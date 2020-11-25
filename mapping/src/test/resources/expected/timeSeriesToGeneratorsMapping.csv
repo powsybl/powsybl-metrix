@@ -1,0 +1,8 @@
+TimeSeries;MinPower;MaxPower;AveragePower;NetworkPower;Variable;Generators
+Pmax;1000;1000;1000;1000;maxP;FSSV.O11_G
+;;;;;;FSSV.O12_G
+Pmin;10;10;10;0;minP;FSSV.O11_G
+;;;;;;FSSV.O12_G
+targetP_12_13;500;500;500;0;targetP;FVALDI12_G
+targetP_13;700;700;700;0;targetP;FVALDI13_G
+targetP_14_ts3;0;0;0;0;targetP;FVALDI14_G

@@ -1,5 +1,9 @@
 # Maven projects
 /target
+/commons/target
+/metrix-integration/target
+/mapping/target
+/distribution/target
 
 # CMake projects
 /build/

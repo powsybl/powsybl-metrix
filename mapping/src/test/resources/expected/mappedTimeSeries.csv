@@ -1,0 +1,6 @@
+MappedTimeSeries;Type;Variable;SourceTimeSeries
+Pmax;generator;maxP;-
+Pmin;generator;minP;-
+targetP_12_13;generator;targetP;-
+targetP_13;generator;targetP;-
+targetP_14_ts3;generator;targetP;-

@@ -1,0 +1,3 @@
+mappingGenerators FSSV on Pmax
+mappingGenerators FSSV on Pmin
+set FVALDI11_G unmapped

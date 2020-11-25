@@ -1,0 +1,5 @@
+Generator;paysCvg;substation;voltageLevel;regionDI;genreCvg;entsoeCategory;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+FVALDI15_G;FRANCE;FVALD;FVALDI1;;CHARBON;;0;0;0;Unmapped;-;-;-;-
+FSSV.O11_G;FRANCE;FSSV.;FSSV.O1;;CHARBON;;480;0;500;Unmapped;-;-;-;-
+FSSV.O12_G;FRANCE;FSSV.;FSSV.O1;;CHARBON;;480;0;500;Unmapped;-;-;-;-
+FVERGE11_G;FRANCE;FVERG;FVERGE1;;CHARBON;;0;0;0;Unmapped;-;-;-;-
