@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<iidm:network xmlns:iidm="http://www.itesla_project.eu/schema/iidm/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" id="Reseau_test_Topase_avec_report_seuils_reduits" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF">
+    <iidm:substation id="NO" country="FR" tso="RTE">
+        <iidm:property name="paysCvg" value="FRANCE"/>
+        <iidm:property name="regionCvg" value="LILLE"/>
+        <iidm:voltageLevel id="NO_poste" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
+            <iidm:nodeBreakerTopology nodeCount="14">
+                <iidm:busbarSection id="NOD1_1" name="1" node="0" v="380.0" angle="0.0"/>
+                <iidm:busbarSection id="NOD1_mnv" name="mnv" node="1" v="380.0" angle="0.0"/>
+                <iidm:switch id="NOD1_NOD1  NE1  1_SC5_0" name="NOD1  NE1  1_SC5_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="2"/>
+                <iidm:switch id="NOD1_NOD1  NE1  1_SC5_1" name="NOD1  NE1  1_SC5_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="2"/>
+                <iidm:switch id="NOD1_NOD1  NE1  1_DJ5" name="NOD1  NE1  1_DJ5" kind="BREAKER" retained="false" open="false" node1="2" node2="3"/>
+                <iidm:switch id="NOD1_NOD1  NE1  2_SC7_0" name="NOD1  NE1  2_SC7_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="4"/>
+                <iidm:switch id="NOD1_NOD1  NE1  2_SC7_1" name="NOD1  NE1  2_SC7_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="4"/>
+                <iidm:switch id="NOD1_NOD1  NE1  2_DJ7" name="NOD1  NE1  2_DJ7" kind="BREAKER" retained="false" open="false" node1="4" node2="5"/>
+                <iidm:switch id="NOD1_SOO1  NOD1  1_SC9_0" name="SOO1  NOD1  1_SC9_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="6"/>
+                <iidm:switch id="NOD1_SOO1  NOD1  1_SC9_1" name="SOO1  NOD1  1_SC9_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="6"/>
+                <iidm:switch id="NOD1_SOO1  NOD1  1_DJ9" name="SOO1  NOD1  1_DJ9" kind="BREAKER" retained="false" open="false" node1="6" node2="7"/>
+                <iidm:switch id="NOD1_SOO1  NOD1  2_SC11_0" name="SOO1  NOD1  2_SC11_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="8"/>
+                <iidm:switch id="NOD1_SOO1  NOD1  2_SC11_1" name="SOO1  NOD1  2_SC11_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="8"/>
+                <iidm:switch id="NOD1_SOO1  NOD1  2_DJ11" name="SOO1  NOD1  2_DJ11" kind="BREAKER" retained="false" open="false" node1="8" node2="9"/>
+                <iidm:switch id="NOD1_NOD1  NETD  1_SC13_0" name="NOD1  NETD  1_SC13_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="10"/>
+                <iidm:switch id="NOD1_NOD1  NETD  1_SC13_1" name="NOD1  NETD  1_SC13_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="10"/>
+                <iidm:switch id="NOD1_NOD1  NETD  1_DJ13" name="NOD1  NETD  1_DJ13" kind="BREAKER" retained="false" open="false" node1="10" node2="11"/>
+                <iidm:switch id="NOD1__SC14_0" name="_SC14_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="12"/>
+                <iidm:switch id="NOD1__SC14_1" name="_SC14_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="12"/>
+                <iidm:switch id="NOD1__SC15_0" name="_SC15_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="13"/>
+                <iidm:switch id="NOD1__SC15_1" name="_SC15_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="13"/>
+                <iidm:switch id="NOD1_NOD1_DJ_OMN" name="NOD1_DJ_OMN" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
+            </iidm:nodeBreakerTopology>
+        </iidm:voltageLevel>
+        <iidm:voltageLevel id="NE_poste" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
+            <iidm:property name="siteInit" value="FTDPR"/>
+            <iidm:nodeBreakerTopology nodeCount="14">
+                <iidm:busbarSection id="NETD_1" name="1" node="0" v="380.0" angle="-0.0380914769006283"/>
+                <iidm:busbarSection id="NETD_mnv" name="mnv" node="1" v="380.0" angle="-0.0380914769006283"/>
+                <iidm:switch id="NETD_NETD  NE1  1_SC5_0" name="NETD  NE1  1_SC5_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="2"/>
+                <iidm:switch id="NETD_NETD  NE1  1_SC5_1" name="NETD  NE1  1_SC5_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="2"/>
+                <iidm:switch id="NETD_NETD  NE1  1_DJ5" name="NETD  NE1  1_DJ5" kind="BREAKER" retained="false" open="false" node1="2" node2="3"/>
+                <iidm:switch id="NETD_NETD  NE1  2_SC7_0" name="NETD  NE1  2_SC7_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="4"/>
+                <iidm:switch id="NETD_NETD  NE1  2_SC7_1" name="NETD  NE1  2_SC7_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="4"/>
+                <iidm:switch id="NETD_NETD  NE1  2_DJ7" name="NETD  NE1  2_DJ7" kind="BREAKER" retained="false" open="false" node1="4" node2="5"/>
+                <iidm:switch id="NETD_SEI1  NETD  1_SC9_0" name="SEI1  NETD  1_SC9_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="6"/>
+                <iidm:switch id="NETD_SEI1  NETD  1_SC9_1" name="SEI1  NETD  1_SC9_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="6"/>
+                <iidm:switch id="NETD_SEI1  NETD  1_DJ9" name="SEI1  NETD  1_DJ9" kind="BREAKER" retained="false" open="false" node1="6" node2="7"/>
+                <iidm:switch id="NETD_SEI1  NETD  2_SC11_0" name="SEI1  NETD  2_SC11_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="8"/>
+                <iidm:switch id="NETD_SEI1  NETD  2_SC11_1" name="SEI1  NETD  2_SC11_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="8"/>
+                <iidm:switch id="NETD_SEI1  NETD  2_DJ11" name="SEI1  NETD  2_DJ11" kind="BREAKER" retained="false" open="false" node1="8" node2="9"/>
+                <iidm:switch id="NETD_NOD1  NETD  1_SC13_0" name="NOD1  NETD  1_SC13_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="10"/>
+                <iidm:switch id="NETD_NOD1  NETD  1_SC13_1" name="NOD1  NETD  1_SC13_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="10"/>
+                <iidm:switch id="NETD_NOD1  NETD  1_DJ13" name="NOD1  NETD  1_DJ13" kind="BREAKER" retained="false" open="false" node1="10" node2="11"/>
+                <iidm:switch id="NETD__SC14_0" name="_SC14_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="12"/>
+                <iidm:switch id="NETD__SC14_1" name="_SC14_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="12"/>
+                <iidm:switch id="NETD__SC15_0" name="_SC15_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="13"/>
+                <iidm:switch id="NETD__SC15_1" name="_SC15_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="13"/>
+                <iidm:switch id="NETD_NETD_DJ_OMN" name="NETD_DJ_OMN" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
+            </iidm:nodeBreakerTopology>
+        </iidm:voltageLevel>
+        <iidm:twoWindingsTransformer id="NE_NO_1" r="13.0" x="1.0" g="0.0" b="0.0" ratedU1="380.0" ratedU2="380.0" node1="11" voltageLevelId1="NE_poste" node2="11" voltageLevelId2="NO_poste" p1="-95.99961429575856" p2="95.99961429575856">
+            <iidm:phaseTapChanger lowTapPosition="0" tapPosition="17" regulationMode="CURRENT_LIMITER" regulationValue="600.0" regulating="true">
+                <iidm:terminalRef id="NE_NO_1" side="ONE"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-9.167247772216797"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.15"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.14"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.13"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.12"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.11"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.1"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.09"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.08"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.07"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.06"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.05"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.04"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.03"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.02"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.01"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.0"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.01"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.02"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.03"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.04"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.05"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.06"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.07"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.08"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.09"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.1"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.11"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.12"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.13"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.14"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="0.15"/>
+                <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="9.167247772216797"/>
+            </iidm:phaseTapChanger>
+            <iidm:currentLimits1 permanentLimit="400.0"/>
+            <iidm:currentLimits2 permanentLimit="400.0">
+                <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="450.0000305175781"/>
+                <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="500.0000305175781"/>
+                <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+            </iidm:currentLimits2>
+        </iidm:twoWindingsTransformer>
+    </iidm:substation>
+    <iidm:substation id="S" country="FR" tso="RTE">
+        <iidm:property name="paysCvg" value="FRANCE"/>
+        <iidm:property name="regionCvg" value="LILLE"/>
+        <iidm:voltageLevel id="S_poste" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
+            <iidm:nodeBreakerTopology nodeCount="12">
+                <iidm:busbarSection id="SS1_1" name="1" node="0" v="380.0" angle="-0.01904573845031415"/>
+                <iidm:busbarSection id="SS1_mnv" name="mnv" node="1" v="380.0" angle="-0.01904573845031415"/>
+                <iidm:switch id="SS1_SS1  SEI1  1_SC5_0" name="SS1  SEI1  1_SC5_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="2"/>
+                <iidm:switch id="SS1_SS1  SEI1  1_SC5_1" name="SS1  SEI1  1_SC5_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="2"/>
+                <iidm:switch id="SS1_SS1  SEI1  1_DJ5" name="SS1  SEI1  1_DJ5" kind="BREAKER" retained="false" open="false" node1="2" node2="3"/>
+                <iidm:switch id="SS1_SS1  SEI1  2_SC7_0" name="SS1  SEI1  2_SC7_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="4"/>
+                <iidm:switch id="SS1_SS1  SEI1  2_SC7_1" name="SS1  SEI1  2_SC7_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="4"/>
+                <iidm:switch id="SS1_SS1  SEI1  2_DJ7" name="SS1  SEI1  2_DJ7" kind="BREAKER" retained="false" open="false" node1="4" node2="5"/>
+                <iidm:switch id="SS1__SC12_0" name="_SC12_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="6"/>
+                <iidm:switch id="SS1__SC12_1" name="_SC12_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="6"/>
+                <iidm:switch id="SS1__SC13_0" name="_SC13_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="7"/>
+                <iidm:switch id="SS1__SC13_1" name="_SC13_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="7"/>
+                <iidm:switch id="SS1_SS1_DJ_OMN" name="SS1_DJ_OMN" kind="BREAKER" retained="true" open="false" node1="6" node2="7"/>
+                <iidm:switch id="SS1_Disj SS1 SOO1 1" name="Disj SS1 SOO1 1" kind="BREAKER" retained="false" open="false" node1="8" node2="9"/>
+                <iidm:switch id="SS1_Sect 1 SS1 SOO1 1" name="Sect 1 SS1 SOO1 1" kind="DISCONNECTOR" retained="false" open="false" node1="9" node2="0"/>
+                <iidm:switch id="SS1_Sect mnv SS1 SOO1 1" name="Sect mnv SS1 SOO1 1" kind="DISCONNECTOR" retained="false" open="true" node1="9" node2="1"/>
+                <iidm:switch id="SS1_Disj SS1 SOO1 2" name="Disj SS1 SOO1 2" kind="BREAKER" retained="false" open="false" node1="10" node2="11"/>
+                <iidm:switch id="SS1_Sect 1 SS1 SOO1 2" name="Sect 1 SS1 SOO1 2" kind="DISCONNECTOR" retained="false" open="true" node1="11" node2="0"/>
+                <iidm:switch id="SS1_Sect mnv SS1 SOO1 2" name="Sect mnv SS1 SOO1 2" kind="DISCONNECTOR" retained="false" open="false" node1="11" node2="1"/>
+            </iidm:nodeBreakerTopology>
+        </iidm:voltageLevel>
+    </iidm:substation>
+    <iidm:substation id="SO" country="FR" tso="RTE">
+        <iidm:property name="paysCvg" value="FRANCE"/>
+        <iidm:property name="regionCvg" value="LILLE"/>
+        <iidm:voltageLevel id="SO_poste" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
+            <iidm:nodeBreakerTopology nodeCount="22">
+                <iidm:busbarSection id="SOO1_1" name="1" node="0" v="380.0" angle="0.038091349365863954"/>
+                <iidm:busbarSection id="SOO1_mnv" name="mnv" node="1" v="380.0" angle="0.038091349365863954"/>
+                <iidm:switch id="SOO1_SOO11_G_SC3_0" name="SOO11_G_SC3_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="2"/>
+                <iidm:switch id="SOO1_SOO11_G_SC3_1" name="SOO11_G_SC3_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="2"/>
+                <iidm:switch id="SOO1_SOO11_G_DJ3" name="SOO11_G_DJ3" kind="BREAKER" retained="false" open="false" node1="2" node2="3"/>
+                <iidm:switch id="SOO1_SOO1  NOD1  1_SC5_0" name="SOO1  NOD1  1_SC5_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="4"/>
+                <iidm:switch id="SOO1_SOO1  NOD1  1_SC5_1" name="SOO1  NOD1  1_SC5_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="4"/>
+                <iidm:switch id="SOO1_SOO1  NOD1  1_DJ5" name="SOO1  NOD1  1_DJ5" kind="BREAKER" retained="false" open="false" node1="4" node2="5"/>
+                <iidm:switch id="SOO1_SOO1  NOD1  2_SC7_0" name="SOO1  NOD1  2_SC7_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="6"/>
+                <iidm:switch id="SOO1_SOO1  NOD1  2_SC7_1" name="SOO1  NOD1  2_SC7_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="6"/>
+                <iidm:switch id="SOO1_SOO1  NOD1  2_DJ7" name="SOO1  NOD1  2_DJ7" kind="BREAKER" retained="false" open="false" node1="6" node2="7"/>
+                <iidm:switch id="SOO1__SC12_0" name="_SC12_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="8"/>
+                <iidm:switch id="SOO1__SC12_1" name="_SC12_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="8"/>
+                <iidm:switch id="SOO1__SC13_0" name="_SC13_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="9"/>
+                <iidm:switch id="SOO1__SC13_1" name="_SC13_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="9"/>
+                <iidm:switch id="SOO1_SOO1_DJ_OMN" name="SOO1_DJ_OMN" kind="BREAKER" retained="true" open="false" node1="8" node2="9"/>
+                <iidm:switch id="SOO1_Disj HVDC1" name="Disj HVDC1" kind="BREAKER" retained="false" open="false" node1="10" node2="11"/>
+                <iidm:switch id="SOO1_Sect 1 HVDC1" name="Sect 1 HVDC1" kind="DISCONNECTOR" retained="false" open="true" node1="11" node2="0"/>
+                <iidm:switch id="SOO1_Sect mnv HVDC1" name="Sect mnv HVDC1" kind="DISCONNECTOR" retained="false" open="false" node1="11" node2="1"/>
+                <iidm:switch id="SOO1_Disj HVDC2" name="Disj HVDC2" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
+                <iidm:switch id="SOO1_Sect 1 HVDC2" name="Sect 1 HVDC2" kind="DISCONNECTOR" retained="false" open="false" node1="13" node2="0"/>
+                <iidm:switch id="SOO1_Sect mnv HVDC2" name="Sect mnv HVDC2" kind="DISCONNECTOR" retained="false" open="true" node1="13" node2="1"/>
+                <iidm:switch id="SOO1_Disj SS1 SOO1 1" name="Disj SS1 SOO1 1" kind="BREAKER" retained="false" open="false" node1="14" node2="15"/>
+                <iidm:switch id="SOO1_Sect 1 SS1 SOO1 1" name="Sect 1 SS1 SOO1 1" kind="DISCONNECTOR" retained="false" open="true" node1="15" node2="0"/>
+                <iidm:switch id="SOO1_Sect mnv SS1 SOO1 1" name="Sect mnv SS1 SOO1 1" kind="DISCONNECTOR" retained="false" open="false" node1="15" node2="1"/>
+                <iidm:switch id="SOO1_Disj SS1 SOO1 2" name="Disj SS1 SOO1 2" kind="BREAKER" retained="false" open="false" node1="16" node2="17"/>
+                <iidm:switch id="SOO1_Sect 1 SS1 SOO1 2" name="Sect 1 SS1 SOO1 2" kind="DISCONNECTOR" retained="false" open="false" node1="17" node2="0"/>
+                <iidm:switch id="SOO1_Sect mnv SS1 SOO1 2" name="Sect mnv SS1 SOO1 2" kind="DISCONNECTOR" retained="false" open="true" node1="17" node2="1"/>
+                <iidm:switch id="SOO1_Disj SOO11_L" name="Disj SOO11_L" kind="BREAKER" retained="false" open="false" node1="18" node2="19"/>
+                <iidm:switch id="SOO1_Sect 1 SOO11_L" name="Sect 1 SOO11_L" kind="DISCONNECTOR" retained="false" open="false" node1="19" node2="0"/>
+                <iidm:switch id="SOO1_Sect mnv SOO11_L" name="Sect mnv SOO11_L" kind="DISCONNECTOR" retained="false" open="true" node1="19" node2="1"/>
+                <iidm:switch id="SOO1_Disj SOO12_G" name="Disj SOO12_G" kind="BREAKER" retained="false" open="false" node1="20" node2="21"/>
+                <iidm:switch id="SOO1_Sect 1 SOO12_G" name="Sect 1 SOO12_G" kind="DISCONNECTOR" retained="false" open="true" node1="21" node2="0"/>
+                <iidm:switch id="SOO1_Sect mnv SOO12_G" name="Sect mnv SOO12_G" kind="DISCONNECTOR" retained="false" open="false" node1="21" node2="1"/>
+            </iidm:nodeBreakerTopology>
+            <iidm:generator id="SO_G1" energySource="THERMAL" minP="0.0" maxP="2000.0" voltageRegulatorOn="true" targetP="480.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="3" p="-480.0">
+                <iidm:property name="genreCvg" value="CHARBON"/>
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
+                    <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:generator>
+            <iidm:generator id="SO_G2" energySource="THERMAL" minP="0.0" maxP="2000.0" voltageRegulatorOn="true" targetP="480.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="20" p="-480.0">
+                <iidm:property name="genreCvg" value="CHARBON"/>
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
+                    <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:generator>
+            <iidm:load id="SO_L" loadType="UNDEFINED" p0="480.0" q0="4.800000190734863" node="18" p="480.0"/>
+            <iidm:vscConverterStation id="SOO1_SOO1_HVDC1" name="SOO1_HVDC1" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="10" p="0.0">
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
+                    <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:vscConverterStation>
+            <iidm:vscConverterStation id="SOO1_SOO1_HVDC2" name="SOO1_HVDC2" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="12" p="0.0">
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
+                    <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:vscConverterStation>
+        </iidm:voltageLevel>
+    </iidm:substation>
+    <iidm:substation id="SE" country="FR" tso="RTE">
+        <iidm:property name="paysCvg" value="FRANCE"/>
+        <iidm:property name="regionCvg" value="LILLE"/>
+        <iidm:voltageLevel id="SE_poste" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
+            <iidm:nodeBreakerTopology nodeCount="22">
+                <iidm:busbarSection id="SEI1_1" name="1" node="0" v="380.0" angle="-0.07618282626649227"/>
+                <iidm:busbarSection id="SEI1_mnv" name="mnv" node="1" v="380.0" angle="-0.07618282626649227"/>
+                <iidm:switch id="SEI1_SEI11_G_SC3_0" name="SEI11_G_SC3_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="2"/>
+                <iidm:switch id="SEI1_SEI11_G_SC3_1" name="SEI11_G_SC3_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="2"/>
+                <iidm:switch id="SEI1_SEI11_G_DJ3" name="SEI11_G_DJ3" kind="BREAKER" retained="false" open="false" node1="2" node2="3"/>
+                <iidm:switch id="SEI1_SS1  SEI1  1_SC5_0" name="SS1  SEI1  1_SC5_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="4"/>
+                <iidm:switch id="SEI1_SS1  SEI1  1_SC5_1" name="SS1  SEI1  1_SC5_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="4"/>
+                <iidm:switch id="SEI1_SS1  SEI1  1_DJ5" name="SS1  SEI1  1_DJ5" kind="BREAKER" retained="false" open="false" node1="4" node2="5"/>
+                <iidm:switch id="SEI1_SS1  SEI1  2_SC7_0" name="SS1  SEI1  2_SC7_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="6"/>
+                <iidm:switch id="SEI1_SS1  SEI1  2_SC7_1" name="SS1  SEI1  2_SC7_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="6"/>
+                <iidm:switch id="SEI1_SS1  SEI1  2_DJ7" name="SS1  SEI1  2_DJ7" kind="BREAKER" retained="false" open="false" node1="6" node2="7"/>
+                <iidm:switch id="SEI1_SEI1  NETD  1_SC9_0" name="SEI1  NETD  1_SC9_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="8"/>
+                <iidm:switch id="SEI1_SEI1  NETD  1_SC9_1" name="SEI1  NETD  1_SC9_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="8"/>
+                <iidm:switch id="SEI1_SEI1  NETD  1_DJ9" name="SEI1  NETD  1_DJ9" kind="BREAKER" retained="false" open="false" node1="8" node2="9"/>
+                <iidm:switch id="SEI1_SEI1  NETD  2_SC11_0" name="SEI1  NETD  2_SC11_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="10"/>
+                <iidm:switch id="SEI1_SEI1  NETD  2_SC11_1" name="SEI1  NETD  2_SC11_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="10"/>
+                <iidm:switch id="SEI1_SEI1  NETD  2_DJ11" name="SEI1  NETD  2_DJ11" kind="BREAKER" retained="false" open="false" node1="10" node2="11"/>
+                <iidm:switch id="SEI1__SC12_0" name="_SC12_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="12"/>
+                <iidm:switch id="SEI1__SC12_1" name="_SC12_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="12"/>
+                <iidm:switch id="SEI1__SC13_0" name="_SC13_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="13"/>
+                <iidm:switch id="SEI1__SC13_1" name="_SC13_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="13"/>
+                <iidm:switch id="SEI1_SEI1_DJ_OMN" name="SEI1_DJ_OMN" kind="BREAKER" retained="true" open="false" node1="12" node2="13"/>
+                <iidm:switch id="SEI1_Disj HVDC1" name="Disj HVDC1" kind="BREAKER" retained="false" open="false" node1="14" node2="15"/>
+                <iidm:switch id="SEI1_Sect 1 HVDC1" name="Sect 1 HVDC1" kind="DISCONNECTOR" retained="false" open="false" node1="15" node2="0"/>
+                <iidm:switch id="SEI1_Sect mnv HVDC1" name="Sect mnv HVDC1" kind="DISCONNECTOR" retained="false" open="true" node1="15" node2="1"/>
+                <iidm:switch id="SEI1_Disj HVDC2" name="Disj HVDC2" kind="BREAKER" retained="false" open="false" node1="16" node2="17"/>
+                <iidm:switch id="SEI1_Sect 1 HVDC2" name="Sect 1 HVDC2" kind="DISCONNECTOR" retained="false" open="false" node1="17" node2="0"/>
+                <iidm:switch id="SEI1_Sect mnv HVDC2" name="Sect mnv HVDC2" kind="DISCONNECTOR" retained="false" open="true" node1="17" node2="1"/>
+                <iidm:switch id="SEI1_Disj SEI11_L" name="Disj SEI11_L" kind="BREAKER" retained="false" open="false" node1="18" node2="19"/>
+                <iidm:switch id="SEI1_Sect 1 SEI11_L" name="Sect 1 SEI11_L" kind="DISCONNECTOR" retained="false" open="false" node1="19" node2="0"/>
+                <iidm:switch id="SEI1_Sect mnv SEI11_L" name="Sect mnv SEI11_L" kind="DISCONNECTOR" retained="false" open="true" node1="19" node2="1"/>
+                <iidm:switch id="SEI1_Disj SEI11_L2" name="Disj SEI11_L2" kind="BREAKER" retained="false" open="false" node1="20" node2="21"/>
+                <iidm:switch id="SEI1_Sect 1 SEI11_L2" name="Sect 1 SEI11_L2" kind="DISCONNECTOR" retained="false" open="true" node1="21" node2="0"/>
+                <iidm:switch id="SEI1_Sect mnv SEI11_L2" name="Sect mnv SEI11_L2" kind="DISCONNECTOR" retained="false" open="false" node1="21" node2="1"/>
+            </iidm:nodeBreakerTopology>
+            <iidm:generator id="SE_G" energySource="THERMAL" minP="0.0" maxP="600.0" voltageRegulatorOn="true" targetP="100.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="3" p="-0.0">
+                <iidm:property name="genreCvg" value="CHARBON"/>
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
+                    <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:generator>
+            <iidm:load id="SE_L1" loadType="UNDEFINED" p0="480.0" q0="4.800000190734863" node="18" p="480.0"/>
+            <iidm:load id="SE_L2" loadType="UNDEFINED" p0="0.0" q0="4.800000190734863" node="20" p="0.0"/>
+            <iidm:vscConverterStation id="SEI1_SEI1_HVDC1" name="SEI1_HVDC1" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="14" p="0.0">
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
+                    <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:vscConverterStation>
+            <iidm:vscConverterStation id="SEI1_SEI1_HVDC2" name="SEI1_HVDC2" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="16" p="0.0">
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
+                    <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:vscConverterStation>
+        </iidm:voltageLevel>
+    </iidm:substation>
+    <iidm:substation id="N" country="FR" tso="RTE">
+        <iidm:property name="paysCvg" value="FRANCE"/>
+        <iidm:property name="regionCvg" value="LILLE"/>
+        <iidm:voltageLevel id="N_poste" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
+            <iidm:nodeBreakerTopology nodeCount="14">
+                <iidm:busbarSection id="NE1_1" name="1" node="0" v="380.0" angle="-0.01904573845031415"/>
+                <iidm:busbarSection id="NE1_mnv" name="mnv" node="1" v="380.0" angle="-0.01904573845031415"/>
+                <iidm:switch id="NE1_NE11_G_SC3_0" name="NE11_G_SC3_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="2"/>
+                <iidm:switch id="NE1_NE11_G_SC3_1" name="NE11_G_SC3_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="2"/>
+                <iidm:switch id="NE1_NE11_G_DJ3" name="NE11_G_DJ3" kind="BREAKER" retained="false" open="false" node1="2" node2="3"/>
+                <iidm:switch id="NE1_NOD1  NE1  1_SC5_0" name="NOD1  NE1  1_SC5_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="4"/>
+                <iidm:switch id="NE1_NOD1  NE1  1_SC5_1" name="NOD1  NE1  1_SC5_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="4"/>
+                <iidm:switch id="NE1_NOD1  NE1  1_DJ5" name="NOD1  NE1  1_DJ5" kind="BREAKER" retained="false" open="false" node1="4" node2="5"/>
+                <iidm:switch id="NE1_NOD1  NE1  2_SC7_0" name="NOD1  NE1  2_SC7_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="6"/>
+                <iidm:switch id="NE1_NOD1  NE1  2_SC7_1" name="NOD1  NE1  2_SC7_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="6"/>
+                <iidm:switch id="NE1_NOD1  NE1  2_DJ7" name="NOD1  NE1  2_DJ7" kind="BREAKER" retained="false" open="false" node1="6" node2="7"/>
+                <iidm:switch id="NE1_NETD  NE1  1_SC9_0" name="NETD  NE1  1_SC9_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="8"/>
+                <iidm:switch id="NE1_NETD  NE1  1_SC9_1" name="NETD  NE1  1_SC9_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="8"/>
+                <iidm:switch id="NE1_NETD  NE1  1_DJ9" name="NETD  NE1  1_DJ9" kind="BREAKER" retained="false" open="false" node1="8" node2="9"/>
+                <iidm:switch id="NE1_NETD  NE1  2_SC11_0" name="NETD  NE1  2_SC11_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="10"/>
+                <iidm:switch id="NE1_NETD  NE1  2_SC11_1" name="NETD  NE1  2_SC11_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="10"/>
+                <iidm:switch id="NE1_NETD  NE1  2_DJ11" name="NETD  NE1  2_DJ11" kind="BREAKER" retained="false" open="false" node1="10" node2="11"/>
+                <iidm:switch id="NE1__SC12_0" name="_SC12_0" kind="DISCONNECTOR" retained="false" open="false" node1="0" node2="12"/>
+                <iidm:switch id="NE1__SC12_1" name="_SC12_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="12"/>
+                <iidm:switch id="NE1__SC13_0" name="_SC13_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="13"/>
+                <iidm:switch id="NE1__SC13_1" name="_SC13_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="13"/>
+                <iidm:switch id="NE1_NE1_DJ_OMN" name="NE1_DJ_OMN" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
+            </iidm:nodeBreakerTopology>
+            <iidm:generator id="N_G" energySource="THERMAL" minP="0.0" maxP="600.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="7.481579780578613" node="3" p="-0.0">
+                <iidm:property name="genreCvg" value="CHARBON"/>
+                <iidm:reactiveCapabilityCurve>
+                    <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
+                    <iidm:point p="600.0" minQ="-200.0" maxQ="200.0"/>
+                </iidm:reactiveCapabilityCurve>
+            </iidm:generator>
+        </iidm:voltageLevel>
+    </iidm:substation>
+    <iidm:line id="NO_N_1" r="1.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="3" voltageLevelId1="NO_poste" node2="5" voltageLevelId2="N_poste" p1="48.0001285680805" p2="-48.0001285680805">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="NO_N_2" r="2.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="5" voltageLevelId1="NO_poste" node2="7" voltageLevelId2="N_poste" p1="48.0001285680805" p2="-48.0001285680805">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="S_SE_1" r="3.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="3" voltageLevelId1="S_poste" node2="5" voltageLevelId2="SE_poste" p1="144.0000642840403" p2="-144.0000642840403">
+        <iidm:currentLimits1 permanentLimit="500.00006103515625">
+            <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="500.00006103515625"/>
+    </iidm:line>
+    <iidm:line id="S_SE_2" r="4.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="5" voltageLevelId1="S_poste" node2="7" voltageLevelId2="SE_poste" p1="144.0000642840403" p2="-144.0000642840403">
+        <iidm:currentLimits1 permanentLimit="500.00006103515625">
+            <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="500.00006103515625"/>
+    </iidm:line>
+    <iidm:line id="S_SO_1" r="5.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="8" voltageLevelId1="S_poste" node2="14" voltageLevelId2="SO_poste" p1="-144.00006428404023" p2="144.00006428404023">
+        <iidm:currentLimits1 permanentLimit="500.00006103515625">
+            <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="500.00006103515625"/>
+    </iidm:line>
+    <iidm:line id="S_SO_2" r="6.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="10" voltageLevelId1="S_poste" node2="16" voltageLevelId2="SO_poste" p1="-144.00006428404023" p2="144.00006428404023">
+        <iidm:currentLimits1 permanentLimit="500.00006103515625">
+            <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="500.00006103515625"/>
+    </iidm:line>
+    <iidm:line id="SO_NO_1" r="7.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="5" voltageLevelId1="SO_poste" node2="7" voltageLevelId2="NO_poste" p1="95.99993571595975" p2="-95.99993571595975">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="SO_NO_2" r="8.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="7" voltageLevelId1="SO_poste" node2="9" voltageLevelId2="NO_poste" p1="95.99993571595975" p2="-95.99993571595975">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="NE_N_1" r="9.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="3" voltageLevelId1="NE_poste" node2="9" voltageLevelId2="N_poste" p1="-48.0001285680805" p2="48.0001285680805">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="NE_N_2" r="10.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="5" voltageLevelId1="NE_poste" node2="11" voltageLevelId2="N_poste" p1="-48.0001285680805" p2="48.0001285680805">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="SE_NE_1" r="11.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="9" voltageLevelId1="SE_poste" node2="7" voltageLevelId2="NE_poste" p1="-95.99993571595978" p2="95.99993571595978">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:line id="SE_NE_2" r="12.0" x="1.0" g1="0.0" b1="0.0" g2="0.0" b2="0.0" node1="11" voltageLevelId1="SE_poste" node2="9" voltageLevelId2="NE_poste" p1="-95.99993571595978" p2="95.99993571595978">
+        <iidm:currentLimits1 permanentLimit="600.0">
+            <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
+            <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
+            <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
+        </iidm:currentLimits1>
+        <iidm:currentLimits2 permanentLimit="600.0"/>
+    </iidm:line>
+    <iidm:hvdcLine id="HVDC1" r="0.25" nominalV="320.0" convertersMode="SIDE_1_RECTIFIER_SIDE_2_INVERTER" activePowerSetpoint="0.0" maxP="1011.0" converterStation1="SOO1_SOO1_HVDC1" converterStation2="SEI1_SEI1_HVDC1"/>
+    <iidm:hvdcLine id="HVDC2" r="0.25" nominalV="320.0" convertersMode="SIDE_1_RECTIFIER_SIDE_2_INVERTER" activePowerSetpoint="0.0" maxP="1011.0" converterStation1="SOO1_SOO1_HVDC2" converterStation2="SEI1_SEI1_HVDC2"/>
+    <iidm:extension id="HVDC2">
+        <hopr:hvdcOperatorActivePowerRange fromCS1toCS2="1000.0" fromCS2toCS1="1000.0"/>
+        <hapc:hvdcAngleDroopActivePowerControl p0="100.0" droop="180.0" enabled="false"/>
+    </iidm:extension>
+</iidm:network>
