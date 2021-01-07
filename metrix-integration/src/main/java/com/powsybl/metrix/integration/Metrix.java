@@ -83,7 +83,6 @@ public class Metrix {
     private static final String LOG_FILE_PREFIX = "log";
     private static final String METRIX_CHUNK_ID = "metrix-chunk-";
 
-    private static final long LF_COMPUTATION_TIMEOUT = 2700L;
     private static final int MAX_PARALLEL_LONG_COMPUTATIONS = 3;
 
     public static final String MAX_THREAT_PREFIX = MetrixOutputData.MAX_THREAT_NAME + "1_FLOW_";

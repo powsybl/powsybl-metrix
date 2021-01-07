@@ -52,7 +52,8 @@ parameters {
 }
 ```
 
- Etant donné qu'il existe des valeurs par défaut, seuls les paramètres utiles ont besoin d'être renseignés. Exemple :
+Since there is default value for each parameters, only useful parameters can be filled in. For instance :
+```
 parameters {
   computationType OPF_WITHOUT_REDISPATCHING  
   nbMaxCurativeAction 3
@@ -60,65 +61,84 @@ parameters {
   withAdequacyResults true
   nbThreatResults 5
 }
-Attention, pour associer une valeur négative à un paramètre en Groovy, il faut mettre des parenthèses autour de cette valeur : nbMaxCurativeAction (-1)
-Ouvrages surveillés et ouvrages avec résultats
+```
 
-On distingue les ouvrages dit surveillés pour lesquels Metrix prendra des actions pour respecter leurs seuils et ceux pour lesquels on veut uniquement des résultats (en mode load flow ces notions sont équivalentes).
+Note that to use a negative value, you must surround it with parenthesis, eg: `maxCurativeAction: (-1)`.
 
-Pour que les ouvrages soient "surveillés", il faut leur définir des seuils en MW. Ces seuils peuvent être définis par des entiers dans le script, ils sont alors fixes sur tous les pas de temps. Il peut aussi s'agir de chroniques de la multi-situations utilisée pour lancer Metrix. L'utilisateur gère ainsi lui-même la conversion A=>MW et peut jouer sur la tension et le cosPhi selon les ouvrages, les pas de temps, en N et N-k.
+### Monitored branches and observed branches
 
-Pour les ouvrages surveillés en N, on déclare un seuil N (basecase en anglais).
+There is a separation between "monitored branches" where Metrix will take action to enforce threshold limits and the "observed branches" where we only want the resulting flow values. 
+In the LF (Load Flow) mode, there is no difference between monitored components and observed components. 
 
-Pour les ouvrages surveillés en N-k, on déclare le seuil à respecter après défaut. Si on fait le choix de ne pas expliciter les parades curatives, il peut être égal à un seuil dont on sait qu'il laisse le temps d'agir en N-k (si par exemple après défaut on dispose d'une action réglant le problème à coup sûr en 5 minutes, on pourra mettre l'IT5). Dans ce cas, Metrix prendra si nécessaire des actions préventives pour tenir ce seuil de surcharge après défaut. Si on fait le choix d'expliciter les parades curatives, le seuil N-k à saisir est le seuil final, c'est-à-dire après les actions curatives définies (le même que le seuil N dans la plupart des cas). Dans ce cas, on peut en complément déclarer un seuil appelé "ITAM" (pour Intensité Temporaire Avant Manœuvre) qui correspond au transit juste après l'incident et avant toute action curative (l'IT5 si on reprend l'exemple ci-dessous). Si un tel seuil est spécifié, l'option preCurativeResults est automatiquement activée dans les paramètres généraux de Metrix. Metrix étant un modèle statique, la valeur transitoire après défaut et avant manœuvres est une indication à utiliser avec précaution.
-Attention au volume des résultats. Il n'est absolument pas recommandé de demander les flux de tous les ouvrages du réseaux sur tous les incidents sous peine d'atteindre la limite du nombre de résultats.
+To indicate that a component should be "monitored" we have to define thresholds in MW. It can be a time series name (originating from the mapping script provided) or an fixed value (constant time series).
+The `branchRatingsBaseCase` parameter will contain the threshold for the basecase (network N), the `branchRatingsBeforeCurative` and `branchRatingsOnContingency` parameters will contain the threshold to be used after a contingency (N-k) respectively before and after remedial actions. 
+Threshold can be defined with a direction constraint with default being the origin -> end direction (the opposite direction is specified with the same parameter name followed by `EndOr`). Origin is the node corresponding to `voltageLevelId1` in the iidm case file.  
 
-La syntaxe pour définir la surveillance des ouvrages est la suivante ("id" étant l'identifiant, de type chaine de caractère, dans le fichier .iidm):
+The syntax to define monitored/observed components is :
 
-branch('id_ouvrage') {
-   baseCaseFlowResults true // si vous voulez des résultats en N
-   maxThreatFlowResults true // si vous voulez des menaces max sur incidents
-   contingencyFlowResults 'a', 'b'// pour les transits sur des incidents particuliers
-   branchRatingsBaseCase 'tsName' // pour ‘surveiller’ l’ouvrage en N, cas où tsName est le nom d'une chronique de la base
-   branchRatingsOnContingency 'tsName' // pour ‘surveiller’ l’ouvrage en N-1, cas où tsName est le nom d'une chronique de la base
-   branchRatingsBeforeCurative 100 // pour ‘surveiller’ l’ouvrage avant curatif (avant manœuvres), cas où 100 est la valeur fixe souhaitée
-   contingencyDetailedMarginalVariations 'a', 'b'// pour les variations marginales détaillées sur des incidents particuliers
-   branchAnalysisRatingsBaseCase 'tsName' // pour 'observer' un ouvrage en N, en disposant d'un seuil pour obtenir des résultats dans la synthèse Metrix
-   branchAnalysisRatingsBaseCaseEndOr 'tsName' // pour 'observer' un ouvrage en N, en disposant d'un seuil sur le sens Extrémité vers Origine pour obtenir des résultats dans la synthèse Metrix
-   branchAnalysisRatingsOnContingency 'tsName' // pour 'observer' un ouvrage en N-1, en disposant d'un seuil sur le sens Extrémité vers Origine pour obtenir des résultats dans la synthèse Metrix
-   branchAnalysisRatingsOnContingencyEndOr 'tsName' // pour 'observer' un ouvrage en N-1, en disposant d'un seuil sur le sens Extrémité vers Origine pour obtenir des résultats dans la synthèse Metrix
+```groovy
+branch('component_id') { // component_id is the string id of the component as found in the iidm network case file
+   baseCaseFlowResults true // true if we want to "observe" the component
+   maxThreatFlowResults true // true to have the maximum contingency threat and related flow result 
+   contingencyFlowResults 'a', 'b'// contingency list for which we want the flow result
+   branchRatingsBaseCase 'tsName' // to "monitor" the branch, can be a fixed value or a named time series (here in the example, a named time series)
+   branchRatingsBaseCaseEndOr 'tsName' // to "monitor" the branch with a threshold in direction End->Origin, can be a fixed value or a named time series (here in the example, a named time series)
+   branchRatingsOnContingency 'tsName' // to "monitor" the branch in N-k, can be a fixed value or a named time series (here in the example, a named time series)
+   branchRatingsOnContingencyEndOr 'tsName' // to "monitor" the branch in N-k with a threshold in direction End->Origin, can be a fixed value or a named time series (here in the example, a named time series)
+   branchRatingsBeforeCurative 100 // to "monitor" the branch in N-k before remedial actions, can be a fixed value or a named time series (here in the example, a fixed value)
+   contingencyDetailedMarginalVariations 'a', 'b'// contingency list for which we want the marginal variation flow result
+   branchAnalysisRatingsBaseCase 'tsName' // to "observe" a branch in basecase with a threshold for postprocessing results
+   branchAnalysisRatingsBaseCaseEndOr 'tsName' // to "observe" a branch in basecase with a threshold in direction End->Origin
+   branchAnalysisRatingsOnContingency 'tsName' // to "observe" a branch in N-1 with a threshold
+   branchAnalysisRatingsOnContingencyEndOr 'tsName' // to "observe" a branch in N-1 with a threshold in direction End->Origin
 }
+```
 
-Précisions :
+Note that monitored branches (when `branchRatingsXXX` is specified) automatically provides resulting flows (when `baseCaseFlowResults` is true).
+If no branch is monitored, then Metrix does not compute anything beside balance adjustment phase.
+HVDC lines cannot be monitored. Flows for HVDC lines in AC emulation mode are always provided, alongside their optimized tuning. 
 
-    Les ouvrages surveillés sont automatiquement des ouvrages avec résultats (il n'est pas besoin d'ajouter )
-    Si on ne déclare aucun ouvrage surveillé, Metrix ne fait aucun calcul à part la phase d'équilibrage P=C
-    On ne peut pas rentrer de lignes HVDC dans les ouvrages surveillés. Les flux des HVDC en émulation AC sont fournis automatiquement ainsi que les consignes des HVDC optimisées par Metrix.
-    Pour créer automatiquement des chroniques de seuils respectant les régimes saisonniers, on pourra s'inspirer de ces fonctions
+#### Examples
 
-Il est possible de définir des seuils asymétriques, avec la valeur du sens "extrémité => origine" différente de celle du sens "origine => extrémité". Il faut pour cela ajouter "EndOr" à la fin de chaque mot-clé : branchRatingsBaseCaseEndOr, branchRatingsOnContingencyEndOr, branchRatingsBeforeCurativeEndOr (également branchRatingsOnSpecificContingencyEndOr et branchRatingsBeforeCurativeOnSpecificContingency pour les incidents spécifiques (cf. ci-dessous).
-
-Les mots clés standards correspondent alors au sens "origine => extrémité" et les mots clés se terminant par "EndOr" correspondent au sens "extrémité => origine".  
-
-L’origine correspond au poste voltageLevelId1 dans le fichier IIDM (l’extrémité au poste voltageLevelId2).
-
-Exemple pour surveiller en N et N-k une liste d'ouvrages en fixant un seuil de 100MW:
-listeOuvrages=[
+To monitor branches on basecase and N-k with a threshold of 100MW :
+```groovy
+branchList=[
 'A.NOUL61FLEAC',
 'AIGREL41ZVERV',
 'AIRVAL41BRESS',
 'AIRVAL41PARTH'
 ]
 
-for (ouvrage in listeOuvrages) {
-  branch(ouvrage) {
+for (branchId in branchList) {
+  branch(branchId) {
    baseCaseFlowResults true 
    maxThreatFlowResults true 
    branchRatingsBaseCase 100
    branchRatingsOnContingency 100
   }     
 }
+```
 
-Exemple pour obtenir les flux sur toutes les lignes et transformateurs 400KV en N et N-k:
+or 
+
+```groovy
+monitoredBranchList=[
+'A.NOUL61FLEAC',
+'AIGREL41ZVERV']
+
+allBranchList = network.branches.collect{it.id} // retrieve all branches from network
+for (branchId in monitoredBranchList) {
+  if (allBranchList.contains(branchId)) {
+     branch(branchId) {
+        baseCaseFlowResults true 
+        maxThreatFlowResults true 
+     } 
+  }
+}
+```
+
+To gather the flow result of every 400KV lines and transformers in basecase and N-k:
+```groovy
 for (l in network.branches) {
   if (l.terminal1.voltageLevel.nominalV >= 380 || l.terminal2.voltageLevel.nominalV >= 380) {
    branch(l.id) {
@@ -127,38 +147,26 @@ for (l in network.branches) {
     } 
   }
 }
+```
 
-Exemple si à partir d'une liste d'ouvrages on veut vérifier d'abord l'existence de chaque élément de la liste avant de demander de le surveiller :
-listeOuvrages=[
+or with more checks :
+
+```groovy
+branchList=[
 'A.NOUL61FLEAC',
 'AIGREL41ZVERV']
 
-listeBranches = network.branches.collect{it.id} //crée la liste des noms de quadripôles du réseau
-for (ouvrage in listeOuvrages) {
-  if (listeBranches.contains(ouvrage)) {
-     branch(ouvrage) {
-        baseCaseFlowResults true 
-        maxThreatFlowResults true 
-     } 
-  }
-}
-
-Variante de l'exemple précédent, où, à partir d'une liste d'ouvrages, on veut vérifier pour chacun son existence et s'il est connecté aux 2 extrémités :
-listeOuvrages=[
-'A.NOUL61FLEAC',
-'AIGREL41ZVERV']
-
-for (lig in listeOuvrages) {
+for (lig in branchList) {
 
         l = network.getBranch(lig)
 
         if (l == null) {
-                println(lig + " n'existe pas dans le réseau") 
+                println(lig + " doesn't exist in the network") 
                 continue
         }
 
         if (!l.terminal1.isConnected() || !l.terminal2.isConnected()) {
-                println(l.id + " est déconnectée") 
+                println(l.id + " is disconnected") 
                 continue
         }
        
@@ -167,6 +175,7 @@ for (lig in listeOuvrages) {
                 maxThreatFlowResults true
         }
 }
+```
 
 Il est également possible de définir une liste d'incidents spécifiques pour lesquels les seuils seront différents de ceux des autres incidents :
 contingencies {
