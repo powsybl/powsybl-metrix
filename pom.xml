@@ -24,10 +24,10 @@
         <url>https://github.com/powsybl/powsybl-metrix</url>
     </scm>
     <modules>
-        <module>commons</module>
-        <module>mapping</module>
+        <module>metrix-commons</module>
+        <module>metrix-mapping</module>
         <module>metrix-integration</module>
-        <module>distribution</module>
+        <module>metrix-distribution</module>
     </modules>
 
     <developers>
