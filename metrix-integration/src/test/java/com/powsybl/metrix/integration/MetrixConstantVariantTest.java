@@ -188,7 +188,7 @@ public class MetrixConstantVariantTest {
         assertEquals(String.join(System.lineSeparator(),
             "NT;2;",
             "-1;CONELE;2;FSSV.O11_L;300;FVERGE11_L;400;",
-            "-1;QATI00MN;2;FS.BIS1  FVALDI1  1;500;FVALDI1  FTDPRA1  1;999;",
+            "-1;QATI00MN;2;FVALDI1  FTDPRA1  1;999;FS.BIS1  FVALDI1  1;500;",
             "0;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;200;",
             "0;CONELE;2;FVALDI11_L;400;FVALDI11_L2;500;",
             "0;QATI00MN;1;FP.AND1  FVERGE1  2;600;",
