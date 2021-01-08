@@ -86,6 +86,8 @@ branch('component_id') { // component_id is the string id of the component as fo
    branchRatingsOnContingency 'tsName' // to "monitor" the branch in N-k, can be a fixed value or a named time series (here in the example, a named time series)
    branchRatingsOnContingencyEndOr 'tsName' // to "monitor" the branch in N-k with a threshold in direction End->Origin, can be a fixed value or a named time series (here in the example, a named time series)
    branchRatingsBeforeCurative 100 // to "monitor" the branch in N-k before remedial actions, can be a fixed value or a named time series (here in the example, a fixed value)
+   branchRatingsOnSpecificContingency 100 // to "monitor" the branch in N-k with specified contingencies list, can be a fixed value or a named time series (here in the example, a fixed value)
+   branchRatingsBeforeCurativeOnSpecificContingency 100 // to "monitor" the branch in N-k before remedial actions with specified contingencies list, can be a fixed value or a named time series (here in the example, a fixed value)
    contingencyDetailedMarginalVariations 'a', 'b'// contingency list for which we want the marginal variation flow result
    branchAnalysisRatingsBaseCase 'tsName' // to "observe" a branch in basecase with a threshold for postprocessing results
    branchAnalysisRatingsBaseCaseEndOr 'tsName' // to "observe" a branch in basecase with a threshold in direction End->Origin
@@ -177,85 +179,87 @@ for (lig in branchList) {
 }
 ```
 
-Il est également possible de définir une liste d'incidents spécifiques pour lesquels les seuils seront différents de ceux des autres incidents :
+To define the list of contingencies where threshold might be differents :
+```groovy
 contingencies {
-  specificContingencies 'a', 'b', 'c' // Liste d'incidents avec seuils spécifiques
+  specificContingencies 'a', 'b', 'c' // Contingency list where special threshold will be applied
 }
-
-Le seuil de ces incidents spécifiques est alors défini via les mots-clés branchRatingsOnSpecificContingency et
-branchRatingsBeforeCurativeOnSpecificContingency (pour le seuil avant manoeuvres) :
-branch("ouvrage") {
+```
+The threshold defined for this list is then defined with the keywords `branchRatingsOnSpecificContingency` or `branchRatingsBeforeCurativeOnSpecificContingency` 
+```groovy
+branch("line") {
    branchRatingsBaseCase 100
    branchRatingsOnContingency 100
-   branchRatingsOnSpecificContingency 200 // Seuil spécifique
-   branchRatingsBeforeCurativeOnSpecificContingency 300 // Seuil spécifique avant manoeuvres
+   branchRatingsOnSpecificContingency 200 // Specific threshold
+   branchRatingsBeforeCurativeOnSpecificContingency 300 // Specific threshold before remedial actions
 }
-Générateurs
+```
 
-On peut définir des groupes dont Metrix pourra changer la consigne :
+### Generators
 
-    pour établir P=C avant tout calcul (phase dite d'adequacy)
-    en préventif et en curatif pour respecter les seuils des ouvrages surveillés (phase dite OPF)
+We can define generators which Metrix can change the target :
+- In the adequacy phase to match the production and load
+- In remedial actions to comply with the defined monitored branch thresholds (only in OPF mode)
 
-Pour ces deux types d'actions, on doit définir des coûts associés à la hausse et à la baisse. Metrix choisira alors le groupe le moins cher en fonction de son coût et de son influence sur la contrainte. Après action, P=C est toujours respecté, il faut donc au moins deux groupes dans chaque phase pour que Metrix puisse en monter un et en baisser un. Comme pour les seuils des ouvrages, les coûts sont donnés soit en faisant référence au nom d'une chronique de la base soit en indiquant un entier.
+For this to happen, we must define ramp up/down costs. Metrix will then choose the cheapest generator to resolve the constraints. 
+There should be at least two generators for Metrix to be able to lower and increase production in order to respect power balance. 
+If no generator is configured to be managed by Metrix, then all generators are implicitly managed with zero cost.\
+Note that Metrix will take into account the Pmin and Pmax values of generators (which can be modified in the mapping script).
+In the same way than most parameters, the value can be a fixed integer/float or a time series name.    
 
-Metrix prend en compte les Pmin et Pmax des groupes. Ce sont celles de la situation réseau éventuellement modifiées dans le script de configuration multi-situations soit par une modification fixe soit par une chronique. 
+The syntax to define a managed generator is :
 
-La syntaxe pour définir qu'un groupe est ajustable est :
-generator(id) { // id du groupe dont Metrix peut modifier la consigne 
-  adequacyDownCosts 'cout_baisse_equilibrage' // Coûts à la baisse pour la phase P=C, exemple où cout_baisse_equilibrage est le nom d'une chronique de la base 
-  adequacyUpCosts 'cout_hausse_equilibrage' // Coûts à la hausse pour la phase P=C, exemple où cout_hausse_equilibrage est le nom d'une chronique de la base 
-  redispatchingDownCosts (-10) // Coûts de redispatching du groupe à la baisse en mode OPF, exemple où -10 est le coût fixe voulu
-  redispatchingUpCosts 100 // Coûts de redispatching du groupe à la hausse en mode OPF, exemple où 100 est le coût fixe voulu
-  onContingencies 'a','b'//... noms des incidents pour lesquels le groupe peut agir en curatif, s'il y en a
+```groovy
+generator(id) { // id of the generator which will be managed by Metrix 
+  adequacyDownCosts 'ts_cost_down' // Cost of ramping down for the adequacy phase (here a time series name is used) 
+  adequacyUpCosts 'ts_cost_up' // Cost of ramping up for the adequacy phase (here a time series name is used) 
+  redispatchingDownCosts (-10) // Cost of ramping down (preventive) for the OPF simulation (here a fixed value is used)
+  redispatchingUpCosts 100 // Cost of ramping up (preventive) for the OPF simulation (here a fixed value is used)
+  onContingencies 'a','b' // list of contingencies where Metrix can use this generator in (curative) remedial actions
 }
+```
 
-Important : Si aucun groupe n'est configuré, alors tous les groupes du réseau peuvent être ajustés par METRIX pour P=C ou redispatching préventif avec un coût nul. Cela permet par exemple de lancer un load flow avec un bilan quasi nul sans se soucier de définir des groupes compensateurs.
-Si au moins un groupe est configuré (qu'importe pour quelle phase : P=C ou OPF), alors seuls les groupes configurés peuvent être utilisés par METRIX dans les deux phases. Si les groupes autorisés à bouger sont insuffisants pour résoudre les contraintes, le calcul n'aboutira pas et le code d'erreur 1 sera renvoyé. Cela arrive pas exemple dans les situations suivantes :
+Note that if at least one generator is managed, then only defined generators will be managed to match adequacy. 
+In some cases, it could result in a program failure (return code -1) where constraints cannot be resolved in OPF mode.
+Also :
+- Generators used for the adequacy phase are not necessarily the same used in redispatching. If `onContingency` isn't defined but `redispatchingCost` is, then the generator will be used only in preventive actions. For the generator to be fully used on preventive and curative remedial action, both of these parameters must be defined.
+- Cost must always be defined for both directions. If we want to prevent a generator to ramp up or down, we can set a high prohibitive cost.
+- Rules that take into account Pmax and Pmin are :
+    - if the targetP is out of bounds (targetP > Pmax or targetP < Pmin) then targetP is adjusted the closest bound. This can happen when `ignore-limits` is set in the mapping script or the tool parameter.
+    - during the adequacy phase, les Pmax constraints are enforced but Pmin are temporarly set to 0. It results that a (only one at most) generator can have a targetP out of its lower bound (0 < targetP < Pmin).
+    - in the redispatching phase, generators with Pmin<targetP<Pmax are enforced between their bounds. If a group have an initial targetP below Pmin, the constraints will be initialTargetP < targetP < Pmax.
+- In theory, the down cost of generators is negative. We should be careful not to create opportunities that would interfere with the planned production. For instance if a generator delivering at Pmin with a up cost of 15€ whereas another generator has it down cost at -25€, event in the absence of constraints, Metrix will choose to ramp up the first low cost generator and decrease the output of the second one. Beside entering fine grained realistic costs, to remedy to this issue, we could make sure that no down cost are higher (in absolute value) then up cost. We can do that using `adequacyCostOffset` and `redispatchingCostOffset` global parameters that will translate cost (we could take the maximum offset between all up and down cost for instance). This option will preserve the original values in the Metrix results though.
 
-    Un groupe non modifiable débite sur une ligne en contrainte ou encore qu'il manque de la production alors que tous les groupes sont à Pmax. Dans ce cas, il y a une inadéquation entre les ouvrages surveillés et les groupes modifiables en préventif/curatif en mode OPF.
-    Un groupe est configuré dans une composante synchrone, mais aucun groupe n'est modifiable dans une deuxième composante synchrone et les HVDC ne peuvent pas aider à résoudre un déséquilibre P=C en sortie du mapping sur cette deuxième composante (par ce quelle n'est pas paramétrée pour participer à l'optimisation ou qu'elle est déjà à Pmin/Pmax).  Dans ce cas, il faut faire attention à bien considérer les composantes synchrones pour la phase P=C, ce qui concerne typiquement les iles britanniques (ANGLETERRE) qui ne sont pas synchrone avec la composante UCTE. 
+#### Examples
 
-Pour rappel, seul le mode "OPF" permet l'utilisation de groupes en préventif et en curatif.
-
-Précisions :
-
-    Les groupes configurés pour l'équilibrage initial ne sont pas nécessairement les mêmes que ceux qui sont configurés pour le redispatching. Les groupes configurés pour faire du redispatching préventif ne font pas de curatif si on n'en indique pas. En revanche, un groupe qui bouge en curatif bouge nécessairement en préventif.
-    Les chroniques de coûts sont toujours à définir par couple, autrement dit un groupe ne peut pas bouger que la hausse ou que à la baisse dans une des phases. Si on souhaite bloquer à la hausse ou à la baisse un groupe, il faut mettre un coût prohibitif.
-    Les règles précises de prise en compte des Pmax et Pmin sont les suivantes :
-        avant tout calcul, si Pconsigne<Pmin, le groupe est mis à Pmin. Si Pconsigne>Pmax, le groupe est mis à Pmax. L'option "ignore-limits" d'une multi-situations permet d'éviter ces conflits en ajustant automatiquement les valeurs. C'est cependant à utiliser avec précautions pour éviter des situations aberrantes.
-        dans la phase d'adequacy, les Pmax sont respectées mais les Pmin>0 sont considérées à 0. La conséquence est qu'un groupe (et un seul) peut se retrouver avec 0<Pcons<Pmin.
-        dans la phase de redispatching, les groupes avec Pmin<Pcons_initiale<Pmax respectent leurs Pmin et Pmax. Un groupe avec une Pmin>0 ne peut donc pas être arrêté. Le groupe éventuellement dans la situation 0<Pcons_après_adequacy<Pmin<Pmax respecte pour sa part : Pcons_après_adequacy<Pcons_après_redispatching<Pmax.
-    En théorie, le coût à la baisse des groupes sur le mécanisme d'ajustement est négatif (le producteur économise du combustible, il rémunère donc RTE pour baisser sa production). Si on définit des coûts négatifs pour Metrix, il faut veiller à ne pas créer "d'opportunités" si on ne veut pas bouleverser le plan de production. Par exemple, si un groupe produisant à Pmin a un coût à la hausse de 15€ alors qu'un groupe produisant à Pmax à un coût à la baisse de -25€, même en l'absence de contraintes réseau, Metrix choisira de monter le premier et baisser le second puisqu'il gagne 10€ par MW modifiés dans ce cas. Pour éviter ce phénomène, deux solutions :
-        S'assurer qu'aucun coût à la baisse ne soit supérieur à un coût à la hausse en valeur absolue. Ceci peut être mis en œuvre en utilisant les options adequacyCostOffset et redispatchingCostOffset qui permettent de définir une translation de tous les coûts d'ajustement d'un montant donné en euros par MWh dans les choix de Metrix, tout en gardant les coûts paramétrés par ailleurs pour les groupes dans les indicateurs de coûts en sortie de Metrix.  Il est à noter que :
-            le montant peut être choisi comme la différence entre le maximum des coûts d'ajustement à la baisse négatifs pris en valeur absolu et le minimum des coûts d'ajustement à la hausse, parmi les groupes paramétrés pour l'OPF (explicitement ou par défaut).
-            L'utilisation d'un offset préserve l'ordre de mérite entre les moyens sur un même noeud électrique, mais il pourra dans certains cas modifier l'ordre de mérite entre des solutions avec différents coefficients d'influencement. Plus précisément, paramétrer un offset non nul favorisera la solution nécessitant le moins de MWh entre deux solutions de redispatching qui auraient un coût total équivalent sans cet offset, ce qui favorisera plutôt les solutions les plus "proches" de la contraintes.
-        Caler finement les coûts, Pmax et Pmin en cohérence avec les données d'équilibre offre-demande (souvent Antares) pour capter les mêmes contraintes. Par exemple, Antares peut écrêter les Pmax pour prendre en compte la réserve primaire, un groupe peu cher peut donc ne pas être à Pmax en sortie. Dans ce cas, il faut écrêter la Pmax dans imaGrid comme dans Antares.
-
-Exemples : 
-// autoriser le slack à bouger
-generator('SLACK_GROUPE') {
+To allow the slack generator to ramp : 
+```groovy
+generator('slack_generator') {
   adequacyDownCosts 0
   adequacyUpCosts 0
-  redispatchingDownCosts 'cout_slack_baisse'
-  redispatchingUpCosts 'cout_slack_hausse'
+  redispatchingDownCosts 'cost_slack_down'
+  redispatchingUpCosts 'cost_slack_up'
 }
+```
 
-// autoriser des groupes à bouger selon leur zone et leur type
+To allow generators to ramp depending on zone or type (provided this properties exists in iidm source file):
+```groovy
 for (g in network.generators) {
         if (g.terminal.voltageLevel.substation.regionDI=='04' & g.genreCvg=="TAC") {
               generator(g.id) {
-                redispatchingDownCosts 'cout_TAC_baisse_AR'
-                redispatchingUpCosts 'cout_TAC_hausse_AR'
+                redispatchingDownCosts 'cost_TAC_down_AR'
+                redispatchingUpCosts 'cost_TAC_up_AR'
               }
        }
 }
-Astuce : On peut facilement définir une chronique constante en utilisant directement une valeur à la place du nom de la chronique (cf. adequacyDownCosts 0 dans l'exemple ci-dessus)
-Consommations
+```
 
-On peut autoriser des consommations à être ajustées dans la phase OPF en préventif et en curatif, uniquement dans le sens d’une baisse de consommation dans la version actuelle.
+### Loads
 
-Le coût en préventif est constant, il est par défaut de 13000€/MWh (modifiable dans les paramètres avec le mot clé "lossOfLoadCost"). On peut aussi le définir pour une consommation donnée (voir syntaxe ci-dessous). Le coût en curatif peut être défini en se référant à une chronique de la base ou via une constante. Ce coût sera automatiquement pondéré de la probabilité de défaillance (10^-3 par défaut, modifiable dans les paramètres).
+Similarly to generators, loads can be adjusted in the OPF simulation (preventive and curative), yet only in decrease.
+The cost in preventive action is fixed (default 13000€/MWh) and can be modified in the global parameters with the keyword `lossOfLoadCost`. 
+Yet we can also override this value for specific loads.  
+On peut aussi le définir pour une consommation donnée (voir syntaxe ci-dessous). Le coût en curatif peut être défini en se référant à une chronique de la base ou via une constante. Ce coût sera automatiquement pondéré de la probabilité de défaillance (10^-3 par défaut, modifiable dans les paramètres).
 
 On peut définir un % max de la consommation écrêtable en préventif et curatif. Après action, aussi bien préventive que curative, l'équilibre P=C sera respecté, il faut donc qu'il y ait au moins un groupe en mesure de baisser sa production pour que Metrix active de l'écrêtement de conso.
 
@@ -276,7 +280,8 @@ load("FVALDI11_L") {
     curativeSheddingCost 40 // à renseigner si on souhaite du curatif
     onContingencies 'FS.BIS1 FSSV.O1 1' // à renseigner si on souhaite du curatif
 }
-Transfo-déphaseurs
+
+### Phase-shifting transformer
 
 Pour les TD, on peut définir un mode de pilotage (par défaut ils sont à déphasage fixe) avec la syntaxe suivante :
 phaseShifter(id) {
@@ -309,23 +314,30 @@ preventiveUpperTapRange Y
 
 Si l’une ou l’autre des grandeurs n’est pas précisée, le TD pourra alors aller jusqu’à sa prise minimale/maximale.
 
-Exemple :
+#### Examples
+
+```groovy
 phaseShifter('FP.AND1FTDPRA11') {
   controlType OPTIMIZED_ANGLE_CONTROL // mode optimisé
   onContingencies 'FVALDI1FTDPRA11','FVALDI1FTDPRA12'... // liste des noms d’incidents pour lesquels le TD peut agir en curatif
   preventiveLowerTapRange 5
 }
-HVDC
+```
+
+
+### HVDC
 
 Dans la situation réseau, chaque HVDC a une consigne P0 qui soit régit directement le transit, soit intervient dans le transit en émulation AC (sous la forme P0 + k*DeltaTheta). Cette consigne est héritée de l'export Convergence mais peut être redéfinie dans la configuration multi-situations. La consigne est ensuite envoyée à Metrix qui laissera le P0 inchangé (en mode "FIXED") ou pourra l'optimiser (en mode "OPTIMIZED"). La syntaxe à utiliser pour le mode de pilotage des HVDCs est proche de celle des TDs :
+```groovy
 hvdc(id) {
   controlType X /* type de contrôle de la HVDC  (voir ci-dessous les valeurs possibles, attention pas de guillemets) */
   onContingencies 'a','b'/* ... liste des noms d’incidents pour lesquels la HVDC peut agir en curatif. */
 }
+```
 
 Valeurs possibles pour le controlType de la HVDC :
-- OPTIMIZED    /* rend optimisé en préventif, pour la phase d'équilibrage P=C, et en curatif si le paramètre "onContigencies" est renseigné */  
-- FIXED        /* Valeur par défaut */
+- `OPTIMIZED`    /* rend optimisé en préventif, pour la phase d'équilibrage P=C, et en curatif si le paramètre "onContigencies" est renseigné */  
+- `FIXED`        /* Valeur par défaut */
 Sections surveillées
 
 Pour donner une contrainte à METRIX sur la somme pondérée des transits en N d’un ensemble de branches, il est possible de définir une section surveillée : METRIX respecte alors la contrainte :
