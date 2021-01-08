@@ -66,11 +66,11 @@ public class HvdcAngleDroopActivePowerControlXmlSerializer implements ExtensionX
     }
 
     @Override
-    public HvdcAngleDroopActivePowerControl read(HvdcLine hvdcLine, XmlReaderContext context) throws XMLStreamException {
+    public HvdcAngleDroopActivePowerControlImpl read(HvdcLine hvdcLine, XmlReaderContext context) throws XMLStreamException {
         float p0 = XmlUtil.readFloatAttribute(context.getReader(), "p0");
         float droop = XmlUtil.readFloatAttribute(context.getReader(), "droop");
         boolean enabled = XmlUtil.readBoolAttribute(context.getReader(), "enabled");
 
-        return new HvdcAngleDroopActivePowerControl(hvdcLine, p0, droop, enabled);
+        return new HvdcAngleDroopActivePowerControlImpl(hvdcLine, p0, droop, enabled);
     }
 }

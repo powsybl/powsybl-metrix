@@ -98,9 +98,9 @@ public class MetrixTool implements Tool {
                         .build());
                 options.addOption(Option.builder()
                         .longOpt("input-time-series")
-                        .desc("time series spaces list in the DB")
+                        .desc("time series csv list")
                         .hasArg()
-                        .argName("SPACE1,SPACE2,...")
+                        .argName("FILE1,FILE2,...")
                         .required()
                         .build());
                 options.addOption(Option.builder()
@@ -200,7 +200,7 @@ public class MetrixTool implements Tool {
         boolean ignoreLimits = line.hasOption("ignore-limits");
         boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
-        List<String> spaceNames = Arrays.stream(line.getOptionValue("input-time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+        List<String> tsCsvs = Arrays.stream(line.getOptionValue("input-time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
 
         int chunkSize = line.hasOption("chunk-size") ? Integer.parseInt(line.getOptionValue("chunk-size")) : -1;
 
@@ -223,7 +223,7 @@ public class MetrixTool implements Tool {
         }
 
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-        store.importTimeSeries(spaceNames.stream().map(Paths::get).collect(Collectors.toList()));
+        store.importTimeSeries(tsCsvs.stream().map(Paths::get).collect(Collectors.toList()));
 
         MetrixAppLogger logger = new MetrixAppLogger() {
             private String tag = "INFO";

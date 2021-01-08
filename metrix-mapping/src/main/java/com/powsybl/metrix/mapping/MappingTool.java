@@ -79,9 +79,9 @@ public class MappingTool implements Tool {
                         .build());
                 options.addOption(Option.builder()
                         .longOpt("time-series")
-                        .desc("time series spaces list in the DB")
+                        .desc("time series csv list")
                         .hasArg()
-                        .argName("SPACE1,SPACE2,...")
+                        .argName("FILE1,FILE2,...")
                         .required()
                         .build());
                 options.addOption(Option.builder()
@@ -169,9 +169,9 @@ public class MappingTool implements Tool {
         try {
             Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
             Path mappingFile = context.getFileSystem().getPath(line.getOptionValue("mapping-file"));
-            List<String> spaceNames = null;
-            spaceNames = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
-            if (spaceNames.isEmpty()) {
+            List<String> tsCsvs = null;
+            tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+            if (tsCsvs.isEmpty()) {
                 throw new IllegalArgumentException("Space list is empty");
             }
             Path mappingSynthesisDir = getDir(line, context, "mapping-synthesis-dir");
@@ -195,7 +195,7 @@ public class MappingTool implements Tool {
             boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
             InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-            store.importTimeSeries(spaceNames.stream().map(Paths::get).collect(Collectors.toList()));
+            store.importTimeSeries(tsCsvs.stream().map(Paths::get).collect(Collectors.toList()));
 
             context.getOutputStream().println("Loading case...");
             Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);

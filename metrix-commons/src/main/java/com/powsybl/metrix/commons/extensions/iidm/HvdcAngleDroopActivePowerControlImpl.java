@@ -17,7 +17,7 @@ import com.powsybl.iidm.network.HvdcLine;
  *
  * @author Mathieu Bague <mathieu.bague at rte-france.com>
  */
-public class HvdcAngleDroopActivePowerControl extends AbstractExtension<HvdcLine> {
+public class HvdcAngleDroopActivePowerControlImpl extends AbstractExtension<HvdcLine> implements HvdcAngleDroopActivePowerControl {
 
     /**
      * Active power offset in MW
@@ -35,7 +35,7 @@ public class HvdcAngleDroopActivePowerControl extends AbstractExtension<HvdcLine
      */
     private boolean enabled;
 
-    public HvdcAngleDroopActivePowerControl(HvdcLine hvdcLine, float p0, float droop, boolean enabled) {
+    public HvdcAngleDroopActivePowerControlImpl(HvdcLine hvdcLine, float p0, float droop, boolean enabled) {
         super(hvdcLine);
         this.p0 = checkP0(p0);
         this.droop = checkDroop(droop);
@@ -43,32 +43,33 @@ public class HvdcAngleDroopActivePowerControl extends AbstractExtension<HvdcLine
     }
 
     @Override
-    public String getName() {
-        return "hvdcAngleDroopActivePowerControl";
-    }
-
     public float getP0() {
         return p0;
     }
 
-    public HvdcAngleDroopActivePowerControl setP0(float p0) {
-        this.p0 = checkP0(p0);
-        return this;
-    }
-
+    @Override
     public float getDroop() {
         return droop;
     }
 
-    public HvdcAngleDroopActivePowerControl setDroop(float droop) {
-        this.droop = checkDroop(droop);
-        return this;
-    }
-
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
 
+    @Override
+    public HvdcAngleDroopActivePowerControl setP0(float p0) {
+        this.p0 = p0;
+        return this;
+    }
+
+    @Override
+    public HvdcAngleDroopActivePowerControl setDroop(float droop) {
+        this.droop = droop;
+        return this;
+    }
+
+    @Override
     public HvdcAngleDroopActivePowerControl setEnabled(boolean enabled) {
         this.enabled = enabled;
         return this;
