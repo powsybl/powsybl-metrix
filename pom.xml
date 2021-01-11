@@ -24,10 +24,9 @@
         <url>https://github.com/powsybl/powsybl-metrix</url>
     </scm>
     <modules>
-        <module>metrix-commons</module>
         <module>metrix-mapping</module>
         <module>metrix-integration</module>
-        <module>metrix-distribution</module>
+        <module>metrix-tools</module>
     </modules>
 
     <developers>

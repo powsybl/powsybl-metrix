@@ -6,8 +6,15 @@
  *
  */
 
-branchList=['S_SO_1']
+package com.powsybl.metrix.mapping.common;
 
-for (branch in branchList) {
-contingency (branch) {equipments branch} //l'incident est ici nommé du nom de l'ouvrage
+/**
+ * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
+ */
+public interface MetrixAppLogger {
+
+    void log(String message, Object... args);
+
+    MetrixAppLogger tagged(String tag);
+
 }

@@ -14,8 +14,6 @@ import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.Switch
 import com.powsybl.iidm.network.TopologyKind
 import com.powsybl.iidm.network.TwoWindingsTransformer
-import com.powsybl.metrix.commons.filter.Filter
-import com.powsybl.metrix.commons.filter.FilteringContext
 import com.powsybl.timeseries.CalculatedTimeSeries
 import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver

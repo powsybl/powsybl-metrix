@@ -12,7 +12,7 @@ import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.iidm.network.*;
-import com.powsybl.metrix.commons.extensions.iidm.HvdcAngleDroopActivePowerControl;
+import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;

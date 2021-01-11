@@ -15,9 +15,9 @@ import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.iidm.xml.NetworkXml;
-import com.powsybl.metrix.commons.Configuration;
-import com.powsybl.metrix.commons.extensions.iidm.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.commons.extensions.iidm.HvdcOperatorActivePowerRange;
+import com.powsybl.metrix.mapping.common.Configuration;
+import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.io.IOException;

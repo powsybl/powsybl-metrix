@@ -29,13 +29,6 @@
     </build>
 
     <dependencies>
-        <!-- project deps -->
-        <dependency>
-            <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-metrix-commons</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
         <!-- ext deps -->
         <dependency>
             <groupId>org.slf4j</groupId>

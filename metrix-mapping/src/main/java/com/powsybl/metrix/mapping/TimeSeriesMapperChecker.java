@@ -12,7 +12,7 @@ import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.metrix.mapping.TimeSeriesMappingLogger.*;
-import com.powsybl.metrix.commons.extensions.iidm.HvdcOperatorActivePowerRange;
+import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesTable;
 
