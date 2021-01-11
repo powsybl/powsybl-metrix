@@ -9,7 +9,6 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.commons.PowsyblException;
-import com.powsybl.metrix.commons.Utils;
 import com.powsybl.timeseries.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
@@ -187,8 +186,8 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
 
         assert Files.isDirectory(fileSystemStorePath);
 
-        return Files.list(fileSystemStorePath)
-                .filter(path -> Files.isDirectory(path))
+        try (Stream<Path> children = Files.list(fileSystemStorePath)) {
+            return children.filter(path -> Files.isDirectory(path))
                 .map(path -> {
                     try {
                         return Files.list(path);
@@ -207,13 +206,26 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                     throw new PowsyblException("Invalid timeseries resource count");
                 })
                 .collect(Collectors.toMap(TimeSeriesMetadata::getName, tsMeta -> tsMeta));
+        }
     }
 
     public void delete() {
         try {
-            Utils.deleteRecursive(fileSystemStorePath);
+            deleteRecursive(fileSystemStorePath);
         } catch (IOException e) {
             LOGGER.error("Failed to delete filesystem timeserie store", e);
         }
     }
+
+    private static void deleteRecursive(Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            try (Stream<Path> childlist = Files.list(path)) {
+                for (Path child : childlist.collect(Collectors.toList())) {
+                    deleteRecursive(child);
+                }
+            }
+        }
+        Files.delete(path);
+    }
+
 }

@@ -277,7 +277,7 @@ public class Metrix {
         } catch (InterruptedException e) {
             LOGGER.warn("Mapping has been interrupted!", e);
             Thread.currentThread().interrupt();
-            return null;
+            throw new RuntimeException(e);
         } finally {
             updateTask.accept(null);
         }
@@ -303,7 +303,7 @@ public class Metrix {
         } catch (InterruptedException e) {
             LOGGER.warn("Metrix dsl loading has been interrupted!", e);
             Thread.currentThread().interrupt();
-            return null;
+            throw new RuntimeException(e);
         } finally {
             updateTask.accept(null);
         }
