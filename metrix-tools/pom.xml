@@ -17,7 +17,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>powsybl-metrix-distribution</artifactId>
+    <artifactId>powsybl-metrix-tools</artifactId>
 
 
 
@@ -104,6 +104,47 @@
             <artifactId>logback-classic</artifactId>
             <version>1.3.0-alpha5</version>
         </dependency>
+
+        <!-- tests -->
+        <dependency>
+            <groupId>com.google.jimfs</groupId>
+            <artifactId>jimfs</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>powsybl-config-test</artifactId>
+            <version>${powsyblcore.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>powsybl-computation-local</artifactId>
+            <version>${powsyblcore.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>powsybl-tools</artifactId>
+            <version>${powsyblcore.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -23,7 +23,7 @@ import com.powsybl.contingency.json.ContingencyJsonModule;
 import com.powsybl.iidm.export.ExportOptions;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
-import com.powsybl.metrix.mapping.common.MetrixIIDMConfiguration;
+import com.powsybl.metrix.mapping.common.MetrixIidmConfiguration;
 import com.powsybl.metrix.mapping.common.MetrixAppLogger;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
@@ -387,7 +387,7 @@ public class Metrix {
             // compress data
             try (OutputStream os = new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(commonWorkingDir.toPath().resolve(NETWORK_XIIDM_GZ))))) {
                 ExportOptions exportOptions = new ExportOptions();
-                exportOptions.setVersion(MetrixIIDMConfiguration.load().getNetworkExportVersion());
+                exportOptions.setVersion(MetrixIidmConfiguration.load().getNetworkExportVersion());
                 NetworkXml.write(network, exportOptions, os);
             }
 
