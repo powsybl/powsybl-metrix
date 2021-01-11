@@ -10,27 +10,29 @@ package com.powsybl.metrix.mapping.common;
 
 import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
+import com.powsybl.iidm.xml.IidmXmlConstants;
+import com.powsybl.iidm.xml.IidmXmlVersion;
 
 /**
  * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
  */
-public final class Configuration {
+public final class MetrixIIDMConfiguration {
 
-    private static final String IIDM_EXPORT_VERSION = "1.0";
+    private static final String IIDM_EXPORT_VERSION = IidmXmlConstants.CURRENT_IIDM_XML_VERSION.toString(".");
     private final String networkExportVersion;
 
-    public static Configuration load() {
+    public static MetrixIIDMConfiguration load() {
         return load(PlatformConfig.defaultConfig());
     }
 
-    public static Configuration load(PlatformConfig platformConfig) {
+    public static MetrixIIDMConfiguration load(PlatformConfig platformConfig) {
         ModuleConfig moduleConfig = platformConfig.getModuleConfig("metrix");
 
         String iidmExportVersion = moduleConfig.getStringProperty("iidmExportVersion", IIDM_EXPORT_VERSION);
-        return new Configuration(iidmExportVersion);
+        return new MetrixIIDMConfiguration(iidmExportVersion);
     }
 
-    private Configuration(String networkExportVersion) {
+    private MetrixIIDMConfiguration(String networkExportVersion) {
         this.networkExportVersion = networkExportVersion;
     }
 
