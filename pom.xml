@@ -27,6 +27,7 @@
         <module>metrix-mapping</module>
         <module>metrix-integration</module>
         <module>metrix-tools</module>
+        <module>metrix-distribution</module>
     </modules>
 
     <developers>

@@ -24,6 +24,8 @@ public class MetrixConfig {
     private static final int DEFAULT_CHUNK_SIZE = 10;
     private static final int RESULT_NUMBER_LIMIT = 10000;
     private static final long COMPUTATION_RETRY_DELAY = 600000L;
+    private static final int DEFAULT_DEBUG_LOG_LEVEL = 0;
+    private static final int DEFAULT_NO_DEBUG_LOG_LEVEL = 2;
 
     public static MetrixConfig load() {
         return load(PlatformConfig.defaultConfig());
@@ -49,7 +51,13 @@ public class MetrixConfig {
                 .orElseGet(() -> moduleConfig.getOptionalLongProperty("computation-retry-delay")
                         .orElse(COMPUTATION_RETRY_DELAY));
 
-        return new MetrixConfig(homeDir, debug, angleDePerteFixe, chunkSize, resultNumberLimit, computationRetryDelay);
+        int debugLogLevel = moduleConfig.getOptionalIntProperty("debugLogLevel")
+                .orElse(DEFAULT_DEBUG_LOG_LEVEL);
+
+        int noDebugLogLevel = moduleConfig.getOptionalIntProperty("noDebugLogLevel")
+                .orElse(DEFAULT_NO_DEBUG_LOG_LEVEL);
+
+        return new MetrixConfig(homeDir, debug, angleDePerteFixe, chunkSize, resultNumberLimit, computationRetryDelay, debugLogLevel, noDebugLogLevel);
     }
 
     private Path homeDir;
@@ -64,6 +72,10 @@ public class MetrixConfig {
 
     private long computationRetryDelay;
 
+    private int debugLogLevel;
+
+    private int noDebugLogLevel;
+
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize < 1) {
             throw new IllegalArgumentException("Invalid chunk size " + chunkSize);
@@ -71,13 +83,22 @@ public class MetrixConfig {
         return chunkSize;
     }
 
-    public MetrixConfig(Path homeDir, boolean debug, boolean angleDePerteFixe, int chunkSize, int resultNumberLimit, long computationRetryDelay) {
+    private static int validateLogLevel(int logLevel) {
+        if (logLevel < 0 || logLevel > 5) {
+            throw new IllegalArgumentException("Invalid loglevel " + logLevel);
+        }
+        return logLevel;
+    }
+
+    public MetrixConfig(Path homeDir, boolean debug, boolean angleDePerteFixe, int chunkSize, int resultNumberLimit, long computationRetryDelay, int debugLogLevel, int noDebugLogLevel) {
         this.homeDir = Objects.requireNonNull(homeDir);
         this.debug = debug;
         this.angleDePerteFixe = angleDePerteFixe;
         this.chunkSize = validateChunkSize(chunkSize);
         this.resultNumberLimit = resultNumberLimit;
         this.computationRetryDelay = computationRetryDelay;
+        this.debugLogLevel = validateLogLevel(debugLogLevel);
+        this.noDebugLogLevel = validateLogLevel(noDebugLogLevel);
     }
 
     public Path getHomeDir() {
@@ -127,5 +148,23 @@ public class MetrixConfig {
 
     public long getComputationRetryDelay() {
         return computationRetryDelay;
+    }
+
+    public int getDebugLogLevel() {
+        return debugLogLevel;
+    }
+
+    public MetrixConfig setDebugLogLevel(int debugLogLevel) {
+        this.debugLogLevel = validateLogLevel(debugLogLevel);
+        return this;
+    }
+
+    public int getNoDebugLogLevel() {
+        return noDebugLogLevel;
+    }
+
+    public MetrixConfig setNoDebugLogLevel(int noDebugLogLevel) {
+        this.noDebugLogLevel = validateLogLevel(noDebugLogLevel);
+        return this;
     }
 }

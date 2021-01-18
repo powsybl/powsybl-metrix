@@ -15,10 +15,7 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.import_.ImportConfig;
 import com.powsybl.iidm.import_.Importers;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.Metrix;
-import com.powsybl.metrix.integration.MetrixRunParameters;
-import com.powsybl.metrix.integration.NetworkSource;
-import com.powsybl.metrix.mapping.common.MetrixAppLogger;
+import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil;
@@ -108,7 +105,7 @@ public class MetrixTool implements Tool {
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("input-time-series")
+                        .longOpt("time-series")
                         .desc("time series csv list")
                         .hasArg()
                         .argName("FILE1,FILE2,...")
@@ -211,7 +208,7 @@ public class MetrixTool implements Tool {
         boolean ignoreLimits = line.hasOption("ignore-limits");
         boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
-        List<String> tsCsvs = Arrays.stream(line.getOptionValue("input-time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+        List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
 
         int chunkSize = line.hasOption("chunk-size") ? Integer.parseInt(line.getOptionValue("chunk-size")) : -1;
 
@@ -325,10 +322,9 @@ public class MetrixTool implements Tool {
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             new Metrix(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,
-                    store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, ignore -> {
-            })
+                    store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger)
                     .run(new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter),
-                            new Metrix.DefaultResultListener() {
+                            new AbstractMetrix.DefaultResultListener() {
 
                                 @Override
                                 public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {

@@ -395,15 +395,15 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         final boolean isOkMinP = targetP >= minP - toleranceThreshold;
         final boolean isOkMaxP = targetP <= maxP + toleranceThreshold;
 
-        if (isMappedTargetP) {
+        boolean ignoreLimits = mappedPower.isIgnoreLimits();
+
+        if (!ignoreLimits && isMappedTargetP) {
             if (isOkMaxP && targetP >= maxP - toleranceThreshold) {
                 targetP = maxP - toleranceThreshold;
             } else if (isOkMinP && targetP <= minP + toleranceThreshold) {
                 targetP = minP + toleranceThreshold;
             }
         }
-
-        boolean ignoreLimits = mappedPower.isIgnoreLimits();
 
         if (minP > maxP) {
             throw new AssertionError("Equipment '" + generator.getId() + "' : invalid active limits [" + minP + ", " + maxP + "] at point " + point);
@@ -433,7 +433,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                 // ... with ignoreLimits option -> try to increase maxP
                 if (isMappedTargetP && !isMappedMaxP) {
                     // targetP is mapped, maxP is not mapped -> increase base case maxP to targetP
-                    TimeSeriesMapper.setMax(generator, targetP);
+                    TimeSeriesMapper.setMax(generator, Math.round(targetP + 0.5f));
                     targetPTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(ScalingDownLimitViolation.MAXP_BY_TARGETP);
                     return targetP;
                 } else if (!isMappedTargetP) {
@@ -461,7 +461,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     // ... with ignoreLimits option -> try to reduce minP
                     if (isMappedTargetP && !isMappedMinP) {
                         // targetP is mapped, minP is not mapped -> reduce base case minP to targetP
-                        TimeSeriesMapper.setMin(generator, targetP);
+                        TimeSeriesMapper.setMin(generator, Math.floor(targetP - 0.5f));
                         targetPTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(ScalingDownLimitViolation.MINP_BY_TARGETP);
                         return targetP;
                     } else if (!isMappedTargetP) {
@@ -530,15 +530,15 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         final boolean isOkMinP = setpoint >= minP - toleranceThreshold;
         final boolean isOkMaxP = setpoint <= maxP + toleranceThreshold;
 
-        if (isMappedSetpoint) {
+        boolean ignoreLimits = mappedPower.isIgnoreLimits();
+
+        if (!ignoreLimits && isMappedSetpoint) {
             if (isOkMaxP && setpoint >= maxP - toleranceThreshold) {
                 setpoint = maxP - toleranceThreshold;
             } else if (isOkMinP && setpoint <= minP + toleranceThreshold) {
                 setpoint = minP + toleranceThreshold;
             }
         }
-
-        boolean ignoreLimits = mappedPower.isIgnoreLimits();
 
         if (hvdcLine.getMaxP() < 0) {
             throw new AssertionError("Equipment '" + hvdcLine.getId() + "' : invalid active limit maxP " + hvdcLine.getMaxP() + " at point " + point);
@@ -574,7 +574,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     if (!isActivePowerRange) {
                         hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) Math.abs(hvdcLineToMinValues.get(hvdcLine).getBaseCaseLimit()));
                     }
-                    TimeSeriesMapper.setMax(hvdcLine, Math.abs(setpoint));
+                    TimeSeriesMapper.setMax(hvdcLine, Math.round(Math.abs(setpoint) + 0.5f));
                     setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(isActivePowerRange ? ScalingDownLimitViolation.CS1TOCS2_BY_ACTIVEPOWER : ScalingDownLimitViolation.MAXP_BY_ACTIVEPOWER);
                     return setpoint;
                 } else if (!isMappedSetpoint) {
@@ -605,7 +605,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     if (!isActivePowerRange) {
                         hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS2toCS1((float) Math.abs(hvdcLineToMaxValues.get(hvdcLine).getBaseCaseLimit()));
                     }
-                    TimeSeriesMapper.setMin(hvdcLine, Math.abs(setpoint));
+                    TimeSeriesMapper.setMin(hvdcLine, Math.round(Math.abs(setpoint) + 0.5f));
                     setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(isActivePowerRange ? ScalingDownLimitViolation.CS2TOCS1_BY_ACTIVEPOWER : ScalingDownLimitViolation.MINP_BY_ACTIVEPOWER);
                     return setpoint;
                 } else if (!isMappedSetpoint) {

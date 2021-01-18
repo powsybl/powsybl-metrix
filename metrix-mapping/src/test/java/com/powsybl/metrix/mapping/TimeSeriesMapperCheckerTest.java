@@ -479,7 +479,7 @@ public class TimeSeriesMapperCheckerTest {
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testGenerator(NetworkXml.copy(network), pmax2Script, true, "N_G", 2000, 0, 2000, 2000,
+        testGenerator(NetworkXml.copy(network), pmax2Script, true, "N_G", 2000, 0, 2000, 2001,
                 INFO, LIMIT_CHANGE + "maxP", SCALING_DOWN_PROBLEM + "at least one maxP increased", VARIANT_EMPTY,
                 "maxP of N_G lower than targetP for 1 variants, maxP increased from 1000 to 2000",
                 "maxP violated by targetP in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
@@ -621,7 +621,7 @@ public class TimeSeriesMapperCheckerTest {
                 "Impossible to scale down at least one value of ts chronique_m2000, modified targetP have been applied");
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2aScript, true, "N_G", -2000, -2000, -2000, 600,
+        testGenerator(NetworkXml.copy(network), pmin2aScript, true, "N_G", -2000, -2001, -2000, 600,
                 INFO, LIMIT_CHANGE + "minP", SCALING_DOWN_PROBLEM + "at least one minP decreased", VARIANT_EMPTY,
                 "minP of N_G higher than targetP for 1 variants, minP decreased from -1000 to -2000",
                 "minP violated by targetP in scaling down of at least one value of ts chronique_m2000, minP has been decreased for equipments");
@@ -925,7 +925,7 @@ public class TimeSeriesMapperCheckerTest {
         // with ignore limits
         // -> maxP/CS1toCS2 changed to mapped activePowerSetpoint = 2000
         testHvdcLine(baseCaseSetpoint, false,
-                pmax2HvdcLineScript, true, "HVDC2", 2000, 2000, 1011, 2000,
+                pmax2HvdcLineScript, true, "HVDC2", 2000, 2001, 1011, 2001,
                 INFO,
                 VARIANT_EMPTY,
                 LIMIT_CHANGE + "maxP",
@@ -934,7 +934,7 @@ public class TimeSeriesMapperCheckerTest {
                 "maxP violated by activePowerSetpoint in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
 
         testHvdcLine(baseCaseSetpoint, true,
-                pmax2HvdcLineScript, true, "HVDC2", 2000, 2000, 900, 2000,
+                pmax2HvdcLineScript, true, "HVDC2", 2000, 2001, 900, 2001,
                 INFO,
                 VARIANT_EMPTY,
                 LIMIT_CHANGE + "CS1toCS2",
@@ -1174,7 +1174,7 @@ public class TimeSeriesMapperCheckerTest {
         // with ignore limits
         // -> minP/CS2toCS1 changed to activePowerSetpoint/p0
         testHvdcLine(baseCaseSetpoint, false,
-                pmin2HvdcLineScript, true, "HVDC2", -2000, 2000, 2000, 1011,
+                pmin2HvdcLineScript, true, "HVDC2", -2000, 2001, 2001, 1011,
                 INFO,
                 VARIANT_EMPTY,
                 LIMIT_CHANGE + "-maxP",
@@ -1183,7 +1183,7 @@ public class TimeSeriesMapperCheckerTest {
                 "-maxP violated by activePowerSetpoint in scaling down of at least one value of ts chronique_m2000, -maxP has been decreased for equipments");
 
         testHvdcLine(baseCaseSetpoint, true,
-                pmin2HvdcLineScript, true, "HVDC2", -2000, 2000, 2000, 1000,
+                pmin2HvdcLineScript, true, "HVDC2", -2000, 2001, 2001, 1000,
                 INFO,
                 VARIANT_EMPTY,
                 LIMIT_CHANGE + "-CS2toCS1",

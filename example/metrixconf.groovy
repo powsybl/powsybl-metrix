@@ -6,8 +6,8 @@
  *
  */
 
-for (branch in network.branches) {
-  branch(branch.id) {
+for (branch_component in network.branches) {
+  branch(branch_component.id) {
    baseCaseFlowResults true
    maxThreatFlowResults true
  }     

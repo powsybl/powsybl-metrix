@@ -6,7 +6,7 @@
  *
  */
 
-package com.powsybl.metrix.mapping.common;
+package com.powsybl.metrix.integration;
 
 /**
  * @author Paul Bui-Quang <paul.buiquang at rte-france.com>

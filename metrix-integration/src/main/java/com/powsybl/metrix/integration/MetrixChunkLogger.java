@@ -11,7 +11,7 @@ package com.powsybl.metrix.integration;
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
  */
-public interface MetrixLogger {
+public interface MetrixChunkLogger {
 
     void beforeNetworkWriting();
 

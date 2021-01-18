@@ -101,16 +101,16 @@ public class MetrixPostProcessingTimeSeriesTest {
         when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.FLOW_NAME + "FVALDI1  FTDPRA1  2")).thenReturn(true);
         when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.FLOW_NAME + "FS.BIS1  FVALDI1  2")).thenReturn(true);
         when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.FLOW_NAME + "FP.AND1  FVERGE1  1")).thenReturn(false);
-        when(metrixResultTimeSeries.timeSeriesExists(Metrix.MAX_THREAT_PREFIX + "FVALDI1  FTDPRA1  1")).thenReturn(true);
-        when(metrixResultTimeSeries.timeSeriesExists(Metrix.MAX_THREAT_PREFIX + "FVALDI1  FTDPRA1  2")).thenReturn(true);
-        when(metrixResultTimeSeries.timeSeriesExists(Metrix.MAX_THREAT_PREFIX + "FS.BIS1  FVALDI1  2")).thenReturn(true);
-        when(metrixResultTimeSeries.timeSeriesExists(Metrix.MAX_THREAT_PREFIX + "FP.AND1  FVERGE1  1")).thenReturn(false);
+        when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FVALDI1  FTDPRA1  1")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FVALDI1  FTDPRA1  2")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FS.BIS1  FVALDI1  2")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FP.AND1  FVERGE1  1")).thenReturn(false);
 
         MappingParameters mappingParameters = MappingParameters.load();
         TimeSeriesMappingConfig tsConfig = TimeSeriesDslLoader.load(mappingFile, network, mappingParameters, store, null);
         MetrixDslData dslData = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
 
-        Map<String, NodeCalc> postProcessingTimeSeries = Metrix.getPostProcessingTimeSeries(dslData, tsConfig, store);
+        Map<String, NodeCalc> postProcessingTimeSeries = AbstractMetrix.getPostProcessingTimeSeries(dslData, tsConfig, store);
         assertEquals(2 * 5, postProcessingTimeSeries.size());
 
         NodeCalc flow1 = new TimeSeriesNameNodeCalc("FLOW_FVALDI1  FTDPRA1  1");

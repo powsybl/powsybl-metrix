@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,8 @@ public class MetrixChunk {
     private static final String WORKING_DIR_PREFIX = "metrix_chunk_";
     private static final String VARIANTES_FILE_NAME = "variantes.csv";
     private static final String LOGS_FILE_NAME = "logs.txt";
+    private static final String LOGS_FILE_DETAIL_PREFIX = "metrix";
+    private static final String LOGS_FILE_DETAIL_SUFFIX = ".log";
     private static final String REMEDIAL_ACTION_FILE_NAME = "parades.csv";
     private static final List<InputFile> FORT_FILE_NAMES = ImmutableList.of(new InputFile("fort.2"),
                                                                             new InputFile("fort.44_BIN"),
@@ -48,6 +51,7 @@ public class MetrixChunk {
                                                                             new InputFile("fort.48_BIN"));
     private static final String METRIX_COMMAND_ID = "metrix";
     private static final String METRIX_PROGRAM = "metrix";
+    private static final String METRIX_LOG_LEVEL_ARG = "--log-level=";
 
     private final Network network;
 
@@ -59,20 +63,56 @@ public class MetrixChunk {
 
     private final Path logFile;
 
-    private final MetrixLogger logger;
+    private final Path logFileDetail;
 
-    public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config, Path remedialActionFile, Path logFile) {
-        this(network, computationManager, config, remedialActionFile, logFile, null);
+    private final MetrixChunkLogger logger;
+
+    public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config, Path remedialActionFile, Path logFile, Path logFileDetail) {
+        this(network, computationManager, config, remedialActionFile, logFile, logFileDetail, null);
     }
 
     public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config,
-                       Path remedialActionFile, Path logFile, MetrixLogger logger) {
+                       Path remedialActionFile, Path logFile, Path logFileDetail, MetrixChunkLogger logger) {
         this.network = Objects.requireNonNull(network);
         this.computationManager = Objects.requireNonNull(computationManager);
         this.config = Objects.requireNonNull(config);
         this.logFile = logFile;
+        this.logFileDetail = logFileDetail;
         this.remedialActionFile = remedialActionFile;
         this.logger = logger;
+    }
+
+    private static String getLogLevelValue(int level) {
+        String value = "";
+        switch (level) {
+            case 0:
+                value = "trace";
+                break;
+            case 1:
+                value = "debug";
+                break;
+            case 2:
+                value = "info";
+                break;
+            case 3:
+                value = "warning";
+                break;
+            case 4:
+                value = "error";
+                break;
+            case 5:
+                value = "critical";
+                break;
+            default:
+                LOGGER.warn("Unknown Metrix log level value '{}'", level);
+                break;
+        }
+        return  value;
+    }
+
+    private String getLogLevelArg(int logLevel) {
+        String logLevelValue = getLogLevelValue(logLevel);
+        return logLevelValue.isEmpty() ? "" : METRIX_LOG_LEVEL_ARG + logLevelValue;
     }
 
     private void copyDic(Path workingDir, List<InputFile> inputFiles) throws IOException {
@@ -174,7 +214,8 @@ public class MetrixChunk {
                                           VARIANTES_FILE_NAME,
                                           MetrixOutputData.FILE_NAME_PREFIX,
                                           Integer.toString(firstVariant),
-                                          Integer.toString(variantCount))
+                                          Integer.toString(variantCount),
+                                          getLogLevelArg(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
                                     .inputFiles(inputFiles)
                                     .outputFiles(outputFiles)
                                     .build();
@@ -217,7 +258,8 @@ public class MetrixChunk {
                                           VARIANTES_FILE_NAME,
                                           MetrixOutputData.FILE_NAME_PREFIX,
                                           Integer.toString(-1),
-                                          Integer.toString(1))
+                                          Integer.toString(1),
+                                          getLogLevelArg(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
                                     .inputFiles(inputFiles)
                                     .outputFiles(outputFiles)
                                     .build();
@@ -274,6 +316,15 @@ public class MetrixChunk {
 
                         if (logFile != null) {
                             Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
+                        }
+
+                        if (logFileDetail != null) {
+                            int i = 0;
+                            Path sourcePath;
+                            while (Files.exists(sourcePath = workingDir.resolve(LOGS_FILE_DETAIL_PREFIX + String.format("%03d", i) + LOGS_FILE_DETAIL_SUFFIX))) {
+                                Files.copy(sourcePath, Paths.get(String.format(logFileDetail.toString(), i)));
+                                i++;
+                            }
                         }
 
                         return results;

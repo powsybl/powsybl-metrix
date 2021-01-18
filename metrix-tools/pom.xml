@@ -20,30 +20,6 @@
     <artifactId>powsybl-metrix-tools</artifactId>
 
 
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.powsybl</groupId>
-                <artifactId>powsybl-itools-packager-maven-plugin</artifactId>
-                <version>${powsyblcore.version}</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>package-zip</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <packageName>metrix</packageName>
-                    <archiveName>itools-metrix</archiveName>
-                    <javaXmx>8G</javaXmx>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
     <profiles>
         <profile>
             <id>jacoco</id>
@@ -86,24 +62,15 @@
         </dependency>
 
         <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>powsybl-computation-local</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.powsybl</groupId>
             <artifactId>powsybl-config-classic</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>2.0.0-alpha1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.3.0-alpha5</version>
-        </dependency>
+
 
         <!-- tests -->
         <dependency>
@@ -128,12 +95,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-config-test</artifactId>
-            <version>${powsyblcore.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-computation-local</artifactId>
             <version>${powsyblcore.version}</version>
             <scope>test</scope>
         </dependency>

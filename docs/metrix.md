@@ -272,7 +272,9 @@ Précisions:
     Si au moins une consommation est configurée, alors seules les consommations configurées pourront être utilisées par le modèle.
     Les consommations configurées en préventif et en curatif ne sont pas nécessairement les mêmes.
 
-Exemple :
+#### Examples
+
+```groovy
 load("FVALDI11_L") {
     preventiveSheddingPercentage 20 
     preventiveSheddingCost 10000 //si non renseigné, la valeur par défaut est utilisée
@@ -280,19 +282,23 @@ load("FVALDI11_L") {
     curativeSheddingCost 40 // à renseigner si on souhaite du curatif
     onContingencies 'FS.BIS1 FSSV.O1 1' // à renseigner si on souhaite du curatif
 }
+```
 
 ### Phase-shifting transformer
 
 Pour les TD, on peut définir un mode de pilotage (par défaut ils sont à déphasage fixe) avec la syntaxe suivante :
+
+```groovy
 phaseShifter(id) {
   controlType X // type de contrôle du TD (voir ci-dessous les valeurs possibles, attention pas de guillemet)
   onContingencies 'a','b'... // optionnel, liste des noms d’incidents pour lesquels le TD peut agir en curatif
 }
+```
 
 Les valeurs possibles pour le type de contrôle (controlType) du TD sont :
-- FIXED_ANGLE_CONTROL // /* Valeur par défaut */ le déphasage de la situation initiale est inchangé
-- OPTIMIZED_ANGLE_CONTROL //le déphasage est optimisé pour résoudre toutes les contraintes
-- CONTROL_OFF // mise hors service du TD, équivaut à un déphasage nul
+- `FIXED_ANGLE_CONTROL` // /* Valeur par défaut */ le déphasage de la situation initiale est inchangé
+- `OPTIMIZED_ANGLE_CONTROL` //le déphasage est optimisé pour résoudre toutes les contraintes
+- `CONTROL_OFF` // mise hors service du TD, équivaut à un déphasage nul
 
 Précisions:
 
@@ -304,13 +310,12 @@ Précisions:
 
 En optimized_angle_control, on peut demander à Metrix de restreindre en préventif l’excursion du TD autour de la prise courante par la définition d’un nombre de prises utilisables à la hausse ou à la baisse autour de la prise courante. C’est toujours un chiffre positif, et il est à noter que le TD peut toujours parcourir toute sa plage de déphasage en curatif. La syntaxe est a suivante :
 
+```groovy
 phaseShifter(id){
-
-preventiveLowerTapRange X
-
-preventiveUpperTapRange Y
-
+  preventiveLowerTapRange X
+  preventiveUpperTapRange Y
 }
+```
 
 Si l’une ou l’autre des grandeurs n’est pas précisée, le TD pourra alors aller jusqu’à sa prise minimale/maximale.
 
@@ -345,40 +350,52 @@ Pour donner une contrainte à METRIX sur la somme pondérée des transits en N d
 \sum (coef_i * transitN_i) \leq maxFlowN 
 
 La syntaxe est la suivante :
+```groovy
 sectionMonitoring(id) { // Nom de la section
   maxFlowN <valeur du seuil>
   branch(id1, <coef1>)
   branch(id2, <coef2>)
   // ... liste des autres branches : quadripôles ou HVDC
 }
+```
 
 ## Contingency DSL
 
 Les incidents sont déclarés dans un fichier spécifique. Ils représentent la perte d'un ou plusieurs quadripôles ou groupes. Chaque incident sera pris en compte par Metrix dans la simulation.
 
 On déclare les incidents à simuler dans ce fichier avec la syntaxe suivante :
+```groovy
 contingency (id) { // nom de l'incident à définir comme on le souhaite
 equipments id1,id2...} //ouvrage(s) à déclencher
+```
+
+### Examples
 
 Exemple pour définir des défauts sur une liste de noms d'ouvrages:
+```groovy
 listeOuvrages=[
-'A.NOUL61FLEAC',
-'AIGREL41ZVERV',
-'AIRVAL41BRESS',
-'AIRVAL41PARTH']
+  'A.NOUL61FLEAC',
+  'AIGREL41ZVERV',
+  'AIRVAL41BRESS',
+  'AIRVAL41PARTH'
+]
 
 for (ouvrage in listeOuvrages) {
-contingency (ouvrage) {equipments ouvrage} //l'incident est ici nommé du nom de l'ouvrage
+  contingency (ouvrage) {equipments ouvrage} //l'incident est ici nommé du nom de l'ouvrage
 }
+```
 
 Exemple pour définir des défauts sur tout le 400kV :
+```groovy
 for (l in network.lines) {
   if (l.terminal1.voltageLevel.nominalV >= 380) {
      contingency (l.id) {equipments l.id}
   }
 }
+```
 
 Il est possible de définir des défauts multiples à partir d'une liste d'identifiants d'ouvrages :
+```groovy
 map_defaut_doubles = [
   "defaut_dbl1":['ouvrage1_id', 'ouvrage2_id'],
   "defaut_dbl2":['ouvrage3_id', 'ouvrage4_id']
@@ -387,6 +404,7 @@ map_defaut_doubles = [
 map_defaut_doubles.each {nom, ouvrages ->
   contingency (nom) {equipments (*ouvrages)}
 }
+```
 
 Précisions :
 
@@ -414,17 +432,21 @@ Il faut bien noter les points suivants :
     Les parades consistant à faire des ajustements sur des groupes ou des consommations sont à modéliser avec des ajustements de groupes ou consommations et peuvent être combinées avec des parades topologiques
 
 Exemple de fichier de parades :
+```text
 NB;4;
 FS.BIS1 FSSV.O1 1;1;FS.BIS1_FS.BIS1_DJ_OMN;
 FS.BIS1 FSSV.O1 1;1;FSSV.O1_FSSV.O1_DJ_OMN;
 FS.BIS1 FSSV.O1 1;2;FS.BIS1_FS.BIS1_DJ_OMN;FSSV.O1_FSSV.O1_DJ_OMN;
 FS.BIS1 FSSV.O1 1;1;FS.BIS1 FSSV.O1 2;
+```
 Restreindre l'activation d'une parade à une contrainte
 
 Il est possible de conditionner l'activation d'une parade à la présence d'une contrainte sur des ouvrages spécifiques.
 
 La parade doit alors être défini de la façon suivante :
+```text
 NOM_DEFAUT | OUVRAGE_CONTRAINTE_1 | OUVRAGE_CONTRAINTE_2 ... ; NOMBRE_ACTIONS ; OUVRAGE_ACTION_1 ; OUVRAGE_ACTION_2 ...;
+```
 
 Les contraintes doivent bien évidemment être des ouvrages surveillés sur incident : branchRatingOnContingencies.
 L'utilisation de parades topologiques peut considérablement allonger les temps de calcul. En particulier s'il y a un grand nombre de parades pour un même incident et que ces parades ont des actions sensiblement équivalentes. L'option analogousRemedialActionDetection permet dans certains cas de détecter si une parade est équivalente à une précédente dans la liste. Dans ce cas, la seconde parade est ignorée et un trace "=> Contraintes equivalentes :" est visible dans les logs Metrix.
@@ -437,17 +459,21 @@ Chaque élément du regroupement varie alors proportionnellement à une variable
 Pour les consommations, la variable de référence est toujours la charge initiale. Le délestage de chaque consommation appartenant au regroupement sera donc proportionnel à sa charge intiiale.
 
 La syntaxe est la suivante :
+```groovy
 loadsGroup("nom du regroupement") {
   filter { load.id == ... } //un filtre comme pour le mapping
 }
+```
 
 Pour les générateurs, la variable de référence peut être, au choix : la puissance maximale, la puissance minimale, la puissance de consigne initiale ou la marge à la hausse (puissance maximale - puissance de consigne).
 
 La syntaxe est la suivante :
+```groovy
 generatorsGroup("nom du regroupement") {
   filter { generator.id == ... } //un filtre comme pour le mapping
   referenceVariable PMAX // c’est la valeur par défaut, les autres possibilités sont PMIN, POBJ, PMAX_MINUS_POBJ
 }
+```
 Des chroniques correspondant aux variations de ces regroupements sont alors disponibles dans les sorties.
 Attention, la variation de tous les éléments de l'ensemble est limitée par le premier élément de l'ensemble qui atteint sa limite.
 
