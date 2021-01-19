@@ -258,134 +258,113 @@ for (g in network.generators) {
 
 Similarly to generators, loads can be adjusted in the OPF simulation (preventive and curative), yet only in decrease.
 The cost in preventive action is fixed (default 13000€/MWh) and can be modified in the global parameters with the keyword `lossOfLoadCost`. 
-Yet we can also override this value for specific loads.  
-On peut aussi le définir pour une consommation donnée (voir syntaxe ci-dessous). Le coût en curatif peut être défini en se référant à une chronique de la base ou via une constante. Ce coût sera automatiquement pondéré de la probabilité de défaillance (10^-3 par défaut, modifiable dans les paramètres).
+Yet we can also override this value for specific loads. The specified cost will automatically be weighted with the contingency probability (default : 10^-3).  
+We also can limit the max percentage of load shedding (in preventive and curative mode).
 
-On peut définir un % max de la consommation écrêtable en préventif et curatif. Après action, aussi bien préventive que curative, l'équilibre P=C sera respecté, il faut donc qu'il y ait au moins un groupe en mesure de baisser sa production pour que Metrix active de l'écrêtement de conso.
-
-La syntaxe pour configurer les consommations ajustables est la suivante :
-
-Précisions:
-
-    Si aucune consommation n'est configurée en préventif, alors toutes les consommations du réseau peuvent être délestées à 100% en préventif .
-    Les consommations pouvant bouger dans la phase d'adequacy initiale sont automatiquement les mêmes qu'en préventif. 
-    Si au moins une consommation est configurée, alors seules les consommations configurées pourront être utilisées par le modèle.
-    Les consommations configurées en préventif et en curatif ne sont pas nécessairement les mêmes.
-
-#### Examples
-
+Here is the corresponding syntax :
 ```groovy
-load("FVALDI11_L") {
-    preventiveSheddingPercentage 20 
-    preventiveSheddingCost 10000 //si non renseigné, la valeur par défaut est utilisée
-    curativeSheddingPercentage 10 // à renseigner si on souhaite du curatif
-    curativeSheddingCost 40 // à renseigner si on souhaite du curatif
-    onContingencies 'FS.BIS1 FSSV.O1 1' // à renseigner si on souhaite du curatif
+load(load_id) {
+    preventiveSheddingPercentage 20 // shedding max percentage for preventive actions 
+    preventiveSheddingCost 10000 // cost for preventive shedding action
+    curativeSheddingPercentage 10 // optional shedding max percentage for curative actions
+    curativeSheddingCost 40 // optional cost for curative shedding action
+    onContingencies 'a', 'b' // optional contingency upon which curative action are operated 
 }
 ```
+
+Note that, like generators, if no load is configured then all loads can be used with 100% shedding capabilities.
 
 ### Phase-shifting transformer
 
-Pour les TD, on peut définir un mode de pilotage (par défaut ils sont à déphasage fixe) avec la syntaxe suivante :
+Phase shifting transformers can be controlled with the following syntax (default mode is fixed) :
 
 ```groovy
 phaseShifter(id) {
-  controlType X // type de contrôle du TD (voir ci-dessous les valeurs possibles, attention pas de guillemet)
-  onContingencies 'a','b'... // optionnel, liste des noms d’incidents pour lesquels le TD peut agir en curatif
+  controlType X // control type (see available values below)
+  onContingencies 'a','b'... // optional list of contingencies upon which phase shifter control apply in curative mode
+  preventiveLowerTapRange X // optional min bound range available for preventive actions
+  preventiveUpperTapRange Y // optional max bound range available for curative actions
 }
 ```
 
-Les valeurs possibles pour le type de contrôle (controlType) du TD sont :
-- `FIXED_ANGLE_CONTROL` // /* Valeur par défaut */ le déphasage de la situation initiale est inchangé
-- `OPTIMIZED_ANGLE_CONTROL` //le déphasage est optimisé pour résoudre toutes les contraintes
-- `CONTROL_OFF` // mise hors service du TD, équivaut à un déphasage nul
+Control types :
+- `FIXED_ANGLE_CONTROL` : (Default) the original phase tap is fixed
+- `OPTIMIZED_ANGLE_CONTROL` : can shift to different phase tap to solve constraints
+- `CONTROL_OFF` : the transformer is deactivated (phase shift is equal to 0)
 
-Précisions:
-
-    Metrix gère le déphasage de manière continue et ignore donc la discrétisation des prises.
-
-    En revanche, pour l’affichage de la prise finale, il cherchera la prise la plus proche du déphasage trouvé. Il est à noter que la prise remontée est exprimé en considérant que le numéro de la première prise est 0, ce qui ne correspond pas toujours à la définition de Convergence.
-    un TD optimisé en curatif est toujours également optimisé en préventif
-    Deux autres modes de contrôle existent mais ne sont pas d'usage courant: FIXED_POWER_CONTROL et OPTIMIZED_POWER_CONTROL. Le TD équivaut alors à une HVDC. Voir la documentation complète de Metrix pour plus de détails.
-
-En optimized_angle_control, on peut demander à Metrix de restreindre en préventif l’excursion du TD autour de la prise courante par la définition d’un nombre de prises utilisables à la hausse ou à la baisse autour de la prise courante. C’est toujours un chiffre positif, et il est à noter que le TD peut toujours parcourir toute sa plage de déphasage en curatif. La syntaxe est a suivante :
-
-```groovy
-phaseShifter(id){
-  preventiveLowerTapRange X
-  preventiveUpperTapRange Y
-}
-```
-
-Si l’une ou l’autre des grandeurs n’est pas précisée, le TD pourra alors aller jusqu’à sa prise minimale/maximale.
-
-#### Examples
-
-```groovy
-phaseShifter('FP.AND1FTDPRA11') {
-  controlType OPTIMIZED_ANGLE_CONTROL // mode optimisé
-  onContingencies 'FVALDI1FTDPRA11','FVALDI1FTDPRA12'... // liste des noms d’incidents pour lesquels le TD peut agir en curatif
-  preventiveLowerTapRange 5
-}
-```
-
+Note that while the optimization will use phase in a continuous range, metrix will then find the closest phase tap in the results.
 
 ### HVDC
 
-Dans la situation réseau, chaque HVDC a une consigne P0 qui soit régit directement le transit, soit intervient dans le transit en émulation AC (sous la forme P0 + k*DeltaTheta). Cette consigne est héritée de l'export Convergence mais peut être redéfinie dans la configuration multi-situations. La consigne est ensuite envoyée à Metrix qui laissera le P0 inchangé (en mode "FIXED") ou pourra l'optimiser (en mode "OPTIMIZED"). La syntaxe à utiliser pour le mode de pilotage des HVDCs est proche de celle des TDs :
+For HVDC the syntax is similar to that of the PST :
 ```groovy
 hvdc(id) {
-  controlType X /* type de contrôle de la HVDC  (voir ci-dessous les valeurs possibles, attention pas de guillemets) */
-  onContingencies 'a','b'/* ... liste des noms d’incidents pour lesquels la HVDC peut agir en curatif. */
+  controlType X // control type (see available values below)
+  onContingencies 'a','b' // optional list of contingencies upon which phase shifter control apply in curative mode
 }
 ```
 
-Valeurs possibles pour le controlType de la HVDC :
-- `OPTIMIZED`    /* rend optimisé en préventif, pour la phase d'équilibrage P=C, et en curatif si le paramètre "onContigencies" est renseigné */  
-- `FIXED`        /* Valeur par défaut */
-Sections surveillées
+Control types : 
+- `OPTIMIZED` : can optimize the p0 target in adequacy phase and preventive (and curative if contingencies were defined)  
+- `FIXED` : the target p0 is fixed
 
-Pour donner une contrainte à METRIX sur la somme pondérée des transits en N d’un ensemble de branches, il est possible de définir une section surveillée : METRIX respecte alors la contrainte :
+### Monitored sections
 
-\sum (coef_i * transitN_i) \leq maxFlowN 
+It is possible to monitor a constraint on a weighted sum of a set of branch flows :
 
-La syntaxe est la suivante :
 ```groovy
 sectionMonitoring(id) { // Nom de la section
-  maxFlowN <valeur du seuil>
-  branch(id1, <coef1>)
-  branch(id2, <coef2>)
-  // ... liste des autres branches : quadripôles ou HVDC
+  maxFlowN 'ts' // threshold (can be a time series name or a fixed value) 
+  branch(id1, 0.5f) // weight assigned to the flow of branch with id id1
+  branch(id2, 0.5f) // wiehgt assigned to the flow of branch with id id2
+  // ... 
 }
 ```
 
 ## Contingency DSL
 
-Les incidents sont déclarés dans un fichier spécifique. Ils représentent la perte d'un ou plusieurs quadripôles ou groupes. Chaque incident sera pris en compte par Metrix dans la simulation.
+Contingencies are specified in an other configuration file. They can represent the loss of one or several network components.
+Every contingency will be simulated.
 
-On déclare les incidents à simuler dans ce fichier avec la syntaxe suivante :
+To define a contingency :
 ```groovy
-contingency (id) { // nom de l'incident à définir comme on le souhaite
-equipments id1,id2...} //ouvrage(s) à déclencher
+contingency (id) { // name of the contingency
+equipments id1,id2...} // component ids that will be put out of order
 ```
+
+Note that to propagate a contingency defined on branches without breaker, the global option `propagateBranchTripping` can be used to propagate the contingency on connected branches.\
+Contingencies that breaks the network connection are ignored unless `outagesBreakingConnexity` global parameter is set to true. In this case, metrix will try to reach adequacy using all loads and generators equally and the results will show the cut off equipments.
+HVDC can be tripped off only within a synchronized network.
 
 ### Examples
 
-Exemple pour définir des défauts sur une liste de noms d'ouvrages:
+To define a list of contingency for some component list :
 ```groovy
-listeOuvrages=[
+components=[
   'A.NOUL61FLEAC',
   'AIGREL41ZVERV',
   'AIRVAL41BRESS',
   'AIRVAL41PARTH'
 ]
 
-for (ouvrage in listeOuvrages) {
-  contingency (ouvrage) {equipments ouvrage} //l'incident est ici nommé du nom de l'ouvrage
+for (component in components) {
+  contingency (component) {equipments component} // the contingency here has the same name as the affected component
 }
 ```
 
-Exemple pour définir des défauts sur tout le 400kV :
+and for multiple components :
+```groovy
+map_dual_contingencies = [
+  "defaut_dbl1":['ouvrage1_id', 'ouvrage2_id'],
+  "defaut_dbl2":['ouvrage3_id', 'ouvrage4_id']
+]
+
+map_dual_contingencies.each {name, components ->
+  contingency (name) {equipments (*components)}
+}
+```
+
+To simulate every single contingency on the 400kV network :
 ```groovy
 for (l in network.lines) {
   if (l.terminal1.voltageLevel.nominalV >= 380) {
@@ -394,44 +373,32 @@ for (l in network.lines) {
 }
 ```
 
-Il est possible de définir des défauts multiples à partir d'une liste d'identifiants d'ouvrages :
-```groovy
-map_defaut_doubles = [
-  "defaut_dbl1":['ouvrage1_id', 'ouvrage2_id'],
-  "defaut_dbl2":['ouvrage3_id', 'ouvrage4_id']
-]
-
-map_defaut_doubles.each {nom, ouvrages ->
-  contingency (nom) {equipments (*ouvrages)}
-}
-```
-
-Précisions :
-
-    Pour propager un défaut sur des ouvrages sans disjoncteur (par exemple un défaut sur un piquage), il faut soit explicitement donner toutes les lignes à déclencher soit activer l'option "propagateBranchTripping" dans les paramètres généraux de Metrix.
-    Par défaut, les incidents rompant la connexité du réseau sont ignorés. Pour les simuler, il faut activer l'option "outagesBreakingConnexity" dans les paramètres généraux de Metrix. La perte de consommation/production résultant est alors compensée par tous les groupes du réseau au prorata de leur Pmax et Metrix renvoie l'information de la production et de la consommation coupées.
-    Les HVDC au sein d'une composante synchrone peuvent être déclarées dans les ouvrages à déclencher. En revanche, le cas des pertes de HVDC entre composantes synchrones n'est pas géré. S'il y en a, ces défauts sont ignorés.
-
-exemple de fichier
 
 ## Remedial actions
 
-On peut indiquer une liste de parades topologiques à Metrix. Elle sont à déclarer ainsi (le format est hérité d'ASSESS/METRIX et évoluera prochainement) :
+Only defined topological remedial action can be used by Metrix. They are defined per contingency in an third file with the following syntax.\
+On the first line is the keyword `NB` followed by the number of remedial actions defined, eg :
+```text
+NB;5;
+```
+Then each line will define a remedial action with :
+```text
+CONTINGENCY_NAME;ACTIONS_COUNT;EQUIPMENT1_ACTION;...;
+```
+where "EQUIPMENT1_ACTION" being the id of a branch or bus coupling. The default action is to open the related breakers. To close a line the `+` sign must be preppended to the branch id.
 
-    en première ligne : NB;X; avec X le nombre de parades qu'on va définir.
-    sur chaque ligne suivante : une parade : NOM_DEFAUT ; NOMBRE_ACTIONS ; OUVRAGE_ACTION_1 ; OUVRAGE_ACTION_2 ...;. Les ouvrages peuvent être des lignes (saisir l’id de la ligne car ne traite pas pour l’instant l’id d’un DJ ligne)  ou des couplages (la manière la plus simple de récupérer le nom des couplages est de les actionner dans Convergence, de récupérer leur nom dans les traces et de rechercher l’id correspondant dans le fichier iidm). Par défaut, ce sont des ouvertures. Si on souhaite indiquer la fermeture d'un ouvrage, il faut faire précéder le nom de l'ouvrage d'un +.
+Remedial action can be limited to specific branch constraints with :
+```text
+CONTINGENCY_NAME | BRANCH_CONSTRAINT_1 | ... ;ACTIONS_COUNT;EQUIPMENT1_ACTION;...;
+```
+where "BRANCH_CONSTRAINT_1" should be the id of a [monitored component](#monitored-branches-and-observed-branches) (`onBranchRatingContingencies`).
+   
+Note that Metrix won't combine multiple defined remedial actions set, each line is tried independently.\
+These topological actions may be combined with generators/loads/pst/... optimizations.
+If several actions are equivalents, the first defined one will be used.\
 
-Il faut bien noter les points suivants :
+### Example
 
-    Metrix n'invente pas de parade, il faut lui donner une liste dans laquelle il choisira
-    Une parade est propre à un incident. Si elle fonctionne sur plusieurs incidents, il faut la déclarer pour chacun d'eux.
-    Il n'y a pas d'obligation d'utiliser une parade (de type si contrainte sur X alors Y), Metrix choisit d'activer une parade si et seulement si elle est utile
-    Metrix ne combine pas de parades. Si une parade consiste en plusieurs actions il faut la définir comme une parade à part entière
-    Une parade ne peut pas consister à changer le panachage des postes (pas d'action sur les sectionneurs)
-    A impact équivalent, Metrix retient la première parade dans la liste fournie
-    Les parades consistant à faire des ajustements sur des groupes ou des consommations sont à modéliser avec des ajustements de groupes ou consommations et peuvent être combinées avec des parades topologiques
-
-Exemple de fichier de parades :
 ```text
 NB;4;
 FS.BIS1 FSSV.O1 1;1;FS.BIS1_FS.BIS1_DJ_OMN;
@@ -439,50 +406,36 @@ FS.BIS1 FSSV.O1 1;1;FSSV.O1_FSSV.O1_DJ_OMN;
 FS.BIS1 FSSV.O1 1;2;FS.BIS1_FS.BIS1_DJ_OMN;FSSV.O1_FSSV.O1_DJ_OMN;
 FS.BIS1 FSSV.O1 1;1;FS.BIS1 FSSV.O1 2;
 ```
-Restreindre l'activation d'une parade à une contrainte
 
-Il est possible de conditionner l'activation d'une parade à la présence d'une contrainte sur des ouvrages spécifiques.
+Using a lot of remedial action will increase the simulation duration, especially with numerous alternative for a same contingency. The option `analogousRemedialActionDetection` may detect equivalent remedial actions and speed up the process. They will be indicated in logs.
 
-La parade doit alors être défini de la façon suivante :
-```text
-NOM_DEFAUT | OUVRAGE_CONTRAINTE_1 | OUVRAGE_CONTRAINTE_2 ... ; NOMBRE_ACTIONS ; OUVRAGE_ACTION_1 ; OUVRAGE_ACTION_2 ...;
-```
+## Binding constraints
 
-Les contraintes doivent bien évidemment être des ouvrages surveillés sur incident : branchRatingOnContingencies.
-L'utilisation de parades topologiques peut considérablement allonger les temps de calcul. En particulier s'il y a un grand nombre de parades pour un même incident et que ces parades ont des actions sensiblement équivalentes. L'option analogousRemedialActionDetection permet dans certains cas de détecter si une parade est équivalente à une précédente dans la liste. Dans ce cas, la seconde parade est ignorée et un trace "=> Contraintes equivalentes :" est visible dans les logs Metrix.
-Variables couplées
+Lastly, we can define binding constraints between some variables so to force them to vary along. 
+Each item of the binding constraint set will then vary proportionnaly to a reference variable. 
 
-Il est possible de définir des liens entre certaines variables préventives du problème pour qu'elles varient de manière conjointe. Cela peut être utilisé pour forcer des groupes ou des consommations à agir dans le même sens.
-
-Chaque élément du regroupement varie alors proportionnellement à une variable de référence.
-
-Pour les consommations, la variable de référence est toujours la charge initiale. Le délestage de chaque consommation appartenant au regroupement sera donc proportionnel à sa charge intiiale.
-
-La syntaxe est la suivante :
+For generators, the syntax is :
 ```groovy
-loadsGroup("nom du regroupement") {
-  filter { load.id == ... } //un filtre comme pour le mapping
+generatorsGroup("name of the set") {
+  filter { generator.id == ... } // filter generators
+  referenceVariable PMAX // reference variable (default is PMAX), other values can be PMIN, POBJ, PMAX_MINUS_POBJ
 }
 ```
 
-Pour les générateurs, la variable de référence peut être, au choix : la puissance maximale, la puissance minimale, la puissance de consigne initiale ou la marge à la hausse (puissance maximale - puissance de consigne).
-
-La syntaxe est la suivante :
+For loads, the only reference variable is the initial load :
 ```groovy
-generatorsGroup("nom du regroupement") {
-  filter { generator.id == ... } //un filtre comme pour le mapping
-  referenceVariable PMAX // c’est la valeur par défaut, les autres possibilités sont PMIN, POBJ, PMAX_MINUS_POBJ
+loadsGroup("name of the sed") {
+  filter { load.id == ... } // filter loads
 }
 ```
-Des chroniques correspondant aux variations de ces regroupements sont alors disponibles dans les sorties.
-Attention, la variation de tous les éléments de l'ensemble est limitée par le premier élément de l'ensemble qui atteint sa limite.
+
+Note that when one of the item in the set reach its limit (eg. its pmax), no further variation can be made on other items. 
 
 ## Outputs
 
-Les sorties de Metrix sont représentées sous forme de chroniques visualisables ou exportables en csv à partir de l'objet "simulation Metrix" correspondant.
+All outputs of Metrix are time series that will be stored in a single file.
 
-exemple de csv de sorties d'un lancement OPF 
-Résultats sur le calcul
+### Simulation result
 
 La chronique ERROR_CODE renseigne sur le bon déroulement du calcul Metrix. Une valeur 0 indique que le calcul de cette variante s'est déroulé normalement.
 
@@ -493,38 +446,36 @@ Toute autre valeur est le signe d'un problème :
     Nombre maximum de micro-itérations atteint : le nombre maximum de micro-itération a été atteint avant la fin de la résolution. Ce n'est pas bon signe, mais il peut être augmenté (voir paramètres).
     Variante ignorée: incohérence dans les données d'entrée de la variante (ex. Pconsigne non comprise entre Pmin et Pmax). Aucun calcul n'est effectué et Metrix passe à la variante suivante.  
 
+### Global results
 Résultats généraux
 
-LOSSES : estimation (en MW) des pertes totales (toutes zones synchrones)
+LOSSES : total losses (in MW) (for all synchonized zones)
 
-LOSSES_country : estimation (en MW) des pertes du pays country (disponible si l'option  lossDetailPerCountry  est activée)
+LOSSES_country : total losses per country (in MW) (only available if option `lossDetailPerCountry` is enabled)
 
-LOSSES_hvdc : estimation (en MW) des pertes de la liaison à courant continu hvdc (disponible si l'option  lossDetailPerCountry est activée)
+LOSSES_hvdc : total losses for HVDC (in MW) (only available if option `lossDetailPerCountry` is enabled)
 
-OVERLOAD_BASECASE : somme de tous les dépassements de seuils en N sur tous les ouvrages surveillés (en MW)
+OVERLOAD_BASECASE : sum of threshold overage on monitored components in base case (en MW)
 
-OVERLOAD_OUTAGES : somme de tous les dépassements de seuils sur tous les ouvrages surveillés et pour tous les incidents (en MW)
+OVERLOAD_OUTAGES : sum of threshold overage on monitored components for all defined contingencies (en MW)
 
-GEN_COST : coût total du redispatching des groupes en préventif
+GEN_COST : total cost of generator redispatching in preventive actions
 
-GEN_CUR_COST : coût total du redispatching des groupes en curatif
+GEN_CUR_COST : total cost of generator redispatching in curative actions
 
-LOAD_COST : coût total du délestage préventif. Convention de signe : Un signe positif indique une baisse de consommation. Un délestage négatif est possible pour les seules consommations négatives.
+LOAD_COST : total cost of preventive load shedding
 
-LOAD_CUR_COST : coût total du délestage curatif. Convention de signe : Un signe positif indique une baisse de consommation. Un délestage négatif est possible pour les seules consommations négatives.
+LOAD_CUR_COST : total cost of curative load shedding
 
-Les chroniques suivantes sont également calculées à partir des sorties Metrix pour préparer la synthèse des résultats :
+basecaseLoad_branchId : load percentage (the flow divided by the threshold) 
 
-basecaseLoad_ouvrage : transit en N sur l'ouvrage ouvrage divisé par la valeur absolue du seuil en N sur cet ouvrage
+basecaseOverload_branchId : overload flow (difference between flow and threshold if greater than threshold)
 
-basecaseOverload_ouvrage : transit en N sur l'ouvrage ouvrage au-delà du seuil en N si transit N > seuil N
+outageLoad_branchId : load percentage for N-1 (the flow divided by the N-1 threshold)
 
-outageLoad_ouvrage : transit en N-1 sur l'ouvrage ouvrage divisé par la valeur absolue du seuil en N-1 sur cet ouvrage
+outageOverload_branchId : overload flow for N-1 (difference between flow and N-1 threshold if greater than threshold)
 
-outageOverload_ouvrage : transit en N-1 sur l'ouvrage ouvrage au-delà du seuil en N-1 si transit N-1 > seuil N-1
-
-overallOverload_ouvrage : abs(basecaseOverload) + abs(outageOverload) (uniquement pour déterminer le nombre d’heures en contraintes)
-LOAD_COST et LOAD_CUR_COST (resp. GEN) sont les sommes des coûts des variables de consommation (resp. production) que le modèle peut ajuster. Les effets liés à l'activation de l'option outagesBreakingConnexity ou remedialActionsBreakingConnexity ne sont pas pris en compte dans ces variables. 
+overallOverload_branchID : sum of basecase and outage overload values
 
 Complément sur le calcul des pertes
 Metrix utilisant l'approximation du courant continu, la tension est considérée constante sur l'ensemble du réseau. Le calcul des pertes fourni Metrix est donc une approximation effectuée a posteriori sur la base des transits actifs obtenus en fin de calcul et en supposant que les transits réactifs sont nuls.
@@ -534,96 +485,96 @@ Pertes = R * (Transit/Unom)2
 Note : pour utiliser une valeur de cos(ϕ) différente de 1, il suffit de diviser le résultat de pertes de Metrix par cos²(ϕ). 
 
 Pour les pertes des HVDC, se référer à la note "METRIX comment ça marche". 
-Résultats sur les transits
 
-FLOW_ligne : transit en N (en MW) sur l'ouvrage ligne
+### Load flow results
 
-FLOW_ligne_incident : transit (en MW) sur l'ouvrage ligne pour le défaut incident. (lié à l'utilisation de l'option contingencyFlowResults )
+FLOW_branchId : flow in basecase (in MW)
 
-MAX_THREAT_indice_FLOW_ligne : transit maximal (en MW) numéro indice sur l'ouvrage ligne après incident (par défaut un seul transit maximal est renseigné par ouvrage mais ce nombre peut être augmenté via l'option nbMaxThreat)
+FLOW_branchId_contingencyId : flow for a specific contingency outage (when using the option `contingencyFlowResults` )
 
-MAX_THREAT_indice_NAME_ligne : nom du défaut correspondant au transit maximal numéro indice pour l'ouvrage ligne (cf. chronique précédente).
+MAX_THREAT_index_FLOW_branchId : (index-th) maximum flow (in MW) on branch after contingencies (default only index 1 is returned but may be increased using option `nbMaxThreat`)
 
-MAX_TMP_THREAT_FLOW_ligne : transit maximal sur l'ouvrage ligne après incident et avant toute manœuvre curative (renseigné uniquement si l'option  preCurativeResults est activée).
+MAX_THREAT_index_NAME_branchId : id of the contingency that caused the maximum flow for specified index (see previous result time series)
 
-MAX_TMP_THREAT_NAME_ligne : nom du défaut correspondant au transit maximal avant manœuvre sur l'ouvrage ligne (cf. chronique précédente).
-Résultats sur l'équilibre offre-demande
+MAX_TMP_THREAT_FLOW_branchId : maximum flow on branch after contingency and before remedial action (if option `preCurativeResults` is enabled).
 
-INIT_BAL_AREA_X : écart entre production et consommation (MW) pour la zone synchrone X avant la phase d'équilibrage.
+MAX_TMP_THREAT_NAME_branchId : id of the contingency that caused the maximum flow after contingency and before remedial action (see previous result time series)
 
-(Les résultats ci-dessous sont liés à l'activation de l'option withAdequacyResults)
+### Adequacy results
 
-INIT_BAL_GEN_groupe : modification initiale de la puissance de consigne du groupe (en MW) pour réaliser l'équilibre P=C (renseigné si non nul).
+INIT_BAL_AREA_X : initial difference between load and production (in MW) for synchronous zone X before adequacy phase
 
-INIT_BAL_LOAD_nœud : délestage initial de la consommation du nœud (en MW) pour réaliser l'équilibre P=C (renseigné si non nul).
+With option `withAdequacyResults` :
 
-(Les résultats ci-dessous sont liés à l'activation de l'option outagesBreakingConnexity ou remedialActionsBreakingConnexity)
+INIT_BAL_GEN_generator : if not nul, the MW adjustement for the generator in the adequacy phase
 
-LOST_LOAD_defaut : volume (en MW) de consommation perdu sur l'incident défaut qui rompt la connexité (i.e. perte d'une poche). Convention de signe : une valeur positive indique une perte de consommation.
+INIT_BAL_LOAD_node : if not nul, load shedding for node (en MW) in the adequacy phase
 
-LOST_LOAD_BEFORE_CURATIVE_defaut : volume (en MW) de consommation perdu sur l'incident défaut qui rompt la connexité (i.e. perte d'une poche) avant actions curatives. Convention de signe : une valeur positive indique une perte de consommation.
+With option `outagesBreakingConnexity` or `remedialActionsBreakingConnexity`:
 
-LOST_GEN_defaut : volume (en MW) de production perdu sur  l'incident défaut qui rompt la connexité. Convention de signe : une valeur positive indique une perte de consommation.
-Si une parade topologique permet de récupérer une partie de la consommation ou de la production perdue, le volume perdu avant application de la parade est renseigné sous le nom de l'incident, préfixé par "BEFORE_CURATIVE_" et le volume perdu après application de la parade est renseigné sous le nom de l'incident.
-Résultats sur le préventif
+LOST_LOAD_contingencyId : total load loss (in MW) when network connexity is broken
 
-PST_déphaseur : valeur (en degré) du déphasage préventif sur le déphaseur (renseigné si différent de la valeur initiale).
+LOST_LOAD_BEFORE_CURATIVE_contingencyId : total load loss (in MW) when network connexity is broken (before remedial actions)
 
-PST_TAP : valeur de la prise finale en préventif, qui correspond à la prise la plus proche par rapport au déphasage préventif du PST.
+LOST_GEN_contingencyId : total production loss (in MW) when network connexity is broken
 
-HVDC_hvdc : valeur (en MW) de la consigne en N sur la hvdc (renseigné si différent de la valeur initiale).
+### Preventive actions results
 
-GEN_VOL_DOWN_typeGrp: volume total de redispatching à la baisse (en MW) de tous les groupes de la filière typeGrp. Convention de signe : valeur négative correspondant à une baisse de production
+PST_pstId : angle value for phase shift if different of initial value
 
-GEN_VOL_UP_typeGrp : volume total de redispatching à la hausse (en MW) de tous les groupes de la filière typeGrp. Convention de signe : valeur positive correspondant à une hausse de production
+PST_TAP : phase shifting tap if different of initial value
 
-GEN_grp : modification en préventif de la puissance de consigne du groupe grp (en MW) pour la résolution de contraintes (renseigné si différent de 0 et si l'option withRedispatchingResults est activée). Convention de signe : une valeur positive indique une hausse de production (delta de sa consigne de production).
+HVDC_hvdcId : p0 value (in MW) for the HVDC if different of initial value
 
-LOAD_load : valeur du délestage préventif sur la load (renseigné si non nul) caractérisée par son id. Convention de signe : Un signe positif indique une baisse de consommation. Un délestage négatif est possible pour les seules consommations négatives.
-Résultats sur le curatif
+GEN_VOL_DOWN_genType : total volume (in MW) of decreased production for generator of type genType
 
-PST_CUR_déphaseur_défaut : valeur (en degré) du déphasage curatif du déphaseur pour le défaut (angle résultant des actions cumulées préventif + curatif, renseigné si différent de la valeur préventive).
+GEN_VOL_UP_genType : total volume (in MW) of increased production for generator of type genType
 
-PST_CUR_TAP : valeur de la prise finale en curatif, qui correspond à la prise la plus proche par rapport au déphasage curatif du PST.
+GEN_genId : variation of targetP for a generator in preventive actions (in MW) (if not nul and if option `withRedispatchingResults` is enabled)
 
-HVDC_CUR_hvdc_défaut : valeur (en MW) de la consigne curative sur la hvdc  pour le défaut (renseigné si différent de la valeur initiale).
+LOAD_loadId : shedding volume (in MW) for a load in remedial actions
 
-GEN_CUR_VOL_DOWN_typeGrp : volume total de redispatching à la baisse (en MW) sur tous les groupes de la filière typeGrp observé sur le pas de temps pour l'incident générant le volume maximal pour cette fillière. Convention de signe : valeur négative correspondant à une baisse de production. 
+### Curative actions results
 
-GEN_CUR_VOL_UP_typeGrp : volume total de redispatching à la hausse (en MW) de tous les groupes de la filière typeGrp observé sur le pas de temps pour l'incident générant le volume maximal pour cette fillière. Convention de signe : valeur positive correspondant à une hausse de production. 
-Warning concernant GEN_CUR_VOL_DOWN_typeGrp et GEN_CUR_VOL_UP_typeGrp: les valeurs pour les différentes fillières peuvent correspondre à des défauts différents sur un même pas de temps et une même filiaire peut avoir à la fois un volume à la hausse et à la baisse correspondant à deux défauts différents. Pour étudier ces volumes aggrégés en curratifs sur un défaut particuliers, il est par exemple possible de limiter la liste de défaut à celui souhaité dans le paramétrage de la simulation. 
+PST_CUR_pstId_contingencyId : angle value for phase shift if different of preventive action value
 
-GEN_CUR_groupe_défaut : valeur (en MW) de l'ajustement de production curatif du groupe pour le défaut (renseigné si différent de la valeur préventive et si l'option withRedispatchingResults est activée). Convention de signe : une valeur positive indique une hausse de production (delta de sa consigne de production).
+PST_CUR_TAP : phase shifting tap for the curative angle value (previous time series)
 
-LOAD_CUR_load_défaut : valeur (en MW) de l'effacement curatif d'une consommation de la load pour le défaut (renseigné si différent de la valeur préventive). Convention de signe : Un signe positif indique une hausse de consommation.
+HVDC_CUR_hvdc_contingencyId : p0 value (in MW) for the HVDC if different of initial value
 
-TOPOLOGY_défaut : parade topologique sélectionnée pour le défaut.
-Résultats sur les variations marginales
-Les variations marginales sont une aide à l'analyse et l'interprétation des résultats en mode OPF (i.e. quand il n'y a plus d'ouvrage en contrainte dans la solution).
-Elles permettent en effet de connaitre les couples "incident / ouvrage en contrainte" qui limitent la solution.
-Plus une variation marginale est élevée, plus la contrainte correspondante est coûteuse pour la solution.
-L'option contingencyDetailedMarginalVariations permet de connaitre le détail des groupes (et consommations) qui sont utilisés pour résoudre une contrainte particulière.
+GEN_CUR_VOL_DOWN_genType : total volume (in MW) of decreased production on the maximal threat contingency for generator of type genType 
 
-(Les résultats ci-dessous sont liés à l'activation de l'option marginalVariationsOnBranches)
+GEN_CUR_VOL_UP_genType : total volume (in MW) of increased production on the maximal threat contingency for generator of type genType 
 
-MV_branche : impact (théorique) sur la fonction coût si on pouvait augmenter de 1 MW sur le seuil en N de l'ouvrage branche.
+GEN_CUR_generator_contingencyId : variation of production (in MW) for the generator under the specified contingency (if different of the preventive value and if option `withRedispatchingResults` is enabled)
 
-MV_branche_défaut : impact (théorique) sur la fonction coût si on pouvait augmenter de 1 MW sur le seuil après défaut de l'ouvrage branche en raison de l'incident défaut.
+LOAD_CUR_load_contingencyId : shedding volume (in MW) of a load  under the specified contingency (if different of the preventive value)
 
-(Les résultats ci-dessous sont liés à l'activation de l'option contingencyDetailedMarginalVariations)
+TOPOLOGY_contingencyId : topological remedial action chosen for the specified contingency
 
-MV_POW_branche_élément : puissance à ajuster en N sur le groupe (ou la consommation) élément pour obtenir un gain de 1 MW sur le transit de l'ouvrage branche.
+### Marginal variation results
 
-MV_POW_branche_défaut_élément : puissance à ajuster sur le groupe (ou la consommation) élément, suite à l'incident défaut, pour obtenir un gain de 1 MW sur le transit de l'ouvrage branche.
+The following results will be produced when option `marginalVariationsOnBranches` is enabled.
 
-MV_COST_branche_élément : coût de l'ajustement en N sur le groupe (ou la consommation) élément pour obtenir un gain de 1 MW sur le transit de l'ouvrage branche.
+MV_branchId : theoretical effect on the cost function if the threshold were to be increase of 1 MW on the branch.
 
-MV_COST_branche_défaut_élément : coût de l'ajustement sur le groupe (ou la consommation) élément, suite à l'incident défaut, pour obtenir un gain de 1 MW sur le transit de l'ouvrage branche.
-Résultats sur les variables couplées
+MV_branchId_contingencyId : theoretical effect on the cost function if the threshold were to be increase of 1 MW on the branch under contingency.
 
-GEN_regroupement : somme des modifications des puissances de consigne de l'ensemble des groupes du regroupement (en MW).
+With option `contingencyDetailedMarginalVariations` :
 
-LOAD_regroupement : somme des délestages réalisés sur les consommations du regroupement (en MW).
+MV_POW_branchId_equipmentId : load variation on generator or load "equipmentId" to obtain a 1 MW increase on branch.
+
+MV_POW_branchId_contingencyId_equipmentId : load variation on generator or load "equipmentId" to obtain a 1 MW increase on branch after contingency.
+
+MV_COST_branchId_equipmentId : cost variation on generator or load "equipmentId" to obtain a 1 MW increase on branch.
+
+MV_COST_branchId_contingencyId_equipmentId : cost variation on generator or load "equipmentId" to obtain a 1 MW increase on branch after contingency.
+
+### Binding constraints results
+
+GEN_setId : sum of variations on the binding constraint set (in MW).
+
+LOAD_setId : sum of load shedding variations on the binding constraint set (in MW).
 
 
 

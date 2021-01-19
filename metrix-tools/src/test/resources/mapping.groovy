@@ -12,7 +12,7 @@ filter {generator.id=='SO_G1'}
 }
 
 mapToGenerators{
-timeSeriesName 'SO_G2'
+timeSeriesName 'SO_G1'
 filter {generator.id=='SO_G2'}
 }
 
