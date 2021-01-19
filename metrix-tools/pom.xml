@@ -19,7 +19,6 @@
 
     <artifactId>powsybl-metrix-tools</artifactId>
 
-
     <profiles>
         <profile>
             <id>jacoco</id>
@@ -50,6 +49,7 @@
     </profiles>
 
     <dependencies>
+        <!-- Compile dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-metrix-mapping</artifactId>
@@ -61,18 +61,7 @@
             <version>${project.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-computation-local</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-config-classic</artifactId>
-        </dependency>
-
-
-
-        <!-- tests -->
+        <!-- Tests dependencies -->
         <dependency>
             <groupId>com.google.jimfs</groupId>
             <artifactId>jimfs</artifactId>
@@ -91,6 +80,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -105,7 +95,5 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
 </project>

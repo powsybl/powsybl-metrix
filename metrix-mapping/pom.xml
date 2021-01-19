@@ -19,6 +19,10 @@
 
     <artifactId>powsybl-metrix-mapping</artifactId>
 
+    <properties>
+        <log4joslf4j.version>1.7.30</log4joslf4j.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -29,7 +33,7 @@
     </build>
 
     <dependencies>
-        <!-- ext deps -->
+        <!-- Compile dependencies -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -39,7 +43,6 @@
             <artifactId>guava</artifactId>
         </dependency>
 
-        <!-- powsybl -->
         <dependency>
             <groupId>com.powsybl</groupId>
             <artifactId>powsybl-time-series-api</artifactId>
@@ -73,7 +76,7 @@
             <artifactId>powsybl-iidm-impl</artifactId>
         </dependency>
 
-        <!-- tests -->
+        <!-- Tests dependencies -->
         <dependency>
             <groupId>com.google.jimfs</groupId>
             <artifactId>jimfs</artifactId>
@@ -96,7 +99,7 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -113,6 +116,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
+            <version>${log4joslf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

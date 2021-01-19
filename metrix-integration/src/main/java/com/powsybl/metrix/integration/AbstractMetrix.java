@@ -8,26 +8,17 @@
 
 package com.powsybl.metrix.integration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Stopwatch;
-import com.google.common.collect.Range;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.io.WorkingDirectory;
-import com.powsybl.commons.json.JsonUtil;
-import com.powsybl.computation.*;
+import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
-import com.powsybl.contingency.json.ContingencyJsonModule;
-import com.powsybl.iidm.export.ExportOptions;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.mapping.*;
-import com.powsybl.metrix.mapping.common.MetrixIidmConfiguration;
-import com.powsybl.metrix.mapping.json.TimeSeriesMappingConfigJsonModule;
 import com.powsybl.timeseries.DoubleTimeSeries;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeries;
@@ -40,21 +31,20 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import static com.powsybl.metrix.integration.MetrixComputationType.LF;
 
 public abstract class AbstractMetrix {
 
@@ -153,18 +143,20 @@ public abstract class AbstractMetrix {
                           ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive,
                           ComputationManager computationManager) {
         this(networkSource,
-                contingenciesProvider,
-                mappingReaderSupplier,
-                metrixDslReaderSupplier,
-                remedialActionsReaderSupplier,
-                store,
-                resultStore,
-                logArchive,
-                computationManager,
-                new NoopAppLogger(),
-                future -> {},
-                null,
-                null);
+            contingenciesProvider,
+            mappingReaderSupplier,
+            metrixDslReaderSupplier,
+            remedialActionsReaderSupplier,
+            store,
+            resultStore,
+            logArchive,
+            computationManager,
+            new NoopAppLogger(),
+            future -> {
+                /* noop */
+            },
+            null,
+            null);
     }
 
     public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
@@ -295,7 +287,7 @@ public abstract class AbstractMetrix {
             metrixDslData.setComputationType(metrixParameters.getComputationType());
             appLogger.tagged("performance")
                     .log("Metrix dsl data loaded in %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-            return  metrixDslData;
+            return metrixDslData;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ExecutionException e) {

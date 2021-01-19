@@ -21,6 +21,7 @@
     </build>
 
     <dependencies>
+        <!-- Compile dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-metrix-mapping</artifactId>
@@ -32,7 +33,6 @@
             <artifactId>slf4j-api</artifactId>
         </dependency>
 
-        <!-- powsybl -->
         <dependency>
             <groupId>com.powsybl</groupId>
             <artifactId>powsybl-iidm-api</artifactId>
@@ -62,7 +62,7 @@
             <artifactId>powsybl-iidm-impl</artifactId>
         </dependency>
 
-        <!-- tests -->
+        <!-- Tests dependencies -->
         <dependency>
             <groupId>com.google.jimfs</groupId>
             <artifactId>jimfs</artifactId>
@@ -85,7 +85,7 @@
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
-            <artifactId>mockito-all</artifactId>
+            <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -99,7 +99,5 @@
             <artifactId>powsybl-config-test</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
 </project>

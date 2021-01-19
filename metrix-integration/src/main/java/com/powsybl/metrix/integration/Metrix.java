@@ -35,7 +35,21 @@ public class Metrix extends AbstractMetrix {
     private static Logger LOGGER = LoggerFactory.getLogger(Metrix.class);
 
     public Metrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager, MetrixAppLogger logger) {
-        super(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier, store, resultStore, logArchive, computationManager, logger, ignore -> {});
+        super(
+            networkSource,
+            contingenciesProvider,
+            mappingReaderSupplier,
+            metrixDslReaderSupplier,
+            remedialActionsReaderSupplier,
+            store,
+            resultStore,
+            logArchive,
+            computationManager,
+            logger,
+            ignore -> {
+                /* noop */
+            }
+        );
     }
 
     public Metrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager) {
@@ -88,7 +102,7 @@ public class Metrix extends AbstractMetrix {
         }
 
         if (!futures.isEmpty()) {
-            for(CompletableFuture future: futures) {
+            for (CompletableFuture future : futures) {
                 future.join();
             }
         }
