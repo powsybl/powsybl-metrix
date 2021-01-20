@@ -217,7 +217,7 @@ public class TimeSeriesMapperCheckerTest {
             "}");
 
     private Network createNetwork() {
-        Network network = NetworkXml.read(getClass().getResourceAsStream("/reseau_6noeuds.xiidm"));
+        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xiidm"));
         List<String> generators = ImmutableList.of("SO_G1", "SO_G2", "SE_G", "N_G");
         generators.forEach(id -> network.getGenerator(id).setTargetP(0));
         List<String> loads = ImmutableList.of("SO_L", "SE_L1", "SE_L2");

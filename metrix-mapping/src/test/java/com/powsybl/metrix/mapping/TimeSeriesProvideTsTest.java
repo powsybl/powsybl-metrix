@@ -26,7 +26,7 @@ public class TimeSeriesProvideTsTest {
     @Before
     public void setUp() throws Exception {
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test

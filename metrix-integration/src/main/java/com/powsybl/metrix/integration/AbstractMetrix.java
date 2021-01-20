@@ -50,7 +50,6 @@ public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);
 
-    protected static final String DEFAULT_SCHEMA_NAME = "default";
     protected static final String INPUT_TIME_SERIES_FILE_NAME_PREFIX = "input_time_series_";
     protected static final String OUTPUT_TIME_SERIES_FILE_NAME_PREFIX = "output_time_series_";
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
@@ -637,7 +636,7 @@ public abstract class AbstractMetrix {
 
         @Override
         public MetrixAppLogger tagged(String tag) {
-            return null;
+            return this;
         }
     }
 

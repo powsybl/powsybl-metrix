@@ -36,7 +36,7 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
         super.setUp();
 
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Mapping script
         String script = String.join(System.lineSeparator(),

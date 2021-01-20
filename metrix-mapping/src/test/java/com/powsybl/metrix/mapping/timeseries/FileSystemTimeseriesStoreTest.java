@@ -20,6 +20,8 @@ import java.nio.file.Path;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
@@ -29,18 +31,20 @@ public class FileSystemTimeseriesStoreTest extends AbstractConverterTest {
     @Test
     public void testTsStore() throws IOException {
         Path resDir = Files.createDirectory(fileSystem.getPath("tmp/res"));
-        //Path resDir = Files.createDirectories(Paths.get("/tmp/res_test"));
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
 
-        try (InputStream resourceAsStream = FileSystemTimeseriesStoreTest.class.getResourceAsStream("/test.csv");
+        try (InputStream resourceAsStream = FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv");
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
             tsStore.importTimeSeries(bufferedReader, true);
         }
 
         assertThat(tsStore.getTimeSeriesNames(null)).isNotEmpty();
-        assertThat(tsStore.getTimeSeriesNames(null)).containsExactly("BALANCE");
+        assertThat(tsStore.getTimeSeriesNames(null)).containsExactlyInAnyOrder("BALANCE", "tsX");
+
+        assertTrue(tsStore.timeSeriesExists("BALANCE"));
+        assertFalse(tsStore.timeSeriesExists("tsY"));
     }
 }

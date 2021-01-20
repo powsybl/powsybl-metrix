@@ -35,7 +35,6 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -204,7 +203,7 @@ public class MappingTool implements Tool {
             boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
             InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-            store.importTimeSeries(tsCsvs.stream().map(Paths::get).collect(Collectors.toList()));
+            store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
 
             context.getOutputStream().println("Loading case...");
             Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);

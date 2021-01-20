@@ -42,7 +42,7 @@ public class NetworkPointWriterTest extends AbstractConverterTest {
         super.setUp();
 
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test

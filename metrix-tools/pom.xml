@@ -19,6 +19,10 @@
 
     <artifactId>powsybl-metrix-tools</artifactId>
 
+    <properties>
+        <log4joslf4j.version>1.7.30</log4joslf4j.version>
+    </properties>
+
     <profiles>
         <profile>
             <id>jacoco</id>
@@ -80,6 +84,12 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>${log4joslf4j.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

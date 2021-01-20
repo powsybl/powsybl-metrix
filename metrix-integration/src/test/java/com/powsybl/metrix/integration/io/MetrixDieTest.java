@@ -77,7 +77,7 @@ public class MetrixDieTest extends AbstractConverterTest {
     @Test
     public void jsonLoadSaveTest() throws IOException, URISyntaxException {
         MetrixDie die = new MetrixDie();
-        Path inputFile =  Paths.get(getClass().getResource("/reseau_test_6noeuds.json").toURI());
+        Path inputFile =  Paths.get(getClass().getResource("/simpleNetwork.json").toURI());
         die.loadFromJson(inputFile);
         Path outputFile = fileSystem.getPath("output.json");
         die.saveToJson(outputFile);

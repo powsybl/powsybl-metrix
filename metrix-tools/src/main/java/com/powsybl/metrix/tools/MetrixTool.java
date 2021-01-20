@@ -33,7 +33,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
@@ -231,7 +230,7 @@ public class MetrixTool implements Tool {
         }
 
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-        store.importTimeSeries(tsCsvs.stream().map(Paths::get).collect(Collectors.toList()));
+        store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
 
         MetrixAppLogger logger = new MetrixAppLogger() {
             private String tag = "INFO";
@@ -318,7 +317,7 @@ public class MetrixTool implements Tool {
             };
         }
 
-        FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("metrix_results_" + UUID.randomUUID()));
+        FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             new Metrix(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,

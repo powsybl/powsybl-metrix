@@ -56,7 +56,7 @@ public class MetrixDslDataLoaderTest {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
-        network = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Create mapping file for use in all tests
         try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {

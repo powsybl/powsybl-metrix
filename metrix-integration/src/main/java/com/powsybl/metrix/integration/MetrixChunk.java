@@ -315,7 +315,11 @@ public class MetrixChunk {
                         }
 
                         if (logFile != null) {
-                            Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
+                            if (Files.exists(workingDir.resolve(LOGS_FILE_NAME))) {
+                                Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
+                            } else {
+                                LOGGER.warn("Failed to retrieve metrix main log file !");
+                            }
                         }
 
                         if (logFileDetail != null) {

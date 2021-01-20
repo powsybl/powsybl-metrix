@@ -51,7 +51,7 @@ public class MetrixConstantVariantTest {
         metrixFile = fileSystem.getPath("/metrix.groovy");
         mappingFile = fileSystem.getPath("/mapping.groovy");
         variantFile = fileSystem.getPath("/variantes.csv");
-        network = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
         network.getLoad("FVERGE11_L").getTerminal().connect(); // Connect 4th load to use it
     }
 

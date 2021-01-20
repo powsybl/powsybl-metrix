@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,13 +57,17 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     @Override
     public List<TimeSeriesMetadata> getTimeSeriesMetadata(Set<String> timeSeriesNames) {
-        return Stream
+        Map<String, TimeSeriesMetadata> metadataList = Stream
                 .concat(stringTimeSeries.entrySet().stream(), doubleTimeSeries.entrySet().stream())
                 .filter(timeSeries -> timeSeriesNames.contains(timeSeries.getKey()))
                 .map(Map.Entry::getValue)
                 .filter(timeSeriesVersions -> !timeSeriesVersions.isEmpty())
                 .map(timeSeriesVersions -> timeSeriesVersions.values().stream().findFirst().get())
                 .map(TimeSeries::getMetadata)
+                .collect(Collectors.toMap(TimeSeriesMetadata::getName, Function.identity()));
+
+        return timeSeriesNames.stream()
+                .map(metadataList::get)
                 .collect(Collectors.toList());
     }
 
@@ -79,10 +84,10 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     public Set<Integer> getTimeSeriesDataVersions(String timeSeriesName) {
         return Stream
                 .concat(stringTimeSeries.entrySet().stream(), doubleTimeSeries.entrySet().stream())
-                .findFirst()
                 .filter(timeSeries -> timeSeriesName.equals(timeSeries.getKey()))
                 .map(Map.Entry::getValue)
                 .map(Map::keySet)
+                .findFirst()
                 .orElse(Collections.emptySet());
     }
 
@@ -139,37 +144,40 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         throw new NotImplementedException("Not impletemented");
     }
 
+    public void importTimeSeries(BufferedReader reader) {
+        Map<Integer, List<TimeSeries>> timeSeries = TimeSeries.parseCsv(reader, TimeSeriesConstants.DEFAULT_SEPARATOR);
+        HashMap<TimeSeriesDataType, HashMap<String, Map<Integer, TimeSeries>>> tsByType = timeSeries.entrySet().stream()
+                .flatMap(tsVersionEntry ->
+                        tsVersionEntry.getValue().stream().map(tsVersion -> Pair.of(tsVersion, tsVersionEntry.getKey()))
+                )
+                .collect(Collectors.groupingBy(
+                    tsVersion -> tsVersion.getKey().getMetadata().getDataType(),
+                    HashMap::new,
+                    Collectors.groupingBy(
+                        tsVersion -> tsVersion.getKey().getMetadata().getName(),
+                        HashMap::new,
+                        Collectors.toMap(Pair::getValue, Pair::getKey)
+                    )
+                ));
+
+        HashMap<String, Map<Integer, TimeSeries>> importedDoubleTimeseries = tsByType.get(TimeSeriesDataType.DOUBLE);
+        if (importedDoubleTimeseries != null) {
+            doubleTimeSeries.putAll(importedDoubleTimeseries);
+        }
+
+        HashMap<String, Map<Integer, TimeSeries>> importedStringTimeseries = tsByType.get(TimeSeriesDataType.STRING);
+        if (importedStringTimeseries != null) {
+            stringTimeSeries.putAll(importedStringTimeseries);
+        }
+    }
+
     public void importTimeSeries(List<Path> csvTimeseries) {
-        csvTimeseries.stream().forEach(timeseriesCsv -> {
+        for (Path timeseriesCsv : csvTimeseries) {
             try (BufferedReader reader = Files.newBufferedReader(timeseriesCsv)) {
-                Map<Integer, List<TimeSeries>> timeSeries = TimeSeries.parseCsv(reader, TimeSeriesConstants.DEFAULT_SEPARATOR);
-                HashMap<TimeSeriesDataType, HashMap<String, Map<Integer, TimeSeries>>> tsByType = timeSeries.entrySet().stream()
-                        .flatMap(tsVersionEntry ->
-                                tsVersionEntry.getValue().stream().map(tsVersion -> Pair.of(tsVersion, tsVersionEntry.getKey()))
-                        )
-                        .collect(Collectors.groupingBy(
-                            tsVersion -> tsVersion.getKey().getMetadata().getDataType(),
-                            HashMap::new,
-                            Collectors.groupingBy(
-                                tsVersion -> tsVersion.getKey().getMetadata().getName(),
-                                HashMap::new,
-                                Collectors.toMap(Pair::getValue, Pair::getKey)
-                            )
-                        ));
-
-                HashMap<String, Map<Integer, TimeSeries>> importedDoubleTimeseries = tsByType.get(TimeSeriesDataType.DOUBLE);
-                if (importedDoubleTimeseries != null) {
-                    doubleTimeSeries.putAll(importedDoubleTimeseries);
-                }
-
-                HashMap<String, Map<Integer, TimeSeries>> importedStringTimeseries = tsByType.get(TimeSeriesDataType.STRING);
-                if (importedStringTimeseries != null) {
-                    stringTimeSeries.putAll(importedStringTimeseries);
-                }
-
+                importTimeSeries(reader);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        }
     }
 }

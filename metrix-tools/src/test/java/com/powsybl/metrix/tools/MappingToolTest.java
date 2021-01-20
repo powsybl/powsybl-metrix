@@ -13,6 +13,10 @@ import com.powsybl.tools.Tool;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.Collections;
 
 /**
@@ -41,7 +45,23 @@ public class MappingToolTest extends AbstractToolTest {
     }
 
     @Test
-    public void run() {
+    public void run() throws IOException {
+        Files.copy(MappingToolTest.class.getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
+        Files.copy(MappingToolTest.class.getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(MappingToolTest.class.getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(MappingToolTest.class.getResourceAsStream("/mapping_result.txt")))) {
+            expected.append(reader.readLine());
+        }
 
+        assertCommand(new String[]{
+            "mapping",
+            "--case-file",
+            "/network.xiidm",
+            "--mapping-file",
+            "/mapping.groovy",
+            "--time-series",
+            "/timeseries.csv"
+        }, 0, expected.toString(), "Mapping is incomplete\n");
     }
 }

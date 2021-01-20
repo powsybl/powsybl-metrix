@@ -13,11 +13,16 @@ import org.threeten.extra.Interval;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class TimeSeriesMappingTest extends AbstractConverterTest {
 
@@ -38,6 +43,40 @@ public class TimeSeriesMappingTest extends AbstractConverterTest {
     private void checkMappingConfigOutput(TimeSeriesMappingConfig mappingConfig, String directoryName, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) throws Exception {
 
         TimeSeriesMappingConfigCsvWriter mappingConfigCsvWriter = new TimeSeriesMappingConfigCsvWriter(mappingConfig, network);
+
+        Path resultDir = tmpDir.resolve("csvmapping");
+        mappingConfigCsvWriter.writeMappingCsv(resultDir, store, computationRange, mappingParameters);
+        List<String> outputFiles = Files.list(resultDir).map(Path::toString).collect(Collectors.toList());
+        assertThat(outputFiles).containsExactlyInAnyOrder(
+            "tmp/csvmapping/boundaryLineToTimeSeriesMapping.csv",
+            "tmp/csvmapping/breakerToTimeSeriesMapping.csv",
+            "tmp/csvmapping/disconnectedBoundaryLines.csv",
+            "tmp/csvmapping/disconnectedGenerators.csv",
+            "tmp/csvmapping/disconnectedLoads.csv",
+            "tmp/csvmapping/generatorToTimeSeriesMapping.csv",
+            "tmp/csvmapping/hvdcLineToTimeSeriesMapping.csv",
+            "tmp/csvmapping/ignoredUnmappedBoundaryLines.csv",
+            "tmp/csvmapping/ignoredUnmappedGenerators.csv",
+            "tmp/csvmapping/ignoredUnmappedHvdcLines.csv",
+            "tmp/csvmapping/ignoredUnmappedLoads.csv",
+            "tmp/csvmapping/ignoredUnmappedPst.csv",
+            "tmp/csvmapping/loadToTimeSeriesMapping.csv",
+            "tmp/csvmapping/outOfMainCcBoundaryLines.csv",
+            "tmp/csvmapping/outOfMainCcGenerators.csv",
+            "tmp/csvmapping/outOfMainCcLoads.csv",
+            "tmp/csvmapping/pstToTimeSeriesMapping.csv",
+            "tmp/csvmapping/timeSeries.csv",
+            "tmp/csvmapping/timeSeriesToBoundaryLinesMapping.csv",
+            "tmp/csvmapping/timeSeriesToBreakersMapping.csv",
+            "tmp/csvmapping/timeSeriesToGeneratorsMapping.csv",
+            "tmp/csvmapping/timeSeriesToHvdcLinesMapping.csv",
+            "tmp/csvmapping/timeSeriesToLoadsMapping.csv",
+            "tmp/csvmapping/timeSeriesToPstMapping.csv",
+            "tmp/csvmapping/unmappedBoundaryLines.csv",
+            "tmp/csvmapping/unmappedGenerators.csv",
+            "tmp/csvmapping/unmappedHvdcLines.csv",
+            "tmp/csvmapping/unmappedLoads.csv",
+            "tmp/csvmapping/unmappedPst.csv");
 
         StringWriter timeSeriesMappingSynthesisTxt = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesMappingSynthesisTxt)) {
@@ -261,7 +300,7 @@ public class TimeSeriesMappingTest extends AbstractConverterTest {
         super.setUp();
 
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // create mapping parameters
         mappingParameters = mappingParameters.load();

@@ -42,7 +42,7 @@ public class MetrixInputTest extends AbstractConverterTest {
             ));
         }
 
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, new MetrixParameters(), remedialActionFile);
         Set<Switch> retainedSwitchList = new HashSet<>();
@@ -119,7 +119,7 @@ public class MetrixInputTest extends AbstractConverterTest {
 
     @Test
     public void metrixDefaultInputTest() throws IOException {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
         new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
@@ -127,12 +127,12 @@ public class MetrixInputTest extends AbstractConverterTest {
 
         // Results comparison
         String actual = writer.toString();
-        compareTxt(getClass().getResourceAsStream("/reseau_test_6noeuds_default.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+        compareTxt(getClass().getResourceAsStream("/simpleNetworkDefault.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
     }
 
     @Test
     public void metrixInputTest() throws IOException {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  1");
@@ -320,13 +320,13 @@ public class MetrixInputTest extends AbstractConverterTest {
 
         // Results comparison
         String actual = writer.toString();
-        compareTxt(getClass().getResourceAsStream("/reseau_test_6noeuds.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+        compareTxt(getClass().getResourceAsStream("/simpleNetwork.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
     }
 
     @Test
     public void mappedBreakerTest() throws IOException {
 
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         String[] mappedBreakers = {
             "FP.AND1_FP.AND1  FTDPRA1  1_DJ13", // PST breaker
@@ -379,7 +379,7 @@ public class MetrixInputTest extends AbstractConverterTest {
 
     @Test
     public void propagateTrippingTest() {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
         Contingency cty = new Contingency("cty", l);
@@ -520,7 +520,7 @@ public class MetrixInputTest extends AbstractConverterTest {
 
     @Test
     public void loadBreakTest() throws IOException {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/reseau_test_6noeuds.xml"));
+        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  2");
