@@ -169,7 +169,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                     bf.write(ts.toJson());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new PowsyblException("Failed to write timeseries", e);
             }
         });
     }

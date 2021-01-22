@@ -8,6 +8,7 @@
 
 package com.powsybl.metrix.mapping.timeseries;
 
+import com.powsybl.commons.PowsyblException;
 import com.powsybl.timeseries.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
@@ -176,7 +177,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
             try (BufferedReader reader = Files.newBufferedReader(timeseriesCsv)) {
                 importTimeSeries(reader);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new PowsyblException("Failed to import time series", e);
             }
         }
     }

@@ -240,7 +240,7 @@ public class MetrixTool implements Tool {
                 try {
                     IOUtils.write(String.format(tag + "\t" + message + "\n", args), context.getOutputStream(), Charset.defaultCharset());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    throw new UncheckedIOException(e);
                 }
             }
 
