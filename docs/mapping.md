@@ -1,6 +1,6 @@
-# MultiCase Configuration (mapping)
+# Mapping configuration
 
-A multi case configuration is made of 3 objects : 
+A mapping configuration is made of 3 objects : 
 - an iidm situation case
 - a timeserie store (csv)
 - a mapping groovy script using the [mapping dsl](#mapping-dsl) described below

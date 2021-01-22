@@ -32,83 +32,121 @@ For more advanced and intensive usage it is recommended to embedded this package
 
 ### Mapping
 
-itools mapping
-```text
-usage: itools [OPTIONS] mapping --case-file <FILE>
-       [--check-equipment-time-series] [--check-versions
-       <VERSION1,VERSION2,...>] [--equipment-time-series-dir <DIR>]
-       [--first-variant <COUNT>] [--help] [--ignore-empty-filter]
-       [--ignore-limits] --mapping-file <FILE> [--mapping-status-file <FILE>]
-       [--mapping-synthesis-dir <DIR>] [--max-variant-count <COUNT>]
-       [--network-output-dir <DIR>] --time-series <FILE1,FILE2,...>
+To use the mapping, add `com.powsybl:powsybl-metrix-mapping` module to your dependencies.
 
-Available options are:
-    --config-name <CONFIG_NAME>   Override configuration file name
+Then you need :
+- a case file
+- a mapping groovy script configuration
+- a time series store
 
-Available arguments are:
-    --case-file <FILE>                         the case to which times series
-                                               will be mapped
-    --check-equipment-time-series              check equipment level time series
-                                               consistency
-    --check-versions <VERSION1,VERSION2,...>   version list to check, all if
-                                               option is not set
-    --equipment-time-series-dir <DIR>          output directory to store
-                                               equipment level time series
-    --first-variant <COUNT>                    first variant to simulate
-    --help                                     display the help and quit
-    --ignore-empty-filter                      ignore empty filter with non zero
-                                               time series value
-    --ignore-limits                            ignore generator limits
-    --mapping-file <FILE>                      Groovy DSL file that describes
-                                               the mapping
-    --mapping-status-file <FILE>               check mapping status of each time
-                                               series of the DB and write result
-                                               to the file
-    --mapping-synthesis-dir <DIR>              output directory to write mapping
-                                               synthesis files
-    --max-variant-count <COUNT>                maximum number of variants
-                                               simulated
-    --network-output-dir <DIR>                 output directory to write IIDM
-                                               networks
-    --time-series <FILE1,FILE2,...>            time series csv list
+```java
+// Entry timeseries
+InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
+store.importTimeSeries(Collections.singletonList(Paths.get("/path/to/timeseries.csv")));
+
+// Mapping file
+Path mappingFile = Paths.get("path/to/mappingFile");
+
+// Network
+Network network = NetworkXml.read(Paths.get("/path/to/network.xiidm"));
+
+// Computation parameters
+MappingParameters mappingParameters = MappingParameters.load();
+int firstVariant = ...
+int maxVariantCount = ...
+ComputationRange computationRange = new ComputationRange(store.getTimeSeriesDataVersions(), firstVariant, maxVariantCount);
+
+// Generate mapping configuration
+TimeSeriesMappingConfig config;
+try (Reader reader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
+    TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString());
+    config = dslLoader.load(network, mappingParameters, store, computationRange);
+}
+
+// Export result in csv
+TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
+csvWriter.writeMappingCsv(Paths.get("/path/to/output"), store, computationRange, mappingParameters);
+
+// Compute mapping on network
+TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+List<TimeSeriesMapperObserver> observers = new ArrayList<>();
+
+// Add network generation computation
+DataSource dataSource = DataSourceUtil.createDataSource(Paths.get("/path/to/networkOutputDir"), network.getId(), null);
+observers.add(new NetworkPointWriter(network, dataSource));
+
+// Add timeseries mapping export
+observers.add(new EquipmentTimeSeriesWriter(Paths.get("/path/to/equipmentTimeSeriesDir")));
+
+// Apply mapping to network
+TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
+TimeSeriesIndex index = config.checkIndexUnicity(store);
+int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
+TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(store.getTimeSeriesDataVersions(), Range.closed(firstVariant, lastPoint), true, true, mappingParameters.getToleranceThreshold());
+mapper.mapToNetwork(store, parameters, observers);
 ```
+
+Further documentation is available on the [dedicated page](https://powsybl.org/) on our website.
 
 ### Metrix
 
-itools metrix
-```text
-usage: itools [OPTIONS] metrix --case-file <FILE> [--chunk-size <SIZE>]
-       [--contingencies-file <FILE>] [--csv-results-file <FILE>]
-       [--first-variant <NUM>] [--help] [--ignore-empty-filter]
-       [--ignore-limits] [--log-archive <FILE>] --mapping-file <FILE>
-       [--metrix-dsl-file <FILE>] [--remedial-actions-file <FILE>] --time-series
-       <FILE1,FILE2,...> [--variant-count <COUNT>] --versions <NUM1,NUM2,...>
+To use metrix with java, add `com.powsybl:powsybl-metrix-integration` module to your dependencies.
 
-Available options are:
-    --config-name <CONFIG_NAME>   Override configuration file name
+Then you need :
+- a case file
+- a mapping groovy script configuration
+- a time series store
+- a metrix configuration script
+- (optional) a contingency configuration script
+- (optional) a remedial actions configuration file
 
-Available arguments are:
-    --case-file <FILE>                the base case file
-    --chunk-size <SIZE>               chunk size
-    --contingencies-file <FILE>       Groovy DSL file that describes
-                                      contingencies
-    --csv-results-file <FILE>         CSV file results
-    --first-variant <NUM>             first variant to simulate
-    --help                            display the help and quit
-    --ignore-empty-filter             ignore empty filter with non zero time
-                                      series value
-    --ignore-limits                   ignore generator limits
-    --log-archive <FILE>              name of gzip file containing execution
-                                      logs
-    --mapping-file <FILE>             Groovy DSL file that describes the mapping
-    --metrix-dsl-file <FILE>          Groovy DSL file that describes the branch
-                                      monitoring and the phase shifter actions
-    --remedial-actions-file <FILE>    Name of the remedial actions file
-    --time-series <FILE1,FILE2,...>   time series csv list
-    --variant-count <COUNT>           number of variants simulated
-    --versions <NUM1,NUM2,...>        time series versions
+```java
+
+ComputationManager computationManager = LocalComputationManager.getDefault();
+// Network
+NetworkSource networkSource = new DefaultNetworkSourceImpl(Paths.get("/path/to/case.xiidm"), computationManager)
+// Timeseries
+InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
+store.importTimeSeries(Collections.singletonList(Paths.get("/path/to/timeseries.csv")));
+// Contingencies
+ContingenciesProvider contingenciesProvider = new GroovyDslContingenciesProvider(Paths.get("/path/to/contingencies.groovy"));
+// Mapping
+Supplier<Reader> mappingReader = () -> Files.newBufferedReader(Paths.get("/path/to/mapping.groovy"), StandardCharsets.UTF_8);
+// Metrix config
+Supplier<Reader> metrixDslReader = () -> Files.newBufferedReader(Paths.get("/path/to/metrixConfig.groovy"), StandardCharsets.UTF_8);
+// Remedial actions
+Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get("/path/to/remedialActions.txt"), StandardCharsets.UTF_8);
+
+// Result timeseries store
+FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));
+
+// Initialize metrix
+Metrix metrix = new Metrix(
+    networkSource,
+    contingenciesProvider,
+    mappingReader,
+    metrixDslReader,
+    remedialActionsReader,
+    store,
+    resultStore,
+    null,
+    computationManager 
+);
+
+
+// Result listener
+ResultListener listener = new AbstractMetrix.DefaultResultListener() {
+
+    @Override
+    public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
+        resultStore.importTimeSeries(timeSeriesList, version, false);
+    }
+
+}
+
+// Run metrix
+MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, true, true);
+metrix.run(runParams, listener);
 ```
 
-## Examples
-
-TP 6 noeuds
+Further documentation is available on the [dedicated page](https://powsybl.org/) on our website.
