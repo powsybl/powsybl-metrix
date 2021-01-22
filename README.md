@@ -86,7 +86,7 @@ TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(store.get
 mapper.mapToNetwork(store, parameters, observers);
 ```
 
-Further documentation is available on the [dedicated page](https://powsybl.org/) on our website.
+Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/mapping.html) on our website.
 
 ### Metrix
 
@@ -149,4 +149,4 @@ MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCou
 metrix.run(runParams, listener);
 ```
 
-Further documentation is available on the [dedicated page](https://powsybl.org/) on our website.
+Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/metrix) on our website.
