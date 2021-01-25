@@ -34,11 +34,13 @@ public class MetrixGeneratorsBinding {
 
     }
 
-    private String name;
-    private Set<String> generatorsIds = new HashSet<>();
-    private ReferenceVariable reference;
+    private final String name;
+    private final Set<String> generatorsIds = new HashSet<>();
+    private final ReferenceVariable reference;
 
     MetrixGeneratorsBinding() {
+        this.name = null;
+        this.reference = null;
     }
 
     MetrixGeneratorsBinding(String name, Collection<String> ids) {

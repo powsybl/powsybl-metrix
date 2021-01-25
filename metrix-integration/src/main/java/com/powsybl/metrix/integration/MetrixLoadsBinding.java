@@ -15,10 +15,11 @@ import java.util.*;
  */
 public class MetrixLoadsBinding {
 
-    private String name;
-    private Set<String> loadsIds = new HashSet<>();
+    private final String name;
+    private final Set<String> loadsIds = new HashSet<>();
 
     MetrixLoadsBinding() {
+        this.name = null;
     }
 
     MetrixLoadsBinding(String name, Collection<String> ids) {

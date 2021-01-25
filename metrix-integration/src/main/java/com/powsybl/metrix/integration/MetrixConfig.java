@@ -20,7 +20,7 @@ import java.util.Objects;
 public class MetrixConfig {
 
     private static final boolean DEFAULT_DEBUG = false;
-    private static final boolean DEFAULT_ANGLE_DE_PERTE_FIXE = false;
+    private static final boolean DEFAULT_CONSTANT_LOAD_FACTOR = false;
     private static final int DEFAULT_CHUNK_SIZE = 10;
     private static final int RESULT_NUMBER_LIMIT = 10000;
     private static final long COMPUTATION_RETRY_DELAY = 600000L;
@@ -35,9 +35,7 @@ public class MetrixConfig {
         ModuleConfig moduleConfig = platformConfig.getModuleConfig("metrix");
         Path homeDir = moduleConfig.getPathProperty("home-dir");
         boolean debug = moduleConfig.getBooleanProperty("debug", DEFAULT_DEBUG);
-        boolean angleDePerteFixe = moduleConfig.getOptionalBooleanProperty("angleDePerteFixe")
-                                               .orElseGet(() -> moduleConfig.getOptionalBooleanProperty("constant-loss-factor")
-                                                                            .orElse(DEFAULT_ANGLE_DE_PERTE_FIXE));
+        boolean constantLossFactor = moduleConfig.getOptionalBooleanProperty("constant-loss-factor").orElse(DEFAULT_CONSTANT_LOAD_FACTOR);
 
         int chunkSize = moduleConfig.getOptionalIntProperty("chunk-size")
             .orElseGet(() -> moduleConfig.getOptionalIntProperty("chunkSize")
@@ -57,14 +55,14 @@ public class MetrixConfig {
         int noDebugLogLevel = moduleConfig.getOptionalIntProperty("noDebugLogLevel")
                 .orElse(DEFAULT_NO_DEBUG_LOG_LEVEL);
 
-        return new MetrixConfig(homeDir, debug, angleDePerteFixe, chunkSize, resultNumberLimit, computationRetryDelay, debugLogLevel, noDebugLogLevel);
+        return new MetrixConfig(homeDir, debug, constantLossFactor, chunkSize, resultNumberLimit, computationRetryDelay, debugLogLevel, noDebugLogLevel);
     }
 
     private Path homeDir;
 
     private boolean debug;
 
-    private boolean angleDePerteFixe;
+    private boolean constantLossFactor;
 
     private int chunkSize;
 
@@ -90,10 +88,10 @@ public class MetrixConfig {
         return logLevel;
     }
 
-    public MetrixConfig(Path homeDir, boolean debug, boolean angleDePerteFixe, int chunkSize, int resultNumberLimit, long computationRetryDelay, int debugLogLevel, int noDebugLogLevel) {
+    public MetrixConfig(Path homeDir, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, long computationRetryDelay, int debugLogLevel, int noDebugLogLevel) {
         this.homeDir = Objects.requireNonNull(homeDir);
         this.debug = debug;
-        this.angleDePerteFixe = angleDePerteFixe;
+        this.constantLossFactor = constantLossFactor;
         this.chunkSize = validateChunkSize(chunkSize);
         this.resultNumberLimit = resultNumberLimit;
         this.computationRetryDelay = computationRetryDelay;
@@ -119,12 +117,12 @@ public class MetrixConfig {
         return this;
     }
 
-    public boolean isAngleDePerteFixe() {
-        return angleDePerteFixe;
+    public boolean isConstantLossFactor() {
+        return constantLossFactor;
     }
 
-    public MetrixConfig setAngleDePerteFixe(boolean angleDePerteFixe) {
-        this.angleDePerteFixe = angleDePerteFixe;
+    public MetrixConfig setConstantLossFactor(boolean constantLossFactor) {
+        this.constantLossFactor = constantLossFactor;
         return this;
     }
 

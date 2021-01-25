@@ -35,32 +35,32 @@ public class MetrixNetwork {
 
     private final Network network;
 
-    private StringToIntMapper<MetrixSubset> mapper = new StringToIntMapper<>(MetrixSubset.class);
+    private final StringToIntMapper<MetrixSubset> mapper = new StringToIntMapper<>(MetrixSubset.class);
 
-    private Set<String> countryList = new HashSet<>();
+    private final Set<String> countryList = new HashSet<>();
 
-    private List<Load> loadList = new ArrayList<>();
+    private final Set<Load> loadList = new LinkedHashSet<>();
 
-    private List<Generator> generatorList = new ArrayList<>();
-    private Set<String> generatorTypeList = new HashSet<>();
+    private final Set<Generator> generatorList = new LinkedHashSet<>();
+    private final Set<String> generatorTypeList = new HashSet<>();
 
-    private List<Line> lineList = new ArrayList<>();
-    private List<TwoWindingsTransformer> twoWindingsTransformerList = new ArrayList<>();
-    private List<ThreeWindingsTransformer> threeWindingsTransformerList = new ArrayList<>();
-    private List<DanglingLine> danglingLineList = new ArrayList<>();
-    private List<Switch> switchList = new ArrayList<>();
+    private final Set<Line> lineList = new LinkedHashSet<>();
+    private final Set<TwoWindingsTransformer> twoWindingsTransformerList = new LinkedHashSet<>();
+    private final Set<ThreeWindingsTransformer> threeWindingsTransformerList = new LinkedHashSet<>();
+    private final Set<DanglingLine> danglingLineList = new LinkedHashSet<>();
+    private final Set<Switch> switchList = new LinkedHashSet<>();
 
-    private List<PhaseTapChanger> phaseTapChangerList = new ArrayList<>();
+    private final Set<PhaseTapChanger> phaseTapChangerList = new LinkedHashSet<>();
 
-    private List<HvdcLine> hvdcLineList = new ArrayList<>();
+    private final Set<HvdcLine> hvdcLineList = new LinkedHashSet<>();
 
-    private List<Bus> busList = new ArrayList<>();
+    private final Set<Bus> busList = new LinkedHashSet<>();
 
-    private List<Contingency> contingencyList = new ArrayList<>();
+    private final List<Contingency> contingencyList = new ArrayList<>();
 
-    private Set<Identifiable> disconnectedElements = new HashSet<>();
+    private final Set<Identifiable> disconnectedElements = new HashSet<>();
 
-    private Map<String, String> mappedSwitchMap = new HashMap<>();
+    private final Map<String, String> mappedSwitchMap = new HashMap<>();
 
     protected MetrixNetwork(Network network) {
         this.network = Objects.requireNonNull(network);
@@ -75,11 +75,11 @@ public class MetrixNetwork {
     }
 
     public List<Load> getLoadList() {
-        return Collections.unmodifiableList(loadList);
+        return Collections.unmodifiableList(new ArrayList<>(loadList));
     }
 
     public List<Generator> getGeneratorList() {
-        return Collections.unmodifiableList(generatorList);
+        return Collections.unmodifiableList(new ArrayList<>(generatorList));
     }
 
     public List<String> getGeneratorTypeList() {
@@ -87,35 +87,35 @@ public class MetrixNetwork {
     }
 
     public List<Line> getLineList() {
-        return Collections.unmodifiableList(lineList);
+        return Collections.unmodifiableList(new ArrayList<>(lineList));
     }
 
     public List<TwoWindingsTransformer> getTwoWindingsTransformerList() {
-        return Collections.unmodifiableList(twoWindingsTransformerList);
+        return Collections.unmodifiableList(new ArrayList<>(twoWindingsTransformerList));
     }
 
     public List<ThreeWindingsTransformer> getThreeWindingsTransformerList() {
-        return Collections.unmodifiableList(threeWindingsTransformerList);
+        return Collections.unmodifiableList(new ArrayList<>(threeWindingsTransformerList));
     }
 
     public List<DanglingLine> getDanglingLineList() {
-        return Collections.unmodifiableList(danglingLineList);
+        return Collections.unmodifiableList(new ArrayList<>(danglingLineList));
     }
 
     public List<Switch> getSwitchList() {
-        return Collections.unmodifiableList(switchList);
+        return Collections.unmodifiableList(new ArrayList<>(switchList));
     }
 
     public List<PhaseTapChanger> getPhaseTapChangerList() {
-        return Collections.unmodifiableList(phaseTapChangerList);
+        return Collections.unmodifiableList(new ArrayList<>(phaseTapChangerList));
     }
 
     public List<HvdcLine> getHvdcLineList() {
-        return Collections.unmodifiableList(hvdcLineList);
+        return Collections.unmodifiableList(new ArrayList<>(hvdcLineList));
     }
 
     public List<Bus> getBusList() {
-        return Collections.unmodifiableList(busList);
+        return Collections.unmodifiableList(new ArrayList<>(busList));
     }
 
     public List<Contingency> getContingencyList() {
@@ -580,15 +580,11 @@ public class MetrixNetwork {
             Switch sw = network.getSwitch(breakerId);
 
             if (sw == null) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(String.format("Switch '%s' not found or not a switch", breakerId));
-                }
+                LOGGER.debug(String.format("Switch '%s' not found or not a switch", breakerId));
                 continue;
             }
             if (sw.isOpen()) {
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Switch '%s' is opened in basecase", breakerId));
-                }
+                LOGGER.warn(String.format("Switch '%s' is opened in basecase", breakerId));
                 continue;
             }
 
@@ -666,22 +662,16 @@ public class MetrixNetwork {
         branchToClose.getTerminal1().connect();
         branchToClose.getTerminal2().connect();
         if (branchToClose.getTerminal1().isConnected() && branchToClose.getTerminal2().isConnected()) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(String.format("Reconnecting open branch : %s", branchToClose.getId()));
-            }
+            LOGGER.debug(String.format("Reconnecting open branch : %s", branchToClose.getId()));
         } else {
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("Unable to reconnect open branch : %s", branchToClose.getId()));
-            }
+            LOGGER.warn(String.format("Unable to reconnect open branch : %s", branchToClose.getId()));
         }
     }
 
     private void closeSwitch(Switch switchToClose) {
         switchToClose.setOpen(false);
         switchToClose.setRetained(true);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Reconnecting open switch : %s", switchToClose.getId()));
-        }
+        LOGGER.debug(String.format("Reconnecting open switch : %s", switchToClose.getId()));
     }
 
     Optional<String> getMappedBranch(Switch sw) {

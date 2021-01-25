@@ -18,8 +18,4 @@ public class MappingScriptLoadingException extends RuntimeException {
     public MappingScriptLoadingException(ExecutionException exception) {
         super(exception);
     }
-
-    public MappingScriptLoadingException(RuntimeException exception) {
-        super(exception);
-    }
 }

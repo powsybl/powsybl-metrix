@@ -114,6 +114,8 @@ public class MetrixVariantsWriter {
                     key = "QATITAMK2";
                 } else if (variable == MetrixVariable.curativeCostDown) {
                     key = "COUEFF";
+                } else {
+                    LOGGER.warn("Unhandled variable {}", variable);
                 }
         }
         return key;

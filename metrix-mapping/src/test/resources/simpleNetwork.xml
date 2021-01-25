@@ -3,7 +3,7 @@
          xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0"
          xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0"
          xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0"
-         id="Reseau_test_Topase_avec_report_seuils_reduits" caseDate="2015-09-29T09:14:00.000+01:00"
+         id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00"
          forecastDistance="0" sourceFormat="NF">
   <substation id="FP.AN" country="FR" tso="RTE">
     <property name="paysCvg" value="FRANCE"/>

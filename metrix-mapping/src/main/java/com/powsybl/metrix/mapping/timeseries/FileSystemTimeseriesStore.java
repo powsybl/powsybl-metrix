@@ -175,7 +175,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting) {
-        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, TimeSeriesConstants.DEFAULT_SEPARATOR);
+        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
         integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting));
     }
 

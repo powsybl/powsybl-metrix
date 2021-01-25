@@ -39,7 +39,7 @@ public class TimeSeriesMapperParameters {
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
         this.toleranceThreshold = toleranceThreshold;
-        this.requiredTimeseries = requiredTimeseries;
+        this.requiredTimeseries = Objects.requireNonNull(requiredTimeseries);
     }
 
     public NavigableSet<Integer> getVersions() {

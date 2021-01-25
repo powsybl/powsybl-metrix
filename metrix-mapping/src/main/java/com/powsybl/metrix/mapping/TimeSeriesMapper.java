@@ -10,10 +10,10 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
 import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
+import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRangeAdder;
 import com.powsybl.iidm.network.extensions.LoadDetail;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRangeAdder;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesTable;
@@ -359,9 +359,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 variableTimeSeries.put(indexedMappingKey, mappedEquipments);
             } else {
                 if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
-                    }
+                    LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
                     constantTimeSeries.put(indexedMappingKey, mappedEquipments);
                 } else {
                     variableTimeSeries.put(indexedMappingKey, mappedEquipments);
@@ -389,9 +387,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 variableTimeSeries.put(indexedMappingKey, mappedEquipments);
             } else {
                 if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
-                    }
+                    LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
                     if (variable == EquipmentVariable.p0) {
                         constantTimeSeries.put(indexedMappingKey, mappedEquipments);
                     } else {
@@ -575,9 +571,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         context.equipmentTimeSeries.forEach((indexedName, mappingKeys) -> {
             int timeSeriesNum = indexedName.getNum();
             if (table.getStdDev(version, timeSeriesNum) < EPSILON_COMPARISON) { // std dev == 0 means time-series is constant
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Equipment time-series '" + indexedName.getName() + "' is constant");
-                }
+                LOGGER.debug("Equipment time-series '" + indexedName.getName() + "' is constant");
                 constantEquipmentTimeSeries.put(indexedName, mappingKeys);
             } else {
                 equipmentTimeSeries.put(indexedName, mappingKeys);

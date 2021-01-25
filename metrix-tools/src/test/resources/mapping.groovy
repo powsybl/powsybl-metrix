@@ -37,8 +37,6 @@ filter {load.id=='SE_L1'}
 } 
 
 timeSeries['nul']=0
-timeSeries['test'] = new com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc('SE_L1') + 2
-ts['test2'] = ts['test'] + 3
 
 mapToGenerators{
 timeSeriesName 'nul'
@@ -58,14 +56,3 @@ mapToHvdcLines{
 timeSeriesName 'nul'
 filter {hvdcLine.id in ['HVDC1','HVDC2'] }
 }
-
-//mapToBreakers {
-//timeSeriesName 'ouverture_S_SO_2'
-//filter {breaker.id=="SOO1_Disj SS1 SOO1 2" || breaker.id=="SS1_Disj SS1 SOO1 2"}
-//}
-
-//mapToBreakers {
-//timeSeriesName 'passage_2_noeuds_S '
-//filter {breaker.id=="SOO1_SOO1_DJ_OMN"}
-//}
-

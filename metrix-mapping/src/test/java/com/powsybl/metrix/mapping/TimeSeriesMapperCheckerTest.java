@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
@@ -6,9 +14,9 @@ import com.powsybl.commons.datasource.MemDataSource;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.xml.NetworkXml;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +31,9 @@ import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+/**
+ * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
+ */
 public class TimeSeriesMapperCheckerTest {
 
     private static final String INFO = "INFO";

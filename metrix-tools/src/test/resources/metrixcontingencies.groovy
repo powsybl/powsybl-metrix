@@ -9,5 +9,5 @@
 branchList=['S_SO_1']
 
 for (branch in branchList) {
-contingency (branch) {equipments branch} //l'incident est ici nommé du nom de l'ouvrage
+contingency (branch) {equipments branch} // the contingency is named after the branch name
 }

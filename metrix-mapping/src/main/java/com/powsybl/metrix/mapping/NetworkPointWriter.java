@@ -12,12 +12,12 @@ import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.MemDataSource;
 import com.powsybl.iidm.export.ExportOptions;
 import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.mapping.common.MetrixIidmConfiguration;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.io.IOException;
@@ -186,7 +186,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 Switch breaker = network.getSwitch(identifiable.getId());
                 breaker.setOpen(equipmentValue == TimeSeriesMapper.SWITCH_OPEN);
             } else {
-                throw new AssertionError();
+                throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
             }
         }
     }

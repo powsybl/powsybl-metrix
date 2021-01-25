@@ -51,7 +51,7 @@ public class MetrixChunk {
                                                                             new InputFile("fort.48_BIN"));
     private static final String METRIX_COMMAND_ID = "metrix";
     private static final String METRIX_PROGRAM = "metrix";
-    private static final String METRIX_LOG_LEVEL_ARG = "--log-level=";
+    private static final String METRIX_LOG_LEVEL_OPT_NAME = "log-level";
 
     private final Network network;
 
@@ -83,7 +83,7 @@ public class MetrixChunk {
     }
 
     private static String getLogLevelValue(int level) {
-        String value = "";
+        String value = "info";
         switch (level) {
             case 0:
                 value = "trace";
@@ -104,15 +104,10 @@ public class MetrixChunk {
                 value = "critical";
                 break;
             default:
-                LOGGER.warn("Unknown Metrix log level value '{}'", level);
+                LOGGER.warn("Unknown Metrix log level value '{}', using default 'info'. Available level range : 0-5", level);
                 break;
         }
         return  value;
-    }
-
-    private String getLogLevelArg(int logLevel) {
-        String logLevelValue = getLogLevelValue(logLevel);
-        return logLevelValue.isEmpty() ? "" : METRIX_LOG_LEVEL_ARG + logLevelValue;
     }
 
     private void copyDic(Path workingDir, List<InputFile> inputFiles) throws IOException {
@@ -194,7 +189,7 @@ public class MetrixChunk {
 
                             // write DIE
                             new MetrixInputData(metrixNetwork, metrixDslData, parameters)
-                                    .write(workingDir, true, config.isAngleDePerteFixe());
+                                    .write(workingDir, true, config.isConstantLossFactor());
 
                             if (logger != null) {
                                 logger.afterNetworkWriting();
@@ -214,8 +209,8 @@ public class MetrixChunk {
                                           VARIANTES_FILE_NAME,
                                           MetrixOutputData.FILE_NAME_PREFIX,
                                           Integer.toString(firstVariant),
-                                          Integer.toString(variantCount),
-                                          getLogLevelArg(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
+                                          Integer.toString(variantCount))
+                                    .option(METRIX_LOG_LEVEL_OPT_NAME, getLogLevelValue(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
                                     .inputFiles(inputFiles)
                                     .outputFiles(outputFiles)
                                     .build();
@@ -241,7 +236,7 @@ public class MetrixChunk {
 
                             // write DIE
                             new MetrixInputData(metrixNetwork, metrixDslData, parameters)
-                                    .write(workingDir, true, config.isAngleDePerteFixe());
+                                    .write(workingDir, true, config.isConstantLossFactor());
 
                             if (logger != null) {
                                 logger.afterNetworkWriting();
@@ -258,8 +253,8 @@ public class MetrixChunk {
                                           VARIANTES_FILE_NAME,
                                           MetrixOutputData.FILE_NAME_PREFIX,
                                           Integer.toString(-1),
-                                          Integer.toString(1),
-                                          getLogLevelArg(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
+                                          Integer.toString(1))
+                                    .option(METRIX_LOG_LEVEL_OPT_NAME, getLogLevelValue(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
                                     .inputFiles(inputFiles)
                                     .outputFiles(outputFiles)
                                     .build();

@@ -12,7 +12,7 @@ import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.iidm.network.*;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
@@ -115,12 +115,10 @@ public class MetrixInputData implements MetrixInputConstants {
     private double sumPmax = 0.d;
 
     private static double toAdmittance(String id, final double x, final double uNom, final double nominalU) {
-        double admittance = x * Math.pow(nominalU, 2) / Math.pow(uNom, 2);
+        double admittance = x * nominalU * nominalU / (uNom * uNom);
         if (admittance == 0) {
             admittance = CQADMITA_SWITCH_VAL;
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug(String.format("x = 0 for branch <%s> -> replaced by x = %f", id, CQADMITA_SWITCH_VAL));
-            }
+            LOGGER.debug(String.format("x = 0 for branch <%s> -> replaced by x = %f", id, CQADMITA_SWITCH_VAL));
         }
         return admittance;
     }
@@ -326,9 +324,7 @@ public class MetrixInputData implements MetrixInputConstants {
                     if (val >= 0) {
                         x = (float) Math.sqrt(val);
                     }
-                    if (LOGGER.isDebugEnabled()) {
-                        LOGGER.debug(String.format("angleDePerteFixe -> twt <%s> x = <%f>", twt.getId(), x));
-                    }
+                    LOGGER.debug(String.format("constantLossFactor -> twt <%s> x = <%f>", twt.getId(), x));
                 }
 
                 MetrixPtcControlType mode = MetrixPtcControlType.FIXED_ANGLE_CONTROL;

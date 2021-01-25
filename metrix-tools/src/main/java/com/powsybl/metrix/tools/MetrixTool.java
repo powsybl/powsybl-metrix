@@ -10,8 +10,8 @@ package com.powsybl.metrix.tools;
 
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
-import com.powsybl.action.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.import_.ImportConfig;
 import com.powsybl.iidm.import_.Importers;
 import com.powsybl.iidm.network.Network;

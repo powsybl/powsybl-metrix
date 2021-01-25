@@ -23,7 +23,12 @@ read INSTALL_TYPE
 if [ -z "$INSTALL_TYPE" ] ; then
   INSTALL_TYPE="full"
 fi
+if [ $INSTALL_TYPE != "full" -a $INSTALL_TYPE != "metrix" ] ; then
+  echo "Allowed value for install type is metrix or full"
+  exit 1
+fi
 echo $INSTALL_TYPE
+exit 0
 
 echo "Preparing install directory"
 mkdir -p $INSTALL_DIR

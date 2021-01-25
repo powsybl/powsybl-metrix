@@ -46,6 +46,9 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
+ */
 public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);
@@ -541,9 +544,7 @@ public abstract class AbstractMetrix {
                 LOGGER.debug("FLOW time-series not found for {}", branch);
                 return;
             }
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Creating basecase postprocessing time-series for {}", branch);
-            }
+            LOGGER.debug("Creating basecase postprocessing time-series for {}", branch);
             NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MetrixOutputData.FLOW_NAME + branch);
             String ratingTimeSeriesName = mappingConfig.getTimeSeriesName(new MappingKey(thresholdN, branch));
             NodeCalc ratingTimeSeriesOrEx = calculatedTimeSeries.computeIfAbsent(ratingTimeSeriesName, TimeSeriesNameNodeCalc::new);
@@ -596,9 +597,7 @@ public abstract class AbstractMetrix {
                 return;
             }
 
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Creating outage postprocessing time-series for {}", branch);
-            }
+            LOGGER.debug("Creating outage postprocessing time-series for {}", branch);
 
             NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MAX_THREAT_PREFIX + branch);
             String ratingTimeSeriesName = mappingConfig.getTimeSeriesName(new MappingKey(thresholdN1, branch));

@@ -15,9 +15,9 @@ import com.powsybl.commons.io.table.Column;
 import com.powsybl.commons.io.table.TableFormatter;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
 

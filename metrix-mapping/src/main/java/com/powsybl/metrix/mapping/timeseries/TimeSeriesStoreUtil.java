@@ -10,6 +10,8 @@ package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.timeseries.*;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.ByteBuffer;
 import java.time.ZoneId;
@@ -38,7 +40,9 @@ public final class TimeSeriesStoreUtil {
                 fileNames.add(fileName);
                 return buffer;
             }, versions, metadataList, doubleTimeSeriesNames, stringTimeSeriesNames);
-            table.writeCsv(writer, separator, zoneId);
+            table.writeCsv(writer, new TimeSeriesCsvConfig(zoneId, separator, true, TimeSeries.TimeFormat.DATE_TIME));
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         } finally {
             for (String fileName : fileNames) {
                 MmapByteBufferService.INSTANCE.closeAndTryToDelete(fileName);

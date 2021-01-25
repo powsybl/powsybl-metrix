@@ -146,7 +146,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     public void importTimeSeries(BufferedReader reader) {
-        Map<Integer, List<TimeSeries>> timeSeries = TimeSeries.parseCsv(reader, TimeSeriesConstants.DEFAULT_SEPARATOR);
+        Map<Integer, List<TimeSeries>> timeSeries = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
         HashMap<TimeSeriesDataType, HashMap<String, Map<Integer, TimeSeries>>> tsByType = timeSeries.entrySet().stream()
                 .flatMap(tsVersionEntry ->
                         tsVersionEntry.getValue().stream().map(tsVersion -> Pair.of(tsVersion, tsVersionEntry.getKey()))

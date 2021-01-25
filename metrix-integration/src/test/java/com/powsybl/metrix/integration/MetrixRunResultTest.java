@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
 package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.AbstractConverterTest;
-import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeriesTable;
+import com.powsybl.timeseries.*;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
@@ -49,7 +54,7 @@ public class MetrixRunResultTest extends AbstractConverterTest {
 
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            table.writeCsv(writer, ';', ZoneId.of("UTC"));
+            table.writeCsv(writer, new TimeSeriesCsvConfig(ZoneId.of("UTC")));
             bufferedWriter.flush();
 
             String actual = writer.toString();

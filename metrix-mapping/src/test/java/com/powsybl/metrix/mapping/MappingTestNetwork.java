@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.*;
@@ -35,12 +43,6 @@ public final class MappingTestNetwork {
                 .setNominalV(380f)
                 .setTopologyKind(TopologyKind.BUS_BREAKER)
                 .add();
-        /*vl1.getBusBreakerView().newBus()
-                .setId("B1")
-                .add();
-        vl1.getBusBreakerView().newBus()
-            .setId("MNV")
-            .add();*/
         vl1.getNodeBreakerView().newBusbarSection()
             .setId("B1")
             .setNode(0)
@@ -82,24 +84,9 @@ public final class MappingTestNetwork {
         vl2.getBusBreakerView().newBus()
                 .setId("B2")
                 .add();
-        /*
-        vl1.getBusBreakerView().newSwitch()
-            .setId("SW1")
-            .setBus1("B1")
-            .setBus2("MNV")
-            .setOpen(true)
-            .add();
-        vl1.getBusBreakerView().newSwitch()
-            .setId("SW2")
-            .setBus1("MNV")
-            .setBus2("B1")
-            .setOpen(true)
-            .add();*/
         network.newLine()
                 .setId("L1")
                 .setVoltageLevel1("VL1")
-                //.setConnectableBus1("B1")
-                //.setBus1("B1")
                 .setNode1(2)
                 .setVoltageLevel2("VL2")
                 .setConnectableBus2("B2")
@@ -113,8 +100,6 @@ public final class MappingTestNetwork {
                 .add();
         vl1.newGenerator()
                 .setId("G1")
-                //.setConnectableBus("B1")
-                //.setBus("B1")
                 .setNode(3)
                 .setEnergySource(EnergySource.NUCLEAR)
                 .setMinP(0f)
@@ -125,8 +110,6 @@ public final class MappingTestNetwork {
                 .add();
         vl1.newGenerator()
                 .setId("G2")
-                //.setConnectableBus("B1")
-                //.setBus("B1")
                 .setNode(4)
                 .setEnergySource(EnergySource.NUCLEAR)
                 .setMinP(0f)
@@ -159,8 +142,6 @@ public final class MappingTestNetwork {
                 .add();
         vl1.newLoad()
                 .setId("LD1")
-                //.setConnectableBus("B1")
-                //.setBus("B1")
                 .setNode(5)
                 .setP0(100)
                 .setQ0(0)
@@ -190,8 +171,6 @@ public final class MappingTestNetwork {
                 .setRatedU2(6.0)
                 .setVoltageLevel1("VL1")
                 .setVoltageLevel2("VL1")
-                //.setConnectableBus1("B1")
-                //.setConnectableBus2("B1")
                 .setNode1(6)
                 .setNode2(7)
                 .add().newPhaseTapChanger()

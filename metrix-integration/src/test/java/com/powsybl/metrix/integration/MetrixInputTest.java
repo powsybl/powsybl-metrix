@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
 package com.powsybl.metrix.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,6 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.powsybl.commons.AbstractConverterTest;
+import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.xml.NetworkXml;
@@ -14,7 +23,6 @@ import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.*;
@@ -24,6 +32,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.Assert.*;
 
 /**
@@ -418,104 +427,72 @@ public class MetrixInputTest extends AbstractConverterTest {
         };
 
         // Empty file
-        boolean ok = true;
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        assertTrue(ok);
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier)).doesNotThrowAnyException();
 
         // Bad header #1
-        ok = true;
         try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "foo;1;",
                     "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;"
             ));
         }
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        Assert.assertFalse(ok);
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
+                .isInstanceOf(PowsyblException.class)
+                .hasMessage("Malformed remedial action file header");
 
         // Bad header #2
-        ok = true;
         try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "NB;-1;",
                     "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;"
             ));
         }
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        Assert.assertFalse(ok);
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
+                .isInstanceOf(PowsyblException.class)
+                .hasMessage("Malformed remedial action file header");
 
         // Bad content #1
-        ok = true;
         try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "NB;1;",
                     "cty1;;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;"
             ));
         }
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        Assert.assertFalse(ok);
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
+                .isInstanceOf(PowsyblException.class)
+                .hasMessage("Empty element in remedial action file, line : 2");
 
         // Bad content #2
-        ok = true;
         try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "NB;1;",
                     ";2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;"
             ));
         }
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        Assert.assertFalse(ok);
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
+                .isInstanceOf(PowsyblException.class)
+                .hasMessage("Empty element in remedial action file, line : 2");
 
         // Bad content #3
-        ok = true;
         try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "NB;1;",
                     "cty1;3;FS.BIS1_FS.BIS1_DJ_OMN;;FVALDI1_FVALDI1_DJ_OMN;"
             ));
         }
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        Assert.assertFalse(ok);
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
+                .isInstanceOf(PowsyblException.class)
+                .hasMessage("Empty element in remedial action file, line : 2");
 
         // File ok
-        ok = true;
         try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "NB;1;",
                     "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;"
             ));
         }
-        try {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
-        } catch (Exception e) {
-            ok = false;
-        }
-        assertTrue(ok);
-
+        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
+                .doesNotThrowAnyException();
     }
 
     @Test

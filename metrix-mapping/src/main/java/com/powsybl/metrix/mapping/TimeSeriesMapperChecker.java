@@ -11,10 +11,9 @@ package com.powsybl.metrix.mapping;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.metrix.mapping.TimeSeriesMappingLogger.*;
-import com.powsybl.metrix.mapping.common.iidm.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.timeseries.TimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeriesTable;
 
 import java.util.*;
 
@@ -248,11 +247,6 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         if (point != TimeSeriesMapper.CONSTANT_VARIANT_ID) {
             identifiableToConstantMappedPowers.entrySet().forEach(e -> identifiableToMappedPower.put(e.getKey(), new MappedPower(e.getValue())));
         }
-    }
-
-    @Override
-    public void map(int version, int point, TimeSeriesTable table) {
-        super.map(version, point, table);
     }
 
     @Override
@@ -701,7 +695,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                 logger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, MINUS_MAXP, timeSeriesName, value, sum, index, version, point));
                 break;
             default:
-                throw new AssertionError();
+                throw new AssertionError(String.format("Unhandled scaling operation %s", change.name()));
         }
     }
 
@@ -741,7 +735,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                 logger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, MINUS_MAXP, timeSeriesName, index, version));
                 break;
             default:
-                throw new AssertionError();
+                throw new AssertionError(String.format("Unhandled scaling operation %s", change.name()));
         }
     }
 
@@ -772,7 +766,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                 logger.addLog(new ScalingDownMinPChangeSynthesis(MINUS_CS21, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
                 break;
             default:
-                throw new AssertionError();
+                throw new AssertionError(String.format("Unhandled scaling operation %s", change.name()));
         }
     }
 

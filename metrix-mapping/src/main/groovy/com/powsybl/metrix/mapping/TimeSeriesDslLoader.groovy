@@ -185,7 +185,7 @@ class TimeSeriesDslLoader {
         Collection<Identifiable> filteredEquipments = Filter.evaluate(binding, filteringContexts, equipmentType.scriptVariable, spec.filter)
 
         // create at least one entry in the config even if no equipment match the filter (mandatory for ignore-empty-filter option)
-        if (filteredEquipments.size() == 0) {
+        if (filteredEquipments.isEmpty()) {
             variables.forEach({ EquipmentVariable variable ->
                 config.addEquipmentMapping(equipmentType, spec.timeSeriesName, null, NumberDistributionKey.ONE, variable)
             });
@@ -323,7 +323,7 @@ class TimeSeriesDslLoader {
         // evaluate equipment filters for each variable
         Collection<Identifiable> filteredEquipments = Filter.evaluate(binding, filteringContexts, equipmentType.scriptVariable, spec.filter)
 
-        if (filteredEquipments.size() == 0) {
+        if (filteredEquipments.isEmpty()) {
             logWarn(out, "provideTs - Empty filtered list for equipment type " + equipmentType.toString() + " and variables " + variables.toString())
         }
 

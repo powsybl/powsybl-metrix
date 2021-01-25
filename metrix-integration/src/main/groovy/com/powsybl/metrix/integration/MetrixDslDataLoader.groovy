@@ -514,14 +514,12 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
     private static branchData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
-        Identifiable identifiable = network.getIdentifiable(id)
+        Identifiable identifiable = network.getBranch(id)
         if (identifiable == null) {
             logWarn(out, "Branch %s not found in the network", id)
             return
         }
-        if (!(identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer)) {
-            throw new MetrixException("Type of monitored branch ''{0}'' is not supported ({1})", id, identifiable.getClass().name)
-        }
+
         def branchSpec = branchMonitoringData(closure)
 
         // Basecase monitoring
@@ -598,14 +596,12 @@ class MetrixDslDataLoader extends DslLoader {
 
 
     private static generatorData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
-        Identifiable identifiable = network.getIdentifiable(id)
+        Identifiable identifiable = network.getGenerator(id)
         if (identifiable == null) {
             logWarn(out, "generator id %s not found in the network", id)
             return
         }
-        if (!(identifiable instanceof Generator)) {
-            throw new MetrixException("generator type " + identifiable.getClass().name + " not supported")
-        }
+
         GeneratorSpec spec = generatorData(closure)
 
         if (spec) {
@@ -700,13 +696,10 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
     private static loadData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
-        Identifiable identifiable = network.getIdentifiable(id)
+        Identifiable identifiable = network.getLoad(id)
         if (identifiable == null) {
             logWarn(out, "load id %s not found in the network", id)
             return
-        }
-        if (!(identifiable instanceof Load)) {
-            throw new MetrixException("load type " + identifiable.getClass().name + " not supported")
         }
 
         LoadSpec loadSpec = loadData(closure)
@@ -892,15 +885,11 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
     private static phaseShifterData(Closure closure, String id, Network network, MetrixDslData data, Writer out) {
-        Identifiable identifiable = network.getIdentifiable(id)
-        if (identifiable == null) {
+        Identifiable twt = network.getTwoWindingsTransformer(id)
+        if (twt == null) {
             logWarn(out, "transformer id %s not found in the network", id)
             return
         }
-        if (!(identifiable instanceof TwoWindingsTransformer)) {
-            throw new MetrixException("transformer type " + id.getClass().name + " not supported")
-        }
-        TwoWindingsTransformer twt = network.getTwoWindingsTransformer(id)
         if (twt.getPhaseTapChanger() == null) {
             throw new MetrixException("transformer id '" + id + "' without phase shifter")
         }
@@ -922,13 +911,10 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
     private static hvdcData(Closure closure, String id, Network network, MetrixDslData data, Writer out) {
-        Identifiable identifiable = network.getIdentifiable(id)
+        Identifiable identifiable = network.getHvdcLine(id)
         if (identifiable == null) {
             logWarn(out, "hvdc id %s not found in the network", id)
             return
-        }
-        if (!(identifiable instanceof HvdcLine)) {
-            throw new MetrixException("hvdc type " + id.getClass().name + " not supported")
         }
         def cloned = closure.clone()
         HvdcSpec spec = new HvdcSpec()

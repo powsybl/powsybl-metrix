@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
@@ -377,32 +385,6 @@ public class TimeSeriesMappingTest extends AbstractConverterTest {
 
         // Create observers
         List<TimeSeriesMapperObserver> observers = new ArrayList<>(2);
-        /*
-        MemDataSource dataSource = new MemDataSource();
-        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource) {
-
-            @Override
-            public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-                super.timeSeriesMappingEnd(point, index, balance);
-                String suffix = getSuffix(point, index);
-                String ext = "xiidm";
-                String fileName = DataSourceUtil.getFileName(network.getId(), suffix, ext);
-                byte[] data = dataSource.getData(suffix, "xiidm");
-
-                // Check network output file
-                try {
-                    try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
-                        try (InputStream actual = new ByteArrayInputStream(data)) {
-                            compareTxt(expected, actual);
-                        }
-                    }
-                } catch (Exception e) {
-                    throw new AssertionError("Impossible to check " + fileName);
-                }
-            }
-        };
-        observers.add(networkPointWriter);
-        */
 
         StringWriter equipmentTimeSeriesWriter = new StringWriter();
         EquipmentTimeSeriesWriter equipmentTimeSeriesBufferedWriter = new EquipmentTimeSeriesWriter(new BufferedWriter(equipmentTimeSeriesWriter));

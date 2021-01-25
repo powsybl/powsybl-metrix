@@ -121,8 +121,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             }
         };
 
-        List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
-        observers.add(defaultTimeSeriesMapperObserver);
+        List<TimeSeriesMapperObserver> observers = Collections.singletonList(defaultTimeSeriesMapperObserver);
 
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, getContingenciesProbilitiesTs(), mappingParameters.getToleranceThreshold());
         mapper.mapToNetwork(store, parameters, observers);

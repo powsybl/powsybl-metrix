@@ -19,8 +19,8 @@ public class MetrixException extends RuntimeException {
         super(message);
     }
 
-    public MetrixException(String template, Object... values) {
-        super(MessageFormat.format(template, values));
+    public MetrixException(String pattern, Object... values) {
+        super(MessageFormat.format(pattern, values));
     }
 
 }

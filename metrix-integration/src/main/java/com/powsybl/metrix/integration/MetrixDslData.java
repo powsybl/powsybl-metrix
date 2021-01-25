@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public class MetrixDslData {
 
-    private static final double OVERLOAD_RATIO = .3; // Assume3 30% of monitored branches get overloaded at some point
+    private static final double OVERLOAD_RATIO = .3; // Assume 30% of monitored branches get overloaded at some point
 
     // Branch monitoring
     private final Map<String, MetrixInputData.MonitoringType> branchMonitoringListN;

@@ -80,7 +80,7 @@ public enum MetrixVariable implements MappingVariable {
     private final String variable;
 
     MetrixVariable(String variable) {
-        this.variable = variable;
+        this.variable = Objects.requireNonNull(variable);
     }
 
     @Override
