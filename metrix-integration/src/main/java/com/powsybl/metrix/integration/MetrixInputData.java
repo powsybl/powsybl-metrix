@@ -271,7 +271,7 @@ public class MetrixInputData implements MetrixInputConstants {
         nbtaptd[index - 1] = nbtap;
     }
 
-    private void writeBranches(boolean angleDePerteFixe, MetrixDie die) {
+    private void writeBranches(boolean constantLossFactor, MetrixDie die) {
 
         // Branch
         String[] cqnomqua = new String[cqnbquad];
@@ -297,7 +297,7 @@ public class MetrixInputData implements MetrixInputConstants {
         for (Line l : metrixNetwork.getLineList()) {
             double nominalVoltage1 = l.getTerminal1().getVoltageLevel().getNominalV();
             double nominalVoltage2 = l.getTerminal2().getVoltageLevel().getNominalV();
-            double nominalVoltage = angleDePerteFixe ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
+            double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
             double r = (l.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
             double admittance = toAdmittance(l.getId(), l.getX(), nominalVoltage, parameters.getNominalU());
             int index = metrixNetwork.getIndex(l);
@@ -319,7 +319,7 @@ public class MetrixInputData implements MetrixInputConstants {
                 int position = ptc.getTapPosition();
                 x = x * (1 + ptc.getStep(position).getX() / 100);
                 r = r * (1 + ptc.getStep(position).getR() / 100);
-                if (angleDePerteFixe) {
+                if (constantLossFactor) {
                     float val = (float) (Math.pow(x, 2) + Math.pow(r, 2) - Math.pow(twt.getR(), 2));
                     if (val >= 0) {
                         x = (float) Math.sqrt(val);
@@ -1102,12 +1102,12 @@ public class MetrixInputData implements MetrixInputConstants {
         }
     }
 
-    private void write(Path dir, boolean write, boolean writeJson, BufferedWriter writer, boolean angleDePerteFixe) throws IOException {
+    private void write(Path dir, boolean write, boolean writeJson, BufferedWriter writer, boolean constantLossFactor) throws IOException {
         MetrixDie die = new MetrixDie();
         writeGeneral(die);
         writeOptions(die);
         writeTopology(die);
-        writeBranches(angleDePerteFixe, die);
+        writeBranches(constantLossFactor, die);
         writeLoads(die);
         writeGenerators(die);
         writeHvdc(die);
@@ -1133,8 +1133,8 @@ public class MetrixInputData implements MetrixInputConstants {
         }
     }
 
-    public void write(Path dir, boolean debug, boolean angleDePerteFixe) throws IOException {
-        write(dir, true, debug, null, angleDePerteFixe);
+    public void write(Path dir, boolean debug, boolean constantLossFactor) throws IOException {
+        write(dir, true, debug, null, constantLossFactor);
     }
 
     public void writeJson(StringWriter writer) throws IOException {

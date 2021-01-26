@@ -26,7 +26,8 @@ public class MappingParameters {
         if (PlatformConfig.defaultConfig().moduleExists("mapping-default-parameters")) {
             ModuleConfig config = PlatformConfig.defaultConfig().getModuleConfig("mapping-default-parameters");
             if (config != null) {
-                parameters.setToleranceThreshold(config.getFloatProperty("toleranceThreshold", DEFAULT_TOLERANCE_THRESHOLD));
+                parameters.setToleranceThreshold(config.getOptionalFloatProperty("tolerance-threshold")
+                        .orElseGet(() -> config.getFloatProperty("toleranceThreshold", DEFAULT_TOLERANCE_THRESHOLD)));
             }
         }
         return parameters;

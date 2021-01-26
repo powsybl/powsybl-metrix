@@ -79,8 +79,8 @@ public class TimeSeriesMappingConfigToJsonTest {
 
     private Map<String, NodeCalc> timeSeriesNodes = ImmutableMap.of("ts", new IntegerNodeCalc(10));
     private Map<MappingKey, DistributionKey> distributionKeys = ImmutableMap.of(new MappingKey(EquipmentVariable.targetP, "id"), new NumberDistributionKey(2.0));
-    private Map<String, Set<MappingKey>> timeSeriesToEquipment = ImmutableMap.of("ts", ImmutableSet.of(new MappingKey(OtherVariable.otherVariable2, "id1")));
-    private Map<MappingKey, String> equipmentToTimeSeries = ImmutableMap.of(new MappingKey(OtherVariable.otherVariable2, "id1"), "ts");
+    private Map<String, Set<MappingKey>> timeSeriesToEquipment = ImmutableMap.of("ts", ImmutableSet.of(new MappingKey(OtherVariable.OTHER_VARIABLE_2, "id1")));
+    private Map<MappingKey, String> equipmentToTimeSeries = ImmutableMap.of(new MappingKey(OtherVariable.OTHER_VARIABLE_2, "id1"), "ts");
     private Set<String> mappedTimeSeriesNames = ImmutableSet.of("ts1", "ts2");
     private Set<String> ignoreLimitsTimeSeriesNames = ImmutableSet.of("tsIL1", "tsIL2");
 

@@ -23,10 +23,7 @@ import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
@@ -44,11 +41,11 @@ public class MetrixChunk {
     private static final String LOGS_FILE_DETAIL_SUFFIX = ".log";
     private static final String REMEDIAL_ACTION_FILE_NAME = "parades.csv";
     private static final List<InputFile> FORT_FILE_NAMES = ImmutableList.of(new InputFile("fort.2"),
-                                                                            new InputFile("fort.44_BIN"),
-                                                                            new InputFile("fort.45_BIN"),
-                                                                            new InputFile("fort.46_BIN"),
-                                                                            new InputFile("fort.47_BIN"),
-                                                                            new InputFile("fort.48_BIN"));
+            new InputFile("fort.44_BIN"),
+            new InputFile("fort.45_BIN"),
+            new InputFile("fort.46_BIN"),
+            new InputFile("fort.47_BIN"),
+            new InputFile("fort.48_BIN"));
     private static final String METRIX_COMMAND_ID = "metrix";
     private static final String METRIX_PROGRAM = "metrix";
     private static final String METRIX_LOG_LEVEL_OPT_NAME = "log-level";
@@ -107,7 +104,7 @@ public class MetrixChunk {
                 LOGGER.warn("Unknown Metrix log level value '{}', using default 'info'. Available level range : 0-5", level);
                 break;
         }
-        return  value;
+        return value;
     }
 
     private void copyDic(Path workingDir, List<InputFile> inputFiles) throws IOException {
@@ -142,6 +139,7 @@ public class MetrixChunk {
         Objects.requireNonNull(parameters);
         Objects.requireNonNull(contingenciesProvider);
 
+        Optional<MetrixChunkLogger> optionalLogger = logger != null ? Optional.of(logger) : Optional.empty();
         Map<String, String> variables = ImmutableMap.of("PATH", config.getHomeDir().resolve("bin").toString());
 
         return computationManager.execute(new ExecutionEnvironment(variables, WORKING_DIR_PREFIX, config.isDebug()),
@@ -171,29 +169,20 @@ public class MetrixChunk {
                             int lastVariant = variantProvider.getVariantRange().upperEndpoint();
                             int variantCount = lastVariant - firstVariant + 1;
 
-                            if (logger != null) {
-                                logger.beforeVariantsWriting();
-                            }
+                            optionalLogger.ifPresent(MetrixChunkLogger::beforeVariantsWriting);
 
                             // write variants
                             MetrixVariantsWriter variantsWriter = new MetrixVariantsWriter(variantProvider, metrixNetwork);
                             variantsWriter.write(Range.closed(firstVariant, lastVariant), workingDir.resolve(VARIANTES_FILE_NAME));
 
-                            if (logger != null) {
-                                logger.afterVariantsWriting(variantCount);
-                            }
-
-                            if (logger != null) {
-                                logger.beforeNetworkWriting();
-                            }
+                            optionalLogger.ifPresent(logger -> logger.afterVariantsWriting(variantCount));
+                            optionalLogger.ifPresent(MetrixChunkLogger::beforeNetworkWriting);
 
                             // write DIE
                             new MetrixInputData(metrixNetwork, metrixDslData, parameters)
                                     .write(workingDir, true, config.isConstantLossFactor());
 
-                            if (logger != null) {
-                                logger.afterNetworkWriting();
-                            }
+                            optionalLogger.ifPresent(MetrixChunkLogger::afterNetworkWriting);
 
                             outputFiles = new ArrayList<>(1 + variantCount);
                             outputFiles.add(new OutputFile(LOGS_FILE_NAME));
@@ -206,10 +195,10 @@ public class MetrixChunk {
                                     .id(METRIX_COMMAND_ID)
                                     .program(METRIX_PROGRAM)
                                     .args(LOGS_FILE_NAME,
-                                          VARIANTES_FILE_NAME,
-                                          MetrixOutputData.FILE_NAME_PREFIX,
-                                          Integer.toString(firstVariant),
-                                          Integer.toString(variantCount))
+                                            VARIANTES_FILE_NAME,
+                                            MetrixOutputData.FILE_NAME_PREFIX,
+                                            Integer.toString(firstVariant),
+                                            Integer.toString(variantCount))
                                     .option(METRIX_LOG_LEVEL_OPT_NAME, getLogLevelValue(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
                                     .inputFiles(inputFiles)
                                     .outputFiles(outputFiles)
@@ -218,29 +207,20 @@ public class MetrixChunk {
                             // create Metrix network
                             MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, parameters, remedialActionFile);
 
-                            if (logger != null) {
-                                logger.beforeVariantsWriting();
-                            }
+                            optionalLogger.ifPresent(MetrixChunkLogger::beforeVariantsWriting);
 
                             // write variants
                             new MetrixVariantsWriter(null, null)
                                     .write(null, workingDir.resolve(VARIANTES_FILE_NAME));
 
-                            if (logger != null) {
-                                logger.afterVariantsWriting(0);
-                            }
-
-                            if (logger != null) {
-                                logger.beforeNetworkWriting();
-                            }
+                            optionalLogger.ifPresent(logger -> logger.afterVariantsWriting(0));
+                            optionalLogger.ifPresent(MetrixChunkLogger::beforeNetworkWriting);
 
                             // write DIE
                             new MetrixInputData(metrixNetwork, metrixDslData, parameters)
                                     .write(workingDir, true, config.isConstantLossFactor());
 
-                            if (logger != null) {
-                                logger.afterNetworkWriting();
-                            }
+                            optionalLogger.ifPresent(MetrixChunkLogger::afterNetworkWriting);
 
                             outputFiles = new ArrayList<>(2);
                             outputFiles.add(new OutputFile(MetrixOutputData.getFileName(-1)));
@@ -250,10 +230,10 @@ public class MetrixChunk {
                                     .id(METRIX_COMMAND_ID)
                                     .program(METRIX_PROGRAM)
                                     .args(LOGS_FILE_NAME,
-                                          VARIANTES_FILE_NAME,
-                                          MetrixOutputData.FILE_NAME_PREFIX,
-                                          Integer.toString(-1),
-                                          Integer.toString(1))
+                                            VARIANTES_FILE_NAME,
+                                            MetrixOutputData.FILE_NAME_PREFIX,
+                                            Integer.toString(-1),
+                                            Integer.toString(1))
                                     .option(METRIX_LOG_LEVEL_OPT_NAME, getLogLevelValue(config.isDebug() ? config.getDebugLogLevel() : config.getNoDebugLogLevel()))
                                     .inputFiles(inputFiles)
                                     .outputFiles(outputFiles)
@@ -265,9 +245,7 @@ public class MetrixChunk {
 
                         ImmutableList<CommandExecution> commandExecutions = ImmutableList.of(new CommandExecution(command, 1, 0, null, overloadedVariables));
 
-                        if (logger != null) {
-                            logger.beforeMetrixExecution();
-                        }
+                        optionalLogger.ifPresent(MetrixChunkLogger::beforeMetrixExecution);
 
                         return commandExecutions;
                     }
@@ -276,14 +254,10 @@ public class MetrixChunk {
                     public List<TimeSeries> after(Path workingDir, ExecutionReport report) throws IOException {
                         List<TimeSeries> results = new ArrayList<>();
 
-                        if (logger != null) {
-                            logger.afterMetrixExecution();
-                        }
+                        optionalLogger.ifPresent(MetrixChunkLogger::afterMetrixExecution);
 
                         if (report.getErrors().isEmpty()) {
-                            if (logger != null) {
-                                logger.beforeResultParsing();
-                            }
+                            optionalLogger.ifPresent(MetrixChunkLogger::beforeResultParsing);
 
                             if (variantProvider != null) {
                                 int firstVariant = variantProvider.getVariantRange().lowerEndpoint();
@@ -297,13 +271,9 @@ public class MetrixChunk {
 
                                 result.createTimeSeries(variantProvider.getIndex(), results);
 
-                                if (logger != null) {
-                                    logger.afterResultParsing(variantCount);
-                                }
+                                optionalLogger.ifPresent(logger -> logger.afterResultParsing(variantCount));
                             } else {
-                                if (logger != null) {
-                                    logger.afterResultParsing(0);
-                                }
+                                optionalLogger.ifPresent(logger -> logger.afterResultParsing(0));
                             }
                         } else {
                             report.log();

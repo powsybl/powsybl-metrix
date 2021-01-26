@@ -42,9 +42,9 @@ class FloatAttribute implements Attribute {
         this.values = Objects.requireNonNull(values).clone();
     }
 
-    FloatAttribute(String name, int n1) {
+    FloatAttribute(String name, int value) {
         this.name = Objects.requireNonNull(name);
-        values = new float[n1];
+        values = new float[value];
         Arrays.fill(values, Float.NaN);
     }
 

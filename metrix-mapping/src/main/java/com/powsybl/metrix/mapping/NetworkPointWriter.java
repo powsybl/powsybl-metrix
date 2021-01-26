@@ -203,7 +203,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         return getSuffix(version, point, index);
     }
 
-    private static String getSuffix(int version, int point, TimeSeriesIndex index) {
+    public static String getSuffix(int version, int point, TimeSeriesIndex index) {
         return "_" + version + "_" + FMT.format(index.getInstantAt(point).atZone(ZoneId.of("UTC")));
     }
 

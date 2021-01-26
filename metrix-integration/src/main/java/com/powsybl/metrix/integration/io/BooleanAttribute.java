@@ -42,9 +42,9 @@ class BooleanAttribute implements Attribute {
         this.values = Objects.requireNonNull(values).clone();
     }
 
-    BooleanAttribute(String name, int n1) {
+    BooleanAttribute(String name, int value) {
         this.name = Objects.requireNonNull(name);
-        values = new boolean[n1];
+        values = new boolean[value];
         Arrays.fill(values, false);
     }
 

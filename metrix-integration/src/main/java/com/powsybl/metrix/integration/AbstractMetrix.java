@@ -19,7 +19,6 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.mapping.*;
-import com.powsybl.timeseries.DoubleTimeSeries;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -53,14 +52,11 @@ public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);
 
-    protected static final String INPUT_TIME_SERIES_FILE_NAME_PREFIX = "input_time_series_";
-    protected static final String OUTPUT_TIME_SERIES_FILE_NAME_PREFIX = "output_time_series_";
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
     protected static final String REMEDIAL_ACTIONS_CSV_GZ = REMEDIAL_ACTIONS_CSV + ".gz";
 
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
-    protected static final String METRIX_CHUNK_ID = "metrix-chunk-";
 
     protected static final String MAX_THREAT_PREFIX = MetrixOutputData.MAX_THREAT_NAME + "1_FLOW_";
     protected static final String BASECASE_LOAD_PREFIX = "basecaseLoad_";
@@ -185,44 +181,6 @@ public abstract class AbstractMetrix {
         this.updateTask = Objects.requireNonNull(updateTask);
         this.logWriter = logWriter;
         this.onResult = onResult;
-    }
-
-    protected static String getInputTimeSeriesFileName(int version, int chunk) {
-        return INPUT_TIME_SERIES_FILE_NAME_PREFIX + version + "_" + chunk + ".json";
-    }
-
-    protected static String getInputTimeSeriesFileNameGz(int version, int chunk) {
-        return getInputTimeSeriesFileName(version, chunk) + ".gz";
-    }
-
-    protected static String getOutputTimeSeriesFileName(int version, int chunk) {
-        return OUTPUT_TIME_SERIES_FILE_NAME_PREFIX + version + "_" + chunk + ".json";
-    }
-
-    protected static String getOutputTimeSeriesFileNameGz(int version, int chunk) {
-        return getOutputTimeSeriesFileName(version, chunk) + ".gz";
-    }
-
-    protected void splitTimeSeries(Path workingDir, int version, int chunkSize) {
-        appLogger.tagged("info")
-                .log("Starting time series (version %d) split", version);
-
-        Stopwatch stopwatch = Stopwatch.createStarted();
-
-        List<DoubleTimeSeries> timeSeriesList = store.getDoubleTimeSeries(version);
-        List<List<DoubleTimeSeries>> split = TimeSeries.split(timeSeriesList, chunkSize);
-        for (int chunk = 0; chunk < split.size(); chunk++) {
-            Path inputTimeSeriesFileGz = workingDir.resolve(getInputTimeSeriesFileNameGz(version, chunk));
-            try (Writer writer = new OutputStreamWriter(new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(inputTimeSeriesFileGz))), StandardCharsets.UTF_8)) {
-                TimeSeries.writeJson(writer, split.get(chunk));
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }
-
-        appLogger.tagged("performance")
-                .log("Time series (version %d) split in %d chunks in %d ms",
-                        version, split.size(), stopwatch.elapsed(TimeUnit.MILLISECONDS));
     }
 
     protected static void compress(Supplier<Reader> readerSupplier, WorkingDirectory directory, String fileNameGz) {
@@ -412,14 +370,6 @@ public abstract class AbstractMetrix {
             int chunkCount,
             int chunkSize
     ) throws IOException;
-
-    protected static String getErrFileName(int version, int chunk) {
-        return METRIX_CHUNK_ID + version + "_" + chunk + ".err";
-    }
-
-    protected static String getOutFileName(int version, int chunk) {
-        return METRIX_CHUNK_ID + version + "_" + chunk + ".out";
-    }
 
     protected static String getLogFileName(int version, int chunk) {
         return LOG_FILE_PREFIX + "_" + version + "_" + chunk + ".txt";

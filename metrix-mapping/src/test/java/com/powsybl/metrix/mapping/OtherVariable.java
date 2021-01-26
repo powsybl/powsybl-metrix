@@ -20,8 +20,8 @@ import java.util.Objects;
  * Created by marifunf on 26/02/19.
  */
 public enum OtherVariable implements MappingVariable {
-    otherVariable1("otherVariable1"),
-    otherVariable2("otherVariable2");
+    OTHER_VARIABLE_1("otherVariable1"),
+    OTHER_VARIABLE_2("otherVariable2");
 
     private static final String NAME = "other";
 
@@ -39,7 +39,7 @@ public enum OtherVariable implements MappingVariable {
         try {
             generator.writeStartObject();
             generator.writeFieldName(variable.getFieldName());
-            generator.writeString(variable.getVariableName());
+            generator.writeString(variable.name());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);

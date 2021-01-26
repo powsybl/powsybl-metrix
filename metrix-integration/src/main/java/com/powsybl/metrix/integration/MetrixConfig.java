@@ -23,9 +23,8 @@ public class MetrixConfig {
     private static final boolean DEFAULT_CONSTANT_LOAD_FACTOR = false;
     private static final int DEFAULT_CHUNK_SIZE = 10;
     private static final int RESULT_NUMBER_LIMIT = 10000;
-    private static final long COMPUTATION_RETRY_DELAY = 600000L;
     private static final int DEFAULT_DEBUG_LOG_LEVEL = 0;
-    private static final int DEFAULT_NO_DEBUG_LOG_LEVEL = 2;
+    private static final int DEFAULT_LOG_LEVEL = 2;
 
     public static MetrixConfig load() {
         return load(PlatformConfig.defaultConfig());
@@ -38,24 +37,22 @@ public class MetrixConfig {
         boolean constantLossFactor = moduleConfig.getOptionalBooleanProperty("constant-loss-factor").orElse(DEFAULT_CONSTANT_LOAD_FACTOR);
 
         int chunkSize = moduleConfig.getOptionalIntProperty("chunk-size")
-            .orElseGet(() -> moduleConfig.getOptionalIntProperty("chunkSize")
-                .orElse(DEFAULT_CHUNK_SIZE));
+                .orElseGet(() -> moduleConfig.getOptionalIntProperty("chunkSize")
+                        .orElse(DEFAULT_CHUNK_SIZE));
 
         int resultNumberLimit = moduleConfig.getOptionalIntProperty("result-limit")
-            .orElseGet(() -> moduleConfig.getOptionalIntProperty("resultLimit")
-                .orElse(RESULT_NUMBER_LIMIT));
+                .orElseGet(() -> moduleConfig.getOptionalIntProperty("resultLimit")
+                        .orElse(RESULT_NUMBER_LIMIT));
 
-        long computationRetryDelay = moduleConfig.getOptionalLongProperty("computation-retry-delay")
-                .orElseGet(() -> moduleConfig.getOptionalLongProperty("computation-retry-delay")
-                        .orElse(COMPUTATION_RETRY_DELAY));
+        int debugLogLevel = moduleConfig.getOptionalIntProperty("debug-log-level")
+                .orElseGet(() -> moduleConfig.getOptionalIntProperty("debugLogLevel")
+                        .orElse(DEFAULT_DEBUG_LOG_LEVEL));
 
-        int debugLogLevel = moduleConfig.getOptionalIntProperty("debugLogLevel")
-                .orElse(DEFAULT_DEBUG_LOG_LEVEL);
+        int noDebugLogLevel = moduleConfig.getOptionalIntProperty("log-level")
+                .orElseGet(() -> moduleConfig.getOptionalIntProperty("logLevel")
+                        .orElse(DEFAULT_LOG_LEVEL));
 
-        int noDebugLogLevel = moduleConfig.getOptionalIntProperty("noDebugLogLevel")
-                .orElse(DEFAULT_NO_DEBUG_LOG_LEVEL);
-
-        return new MetrixConfig(homeDir, debug, constantLossFactor, chunkSize, resultNumberLimit, computationRetryDelay, debugLogLevel, noDebugLogLevel);
+        return new MetrixConfig(homeDir, debug, constantLossFactor, chunkSize, resultNumberLimit, debugLogLevel, noDebugLogLevel);
     }
 
     private Path homeDir;
@@ -67,8 +64,6 @@ public class MetrixConfig {
     private int chunkSize;
 
     private int resultNumberLimit;
-
-    private long computationRetryDelay;
 
     private int debugLogLevel;
 
@@ -88,13 +83,12 @@ public class MetrixConfig {
         return logLevel;
     }
 
-    public MetrixConfig(Path homeDir, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, long computationRetryDelay, int debugLogLevel, int noDebugLogLevel) {
+    public MetrixConfig(Path homeDir, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, int debugLogLevel, int noDebugLogLevel) {
         this.homeDir = Objects.requireNonNull(homeDir);
         this.debug = debug;
         this.constantLossFactor = constantLossFactor;
         this.chunkSize = validateChunkSize(chunkSize);
         this.resultNumberLimit = resultNumberLimit;
-        this.computationRetryDelay = computationRetryDelay;
         this.debugLogLevel = validateLogLevel(debugLogLevel);
         this.noDebugLogLevel = validateLogLevel(noDebugLogLevel);
     }
@@ -142,10 +136,6 @@ public class MetrixConfig {
     public MetrixConfig setResultNumberLimit(int resultNumberLimit) {
         this.resultNumberLimit = resultNumberLimit;
         return this;
-    }
-
-    public long getComputationRetryDelay() {
-        return computationRetryDelay;
     }
 
     public int getDebugLogLevel() {

@@ -41,9 +41,9 @@ class IntAttribute implements Attribute {
         this.values = Objects.requireNonNull(values).clone();
     }
 
-    IntAttribute(String name, int n1) {
+    IntAttribute(String name, int value) {
         this.name = Objects.requireNonNull(name);
-        this.values = new int[n1];
+        this.values = new int[value];
         Arrays.fill(values, -1);
 
     }

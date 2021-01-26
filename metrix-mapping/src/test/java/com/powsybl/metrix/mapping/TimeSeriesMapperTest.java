@@ -34,7 +34,7 @@ import static org.junit.Assert.assertEquals;
 public class TimeSeriesMapperTest {
 
     public enum OtherVariable implements MappingVariable {
-        otherVariable1("otherVariable1");
+        OTHER_VARIABLE_1("otherVariable1");
 
         static final String NAME = "other";
 
@@ -92,7 +92,7 @@ public class TimeSeriesMapperTest {
         // create mapping config
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
         mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "equipment_ts", "LD2", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentTimeSeries("other_ts", OtherVariable.otherVariable1, "L1");
+        mappingConfig.addEquipmentTimeSeries("other_ts", OtherVariable.OTHER_VARIABLE_1, "L1");
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();

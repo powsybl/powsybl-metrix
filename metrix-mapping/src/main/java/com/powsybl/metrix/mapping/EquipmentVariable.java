@@ -51,7 +51,7 @@ public enum EquipmentVariable implements MappingVariable {
         try {
             generator.writeStartObject();
             generator.writeFieldName(variable.getFieldName());
-            generator.writeString(variable.getVariableName());
+            generator.writeString(variable.name());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);

@@ -27,7 +27,8 @@ public final class MetrixIidmConfiguration {
     public static MetrixIidmConfiguration load(PlatformConfig platformConfig) {
         ModuleConfig moduleConfig = platformConfig.getModuleConfig("metrix");
 
-        String iidmExportVersion = moduleConfig.getStringProperty("iidmExportVersion", IIDM_EXPORT_VERSION);
+        String iidmExportVersion = moduleConfig.getOptionalStringProperty("iidm-export-version")
+                .orElseGet(() -> moduleConfig.getStringProperty("iidmExportVersion", IIDM_EXPORT_VERSION));
         return new MetrixIidmConfiguration(iidmExportVersion);
     }
 

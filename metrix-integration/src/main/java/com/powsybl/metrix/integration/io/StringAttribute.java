@@ -41,8 +41,8 @@ class StringAttribute implements Attribute {
 
     private String[] values;
 
-    private static byte[][] newByteArray(int n1, int n2) {
-        byte[][] data = new byte[n2][n1];
+    private static byte[][] newByteArray(int val1, int val2) {
+        byte[][] data = new byte[val2][val1];
         for (int i = 0; i < data.length; i++) {
             Arrays.fill(data[i], BLANK_BYTE);
         }
@@ -69,9 +69,9 @@ class StringAttribute implements Attribute {
         return data;
     }
 
-    StringAttribute(String name, int n1, int n2) {
+    StringAttribute(String name, int val1, int val2) {
         this.name = Objects.requireNonNull(name);
-        data = newByteArray(n1, n2);
+        data = newByteArray(val1, val2);
     }
 
     StringAttribute(String name, String[] values) {

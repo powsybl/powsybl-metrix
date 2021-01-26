@@ -32,9 +32,12 @@ public class MetrixParameters {
         if (PlatformConfig.defaultConfig().moduleExists("metrix-default-parameters")) {
             ModuleConfig config = PlatformConfig.defaultConfig().getModuleConfig("metrix-default-parameters");
             if (config != null) {
-                parameters.setComputationType(config.getEnumProperty("computationType", MetrixComputationType.class, DEFAULT_COMPUTATION_TYPE));
-                parameters.setLossFactor(config.getFloatProperty("lossFactor", DEFAULT_LOSS_FACTOR));
-                parameters.setNominalU(config.getIntProperty("nominalU", DEFAULT_NOMINAL_U));
+                parameters.setComputationType(config.getOptionalEnumProperty("computation-type", MetrixComputationType.class)
+                        .orElseGet(() -> config.getEnumProperty("computationType", MetrixComputationType.class, DEFAULT_COMPUTATION_TYPE)));
+                parameters.setLossFactor(config.getOptionalFloatProperty("loss-factor")
+                        .orElseGet(() -> config.getFloatProperty("lossFactor", DEFAULT_LOSS_FACTOR)));
+                parameters.setNominalU(config.getOptionalIntProperty("nominal-u")
+                        .orElseGet(() -> config.getIntProperty("nominalU", DEFAULT_NOMINAL_U)));
             }
         }
         return parameters;

@@ -34,7 +34,8 @@ import java.util.stream.Collectors;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfig.*;
 
 /**
- /**
+ * /**
+ *
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
  */
 public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
@@ -44,10 +45,6 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     private static final int N = 1;
 
     private final DecimalFormat formatter = new DecimalFormat("0." + Strings.repeat("#", N), new DecimalFormatSymbols(Locale.US));
-
-    private String formatDouble(double value) {
-        return formatter.format(value);
-    }
 
     private static final String MAPPING_SYNTHESIS = "Mapping synthesis";
     private static final String VARIABLE_SYNTHESIS = "Variable synthesis";
@@ -139,33 +136,33 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             PAYS_CVG,
             VOLTAGE_LEVEL));
 
-    private final TimeSeriesMappingConfig config;
+    protected final TimeSeriesMappingConfig config;
 
-    private final Network network;
+    protected final Network network;
 
     public TimeSeriesMappingConfigCsvWriter(TimeSeriesMappingConfig config, Network network) {
         this.config = Objects.requireNonNull(config);
         this.network = Objects.requireNonNull(network);
     }
 
-    private static int writeEquipmentHeader(BufferedWriter writer, String equipmentType) {
+    private int writeEquipmentHeader(BufferedWriter writer, String equipmentType) {
         try {
             List<String> header;
             switch (equipmentType) {
                 case GENERATOR:
-                    header = GENERATOR_HEADER;
+                    header = getGeneratorHeader();
                     break;
 
                 case LOAD:
-                    header = LOAD_HEADER;
+                    header = getLoadHeader();
                     break;
 
                 case HVDC_LINE:
-                    header = HVDC_LINE_HEADER;
+                    header = getHvdcLineHeader();
                     break;
 
                 case PST:
-                    header = PST_HEADER;
+                    header = getPstHeader();
                     break;
 
                 case BOUNDARY_LINE:
@@ -173,7 +170,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                     break;
 
                 case BREAKER:
-                    header = BREAKER_HEADER;
+                    header = getBreakerHeader();
                     break;
 
                 default:
@@ -191,7 +188,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         }
     }
 
-    private void writeGenerator(BufferedWriter writer, String id) throws IOException {
+    protected List<String> getGeneratorHeader() {
+        return GENERATOR_HEADER;
+    }
+
+    protected void writeGenerator(BufferedWriter writer, String id) throws IOException {
         Generator generator = network.getGenerator(id);
         Substation substation = generator.getTerminal().getVoltageLevel().getSubstation();
 
@@ -232,7 +233,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         writer.write(CSV_SEPARATOR);
     }
 
-    private void writeHvdcLine(BufferedWriter writer, String id) throws IOException {
+    protected List<String> getHvdcLineHeader() {
+        return HVDC_LINE_HEADER;
+    }
+
+    protected void writeHvdcLine(BufferedWriter writer, String id) throws IOException {
         HvdcLine hvdcLine = network.getHvdcLine(id);
         Substation substation1 = hvdcLine.getConverterStation1().getTerminal().getVoltageLevel().getSubstation();
         Substation substation2 = hvdcLine.getConverterStation2().getTerminal().getVoltageLevel().getSubstation();
@@ -273,7 +278,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         writer.write(CSV_SEPARATOR);
     }
 
-    private void writePst(BufferedWriter writer, String id) throws IOException {
+    protected List<String> getPstHeader() {
+        return PST_HEADER;
+    }
+
+    protected void writePst(BufferedWriter writer, String id) throws IOException {
         TwoWindingsTransformer pst = network.getTwoWindingsTransformer(id);
         Substation substation = pst.getSubstation();
 
@@ -289,7 +298,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         writer.write(CSV_SEPARATOR);
     }
 
-    private void writeLoad(BufferedWriter writer, String id) throws IOException {
+    protected List<String> getLoadHeader() {
+        return LOAD_HEADER;
+    }
+
+    protected void writeLoad(BufferedWriter writer, String id) throws IOException {
         Load load = network.getLoad(id);
         Substation substation = load.getTerminal().getVoltageLevel().getSubstation();
 
@@ -327,7 +340,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         writer.write(CSV_SEPARATOR);
     }
 
-    private void writeBreaker(BufferedWriter writer, String id) throws IOException {
+    protected List<String> getBreakerHeader() {
+        return BREAKER_HEADER;
+    }
+
+    protected void writeBreaker(BufferedWriter writer, String id) throws IOException {
         Switch sw = network.getSwitch(id);
         Substation substation = sw.getVoltageLevel().getSubstation();
 
@@ -396,10 +413,10 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             if (values.size() > 1) {
                 writer.write(MULTI_MAPPED);
             } else if (variable == EquipmentVariable.targetP ||
-                       variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower ||
-                       variable == EquipmentVariable.activePowerSetpoint ||
-                       variable == EquipmentVariable.currentTap ||
-                       variable == EquipmentVariable.open) {
+                    variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower ||
+                    variable == EquipmentVariable.activePowerSetpoint ||
+                    variable == EquipmentVariable.currentTap ||
+                    variable == EquipmentVariable.open) {
                 writer.write(MAPPED);
             } else {
                 writer.write("");
@@ -1510,6 +1527,10 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                 .filter(key -> key.getMappingVariable() == variable)
                 .collect(Collectors.toList())
                 .size();
+    }
+
+    protected String formatDouble(double value) {
+        return formatter.format(value);
     }
 
     public int getNbGeneratorMapped() {

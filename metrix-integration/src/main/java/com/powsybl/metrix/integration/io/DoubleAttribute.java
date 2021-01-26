@@ -41,9 +41,9 @@ class DoubleAttribute implements Attribute {
         this.values = Objects.requireNonNull(values).clone();
     }
 
-    DoubleAttribute(String name, int n1) {
+    DoubleAttribute(String name, int value) {
         this.name = Objects.requireNonNull(name);
-        values = new double[n1];
+        values = new double[value];
         Arrays.fill(values, Double.NaN);
     }
 
