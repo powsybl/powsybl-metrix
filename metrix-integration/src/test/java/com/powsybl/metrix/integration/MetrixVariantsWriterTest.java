@@ -19,6 +19,7 @@ import com.powsybl.iidm.network.impl.extensions.LoadDetailAdderImpl;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesIndex;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.threeten.extra.Interval;
@@ -26,6 +27,7 @@ import org.threeten.extra.Interval;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 
@@ -278,82 +280,11 @@ public class MetrixVariantsWriterTest {
                 }
             }, network).write(Range.closed(0, 3), bufferedWriter);
         }
-        assertEquals(String.join(System.lineSeparator(),
-            "NT;4;",
-            "0;QUADIN;1;line1;",
-            "0;PRODIM;1;g1;100.01;",
-            "0;TRPUIMIN;1;g1;111;",
-            "0;TRVALPMD;1;g1;121;",
-//            "0;DCIMPPUI;1;hl1;200;", // hl1 not present cause too close to base case
-            "0;DCMAXPUI;1;hl1;220;",
-            "0;DCMINPUI;1;hl1;210;",
-            "0;CONELE;10;l2;16;l7;17;l11;10;l12;20;l3;6;l4;8;l5;14;l8;18;l9;11;l10;14;", // // l1 not present cause always identical to base case
-            "0;QATI00MN;1;line1;1001;",
-            "0;QATI00MN2;1;line1;2001;",
-            "0;QATI20MN;1;line1;1021;",
-            "0;QATITAMN;1;line1;1031;",
-            "0;COUHAR;1;g1;1141;",
-            "0;QATI20MN2;1;line1;2021;",
-            "0;QATITAMK;1;line1;1041;",
-            "0;COUEFF;2;l1;10;l13;0;",
-            "0;QATI5MNS;1;line1;1011;",
-            "0;QATITAMK2;1;line1;2041;",
-            "0;QATI5MNS2;1;line1;2011;",
-            "0;QATITAMN2;1;line1;2031;",
-            "0;COUBHR;1;g1;1111;",
-            "0;CTORDR;1;g1;1121;",
-            "0;COUBAR;1;g1;1131;",
-            "1;QUADIN;2;sw1;hl1;",
-            "1;PRODIM;1;g1;101.01;",
-            "1;TRPUIMIN;1;g1;112;",
-            "1;TRVALPMD;1;g1;122;",
-            "1;DCIMPPUI;1;hl1;201;", // rounded
-            "1;DCMAXPUI;1;hl1;221;",
-            "1;DCMINPUI;1;hl1;211;",
-            "1;CONELE;7;l1;11;l2;17;l11;11;l12;19;l4;9;l9;12;l10;16;",
-                "1;DTVALDEP;1;pst1;18;",
-            "1;QATI00MN;1;line1;1002;",
-            "1;QATI00MN2;1;line1;2002;",
-            "1;QATI20MN;1;line1;1022;",
-            "1;QATITAMN;1;line1;1032;",
-            "1;COUHAR;1;g1;1142;",
-            "1;QATI20MN2;1;line1;2022;",
-            "1;QATITAMK;1;line1;1042;",
-            "1;COUEFF;2;l1;11;l13;1;",
-            "1;QATI5MNS;1;line1;1012;",
-            "1;QATITAMK2;1;line1;2042;",
-            "1;QATI5MNS2;1;line1;2012;",
-            "1;QATITAMN2;1;line1;2032;",
-            "1;COUBHR;1;g1;1112;",
-            "1;CTORDR;1;g1;1122;",
-            "1;COUBAR;1;g1;1132;",
-            "2;QUADIN;1;line1;",
-            "2;PRODIM;1;g1;102.01;",
-            "2;TRPUIMIN;1;g1;113;",
-            "2;TRVALPMD;1;g1;123;",
-            "2;DCIMPPUI;1;hl1;202;", // rounded
-            "2;DCMAXPUI;1;hl1;222;",
-            "2;DCMINPUI;1;hl1;212;",
-            "2;CONELE;8;l1;12;l2;18;l7;19;l3;8;l5;18;l8;20;l9;13;l10;18;",
-                "2;DTVALDEP;1;pst1;19;",
-            "2;QATI00MN;1;line1;1003;",
-            "2;QATI00MN2;1;line1;2003;",
-            "2;QATI20MN;1;line1;1023;",
-            "2;QATITAMN;1;line1;1033;",
-            "2;COUHAR;1;g1;1143;",
-            "2;QATI20MN2;1;line1;2023;",
-            "2;QATITAMK;1;line1;1043;",
-            "2;COUEFF;2;l1;12;l13;2;",
-            "2;QATI5MNS;1;line1;1013;",
-            "2;QATITAMK2;1;line1;2043;",
-            "2;QATI5MNS2;1;line1;2013;",
-            "2;QATITAMN2;1;line1;2033;",
-            "2;COUBHR;1;g1;1113;",
-            "2;CTORDR;1;g1;1123;",
-            "2;COUBAR;1;g1;1133;",
-            "3;") // 4th variant is empty
-                + System.lineSeparator(),
-            writer.toString());
+
+        assertEquals(
+            String.join(System.lineSeparator(), IOUtils.readLines(MetrixVariantsWriterTest.class.getResourceAsStream("/expected/variantsOutput.txt"), StandardCharsets.UTF_8)),
+            writer.toString().trim()
+        );
     }
 
     abstract class AbstractNetworkImplTest implements Network, VariantManagerHolder {

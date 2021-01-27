@@ -27,6 +27,7 @@ import org.junit.Test;
 import org.threeten.extra.Interval;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
@@ -47,7 +48,6 @@ public class MetrixConstantVariantTest {
 
     private FileSystem fileSystem;
     private Path metrixFile;
-    private Path mappingFile;
     private Path variantFile;
     private Network network;
 
@@ -57,7 +57,6 @@ public class MetrixConstantVariantTest {
     public void setUp() throws IOException {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         metrixFile = fileSystem.getPath("/metrix.groovy");
-        mappingFile = fileSystem.getPath("/mapping.groovy");
         variantFile = fileSystem.getPath("/variantes.csv");
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
         network.getLoad("FVERGE11_L").getTerminal().connect(); // Connect 4th load to use it
@@ -70,71 +69,6 @@ public class MetrixConstantVariantTest {
 
     @Test
     public void constantVariantTest() throws IOException {
-
-        // Creates mapping file
-        try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                "parameters {",
-                    "    toleranceThreshold 0.0001f",
-                    "}",
-                "timeSeries['zero'] = 0",
-                "timeSeries['constant_ts3'] = 500",
-                "mapToGenerators {",
-                "    timeSeriesName 'zero'",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'constant_ts1'",
-                "    filter {",
-                "        generator.id == 'FSSV.O11_G'",
-                "    }",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'variable_ts1'",
-                "    filter {",
-                "        generator.id == 'FSSV.O12_G'",
-                "    }",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'constant_ts2'",
-                "    filter {",
-                "        load.id == 'FSSV.O11_L'",
-                "    }",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'variable_ts2'",
-                "    filter {",
-                "        load.id == 'FVALDI11_L'",
-                "    }",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'constant_ts1'",
-                "    filter {",
-                "        load.id == 'FVALDI11_L2'",
-                "    }",
-                "    variable fixedActivePower",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'variable_ts2'",
-                "    filter {",
-                "        load.id == 'FVALDI11_L2'",
-                "    }",
-                "    variable variableActivePower",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'constant_ts1'",
-                "    filter {",
-                "        load.id == 'FVERGE11_L'",
-                "    }",
-                "    variable fixedActivePower",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'constant_ts2'",
-                "    filter {",
-                "        load.id == 'FVERGE11_L'",
-                "    }",
-                "    variable variableActivePower",
-                "}"));
-        }
 
         // Creates metrix file
         try (Writer writer = Files.newBufferedWriter(metrixFile, StandardCharsets.UTF_8)) {
@@ -176,7 +110,7 @@ public class MetrixConstantVariantTest {
         MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, new MetrixParameters(), (Path) null);
 
         TimeSeriesMappingConfig mappingConfig;
-        try (Reader mappingReader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
+        try (Reader mappingReader = new InputStreamReader(MetrixConstantVariantTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy"), StandardCharsets.UTF_8)) {
             mappingConfig = TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, null, null);
         }
 

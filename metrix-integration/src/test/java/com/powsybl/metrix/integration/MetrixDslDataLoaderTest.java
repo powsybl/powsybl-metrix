@@ -20,6 +20,7 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
+import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -27,9 +28,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.threeten.extra.Interval;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -88,90 +87,10 @@ public class MetrixDslDataLoaderTest {
 
     @Test
     public void testWrongConfigurations() throws IOException {
-        try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                "branch('FP.AND1  FVERGE1  1') {",
-                "}",
-                "branch('FVALDI1  FTDPRA1  1') {",
-                "    maxThreatFlowResults false",
-                "    branchRatingsOnContingency 'tsN_1'",
-                "}",
-                "branch('FS.BIS1  FVALDI1  1') {",
-                "    maxThreatFlowResults false",
-                "    branchRatingsOnContingency 'tsN'",
-                "    branchRatingsBeforeCurative 'tsITAM'",
-                "}",
-                "branch('FP.AND1  FVERGE1  2') {",
-                "    baseCaseFlowResults false",
-                "    branchRatingsBaseCase 'tsN'",
-                "    branchRatingsOnContingency 'tsN'", // ok
-                "}",
-                "branch('FS.BIS1  FVALDI1  2') {",
-                "    branchRatingsBeforeCurative 'tsITAM'",
-                "}",
-                "branch('FVALDI1  FTDPRA1  2') {",
-                "    maxThreatFlowResults false",
-                "    branchRatingsBaseCase 'tsN'", // ok
-                "    branchRatingsBeforeCurative 'tsITAM'",
-                "}",
-                "phaseShifter('FP.AND1  FTDPRA1  1') {",
-                "    onContingencies 'cty1', 'cty2'",
-                "}",
-                "hvdc('HVDC1') {",
-                "    onContingencies 'cty3', 'cty4'",
-                "}",
-                "sectionMonitoring('sectionOk') {",
-                "    maxFlowN 2000",
-                "    branch('HVDC1', 0.9)",
-                "    branch('FP.AND1  FTDPRA1  1', 1.1)",
-                "    branch('FVALDI1  FTDPRA1  1', 2)",
-                "}",
-                "sectionMonitoring('sectionBad1') {",
-                "    branch('HVDC1', 0.9)",
-                "}",
-                "sectionMonitoring('sectionBad2') {",
-                "    maxFlowN 0.1",
-                "}",
-                "sectionMonitoring('sectionBadType') {",
-                "    maxFlowN 100",
-                "    branch('HVDC1', 1.0)",
-                "    branch('FSSV.O11_L', 2.0)",
-                "}",
-                "generator('FSSV.O11_G') {",
-                "    adequacyDownCosts 'ts1'",
-                "    redispatchingDownCosts 'ts3'",
-                "}",
-                "generator('FSSV.O12_G') {",
-                "    adequacyUpCosts 'ts3'",
-                "    redispatchingUpCosts 'ts4'",
-                "}",
-                "generator('FVALDI11_G') {",
-                "    redispatchingUpCosts 'ts4'",
-                "    redispatchingDownCosts 'ts3'",
-                "}",
-                "generator('FVERGE11_G') {",
-                "    onContingencies 'cty3', 'cty4'",
-                "}",
-                "load('FSSV.O11_L') {",
-                "    preventiveSheddingPercentage 101",
-                "}",
-                "load('FSSV.O11_L') {",
-                "    preventiveSheddingPercentage (-1)",
-                "}",
-                "load('FSSV.O11_L') {",
-                "    preventiveSheddingCost 100.2",
-                "    curativeSheddingCost 'ts3'",
-                "}",
-                "load('FSSV.O11_L') {",
-                "    curativeSheddingPercentage 20",
-                "}",
-                "load('FVALDI11_L') {",
-                "    curativeSheddingCost 'ts4'",
-                "}",
-                "load('FVALDI11_L2') {",
-                "    curativeSheddingPercentage 20",
-                "}"
-            ));
+        try (OutputStream writer = Files.newOutputStream(dslFile);
+             InputStream inputStream = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/badConfiguration.groovy");
+        ) {
+            IOUtils.copy(inputStream, writer);
         }
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
@@ -244,51 +163,10 @@ public class MetrixDslDataLoaderTest {
     @Test
     public void testAutomaticList() throws IOException {
 
-        try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                "for (l in network.lines) {",
-                "    branch(l.id) {",
-                "        branchRatingsBaseCase 'tsN'",
-                "        maxThreatFlowResults true",
-                "    }",
-                "}",
-                "for (twt in network.twoWindingsTransformers) {",
-                "    branch(twt.id) {",
-                "        baseCaseFlowResults true",
-                "        branchRatingsOnContingency 'tsN_1'",
-                "        branchRatingsBeforeCurative 'tsITAM'",
-                "    }",
-                "    phaseShifter(twt.id) {",
-                "        onContingencies 'cty'",
-                "        controlType FIXED_POWER_CONTROL",
-                "    }",
-                "}",
-                "for (h in network.hvdcLines) {",
-                "    hvdc(h.id) {",
-                "        onContingencies 'cty1'",
-                "        controlType OPTIMIZED",
-                "    }",
-                "}",
-                "for (g in network.generators) {",
-                "    generator(g.id) {",
-                "        adequacyDownCosts 'ts1'",
-                "        adequacyUpCosts 'ts2'",
-                "        redispatchingDownCosts 'ts3'",
-                "        redispatchingUpCosts 'ts4'",
-                "        onContingencies 'cty2', 'cty3'",
-                "    }",
-                "}",
-                "int i=0",
-                "for (l in network.loads) {",
-                "    load(l.id) {",
-                "        preventiveSheddingPercentage 20+i",
-                "        preventiveSheddingCost 12000+i",
-                "        curativeSheddingPercentage 5+i",
-                "        curativeSheddingCost 'ts5'",
-                "        onContingencies 'cty4'",
-                "    }",
-                "    i++;",
-                "}"));
+        try (OutputStream os = Files.newOutputStream(dslFile);
+             InputStream is = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/automaticList.groovy")
+        ) {
+            IOUtils.copy(is, os);
         }
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
@@ -745,45 +623,10 @@ public class MetrixDslDataLoaderTest {
 
     @Test
     public void testWrongId() throws IOException {
-        try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                "branch('MONITORING N WRONG ID') {",
-                "    branchRatingsBaseCase 'tsN'",
-                "}",
-                "branch('RESULT N WRONG ID') {",
-                "    baseCaseFlowResults()",
-                "}",
-                "branch('MONITORING Nk WRONG ID') {",
-                "    branchRatingsOnContingency 'tsN_1'",
-                "}",
-                "branch('RESULT Nk WRONG ID') {",
-                "    maxThreatFlowResults()",
-                "}",
-                "phaseShifter('PHASE SHIFTER WRONG ID') {",
-                "    onContingencies 'cty1', 'cty2'",
-                "    controlType CONTROL_OFF",
-                "}",
-                "hvdc('HVDC WRONG ID') {",
-                "    onContingencies 'cty3', 'cty4'",
-                "    controlType OPTIMIZED",
-                "}",
-                "sectionMonitoring('section') {",
-                "    maxFlowN 1000",
-                "    branch('BRANCH WRONG ID', 1)",
-                "}",
-                "generator('GENERATOR WRONG ID') {",
-                "    adequacyDownCosts 'ts1'",
-                "    adequacyUpCosts 'ts2'",
-                "    redispatchingDownCosts 'ts3'",
-                "    redispatchingUpCosts 'ts4'",
-                "    onContingencies 'cty3'",
-                "}",
-                "load('LOAD WRONG ID') {",
-                "    preventiveSheddingPercentage 10",
-                "    curativeSheddingPercentage 10",
-                "    onContingencies 'cty3', 'cty4'",
-                "}"
-            ));
+        try (OutputStream os = Files.newOutputStream(dslFile);
+             InputStream is = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/wrongId.groovy")
+        ) {
+            IOUtils.copy(is, os);
         }
 
         MetrixDslData data;
