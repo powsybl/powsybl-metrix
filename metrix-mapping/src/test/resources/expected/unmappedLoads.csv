@@ -1,4 +1,4 @@
-Load;paysCvg;substation;voltageLevel;regionDI;p0;fixedActivePower;variableActivePower;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
-FVALDI11_L;FRANCE;FVALD;FVALDI1;;470;400;70;Unmapped;-;-;-;-
-FSSV.O11_L;FRANCE;FSSV.;FSSV.O1;;480;;;Unmapped;-;-;-;-
-FVALDI11_L2;FRANCE;FVALD;FVALDI1;;10;;;Unmapped;-;-;-;-
+Load;substation;voltageLevel;p0;fixedActivePower;variableActivePower;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+FVALDI11_L;FVALD;FVALDI1;470;400;70;Unmapped;-;-;-;-
+FSSV.O11_L;FSSV.;FSSV.O1;480;;;Unmapped;-;-;-;-
+FVALDI11_L2;FVALD;FVALDI1;10;;;Unmapped;-;-;-;-

@@ -1,1 +1,1 @@
-Generator;paysCvg;substation;voltageLevel;regionDI;genreCvg;entsoeCategory;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+Generator;substation;voltageLevel;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries

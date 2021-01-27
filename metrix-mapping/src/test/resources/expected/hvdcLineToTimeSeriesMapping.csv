@@ -1,1 +1,1 @@
-HvdcLine;paysCvg1;paysCvg2;voltageLevel1;voltageLevel2;convertersMode;activePowerSetpoint;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+HvdcLine;voltageLevel1;voltageLevel2;convertersMode;activePowerSetpoint;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries

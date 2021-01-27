@@ -58,12 +58,12 @@ public abstract class AbstractMetrix {
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
 
-    protected static final String MAX_THREAT_PREFIX = MetrixOutputData.MAX_THREAT_NAME + "1_FLOW_";
-    protected static final String BASECASE_LOAD_PREFIX = "basecaseLoad_";
-    protected static final String BASECASE_OVERLOAD_PREFIX = "basecaseOverload_";
-    protected static final String OUTAGE_LOAD_PREFIX = "outageLoad_";
-    protected static final String OUTAGE_OVERLOAD_PREFIX = "outageOverload_";
-    protected static final String OVERALL_OVERLOAD_PREFIX = "overallOverload_";
+    public static final String MAX_THREAT_PREFIX = MetrixOutputData.MAX_THREAT_NAME + "1_FLOW_";
+    public static final String BASECASE_LOAD_PREFIX = "basecaseLoad_";
+    public static final String BASECASE_OVERLOAD_PREFIX = "basecaseOverload_";
+    public static final String OUTAGE_LOAD_PREFIX = "outageLoad_";
+    public static final String OUTAGE_OVERLOAD_PREFIX = "outageOverload_";
+    public static final String OVERALL_OVERLOAD_PREFIX = "overallOverload_";
 
     public interface ResultListener {
 

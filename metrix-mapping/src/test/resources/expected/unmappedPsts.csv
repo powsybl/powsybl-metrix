@@ -1,2 +1,2 @@
-Pst;paysCvg;currentTap;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
-FP.AND1  FTDPRA1  1;FRANCE;16;Unmapped;-;-;-;-
+Pst;currentTap;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+FP.AND1  FTDPRA1  1;16;Unmapped;-;-;-;-

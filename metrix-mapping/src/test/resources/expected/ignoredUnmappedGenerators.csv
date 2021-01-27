@@ -1,2 +1,2 @@
-Generator;paysCvg;substation;voltageLevel;regionDI;genreCvg;entsoeCategory;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
-FVALDI11_G;FRANCE;FVALD;FVALDI1;;CHARBON;;0;0;2000;Ignored unmapped;-;-;-;-
+Generator;substation;voltageLevel;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+FVALDI11_G;FVALD;FVALDI1;0;0;2000;Ignored unmapped;-;-;-;-

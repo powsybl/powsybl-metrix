@@ -96,28 +96,20 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     private static final String AVERAGE_POWER = "AveragePower";
 
     private static final List<String> GENERATOR_HEADER = Collections.unmodifiableList(Lists.newArrayList(
-            PAYS_CVG,
             SUBSTATION,
             VOLTAGE_LEVEL,
-            REGION_DI,
-            GENRE_CVG,
-            ENTSOE_CATEGORY,
             TARGET_P,
             MIN_P,
             MAX_P));
 
     private static final List<String> LOAD_HEADER = Collections.unmodifiableList(Lists.newArrayList(
-            PAYS_CVG,
             SUBSTATION,
             VOLTAGE_LEVEL,
-            REGION_DI,
             P0,
             FIXED_ACTIVE_POWER,
             VARIABLE_ACTIVE_POWER));
 
     private static final List<String> HVDC_LINE_HEADER = Collections.unmodifiableList(Lists.newArrayList(
-            PAYS_CVG1,
-            PAYS_CVG2,
             VOLTAGE_LEVEL1,
             VOLTAGE_LEVEL2,
             CONVERTERS_MODE,
@@ -126,14 +118,12 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             MAX_P));
 
     private static final List<String> PST_HEADER = Collections.unmodifiableList(Lists.newArrayList(
-            PAYS_CVG,
             CURRENT_TAP));
 
     private static final List<String> BOUNDARY_LINE_HEADER = Collections.unmodifiableList(Lists.newArrayList(
     ));
 
     private static final List<String> BREAKER_HEADER = Collections.unmodifiableList(Lists.newArrayList(
-            PAYS_CVG,
             VOLTAGE_LEVEL));
 
     protected final TimeSeriesMappingConfig config;
@@ -196,34 +186,9 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         Generator generator = network.getGenerator(id);
         Substation substation = generator.getTerminal().getVoltageLevel().getSubstation();
 
-        String paysCvg = substation.getProperty("paysCvg");
-        if (paysCvg == null) {
-            paysCvg = "";
-        }
-
-        String regionDI = substation.getProperty("regionDI");
-        if (regionDI == null) {
-            regionDI = "";
-        }
-
-        String genreCvg = generator.getProperty("genreCvg");
-        if (genreCvg == null) {
-            genreCvg = "";
-        }
-
-        String entsoeCategory = "";
-
-        writer.write(paysCvg);
-        writer.write(CSV_SEPARATOR);
         writer.write(substation.getId());
         writer.write(CSV_SEPARATOR);
         writer.write(generator.getTerminal().getVoltageLevel().getId());
-        writer.write(CSV_SEPARATOR);
-        writer.write(regionDI);
-        writer.write(CSV_SEPARATOR);
-        writer.write(genreCvg);
-        writer.write(CSV_SEPARATOR);
-        writer.write(entsoeCategory);
         writer.write(CSV_SEPARATOR);
         writer.write(formatDouble(generator.getTargetP()));
         writer.write(CSV_SEPARATOR);
@@ -242,16 +207,6 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         Substation substation1 = hvdcLine.getConverterStation1().getTerminal().getVoltageLevel().getSubstation();
         Substation substation2 = hvdcLine.getConverterStation2().getTerminal().getVoltageLevel().getSubstation();
 
-        String paysCvg1 = substation1.getProperty("paysCvg");
-        if (paysCvg1 == null) {
-            paysCvg1 = "";
-        }
-
-        String paysCvg2 = substation2.getProperty("paysCvg");
-        if (paysCvg2 == null) {
-            paysCvg2 = "";
-        }
-
         float min = (float) -hvdcLine.getMaxP();
         float max = (float) hvdcLine.getMaxP();
         HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
@@ -260,10 +215,6 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             max = activePowerRange.getOprFromCS1toCS2();
         }
 
-        writer.write(paysCvg1);
-        writer.write(CSV_SEPARATOR);
-        writer.write(paysCvg2);
-        writer.write(CSV_SEPARATOR);
         writer.write(hvdcLine.getConverterStation1().getTerminal().getVoltageLevel().getId());
         writer.write(CSV_SEPARATOR);
         writer.write(hvdcLine.getConverterStation2().getTerminal().getVoltageLevel().getId());
@@ -286,14 +237,8 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         TwoWindingsTransformer pst = network.getTwoWindingsTransformer(id);
         Substation substation = pst.getSubstation();
 
-        String paysCvg = substation.getProperty("paysCvg");
-        if (paysCvg == null) {
-            paysCvg = "";
-        }
         int currentTap = pst.getPhaseTapChanger().getTapPosition();
 
-        writer.write(paysCvg);
-        writer.write(CSV_SEPARATOR);
         writer.write(formatDouble(currentTap));
         writer.write(CSV_SEPARATOR);
     }
@@ -306,16 +251,6 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
         Load load = network.getLoad(id);
         Substation substation = load.getTerminal().getVoltageLevel().getSubstation();
 
-        String paysCvg = substation.getProperty("paysCvg");
-        if (paysCvg == null) {
-            paysCvg = "";
-        }
-
-        String regionDI = substation.getProperty("regionDI");
-        if (regionDI == null) {
-            regionDI = "";
-        }
-
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         String fixedActivePower = "";
         String variableActivePower = "";
@@ -324,13 +259,9 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             variableActivePower = formatDouble(loadDetail.getVariableActivePower());
         }
 
-        writer.write(paysCvg);
-        writer.write(CSV_SEPARATOR);
         writer.write(substation.getId());
         writer.write(CSV_SEPARATOR);
         writer.write(load.getTerminal().getVoltageLevel().getId());
-        writer.write(CSV_SEPARATOR);
-        writer.write(regionDI);
         writer.write(CSV_SEPARATOR);
         writer.write(formatDouble(load.getP0()));
         writer.write(CSV_SEPARATOR);

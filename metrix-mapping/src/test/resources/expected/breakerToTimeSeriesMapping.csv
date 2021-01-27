@@ -1,1 +1,1 @@
-Breaker;paysCvg;voltageLevel;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+Breaker;voltageLevel;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
