@@ -14,6 +14,7 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.dsl.DslLoader
 import com.powsybl.iidm.network.*
+import com.powsybl.metrix.integration.exceptions.MetrixException
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.MappingVariable

@@ -59,8 +59,8 @@ public enum EquipmentVariable implements MappingVariable {
     }
 
     static MappingVariable parseJson(JsonParser parser) throws IOException {
-        JsonToken token;
-        while ((token = parser.nextToken()) != null) {
+        JsonToken token = parser.nextToken();
+        if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
                 return EquipmentVariable.valueOf(parser.getValueAsString());
             } else {

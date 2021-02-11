@@ -70,7 +70,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     private final Map<String, HvdcLineInitialValues> hvdcLineToInitialValues = new HashMap<>();
 
-    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("YYYYMMdd_HHmm");
+    private static final DateTimeFormatter FMT = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
 
     private final Network network;
 

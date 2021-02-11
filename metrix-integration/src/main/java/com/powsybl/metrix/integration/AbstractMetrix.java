@@ -379,14 +379,6 @@ public abstract class AbstractMetrix {
         return LOG_FILE_DETAIL_PREFIX + "%03d" + "_" + version + "_" + chunk + ".log";
     }
 
-    protected static String getLogFileNameGz(int version, int chunk) {
-        return getLogFileName(version, chunk) + ".gz";
-    }
-
-    protected static String getLogDetailFileNameFormatGz(int version, int chunk) {
-        return getLogDetailFileNameFormat(version, chunk) + ".gz";
-    }
-
     protected static void addLogToArchive(Path logFile, ZipOutputStream logArchive) throws IOException {
         if (Files.exists(logFile)) {
             boolean gzipped = logFile.getFileName().toString().endsWith(".gz");
@@ -399,20 +391,6 @@ public abstract class AbstractMetrix {
                 ByteStreams.copy(is, logArchive);
             }
             logArchive.closeEntry();
-        }
-    }
-
-    protected static void addLogDetailGz(Path workingDir, String logDetailFileNameFormat) throws IOException {
-        Path path;
-        int i = 0;
-        while (Files.exists(path = workingDir.resolve(String.format(logDetailFileNameFormat, i)))) {
-            if (!Files.exists(workingDir.resolve(path + ".gz"))) {
-                try (InputStream is = Files.newInputStream(path);
-                     OutputStream os = new GZIPOutputStream(Files.newOutputStream(workingDir.resolve(path + ".gz")))) {
-                    ByteStreams.copy(is, os);
-                }
-            }
-            i++;
         }
     }
 

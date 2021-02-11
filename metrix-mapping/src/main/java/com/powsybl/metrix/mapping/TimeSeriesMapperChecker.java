@@ -22,40 +22,28 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExt
 public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver implements TimeSeriesConstants {
 
     enum ScalingDownPowerChange {
-        BASE_CASE_MINP(0),
-        BASE_CASE_MAXP(1),
-        ZERO(2),
-        MAPPED_MINP(3),
-        MAPPED_MAXP(4),
-        MAPPED_MINP_DISABLED(5),
-        MAPPED_MAXP_DISABLED(6),
-        ZERO_DISABLED(7),
-        BASE_CASE_CS1TOCS2(8),
-        BASE_CASE_CS2TOCS1(9),
-        BASE_CASE_MINUS_MAXP(10);
-
-        private final int change;
-
-        ScalingDownPowerChange(int change) {
-            this.change = change;
-        }
+        BASE_CASE_MINP,
+        BASE_CASE_MAXP,
+        ZERO,
+        MAPPED_MINP,
+        MAPPED_MAXP,
+        MAPPED_MINP_DISABLED,
+        MAPPED_MAXP_DISABLED,
+        ZERO_DISABLED,
+        BASE_CASE_CS1TOCS2,
+        BASE_CASE_CS2TOCS1,
+        BASE_CASE_MINUS_MAXP
     }
 
     enum ScalingDownLimitViolation {
-        BASE_CASE_MINP_BY_TARGETP(0),
-        MAPPED_MINP_BY_TARGETP(1),
-        MAXP_BY_TARGETP(2),
-        MAXP_BY_ACTIVEPOWER(3),
-        CS1TOCS2_BY_ACTIVEPOWER(4),
-        MINP_BY_TARGETP(5),
-        MINP_BY_ACTIVEPOWER(6),
-        CS2TOCS1_BY_ACTIVEPOWER(7);
-
-        private final int violation;
-
-        ScalingDownLimitViolation(int violation) {
-            this.violation = violation;
-        }
+        BASE_CASE_MINP_BY_TARGETP,
+        MAPPED_MINP_BY_TARGETP,
+        MAXP_BY_TARGETP,
+        MAXP_BY_ACTIVEPOWER,
+        CS1TOCS2_BY_ACTIVEPOWER,
+        MINP_BY_TARGETP,
+        MINP_BY_ACTIVEPOWER,
+        CS2TOCS1_BY_ACTIVEPOWER
     }
 
     static final class MappedEquipments {
