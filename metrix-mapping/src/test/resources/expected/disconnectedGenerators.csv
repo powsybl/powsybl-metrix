@@ -1,0 +1,2 @@
+Generator;substation;voltageLevel;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+FVALDI16_G;FVALD;FVALDI1;0;0;0;Disconnected;-;-;-;-

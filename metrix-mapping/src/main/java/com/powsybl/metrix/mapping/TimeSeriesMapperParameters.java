@@ -1,0 +1,68 @@
+/*
+ * Copyright (c) 2020, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
+package com.powsybl.metrix.mapping;
+
+import com.google.common.collect.Range;
+
+import java.util.*;
+
+/**
+ * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
+ */
+public class TimeSeriesMapperParameters {
+
+    private final TreeSet<Integer> versions;
+
+    private final Range<Integer> pointRange;
+
+    private final boolean ignoreLimits;
+
+    private final boolean ignoreEmptyFilter;
+
+    private final float toleranceThreshold;
+
+    private final Set<String> requiredTimeseries;
+
+    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, float toleranceThreshold) {
+        this(versions, pointRange, ignoreLimits, ignoreEmptyFilter, Collections.emptySet(), toleranceThreshold);
+    }
+
+    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, Set<String> requiredTimeseries, float toleranceThreshold) {
+        this.versions = new TreeSet<>(Objects.requireNonNull(versions));
+        this.pointRange = Objects.requireNonNull(pointRange);
+        this.ignoreLimits = ignoreLimits;
+        this.ignoreEmptyFilter = ignoreEmptyFilter;
+        this.toleranceThreshold = toleranceThreshold;
+        this.requiredTimeseries = Objects.requireNonNull(requiredTimeseries);
+    }
+
+    public NavigableSet<Integer> getVersions() {
+        return Collections.unmodifiableNavigableSet(versions);
+    }
+
+    public Range<Integer> getPointRange() {
+        return pointRange;
+    }
+
+    public boolean isIgnoreLimits() {
+        return ignoreLimits;
+    }
+
+    public boolean isIgnoreEmptyFilter() {
+        return ignoreEmptyFilter;
+    }
+
+    public float getToleranceThreshold() {
+        return toleranceThreshold;
+    }
+
+    public Set<String> getRequiredTimeseries() {
+        return requiredTimeseries;
+    }
+}

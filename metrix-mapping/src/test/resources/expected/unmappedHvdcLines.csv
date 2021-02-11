@@ -1,0 +1,3 @@
+HvdcLine;voltageLevel1;voltageLevel2;convertersMode;activePowerSetpoint;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+HVDC1;FSSV.O1;FVALDI1;SIDE_1_RECTIFIER_SIDE_2_INVERTER;0;-1011;1011;Unmapped;-;-;-;-
+HVDC2;FSSV.O1;FVALDI1;SIDE_1_RECTIFIER_SIDE_2_INVERTER;0;-1000;1000;Unmapped;-;-;-;-

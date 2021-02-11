@@ -1,0 +1,5 @@
+Generator;substation;voltageLevel;targetP;minP;maxP;Status;NetworkPower;Variable;AppliedTimeSeries;UnusedTimeSeries
+FVALDI15_G;FVALD;FVALDI1;0;0;0;Unmapped;-;-;-;-
+FSSV.O11_G;FSSV.;FSSV.O1;480;0;500;Unmapped;-;-;-;-
+FSSV.O12_G;FSSV.;FSSV.O1;480;0;500;Unmapped;-;-;-;-
+FVERGE11_G;FVERG;FVERGE1;0;0;0;Unmapped;-;-;-;-

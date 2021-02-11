@@ -1,5 +1,9 @@
 # Maven projects
 /target
+/metrix-integration/target
+/metrix-mapping/target
+/metrix-tools/target
+/metrix-distribution/target
 
 # CMake projects
 /build/
