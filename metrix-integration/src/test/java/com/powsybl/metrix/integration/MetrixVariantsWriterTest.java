@@ -117,7 +117,7 @@ public class MetrixVariantsWriterTest {
                     } else {
                         Mockito.when(b.getId()).thenReturn(busId);
                     }
-                    Mockito.when(b.getLoads()).thenReturn(Arrays.asList(l));
+                    Mockito.when(b.getLoads()).thenReturn(Collections.singletonList(l));
                     Mockito.when(l.getExtension(LoadDetail.class)).thenAnswer(invocationOnMock -> loadDetailMap.get(id));
                     Mockito.when(l.newExtension(LoadDetailAdder.class)).thenReturn(new LoadDetailAdderImpl(l));
                     Mockito.doAnswer(invocationOnMock -> loadDetailMap.put(id, (LoadDetail) invocationOnMock.getArguments()[1]))
@@ -287,7 +287,7 @@ public class MetrixVariantsWriterTest {
         );
     }
 
-    abstract class AbstractNetworkImplTest implements Network, VariantManagerHolder {
+    abstract static class AbstractNetworkImplTest implements Network, VariantManagerHolder {
 
     }
 }

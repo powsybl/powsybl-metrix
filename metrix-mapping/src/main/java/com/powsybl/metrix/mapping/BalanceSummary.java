@@ -85,7 +85,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
     public BalanceSummary() {
     }
 
-    public static boolean isInjection(Identifiable identifiable, MappingVariable variable) {
+    public static boolean isInjection(Identifiable<?> identifiable, MappingVariable variable) {
         if (identifiable instanceof Injection) {
             if (identifiable instanceof Generator) {
                 return variable == EquipmentVariable.targetP;
@@ -98,7 +98,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
         return false;
     }
 
-    public double getInjection(Identifiable identifiable, MappingVariable variable) {
+    public double getInjection(Identifiable<?> identifiable, MappingVariable variable) {
         if (identifiable instanceof Injection) {
             if (identifiable instanceof Generator) {
                 return ((Generator) identifiable).getTargetP();
@@ -131,7 +131,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
         return 0;
     }
 
-    public static boolean isPositiveInjection(Identifiable identifiable) {
+    public static boolean isPositiveInjection(Identifiable<?> identifiable) {
         return identifiable instanceof Generator;
     }
 
@@ -161,7 +161,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
     }
 
     @Override
-    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         if (isInjection(identifiable, variable)) {
             if (!Double.isNaN(equipmentValue)) {
                 balanceValue += (isPositiveInjection(identifiable) ? 1 : -1) * equipmentValue;
@@ -225,9 +225,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
         for (Instant instant : table.rowKeySet()) {
             ZonedDateTime dateTime = ZonedDateTime.ofInstant(instant, zoneId);
             writer.write(dateTime.format(config.dateTimeFormatter));
-            Iterator<Integer> itV = table.columnKeySet().iterator();
-            while (itV.hasNext()) {
-                int version = itV.next();
+            for (int version : table.columnKeySet()) {
                 writer.write(config.separator);
                 writer.write(formatDouble(table.get(instant, version)));
             }

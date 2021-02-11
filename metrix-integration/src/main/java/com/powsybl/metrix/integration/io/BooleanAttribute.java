@@ -106,8 +106,8 @@ class BooleanAttribute implements Attribute {
 
     @Override
     public void writeJson(JsonGenerator generator) throws IOException {
-        for (int i = 0; i < values.length; i++) {
-            generator.writeString(Boolean.toString(values[i]));
+        for (boolean value : values) {
+            generator.writeString(Boolean.toString(value));
         }
     }
 

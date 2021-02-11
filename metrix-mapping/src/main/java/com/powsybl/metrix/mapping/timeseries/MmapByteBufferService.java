@@ -28,7 +28,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -63,14 +62,12 @@ public class MmapByteBufferService {
 
     private final Lock lock = new ReentrantLock();
 
-    private final ScheduledFuture<?> future;
-
     public MmapByteBufferService() {
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
                 .setDaemon(true)
                 .setNameFormat("MMAP_CLEANER-%d")
                 .build());
-        future = scheduledExecutorService.scheduleAtFixedRate(() -> {
+        scheduledExecutorService.scheduleAtFixedRate(() -> {
             lock.lock();
             try {
                 for (Iterator<Map.Entry<String, BufferContext>> it = contexts.entrySet().iterator(); it.hasNext();) {

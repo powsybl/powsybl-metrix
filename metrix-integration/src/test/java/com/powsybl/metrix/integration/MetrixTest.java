@@ -126,7 +126,7 @@ public class MetrixTest extends AbstractConverterTest {
             }
 
             @Override
-            public void stopForcibly(Path path) throws InterruptedException {
+            public void stopForcibly(Path path) {
 
             }
         };

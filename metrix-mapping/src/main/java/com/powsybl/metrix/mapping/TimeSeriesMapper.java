@@ -46,7 +46,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
     private final TimeSeriesMappingLogger logger;
 
-    private class MapperContext {
+    private static class MapperContext {
 
         private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLoadsMapping;
 
@@ -69,7 +69,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         this.logger = Objects.requireNonNull(logger);
     }
 
-    public static void setMax(Identifiable identifiable, double max) {
+    public static void setMax(Identifiable<?> identifiable, double max) {
         if (identifiable instanceof Generator) {
             ((Generator) identifiable).setMaxP(max);
         } else if (identifiable instanceof HvdcLine) {
@@ -82,7 +82,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         }
     }
 
-    public static void setMin(Identifiable identifiable, double min) {
+    public static void setMin(Identifiable<?> identifiable, double min) {
         if (identifiable instanceof Generator) {
             ((Generator) identifiable).setMinP(min);
         } else if (identifiable instanceof HvdcLine) {
@@ -111,7 +111,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         }
     }
 
-    public static float getMin(Identifiable identifiable) {
+    public static float getMin(Identifiable<?> identifiable) {
         if (identifiable instanceof Generator) {
             return (float) ((Generator) identifiable).getMinP();
         } else if (identifiable instanceof HvdcLine) {
@@ -165,7 +165,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         }
     }
 
-    public static float getP(Identifiable identifiable) {
+    public static float getP(Identifiable<?> identifiable) {
         if (identifiable instanceof Generator) {
             return (float) ((Generator) identifiable).getTargetP();
         } else if (identifiable instanceof HvdcLine) {
@@ -200,7 +200,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 variable == EquipmentVariable.activePowerSetpoint;
     }
 
-    public static MappingVariable getPowerVariable(Identifiable identifiable) {
+    public static MappingVariable getPowerVariable(Identifiable<?> identifiable) {
         if (identifiable instanceof Generator) {
             return EquipmentVariable.targetP;
         } else if (identifiable instanceof HvdcLine) {
@@ -212,16 +212,16 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
     static class MappedEquipment {
 
-        private final Identifiable identifiable;
+        private final Identifiable<?> identifiable;
 
         private final DistributionKey distributionKey;
 
-        public MappedEquipment(Identifiable identifiable, DistributionKey distributionKey) {
+        public MappedEquipment(Identifiable<?> identifiable, DistributionKey distributionKey) {
             this.identifiable = Objects.requireNonNull(identifiable);
             this.distributionKey = distributionKey;
         }
 
-        public Identifiable getIdentifiable() {
+        public Identifiable<?> getIdentifiable() {
             return identifiable;
         }
 
@@ -234,8 +234,8 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         }
     }
 
-    private static Identifiable getIdentifiable(Network network, String equipmentId) {
-        Identifiable identifiable = network.getIdentifiable(equipmentId);
+    private static Identifiable<?> getIdentifiable(Network network, String equipmentId) {
+        Identifiable<?> identifiable = network.getIdentifiable(equipmentId);
         // check equipment exists
         if (identifiable == null) {
             throw new TimeSeriesMappingException("'" + equipmentId + "' not found");
@@ -245,7 +245,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
     private List<MappedEquipment> mapEquipments(MappingKey key, List<String> equipmentIds) {
         return equipmentIds.stream().map(equipmentId -> {
-            Identifiable identifiable = getIdentifiable(network, equipmentId);
+            Identifiable<?> identifiable = getIdentifiable(network, equipmentId);
             DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.getMappingVariable(), equipmentId));
             return new MappedEquipment(identifiable, distributionKey);
         }).collect(Collectors.toList());
@@ -328,7 +328,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         }
 
         if (observer != null) {
-            List<Identifiable> identifiables = mappedEquipments.stream().map(MappedEquipment::getIdentifiable).collect(Collectors.toList());
+            List<Identifiable<?>> identifiables = mappedEquipments.stream().map(MappedEquipment::getIdentifiable).collect(Collectors.toList());
             boolean ignoreLimitsForTimeSeries = ignoreLimits || TimeSeriesMapper.isPowerVariable(variable) && config.getIgnoreLimitsTimeSeriesNames().contains(timeSeriesName);
             observer.timeSeriesMappedToEquipments(variantId, timeSeriesName, timeSeriesValue, identifiables, variable, equipmentValues, ignoreLimitsForTimeSeries);
         }

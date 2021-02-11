@@ -19,7 +19,7 @@ public interface MetrixVariantReader {
 
     void onVariantStart(int variantNum);
 
-    void onEquipmentVariant(Identifiable identifiable, MappingVariable variable, double value);
+    void onEquipmentVariant(Identifiable<?> identifiable, MappingVariable variable, double value);
 
     void onVariant(int version, int point, TimeSeriesTable table);
 

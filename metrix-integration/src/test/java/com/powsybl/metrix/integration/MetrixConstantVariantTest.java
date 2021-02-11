@@ -37,7 +37,6 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,10 +50,10 @@ public class MetrixConstantVariantTest {
     private Path variantFile;
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
     @Before
-    public void setUp() throws IOException {
+    public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         metrixFile = fileSystem.getPath("/metrix.groovy");
         variantFile = fileSystem.getPath("/variantes.csv");
@@ -95,15 +94,12 @@ public class MetrixConstantVariantTest {
             TimeSeries.createDouble("variable_ts3", index, 600d, 601d)
         );
 
-        ContingenciesProvider contingenciesProvider = new ContingenciesProvider() {
-            @Override
-            public List<Contingency> getContingencies(Network network) {
-                Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("FVALDI1  FTDPRA1  1")));
-                a.addExtension(Probability.class, new Probability(0.002d, null));
-                Contingency b = new Contingency("b", Arrays.asList(new BranchContingency("FS.BIS1  FVALDI1  1"), new BranchContingency("FP.AND1  FVERGE1  2")));
-                b.addExtension(Probability.class, new Probability(null, "variable_ts1"));
-                return Arrays.asList(a, b);
-            }
+        ContingenciesProvider contingenciesProvider = network -> {
+            Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("FVALDI1  FTDPRA1  1")));
+            a.addExtension(Probability.class, new Probability(0.002d, null));
+            Contingency b = new Contingency("b", Arrays.asList(new BranchContingency("FS.BIS1  FVALDI1  1"), new BranchContingency("FP.AND1  FVERGE1  2")));
+            b.addExtension(Probability.class, new Probability(null, "variable_ts1"));
+            return Arrays.asList(a, b);
         };
 
         MetrixParameters metrixParameters = MetrixParameters.load();

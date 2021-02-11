@@ -54,9 +54,9 @@ public class MetrixDslDataLoaderTest {
 
     private Network network;
 
-    private MetrixParameters parameters = new MetrixParameters();
+    private final MetrixParameters parameters = new MetrixParameters();
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
     @Before
     public void setUp() throws Exception {

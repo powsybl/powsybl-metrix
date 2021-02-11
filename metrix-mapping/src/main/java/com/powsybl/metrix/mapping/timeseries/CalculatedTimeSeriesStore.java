@@ -31,8 +31,7 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     public NodeCalc getTimeSeriesNodeCalc(String timeSeriesName) {
         Objects.requireNonNull(timeSeriesName);
-        NodeCalc node = nodes.get(timeSeriesName);
-        return node;
+        return nodes.get(timeSeriesName);
     }
 
     @Override

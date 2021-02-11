@@ -58,7 +58,7 @@ public class MetrixNetwork {
 
     private final List<Contingency> contingencyList = new ArrayList<>();
 
-    private final Set<Identifiable> disconnectedElements = new HashSet<>();
+    private final Set<Identifiable<?>> disconnectedElements = new HashSet<>();
 
     private final Map<String, String> mappedSwitchMap = new HashMap<>();
 
@@ -140,7 +140,7 @@ public class MetrixNetwork {
         return mapper.getInt(subset, identifiable.getId());
     }
 
-    public Identifiable getIdentifiable(String id) {
+    public Identifiable<?> getIdentifiable(String id) {
         return network.getIdentifiable(id);
     }
 
@@ -152,7 +152,7 @@ public class MetrixNetwork {
         return mapper.getInt(subset, id);
     }
 
-    public boolean isMapped(Identifiable identifiable) {
+    public boolean isMapped(Identifiable<?> identifiable) {
         MetrixSubset subset = MetrixSubset.QUAD;
         if (identifiable instanceof Generator) {
             subset = MetrixSubset.GROUPE;
@@ -465,7 +465,7 @@ public class MetrixNetwork {
             boolean ctyOk = true;
             for (ContingencyElement element : contingency.getElements()) {
                 boolean elemOk = true;
-                Identifiable identifiable = network.getIdentifiable(element.getId());
+                Identifiable<?> identifiable = network.getIdentifiable(element.getId());
                 if (identifiable == null ||
                         (element.getType() == ContingencyElementType.GENERATOR && !(identifiable instanceof Generator)) ||
                         (element.getType() == ContingencyElementType.BRANCH && !(identifiable instanceof Branch)) ||
@@ -631,10 +631,10 @@ public class MetrixNetwork {
 
     private void createOpenedBranchesList(Set<String> openedBranches) {
         for (String branchId : openedBranches) {
-            Identifiable identifiable = network.getIdentifiable(branchId);
+            Identifiable<?> identifiable = network.getIdentifiable(branchId);
             if (identifiable != null) {
                 if (identifiable instanceof Branch) {
-                    Branch branchToClose = (Branch) identifiable;
+                    Branch<?> branchToClose = (Branch<?>) identifiable;
                     if (!branchToClose.getTerminal1().isConnected() || !branchToClose.getTerminal2().isConnected()) {
                         closeBranch(branchToClose);
                         disconnectedElements.add(branchToClose);
@@ -658,7 +658,7 @@ public class MetrixNetwork {
         }
     }
 
-    private void closeBranch(Branch branchToClose) {
+    private void closeBranch(Branch<?> branchToClose) {
         branchToClose.getTerminal1().connect();
         branchToClose.getTerminal2().connect();
         if (branchToClose.getTerminal1().isConnected() && branchToClose.getTerminal2().isConnected()) {
@@ -797,7 +797,7 @@ public class MetrixNetwork {
             terminalsToDisconnect.stream()
                     .filter(Objects::nonNull)
                     .forEach(t -> {
-                        Connectable connectable = t.getConnectable();
+                        Connectable<?> connectable = t.getConnectable();
                         if (connectable != null && types.contains(connectable.getType())) {
                             elementsToTrip.add(new BranchContingency(connectable.getId()));
                         }

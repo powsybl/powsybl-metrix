@@ -85,12 +85,12 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 .getContingencyList()
                 .stream()
                 .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
-                .collect(Collectors.groupingBy(contingency -> ((Contingency) contingency).getExtension(Probability.class).getProbabilityTimeSeriesRef(), Collectors.toList()));
+                .collect(Collectors.groupingBy(contingency -> contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef(), Collectors.toList()));
         this.contingencyConstantProbabilities = metrixNetwork
                 .getContingencyList()
                 .stream()
                 .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityBase() != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() == null)
-                .collect(Collectors.groupingBy(contingency -> ((Contingency) contingency).getExtension(Probability.class).getProbabilityBase(), Collectors.toList()));
+                .collect(Collectors.groupingBy(contingency -> contingency.getExtension(Probability.class).getProbabilityBase(), Collectors.toList()));
     }
 
     private void addValue(String id, MappingVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, String equipmentType) {
@@ -188,9 +188,9 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         writer.write(key);
         writer.write(separator);
         writer.write(Integer.toString(ids.size()));
-        for (int i = 0; i < ids.size(); i++) {
+        for (String id : ids) {
             writer.write(separator);
-            writer.write(ids.get(i));
+            writer.write(id);
         }
         writer.write(separator);
         writer.newLine();
@@ -322,7 +322,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     }
 
     @Override
-    public void onEquipmentVariant(Identifiable identifiable, MappingVariable variable, double value) {
+    public void onEquipmentVariant(Identifiable<?> identifiable, MappingVariable variable, double value) {
         if (variable instanceof MetrixVariable) {
             String id = identifiable.getId();
             addValue(id, variable, value, metrixVariableIds, metrixVariableValues, "");

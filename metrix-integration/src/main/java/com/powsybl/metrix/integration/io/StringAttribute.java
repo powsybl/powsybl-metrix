@@ -43,8 +43,8 @@ class StringAttribute implements Attribute {
 
     private static byte[][] newByteArray(int val1, int val2) {
         byte[][] data = new byte[val2][val1];
-        for (int i = 0; i < data.length; i++) {
-            Arrays.fill(data[i], BLANK_BYTE);
+        for (byte[] datum : data) {
+            Arrays.fill(datum, BLANK_BYTE);
         }
         return data;
     }
@@ -96,8 +96,8 @@ class StringAttribute implements Attribute {
 
     @Override
     public void write(LittleEndianDataOutputStream os) throws IOException {
-        for (int i = 0; i < data.length; i++) {
-            os.write(data[i]);
+        for (byte[] datum : data) {
+            os.write(datum);
         }
     }
 

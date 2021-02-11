@@ -187,7 +187,7 @@ public class MetrixParametersTest {
     }
 
     @Test
-    public void toStringTest() throws Exception {
+    public void toStringTest() {
         MetrixParameters p = new MetrixParameters();
         String expected = "{computationType=LF, lossFactor=0.0, nominalU=100, propagateBranchTripping=false}";
         assertEquals(expected, p.toString());

@@ -87,7 +87,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         return "point-" + index.getInstantAt(point);
     }
 
-    private void mapToEquipmentVariable(Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+    private void mapToEquipmentVariable(Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         if (!Double.isNaN(equipmentValue)) {
             if (identifiable instanceof Generator) {
                 Generator generator = network.getGenerator(identifiable.getId());
@@ -191,10 +191,6 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         }
     }
 
-    String getFileName(int point, TimeSeriesIndex index) {
-        return getFileName(network, version, point, index);
-    }
-
     public static String getFileName(Network network, int version, int point, TimeSeriesIndex index) {
         return network.getId() + "_" + version + "_" + FMT.format(index.getInstantAt(point).atZone(ZoneId.of("UTC")));
     }
@@ -289,7 +285,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     }
 
     @Override
-    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         mapToEquipmentVariable(identifiable, variable, equipmentValue);
     }
 

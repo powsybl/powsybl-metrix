@@ -35,7 +35,7 @@ public class MappingParameters {
 
     private float toleranceThreshold;
 
-    private boolean withTimeSeriesStats = false;
+    private boolean withTimeSeriesStats;
 
     public MappingParameters() {
         this(DEFAULT_TOLERANCE_THRESHOLD, false);

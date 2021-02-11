@@ -23,17 +23,6 @@
     <dependencies>
         <!-- Compile dependencies -->
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-metrix-mapping</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.powsybl</groupId>
             <artifactId>powsybl-contingency-dsl</artifactId>
         </dependency>
@@ -48,6 +37,15 @@
         <dependency>
             <groupId>com.powsybl</groupId>
             <artifactId>powsybl-iidm-scripting</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>powsybl-metrix-mapping</artifactId>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Tests dependencies -->

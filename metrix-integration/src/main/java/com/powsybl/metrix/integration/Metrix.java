@@ -32,7 +32,7 @@ import java.util.zip.ZipOutputStream;
  */
 public class Metrix extends AbstractMetrix {
 
-    private static Logger LOGGER = LoggerFactory.getLogger(Metrix.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Metrix.class);
 
     public Metrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager, MetrixAppLogger logger) {
         super(

@@ -57,10 +57,12 @@
         <guava.version>29.0-jre</guava.version>
         <jimfs.version>1.1</jimfs.version>
         <junit.version>4.13.1</junit.version>
+        <log4joslf4j.version>1.7.30</log4joslf4j.version>
+        <logback.version>1.1.8</logback.version>
         <mockito.version>3.3.3</mockito.version>
         <slf4j.version>1.7.22</slf4j.version>
 
-        <powsyblcore.version>4.0.0-RC2</powsyblcore.version>
+        <powsyblcore.version>4.0.0</powsyblcore.version>
     </properties>
 
     <profiles>

@@ -48,7 +48,7 @@ public class MetrixPostProcessingTimeSeriesTest {
 
     private Network network;
 
-    private MetrixParameters parameters = new MetrixParameters();
+    private final MetrixParameters parameters = new MetrixParameters();
 
     @Before
     public void setUp() throws Exception {

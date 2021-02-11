@@ -106,8 +106,8 @@ class FloatAttribute implements Attribute {
 
     @Override
     public void writeJson(JsonGenerator generator) throws IOException {
-        for (int i = 0; i < values.length; i++) {
-            generator.writeNumber(values[i]);
+        for (float value : values) {
+            generator.writeNumber(value);
         }
     }
 

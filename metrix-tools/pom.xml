@@ -19,10 +19,6 @@
 
     <artifactId>powsybl-metrix-tools</artifactId>
 
-    <properties>
-        <log4joslf4j.version>1.7.30</log4joslf4j.version>
-    </properties>
-
     <profiles>
         <profile>
             <id>jacoco</id>

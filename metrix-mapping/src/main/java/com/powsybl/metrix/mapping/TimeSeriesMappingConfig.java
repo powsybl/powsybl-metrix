@@ -592,12 +592,10 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 switch (token) {
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
-                        switch (fieldName) {
-                            case MAPPINGKEY:
-                                mappingKey = MappingKey.parseJson(parser);
-                                break;
-                            default:
-                                throw new IllegalStateException("Unexpected field name " + fieldName);
+                        if (fieldName.equals(MAPPINGKEY)) {
+                            mappingKey = MappingKey.parseJson(parser);
+                        } else {
+                            throw new IllegalStateException("Unexpected field name " + fieldName);
                         }
                         break;
                     case END_OBJECT:
@@ -1568,7 +1566,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableSet(outOfMainCcDanglingLines);
     }
 
-    public boolean isStoreTimeSeriesEquipment(MappingVariable variable, Identifiable identifiable) {
+    public boolean isStoreTimeSeriesEquipment(MappingVariable variable, Identifiable<?> identifiable) {
         MappingKey key = new MappingKey(variable, identifiable.getId());
         if (identifiable instanceof Generator) {
             return generatorTimeSeries.contains(key);

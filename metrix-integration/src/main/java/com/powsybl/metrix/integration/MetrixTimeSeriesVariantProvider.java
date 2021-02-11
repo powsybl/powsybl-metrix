@@ -10,7 +10,6 @@ package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
 import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.contingency.Probability;
@@ -48,9 +47,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final PrintStream err;
 
-    private TimeSeriesMapper mapper;
-
-    private final TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+    private final TimeSeriesMapper mapper;
 
     public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters, TimeSeriesMappingConfig config, ContingenciesProvider contingenciesProvider,
                                            int version, Range<Integer> variantRange, boolean ignoreLimits, boolean ignoreEmptyFilter,
@@ -65,7 +62,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.ignoreEmptyFilter = ignoreEmptyFilter;
         this.contingenciesProvider = contingenciesProvider;
         this.err = Objects.requireNonNull(err);
-        mapper = new TimeSeriesMapper(config, network, logger);
+        mapper = new TimeSeriesMapper(config, network, new TimeSeriesMappingLogger());
     }
 
     @Override
@@ -107,7 +104,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             }
 
             @Override
-            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 super.timeSeriesMappedToEquipment(point, timeSeriesName, identifiable, variable, equipmentValue);
                 if (!Double.isNaN(equipmentValue)) {
                     reader.onEquipmentVariant(identifiable, variable, equipmentValue);
@@ -131,7 +128,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         return contingenciesProvider.getContingencies(network)
                 .stream()
                 .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
-                .map(contingency -> ((Contingency) contingency).getExtension(Probability.class).getProbabilityTimeSeriesRef())
+                .map(contingency -> contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef())
                 .collect(Collectors.toSet());
     }
 }

@@ -31,7 +31,7 @@ public interface TimeSeriesMapperObserver {
         // no op
     }
 
-    void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue);
+    void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue);
 
     void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance);
 }

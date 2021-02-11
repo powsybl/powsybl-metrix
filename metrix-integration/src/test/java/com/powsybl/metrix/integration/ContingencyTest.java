@@ -38,25 +38,6 @@ public class ContingencyTest {
         network = NetworkXml.read(ContingencyTest.class.getResourceAsStream("/simpleNetwork.xml"));
     }
 
-//    @Test
-//    public void testExtension() throws IOException {
-//        try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
-//            writer.write(String.join(System.lineSeparator(),
-//                    "contingency('test') {",
-//                    "    equipments 'FP.AND1  FVERGE1  1'",
-//                    "    probability {",
-//                    "        base 0.1",
-//                    "        tsName 'myTs'",
-//                    "    }",
-//                    "}"));
-//        }
-//        List<Contingency> contingencies = new GroovyDslContingenciesProvider(dslFile)
-//                .getContingencies(network);
-//        assertEquals(1, contingencies.size());
-//        assertEquals(1, contingencies.get(0).getExtensions().size());
-//        assertEquals("myTs", contingencies.get(0).getExtension(Probability.class).getProbabilityTimeSeriesRef());
-//    }
-
     @Test
     public void testProbability() {
         Probability a = new Probability(1.2d, null);

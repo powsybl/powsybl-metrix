@@ -501,7 +501,7 @@ public class MetrixInputTest extends AbstractConverterTest {
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  2");
-        Contingency cty1 = new Contingency("cty1", Arrays.asList(l1));
+        Contingency cty1 = new Contingency("cty1", Collections.singletonList(l1));
         ContingenciesProvider provider = network -> ImmutableList.of(cty1);
 
         // Metrix parameters

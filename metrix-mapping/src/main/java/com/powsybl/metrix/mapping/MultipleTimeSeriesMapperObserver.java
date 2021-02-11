@@ -62,7 +62,7 @@ public class MultipleTimeSeriesMapperObserver implements TimeSeriesMapperObserve
     }
 
     @Override
-    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         observers.forEach(o -> o.timeSeriesMappedToEquipment(point, timeSeriesName, identifiable, variable, equipmentValue));
     }
 

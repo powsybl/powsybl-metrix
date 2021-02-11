@@ -42,7 +42,7 @@ public class DefaultTimeSeriesMapperObserver implements TimeSeriesMapperObserver
     }
 
     @Override
-    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         // default empty implementation
     }
 

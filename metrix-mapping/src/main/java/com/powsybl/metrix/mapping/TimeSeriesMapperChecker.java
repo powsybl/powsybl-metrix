@@ -62,13 +62,13 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
 
         private final double timeSeriesValue;
 
-        private final Set<Identifiable> identifiables;
+        private final Set<Identifiable<?>> identifiables;
 
         private final Set<ScalingDownPowerChange> scalingDownPowerChange = new HashSet<>();
 
         private final Set<ScalingDownLimitViolation> scalingDownLimitViolation = new HashSet<>();
 
-        public MappedEquipments(double timeSeriesValue, Set<Identifiable> identifiables) {
+        public MappedEquipments(double timeSeriesValue, Set<Identifiable<?>> identifiables) {
             this.timeSeriesValue = timeSeriesValue;
             this.identifiables = Objects.requireNonNull(identifiables);
         }
@@ -77,7 +77,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
             return timeSeriesValue;
         }
 
-        public Set<Identifiable> getIdentifiables() {
+        public Set<Identifiable<?>> getIdentifiables() {
             return identifiables;
         }
 
@@ -198,9 +198,9 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
 
     private final Map<String, Boolean> hvdcLineToActivePowerRange = new HashMap<>();
 
-    private final Map<Identifiable, MappedPower> identifiableToConstantMappedPowers = new LinkedHashMap<>();
+    private final Map<Identifiable<?>, MappedPower> identifiableToConstantMappedPowers = new LinkedHashMap<>();
 
-    private final Map<Identifiable, MappedPower> identifiableToMappedPower = new LinkedHashMap<>();
+    private final Map<Identifiable<?>, MappedPower> identifiableToMappedPower = new LinkedHashMap<>();
 
     private final Map<String, MappedEquipments> targetPTimeSeriesToEquipments = new HashMap<>();
 
@@ -214,17 +214,17 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
 
     private final Map<String, Set<ScalingDownLimitViolation>> setpointTimeSeriesToScalingDownLimitViolationSynthesis = new HashMap<>();
 
-    private final Map<Identifiable, LimitChange> generatorToMaxValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> generatorToMaxValues = new HashMap<>();
 
-    private final Map<Identifiable, LimitChange> generatorToMinValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> generatorToMinValues = new HashMap<>();
 
-    private final Map<Identifiable, LimitChange> hvdcLineToMaxValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> hvdcLineToMaxValues = new HashMap<>();
 
-    private final Map<Identifiable, LimitChange> hvdcLineToMinValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> hvdcLineToMinValues = new HashMap<>();
 
-    private final Map<Identifiable, LimitChange> hvdcLineToCS1toCS2Values = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> hvdcLineToCS1toCS2Values = new HashMap<>();
 
-    private final Map<Identifiable, LimitChange> hvdcLineToCS2toCS1Values = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> hvdcLineToCS2toCS1Values = new HashMap<>();
 
     @Override
     public void versionStart(int version) {
@@ -245,21 +245,21 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         super.timeSeriesMappingStart(point, index);
         this.index = index;
         if (point != TimeSeriesMapper.CONSTANT_VARIANT_ID) {
-            identifiableToConstantMappedPowers.entrySet().forEach(e -> identifiableToMappedPower.put(e.getKey(), new MappedPower(e.getValue())));
+            identifiableToConstantMappedPowers.forEach((key, value) -> identifiableToMappedPower.put(key, new MappedPower(value)));
         }
     }
 
     @Override
     public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
         // Correct each mapped power value if necessary and notify observers
-        identifiableToMappedPower.entrySet().forEach(e -> correctAndNotifyMappedPowers(index, version, point, e.getKey(), e.getValue()));
+        identifiableToMappedPower.forEach((key, value) -> correctAndNotifyMappedPowers(index, version, point, key, value));
 
         // Add scaling down logs to logger
-        targetPTimeSeriesToEquipments.entrySet().forEach(e -> addScalingDownLogs(index, version, point, e.getKey(), e.getValue(),
+        targetPTimeSeriesToEquipments.forEach((key, value) -> addScalingDownLogs(index, version, point, key, value,
                 EquipmentVariable.targetP,
                 targetPTimeSeriesToScalingDownPowerChangeSynthesis,
                 targetPTimeSeriesToScalingDownLimitViolationSynthesis));
-        setpointTimeSeriesToEquipments.entrySet().forEach(e -> addScalingDownLogs(index, version, point, e.getKey(), e.getValue(),
+        setpointTimeSeriesToEquipments.forEach((key, value) -> addScalingDownLogs(index, version, point, key, value,
                 EquipmentVariable.activePowerSetpoint,
                 setpointTimeSeriesToScalingDownPowerChangeSynthesis,
                 setpointTimeSeriesToScalingDownLimitViolationSynthesis));
@@ -282,10 +282,10 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         addLimitChangeLog(hvdcLineToCS1toCS2Values, MappingLimitType.MAX, version, CS12, EquipmentVariable.activePowerSetpoint.getVariableName());
 
         // Add scaling down logs synthesis to logger
-        targetPTimeSeriesToScalingDownPowerChangeSynthesis.entrySet().forEach(ts -> ts.getValue().forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.targetP.getVariableName(), change, version, ts.getKey())));
-        targetPTimeSeriesToScalingDownLimitViolationSynthesis.entrySet().forEach(ts -> ts.getValue().forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, ts.getKey())));
-        setpointTimeSeriesToScalingDownPowerChangeSynthesis.entrySet().forEach(ts -> ts.getValue().forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.activePowerSetpoint.getVariableName(), change, version, ts.getKey())));
-        setpointTimeSeriesToScalingDownLimitViolationSynthesis.entrySet().forEach(ts -> ts.getValue().forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, ts.getKey())));
+        targetPTimeSeriesToScalingDownPowerChangeSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.targetP.getVariableName(), change, version, key)));
+        targetPTimeSeriesToScalingDownLimitViolationSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, key)));
+        setpointTimeSeriesToScalingDownPowerChangeSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.activePowerSetpoint.getVariableName(), change, version, key)));
+        setpointTimeSeriesToScalingDownLimitViolationSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, key)));
 
         identifiableToConstantMappedPowers.clear();
         generatorToMinValues.clear();
@@ -308,14 +308,14 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         this.toleranceThreshold = parameters.getToleranceThreshold();
     }
 
-    public void timeSeriesMappedToEquipments(int point, String timeSeriesName, double timeSeriesValue, List<Identifiable> identifiables, MappingVariable variable, double[] equipmentValues, boolean ignoreLimits) {
+    public void timeSeriesMappedToEquipments(int point, String timeSeriesName, double timeSeriesValue, List<Identifiable<?>> identifiables, MappingVariable variable, double[] equipmentValues, boolean ignoreLimits) {
         if (variable == EquipmentVariable.targetP) {
             targetPTimeSeriesToEquipments.put(timeSeriesName, new MappedEquipments(timeSeriesValue, new HashSet<>(identifiables)));
         } else if (variable == EquipmentVariable.activePowerSetpoint) {
             setpointTimeSeriesToEquipments.put(timeSeriesName, new MappedEquipments(timeSeriesValue, new HashSet<>(identifiables)));
         }
         for (int i = 0; i < identifiables.size(); i++) {
-            Identifiable identifiable = identifiables.get(i);
+            Identifiable<?> identifiable = identifiables.get(i);
             double equipmentValue = equipmentValues[i];
             if (TimeSeriesMapper.isPowerOrLimitVariable(variable)) {
                 // Store mapped power values and limits in order to correct power values not included in limits
@@ -332,7 +332,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         }
     }
 
-    private void addTimeSeriesMappedToEquipments(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue, boolean ignoreLimits) {
+    private void addTimeSeriesMappedToEquipments(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue, boolean ignoreLimits) {
         MappedPower mappedPower;
         if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
             identifiableToConstantMappedPowers.computeIfAbsent(identifiable, e -> new MappedPower());
@@ -353,7 +353,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         }
     }
 
-    private void correctAndNotifyMappedPowers(TimeSeriesIndex index, int version, int point, Identifiable identifiable, MappedPower mappedPower) {
+    private void correctAndNotifyMappedPowers(TimeSeriesIndex index, int version, int point, Identifiable<?> identifiable, MappedPower mappedPower) {
         double value;
         if (identifiable instanceof Generator) {
             value = correctMappedPowerGenerator(index, version, point, (Generator) identifiable, mappedPower);
@@ -617,7 +617,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         return Double.NaN;
     }
 
-    private void addLimitValueChange(MappingLimitType limitType, Map<Identifiable, LimitChange> equipmentToLimitValues, Identifiable identifiable, double oldLimit, double newLimit) {
+    private void addLimitValueChange(MappingLimitType limitType, Map<Identifiable<?>, LimitChange> equipmentToLimitValues, Identifiable<?> identifiable, double oldLimit, double newLimit) {
         if ((limitType == MappingLimitType.MAX) || (limitType == MappingLimitType.MIN)) {
             equipmentToLimitValues.computeIfAbsent(identifiable, e -> new LimitChange(oldLimit, Double.NaN));
             if ((limitType == MappingLimitType.MAX && newLimit > oldLimit + toleranceThreshold) || (limitType == MappingLimitType.MIN && newLimit < oldLimit - toleranceThreshold)) {
@@ -641,7 +641,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
 
         if (mappedEquipments.getScalingDownPowerChange().size() > 0) {
             double value = mappedEquipments.getTimeSeriesValue();
-            Set<Identifiable> identifiables = mappedEquipments.getIdentifiables();
+            Set<Identifiable<?>> identifiables = mappedEquipments.getIdentifiables();
             double sum = identifiables.stream()
                     .mapToDouble(e -> identifiableToMappedPower.get(e).getP() != null ? identifiableToMappedPower.get(e).getP() : TimeSeriesMapper.getP(e))
                     .sum();
@@ -770,7 +770,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         }
     }
 
-    private void addLimitChangeLog(Map<Identifiable, LimitChange> equipmentToValues, MappingLimitType limitType, int version, String variableToChange, String variable) {
+    private void addLimitChangeLog(Map<Identifiable<?>, LimitChange> equipmentToValues, MappingLimitType limitType, int version, String variableToChange, String variable) {
         if (limitType == MappingLimitType.MIN) {
             equipmentToValues.entrySet().stream()
                     .filter(e -> !Double.isNaN(e.getValue().getLimit()))

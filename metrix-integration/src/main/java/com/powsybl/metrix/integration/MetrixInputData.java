@@ -404,7 +404,7 @@ public class MetrixInputData implements MetrixInputConstants {
         // Disconnected branches
         if (!metrixNetwork.getDisconnectedElements().isEmpty()) {
             List<Integer> openbran = new ArrayList<>();
-            for (Identifiable disconnectedElement : metrixNetwork.getDisconnectedElements()) {
+            for (Identifiable<?> disconnectedElement : metrixNetwork.getDisconnectedElements()) {
                 try {
                     openbran.add(metrixNetwork.getIndex(disconnectedElement));
                 } catch (IllegalStateException ise) {
@@ -897,7 +897,7 @@ public class MetrixInputData implements MetrixInputConstants {
                 Integer indexCty;
                 for (String branchId : idList) {
 
-                    Identifiable identifiable = metrixNetwork.getIdentifiable(branchId);
+                    Identifiable<?> identifiable = metrixNetwork.getIdentifiable(branchId);
                     if (identifiable == null ||
                             !metrixNetwork.isMapped(identifiable)) {
                         continue;
@@ -940,7 +940,7 @@ public class MetrixInputData implements MetrixInputConstants {
                 Integer indexCty;
                 for (String branchId : idList) {
 
-                    Identifiable identifiable = metrixNetwork.getIdentifiable(branchId);
+                    Identifiable<?> identifiable = metrixNetwork.getIdentifiable(branchId);
                     if (identifiable == null ||
                             !metrixNetwork.isMapped(identifiable)) {
                         continue;
@@ -989,7 +989,7 @@ public class MetrixInputData implements MetrixInputConstants {
                 sectnoms[index] = replaceSpaces(section.getId());
                 sectmaxn[index] = section.getMaxFlowN();
                 for (Map.Entry<String, Float> branch : section.getCoefFlowList().entrySet()) {
-                    Identifiable identifiable = metrixNetwork.getNetwork().getIdentifiable(branch.getKey());
+                    Identifiable<?> identifiable = metrixNetwork.getNetwork().getIdentifiable(branch.getKey());
                     if (identifiable != null) {
                         if (identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer) {
                             secttype.add(ElementType.BRANCH.getType());
