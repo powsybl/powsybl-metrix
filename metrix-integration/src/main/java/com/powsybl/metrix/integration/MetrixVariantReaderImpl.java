@@ -307,7 +307,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     void onPstVariant(TwoWindingsTransformer twc, MappingVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.currentTap) {
+        if (variable == EquipmentVariable.phaseTapPosition) {
             isDifferent = isDifferent(value, twc.getPhaseTapChanger().getTapPosition());
         }
         if (isDifferent) {

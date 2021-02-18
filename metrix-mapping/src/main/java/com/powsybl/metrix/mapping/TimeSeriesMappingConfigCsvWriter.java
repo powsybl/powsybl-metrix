@@ -88,7 +88,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     private static final String LOAD_TYPE = "load";
     private static final String BOUNDARY_LINE_TYPE = "boundary";
     private static final String HVDC_LINE_TYPE = "hvdc";
-    private static final String PST_TYPE = "pst";
+    private static final String PHASE_TAP_CHANGER_TYPE = "phaseTapChanger";
+    private static final String RATIO_TAP_CHANGER_TYPE = "ratioTapChanger";
+    private static final String TRANSFORMER_TYPE = "transformer";
+    private static final String LCC_CONVERTER_STATION_TYPE = "lccConverterStation";
+    private static final String VSC_CONVERTER_STATION_TYPE = "vscConverterStation";
     private static final String BREAKER_TYPE = "breaker";
     private static final String EMPTY_TYPE = "-";
     private static final String MIN_POWER = "MinPower";
@@ -317,7 +321,11 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                 case LOAD_TYPE:
                 case BOUNDARY_LINE_TYPE:
                 case HVDC_LINE_TYPE:
-                case PST_TYPE:
+                case PHASE_TAP_CHANGER_TYPE:
+                case RATIO_TAP_CHANGER_TYPE:
+                case TRANSFORMER_TYPE:
+                case LCC_CONVERTER_STATION_TYPE:
+                case VSC_CONVERTER_STATION_TYPE:
                 case BREAKER_TYPE:
                 case EMPTY_TYPE:
                 case BOUNDARY_LINE:
@@ -347,7 +355,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             } else if (variable == EquipmentVariable.targetP ||
                     variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower ||
                     variable == EquipmentVariable.activePowerSetpoint ||
-                    variable == EquipmentVariable.currentTap ||
+                    variable == EquipmentVariable.phaseTapPosition ||
                     variable == EquipmentVariable.open) {
                 writer.write(MAPPED);
             } else {
@@ -614,7 +622,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
 
     public void writeTimeSeriesToPstMapping(BufferedWriter writer, ReadOnlyTimeSeriesStore store, ComputationRange computationRange, boolean withTimeSeriesStats) {
         try {
-            writeTimeSerieToEquipmentsMapping(writer, PSTS, config.getTimeSeriesToPstMapping(), store, computationRange, withTimeSeriesStats);
+            writeTimeSerieToEquipmentsMapping(writer, PSTS, config.getTimeSeriesToPhaseTapChangersMapping(), store, computationRange, withTimeSeriesStats);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -652,12 +660,20 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, GENERATOR_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToHvdcLinesMapping());
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, HVDC_LINE_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
-            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToPstMapping());
-            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, PST_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
+            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToPhaseTapChangersMapping());
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, PHASE_TAP_CHANGER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToDanglingLinesMapping());
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, BOUNDARY_LINE_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToBreakersMapping());
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, BREAKER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
+            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToTransformersMapping());
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, TRANSFORMER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
+            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToRatioTapChangersMapping());
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, RATIO_TAP_CHANGER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
+            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToLccConverterStationsMapping());
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, LCC_CONVERTER_STATION_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
+            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToVscConverterStationsMapping());
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, VSC_CONVERTER_STATION_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findDistributionKeyTimeSeries();
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, EMPTY_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
         } catch (IOException e) {
@@ -699,7 +715,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
 
     public void writePstToTimeSeriesMapping(BufferedWriter writer) {
         try {
-            writeEquipmentToTimeSeriesMapping(writer, PST, config.getPstToTimeSeriesMapping(), config.getTimeSeriesToPstMapping());
+            writeEquipmentToTimeSeriesMapping(writer, PST, config.getPhaseTapChangerToTimeSeriesMapping(), config.getTimeSeriesToPhaseTapChangersMapping());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -747,7 +763,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
 
     public void writeUnmappedPst(BufferedWriter writer) {
         try {
-            writeEquipmentSet(writer, PST, UNMAPPED, config.getUnmappedPst(), config.getIgnoredUnmappedPst());
+            writeEquipmentSet(writer, PST, UNMAPPED, config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -811,7 +827,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
 
     public void writeIgnoredUnmappedPst(BufferedWriter writer) {
         try {
-            writeEquipmentSet(writer, PST, IGNORED_UNMAPPED, config.getIgnoredUnmappedPst(), new HashSet<>());
+            writeEquipmentSet(writer, PST, IGNORED_UNMAPPED, config.getIgnoredUnmappedPhaseTapChangers(), new HashSet<>());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -849,19 +865,19 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             writeTimeSerieToEquipmentsMapping(dir, "timeSeriesToLoadsMapping.csv", LOADS, config.getTimeSeriesToLoadsMapping(), store, computationRange, withTimeSeriesStats);
             writeTimeSerieToEquipmentsMapping(dir, "timeSeriesToBoundaryLinesMapping.csv", BOUNDARY_LINES, config.getTimeSeriesToDanglingLinesMapping(), store, computationRange, withTimeSeriesStats);
             writeTimeSerieToEquipmentsMapping(dir, "timeSeriesToHvdcLinesMapping.csv", HVDC_LINES, config.getTimeSeriesToHvdcLinesMapping(), store, computationRange, withTimeSeriesStats);
-            writeTimeSerieToEquipmentsMapping(dir, "timeSeriesToPstMapping.csv", PSTS, config.getTimeSeriesToPstMapping(), store, computationRange, withTimeSeriesStats);
+            writeTimeSerieToEquipmentsMapping(dir, "timeSeriesToPstMapping.csv", PSTS, config.getTimeSeriesToPhaseTapChangersMapping(), store, computationRange, withTimeSeriesStats);
             writeTimeSerieToEquipmentsMapping(dir, "timeSeriesToBreakersMapping.csv", BREAKERS, config.getTimeSeriesToBreakersMapping(), store, computationRange, withTimeSeriesStats);
             writeEquipmentToTimeSeriesMapping(dir, "generatorToTimeSeriesMapping.csv", GENERATOR, config.getGeneratorToTimeSeriesMapping(), config.getTimeSeriesToGeneratorsMapping());
             writeEquipmentToTimeSeriesMapping(dir, "loadToTimeSeriesMapping.csv", LOAD, config.getLoadToTimeSeriesMapping(), config.getTimeSeriesToLoadsMapping());
             writeEquipmentToTimeSeriesMapping(dir, "boundaryLineToTimeSeriesMapping.csv", BOUNDARY_LINE, config.getDanglingLineToTimeSeriesMapping(), config.getTimeSeriesToDanglingLinesMapping());
             writeEquipmentToTimeSeriesMapping(dir, "hvdcLineToTimeSeriesMapping.csv", HVDC_LINE, config.getHvdcLineToTimeSeriesMapping(), config.getTimeSeriesToHvdcLinesMapping());
-            writeEquipmentToTimeSeriesMapping(dir, "pstToTimeSeriesMapping.csv", PST, config.getPstToTimeSeriesMapping(), config.getTimeSeriesToPstMapping());
+            writeEquipmentToTimeSeriesMapping(dir, "pstToTimeSeriesMapping.csv", PST, config.getPhaseTapChangerToTimeSeriesMapping(), config.getTimeSeriesToPhaseTapChangersMapping());
             writeEquipmentToTimeSeriesMapping(dir, "breakerToTimeSeriesMapping.csv", BREAKER, config.getBreakerToTimeSeriesMapping(), config.getTimeSeriesToBreakersMapping());
             writeEquipmentSet(dir, "unmappedGenerators.csv", GENERATOR, UNMAPPED, config.getUnmappedGenerators(), config.getIgnoredUnmappedGenerators());
             writeEquipmentSet(dir, "unmappedLoads.csv", LOAD, UNMAPPED, config.getUnmappedLoads(), config.getIgnoredUnmappedLoads());
             writeEquipmentSet(dir, "unmappedBoundaryLines.csv", BOUNDARY_LINE, UNMAPPED, config.getUnmappedDanglingLines(), config.getIgnoredUnmappedDanglingLines());
             writeEquipmentSet(dir, "unmappedHvdcLines.csv", HVDC_LINE, UNMAPPED, config.getUnmappedHvdcLines(), config.getIgnoredUnmappedHvdcLines());
-            writeEquipmentSet(dir, "unmappedPst.csv", PST, UNMAPPED, config.getUnmappedPst(), config.getIgnoredUnmappedPst());
+            writeEquipmentSet(dir, "unmappedPst.csv", PST, UNMAPPED, config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers());
             writeEquipmentSet(dir, "disconnectedGenerators.csv", GENERATOR, DISCONNECTED, config.getDisconnectedGenerators(), new HashSet<>());
             writeEquipmentSet(dir, "disconnectedLoads.csv", LOAD, DISCONNECTED, config.getDisconnectedLoads(), new HashSet<>());
             writeEquipmentSet(dir, "disconnectedBoundaryLines.csv", BOUNDARY_LINE, DISCONNECTED, config.getDisconnectedDanglingLines(), new HashSet<>());
@@ -869,7 +885,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             writeEquipmentSet(dir, "ignoredUnmappedLoads.csv", LOAD, IGNORED_UNMAPPED, config.getIgnoredUnmappedLoads(), new HashSet<>());
             writeEquipmentSet(dir, "ignoredUnmappedBoundaryLines.csv", BOUNDARY_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedDanglingLines(), new HashSet<>());
             writeEquipmentSet(dir, "ignoredUnmappedHvdcLines.csv", HVDC_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedHvdcLines(), new HashSet<>());
-            writeEquipmentSet(dir, "ignoredUnmappedPst.csv", PST, IGNORED_UNMAPPED, config.getIgnoredUnmappedPst(), new HashSet<>());
+            writeEquipmentSet(dir, "ignoredUnmappedPst.csv", PST, IGNORED_UNMAPPED, config.getIgnoredUnmappedPhaseTapChangers(), new HashSet<>());
             writeEquipmentSet(dir, "outOfMainCcGenerators.csv", GENERATOR, OUT_OF_MAIN_CC, config.getOutOfMainCcGenerators(), new HashSet<>());
             writeEquipmentSet(dir, "outOfMainCcLoads.csv", LOAD, OUT_OF_MAIN_CC, config.getOutOfMainCcLoads(), new HashSet<>());
             writeEquipmentSet(dir, "outOfMainCcBoundaryLines.csv", BOUNDARY_LINE, OUT_OF_MAIN_CC, config.getOutOfMainCcDanglingLines(), new HashSet<>());
@@ -901,7 +917,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
             Set<MappingKey> multiMappedHvdcLines = config.getHvdcLineToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
-            Set<MappingKey> multiMappedPst = config.getPstToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
+            Set<MappingKey> multiMappedPst = config.getPhaseTapChangerToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
             Set<MappingKey> multiMappedBreakers = config.getBreakerToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
@@ -935,7 +951,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             writer.write(CSV_SEPARATOR);
             writer.write(Integer.toString(getNbHvdcLineMapped(EquipmentVariable.activePowerSetpoint)));
             writer.write(CSV_SEPARATOR);
-            writer.write(Integer.toString(getNbPstMapped(EquipmentVariable.currentTap)));
+            writer.write(Integer.toString(getNbPstMapped(EquipmentVariable.phaseTapPosition)));
             writer.write(CSV_SEPARATOR);
             writer.write(Integer.toString(getNbBreakerMapped(EquipmentVariable.open)));
             writer.newLine();
@@ -986,7 +1002,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             writer.write(CSV_SEPARATOR);
             writer.write(Integer.toString(config.getIgnoredUnmappedHvdcLines().size()));
             writer.write(CSV_SEPARATOR);
-            writer.write(Integer.toString(config.getIgnoredUnmappedPst().size()));
+            writer.write(Integer.toString(config.getIgnoredUnmappedPhaseTapChangers().size()));
             writer.write(CSV_SEPARATOR);
             writer.write("-");
             writer.newLine();
@@ -1144,7 +1160,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             writer.write("-");
             writer.newLine();
 
-            writer.write(EquipmentVariable.currentTap.getVariableName());
+            writer.write(EquipmentVariable.phaseTapPosition.getVariableName());
             writer.write(CSV_SEPARATOR);
             writer.write("-");
             writer.write(CSV_SEPARATOR);
@@ -1156,7 +1172,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             writer.write(CSV_SEPARATOR);
             writer.write("-");
             writer.write(CSV_SEPARATOR);
-            writer.write(Integer.toString(getNbPstMapped(EquipmentVariable.currentTap)));
+            writer.write(Integer.toString(getNbPstMapped(EquipmentVariable.phaseTapPosition)));
             writer.write(CSV_SEPARATOR);
             writer.write("-");
             writer.newLine();
@@ -1275,7 +1291,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
             Set<MappingKey> multiMappedHvdcLines = config.getHvdcLineToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
-            Set<MappingKey> multiMappedPst = config.getPstToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
+            Set<MappingKey> multiMappedPst = config.getPhaseTapChangerToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
             Set<MappingKey> multiMappedBreakers = config.getBreakerToTimeSeriesMapping().entrySet().stream().filter(e -> e.getValue().size() > 1)
                     .map(Map.Entry::getKey).collect(Collectors.toSet());
@@ -1284,14 +1300,14 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                     .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping()))
                     .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.p0))
                     .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.activePowerSetpoint))
-                    .writeCell(getNbMapped(config.getPstToTimeSeriesMapping(), EquipmentVariable.currentTap))
+                    .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.phaseTapPosition))
                     .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.open))
                     .writeCell(UNMAPPED)
                     .writeCell(getNbUnmapped(config.getUnmappedGenerators(), config.getIgnoredUnmappedGenerators()))
                     .writeCell(getNbUnmapped(config.getUnmappedLoads(), config.getIgnoredUnmappedLoads()))
                     .writeCell(getNbUnmapped(config.getUnmappedDanglingLines(), config.getIgnoredUnmappedDanglingLines()))
                     .writeCell(getNbUnmapped(config.getUnmappedHvdcLines(), config.getIgnoredUnmappedHvdcLines()))
-                    .writeCell(getNbUnmapped(config.getUnmappedPst(), config.getIgnoredUnmappedPst()))
+                    .writeCell(getNbUnmapped(config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers()))
                     .writeCell("-")
                     .writeCell(MULTI_MAPPED)
                     .writeCell(multiMappedGenerators.size())
@@ -1305,7 +1321,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                     .writeCell(config.getIgnoredUnmappedLoads().size())
                     .writeCell(config.getIgnoredUnmappedDanglingLines().size())
                     .writeCell(config.getIgnoredUnmappedHvdcLines().size())
-                    .writeCell(config.getIgnoredUnmappedPst().size())
+                    .writeCell(config.getIgnoredUnmappedPhaseTapChangers().size())
                     .writeCell("-")
                     .writeCell(DISCONNECTED)
                     .writeCell(config.getDisconnectedGenerators().size())
@@ -1384,12 +1400,12 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                     .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.activePowerSetpoint))
                     .writeCell("-")
                     .writeCell("-")
-                    .writeCell(EquipmentVariable.currentTap.getVariableName())
+                    .writeCell(EquipmentVariable.phaseTapPosition.getVariableName())
                     .writeCell("-")
                     .writeCell("-")
                     .writeCell("-")
                     .writeCell("-")
-                    .writeCell(getNbMapped(config.getPstToTimeSeriesMapping(), EquipmentVariable.currentTap))
+                    .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.phaseTapPosition))
                     .writeCell("-")
                     .writeCell(EquipmentVariable.open.getVariableName())
                     .writeCell("-")
@@ -1420,7 +1436,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     }
 
     private int getNbPstUnmapped() {
-        return getNbUnmapped(config.getUnmappedPst(), config.getIgnoredUnmappedPst());
+        return getNbUnmapped(config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers());
     }
 
     private int getNbGeneratorMapped(EquipmentVariable variable) {
@@ -1444,7 +1460,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     }
 
     private int getNbPstMapped(EquipmentVariable variable) {
-        return getNbMapped(config.getPstToTimeSeriesMapping(), variable);
+        return getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), variable);
     }
 
     private static int getNbMapped(Map<MappingKey, List<String>> equipmentToTimeSeriesMapping) {
