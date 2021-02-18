@@ -19,9 +19,6 @@ import org.threeten.extra.Interval;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -65,9 +62,24 @@ public class TimeSeriesProvideTsTest {
                 "        breaker.id==\"FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0\"",
                 "    }",
                 "}",
-                "provideTsPsts {",
+                "provideTsPhaseTapChangers {",
                 "    filter {",
-                "        pst.id==\"FP.AND1  FTDPRA1  1\"",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "}",
+                "provideTsRatioTapChangers {",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "}",
+                "provideTsLccConverterStations {",
+                "    filter {",
+                "        lccConverterStation.id==\"FVALDI1_FVALDI1_HVDC1\"",
+                "    }",
+                "}",
+                "provideTsVscConverterStations {",
+                "    filter {",
+                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
                 "    }",
                 "}");
 
@@ -84,13 +96,14 @@ public class TimeSeriesProvideTsTest {
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.variableActivePower, "FSSV.O11_L"), new MappingKey(EquipmentVariable.fixedActivePower, "FSSV.O11_L")), mappingConfig.getLoadTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1")), mappingConfig.getHvdcLineTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")), mappingConfig.getBreakerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.currentTap, "FP.AND1  FTDPRA1  1")), mappingConfig.getPstTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1")), mappingConfig.getPhaseTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1")), mappingConfig.getRatioTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1")), mappingConfig.getLccConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1")), mappingConfig.getVscConverterStationTimeSeries());
     }
 
     @Test
     public void provideTsVariableTest() throws Exception {
-
-        Map<String, List<MappingVariable>> results = new HashMap<>();
 
         // mapping script
         String script = String.join(System.lineSeparator(),
@@ -98,43 +111,19 @@ public class TimeSeriesProvideTsTest {
                 "    filter {",
                 "        generator.id==\"FSSV.O11_G\"",
                 "    }",
-                "    variables minP",
-                "}",
-                "provideTsGenerators {",
-                "    filter {",
-                "        generator.id==\"FVALDI11_G\"",
-                "    }",
-                "    variables maxP",
+                "    variables targetP, minP, maxP, targetQ, voltageRegulatorOn, targetV",
                 "}",
                 "provideTsLoads {",
                 "    filter {",
                 "        load.id==\"FSSV.O11_L\"",
                 "    }",
-                "    variables p0",
-                "}",
-                "provideTsLoads {",
-                "    filter {",
-                "        load.id==\"FVALDI11_L\"",
-                "    }",
-                "    variables fixedActivePower, variableActivePower",
-                "}",
-                "provideTsLoads {",
-                "    filter {",
-                "        load.id==\"FVALDI11_L2\"",
-                "    }",
-                "    variables variableActivePower",
+                "    variables p0, fixedActivePower, variableActivePower, q0, fixedReactivePower, variableReactivePower",
                 "}",
                 "provideTsHvdcLines {",
                 "    filter {",
                 "        hvdcLine.id==\"HVDC1\"",
                 "    }",
-                "    variables minP",
-                "}",
-                "provideTsHvdcLines {",
-                "    filter {",
-                "        hvdcLine.id==\"HVDC2\"",
-                "    }",
-                "    variables maxP",
+                "    variables activePowerSetpoint, minP, maxP, nominalV",
                 "}",
                 "provideTsBreakers {",
                 "    filter {",
@@ -142,11 +131,35 @@ public class TimeSeriesProvideTsTest {
                 "    }",
                 "    variables open",
                 "}",
-                "provideTsPsts {",
+                "provideTsTransformers {",
                 "    filter {",
-                "        pst.id==\"FP.AND1  FTDPRA1  1\"",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
-                "    variables currentTap",
+                "    variables ratedU1, ratedU2",
+                "}",
+                "provideTsPhaseTapChangers {",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variables phaseTapPosition, regulationMode",
+                "}",
+                "provideTsRatioTapChangers {",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variables ratioTapPosition, loadTapChangingCapabilities, regulating, targetV",
+                "}",
+                "provideTsLccConverterStations {",
+                "    filter {",
+                "        lccConverterStation.id==\"FVALDI1_FVALDI1_HVDC1\"",
+                "    }",
+                "    variables powerFactor",
+                "}",
+                "provideTsVscConverterStations {",
+                "    filter {",
+                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
+                "    }",
+                "    variables voltageSetpoint, voltageRegulatorOn, reactivePowerSetpoint",
                 "}");
 
         // create time series space mock
@@ -160,11 +173,44 @@ public class TimeSeriesProvideTsTest {
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
 
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.minP, "FSSV.O11_G"), new MappingKey(EquipmentVariable.maxP, "FVALDI11_G")), mappingConfig.getGeneratorTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.variableActivePower, "FVALDI11_L2"), new MappingKey(EquipmentVariable.fixedActivePower, "FVALDI11_L"), new MappingKey(EquipmentVariable.variableActivePower, "FVALDI11_L")), mappingConfig.getLoadTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.minP, "HVDC1"), new MappingKey(EquipmentVariable.maxP, "HVDC2")), mappingConfig.getHvdcLineTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")), mappingConfig.getBreakerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.currentTap, "FP.AND1  FTDPRA1  1")), mappingConfig.getPstTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.minP, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.maxP, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.targetQ, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.voltageRegulatorOn, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.targetV, "FSSV.O11_G")),
+                                     mappingConfig.getGeneratorTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.variableActivePower, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.fixedActivePower, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.q0, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.variableReactivePower, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.fixedReactivePower, "FSSV.O11_L")),
+                                     mappingConfig.getLoadTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1"),
+                                     new MappingKey(EquipmentVariable.minP, "HVDC1"),
+                                     new MappingKey(EquipmentVariable.maxP, "HVDC1"),
+                                     new MappingKey(EquipmentVariable.nominalV, "HVDC1")),
+                                     mappingConfig.getHvdcLineTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")),
+                                     mappingConfig.getBreakerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratedU1, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.ratedU2, "FP.AND1  FTDPRA1  1")),
+                                     mappingConfig.getTransformerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.regulationMode, "FP.AND1  FTDPRA1  1")),
+                                     mappingConfig.getPhaseTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.targetV, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.loadTapChangingCapabilities, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.regulating, "FP.AND1  FTDPRA1  1")),
+                                     mappingConfig.getRatioTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1")),
+                                     mappingConfig.getLccConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1"),
+                                     new MappingKey(EquipmentVariable.voltageRegulatorOn, "FSSV.O1_FSSV.O1_HVDC1"),
+                                     new MappingKey(EquipmentVariable.reactivePowerSetpoint, "FSSV.O1_FSSV.O1_HVDC1")),
+                                     mappingConfig.getVscConverterStationTimeSeries());
     }
 
     @Test

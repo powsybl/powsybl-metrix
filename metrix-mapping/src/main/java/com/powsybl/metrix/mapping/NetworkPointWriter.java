@@ -36,7 +36,9 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExt
  */
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
-    static final class GeneratorInitialValues {
+    private static final int ON_VALUE = 1;
+
+    private static final class GeneratorInitialValues {
 
         private final double minP;
 
@@ -99,6 +101,10 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                     generator.setMinP((float) equipmentValue);
                 } else if (variable == EquipmentVariable.maxP) {
                     generator.setMaxP((float) equipmentValue);
+                } else if (variable == EquipmentVariable.voltageRegulatorOn) {
+                    generator.setVoltageRegulatorOn(equipmentValue == ON_VALUE);
+                } else if (variable == EquipmentVariable.targetV) {
+                    generator.setTargetV((float) equipmentValue);
                 }
             } else if (identifiable instanceof Load) {
                 Load load = network.getLoad(identifiable.getId());
@@ -181,10 +187,62 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                             hvdcLine.setMaxP(maxP);
                         }
                     }
+                } else if (variable == EquipmentVariable.nominalV) {
+                    hvdcLine.setNominalV(equipmentValue);
                 }
             } else if (identifiable instanceof Switch) {
                 Switch breaker = network.getSwitch(identifiable.getId());
                 breaker.setOpen(equipmentValue == TimeSeriesMapper.SWITCH_OPEN);
+            } else if (identifiable instanceof TwoWindingsTransformer) {
+                TwoWindingsTransformer transformer = network.getTwoWindingsTransformer(identifiable.getId());
+                // mapToTransformers variables
+                if (variable == EquipmentVariable.ratedU1) {
+                    transformer.setRatedU1(equipmentValue);
+                } else if (variable == EquipmentVariable.ratedU2) {
+                    transformer.setRatedU2(equipmentValue);
+                // mapToPhaseTapChangers variables
+                } else if (variable == EquipmentVariable.phaseTapPosition) {
+                    transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
+                } else if (variable == EquipmentVariable.regulationMode) {
+                    PhaseTapChanger.RegulationMode mode;
+                    switch ((int) equipmentValue) {
+                        case 0 :
+                            mode = PhaseTapChanger.RegulationMode.CURRENT_LIMITER;
+                            break;
+                        case 1 :
+                            mode = PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL;
+                            break;
+                        case 2 :
+                            mode = PhaseTapChanger.RegulationMode.FIXED_TAP;
+                            break;
+                        default :
+                            throw new AssertionError("Unsupported regulation mode " + equipmentValue);
+                    }
+                    transformer.getPhaseTapChanger().setRegulationMode(mode);
+                // mapToRatioTapChanger variables
+                } else if (variable == EquipmentVariable.ratioTapPosition) {
+                    transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
+                } else if (variable == EquipmentVariable.targetV) {
+                    transformer.getRatioTapChanger().setTargetV(equipmentValue);
+                } else if (variable == EquipmentVariable.loadTapChangingCapabilities) {
+                    transformer.getRatioTapChanger().setLoadTapChangingCapabilities(equipmentValue == ON_VALUE);
+                } else if (variable == EquipmentVariable.regulating) {
+                    transformer.getRatioTapChanger().setRegulating(equipmentValue == ON_VALUE);
+                }
+            } else if (identifiable instanceof LccConverterStation) {
+                LccConverterStation converter = network.getLccConverterStation(identifiable.getId());
+                if (variable == EquipmentVariable.powerFactor) {
+                    converter.setPowerFactor((float) equipmentValue);
+                }
+            } else if (identifiable instanceof VscConverterStation) {
+                VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
+                if (variable == EquipmentVariable.voltageRegulatorOn) {
+                    converter.setVoltageRegulatorOn(equipmentValue == ON_VALUE);
+                } else if (variable == EquipmentVariable.voltageSetpoint) {
+                    converter.setVoltageSetpoint(equipmentValue);
+                } else if (variable == EquipmentVariable.reactivePowerSetpoint) {
+                    converter.setReactivePowerSetpoint(equipmentValue);
+                }
             } else {
                 throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
             }

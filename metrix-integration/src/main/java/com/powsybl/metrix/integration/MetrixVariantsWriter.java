@@ -61,7 +61,7 @@ public class MetrixVariantsWriter {
                 }
                 break;
             case "pst":
-                if (variable == EquipmentVariable.currentTap) {
+                if (variable == EquipmentVariable.phaseTapPosition) {
                     key = "DTVALDEP";
                 }
                 break;
