@@ -20,6 +20,8 @@ import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -94,6 +96,8 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     private static final String MIN_POWER = "MinPower";
     private static final String MAX_POWER = "MaxPower";
     private static final String AVERAGE_POWER = "AveragePower";
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfigCsvWriter.class);
 
     private static final List<String> GENERATOR_HEADER = Collections.unmodifiableList(Lists.newArrayList(
             SUBSTATION,
@@ -329,6 +333,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                 case HVDC_LINES:
                 case PSTS:
                 case BREAKERS:
+                case BOUNDARY_LINE:
                     break;
 
                 default:
