@@ -20,8 +20,6 @@ import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
