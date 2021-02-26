@@ -97,8 +97,6 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     private static final String MAX_POWER = "MaxPower";
     private static final String AVERAGE_POWER = "AveragePower";
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfigCsvWriter.class);
-
     private static final List<String> GENERATOR_HEADER = Collections.unmodifiableList(Lists.newArrayList(
             SUBSTATION,
             VOLTAGE_LEVEL,
@@ -324,6 +322,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                 case PST_TYPE:
                 case BREAKER_TYPE:
                 case EMPTY_TYPE:
+                case BOUNDARY_LINE:
                     writer.write(equipmentType);
                     writer.write(CSV_SEPARATOR);
                     break;
@@ -333,7 +332,6 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                 case HVDC_LINES:
                 case PSTS:
                 case BREAKERS:
-                case BOUNDARY_LINE:
                     break;
 
                 default:
