@@ -17,7 +17,7 @@ set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 metrix_test("encodage_utf8" 2)
 metrix_test("probleme_bornes_ecart_1" 1)
 metrix_test("probleme_bornes_ecart_2" 2)
-metrix_test("contrainte_sans_action_possible_opf" 2)
+metrix_test_check_only_results("contrainte_sans_action_possible_opf" 2) # no check metrix out because CI has a different result depending on test duration
 metrix_test("contraintes_sans_action_possible" 1)
 metrix_test("tres_long" 2)
 metrix_test("tout_fixe" 2)
