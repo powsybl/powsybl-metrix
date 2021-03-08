@@ -1,19 +1,19 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole MTGROP6_SOLEI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole SANSSP3_SANSS   3COUPL    DJ a une admittance tres grande (100000.0000000000)
-Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
-Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
-Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
-Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
-Incident 'SALINL31VIRAD' : Noeuds perdus '4541 [SALINP3_7]'
-Incident 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
-Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
-Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
-Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
-Incident 'BESSEL31Z3bou' : Noeuds perdus '4540 [SALINP3_6]' '6204 [ZSALIP3_5]'
-Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
-Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
-Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
+Attention: Le quadripole QUAD_VLA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VLB a une admittance tres grande (100000.0000000000)
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFP' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFQ' : Noeuds perdus '3911 [CONSO_ETM]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -32,13 +32,13 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Parade 'MTPEZL31ZP.VE / LAVEYY611 / LAVEYY612' sur défaut 'BOUDEL61MTPEZ' : Noeuds perdus '2982 [LAVEYP1_12]' '2983 [LAVEYP1_13]'
+Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
  Nb total d'incidents + parades : 59
 Mode de calcul : OPF sans redispatching de groupes
-Noeud bilan : 0 [.CTLHP3_6]
-0 [.CTLHP3_6](1) <-> 2 [.CTLOP3_14](4) <-> 1 [.CTLHP3_7](1)
-                                       <-> 2236 [FINS P3_9](2)
-                                       <-> 5975 [ZLIEBP3_5](3)
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2236 [CONSO_CHB](2)
+                                  <-> 5975 [CONSO_HUW](3)
 
 
 ********************************************
@@ -58,7 +58,7 @@ Puissance à ajuster                 = 13251.2939  MW
 Puissance disponible à la hausse (hors Pimp) = 25506454.6673  MW
 Puissance disponible à la baisse (hors Pimp) = -25648429.3327  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = -13251.2939 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = -13251.2939 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -93,8 +93,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :    4306.7130
-Valeur de la fonction objectif :    4306.7130
+Cout des écarts de transit     :    4105.0930
+Valeur de la fonction objectif :    4105.0930
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 24 (taille de la matrice : 24)
@@ -113,7 +113,7 @@ Puissance à ajuster                 =    -0.0032  MW
 Puissance disponible à la hausse (hors Pimp) = 25530971.2640  MW
 Puissance disponible à la baisse (hors Pimp) = -25623912.7360  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 0.0032 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0032 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -140,20 +140,20 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
-Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
-Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
-Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
-Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
-Incident 'SALINL31VIRAD' : Noeuds perdus '4541 [SALINP3_7]'
-Incident 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
-Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
-Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
-Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
-Incident 'BESSEL31Z3bou' : Noeuds perdus '4540 [SALINP3_6]' '6204 [ZSALIP3_5]'
-Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
-Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
-Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
-Parade 'MTPEZL31ZP.VE / LAVEYY611 / LAVEYY612' sur défaut 'BOUDEL61MTPEZ' : Noeuds perdus '2982 [LAVEYP1_12]' '2983 [LAVEYP1_13]'
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFP' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFQ' : Noeuds perdus '3911 [CONSO_ETM]'
+Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
 
 ---------------------
 ---------------------
@@ -168,7 +168,7 @@ Puissance à ajuster                 =  -574.4974  MW
 Puissance disponible à la hausse (hors Pimp) = 25510417.0037  MW
 Puissance disponible à la baisse (hors Pimp) = -25644466.9963  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 574.4974 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 574.4974 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -210,17 +210,17 @@ Valeur de la fonction objectif :       4.1556
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 20 (taille de la matrice : 20)
 Pas de contraintes
-Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
-Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
-Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
-Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
-Incident 'SALINL31VIRAD' : Noeuds perdus '4541 [SALINP3_7]'
-Incident 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
-Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
-Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
-Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
-Incident 'BESSEL31Z3bou' : Noeuds perdus '4540 [SALINP3_6]' '6204 [ZSALIP3_5]'
-Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
-Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
-Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
-Parade 'MTPEZL31ZP.VE / LAVEYY611 / LAVEYY612' sur défaut 'BOUDEL61MTPEZ' : Noeuds perdus '2982 [LAVEYP1_12]' '2983 [LAVEYP1_13]'
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFP' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFQ' : Noeuds perdus '3911 [CONSO_ETM]'
+Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'

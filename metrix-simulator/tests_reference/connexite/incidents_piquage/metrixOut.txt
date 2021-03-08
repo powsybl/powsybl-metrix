@@ -1,11 +1,11 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole SSME1L61SSMEL_Td a une admittance tres grande (715.9485626221)
-Attention: Le quadripole DEPH1L71MUHLB_Td a une admittance tres grande (1444.0574645996)
-Incident 'piquageZGRA6' : Noeuds perdus '6631 [ZGRA6P6_1]'
-Incident 'piquageJUMEAU2' : Noeuds perdus '3426 [JUMEAP7_3]'
-Incident 'piquageJUMEAU1' : Noeuds perdus '3425 [JUMEAP7_2]'
-Incident 'piquage' : Noeuds perdus '6991 [ZSSG7P6_1]'
-Incident 'piquageZS.SE' : Noeuds perdus '5159 [S.SEVP6_1]' '6938 [ZS.SE_1]'
+Attention: Le quadripole QUAD_WAF_Td a une admittance tres grande (715.9485626221)
+Attention: Le quadripole QUAD_WVH_Td a une admittance tres grande (1444.0574645996)
+Incident 'INC_AMII' : Noeuds perdus '6631 [CONSO_IUK]'
+Incident 'INC_AMIJ' : Noeuds perdus '3426 [CONSO_EBD]'
+Incident 'INC_AMIK' : Noeuds perdus '3425 [CONSO_EBC]'
+Incident 'INC_AMIL' : Noeuds perdus '6991 [CONSO_JIG]'
+Incident 'INC_AMIM' : Noeuds perdus '5159 [CONSO_GPU]' '6938 [CONSO_JGF]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -25,26 +25,26 @@ Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
 Mode de calcul : LOAD-FLOW
-Noeud bilan : 0 [.A.ZA 6_1]
-0 [.A.ZA 6_1](2) <-> 300 [.MTTO 6_2](4) <-> 83 [.CART 6_1](2)
-                                        <-> 146 [.ENTR 6_1](2)
-                                        <-> 151 [.ESPA 6_1](2)
-                 <-> 326 [.PENA 6_2](5) <-> 83 [.CART 6_1](2)
-                                        <-> 474 [.VILN 6_4](3)
-                                        <-> 327 [.PENA 7_2](4)
+Noeud bilan : 0 [CONSO_J]
+0 [CONSO_J](2) <-> 300 [CONSO_KX](4) <-> 83 [CONSO_CO](2)
+                                     <-> 146 [CONSO_EZ](2)
+                                     <-> 151 [CONSO_FE](2)
+               <-> 326 [CONSO_LX](5) <-> 83 [CONSO_CO](2)
+                                     <-> 474 [CONSO_RP](3)
+                                     <-> 327 [CONSO_LY](4)
 
-Noeud bilan : 58 [.BIPOLP7_2]
-58 [.BIPOLP7_2](1) <-> 446 [.UK  P7_1](6) <-> 66 [.BRITP7_1](1)
-                                          <-> 88 [.CELTIP7_1](1)
-                                          <-> 157 [.FABP7_1](1)
-                                          <-> 211 [.IFA2P7_1](1)
-                                          <-> 306 [.NEMOP7_1](1)
-                   |=| 3854 [MANDAP7_1](6) <-> 515 [ARGOEP7_1](13)
-                                           <-> 1120 [ATTAQP7_1](4)
-                                           <-> 2898 [FRUGEP7_3](3)
-                                           <-> 6263 [WARANP7_2](8)
-                                           <-> 3852 [MANDAP6_2](2)
-                                           <-> 3853 [MANDAP6_3](5)
+Noeud bilan : 58 [CONSO_BP]
+58 [CONSO_BP](1) <-> 446 [CONSO_QN](6) <-> 66 [CONSO_BX](1)
+                                       <-> 88 [CONSO_CT](1)
+                                       <-> 157 [CONSO_FK](1)
+                                       <-> 211 [CONSO_HM](1)
+                                       <-> 306 [CONSO_LD](1)
+                 |=| 3854 [CONSO_ERP](6) <-> 515 [CONSO_TE](13)
+                                         <-> 1120 [CONSO_AQL](4)
+                                         <-> 2898 [CONSO_DGV](3)
+                                         <-> 6263 [CONSO_IGG](8)
+                                         <-> 3852 [CONSO_ERN](2)
+                                         <-> 3853 [CONSO_ERO](5)
 
 
 ********************************************
@@ -64,8 +64,8 @@ Puissance à ajuster                 = -4964.9880  MW
 Puissance disponible à la hausse (hors Pimp) = 1433614.0896  MW
 Puissance disponible à la baisse (hors Pimp) = -247554.7939  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_1]), bilan = -0.0120 MW
-Zone synchrone 1 (noeud bilan 58 [.BIPOLP7_2]), bilan = 4965.0000 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -0.0120 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = 4965.0000 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe

@@ -1,5 +1,5 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole PRATCP6_PRATC   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VAP a une admittance tres grande (100000.0000000000)
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -20,10 +20,10 @@ Pénalisation des HVDC dans la fonction coût = 0.1
 
  Nb total d'incidents + parades : 5
 Mode de calcul : OPF sans redispatching de groupes
-Noeud bilan : 0 [.CTLHP3_6]
-0 [.CTLHP3_6](1) <-> 2 [.CTLOP3_14](4) <-> 1 [.CTLHP3_7](1)
-                                       <-> 2200 [FINS P3_9](2)
-                                       <-> 5906 [ZLIEBP3_5](3)
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2200 [CONSO_CFR](2)
+                                  <-> 5906 [CONSO_HSF](3)
 
 
 ********************************************
@@ -43,7 +43,7 @@ Puissance à ajuster                 = -63319.9987  MW
 Puissance disponible à la hausse (hors Pimp) = 25224209.9485  MW
 Puissance disponible à la baisse (hors Pimp) = -25390728.0515  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 63319.9987 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 63319.9987 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -80,7 +80,7 @@ Puissance à ajuster                 =   198.0420  MW
 Puissance disponible à la hausse (hors Pimp) = 25247228.8060  MW
 Puissance disponible à la baisse (hors Pimp) = -25367709.1940  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = -198.0420 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = -198.0420 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe

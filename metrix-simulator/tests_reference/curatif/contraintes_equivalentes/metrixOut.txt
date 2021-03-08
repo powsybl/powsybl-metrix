@@ -1,298 +1,298 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole CHEV5P6_CHEV5   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole MERLAP6_MERLA   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole SSFLOP4_SSFLO   4COUPL    INTER a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole SSME1L61SSMEL_Td a une admittance tres grande (715.9455871582)
-Attention: Le quadripole DEPH1L71MUHLB_Td a une admittance tres grande (1444.0118408203)
-Groupe BAYET_EOL_ES : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe A.OTH_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ALBE5_EOL_ES : Pobj (0.000160) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe AMELO_PV_ES : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ANNAY_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe APT  _EOL_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ARACH_PV_ES : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ARC18_PV_ES : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ARLES_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ARTIG_PV_ES : Pobj (0.000279) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe AUBI5_EOL_ES : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe AURAY_HY_ES : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe AUZAT_PV_ES : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe AVALL_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe AVRAN_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe B.CEZ_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe B.CHA_PV_ES : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe B.GES_HY_ES : Pobj (0.000362) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe B.LOM_HY_ES : Pobj (0.000121) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BACCH_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BAYEU_PV_CHG : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BAYEU_EOL_ES : Pobj (0.000411) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BISSO_PV_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BOCAG_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BORDE_PV_ES : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BOUCE_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BOUCE_PV_CHG : Pobj (0.001503) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BOUCE_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BOULI_EOL_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BROU5_EOL_ES : Pobj (0.000295) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BXBOU_PV_ES : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BXREP_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe BZBAK_PV_ES : Pobj (0.004074) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe C.GIB_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe C.GON_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe C.LEO_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe C.NOI_PV_CHG : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CAEN _PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CAMBO_HY_ES : Pobj (0.000566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CARHA_HY_ES : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CARPE_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CAS.S_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CASTA_PV_ES : Pobj (0.008626) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CATEA_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CHAZ5_EOL_ES : Pobj (0.000054) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CIOTA_PV_ES : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CONNE_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CORIO_PV_ES : Pobj (0.003287) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe COUE5_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe COURS_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CPRAD_PV_ES : Pobj (0.002502) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CREUL_PV_CHG : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CROLL_PV_ES : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CROQU_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CROZE_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CRUEL_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CRUEL_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CUBNE_EOL_ES : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CUISE_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CZBEV_PV_ES : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe CZPIE_EOL_ES : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DANT5_PV_ES : Pobj (0.003000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GUARB_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PRAGN_PV_ES : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DIEUL_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DIEUZ_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DIVES_PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DOL  _EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DOUAI_TH_CHG : Pobj (0.001919) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe DOUAR_HY_ES : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ENTRA_EOL_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ERQUY_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe EVREU_EOL_ES : Pobj (0.000630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe EVRO2_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe F.ALL_PV_ES : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe F.BER_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe F.ETO_PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe FISME_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe FOUGE_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe G.BAN_EOL_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GAILL_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GANDR_PV_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GARCH_EOL_ES : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GARIB_PV_ES : Pobj (0.004313) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GOSNA_EOL_ES : Pobj (0.000080) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GOSNE_EOL_ES : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GRAVE_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GRIBO_EOL_ES : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GUER _TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe GUING_HY_ES : Pobj (0.014881) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe H.RIV_PV_ES : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe HALLE_PV_ES : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe HARCA_HY_ES : Pobj (0.001932) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe HAYBE_PV_ES : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe HERIM_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe HOLQU_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe HUBER_EOL_ES : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ISIGN_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ISIGN_PV_CHG : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe L.MOR_PV_CHG : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe L.OO _PV_ES : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LAMB5_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LANNI_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LANNI_EOL_ES : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LAVAL_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LAVAL_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LAVAN_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LIVAR_PV_CHG : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LIVIE_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LOCHE_EOL_ES : Pobj (0.000731) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LOCMA_HY_ES : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LOGER_EOL_ES : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LOUD7_PV_ES : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LOUE _EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LUTTE_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe LUZ  _PV_ES : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MAC.S_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MAGEN_PV_ES : Pobj (0.009422) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MAICH_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MALAG_PV_ES : Pobj (0.003605) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MASEV_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MATEL_PV_ES : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MENUS_PV_ES : Pobj (0.003000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MESNI_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MESNI_PV_CHG : Pobj (0.001503) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MILLE_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MIRAN_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MOIRA_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MONNA_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MORTA_TH_CHG : Pobj (0.003837) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MORU _PV_ES : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MOTTA_PV_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MOUS6_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MRLLA_EOL_ES : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MTEND_EOL_ES : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MTMAR_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MTPEZ_PV_CHG : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe MTRI5_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe NENEZ_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe NENEZ_HY_ES : Pobj (0.022321) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe NOURO_EOL_ES : Pobj (0.000630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe NOYA5_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ODON _PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe P.JER_EOL_ES : Pobj (0.000555) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe P.PAI_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PAIMP_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PEUPL_PV_ES : Pobj (0.002356) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PEZEN_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PLAN6_EOL_ES : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PLOER_HY_ES : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PLOUR_HY_ES : Pobj (0.014881) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe POLY5_EOL_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PTAC _PV_ES : Pobj (0.000394) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe PTIVY_HY_ES : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe QUEVI_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe RANVI_PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe RANVI_EOL_ES : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe REINI_PV_CHG : Pobj (0.001513) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe RENNE_EOL_ES : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe ROMEN_EOL_ES : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe S.GIR_EOL_ES : Pobj (0.000054) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SAONN_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SARDO_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SEGRE_HY_ES : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SENLI_PV_ES : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SENS _EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SEQUE_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SERV6_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SEVRE_PV_ES : Pobj (0.004313) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSBR6_EOL_ES : Pobj (0.000411) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSCEC_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSCLA_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSCON_PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSGE6_EOL_ES : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSHEN_EOL_ES : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSLAC_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSLAU_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSMAX_PV_ES : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSNI6_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSRO5_EOL_ES : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSSE5_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSSIX_PV_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSTIN_PV_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe SSYOR_EOL_ES : Pobj (0.000483) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TAIN _EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TARAR_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TEMP5_PV_ES : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TERNE_PV_ES : Pobj (0.001000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TERR5_PV_ES : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TINTE_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TINTE_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe TOURL_TH_CHG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe UZES _EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe V.THO_PV_ES : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VALCA_PV_CHG : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VALE8_EOL_ES : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VALEN_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VALLE_PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VALLE_EOL_ES : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VALS _EOL_ES : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VARET_PV_CHG : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VARS _PV_ES : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VAUVE_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VEDEN_EOL_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VENIS_EOL_ES : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VICLA_PV_ES : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VIGUI_EOL_ES : Pobj (0.000220) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe VIREU_PV_ES : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe WARHE_EOL_ES : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe YQUEL_PV_CHG : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe YQUEL_EOL_ES : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-L'incident N-k numero 2 (FLEACL41N.CHA) rompt la connexité, il est ignoré
-L'incident N-k numero 4 (MAUGEL41SOURD) rompt la connexité, il est ignoré
-L'incident N-k numero 13 (CPNI5L41MTBRO) rompt la connexité, il est ignoré
-L'incident N-k numero 26 (MANSLL41ZMANS) rompt la connexité, il est ignoré
-L'incident N-k numero 34 (G.RIVL61GUERS) rompt la connexité, il est ignoré
-L'incident N-k numero 40 (SOULLL41SSRIE) rompt la connexité, il est ignoré
-L'incident N-k numero 46 (FLEACY633) rompt la connexité, il est ignoré
-L'incident N-k numero 50 (AYTREL41JARNE) rompt la connexité, il est ignoré
-L'incident N-k numero 63 (AUBREL41ZAUBR) rompt la connexité, il est ignoré
-L'incident N-k numero 64 (BREI5L41DISTR) rompt la connexité, il est ignoré
-L'incident N-k numero 65 (CHABOL31CNNAY) rompt la connexité, il est ignoré
-L'incident N-k numero 67 (CHEV5L32CNNAY) rompt la connexité, il est ignoré
-L'incident N-k numero 68 (BRAINL31INDRE) rompt la connexité, il est ignoré
-L'incident N-k numero 74 (GOISEL41SSFLO) rompt la connexité, il est ignoré
-L'incident N-k numero 83 (GRUESL41LUCON) rompt la connexité, il est ignoré
-L'incident N-k numero 85 (LUCONL41MOUZE) rompt la connexité, il est ignoré
-L'incident N-k numero 90 (MORA6L41TOUVR) rompt la connexité, il est ignoré
-L'incident N-k numero 101 (GOULAL41VERTO) rompt la connexité, il est ignoré
-L'incident N-k numero 102 (B.INDL31CHABO) rompt la connexité, il est ignoré
-L'incident N-k numero 109 (SOYAUY433) rompt la connexité, il est ignoré
-L'incident N-k numero 114 (C.BERL42NICER) rompt la connexité, il est ignoré
-L'incident N-k numero 121 (THAIML41ZTHAI) rompt la connexité, il est ignoré
-L'incident N-k numero 122 (C.2I1L62SOULL) rompt la connexité, il est ignoré
-L'incident N-k numero 131 (CHABOL31MTLU5) rompt la connexité, il est ignoré
-L'incident N-k numero 134 (B.INDL32CHABO) rompt la connexité, il est ignoré
-L'incident N-k numero 145 (COR.PL65CORD5) rompt la connexité, il est ignoré
-L'incident N-k numero 153 (R.YONL41THIBA) rompt la connexité, il est ignoré
-L'incident N-k numero 154 (NIORTL61NIOTD) rompt la connexité, il est ignoré
-L'incident N-k numero 163 (CHEV5L31CNNAY) rompt la connexité, il est ignoré
-L'incident N-k numero 167 (ATTE4L61B.GUE) rompt la connexité, il est ignoré
-L'incident N-k numero 170 (NIORTL41TREVI) rompt la connexité, il est ignoré
-L'incident N-k numero 172 (BRUFFL41CHOLE) rompt la connexité, il est ignoré
-L'incident N-k numero 178 (ESSA5L41MERLA) rompt la connexité, il est ignoré
-L'incident N-k numero 184 (M.HERL41SSMAI) rompt la connexité, il est ignoré
-L'incident N-k numero 193 (COR.PL73CORD5) rompt la connexité, il est ignoré
-L'incident N-k numero 194 (GALORL61GALTD) rompt la connexité, il est ignoré
-L'incident N-k numero 195 (CARAVL31ZROU1) rompt la connexité, il est ignoré
-L'incident N-k numero 198 (BXLIEL41N.MER) rompt la connexité, il est ignoré
-L'incident N-k numero 202 (MARTYL61PONAN) rompt la connexité, il est ignoré
-L'incident N-k numero 203 (C.2I1L61SOULL) rompt la connexité, il est ignoré
-L'incident N-k numero 210 (E.CL5L41RABIO) rompt la connexité, il est ignoré
-L'incident N-k numero 214 (MORINL41PALLI) rompt la connexité, il est ignoré
-L'incident N-k numero 216 (PRII1L62PRINQ) rompt la connexité, il est ignoré
-L'incident N-k numero 220 (C.BERL41NICER) rompt la connexité, il est ignoré
-L'incident N-k numero 224 (CHEMIL41G.OUC) rompt la connexité, il est ignoré
-L'incident N-k numero 228 (GENETL41ZGEN5) rompt la connexité, il est ignoré
-L'incident N-k numero 234 (CHARBL41PONS) rompt la connexité, il est ignoré
-L'incident N-k numero 240 (B.AI5L41BLANC) rompt la connexité, il est ignoré
-L'incident N-k numero 246 (FLEACL41ROUI5) rompt la connexité, il est ignoré
-L'incident N-k numero 250 (ARCHIL41ZCH10) rompt la connexité, il est ignoré
-L'incident N-k numero 253 (MACHEL31SSPAZ) rompt la connexité, il est ignoré
-L'incident N-k numero 261 (A.NOUL61FLEAC) rompt la connexité, il est ignoré
-L'incident N-k numero 267 (ORVAUL31SSHE8) rompt la connexité, il est ignoré
-L'incident N-k numero 272 (DOULOL61ZDOUL) rompt la connexité, il est ignoré
-L'incident N-k numero 273 (BXVO5L41CHALL) rompt la connexité, il est ignoré
-L'incident N-k numero 274 (PALLIL41VAUGO) rompt la connexité, il est ignoré
-L'incident N-k numero 276 (CHEV5L33CNNAY) rompt la connexité, il est ignoré
-L'incident N-k numero 277 (MATHAL41SSANG) rompt la connexité, il est ignoré
-L'incident N-k numero 280 (M.ACHL41ZM.AC) rompt la connexité, il est ignoré
-L'incident N-k numero 285 (ESSA5L41ZESS5) rompt la connexité, il est ignoré
-L'incident N-k numero 292 (CHEV5L61CHETD) rompt la connexité, il est ignoré
-L'incident N-k numero 320 (AULN5L41BOIS5) rompt la connexité, il est ignoré
-L'incident N-k numero 321 (ARNOUL41ZARNO) rompt la connexité, il est ignoré
-L'incident N-k numero 324 (PRIN1L61PRINQ) rompt la connexité, il est ignoré
-L'incident N-k numero 326 (AIGREL41ZVERV) rompt la connexité, il est ignoré
-L'incident N-k numero 330 (SIRMIL61SIRTD) rompt la connexité, il est ignoré
-L'incident N-k numero 335 (KUHL5L32PAIMB) rompt la connexité, il est ignoré
-L'incident N-k numero 336 (CZONNL31FLEAC) rompt la connexité, il est ignoré
-L'incident N-k numero 344 (ATTE4L62B.GUE) rompt la connexité, il est ignoré
-L'incident N-k numero 345 (C.DENL41NIORT) rompt la connexité, il est ignoré
-L'incident N-k numero 350 (B.AI5L42BLANC) rompt la connexité, il est ignoré
-L'incident N-k numero 352 (CARAVL32ZROU2) rompt la connexité, il est ignoré
-L'incident N-k numero 353 (CHEV5L31I.NAN) rompt la connexité, il est ignoré
-L'incident N-k numero 371 (B.INDL33CHABO) rompt la connexité, il est ignoré
-L'incident N-k numero 372 (COR.PL64CORD5) rompt la connexité, il est ignoré
-L'incident N-k numero 384 (S.SEVL61ZS.SE) rompt la connexité, il est ignoré
-L'incident N-k numero 386 (PRAUDL41VALL6) rompt la connexité, il est ignoré
-L'incident N-k numero 390 (BRIZEL61NIORT) rompt la connexité, il est ignoré
+Attention: Le quadripole QUAD_YGE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YGF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YGG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_WAG_Td a une admittance tres grande (715.9455871582)
+Attention: Le quadripole QUAD_WVI_Td a une admittance tres grande (1444.0118408203)
+Groupe GROUP_YSP : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_YUQ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_YXN : Pobj (0.000160) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZAG : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZCJ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZDT : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZDV : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZED : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZGG : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZHZ : Pobj (0.000279) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZKB : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZMK : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZOL : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZOR : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZPW : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZRL : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZRO : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZSV : Pobj (0.000362) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZTI : Pobj (0.000121) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZUT : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZZY : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAAC : Pobj (0.000411) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAGF : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAIA : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAKW : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AALQ : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AALR : Pobj (0.001503) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AALU : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAMW : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AARX : Pobj (0.000295) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAUT : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAXK : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAYM : Pobj (0.004074) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABBE : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABBM : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABCH : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABDF : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABFY : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABHD : Pobj (0.000566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABIO : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABJC : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABJX : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABKG : Pobj (0.008626) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABKU : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABSM : Pobj (0.000054) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABVK : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACAZ : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACDE : Pobj (0.003287) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACEE : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACEZ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACGA : Pobj (0.002502) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACHM : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACIJ : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACIO : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACIT : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACJG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACJK : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACLP : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACLV : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACNW : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACON : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACQB : Pobj (0.003000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACRO : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACRT : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACSZ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACTB : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACTR : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACUF : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACVE : Pobj (0.001919) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACVK : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADBD : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADCV : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADGQ : Pobj (0.000630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADGS : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADHP : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADHV : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADIN : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADNA : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADPW : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADSY : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADWA : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADWQ : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADXJ : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADYL : Pobj (0.004313) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEDX : Pobj (0.000080) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEEB : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEGT : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEHC : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEIF : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEJT : Pobj (0.014881) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEKY : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AELO : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEMG : Pobj (0.001932) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEMZ : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEOV : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEPR : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEQV : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AESV : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AESW : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFAM : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFAZ : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFDW : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFGV : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFGW : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFJB : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFJD : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFJK : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFOZ : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFPF : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFPT : Pobj (0.000731) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFPX : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFQR : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFTA : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFTO : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFWL : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFWW : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGAT : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGBM : Pobj (0.009422) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGBZ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGDA : Pobj (0.003605) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGIT : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGJD : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGNX : Pobj (0.003000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGOX : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGOY : Pobj (0.001503) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGRD : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGSB : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGTX : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGVO : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGWN : Pobj (0.003837) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGWS : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGXA : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGYR : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHAB : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHBW : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHDU : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHEN : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHFE : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHJF : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHJG : Pobj (0.022321) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHLQ : Pobj (0.000630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHMC : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHNE : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHTQ : Pobj (0.000555) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHUY : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHXQ : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIDK : Pobj (0.002356) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIDX : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIFS : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIHB : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIHR : Pobj (0.014881) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIJU : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIOG : Pobj (0.000394) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIOZ : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIRW : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIUK : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIUM : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIWJ : Pobj (0.001513) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIWX : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJDN : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJJN : Pobj (0.000054) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJOO : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJOR : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJTH : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJUP : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJUU : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJUZ : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJVI : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJWF : Pobj (0.004313) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKEZ : Pobj (0.000411) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKFO : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKGK : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKGX : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKJX : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKKY : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKNE : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKNM : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKOK : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKQO : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKTI : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKUC : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKUP : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKVA : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKXF : Pobj (0.000483) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKZW : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALAQ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALBY : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALCM : Pobj (0.001000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALCQ : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALFU : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALFZ : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALHL : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALMV : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALPU : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALQV : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALRM : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALRU : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALSR : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALST : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALTC : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALTT : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALTW : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALVC : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALVQ : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALWT : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMAJ : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMAY : Pobj (0.000220) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMCL : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMGQ : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMHO : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMHP : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+L'incident N-k numero 2 (QUAD_QBZ) rompt la connexité, il est ignoré
+L'incident N-k numero 4 (QUAD_SNC) rompt la connexité, il est ignoré
+L'incident N-k numero 13 (QUAD_OTG) rompt la connexité, il est ignoré
+L'incident N-k numero 26 (QUAD_SIP) rompt la connexité, il est ignoré
+L'incident N-k numero 34 (QUAD_QKJ) rompt la connexité, il est ignoré
+L'incident N-k numero 40 (QUAD_URF) rompt la connexité, il est ignoré
+L'incident N-k numero 46 (QUAD_WZB) rompt la connexité, il est ignoré
+L'incident N-k numero 50 (QUAD_LQZ) rompt la connexité, il est ignoré
+L'incident N-k numero 63 (QUAD_LLB) rompt la connexité, il est ignoré
+L'incident N-k numero 64 (QUAD_MVP) rompt la connexité, il est ignoré
+L'incident N-k numero 65 (QUAD_NVG) rompt la connexité, il est ignoré
+L'incident N-k numero 67 (QUAD_ODS) rompt la connexité, il est ignoré
+L'incident N-k numero 68 (QUAD_MUT) rompt la connexité, il est ignoré
+L'incident N-k numero 74 (QUAD_QSX) rompt la connexité, il est ignoré
+L'incident N-k numero 83 (QUAD_QXZ) rompt la connexité, il est ignoré
+L'incident N-k numero 85 (QUAD_SBW) rompt la connexité, il est ignoré
+L'incident N-k numero 90 (QUAD_SUU) rompt la connexité, il est ignoré
+L'incident N-k numero 101 (QUAD_QTV) rompt la connexité, il est ignoré
+L'incident N-k numero 102 (QUAD_LTS) rompt la connexité, il est ignoré
+L'incident N-k numero 109 (QUAD_XXR) rompt la connexité, il est ignoré
+L'incident N-k numero 114 (QUAD_NGK) rompt la connexité, il est ignoré
+L'incident N-k numero 121 (QUAD_VCR) rompt la connexité, il est ignoré
+L'incident N-k numero 122 (QUAD_NFU) rompt la connexité, il est ignoré
+L'incident N-k numero 131 (QUAD_NVI) rompt la connexité, il est ignoré
+L'incident N-k numero 134 (QUAD_LTT) rompt la connexité, il est ignoré
+L'incident N-k numero 145 (QUAD_ONN) rompt la connexité, il est ignoré
+L'incident N-k numero 153 (QUAD_UCP) rompt la connexité, il est ignoré
+L'incident N-k numero 154 (QUAD_XNB) rompt la connexité, il est ignoré
+L'incident N-k numero 163 (QUAD_ODN) rompt la connexité, il est ignoré
+L'incident N-k numero 167 (QUAD_LJV) rompt la connexité, il est ignoré
+L'incident N-k numero 170 (QUAD_TFC) rompt la connexité, il est ignoré
+L'incident N-k numero 172 (QUAD_MZA) rompt la connexité, il est ignoré
+L'incident N-k numero 178 (QUAD_PTZ) rompt la connexité, il est ignoré
+L'incident N-k numero 184 (QUAD_SEC) rompt la connexité, il est ignoré
+L'incident N-k numero 193 (QUAD_ONT) rompt la connexité, il est ignoré
+L'incident N-k numero 194 (QUAD_XBB) rompt la connexité, il est ignoré
+L'incident N-k numero 195 (QUAD_NOI) rompt la connexité, il est ignoré
+L'incident N-k numero 198 (QUAD_NCQ) rompt la connexité, il est ignoré
+L'incident N-k numero 202 (QUAD_SLW) rompt la connexité, il est ignoré
+L'incident N-k numero 203 (QUAD_NFT) rompt la connexité, il est ignoré
+L'incident N-k numero 210 (QUAD_PNZ) rompt la connexité, il est ignoré
+L'incident N-k numero 214 (QUAD_SVT) rompt la connexité, il est ignoré
+L'incident N-k numero 216 (QUAD_TZN) rompt la connexité, il est ignoré
+L'incident N-k numero 220 (QUAD_NGJ) rompt la connexité, il est ignoré
+L'incident N-k numero 224 (QUAD_OBZ) rompt la connexité, il est ignoré
+L'incident N-k numero 228 (QUAD_QPW) rompt la connexité, il est ignoré
+L'incident N-k numero 234 (QUAD_NZI) rompt la connexité, il est ignoré
+L'incident N-k numero 240 (QUAD_LRF) rompt la connexité, il est ignoré
+L'incident N-k numero 246 (QUAD_QCE) rompt la connexité, il est ignoré
+L'incident N-k numero 250 (QUAD_LBM) rompt la connexité, il est ignoré
+L'incident N-k numero 253 (QUAD_SFQ) rompt la connexité, il est ignoré
+L'incident N-k numero 261 (QUAD_KPM) rompt la connexité, il est ignoré
+L'incident N-k numero 267 (QUAD_TIM) rompt la connexité, il est ignoré
+L'incident N-k numero 272 (QUAD_PLW) rompt la connexité, il est ignoré
+L'incident N-k numero 273 (QUAD_NEZ) rompt la connexité, il est ignoré
+L'incident N-k numero 274 (QUAD_TQC) rompt la connexité, il est ignoré
+L'incident N-k numero 276 (QUAD_ODU) rompt la connexité, il est ignoré
+L'incident N-k numero 277 (QUAD_SMR) rompt la connexité, il est ignoré
+L'incident N-k numero 280 (QUAD_SDN) rompt la connexité, il est ignoré
+L'incident N-k numero 285 (QUAD_PUA) rompt la connexité, il est ignoré
+L'incident N-k numero 292 (QUAD_WRK) rompt la connexité, il est ignoré
+L'incident N-k numero 320 (QUAD_LLV) rompt la connexité, il est ignoré
+L'incident N-k numero 321 (QUAD_LFU) rompt la connexité, il est ignoré
+L'incident N-k numero 324 (QUAD_TZQ) rompt la connexité, il est ignoré
+L'incident N-k numero 326 (QUAD_KRP) rompt la connexité, il est ignoré
+L'incident N-k numero 330 (QUAD_XWZ) rompt la connexité, il est ignoré
+L'incident N-k numero 335 (QUAD_RLS) rompt la connexité, il est ignoré
+L'incident N-k numero 336 (QUAD_PCO) rompt la connexité, il est ignoré
+L'incident N-k numero 344 (QUAD_LJX) rompt la connexité, il est ignoré
+L'incident N-k numero 345 (QUAD_NGV) rompt la connexité, il est ignoré
+L'incident N-k numero 350 (QUAD_LRG) rompt la connexité, il est ignoré
+L'incident N-k numero 352 (QUAD_NOJ) rompt la connexité, il est ignoré
+L'incident N-k numero 353 (QUAD_ODO) rompt la connexité, il est ignoré
+L'incident N-k numero 371 (QUAD_LTU) rompt la connexité, il est ignoré
+L'incident N-k numero 372 (QUAD_ONM) rompt la connexité, il est ignoré
+L'incident N-k numero 384 (QUAD_ULK) rompt la connexité, il est ignoré
+L'incident N-k numero 386 (QUAD_TYS) rompt la connexité, il est ignoré
+L'incident N-k numero 390 (QUAD_MYD) rompt la connexité, il est ignoré
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 17270.731409
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -311,29 +311,29 @@ Nombre de composantes synchrones 2
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-L'incident parade numero BLANCL41CHOLE (BLANCL41CHEMI / BENE5L41BLANC) rompt la connexité, il est ignoré
+L'incident parade numero QUAD_MMA (QUAD_MLZ / QUAD_MFK) rompt la connexité, il est ignoré
  Nb total d'incidents + parades : 454
 Mode de calcul : OPF sans redispatching de groupes
-Noeud bilan : 0 [.A.ZA 6_1]
-0 [.A.ZA 6_1](2) <-> 300 [.MTTO 6_2](4) <-> 83 [.CART 6_1](2)
-                                        <-> 146 [.ENTR 6_1](2)
-                                        <-> 151 [.ESPA 6_1](2)
-                 <-> 326 [.PENA 6_2](5) <-> 83 [.CART 6_1](2)
-                                        <-> 474 [.VILN 6_4](3)
-                                        <-> 327 [.PENA 7_2](4)
+Noeud bilan : 0 [CONSO_J]
+0 [CONSO_J](2) <-> 300 [CONSO_KX](4) <-> 83 [CONSO_CO](2)
+                                     <-> 146 [CONSO_EZ](2)
+                                     <-> 151 [CONSO_FE](2)
+               <-> 326 [CONSO_LX](5) <-> 83 [CONSO_CO](2)
+                                     <-> 474 [CONSO_RP](3)
+                                     <-> 327 [CONSO_LY](4)
 
-Noeud bilan : 58 [.BIPOLP7_2]
-58 [.BIPOLP7_2](1) <-> 446 [.UK  P7_1](6) <-> 66 [.BRITP7_1](1)
-                                          <-> 88 [.CELTIP7_1](1)
-                                          <-> 157 [.FABP7_1](1)
-                                          <-> 211 [.IFA2P7_1](1)
-                                          <-> 306 [.NEMOP7_1](1)
-                   |=| 3854 [MANDAP7_1](6) <-> 515 [ARGOEP7_1](13)
-                                           <-> 1120 [ATTAQP7_1](4)
-                                           <-> 2898 [FRUGEP7_3](3)
-                                           <-> 6265 [WARANP7_2](8)
-                                           <-> 3852 [MANDAP6_2](2)
-                                           <-> 3853 [MANDAP6_3](5)
+Noeud bilan : 58 [CONSO_BP]
+58 [CONSO_BP](1) <-> 446 [CONSO_QN](6) <-> 66 [CONSO_BX](1)
+                                       <-> 88 [CONSO_CT](1)
+                                       <-> 157 [CONSO_FK](1)
+                                       <-> 211 [CONSO_HM](1)
+                                       <-> 306 [CONSO_LD](1)
+                 |=| 3854 [CONSO_ERP](6) <-> 515 [CONSO_TE](13)
+                                         <-> 1120 [CONSO_AQL](4)
+                                         <-> 2898 [CONSO_DGV](3)
+                                         <-> 6265 [CONSO_IGI](8)
+                                         <-> 3852 [CONSO_ERN](2)
+                                         <-> 3853 [CONSO_ERO](5)
 
 
 ********************************************
@@ -346,493 +346,493 @@ Variante numéro 0
 ---------------------
 ---------------------
 
-Groupe A.DUCIN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe A.DUC_EOL_CHG : Pobj (-0.667000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe A.OTH_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ABBEN_EOL_CHG : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AILLEIN3 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AILLE_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ALTEN_EOL_CHG : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ALTKI_EOL_CHG : Pobj (-0.493000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AMARI_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AMELEIN3 : Pobj (-2.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AMELE_EOL_CHG : Pobj (-0.749000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ANNAY_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ANNEY_EOL_CHG : Pobj (-0.173000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe APT  _EOL_CHG : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARBOI_EOL_CHG : Pobj (-0.667000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARCISIN1 : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARCISIN3 : Pobj (-2.374000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARCIS_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARCIS_EOL_ES : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARRO5_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ARSOT_EOL_CHG : Pobj (-0.210000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AULNAIN1 : Pobj (-0.758000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AULNAIN2 : Pobj (-1.479000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AULNA_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AURI5_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AUTUN_EOL_CHG : Pobj (-0.904000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AUXERIN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AUXERIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AUXON_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AVALL_EOL_CHG : Pobj (-0.877000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe AVREU_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe B.BAS_EOL_CHG : Pobj (-0.950000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe B.DAM_EOL_CHG : Pobj (-1.388000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe B.DUCIN1 : Pobj (-3.104000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe B.DUCIN2 : Pobj (-3.607000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BABLOIN1 : Pobj (-4.529000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BABLOIN3 : Pobj (-2.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BABLO_EOL_CHG : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BANCA_EOL_CHG : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BARBUIN1 : Pobj (-2.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BARBUIN3 : Pobj (-1.123000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BARBU_EOL_CHG : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BARJO_EOL_CHG : Pobj (-0.164000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BASS6IN1 : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BASS6IN3 : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BASS6_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BAYAR_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BAYON_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BAZANIN1 : Pobj (-1.689000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BAZANIN2 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BAZAN_EOL_CHG : Pobj (-1.032000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BELLE_EOL_CHG : Pobj (-0.639000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BETTI_EOL_CHG : Pobj (-0.146000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BIBER_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BITCH_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BLANZ_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BOGNY_EOL_CHG : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BOULAIN1 : Pobj (-1.050000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BOULAIN2 : Pobj (-2.739000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BOULAIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BOULI_EOL_CHG : Pobj (-1.917000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BOUZOIN1 : Pobj (-0.822000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BREAU_EOL_CHG : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BRIEN_EOL_CHG : Pobj (-0.210000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BROUS_EOL_CHG : Pobj (-0.740000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BRUMA_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BURCI_EOL_CHG : Pobj (-0.740000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BUSSI_EOL_CHG : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXMET_EOL_CHG : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXNE _EOL_CHG : Pobj (-0.155000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXNE _EOL_ES : Pobj (-1.643000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXREP_EOL_CHG : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXVAL_EOL_CHG : Pobj (-0.265000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXZEEIN1 : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BXZEEIN3 : Pobj (-1.963000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe BZBON_EOL_CHG : Pobj (-0.201000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.AND_EOL_CHG : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.FOU_EOL_CHG : Pobj (-0.603000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.LANIN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.LAN_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.LEO_EOL_CHG : Pobj (-0.329000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.REG_EOL_CHG : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.RHOIN1 : Pobj (-1.908000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.RHO_EOL_CHG : Pobj (-1.771000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.RHO_EOL_ES : Pobj (-1.570000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe C.SEI_EOL_CHG : Pobj (-0.849000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CARNO_EOL_CHG : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CARPE_EOL_CHG : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHA.N_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAIL_EOL_CHG : Pobj (-0.904000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHALO_EOL_CHG : Pobj (-0.274000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAN7IN1 : Pobj (-1.306000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAN7_EOL_CHG : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAR6IN1 : Pobj (-2.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHARN_EOL_CHG : Pobj (-1.452000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHARO_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG1 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG2 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG3 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG4 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG5 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG6 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG7 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG8 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHAT9.TG9 : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHEYLIN1 : Pobj (-0.110000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHEYLIN2 : Pobj (-1.260000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CHEYL_EOL_CHG : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CIREYIN1 : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CLAYE_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CLUNY_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CLUS5_EOL_CHG : Pobj (-1.945000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe COMPEIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe COMPEIN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe COMPEIN3 : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe COMPE_EOL_CHG : Pobj (-0.073000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe COUCH_EOL_CHG : Pobj (-0.301000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe COULO_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CPDIV_EOL_CHG : Pobj (-0.265000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CPVAN_EOL_CHG : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CPVER_EOL_CHG : Pobj (-0.511000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CRENEIN2 : Pobj (-4.200000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CRENEIN3 : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CRENE_EOL_CHG : Pobj (-1.890000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CRESTIN1 : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CREUS_EOL_CHG : Pobj (-0.155000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CREUTIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CRUET_EOL_CHG : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CRUGE_EOL_CHG : Pobj (-0.247000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CUBRY_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CUISE_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXCON_EOL_CHG : Pobj (-0.110000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXMO5_EOL_CHG : Pobj (-1.004000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXMO5_EOL_ES : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXSSEIN1 : Pobj (-2.611000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXSSEIN2 : Pobj (-2.931000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXSSEIN3 : Pobj (-2.949000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CXSSE_EOL_CHG : Pobj (-3.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe CZEGE_EOL_CHG : Pobj (-0.329000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DARNE_EOL_CHG : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DARSEIN2 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DARSE_EOL_CHG : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DIEUL_EOL_CHG : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DIEUZ_EOL_CHG : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DIGNE_EOL_CHG : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DIGOI_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DOGNE_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DORMA_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DRAGU_EOL_CHG : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DRULI_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DUGNYIN1 : Pobj (-1.278000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DUGNYIN3 : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe DUNIE_EOL_CHG : Pobj (-0.950000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe E.CO5E01 : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EPERN_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EPINAIN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EPINAIN3 : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EPIZO.TG1 : Pobj (-7.122000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ERROUIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ERROU_EOL_CHG : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ESSEY_EOL_CHG : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ESTRE_EOL_CHG : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ETIVA_EOL_CHG : Pobj (-0.749000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ETUPE_EOL_CHG : Pobj (-0.137000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EUROPIN1 : Pobj (-1.598000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EUROPIN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EUROP_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EYSSE.TG2 : Pobj (-0.940000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EYSSE.TG3 : Pobj (-0.940000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe EYSSEEG1 : Pobj (-0.931000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe F.CHAIN1 : Pobj (-3.561000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe F.CHAIN2 : Pobj (-2.986000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe F.CHAIN3 : Pobj (-2.949000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe F.CHA_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe F.JOU_EOL_CHG : Pobj (-0.858000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FESC _EOL_CHG : Pobj (-0.648000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FEURS_EOL_CHG : Pobj (-0.283000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FISME_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FLACE_EOL_CHG : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FLEVI_EOL_CHG : Pobj (-0.073000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FLOIN_EOL_CHG : Pobj (-0.173000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FORBA_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FRONCIN1 : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FRONCIN2 : Pobj (-1.461000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FRONC_EOL_CHG : Pobj (-0.310000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe FTOY _EOL_CHG : Pobj (-0.712000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe G.BAN_EOL_CHG : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GARDA_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GARROE01 : Pobj (-3.470000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GENEU_EOL_CHG : Pobj (-0.511000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GERMI_EOL_CHG : Pobj (-1.032000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GIVET_EOL_CHG : Pobj (-0.046000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GONTA_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GRAY _EOL_CHG : Pobj (-1.525000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GUEU8_EOL_CHG : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GUIGNIN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe GUIGNIN2 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe H.CLO_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe H.PAU_EOL_CHG : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe H.RIV_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HAMBA_EOL_CHG : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HAYBE_EOL_CHG : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HORME_EOL_CHG : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HOUDEIN1 : Pobj (-3.241000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HOUDEIN3 : Pobj (-1.077000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HOUDE_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe HYERE_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe I.DOUIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe I.DOUIN3 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe I.DOU_EOL_CHG : Pobj (-0.137000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe INGWI_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe INSMIIN3 : Pobj (-1.260000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ISOL5_EOL_CHG : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe J.VILE01 : Pobj (-8.217000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe J.VIL_EOL_CHG : Pobj (-3.442000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe JOINVIN2 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe JOINV_EOL_CHG : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe JONQUIN1 : Pobj (-1.050000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe JONQU_EOL_CHG : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe JOUY _EOL_CHG : Pobj (-0.301000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe JUSSE_EOL_CHG : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe KERBAIN1 : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe KIR  _EOL_CHG : Pobj (-0.119000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe L.BARIN1 : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe L.BARIN3 : Pobj (-3.214000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe L.BAR_EOL_CHG : Pobj (-0.749000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe L.MON_EOL_CHG : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAMAS_EOL_CHG : Pobj (-0.530000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAND5IN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAND5IN2 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAND5IN3 : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAND5_EOL_CHG : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAND5_EOL_ES : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LANDR_EOL_CHG : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LANG8IN1 : Pobj (-0.155000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LANG8IN2 : Pobj (-2.063000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAPOU_EOL_CHG : Pobj (-0.374000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAUTE_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAVAN_EOL_CHG : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LAVE5_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LENT5_EOL_CHG : Pobj (-1.507000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LIARTIN1 : Pobj (-1.497000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LIARTIN2 : Pobj (-1.744000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LIART_EOL_CHG : Pobj (-0.247000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LIMAN_EOL_CHG : Pobj (-0.648000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LINGU_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LIZY _EOL_CHG : Pobj (-1.041000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LONG5IN1 : Pobj (-2.767000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LONG5IN2 : Pobj (-1.534000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LONG5_EOL_CHG : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LONG5_EOL_ES : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LORIOIN1 : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LORIO_EOL_CHG : Pobj (-0.794000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LUCY _EOL_CHG : Pobj (-0.329000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe LUTZE_EOL_CHG : Pobj (-0.073000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.CAM_EOL_CHG : Pobj (-0.119000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.GOUIN1 : Pobj (-0.657000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.GOU_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.MA5IN1 : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.MA5IN2 : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.ROIIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.ROI_EOL_CHG : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe M.SEI_EOL_CHG : Pobj (-3.223000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAC.S_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAILLIN1 : Pobj (-1.388000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MALADIN2 : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MALADIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MALAD_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAMBE_EOL_CHG : Pobj (-1.333000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MARC6_EOL_CHG : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MARCI_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MARL8_EOL_CHG : Pobj (-0.265000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MARNA_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAROLIN1 : Pobj (-1.753000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAROLIN2 : Pobj (-2.767000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAROLIN3 : Pobj (-1.123000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAROL_EOL_CHG : Pobj (-1.278000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAUPAIN1 : Pobj (-1.470000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MAUPA_EOL_CHG : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MEXYIN1 : Pobj (-0.201000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MIGEN_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MILLE_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MIRAM_EOL_CHG : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MIREC_EOL_CHG : Pobj (-1.233000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MOHON_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MOING_EOL_CHG : Pobj (-0.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MOLIN1 : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MOLIN_EOL_CHG : Pobj (-1.059000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MOLLE_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MRNIEIN1 : Pobj (-0.630000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTBAR_EOL_CHG : Pobj (-0.119000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTELIIN1 : Pobj (-1.461000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTJOYIN1 : Pobj (-1.570000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTMAR_EOL_CHG : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTMIRIN1 : Pobj (-0.895000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTMIRIN2 : Pobj (-2.237000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTMIR_EOL_CHG : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTOIS_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTPEZ_EOL_ES : Pobj (-0.082000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MTREV_EOL_CHG : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MUREMIN3 : Pobj (-6.592000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MUREM_EOL_CHG : Pobj (-1.561000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MUREM_EOL_ES : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe MURIG_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe N.SEIIN3 : Pobj (-2.036000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe N.SEI_EOL_CHG : Pobj (-0.402000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe N.SEUIN1 : Pobj (-1.370000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe N.SEUIN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe N.SEUIN3 : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe N.SEU_EOL_CHG : Pobj (-1.872000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe NOGEN_EOL_CHG : Pobj (-1.187000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe NOUET_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe NOUZO_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe OIRY _EOL_CHG : Pobj (-0.055000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe OLIVE_EOL_CHG : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ORMES_EOL_CHG : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ORNAN_EOL_CHG : Pobj (-0.539000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe OSNESIN1 : Pobj (-0.877000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe OSNESIN2 : Pobj (-0.877000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe OSNES_EOL_CHG : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.FOS_EOL_CHG : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.RHO_EOL_CHG : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.RHO_EOL_ES : Pobj (-0.082000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.ROIIN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.SAO_EOL_CHG : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.TER_EOL_CHG : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe P.VIL_EOL_CHG : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PALEN_EOL_CHG : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PALISIN1 : Pobj (-0.931000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PALISIN2 : Pobj (-1.643000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PALIS_EOL_CHG : Pobj (-0.603000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PAROY_EOL_CHG : Pobj (-1.087000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PECY _EOL_CHG : Pobj (-1.041000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PELADE24 : Pobj (-6.300000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PHALS_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PIOLE_EOL_CHG : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PLANTIN1 : Pobj (-0.274000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PLOMB_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe POISEIN1 : Pobj (-3.835000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe POISE_EOL_CHG : Pobj (-0.721000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe POISE_EOL_ES : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe POLISIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe POLIS_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PONTE_EOL_CHG : Pobj (-2.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe POURP_EOL_CHG : Pobj (-0.575000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRAUTIN1 : Pobj (-1.461000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRAUTIN3 : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRAUT_EOL_CHG : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PREUS_EOL_CHG : Pobj (-0.110000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRIEU_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRIVAIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRIVA_EOL_CHG : Pobj (-0.530000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PRIVA_EOL_ES : Pobj (-0.055000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PTARL_EOL_CHG : Pobj (-0.639000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PTFAVIN2 : Pobj (-0.904000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PTFAV_EOL_CHG : Pobj (-0.740000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PTFAV_EOL_ES : Pobj (-2.903000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PUGET_EOL_CHG : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe PUTTE_EOL_CHG : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe R.CH5IN1 : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe R.GI5_EOL_CHG : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RAMBEIN1 : Pobj (-0.621000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RAMBE_EOL_CHG : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RECY IN1 : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RECY IN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RECY _EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe REINA_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RETHEIN1 : Pobj (-2.410000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RETHEIN2 : Pobj (-2.237000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RETHEIN3 : Pobj (-2.255000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RETHE_EOL_CHG : Pobj (-0.201000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe REVIG_EOL_CHG : Pobj (-0.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe REVIN_EOL_CHG : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RIGOTE01 : Pobj (-10.847000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RIVIE_EOL_CHG : Pobj (-1.059000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROMILIN1 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROMILIN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROMILIN3 : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROMIL_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROUMO_EOL_CHG : Pobj (-2.054000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROUS7_EOL_CHG : Pobj (-0.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe ROUSS_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe RQBIL_EOL_CHG : Pobj (-0.292000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe S.SAU_EOL_CHG : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe S.UNIIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SALEL_EOL_CHG : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SALER_EOL_CHG : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SALET_EOL_CHG : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SARR6IN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SAUILIN1 : Pobj (-1.890000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SAUILIN3 : Pobj (-1.050000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SAUIL_EOL_CHG : Pobj (-0.630000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SAULI_EOL_CHG : Pobj (-1.452000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SAUTE_EOL_ES : Pobj (-0.247000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SELON_EOL_CHG : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SEZAN_EOL_CHG : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SISTE_EOL_CHG : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SOMBU_EOL_CHG : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SORNA_EOL_CHG : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSARD_EOL_CHG : Pobj (-0.530000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSAVOIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSAVOIN2 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSAVO_EOL_CHG : Pobj (-0.630000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSBO5_EOL_CHG : Pobj (-1.415000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSBON_EOL_CHG : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSBR5_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSCEC_EOL_CHG : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSDAL_EOL_CHG : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSDIE_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSDIZ_EOL_CHG : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSHON_EOL_CHG : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSMA7_EOL_CHG : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSMA8_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSMC5_EOL_CHG : Pobj (-0.959000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSMEN_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSMIHIN2 : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSMIH_EOL_CHG : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSNAB_EOL_CHG : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSROY_EOL_CHG : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSTIN_EOL_CHG : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSVALIN2 : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSVALIN3 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSVAU_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSVIE_EOL_CHG : Pobj (-0.694000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSVIE_EOL_ES : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SSVIT_EOL_CHG : Pobj (-1.178000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe STENAIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe STENA_EOL_CHG : Pobj (-1.114000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe SUIPP_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe T.IND_EOL_CHG : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TAILL_EOL_CHG : Pobj (-1.507000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TARAR_EOL_CHG : Pobj (-1.771000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TEIL IN1 : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TEIL _EOL_CHG : Pobj (-2.547000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TENAY_EOL_CHG : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TENDR_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TOMMEE01 : Pobj (-17.804000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TOMMEE02 : Pobj (-17.804000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TONNE_EOL_CHG : Pobj (-1.150000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TOURR_EOL_CHG : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TRESC_EOL_CHG : Pobj (-1.077000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TRIEY_EOL_CHG : Pobj (-0.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TRO.E_EOL_CHG : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TRUCH_EOL_CHG : Pobj (-0.374000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe TUCQUIN1 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.AUBIN1 : Pobj (-2.830000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.AUBIN2 : Pobj (-2.082000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.AUBIN3 : Pobj (-2.246000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.AUB_EOL_CHG : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.BARIN1 : Pobj (-1.643000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.BAR_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.MAN_EOL_CHG : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.MOYIN1 : Pobj (-1.342000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.MOYIN3 : Pobj (-4.337000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe V.MOY_EOL_CHG : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VAISO_EOL_CHG : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VALDA_EOL_CHG : Pobj (-0.831000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VALE8_EOL_CHG : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VANDI_EOL_CHG : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VENAR_EOL_CHG : Pobj (-0.758000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VENDA_EOL_CHG : Pobj (-0.867000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VENTA_EOL_CHG : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VERDU_EOL_CHG : Pobj (-1.114000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VERTUIN1 : Pobj (-1.790000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VERTUIN2 : Pobj (-3.232000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VERTU_EOL_CHG : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VESAI_EOL_CHG : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VESLE_EOL_CHG : Pobj (-3.223000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VESOU_EOL_CHG : Pobj (-0.858000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VESTR_EOL_CHG : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VEYNE_EOL_CHG : Pobj (-1.077000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VIAUD_EOL_CHG : Pobj (-0.593000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VIELMIN1 : Pobj (-2.739000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VIELMIN2 : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VIELMIN3 : Pobj (-1.972000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VINCE_EOL_CHG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VINON_EOL_CHG : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VINS _EOL_CHG : Pobj (-0.292000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VIREU_EOL_CHG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VITTE_EOL_CHG : Pobj (-1.379000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOID _EOL_CHG : Pobj (-1.114000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOIDIN1 : Pobj (-2.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOIDIN2 : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOUJE_EOL_CHG : Pobj (-0.986000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOUZIIN1 : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOUZIIN2 : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
-Groupe VOUZI_EOL_CHG : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAAD : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAAJ : Pobj (-1.689000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAAK : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAAM : Pobj (-1.032000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AABV : Pobj (-0.639000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAEM : Pobj (-0.146000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAFB : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAGJ : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAHA : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAIT : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAMK : Pobj (-1.050000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAML : Pobj (-2.739000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAMM : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAMU : Pobj (-1.917000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AANI : Pobj (-0.822000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAOQ : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAQO : Pobj (-0.210000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AARY : Pobj (-0.740000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AASR : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AATQ : Pobj (-0.740000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AATT : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAWI : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAWN : Pobj (-0.155000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAWP : Pobj (-1.643000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAXH : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAXW : Pobj (-0.265000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAYF : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAYG : Pobj (-1.963000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAYT : Pobj (-0.201000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AAZX : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABAZ : Pobj (-0.603000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABBV : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABBW : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABCF : Pobj (-0.329000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABDQ : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABDZ : Pobj (-1.908000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABEA : Pobj (-1.771000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABED : Pobj (-1.570000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABEV : Pobj (-0.849000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABIU : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABJA : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABNH : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABOK : Pobj (-0.904000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABOY : Pobj (-0.274000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABPI : Pobj (-1.306000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABPJ : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABQA : Pobj (-2.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABQO : Pobj (-1.452000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABQQ : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRK : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRL : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRM : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRN : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRO : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRP : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRQ : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRR : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABRS : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABTZ : Pobj (-0.110000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABUA : Pobj (-1.260000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABUC : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABVL : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABWF : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABWU : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABWX : Pobj (-1.945000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABZM : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABZN : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABZO : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ABZP : Pobj (-0.073000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACDY : Pobj (-0.301000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACEV : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACFF : Pobj (-0.265000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACGB : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACGG : Pobj (-0.511000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACHF : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACHP : Pobj (-0.155000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACHS : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACJM : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACJQ : Pobj (-0.247000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACLS : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACLU : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACMH : Pobj (-0.110000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACMS : Pobj (-1.004000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACMW : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACNC : Pobj (-2.611000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACND : Pobj (-2.931000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACNE : Pobj (-2.949000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACNF : Pobj (-3.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACOD : Pobj (-0.329000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACQE : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACQL : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACQO : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACSW : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACTA : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACTD : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACTI : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACTZ : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACUZ : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACWJ : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACXB : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACXI : Pobj (-1.278000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACXJ : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACXR : Pobj (-0.950000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ACYT : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADBU : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADCI : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADCJ : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADCP : Pobj (-7.122000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADDA : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADDB : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADEQ : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADFB : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADFO : Pobj (-0.749000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADFY : Pobj (-0.137000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADGE : Pobj (-1.598000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADGF : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADGG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADHJ : Pobj (-0.940000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADHK : Pobj (-0.940000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADHL : Pobj (-0.931000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADHW : Pobj (-3.561000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADHX : Pobj (-2.986000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADHY : Pobj (-2.949000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADIA : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADIV : Pobj (-0.858000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADLZ : Pobj (-0.648000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADMJ : Pobj (-0.283000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADMW : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADNB : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADNU : Pobj (-0.073000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADOB : Pobj (-0.173000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADPC : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADRI : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADRJ : Pobj (-1.461000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADRK : Pobj (-0.310000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADSD : Pobj (-0.712000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADSW : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADXW : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADYM : Pobj (-3.470000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ADZP : Pobj (-0.511000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEAL : Pobj (-1.032000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEBW : Pobj (-0.046000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEDH : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEGU : Pobj (-1.525000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEIX : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEJF : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEJG : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEKK : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEKW : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AELV : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEMX : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEQB : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEQJ : Pobj (-3.241000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEQK : Pobj (-1.077000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEQL : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEQZ : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AERH : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AERI : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AERJ : Pobj (-0.137000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AESN : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AESP : Pobj (-1.260000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AETB : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEUJ : Pobj (-8.217000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEUK : Pobj (-3.442000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEVU : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEVV : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEWE : Pobj (-1.050000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEWG : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEXG : Pobj (-0.301000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEXS : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEYE : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEZB : Pobj (-0.119000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEZS : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEZT : Pobj (-3.214000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AEZU : Pobj (-0.749000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFAI : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFDN : Pobj (-0.530000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFEL : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFEN : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFEO : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFER : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFET : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFFD : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFFU : Pobj (-0.155000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFFV : Pobj (-2.063000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFHJ : Pobj (-0.374000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFIP : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFJH : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFJQ : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFLC : Pobj (-1.507000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFMT : Pobj (-1.497000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFMU : Pobj (-1.744000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFMX : Pobj (-0.247000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFNN : Pobj (-0.648000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFOG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFPL : Pobj (-1.041000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFRG : Pobj (-2.767000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFRH : Pobj (-1.534000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFRI : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFRM : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFSG : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFSI : Pobj (-0.794000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFUZ : Pobj (-0.329000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFWN : Pobj (-0.073000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFYE : Pobj (-0.119000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFYI : Pobj (-0.657000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFYJ : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFZG : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFZH : Pobj (-0.730000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AFZZ : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGAA : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGAD : Pobj (-3.223000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGAQ : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGCG : Pobj (-1.388000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGCS : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGCT : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGCU : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGGB : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGGI : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGGZ : Pobj (-0.265000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGHO : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGHT : Pobj (-1.753000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGHU : Pobj (-2.767000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGHV : Pobj (-1.123000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGHW : Pobj (-1.278000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGKF : Pobj (-1.470000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGKG : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGPR : Pobj (-0.201000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGQK : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGQX : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGRT : Pobj (-0.228000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGSH : Pobj (-1.233000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGTI : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGTQ : Pobj (-0.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGUI : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGUJ : Pobj (-1.059000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AGUL : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHAF : Pobj (-0.630000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHAU : Pobj (-0.119000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHBO : Pobj (-1.461000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHDJ : Pobj (-1.570000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHDR : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHDV : Pobj (-0.895000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHDW : Pobj (-2.237000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHDX : Pobj (-0.429000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHEE : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHEO : Pobj (-0.082000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHEX : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHGA : Pobj (-6.592000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHGB : Pobj (-1.561000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHGD : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHGG : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHHG : Pobj (-2.036000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHHH : Pobj (-0.402000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHHN : Pobj (-1.370000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHHO : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHHP : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHHQ : Pobj (-1.872000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHKW : Pobj (-1.187000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHLH : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHLS : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHNK : Pobj (-0.055000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHNS : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHPU : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHPX : Pobj (-0.539000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHQG : Pobj (-0.877000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHQH : Pobj (-0.877000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHQI : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHSY : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHVH : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHVK : Pobj (-0.082000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHVM : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHWA : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHWT : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHXF : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHYC : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHYH : Pobj (-0.931000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHYI : Pobj (-1.643000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHYJ : Pobj (-0.603000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AHZP : Pobj (-1.087000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIBH : Pobj (-1.041000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIBK : Pobj (-6.300000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIEA : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIET : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIFW : Pobj (-0.274000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIHC : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIIW : Pobj (-3.835000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIIX : Pobj (-0.721000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIIZ : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIJL : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIJM : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIKG : Pobj (-2.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AILH : Pobj (-0.575000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIMV : Pobj (-1.461000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIMW : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIMX : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AINK : Pobj (-0.110000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AINO : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AINX : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AINZ : Pobj (-0.530000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIOA : Pobj (-0.055000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIOH : Pobj (-0.639000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AION : Pobj (-0.904000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIOP : Pobj (-0.740000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIOR : Pobj (-2.903000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIPE : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIPV : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AISG : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AISJ : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AITO : Pobj (-0.621000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AITP : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIVR : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIVS : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIVT : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIWF : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIXP : Pobj (-2.410000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIXQ : Pobj (-2.237000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIXR : Pobj (-2.255000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIXS : Pobj (-0.201000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIYK : Pobj (-0.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AIYP : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJAE : Pobj (-10.847000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJBK : Pobj (-1.059000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJDO : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJDU : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJDW : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJDX : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJFR : Pobj (-2.054000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJGE : Pobj (-0.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJGH : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJGW : Pobj (-0.292000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJKN : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJKT : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJMJ : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJMO : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJMR : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJPA : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJQI : Pobj (-1.890000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJQJ : Pobj (-1.050000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJQK : Pobj (-0.630000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJQU : Pobj (-1.452000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJRR : Pobj (-0.247000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJTW : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJWP : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJXX : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJYP : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AJZL : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKDC : Pobj (-0.530000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKDO : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKDP : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKDQ : Pobj (-0.630000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKEF : Pobj (-1.415000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKEI : Pobj (-1.205000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKES : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKFM : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKHP : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKHT : Pobj (-0.037000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKLK : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKNZ : Pobj (-0.128000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKOD : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKOR : Pobj (-0.959000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKOZ : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKPI : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKPJ : Pobj (-0.183000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKQG : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKTO : Pobj (-0.886000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKUZ : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKVK : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKVM : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKVR : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKWP : Pobj (-0.694000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKWR : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKWX : Pobj (-1.178000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKXJ : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKXK : Pobj (-1.114000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKXW : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKYL : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AKZQ : Pobj (-1.507000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALAP : Pobj (-1.771000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALBQ : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALBS : Pobj (-2.547000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALCC : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALCF : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALGO : Pobj (-17.804000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALGP : Pobj (-17.804000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALGQ : Pobj (-1.150000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALHO : Pobj (-0.420000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALJP : Pobj (-1.077000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALKB : Pobj (-0.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALKP : Pobj (-0.018000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALKW : Pobj (-0.374000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALLC : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALNC : Pobj (-2.830000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALND : Pobj (-2.082000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALNE : Pobj (-2.246000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALNF : Pobj (-0.393000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALNK : Pobj (-1.643000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALNL : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALPE : Pobj (-0.320000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALPJ : Pobj (-1.342000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALPK : Pobj (-4.337000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALPL : Pobj (-0.484000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALQI : Pobj (-0.256000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALQX : Pobj (-0.831000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALRL : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALTD : Pobj (-0.447000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALVU : Pobj (-0.758000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALWC : Pobj (-0.867000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALWX : Pobj (-0.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALXK : Pobj (-1.114000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALYO : Pobj (-1.790000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALYP : Pobj (-3.232000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALYQ : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALYT : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALYX : Pobj (-3.223000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALYY : Pobj (-0.858000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALZE : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALZJ : Pobj (-1.077000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ALZV : Pobj (-0.593000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMBO : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMBT : Pobj (-0.292000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMCI : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMCZ : Pobj (-1.379000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMET : Pobj (-2.785000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMEU : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMEV : Pobj (-1.114000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMFO : Pobj (-0.986000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMFT : Pobj (-1.826000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMFU : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_AMFV : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YRN : Pobj (-0.064000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YRW : Pobj (-2.739000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YRX : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YRY : Pobj (-1.972000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YSF : Pobj (-0.548000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YST : Pobj (-1.333000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YTB : Pobj (-1.890000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YTE : Pobj (-4.200000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YTF : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YTG : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YTU : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YTV : Pobj (-0.667000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YUO : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YUU : Pobj (-0.457000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YWL : Pobj (-0.913000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YWM : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YYV : Pobj (-0.411000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YYX : Pobj (-0.493000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_YZO : Pobj (-0.338000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZAB : Pobj (-2.100000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZAC : Pobj (-0.749000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZCH : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZCS : Pobj (-0.173000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZDQ : Pobj (-0.520000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZDW : Pobj (-0.667000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZEN : Pobj (-2.922000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZEO : Pobj (-2.374000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZEP : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZER : Pobj (-0.685000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZHO : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZHQ : Pobj (-0.210000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZLL : Pobj (-1.479000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZLM : Pobj (-0.758000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZLN : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZMV : Pobj (-0.192000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZNU : Pobj (-0.904000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZOA : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZOB : Pobj (-1.096000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZOE : Pobj (-0.365000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZOO : Pobj (-0.877000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZPY : Pobj (-0.009000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZRE : Pobj (-0.950000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZSA : Pobj (-1.388000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZSF : Pobj (-3.104000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZSG : Pobj (-3.607000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZUF : Pobj (-4.529000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZUG : Pobj (-2.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZUH : Pobj (-0.566000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZVU : Pobj (-0.356000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZWU : Pobj (-2.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZWV : Pobj (-1.123000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZWW : Pobj (-0.557000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZXO : Pobj (-0.164000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZYD : Pobj (-3.287000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZYE : Pobj (-2.191000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZYF : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
+Groupe GROUP_ZZT : Pobj (-0.027000) est inferieur a Pmin (0.000000): Pobj mis a Pmin.
 Demarrage des groupes par empilement économique :
 Consommation globale                = 250499.9640  MW
 Production démarrée                 = 251001.7283  MW
@@ -840,8 +840,8 @@ Puissance à ajuster                 =  -501.7643  MW
 Puissance disponible à la hausse (hors Pimp) = 1476071.4192  MW
 Puissance disponible à la baisse (hors Pimp) = -267427.4283  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_1]), bilan = 502.7643 MW
-Zone synchrone 1 (noeud bilan 58 [.BIPOLP7_2]), bilan = -1.0000 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = 502.7643 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -861,24 +861,23 @@ Blocage des variables de defaillance
 Micro itération 1 (nombre de contraintes 0)
 -------------------- : 
 
-Des contraintes ont été détectées : 622
+Des contraintes ont été détectées : 472
 Nb termes dans la matrice : 0 (taille de la matrice : 0)
-Contraintes equivalentes : 'PARADE_NRF' & 'BXLIEL61SIRMI_NRF' (icdt : BXLIEL61SIRMI)
-Contraintes equivalentes : 'CHEV5P6_CHEV5   6COUPL    DJ / MERLAP6_MERLA   6COUPL    DJ / LUCONL41ZTREZ' & 'CHEV5P6_CHEV5   6COUPL    DJ / MERLAP6_MERLA   6COUPL    DJ / LUCONL41ZTREZ' (icdt : BXLIEL61SIRMI)
-Contraintes equivalentes : 'PARADE_NRF' & 'MERLAL61SIRMI_NRF' (icdt : MERLAL61SIRMI)
-Contraintes equivalentes : 'PARADE_NRF' & 'COR.PL72DISTR_NRF' (icdt : COR.PL72DISTR)
-Contraintes equivalentes : 'PARADE_NRF' & 'COR.PY761_NRF' (icdt : COR.PY761)
-Contraintes equivalentes : 'PARADE_NRF' & 'COR.PY763_NRF' (icdt : COR.PY763)
-Contraintes equivalentes : 'PARADE_NRF' & 'NIORTL41SSFLO_NRF' (icdt : NIORTL41SSFLO)
-Contraintes equivalentes : 'PARADE_NRF' & 'BLANCL41CHOLE_NRF' (icdt : BLANCL41CHOLE)
-Contraintes equivalentes : 'PARADE_NRF' & 'V.SEVY641_NRF' (icdt : V.SEVY641)
-Contraintes equivalentes : 'PARADE_NRF' & 'CHOLEL61RECOU_NRF' (icdt : CHOLEL61RECOU)
-Contraintes equivalentes : 'PARADE_NRF' & 'COR.PL71GALOR_NRF' (icdt : COR.PL71GALOR)
-Contraintes equivalentes : 'PARADE_NRF' & 'MAUGEL61VERTO_NRF' (icdt : MAUGEL61VERTO)
-Contraintes equivalentes : 'PARADE_NRF' & 'CHOLEL61MAUGE_NRF' (icdt : CHOLEL61MAUGE)
-Contraintes equivalentes : 'PARADE_NRF' & 'CHEV5L61VERTO_NRF' (icdt : CHEV5L61VERTO)
-Ajout de 711 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 738)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_NCW_NRF' (icdt : QUAD_NCW)
+Contraintes equivalentes : 'QUAD_YGE / QUAD_YGF / QUAD_SBX' & 'QUAD_YGE / QUAD_YGF / QUAD_SBX' (icdt : QUAD_NCW)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_SPY_NRF' (icdt : QUAD_SPY)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ONQ_NRF' (icdt : QUAD_ONQ)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_TFB_NRF' (icdt : QUAD_TFB)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_WSV_NRF' (icdt : QUAD_WSV)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_WSW_NRF' (icdt : QUAD_WSW)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_MMA_NRF' (icdt : QUAD_MMA)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_OFI_NRF' (icdt : QUAD_OFI)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ONO_NRF' (icdt : QUAD_ONO)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_SNE_NRF' (icdt : QUAD_SNE)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_OFH_NRF' (icdt : QUAD_OFH)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ODY_NRF' (icdt : QUAD_ODY)
+Ajout de 541 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 565)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -889,15 +888,16 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.9164
-Cout des écarts de transit     :  374458.2912
-Valeur de la fonction objectif :  374701.2076
+Cout de pénalisation TD & HVDC :     242.6737
+Cout des écarts de transit     :  159899.2856
+Valeur de la fonction objectif :  160141.9593
 
-Des contraintes ont été détectées : 508
-Nb termes dans la matrice : 2487 (taille de la matrice : 2487)
-Contraintes equivalentes : 'PARADE_NRF' & 'CHEV5L61MERLA_NRF' (icdt : CHEV5L61MERLA)
-Ajout de 268 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 1007)
+Des contraintes ont été détectées : 623
+Nb termes dans la matrice : 1893 (taille de la matrice : 1893)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_YDJ_NRF' (icdt : QUAD_YDJ)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ODW_NRF' (icdt : QUAD_ODW)
+Ajout de 368 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 937)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -908,14 +908,14 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     243.2407
-Cout des écarts de transit     :  499801.8837
-Valeur de la fonction objectif :  500045.1244
+Cout de pénalisation TD & HVDC :     242.6737
+Cout des écarts de transit     :  347486.5364
+Valeur de la fonction objectif :  347729.2101
 
-Des contraintes ont été détectées : 11
-Nb termes dans la matrice : 3358 (taille de la matrice : 3358)
-Ajout de 28 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 1035)
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 3024 (taille de la matrice : 3024)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 943)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -926,14 +926,14 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.7300
-Cout des écarts de transit     :  502563.9544
-Valeur de la fonction objectif :  502806.6844
+Cout de pénalisation TD & HVDC :     242.8590
+Cout des écarts de transit     :  347495.8704
+Valeur de la fonction objectif :  347738.7294
 
-Des contraintes ont été détectées : 5
-Nb termes dans la matrice : 3510 (taille de la matrice : 3510)
-Ajout de 14 contraintes dans le probleme
-Micro itération 5 (nombre de contraintes 1049)
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 3052 (taille de la matrice : 3052)
+Ajout de 4 contraintes dans le probleme
+Micro itération 5 (nombre de contraintes 947)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -944,10 +944,10 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.7300
-Cout des écarts de transit     :  502718.7621
-Valeur de la fonction objectif :  502961.4922
+Cout de pénalisation TD & HVDC :     242.6737
+Cout des écarts de transit     :  347518.3331
+Valeur de la fonction objectif :  347761.0068
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 3586 (taille de la matrice : 3586)
+Nb termes dans la matrice : 3076 (taille de la matrice : 3076)
 Pas de contraintes

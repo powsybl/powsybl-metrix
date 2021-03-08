@@ -1,6 +1,6 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole MTGROP6_SOLEI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole SANSSP3_SANSS   3COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VLA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VLB a une admittance tres grande (100000.0000000000)
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -19,13 +19,13 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Parade 'MTGROP6_SOLEI   6COUPL.1  DJ / MTPEZL31ZP.VE / LANG8L31PALIS / BESSEL31ZSALI / LAVEYY611 / LAVEYY612' sur défaut 'ATTAQL41CALAI' : Noeuds perdus '2982 [LAVEYP1_12]' '2983 [LAVEYP1_13]'
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
  Nb total d'incidents + parades : 5
 Mode de calcul : OPF sans redispatching de groupes
-Noeud bilan : 0 [.CTLHP3_6]
-0 [.CTLHP3_6](1) <-> 2 [.CTLOP3_14](4) <-> 1 [.CTLHP3_7](1)
-                                       <-> 2236 [FINS P3_9](2)
-                                       <-> 5975 [ZLIEBP3_5](3)
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2236 [CONSO_CHB](2)
+                                  <-> 5975 [CONSO_HUW](3)
 
 
 ********************************************
@@ -45,7 +45,7 @@ Puissance à ajuster                 =  8274.2922  MW
 Puissance disponible à la hausse (hors Pimp) = 25501477.6656  MW
 Puissance disponible à la baisse (hors Pimp) = -25653406.3344  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = -8274.2922 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = -8274.2922 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -72,7 +72,7 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
-Parade 'MTGROP6_SOLEI   6COUPL.1  DJ / MTPEZL31ZP.VE / LANG8L31PALIS / BESSEL31ZSALI / LAVEYY611 / LAVEYY612' sur défaut 'ATTAQL41CALAI' : Noeuds perdus '2982 [LAVEYP1_12]' '2983 [LAVEYP1_13]'
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
 
 ---------------------
 ---------------------
@@ -87,7 +87,7 @@ Puissance à ajuster                 =    -0.0313  MW
 Puissance disponible à la hausse (hors Pimp) = 25537030.0850  MW
 Puissance disponible à la baisse (hors Pimp) = -25617853.9150  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 0.0313 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0313 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -147,4 +147,4 @@ Valeur de la fonction objectif :       7.6014
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 44 (taille de la matrice : 44)
 Pas de contraintes
-Parade 'MTGROP6_SOLEI   6COUPL.1  DJ / MTPEZL31ZP.VE / LANG8L31PALIS / BESSEL31ZSALI / LAVEYY611 / LAVEYY612' sur défaut 'ATTAQL41CALAI' : Noeuds perdus '2982 [LAVEYP1_12]' '2983 [LAVEYP1_13]'
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'

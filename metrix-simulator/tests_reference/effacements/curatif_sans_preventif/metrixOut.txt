@@ -1,228 +1,228 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole ++++++++++++++++.00V forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ++++++++++++++++.01B forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ++++++++++++++++.024 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ++++++++++++++++.02A forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ++++++++++++++++.02M forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ++++++++++++++++.02Z forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole AHM     1 110_AHM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole AL1KW   2 110_AL1KW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ALFS     1110_ALFS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole AS      A 110_AS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole AUDO     1110_AUDO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole BARL     1110_BARL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole BGM220-BGM1 a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BGM220-BGM2 a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_10_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_13_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_1_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_2_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_3_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_4.000 a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_41_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_42_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_43_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_46_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_47_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_4_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_5_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_8_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_9.000 a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BREAKER/SWITCH_9_ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole BRNKO   1A110_BRNKO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole BR_BR - BRUN.000 a une admittance tres grande (752.0832519531)
-Attention: Le quadripole BR_BR - BRUN.001 a une admittance tres grande (752.0832519531)
-Attention: Le quadripole BZWNG   1A110_BZWNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole BZWNG   1B110_BZWNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole CLPO     1110_CLPO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole CONN     1110_CONN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole D7KUEH SLAUFEX a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole DAXLA   1A110_DAXLA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole DELLM   1A110_DELLM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole DE_SI - DELLM a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole DE_VO - DELLM a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole DE_VO - DELLM.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole DOLL     1110_DOLL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole EDC-XNORNED a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole EDSBH   2A110_EDSBH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole EICHS   1A110_EICHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole EICHS   2A110_EICHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ELT     A 110_ELT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole EMDB     1110_EMDB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole EMSLAND-OST-WEISS a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole ENGST   1A110_ENGST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ENGST   1B110_ENGST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ENGST OBJTT PULV.001 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole EOS-COBRA380 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole ETZ-MH 437 a une admittance tres grande (962.6666870117)
-Attention: Le quadripole FLEN     1110_FLEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole FRSW GIEN a une admittance tres grande (1137.0083007812)
-Attention: Le quadripole GABUW   1C110_GA.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GABUW   1C110_GABUW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GABUW   2A110_GABUW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GEB     A 110_GEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GODE     1110_GODE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GOEH     1110_GOEH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GOHFE   1A110_GOHFE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GOHFE KUPZL NSTN.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole GRKRA   1A110_GRKRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GROGH_branch a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole GROGH   1A110_GROGH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole GR_GR - GROSSG a une admittance tres grande (1110.7691650391)
-Attention: Le quadripole GURTW   1B110_GURTW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HAMH NORD a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HAMH NORD.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HANEKN  S1110_HANEKN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HANW     1110_HANW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HATT     2110_HATT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HELM     1110_HELM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HERBERTINGEN WES.001 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HERBERTINGEN WESTX a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR. 18 WOL _GUN a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.01 EMDB _OST a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.01 EMDB.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.01 OSTRA.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.01 OSTRAT _E a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.02 OSTRA.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.02 OSTRAT _P a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.02 PHILI _OS a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.02 PHILI.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.02 PHILI.001 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.03 BUERS.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.04 URBER _WE a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.04 URBER.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.04 WEHRN.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.04 WEHRND _U a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.05 BRUN _GRO a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.05 BRUN.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.05 GROGH _BR a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.05 GROGH.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.06 KSEG _GOH a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.06 WDLNG _KS a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.06 WDLNG.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.07 GR _K.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.07 GR _KSEG_ a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.07 KSEG _GR_ a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.07 KSEG.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.08 RAI _.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.08 RAI _KSEG a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09 LAU _.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09 LAU _MEIT a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09 MEITG.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09 MEITGN _L a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09A LAU _MEI a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09A MEIT.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.09A MEITGN _ a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.10 GUE _MEIT a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.10 MEITG.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.11 OBZIE.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.11 OBZIER _E a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.12 ELWE _PHI a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.12 ELWE.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.13 RAI _.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.13 RAI _STAD a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.13 STAD _RAI a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.13 STAD.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.14 ALFS _VOE a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.14 ALFS.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.14 VOERG _AL a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.14 VOERG.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.15 CONN.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.15 ROKI.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.21 GUN_WOL_ a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HG__ NR.21 WOL_GUN_ a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HR_SI - HRBTG a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole HUEFF   1A110_HUEFF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HUSU     1110_HUSU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole HWBC - HW_KR a une admittance tres grande (1444.0000000000)
-Attention: Le quadripole IRS     A 110_IRS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole K6 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole KAISERSLAUTERN SUEDX a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole KILS GROH a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole KOPPELVELD DMN 34 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole KRIFTL  S1110_KRIFTL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole KUMRA   1 110_KUMRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole KUPZL   1A110_KUPZL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole LAICH   2A110_LAICH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole LAU _1_ - HG__ NR.09 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole LAU-JSN 503.001 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole LUESTR-HESSLN-GUETER a une admittance tres grande (1110.7691650391)
-Attention: Le quadripole MBG     A 110_MBG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MEB     A 110_MEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MEZNG   1 110_MEZNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MUEN    A 110_MUEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MUENST  S1110_MUENST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MULHS   1A110_MULHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MUNST   1 110_MUNST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole MVL380-BRITNED a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NASSAU.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NEHDEN  S1110_NEHDEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole NFI     BL110_NFI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole NIEB     1110_NIEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole NORD-AU_NO a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NORD-NO_DO a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NO_NO a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NO_NO.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NR. 18 WOL _GUN_ - H a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NR.18 GUN_WOL_ - GUN a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NR.18 GUN_WOL_ - HG_ a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole NSTNG   1A110_NSTNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole OBA     B 110_OBA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole OHLE     1110_OHLE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PI      A 110_PI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PT      A 110_PT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PUNGN   1A110_PU.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PUNGN   1A110_PU.001 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PUNGN   1A110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PUNGN   1B110_PU.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PUNGN   1B110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole PUNGN   2A110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole RC1I01 a une admittance tres grande (1600.0000000000)
-Attention: Le quadripole RE      A 110_RE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole RED-D8 a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole RHEINGRABENX a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole RHEINGRABENY a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole SAS1 SAS2 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole SIT     A 110_SIT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole SOONWALD OST.000 a une admittance tres grande (627.8261718750)
-Attention: Le quadripole STAD     1110_STAD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole STOCK   1A110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole STOCK   1B110_ST.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole STOCK   1B110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole STOCK   2A110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole S_PETROLAND1 a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole TIENGEN NORDX a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole TRAFO T411_T422 CONN a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole TRE     A 110_TRE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole U74ELL  S1110_U74ELL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole VANYK_PSTL71VANYK a une admittance tres grande (722.0000610352)
-Attention: Le quadripole VANYK_PSTL72VANYK a une admittance tres grande (722.0000610352)
-Attention: Le quadripole VLN150-BVW380 G a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole VLPRL2 a une admittance tres grande (1600.0000000000)
-Attention: Le quadripole VOSL     1110_VOSL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WALKW   1 110_WALKW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WDLNG   1A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WDLNG   2A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WDLNG   3A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WECH     1110_WECH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WILS - HG__ NR.06 KS a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole WILS - WILS_X a une admittance tres grande (1250.0000000000)
-Attention: Le quadripole WITAVU  S1110_WITTEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole WNHEI - P_PF_WN a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole WNHEI - P_PF_WN.000 a une admittance tres grande (1443.9998779297)
-Attention: Le quadripole WTHURM  S1110_WTHURM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
-Attention: Le quadripole ZANDV_PSTL71ZANDV a une admittance tres grande (722.0000610352)
-Attention: Le quadripole ZANDV_PSTL72ZANDV a une admittance tres grande (722.0000610352)
-Attention: Le quadripole _71DCBFEBC3FE43C1A0F a une admittance tres grande (1600.0000000000)
-Attention: Le quadripole RTR_LEIDEN a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole REALTP6_REALT   6LIAIS12  DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole DARSEP6_DARSE   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole E.BOTP6_E.BOT   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole PALUNP6_PALUN   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole RQROUP6_RQROU   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole SEPTEP6_SEPTE   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole RTR_LEIDEN_Td a une admittance tres grande (1000000.0000000000)
+Attention: Le quadripole QUAD_AU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_BK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_DE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_DR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_XQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AOJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_BKV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CAB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CAC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CTL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CWV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CZS a une admittance tres grande (752.0832519531)
+Attention: Le quadripole QUAD_CZT a une admittance tres grande (752.0832519531)
+Attention: Le quadripole QUAD_DJI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_DJJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ENU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ESW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_FNR a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_FRK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_FSY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_FUF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_FUG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_FUH a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_FZK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GIX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_GJM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GMO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GMP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GOC forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GPF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GQF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_GQM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GQO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GQU a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_GSK a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_GZI a une admittance tres grande (962.6666870117)
+Attention: Le quadripole QUAD_HIR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HQJ a une admittance tres grande (1137.0083007812)
+Attention: Le quadripole QUAD_HVJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HVK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HVR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IBE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IJE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IJU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IKX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ILF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_IRW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ISE a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_ISF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IUM a une admittance tres grande (1110.7691650391)
+Attention: Le quadripole QUAD_IYW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JDJ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JDK a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JEH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JER forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JGW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JJM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JKL a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JKM a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JND a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNE a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNH a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNI a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNJ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNK a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNL a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNM a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNO a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNP a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNQ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNR a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNS a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNT a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNU a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNV a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNW a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNY a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JNZ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOA a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOB a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOC a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOD a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOE a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOH a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOI a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOJ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOK a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOL a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOM a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JON a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOO a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOP a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOQ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOR a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOS a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOT a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOU a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOV a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOW a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOY a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JOZ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JPA a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JPB a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JPC a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JPD a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JSY a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_JTZ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JUS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JUW a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_JYI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KDX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_KEG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_KHC a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_KIE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KJV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KLQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KLV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ONP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_OSK a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_OSN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_QMD a une admittance tres grande (1110.7691650391)
+Attention: Le quadripole QUAD_RBF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RCT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RII forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RUP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RVF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RVP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RVU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RXK a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_RZJ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SAM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SCM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SDL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SGC a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SGD a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SGX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SGY a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SHB a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SHC a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SHD a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_SHX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SJC forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SLJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TDV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TLV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TNH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TNI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TNL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TNM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TNN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TSM a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole QUAD_TSO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TTS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_TWM a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_TWN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_UIK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UOT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UQE a une admittance tres grande (627.8261718750)
+Attention: Le quadripole QUAD_VAH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VBD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VBE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VBF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VBG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VCO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VHF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_VIV a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_VJA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VLQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VQD a une admittance tres grande (722.0000610352)
+Attention: Le quadripole QUAD_VQE a une admittance tres grande (722.0000610352)
+Attention: Le quadripole QUAD_VVO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VVR a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole QUAD_VWV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VYW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VZS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VZT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VZU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WAB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WDI a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_WDJ a une admittance tres grande (1250.0000000000)
+Attention: Le quadripole QUAD_WDP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WEF a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_WEG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_WEW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WGT a une admittance tres grande (722.0000610352)
+Attention: Le quadripole QUAD_WGU a une admittance tres grande (722.0000610352)
+Attention: Le quadripole QUAD_WLC a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole QUAD_ZYY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AIBB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AIBC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AIBD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AIBE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AIBF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AIBG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ZYY_Td a une admittance tres grande (1000000.0000000000)
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -280,26 +280,26 @@ Le noeud 'TOU.C6TR6111' de la loi -1 de variation de conso est introuvable
  Nb total d'incidents + parades : 37
 Mode de calcul : OPF
 Noeud bilan : 0
-0(1) <-> 23 [CONSO_UK](8) <-> 2(1)
-                          <-> 3(1)
-                          <-> 4(1)
-                          <-> 11(1)
-                          <-> 12(1)
-                          <-> 14(1)
-                          <-> 18(1)
+0(1) <-> 23 [CONSO_AICB](8) <-> 2(1)
+                            <-> 3(1)
+                            <-> 4(1)
+                            <-> 11(1)
+                            <-> 12(1)
+                            <-> 14(1)
+                            <-> 18(1)
      |=| 6119(7) <-> 14192(7)
                  <-> 16120(15)
                  <-> 16843(5)
-                 <-> 13328 [PALUE7TR2/3JA, PALUE7TS2](1)
+                 <-> 13328 [CONSO_AWMK, CONSO_AWMM](1)
                  <-> 13435(9)
                  <-> 14529(11)
-                 <-> 13327 [PALUE7TR3/3JA, PALUE7TS3](1)
+                 <-> 13327 [CONSO_AWMH, CONSO_AWMN](1)
 
 Noeud bilan : 1
-1(4) <-> 19 [.GUERL41.Q.RO, .Q.RO4QUEENS](3) <-> 21 [.SHIL4COLLETTE](4)
-                                             <-> 24 [.WEST4TR411, .WEST4TR412](2)
-     <-> 20 [.R.PR4TR411, .R.PR4TR412](2) <-> 21 [.SHIL4COLLETTE](4)
-     <-> 15691(4) <-> 10115 [H.PUI4T411, H.PUI4T412](5)
+1(4) <-> 19 [CONSO_AIBT, CONSO_AIBU](3) <-> 21 [CONSO_AIBX](4)
+                                        <-> 24 [CONSO_AICC, CONSO_AICD](2)
+     <-> 20 [CONSO_AIBV, CONSO_AIBW](2) <-> 21 [CONSO_AIBX](4)
+     <-> 15691(4) <-> 10115 [CONSO_ASGS, CONSO_ASGT](5)
 
 
 ********************************************
@@ -312,19 +312,19 @@ Variante numéro 0
 ---------------------
 ---------------------
 
-Groupe 7210ON-_BL-NW_-NE : Pobj (0.003054) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe 7211ON-_BL-NW_-NE : Pobj (0.001542) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe 7212ON-_BL-NW_-NE : Pobj (0.002238) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe 7240ON-_BL-NW_-NE : Pobj (0.002949) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe 7241ON-_BL-NW_-NE : Pobj (0.002145) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe 7249ON-_BL-NW_-NE : Pobj (0.001593) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe 7251ON-_BL-NW_-NE : Pobj (0.003078) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe 7254ON-_BL-NW_-NE : Pobj (0.001662) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe 7259ON-_BL-NW_-NE : Pobj (0.001881) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe 7404ON-_BL-NW_-NE : Pobj (0.002988) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe 7510ON-_BL-HE_-NE : Pobj (0.002340) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe AVIV2 : Pobj (0.000826) est superieur a Pmax (0.000000): Pobj mis a Pmax.
-Groupe RPAV3 : Pobj (0.000413) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BCRV : Pobj (0.002988) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BCST : Pobj (0.002340) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BDMT : Pobj (0.003054) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BFYB : Pobj (0.002949) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BFZD : Pobj (0.002145) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BGGC : Pobj (0.001593) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BGHY : Pobj (0.003078) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BGNB : Pobj (0.001662) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BGWK : Pobj (0.001881) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BIDL : Pobj (0.000826) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOKZ : Pobj (0.001542) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BOLA : Pobj (0.002238) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BYVG : Pobj (0.000413) est superieur a Pmax (0.000000): Pobj mis a Pmax.
 Demarrage des groupes par empilement économique :
 Consommation globale                = 212279.0220  MW
 Production démarrée                 = 212282.1060  MW
@@ -362,14 +362,14 @@ Variante numéro 382
 ---------------------
 ---------------------
 
-Groupe 4045ON : Pobj (0.001833) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe C.HER3-HTA-EOL-ES : Pobj (0.001900) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe NFI -NEP12-WE.001 : Pobj (0.001887) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe NFI -NEP12-WE.002 : Pobj (0.001887) est superieur a Pmax (0.001000): Pobj mis a Pmax.
-Groupe OBR -NEP12-WEA-_B : Pobj (0.003138) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe SI  -NEP12-WE.000 : Pobj (0.002739) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe SI  -NEP12-WEA-_B : Pobj (0.002739) est superieur a Pmax (0.002000): Pobj mis a Pmax.
-Groupe TARNO3-HTA-EOL-ES : Pobj (0.001900) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BFRQ : Pobj (0.001833) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BGNT : Pobj (0.002739) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BGNU : Pobj (0.002739) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_BLKT : Pobj (0.001900) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BVMY : Pobj (0.001887) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BVMZ : Pobj (0.001887) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe GROUP_BWCN : Pobj (0.003138) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe GROUP_CBZG : Pobj (0.001900) est superieur a Pmax (0.001000): Pobj mis a Pmax.
 Demarrage des groupes par empilement économique :
 Consommation globale                = 222081.3158  MW
 Production démarrée                 = 222085.3560  MW

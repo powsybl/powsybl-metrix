@@ -18,14 +18,14 @@ Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
 Mode de calcul : LOAD-FLOW
-Noeud bilan : 0 [.A.ZA 6_2]
-0 [.A.ZA 6_2](2) <-> 279 [.MTTO 6_2](4) <-> 83 [.CART 6_1](2)
-                                        <-> 145 [.ESPA 6_1](2)
-                                        <-> 308 [.PENA 6_1](6)
-                 <-> 308 [.PENA 6_1](6) <-> 83 [.CART 6_1](2)
-                                        <-> 279 [.MTTO 6_2](4)
-                                        <-> 455 [.VILN 6_2](5)
-                                        <-> 309 [.PENA 7_1](4)
+Noeud bilan : 0 [CONSO_K]
+0 [CONSO_K](2) <-> 279 [CONSO_KD](4) <-> 83 [CONSO_CP](2)
+                                     <-> 145 [CONSO_EZ](2)
+                                     <-> 308 [CONSO_LG](6)
+               <-> 308 [CONSO_LG](6) <-> 83 [CONSO_CP](2)
+                                     <-> 279 [CONSO_KD](4)
+                                     <-> 455 [CONSO_QX](5)
+                                     <-> 309 [CONSO_LH](4)
 
 
 ********************************************
@@ -45,7 +45,7 @@ Puissance à ajuster                 =    -0.4176  MW
 Puissance disponible à la hausse (hors Pimp) = 1350028.1798  MW
 Puissance disponible à la baisse (hors Pimp) = -1165088.8842  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_2]), bilan = 0.4176 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_K]), bilan = 0.4176 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe

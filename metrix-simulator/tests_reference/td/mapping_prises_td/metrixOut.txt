@@ -1,6 +1,6 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole SSME1L61SSMEL_Td a une admittance tres grande (715.9455871582)
-Attention: Le quadripole DEPH1L71MUHLB_Td a une admittance tres grande (1444.0116882324)
+Attention: Le quadripole QUAD_LNU_Td a une admittance tres grande (715.9455871582)
+Attention: Le quadripole QUAD_MIT_Td a une admittance tres grande (1444.0116882324)
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -19,28 +19,28 @@ Nombre de composantes synchrones 2
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Pour le td 'CHATEY761' la prise souhaitée -1 est introuvable pour la variante 3
-Pour le td 'INNERY761' la prise souhaitée -1 est introuvable pour la variante 3
-Pour le td 'ARGI2L61ARGIA' la prise souhaitée -1 est introuvable pour la variante 3
-Pour le td 'CHATEY761' la prise souhaitée 25 est introuvable pour la variante 4
-Pour le td 'INNERY761' la prise souhaitée 31 est introuvable pour la variante 4
-Pour le td 'ARGI2L61ARGIA' la prise souhaitée 33 est introuvable pour la variante 4
+Pour le td 'QUAD_LBQ' la prise souhaitée -1 est introuvable pour la variante 3
+Pour le td 'QUAD_LCK' la prise souhaitée -1 est introuvable pour la variante 3
+Pour le td 'QUAD_LFH' la prise souhaitée -1 est introuvable pour la variante 3
+Pour le td 'QUAD_LBQ' la prise souhaitée 25 est introuvable pour la variante 4
+Pour le td 'QUAD_LCK' la prise souhaitée 31 est introuvable pour la variante 4
+Pour le td 'QUAD_LFH' la prise souhaitée 33 est introuvable pour la variante 4
 Lancement de METRIX sans curatif topologique
 Mode de calcul : OPF
 Noeud bilan : 0
-0(2) <-> 300 [.MTTO 6 .MARI 1, .MTTO 6 .MARI 2, .MTTO 6 TR 638 C, .MTTO 6 TR 651 C, .MTTO 6 TR 652 C, .MTTO 6 TR 653 C, .MTTO 6 TR 654 C](4) <-> 83(2)
-                                                                                                                                             <-> 146 [.ENTR 6 TR 611 C, .ENTR 6 TR 612 C, .ENTR 6 TR 613 C, .ENTR 6 TR 644 C, .ENTR 6 TR 645 C](2)
-                                                                                                                                             <-> 151 [.ESPA 6 TR 643 C, .ESPA 6 TR 645 C, .ESPA 6 TR 646 C](2)
-     <-> 326 [.PENA 6 TR654 1](5) <-> 83(2)
-                                  <-> 474 [.VILN 6 TR 651 C, .VILN 6 TR 652 C, .VILN 6 TR 653 C](3)
-                                  <-> 327(4)
+0(2) <-> 300 [CONSO_OOU, CONSO_OOV, CONSO_OOW, CONSO_OOX, CONSO_OOY, CONSO_OOZ, CONSO_OPA](4) <-> 83(2)
+                                                                                              <-> 146 [CONSO_ODZ, CONSO_OEA, CONSO_OEB, CONSO_OEC, CONSO_OED](2)
+                                                                                              <-> 151 [CONSO_OEO, CONSO_OEP, CONSO_OEQ](2)
+     <-> 326 [CONSO_ORF](5) <-> 83(2)
+                            <-> 474 [CONSO_PCT, CONSO_PCU, CONSO_PCV](3)
+                            <-> 327(4)
 
 Noeud bilan : 58
-58(1) <-> 446 [CONSO.UK](6) <-> 66(1)
-                            <-> 88(1)
-                            <-> 157(1)
-                            <-> 211(1)
-                            <-> 306(1)
+58(1) <-> 446 [CONSO_PAN](6) <-> 66(1)
+                             <-> 88(1)
+                             <-> 157(1)
+                             <-> 211(1)
+                             <-> 306(1)
       |=| 3853(6) <-> 515(13)
                   <-> 1120(4)
                   <-> 2897(3)
@@ -59,10 +59,10 @@ Variante numéro 0
 ---------------------
 ---------------------
 
-le TD ARGI2L61ARGIA est limite a la hausse
-le TD ARGI2L61ARGIA est limite a la baisse
-le TD CHATEY761 est limite a la hausse
-le TD INNERY761 est limite a la baisse
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la hausse
+le TD QUAD_LFH est limite a la baisse
 Demarrage des groupes par empilement économique :
 Consommation globale                = 231425.0054  MW
 Production démarrée                 = 236389.7571  MW
@@ -100,8 +100,8 @@ Variante numéro 1
 ---------------------
 ---------------------
 
-le TD ARGI2L61ARGIA est limite a la hausse
-le TD CHATEY761 est limite a la hausse
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LFH est limite a la hausse
 Demarrage des groupes par empilement économique :
 Consommation globale                = 231425.0054  MW
 Production démarrée                 = 236389.7571  MW
@@ -139,8 +139,8 @@ Variante numéro 2
 ---------------------
 ---------------------
 
-le TD ARGI2L61ARGIA est limite a la baisse
-le TD INNERY761 est limite a la baisse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la baisse
 Demarrage des groupes par empilement économique :
 Consommation globale                = 231425.0054  MW
 Production démarrée                 = 236389.7571  MW
@@ -178,10 +178,10 @@ Variante numéro 3
 ---------------------
 ---------------------
 
-le TD ARGI2L61ARGIA est limite a la hausse
-le TD ARGI2L61ARGIA est limite a la baisse
-le TD CHATEY761 est limite a la hausse
-le TD INNERY761 est limite a la baisse
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la hausse
+le TD QUAD_LFH est limite a la baisse
 Demarrage des groupes par empilement économique :
 Consommation globale                = 231425.0054  MW
 Production démarrée                 = 236389.7571  MW
@@ -219,10 +219,10 @@ Variante numéro 4
 ---------------------
 ---------------------
 
-le TD ARGI2L61ARGIA est limite a la hausse
-le TD ARGI2L61ARGIA est limite a la baisse
-le TD CHATEY761 est limite a la hausse
-le TD INNERY761 est limite a la baisse
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la hausse
+le TD QUAD_LFH est limite a la baisse
 Demarrage des groupes par empilement économique :
 Consommation globale                = 231425.0054  MW
 Production démarrée                 = 236389.7571  MW

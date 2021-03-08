@@ -1,19 +1,19 @@
 Use dictionnary file METRIX.dic
-Attention: Le quadripole PRATCP3_PRATC   3COUPL    DJ a une admittance tres grande (100000.0000000000)
-Attention: Le quadripole PRATCP6_PRATC   6COUPL    DJ a une admittance tres grande (100000.0000000000)
-Incident 'BARJAL61Z3bou' : Noeuds perdus '2850 [LAFIGP1_5]' '2851 [LAFIGP6_4]' '5893 [ZLAFIP6_5]'
-Incident 'BEYSSL31P.BOR' : Noeuds perdus '894 [BEYSSP3_5]'
-Incident 'P.BORL31PLANC' : Noeuds perdus '3995 [PLANCP3_7]'
-Incident 'SALINL31VIRAD' : Noeuds perdus '4492 [SALINP3_9]'
-Incident 'GRANDL61Z3bou' : Noeuds perdus '2873 [LANAUP6_4]' '5898 [ZLANAP6_5]'
-Incident 'LANG8L31Z2bou' : Noeuds perdus '3865 [PALISP3_11]'
-Incident 'LAFIGY611' : Noeuds perdus '2850 [LAFIGP1_5]' '2851 [LAFIGP6_4]'
-Incident 'M.ALLL31PRATC' : Noeuds perdus '3107 [M.ALLP3_6]'
-Incident 'MTPEZL31Z3bou' : Noeuds perdus '3848 [P.VEYP3_4]' '6043 [ZP.VEP3_5]'
-Incident 'TEIL L31TEIL5' : Noeuds perdus '5064 [TEIL5P3_6]'
-Incident 'LAVEYY612' : Noeuds perdus '2945 [LAVEYP1_13]'
-Incident 'LAVEYY611' : Noeuds perdus '2944 [LAVEYP1_12]'
-Incident 'MEYSSL31TEIL' : Noeuds perdus '3363 [MEYSSP3_3]'
+Attention: Le quadripole QUAD_VAQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VAR a une admittance tres grande (100000.0000000000)
+Incident 'INC_YUB' : Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]' '5893 [CONSO_HRS]'
+Incident 'QUAD_JXX' : Noeuds perdus '894 [CONSO_AHL]'
+Incident 'QUAD_QRI' : Noeuds perdus '3995 [CONSO_EWS]'
+Incident 'QUAD_RRN' : Noeuds perdus '4492 [CONSO_FPV]'
+Incident 'INC_YUC' : Noeuds perdus '2873 [CONSO_DFO]' '5898 [CONSO_HRX]'
+Incident 'INC_YUD' : Noeuds perdus '3865 [CONSO_ERS]'
+Incident 'QUAD_UCF' : Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]'
+Incident 'QUAD_PMQ' : Noeuds perdus '3107 [CONSO_DOO]'
+Incident 'INC_YUE' : Noeuds perdus '3848 [CONSO_ERB]' '6043 [CONSO_HXM]'
+Incident 'QUAD_SGU' : Noeuds perdus '5064 [CONSO_GLV]'
+Incident 'QUAD_UDG' : Noeuds perdus '2945 [CONSO_DII]'
+Incident 'QUAD_UDF' : Noeuds perdus '2944 [CONSO_DIH]'
+Incident 'QUAD_PZE' : Noeuds perdus '3363 [CONSO_DYK]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -34,10 +34,10 @@ Pénalisation des HVDC dans la fonction coût = 0.1
 
  Nb total d'incidents + parades : 88
 Mode de calcul : OPF sans redispatching de groupes
-Noeud bilan : 0 [.CTLHP3_6]
-0 [.CTLHP3_6](1) <-> 2 [.CTLOP3_14](4) <-> 1 [.CTLHP3_7](1)
-                                       <-> 2200 [FINS P3_9](2)
-                                       <-> 5907 [ZLIEBP3_5](3)
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2200 [CONSO_CFR](2)
+                                  <-> 5907 [CONSO_HSG](3)
 
 
 ********************************************
@@ -57,7 +57,7 @@ Puissance à ajuster                 = -63319.9987  MW
 Puissance disponible à la hausse (hors Pimp) = 25224209.9485  MW
 Puissance disponible à la baisse (hors Pimp) = -25390728.0515  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 63319.9987 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 63319.9987 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -94,7 +94,7 @@ Puissance à ajuster                 =    -0.0075  MW
 Puissance disponible à la hausse (hors Pimp) = 25258361.4800  MW
 Puissance disponible à la baisse (hors Pimp) = -25356576.5200  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 0.0075 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0075 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
@@ -131,7 +131,7 @@ Puissance à ajuster                 =    -0.0272  MW
 Puissance disponible à la hausse (hors Pimp) = 25258362.9450  MW
 Puissance disponible à la baisse (hors Pimp) = -25356575.0550  MW
 Bilans par zones synchrones :
-Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 0.0272 MW
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0272 MW
 
 Utilisation du simplexe car une Pmin est différente de zéro
 Appel du simplexe
