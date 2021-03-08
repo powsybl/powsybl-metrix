@@ -8,14 +8,6 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul coneu pour etre integre dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description : programme decrivant le reseau (chainages, carateristiques...)
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
 #ifndef RESEAU_METRIX
 #define RESEAU_METRIX
 

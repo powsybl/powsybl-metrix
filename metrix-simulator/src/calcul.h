@@ -8,15 +8,9 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-/*********************************************************************
-
-Modele : OPF en Actif Seul coneu etre integre dans la logique statistique d'ASSESS
-Auteur : Yacine HASSAINE
-COPYRIGHT RTE 2008
-
-**********************************************************************/
 #ifndef CALCUL_METRIX
 #define CALCUL_METRIX
+
 #include "err/error.h"
 #include "margin_variations_compute.h"
 #include "pne.h"
