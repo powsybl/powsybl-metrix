@@ -21,6 +21,8 @@ jobs:
         run: >
           cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_CXX-COMPILER=g++-8
+          -DCMAKE_C_COMPILER=gcc-8
           -DCMAKE_PREFIX_PATH=$BOOST_ROOT_1_72_0
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 

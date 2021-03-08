@@ -18,6 +18,8 @@ jobs:
         run: >
           cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
           -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_CXX-COMPILER=g++-8
+          -DCMAKE_C_COMPILER=gcc-8
           -DCMAKE_PREFIX_PATH=$BOOST_ROOT_1_72_0
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
 
@@ -65,6 +67,8 @@ jobs:
           cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Debug
           -DCODE_COVERAGE=TRUE
+          -DCMAKE_CXX-COMPILER=g++-8
+          -DCMAKE_C_COMPILER=gcc-8
           -DCMAKE_PREFIX_PATH=$BOOST_ROOT_1_72_0
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
