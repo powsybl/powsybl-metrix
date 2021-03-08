@@ -116,6 +116,41 @@ Supplier<Reader> mappingReader = () -> Files.newBufferedReader(Paths.get("/path/
 Supplier<Reader> metrixDslReader = () -> Files.newBufferedReader(Paths.get("/path/to/metrixConfig.groovy"), StandardCharsets.UTF_8);
 // Remedial actions
 Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get("/path/to/remedialActions.txt"), StandardCharsets.UTF_8);
+
+// Result timeseries store
+FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));
+
+// Initialize metrix
+Metrix metrix = new Metrix(
+    networkSource,
+    contingenciesProvider,
+    mappingReader,
+    metrixDslReader,
+    remedialActionsReader,
+    store,
+    resultStore,
+    null,
+    computationManager 
+);
+
+
+// Result listener
+ResultListener listener = new AbstractMetrix.DefaultResultListener() {
+
+    @Override
+    public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
+        resultStore.importTimeSeries(timeSeriesList, version, false);
+    }
+
+}
+
+// Run metrix
+MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, true, true);
+metrix.run(runParams, listener);
+```
+
+Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/metrix) on our website.
+
 #### Metrix simulator
 Metrix simulator is an independant c++ executable. It must be installed before using powsybl-metrix. 
 
@@ -216,37 +251,45 @@ This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to veri
 ###### Code coverage
 This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to the configure command.
 
+###### Run metrix simulator
+The following environments variables must be defined in order to run metrix properly:
+METRIX_ETC: location of the .dic files for language region (some of these dictionnaries are exported in 'etc' directory in install directory)
 
-// Result timeseries store
-FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));
-
-// Initialize metrix
-Metrix metrix = new Metrix(
-    networkSource,
-    contingenciesProvider,
-    mappingReader,
-    metrixDslReader,
-    remedialActionsReader,
-    store,
-    resultStore,
-    null,
-    computationManager 
-);
-
-
-// Result listener
-ResultListener listener = new AbstractMetrix.DefaultResultListener() {
-
-    @Override
-    public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
-        resultStore.importTimeSeries(timeSeriesList, version, false);
-    }
-
-}
-
-// Run metrix
-MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, true, true);
-metrix.run(runParams, listener);
+All options are detailed in the helper
 ```
-
-Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/metrix) on our website.
+$> ./metrix-simulator --help
+Usage:
+ metrix-simulator <errorFilepath> <variantFilepath> <resultsFilepath> <firstVariantIndex> <numberVariants> <paradesFilepath> 
+<paradesFilepath> = "parades.csv" by default 
+[options] 
+Metrix options:
+  -h [ --help ]                 Display help message
+  --log-level arg               Logger level (allowed values are critical, 
+                                error, warning, info, debug, trace): default is
+                                info
+  -p [ --print-log ]            Print developer log in standard output
+  --verbose-config              Activate debug/trace logs relative to 
+                                configuration
+  --verbose-constraints         Activate debug/trace logs relative to 
+                                constraint detection
+  --write-constraints           Write the constraints in a dedicated file
+  --print-constraints           Trace in logs the constraints matrix (time 
+                                consuming even if trace logs are not active), 
+                                log level at trace is required
+  --write-sensitivity           Write the sensivity matrix in a dedicated file
+  --write-report                Write the rate matrix report in a dedicated 
+                                file
+  --check-constraints-level arg Check adding constraints:
+                                0: no check (default)
+                                1: When adding a constraint, perform a load 
+                                flow to check transit (more time consuming)
+                                2: When adding a constraint, run every incident
+                                to check that we didn't forget a constraint 
+                                (even more time consuming
+  --compare-reports             Compare load flow reports after application of 
+                                report factors to check trigger of coupling
+  --no-incident-group           Ignore incident if a group of N-K is not 
+                                available
+  --all-outputs                 Display all values in results files
+  --mps-file                    Export MPS file
+```
