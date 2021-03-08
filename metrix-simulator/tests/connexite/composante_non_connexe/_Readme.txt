@@ -1,0 +1,1 @@
+Reseau non connexe -> erreur

@@ -20,3 +20,17 @@ org.eclipse.core.resources.prefs
 org.eclipse.jdt.core.prefs
 org.eclipse.m2e.core.prefs
 org.eclipse.jdt.groovy.core.prefs
+
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
+
+### VisualStudioCode ###
+.vscode/*
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode

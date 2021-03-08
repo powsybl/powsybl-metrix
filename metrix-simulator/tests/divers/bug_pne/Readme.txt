@@ -1,0 +1,1 @@
+En raison d'un bug dans PNE, la solution retournée ne résout pas complètement une contrainte qui est redétectée à chaque nouvelle micro-itération.

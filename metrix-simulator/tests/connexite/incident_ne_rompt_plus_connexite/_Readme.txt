@@ -1,0 +1,1 @@
+Dans la variante 0, l'incident 'ISSOIL31TAUPE' rompt la connexite. Dans la variante 1 il ne la rompt plus ce qui provoquait une exception.

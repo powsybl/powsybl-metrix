@@ -1,0 +1,1 @@
+L'incident 'GRANDL61Z3bou' rompt la connexité ce qui créait une erreur lors du calcul des coefficients.

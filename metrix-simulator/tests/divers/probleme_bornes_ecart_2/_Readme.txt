@@ -1,0 +1,1 @@
+Problème initialement infaisable car écart sur une ligne supérieur à valeur max de l'écart

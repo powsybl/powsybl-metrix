@@ -1,0 +1,1 @@
+network is connex but base variant breaks it -> manage connexity

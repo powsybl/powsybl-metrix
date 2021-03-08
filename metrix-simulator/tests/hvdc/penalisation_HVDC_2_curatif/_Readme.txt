@@ -1,0 +1,1 @@
+Pénalisation des HVDC autour de la consigne initiale, en curatif et en préventif

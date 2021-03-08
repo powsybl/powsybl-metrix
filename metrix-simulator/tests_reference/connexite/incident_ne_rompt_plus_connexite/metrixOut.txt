@@ -1,0 +1,263 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole MTGROP6_SOLEI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole PRATCP6_PRATC   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
+Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
+Incident 'SALINL31VIRAD' : Noeuds perdus '4542 [SALINP3_7]'
+Incident 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
+Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
+Incident 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+Incident 'SALETL31YSSIN' : Noeuds perdus '4539 [SALETP3_3]'
+Incident 'B.BASL31TREVA' : Noeuds perdus '712 [B.BASP3_9]'
+Incident 'P.LIGL31TREVA' : Noeuds perdus '5418 [VENDEP3_4]'
+Incident 'TREVAL31VENDE' : Noeuds perdus '5418 [VENDEP3_4]'
+Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Incident 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Incident 'C.RHOL32Z3bou' : Noeuds perdus '6288 [ZTEILP3_5]'
+Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Incident 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
+Incident 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Incident 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Incident 'SANSSL31Z3bou' : Noeuds perdus '3097 [LOUD6P3_8]' '5989 [ZLOUDP3_5]'
+Incident 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Incident 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Incident 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 99 (sur 99)
+Nombre de regions       = 1
+Nombre total de noeuds  = 6366
+Nombre de consommations = 6352 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 8847 (dont 0 surveillés en N et 5 surveillés sur défaut)
+Nombre de groupes       = 2558 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 14 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Parade 'BRIOUL31TAUPE' sur défaut 'ISSOIL31TAUPE' : Noeuds perdus '5106 [TAUPEP3_11]'
+Parade 'BRIOUL31TAUPE' sur défaut 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Parade 'BRIOUL31TAUPE' sur défaut 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Parade 'BRIOUL31TAUPE' sur défaut 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'LANG8L31PALIS' sur défaut 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Le défaut MTGROL62MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Parade 'LANG8L31PALIS' sur défaut 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Parade 'LANG8L31PALIS' sur défaut 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'LANG8L31PALIS' sur défaut 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Parade 'LANG8L31PALIS' sur défaut 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+ Nb total d'incidents + parades : 206
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [.CTLHP3_6]
+0 [.CTLHP3_6](1) <-> 2 [.CTLOP3_14](4) <-> 1 [.CTLHP3_7](1)
+                                       <-> 2236 [FINS P3_9](2)
+                                       <-> 5975 [ZLIEBP3_5](3)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 60612.1333  MW
+Production démarrée                 = 60612.1260  MW
+Puissance à ajuster                 =     0.0073  MW
+Puissance disponible à la hausse (hors Pimp) = 25516829.8740  MW
+Puissance disponible à la baisse (hors Pimp) = -25638054.1260  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = -0.0073 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   60612.1333 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
+Incident 'ISSOIL31TAUPE' : Noeuds perdus '5106 [TAUPEP3_11]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
+Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
+Incident 'SALINL31VIRAD' : Noeuds perdus '4542 [SALINP3_7]'
+Incident 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
+Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
+Incident 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+Incident 'SALETL31YSSIN' : Noeuds perdus '4539 [SALETP3_3]'
+Incident 'B.BASL31TREVA' : Noeuds perdus '712 [B.BASP3_9]'
+Incident 'P.LIGL31TREVA' : Noeuds perdus '5418 [VENDEP3_4]'
+Incident 'TREVAL31VENDE' : Noeuds perdus '5418 [VENDEP3_4]'
+Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Incident 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Incident 'C.RHOL32Z3bou' : Noeuds perdus '6288 [ZTEILP3_5]'
+Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Incident 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
+Incident 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Incident 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Incident 'SANSSL31Z3bou' : Noeuds perdus '3097 [LOUD6P3_8]' '5989 [ZLOUDP3_5]'
+Incident 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Incident 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Incident 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'ISSOIL31TAUPE_NRF' sur défaut 'ISSOIL31TAUPE' : Noeuds perdus '5106 [TAUPEP3_11]'
+Parade 'BRIOUL31TAUPE' sur défaut 'ISSOIL31TAUPE' : Noeuds perdus '5106 [TAUPEP3_11]'
+Parade 'SALZUL31Z3bou_NRF' sur défaut 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'SSSIGL31Z2bou_NRF' sur défaut 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Parade 'BRIOUL31TAUPE' sur défaut 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Parade 'A.NORL31Z2bou_NRF' sur défaut 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Parade 'BRIOUL31TAUPE' sur défaut 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Parade 'LANG8L31Z4bou_NRF' sur défaut 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Parade 'M.ALLL31PRATC_NRF' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'BRIOUL31TAUPE' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'GRANDL61Z3bou_NRF' sur défaut 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Parade 'LANG8L31PALIS' sur défaut 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Parade 'BARJAL61Z3bou_NRF' sur défaut 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Parade 'LANG8L31PALIS' sur défaut 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Parade 'MTPEZL31Z3bou_NRF' sur défaut 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Parade 'BESSEL31Z3bou_NRF' sur défaut 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'TEIL L31TEIL5_NRF' sur défaut 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Parade 'LANG8L31PALIS' sur défaut 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Parade 'SALINL31Z3bou_NRF' sur défaut 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'ANCELL31Z3bou_NRF' sur défaut 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Parade 'LAUSSL31TAULH_NRF' sur défaut 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+Parade 'LANG8L31PALIS' sur défaut 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Attention: incident 20, l'ouvrage BRIOUL31TAUPE est deja deconnecte
+Demarrage des groupes par empilement économique :
+Consommation globale                = 61884.8760  MW
+Production démarrée                 = 61884.9090  MW
+Puissance à ajuster                 =    -0.0330  MW
+Puissance disponible à la hausse (hors Pimp) = 25515557.0910  MW
+Puissance disponible à la baisse (hors Pimp) = -25639326.9090  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 0.0330 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   61884.8760 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
+Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
+Incident 'SALINL31VIRAD' : Noeuds perdus '4542 [SALINP3_7]'
+Incident 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
+Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
+Incident 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+Incident 'SALETL31YSSIN' : Noeuds perdus '4539 [SALETP3_3]'
+Incident 'B.BASL31TREVA' : Noeuds perdus '712 [B.BASP3_9]'
+Incident 'P.LIGL31TREVA' : Noeuds perdus '5418 [VENDEP3_4]'
+Incident 'TREVAL31VENDE' : Noeuds perdus '5418 [VENDEP3_4]'
+Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Incident 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Incident 'C.RHOL32Z3bou' : Noeuds perdus '6288 [ZTEILP3_5]'
+Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Incident 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
+Incident 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Incident 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Incident 'SANSSL31Z3bou' : Noeuds perdus '3097 [LOUD6P3_8]' '5989 [ZLOUDP3_5]'
+Incident 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Incident 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Incident 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'ISSOIL31TAUPE' : Noeuds perdus '5106 [TAUPEP3_11]'
+Parade 'SALZUL31Z3bou_NRF' sur défaut 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'SALZUL31Z3bou' : Noeuds perdus '4549 [SALZUP3_7]' '6206 [ZSALZP3_5]'
+Parade 'SSSIGL31Z2bou_NRF' sur défaut 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Parade 'BRIOUL31TAUPE' sur défaut 'SSSIGL31Z2bou' : Noeuds perdus '5451 [VERSIP3_3]'
+Parade 'A.NORL31Z2bou_NRF' sur défaut 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Parade 'BRIOUL31TAUPE' sur défaut 'A.NORL31Z2bou' : Noeuds perdus '407 [A.NORP3_4]'
+Parade 'LANG8L31Z4bou_NRF' sur défaut 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Parade 'BRIOUL31TAUPE' sur défaut 'LANG8L31Z4bou' : Noeuds perdus '3671 [NAUSSP3_3]' '6077 [ZNAUSP3_5]' '6146 [ZPRA5P3_5]'
+Parade 'M.ALLL31PRATC_NRF' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'BRIOUL31TAUPE' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'GRANDL61Z3bou_NRF' sur défaut 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Parade 'LANG8L31PALIS' sur défaut 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5966 [ZLANAP6_5]'
+Parade 'BARJAL61Z3bou_NRF' sur défaut 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Parade 'LANG8L31PALIS' sur défaut 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5961 [ZLAFIP6_5]'
+Parade 'MTPEZL31Z3bou_NRF' sur défaut 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6111 [ZP.VEP3_5]'
+Parade 'BESSEL31Z3bou_NRF' sur défaut 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'BESSEL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Parade 'TEIL L31TEIL5_NRF' sur défaut 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Parade 'LANG8L31PALIS' sur défaut 'TEIL L31TEIL5' : Noeuds perdus '5118 [TEIL5P3_6]'
+Parade 'SALINL31Z3bou_NRF' sur défaut 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'SALINL31Z3bou' : Noeuds perdus '4541 [SALINP3_6]' '6204 [ZSALIP3_5]'
+Parade 'ANCELL31Z3bou_NRF' sur défaut 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Parade 'LANG8L31PALIS' sur défaut 'ANCELL31Z3bou' : Noeuds perdus '500 [ANCELP3_9]' '5609 [ZANCEP3_5]'
+Parade 'LAUSSL31TAULH_NRF' sur défaut 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'
+Parade 'LANG8L31PALIS' sur défaut 'LAUSSL31TAULH' : Noeuds perdus '2967 [LAUSSP3_8]'

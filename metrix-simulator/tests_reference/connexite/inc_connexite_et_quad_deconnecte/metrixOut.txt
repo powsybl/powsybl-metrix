@@ -1,0 +1,148 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole MTGROP6_SOLEI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
+Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
+Incident 'SALINL31VIRAD' : Noeuds perdus '4541 [SALINP3_7]'
+Incident 'TEIL L31TEIL5' : Noeuds perdus '5117 [TEIL5P3_6]'
+Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
+Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
+Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5960 [ZLAFIP6_5]'
+Incident 'BESSEL31Z3bou' : Noeuds perdus '4540 [SALINP3_6]' '6203 [ZSALIP3_5]'
+Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5965 [ZLANAP6_5]'
+Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6110 [ZP.VEP3_5]'
+Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 57 (sur 57)
+Nombre de regions       = 1
+Nombre total de noeuds  = 6365
+Nombre de consommations = 6351 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 8846 (dont 0 surveillés en N et 9 surveillés sur défaut)
+Nombre de groupes       = 2558 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 14 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [.CTLHP3_6]
+0 [.CTLHP3_6](1) <-> 2 [.CTLOP3_14](4) <-> 1 [.CTLHP3_7](1)
+                                       <-> 2236 [FINS P3_9](2)
+                                       <-> 5974 [ZLIEBP3_5](3)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 84238.6266  MW
+Production démarrée                 = 75403.7445  MW
+Puissance à ajuster                 =  8834.8821  MW
+Puissance disponible à la hausse (hors Pimp) = 25502038.2555  MW
+Puissance disponible à la baisse (hors Pimp) = -25652845.7445  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = -8834.8821 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   84238.6266 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
+Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
+Incident 'SALINL31VIRAD' : Noeuds perdus '4541 [SALINP3_7]'
+Incident 'TEIL L31TEIL5' : Noeuds perdus '5117 [TEIL5P3_6]'
+Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
+Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
+Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5960 [ZLAFIP6_5]'
+Incident 'BESSEL31Z3bou' : Noeuds perdus '4540 [SALINP3_6]' '6203 [ZSALIP3_5]'
+Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5965 [ZLANAP6_5]'
+Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6110 [ZP.VEP3_5]'
+Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'
+
+---------------------
+---------------------
+Variante numéro 2189
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 64126.2215  MW
+Production démarrée                 = 64126.2280  MW
+Puissance à ajuster                 =    -0.0065  MW
+Puissance disponible à la hausse (hors Pimp) = 25513315.7720  MW
+Puissance disponible à la baisse (hors Pimp) = -25641568.2280  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.CTLHP3_6]), bilan = 0.0065 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2189 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   64126.2215 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+Incident 'BEYSSL31P.BOR' : Noeuds perdus '916 [BEYSSP3_5]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3145 [M.ALLP3_6]'
+Incident 'MEYSSL31TEIL' : Noeuds perdus '3403 [MEYSSP3_3]'
+Incident 'P.BORL31PLANC' : Noeuds perdus '4042 [PLANCP3_7]'
+Incident 'SALINL31VIRAD' : Noeuds perdus '4541 [SALINP3_7]'
+Incident 'TEIL L31TEIL5' : Noeuds perdus '5117 [TEIL5P3_6]'
+Incident 'LAVEYY611' : Noeuds perdus '2982 [LAVEYP1_12]'
+Incident 'LAVEYY612' : Noeuds perdus '2983 [LAVEYP1_13]'
+Incident 'BARJAL61Z3bou' : Noeuds perdus '2888 [LAFIGP1_5]' '2889 [LAFIGP6_4]' '5960 [ZLAFIP6_5]'
+Incident 'BESSEL31Z3bou' : Noeuds perdus '4540 [SALINP3_6]' '6203 [ZSALIP3_5]'
+Incident 'GRANDL61Z3bou' : Noeuds perdus '2911 [LANAUP6_5]' '5965 [ZLANAP6_5]'
+Incident 'MTPEZL31Z3bou' : Noeuds perdus '3894 [P.VEYP3_5]' '6110 [ZP.VEP3_5]'
+Incident 'LANG8L31Z2bou' : Noeuds perdus '3911 [PALISP3_11]'

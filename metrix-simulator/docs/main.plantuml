@@ -1,0 +1,75 @@
+@startuml component
+
+package metrix {
+    object "metrix" as main
+
+    object log
+
+    object PNE
+    object LU
+
+    main --> PNE
+    PNE --> LU
+    main --> LU
+    main --> log
+}
+
+package boost {
+    object "asio" as boost_asio
+    object "log" as boost_log
+    object "program_options" as boost_program_options
+    object "filesystem" as boost_filesystem
+}
+
+main --> boost_program_options
+
+main --> boost_filesystem
+
+log --> boost_asio
+log --> boost_log
+log --> boost_filesystem
+
+@enduml
+
+@startuml activity_OPF
+
+(*) --> "Parse program options"
+--> "Load configuration"
+note right
+Network, variants, parades
+end note
+--> "Perform inital balance"
+note left
+P=C
+end note
+
+' Loop for variantes
+--> [loop for all variants] "Process variant"
+note right
+Apply variant 
+configuration on network
+end note
+' Loop for micro iterations
+partition "Micro-iterations" {
+    -right-> "Load flow"
+    --> "Constraint detection"
+    if "Contrainsts detected ?" then
+        --> [Yes]"Add constraints to problem"
+        --> "Resolve optimization problem"
+        --> [Next micro iteration] "Load flow"
+else
+    --> [No] "Display results"
+    --> "End variant process"
+    note right
+    Remove applied variant 
+    configuration on network
+    end note
+endif
+}
+if "Variants left ?" then
+    --> [Yes] "Process variant"
+else
+    --> [No] (*)
+endif
+
+@enduml

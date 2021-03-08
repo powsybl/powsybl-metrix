@@ -1,0 +1,1 @@
+La parade définie sur l'incident "BOUDEL61MTPEZ" crée 2 poches (2 noeuds isolés)

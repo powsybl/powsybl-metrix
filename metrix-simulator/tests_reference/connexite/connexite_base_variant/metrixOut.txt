@@ -1,0 +1,104 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole CALA5P6_CALA5   6MUR  .1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CHEV5P6_CHEV5   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole P.HA5P6_P.HA5   6MUR  .1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole THIBAP4_THIBA4R.YON.1DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole THIBAP4_THIBA4ZTHIB.1DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole ZTHIBP4_ZTHIB4THIBA.1DJF a une admittance tres grande (100000.0000000000)
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 11
+Nombre total de noeuds  = 6975
+Nombre de consommations = 7690 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 9824 (dont 1559 surveillés en N et 1559 surveillés sur défaut)
+Nombre de groupes       = 5467 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 41 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 2 (dont 0 peuvent agir en curatif et 2 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+La ligne 'MUR  L61P.HA5' de la loi -1:QUADIN est introuvable
+Noeud '4176' est hors composante connexe principale (composante -1)
+Mode de calcul : LOAD-FLOW
+Noeud bilan : 0 [.A.ZA 6 .ACAM 1, .A.ZA 6 AVEZT_1]
+0 [.A.ZA 6 .ACAM 1, .A.ZA 6 AVEZT_1](1) <-> 354 [.PENA 6 TR654 1](3) <-> 321 [.MTTO 6 .MARI 1, .MTTO 6 .MARI 2, .MTTO 6 TR 638 C, .MTTO 6 TR 651 C, .MTTO 6 TR 652 C, .MTTO 6 TR 653 C, .MTTO 6 TR 654 C](5)
+                                                                     <-> 356(4)
+
+Noeud bilan : 4176
+4176(1) <-> 1874(2) <-> 1873(3)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Groupe BATON3PRODUC : Pobj (5.600000) est superieur a Pmax (5.600000): Pobj mis a Pmax.
+Groupe BXNE INF : Pobj (1.286000) est superieur a Pmax (1.285714): Pobj mis a Pmax.
+Groupe BXNE ING : Pobj (1.286000) est superieur a Pmax (1.285714): Pobj mis a Pmax.
+Groupe BZNIL.HG4 : Pobj (7.600000) est superieur a Pmax (7.600000): Pobj mis a Pmax.
+Groupe CAS.SIN3 : Pobj (13.218000) est superieur a Pmax (13.217617): Pobj mis a Pmax.
+Groupe COUFF.TG3 : Pobj (2.300000) est superieur a Pmax (2.300000): Pobj mis a Pmax.
+Groupe CPNY .HG2 : Pobj (9.200000) est superieur a Pmax (9.200000): Pobj mis a Pmax.
+Groupe FABIA.HG1 : Pobj (9.200000) est superieur a Pmax (9.200000): Pobj mis a Pmax.
+Groupe FABIA.HG2 : Pobj (9.200000) est superieur a Pmax (9.200000): Pobj mis a Pmax.
+Groupe GIFFR.HG1 : Pobj (3.300000) est superieur a Pmax (3.300000): Pobj mis a Pmax.
+Groupe HERMI6G1 : Pobj (58.800000) est superieur a Pmax (58.799999): Pobj mis a Pmax.
+Groupe LAMAT.HG3 : Pobj (2.350000) est superieur a Pmax (2.350000): Pobj mis a Pmax.
+Groupe LNEUH6GROUPE2 : Pobj (33.480000) est superieur a Pmax (33.480000): Pobj mis a Pmax.
+Groupe P.BE61G3 : Pobj (20.140000) est superieur a Pmax (20.139999): Pobj mis a Pmax.
+Groupe P.BE61G4 : Pobj (20.140000) est superieur a Pmax (20.139999): Pobj mis a Pmax.
+Groupe PTCH53BREDA : Pobj (5.850000) est superieur a Pmax (5.850000): Pobj mis a Pmax.
+Groupe RECY IN3 : Pobj (3.600000) est superieur a Pmax (3.600000): Pobj mis a Pmax.
+Groupe RHINH1GROUP.2 : Pobj (37.800000) est superieur a Pmax (37.799999): Pobj mis a Pmax.
+Groupe RHINH1GROUP.4 : Pobj (37.800000) est superieur a Pmax (37.799999): Pobj mis a Pmax.
+Groupe S.SAB.HG1 : Pobj (2.530000) est superieur a Pmax (2.530000): Pobj mis a Pmax.
+Groupe SSSAU IN2 : Pobj (3.214000) est superieur a Pmax (3.213636): Pobj mis a Pmax.
+Groupe THIMEINF : Pobj (0.471000) est superieur a Pmax (0.470588): Pobj mis a Pmax.
+Groupe V.COR.TG02 : Pobj (23.293000) est superieur a Pmax (23.292559): Pobj mis a Pmax.
+Groupe V.COR.TG03 : Pobj (23.293000) est superieur a Pmax (23.292559): Pobj mis a Pmax.
+Groupe V.COR.TG04 : Pobj (23.293000) est superieur a Pmax (23.292559): Pobj mis a Pmax.
+Groupe VALAB5GROUPE12 : Pobj (30.060000) est superieur a Pmax (30.059999): Pobj mis a Pmax.
+Groupe VLARD.HG1 : Pobj (2.860000) est superieur a Pmax (2.860000): Pobj mis a Pmax.
+Groupe VLARD.HG2 : Pobj (2.860000) est superieur a Pmax (2.860000): Pobj mis a Pmax.
+Groupe VLARD.HG3 : Pobj (2.860000) est superieur a Pmax (2.860000): Pobj mis a Pmax.
+Demarrage des groupes par empilement économique :
+Consommation globale                = 74330.9060  MW
+Production démarrée                 = 74389.3140  MW
+Puissance à ajuster                 =   -58.4080  MW
+Puissance disponible à la hausse (hors Pimp) = 2003430.1023  MW
+Puissance disponible à la baisse (hors Pimp) = -1713960.7240  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6 .ACAM 1, .A.ZA 6 AVEZT_1]), bilan = 58.4080 MW
+Zone synchrone 1 (noeud bilan 4176), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   74330.9060 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 3)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 18630 (taille de la matrice : 18630)

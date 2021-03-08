@@ -1,0 +1,519 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole TOURBL71TOUR4 a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole SAUS5P6_SAUS5   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole SEINEP6_SEINE   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole VLEJUP6_VLEJU   6TRO.2AB  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole VLEJUP6_VLEJU   6ZLINA.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole ROMAIP3_ROMAI   3COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole ROMAIP6_ROMAI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole AUBE6P6_Disj Couplage 1.1|2.1 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole AVENIP6_AVENI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BILLAP3_BILLA   3COUPL.1  INTERRUP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BONDYP3_BONDY   3COUPL.B  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CHEVIP6_CHEVI   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CHEVIP6_CHEVI   6COUPL.2  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CORMEP6_CORME   6TRO.1AB  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CRETAP6_CRETA   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CZNEUP6_CZNEU   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole LIERSP6_Disj LIERSL61ZLIN7 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole LOGESP6_LOGES   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole NANTEP6_NANTE   6COUPL.B  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole NOVIOP3_Disj Tronc 24 23 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole PECQ P3_PECQ    3COUPL.1  INTERRUP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole PUISEP3_PUISE   3COUPL.2  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole PUTEAP6_PUTEA   6COUPL.A  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RATIEP4_RATIE4COUPL.1DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole SSMR P6_SSMR    6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole SSMR P6_SSMR    6COUPL    DJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole SSOU5P6_SSOU5   6COUPL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole VEXINP3_VEXIN   3ZVEXI.1  INTERRUP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole VINC5P6_VINC5   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Groupe PEU.S.TG2 : Pobj (13.000000) est superieur a Pmax (12.000000): Pobj mis a Pmax.
+L'incident N-k numero 12 (ALESIL61BERT5) rompt la connexité, il est ignoré
+L'incident N-k numero 13 (ALESIL61R.COT) rompt la connexité, il est ignoré
+L'incident N-k numero 14 (ALIZAL42MANOI) rompt la connexité, il est ignoré
+L'incident N-k numero 15 (ALMA L61BAUDR) rompt la connexité, il est ignoré
+L'incident N-k numero 23 (AMELOL61SAUS5) rompt la connexité, il est ignoré
+L'incident N-k numero 24 (AMFARL61RATIE) rompt la connexité, il est ignoré
+L'incident N-k numero 25 (AMFARL62RATIE) rompt la connexité, il est ignoré
+L'incident N-k numero 27 (AMPERL31LAMAR) rompt la connexité, il est ignoré
+L'incident N-k numero 31 (AMPERL61SEINE) rompt la connexité, il est ignoré
+L'incident N-k numero 32 (AMPERL62SEINE) rompt la connexité, il est ignoré
+L'incident N-k numero 33 (AMPERL63SEINE) rompt la connexité, il est ignoré
+L'incident N-k numero 34 (AMPONL61PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 40 (AQUEDL31ESSON) rompt la connexité, il est ignoré
+L'incident N-k numero 42 (AQUEDL31ZDAVI) rompt la connexité, il est ignoré
+L'incident N-k numero 43 (AQUEDL32CORB7) rompt la connexité, il est ignoré
+L'incident N-k numero 44 (AQUEDL32ESSON) rompt la connexité, il est ignoré
+L'incident N-k numero 46 (AQUEDL33ESSON) rompt la connexité, il est ignoré
+L'incident N-k numero 49 (AQUEDL61ZCOQU) rompt la connexité, il est ignoré
+L'incident N-k numero 52 (AQUEDL62ZCOQ5) rompt la connexité, il est ignoré
+L'incident N-k numero 57 (ARDO5L32ARRIG) rompt la connexité, il est ignoré
+L'incident N-k numero 58 (ARGE6L32FALLO) rompt la connexité, il est ignoré
+L'incident N-k numero 60 (ARGE6L61FALLO) rompt la connexité, il est ignoré
+L'incident N-k numero 70 (ARRIGL31CAVEL) rompt la connexité, il est ignoré
+L'incident N-k numero 71 (ARRIGL31DENFE) rompt la connexité, il est ignoré
+L'incident N-k numero 72 (ARRIGL31POMPA) rompt la connexité, il est ignoré
+L'incident N-k numero 73 (ARRIGL31REGHA) rompt la connexité, il est ignoré
+L'incident N-k numero 74 (ARRIGL31VITR5) rompt la connexité, il est ignoré
+L'incident N-k numero 76 (ARRIGL32CAVEL) rompt la connexité, il est ignoré
+L'incident N-k numero 83 (ARRIGL61SSMR) rompt la connexité, il est ignoré
+L'incident N-k numero 87 (ARRIGY612) rompt la connexité, il est ignoré
+L'incident N-k numero 88 (ARRIGY613) rompt la connexité, il est ignoré
+L'incident N-k numero 93 (ARSENL41CHERB) rompt la connexité, il est ignoré
+L'incident N-k numero 94 (ARVIGL61SENAR) rompt la connexité, il est ignoré
+L'incident N-k numero 95 (ASNIEL31NOVIO) rompt la connexité, il est ignoré
+L'incident N-k numero 96 (ASNIEL32NOVIO) rompt la connexité, il est ignoré
+L'incident N-k numero 97 (AUBE L41BOIST) rompt la connexité, il est ignoré
+L'incident N-k numero 100 (AUBE L41FERR5) rompt la connexité, il est ignoré
+L'incident N-k numero 102 (AUBE L41SEES) rompt la connexité, il est ignoré
+L'incident N-k numero 115 (AUMALL41BLOCA) rompt la connexité, il est ignoré
+L'incident N-k numero 116 (AUSTEL61CORIO) rompt la connexité, il est ignoré
+L'incident N-k numero 117 (AUSTEL61NATI3) rompt la connexité, il est ignoré
+L'incident N-k numero 119 (AVENIL61CRIME) rompt la connexité, il est ignoré
+L'incident N-k numero 127 (AVRONL61ZAVRO) rompt la connexité, il est ignoré
+L'incident N-k numero 128 (AVRONL62ZAVR5) rompt la connexité, il est ignoré
+L'incident N-k numero 129 (B.CHAL61P.LAC) rompt la connexité, il est ignoré
+L'incident N-k numero 130 (B.CHAL61ROMAI) rompt la connexité, il est ignoré
+L'incident N-k numero 131 (B.CHAL61TEMP5) rompt la connexité, il est ignoré
+L'incident N-k numero 140 (BAGNEL31OSERA) rompt la connexité, il est ignoré
+L'incident N-k numero 144 (BARNAL71PALUE) rompt la connexité, il est ignoré
+L'incident N-k numero 150 (BARNAL72PALUE) rompt la connexité, il est ignoré
+L'incident N-k numero 156 (BARNAL73PALUE) rompt la connexité, il est ignoré
+L'incident N-k numero 157 (BARNAL74PALUE) rompt la connexité, il est ignoré
+L'incident N-k numero 159 (BATELL61SSOU5) rompt la connexité, il est ignoré
+L'incident N-k numero 160 (BATIGL61CARDI) rompt la connexité, il est ignoré
+L'incident N-k numero 161 (BATIGL61PERRE) rompt la connexité, il est ignoré
+L'incident N-k numero 162 (BATIGL62CARDI) rompt la connexité, il est ignoré
+L'incident N-k numero 163 (BAUDRL61PERRE) rompt la connexité, il est ignoré
+L'incident N-k numero 166 (BELLOL61ZB.FR) rompt la connexité, il est ignoré
+L'incident N-k numero 167 (BERANL61BONNI) rompt la connexité, il est ignoré
+L'incident N-k numero 168 (BERCYL31RAPEE) rompt la connexité, il est ignoré
+L'incident N-k numero 169 (BERLIL31ZBER7) rompt la connexité, il est ignoré
+L'incident N-k numero 183 (BLERIL61SAUS5) rompt la connexité, il est ignoré
+L'incident N-k numero 206 (BOUCEL41LAUNA) rompt la connexité, il est ignoré
+L'incident N-k numero 209 (BOUV5L31V.GEO) rompt la connexité, il est ignoré
+L'incident N-k numero 210 (BREV6L31ZBRE5) rompt la connexité, il est ignoré
+L'incident N-k numero 211 (BREV6L32ZBREV) rompt la connexité, il est ignoré
+L'incident N-k numero 212 (BREV7L31V.GEO) rompt la connexité, il est ignoré
+L'incident N-k numero 213 (BREV7L32V.GEO) rompt la connexité, il est ignoré
+L'incident N-k numero 214 (BRICHL62ZBRI5) rompt la connexité, il est ignoré
+L'incident N-k numero 215 (BRICHL64ZBRIC) rompt la connexité, il est ignoré
+L'incident N-k numero 216 (BRUNOL31EPIN5) rompt la connexité, il est ignoré
+L'incident N-k numero 224 (BVUE5L41JUINE) rompt la connexité, il est ignoré
+L'incident N-k numero 225 (BVUE5L42JUINE) rompt la connexité, il est ignoré
+L'incident N-k numero 226 (BXBOUL61TEMP5) rompt la connexité, il est ignoré
+L'incident N-k numero 231 (BXVALL31MEAUX) rompt la connexité, il est ignoré
+L'incident N-k numero 233 (BZBAKL41G.QUE) rompt la connexité, il est ignoré
+L'incident N-k numero 234 (BZGAYL41VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 242 (C.BOIL61VLEVA) rompt la connexité, il est ignoré
+L'incident N-k numero 244 (C.HUIL41N.ROT) rompt la connexité, il est ignoré
+L'incident N-k numero 249 (C.LEML61GOBEL) rompt la connexité, il est ignoré
+L'incident N-k numero 250 (C.LEUL41ZC.LE) rompt la connexité, il est ignoré
+L'incident N-k numero 251 (C.NOIL41FLERS) rompt la connexité, il est ignoré
+L'incident N-k numero 252 (C.REAL41SSBAI) rompt la connexité, il est ignoré
+L'incident N-k numero 255 (C.ROIL33V.GEO) rompt la connexité, il est ignoré
+L'incident N-k numero 258 (CAILLL41D.ROU) rompt la connexité, il est ignoré
+L'incident N-k numero 261 (CAMPEL41VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 264 (CARDIL61NOVIO) rompt la connexité, il est ignoré
+L'incident N-k numero 265 (CARDIL61PASQU) rompt la connexité, il est ignoré
+L'incident N-k numero 268 (CARR5L61ZCARR) rompt la connexité, il est ignoré
+L'incident N-k numero 271 (CASTAL61HARC7) rompt la connexité, il est ignoré
+L'incident N-k numero 272 (CASTAL61MOUL8) rompt la connexité, il est ignoré
+L'incident N-k numero 273 (CASTAL61SEVRE) rompt la connexité, il est ignoré
+L'incident N-k numero 276 (CAULAL61PYRAM) rompt la connexité, il est ignoré
+L'incident N-k numero 277 (CAULAL61SEINE) rompt la connexité, il est ignoré
+L'incident N-k numero 278 (CAUMOL41ZCAU6) rompt la connexité, il est ignoré
+L'incident N-k numero 291 (CERGYL61ZLIES) rompt la connexité, il est ignoré
+L'incident N-k numero 305 (CHAPEL41COTON) rompt la connexité, il est ignoré
+L'incident N-k numero 306 (CHAPEL61SSROU) rompt la connexité, il est ignoré
+L'incident N-k numero 307 (CHAREL31DENFE) rompt la connexité, il est ignoré
+L'incident N-k numero 309 (CHAREL31P.LAC) rompt la connexité, il est ignoré
+L'incident N-k numero 310 (CHAREL31RAPEE) rompt la connexité, il est ignoré
+L'incident N-k numero 311 (CHAREL31VALMY) rompt la connexité, il est ignoré
+L'incident N-k numero 313 (CHAREL32VALMY) rompt la connexité, il est ignoré
+L'incident N-k numero 315 (CHAREL61CORIO) rompt la connexité, il est ignoré
+L'incident N-k numero 316 (CHAREL61NATI3) rompt la connexité, il est ignoré
+L'incident N-k numero 317 (CHAREL61VINC5) rompt la connexité, il est ignoré
+L'incident N-k numero 324 (CHATIL61VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 325 (CHATIL62ZROB5) rompt la connexité, il est ignoré
+L'incident N-k numero 335 (CHESNL31MTER5) rompt la connexité, il est ignoré
+L'incident N-k numero 344 (CHESNL61PATOU) rompt la connexité, il est ignoré
+L'incident N-k numero 347 (CHESNL62VOULZ) rompt la connexité, il est ignoré
+L'incident N-k numero 349 (CHESNL65MTERE) rompt la connexité, il est ignoré
+L'incident N-k numero 350 (CHESNL66MTERE) rompt la connexité, il est ignoré
+L'incident N-k numero 354 (CHESNL71RENAR) rompt la connexité, il est ignoré
+L'incident N-k numero 367 (CHEVIL61CORIO) rompt la connexité, il est ignoré
+L'incident N-k numero 369 (CHEVIL61RUNGI) rompt la connexité, il est ignoré
+L'incident N-k numero 373 (CHEVIL62RUNGI) rompt la connexité, il est ignoré
+L'incident N-k numero 389 (CLEONL41SSELB) rompt la connexité, il est ignoré
+L'incident N-k numero 394 (CLIMAL31DANT5) rompt la connexité, il est ignoré
+L'incident N-k numero 395 (CLIMAL32DANT5) rompt la connexité, il est ignoré
+L'incident N-k numero 396 (COIG5L31ZCOIG) rompt la connexité, il est ignoré
+L'incident N-k numero 397 (CONVEL61LAOS) rompt la connexité, il est ignoré
+L'incident N-k numero 398 (CONVEL61MOUL8) rompt la connexité, il est ignoré
+L'incident N-k numero 399 (COQU5L61ZCOQU) rompt la connexité, il est ignoré
+L'incident N-k numero 400 (COQU5L62ZCOQ5) rompt la connexité, il est ignoré
+L'incident N-k numero 413 (CORIOL61FAIDH) rompt la connexité, il est ignoré
+L'incident N-k numero 425 (COSSIL31TOUR5) rompt la connexité, il est ignoré
+L'incident N-k numero 433 (COTONL41R.LES) rompt la connexité, il est ignoré
+L'incident N-k numero 434 (COTONL42R.LES) rompt la connexité, il est ignoré
+L'incident N-k numero 438 (COUDRL41THEIL) rompt la connexité, il est ignoré
+L'incident N-k numero 439 (COULIL41ZCO10) rompt la connexité, il est ignoré
+L'incident N-k numero 445 (COUTAL42ZCOU6) rompt la connexité, il est ignoré
+L'incident N-k numero 447 (CRETAL61GOBEL) rompt la connexité, il est ignoré
+L'incident N-k numero 448 (CRETAL61R.COT) rompt la connexité, il est ignoré
+L'incident N-k numero 450 (CREULL41ZCRE7) rompt la connexité, il est ignoré
+L'incident N-k numero 451 (CREVEL31ZCREV) rompt la connexité, il est ignoré
+L'incident N-k numero 452 (CRIMEL61FLAND) rompt la connexité, il est ignoré
+L'incident N-k numero 453 (CRIMEL61TEMP5) rompt la connexité, il est ignoré
+L'incident N-k numero 456 (CROISL41VALLE) rompt la connexité, il est ignoré
+L'incident N-k numero 457 (CROSNL31ZBER7) rompt la connexité, il est ignoré
+L'incident N-k numero 464 (CZBEVL32FALLO) rompt la connexité, il est ignoré
+L'incident N-k numero 465 (CZCELL61FOCH) rompt la connexité, il est ignoré
+L'incident N-k numero 466 (CZLISL41SANDO) rompt la connexité, il est ignoré
+L'incident N-k numero 470 (CZTRYL31GRAN7) rompt la connexité, il est ignoré
+L'incident N-k numero 483 (D.ROUL41VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 488 (DANT5L31PUTE5) rompt la connexité, il est ignoré
+L'incident N-k numero 490 (DARBLL61G.COU) rompt la connexité, il est ignoré
+L'incident N-k numero 491 (DARS5L41P.JER) rompt la connexité, il est ignoré
+L'incident N-k numero 492 (DIEP5L41ZDIEP) rompt la connexité, il est ignoré
+L'incident N-k numero 493 (DIEP5L42VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 504 (DREUXL41ZMAL6) rompt la connexité, il est ignoré
+L'incident N-k numero 506 (DRONNL41FREN5) rompt la connexité, il est ignoré
+L'incident N-k numero 516 (ECRAIL42ZECRA) rompt la connexité, il est ignoré
+L'incident N-k numero 517 (EDGARL41ZEDGA) rompt la connexité, il est ignoré
+L'incident N-k numero 522 (ELANCL31MTFOR) rompt la connexité, il est ignoré
+L'incident N-k numero 524 (ELANCL31VERRI) rompt la connexité, il est ignoré
+L'incident N-k numero 526 (ELANCL32MTFOR) rompt la connexité, il est ignoré
+L'incident N-k numero 536 (EMALEL61ZEMAL) rompt la connexité, il est ignoré
+L'incident N-k numero 539 (EPER5L31GAZER) rompt la connexité, il est ignoré
+L'incident N-k numero 543 (EPN  L41P.JER) rompt la connexité, il est ignoré
+L'incident N-k numero 544 (ERASML61GOBEL) rompt la connexité, il est ignoré
+L'incident N-k numero 548 (ETREVL41ZETRE) rompt la connexité, il est ignoré
+L'incident N-k numero 554 (F.EAUL41NEUF5) rompt la connexité, il est ignoré
+L'incident N-k numero 556 (F.JOUL31GAZ) rompt la connexité, il est ignoré
+L'incident N-k numero 557 (F.JOUL31LIZY) rompt la connexité, il est ignoré
+L'incident N-k numero 558 (F.MAUL41MAGNA) rompt la connexité, il est ignoré
+L'incident N-k numero 559 (F.WILL41PIROU) rompt la connexité, il est ignoré
+L'incident N-k numero 560 (FALLOL31MARA8) rompt la connexité, il est ignoré
+L'incident N-k numero 563 (FALLOL31SEGUI) rompt la connexité, il est ignoré
+L'incident N-k numero 567 (FALLOL61GENN3) rompt la connexité, il est ignoré
+L'incident N-k numero 580 (FANAUL63ZFANA) rompt la connexité, il est ignoré
+L'incident N-k numero 581 (FANAUL64ZFAN5) rompt la connexité, il est ignoré
+L'incident N-k numero 583 (FECAML41V.MER) rompt la connexité, il est ignoré
+L'incident N-k numero 585 (FLAMAL71MENUE) rompt la connexité, il est ignoré
+L'incident N-k numero 586 (FLAMAL72MENUE) rompt la connexité, il est ignoré
+L'incident N-k numero 587 (FLAMAL73MENUE) rompt la connexité, il est ignoré
+L'incident N-k numero 588 (FLAMAL74MENUE) rompt la connexité, il est ignoré
+L'incident N-k numero 589 (FLANDL61MAGEN) rompt la connexité, il est ignoré
+L'incident N-k numero 590 (FLANDL61ROMAI) rompt la connexité, il est ignoré
+L'incident N-k numero 601 (FLINSL31PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 602 (FOCH L61PUTEA) rompt la connexité, il est ignoré
+L'incident N-k numero 603 (FOCH L62PUTEA) rompt la connexité, il est ignoré
+L'incident N-k numero 604 (FOLIEL61TURGO) rompt la connexité, il est ignoré
+L'incident N-k numero 617 (FROMAL63ZFRO6) rompt la connexité, il est ignoré
+L'incident N-k numero 618 (FROMAL64ZFRO7) rompt la connexité, il est ignoré
+L'incident N-k numero 620 (G.COUL41MARIT) rompt la connexité, il est ignoré
+L'incident N-k numero 628 (G.HAML41SERQU) rompt la connexité, il est ignoré
+L'incident N-k numero 629 (G.QU6L41G.QUE) rompt la connexité, il est ignoré
+L'incident N-k numero 635 (G.SOLL71PENL5) rompt la connexité, il est ignoré
+L'incident N-k numero 636 (G.SOLY761) rompt la connexité, il est ignoré
+L'incident N-k numero 642 (GAIL6L41SSBAI) rompt la connexité, il est ignoré
+L'incident N-k numero 643 (GALERL62ZGAL5) rompt la connexité, il est ignoré
+L'incident N-k numero 644 (GALERL64ZGALE) rompt la connexité, il est ignoré
+L'incident N-k numero 645 (GAMBEL61MALA6) rompt la connexité, il est ignoré
+L'incident N-k numero 646 (GAMBEL61VINC5) rompt la connexité, il est ignoré
+L'incident N-k numero 647 (GANILL41SSCON) rompt la connexité, il est ignoré
+L'incident N-k numero 649 (GARGEL32ZISSO) rompt la connexité, il est ignoré
+L'incident N-k numero 650 (GARIBL61JAVEL) rompt la connexité, il est ignoré
+L'incident N-k numero 653 (GER  L41ZGER) rompt la connexité, il est ignoré
+L'incident N-k numero 654 (GOBELL61TOLBI) rompt la connexité, il est ignoré
+L'incident N-k numero 655 (GONESL61P.GAS) rompt la connexité, il est ignoré
+L'incident N-k numero 660 (GREGYL31SENAR) rompt la connexité, il est ignoré
+L'incident N-k numero 661 (GRIGNL61ZCOQU) rompt la connexité, il est ignoré
+L'incident N-k numero 662 (GRIGNL62ZCOQ5) rompt la connexité, il est ignoré
+L'incident N-k numero 666 (GUISLL41ZGUIS) rompt la connexité, il est ignoré
+L'incident N-k numero 667 (H.BORL61P.GAS) rompt la connexité, il est ignoré
+L'incident N-k numero 668 (H.BORL61ZLIES) rompt la connexité, il est ignoré
+L'incident N-k numero 669 (H.DIEL61VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 670 (H.DIEL62VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 675 (H.PUIL42SSRLA) rompt la connexité, il est ignoré
+L'incident N-k numero 679 (HALLEL61MAGEN) rompt la connexité, il est ignoré
+L'incident N-k numero 681 (HARC7L31ISSY) rompt la connexité, il est ignoré
+L'incident N-k numero 682 (HARC7L31MTTES) rompt la connexité, il est ignoré
+L'incident N-k numero 683 (HARC7L31O.CEI) rompt la connexité, il est ignoré
+L'incident N-k numero 684 (HARC7L31Q.ISS) rompt la connexité, il est ignoré
+L'incident N-k numero 689 (HARC7L61JAVEL) rompt la connexité, il est ignoré
+L'incident N-k numero 690 (HARC7L61MENUS) rompt la connexité, il est ignoré
+L'incident N-k numero 693 (HARC7L62JAVEL) rompt la connexité, il est ignoré
+L'incident N-k numero 695 (HARC7Y613) rompt la connexité, il est ignoré
+L'incident N-k numero 696 (HARC7Y614) rompt la connexité, il est ignoré
+L'incident N-k numero 702 (HARCAL41ZHARC) rompt la connexité, il est ignoré
+L'incident N-k numero 703 (HARGEL31ZHARG) rompt la connexité, il est ignoré
+L'incident N-k numero 706 (HAVR5L64HAVRE) rompt la connexité, il est ignoré
+L'incident N-k numero 707 (HAVR5L72HAVRE) rompt la connexité, il est ignoré
+L'incident N-k numero 712 (HERBLL31MERY) rompt la connexité, il est ignoré
+L'incident N-k numero 715 (HERBLL61ZHERB) rompt la connexité, il est ignoré
+L'incident N-k numero 716 (HERBLL62ZHER7) rompt la connexité, il est ignoré
+L'incident N-k numero 719 (HUBERL41VALCA) rompt la connexité, il est ignoré
+L'incident N-k numero 722 (ISSOUL32ZISSO) rompt la connexité, il est ignoré
+L'incident N-k numero 724 (JONCHL31ZJONC) rompt la connexité, il est ignoré
+L'incident N-k numero 726 (JUINEL41MORIG) rompt la connexité, il est ignoré
+L'incident N-k numero 734 (LAMARL31NOVIO) rompt la connexité, il est ignoré
+L'incident N-k numero 735 (LANG6L61MORBR) rompt la connexité, il est ignoré
+L'incident N-k numero 736 (LANG6L62ZLAN8) rompt la connexité, il est ignoré
+L'incident N-k numero 752 (LEVALL61PERRE) rompt la connexité, il est ignoré
+L'incident N-k numero 753 (LEVALL62PERRE) rompt la connexité, il est ignoré
+L'incident N-k numero 754 (LEVALL63PERRE) rompt la connexité, il est ignoré
+L'incident N-k numero 755 (LIERSL61LOGES) rompt la connexité, il est ignoré
+L'incident N-k numero 756 (LIERSL61ZLIN7) rompt la connexité, il est ignoré
+L'incident N-k numero 757 (LIESSL61ZLIE5) rompt la connexité, il est ignoré
+L'incident N-k numero 761 (LIMAYL31ZLIMA) rompt la connexité, il est ignoré
+L'incident N-k numero 772 (LOGESL61ZLINA) rompt la connexité, il est ignoré
+L'incident N-k numero 778 (LONG4L61MENUS) rompt la connexité, il est ignoré
+L'incident N-k numero 779 (LOUV5L41VALLE) rompt la connexité, il est ignoré
+L'incident N-k numero 780 (LOUVEL31PECQ) rompt la connexité, il est ignoré
+L'incident N-k numero 781 (M.MO5L61M.MOR) rompt la connexité, il est ignoré
+L'incident N-k numero 782 (M.MO5L62M.MOR) rompt la connexité, il est ignoré
+L'incident N-k numero 791 (MALA6L61NATI3) rompt la connexité, il est ignoré
+L'incident N-k numero 793 (MALA6L61VINC5) rompt la connexité, il est ignoré
+L'incident N-k numero 794 (MALAUL41VAUPA) rompt la connexité, il est ignoré
+L'incident N-k numero 798 (MALMAL41ZMALM) rompt la connexité, il est ignoré
+L'incident N-k numero 799 (MANOIL41P.ARC) rompt la connexité, il est ignoré
+L'incident N-k numero 806 (MARC7L42VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 807 (MARC7L43VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 808 (MARGUL31ZMARG) rompt la connexité, il est ignoré
+L'incident N-k numero 809 (MARIAL32ZMAR6) rompt la connexité, il est ignoré
+L'incident N-k numero 812 (MARTRL41PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 813 (MASSYL41VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 814 (MASSYL62VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 815 (MASSYL64ZMAS5) rompt la connexité, il est ignoré
+L'incident N-k numero 816 (MEDERL31REGHA) rompt la connexité, il est ignoré
+L'incident N-k numero 817 (MELUNL31ZMELU) rompt la connexité, il est ignoré
+L'incident N-k numero 818 (MELUNL32ZMEL5) rompt la connexité, il est ignoré
+L'incident N-k numero 825 (MENUSL61MUETT) rompt la connexité, il est ignoré
+L'incident N-k numero 826 (MENUSL61PUTEA) rompt la connexité, il est ignoré
+L'incident N-k numero 828 (MERS L41TREPO) rompt la connexité, il est ignoré
+L'incident N-k numero 837 (MEZE5L71PORC2) rompt la connexité, il est ignoré
+L'incident N-k numero 840 (MEZE5L72PORC2) rompt la connexité, il est ignoré
+L'incident N-k numero 843 (MEZE5L73PORC2) rompt la connexité, il est ignoré
+L'incident N-k numero 844 (MEZE5L74PORC2) rompt la connexité, il est ignoré
+L'incident N-k numero 851 (MORB5L61MORBR) rompt la connexité, il est ignoré
+L'incident N-k numero 852 (MORB5L62MORBR) rompt la connexité, il est ignoré
+L'incident N-k numero 857 (MORBRL62ZLAN8) rompt la connexité, il est ignoré
+L'incident N-k numero 866 (MORTEL41SANDO) rompt la connexité, il est ignoré
+L'incident N-k numero 870 (MTALEL31PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 871 (MTER5L31ZG.P5) rompt la connexité, il est ignoré
+L'incident N-k numero 875 (MTJAYL41VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 876 (MTJAYL42ZPROV) rompt la connexité, il est ignoré
+L'incident N-k numero 877 (MTJAYL61ZMTJ5) rompt la connexité, il est ignoré
+L'incident N-k numero 878 (MTJAYL61ZMTJA) rompt la connexité, il est ignoré
+L'incident N-k numero 879 (MTTESL31PUTE5) rompt la connexité, il est ignoré
+L'incident N-k numero 884 (N.GRAL41ZN.GR) rompt la connexité, il est ignoré
+L'incident N-k numero 885 (N.MARL61PLAIS) rompt la connexité, il est ignoré
+L'incident N-k numero 886 (N.MARL62PLAIS) rompt la connexité, il est ignoré
+L'incident N-k numero 887 (N.MARL63PLAIS) rompt la connexité, il est ignoré
+L'incident N-k numero 889 (NANGIL31OSERA) rompt la connexité, il est ignoré
+L'incident N-k numero 893 (NANTEL62PUTEA) rompt la connexité, il est ignoré
+L'incident N-k numero 904 (NEY  L61SSOU5) rompt la connexité, il est ignoré
+L'incident N-k numero 905 (NEY  L62SSOU5) rompt la connexité, il est ignoré
+L'incident N-k numero 906 (NOISYL61ROMAI) rompt la connexité, il est ignoré
+L'incident N-k numero 907 (NOISYL62ROMAI) rompt la connexité, il est ignoré
+L'incident N-k numero 908 (NONANL41ZMAL6) rompt la connexité, il est ignoré
+L'incident N-k numero 912 (NOZAYL41VLEJU) rompt la connexité, il est ignoré
+L'incident N-k numero 915 (OLLAIL41ZOLLA) rompt la connexité, il est ignoré
+L'incident N-k numero 916 (ORBECL41VALLE) rompt la connexité, il est ignoré
+L'incident N-k numero 917 (ORLY L61RUNGI) rompt la connexité, il est ignoré
+L'incident N-k numero 918 (ORME5L31ZG.P5) rompt la connexité, il est ignoré
+L'incident N-k numero 924 (P.AU5L41RISLE) rompt la connexité, il est ignoré
+L'incident N-k numero 928 (P.BOIL61ZLIN7) rompt la connexité, il est ignoré
+L'incident N-k numero 929 (P.GASL61PERSA) rompt la connexité, il est ignoré
+L'incident N-k numero 935 (P.GASL61ZLIE5) rompt la connexité, il est ignoré
+L'incident N-k numero 954 (P.JE5L41P.JER) rompt la connexité, il est ignoré
+L'incident N-k numero 955 (P.JE5L42P.JER) rompt la connexité, il est ignoré
+L'incident N-k numero 956 (P.JERL41ZEDGA) rompt la connexité, il est ignoré
+L'incident N-k numero 958 (P.JERL43STEA5) rompt la connexité, il est ignoré
+L'incident N-k numero 959 (P.JERL45POLYM) rompt la connexité, il est ignoré
+L'incident N-k numero 960 (P.JERL46POLYM) rompt la connexité, il est ignoré
+L'incident N-k numero 968 (P.LACL31ROMAI) rompt la connexité, il est ignoré
+L'incident N-k numero 972 (P.SEPL41SOQUE) rompt la connexité, il est ignoré
+L'incident N-k numero 980 (PALA5L31SSAU5) rompt la connexité, il est ignoré
+L'incident N-k numero 981 (PASIPL31V.GEO) rompt la connexité, il est ignoré
+L'incident N-k numero 982 (PASIPL32V.GEO) rompt la connexité, il est ignoré
+L'incident N-k numero 985 (PENL5L71PENLY) rompt la connexité, il est ignoré
+L'incident N-k numero 986 (PENL5L72PENLY) rompt la connexité, il est ignoré
+L'incident N-k numero 989 (PERIEL41PIROU) rompt la connexité, il est ignoré
+L'incident N-k numero 994 (PERREL61TERNE) rompt la connexité, il est ignoré
+L'incident N-k numero 1002 (PORC2L31PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 1003 (PORC2L32PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 1004 (PORC2L33PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 1005 (PORC2L34PORCH) rompt la connexité, il est ignoré
+L'incident N-k numero 1013 (PORCHL32ZMTAL) rompt la connexité, il est ignoré
+L'incident N-k numero 1014 (PORCHL41RAMBO) rompt la connexité, il est ignoré
+L'incident N-k numero 1020 (PORCHY642) rompt la connexité, il est ignoré
+L'incident N-k numero 1024 (PROVEL42ZPROV) rompt la connexité, il est ignoré
+L'incident N-k numero 1025 (PUISEL31VEXIN) rompt la connexité, il est ignoré
+L'incident N-k numero 1026 (PUISEL31VIGNY) rompt la connexité, il est ignoré
+L'incident N-k numero 1040 (RADICL41SSFOL) rompt la connexité, il est ignoré
+L'incident N-k numero 1041 (RAMBOL31ZRAMB) rompt la connexité, il est ignoré
+L'incident N-k numero 1045 (RAPEEL31VALMY) rompt la connexité, il est ignoré
+L'incident N-k numero 1046 (RATIEL61ROGE5) rompt la connexité, il est ignoré
+L'incident N-k numero 1049 (REINIL41ZG.MO) rompt la connexité, il est ignoré
+L'incident N-k numero 1051 (RENOUL41ZNEUF) rompt la connexité, il est ignoré
+L'incident N-k numero 1052 (REVESL61SEINE) rompt la connexité, il est ignoré
+L'incident N-k numero 1053 (REVESL62SEINE) rompt la connexité, il est ignoré
+L'incident N-k numero 1054 (RICH5L62ZRIC6) rompt la connexité, il est ignoré
+L'incident N-k numero 1061 (ROMAIY613) rompt la connexité, il est ignoré
+L'incident N-k numero 1073 (RUPERL31ZFRO8) rompt la connexité, il est ignoré
+L'incident N-k numero 1076 (S.BOEL42THEIL) rompt la connexité, il est ignoré
+L'incident N-k numero 1084 (SAMORL31ZSAMO) rompt la connexité, il est ignoré
+L'incident N-k numero 1086 (SANDOL41SSYMO) rompt la connexité, il est ignoré
+L'incident N-k numero 1090 (SAUGEL42ZSAU6) rompt la connexité, il est ignoré
+L'incident N-k numero 1098 (SAVI5L61ZSAVI) rompt la connexité, il est ignoré
+L'incident N-k numero 1104 (SEINEY611) rompt la connexité, il est ignoré
+L'incident N-k numero 1105 (SEINEY612) rompt la connexité, il est ignoré
+L'incident N-k numero 1110 (SENARY631) rompt la connexité, il est ignoré
+L'incident N-k numero 1112 (SERIFL31ZAMEC) rompt la connexité, il est ignoré
+L'incident N-k numero 1114 (SSAU5L31TECH5) rompt la connexité, il est ignoré
+L'incident N-k numero 1115 (SSAU5L31V.BAC) rompt la connexité, il est ignoré
+L'incident N-k numero 1116 (SSAU5L31VERSA) rompt la connexité, il est ignoré
+L'incident N-k numero 1127 (SSEURL41ZSSEU) rompt la connexité, il est ignoré
+L'incident N-k numero 1132 (SSVILL41ZSSV7) rompt la connexité, il est ignoré
+L'incident N-k numero 1133 (SUISSL31VANVE) rompt la connexité, il est ignoré
+L'incident N-k numero 1145 (TILL5L41VALTI) rompt la connexité, il est ignoré
+L'incident N-k numero 1158 (TOURBL71TOUR4) rompt la connexité, il est ignoré
+L'incident N-k numero 1162 (V.GEOL31ZBER7) rompt la connexité, il est ignoré
+L'incident N-k numero 1163 (V.GEOY631) rompt la connexité, il est ignoré
+L'incident N-k numero 1164 (V.REUL41VAUDR) rompt la connexité, il est ignoré
+L'incident N-k numero 1165 (VAIR6L61VAIRE) rompt la connexité, il est ignoré
+L'incident N-k numero 1166 (VAIR6L62VAIRE) rompt la connexité, il est ignoré
+L'incident N-k numero 1167 (VAIREL61VLEVA) rompt la connexité, il est ignoré
+L'incident N-k numero 1168 (VAIREL62VLEVA) rompt la connexité, il est ignoré
+L'incident N-k numero 1176 (VAUPAL41ZMAL5) rompt la connexité, il est ignoré
+L'incident N-k numero 1185 (VERRIL31ZCOIG) rompt la connexité, il est ignoré
+L'incident N-k numero 1186 (VEXINL31ZVEXI) rompt la connexité, il est ignoré
+L'incident N-k numero 1187 (VIEVRL41ZVIEV) rompt la connexité, il est ignoré
+L'incident N-k numero 1190 (VLEJUL42ZPROV) rompt la connexité, il est ignoré
+L'incident N-k numero 1193 (VLEJUL61ZLIN7) rompt la connexité, il est ignoré
+L'incident N-k numero 1194 (VLEJUL61ZLINA) rompt la connexité, il est ignoré
+L'incident N-k numero 1195 (VLEJUL61ZMTJ5) rompt la connexité, il est ignoré
+L'incident N-k numero 1197 (VLEJUL62ZCAR6) rompt la connexité, il est ignoré
+L'incident N-k numero 1198 (VLEJUL62ZROB5) rompt la connexité, il est ignoré
+L'incident N-k numero 1209 (VLERSL31ZDAVI) rompt la connexité, il est ignoré
+L'incident N-k numero 1222 (YAINVL41YVETO) rompt la connexité, il est ignoré
+L'incident N-k numero 1226 (ZCAMPL41ZMAL5) rompt la connexité, il est ignoré
+L'incident N-k numero 1227 (ZCARRL61ZSEMO) rompt la connexité, il est ignoré
+L'incident N-k numero 1228 (ZISSOL32ZMTAL) rompt la connexité, il est ignoré
+L'incident N-k numero 1229 (ZMARGL31ZCOIG) rompt la connexité, il est ignoré
+L'incident N-k numero 1230 (ZMARGL31ZRAMB) rompt la connexité, il est ignoré
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 853 (sur 1231)
+Nombre de regions       = 10
+Nombre total de noeuds  = 7054
+Nombre de consommations = 7015 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 9989 (dont 1239 surveillés en N et 1239 surveillés sur défaut)
+Nombre de groupes       = 23503 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 39 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 5 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le quadripole 'SSMR P6_SSMR    6COUPL    DJ' mentionné dans une parade forme une boucle sur un même noeud. Cette parade est invalide.
+ Nb total d'incidents + parades : 1231
+Mode de calcul : OPF
+Noeud bilan : 0 [.A.ZA 6_9]
+0 [.A.ZA 6_9](2) <-> 285 [.MTTO 6_20](5) <-> 83 [.CART 6_4](2)
+                                         <-> 141 [.ENTR 6_9](2)
+                                         <-> 146 [.ESPA 6_7](2)
+                                         <-> 313 [.PENA 6_10](6)
+                 <-> 313 [.PENA 6_10](6) <-> 83 [.CART 6_4](2)
+                                         <-> 285 [.MTTO 6_20](5)
+                                         <-> 459 [.VILN 6_12](4)
+                                         <-> 314 [.PENA 7_7](4)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Attention: incident 607, l'ouvrage FOSSEL31TOUR5 est deja deconnecte
+Attention: incident 637, l'ouvrage GABIOL41RATIE est deja deconnecte
+Attention: incident 864, l'ouvrage MORIGL41SERMA est deja deconnecte
+Demarrage des groupes par empilement économique :
+Consommation globale                = 117524.0067  MW
+Production démarrée                 = 117520.3357  MW
+Puissance à ajuster                 =     3.6709  MW
+Puissance disponible à la hausse (hors Pimp) = 36675.5762  MW
+Puissance disponible à la baisse (hors Pimp) = -43316.4238  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_9]), bilan = -3.6709 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  117524.0067 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 23
+Nb termes dans la matrice : 4226 (taille de la matrice : 4226)
+Ajout de 23 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 24)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  116792.2100 MW
+Volume de délestage  =     731.7967 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      : 7317966.6594
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif : 7317966.6594
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 20056 (taille de la matrice : 20056)
+Ajout de 1 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 25)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  116789.7712 MW
+Volume de délestage  =     734.2355 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      : 7342354.5189
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif : 7342354.5189
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 23943 (taille de la matrice : 23943)
+Pas de contraintes

@@ -1,0 +1,1 @@
+Initialement, du fait d'une inversion dans un test, ce calcul comportant du redispatching préventif n'avait pas de VM associée.

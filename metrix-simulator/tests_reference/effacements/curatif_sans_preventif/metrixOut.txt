@@ -1,0 +1,659 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole ++++++++++++++++.00V forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.01B forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.024 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.02A forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.02M forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.02Z forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AHM     1 110_AHM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AL1KW   2 110_AL1KW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ALFS     1110_ALFS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AS      A 110_AS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AUDO     1110_AUDO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BARL     1110_BARL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BGM220-BGM1 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BGM220-BGM2 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_10_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_13_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_1_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_2_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_3_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_4.000 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_41_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_42_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_43_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_46_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_47_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_4_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_5_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_8_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_9.000 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_9_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BRNKO   1A110_BRNKO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BR_BR - BRUN.000 a une admittance tres grande (752.0832519531)
+Attention: Le quadripole BR_BR - BRUN.001 a une admittance tres grande (752.0832519531)
+Attention: Le quadripole BZWNG   1A110_BZWNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BZWNG   1B110_BZWNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole CLPO     1110_CLPO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole CONN     1110_CONN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole D7KUEH SLAUFEX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole DAXLA   1A110_DAXLA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole DELLM   1A110_DELLM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole DE_SI - DELLM a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole DE_VO - DELLM a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole DE_VO - DELLM.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole DOLL     1110_DOLL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EDC-XNORNED a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole EDSBH   2A110_EDSBH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EICHS   1A110_EICHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EICHS   2A110_EICHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ELT     A 110_ELT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EMDB     1110_EMDB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EMSLAND-OST-WEISS a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole ENGST   1A110_ENGST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ENGST   1B110_ENGST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ENGST OBJTT PULV.001 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole EOS-COBRA380 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole ETZ-MH 437 a une admittance tres grande (962.6666870117)
+Attention: Le quadripole FLEN     1110_FLEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole FRSW GIEN a une admittance tres grande (1137.0083007812)
+Attention: Le quadripole GABUW   1C110_GA.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GABUW   1C110_GABUW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GABUW   2A110_GABUW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GEB     A 110_GEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GODE     1110_GODE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GOEH     1110_GOEH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GOHFE   1A110_GOHFE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GOHFE KUPZL NSTN.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole GRKRA   1A110_GRKRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GROGH_branch a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole GROGH   1A110_GROGH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GR_GR - GROSSG a une admittance tres grande (1110.7691650391)
+Attention: Le quadripole GURTW   1B110_GURTW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HAMH NORD a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HAMH NORD.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HANEKN  S1110_HANEKN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HANW     1110_HANW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HATT     2110_HATT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HELM     1110_HELM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HERBERTINGEN WES.001 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HERBERTINGEN WESTX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR. 18 WOL _GUN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.01 EMDB _OST a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.01 EMDB.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.01 OSTRA.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.01 OSTRAT _E a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.02 OSTRA.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.02 OSTRAT _P a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.02 PHILI _OS a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.02 PHILI.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.02 PHILI.001 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.03 BUERS.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.04 URBER _WE a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.04 URBER.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.04 WEHRN.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.04 WEHRND _U a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.05 BRUN _GRO a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.05 BRUN.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.05 GROGH _BR a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.05 GROGH.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.06 KSEG _GOH a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.06 WDLNG _KS a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.06 WDLNG.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.07 GR _K.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.07 GR _KSEG_ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.07 KSEG _GR_ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.07 KSEG.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.08 RAI _.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.08 RAI _KSEG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09 LAU _.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09 LAU _MEIT a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09 MEITG.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09 MEITGN _L a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09A LAU _MEI a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09A MEIT.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.09A MEITGN _ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.10 GUE _MEIT a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.10 MEITG.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.11 OBZIE.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.11 OBZIER _E a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.12 ELWE _PHI a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.12 ELWE.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.13 RAI _.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.13 RAI _STAD a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.13 STAD _RAI a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.13 STAD.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.14 ALFS _VOE a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.14 ALFS.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.14 VOERG _AL a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.14 VOERG.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.15 CONN.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.15 ROKI.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.21 GUN_WOL_ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HG__ NR.21 WOL_GUN_ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HR_SI - HRBTG a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole HUEFF   1A110_HUEFF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HUSU     1110_HUSU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HWBC - HW_KR a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole IRS     A 110_IRS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole K6 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole KAISERSLAUTERN SUEDX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole KILS GROH a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole KOPPELVELD DMN 34 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole KRIFTL  S1110_KRIFTL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole KUMRA   1 110_KUMRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole KUPZL   1A110_KUPZL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole LAICH   2A110_LAICH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole LAU _1_ - HG__ NR.09 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole LAU-JSN 503.001 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole LUESTR-HESSLN-GUETER a une admittance tres grande (1110.7691650391)
+Attention: Le quadripole MBG     A 110_MBG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MEB     A 110_MEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MEZNG   1 110_MEZNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MUEN    A 110_MUEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MUENST  S1110_MUENST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MULHS   1A110_MULHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MUNST   1 110_MUNST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MVL380-BRITNED a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NASSAU.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NEHDEN  S1110_NEHDEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole NFI     BL110_NFI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole NIEB     1110_NIEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole NORD-AU_NO a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NORD-NO_DO a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NO_NO a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NO_NO.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NR. 18 WOL _GUN_ - H a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NR.18 GUN_WOL_ - GUN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NR.18 GUN_WOL_ - HG_ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole NSTNG   1A110_NSTNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole OBA     B 110_OBA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole OHLE     1110_OHLE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PI      A 110_PI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PT      A 110_PT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1A110_PU.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1A110_PU.001 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1A110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1B110_PU.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1B110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   2A110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole RC1I01 a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole RE      A 110_RE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole RED-D8 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RHEINGRABENX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole RHEINGRABENY a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole SAS1 SAS2 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole SIT     A 110_SIT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole SOONWALD OST.000 a une admittance tres grande (627.8261718750)
+Attention: Le quadripole STAD     1110_STAD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   1A110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   1B110_ST.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   1B110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   2A110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole S_PETROLAND1 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole TIENGEN NORDX a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole TRAFO T411_T422 CONN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole TRE     A 110_TRE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole U74ELL  S1110_U74ELL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole VANYK_PSTL71VANYK a une admittance tres grande (722.0000610352)
+Attention: Le quadripole VANYK_PSTL72VANYK a une admittance tres grande (722.0000610352)
+Attention: Le quadripole VLN150-BVW380 G a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole VLPRL2 a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole VOSL     1110_VOSL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WALKW   1 110_WALKW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WDLNG   1A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WDLNG   2A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WDLNG   3A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WECH     1110_WECH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WILS - HG__ NR.06 KS a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole WILS - WILS_X a une admittance tres grande (1250.0000000000)
+Attention: Le quadripole WITAVU  S1110_WITTEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WNHEI - P_PF_WN a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole WNHEI - P_PF_WN.000 a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole WTHURM  S1110_WTHURM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ZANDV_PSTL71ZANDV a une admittance tres grande (722.0000610352)
+Attention: Le quadripole ZANDV_PSTL72ZANDV a une admittance tres grande (722.0000610352)
+Attention: Le quadripole _71DCBFEBC3FE43C1A0F a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole RTR_LEIDEN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole REALTP6_REALT   6LIAIS12  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole DARSEP6_DARSE   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole E.BOTP6_E.BOT   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole PALUNP6_PALUN   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RQROUP6_RQROU   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole SEPTEP6_SEPTE   6COUPL    DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RTR_LEIDEN_Td a une admittance tres grande (1000000.0000000000)
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 1 (sur 1)
+Nombre de regions       = 14
+Nombre total de noeuds  = 18627
+Nombre de consommations = 14284 (dont 1300 peuvent agir en curatif)
+Nombre de quadripoles   = 25835 (dont 0 surveillés en N et 595 surveillés sur défaut)
+Nombre de groupes       = 19857 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 106 (dont 5 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 24 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le groupe 'MUHLB7FESS5.1' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.2' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.1' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.1' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.2' de la loi -1 est introuvable
+Le groupe 'OVER-R_BELF' de la loi -1 est introuvable
+Le groupe 'OVER-R_DRT' de la loi -1 est introuvable
+Le groupe 'GATELIN2' de la loi -1 est introuvable
+Le groupe 'GATELIN3' de la loi -1 est introuvable
+Le groupe 'WKKG-R_SS' de la loi -1 est introuvable
+Le groupe 'ZONP-R_SS' de la loi -1 est introuvable
+Le groupe 'OVER-R_ZBM' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.1' de la loi -1 est introuvable
+Le groupe 'MUHLB7FESS5.2' de la loi -1 est introuvable
+Le groupe 'GATELIN2' de la loi -1 est introuvable
+Le groupe 'GATELIN3' de la loi -1 est introuvable
+Le groupe 'OVER-R_BELF' de la loi -1 est introuvable
+Le groupe 'OVER-R_DRT' de la loi -1 est introuvable
+Le groupe 'WKKG-R_SS' de la loi -1 est introuvable
+Le groupe 'ZONP-R_SS' de la loi -1 est introuvable
+Le groupe 'OVER-R_ZBM' de la loi -1 est introuvable
+Le noeud 'E.LES3CD2' de la loi -1 de variation de conso est introuvable
+Le noeud 'L.ATH3CD1' de la loi -1 de variation de conso est introuvable
+Le noeud '.BENOL51L.OO' de la loi -1 de variation de conso est introuvable
+Le noeud 'PEYRO6TR6111' de la loi -1 de variation de conso est introuvable
+Le noeud 'Q.SEI6TR6111' de la loi -1 de variation de conso est introuvable
+Le noeud 'TOU.C6TR6111' de la loi -1 de variation de conso est introuvable
+ Nb total d'incidents + parades : 37
+Mode de calcul : OPF
+Noeud bilan : 0
+0(1) <-> 23 [CONSO_UK](8) <-> 2(1)
+                          <-> 3(1)
+                          <-> 4(1)
+                          <-> 11(1)
+                          <-> 12(1)
+                          <-> 14(1)
+                          <-> 18(1)
+     |=| 6119(7) <-> 14192(7)
+                 <-> 16120(15)
+                 <-> 16843(5)
+                 <-> 13328 [PALUE7TR2/3JA, PALUE7TS2](1)
+                 <-> 13435(9)
+                 <-> 14529(11)
+                 <-> 13327 [PALUE7TR3/3JA, PALUE7TS3](1)
+
+Noeud bilan : 1
+1(4) <-> 19 [.GUERL41.Q.RO, .Q.RO4QUEENS](3) <-> 21 [.SHIL4COLLETTE](4)
+                                             <-> 24 [.WEST4TR411, .WEST4TR412](2)
+     <-> 20 [.R.PR4TR411, .R.PR4TR412](2) <-> 21 [.SHIL4COLLETTE](4)
+     <-> 15691(4) <-> 10115 [H.PUI4T411, H.PUI4T412](5)
+
+
+********************************************
+Traitement d'un paquet de 4 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Groupe 7210ON-_BL-NW_-NE : Pobj (0.003054) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe 7211ON-_BL-NW_-NE : Pobj (0.001542) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe 7212ON-_BL-NW_-NE : Pobj (0.002238) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe 7240ON-_BL-NW_-NE : Pobj (0.002949) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe 7241ON-_BL-NW_-NE : Pobj (0.002145) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe 7249ON-_BL-NW_-NE : Pobj (0.001593) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe 7251ON-_BL-NW_-NE : Pobj (0.003078) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe 7254ON-_BL-NW_-NE : Pobj (0.001662) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe 7259ON-_BL-NW_-NE : Pobj (0.001881) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe 7404ON-_BL-NW_-NE : Pobj (0.002988) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe 7510ON-_BL-HE_-NE : Pobj (0.002340) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe AVIV2 : Pobj (0.000826) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe RPAV3 : Pobj (0.000413) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Demarrage des groupes par empilement économique :
+Consommation globale                = 212279.0220  MW
+Production démarrée                 = 212282.1060  MW
+Puissance à ajuster                 =    -3.0840  MW
+Puissance disponible à la hausse (hors Pimp) = 500016.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -541774.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 3.0840 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212279.0220 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       3.0840
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       3.0840
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 73732 (taille de la matrice : 73732)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 382
+---------------------
+---------------------
+
+Groupe 4045ON : Pobj (0.001833) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe C.HER3-HTA-EOL-ES : Pobj (0.001900) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe NFI -NEP12-WE.001 : Pobj (0.001887) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe NFI -NEP12-WE.002 : Pobj (0.001887) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Groupe OBR -NEP12-WEA-_B : Pobj (0.003138) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe SI  -NEP12-WE.000 : Pobj (0.002739) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe SI  -NEP12-WEA-_B : Pobj (0.002739) est superieur a Pmax (0.002000): Pobj mis a Pmax.
+Groupe TARNO3-HTA-EOL-ES : Pobj (0.001900) est superieur a Pmax (0.001000): Pobj mis a Pmax.
+Demarrage des groupes par empilement économique :
+Consommation globale                = 222081.3158  MW
+Production démarrée                 = 222085.3560  MW
+Puissance à ajuster                 =    -4.0402  MW
+Puissance disponible à la hausse (hors Pimp) = 500011.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -542140.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 4.0402 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 382 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  222081.3158 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       4.0402
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       4.0402
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 73732 (taille de la matrice : 73732)
+Ajout de 72 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 86)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 382 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  222081.3158 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   48631.4250
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.2599
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   48632.6849
+
+Des contraintes ont été détectées : 10
+Nb termes dans la matrice : 699246 (taille de la matrice : 699246)
+Ajout de 342 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 428)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 382 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  222081.3158 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   48800.5654
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.6626
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   48801.2280
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 4437028 (taille de la matrice : 4437028)
+Ajout de 36 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 464)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 382 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  222081.3158 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   48802.9696
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.1828
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   48804.1524
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 5059936 (taille de la matrice : 5059936)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 382 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  222081.3158 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   48802.9696
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.1828
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   48804.1524
+
+
+---------------------
+---------------------
+Variante numéro 383
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 212562.9543  MW
+Production démarrée                 = 212565.9040  MW
+Puissance à ajuster                 =    -2.9497  MW
+Puissance disponible à la hausse (hors Pimp) = 500011.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -542140.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 2.9497 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 383 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212562.9543 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       2.9497
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       2.9497
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 73732 (taille de la matrice : 73732)
+Ajout de 72 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 86)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 383 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212562.9543 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   50898.5077
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.2599
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   50899.7675
+
+Des contraintes ont été détectées : 11
+Nb termes dans la matrice : 598338 (taille de la matrice : 598338)
+Ajout de 378 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 464)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 383 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212562.9543 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   51131.7325
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.6337
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   51133.3663
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 4252708 (taille de la matrice : 4252708)
+Ajout de 72 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 536)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 383 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212562.9543 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   51131.7626
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.6220
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   51133.3846
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 5296708 (taille de la matrice : 5296708)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 383 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212562.9543 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   51131.7626
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.6220
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   51133.3846
+
+
+---------------------
+---------------------
+Variante numéro 384
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 199677.1306  MW
+Production démarrée                 = 199680.1400  MW
+Puissance à ajuster                 =    -3.0094  MW
+Puissance disponible à la hausse (hors Pimp) = 500017.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -543575.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 3.0094 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 384 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  199677.1306 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       3.0094
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       3.0094
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 73732 (taille de la matrice : 73732)
+Ajout de 72 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 86)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 384 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  199677.1306 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   25125.3939
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.2599
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   25126.6538
+
+Des contraintes ont été détectées : 9
+Nb termes dans la matrice : 589878 (taille de la matrice : 589878)
+Ajout de 306 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 392)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 384 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  199677.1306 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   25215.9107
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.0137
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   25216.9245
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 3157948 (taille de la matrice : 3157948)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 384 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  199677.1306 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   25215.9107
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       1.0137
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   25216.9245
+

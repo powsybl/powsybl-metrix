@@ -1,0 +1,2177 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole ++++++++++++++++.00V forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.01B forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.024 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.02A forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.02M forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ++++++++++++++++.02Z forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AHM     1 110_AHM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AL1KW   2 110_AL1KW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ALFS     1110_ALFS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AS      A 110_AS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole AUDO     1110_AUDO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BARL     1110_BARL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BGM220-BGM1 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BGM220-BGM2 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_10_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_13_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_1_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_2_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_3_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_4.000 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_41_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_42_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_43_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_46_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_47_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_4_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_5_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_8_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_9.000 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BREAKER/SWITCH_9_ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole BRNKO   1A110_BRNKO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BR_BR - BRUN.000 a une admittance tres grande (752.0832519531)
+Attention: Le quadripole BR_BR - BRUN.001 a une admittance tres grande (752.0832519531)
+Attention: Le quadripole BZWNG   1A110_BZWNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole BZWNG   1B110_BZWNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole CLPO     1110_CLPO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole CONN     1110_CONN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole D7KUEH SLAUFEX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole DAXLA   1A110_DAXLA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole DELLM   1A110_DELLM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole DE_SI - DELLM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole DE_VO - DELLM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole DE_VO - DELLM.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole DOLL     1110_DOLL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EDC-XNORNED a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole EDSBH   2A110_EDSBH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EICHS   1A110_EICHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EICHS   2A110_EICHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ELT     A 110_ELT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EMDB     1110_EMDB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole EMSLAND-OST-WEISS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole ENGST   1A110_ENGST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ENGST   1B110_ENGST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ENGST OBJTT PULV.001 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole EOS-COBRA380 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole ETZ-MH 437 a une admittance tres grande (962.6669921875)
+Attention: Le quadripole FLEN     1110_FLEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole FRSW GIEN a une admittance tres grande (1137.0086669922)
+Attention: Le quadripole GABUW   1C110_GA.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GABUW   1C110_GABUW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GABUW   2A110_GABUW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GEB     A 110_GEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GODE     1110_GODE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GOEH     1110_GOEH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GOHFE   1A110_GOHFE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GOHFE KUPZL NSTN.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole GRKRA   1A110_GRKRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GROGH   1A110_GROGH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole GROGH_branch a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole GR_GR - GROSSG a une admittance tres grande (1110.7692871094)
+Attention: Le quadripole GURTW   1B110_GURTW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HAMH NORD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HAMH NORD.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HANEKN  S1110_HANEKN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HANW     1110_HANW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HATT     2110_HATT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HELM     1110_HELM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HERBERTINGEN WES.001 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HERBERTINGEN WESTX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR. 18 WOL _GUN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.01 EMDB _OST a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.01 EMDB.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.01 OSTRA.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.01 OSTRAT _E a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.02 OSTRA.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.02 OSTRAT _P a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.02 PHILI _OS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.02 PHILI.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.02 PHILI.001 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.03 BUERS.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.04 URBER _WE a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.04 URBER.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.04 WEHRN.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.04 WEHRND _U a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.05 BRUN _GRO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.05 BRUN.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.05 GROGH _BR a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.05 GROGH.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.06 KSEG _GOH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.06 WDLNG _KS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.06 WDLNG.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.07 GR _K.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.07 GR _KSEG_ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.07 KSEG _GR_ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.07 KSEG.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.08 RAI _.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.08 RAI _KSEG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09 LAU _.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09 LAU _MEIT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09 MEITG.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09 MEITGN _L a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09A LAU _MEI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09A MEIT.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.09A MEITGN _ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.10 GUE _MEIT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.10 MEITG.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.11 OBZIE.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.11 OBZIER _E a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.12 ELWE _PHI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.12 ELWE.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.13 RAI _.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.13 RAI _STAD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.13 STAD _RAI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.13 STAD.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.14 ALFS _VOE a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.14 ALFS.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.14 VOERG _AL a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.14 VOERG.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.15 CONN.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.15 ROKI.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.21 GUN_WOL_ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HG__ NR.21 WOL_GUN_ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HR_SI - HRBTG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole HUEFF   1A110_HUEFF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HUSU     1110_HUSU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole HWBC - HW_KR a une admittance tres grande (1599.9271240234)
+Attention: Le quadripole IRS     A 110_IRS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole K6 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole KAISERSLAUTERN SUEDX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole KILS GROH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole KOPPELVELD DMN 34 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole KRIFTL  S1110_KRIFTL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole KUMRA   1 110_KUMRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole KUPZL   1A110_KUPZL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole LAICH   2A110_LAICH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole LAU _1_ - HG__ NR.09 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole LAU-JSN 503.001 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole LUESTR-HESSLN-GUETER a une admittance tres grande (1110.7692871094)
+Attention: Le quadripole MBG     A 110_MBG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MEB     A 110_MEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MEZNG   1 110_MEZNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MUEN    A 110_MUEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MUENST  S1110_MUENST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MULHS   1A110_MULHS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MUNST   1 110_MUNST forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole MVL380-BRITNED a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NASSAU.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NEHDEN  S1110_NEHDEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole NFI     BL110_NFI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole NIEB     1110_NIEB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole NORD-AU_NO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NORD-NO_DO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NO_NO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NO_NO.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NR. 18 WOL _GUN_ - H a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NR.18 GUN_WOL_ - GUN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NR.18 GUN_WOL_ - HG_ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole NSTNG   1A110_NSTNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole OBA     B 110_OBA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole OHLE     1110_OHLE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PI      A 110_PI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PT      A 110_PT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1A110_PU.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1A110_PU.001 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1A110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1B110_PU.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   1B110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole PUNGN   2A110_PUNGN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole RC1I01 a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole RE      A 110_RE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole RED-D8 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RHEINGRABENX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole RHEINGRABENY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole SAS1 SAS2 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole SIT     A 110_SIT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole SOONWALD OST.000 a une admittance tres grande (627.8260498047)
+Attention: Le quadripole STAD     1110_STAD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   1A110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   1B110_ST.000 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   1B110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole STOCK   2A110_STOCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole S_PETROLAND1 a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole TIENGEN NORDX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole TOURBL71TOUR4 a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole TRAFO T411_T422 CONN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole TRE     A 110_TRE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole U74ELL  S1110_U74ELL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole VANYK_PSTL71VANYK a une admittance tres grande (722.0002441406)
+Attention: Le quadripole VANYK_PSTL72VANYK a une admittance tres grande (722.0002441406)
+Attention: Le quadripole VLN150-BVW380 G a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole VLPRL2 a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole VOSL     1110_VOSL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WALKW   1 110_WALKW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WDLNG   1A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WDLNG   2A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WDLNG   3A110_WDLNG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WECH     1110_WECH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WILS - HG__ NR.06 KS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole WILS - WILS_X a une admittance tres grande (1250.0000000000)
+Attention: Le quadripole WITAVU  S1110_WITTEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole WNHEI - P_PF_WN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole WNHEI - P_PF_WN.000 a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole WTHURM  S1110_WTHURM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole ZANDV_PSTL71ZANDV a une admittance tres grande (722.0002441406)
+Attention: Le quadripole ZANDV_PSTL72ZANDV a une admittance tres grande (722.0002441406)
+Attention: Le quadripole _71DCBFEBC3FE43C1A0F a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole RTR_LEIDEN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole CONFLP3_CONFLP3_CONFL   3FOUG5.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole LURE P3_LURE P3_LURE    3LUXEU.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole LURE P3_LURE P3_LURE    3PUSY .1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RONCHP3_RONCHP3_RONCH   3THILL.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole RTR_LEIDEN_Td a une admittance tres grande (1000000.0000000000)
+Groupe CRENE_PV_ES : Pobj (0.625927) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VINCE_PV_ES : Pobj (0.235866) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe A.OTH_PV_CHG : Pobj (0.190340) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe A.OTH_PV_ES : Pobj (0.124453) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AILLE_PV_CHG : Pobj (0.281850) est superieur a Pmax (0.100873): Pobj mis a Pmax.
+Groupe AILLE_PV_ES : Pobj (0.556379) est superieur a Pmax (0.199127): Pobj mis a Pmax.
+Groupe ALGER_PV_CHG : Pobj (2.719130) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AMELE_PV_CHG : Pobj (4.437714) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AMELE_PV_ES : Pobj (0.400218) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ANOUL_PV_ES : Pobj (0.188693) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ANOUL_EOL_CHG : Pobj (2.376387) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe ARCIS_PV_ES : Pobj (1.207929) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ARGIE_EOL_CHG : Pobj (2.376387) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe AUBRI_EOL_CHG : Pobj (1.690695) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe AUBRI_PV_CHG : Pobj (1.957930) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AUBRI_PV_ES : Pobj (0.109864) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AULNA_PV_CHG : Pobj (0.489176) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AULNA_PV_ES : Pobj (0.148710) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AVREU_PV_CHG : Pobj (0.058566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AVREU_PV_ES : Pobj (0.164718) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AVRIM_PV_CHG : Pobj (0.482616) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe AVRIM_PV_ES : Pobj (0.074550) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe B.BAI_PV_ES : Pobj (0.243729) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe B.DUC_PV_CHG : Pobj (6.101366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe B.DUC_PV_ES : Pobj (0.533624) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BABLO_PV_ES : Pobj (0.131774) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BARBUIN1 : Pobj (10.158600) est superieur a Pmax (7.767902): Pobj mis a Pmax.
+Groupe BARBUIN3 : Pobj (8.816214) est superieur a Pmax (6.741429): Pobj mis a Pmax.
+Groupe BARBU_EOL_CHG : Pobj (62.199657) est superieur a Pmax (47.561752): Pobj mis a Pmax.
+Groupe BARBU_PV_CHG : Pobj (15.256510) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BARBU_EOL_ES : Pobj (13.115478) est superieur a Pmax (10.028915): Pobj mis a Pmax.
+Groupe BARBU_PV_ES : Pobj (0.080529) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BASS6_PV_CHG : Pobj (1.090797) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BASS6_PV_ES : Pobj (0.124453) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BAYAR_PV_CHG : Pobj (0.090245) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BAYAR_PV_ES : Pobj (0.047084) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BAYON_PV_ES : Pobj (0.267315) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BAZAN_PV_ES : Pobj (1.592758) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BIBER_PV_CHG : Pobj (3.770683) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BIBER_PV_ES : Pobj (0.247194) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BITCH_PV_CHG : Pobj (3.805996) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BITCH_PV_ES : Pobj (0.502235) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BOGNY_PV_CHG : Pobj (0.332640) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BOGNY_EOL_CHG : Pobj (1.501143) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe BOGNY_PV_ES : Pobj (0.019567) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BORNY_PV_CHG : Pobj (2.165887) est superieur a Pmax (1.200000): Pobj mis a Pmax.
+Groupe BORNY_EOL_CHG : Pobj (1.757849) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe BOULA_PV_CHG : Pobj (4.865397) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BOULA_PV_ES : Pobj (0.812208) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BOUZOIN3 : Pobj (0.667030) est superieur a Pmax (0.278152): Pobj mis a Pmax.
+Groupe BOUZO_PV_CHG : Pobj (3.060492) est superieur a Pmax (1.276227): Pobj mis a Pmax.
+Groupe BOUZO_PV_ES : Pobj (0.349210) est superieur a Pmax (0.145621): Pobj mis a Pmax.
+Groupe BRABO_PV_CHG : Pobj (0.537548) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BRABO_PV_ES : Pobj (0.207957) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BROUS_PV_CHG : Pobj (5.893409) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BROUS_PV_ES : Pobj (0.494387) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BXRE5_PV_CHG : Pobj (0.490463) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BXRE5_PV_ES : Pobj (0.113788) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BXZEE_PV_CHG : Pobj (4.814390) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BXZEE_PV_ES : Pobj (0.168719) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BZBON_PV_CHG : Pobj (0.208642) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe BZBON_PV_ES : Pobj (0.292831) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe C.MET_PV_ES : Pobj (0.247194) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CHOLO_PV_ES : Pobj (0.553243) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CIREY_PV_ES : Pobj (0.192262) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe COMPE_PV_CHG : Pobj (1.047630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe COMPE_PV_ES : Pobj (1.165341) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CONFL_EOL_CHG : Pobj (2.376387) est superieur a Pmax (1.900000): Pobj mis a Pmax.
+Groupe CORN6_EOL_CHG : Pobj (1.546887) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe CORN6_PV_CHG : Pobj (1.077123) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CORN6_PV_ES : Pobj (0.302695) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CPIGN_PV_CHG : Pobj (0.494387) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CPIGN_PV_ES : Pobj (0.204033) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CREUT_PV_CHG : Pobj (1.133952) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CREUT_PV_ES : Pobj (0.262888) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CUBRY_PV_CHG : Pobj (0.062615) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe CXSSE_PV_ES : Pobj (1.177112) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DALST_PV_ES : Pobj (0.415913) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DARNE_PV_CHG : Pobj (1.981277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DARNE_PV_ES : Pobj (0.294833) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DEBON_PV_CHG : Pobj (0.506158) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DIEUZ_PV_CHG : Pobj (1.141799) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DIEUZ_PV_ES : Pobj (0.859292) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DOGNE_PV_CHG : Pobj (5.837691) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DOGNE_PV_ES : Pobj (0.507113) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DORMA_PV_CHG : Pobj (0.062615) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DORMA_PV_ES : Pobj (0.043047) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe DUGNY_PV_ES : Pobj (0.223651) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ENNER_PV_CHG : Pobj (0.737657) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe EPERN_PV_CHG : Pobj (0.070441) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe EPERN_PV_ES : Pobj (0.250458) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ERROU_PV_CHG : Pobj (2.209048) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ERROU_PV_ES : Pobj (0.176567) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ESSEY_EOL_CHG : Pobj (6.818084) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe ESSEY_PV_CHG : Pobj (8.337880) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ESSEY_PV_ES : Pobj (0.231499) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ETAI5_PV_CHG : Pobj (0.702344) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ETAI5_PV_ES : Pobj (0.321744) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ETIVA_PV_ES : Pobj (0.259453) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe F.CHA_PV_ES : Pobj (1.178646) est superieur a Pmax (0.200000): Pobj mis a Pmax.
+Groupe FISME_PV_CHG : Pobj (0.109575) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe FISME_PV_ES : Pobj (0.313073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe FLEVI_PV_CHG : Pobj (0.188338) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe FLEVI_PV_ES : Pobj (0.098093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe FLOIN_PV_CHG : Pobj (1.307079) est superieur a Pmax (0.073085): Pobj mis a Pmax.
+Groupe FLOIN_EOL_CHG : Pobj (5.570032) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe FLOIN_PV_ES : Pobj (0.481349) est superieur a Pmax (0.026915): Pobj mis a Pmax.
+Groupe FORBA_PV_CHG : Pobj (5.740385) est superieur a Pmax (3.807417): Pobj mis a Pmax.
+Groupe FORBA_EOL_CHG : Pobj (4.858773) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe FORBA_PV_ES : Pobj (0.290354) est superieur a Pmax (0.192583): Pobj mis a Pmax.
+Groupe FRONC_PV_ES : Pobj (0.355058) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe FROUA_PV_CHG : Pobj (1.181036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe FROUA_EOL_CHG : Pobj (1.666994) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe FROUA_PV_ES : Pobj (0.074550) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GERAR_EOL_CHG : Pobj (1.175950) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GERAR_PV_CHG : Pobj (1.360162) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GERAR_PV_ES : Pobj (0.275177) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GIVET_PV_ES : Pobj (0.046961) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GLONV_PV_CHG : Pobj (0.597528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GLONV_PV_ES : Pobj (0.200486) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GOETZIN1 : Pobj (0.470845) est superieur a Pmax (0.324910): Pobj mis a Pmax.
+Groupe GOETZ_PV_CHG : Pobj (0.667030) est superieur a Pmax (0.460289): Pobj mis a Pmax.
+Groupe GOETZ_PV_ES : Pobj (0.601112) est superieur a Pmax (0.414801): Pobj mis a Pmax.
+Groupe H.CLO_PV_CHG : Pobj (0.065887) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe H.CLO_PV_ES : Pobj (0.054906) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe H.RIV_PV_CHG : Pobj (0.058701) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe H.RIV_PV_ES : Pobj (0.011740) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe HAYBE_PV_ES : Pobj (0.023480) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe HERIM_PV_CHG : Pobj (0.749428) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe HERIM_PV_ES : Pobj (0.757276) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe HOUDE_PV_CHG : Pobj (4.936025) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe HOUDE_PV_ES : Pobj (0.282507) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe INSMI_PV_CHG : Pobj (2.079565) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe INSMI_PV_ES : Pobj (0.235422) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe JEUXE_PV_ES : Pobj (0.286971) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe JOINV_PV_CHG : Pobj (3.316314) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe JOINV_PV_ES : Pobj (0.201321) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe KERBA_PV_CHG : Pobj (1.228121) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe KERBA_PV_ES : Pobj (0.490463) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe L.BAR_PV_CHG : Pobj (8.326108) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe L.BAR_PV_ES : Pobj (0.137330) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LAND5IN4 : Pobj (0.439455) est superieur a Pmax (0.074477): Pobj mis a Pmax.
+Groupe LAND5IN5 : Pobj (0.721962) est superieur a Pmax (0.122354): Pobj mis a Pmax.
+Groupe LAND5_PV_CHG : Pobj (15.251452) est superieur a Pmax (2.584738): Pobj mis a Pmax.
+Groupe LAND5_PV_ES : Pobj (0.698812) est superieur a Pmax (0.118431): Pobj mis a Pmax.
+Groupe LANEU_PV_ES : Pobj (0.431608) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LAVE5_EOL_CHG : Pobj (3.322651) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe LAVE5_PV_CHG : Pobj (3.836759) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LAVE5_PV_ES : Pobj (0.483526) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LAXOU_PV_CHG : Pobj (0.470845) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LAXOU_PV_ES : Pobj (0.086322) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LIART_PV_CHG : Pobj (1.006607) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LIART_PV_ES : Pobj (0.195079) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LONG5_PV_CHG : Pobj (12.292976) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LONG5_PV_ES : Pobj (0.270736) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LUDRE_EOL_CHG : Pobj (1.674894) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe LUDRE_PV_CHG : Pobj (1.137875) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe LUDRE_PV_ES : Pobj (0.298202) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe M.CAM_PV_ES : Pobj (0.078268) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe M.MA5_PV_CHG : Pobj (2.405233) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe M.MA5_PV_ES : Pobj (0.125559) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe M.ROI_PV_CHG : Pobj (0.556379) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe M.ROI_PV_ES : Pobj (1.610572) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MALAD_PV_CHG : Pobj (0.695474) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MALAD_PV_ES : Pobj (0.530757) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MANOM_PV_CHG : Pobj (0.498311) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MANOM_PV_ES : Pobj (0.153025) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MARL8_EOL_CHG : Pobj (3.930471) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe MARL8_PV_CHG : Pobj (4.841856) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MARNA_PV_CHG : Pobj (0.074550) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MARNA_PV_ES : Pobj (0.160872) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MAROL_PV_ES : Pobj (1.388993) est superieur a Pmax (0.500000): Pobj mis a Pmax.
+Groupe MAUPAIN1 : Pobj (6.379609) est superieur a Pmax (5.413114): Pobj mis a Pmax.
+Groupe MAUPA_EOL_CHG : Pobj (17.898457) est superieur a Pmax (15.186886): Pobj mis a Pmax.
+Groupe MAUPA_PV_CHG : Pobj (0.608175) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MAUPA_PV_ES : Pobj (0.608175) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe METZ6_PV_CHG : Pobj (0.478692) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe METZ6_PV_ES : Pobj (0.125559) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MILLE_PV_ES : Pobj (0.306049) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MIREC_PV_CHG : Pobj (3.011226) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MIREC_PV_ES : Pobj (0.412766) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MOHON_PV_ES : Pobj (0.191757) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MOND5_PV_CHG : Pobj (0.937766) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MOND5_PV_ES : Pobj (0.172643) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MOULI_PV_CHG : Pobj (0.808284) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MOULI_PV_ES : Pobj (0.863216) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MTMIR_PV_ES : Pobj (0.262198) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MTOIS_PV_ES : Pobj (0.349210) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MURIG_PV_CHG : Pobj (0.066528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe MURIG_PV_ES : Pobj (0.082182) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe N.SEI_PV_CHG : Pobj (0.655210) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe N.SEI_PV_ES : Pobj (0.355058) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe N.SEU_PV_CHG : Pobj (2.062367) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe NOUET_PV_CHG : Pobj (0.074355) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe NOUET_PV_ES : Pobj (0.309159) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe NOUZO_PV_CHG : Pobj (0.066528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe NOUZO_PV_ES : Pobj (0.078268) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe OIRY _EOL_CHG : Pobj (1.975189) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe ORMES_EOL_CHG : Pobj (0.355534) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe OSNES_PV_CHG : Pobj (0.399168) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe OSNES_PV_ES : Pobj (0.344380) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe P.SI1_EOL_CHG : Pobj (1.307523) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe P.SI4_PV_CHG : Pobj (0.415913) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe P.SI4_PV_ES : Pobj (0.047084) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe P.TER_PV_CHG : Pobj (0.547877) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe P.TER_PV_ES : Pobj (0.144796) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe P.VIL_PV_CHG : Pobj (0.347737) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe P.VIL_PV_ES : Pobj (0.420945) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PHALS_PV_CHG : Pobj (2.381691) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PHALS_EOL_CHG : Pobj (1.998812) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe PHALS_PV_ES : Pobj (0.290354) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PLOMB_PV_ES : Pobj (0.110071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PLOMB_EOL_CHG : Pobj (2.376387) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe POLIS_PV_CHG : Pobj (0.792715) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe POLIS_PV_ES : Pobj (0.457487) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe POUXE_EOL_CHG : Pobj (1.389042) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe POUXE_PV_CHG : Pobj (1.026018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe POUXE_PV_ES : Pobj (0.279108) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PRIEU_PV_CHG : Pobj (0.066528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PRIEU_PV_ES : Pobj (0.160450) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PTFAVIN1 : Pobj (1.956705) est superieur a Pmax (1.829224): Pobj mis a Pmax.
+Groupe PTFAV_PV_CHG : Pobj (3.028979) est superieur a Pmax (2.831638): Pobj mis a Pmax.
+Groupe PTFAV_PV_ES : Pobj (0.362773) est superieur a Pmax (0.339138): Pobj mis a Pmax.
+Groupe PTIFF_EOL_CHG : Pobj (6.810184) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe PTIFF_PV_CHG : Pobj (8.388887) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe PUSY _EOL_CHG : Pobj (2.376387) est superieur a Pmax (0.800000): Pobj mis a Pmax.
+Groupe PUTTE_EOL_CHG : Pobj (5.538212) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe PUTTE_PV_CHG : Pobj (6.591829) est superieur a Pmax (0.791623): Pobj mis a Pmax.
+Groupe PUTTE_PV_ES : Pobj (0.902453) est superieur a Pmax (0.108377): Pobj mis a Pmax.
+Groupe QUEVI_PV_CHG : Pobj (0.530699) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe QUEVI_PV_ES : Pobj (0.353799) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe R.CH5_PV_CHG : Pobj (3.707904) est superieur a Pmax (1.100806): Pobj mis a Pmax.
+Groupe R.CH5_PV_ES : Pobj (0.670954) est superieur a Pmax (0.199194): Pobj mis a Pmax.
+Groupe RAMBE_PV_ES : Pobj (0.424559) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe RANGU_PV_CHG : Pobj (0.498311) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe RANGU_PV_ES : Pobj (0.153025) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REINA_EOL_CHG : Pobj (4.609910) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe REINA_PV_CHG : Pobj (5.599131) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REINA_PV_ES : Pobj (0.309973) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REMIR_PV_CHG : Pobj (0.632908) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REMIR_PV_ES : Pobj (0.330213) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe RETHE_PV_ES : Pobj (0.829643) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REVIG_PV_ES : Pobj (0.290354) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REVIN_PV_CHG : Pobj (0.387428) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe REVIN_EOL_CHG : Pobj (2.014692) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe REVIN_PV_ES : Pobj (0.058701) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ROUS7_EOL_CHG : Pobj (9.014407) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe ROUS7_PV_CHG : Pobj (11.076627) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe ROUS7_PV_ES : Pobj (0.129482) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe S.SAU_PV_CHG : Pobj (0.117402) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe S.SAU_PV_ES : Pobj (0.813989) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SARR6IN2 : Pobj (0.392371) est superieur a Pmax (0.342679): Pobj mis a Pmax.
+Groupe SARR6_PV_ES : Pobj (0.867139) est superieur a Pmax (0.757321): Pobj mis a Pmax.
+Groupe SAUDR_PV_CHG : Pobj (0.510082) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SAUDR_PV_ES : Pobj (0.274660) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SEZAN_PV_ES : Pobj (0.834569) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SOMBU_PV_CHG : Pobj (6.756625) est superieur a Pmax (0.098852): Pobj mis a Pmax.
+Groupe SOMBU_EOL_CHG : Pobj (2.796757) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe SOMBU_PV_ES : Pobj (0.078474) est superieur a Pmax (0.001148): Pobj mis a Pmax.
+Groupe SSBR5_PV_CHG : Pobj (0.195670) est superieur a Pmax (0.078125): Pobj mis a Pmax.
+Groupe SSBR5_PV_ES : Pobj (0.305246) est superieur a Pmax (0.121875): Pobj mis a Pmax.
+Groupe SSCH6_PV_CHG : Pobj (0.631717) est superieur a Pmax (0.160199): Pobj mis a Pmax.
+Groupe SSCH6_PV_ES : Pobj (0.156948) est superieur a Pmax (0.039801): Pobj mis a Pmax.
+Groupe SSDIE_EOL_CHG : Pobj (3.180590) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe SSDIE_PV_CHG : Pobj (3.801378) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSDIE_PV_ES : Pobj (0.357731) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSDIZ_EOL_CHG : Pobj (1.465533) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe SSDIZ_PV_CHG : Pobj (0.329591) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSDIZ_PV_ES : Pobj (0.282507) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSHUB_PV_ES : Pobj (0.156948) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSJUL_PV_ES : Pobj (4.331774) est superieur a Pmax (1.200000): Pobj mis a Pmax.
+Groupe SSMEN_PV_CHG : Pobj (0.211880) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSMEN_PV_ES : Pobj (0.408066) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSMEU_PV_CHG : Pobj (0.511044) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSMEU_PV_ES : Pobj (0.141520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSMIH_PV_CHG : Pobj (4.088504) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSMIH_PV_ES : Pobj (0.298202) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSNAB_PV_ES : Pobj (0.035380) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSNAB_EOL_CHG : Pobj (2.376387) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe SSVAU_PV_CHG : Pobj (0.106151) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SSVAU_PV_ES : Pobj (0.208642) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SUIPP_PV_CHG : Pobj (0.086095) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe SUIPP_PV_ES : Pobj (1.264031) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe T.IND_PV_CHG : Pobj (0.215963) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe T.IND_PV_ES : Pobj (0.029283) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe T.VER_PV_CHG : Pobj (0.643488) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe T.VER_PV_ES : Pobj (0.066703) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe TECHN_PV_CHG : Pobj (0.553243) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe TENDR_PV_ES : Pobj (0.039134) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe THILL_PV_CHG : Pobj (0.676150) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe THILL_PV_ES : Pobj (0.385248) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe TRO.E_PV_CHG : Pobj (0.058566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe TRO.E_PV_ES : Pobj (0.076868) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe TUCQU_PV_CHG : Pobj (1.322289) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe TUCQU_PV_ES : Pobj (0.223651) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe V.BAR_PV_CHG : Pobj (0.351398) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe V.BAR_PV_ES : Pobj (0.150076) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VANDI_PV_ES : Pobj (0.404142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VARAN_PV_CHG : Pobj (0.502235) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VARAN_PV_ES : Pobj (0.149101) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VERDU_EOL_CHG : Pobj (11.337139) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe VERDU_PV_CHG : Pobj (13.901697) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VERDU_PV_ES : Pobj (0.102016) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VERTU_PV_ES : Pobj (0.344380) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VESAI_PV_CHG : Pobj (0.175699) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VESAI_PV_ES : Pobj (0.669852) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VIREU_PV_CHG : Pobj (0.070441) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VIREU_PV_ES : Pobj (0.015654) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VITTE_PV_ES : Pobj (1.702168) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe VOUZI_PV_CHG : Pobj (1.130975) est superieur a Pmax (0.056556): Pobj mis a Pmax.
+Groupe VOUZI_PV_ES : Pobj (0.868777) est superieur a Pmax (0.043444): Pobj mis a Pmax.
+Groupe WADON_PV_CHG : Pobj (1.000546) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe WADON_PV_ES : Pobj (0.490463) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe WOIPP_EOL_CHG : Pobj (2.844160) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe WOIPP_PV_CHG : Pobj (3.503871) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Incident '.CTLOL31ZLIEB' : Noeuds perdus '18049'
+Incident 'A.OTHL31ROSIE' : Noeuds perdus '5277 [A.OTH3TR311]'
+Incident 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Incident 'ARGIEL31HERI5' : Noeuds perdus '10236 [HERI53TSNCF]'
+Incident 'ARGIEL31ZSEV5' : Noeuds perdus '18329'
+Incident 'ARSOTL31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'B.DAML31DOUVO' : Noeuds perdus '8526 [DOUVO3TSNCF.1]'
+Incident 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Incident 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Incident 'BZGUIL31ZLIEB' : Noeuds perdus '18049'
+Incident 'C.FO5L31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Incident 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Incident 'CHAL7Y611' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHAL7Y612' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHAL7Y613' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'CHARIL31RENA5' : Noeuds perdus '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'CRENEL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'CRENEL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'CRENEY765' : Noeuds perdus '4929' '4930'
+Incident 'CRENEY775' : Noeuds perdus '4929' '4930'
+Incident 'DAMPJL31LIEBV' : Noeuds perdus '8293' '8294'
+Incident 'DELLEL31ZSEV5' : Noeuds perdus '18329'
+Incident 'DOCELL31POUXE' : Noeuds perdus '8473 [DOCEL3TR31A]'
+Incident 'ETIVAL31MOYEN' : Noeuds perdus '12299 [MOYEN3TSNCF.1]'
+Incident 'ETIVAL31RAON' : Noeuds perdus '14059 [RAON3 TR311]'
+Incident 'ETIVAL31V.PRE' : Noeuds perdus '16644' '16645'
+Incident 'ETIVAL31ZSSME' : Noeuds perdus '15604 [SSMEU3TR311]' '18366'
+Incident 'ETIVAL32MOYEN' : Noeuds perdus '12300 [MOYEN3TSNCF.2]'
+Incident 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Incident 'ETUPEL31SEVEN' : Noeuds perdus '15162 [SEVEN3TR31A]'
+Incident 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'GIROML31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'I.DOUL31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'JEUXEY631' : Noeuds perdus '10670'
+Incident 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Incident 'LANG9L31VINCE' : Noeuds perdus '11062 [LANG93TSNCF.2]'
+Incident 'LANG9L32VINCE' : Noeuds perdus '11063 [LANG93TSNCF.1]'
+Incident 'LIEBHL31LIEBV' : Noeuds perdus '11257' '11258'
+Incident 'LIEBVL31VAUFR' : Noeuds perdus '16791' '16792'
+Incident 'LIEBVL31ZLIEB' : Noeuds perdus '18049'
+Incident 'LOGELL31MUNST' : Noeuds perdus '12426 [MUNST3TR311, MUNST3TR312]'
+Incident 'LOGELL31TURCK' : Noeuds perdus '16399 [TURCK3TR31A]'
+Incident 'LOGELL31ZCOL.' : Noeuds perdus '17788'
+Incident 'LOGELL31ZSSPL' : Noeuds perdus '15634 [SSPLA3TR313]' '18371'
+Incident 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'M.LOUL31THEOD' : Noeuds perdus '16102 [THEOD3TR311]'
+Incident 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Incident 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Incident 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Incident 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Incident 'MORGEL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'NOVILL31ZNOVI' : Noeuds perdus '12704 [NOVIL3TR31A]' '18170'
+Incident 'P.VAUL31ZNOVI' : Noeuds perdus '12704 [NOVIL3TR31A]' '18170'
+Incident 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Incident 'PEU.NL31PEU.S' : Noeuds perdus '13423 [PEU.N3TR31A, PEU.N3TR31B]'
+Incident 'POLISL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'PRAUTL31ROLAM' : Noeuds perdus '13788 [PRAUT3TR311, PRAUT3TR313]'
+Incident 'RENA5L31V.MAN' : Noeuds perdus '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Incident 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Incident 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Incident 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Incident 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Incident 'RONCHL31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Incident 'SSDIEL31ZSSME' : Noeuds perdus '15604 [SSMEU3TR311]' '18366'
+Incident 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Incident 'SSVAUL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'VINCEL31ZHERI' : Noeuds perdus '17984'
+Incident 'VINCEL61VITTE' : Noeuds perdus '17068'
+Incident 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'VINCEL61ZMAD6' : Noeuds perdus '11659' '18083'
+Incident 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Incident 'VINCEY766' : Noeuds perdus '5059' '5060'
+Incident 'VINCEY776' : Noeuds perdus '5059' '5060'
+Incident 'VOUJEL31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'AVREUL31CRENE' : Noeuds perdus '5885 [AVREU3TR311]'
+Incident 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Incident 'COL.NL31LOGEL' : Noeuds perdus '7915 [COL.N3TR314, COL.N3TR315]'
+Incident 'COL.OL31LOGEL' : Noeuds perdus '7916 [COL.O3TR311, COL.O3TR313]'
+Incident 'COLMAL31LOGEL' : Noeuds perdus '7921 [COLMA3TR31A]'
+Incident 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Incident 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Incident 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Incident 'SEVENL31ZSEV5' : Noeuds perdus '18329'
+Incident 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'FESS5L71MUHLB' : Noeuds perdus '9046 [FESS57TS1]'
+Incident 'FESS5L72MUHLB' : Noeuds perdus '9047 [FESS57TS2]'
+Incident 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Incident 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'V.BARL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'KEMBSL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Incident 'HESINL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Incident 'HUNINL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 304 (sur 304)
+Nombre de regions       = 14
+Nombre total de noeuds  = 18592
+Nombre de consommations = 14198 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 25688 (dont 32 surveillés en N et 32 surveillés sur défaut)
+Nombre de groupes       = 23082 (dont 103 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 106 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 24 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le groupe 'G1121' de la loi 8063 est introuvable
+Le noeud '99121_1' de la loi 8064 de variation de conso est introuvable
+Le groupe 'G1121' de la loi 8064 est introuvable
+Le noeud '99121_1' de la loi 8066 de variation de conso est introuvable
+Le groupe 'G1121' de la loi 8066 est introuvable
+Le groupe 'G1121' de la loi 8067 est introuvable
+Le noeud '99121_1' de la loi 8068 de variation de conso est introuvable
+Le noeud '99121_1' de la loi 8070 de variation de conso est introuvable
+Le groupe 'G1121' de la loi 8071 est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+La branche (ligne ou couplage) '	BASS6L31CXMO5' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CRENEY765' : Noeuds perdus '4929' '4930'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CRENEY775' : Noeuds perdus '4929' '4930'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+La branche (ligne ou couplage) 'RONCHL1THILL' mentionnée dans une parade est introuvable
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'B.BAIL31DARNE' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+La branche (ligne ou couplage) 'RONCHL1THILL' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'B.BAIL31DARNE' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEL61VAROI' : Noeuds perdus '16785'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'CXMO5L31ROLAM / BASS6L31CXMO5 / RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'CXMO5L31ROLAM / BASS6L31CXMO5 / RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+L'element 'VINCEL61ZG.HA' mentionne dans une parade fait partie de l'incident 'SAIN5L61ZG.HA'
+Parade 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'B.BAIL31DARNE' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+ Nb total d'incidents + parades : 631
+Mode de calcul : OPF
+Noeud bilan : 0
+0(4) <-> 8 [.GUERL41.Q.RO, .Q.RO4QUEENS](3) <-> 10 [.SHIL4COLLETTE](4)
+                                            <-> 12 [.WEST4TR411, .WEST4TR412](2)
+     <-> 9 [.R.PR4TR411, .R.PR4TR412](2) <-> 10 [.SHIL4COLLETTE](4)
+     <-> 15648(4) <-> 10072 [H.PUI4T411, H.PUI4T412](5)
+
+Noeud bilan : 1
+1(1) <-> 11 [.UK](6) <-> 2(1)
+                     <-> 3(1)
+                     <-> 5(1)
+                     <-> 6(1)
+                     <-> 7(1)
+                     |=| 6092(7)
+                     |=| 6093(7)
+     |=| 11715(7) <-> 367(13)
+                  <-> 5748(4)
+                  <-> 9298(3)
+                  <-> 13427(1)
+                  <-> 17238(16)
+                  <-> 11713(2)
+                  <-> 11714(5)
+
+
+********************************************
+Traitement d'un paquet de 2 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 293255.3590  MW
+Production démarrée                 = 283197.1985  MW
+Puissance à ajuster                 = 10058.1605  MW
+Puissance disponible à la hausse (hors Pimp) = 293974.6702  MW
+Puissance disponible à la baisse (hors Pimp) = -270805.3298  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -4858.1605 MW
+Zone synchrone 1 (noeud bilan 1), bilan = -5200.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  293255.3590 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :  804652.8401
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  804652.8401
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'AILLEL31V.BAR' & 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / AILLEL31V.BAR' (icdt : CRENEL61FRONC)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / AILLEL31V.BAR / BASS6L31CXMO5 / CXMO5L31ROLAM' & 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / AILLEL31V.BAR' (icdt : CRENEL61FRONC)
+Contraintes equivalentes : 'AILLEL31V.BAR / BASS6L31CXMO5 / CXMO5L31ROLAM' & 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / AILLEL31V.BAR' (icdt : CRENEL61FRONC)
+Ajout de 7 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 425)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  293255.3590 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 44428 (taille de la matrice : 44428)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  293255.3590 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+
+---------------------
+---------------------
+Variante numéro 8063
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 212740.3100  MW
+Production démarrée                 = 212720.1237  MW
+Puissance à ajuster                 =    20.1863  MW
+Puissance disponible à la hausse (hors Pimp) = 272910.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -291870.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -20.1863 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    1614.9056
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    1614.9056
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 263
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      30.0893
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      30.0893
+
+Des contraintes ont été détectées : 111
+Nb termes dans la matrice : 21246 (taille de la matrice : 21246)
+Contraintes equivalentes : 'BUSSUL61ETUPE' & 'BUSSUL61ETUPE' (icdt : .BASSL71MAMBE)
+Ajout de 208 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 5676)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      32.8880
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0088
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     737.7684
+Valeur de la fonction objectif :     770.6652
+
+Des contraintes ont été détectées : 4
+Nb termes dans la matrice : 1406153 (taille de la matrice : 1406153)
+Ajout de 8 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 5684)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      32.8880
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3183
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     737.7684
+Valeur de la fonction objectif :     770.9747
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1461817 (taille de la matrice : 1461817)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      32.8880
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3183
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     737.7684
+Valeur de la fonction objectif :     770.9747
+
+
+********************************************
+Traitement d'un paquet de 9 variante(s)
+********************************************
+Incident '.CTLOL31ZLIEB' : Noeuds perdus '18049'
+Incident 'A.OTHL31ROSIE' : Noeuds perdus '5277 [A.OTH3TR311]'
+Incident 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Incident 'ARGIEL31HERI5' : Noeuds perdus '10236 [HERI53TSNCF]'
+Incident 'ARGIEL31ZSEV5' : Noeuds perdus '18329'
+Incident 'ARSOTL31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'B.DAML31DOUVO' : Noeuds perdus '8526 [DOUVO3TSNCF.1]'
+Incident 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Incident 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Incident 'BZGUIL31ZLIEB' : Noeuds perdus '18049'
+Incident 'C.FO5L31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Incident 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Incident 'CHAL7Y611' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHAL7Y612' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHAL7Y613' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'CHARIL31RENA5' : Noeuds perdus '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'CRENEL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'CRENEL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'CRENEY765' : Noeuds perdus '4929' '4930'
+Incident 'CRENEY775' : Noeuds perdus '4929' '4930'
+Incident 'DAMPJL31LIEBV' : Noeuds perdus '8293' '8294'
+Incident 'DELLEL31ZSEV5' : Noeuds perdus '18329'
+Incident 'DOCELL31POUXE' : Noeuds perdus '8473 [DOCEL3TR31A]'
+Incident 'ETIVAL31MOYEN' : Noeuds perdus '12299 [MOYEN3TSNCF.1]'
+Incident 'ETIVAL31RAON' : Noeuds perdus '14059 [RAON3 TR311]'
+Incident 'ETIVAL31V.PRE' : Noeuds perdus '16644' '16645'
+Incident 'ETIVAL31ZSSME' : Noeuds perdus '15604 [SSMEU3TR311]' '18366'
+Incident 'ETIVAL32MOYEN' : Noeuds perdus '12300 [MOYEN3TSNCF.2]'
+Incident 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Incident 'ETUPEL31SEVEN' : Noeuds perdus '15162 [SEVEN3TR31A]'
+Incident 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'GIROML31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'I.DOUL31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'JEUXEY631' : Noeuds perdus '10670'
+Incident 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Incident 'LANG9L31VINCE' : Noeuds perdus '11062 [LANG93TSNCF.2]'
+Incident 'LANG9L32VINCE' : Noeuds perdus '11063 [LANG93TSNCF.1]'
+Incident 'LIEBHL31LIEBV' : Noeuds perdus '11257' '11258'
+Incident 'LIEBVL31VAUFR' : Noeuds perdus '16791' '16792'
+Incident 'LIEBVL31ZLIEB' : Noeuds perdus '18049'
+Incident 'LOGELL31MUNST' : Noeuds perdus '12426 [MUNST3TR311, MUNST3TR312]'
+Incident 'LOGELL31TURCK' : Noeuds perdus '16399 [TURCK3TR31A]'
+Incident 'LOGELL31ZCOL.' : Noeuds perdus '17788'
+Incident 'LOGELL31ZSSPL' : Noeuds perdus '15634 [SSPLA3TR313]' '18371'
+Incident 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'M.LOUL31THEOD' : Noeuds perdus '16102 [THEOD3TR311]'
+Incident 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Incident 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Incident 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Incident 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Incident 'MORGEL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'NOVILL31ZNOVI' : Noeuds perdus '12704 [NOVIL3TR31A]' '18170'
+Incident 'P.VAUL31ZNOVI' : Noeuds perdus '12704 [NOVIL3TR31A]' '18170'
+Incident 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Incident 'PEU.NL31PEU.S' : Noeuds perdus '13423 [PEU.N3TR31A, PEU.N3TR31B]'
+Incident 'POLISL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'PRAUTL31ROLAM' : Noeuds perdus '13788 [PRAUT3TR311, PRAUT3TR313]'
+Incident 'RENA5L31V.MAN' : Noeuds perdus '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Incident 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Incident 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Incident 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Incident 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Incident 'RONCHL31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Incident 'SSDIEL31ZSSME' : Noeuds perdus '15604 [SSMEU3TR311]' '18366'
+Incident 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Incident 'SSVAUL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'VINCEL31ZHERI' : Noeuds perdus '17984'
+Incident 'VINCEL61VITTE' : Noeuds perdus '17068'
+Incident 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'VINCEL61ZMAD6' : Noeuds perdus '11659' '18083'
+Incident 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Incident 'VINCEY766' : Noeuds perdus '5059' '5060'
+Incident 'VINCEY776' : Noeuds perdus '5059' '5060'
+Incident 'VOUJEL31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'AVREUL31CRENE' : Noeuds perdus '5885 [AVREU3TR311]'
+Incident 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Incident 'COL.NL31LOGEL' : Noeuds perdus '7915 [COL.N3TR314, COL.N3TR315]'
+Incident 'COL.OL31LOGEL' : Noeuds perdus '7916 [COL.O3TR311, COL.O3TR313]'
+Incident 'COLMAL31LOGEL' : Noeuds perdus '7921 [COLMA3TR31A]'
+Incident 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Incident 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Incident 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Incident 'SEVENL31ZSEV5' : Noeuds perdus '18329'
+Incident 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'FESS5L71MUHLB' : Noeuds perdus '9046 [FESS57TS1]'
+Incident 'FESS5L72MUHLB' : Noeuds perdus '9047 [FESS57TS2]'
+Incident 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Incident 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'V.BARL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'KEMBSL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Incident 'HESINL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Incident 'HUNINL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Parade 'ANOULL61ZL.NO_NRF' sur défaut 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'ARCHEL31POUXE_NRF' sur défaut 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Parade 'B.RE6L31LURE_NRF' sur défaut 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Parade 'BOLO5L31BOLOG_NRF' sur défaut 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'BOLO5L31CXMO5_NRF' sur défaut 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'BOLO5L31FRONC_NRF' sur défaut 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'BZBONL31M.ROI_NRF' sur défaut 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Parade 'C.LANL31ROLAM_NRF' sur défaut 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Parade 'C.LANL32ROLAM_NRF' sur défaut 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Parade 'CHARIL31PUSY_NRF' sur défaut 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Parade 'CLAIRL31ETIVA_NRF' sur défaut 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Parade 'CRENEY765_NRF' sur défaut 'CRENEY765' : Noeuds perdus '4929' '4930'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CRENEY765' : Noeuds perdus '4929' '4930'
+Parade 'CRENEY775_NRF' sur défaut 'CRENEY775' : Noeuds perdus '4929' '4930'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CRENEY775' : Noeuds perdus '4929' '4930'
+Parade 'EPIZOL61ZEPIZ_NRF' sur défaut 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'ETIVAL61ZSSNA_NRF' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'ETUPEL61ZHIRS_NRF' sur défaut 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'FRONCL61ZEPIZ_NRF' sur défaut 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'GOLBEL61ZGOLB_NRF' sur défaut 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'GIRONL31VITTE_NRF' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'B.BAIL31DARNE' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'JEUXEY631_NRF' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'B.BAIL31DARNE' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'HIRSIL61ZHIRS_NRF' sur défaut 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'HOUDRL71N.MAI_NRF' sur défaut 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Parade 'JEUXEL61ZGOLB_NRF' sur défaut 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'JUSSEL31PUSY_NRF' sur défaut 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Parade 'L.NOIL61ZL.NO_NRF' sur défaut 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'LOGELL61ZL.NO_NRF' sur défaut 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'MAICHL31REFRA_NRF' sur défaut 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Parade 'MAMBEL61VAROI_NRF' sur défaut 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Parade 'MAMBEY763_NRF' sur défaut 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Parade 'MAMBEY773_NRF' sur défaut 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Parade 'MUHLBL71TDMU2_NRF' sur défaut 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'MUHLBL72TDMU2_NRF' sur défaut 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'MUREML61ZEPIZ_NRF' sur défaut 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'MUREML61ZG.HA_NRF' sur défaut 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'P.VILL61ZP.V5_NRF' sur défaut 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'CXMO5L31ROLAM / BASS6L31CXMO5 / RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'RIGOTL61ZRIGO_NRF' sur défaut 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'ROLAML31VLEGU_NRF' sur défaut 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'ROLAML32VLEGU_NRF' sur défaut 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'ROLAML61ZP.V5_NRF' sur défaut 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'CXMO5L31ROLAM / BASS6L31CXMO5 / RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'ROLAML61ZRIGO_NRF' sur défaut 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'ROSIEL61ZC.SE_NRF' sur défaut 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Parade 'SAIN5L61ZG.HA_NRF' sur défaut 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'SIEREL61ZHIRS_NRF' sur défaut 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'SSNABL61ZSSNA_NRF' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'VINCEL61VITTE_NRF' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'B.BAIL31DARNE' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'VINCEL61ZG.HA_NRF' sur défaut 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL61ZGOLB_NRF' sur défaut 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'VINCEL61ZSSNA_NRF' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+
+---------------------
+---------------------
+Variante numéro 8064
+---------------------
+---------------------
+
+Attention: incident 199, l'ouvrage RONCHL31THILL est deja deconnecte
+Attention: incident 580, l'ouvrage RONCHL31THILL est deja deconnecte
+Demarrage des groupes par empilement économique :
+Consommation globale                = 189729.4792  MW
+Production démarrée                 = 189658.5755  MW
+Puissance à ajuster                 =    70.9038  MW
+Puissance disponible à la hausse (hors Pimp) = 272719.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -292061.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -70.9038 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    5672.3016
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    5672.3016
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 263
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : PLOMBL51VINCE)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : VINCEY651)
+Ajout de 32 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2747)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      44.1314
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0208
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     131.1651
+Valeur de la fonction objectif :     175.3173
+
+Des contraintes ont été détectées : 111
+Nb termes dans la matrice : 191074 (taille de la matrice : 191074)
+Contraintes equivalentes : 'BUSSUL61ETUPE' & 'BUSSUL61ETUPE' (icdt : .BASSL71MAMBE)
+Ajout de 209 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 7158)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      77.5146
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3287
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     705.1679
+Valeur de la fonction objectif :     783.0112
+
+Des contraintes ont été détectées : 5
+Nb termes dans la matrice : 1580646 (taille de la matrice : 1580646)
+Ajout de 10 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 7168)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      77.5146
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3677
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     705.1679
+Valeur de la fonction objectif :     783.0502
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1650222 (taille de la matrice : 1650222)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      77.5146
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3677
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     705.1679
+Valeur de la fonction objectif :     783.0502
+
+ Le nombre le contraintes (7168) est different de la taille de la base : 7167
+
+---------------------
+---------------------
+Variante numéro 8065
+---------------------
+---------------------
+
+Groupe ARCISIN1 : Pobj (107.476000) est superieur a Pmax (107.475861): Pobj mis a Pmax.
+Demarrage des groupes par empilement économique :
+Consommation globale                = 178801.5046  MW
+Production démarrée                 = 178803.8279  MW
+Puissance à ajuster                 =    -2.3233  MW
+Puissance disponible à la hausse (hors Pimp) = 273115.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -291665.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 2.3233 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     185.8639
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     185.8639
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 299
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : VINCEY651)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : PLOMBL51VINCE)
+Ajout de 88 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4055)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      29.5321
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     254.5646
+Valeur de la fonction objectif :     284.0970
+
+Des contraintes ont été détectées : 126
+Nb termes dans la matrice : 429113 (taille de la matrice : 429113)
+Contraintes equivalentes : 'BUSSUL61ETUPE' & 'BUSSUL61ETUPE' (icdt : .BASSL71MAMBE)
+Ajout de 237 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 8722)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      50.8874
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0873
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1128.5285
+Valeur de la fonction objectif :    1179.5032
+
+Des contraintes ont été détectées : 3
+Nb termes dans la matrice : 2008298 (taille de la matrice : 2008298)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 8728)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      50.8874
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1798
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1128.5285
+Valeur de la fonction objectif :    1179.5957
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 2050034 (taille de la matrice : 2050034)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      50.8874
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1798
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1128.5285
+Valeur de la fonction objectif :    1179.5957
+
+ Le nombre le contraintes (8728) est different de la taille de la base : 8727
+
+---------------------
+---------------------
+Variante numéro 8066
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 167278.1295  MW
+Production démarrée                 = 167229.9913  MW
+Puissance à ajuster                 =    48.1382  MW
+Puissance disponible à la hausse (hors Pimp) = 273775.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -291005.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -48.1382 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    3851.0599
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    3851.0599
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 294
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : VINCEY651)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : PLOMBL51VINCE)
+Ajout de 74 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3209)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      47.7688
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     235.3630
+Valeur de la fonction objectif :     283.1320
+
+Des contraintes ont été détectées : 113
+Nb termes dans la matrice : 357760 (taille de la matrice : 357760)
+Contraintes equivalentes : 'BUSSUL61ETUPE' & 'BUSSUL61ETUPE' (icdt : .BASSL71MAMBE)
+Ajout de 204 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 7846)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      72.2389
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1519
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1313.6456
+Valeur de la fonction objectif :    1386.0364
+
+Des contraintes ont été détectées : 3
+Nb termes dans la matrice : 1710580 (taille de la matrice : 1710580)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 7852)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      72.2389
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1702
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1313.6456
+Valeur de la fonction objectif :    1386.0547
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1752328 (taille de la matrice : 1752328)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      72.2389
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1702
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1313.6456
+Valeur de la fonction objectif :    1386.0547
+
+ Le nombre le contraintes (7852) est different de la taille de la base : 7851
+
+---------------------
+---------------------
+Variante numéro 8067
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 162166.2966  MW
+Production démarrée                 = 162167.6636  MW
+Puissance à ajuster                 =    -1.3670  MW
+Puissance disponible à la hausse (hors Pimp) = 274957.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -289823.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 1.3670 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     109.3568
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     109.3568
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 51
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : PLOMBL51VINCE)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : VINCEY651)
+Ajout de 97 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4278)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       1.0546
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0112
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     216.9926
+Valeur de la fonction objectif :     218.0585
+
+Des contraintes ont été détectées : 9
+Nb termes dans la matrice : 540883 (taille de la matrice : 540883)
+Ajout de 18 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 4296)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       1.0546
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0256
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     216.9926
+Valeur de la fonction objectif :     218.0728
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 666119 (taille de la matrice : 666119)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       1.0546
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0256
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     216.9926
+Valeur de la fonction objectif :     218.0728
+
+ Le nombre le contraintes (4296) est different de la taille de la base : 4295
+
+---------------------
+---------------------
+Variante numéro 8068
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 159542.1425  MW
+Production démarrée                 = 159480.7635  MW
+Puissance à ajuster                 =    61.3790  MW
+Puissance disponible à la hausse (hors Pimp) = 275241.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -289539.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -61.3790 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8068 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  159542.1425 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4910.3175
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4910.3175
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 35
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : PLOMBL51VINCE)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : VINCEY651)
+Ajout de 54 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4026)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8068 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  159542.1425 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     207.3838
+Valeur de la fonction objectif :     207.3840
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 286543 (taille de la matrice : 286543)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8068 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  159542.1425 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     207.3838
+Valeur de la fonction objectif :     207.3840
+
+
+---------------------
+---------------------
+Variante numéro 8069
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 157564.4626  MW
+Production démarrée                 = 157566.7114  MW
+Puissance à ajuster                 =    -2.2488  MW
+Puissance disponible à la hausse (hors Pimp) = 276821.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -287959.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 2.2488 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8069 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  157564.4626 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     179.9076
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     179.9076
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 24
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 34 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2543)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8069 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  157564.4626 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     201.2654
+Valeur de la fonction objectif :     201.2655
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 191128 (taille de la matrice : 191128)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8069 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  157564.4626 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     201.2654
+Valeur de la fonction objectif :     201.2655
+
+
+---------------------
+---------------------
+Variante numéro 8070
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 160714.7532  MW
+Production démarrée                 = 160650.8131  MW
+Puissance à ajuster                 =    63.9401  MW
+Puissance disponible à la hausse (hors Pimp) = 276251.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -288529.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -63.9401 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8070 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  160714.7532 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    5115.2086
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    5115.2086
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 17
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 27 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1700)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8070 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  160714.7532 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       4.3200
+Valeur de la fonction objectif :       4.3201
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 139238 (taille de la matrice : 139238)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8070 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  160714.7532 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       4.3200
+Valeur de la fonction objectif :       4.3201
+
+
+---------------------
+---------------------
+Variante numéro 8071
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 172025.3942  MW
+Production démarrée                 = 172062.1015  MW
+Puissance à ajuster                 =   -36.7073  MW
+Puissance disponible à la hausse (hors Pimp) = 274087.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -290693.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 35.7063 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 1.0010 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8071 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  172025.3942 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2936.5857
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2936.5857
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 25
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : PLOMBL51VINCE)
+Contraintes equivalentes : 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' & 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' (icdt : VINCEY651)
+Ajout de 43 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3174)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8071 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  172025.3942 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       0.2376
+Valeur de la fonction objectif :       0.2378
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 235966 (taille de la matrice : 235966)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8071 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  172025.3942 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       0.2376
+Valeur de la fonction objectif :       0.2378
+
+
+---------------------
+---------------------
+Variante numéro 8072
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 189737.4638  MW
+Production démarrée                 = 189740.7967  MW
+Puissance à ajuster                 =    -3.3329  MW
+Puissance disponible à la hausse (hors Pimp) = 273972.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -290808.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 3.3329 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8072 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189737.4638 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     266.6290
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     266.6290
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 8
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 12 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1470)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8072 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189737.4638 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 90636 (taille de la matrice : 90636)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8072 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189737.4638 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
+
+Incident '.CTLOL31ZLIEB' : Noeuds perdus '18049'
+Incident 'A.OTHL31ROSIE' : Noeuds perdus '5277 [A.OTH3TR311]'
+Incident 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Incident 'ARGIEL31HERI5' : Noeuds perdus '10236 [HERI53TSNCF]'
+Incident 'ARGIEL31ZSEV5' : Noeuds perdus '18329'
+Incident 'ARSOTL31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'B.DAML31DOUVO' : Noeuds perdus '8526 [DOUVO3TSNCF.1]'
+Incident 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Incident 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Incident 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Incident 'BZGUIL31ZLIEB' : Noeuds perdus '18049'
+Incident 'C.FO5L31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Incident 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Incident 'CHAL7Y611' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHAL7Y612' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHAL7Y613' : Noeuds perdus '7626 [CHAL71TR11A]'
+Incident 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'CHARIL31RENA5' : Noeuds perdus '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'CRENEL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'CRENEL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'CRENEY765' : Noeuds perdus '4929' '4930'
+Incident 'CRENEY775' : Noeuds perdus '4929' '4930'
+Incident 'DAMPJL31LIEBV' : Noeuds perdus '8293' '8294'
+Incident 'DELLEL31ZSEV5' : Noeuds perdus '18329'
+Incident 'DOCELL31POUXE' : Noeuds perdus '8473 [DOCEL3TR31A]'
+Incident 'ETIVAL31MOYEN' : Noeuds perdus '12299 [MOYEN3TSNCF.1]'
+Incident 'ETIVAL31RAON' : Noeuds perdus '14059 [RAON3 TR311]'
+Incident 'ETIVAL31V.PRE' : Noeuds perdus '16644' '16645'
+Incident 'ETIVAL31ZSSME' : Noeuds perdus '15604 [SSMEU3TR311]' '18366'
+Incident 'ETIVAL32MOYEN' : Noeuds perdus '12300 [MOYEN3TSNCF.2]'
+Incident 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Incident 'ETUPEL31SEVEN' : Noeuds perdus '15162 [SEVEN3TR31A]'
+Incident 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'GIROML31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'I.DOUL31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'JEUXEY631' : Noeuds perdus '10670'
+Incident 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Incident 'LANG9L31VINCE' : Noeuds perdus '11062 [LANG93TSNCF.2]'
+Incident 'LANG9L32VINCE' : Noeuds perdus '11063 [LANG93TSNCF.1]'
+Incident 'LIEBHL31LIEBV' : Noeuds perdus '11257' '11258'
+Incident 'LIEBVL31VAUFR' : Noeuds perdus '16791' '16792'
+Incident 'LIEBVL31ZLIEB' : Noeuds perdus '18049'
+Incident 'LOGELL31MUNST' : Noeuds perdus '12426 [MUNST3TR311, MUNST3TR312]'
+Incident 'LOGELL31TURCK' : Noeuds perdus '16399 [TURCK3TR31A]'
+Incident 'LOGELL31ZCOL.' : Noeuds perdus '17788'
+Incident 'LOGELL31ZSSPL' : Noeuds perdus '15634 [SSPLA3TR313]' '18371'
+Incident 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'M.LOUL31THEOD' : Noeuds perdus '16102 [THEOD3TR311]'
+Incident 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Incident 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Incident 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Incident 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Incident 'MORGEL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'NOVILL31ZNOVI' : Noeuds perdus '12704 [NOVIL3TR31A]' '18170'
+Incident 'P.VAUL31ZNOVI' : Noeuds perdus '12704 [NOVIL3TR31A]' '18170'
+Incident 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Incident 'PEU.NL31PEU.S' : Noeuds perdus '13423 [PEU.N3TR31A, PEU.N3TR31B]'
+Incident 'POLISL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'PRAUTL31ROLAM' : Noeuds perdus '13788 [PRAUT3TR311, PRAUT3TR313]'
+Incident 'RENA5L31V.MAN' : Noeuds perdus '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Incident 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Incident 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Incident 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Incident 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Incident 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Incident 'RONCHL31ZGIR6' : Noeuds perdus '9743 [GIROM3TR311]' '17945'
+Incident 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Incident 'SSDIEL31ZSSME' : Noeuds perdus '15604 [SSMEU3TR311]' '18366'
+Incident 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Incident 'SSVAUL31ZSSVA' : Noeuds perdus '15690 [SSVAU3TR313]' '18380'
+Incident 'VINCEL31ZHERI' : Noeuds perdus '17984'
+Incident 'VINCEL61VITTE' : Noeuds perdus '17068'
+Incident 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Incident 'VINCEL61ZMAD6' : Noeuds perdus '11659' '18083'
+Incident 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Incident 'VINCEY766' : Noeuds perdus '5059' '5060'
+Incident 'VINCEY776' : Noeuds perdus '5059' '5060'
+Incident 'VOUJEL31ZC.FO' : Noeuds perdus '7026 [C.FO53TR31A]' '17730'
+Incident 'AVREUL31CRENE' : Noeuds perdus '5885 [AVREU3TR311]'
+Incident 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Incident 'COL.NL31LOGEL' : Noeuds perdus '7915 [COL.N3TR314, COL.N3TR315]'
+Incident 'COL.OL31LOGEL' : Noeuds perdus '7916 [COL.O3TR311, COL.O3TR313]'
+Incident 'COLMAL31LOGEL' : Noeuds perdus '7921 [COLMA3TR31A]'
+Incident 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Incident 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Incident 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Incident 'SEVENL31ZSEV5' : Noeuds perdus '18329'
+Incident 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Incident 'FESS5L71MUHLB' : Noeuds perdus '9046 [FESS57TS1]'
+Incident 'FESS5L72MUHLB' : Noeuds perdus '9047 [FESS57TS2]'
+Incident 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Incident 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Incident 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Incident 'V.BARL31ZMORG' : Noeuds perdus '12242' '18138'
+Incident 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Incident 'KEMBSL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Incident 'HESINL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Incident 'HUNINL31ZHESI' : Noeuds perdus '10251 [HESIN3TR321]' '10444 [HUNIN3TR311]' '17986'
+Parade 'ANOULL61ZL.NO_NRF' sur défaut 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ANOULL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'ARCHEL31POUXE_NRF' sur défaut 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ARCHEL31POUXE' : Noeuds perdus '5647 [ARCHE3TR31A]'
+Parade 'B.RE6L31LURE_NRF' sur défaut 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'B.RE6L31LURE' : Noeuds perdus '5957 [B.RE63TR31A]'
+Parade 'BOLO5L31BOLOG_NRF' sur défaut 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31BOLOG' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'BOLO5L31CXMO5_NRF' sur défaut 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31CXMO5' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'BOLO5L31FRONC_NRF' sur défaut 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BOLO5L31FRONC' : Noeuds perdus '6505' '6506 [BOLOG3TR311]'
+Parade 'BZBONL31M.ROI_NRF' sur défaut 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'BZBONL31M.ROI' : Noeuds perdus '6929 [BZBON3TR311]'
+Parade 'C.LANL31ROLAM_NRF' sur défaut 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'C.LANL31ROLAM' : Noeuds perdus '7044 [C.LAN3TR311]'
+Parade 'C.LANL32ROLAM_NRF' sur défaut 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'C.LANL32ROLAM' : Noeuds perdus '7045 [C.LAN3TR312]'
+Parade 'CHARIL31PUSY_NRF' sur défaut 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CHARIL31PUSY' : Noeuds perdus '7657 [CHARI3TR311, CHARI3TR312]' '14148 [RENA53TR311, RENA53TR312]' '16634 [V.MAN3TR311, V.MAN3TR312]'
+Parade 'CLAIRL31ETIVA_NRF' sur défaut 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CLAIRL31ETIVA' : Noeuds perdus '7786 [CLAIR3TR311]'
+Parade 'CRENEY765_NRF' sur défaut 'CRENEY765' : Noeuds perdus '4929' '4930'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CRENEY765' : Noeuds perdus '4929' '4930'
+Parade 'CRENEY775_NRF' sur défaut 'CRENEY775' : Noeuds perdus '4929' '4930'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'CRENEY775' : Noeuds perdus '4929' '4930'
+Parade 'EPIZOL61ZEPIZ_NRF' sur défaut 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'EPIZOL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'ETIVAL61ZSSNA_NRF' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'ETIVAL61ZSSNA' : Noeuds perdus '18369'
+Parade 'ETUPEL61ZHIRS_NRF' sur défaut 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ETUPEL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'FRONCL61ZEPIZ_NRF' sur défaut 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'FRONCL61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'GOLBEL61ZGOLB_NRF' sur défaut 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'GOLBEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'GIRONL31VITTE_NRF' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'B.BAIL31DARNE' sur défaut 'GIRONL31VITTE' : Noeuds perdus '9744 [GIRON3TR31A]'
+Parade 'JEUXEY631_NRF' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'B.BAIL31DARNE' sur défaut 'JEUXEY631' : Noeuds perdus '10670'
+Parade 'HIRSIL61ZHIRS_NRF' sur défaut 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'HIRSIL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'HOUDRL71N.MAI_NRF' sur défaut 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'HOUDRL71N.MAI' : Noeuds perdus '12497 [N.MAI7TR731]'
+Parade 'JEUXEL61ZGOLB_NRF' sur défaut 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JEUXEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'JUSSEL31PUSY_NRF' sur défaut 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'JUSSEL31PUSY' : Noeuds perdus '10715 [JUSSE3TR311, JUSSE3TR312]'
+Parade 'L.NOIL61ZL.NO_NRF' sur défaut 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'L.NOIL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'LOGELL61ZL.NO_NRF' sur défaut 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'LOGELL61ZL.NO' : Noeuds perdus '10895' '18021'
+Parade 'MAICHL31REFRA_NRF' sur défaut 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAICHL31REFRA' : Noeuds perdus '14122' '14123'
+Parade 'MAMBEL61VAROI_NRF' sur défaut 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEL61VAROI' : Noeuds perdus '16785'
+Parade 'MAMBEY763_NRF' sur défaut 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEY763' : Noeuds perdus '4838' '4839'
+Parade 'MAMBEY773_NRF' sur défaut 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MAMBEY773' : Noeuds perdus '4838' '4839'
+Parade 'MUHLBL71TDMU2_NRF' sur défaut 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MUHLBL71TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'MUHLBL72TDMU2_NRF' sur défaut 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'MUHLBL72TDMU2' : Noeuds perdus '12419' '12421' '18542'
+Parade 'MUREML61ZEPIZ_NRF' sur défaut 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'MUREML61ZEPIZ' : Noeuds perdus '8782' '17878'
+Parade 'MUREML61ZG.HA_NRF' sur défaut 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'MUREML61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'P.VILL61ZP.V5_NRF' sur défaut 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'CXMO5L31ROLAM / BASS6L31CXMO5 / RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'P.VILL61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'RIGOTL61ZRIGO_NRF' sur défaut 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'RIGOTL61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'ROLAML31VLEGU_NRF' sur défaut 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML31VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'ROLAML32VLEGU_NRF' sur défaut 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML32VLEGU' : Noeuds perdus '17085 [VLEGU3TSNCF.1]'
+Parade 'ROLAML61ZP.V5_NRF' sur défaut 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'CXMO5L31ROLAM / BASS6L31CXMO5 / RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML61ZP.V5' : Noeuds perdus '13182 [P.VIL6TR611]' '18207'
+Parade 'ROLAML61ZRIGO_NRF' sur défaut 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROLAML61ZRIGO' : Noeuds perdus '14315' '18278'
+Parade 'ROSIEL61ZC.SE_NRF' sur défaut 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'ROSIEL61ZC.SE' : Noeuds perdus '17741'
+Parade 'SAIN5L61ZG.HA_NRF' sur défaut 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL31ZHERI / VINCEL61ZG.HA / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'SAIN5L61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'SIEREL61ZHIRS_NRF' sur défaut 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'SIEREL61ZHIRS' : Noeuds perdus '10338' '17987'
+Parade 'SSNABL61ZSSNA_NRF' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'SSNABL61ZSSNA' : Noeuds perdus '18369'
+Parade 'VINCEL61VITTE_NRF' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'B.BAIL31DARNE' sur défaut 'VINCEL61VITTE' : Noeuds perdus '17068'
+Parade 'VINCEL61ZG.HA_NRF' sur défaut 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL31ZHERI / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / GONCOL31VITTE / RONCHL31THILL' sur défaut 'VINCEL61ZG.HA' : Noeuds perdus '14885' '17922'
+Parade 'VINCEL61ZGOLB_NRF' sur défaut 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61ZGOLB' : Noeuds perdus '9831 [GOLBE6TR611, GOLBE6TR612, GOLBE6TR613]' '17951'
+Parade 'VINCEL61ZSSNA_NRF' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5 / B.BAIL31DARNE' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'RONCHL31THILL / LURE L31PUSY / LURE L31LUXEU / CONFLL31FOUG5' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'
+Parade 'B.BAIL31DARNE' sur défaut 'VINCEL61ZSSNA' : Noeuds perdus '18369'

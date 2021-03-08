@@ -1,0 +1,1 @@
+Test des parades de l'étude Vendée (variante 1170 et suivantes)

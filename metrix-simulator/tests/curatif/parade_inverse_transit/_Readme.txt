@@ -1,0 +1,2 @@
+La parade "+MTGROP6_SOLEI   6COUPL.1  DJ" inverse complètement le flux sur l'ouvrage en contrainte "LAVEYL61P.BOR" par rapport aux autres parades.
+Ce cas n’était absolument pas prévu et l'écriture des contraintes des autres parades était faux ce qui empêchait de les sélectionner.

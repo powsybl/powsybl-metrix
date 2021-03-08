@@ -1,0 +1,378 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole .KUHM TR 661_Td a une admittance tres grande (658.2020568848)
+Attention: Le quadripole DEPH1L71MUHLB_Td a une admittance tres grande (1451.3214111328)
+L'incident N-k numero 2 (FLEACL41N.CHA) rompt la connexité, il est ignoré
+L'incident N-k numero 4 (MAUGEL41SOURD) rompt la connexité, il est ignoré
+L'incident N-k numero 13 (CPNI5L41MTBRO) rompt la connexité, il est ignoré
+L'incident N-k numero 26 (MANSLL41ZMANS) rompt la connexité, il est ignoré
+L'incident N-k numero 34 (G.RIVL61GUERS) rompt la connexité, il est ignoré
+L'incident N-k numero 40 (SOULLL41SSRIE) rompt la connexité, il est ignoré
+L'incident N-k numero 46 (FLEACY633) rompt la connexité, il est ignoré
+L'incident N-k numero 50 (AYTREL41JARNE) rompt la connexité, il est ignoré
+L'incident N-k numero 63 (AUBREL41ZAUBR) rompt la connexité, il est ignoré
+L'incident N-k numero 64 (BREI5L41DISTR) rompt la connexité, il est ignoré
+L'incident N-k numero 65 (CHABOL31CNNAY) rompt la connexité, il est ignoré
+L'incident N-k numero 67 (CHEV5L32CNNAY) rompt la connexité, il est ignoré
+L'incident N-k numero 68 (BRAINL31INDRE) rompt la connexité, il est ignoré
+L'incident N-k numero 74 (GOISEL41SSFLO) rompt la connexité, il est ignoré
+L'incident N-k numero 83 (GRUESL41LUCON) rompt la connexité, il est ignoré
+L'incident N-k numero 85 (LUCONL41MOUZE) rompt la connexité, il est ignoré
+L'incident N-k numero 90 (MORA6L41TOUVR) rompt la connexité, il est ignoré
+L'incident N-k numero 101 (GOULAL41VERTO) rompt la connexité, il est ignoré
+L'incident N-k numero 102 (B.INDL31CHABO) rompt la connexité, il est ignoré
+L'incident N-k numero 109 (SOYAUY433) rompt la connexité, il est ignoré
+L'incident N-k numero 114 (C.BERL42NICER) rompt la connexité, il est ignoré
+L'incident N-k numero 122 (THAIML41ZTHAI) rompt la connexité, il est ignoré
+L'incident N-k numero 123 (C.2I1L62SOULL) rompt la connexité, il est ignoré
+L'incident N-k numero 132 (CHABOL31MTLU5) rompt la connexité, il est ignoré
+L'incident N-k numero 135 (B.INDL32CHABO) rompt la connexité, il est ignoré
+L'incident N-k numero 146 (COR.PL65CORD5) rompt la connexité, il est ignoré
+L'incident N-k numero 154 (R.YONL41THIBA) rompt la connexité, il est ignoré
+L'incident N-k numero 155 (NIORTL61NIOTD) rompt la connexité, il est ignoré
+L'incident N-k numero 164 (CHEV5L31CNNAY) rompt la connexité, il est ignoré
+L'incident N-k numero 168 (ATTE4L61B.GUE) rompt la connexité, il est ignoré
+L'incident N-k numero 171 (NIORTL41TREVI) rompt la connexité, il est ignoré
+L'incident N-k numero 173 (BRUFFL41CHOLE) rompt la connexité, il est ignoré
+L'incident N-k numero 179 (ESSA5L41MERLA) rompt la connexité, il est ignoré
+L'incident N-k numero 185 (M.HERL41SSMAI) rompt la connexité, il est ignoré
+L'incident N-k numero 194 (COR.PL73CORD5) rompt la connexité, il est ignoré
+L'incident N-k numero 195 (GALORL61GALTD) rompt la connexité, il est ignoré
+L'incident N-k numero 196 (CARAVL31ZROU1) rompt la connexité, il est ignoré
+L'incident N-k numero 199 (BXLIEL41N.MER) rompt la connexité, il est ignoré
+L'incident N-k numero 203 (MARTYL61PONAN) rompt la connexité, il est ignoré
+L'incident N-k numero 204 (C.2I1L61SOULL) rompt la connexité, il est ignoré
+L'incident N-k numero 211 (E.CL5L41RABIO) rompt la connexité, il est ignoré
+L'incident N-k numero 215 (MORINL41PALLI) rompt la connexité, il est ignoré
+L'incident N-k numero 217 (PRII1L62PRINQ) rompt la connexité, il est ignoré
+L'incident N-k numero 221 (C.BERL41NICER) rompt la connexité, il est ignoré
+L'incident N-k numero 225 (CHEMIL41G.OUC) rompt la connexité, il est ignoré
+L'incident N-k numero 229 (GENETL41ZGEN5) rompt la connexité, il est ignoré
+L'incident N-k numero 235 (CHARBL41PONS) rompt la connexité, il est ignoré
+L'incident N-k numero 241 (B.AI5L41BLANC) rompt la connexité, il est ignoré
+L'incident N-k numero 247 (FLEACL41ROUI5) rompt la connexité, il est ignoré
+L'incident N-k numero 251 (ARCHIL41ZCH10) rompt la connexité, il est ignoré
+L'incident N-k numero 254 (MACHEL31SSPAZ) rompt la connexité, il est ignoré
+L'incident N-k numero 262 (A.NOUL61FLEAC) rompt la connexité, il est ignoré
+L'incident N-k numero 268 (ORVAUL31SSHE8) rompt la connexité, il est ignoré
+L'incident N-k numero 273 (DOULOL61ZDOUL) rompt la connexité, il est ignoré
+L'incident N-k numero 274 (BXVO5L41CHALL) rompt la connexité, il est ignoré
+L'incident N-k numero 275 (PALLIL41VAUGO) rompt la connexité, il est ignoré
+L'incident N-k numero 277 (CHEV5L33CNNAY) rompt la connexité, il est ignoré
+L'incident N-k numero 278 (MATHAL41SSANG) rompt la connexité, il est ignoré
+L'incident N-k numero 281 (M.ACHL41ZM.AC) rompt la connexité, il est ignoré
+L'incident N-k numero 286 (ESSA5L41ZESS5) rompt la connexité, il est ignoré
+L'incident N-k numero 293 (CHEV5L61CHETD) rompt la connexité, il est ignoré
+L'incident N-k numero 321 (AULN5L41BOIS5) rompt la connexité, il est ignoré
+L'incident N-k numero 322 (ARNOUL41ZARNO) rompt la connexité, il est ignoré
+L'incident N-k numero 325 (PRIN1L61PRINQ) rompt la connexité, il est ignoré
+L'incident N-k numero 327 (AIGREL41ZVERV) rompt la connexité, il est ignoré
+L'incident N-k numero 331 (SIRMIL61SIRTD) rompt la connexité, il est ignoré
+L'incident N-k numero 336 (KUHL5L32PAIMB) rompt la connexité, il est ignoré
+L'incident N-k numero 337 (CZONNL31FLEAC) rompt la connexité, il est ignoré
+L'incident N-k numero 345 (ATTE4L62B.GUE) rompt la connexité, il est ignoré
+L'incident N-k numero 346 (C.DENL41NIORT) rompt la connexité, il est ignoré
+L'incident N-k numero 351 (B.AI5L42BLANC) rompt la connexité, il est ignoré
+L'incident N-k numero 353 (CARAVL32ZROU2) rompt la connexité, il est ignoré
+L'incident N-k numero 354 (CHEV5L31I.NAN) rompt la connexité, il est ignoré
+L'incident N-k numero 372 (B.INDL33CHABO) rompt la connexité, il est ignoré
+L'incident N-k numero 373 (COR.PL64CORD5) rompt la connexité, il est ignoré
+L'incident N-k numero 385 (S.SEVL61ZS.SE) rompt la connexité, il est ignoré
+L'incident N-k numero 387 (PRAUDL41VALL6) rompt la connexité, il est ignoré
+L'incident N-k numero 391 (BRIZEL61NIORT) rompt la connexité, il est ignoré
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 16696.159795
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 322 (sur 400)
+Nombre de regions       = 9
+Nombre total de noeuds  = 7130
+Nombre de consommations = 7087 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 10033 (dont 381 surveillés en N et 381 surveillés sur défaut)
+Nombre de groupes       = 9510 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 43 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 10 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0 [.A.ZA 6_1]
+0 [.A.ZA 6_1](2) <-> 300 [.MTTO 6_2](4) <-> 83 [.CART 6_1](2)
+                                        <-> 146 [.ENTR 6_1](2)
+                                        <-> 151 [.ESPA 6_1](2)
+                 <-> 326 [.PENA 6_2](5) <-> 83 [.CART 6_1](2)
+                                        <-> 474 [.VILN 6_4](3)
+                                        <-> 327 [.PENA 7_2](4)
+
+Noeud bilan : 58 [.BIPOLP7_2]
+58 [.BIPOLP7_2](1) <-> 446 [.UK  P7_1](6) <-> 66 [.BRITP7_1](1)
+                                          <-> 88 [.CELTIP7_1](1)
+                                          <-> 157 [.FABP7_1](1)
+                                          <-> 211 [.IFA2P7_1](1)
+                                          <-> 306 [.NEMOP7_1](1)
+                   |=| 3854 [MANDAP7_1](6) <-> 515 [ARGOEP7_1](13)
+                                           <-> 1120 [ATTAQP7_1](4)
+                                           <-> 2898 [FRUGEP7_3](3)
+                                           <-> 6263 [WARANP7_2](8)
+                                           <-> 3852 [MANDAP6_2](2)
+                                           <-> 3853 [MANDAP6_3](5)
+
+
+********************************************
+Traitement d'un paquet de 4 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_1]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [.BIPOLP7_2]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4163.2500
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4163.2500
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_1]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [.BIPOLP7_2]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   99018.0013
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   99018.0013
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 2
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_1]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [.BIPOLP7_2]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247027.1731 MW
+Volume de délestage  =      22.8109 MW
+Résultats sur les couts
+Cout associé aux groupes       :    -114.0547
+Cout associé au délestage      :  250920.3421
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  250806.2874
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 3
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6_1]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [.BIPOLP7_2]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4161.1482
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4161.1482
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes

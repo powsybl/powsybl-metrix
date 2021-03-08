@@ -1,0 +1,39 @@
+/bin
+install
+cmake_install.cmake
+CMakeCache.txt
+CTestTestfile.cmake
+Makefile
+CMakeFiles
+Testing
+coverage
+/tests/*/*/out_s*
+/tests/*/*/metrixOut.txt
+tests/*/*/metrix*.log
+tests/*/*/result.txt
+out/**
+
+docs/doc/**
+
+*.orig
+
+# generated version file
+src/config/version.h
+
+# cmake build directory
+build/*
+
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
+
+### VisualStudioCode ###
+.vscode/*
+*.code-workspace
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
+
+# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode

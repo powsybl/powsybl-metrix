@@ -1,0 +1,13 @@
+Release note for Version 7.1.0
+
+incompatibilities with previous versions:
+N/A
+
+bug fixes:
+- #53: correction display in case dispatching is disabled
+
+features:
+- OPF with overload mode: OPF with difference variables
+- runtime option to export MPS file for solver
+- Add clang-tidy checks
+- Standardize installation mechanism

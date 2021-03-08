@@ -1,0 +1,1 @@
+Pénalisation du TD autour de la prise initiale, en curatif et en préventif

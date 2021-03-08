@@ -1,0 +1,1 @@
+Idem problème "très long" mais sans parade -> plus aucun degré de liberté
