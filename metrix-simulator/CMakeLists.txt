@@ -126,7 +126,6 @@ install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
     message(STATUS "CODE COVERAGE")
-	set(CMAKE_BUILD_TYPE "Debug")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
     include(cmake/CodeCoverage)
     code_coverage(NAME code-coverage

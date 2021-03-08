@@ -10,14 +10,6 @@
 
 #ifndef PARAMETRES_METRIX
 #define PARAMETRES_METRIX
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul con�u pour �tre int�gr� dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description : parametres utilises dans toutes les fonctions du projet
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
 #include <algorithm>
 #include <cctype>
 #include <cmath>

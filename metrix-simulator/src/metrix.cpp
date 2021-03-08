@@ -8,15 +8,6 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul con�u pour �tre int�gr� dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description : Fonction principale
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
-
 #include "calcul.h"
 #include "config/configuration.h"
 #include "config/input_configuration.h"
@@ -184,7 +175,7 @@ int main(int argc, char* argv[])
                         inc->tdFictifsElemCur_.swap(paradeNRF->tdFictifsElemCur_);
 
                         if (!paradeNRF->tdFictifsElemCur_.empty()) {
-                            // On duplique les curatifs fictifs correspondant � l'�mulation AC sur l'incident pere
+                            // duplicate fictive curative corresponding to AC emulating on father incident
                             for (auto it = paradeNRF->tdFictifsElemCur_.cbegin();
                                  it != paradeNRF->tdFictifsElemCur_.end();
                                  ++it) {

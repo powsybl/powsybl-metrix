@@ -8,15 +8,6 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul con�u pour �tre int�gr� dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description : calcul de la connexit�
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
-
 #include "parametres.h"
 
 #include <algorithm>

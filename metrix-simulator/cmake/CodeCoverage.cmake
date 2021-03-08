@@ -8,6 +8,8 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
+include(CMakeParseArguments)
+
 # Compilation flags
 set(COVERAGE_CXX_FLAGS "-g -O0 -fprofile-arcs -ftest-coverage")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COVERAGE_CXX_FLAGS}")
@@ -17,8 +19,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${COVERAGE_CXX_FLAGS}")
 set(COVERAGE_LINKER_FLAGS "--coverage")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${COVERAGE_LINKER_FLAGS}")
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${COVERAGE_LINKER_FLAGS}")
-
-include(CMakeParseArguments)
 
 function(code_coverage)
     set(options NONE)
@@ -71,14 +71,14 @@ function(code_coverage)
         COMMAND ${CMAKE_COMMAND} -E make_directory ${Coverage_OUTPUT_DIR}/reports
         COMMAND ${GCOVR_CMD} ${CMAKE_CURRENT_BINARY_DIR}
         --gcov-executable "${GCOV_CMD}"
-        --object-directory ${Coverage_OUTPUT_DIR}/reports
-        --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html
-        --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
+        --root ${CMAKE_SOURCE_DIR}
+        --keep --object-directory ${Coverage_OUTPUT_DIR}/reports
+        --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
         ${GCOVR_OPTIONS}
 
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
 
         DEPENDS ${Coverage_DEPENDENCIES}
-        )
+    )
 
 endfunction()

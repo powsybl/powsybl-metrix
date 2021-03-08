@@ -8,21 +8,6 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul con�u pour �tre int�gr� dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description : Fonction ayant pour but la lecture des donnees du cas de base a partir
-des fichiers DIE :
-- fort.44_BIN , donnees de type entier
-- fort.45_BIN , donnees de type reel
-- fort.46_BIN , donnees de type double precision
-- fort.47_BIN , donnees de type caractere
-- fort.48_BIN , donnees de type logique
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
-
 #include <cmath>
 #include <cstdio>
 #include <iomanip>
@@ -177,7 +162,7 @@ void Reseau::lireDonnees()
     noeuds_.resize(nbNoeuds_, nullptr); /*vector des noeuds*/
 
 
-    // Traitement des r�gions
+    // Traitement des régions
     //----------------------
     regions_ = config.cgnomregDIE();
     for (auto& region : regions_) {
@@ -251,7 +236,7 @@ void Reseau::lireDonnees()
             }
         }
 
-        // Pour les proc�dures de verif en debug on a besoin de calculer les coeffs de report de tous les quads
+        // Pour les procédures de verif en debug on a besoin de calculer les coeffs de report de tous les quads
         if (config::inputConfiguration().checkConstraintLevel()
             != config::InputConfiguration::CheckConstraintLevel::NONE) {
             quadsSurv_.insert(quad);
@@ -727,7 +712,7 @@ void Reseau::lireDonnees()
 
     // Traitement des incidents
     //------------------------
-    // les icidents sont class�s dans l'ordre suivant
+    // les icidents sont classés dans l'ordre suivant
     // N-1 groupes systematique
     // N-1 lignes  systematique
     // N-k (groupes et ligne)
@@ -1300,7 +1285,7 @@ Quadripole::Quadripole(int num,
     }
 
     if (tnnorqua() == tnnexqua()) {
-        // La ligne boucle sur elle m�me, on l'ouvre
+        // La ligne boucle sur elle même, on l'ouvre
         LOG_ALL(warning) << err::ioDico().msg("WARNQuadBoucle", nom_);
         etatOr_ = false;
         etatOrBase_ = false;
@@ -1517,11 +1502,11 @@ int Groupe::checkCoherencePminMaxObj()
         if (prodPobj_ > puisMax_) {
             LOG_ALL(warning) << err::ioDico().msg(
                 "WARNPobjInferieurPmax", nom_, c_fmt("%f", prodPobj_), c_fmt("%f", puisMax_));
-            prodPobj_ = puisMax_; // si le groupe doit d�marrer en dessus de Pmax il d�marre � Pmax
+            prodPobj_ = puisMax_; // si le groupe doit démarrer en dessus de Pmax il démarre é Pmax
         } else if (prodPobj_ < puisMin_) {
             LOG_ALL(warning) << err::ioDico().msg(
                 "WARNPobjSuperieurPmin", nom_, c_fmt("%f", prodPobj_), c_fmt("%f", puisMin_));
-            prodPobj_ = puisMin_; // si le groupe doit d�marrer en dessous de Pmin il d�marre � Pmin
+            prodPobj_ = puisMin_; // si le groupe doit démarrer en dessous de Pmin il démarre é Pmin
         }
     }
     prod_ = prodPobj_;
@@ -1610,7 +1595,7 @@ TransformateurDephaseur::TransformateurDephaseur(int unsigned num,
 
     if (pilotage == TransformateurDephaseur::PILOTAGE_PUISSANCE_OPTIMISE
         || pilotage == TransformateurDephaseur::PILOTAGE_PUISSANCE_IMPOSE) {
-        // En mode pilotage en puissance, le quad fictif est deconnect�
+        // En mode pilotage en puissance, le quad fictif est deconnecté
         quad_->etatOr_ = false;
         quad_->etatEx_ = false;
         quad_->etatOrBase_ = false;
@@ -1742,7 +1727,7 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 {
     // Petit trick pour avoir de l'aleatoire "reproductible" entre variantes
-    srand(var->num_ + 2); // seed du cas de base initialise � 1
+    srand(var->num_ + 2); // seed du cas de base initialise é 1
 
     // use instead
     // std::mt19937 e;
@@ -1851,7 +1836,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     // X - bilan zonal en jouant sur la consommation
     //-------------------------------------------------------
     double bilanCourant = 0.0; // bilan actuel apres application de toutes les autres lois
-    double bilanCible = 0.0;   // bilan vis� par la variante
+    double bilanCible = 0.0;   // bilan visé par la variante
     double sumC = 0.0;         // somme des consommations
 
     for (auto& elem : var->valeurEchange_) {
@@ -1931,7 +1916,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         lcc->puiMax_ = elem.second;
 
         if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
-            // Mise � jour du quad fictif surveill�
+            // Mise à jour du quad fictif surveillé
             auto& elemAS = lcc->quadFictif_->elemAS_;
             elemAS->seuilMaxN_ = lcc->puiMax_;
             elemAS->seuilMaxInc_ = lcc->puiMax_;
@@ -1947,7 +1932,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         elem.first->puiCons_ = elem.second;
     }
 
-    // V�rification PCons, Pmin et Pmax (si pilotage puissance impos�e)
+    // Vérification PCons, Pmin et Pmax (si pilotage puissance imposée)
     // ----------------------------------------------------------------
     for (auto lIt = LigneCCs_.cbegin(); lIt != LigneCCs_.end(); ++lIt) {
         auto& lcc = lIt->second;
@@ -2041,7 +2026,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
  */
 int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
 {
-    // Modification des Pmin > 0 pour la phase HR et v�rification Pmin, Pmax, Pobj
+    // Modification des Pmin > 0 pour la phase HR et vérification Pmin, Pmax, Pobj
     bool ok = true;
     for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
         auto& grp = grpIt->second;
@@ -2179,7 +2164,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
 void Reseau::miseAjourPmax(double prodEnMoins)
 {
     // Pmax est evalue en fonction de PmaxDispo et de la reserve de frequence
-    // Pmax doit �tre mis a jour des que dans une variante, on reduit la puissance disponible
+    // Pmax doit étre mis a jour des que dans une variante, on reduit la puissance disponible
     // prodEnMoins : correspond au volume perdu par l indisponibilite des groupes de la variante consideree par rapport
     // au cas de base
     for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
@@ -2192,7 +2177,7 @@ void Reseau::miseAjourPmax(double prodEnMoins)
 }
 
 /**
- * Modification de toutes les consommations positives du r�seau pour prendre en compte un nouveau taux de pertes
+ * Modification de toutes les consommations positives du réseau pour prendre en compte un nouveau taux de pertes
  */
 int Reseau::modifTauxDePertes(float ancienTx, float nouveauTx)
 {
@@ -2207,8 +2192,8 @@ int Reseau::modifTauxDePertes(float ancienTx, float nouveauTx)
 }
 
 /**
- * Remise du r�seau dans l'�tat de base apr�s le calcul d'une variante
- * si "toutesConsos" est � true, toutes les consommations sont r�initialis�es (et pas seulement celles modifi�es par
+ * Remise du réseau dans l'état de base aprés le calcul d'une variante
+ * si "toutesConsos" est à true, toutes les consommations sont réinitialisées (et pas seulement celles modifiées par
  * la variante)
  */
 int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
@@ -2380,12 +2365,12 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         }
     }
 
-    // Reset des transits en N et N-k HR des quadrip�les surveill�s
+    // Reset des transits en N et N-k HR des quadripéles surveillés
     vector<std::shared_ptr<ElementASurveiller>>::const_iterator itElemAS, endElemAS;
     for (itElemAS = elementsASurveiller_.begin(), endElemAS = elementsASurveiller_.end(); itElemAS != endElemAS;
          ++itElemAS) {
         auto& elemAS = *itElemAS;
-        // suppression des variables d'�cart pr�c�dentes
+        // suppression des variables d'écart précédentes
         elemAS->ecarts_.clear();
         elemAS->menacesMax_.clear();
         elemAS->menaceMaxAvantParade_.transit_ = config::constants::valdef;
@@ -2429,7 +2414,7 @@ int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
                 inc->validite_ = inc->validiteBase_;
 
                 if (inc->pochePerdue_) {
-                    // incident rompant la connexit� d�clar� invalide dans cette variante
+                    // incident rompant la connexité déclaré invalide dans cette variante
                     connexite(inc, false, config::configuration().useIncRompantConnexite());
                 }
             }
@@ -2437,7 +2422,7 @@ int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 
         vector<std::shared_ptr<Incident>> oldIncRompantConnexite = incidentsRompantConnexite_;
         incidentsRompantConnexite_.clear();
-        // recalcul de la poche pour les incidents rompant la connexit�
+        // recalcul de la poche pour les incidents rompant la connexité
         for (auto& elem : oldIncRompantConnexite) {
             connexite(elem, false, config::configuration().useIncRompantConnexite());
         }
@@ -2474,7 +2459,7 @@ std::shared_ptr<TransformateurDephaseur> Reseau::creerTD(std::shared_ptr<Quadrip
     quad->typeQuadripole_ = Quadripole::QUADRIPOLE_FICTIF;
     quads_.insert(std::pair<string, std::shared_ptr<Quadripole>>(quad->nom_, quad));
 
-    // Pour les proc�dures de verif en debug on a besoin de calculer les coeffs de report de tous les quads
+    // Pour les procédures de verif en debug on a besoin de calculer les coeffs de report de tous les quads
     if (config::inputConfiguration().checkConstraintLevel() != config::InputConfiguration::CheckConstraintLevel::NONE) {
         quadsSurv_.insert(quad);
     }
@@ -2708,7 +2693,7 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
             lcc->puiMax_ = var_dbl;
 
             if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
-                // Mise � jour du quad fictif surveill�
+                // Mise à jour du quad fictif surveillé
                 auto& elemAS = lcc->quadFictif_->elemAS_;
                 elemAS->seuilMaxN_ = lcc->puiMax_;
                 elemAS->seuilMaxInc_ = lcc->puiMax_;

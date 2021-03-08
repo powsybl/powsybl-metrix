@@ -9,15 +9,6 @@
 //
 
 
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul con�u pour �tre int�gr� dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description :
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
-
 #include "err/error.h"
 
 #include <boost/filesystem.hpp>

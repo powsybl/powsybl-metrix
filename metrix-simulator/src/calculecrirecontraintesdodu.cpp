@@ -8,15 +8,6 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-/***************************************************************************************
-
-Modele      : OPF en Actif Seul coneu pour etre integre dans la logique statistique d'ASSESS
-Auteur      : Yacine HASSAINE
-Description :
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
-
 #include "calcul.h"
 #include "config/configuration.h"
 #include "config/constants.h"

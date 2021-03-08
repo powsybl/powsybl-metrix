@@ -10,13 +10,6 @@
 
 #ifndef PNE_METRIX
 #define PNE_METRIX
-/***************************************************************************************
-
-Modele : OPF en Actif Seul con�u pour �tre int�gr� dans la logique statistique d'ASSESS
-Auteur : Yacine HASSAINE
-COPYRIGHT RTE 2008
-
-*****************************************************************************************/
 
 /**
  * @file LU/PNE/SPX header interface

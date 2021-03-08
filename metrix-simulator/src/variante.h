@@ -11,13 +11,6 @@
 
 #ifndef LOI_METRIX
 #define LOI_METRIX
-/*********************************************************************
-
-Modele : OPF en Actif Seul con�u �tre int�gr� dans la logique statistique d'ASSESS
-Auteur : Yacine HASSAINE
-COPYRIGHT RTE 2008
-
-**********************************************************************/
 
 
 #include "reseau.h"
@@ -64,7 +57,7 @@ public:
 
     std::map<std::shared_ptr<LigneCC>, double> dcPuissMin_; /*puissance minimale de liaisons DC*/
     std::map<std::shared_ptr<LigneCC>, double> dcPuissMax_; /*puissance minimale de liaisons DC*/
-    std::map<std::shared_ptr<LigneCC>, double> dcPuissImp_; /*consigne de puissance impos�e de la liaison DC*/
+    std::map<std::shared_ptr<LigneCC>, double> dcPuissImp_; /*consigne de puissance imposée de la liaison DC*/
 
     std::map<std::shared_ptr<TransformateurDephaseur>, double> dtValDep_; /*dephasage initial du TD*/
 
@@ -77,7 +70,7 @@ public:
     std::map<std::shared_ptr<ElementASurveiller>, double>
         quatitamk_; /* seuil max avant curatif (regime incident complexe) */
 
-    // Seuils Extremit� vers Origine
+    // Seuils Extremité vers Origine
     std::map<std::shared_ptr<ElementASurveiller>, double> quati00mnExOr_; /* seuil max N Ext -> Or */
     std::map<std::shared_ptr<ElementASurveiller>, double> quati5mnsExOr_; /* seuil max N-1 Ext -> Or */
     std::map<std::shared_ptr<ElementASurveiller>, double> quati20mnExOr_; /* seuil max N-k Ext -> Or */
