@@ -390,10 +390,10 @@ Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   83284.5310
 
-Des contraintes ont été détectées : 142
+Des contraintes ont été détectées : 138
 Nb termes dans la matrice : 80881 (taille de la matrice : 80881)
-Ajout de 158 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 178)
+Ajout de 153 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 172)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -408,10 +408,10 @@ Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   83284.5310
 
-Des contraintes ont été détectées : 9229
-Nb termes dans la matrice : 2964281 (taille de la matrice : 2964281)
-Ajout de 297 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 484)
+Des contraintes ont été détectées : 8909
+Nb termes dans la matrice : 2873032 (taille de la matrice : 2873032)
+Ajout de 285 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 467)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -426,7 +426,7 @@ Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   83284.5310
 
-Des contraintes ont été détectées : 2691
-Nb termes dans la matrice : 8347913 (taille de la matrice : 8347913)
-Ajout de 97 contraintes dans le probleme
+Des contraintes ont été détectées : 2603
+Nb termes dans la matrice : 8001206 (taille de la matrice : 8001206)
+Ajout de 68 contraintes dans le probleme
 nombre max d iterations est atteint : 5

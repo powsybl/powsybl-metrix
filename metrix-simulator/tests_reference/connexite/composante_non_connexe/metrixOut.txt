@@ -38368,4 +38368,4 @@ Noeud '42248 [CONSO_BJMH]' est hors composante connexe principale (composante 23
 Noeud '42249 [CONSO_BJMI]' est hors composante connexe principale (composante 2310)
 Noeud '42250 [CONSO_BJMJ]' est hors composante connexe principale (composante 2310)
 Noeud '42251 [CONSO_BJMK]' est hors composante connexe principale (composante 2310)
-Not recoverable error: Réseau non connexe (file=reseau.cpp ,line=667)
+Not recoverable error: Réseau non connexe (file=reseau.cpp ,line=665)

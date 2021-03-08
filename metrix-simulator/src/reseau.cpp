@@ -50,8 +50,6 @@ using std::vector;
 
 
 std::mt19937 Reseau::random;
-int Reseau::myRandom(int i) { return random() % i; }
-
 
 bool compareGroupeHausse(const std::shared_ptr<Groupe>& grp1, const std::shared_ptr<Groupe>& grp2)
 {
@@ -1720,14 +1718,6 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 
 int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 {
-    // Petit trick pour avoir de l'aleatoire "reproductible" entre variantes
-    srand(var->num_ + 2); // seed du cas de base initialise é 1
-
-    // use instead
-    // std::mt19937 e;
-    // e.seed(static_cast<unsigned int>(t)); //Seed engine with timed value.
-
-
     // I-Indispo groupes
     //------------------
     // II-1 modification de l'etat et la production objectif
@@ -2075,7 +2065,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
             }
 
             // Bruitage des groupes
-            random_shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), myRandom);
+            std::shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), random);
             varGroupesZones_[numRegion] = groupesDeLaZone;
         }
 

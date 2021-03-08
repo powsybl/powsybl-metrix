@@ -78,10 +78,10 @@ Blocage des variables de defaillance
 Micro itération 1 (nombre de contraintes 0)
 -------------------- : 
 
-Des contraintes ont été détectées : 2
+Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 0 (taille de la matrice : 0)
-Ajout de 3 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 5)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -93,11 +93,11 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :    4105.0930
-Valeur de la fonction objectif :    4105.0930
+Cout des écarts de transit     :     745.2944
+Valeur de la fonction objectif :     745.2944
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 24 (taille de la matrice : 24)
+Nb termes dans la matrice : 22 (taille de la matrice : 22)
 Pas de contraintes
 
 ---------------------

@@ -808,14 +808,14 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 2)
 -------------------- : 
 
-Des contraintes ont été détectées : 4
+Des contraintes ont été détectées : 3
 Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
 Contraintes equivalentes : 'QUAD_UD' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD / QUAD_BLR / QUAD_FIM' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
 Contraintes equivalentes : 'QUAD_UD / QUAD_BLR / QUAD_FIM' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_DIB)
-Ajout de 12 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 638)
+Ajout de 10 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 636)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -831,7 +831,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 73275 (taille de la matrice : 73275)
+Nb termes dans la matrice : 59267 (taille de la matrice : 59267)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -892,11 +892,11 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      30.0849
+Cout associé aux groupes       :      29.9684
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :      30.0849
+Valeur de la fonction objectif :      29.9684
 
 Des contraintes ont été détectées : 111
 Nb termes dans la matrice : 21246 (taille de la matrice : 21246)
@@ -911,12 +911,12 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      32.8835
+Cout associé aux groupes       :      32.7697
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0088
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     737.7684
-Valeur de la fonction objectif :     770.6608
+Valeur de la fonction objectif :     770.5470
 
 Des contraintes ont été détectées : 4
 Nb termes dans la matrice : 1412894 (taille de la matrice : 1412894)
@@ -930,12 +930,12 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      32.8835
+Cout associé aux groupes       :      32.7697
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3182
+Cout de pénalisation TD & HVDC :       0.3190
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     737.7684
-Valeur de la fonction objectif :     770.9701
+Valeur de la fonction objectif :     770.8571
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 1468558 (taille de la matrice : 1468558)
@@ -947,12 +947,12 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      32.8835
+Cout associé aux groupes       :      32.7697
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3182
+Cout de pénalisation TD & HVDC :       0.3190
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     737.7684
-Valeur de la fonction objectif :     770.9701
+Valeur de la fonction objectif :     770.8571
 
 
 ********************************************
@@ -1211,7 +1211,7 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 2)
 -------------------- : 
 
-Des contraintes ont été détectées : 265
+Des contraintes ont été détectées : 263
 Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
@@ -1225,18 +1225,18 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      43.5686
+Cout associé aux groupes       :      44.2012
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.0206
+Cout de pénalisation TD & HVDC :       0.0208
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     131.1651
-Valeur de la fonction objectif :     174.7542
+Valeur de la fonction objectif :     175.3871
 
-Des contraintes ont été détectées : 112
+Des contraintes ont été détectées : 111
 Nb termes dans la matrice : 191074 (taille de la matrice : 191074)
 Contraintes equivalentes : 'QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_EY)
-Ajout de 211 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 7161)
+Ajout de 210 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 7160)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1245,17 +1245,17 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      76.8337
+Cout associé aux groupes       :      77.5725
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3202
+Cout de pénalisation TD & HVDC :       0.3299
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     705.1679
-Valeur de la fonction objectif :     782.3219
+Valeur de la fonction objectif :     783.0704
 
 Des contraintes ont été détectées : 5
-Nb termes dans la matrice : 1594152 (taille de la matrice : 1594152)
+Nb termes dans la matrice : 1587401 (taille de la matrice : 1587401)
 Ajout de 10 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 7171)
+Micro itération 4 (nombre de contraintes 7170)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1264,15 +1264,15 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      76.8337
+Cout associé aux groupes       :      77.5725
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3564
+Cout de pénalisation TD & HVDC :       0.3693
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     705.1679
-Valeur de la fonction objectif :     782.3580
+Valeur de la fonction objectif :     783.1097
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 1663728 (taille de la matrice : 1663728)
+Nb termes dans la matrice : 1656977 (taille de la matrice : 1656977)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -1281,14 +1281,14 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      76.8337
+Cout associé aux groupes       :      77.5725
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3564
+Cout de pénalisation TD & HVDC :       0.3693
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     705.1679
-Valeur de la fonction objectif :     782.3580
+Valeur de la fonction objectif :     783.1097
 
- Le nombre le contraintes (7171) est different de la taille de la base : 7170
+ Le nombre le contraintes (7170) est different de la taille de la base : 7169
 
 ---------------------
 ---------------------
@@ -1450,12 +1450,12 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      47.5978
+Cout associé aux groupes       :      47.7235
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     235.3630
-Valeur de la fonction objectif :     282.9610
+Valeur de la fonction objectif :     283.0867
 
 Des contraintes ont été détectées : 113
 Nb termes dans la matrice : 357760 (taille de la matrice : 357760)
@@ -1470,12 +1470,12 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      72.0638
+Cout associé aux groupes       :      72.2014
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1498
+Cout de pénalisation TD & HVDC :       0.1515
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1313.6456
-Valeur de la fonction objectif :    1385.8592
+Valeur de la fonction objectif :    1385.9984
 
 Des contraintes ont été détectées : 3
 Nb termes dans la matrice : 1717335 (taille de la matrice : 1717335)
@@ -1489,12 +1489,12 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      72.0638
+Cout associé aux groupes       :      72.2014
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1674
+Cout de pénalisation TD & HVDC :       0.1701
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1313.6456
-Valeur de la fonction objectif :    1385.8768
+Valeur de la fonction objectif :    1386.0170
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 1759083 (taille de la matrice : 1759083)
@@ -1506,12 +1506,12 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      72.0638
+Cout associé aux groupes       :      72.2014
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1674
+Cout de pénalisation TD & HVDC :       0.1701
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1313.6456
-Valeur de la fonction objectif :    1385.8768
+Valeur de la fonction objectif :    1386.0170
 
  Le nombre le contraintes (7854) est different de la taille de la base : 7853
 
@@ -1640,12 +1640,12 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 2)
 -------------------- : 
 
-Des contraintes ont été détectées : 34
+Des contraintes ont été détectées : 35
 Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
-Ajout de 52 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 4023)
+Ajout de 54 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4026)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1662,7 +1662,7 @@ Cout valorisation ENE/END      :     207.3838
 Valeur de la fonction objectif :     207.3840
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 279782 (taille de la matrice : 279782)
+Nb termes dans la matrice : 286543 (taille de la matrice : 286543)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
