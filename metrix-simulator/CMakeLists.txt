@@ -10,6 +10,8 @@
 
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
+include(CMakePackageConfigHelpers)
+
 project(MetrixSimulator 
     VERSION 1.0.0
     LANGUAGES C CXX)
@@ -21,6 +23,8 @@ message("Source directory : ${CMAKE_SOURCE_DIR}")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
+
+set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
 
 if(MSVC)
   add_compile_definitions(WIN32)
@@ -120,7 +124,11 @@ target_link_libraries(${target}
     ${Boost_LIBRARIES}
 )
 
-install(TARGETS ${target} RUNTIME DESTINATION bin)
+install(TARGETS ${target} EXPORT targets RUNTIME DESTINATION bin)
+install(EXPORT targets
+    FILE metrix-simulator-config.cmake
+    DESTINATION ${INSTALL_CMAKE_DIR}
+)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
@@ -137,3 +145,12 @@ endif()
 
 enable_testing()
 add_subdirectory(tests)
+
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/metrix-simulator-config.cmake"
+    VERSION ${MetrixSimulator_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/metrix-simulator-config.cmake"
+    DESTINATION ${INSTALL_CMAKE_DIR}
+)
