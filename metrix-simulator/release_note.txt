@@ -8,16 +8,13 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
-Release note for Version 7.1.0
+Release note for Version 7.1.1
 
 incompatibilities with previous versions:
 N/A
 
 bug fixes:
-- #53: correction display in case dispatching is disabled
+N/A
 
 features:
-- OPF with overload mode: OPF with difference variables
-- runtime option to export MPS file for solver
-- Add clang-tidy checks
-- Standardize installation mechanism
+N/A

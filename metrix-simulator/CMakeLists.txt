@@ -10,8 +10,8 @@
 
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
-project(METRIX 
-    VERSION 7.1.0
+project(MetrixSimulator 
+    VERSION 7.1.1
     LANGUAGES C CXX)
 
 cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
@@ -96,7 +96,7 @@ set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
 
-set(target "metrix")
+set(target "metrix-simulator")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config/version.h)
 
@@ -120,7 +120,7 @@ target_link_libraries(${target}
     ${Boost_LIBRARIES}
 )
 
-install(TARGETS metrix RUNTIME DESTINATION bin)
+install(TARGETS ${target} RUNTIME DESTINATION bin)
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")

@@ -26,7 +26,7 @@ macro(metrix_test TEST_NAME NB_TESTS)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
     add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
-        -DEXE=$<TARGET_FILE:metrix>
+        -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
         -DNB_TESTS=${NB_TESTS}
@@ -46,7 +46,7 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
     add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
-        -DEXE=$<TARGET_FILE:metrix>
+        -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
         -DNB_TESTS=${NB_TESTS}
@@ -67,7 +67,7 @@ macro(metrix_test_no_check TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  metrix metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
+    add_test(NAME ${TEST_NAME} COMMAND  metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
     set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
     message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${TEST_NAME} "\" must be checked manually")

@@ -21,8 +21,8 @@ namespace config
  */
 namespace version
 {
-constexpr unsigned int major_version = ${METRIX_VERSION_MAJOR};
-constexpr unsigned int minor_version = ${METRIX_VERSION_MINOR};
-constexpr unsigned int patch_version = ${METRIX_VERSION_PATCH};
+constexpr unsigned int major_version = ${MetrixSimulator_VERSION_MAJOR};
+constexpr unsigned int minor_version = ${MetrixSimulator_VERSION_MINOR};
+constexpr unsigned int patch_version = ${MetrixSimulator_VERSION_PATCH};
 } // namespace version
 } // namespace config
