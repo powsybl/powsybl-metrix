@@ -231,7 +231,7 @@ $> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
 1 - Clone the project
 ```
 $> git clone https://github.com/powsybl/powsybl-metrix.git
-$> cd powsybl-metrix
+$> cd powsybl-metrix/metrix-simulator
 ```
 
 2 - Configure the project
