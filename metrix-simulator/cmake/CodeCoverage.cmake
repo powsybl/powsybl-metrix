@@ -28,7 +28,7 @@ function(code_coverage)
 
     # Assert gcov (or llvm-cov) and gcovr commands are available
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-        find_program(GCOV_CMD gcov)
+        find_program(GCOV_CMD gcov-8)
         if (NOT GCOV_CMD)
             message(FATAL_ERROR "gcov not found")
         endif ()
