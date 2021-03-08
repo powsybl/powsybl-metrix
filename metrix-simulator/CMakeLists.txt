@@ -124,13 +124,6 @@ target_link_libraries(${target}
     ${Boost_LIBRARIES}
 )
 
-install(TARGETS ${target} EXPORT targets RUNTIME DESTINATION bin)
-install(EXPORT targets
-    FILE metrix-simulator-config.cmake
-    DESTINATION ${INSTALL_CMAKE_DIR}
-)
-install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
-
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
     message(STATUS "CODE COVERAGE")
@@ -142,6 +135,13 @@ if (CODE_COVERAGE)
         DEPENDENCIES metrix-simulator
     )
 endif()
+
+install(TARGETS ${target} EXPORT targets RUNTIME DESTINATION bin)
+install(EXPORT targets
+    FILE metrix-simulator-config.cmake
+    DESTINATION ${INSTALL_CMAKE_DIR}
+)
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 
 enable_testing()
 add_subdirectory(tests)

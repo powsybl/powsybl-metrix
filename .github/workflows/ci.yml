@@ -71,7 +71,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
-        run:  >
+        run: >
           ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
           --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
