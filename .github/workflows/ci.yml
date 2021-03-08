@@ -27,9 +27,7 @@ jobs:
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
 
       - name: Tests
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target test
-        env:
-          CTEST_OUTPUT_ON_FAILURE: 1
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
 
   qa:
     name: QA
@@ -80,9 +78,7 @@ jobs:
 
       - name: Tests
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target test
-        env:
-          CTEST_OUTPUT_ON_FAILURE: 1
+           cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
 
       - name: Code coverage
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
