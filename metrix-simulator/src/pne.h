@@ -26,9 +26,5 @@ extern "C" {
 #include "spx_constantes_externes.h"
 #include "spx_definition_arguments.h"
 #include "spx_fonctions.h"
-
-#undef malloc
-#undef free
-#undef realloc
 }
 #endif

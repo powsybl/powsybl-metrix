@@ -52,7 +52,7 @@ public:
                        CONSO = 5
     };
 
-    ElementCuratif(/*int num, */ TypeElement type) :
+    explicit ElementCuratif(/*int num, */ TypeElement type) :
         // num_(num),
         typeElem_(type),
         positionVarCurative_(-1),
@@ -764,7 +764,7 @@ public:
                         INCONNU = 4
     };
 
-    Incident(TypeIncident type) :
+    explicit Incident(TypeIncident type) :
         type_(type),
         nbLignes_(0),
         nbGroupes_(0),
@@ -912,7 +912,7 @@ class ElementCuratifTD : public ElementCuratif
 public:
     std::shared_ptr<TransformateurDephaseur> td_;
 
-    ElementCuratifTD(const std::shared_ptr<TransformateurDephaseur>& td) :
+    explicit ElementCuratifTD(const std::shared_ptr<TransformateurDephaseur>& td) :
         ElementCuratif(td->fictif_ ? TD_FICTIF : TD),
         td_(td)
     {
@@ -934,7 +934,7 @@ class ElementCuratifHVDC : public ElementCuratif
 public:
     std::shared_ptr<LigneCC> lcc_;
 
-    ElementCuratifHVDC(const std::shared_ptr<LigneCC>& lcc) : ElementCuratif(HVDC), lcc_(lcc) {}
+    explicit ElementCuratifHVDC(const std::shared_ptr<LigneCC>& lcc) : ElementCuratif(HVDC), lcc_(lcc) {}
 
     bool estValide() final { return lcc_->connecte(); }
 
@@ -952,7 +952,7 @@ class ElementCuratifGroupe : public ElementCuratif
 public:
     std::shared_ptr<Groupe> groupe_;
 
-    ElementCuratifGroupe(const std::shared_ptr<Groupe>& grp) : ElementCuratif(GROUPE), groupe_(grp) {}
+    explicit ElementCuratifGroupe(const std::shared_ptr<Groupe>& grp) : ElementCuratif(GROUPE), groupe_(grp) {}
 
     bool estValide() final { return groupe_->etat_; }
 
@@ -971,7 +971,12 @@ public:
     std::shared_ptr<Consommation> conso_;
     double max_; // valeur max de l'effacement (en %)
 
-    ElementCuratifConso(const std::shared_ptr<Consommation>& conso) : ElementCuratif(CONSO), conso_(conso), max_(1.) {}
+    explicit ElementCuratifConso(const std::shared_ptr<Consommation>& conso) :
+        ElementCuratif(CONSO),
+        conso_(conso),
+        max_(1.)
+    {
+    }
 
     bool estValide() final { return conso_->valeur_ > 0; }
 
