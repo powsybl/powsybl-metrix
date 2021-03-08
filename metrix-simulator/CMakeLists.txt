@@ -129,10 +129,10 @@ if (CODE_COVERAGE)
 	set(CMAKE_BUILD_TYPE "Debug")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
     include(cmake/CodeCoverage)
-    CODE_COVERAGE(NAME code-coverage
+    code_coverage(NAME code-coverage
         OUTPUT_DIR coverage
-        ROOT_DIR src
-        DEPENDENCIES metrix
+        EXCLUDE_DIRS LU PNE tests
+        DEPENDENCIES metrix-simulator
     )
 endif()
 

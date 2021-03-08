@@ -22,7 +22,7 @@ include(CMakeParseArguments)
 
 function(code_coverage)
     set(options NONE)
-    set(oneValueArgs NAME ROOT_DIR OUTPUT_DIR)
+    set(oneValueArgs NAME OUTPUT_DIR)
     set(multiValueArgs DEPENDENCIES EXCLUDES EXCLUDE_DIRS)
     cmake_parse_arguments(Coverage "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -54,12 +54,6 @@ function(code_coverage)
     if ("${Coverage_OUTPUT_DIR}" STREQUAL "")
         message(FATAL_ERROR "OUTPUT_DIR undefined")
     endif ()
-	
-	if ("${Coverage_ROOT_DIR}" STREQUAL "")
-        set(ROOT_DIR ${CMAKE_SOURCE_DIR})	
-    else()
-	    set(ROOT_DIR ${Coverage_ROOT_DIR})
-    endif ()
 
     foreach (exclude ${Coverage_EXCLUDES})
         list(APPEND GCOVR_OPTIONS "--exclude" "${exclude}")
@@ -77,12 +71,12 @@ function(code_coverage)
         COMMAND ${CMAKE_COMMAND} -E make_directory ${Coverage_OUTPUT_DIR}/reports
         COMMAND ${GCOVR_CMD} ${CMAKE_CURRENT_BINARY_DIR}
         --gcov-executable "${GCOV_CMD}"
-        --root ${ROOT_DIR}
-        --keep --object-directory ${Coverage_OUTPUT_DIR}/reports
+        --object-directory ${Coverage_OUTPUT_DIR}/reports
         --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html
+        --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
         ${GCOVR_OPTIONS}
 
-        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 
         DEPENDS ${Coverage_DEPENDENCIES}
         )
