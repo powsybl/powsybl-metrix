@@ -38368,4 +38368,4 @@ Noeud '42248 [ZBRUGP3_1]' est hors composante connexe principale (composante 281
 Noeud '42249 [ZBRUGP3_2]' est hors composante connexe principale (composante 2818)
 Noeud '42250 [ZBRUGP3_3]' est hors composante connexe principale (composante 2818)
 Noeud '42251 [ZBRUGP3_4]' est hors composante connexe principale (composante 2818)
-Not recoverable error: Réseau non connexe (file=reseau.cpp ,line=674)
+Not recoverable error: Réseau non connexe (file=reseau.cpp ,line=684)
