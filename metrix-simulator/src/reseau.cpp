@@ -186,9 +186,9 @@ void Reseau::lireDonnees()
     for (i = 0; i < static_cast<unsigned int>(nbQuads_); ++i) {
         nomQuadripole = config.cqnomquaDIE()[i];
         rtrim(nomQuadripole);
-        if (i >= config.tnnorquaDIE().size() || i >= config.tnnexquaDIE().size() || i >= config.tnnorquaDIE().size()
-            || i >= config.tnnexquaDIE().size() || config.tnnorquaDIE()[i] == 0 || config.tnnexquaDIE()[i] == 0
-            || config.tnnorquaDIE()[i] > nbNoeuds_ || config.tnnexquaDIE()[i] > nbNoeuds_) {
+        if (i >= config.tnnorquaDIE().size() || i >= config.tnnexquaDIE().size() || config.tnnorquaDIE()[i] == 0
+            || config.tnnexquaDIE()[i] == 0 || config.tnnorquaDIE()[i] > nbNoeuds_
+            || config.tnnexquaDIE()[i] > nbNoeuds_) {
             ostringstream errMsg;
             errMsg << err::ioDico().msg("ERRNoeudsQuadripole", nomQuadripole);
             throw ErrorI(errMsg.str());
@@ -518,8 +518,7 @@ void Reseau::lireDonnees()
     for (i = 0; i < static_cast<unsigned int>(nbGroupes_); ++i) {
         nomGroupe = config.trnomgthDIE()[i];
         rtrim(nomGroupe);
-        if (i >= config.tnneurgtDIE().size() || i >= config.tnneurgtDIE().size() || config.tnneurgtDIE()[i] == 0
-            || config.tnneurgtDIE()[i] > nbNoeuds_) {
+        if (i >= config.tnneurgtDIE().size() || config.tnneurgtDIE()[i] == 0 || config.tnneurgtDIE()[i] > nbNoeuds_) {
             ostringstream errMsg;
             errMsg << err::ioDico().msg("ERRNoeudGroupe", nomGroupe, c_fmt("%d", config.tnneurgtDIE()[i]));
             throw ErrorI(errMsg.str());
@@ -604,8 +603,7 @@ void Reseau::lireDonnees()
         nomConso = config.tnnomnoeDIE()[i];
         rtrim(nomConso);
 
-        if (i >= config.tnneucelDIE().size() || i >= config.tnneucelDIE().size() || config.tnneucelDIE()[i] == 0
-            || config.tnneucelDIE()[i] > nbNoeuds_) {
+        if (i >= config.tnneucelDIE().size() || config.tnneucelDIE()[i] == 0 || config.tnneucelDIE()[i] > nbNoeuds_) {
             ostringstream errMsg;
             errMsg << err::ioDico().msg("ERRNoeudConso", c_fmt("%d", i), c_fmt("%d", config.tnneucelDIE()[i]));
             throw ErrorI(errMsg.str());

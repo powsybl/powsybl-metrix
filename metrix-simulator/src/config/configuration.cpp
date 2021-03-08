@@ -329,7 +329,7 @@ Configuration::Configuration(const std::string& pathname)
         initWithRawConfig(raw_config);
     } catch (const err::Error& e) {
         // propagate Error without doing anything else
-        throw e;
+        throw;
     } catch (const std::exception& e) {
         // other than iodico error (probably reading exception)
         LOG_ALL(error) << "Cannot read json configuration \"" << pathname << "\": " << e.what();

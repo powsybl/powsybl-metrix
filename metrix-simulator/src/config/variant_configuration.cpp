@@ -237,7 +237,7 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
         throw ErrorI(err::ioDico().msg("ERRLectFicPointVirgule", pathname));
     } catch (const err::Error& err) {
         // do nothing more: propagate error
-        throw err;
+        throw;
     } catch (const std::exception& e) {
         LOG(error) << e.what();
         throw ErrorI(err::ioDico().msg("ERRLectureFichier", pathname)); // propagate error

@@ -104,7 +104,7 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
             // Rien a faire, valeur par defaut
             ss << "OPF";
             break;
-        default: throw ErrorI(err::ioDico().msg("ERRTypeCalculInconnu")); break;
+        default: throw ErrorI(err::ioDico().msg("ERRTypeCalculInconnu"));
     }
     LOG_ALL(info) << ss.str();
 

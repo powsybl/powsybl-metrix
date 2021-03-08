@@ -294,6 +294,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                        == config::Configuration::ComputationType::OPF_WITH_OVERLOAD)
             && pbNombreDeContraintes_ > 0) {
             if (!calculVariationsMarginales(fr, incidentsContraignants)) {
+                fclose(fr);
                 return METRIX_PAS_PROBLEME; // pour continuer les autres variantes
                                             // mais ne pas ecrire de resultats pour cette variante sans sol
             }

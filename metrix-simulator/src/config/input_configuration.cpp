@@ -32,7 +32,7 @@ static InputConfiguration config_("",
                                   false,
                                   false);
 
-void configureInputConfiguration(InputConfiguration&& config) { config_ = std::forward<InputConfiguration>(config); }
+void configureInputConfiguration(InputConfiguration&& config) { config_ = std::move(config); }
 
 InputConfiguration::InputConfiguration(const std::string& filepath_error,
                                        const std::string& filepath_variant,

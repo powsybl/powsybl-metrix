@@ -58,11 +58,11 @@ double Calculer::round(double x, double prec)
 std::ostream& operator<<(std::ostream& str, const ElementCuratif::TypeElement a)
 {
     switch (a) {
-        case (ElementCuratif::TD): return str << "TD"; break;
-        case (ElementCuratif::TD_FICTIF): return str << "TD_FICTIF"; break;
-        case (ElementCuratif::HVDC): return str << "HVDC"; break;
-        case (ElementCuratif::GROUPE): return str << "GROUPE"; break;
-        case (ElementCuratif::CONSO): return str << "CONSO"; break;
+        case (ElementCuratif::TD): return str << "TD";
+        case (ElementCuratif::TD_FICTIF): return str << "TD_FICTIF";
+        case (ElementCuratif::HVDC): return str << "HVDC";
+        case (ElementCuratif::GROUPE): return str << "GROUPE";
+        case (ElementCuratif::CONSO): return str << "CONSO";
         default: return str << "Unknown";
     }
 }
@@ -3578,9 +3578,9 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
 
     FILE* fr = nullptr;
     if (config::inputConfiguration().writeConstraintsFile()) {
-        char nom1[50];
-        sprintf(nom1, "contraintes_%d_%d.txt", varianteCourante_->num_, numMicroIteration_);
-        fr = fopen(nom1, "w+");
+        std::stringstream ss("contraintes_%d_%d.txt");
+        ss << varianteCourante_->num_ << "_" << numMicroIteration_ << ".txt";
+        fr = fopen(ss.str().c_str(), "w+");
     }
     int codeRet = 1;
 
