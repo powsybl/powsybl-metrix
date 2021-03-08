@@ -116,6 +116,106 @@ Supplier<Reader> mappingReader = () -> Files.newBufferedReader(Paths.get("/path/
 Supplier<Reader> metrixDslReader = () -> Files.newBufferedReader(Paths.get("/path/to/metrixConfig.groovy"), StandardCharsets.UTF_8);
 // Remedial actions
 Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get("/path/to/remedialActions.txt"), StandardCharsets.UTF_8);
+#### Metrix simulator
+Metrix simulator is an independant c++ executable. It must be installed before using powsybl-metrix. 
+
+It has its own toolchain and requirements.
+
+##### Inputs / outputs
+*inputs:*
+- fort.json: aggregate file containing network data, mapping and metrix options. __The name of this file is frozen__
+- variant file: this file describes the network modification to apply to the information present in the fort.json file for each defined variant. The name of this name is chosen at metrix launch (see --help)
+- counter file: this file describes the list of topological actions that are allowed as preemptive actions to counter an issue. The name of this name can be chosen at metrix launch (see --help)
+- index first variant: the first variant to process in the variant file. Is chosen at launch.
+- number of variants: the number of variants to process. Is chosen at launch.
+
+*outputs:*
+- user log file: the user log file, displaying user friendly information about the finished run. These information are duplicated in the developper log file
+- developper log files: a set of more developpement-axed log files, with more information
+- result files: the result files (1 by variant processed)
+
+all input options are described in --help option
+
+##### Requirements
+
+To build metrix-simulator, you need:
+- A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
+- [CMake](https://cmake.org) (3.12 or higher)
+- [Make](https://www.gnu.org/software/make/)
+- [Boost](https://www.boost.org) development packages (1.66 or higher)
+
+###### Ubuntu 20.04
+```
+$> apt install -y cmake g++ git libboost-all-dev libxml2-dev make
+``` 
+
+###### Ubuntu 18.04
+```
+$> apt install -y g++ git libboost-all-dev libxml2-dev make wget
+```
+
+**Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), so you have to install it manually:
+```
+$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+```
+
+###### CentOS 8
+```
+$> yum install -y boost-devel gcc-c++ git libxml2-devel make wget
+```
+
+**Note:** Under CentOS 8, the default CMake package is too old (3.11.4), so you have to install it manually:
+```
+$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+```
+
+###### CentOS 7
+```
+$> yum install -y gcc-c++ git libxml2-devel make wget
+```
+**Note:** Under CentOS 7, the default `boost-devel` package is too old (1.53), so we install Boost 1.66 from `epel-release`.
+```
+$> yum install -y epel-release
+$> yum install -y boost166-devel
+$> export BOOST_INCLUDEDIR=/usr/include/boost166
+$> export BOOST_LIBRARYDIR=/usr/lib64/boost166
+```
+
+**Note:** Under CentOS 7, the default CMake package is too old (2.8.12), so you have to install it manually:
+```
+$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+```
+##### Build sources
+
+1 - Clone the project
+```
+$> git clone https://github.com/powsybl/powsybl-metrix.git
+$> cd powsybl-iidm4cpp
+```
+
+2 - Configure the project
+```
+$> mkdir build
+$> cd build
+$> cmake .. -DCMAKE_INSTALL_PREFIX=<PREFIX> -DCMAKE_BUILD_TYPE=<BUILD_TYPE>
+```
+
+4. Build and install the executable
+```
+$> cmake --build . --target install
+```
+###### Checkstyle
+This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command.  
+
+###### Code coverage
+This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to the configure command.
+
 
 // Result timeseries store
 FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));

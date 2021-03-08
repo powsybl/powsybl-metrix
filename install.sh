@@ -34,13 +34,11 @@ echo "Preparing install directory"
 mkdir -p $INSTALL_DIR
 
 echo "Installing metrix"
-pushd $CURDIR/metrix-cpp
-cmake .
-make
-mkdir -p $INSTALL_DIR/bin
-mkdir -p $INSTALL_DIR/etc
-cp etc/* $INSTALL_DIR/etc
-cp bin/metrix $INSTALL_DIR/bin
+pushd $CURDIR/metrix-simulator
+mkdir -p build
+cd build
+cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR .
+cmake --build . --target install
 popd
 
 if [ "$INSTALL_TYPE" == "full" ] ; then
