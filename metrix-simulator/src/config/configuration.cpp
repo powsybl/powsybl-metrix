@@ -327,7 +327,7 @@ Configuration::Configuration(const std::string& pathname)
         auto raw_config = readRawConfiguration(pathname);
         checkConfiguration(raw_config);
         initWithRawConfig(raw_config);
-    } catch (const err::Error& e) {
+    } catch (const err::Error&) {
         // propagate Error without doing anything else
         throw;
     } catch (const std::exception& e) {

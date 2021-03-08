@@ -119,7 +119,7 @@ bool Groupe::estAjustable(bool adequacy)
 
 void Reseau::update_with_configuration()
 {
-    auto configuration = config::configuration();
+    const auto& configuration = config::configuration();
 
     coeff_pertes_ = configuration.coeffPertes();
     nbRegions_ = configuration.nbRegions();

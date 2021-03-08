@@ -325,7 +325,7 @@ int Calculer::resolutionProbleme()
 
             // remise du reseau dans son etat initial (toute modification de type production ou conso mais pas les
             // lignes indisponibles),
-            if ((res_.resetReseau(varianteCourante_, (nbCalculs > 0)) != METRIX_PAS_PROBLEME)) {
+            if (res_.resetReseau(varianteCourante_, (nbCalculs > 0)) != METRIX_PAS_PROBLEME) {
                 LOG_ALL(error) << "probleme lors de la modification de reseau par la variante numero : "
                                << varianteCourante_->num_;
                 LU_LibererMemoireLU(jacFactorisee_);
@@ -555,7 +555,7 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
 
     // calcul des coeffs de repport et d'inflencement
     //*************************************************
-    status = calculReportInfluencement();
+    calculReportInfluencement();
 
     string nomFichier;
     FILE* file;

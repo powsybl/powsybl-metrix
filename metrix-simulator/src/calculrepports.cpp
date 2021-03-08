@@ -473,8 +473,7 @@ int Calculer::calculeInvB(const std::shared_ptr<Incident>& icdt,
 
     // ATTENTION A verifier ProblemeDeFactorisation;  /* Le code retour ( NON_LU si tout s'est bien passe ) */
     int codeRet = OUI_LU;
-    int i;
-    for (i = 0; i < nbColones; ++i) {
+    for (int i = 0; i < nbColones; ++i) {
         invB[i][i] = 1;
         LU_LuSolv(Bptr, &invB[i][0], &codeRet, nullptr, 0, 0.0);
         if (codeRet != NON_LU) {

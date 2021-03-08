@@ -98,7 +98,7 @@ ParadesConfiguration::ParadesConfiguration(const std::string& pathname)
     } catch (const std::ios_base::failure& e) {
         LOG(error) << e.what();
         throw ErrorI(err::ioDico().msg("ERRLectFicPointVirgule", pathname));
-    } catch (const err::Error& err) {
+    } catch (const err::Error&) {
         // do nothing more: propagate error
         throw;
     } catch (const std::exception& e) {

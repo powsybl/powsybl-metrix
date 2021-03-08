@@ -168,9 +168,9 @@ void Logger::logImplDev()
     BOOST_LOG_SCOPED_LOGGER_ATTR(
         (*logger_),
         "Timestamp",
-        boost::log::attributes::constant<std::chrono::system_clock::time_point>(std::chrono::system_clock::now()));
-    BOOST_LOG_SCOPED_LOGGER_ATTR((*logger_), "File", boost::log::attributes::constant<std::string>(logInfo_->filename));
-    BOOST_LOG_SCOPED_LOGGER_ATTR((*logger_), "Line", boost::log::attributes::constant<int>(logInfo_->line));
+        boost::log::attributes::constant<std::chrono::system_clock::time_point>(std::chrono::system_clock::now()))
+    BOOST_LOG_SCOPED_LOGGER_ATTR((*logger_), "File", boost::log::attributes::constant<std::string>(logInfo_->filename))
+    BOOST_LOG_SCOPED_LOGGER_ATTR((*logger_), "Line", boost::log::attributes::constant<int>(logInfo_->line))
     BOOST_LOG_SEV((*logger_), logInfo_->level) << logInfo_->stream.str();
 }
 

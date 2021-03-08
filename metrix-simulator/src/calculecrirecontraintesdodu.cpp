@@ -439,7 +439,8 @@ int Calculer::ecrireContrainteBilanEnergetique(bool parZonesSynchr)
     int nbTermesNonNuls;
     double secondMembre;
     for (int b = firstZone; b < nbZonesSynch; ++b) {
-        nbTermesNonNuls = 0, secondMembre = 0.;
+        nbTermesNonNuls = 0;
+        secondMembre = 0.;
         for (int i = 0; i < pbNombreDeVariables_; ++i) {
             if ((typeEtat_[i] == PROD_B) || (typeEtat_[i] == DEPH_H) || (typeEtat_[i] == DEPH_B)
                 || (typeEtat_[i] == LIGNE_CC_B)) { // Les autres types de variables n'existent pas encore
@@ -1217,9 +1218,6 @@ int Calculer::construireJacobienne()
     // 1- elimination de la derniere injection
     // 2- remplacement de cette derniere par une phase.
 
-    int i;
-    int j;
-    int k;
     int nbQuadN;
     int indElmExistDeja = 0;
     int nbElmdeMatrContraint = 0;
@@ -1227,7 +1225,7 @@ int Calculer::construireJacobienne()
     bool existDeja;
 
     // construction de la matrice de contraintes d'egalites
-    for (i = 0; i < res_.nbNoeuds_; ++i) {
+    for (int i = 0; i < res_.nbNoeuds_; ++i) {
         // Attention : Pour l ecriture des contraintes il faut commencer par le traitement des quadripoles
         auto& nod = res_.noeuds_[i];
         nbQuadN = nod->nbQuads();
@@ -1244,7 +1242,7 @@ int Calculer::construireJacobienne()
         // la derniere injection correspond au noeud bilan
         elemNod = 0;
         if (!nod->bilan_) {
-            for (j = 0; j < nbQuadN; ++j) {
+            for (int j = 0; j < nbQuadN; ++j) {
                 auto& quad = nod->listeQuads_[j];
                 auto& nodO = quad->norqua_;
                 auto& nodE = quad->nexqua_;
@@ -1256,7 +1254,7 @@ int Calculer::construireJacobienne()
                     // Noeud voisin = noeuds extremite nodE
                     auto other_node = (nodO == nod) ? nodE : nodO;
                     // est que le noeud est deja traite ?
-                    for (k = jacIndexDebutDesColonnes_[i]; k < nbElmdeMatrContraint; ++k) {
+                    for (int k = jacIndexDebutDesColonnes_[i]; k < nbElmdeMatrContraint; ++k) {
                         if (jacIndicesDeLigne_[k] == static_cast<int>(other_node->num_)) {
                             existDeja = true;
                             indElmExistDeja = k;
@@ -4643,7 +4641,8 @@ void Calculer::printMatriceDesContraintes()
         ss << i << ";";
     }
 
-    indiceDebut = variables.begin(), indiceFin = variables.end();
+    indiceDebut = variables.begin();
+    indiceFin = variables.end();
 
     ss << ";B;";
 

@@ -126,7 +126,4 @@ struct CompareSet {
     }
 };
 
-using MapQuadinVar
-    = std::map<Quadripole::SetQuadripoleSortedByName, std::vector<std::shared_ptr<Variante>>, CompareSet>;
-
 #endif

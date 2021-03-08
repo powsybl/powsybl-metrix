@@ -39,7 +39,7 @@ using std::vector;
 // Contrainte : couple quad/incident
 //----------------------------------------------------------
 
-#define SITU_N -1
+constexpr int SITU_N = -1;
 
 class Contrainte
 {
