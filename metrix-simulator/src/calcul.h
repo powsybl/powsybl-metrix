@@ -306,7 +306,7 @@ public:
                                          const vector<double>& secondMembreN,
                                          const vector<double>& secondMembreFixeN);
 
-    int ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& elem, float proba);
+    int ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& elem, double proba);
     void ajouterContraintesBorneCuratif(int numVar, int numVarCur, double Pmin, double Pmax);
     void ajouterContraintesBorneCuratifGroupe(int numVarGrp, int numVarCur, const std::shared_ptr<Groupe>& grp);
     void ajouterContraintesBorneCuratifConso(int numVarPrev, int numVarCur, double consoNod, double pourcentEff);

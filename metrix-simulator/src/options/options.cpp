@@ -286,7 +286,7 @@ std::string Options::make_usage_string(const std::string& program_name,
     std::vector<std::string> parts;
     parts.emplace_back("Usage:\n");
     parts.push_back(program_name);
-    for (size_t i = 0; i < p.max_total_count(); ++i) {
+    for (unsigned int i = 0; i < p.max_total_count(); ++i) {
         parts.emplace_back("<" + p.name_for_position(i) + ">");
     }
     // special case for last input argument

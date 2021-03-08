@@ -279,7 +279,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     nb_groups_types_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "TRNBTYPE", 0U);
 
     // computation options
-    coeff_pertes_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "CGCPERTE", 0.0);
+    coeff_pertes_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "CGCPERTE", 0.0F);
     max_relance_pertes_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "RELPERTE", 0U);
     threshold_relance_pertes_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "SEUILPER", 500U);
     test_seuil_itam_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "TESTITAM", false);
@@ -294,9 +294,9 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     resultats_surcharges_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "OVRLDRES", false);
     showAllAngleTDTransitHVDC_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "SHTDHVDC", false);
 
-    cost_td_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "TDPENALI", 1.e-2);
-    cost_hvdc_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "HVDCPENA", 0.1);
-    cost_failure_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "COUTDEFA", 13000.);
+    cost_td_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "TDPENALI", 1.e-2F);
+    cost_hvdc_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "HVDCPENA", 0.1F);
+    cost_failure_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "COUTDEFA", 13000.F);
     computation_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "MODECALC", ComputationType::OPF);
     u_ref_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "UNOMINAL", 0U);
     nb_max_number_micro_iterations_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "NBMAXMIT", 30U);
@@ -304,14 +304,14 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     nb_threats_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "NBTHREAT", 1U);
     time_max_pne_ = helper::updateValueNumber(
         std::get<INTEGER>(raw_config), "MAXSOLVE", 0U); // no maximum time by default
-    proba_inc_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "PROBAINC", 1.e-3);
-    cost_valo_end_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "COUENDCU", 26000.);
-    cost_valo_ene_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "COUENECU", 100.);
+    proba_inc_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "PROBAINC", 1.e-3F);
+    cost_valo_end_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "COUENDCU", 26000.F);
+    cost_valo_ene_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "COUENECU", 100.F);
     limit_curative_grp_ = helper::updateValueNumber(
         std::get<INTEGER>(raw_config), "LIMCURGR", -1); // not used by default
     adequacy_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "ADEQUAOF", 0);
     redispatch_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "REDISPOF", 0);
-    cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10.);
+    cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10);
 
     // log level
     auto& map = std::get<INTEGER>(raw_config);

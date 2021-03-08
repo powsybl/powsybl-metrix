@@ -134,9 +134,9 @@ public:
     PositionConnexion
     position(const std::shared_ptr<Connexion>& branche); /* si noeud ORIGINE alors ORIGINE sinon EXTREMITE*/
 
-    int nbQuads() { return listeQuads_.size(); };
-    int nbTd() { return listeTd_.size(); };
-    int nbCC() { return listeCC_.size(); };
+    int nbQuads() { return static_cast<int>(listeQuads_.size()); };
+    int nbTd() { return static_cast<int>(listeTd_.size()); };
+    int nbCC() { return static_cast<int>(listeCC_.size()); };
 
     double consoNodale();
 

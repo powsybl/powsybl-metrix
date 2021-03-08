@@ -68,7 +68,7 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
     //------------------------------------------------------------------
     double coutMaxGrp = 0;
     for (size_t i = 0; i < res_.numNoeudBilanParZone_.size(); ++i) {
-        res_.bilanParZone_[i] = 0;
+        res_.bilanParZone_[static_cast<int>(i)] = 0.;
     }
 
 

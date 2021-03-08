@@ -307,7 +307,7 @@ int Calculer::resolutionProbleme()
                         > config::configuration().thresholdRelancePertes()) {
                         relance = true;
                         nbCalculs++;
-                        float txPertesCalcule = round(pertesTotales_ / consoTotale_ * 100, 100.);
+                        auto txPertesCalcule = static_cast<float>(round(pertesTotales_ / consoTotale_ * 100, 100.));
                         res_.modifTauxDePertes(tauxPertes_, txPertesCalcule);
                         tauxPertes_ = txPertesCalcule;
                         LOG_ALL(info) << err::ioDico().msg("INFODeltaPertes",

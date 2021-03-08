@@ -258,8 +258,8 @@ void Reseau::lireDonnees()
     tdParIndice_.reserve(nbTd_);
     if (nbTd_ > 0) {
         // Ajout d'un nouveau quadripole et un nouveau noeud pour chaque TD
-        int oldSizeNoeuds = noeuds_.size();
-        int oldSizeQuads = quads_.size();
+        int oldSizeNoeuds = static_cast<int>(noeuds_.size());
+        int oldSizeQuads = static_cast<int>(quads_.size());
         nbQuads_ = nbQuads_ + nbTd_;
         nbNoeuds_ = nbNoeuds_ + nbTd_;
         noeuds_.resize(nbNoeuds_);
@@ -3078,7 +3078,7 @@ int Reseau::findRegion(const std::string& name)
     if (regionIt == regions_.end()) {
         return -1;
     }
-    return regionIt - regions_.begin();
+    return static_cast<int>(regionIt - regions_.begin());
 }
 
 void Reseau::updateParades(const config::ParadesConfiguration& config)
@@ -3206,7 +3206,7 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
         }
 
         incident->parades_.push_back(parade); // ajout de la parade dans les parades de l'incident
-        parade->num_ = incidentsEtParades_.size();
+        parade->num_ = static_cast<int>(incidentsEtParades_.size());
         incidentsEtParades_.push_back(parade); // ajout de la parade dans les incidents du reseau
         nbIncidents_++;
 
@@ -3265,7 +3265,7 @@ std::shared_ptr<Incident> Reseau::ajouteParadeNeRienFaire(const std::shared_ptr<
     paradeNRF->nom_ = incident->nom_ + "_NRF";
 
     incident->parades_.push_back(paradeNRF); // ajout de la parade dans les parades de l'inc
-    paradeNRF->num_ = incidentsEtParades_.size();
+    paradeNRF->num_ = static_cast<int>(incidentsEtParades_.size());
     incidentsEtParades_.push_back(paradeNRF); // ajout de la parade dans les incidents du reseau
     nbIncidents_++;
 

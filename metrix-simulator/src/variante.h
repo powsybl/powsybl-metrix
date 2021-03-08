@@ -78,19 +78,19 @@ public:
     std::map<std::shared_ptr<ElementASurveiller>, double>
         quatitamkExOr_; /* seuil max avant curatif Ext -> Or (regime incident complexe) */
 
-    int nbGrpIndispo() const { return grpIndispo_.size(); }
-    int nbProdImposee() const { return prodImpose_.size(); }
-    int nbProdMax() const { return prodMax_.size(); }
-    int nbProdMin() const { return prodMin_.size(); }
-    int nbEchange() const { return valeurEchange_.size(); }
-    int nbBilanProd() const { return varBilanProd_.size(); }
-    int nbConsommation() const { return valeurConso_.size(); }
-    int nbCoutEfface() const { return coutEfface_.size(); }
-    int nbIndispoLignes() const { return indispoLignes_.size(); }
-    int nbDcPuissMin() const { return dcPuissMin_.size(); }
-    int nbDcPuissMax() const { return dcPuissMax_.size(); }
-    int nbDcPuissImp() const { return dcPuissImp_.size(); }
-    int nbDtValDep() const { return dtValDep_.size(); }
+    int nbGrpIndispo() const { return static_cast<int>(grpIndispo_.size()); }
+    int nbProdImposee() const { return static_cast<int>(prodImpose_.size()); }
+    int nbProdMax() const { return static_cast<int>(prodMax_.size()); }
+    int nbProdMin() const { return static_cast<int>(prodMin_.size()); }
+    int nbEchange() const { return static_cast<int>(valeurEchange_.size()); }
+    int nbBilanProd() const { return static_cast<int>(varBilanProd_.size()); }
+    int nbConsommation() const { return static_cast<int>(valeurConso_.size()); }
+    int nbCoutEfface() const { return static_cast<int>(coutEfface_.size()); }
+    int nbIndispoLignes() const { return static_cast<int>(indispoLignes_.size()); }
+    int nbDcPuissMin() const { return static_cast<int>(dcPuissMin_.size()); }
+    int nbDcPuissMax() const { return static_cast<int>(dcPuissMax_.size()); }
+    int nbDcPuissImp() const { return static_cast<int>(dcPuissImp_.size()); }
+    int nbDtValDep() const { return static_cast<int>(dtValDep_.size()); }
 };
 
 /**

@@ -434,7 +434,7 @@ int Calculer::ecrireContrainteBilanEnergetique(bool parZonesSynchr)
     int nbConsosN;
     int nbQuadN;
     int firstZone = parZonesSynchr ? 1 : 0;
-    int nbZonesSynch = parZonesSynchr ? res_.numNoeudBilanParZone_.size() : 1;
+    int nbZonesSynch = parZonesSynchr ? static_cast<int>(res_.numNoeudBilanParZone_.size()) : 1;
 
     int nbTermesNonNuls;
     double secondMembre;
@@ -716,7 +716,7 @@ int Calculer::ajouterLimiteCuratifGroupe(const std::map<int, std::vector<int>>& 
 {
     for (const auto& zone : mapZoneSyncGrp) {
         const std::vector<int>& listeVarCurGrp = zone.second;
-        int nbVarCurGrp = listeVarCurGrp.size();
+        int nbVarCurGrp = static_cast<int>(listeVarCurGrp.size());
 
         // redispatching B
         for (int i = 0; i < nbVarCurGrp; i++) {
@@ -755,7 +755,7 @@ int Calculer::ecrireEquationBilanCuratif(
         auto itZoneSync = mapZoneSyncGrp.find(zone);
         if (itZoneSync != mapZoneSyncGrp.cend()) {
             const std::vector<int>& listeVarCurGrp = itZoneSync->second;
-            nbVarCurGrp = listeVarCurGrp.size();
+            nbVarCurGrp = static_cast<int>(listeVarCurGrp.size());
             for (int i = 0; i < nbVarCurGrp; i++) {
                 pbIndicesColonnes_.push_back(listeVarCurGrp[i]);
                 pbCoefficientsDeLaMatriceDesContraintes_.push_back(1.);
@@ -766,7 +766,7 @@ int Calculer::ecrireEquationBilanCuratif(
         itZoneSync = mapZoneSyncConso.find(zone);
         if (itZoneSync != mapZoneSyncConso.cend()) {
             const std::vector<int>& listeVarCurConso = itZoneSync->second;
-            nbVarCurConso = listeVarCurConso.size();
+            nbVarCurConso = static_cast<int>(listeVarCurConso.size());
             for (int i = 0; i < nbVarCurConso; i++) {
                 pbIndicesColonnes_.push_back(listeVarCurConso[i]);
                 pbCoefficientsDeLaMatriceDesContraintes_.push_back(-1.);
@@ -777,7 +777,7 @@ int Calculer::ecrireEquationBilanCuratif(
         auto itZoneSyncLcc = mapZoneSyncHvdc.find(zone);
         if (itZoneSyncLcc != mapZoneSyncHvdc.cend()) {
             const auto& listeVarCurLcc = itZoneSyncLcc->second;
-            nbVarCurLcc = listeVarCurLcc.size();
+            nbVarCurLcc = static_cast<int>(listeVarCurLcc.size());
             for (int i = 0; i < nbVarCurLcc; i++) {
                 auto& elemCurLcc = listeVarCurLcc[i];
                 double coeff = 1.;
@@ -1486,7 +1486,7 @@ int Calculer::ecrireCoupeTransit(const double& maxTprev,
             double proba = incidentPere->getProb();
 
             icdt->numVarActivation_ = ajouterVariableEntiere(
-                icdt->num_, config::constants::cost_parade * incidentPere->contraintes_.size() * proba);
+                icdt->num_, config::constants::cost_parade * proba * incidentPere->contraintes_.size());
             if (coefs_.size() < static_cast<size_t>(pbNombreDeVariables_)) {
                 coefs_.resize(pbNombreDeVariables_, 0.);
             }
@@ -1548,7 +1548,7 @@ int Calculer::ecrireCoupeTransit(const double& maxTprev,
         }
     }
 
-    ctre->num_ = pbContraintes_.size();
+    ctre->num_ = static_cast<int>(pbContraintes_.size());
     if (incidentPere != nullptr) {
         incidentPere->contraintes_.push_back(ctre->num_);
     }
@@ -2622,7 +2622,7 @@ void Calculer::choixContraintesAajouter()
     }
 }
 
-int Calculer::ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& elem, float proba)
+int Calculer::ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& elem, double proba)
 {
     int numVarCur = pbNombreDeVariables_;
     int numElem = elem->num();
@@ -3653,7 +3653,7 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
                     double proba = icdt->getProb();
 
                     parade->numVarActivation_ = ajouterVariableEntiere(
-                        parade->num_, config::constants::cost_parade * icdt->contraintes_.size() * proba);
+                        parade->num_, config::constants::cost_parade * proba * icdt->contraintes_.size());
 
                     if (!parade->contraintesAutorisees_.empty()
                         && parade->contraintesAutorisees_.find(contrainte->elemAS_)
