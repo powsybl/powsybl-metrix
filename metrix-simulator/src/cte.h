@@ -10,6 +10,8 @@
 
 #pragma once
 
+#include <array>
+#include <cstdio>
 #include <string>
 
 /**
@@ -22,5 +24,15 @@ namespace cte
  *
  * The formatted string must be at most 1000 characters.
  */
-std::string c_fmt(const char* format, ...);
+template<class... Args>
+std::string c_fmt(const char* format, Args... args)
+{
+    constexpr size_t max = 1000;
+    std::array<char, max> buf;
+    buf.fill('\0');
+
+    sprintf(buf.data(), format, args...);
+
+    return std::string(buf.data());
+}
 } // namespace cte

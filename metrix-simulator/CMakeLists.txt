@@ -90,7 +90,6 @@ set(METRIX_SOURCES
         src/config/parades_configuration.cpp
         src/config/converter.cpp
         src/config/version_def.cpp
-        src/cte.cpp
         src/options/options.cpp
         src/compute/solver.cpp
         src/margin_variations_compute.cpp
