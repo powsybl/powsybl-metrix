@@ -53,7 +53,8 @@ int Reseau::fusionner(int nZone1, int nZone2, map<int, int>& mapZones)
         LOG_ALL(warning) << "probleme lors de la fusion";
     }
 
-    auto iZone1 = mapZones.find(nZone1), iZone2 = mapZones.find(nZone2);
+    auto iZone1 = mapZones.find(nZone1);
+    auto iZone2 = mapZones.find(nZone2);
 
     if (iZone1 != mapZones.end()) {
         nZone1 = mapZone(nZone1, mapZones);

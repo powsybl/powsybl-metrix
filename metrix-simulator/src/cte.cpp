@@ -12,6 +12,7 @@
 
 #include "err/error.h"
 
+#include <array>
 #include <cstdarg>
 #include <cstring>
 
@@ -20,15 +21,12 @@ namespace cte
 std::string c_fmt(const char* format, ...)
 {
     const int max = 1000;
-    char buf[max];
+    std::array<char, max> buf;
+    buf.fill('\0');
     va_list ap;
     va_start(ap, format);
-    vsnprintf(buf, max, format, ap);
-    if (strlen(buf) >= sizeof(buf)) {
-        std::string msg = "pb de conversion en string c_fmt";
-        throw ErrorI(msg);
-    }
+    vsnprintf(buf.data(), max, format, ap);
 
-    return std::string(buf);
+    return std::string(buf.data());
 }
 } // namespace cte

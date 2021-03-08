@@ -135,17 +135,16 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
     ss << err::ioDico().msg("INFOPuissanceMaximaleArretableHorsPimp", c_fmt("%.4f ", -sumProductionsMin)) << std::endl;
 
     ss << err::ioDico().msg("INFOBilanParZoneSync") << std::endl;
-    std::map<int, double>::const_iterator it, itEnd = res_.bilanParZone_.end();
-    for (it = res_.bilanParZone_.begin(); it != itEnd; it++) {
-        int numNoeudBilan = res_.numNoeudBilanParZone_.find(it->first)->second;
+    for (const auto& pair : res_.bilanParZone_) {
+        int numNoeudBilan = res_.numNoeudBilanParZone_.find(pair.first)->second;
 
         ss << err::ioDico().msg("INFOBilanZoneSync",
-                                c_fmt("%d", it->first),
+                                c_fmt("%d", pair.first),
                                 res_.noeuds_[numNoeudBilan]->print(),
-                                c_fmt("%.4f", it->second))
+                                c_fmt("%.4f", pair.second))
            << std::endl;
 
-        equilibrageNonNecessaire &= fabs(it->second) < config::constants::epsilon;
+        equilibrageNonNecessaire &= fabs(pair.second) < config::constants::epsilon;
     }
     LOG_ALL(info) << ss.str();
 

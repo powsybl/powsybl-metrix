@@ -1679,9 +1679,8 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
         calculerCoeffReport_ = true;
 
         // verification de la connexite du reseau + recalcul des noeuds bilan
-        std::map<int, int>::const_iterator itNb, itNbEnd = numNoeudBilanParZone_.cend();
-        for (itNb = numNoeudBilanParZone_.cbegin(); itNb != itNbEnd; ++itNb) {
-            noeuds_[itNb->second]->bilan_ = false;
+        for (const auto& pair : numNoeudBilanParZone_) {
+            noeuds_[pair.second]->bilan_ = false;
         }
         numNoeudBilanParZone_.clear();
 
@@ -1693,10 +1692,7 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
         incidentsRompantConnexite_.clear();
 
         // verification de la validite des incidents
-        vector<std::shared_ptr<Incident>>::const_iterator icdtIt, icdtEnd = incidentsEtParades_.cend();
-        for (icdtIt = incidentsEtParades_.cbegin(); icdtIt != icdtEnd; ++icdtIt) {
-            auto& inc = *icdtIt;
-
+        for (const auto& inc : incidentsEtParades_) {
             if (!inc->validite_) {
                 continue;
             }
@@ -2351,9 +2347,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
     }
 
     // Reset sur les numeros d'incidents contraignants et les activations de parade
-    vector<std::shared_ptr<Incident>>::const_iterator icdtIt, icdtEnd = incidentsEtParades_.cend();
-    for (icdtIt = incidentsEtParades_.cbegin(); icdtIt != icdtEnd; ++icdtIt) {
-        auto& inc = *icdtIt;
+    for (const auto& inc : incidentsEtParades_) {
         inc->incidentATraiterEncuratif_ = false;
         inc->numVarActivation_ = -1;
         inc->paradesActivees_ = false;
@@ -2364,10 +2358,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
     }
 
     // Reset des transits en N et N-k HR des quadripéles surveillés
-    vector<std::shared_ptr<ElementASurveiller>>::const_iterator itElemAS, endElemAS;
-    for (itElemAS = elementsASurveiller_.begin(), endElemAS = elementsASurveiller_.end(); itElemAS != endElemAS;
-         ++itElemAS) {
-        auto& elemAS = *itElemAS;
+    for (const auto& elemAS : elementsASurveiller_) {
         // suppression des variables d'écart précédentes
         elemAS->ecarts_.clear();
         elemAS->menacesMax_.clear();
@@ -2381,12 +2372,9 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
 int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 {
     if (!quads.empty()) {
-        std::set<std::shared_ptr<Quadripole>>::const_iterator setQuadsIt, setQuadsEnd;
         // Application des indispos lignes
         //----------------------------------------------
-        setQuadsEnd = quads.cend();
-        for (setQuadsIt = quads.cbegin(); setQuadsIt != setQuadsEnd; ++setQuadsIt) {
-            auto& ligne = *setQuadsIt;
+        for (const auto& ligne : quads) {
             ligne->etatOr_ = ligne->etatOrBase_;
             ligne->etatEx_ = ligne->etatExBase_;
         }
@@ -2404,10 +2392,7 @@ int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
         }
 
         // On remet la validite des incidents a jour
-        vector<std::shared_ptr<Incident>>::const_iterator icdtIt, icdtEnd = incidentsEtParades_.cend();
-        for (icdtIt = incidentsEtParades_.cbegin(); icdtIt != icdtEnd; ++icdtIt) {
-            auto inc = *icdtIt;
-
+        for (const auto& inc : incidentsEtParades_) {
             if (inc->validite_ != inc->validiteBase_) {
                 inc->validite_ = inc->validiteBase_;
 
@@ -2429,7 +2414,7 @@ int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 }
 
 
-std::shared_ptr<TransformateurDephaseur> Reseau::creerTD(std::shared_ptr<Quadripole> quadVrai,
+std::shared_ptr<TransformateurDephaseur> Reseau::creerTD(const std::shared_ptr<Quadripole>& quadVrai,
                                                          int numTd,
                                                          int numNoeudFictif,
                                                          int numQuadFictif,
@@ -2440,7 +2425,7 @@ std::shared_ptr<TransformateurDephaseur> Reseau::creerTD(std::shared_ptr<Quadrip
                                                          ModeCuratif curatif,
                                                          int lowtap,
                                                          int nbtap,
-                                                         vector<float> tapdepha,
+                                                         const vector<float>& tapdepha,
                                                          int lowran,
                                                          int uppran)
 {
@@ -2494,7 +2479,8 @@ void ElementCuratif::reset()
 int TransformateurDephaseur::getClosestTapPosition(double angleFinal)
 {
     int closestTapPosition = nbtap_ - 1;
-    double dif1 = angleFinal - tapdepha_[0], dif2;
+    double dif1 = angleFinal - tapdepha_[0];
+    double dif2;
     for (int j = 1; j < nbtap_; ++j) {
         dif2 = angleFinal - tapdepha_[j];
         if (dif1 * dif2 <= 1.e-6) {

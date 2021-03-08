@@ -326,7 +326,8 @@ int Calculer::ecrireContraintesDeBordTransformateurDephaseur()
         auto& td = tdIt->second;
         numVarTd = td->numVar_;
 
-        double puiMax, puiMin;
+        double puiMax;
+        double puiMin;
         if (td->type_ == TransformateurDephaseur::PILOTAGE_ANGLE_IMPOSE
             || td->type_ == TransformateurDephaseur::PILOTAGE_PUISSANCE_IMPOSE) {
             puiMax = td->puiCons_;
@@ -429,7 +430,9 @@ int Calculer::ecrireContrainteBilanEnergetique(bool parZonesSynchr)
     // on ecrit une contrainte de bilan par zone synchrone (afin que les load flow ensuite se passent bien)
     // decrit en plein: les zeros sont decrits ( a revoir eventuellement)
     // A noter : on n'ecrit pas ces contraintes dans la phase Hors reseau car les HVDC font parties du reseau ...
-    int nbGroupesN, nbConsosN, nbQuadN;
+    int nbGroupesN;
+    int nbConsosN;
+    int nbQuadN;
     int firstZone = parZonesSynchr ? 1 : 0;
     int nbZonesSynch = parZonesSynchr ? res_.numNoeudBilanParZone_.size() : 1;
 
@@ -594,8 +597,10 @@ int Calculer::ajouterContraintesCouplagesConsos()
         auto& consoRef = *listeIt;
 
         int nbContraintes = 0;
-        int numVar, numVarRef = consoRef->numVarConso_;
-        double valeurVar, valeurRef = consoRef->valeur_;
+        int numVar;
+        int numVarRef = consoRef->numVarConso_;
+        double valeurVar;
+        double valeurRef = consoRef->valeur_;
 
         if (valeurRef == 0) {
             LOG_ALL(warning) << err::ioDico().msg("ERRConsoNulle", consoRef->nom_, binding->nomRegroupement_);
@@ -653,8 +658,10 @@ int Calculer::ajouterContraintesCouplagesGroupes()
         auto& grpRef = *listeIt;
 
         int nbContraintes = 0;
-        int numVar, numVarRef = grpRef->numVarGrp_;
-        double valeurVar, valeurRef = valeurVariableReference(binding->reference_, grpRef);
+        int numVar;
+        int numVarRef = grpRef->numVarGrp_;
+        double valeurVar;
+        auto valeurRef = valeurVariableReference(binding->reference_, grpRef);
 
         if (valeurRef == 0) {
             LOG_ALL(error) << err::ioDico().msg("ERRVarRefNulle", grpRef->nom_, binding->nomRegroupement_);
@@ -706,10 +713,8 @@ int Calculer::ajouterContraintesCouplagesGroupes()
 /* ajout de 2 contraintes pour limiter le vol de redispatching curatif e la hausse et a la baisse */
 int Calculer::ajouterLimiteCuratifGroupe(const std::map<int, std::vector<int>>& mapZoneSyncGrp)
 {
-    std::map<int, std::vector<int>>::const_iterator itZoneSync, itZoneSyncGrpEnd = mapZoneSyncGrp.end();
-
-    for (itZoneSync = mapZoneSyncGrp.begin(); itZoneSync != itZoneSyncGrpEnd; ++itZoneSync) {
-        const std::vector<int>& listeVarCurGrp = itZoneSync->second;
+    for (const auto& zone : mapZoneSyncGrp) {
+        const std::vector<int>& listeVarCurGrp = zone.second;
         int nbVarCurGrp = listeVarCurGrp.size();
 
         // redispatching B
@@ -743,7 +748,9 @@ int Calculer::ecrireEquationBilanCuratif(
     }
 
     for (auto& zone : zoneSync) {
-        int nbVarCurGrp = 0, nbVarCurConso = 0, nbVarCurLcc = 0;
+        int nbVarCurGrp = 0;
+        int nbVarCurConso = 0;
+        int nbVarCurLcc = 0;
         auto itZoneSync = mapZoneSyncGrp.find(zone);
         if (itZoneSync != mapZoneSyncGrp.cend()) {
             const std::vector<int>& listeVarCurGrp = itZoneSync->second;
@@ -885,7 +892,11 @@ int Calculer::initJacobienne()
 
 int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vector<double>& secondMembreFixe)
 {
-    int nbGroupesN, nbConsosN, nbQuadN, nbTdN, nbCCN;
+    int nbGroupesN;
+    int nbConsosN;
+    int nbQuadN;
+    int nbTdN;
+    int nbCCN;
 
     for (int i = 0; i < res_.nbNoeuds_; ++i) {
         auto& nod = res_.noeuds_[i];
@@ -1170,7 +1181,8 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
 
 double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
 {
-    double prodCoupee = 0., consoCoupee = 0.;
+    double prodCoupee = 0.;
+    double consoCoupee = 0.;
     if (poche->pocheAvecConsoProd_) {
         for (auto& node : poche->noeudsPoche_) {
             for (int j = 0; j < node->nbConsos_; ++j) {
@@ -1205,7 +1217,10 @@ int Calculer::construireJacobienne()
     // 1- elimination de la derniere injection
     // 2- remplacement de cette derniere par une phase.
 
-    int i, j, k, nbQuadN;
+    int i;
+    int j;
+    int k;
+    int nbQuadN;
     int indElmExistDeja = 0;
     int nbElmdeMatrContraint = 0;
     double elemNod = 0;
@@ -1964,7 +1979,9 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     double variationTranSurIncident = 0.;
 
     double puissance = 0.;
-    int numQuadSurveille = quad->num_, i_q, i_p;
+    int numQuadSurveille = quad->num_;
+    int i_q;
+    int i_p;
 
     for (i_q = 0; i_q < icdt->nbLignes_; ++i_q) {
         auto& quad2 = icdt->listeQuads_[i_q];
@@ -2138,7 +2155,9 @@ double Calculer::transitSurQuadIncidentNonConnexe(const std::shared_ptr<Quadripo
 
 int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*phase*/, bool& existe_contrainte_active)
 {
-    double minT, maxT, tran;
+    double minT;
+    double maxT;
+    double tran;
 
     // initialisation du nombre de contraintes detectees
     nbCtr_ = 0;
@@ -4607,7 +4626,8 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
 void Calculer::printMatriceDesContraintes()
 {
     std::stringstream ss;
-    std::vector<int>::const_iterator indiceDebut = pbIndicesColonnes_.begin(), indiceFin = pbIndicesColonnes_.end();
+    auto indiceDebut = pbIndicesColonnes_.begin();
+    auto indiceFin = pbIndicesColonnes_.end();
 
     ss << "Matrice des contraintes" << std::endl;
 

@@ -13,6 +13,7 @@
 #include "error.h"
 #include <metrix/log.h>
 
+#include <array>
 #include <cstring>
 #include <fstream>
 #include <iostream>
@@ -104,7 +105,8 @@ void IoDico::readFile(const char* filename)
 
     // Traiter chaque ligne
     bool ok = true;
-    string key, phrase;
+    string key;
+    string phrase;
 
     while (!in.eof() && ok) {
         ok = processLine(in, key, phrase);
@@ -240,7 +242,7 @@ bool IoDico::processLine(ifstream& in, string& key, string& value)
 string
 IoDico::msg(const char* msgId, const string& p1, const string& p2, const string& p3, const string& p4, const string& p5)
 {
-    const string* tab[5] = {&p1, &p2, &p3, &p4, &p5};
+    const std::array<const string*, 5> tab = {&p1, &p2, &p3, &p4, &p5};
     string val;
 
     if (map_.find(msgId) == map_.end()) {
@@ -250,7 +252,8 @@ IoDico::msg(const char* msgId, const string& p1, const string& p2, const string&
     }
 
     // Traitement des $
-    const char *d1 = val.c_str(), *d2;
+    const char* d1 = val.c_str();
+    const char* d2;
     string phrase;
     int num;
     while (true) {

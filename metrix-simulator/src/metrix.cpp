@@ -109,7 +109,9 @@ int main(int argc, char* argv[])
 
         // Lecture des parametres
         //----------------------
-        time_t start, end, lect;
+        time_t start;
+        time_t end;
+        time_t lect;
         double dif;
         time(&start);
 

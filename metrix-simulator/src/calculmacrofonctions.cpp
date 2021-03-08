@@ -23,6 +23,7 @@
 #include "variante.h"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 #include <fstream> //attention
 #include <iomanip>
@@ -243,9 +244,8 @@ int Calculer::resolutionProbleme()
             }
 
             // Suppression des autres jacobiennes (pour les incidents rompant la connexité)
-            std::map<ListeQuadsIncident, MATRICE*>::iterator it, itEnd = jacIncidentsModifies_.end();
-            for (it = jacIncidentsModifies_.begin(); it != itEnd; ++it) {
-                LU_LibererMemoireLU(it->second);
+            for (const auto& pair : jacIncidentsModifies_) {
+                LU_LibererMemoireLU(pair.second);
             }
             jacIncidentsModifies_.clear();
         }
@@ -1055,8 +1055,8 @@ Calculer::~Calculer() { icdtQdt_.clear(); }
 void Calculer::printStats()
 {
     // statistiques sur les termes de la matrice des contraintes
-    int coeffs[10];
-    std::fill(coeffs, coeffs + 10, 0);
+    std::array<int, 10> coeffs;
+    coeffs.fill(0);
     int nbCoeff = 0;
     for (int i = 0; i < pbNombreDeContraintes_; i++) {
         nbCoeff += pbNombreDeTermesDesLignes_[i];

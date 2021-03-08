@@ -169,7 +169,11 @@ int Calculer::calculCoefsReport(std::shared_ptr<Incident> icdt)
         int nbLignesAAnalyser = nbLignes + nbCouplages;
 
         if (nbLignesAAnalyser > 0) {
-            int m, k, j, i, status;
+            int m;
+            int k;
+            int j;
+            int i;
+            int status;
             vector<std::shared_ptr<Quadripole>> tmpQuadInc(icdt->listeQuads_);
 
             if (nbCouplages > 0) {
@@ -652,7 +656,8 @@ int Calculer::calculReportGroupesEtConsos()
     // permet de savoir si on a déjà calculé les coefficient pour ce noeud
     vector<bool> noeudCalcules;
     vector<double> theta;
-    int numNoeud, cpt = 0;
+    int numNoeud;
+    int cpt = 0;
     if (res_.nbGroupesCuratifs_ > 0 || res_.nbConsosCuratifs_ > 0) {
         noeudCalcules.resize(res_.nbNoeuds_, false);
     }

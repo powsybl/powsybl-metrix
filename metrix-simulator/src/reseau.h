@@ -712,7 +712,7 @@ public:
 
 
 private:
-    std::shared_ptr<TransformateurDephaseur> creerTD(std::shared_ptr<Quadripole> quadVrai,
+    std::shared_ptr<TransformateurDephaseur> creerTD(const std::shared_ptr<Quadripole>& quadVrai,
                                                      int numTd,
                                                      int numNoeudFictif,
                                                      int numQuadFictif,
@@ -723,7 +723,7 @@ private:
                                                      ModeCuratif curatif,
                                                      int lowtap,
                                                      int nbtap,
-                                                     std::vector<float> tapdepha,
+                                                     const std::vector<float>& tapdepha,
                                                      int lowran,
                                                      int uppran);
 

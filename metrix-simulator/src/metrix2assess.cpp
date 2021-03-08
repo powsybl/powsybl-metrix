@@ -120,10 +120,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ----------------------------------------------------------
         // On les ecrit avant le status car il peuvent servir au debug
         fprintf(fr, "C5 ;ZONE SYNC;NUM ZONE;BILAN;\n");
-        std::map<int, double>::const_iterator it, itEnd = res_.bilanParZone_.end();
-        for (it = res_.bilanParZone_.begin(); it != itEnd; it++) {
-            double value = (fabs(it->second) < EPSILON_SORTIES) ? 0.0 : it->second;
-            fprintf(fr, "C5 ;;%d;%.1f;\n", it->first, value);
+        for (const auto& pair : res_.bilanParZone_) {
+            double value = (fabs(pair.second) < EPSILON_SORTIES) ? 0.0 : pair.second;
+            fprintf(fr, "C5 ;;%d;%.1f;\n", pair.first, value);
         }
 
         // ecriture : C2.
@@ -532,8 +531,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 "AR;CT ORDRE;CT EMPIL HR;\n");
         }
 
-        double deltaHR, deltaAR;
-        string sDeltaHR, sDeltaAR;
+        double deltaHR;
+        double deltaAR;
+        string sDeltaHR;
+        string sDeltaAR;
 
         for (auto& elem : res_.groupes_) {
             auto& grp = elem.second;
@@ -1101,7 +1102,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         } else {
             fprintf(fr, "R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;\n");
         }
-        double val, varMargPrev, tmpVal;
+        double val;
+        double varMargPrev;
+        double tmpVal;
         int numVar;
         string nom;
 
@@ -1394,7 +1397,8 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         }
 
         // recherche des variables en base de type delestage
-        int nbDelestageEnBase = 0, numVar;
+        int nbDelestageEnBase = 0;
+        int numVar;
         for (auto& elem : res_.consos_) {
             auto& conso = elem.second;
             numVar = conso->numVarConso_;
