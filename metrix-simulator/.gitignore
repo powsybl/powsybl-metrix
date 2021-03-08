@@ -1,11 +1,14 @@
-/bin
+# 
+# Copyright (c) 2021, RTE (http://www.rte-france.com)
+# See AUTHORS.txt
+# All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, you can obtain one at http://mozilla.org/MPL/2.0/.
+# SPDX-License-Identifier: MPL-2.0
+# 
+
 install
-cmake_install.cmake
-CMakeCache.txt
-CTestTestfile.cmake
-Makefile
-CMakeFiles
-Testing
 coverage
 /tests/*/*/out_s*
 /tests/*/*/metrixOut.txt
@@ -33,7 +36,5 @@ build/*
 ### VisualStudioCode Patch ###
 # Ignore all local history of files
 .history
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode

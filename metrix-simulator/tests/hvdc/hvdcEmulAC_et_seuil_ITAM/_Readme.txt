@@ -1,3 +1,13 @@
+# 
+# Copyright (c) 2021, RTE (http://www.rte-france.com)
+# See AUTHORS.txt
+# All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, you can obtain one at http://mozilla.org/MPL/2.0/.
+# SPDX-License-Identifier: MPL-2.0
+# 
+
 ﻿Même test que émulation AC et TD en curatif, mais on teste le seuil ITAM
 Une parade NRF est donc créée mais le curatif de l'émulation AC doit pouvoir agir sur l'incident père (ce qui n'est pas le cas des autres curatifs)
 
