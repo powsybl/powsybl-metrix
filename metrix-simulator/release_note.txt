@@ -8,7 +8,7 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
-Release note for Version 7.1.1
+Release note for Version 1.0.0
 
 incompatibilities with previous versions:
 N/A
@@ -17,4 +17,4 @@ bug fixes:
 N/A
 
 features:
-N/A
+- initial code extracted from project metrix 7.1.0

@@ -11,7 +11,7 @@
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 project(MetrixSimulator 
-    VERSION 7.1.1
+    VERSION 1.0.0
     LANGUAGES C CXX)
 
 cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
