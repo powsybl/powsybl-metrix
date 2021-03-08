@@ -11,6 +11,9 @@ jobs:
     name: Linux
     runs-on: ubuntu-latest
     steps:
+      - name: Install Boost
+        run: sudo apt update -y && sudo apt install -y libboost-all-dev
+
       - name: Checkout sources
         uses: actions/checkout@v1
 
@@ -20,7 +23,6 @@ jobs:
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_CXX_COMPILER=g++-8
           -DCMAKE_C_COMPILER=gcc-8
-          -DCMAKE_PREFIX_PATH=$BOOST_ROOT_1_72_0
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
 
       - name: Build
@@ -56,6 +58,9 @@ jobs:
           rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
         env:
           SONAR_SCANNER_VERSION: 3.3.0.1492
+
+      - name: Install Boost
+        run: sudo apt update -y && sudo apt install -y libboost-all-dev
 
       - name: Checkout sources
         uses: actions/checkout@v1
