@@ -210,7 +210,9 @@ void Logger::formatter(const record_view& view, formatting_ostream& os) const
         view.attribute_values()["Timestamp"].extract<std::chrono::system_clock::time_point>().get());
     std::string time_formatted;
     time_formatted.assign(nb_char_time_formatted, '\0');
-    std::strftime(&time_formatted[0], nb_char_time_formatted, "%a %b %d %H:%M:%S %Y", std::localtime(&time));
+    std::tm l_tm;
+    localtime_r(&time, &l_tm);
+    std::strftime(&time_formatted[0], nb_char_time_formatted, "%a %b %d %H:%M:%S %Y", &l_tm);
 
     os << "[" << time_formatted << "] [" << severities_.at(lvl) << "] "
        << view.attribute_values()["File"].extract<std::string>() << ",l"
