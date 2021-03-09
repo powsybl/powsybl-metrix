@@ -1600,20 +1600,6 @@ LigneCC::LigneCC(int unsigned num,
 {
 }
 
-Reseau::~Reseau()
-{
-    quads_.clear();
-    noeuds_.clear();
-    consos_.clear();
-    groupes_.clear();
-    incidents_.clear();
-    TransfoDephaseurs_.clear();
-    LigneCCs_.clear();
-    elementsASurveiller_.clear();
-    groupesCouples_.clear();
-    consosCouplees_.clear();
-}
-
 //--------------------
 // Reseau::interfaceDIE
 //--------------------

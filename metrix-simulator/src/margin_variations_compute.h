@@ -34,6 +34,10 @@ public:
                           const std::vector<int>& baseComplement,
                           const std::vector<char>& sens);
     ~MarginVariationMatrix();
+    MarginVariationMatrix(const MarginVariationMatrix&) = delete;
+    MarginVariationMatrix& operator=(const MarginVariationMatrix&) = delete;
+    MarginVariationMatrix(MarginVariationMatrix&&) = default;
+    MarginVariationMatrix& operator=(MarginVariationMatrix&&) = default;
 
     MATRICE* matrix() const { return pmatrix_; }
     MATRICE_A_FACTORISER* matrixToFactor() { return &B_; }

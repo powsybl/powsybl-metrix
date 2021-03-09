@@ -1054,8 +1054,6 @@ void Calculer::fixerVariablesEntieres()
 }
 
 
-Calculer::~Calculer() { icdtQdt_.clear(); }
-
 void Calculer::printStats()
 {
     // statistiques sur les termes de la matrice des contraintes

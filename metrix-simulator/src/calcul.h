@@ -57,6 +57,7 @@ public:
     };
 
     Contrainte(const Contrainte& copie) { *this = copie; }
+    ~Contrainte() = default;
 
     Contrainte& operator=(const Contrainte& ctr)
     {
@@ -408,12 +409,6 @@ public:
 
     // Traces
     void printFctObj(bool silent);
-
-    ~Calculer();
-
-    Calculer(const Calculer&) = delete;            // Constructeur de copie
-    Calculer& operator=(const Calculer&) = delete; // Operateur d'affectation
-
 private:
     struct CostDef {
         std::string type;

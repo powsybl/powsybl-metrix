@@ -570,10 +570,6 @@ public:
     void updateVariant(MapQuadinVar& mapping, const config::VariantConfiguration::VariantConfig& config);
     void updateParades(const config::ParadesConfiguration& config);
 
-    ~Reseau();
-    Reseau(const Reseau&) = delete;            // Constructeur de copie
-    Reseau& operator=(const Reseau&) = delete; // Operateur d'affectation
-
     std::vector<std::string> regions_;           /* noms des regions */
     std::vector<std::shared_ptr<Noeud>> noeuds_; /* indices des noeuds*/
     std::set<std::shared_ptr<Quadripole>>
@@ -803,6 +799,9 @@ public:
         return *this;
     }
 
+    Incident& operator=(Incident&&) = default;
+    Incident(Incident&&) = default;
+
     ~Incident() = default;
 
     TypeIncident type_; /* type d incident */
@@ -986,6 +985,9 @@ public:
     PochePerdue(const std::shared_ptr<Incident>& icdt, std::map<std::shared_ptr<Noeud>, int>& listeNoeuds);
     PochePerdue& operator=(const PochePerdue& other);
     PochePerdue(const PochePerdue& poche);
+    PochePerdue(PochePerdue&&) = default;
+    PochePerdue& operator=(PochePerdue&&) = default;
+    ~PochePerdue() = default;
 
     std::set<std::shared_ptr<Noeud>, bool (*)(const std::shared_ptr<Noeud>&, const std::shared_ptr<Noeud>&)>
         noeudsPoche_
