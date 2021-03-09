@@ -12,25 +12,8 @@
 
 namespace config
 {
-/// @brief Single instance of the inpu configuration
-static InputConfiguration config_("",
-                                  "",
-                                  "",
-                                  "",
-                                  0,
-                                  0,
-                                  false,
-                                  {},
-                                  boost::none,
-                                  false,
-                                  false,
-                                  false,
-                                  false,
-                                  InputConfiguration::CheckConstraintLevel::NONE,
-                                  false,
-                                  false,
-                                  false,
-                                  false);
+/// @brief Single instance of the input configuration
+static InputConfiguration config_;
 
 void configureInputConfiguration(InputConfiguration&& config) { config_ = std::move(config); }
 

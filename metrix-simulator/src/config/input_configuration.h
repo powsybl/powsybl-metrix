@@ -34,6 +34,7 @@ public:
         EVERY_INCIDENT ///< When adding a constraint, run every incident to check that we didn't forget a constraint
     };
 
+    InputConfiguration() = default;
     InputConfiguration(const std::string& filepath_error,
                        const std::string& filepath_variant,
                        const std::string& filepath_results,
@@ -77,20 +78,20 @@ private:
     std::string filepathVariant_;
     std::string filepathResults_;
     std::string filepathParades_;
-    unsigned int firstVariant_;
-    unsigned int nbVariant_;
-    bool printLog_;
+    unsigned int firstVariant_ = 0;
+    unsigned int nbVariant_ = 0;
+    bool printLog_ = false;
     std::vector<metrix::log::Verbose> verboses_;
     boost::optional<metrix::log::severity::level> logLevel_;
-    bool writeConstraintsFile_;
-    bool printConstraintsMatrix_;
-    bool writeSensivityFile_;
-    bool writeMatrixReport_;
-    CheckConstraintLevel checkConstraintLevel_;
-    bool compareLoadFlowReport_;
-    bool ignoreIncidentGroupAbsent_;
-    bool useAllOutputs_;
-    bool exportMPSFile_;
+    bool writeConstraintsFile_ = false;
+    bool printConstraintsMatrix_ = false;
+    bool writeSensivityFile_ = false;
+    bool writeMatrixReport_ = false;
+    CheckConstraintLevel checkConstraintLevel_ = CheckConstraintLevel::NONE;
+    bool compareLoadFlowReport_ = false;
+    bool ignoreIncidentGroupAbsent_ = false;
+    bool useAllOutputs_ = false;
+    bool exportMPSFile_ = false;
 };
 
 void configureInputConfiguration(InputConfiguration&& config);
