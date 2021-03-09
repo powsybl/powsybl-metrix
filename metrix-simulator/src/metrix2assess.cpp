@@ -1508,7 +1508,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
             continue;
         }
         string nom;
-        int numIncident;
+        int numIncident = -1;
         std::tie(nom, numIncident, std::ignore) = (*opt_inc);
         double costVal = (config::configuration().redispatchCostOffset() > 0)
                              ? std::accumulate(cost[i].begin(),

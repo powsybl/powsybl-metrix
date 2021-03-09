@@ -31,7 +31,7 @@ std::string c_fmt(const char* format, Args... args)
     std::array<char, max> buf;
     buf.fill('\0');
 
-    sprintf(buf.data(), format, args...);
+    snprintf(buf.data(), max, format, args...);
 
     return std::string(buf.data());
 }

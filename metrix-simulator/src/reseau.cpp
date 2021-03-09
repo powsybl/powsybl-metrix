@@ -148,8 +148,6 @@ void Reseau::update_with_configuration()
 //--------------------
 void Reseau::lireDonnees()
 {
-    unsigned int i;
-
     auto& config = config::configuration();
 
     update_with_configuration();
@@ -169,7 +167,7 @@ void Reseau::lireDonnees()
 
     // Traitement des noeuds
     //----------------------
-    for (i = 0; i < static_cast<unsigned int>(nbNoeuds_); ++i) {
+    for (int i = 0; i < nbNoeuds_; ++i) {
         auto noeud = std::make_shared<Noeud>(i, config.cpposregDIE()[i] - 1);
         noeuds_[i] = noeud;
         noeud->typeNoeud_ = Noeud::NOEUD_REEL;
@@ -181,7 +179,7 @@ void Reseau::lireDonnees()
 
     vector<std::shared_ptr<Quadripole>> quadsParIndice;
     quadsParIndice.reserve(nbQuads_);
-    for (i = 0; i < static_cast<unsigned int>(nbQuads_); ++i) {
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nbQuads_); ++i) {
         nomQuadripole = config.cqnomquaDIE()[i];
         rtrim(nomQuadripole);
         if (i >= config.tnnorquaDIE().size() || i >= config.tnnexquaDIE().size() || config.tnnorquaDIE()[i] == 0
@@ -264,7 +262,7 @@ void Reseau::lireDonnees()
         nbNoeuds_ = nbNoeuds_ + nbTd_;
         noeuds_.resize(nbNoeuds_);
 
-        for (i = 0; i < static_cast<unsigned int>(nbTd_); ++i) {
+        for (unsigned int i = 0; i < static_cast<unsigned int>(nbTd_); ++i) {
             auto quadVrai = quadsParIndice[config.dttrdequDIE()[i] - 1];
             auto typeP = static_cast<TransformateurDephaseur::TypePilotageTD>(config.dtmodregDIE()[i]);
 
@@ -343,7 +341,7 @@ void Reseau::lireDonnees()
             noeuds_.resize(nbNoeuds_ + nbCCEmulAC_);
         }
 
-        for (i = 0; i < static_cast<unsigned int>(nbCC_); ++i) {
+        for (unsigned int i = 0; i < static_cast<unsigned int>(nbCC_); ++i) {
             auto& nor = noeuds_[config.dcnorquaDIE()[i] - 1];
             auto& nex = noeuds_[config.dcnexquaDIE()[i] - 1];
             string nom = config.dcnomquaDIE()[i];
@@ -498,7 +496,7 @@ void Reseau::lireDonnees()
     //----------------------
 
     // Types des groupes
-    for (i = 0; i < static_cast<unsigned int>(nbTypesGroupes_); ++i) {
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nbTypesGroupes_); ++i) {
         string typeGroupe = config.trnomtypDIE()[i];
         rtrim(typeGroupe);
         typesGroupes_.push_back(typeGroupe);
@@ -508,12 +506,11 @@ void Reseau::lireDonnees()
     nbVarGroupes_ = 0;
     double sumMaxGroupes = 0.0;
     DBandeRegGlobale_ = 0;
-    std::shared_ptr<Groupe> prod;
     cptPtIncident = 0;
     vector<std::shared_ptr<Groupe>> groupesParIndice;
     groupesParIndice.reserve(nbGroupes_);
 
-    for (i = 0; i < static_cast<unsigned int>(nbGroupes_); ++i) {
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nbGroupes_); ++i) {
         nomGroupe = config.trnomgthDIE()[i];
         rtrim(nomGroupe);
         if (i >= config.tnneurgtDIE().size() || config.tnneurgtDIE()[i] == 0 || config.tnneurgtDIE()[i] > nbNoeuds_) {
@@ -597,7 +594,7 @@ void Reseau::lireDonnees()
     string nomConso;
     vector<std::shared_ptr<Consommation>> consommationsParIndice;
     consommationsParIndice.reserve(nbConsos_);
-    for (i = 0; i < static_cast<unsigned int>(nbConsos_); ++i) {
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nbConsos_); ++i) {
         nomConso = config.tnnomnoeDIE()[i];
         rtrim(nomConso);
 
@@ -722,7 +719,7 @@ void Reseau::lireDonnees()
     int nbIncValides = 0;
 
     incidentsEtParades_.reserve(nbIncidents_);
-    for (i = 0; i < static_cast<unsigned int>(nbIncidents_); ++i) {
+    for (unsigned int i = 0; i < static_cast<unsigned int>(nbIncidents_); ++i) {
         auto icdt = std::make_shared<Incident>(Incident::INCONNU);
         icdt->num_ = i;
         icdt->nbLignes_ = 0;
@@ -851,11 +848,14 @@ void Reseau::lireDonnees()
         int indice = -1;
         int nbDef = -1;
         while (indice < static_cast<int>(config.nbDefres()) - 1) {
-            auto& quad = quadsParIndice[config.ptdefresDIE()[++indice] - 1];
-            nbDef = config.ptdefresDIE()[++indice];
+            ++indice;
+            auto& quad = quadsParIndice[config.ptdefresDIE()[indice] - 1];
+            ++indice;
+            nbDef = config.ptdefresDIE()[indice];
             std::set<std::shared_ptr<Incident>> listeIncidents;
             for (int i = 0; i < nbDef; ++i) {
-                auto& icdt = incidentsEtParades_[config.ptdefresDIE()[++indice]];
+                ++indice;
+                auto& icdt = incidentsEtParades_[config.ptdefresDIE()[indice]];
                 LOG(debug) << metrix::log::verbose_config << "Quad : " << quad->nom_
                            << ", transit sur incident : " << icdt->nom_;
                 if (icdt->validite_) {
@@ -880,11 +880,14 @@ void Reseau::lireDonnees()
         int indice = -1;
         int nbDef = -1;
         while (indice < static_cast<int>(config.nbVarmar()) - 1) {
-            auto& quad = quadsParIndice[config.ptvarmarDIE()[++indice] - 1];
-            nbDef = config.ptvarmarDIE()[++indice];
+            ++indice;
+            auto& quad = quadsParIndice[config.ptvarmarDIE()[indice] - 1];
+            ++indice;
+            nbDef = config.ptvarmarDIE()[indice];
             std::set<std::shared_ptr<Incident>> listeIncidents;
             for (int i = 0; i < nbDef; ++i) {
-                auto& icdt = incidentsEtParades_[config.ptvarmarDIE()[++indice]];
+                ++indice;
+                auto& icdt = incidentsEtParades_[config.ptvarmarDIE()[indice]];
                 LOG(debug) << "Quad : " << quad->nom_
                            << ", variations marginales detaillees sur incident : " << icdt->nom_;
                 if (icdt->validite_) {
@@ -2699,11 +2702,11 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& td : config.tdPhasing) {
-        const auto& str = std::get<VariantConfiguration::NAME>(td);
+    for (auto& tdPhasing : config.tdPhasing) {
+        const auto& str = std::get<VariantConfiguration::NAME>(tdPhasing);
         auto tdIt = TransfoDephaseurs_.find(str);
         if (tdIt != TransfoDephaseurs_.end()) {
-            auto var_int = std::get<VariantConfiguration::VALUE>(td);
+            auto var_int = std::get<VariantConfiguration::VALUE>(tdPhasing);
             auto& td = tdIt->second;
             if (!td->tapdepha_.empty() && (var_int >= td->lowtap_) && (var_int < td->lowtap_ + td->nbtap_)) {
                 td->puiConsBase_ = td->angle2Power(td->tapdepha_[var_int - td->lowtap_]);
@@ -2946,11 +2949,11 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& td : config.tdPhasing) {
-        const auto& str = std::get<VariantConfiguration::NAME>(td);
+    for (auto& tdPhasing : config.tdPhasing) {
+        const auto& str = std::get<VariantConfiguration::NAME>(tdPhasing);
         auto tdIt = TransfoDephaseurs_.find(str);
         if (tdIt != TransfoDephaseurs_.end()) {
-            auto var_int = std::get<VariantConfiguration::VALUE>(td);
+            auto var_int = std::get<VariantConfiguration::VALUE>(tdPhasing);
             auto& td = tdIt->second;
             if (!td->tapdepha_.empty() && (var_int >= td->lowtap_) && (var_int < td->lowtap_ + td->nbtap_)) {
                 auto power = td->angle2Power(td->tapdepha_[var_int - td->lowtap_]);
@@ -2963,13 +2966,13 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     }
 
     for (auto& threshold : config.tresholds) {
-        for (auto quad_cfg : threshold.second) {
+        for (const auto& quad_cfg : threshold.second) {
             const auto& str = std::get<VariantConfiguration::NAME>(quad_cfg);
-            auto& mapping = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
-                                ? elementsASurveillerN_
-                                : elementsASurveillerNk_;
-            auto quadSurvIt = mapping.find(str);
-            if (quadSurvIt != mapping.end()) {
+            auto& map = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
+                            ? elementsASurveillerN_
+                            : elementsASurveillerNk_;
+            auto quadSurvIt = map.find(str);
+            if (quadSurvIt != map.end()) {
                 auto& quad = quadSurvIt->second;
                 auto var_dbl = std::get<VariantConfiguration::VALUE>(quad_cfg);
 

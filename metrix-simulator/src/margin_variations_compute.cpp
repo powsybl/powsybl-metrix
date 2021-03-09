@@ -102,7 +102,11 @@ void MarginVariationMatrix::init(int nbConstraints,
         cpmBase++;
         int ideb = BIndexDebutDesColonnes_[i];
         for (int j = 0; j < baseSize; ++j) {
-            BValeurDesTermesDeLaMatrice_[ideb + j] = baseComplement[cpmBase] == j ? (sens[j] == '>' ? -1 : 1) : 0;
+            double value = 0.;
+            if (baseComplement[cpmBase] == j) {
+                value = sens[j] == '>' ? -1 : 1;
+            }
+            BValeurDesTermesDeLaMatrice_[ideb + j] = value;
         }
     }
 

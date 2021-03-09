@@ -77,9 +77,12 @@ bool estEnDepassement(const std::shared_ptr<ElementASurveiller>& elemSurv,
 
 bool estEnDepassementAvantManoeuvre(const std::shared_ptr<ElementASurveiller>& elemSurv, double transit)
 {
-    double seuil = transit >= 0 ? elemSurv->seuilMaxAvantCur_
-                                : elemSurv->seuilsAssymetriques_ ? -elemSurv->seuilMaxAvantCurExOr_
-                                                                 : elemSurv->seuilMaxAvantCur_;
+    double seuil = 0.0;
+    if (elemSurv->seuilsAssymetriques_) {
+        seuil = transit >= 0 ? elemSurv->seuilMaxAvantCur_ : -elemSurv->seuilMaxAvantCurExOr_;
+    } else {
+        seuil = transit >= 0 ? elemSurv->seuilMaxAvantCur_ : elemSurv->seuilMaxAvantCur_;
+    }
     return (seuil != config::constants::valdef) && (fabs(transit) - seuil > config::constants::acceptable_diff);
 }
 
@@ -1486,7 +1489,7 @@ int Calculer::ecrireCoupeTransit(const double& maxTprev,
             double proba = incidentPere->getProb();
 
             icdt->numVarActivation_ = ajouterVariableEntiere(
-                icdt->num_, config::constants::cost_parade * proba * incidentPere->contraintes_.size());
+                icdt->num_, incidentPere->contraintes_.size() * config::constants::cost_parade * proba);
             if (coefs_.size() < static_cast<size_t>(pbNombreDeVariables_)) {
                 coefs_.resize(pbNombreDeVariables_, 0.);
             }
@@ -1978,10 +1981,8 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
 
     double puissance = 0.;
     int numQuadSurveille = quad->num_;
-    int i_q;
-    int i_p;
 
-    for (i_q = 0; i_q < icdt->nbLignes_; ++i_q) {
+    for (int i_q = 0; i_q < icdt->nbLignes_; ++i_q) {
         auto& quad2 = icdt->listeQuads_[i_q];
         // verification sur la presence du quad dans l'incident
         if (quad2->num_ == quad->num_) {
@@ -1991,7 +1992,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
         variationTranSurIncident += puissance * icdt->rho_[i_q][numQuadSurveille];
     }
 
-    for (i_q = 0; i_q < icdt->nbCouplagesFermes_; ++i_q) {
+    for (int i_q = 0; i_q < icdt->nbCouplagesFermes_; ++i_q) {
         auto& quad2 = icdt->listeCouplagesFermes_[i_q];
         // verification sur la presence du quad dans l'incident
         puissance = quad2->u2Yij_ * (theta[quad2->norqua_->num_] - theta[quad2->nexqua_->num_]);
@@ -2000,7 +2001,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
 
     if (icdt->nbGroupes_ >= 1) {
         int nbQuadsInc = icdt->nbLignes_ + icdt->nbCouplagesFermes_;
-        for (i_p = 0; i_p < icdt->nbGroupes_; ++i_p) {
+        for (int i_p = 0; i_p < icdt->nbGroupes_; ++i_p) {
             auto& grpe = icdt->listeGroupes_[i_p];
             if (!grpe->etat_) {
                 continue;
@@ -2029,7 +2030,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     }
 
     if (icdt->nbLccs_ >= 1) {
-        for (i_q = 0; i_q < icdt->nbLccs_; ++i_q) { // ATTENTION AU SIGNE -
+        for (int i_q = 0; i_q < icdt->nbLccs_; ++i_q) { // ATTENTION AU SIGNE -
             auto& hvdc = icdt->listeLccs_[i_q];
             if (!hvdc->connecte()) {
                 continue;
@@ -2045,7 +2046,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     }
 
     // Annulation de l'action des TD fictifs en N
-    for (i_p = 0; i_p < res_.nbCCEmulAC_; ++i_p) {
+    for (int i_p = 0; i_p < res_.nbCCEmulAC_; ++i_p) {
         double varPuiss = 0.;
 
         auto& tdfictif = res_.TDFictifs_[i_p];
@@ -3653,7 +3654,7 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
                     double proba = icdt->getProb();
 
                     parade->numVarActivation_ = ajouterVariableEntiere(
-                        parade->num_, config::constants::cost_parade * proba * icdt->contraintes_.size());
+                        parade->num_, icdt->contraintes_.size() * config::constants::cost_parade * proba);
 
                     if (!parade->contraintesAutorisees_.empty()
                         && parade->contraintesAutorisees_.find(contrainte->elemAS_)
@@ -4281,10 +4282,13 @@ int Calculer::fixerProdSansReseau()
                                       ? 0.
                                       : grpe->puisMax_ - grpe->prod_;
                 pbXmin_[numVar + 1] = 0.;
-                pbXmax_[numVar + 1] = (config.computationType()
-                                       == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
-                                          ? 0.
-                                          : (grpe->prod_ >= grpe->puisMin_ ? grpe->prod_ - grpe->puisMin_ : 0.);
+
+                double value = 0.0;
+                if (grpe->prod_ >= grpe->puisMin_
+                    && config.computationType() != config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH) {
+                    value = grpe->prod_ - grpe->puisMin_;
+                }
+                pbXmax_[numVar + 1] = value;
             } else {
                 pbCoutLineaire_[numVar] = 0.;
                 pbCoutLineaire_[numVar + 1] = 0.;
