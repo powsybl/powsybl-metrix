@@ -268,7 +268,7 @@ private:
 
     // underlying loggers
     std::unique_ptr<logger_src> logger_;
-    std::ofstream resultFileStream_;
+    std::ofstream resultFileStream_ = std::ofstream(config.resultFilepath);
 
     // thread management
     std::unique_ptr<std::thread> thread_;

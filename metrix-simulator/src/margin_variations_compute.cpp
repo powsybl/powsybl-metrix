@@ -21,7 +21,6 @@ MarginVariationMatrix::MarginVariationMatrix(int nbConstraints,
                                              const std::vector<double>& constraintsMatrixCoeffs,
                                              const std::vector<int>& baseComplement,
                                              const std::vector<char>& sens) :
-    pmatrix_{nullptr},
     BValeurDesTermesDeLaMatrice_(nbConstraints * nbConstraints, 0.)
 {
     BIndexDebutDesColonnes_.reserve(nbConstraints);

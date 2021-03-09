@@ -452,12 +452,7 @@ bool compareNoeuds(const std::shared_ptr<Noeud>& noeud1, const std::shared_ptr<N
     return noeud1->num_ < noeud2->num_;
 }
 
-PochePerdue::PochePerdue(const std::shared_ptr<Incident>& icdt, map<std::shared_ptr<Noeud>, int>& listeNoeuds) :
-    noeudsPoche_(&compareNoeuds),
-    prodMaxPoche_(0),
-    prodPerdue_(0.),
-    consoPerdue_(0.),
-    pocheAvecConsoProd_(false)
+PochePerdue::PochePerdue(const std::shared_ptr<Incident>& icdt, map<std::shared_ptr<Noeud>, int>& listeNoeuds)
 {
     if (icdt->nbGroupes_ > 0) {
         LOG_ALL(error) << err::ioDico().msg("ERRIncidentGroupeRompantConnexite", icdt->nom_, c_fmt("%d", icdt->num_));
@@ -547,8 +542,6 @@ PochePerdue::PochePerdue(const std::shared_ptr<Incident>& icdt, map<std::shared_
 PochePerdue::PochePerdue(const PochePerdue& poche) :
     noeudsPoche_(poche.noeudsPoche_),
     prodMaxPoche_(poche.prodMaxPoche_),
-    prodPerdue_(0.),
-    consoPerdue_(0.),
     pocheAvecConsoProd_(poche.pocheAvecConsoProd_),
     incidentModifie_(std::make_shared<Incident>(*poche.incidentModifie_))
 {

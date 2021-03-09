@@ -84,21 +84,22 @@ private:
         std::string filepathVariant;
         std::string filepathResults;
         std::string filepathParades;
-        int firstVariant;
-        int nbVariant;
-        bool printLog;
-        bool verboseConfig;
-        bool verboseConstraints;
+        int firstVariant = -1;
+        int nbVariant = -1;
+        bool printLog = false;
+        bool verboseConfig = false;
+        bool verboseConstraints = false;
         boost::optional<metrix::log::severity::level> logLevel;
-        bool writeConstraintsFile;
-        bool printConstraintsMatrix;
-        bool writeSensivityFile;
-        bool writeMatrixReport;
-        config::InputConfiguration::CheckConstraintLevel checkConstraintLevel;
-        bool compareLoadFlowReport;
-        bool ignoreIncidentGroupAbsent;
-        bool allOutputs;
-        bool exportMPSFile;
+        bool writeConstraintsFile = false;
+        bool printConstraintsMatrix = false;
+        bool writeSensivityFile = false;
+        bool writeMatrixReport = false;
+        config::InputConfiguration::CheckConstraintLevel checkConstraintLevel
+            = config::InputConfiguration::CheckConstraintLevel::NONE;
+        bool compareLoadFlowReport = false;
+        bool ignoreIncidentGroupAbsent = false;
+        bool allOutputs = false;
+        bool exportMPSFile = false;
     };
 
 private:
@@ -112,7 +113,7 @@ private:
 
 private:
     boost::program_options::options_description allOptions_;
-    boost::program_options::options_description desc_;
+    boost::program_options::options_description desc_ = boost::program_options::options_description("Metrix options");
     boost::program_options::positional_options_description positional_;
 
     TemporaryInputConfiguration config_;

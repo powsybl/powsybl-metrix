@@ -127,7 +127,6 @@ private:
 bool compareContraintes(const std::shared_ptr<Contrainte>& icdtQdt1, const std::shared_ptr<Contrainte>& icdtQdt2);
 bool compareGroupeHausse(const std::shared_ptr<Groupe>& grp1, const std::shared_ptr<Groupe>& grp2);
 bool compareGroupeBaisse(const std::shared_ptr<Groupe>& grp1, const std::shared_ptr<Groupe>& grp2);
-bool compareMenaces(const Menace& menace1, const Menace& menace2);
 
 //----------------------------------------------------------
 // classe Calculer

@@ -125,12 +125,7 @@ const std::map<std::string, metrix::log::severity::level> Options::severities_ =
     {"critical", metrix::log::severity::critical},
 };
 
-Options::Options() :
-    desc_("Metrix options"),
-    config_{
-        "",    "",    "",          "",    "",    -1,    -1,    false,
-        false, false, boost::none, false, false, false, false, config::InputConfiguration::CheckConstraintLevel::NONE,
-        false, false, false,       false}
+Options::Options()
 {
     po::options_description hidden;
     desc_.add_options()("help,h", "Display help message")(

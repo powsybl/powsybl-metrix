@@ -12,6 +12,7 @@
 #define RESEAU_METRIX
 
 #include "config/configuration.h"
+#include "config/constants.h"
 #include "config/parades_configuration.h"
 #include "config/variant_configuration.h"
 #include "parametres.h"
@@ -54,9 +55,7 @@ public:
 
     explicit ElementCuratif(/*int num, */ TypeElement type) :
         // num_(num),
-        typeElem_(type),
-        positionVarCurative_(-1),
-        positionVarEntiereCur_(-1)
+        typeElem_(type)
     {
     }
 
@@ -64,10 +63,10 @@ public:
     TypeElement typeElem_;
 
     // donnees variables d'une variante a l'autre
-    int positionVarCurative_;   // numero de la variable curative du TD (meme position que les incidents)
-                                // vaut 0 si la parade est active; 1 sinon
-    int positionVarEntiereCur_; // pointe dans la place dans le vect. variable, la variable entiere qui active ou
-                                // desactive l'action
+    int positionVarCurative_ = -1;   // numero de la variable curative du TD (meme position que les incidents)
+                                     // vaut 0 si la parade est active; 1 sinon
+    int positionVarEntiereCur_ = -1; // pointe dans la place dans le vect. variable, la variable entiere qui active ou
+                                     // desactive l'action
 
     void reset();
     virtual bool estValide() = 0;
@@ -111,12 +110,12 @@ public:
 
     enum TypeNoeud { NOEUD_REEL = 1, NOEUD_FICTIF = 2 };
 
-    int unsigned num_;    /* num des noeuds */
-    TypeNoeud typeNoeud_; /* type du noeud*/
-    int nbGroupes_;       /* Nombre des groupes, fixe pour toute les variantes */
-    int nbConsos_;        /* Nombre des consommations, fixe pour toutes les variantes*/
-    bool bilan_;          // est ce que le noeud est un noeud bilan
-    int numCompSynch_;
+    int unsigned num_;                          /* num des noeuds */
+    TypeNoeud typeNoeud_ = Noeud::NOEUD_FICTIF; /* type du noeud*/
+    int nbGroupes_ = 0;                         /* Nombre des groupes, fixe pour toute les variantes */
+    int nbConsos_ = 0;                          /* Nombre des consommations, fixe pour toutes les variantes*/
+    bool bilan_ = false;                        // est ce que le noeud est un noeud bilan
+    int numCompSynch_ = 0;
 
     std::vector<Quadripole*> listeQuads_; /* les quadripoles voisins, fixe pour toutes les variantes*/
     int numRegion_;                       /* numero de la region */
@@ -159,10 +158,10 @@ public:
     Connexion(const Connexion&) = delete;            // Constructeur de copie
     Connexion& operator=(const Connexion&) = delete; // Operateur d'affectation
 
-    bool etatOr_;                   /* etat de connection courant origine */
-    bool etatEx_;                   /* etat de connection courant extremite */
-    bool etatOrBase_;               /* etat de connection Variante0 origine */
-    bool etatExBase_;               /* etat de connection Variante0 extremite */
+    bool etatOr_ = true;            /* etat de connection courant origine */
+    bool etatEx_ = true;            /* etat de connection courant extremite */
+    bool etatOrBase_ = true;        /* etat de connection Variante0 origine */
+    bool etatExBase_ = true;        /* etat de connection Variante0 extremite */
     std::shared_ptr<Noeud> norqua_; /* ptr du Noeud origine du dipole, fixe pour toutes les variantes */
     std::shared_ptr<Noeud> nexqua_; /* ptr du Noeud extremite du dipole, fixe pour toutes les variantes */
 
@@ -196,7 +195,7 @@ public:
 
     std::string nom_;  /* Nom du dipole */
     int unsigned num_; /* num du dipole */
-    TypeQuadripole typeQuadripole_;
+    TypeQuadripole typeQuadripole_ = Quadripole::QUADRIPOLE_REEL;
 
     std::shared_ptr<TransformateurDephaseur> td_; /* ptr vers le td sinon nullptr*/
 
@@ -230,6 +229,7 @@ public:
     }; /* numero Noeud extremite du dipole, fixe pour toutes les variantes */
 };
 
+bool compareMenaces(const Menace& menace1, const Menace& menace2);
 
 class ElementASurveiller
 {
@@ -258,17 +258,18 @@ public:
     double seuilMaxAvantCurIncComplexe_; // seuil avant manoeuvre (ITAM) pour un incident specifique
 
     // Seuils Extremite -> Origine
-    bool seuilsAssymetriques_;
-    double seuilMaxNExOr_;   // seuil max pour situ N
-    double seuilMaxIncExOr_; // -- pour incident N-1 ligne
-    double seuilMaxIncComplexeExOr_;
-    double seuilMaxAvantCurExOr_; // seuil avant manoeuvre (ITAM)
-    double seuilMaxAvantCurIncComplexeExOr_;
+    bool seuilsAssymetriques_ = false;
+    double seuilMaxNExOr_ = config::constants::valdef;   // seuil max pour situ N
+    double seuilMaxIncExOr_ = config::constants::valdef; // -- pour incident N-1 ligne
+    double seuilMaxIncComplexeExOr_ = config::constants::valdef;
+    double seuilMaxAvantCurExOr_ = config::constants::valdef; // seuil avant manoeuvre (ITAM)
+    double seuilMaxAvantCurIncComplexeExOr_ = config::constants::valdef;
 
-    double depassementEnN_; // depassement de seuil en N
+    double depassementEnN_ = 0.0; // depassement de seuil en N
     std::set<std::shared_ptr<Incident>> incidentsAvecTransit_;
 
-    std::set<Menace, bool (*)(const Menace&, const Menace&)> menacesMax_;
+    std::set<Menace, bool (*)(const Menace&, const Menace&)> menacesMax_
+        = std::set<Menace, bool (*)(const Menace&, const Menace&)>(&compareMenaces);
     Menace menaceMaxAvantParade_;
 
     std::vector<int>
@@ -312,8 +313,8 @@ public:
     int unsigned num_;             /* num du groupe*/
     int unsigned numNoeud_;        /* Sommets de raccordement des groupes thermiques */
     std::shared_ptr<Noeud> noeud_; /* noeud de connection*/
-    bool etat_;                    /* etat de connection courant  */
-    bool etatBase_;                /* etat de connection cas de base */
+    bool etat_ = true;             /* etat de connection courant  */
+    bool etatBase_ = true;         /* etat de connection cas de base */
 
     int type_; /* type de groupe */
 
@@ -331,13 +332,13 @@ public:
     double demiBande_;        /* demi bande de reglage en reglage secondaire */
 
     // les couts
-    double coutHausseHR_; /* cout Hors reseau*/
-    double coutBaisseHR_; /* cout Hors reseau*/
-    double coutHausseAR_; /* cout Avec reseau*/
-    double coutBaisseAR_; /* cout Avec reseau*/
+    double coutHausseHR_ = 0.0; /* cout Hors reseau*/
+    double coutBaisseHR_ = 0.0; /* cout Hors reseau*/
+    double coutHausseAR_ = 0.0; /* cout Avec reseau*/
+    double coutBaisseAR_ = 0.0; /* cout Avec reseau*/
 
-    double participation_; /* Participation du grp au reglage de frequence*/
-    int numVarGrp_;        /* numero de la variable correspondant au groupe (numVarGrp_, numVarGrp_+1)*/
+    double participation_ = 0.0; /* Participation du grp au reglage de frequence*/
+    int numVarGrp_ = -1;         /* numero de la variable correspondant au groupe (numVarGrp_, numVarGrp_+1)*/
     // pour info numVar est different de num car les groupes sont retries pour que le demarrage HR soit arbitraire
 
     // Curatif
@@ -396,19 +397,19 @@ class Consommation
 public:
     unsigned int num_;      /* num de la conso */
     const std::string nom_; /* nom de la conso */
-    int numVarConso_;       /* un numero est affecte si il existe une conso modifiable */
+    int numVarConso_ = -1;  /* un numero est affecte si il existe une conso modifiable */
 
     std::shared_ptr<Noeud> noeud_; /* noeud de raccordement */
     double valeur_;                /* Valeur de la conso dans la variante */
     double valeurBase_;            /* Valeur de la conso dans le cas de base */
 
-    double seuil_; /* pourcentage max de delestage preventif % */
-    double cout_;  /* cout du delestage preventif */
+    double seuil_ = 0.0; /* pourcentage max de delestage preventif % */
+    double cout_ = 0.0;  /* cout du delestage preventif */
 
-    std::set<int> incidentsAtraiterCuratif_; // indices des incidents a traiter en curatif
-    double coutEffacement_;                  /* Cout de l'effacement curatif dans la variante */
-    double coutEffacementBase_;              /* Cout de l'effacement curatif en base */
-    double pourcentEffacement_;              /* Poucentage d'effacement curatif de la conso */
+    std::set<int> incidentsAtraiterCuratif_;                // indices des incidents a traiter en curatif
+    double coutEffacement_ = config::constants::valdef;     /* Cout de l'effacement curatif dans la variante */
+    double coutEffacementBase_ = config::constants::valdef; /* Cout de l'effacement curatif en base */
+    double pourcentEffacement_ = 0.0;                       /* Poucentage d'effacement curatif de la conso */
 
     Consommation(int num, const std::string& nom, const std::shared_ptr<Noeud>& noeud, float valeur);
     ~Consommation() = default;
@@ -439,7 +440,7 @@ public:
     int unsigned num_;                     /* num du TD*/
     std::shared_ptr<Quadripole> quad_;     /* nom du quadripole fictif portant le dephasage*/
     std::shared_ptr<Quadripole> quadVrai_; /* nom du simple quadripole*/
-    bool fictif_;                          /* TD fictif representant une HVDC en emulation AC */
+    bool fictif_ = false;                  /* TD fictif representant une HVDC en emulation AC */
     double puiMin_;                        /* puissance minimale */
     double puiMax_;                        /* puissance maximale */
     double puiConsBase_;                   /* valeur correspondant au dephasage initial */
@@ -452,8 +453,8 @@ public:
     int lowran_;                             /* borne minimale de variation de prises du td */
     int uppran_;                             /* borne maximale de variation de prises du td */
     std::set<int> incidentsAtraiterCuratif_; // indices des incidents a traiter en curatif
-    int numVar_;                             // numero de la position de sa consigne en N dans le vecteur variable
-    int numVarEntiere_;                      // numero de la variable entiere d'activation (td fictif)
+    int numVar_ = -1;                        // numero de la position de sa consigne en N dans le vecteur variable
+    int numVarEntiere_ = -1;                 // numero de la variable entiere d'activation (td fictif)
 
     TransformateurDephaseur(int unsigned num,
                             const std::shared_ptr<Quadripole>& quadTd,
@@ -519,7 +520,7 @@ public:
     double r_;             // resistance du cable DC
     double vdc_;           // tension du cable DC
 
-    int numVar_;                             // numero de la position de sa consigne en N dans le vecteur variable
+    int numVar_ = -1;                        // numero de la position de sa consigne en N dans le vecteur variable
     std::set<int> incidentsAtraiterCuratif_; // indices des incidents a traiter en curatif
 
     std::shared_ptr<Quadripole> quadFictif_; // modelisation de l'emulation AC
@@ -764,18 +765,7 @@ public:
                         INCONNU = 4
     };
 
-    explicit Incident(TypeIncident type) :
-        type_(type),
-        nbLignes_(0),
-        nbGroupes_(0),
-        nbLccs_(0),
-        incidentComplexe_(false),
-        nbCouplagesFermes_(0),
-        probabilite_(config::configuration().probaInc()),
-        probabiliteBase_(config::configuration().probaInc())
-    {
-        init();
-    };
+    explicit Incident(TypeIncident type) : type_(type) { init(); };
 
     Incident(const Incident& copie) :
         type_(copie.type_),
@@ -815,16 +805,16 @@ public:
 
     ~Incident() = default;
 
-    TypeIncident type_;     /* type d incident */
-    int nbLignes_;          /* nombre de lignes a etudier  */
-    int nbGroupes_;         /* nombre de groupes a etudier */
-    int nbLccs_;            /* nombre de groupes a etudier */
-    int unsigned num_;      /* numero de l'incident */
-    bool validite_;         /* indicateur de validite de l'incident, ex : "false" si perte de connexite */
-    bool validiteBase_;     /* indicateur de validite de l'incident en base, pour les variantes contennant des indispo
-                               lignes */
-    bool parade_;           /* ce n'est pas un vrai incident mais une parade */
-    bool incidentComplexe_; /* utilisation du seuil des incidents complexes */
+    TypeIncident type_; /* type d incident */
+    int nbLignes_ = 0;  /* nombre de lignes a etudier  */
+    int nbGroupes_ = 0; /* nombre de groupes a etudier */
+    int nbLccs_ = 0;    /* nombre de groupes a etudier */
+    int unsigned num_;  /* numero de l'incident */
+    bool validite_;     /* indicateur de validite de l'incident, ex : "false" si perte de connexite */
+    bool validiteBase_; /* indicateur de validite de l'incident en base, pour les variantes contennant des indispo
+                           lignes */
+    bool parade_;       /* ce n'est pas un vrai incident mais une parade */
+    bool incidentComplexe_ = false;                       /* utilisation du seuil des incidents complexes */
     std::vector<std::shared_ptr<Quadripole>> listeQuads_; /* liste des quadripoles */
     std::vector<std::shared_ptr<Groupe>> listeGroupes_;   /* liste des groupes */
     std::vector<std::shared_ptr<LigneCC>> listeLccs_;     /* liste des liaisons A courant continu */
@@ -848,17 +838,20 @@ public:
         tdFictifsElemCur_; // pour rechercher les td fictif de l'incident
 
     // Donnees pour les fermetures de couplages (uniquement pour une parade) :
-    int nbCouplagesFermes_;
+    int nbCouplagesFermes_ = 0;
     std::vector<std::shared_ptr<Quadripole>> listeCouplagesFermes_; /*liste des couplages a fermer dans la parade*/
 
     // donnees variables d'une variante a l autre
     bool incidentATraiterEncuratif_;
     bool pocheRecuperableEncuratif_;
     std::string nom_;
-    double probabilite_; // probabilite d'un incident (peut être définie à une valeur différente selon la variante).
-    double probabiliteBase_; // probabilite de base de l'incident (sert pour les variantes)
-    double getProb() const;  // fonction renvoi probabilite d'un incident ou d'une parade. Si parade, prob est celle de
-                             // l'incident de la parade
+    double probabilite_
+        = config::configuration()
+              .probaInc(); // probabilite d'un incident (peut être définie à une valeur différente selon la variante).
+    double probabiliteBase_
+        = config::configuration().probaInc(); // probabilite de base de l'incident (sert pour les variantes)
+    double getProb() const; // fonction renvoi probabilite d'un incident ou d'une parade. Si parade, prob est celle de
+                            // l'incident de la parade
 
     // gestion des parades topo
     std::vector<std::shared_ptr<Incident>> parades_; // les parades possibles pour cet incident
@@ -969,14 +962,9 @@ class ElementCuratifConso : public ElementCuratif
 {
 public:
     std::shared_ptr<Consommation> conso_;
-    double max_; // valeur max de l'effacement (en %)
+    double max_ = 1.0; // valeur max de l'effacement (en %)
 
-    explicit ElementCuratifConso(const std::shared_ptr<Consommation>& conso) :
-        ElementCuratif(CONSO),
-        conso_(conso),
-        max_(1.)
-    {
-    }
+    explicit ElementCuratifConso(const std::shared_ptr<Consommation>& conso) : ElementCuratif(CONSO), conso_(conso) {}
 
     bool estValide() final { return conso_->valeur_ > 0; }
 
@@ -989,6 +977,9 @@ public:
     const std::vector<double>& rho() final { return conso_->noeud_->rho_; }
 };
 
+// Fonction pour ordonner les noeuds
+bool compareNoeuds(const std::shared_ptr<Noeud>& noeud1, const std::shared_ptr<Noeud>& noeud2);
+
 class PochePerdue
 {
 public:
@@ -997,11 +988,13 @@ public:
     PochePerdue(const PochePerdue& poche);
 
     std::set<std::shared_ptr<Noeud>, bool (*)(const std::shared_ptr<Noeud>&, const std::shared_ptr<Noeud>&)>
-        noeudsPoche_;
-    double prodMaxPoche_;
-    double prodPerdue_;
-    double consoPerdue_;
-    bool pocheAvecConsoProd_;
+        noeudsPoche_
+        = std::set<std::shared_ptr<Noeud>, bool (*)(const std::shared_ptr<Noeud>&, const std::shared_ptr<Noeud>&)>(
+            &compareNoeuds);
+    double prodMaxPoche_ = 0.0;
+    double prodPerdue_ = 0.0;
+    double consoPerdue_ = 0.0;
+    bool pocheAvecConsoProd_ = false;
 
     std::vector<double> phases_;
     std::vector<double> secondMembreFixe_;
@@ -1010,8 +1003,5 @@ public:
 
     std::string print() const;
 };
-
-// Fonction pour ordonner les noeuds
-bool compareNoeuds(const std::shared_ptr<Noeud>& noeud1, const std::shared_ptr<Noeud>& noeud2);
 
 #endif

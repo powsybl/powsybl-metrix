@@ -1201,16 +1201,7 @@ void Reseau::lireDonnees()
 }
 
 
-Noeud::Noeud(int num, int numRegion) :
-    num_(num),
-    typeNoeud_(Noeud::NOEUD_FICTIF),
-    nbGroupes_(0),
-    nbConsos_(0),
-    bilan_(false),
-    numCompSynch_(0),
-    numRegion_(numRegion)
-{
-}
+Noeud::Noeud(int num, int numRegion) : num_(num), numRegion_(numRegion) {}
 
 Noeud::PositionConnexion Noeud::position(const std::shared_ptr<Connexion>& branche) const
 {
@@ -1240,13 +1231,7 @@ double Noeud::consoNodale()
 }
 
 
-Connexion::Connexion(const std::shared_ptr<Noeud>& nor, const std::shared_ptr<Noeud>& nex) :
-    etatOr_(true),
-    etatEx_(true),
-    etatOrBase_(true),
-    etatExBase_(true),
-    norqua_(nor),
-    nexqua_(nex)
+Connexion::Connexion(const std::shared_ptr<Noeud>& nor, const std::shared_ptr<Noeud>& nex) : norqua_(nor), nexqua_(nex)
 {
     etatOr_ = etatOrBase_;
     etatEx_ = etatExBase_;
@@ -1260,10 +1245,7 @@ Quadripole::Quadripole(int num,
                        double r) :
     Connexion(norqua, nexqua),
     nom_(nom),
-    num_(num),
-    typeQuadripole_(Quadripole::QUADRIPOLE_REEL),
-    td_(nullptr),
-    elemAS_(nullptr)
+    num_(num)
 {
     reconnectable_ = tnnorqua() != tnnexqua();
 
@@ -1306,15 +1288,7 @@ ElementASurveiller::ElementASurveiller(const string& nom,
     seuilMaxInc_(seuilInc),
     seuilMaxIncComplexe_(seuilIncComplexe),
     seuilMaxAvantCur_(seuilAvantCuratif),
-    seuilMaxAvantCurIncComplexe_(seuilAvantCuratif),
-    seuilsAssymetriques_(false),
-    seuilMaxNExOr_(config::constants::valdef),
-    seuilMaxIncExOr_(config::constants::valdef),
-    seuilMaxIncComplexeExOr_(config::constants::valdef),
-    seuilMaxAvantCurExOr_(config::constants::valdef),
-    seuilMaxAvantCurIncComplexeExOr_(config::constants::valdef),
-    depassementEnN_(0),
-    menacesMax_(&compareMenaces)
+    seuilMaxAvantCurIncComplexe_(seuilAvantCuratif)
 {
 }
 
@@ -1451,17 +1425,9 @@ Groupe::Groupe(int num,
     num_(num),
     numNoeud_{noeud->num_},
     noeud_(noeud),
-    etat_{true},
-    etatBase_{true},
     type_(type),
     prodAjust_(pimpmod),
-    demiBande_(demiBande),
-    coutHausseHR_(0.),
-    coutBaisseHR_(0.),
-    coutHausseAR_(0.),
-    coutBaisseAR_(0.),
-    participation_(0),
-    numVarGrp_(-1)
+    demiBande_(demiBande)
 {
     noeud->listeGroupes_.push_back(this);
     noeud->nbGroupes_++;
@@ -1516,15 +1482,9 @@ int Groupe::checkCoherencePminMaxObj()
 Consommation::Consommation(int num, const string& nom, const std::shared_ptr<Noeud>& noeud, float valeur) :
     num_(num),
     nom_(nom),
-    numVarConso_(-1),
     noeud_(noeud),
     valeur_(valeur),
-    valeurBase_(valeur),
-    seuil_(0.),
-    cout_(0.),
-    coutEffacement_(config::constants::valdef),
-    coutEffacementBase_(config::constants::valdef),
-    pourcentEffacement_(0.)
+    valeurBase_(valeur)
 {
     noeud_->listeConsos_.push_back(this);
     noeud->nbConsos_++;
@@ -1546,16 +1506,13 @@ TransformateurDephaseur::TransformateurDephaseur(int unsigned num,
     num_(num),
     quad_(quadTd),
     quadVrai_(quadVrai),
-    fictif_(false),
     type_(pilotage),
     mode_(mode),
     lowtap_(lowtap),
     nbtap_(nbtap),
     tapdepha_(tapdepha),
     lowran_(lowran),
-    uppran_(uppran),
-    numVar_(-1),
-    numVarEntiere_(-1)
+    uppran_(uppran)
 {
     switch (pilotage) {
         case HORS_SERVICE:
@@ -1635,9 +1592,7 @@ LigneCC::LigneCC(int unsigned num,
     coeffPertesOr_(coeffPerteOr),
     coeffPertesEx_(coeffPerteEx),
     r_(r),
-    vdc_(vdc),
-    numVar_(-1),
-    quadFictif_(nullptr)
+    vdc_(vdc)
 {
     puiCons_ = de0;
     puiMin_ = pMin;

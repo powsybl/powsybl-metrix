@@ -80,7 +80,7 @@ private:
 
 private:
     MATRICE_A_FACTORISER B_;
-    MATRICE* pmatrix_;
+    MATRICE* pmatrix_ = nullptr;
     std::vector<int> BIndexDebutDesColonnes_;
     std::vector<int> BNbTermesDesColonnes_;
     std::vector<int> BIndicesDeLigne_;

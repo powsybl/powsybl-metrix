@@ -98,7 +98,7 @@ std::string Logger::computeDevfilePattern(const std::string& filepath)
     return std::string(path.generic_string()) + rotating;
 }
 
-Logger::Logger() : resultFileStream_(config.resultFilepath), timer_(context_)
+Logger::Logger() : timer_(context_)
 {
     // file synk
     auto file_pattern = computeDevfilePattern(config.devFilepath);
