@@ -1476,7 +1476,8 @@ int Calculer::ecrireCoupeTransit(const double& maxTprev,
             double proba = incidentPere->getProb();
 
             icdt->numVarActivation_ = ajouterVariableEntiere(
-                icdt->num_, incidentPere->contraintes_.size() * config::constants::cost_parade * proba);
+                icdt->num_,
+                config::constants::cost_parade * proba * static_cast<double>(incidentPere->contraintes_.size()));
             if (coefs_.size() < static_cast<size_t>(pbNombreDeVariables_)) {
                 coefs_.resize(pbNombreDeVariables_, 0.);
             }
@@ -3650,7 +3651,8 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
                     double proba = icdt->getProb();
 
                     parade->numVarActivation_ = ajouterVariableEntiere(
-                        parade->num_, icdt->contraintes_.size() * config::constants::cost_parade * proba);
+                        parade->num_,
+                        config::constants::cost_parade * proba * static_cast<double>(icdt->contraintes_.size()));
 
                     if (!parade->contraintesAutorisees_.empty()
                         && parade->contraintesAutorisees_.find(contrainte->elemAS_)
