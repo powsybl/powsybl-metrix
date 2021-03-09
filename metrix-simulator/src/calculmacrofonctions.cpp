@@ -600,10 +600,10 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
         fprintf(file, "\n");
 
         resetCoeffQuadsN();
-        for (auto& quad : res_.quadsSurv_) {
+        for (const auto& quad : res_.quadsSurv_) {
             calculerCoeffEnN(quad);
             fprintf(file, "%s;", quad->nom_.c_str());
-            int i = 0;
+            i = 0;
             while (i < pbNombreDeVariables_) {
                 i++;
                 if (i < res_.nbVarGroupes_) {

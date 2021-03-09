@@ -137,8 +137,8 @@ std::tuple<bool, bool, std::vector<int>> Reseau::checkConnexite(bool choisiNoeud
     int nNoeudExt;
     int numZoneCourant = 0;
 
-    for (auto quadIt = quads_.cbegin(); quadIt != quads_.end(); ++quadIt) {
-        auto quad = quadIt->second;
+    for (const auto& quad_pair : quads_) {
+        const auto& quad = quad_pair.second;
 
         if (!quad->connecte()) {
             continue;
@@ -182,7 +182,7 @@ std::tuple<bool, bool, std::vector<int>> Reseau::checkConnexite(bool choisiNoeud
         // est-ce les HVDC permettent la connexite
         std::shared_ptr<LigneCC> lcc;
 
-        for (auto& lccPair : LigneCCs_) {
+        for (const auto& lccPair : LigneCCs_) {
             lcc = lccPair.second;
 
             if (!lcc->connecte()) {
@@ -228,7 +228,7 @@ void Reseau::correctConnexite(bool was_connexe,
 {
     if (was_connexe) {
         if (icdt && icdt->parade_) {
-            auto& icdtPere = icdt->incTraiteCur_;
+            const auto& icdtPere = icdt->incTraiteCur_;
             if (icdtPere->pochePerdue_) {
                 // La parade ne rompt plus la connexite
                 LOG(debug) << "La poche de l'incident '" << icdtPere->nom_ << "' est recuperable par la parade : '"
@@ -279,7 +279,7 @@ void Reseau::correctConnexite(bool was_connexe,
                 if (icdt->validite_) { // il peut avoir été invalidé lors de la creation de la poche
 
                     if (icdt->parade_) {
-                        auto& icdtPere = icdt->incTraiteCur_;
+                        const auto& icdtPere = icdt->incTraiteCur_;
 
                         if (icdtPere->pochePerdue_) {
                             // L'incident pere rompt deja la connexite, la parade ne doit pas l'aggraver
@@ -398,7 +398,7 @@ void Reseau::afficheSousReseau(unsigned int numNoeud, unsigned int prof)
 
 void Reseau::afficheSousReseau(int numNoeud, int numPere, unsigned int prof, int nbIndent, std::stringstream& ss)
 {
-    auto& noeud = noeuds_[numNoeud];
+    const auto& noeud = noeuds_[numNoeud];
     string tmpString = noeud->print() + "(" + c_fmt("%d", noeud->nbQuads()) + ")";
     ss << tmpString;
     if (prof == 0) {
@@ -426,7 +426,7 @@ void Reseau::afficheSousReseau(int numNoeud, int numPere, unsigned int prof, int
         }
     }
     for (int i = 0; i < noeud->nbCC(); i++) {
-        auto& lcc = noeud->listeCC_[i];
+        const auto& lcc = noeud->listeCC_[i];
         int numFils;
         if (noeud->position(lcc) == Noeud::ORIGINE) {
             numFils = noeud->listeCC_[i]->nexqua_->num_;

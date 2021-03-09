@@ -148,7 +148,7 @@ void Reseau::update_with_configuration()
 //--------------------
 void Reseau::lireDonnees()
 {
-    auto& config = config::configuration();
+    const auto& config = config::configuration();
 
     update_with_configuration();
 
@@ -241,7 +241,7 @@ void Reseau::lireDonnees()
 
     // Deconnexion des quadripoles ouverts
     for (auto ind : config.openbranDIE()) {
-        auto quad = quadsParIndice[ind - 1];
+        const auto& quad = quadsParIndice[ind - 1];
         quad->etatExBase_ = false;
         quad->etatEx_ = false;
         quad->etatOrBase_ = false;
@@ -263,7 +263,7 @@ void Reseau::lireDonnees()
         noeuds_.resize(nbNoeuds_);
 
         for (unsigned int i = 0; i < static_cast<unsigned int>(nbTd_); ++i) {
-            auto quadVrai = quadsParIndice[config.dttrdequDIE()[i] - 1];
+            const auto& quadVrai = quadsParIndice[config.dttrdequDIE()[i] - 1];
             auto typeP = static_cast<TransformateurDephaseur::TypePilotageTD>(config.dtmodregDIE()[i]);
 
             if (typeP == TransformateurDephaseur::PILOTAGE_ANGLE_OPTIMISE
@@ -317,7 +317,7 @@ void Reseau::lireDonnees()
         for (unsigned int ii = 0; ii < 2 * static_cast<unsigned int>(nbTd_) && ii < config.dtlowranDIE().size()
                                   && config.dtlowranDIE()[ii] != -1;
              ii += 2) {
-            auto tmpQuad = quadsParIndice[config.dtlowranDIE()[ii] - 1];
+            const auto& tmpQuad = quadsParIndice[config.dtlowranDIE()[ii] - 1];
             TransfoDephaseurs_.find(tmpQuad->nom_)->second->lowran_ = config.dtlowranDIE()[ii + 1];
         }
 
@@ -325,7 +325,7 @@ void Reseau::lireDonnees()
         for (unsigned int ii = 0; ii < 2 * static_cast<unsigned int>(nbTd_) && ii < config.dtuppranDIE().size()
                                   && config.dtuppranDIE()[ii] != -1;
              ii += 2) {
-            auto quad = quadsParIndice[config.dtuppranDIE()[ii] - 1];
+            const auto& quad = quadsParIndice[config.dtuppranDIE()[ii] - 1];
             TransfoDephaseurs_.find(quad->nom_)->second->uppran_ = config.dtuppranDIE()[ii + 1];
         }
     }
@@ -342,8 +342,8 @@ void Reseau::lireDonnees()
         }
 
         for (unsigned int i = 0; i < static_cast<unsigned int>(nbCC_); ++i) {
-            auto& nor = noeuds_[config.dcnorquaDIE()[i] - 1];
-            auto& nex = noeuds_[config.dcnexquaDIE()[i] - 1];
+            const auto& nor = noeuds_[config.dcnorquaDIE()[i] - 1];
+            const auto& nex = noeuds_[config.dcnexquaDIE()[i] - 1];
             string nom = config.dcnomquaDIE()[i];
             rtrim(nom);
             auto ligneCC = std::make_shared<LigneCC>(i,
@@ -605,7 +605,7 @@ void Reseau::lireDonnees()
         }
 
         int indNoeudRaccord = config.tnneucelDIE()[i] - 1;
-        auto noeud = noeuds_[indNoeudRaccord];
+        const auto& noeud = noeuds_[indNoeudRaccord];
 
         auto conso = std::make_shared<Consommation>(i, nomConso, noeud, config.esafiactDIE()[i]);
         consos_.insert(std::pair<string, std::shared_ptr<Consommation>>(conso->nom_, conso));
@@ -686,11 +686,11 @@ void Reseau::lireDonnees()
         for (int j = 0; j < config.sectnbqdDIE()[i]; ++j) {
             int type = config.secttypeDIE()[j + cptTableDescr];
             if (type == QUADRIPOLE) {
-                auto quad = quadsParIndice[config.sectnumqDIE()[j + cptTableDescr] - 1];
+                const auto& quad = quadsParIndice[config.sectnumqDIE()[j + cptTableDescr] - 1];
                 elemAS->quadsASurv_[quad] = config.sectcoefDIE()[j + cptTableDescr];
                 quadsSurv_.insert(quad);
             } else if (type == HVDC) {
-                auto lcc = lccParIndice_[config.sectnumqDIE()[j + cptTableDescr] - 1];
+                const auto& lcc = lccParIndice_[config.sectnumqDIE()[j + cptTableDescr] - 1];
                 elemAS->hvdcASurv_[lcc] = config.sectcoefDIE()[j + cptTableDescr];
             } else {
                 LOG_ALL(error) << " Objet dans section surveillee non traite : type " << type;
@@ -741,7 +741,7 @@ void Reseau::lireDonnees()
                     errMsg << err::ioDico().msg("ERROuvrageInconnuIncident", c_fmt("%d", icdt->num_));
                     throw ErrorI(errMsg.str());
                 }
-                auto quadInc = quadsParIndice[config.dmdescrkDIE()[ind] - 1];
+                const auto& quadInc = quadsParIndice[config.dmdescrkDIE()[ind] - 1];
                 icdt->listeQuads_.push_back(quadInc);
                 quadsSurv_.insert(quadInc);
                 ind++;
@@ -754,7 +754,7 @@ void Reseau::lireDonnees()
                     errMsg << err::ioDico().msg("ERROuvrageInconnuIncident", c_fmt("%d", icdt->num_));
                     throw ErrorI(errMsg.str());
                 }
-                auto grp = groupesParIndice[config.dmdescrkDIE()[ind] - 1];
+                const auto& grp = groupesParIndice[config.dmdescrkDIE()[ind] - 1];
                 icdt->listeGroupes_.push_back(grp);
                 pMaxTmp += grp->puisMax_;
 
@@ -768,7 +768,7 @@ void Reseau::lireDonnees()
                     errMsg << err::ioDico().msg("ERROuvrageInconnuIncident", c_fmt("%d", icdt->num_));
                     throw ErrorI(errMsg.str());
                 }
-                auto hvdc = lccParIndice_[config.dmdescrkDIE()[ind] - 1];
+                const auto& hvdc = lccParIndice_[config.dmdescrkDIE()[ind] - 1];
                 icdt->listeLccs_.push_back(hvdc);
                 if (hvdc->quadFictif_) {
                     icdt->nbLignes_++;
@@ -849,13 +849,13 @@ void Reseau::lireDonnees()
         int nbDef = -1;
         while (indice < static_cast<int>(config.nbDefres()) - 1) {
             ++indice;
-            auto& quad = quadsParIndice[config.ptdefresDIE()[indice] - 1];
+            const auto& quad = quadsParIndice[config.ptdefresDIE()[indice] - 1];
             ++indice;
             nbDef = config.ptdefresDIE()[indice];
             std::set<std::shared_ptr<Incident>> listeIncidents;
             for (int i = 0; i < nbDef; ++i) {
                 ++indice;
-                auto& icdt = incidentsEtParades_[config.ptdefresDIE()[indice]];
+                const auto& icdt = incidentsEtParades_[config.ptdefresDIE()[indice]];
                 LOG(debug) << metrix::log::verbose_config << "Quad : " << quad->nom_
                            << ", transit sur incident : " << icdt->nom_;
                 if (icdt->validite_) {
@@ -870,7 +870,7 @@ void Reseau::lireDonnees()
 
     // Traitement des incidents complexes
     for (unsigned int i = 0; i < config.nbDefspe(); ++i) {
-        auto& icdt = incidentsEtParades_[config.ptdefspeDIE()[i]];
+        const auto& icdt = incidentsEtParades_[config.ptdefspeDIE()[i]];
         icdt->incidentComplexe_ = true;
         LOG_ALL(info) << "Incident complexe : " << icdt->nom_ << " (num=" << icdt->num_ << ")";
     }
@@ -881,13 +881,13 @@ void Reseau::lireDonnees()
         int nbDef = -1;
         while (indice < static_cast<int>(config.nbVarmar()) - 1) {
             ++indice;
-            auto& quad = quadsParIndice[config.ptvarmarDIE()[indice] - 1];
+            const auto& quad = quadsParIndice[config.ptvarmarDIE()[indice] - 1];
             ++indice;
             nbDef = config.ptvarmarDIE()[indice];
             std::set<std::shared_ptr<Incident>> listeIncidents;
             for (int i = 0; i < nbDef; ++i) {
                 ++indice;
-                auto& icdt = incidentsEtParades_[config.ptvarmarDIE()[indice]];
+                const auto& icdt = incidentsEtParades_[config.ptvarmarDIE()[indice]];
                 LOG(debug) << "Quad : " << quad->nom_
                            << ", variations marginales detaillees sur incident : " << icdt->nom_;
                 if (icdt->validite_) {
@@ -903,7 +903,7 @@ void Reseau::lireDonnees()
     int nbCur = 0;
     // Remplissage du vecteur des TD curatif
     for (int u = 0; nbCur < nbTdCuratif_ && u < nbTd_; ++u) {
-        auto& td = tdParIndice_[u];
+        const auto& td = tdParIndice_[u];
 
         if (td->incidentsAtraiterCuratif_.empty()) {
             continue;
@@ -911,7 +911,7 @@ void Reseau::lireDonnees()
 
         nbCur++;
         for (auto num : td->incidentsAtraiterCuratif_) {
-            auto& inc = incidentsEtParades_[num];
+            const auto& inc = incidentsEtParades_[num];
 
             if (!inc->validite_) {
                 continue;
@@ -935,7 +935,7 @@ void Reseau::lireDonnees()
     // Remplissage du vecteur des HVDC curatifs
     nbCur = 0;
     for (int u = 0; nbCur < nbCCCuratif_ && u < nbCC_; ++u) {
-        auto& lcc = lccParIndice_[u];
+        const auto& lcc = lccParIndice_[u];
 
         if (lcc->incidentsAtraiterCuratif_.empty()) {
             continue;
@@ -943,7 +943,7 @@ void Reseau::lireDonnees()
 
         nbCur++;
         for (auto num : lcc->incidentsAtraiterCuratif_) {
-            auto& inc = incidentsEtParades_[num];
+            const auto& inc = incidentsEtParades_[num];
 
             if (!inc->validite_) {
                 continue;
@@ -964,14 +964,14 @@ void Reseau::lireDonnees()
     // Remplissage du vecteur des groupes curatifs
     nbCur = 0;
     for (int u = 0; nbCur < nbGroupesCuratifs_ && u < nbGroupes_; ++u) {
-        auto& grp = groupesParIndice[u];
+        const auto& grp = groupesParIndice[u];
         if (grp->incidentsAtraiterCuratif_.empty()) {
             continue;
         }
 
         nbCur++;
         for (auto num : grp->incidentsAtraiterCuratif_) {
-            auto& inc = incidentsEtParades_[num];
+            const auto& inc = incidentsEtParades_[num];
 
             if (!inc->validite_) {
                 continue;
@@ -990,14 +990,14 @@ void Reseau::lireDonnees()
     // Remplissage du vecteur des effacements curatifs
     nbCur = 0;
     for (int u = 0; nbCur < nbConsosCuratifs_ && u < nbConsos_; ++u) {
-        auto& conso = consommationsParIndice[u];
+        const auto& conso = consommationsParIndice[u];
 
         if (conso->incidentsAtraiterCuratif_.empty()) {
             continue;
         }
         nbCur++;
         for (auto num : conso->incidentsAtraiterCuratif_) {
-            auto& inc = incidentsEtParades_[num];
+            const auto& inc = incidentsEtParades_[num];
 
             if (!inc->validite_) {
                 continue;
@@ -1008,8 +1008,8 @@ void Reseau::lireDonnees()
         }
     }
 
-    for (auto& elem : incidents_) {
-        auto& inc = elem.second;
+    for (const auto& elem : incidents_) {
+        const auto& inc = elem.second;
         if (!inc->validite_) {
             continue;
         }
@@ -1059,7 +1059,7 @@ void Reseau::lireDonnees()
                                      &(config.gbinddefDIE()[indexCourant + nbVar]));
         GroupesCouples::SetGroupPtr elements;
         for (auto var : listeVariables) {
-            auto& grp = groupesParIndice[var - 1];
+            const auto& grp = groupesParIndice[var - 1];
             if (!grp->estAjustable(false)) {
                 ostringstream errMsg;
                 errMsg << err::ioDico().msg("ERRGroupeLieNonModifiable", grp->nom_, nom);
@@ -1083,7 +1083,7 @@ void Reseau::lireDonnees()
         std::set<int> listeVariables(&config.lbinddefDIE()[indexCourant], &config.lbinddefDIE()[indexCourant + nbVar]);
         std::set<std::shared_ptr<Consommation>> elements;
         for (auto var : listeVariables) {
-            auto& conso = consommationsParIndice[var - 1];
+            const auto& conso = consommationsParIndice[var - 1];
             if (conso->numVarConso_ == -1) {
                 ostringstream errMsg;
                 errMsg << err::ioDico().msg("ERRConsoLieeNonModifiable", conso->nom_, nom);
@@ -1099,10 +1099,10 @@ void Reseau::lireDonnees()
 
     std::stringstream ss;
     ss << "Informations sur les variables couplees";
-    for (auto& elem : groupesCouples_) {
+    for (const auto& elem : groupesCouples_) {
         ss << " " << elem->toString();
     }
-    for (auto& elem : consosCouplees_) {
+    for (const auto& elem : consosCouplees_) {
         ss << " " << elem->toString();
     }
     LOG(debug) << metrix::log::verbose_config << ss.str();
@@ -1245,17 +1245,15 @@ Quadripole::Quadripole(int num,
                        double r) :
     Connexion(norqua, nexqua),
     nom_(nom),
-    num_(num)
+    num_(num),
+    y_(y),
+    r_(r),
+    u2Yij_(config::configuration().uRef() * config::configuration().uRef() * y)
 {
     reconnectable_ = tnnorqua() != tnnexqua();
 
     norqua_->listeQuads_.push_back(this);
     nexqua_->listeQuads_.push_back(this);
-
-    y_ = y;
-    unsigned int uref = config::configuration().uRef();
-    u2Yij_ = uref * uref * y;
-    r_ = r;
 
     if (fabs(y_) < 0.00001) {
         LOG_ALL(warning) << err::ioDico().msg("WARNAdmitFaible", nom_, c_fmt("%1.10f", u2Yij_));
@@ -1427,13 +1425,13 @@ Groupe::Groupe(int num,
     noeud_(noeud),
     type_(type),
     prodAjust_(pimpmod),
+    puisMinBase_(puisMin),
+    puisMinAR_(puisMin),
     demiBande_(demiBande)
 {
     noeud->listeGroupes_.push_back(this);
     noeud->nbGroupes_++;
 
-    puisMinBase_ = puisMin;
-    puisMinAR_ = puisMin;
     puisMin_ = (puisMinAR_ >= 0) ? 0 : puisMinAR_;
 
     if (puisMinBase_ > 0) {
@@ -1589,19 +1587,17 @@ LigneCC::LigneCC(int unsigned num,
     Connexion(nor, nex),
     num_(num),
     nom_(nom),
+    puiMin_(pMin),
+    puiMax_(pMax),
+    puiCons_(de0),
+    puiMinBase_(pMin),
+    puiMaxBase_(pMax),
+    puiConsBase_(de0),
     coeffPertesOr_(coeffPerteOr),
     coeffPertesEx_(coeffPerteEx),
     r_(r),
     vdc_(vdc)
 {
-    puiCons_ = de0;
-    puiMin_ = pMin;
-    puiMax_ = pMax;
-    puiConsBase_ = de0;
-    puiMinBase_ = pMin;
-    puiMaxBase_ = pMax;
-    type_ = HORS_SERVICE;
-    mode_ = PREVENTIF_SEUL;
 }
 
 Reseau::~Reseau()
@@ -1680,7 +1676,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     // II-1 modification de l'etat et la production objectif
     double prodEnMoins = 0.0;
 
-    for (auto& prod : var->grpIndispo_) {
+    for (const auto& prod : var->grpIndispo_) {
         if (prod->prodAjust_ == Groupe::OUI_HR_AR || prod->prodAjust_ == Groupe::OUI_HR) {
             prodEnMoins += prod->puisMaxDispo_;
         }
@@ -1690,8 +1686,8 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // I-2 : Modif pmax et pmin
     //------------------------
-    for (auto& elem : var->prodMax_) {
-        auto& prod = elem.first;
+    for (const auto& elem : var->prodMax_) {
+        const auto& prod = elem.first;
         prod->puisMaxDispo_ = elem.second;
         prod->puisMax_ = elem.second;
         if (prod->prodAjust_ == Groupe::OUI_HR_AR || prod->prodAjust_ == Groupe::OUI_HR) {
@@ -1700,7 +1696,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         LOG(debug) << "la prod max du groupe : " << prod->nom_ << " est modifee, nouvelle valeur : " << prod->puisMax_;
     }
 
-    for (auto& elem : var->prodMin_) {
+    for (const auto& elem : var->prodMin_) {
         elem.first->puisMinAR_ = elem.second;
         // prod->puisMin_ = (prod->puisMinAR_ > 0)?0:prod->puisMinAR_; // deja dans le modifBilan
         LOG(debug) << "la prod min AR du groupe : " << elem.first->nom_
@@ -1715,7 +1711,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // II-productions imposees
     //------------------------
-    for (auto& elem : var->prodImpose_) {
+    for (const auto& elem : var->prodImpose_) {
         elem.first->prodPobj_ = elem.second;
 
         // prod->checkCoherencePminMaxObj();
@@ -1725,7 +1721,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // III-variation de la consommation
     //-------------------------------
-    for (auto& elem : var->valeurConso_) {
+    for (const auto& elem : var->valeurConso_) {
         elem.first->valeur_ = elem.second;
 
         LOG(debug) << "la conso : " << elem.first->nom_ << " est modifee, nouvelle valeur : " << elem.first->valeur_;
@@ -1733,7 +1729,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // IV-variation des couts a la hausse sans reseau
     //----------------------------------------------
-    for (auto& elem : var->grpHausseHR_) {
+    for (const auto& elem : var->grpHausseHR_) {
         elem.first->coutHausseHR_ = elem.second;
 
         LOG(debug) << "le cout a la hausse  : " << elem.first->nom_
@@ -1742,7 +1738,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // V-variation des couts a la baisse sans reseau
     //----------------------------------------------
-    for (auto& elem : var->grpBaisseHR_) {
+    for (const auto& elem : var->grpBaisseHR_) {
         elem.first->coutBaisseHR_ = elem.second;
 
         LOG(debug) << "le cout a la baisse  : " << elem.first->nom_
@@ -1750,7 +1746,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     }
     // VII-variation des couts a la hausse avec reseau
     //----------------------------------------------
-    for (auto& elem : var->grpHausseAR_) {
+    for (const auto& elem : var->grpHausseAR_) {
         elem.first->coutHausseAR_ = elem.second;
 
         LOG(debug) << "le cout a la hausse AR : " << elem.first->nom_
@@ -1758,7 +1754,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     }
     // VIII-variation des couts a la baisse avec reseau
     //----------------------------------------------
-    for (auto& elem : var->grpBaisseAR_) {
+    for (const auto& elem : var->grpBaisseAR_) {
         elem.first->coutBaisseAR_ = elem.second;
 
         LOG(debug) << "le cout a la baisse AR : " << elem.first->nom_
@@ -1767,7 +1763,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // IX - variation des couts d'effacement
     //----------------------------------------------
-    for (auto& elem : var->coutEfface_) {
+    for (const auto& elem : var->coutEfface_) {
         elem.first->coutEffacement_ = elem.second;
 
         LOG(debug) << "le cout d'effacement : " << elem.first->nom_
@@ -1780,7 +1776,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     double bilanCible = 0.0;   // bilan visé par la variante
     double sumC = 0.0;         // somme des consommations
 
-    for (auto& elem : var->valeurEchange_) {
+    for (const auto& elem : var->valeurEchange_) {
         bilanCible = elem.second;
 
         bilanCourant = 0.0;
@@ -1790,7 +1786,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
                    << ", nouvelle valeur d echange : " << bilanCible;
         // calcul de echCourant
         for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-            auto& prod = grpIt->second;
+            const auto& prod = grpIt->second;
             if (noeuds_[prod->numNoeud_]->numRegion_ != elem.first || !prod->etat_) {
                 continue;
             }
@@ -1806,7 +1802,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         }
 
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-            auto& conso = cIt->second;
+            const auto& conso = cIt->second;
 
             if (conso->noeud_->numRegion_ != elem.first) {
                 continue;
@@ -1822,7 +1818,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
         // mise a jour des consommations de la region var->numRegion_[k]
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-            auto& conso = cIt->second;
+            const auto& conso = cIt->second;
 
             if (conso->noeud_->numRegion_ != elem.first) {
                 continue;
@@ -1837,12 +1833,12 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     // XI-Limitations Pmin et Pmax des HVDCs
     //--------------------------------------
     for (auto lccIt = var->dcPuissMin_.cbegin(); lccIt != var->dcPuissMin_.end(); ++lccIt) {
-        auto& lcc = lccIt->first;
+        const auto& lcc = lccIt->first;
         lcc->puiMin_ = lccIt->second;
 
         if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
             // Mise a jour du quad fictif surveille
-            auto& elemAS = lcc->quadFictif_->elemAS_;
+            const auto& elemAS = lcc->quadFictif_->elemAS_;
             double minT = -lcc->puiMin_;
             elemAS->seuilMaxNExOr_ = minT;
             elemAS->seuilMaxIncExOr_ = minT;
@@ -1853,7 +1849,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     }
 
     for (auto& elem : var->dcPuissMax_) {
-        auto& lcc = elem.first;
+        const auto& lcc = elem.first;
         lcc->puiMax_ = elem.second;
 
         if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
@@ -1868,7 +1864,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // XII-Puissance de consigne des HVDCs
     //-----------------------------------
-    for (auto& elem : var->dcPuissImp_) {
+    for (const auto& elem : var->dcPuissImp_) {
         // Modification de la puissance de consigne de la LCC
         elem.first->puiCons_ = elem.second;
     }
@@ -1876,7 +1872,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
     // Vérification PCons, Pmin et Pmax (si pilotage puissance imposée)
     // ----------------------------------------------------------------
     for (auto lIt = LigneCCs_.cbegin(); lIt != LigneCCs_.end(); ++lIt) {
-        auto& lcc = lIt->second;
+        const auto& lcc = lIt->second;
         if ((lcc->puiCons_ < lcc->puiMin_) || (lcc->puiCons_ > lcc->puiMax_)) {
             LOG_ALL(error) << err::ioDico().msg("ERRHVDCPminPmaxImpose", lcc->nom_);
             return METRIX_PROBLEME;
@@ -1885,8 +1881,8 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // XIII-Dephasage des TDs
     //------------------------
-    for (auto& elem : var->dtValDep_) {
-        auto& td = elem.first;
+    for (const auto& elem : var->dtValDep_) {
+        const auto& td = elem.first;
         if (td->type_ == TransformateurDephaseur::HORS_SERVICE) {
             LOG_ALL(warning) << err::ioDico().msg("WARNTdHs", td->quadVrai_->nom_);
             continue;
@@ -1896,19 +1892,19 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // XIV-Seuils des quadripoles
     //----------------------------
-    for (auto& elem : var->quati00mn_) {
+    for (const auto& elem : var->quati00mn_) {
         // Modification du seuil N
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxN_ = elem.second;
     }
-    for (auto& elem : var->quati5mns_) {
+    for (const auto& elem : var->quati5mns_) {
         // Modification du seuil N-1
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxInc_ = elem.second;
     }
-    for (auto& elem : var->quati20mn_) {
+    for (const auto& elem : var->quati20mn_) {
         // Modification du seuil N-k
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxIncComplexe_ = elem.second;
     }
     for (auto& elem : var->quatitamn_) {
@@ -1916,44 +1912,44 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         auto& quad = elem.first;
         quad->seuilMaxAvantCur_ = elem.second;
     }
-    for (auto& elem : var->quatitamk_) {
+    for (const auto& elem : var->quatitamk_) {
         // Modification du seuil ITAM complexe
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxAvantCurIncComplexe_ = elem.second;
     }
 
     // Seuils Extremite -> Origine
-    for (auto& elem : var->quati00mnExOr_) {
+    for (const auto& elem : var->quati00mnExOr_) {
         // Modification du seuil N
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxNExOr_ = elem.second;
     }
-    for (auto& elem : var->quati5mnsExOr_) {
+    for (const auto& elem : var->quati5mnsExOr_) {
         // Modification du seuil N-1
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxIncExOr_ = elem.second;
     }
-    for (auto& elem : var->quati20mnExOr_) {
+    for (const auto& elem : var->quati20mnExOr_) {
         // Modification du seuil N-k
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxIncComplexeExOr_ = elem.second;
     }
-    for (auto& elem : var->quatitamnExOr_) {
+    for (const auto& elem : var->quatitamnExOr_) {
         // Modification du seuil ITAM
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxAvantCurExOr_ = elem.second;
     }
-    for (auto& elem : var->quatitamkExOr_) {
+    for (const auto& elem : var->quatitamkExOr_) {
         // Modification du seuil ITAM complexe
-        auto& quad = elem.first;
+        const auto& quad = elem.first;
         quad->seuilMaxAvantCurIncComplexeExOr_ = elem.second;
     }
 
     // XV-Probabilite des incidents
     //----------------------------
-    for (auto& elem : var->probabinc_) {
+    for (const auto& elem : var->probabinc_) {
         // Modification de la probabilite de défaut
-        auto& icdt = elem.first;
+        const auto& icdt = elem.first;
         icdt->probabilite_ = elem.second;
     }
 
@@ -1970,7 +1966,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
     // Modification des Pmin > 0 pour la phase HR et vérification Pmin, Pmax, Pobj
     bool ok = true;
     for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-        auto& grp = grpIt->second;
+        const auto& grp = grpIt->second;
         grp->puisMin_ = grp->puisMinAR_ >= 0 ? 0 : grp->puisMinAR_;
         ok &= (grp->checkCoherencePminMaxObj() != METRIX_PROBLEME);
     }
@@ -1987,7 +1983,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
     vector<std::shared_ptr<Groupe>> groupesDeLaZone;
     std::map<int, vector<std::shared_ptr<Groupe>>>::const_iterator grpZone;
 
-    for (auto& elem : var->varBilanProd_) {
+    for (const auto& elem : var->varBilanProd_) {
         numRegion = elem.first;
         bilanCible = elem.second;
         bilanCourant = 0.0;
@@ -1997,7 +1993,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
             groupesDeLaZone = grpZone->second;
             // Calcul de la production initiale sur la zone
             for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-                auto& prod = grpIt->second;
+                const auto& prod = grpIt->second;
                 if (!prod->etat_ || prod->noeud_->numRegion_ != numRegion) {
                     continue;
                 }
@@ -2008,7 +2004,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
 
             // Calcul de la production initiale sur la zone
             for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-                auto& prod = grpIt->second;
+                const auto& prod = grpIt->second;
                 if (!prod->etat_ || prod->noeud_->numRegion_ != numRegion) {
                     continue;
                 }
@@ -2028,7 +2024,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
 
         // Calcul de la somme des consommations de la zone
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-            auto& conso = cIt->second;
+            const auto& conso = cIt->second;
 
             if (conso->noeud_->numRegion_ != numRegion) {
                 continue;
@@ -2047,7 +2043,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
         if (deltaBilan > 0.0) {
             // Trop de production on baisse les groupes les moins chers (CBHR)
             std::sort(groupesDeLaZone.begin(), groupesDeLaZone.end(), compareGroupeBaisse);
-            for (auto& prod : groupesDeLaZone) {
+            for (const auto& prod : groupesDeLaZone) {
                 prodDisp = max(prod->prodPobj_ - prod->puisMin_, 0.0); // puisMin_ <= 0
                 if (prodDisp <= deltaBilan) {
                     prod->prodPobj_ = prod->puisMin_;
@@ -2061,7 +2057,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
         } else if (deltaBilan < 0.0) {
             // Pas assez de production on empile les groupes les moins chers (CEHR)
             std::sort(groupesDeLaZone.begin(), groupesDeLaZone.end(), compareGroupeHausse);
-            for (auto& prod : groupesDeLaZone) {
+            for (const auto& prod : groupesDeLaZone) {
                 prodDisp = min(prod->prodPobj_ - prod->puisMax_, 0.0);
                 if (prodDisp >= deltaBilan) {
                     prod->prodPobj_ = prod->puisMax_;
@@ -2085,13 +2081,13 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
         double debugBilan = 0.0;
 
         for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-            auto& prod = grpIt->second;
+            const auto& prod = grpIt->second;
             if (prod->etat_ && noeuds_[prod->numNoeud_]->numRegion_ == numRegion) {
                 debugBilan += prod->prodPobj_;
             }
         }
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-            auto& conso = cIt->second;
+            const auto& conso = cIt->second;
             if (conso->noeud_->numRegion_ == numRegion) {
                 debugBilan -= conso->valeur_;
             }
@@ -2109,7 +2105,7 @@ void Reseau::miseAjourPmax(double prodEnMoins)
     // prodEnMoins : correspond au volume perdu par l indisponibilite des groupes de la variante consideree par rapport
     // au cas de base
     for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-        auto& grp = grpIt->second;
+        const auto& grp = grpIt->second;
         if (!grp->etat_ || grp->prodAjust_ == Groupe::NON_HR_AR || grp->prodAjust_ == Groupe::OUI_AR) {
             continue;
         }
@@ -2124,7 +2120,7 @@ int Reseau::modifTauxDePertes(float ancienTx, float nouveauTx)
 {
     float coeff = (100 + nouveauTx) / (100 + ancienTx);
     for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-        auto& conso = cIt->second;
+        const auto& conso = cIt->second;
         if (conso->valeur_ > 0) {
             conso->valeur_ *= coeff;
         }
@@ -2144,7 +2140,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         //-----------------
 
         // I-1-mise a jour de l etat de connection des groupes
-        for (auto& prod : var->grpIndispo_) {
+        for (const auto& prod : var->grpIndispo_) {
             prod->etat_ = prod->etatBase_;
             prod->prodPobj_ = prod->prodPobjBase_;
             prod->prod_ = prod->prodPobjBase_;
@@ -2154,12 +2150,12 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         // I-2-Productions min et max
         //-------------------------
         for (auto groupesIt = var->prodMax_.cbegin(); groupesIt != var->prodMax_.end(); groupesIt++) {
-            auto& prod = groupesIt->first;
+            const auto& prod = groupesIt->first;
             prod->puisMaxDispo_ = prod->puisMaxDispoBase_;
             prod->puisMax_ = prod->puisMaxDispoBase_;
         }
         for (auto groupesIt = var->prodMin_.cbegin(); groupesIt != var->prodMin_.end(); groupesIt++) {
-            auto& prod = groupesIt->first;
+            const auto& prod = groupesIt->first;
             prod->puisMinAR_ = prod->puisMinBase_;
         }
 
@@ -2172,7 +2168,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         //-----------------------
 
         for (auto groupesIt = var->prodImpose_.cbegin(); groupesIt != var->prodImpose_.end(); ++groupesIt) {
-            auto& prod = groupesIt->first;
+            const auto& prod = groupesIt->first;
             prod->prodPobj_ = prod->prodPobjBase_;
             prod->prod_ = prod->prodPobjBase_;
         }
@@ -2181,7 +2177,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         //-------------------------------
         if (!toutesConsos) { // sinon on le fait plus bas
             for (auto consosIt = var->valeurConso_.cbegin(); consosIt != var->valeurConso_.end(); ++consosIt) {
-                auto& conso = consosIt->first;
+                const auto& conso = consosIt->first;
                 conso->valeur_ = conso->valeurBase_;
             }
         }
@@ -2190,7 +2186,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         //-------------------------
         for (auto it = var->valeurEchange_.cbegin(); it != var->valeurEchange_.end(); ++it) {
             for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-                auto& conso = cIt->second;
+                const auto& conso = cIt->second;
                 if (conso->noeud_->numRegion_ != it->first) {
                     continue;
                 }
@@ -2200,7 +2196,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
 
         // Couts a la baisse des consommations (effacements)
         for (auto consosIt = var->coutEfface_.cbegin(); consosIt != var->coutEfface_.end(); ++consosIt) {
-            auto& conso = consosIt->first;
+            const auto& conso = consosIt->first;
             conso->coutEffacement_ = conso->coutEffacementBase_;
 
             LOG(debug) << "le cout a la baisse AR : " << conso->nom_ << " est remis a jour a son etat de base";
@@ -2209,7 +2205,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         // X-limitation des HVDC
         //----------------------
         for (auto lccIt = var->dcPuissMin_.cbegin(); lccIt != var->dcPuissMin_.end(); ++lccIt) {
-            auto& lcc = lccIt->first;
+            const auto& lcc = lccIt->first;
             lcc->puiMin_ = lcc->puiMinBase_;
 
             if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
@@ -2225,12 +2221,12 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         }
 
         for (auto lccIt = var->dcPuissMax_.cbegin(); lccIt != var->dcPuissMax_.end(); ++lccIt) {
-            auto& lcc = lccIt->first;
+            const auto& lcc = lccIt->first;
             lcc->puiMax_ = lcc->puiMaxBase_;
 
             if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
                 // Mise a jour du quad fictif surveille
-                auto& quad = lcc->quadFictif_->elemAS_;
+                const auto& quad = lcc->quadFictif_->elemAS_;
                 quad->seuilMaxN_ = lcc->puiMax_;
                 quad->seuilMaxInc_ = lcc->puiMax_;
                 quad->seuilMaxIncComplexe_ = lcc->puiMax_;
@@ -2244,7 +2240,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         //----------------------------------
         for (auto lccIt = var->dcPuissImp_.cbegin(); lccIt != var->dcPuissImp_.end(); ++lccIt) {
             // Reset puissance de consigne
-            auto& lcc = lccIt->first;
+            const auto& lcc = lccIt->first;
             lcc->puiCons_ = lcc->puiConsBase_;
             LOG(debug) << "la consigne de puissance de la liaison HVDC : " << lcc->nom_
                        << " est remis a jour a son etat de base";
@@ -2254,7 +2250,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         //----------------------
         for (auto tdIt = var->dtValDep_.cbegin(); tdIt != var->dtValDep_.end(); ++tdIt) {
             // Reset dephasage
-            auto& td = tdIt->first;
+            const auto& td = tdIt->first;
             td->puiCons_ = td->puiConsBase_;
 
             LOG(debug) << "le dephasage du TD : " << td->quadVrai_->nom_ << " est remis a jour a son etat de base";
@@ -2267,7 +2263,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
             numRegion = it->first;
 
             for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
-                auto& prod = grpIt->second;
+                const auto& prod = grpIt->second;
 
                 if (prod->noeud_->numRegion_ == numRegion) {
                     prod->prod_ = prod->prodPobjBase_;
@@ -2280,7 +2276,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         // XV - Probabilite d'incidents
         //--------------------
         for (auto icIt = var->probabinc_.cbegin(); icIt != var->probabinc_.end(); ++icIt) {
-            auto& icdt = icIt->first;
+            const auto& icdt = icIt->first;
             icdt->probabilite_ = icdt->probabiliteBase_;
         }
     }
@@ -2288,7 +2284,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
     // Reset des consos nodales
     if (toutesConsos) {
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
-            auto& conso = cIt->second;
+            const auto& conso = cIt->second;
             conso->valeur_ = conso->valeurBase_;
         }
     }
@@ -2299,7 +2295,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         inc->numVarActivation_ = -1;
         inc->paradesActivees_ = false;
         inc->contraintes_.clear();
-        for (auto& elem : inc->listeElemCur_) {
+        for (const auto& elem : inc->listeElemCur_) {
             elem->reset();
         }
     }
@@ -2353,7 +2349,7 @@ int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
         vector<std::shared_ptr<Incident>> oldIncRompantConnexite = incidentsRompantConnexite_;
         incidentsRompantConnexite_.clear();
         // recalcul de la poche pour les incidents rompant la connexité
-        for (auto& elem : oldIncRompantConnexite) {
+        for (const auto& elem : oldIncRompantConnexite) {
             connexite(elem, false, config::configuration().useIncRompantConnexite());
         }
     }
@@ -2505,7 +2501,7 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         return;
     }
 
-    for (auto& group : config.unavailableGroups) {
+    for (const auto& group : config.unavailableGroups) {
         auto groupesIt = groupes_.find(group);
         if (groupesIt != groupes_.end()) {
             auto& grp = groupesIt->second;
@@ -2520,11 +2516,11 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& conso_cfg : config.consos) {
+    for (const auto& conso_cfg : config.consos) {
         const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
         auto consosIt = consos_.find(str);
         if (consosIt != consos_.end()) {
-            auto& conso = consosIt->second;
+            const auto& conso = consosIt->second;
             auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
             conso->valeurBase_ = var_dbl;
             conso->valeur_ = var_dbl;
@@ -2533,12 +2529,12 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& group : config.groups) {
+    for (const auto& group : config.groups) {
         const auto& str = std::get<VariantConfiguration::NAME>(group);
         auto groupesIt = groupes_.find(str);
         if (groupesIt != groupes_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            auto& grp = groupesIt->second;
+            const auto& grp = groupesIt->second;
             grp->prodPobjBase_ = var_dbl;
             grp->prodPobj_ = var_dbl;
             grp->prod_ = var_dbl;
@@ -2547,12 +2543,12 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& group : config.pmaxGroups) {
+    for (const auto& group : config.pmaxGroups) {
         const auto& str = std::get<VariantConfiguration::NAME>(group);
         auto groupesIt = groupes_.find(str);
         if (groupesIt != groupes_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            auto& grp = groupesIt->second;
+            const auto& grp = groupesIt->second;
             if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
                 prodMaxPossible_ -= grp->puisMaxDispoBase_ - var_dbl;
             }
@@ -2564,12 +2560,12 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& group : config.pminGroups) {
+    for (const auto& group : config.pminGroups) {
         const auto& str = std::get<VariantConfiguration::NAME>(group);
         auto groupesIt = groupes_.find(str);
         if (groupesIt != groupes_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            auto& grp = groupesIt->second;
+            const auto& grp = groupesIt->second;
             grp->puisMinBase_ = var_dbl;
             grp->puisMin_ = var_dbl;
             grp->puisMinAR_ = var_dbl;
@@ -2578,12 +2574,12 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& cost : config.costs) {
-        for (auto& group : cost.second) {
+    for (const auto& cost : config.costs) {
+        for (const auto& group : cost.second) {
             const auto& str = std::get<VariantConfiguration::NAME>(group);
             auto groupesIt = groupes_.find(str);
             if (groupesIt != groupes_.end()) {
-                auto& grp = groupesIt->second;
+                const auto& grp = groupesIt->second;
                 auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
 
                 switch (cost.first) {
@@ -2601,10 +2597,10 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& line : config.unavailableLines) {
+    for (const auto& line : config.unavailableLines) {
         auto quadsIt = quads_.find(line);
         if (quadsIt != quads_.end()) {
-            auto& quad = quadsIt->second;
+            const auto& quad = quadsIt->second;
             quad->etatExBase_ = false;
             quad->etatEx_ = false;
             quad->etatOrBase_ = false;
@@ -2614,18 +2610,18 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& line : config.pmaxHvdc) {
+    for (const auto& line : config.pmaxHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
-            auto& lcc = lccIt->second;
+            const auto& lcc = lccIt->second;
             lcc->puiMaxBase_ = var_dbl;
             lcc->puiMax_ = var_dbl;
 
             if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
                 // Mise à jour du quad fictif surveillé
-                auto& elemAS = lcc->quadFictif_->elemAS_;
+                const auto& elemAS = lcc->quadFictif_->elemAS_;
                 elemAS->seuilMaxN_ = lcc->puiMax_;
                 elemAS->seuilMaxInc_ = lcc->puiMax_;
                 elemAS->seuilMaxIncComplexe_ = lcc->puiMax_;
@@ -2634,34 +2630,34 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& line : config.pminHvdc) {
+    for (const auto& line : config.pminHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
-            auto& lcc = lccIt->second;
+            const auto& lcc = lccIt->second;
             lcc->puiMinBase_ = var_dbl;
             lcc->puiMin_ = var_dbl;
         }
     }
 
-    for (auto line : config.powerHvdc) {
+    for (const auto& line : config.powerHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
-            auto& lcc = lccIt->second;
+            const auto& lcc = lccIt->second;
             lcc->puiConsBase_ = var_dbl;
             lcc->puiCons_ = var_dbl;
         }
     }
 
-    for (auto& tdPhasing : config.tdPhasing) {
+    for (const auto& tdPhasing : config.tdPhasing) {
         const auto& str = std::get<VariantConfiguration::NAME>(tdPhasing);
         auto tdIt = TransfoDephaseurs_.find(str);
         if (tdIt != TransfoDephaseurs_.end()) {
             auto var_int = std::get<VariantConfiguration::VALUE>(tdPhasing);
-            auto& td = tdIt->second;
+            const auto& td = tdIt->second;
             if (!td->tapdepha_.empty() && (var_int >= td->lowtap_) && (var_int < td->lowtap_ + td->nbtap_)) {
                 td->puiConsBase_ = td->angle2Power(td->tapdepha_[var_int - td->lowtap_]);
             } else {
@@ -2671,15 +2667,15 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& threshold : config.tresholds) {
-        for (auto quad_cfg : threshold.second) {
+    for (const auto& threshold : config.tresholds) {
+        for (const auto& quad_cfg : threshold.second) {
             const auto& str = std::get<VariantConfiguration::NAME>(quad_cfg);
-            auto& mapping = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
-                                ? elementsASurveillerN_
-                                : elementsASurveillerNk_;
+            const auto& mapping = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
+                                      ? elementsASurveillerN_
+                                      : elementsASurveillerNk_;
             auto quadSurvIt = mapping.find(str);
             if (quadSurvIt != mapping.end()) {
-                auto& quad = quadSurvIt->second;
+                const auto& quad = quadSurvIt->second;
                 auto var_dbl = std::get<VariantConfiguration::VALUE>(quad_cfg);
 
                 switch (threshold.first) {
@@ -2722,12 +2718,12 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (auto& conso_cfg : config.deleteConsosCosts) {
+    for (const auto& conso_cfg : config.deleteConsosCosts) {
         const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
         auto consosIt = consos_.find(str);
         if (consosIt != consos_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
-            auto& conso = consosIt->second;
+            const auto& conso = consosIt->second;
             conso->coutEffacementBase_ = var_dbl;
             conso->coutEffacement_ = var_dbl;
         } else {
@@ -2740,7 +2736,7 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         auto icIt = incidents_.find(str);
         if (icIt != incidents_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(incident);
-            auto& icdt = icIt->second;
+            const auto& icdt = icIt->second;
             icdt->probabilite_ = var_dbl;
             icdt->probabiliteBase_ = var_dbl;
         } else {
@@ -2753,7 +2749,7 @@ void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfigur
 {
     const auto& input_config = config::inputConfiguration();
     unsigned int variant_index = 0;
-    for (auto& pair : config.variants()) {
+    for (const auto& pair : config.variants()) {
         if (pair.first == config::VariantConfiguration::variant_base) {
             // ignore base variant: is processed in another function
             continue;
@@ -2780,7 +2776,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     auto variant = std::make_shared<Variante>();
     variant->num_ = config.num;
 
-    for (auto& group : config.unavailableGroups) {
+    for (const auto& group : config.unavailableGroups) {
         auto groupesIt = groupes_.find(group);
         if (groupesIt != groupes_.end()) {
             variant->grpIndispo_.insert(groupesIt->second);
@@ -2789,7 +2785,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& conso_cfg : config.consos) {
+    for (const auto& conso_cfg : config.consos) {
         const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
         auto consosIt = consos_.find(str);
         if (consosIt != consos_.end()) {
@@ -2800,7 +2796,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& group : config.groups) {
+    for (const auto& group : config.groups) {
         const auto& str = std::get<VariantConfiguration::NAME>(group);
         auto groupesIt = groupes_.find(str);
         if (groupesIt != groupes_.end()) {
@@ -2811,7 +2807,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& group : config.pmaxGroups) {
+    for (const auto& group : config.pmaxGroups) {
         const auto& str = std::get<VariantConfiguration::NAME>(group);
         auto groupesIt = groupes_.find(str);
         if (groupesIt != groupes_.end()) {
@@ -2822,7 +2818,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& group : config.pminGroups) {
+    for (const auto& group : config.pminGroups) {
         const auto& str = std::get<VariantConfiguration::NAME>(group);
         auto groupesIt = groupes_.find(str);
         if (groupesIt != groupes_.end()) {
@@ -2833,7 +2829,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& cost : config.costs) {
+    for (const auto& cost : config.costs) {
         for (auto group : cost.second) {
             const auto& str = std::get<VariantConfiguration::NAME>(group);
             auto groupesIt = groupes_.find(str);
@@ -2867,7 +2863,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& line : config.unavailableLines) {
+    for (const auto& line : config.unavailableLines) {
         auto quadsIt = quads_.find(line);
         if (quadsIt != quads_.end()) {
             variant->indispoLignes_.insert(quadsIt->second);
@@ -2876,7 +2872,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& line : config.pmaxHvdc) {
+    for (const auto& line : config.pmaxHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
@@ -2885,7 +2881,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& line : config.pminHvdc) {
+    for (const auto& line : config.pminHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
@@ -2894,7 +2890,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& line : config.powerHvdc) {
+    for (const auto& line : config.powerHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
@@ -2903,12 +2899,12 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& tdPhasing : config.tdPhasing) {
+    for (const auto& tdPhasing : config.tdPhasing) {
         const auto& str = std::get<VariantConfiguration::NAME>(tdPhasing);
         auto tdIt = TransfoDephaseurs_.find(str);
         if (tdIt != TransfoDephaseurs_.end()) {
             auto var_int = std::get<VariantConfiguration::VALUE>(tdPhasing);
-            auto& td = tdIt->second;
+            const auto& td = tdIt->second;
             if (!td->tapdepha_.empty() && (var_int >= td->lowtap_) && (var_int < td->lowtap_ + td->nbtap_)) {
                 auto power = td->angle2Power(td->tapdepha_[var_int - td->lowtap_]);
                 variant->dtValDep_.insert(std::pair<std::shared_ptr<TransformateurDephaseur>, double>(td, power));
@@ -2919,15 +2915,15 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& threshold : config.tresholds) {
+    for (const auto& threshold : config.tresholds) {
         for (const auto& quad_cfg : threshold.second) {
             const auto& str = std::get<VariantConfiguration::NAME>(quad_cfg);
-            auto& map = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
-                            ? elementsASurveillerN_
-                            : elementsASurveillerNk_;
+            const auto& map = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
+                                  ? elementsASurveillerN_
+                                  : elementsASurveillerNk_;
             auto quadSurvIt = map.find(str);
             if (quadSurvIt != map.end()) {
-                auto& quad = quadSurvIt->second;
+                const auto& quad = quadSurvIt->second;
                 auto var_dbl = std::get<VariantConfiguration::VALUE>(quad_cfg);
 
                 switch (threshold.first) {
@@ -2984,7 +2980,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& conso_cfg : config.deleteConsosCosts) {
+    for (const auto& conso_cfg : config.deleteConsosCosts) {
         const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
         auto consosIt = consos_.find(str);
         if (consosIt != consos_.end()) {
@@ -2995,7 +2991,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (auto& balance : config.balancesConso) {
+    for (const auto& balance : config.balancesConso) {
         const auto& str = std::get<VariantConfiguration::NAME>(balance);
         int region_num = findRegion(str);
         if (region_num == -1) {
@@ -3005,7 +3001,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         variant->valeurEchange_.insert(std::pair<int, double>(region_num, var_dbl));
     }
 
-    for (auto& balance : config.balancesProd) {
+    for (const auto& balance : config.balancesProd) {
         const auto& str = std::get<VariantConfiguration::NAME>(balance);
         int region_num = findRegion(str);
         if (region_num == -1) {
@@ -3015,7 +3011,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         variant->varBilanProd_.insert(std::pair<int, double>(region_num, var_dbl));
     }
 
-    for (auto& incident : config.probas) {
+    for (const auto& incident : config.probas) {
         const auto& str = std::get<VariantConfiguration::NAME>(incident);
         auto icIt = incidents_.find(str);
         if (icIt != incidents_.end()) {
@@ -3044,14 +3040,14 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
         return;
     }
 
-    for (auto& parade_def : config.parades()) {
+    for (const auto& parade_def : config.parades()) {
         auto mapIt = incidents_.find(parade_def.incident_name);
         if (mapIt == incidents_.end()) {
             LOG_ALL(warning) << err::ioDico().msg("ERRCurTopoIncidentInconnu", parade_def.incident_name);
             continue;
         }
 
-        auto& incident = mapIt->second;
+        const auto& incident = mapIt->second;
         if (!incident->validite_) {
             continue;
         }
@@ -3067,7 +3063,7 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
         }
 
         if (!parade_def.constraints.empty()) {
-            for (auto& cont : parade_def.constraints) {
+            for (const auto& cont : parade_def.constraints) {
                 auto mapCIt = elementsASurveillerNk_.find(cont);
                 if (mapCIt != elementsASurveillerNk_.end()) {
                     parade->contraintesAutorisees_.insert(mapCIt->second);
@@ -3098,7 +3094,7 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
                 break;
             }
 
-            auto& quad = mapQIt->second;
+            const auto& quad = mapQIt->second;
 
             if (quad->norqua_->num_ == quad->nexqua_->num_) {
                 LOG_ALL(error) << err::ioDico().msg("ERRCouplageBoucle", quad->nom_);
@@ -3177,14 +3173,14 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
     }
 
     // Move curative means (TD/HVDC) from incident to parades
-    for (auto& elem : incidents_) {
-        auto& inc = elem.second;
+    for (const auto& elem : incidents_) {
+        const auto& inc = elem.second;
 
         if (inc->parades_.empty() || inc->listeElemCur_.empty()) {
             continue;
         }
 
-        auto& premiereParade = inc->parades_[0];
+        const auto& premiereParade = inc->parades_[0];
 
         // Switch lists
         inc->listeElemCur_.swap(premiereParade->listeElemCur_);

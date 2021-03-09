@@ -590,7 +590,7 @@ int Calculer::ajouterContraintesCouplagesConsos()
     // D(i)/ref(i) = D(0)/ref(0)
     // soit ref(0)*D(i) - ref(i)*D(0) = 0
 
-    for (auto& binding : res_.consosCouplees_) {
+    for (const auto& binding : res_.consosCouplees_) {
         auto listeIt = binding->elements_.cbegin();
         const auto& consoRef = *listeIt;
 
@@ -651,7 +651,7 @@ int Calculer::ajouterContraintesCouplagesGroupes()
     // P(i)/ref(i) = P(0)/ref(0)
     // soit ref(0)*P(i) - ref(i)*P(0) = 0
 
-    for (auto& binding : res_.groupesCouples_) {
+    for (const auto& binding : res_.groupesCouples_) {
         auto listeIt = binding->elements_.begin();
         const auto& grpRef = *listeIt;
 
@@ -924,9 +924,7 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
         }
 
         // parcours des productions connectees au noeud
-        Groupe* grp;
-        for (int j = 0; j < nbGroupesN; ++j) {
-            grp = nod->listeGroupes_[j];
+        for (const auto& grp : nod->listeGroupes_) {
             if (grp->etat_) {
                 secondMembre[i] += grp->prod_;
                 secondMembreFixe[i] += grp->prod_;
@@ -938,10 +936,8 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
         }
 
         // Ajout de la consommation nodale
-        Consommation* conso;
         if (nbConsosN > 0) {
-            for (int j = 0; j < nbConsosN; ++j) {
-                conso = nod->listeConsos_[j];
+            for (const auto& conso : nod->listeConsos_) {
                 int numVar = conso->numVarConso_;
                 secondMembre[i] -= conso->valeur_;
                 secondMembreFixe[i] -= conso->valeur_;
@@ -952,8 +948,7 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
         }
 
         // parcours des transformateurs-dephaseurs connectees au noeud
-        for (int j = 0; j < nbTdN; ++j) {
-            const auto& td = nod->listeTd_[j];
+        for (const auto& td : nod->listeTd_) {
             int varTd = td->numVar_;
             if (nod->position(td->quad_) == Noeud::ORIGINE) {
                 secondMembreFixe[i] -= td->puiCons_;
@@ -965,8 +960,7 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
         }
 
         // parcours des ligne a CC connectees au noeud
-        for (int j = 0; j < nbCCN; ++j) {
-            const auto& lcc = nod->listeCC_[j];
+        for (const auto& lcc : nod->listeCC_) {
             int varLcc = lcc->numVar_;
             if (nod->position(lcc) == Noeud::ORIGINE) {
                 secondMembreFixe[i] -= lcc->puiCons_;
@@ -997,8 +991,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
         comput_ParticipationGrp(icdt);
 
         double puissancePerdueTotale = 0.0; // sur tous els groupes composant l incident
-        for (int i_p = 0; i_p < icdt->nbGroupes_; ++i_p) {
-            const auto& grpe = icdt->listeGroupes_[i_p];
+        for (const auto& grpe : icdt->listeGroupes_) {
             if (!grpe->etat_) {
                 continue;
             }
@@ -1027,8 +1020,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
     }
 
     // Modif de l injection si incident HVDC ...
-    for (int i = 0; i < icdt->nbLccs_; ++i) {
-        const auto& lcc = icdt->listeLccs_[i];
+    for (const auto& lcc : icdt->listeLccs_) {
         int numVar = lcc->numVar_;
         double injHvdc = lcc->puiCons_ + pbX_[numVar] - pbX_[numVar + 1];
         injectionsNodales[lcc->norqua_->num_] += injHvdc;
@@ -1037,7 +1029,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
 
     // Modif de l'injection si curatif ...
     if (icdt->incidentATraiterEncuratif_) {
-        for (auto& elemC : icdt->listeElemCur_) {
+        for (const auto& elemC : icdt->listeElemCur_) {
             if (elemC->positionVarCurative_ == -1) {
                 continue;
             }
@@ -1177,9 +1169,8 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
     double prodCoupee = 0.;
     double consoCoupee = 0.;
     if (poche->pocheAvecConsoProd_) {
-        for (auto& node : poche->noeudsPoche_) {
-            for (int j = 0; j < node->nbConsos_; ++j) {
-                const auto& conso = node->listeConsos_[j];
+        for (const auto& node : poche->noeudsPoche_) {
+            for (const auto& conso : node->listeConsos_) {
                 consoCoupee += conso->valeur_;
                 int numVar = conso->numVarConso_;
                 if (numVar >= 0) {
@@ -1187,8 +1178,7 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
                 }
             }
 
-            for (int i = 0; i < node->nbGroupes_; ++i) {
-                const auto& tmpGrp = node->listeGroupes_[i];
+            for (const auto& tmpGrp : node->listeGroupes_) {
                 if (tmpGrp->etat_) {
                     prodCoupee += tmpGrp->prod_;
                     if (tmpGrp->prodAjust_ != Groupe::NON_HR_AR) {

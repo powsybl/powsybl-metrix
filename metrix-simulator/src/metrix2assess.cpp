@@ -73,7 +73,7 @@ bool Calculer::findNumIncident(const std::map<std::shared_ptr<Incident>, int>& i
     if (pbTypeContrainte_[indexConstraint] == COUPE_SURETE_N) {
         numIncident = 0;
     } else {
-        auto& icdt = pbContraintes_[indexConstraint]->icdt_;
+        const auto& icdt = pbContraintes_[indexConstraint]->icdt_;
         auto itNumIncident = incidentsContraignants.end();
         if (icdt->parade_) {
             itNumIncident = incidentsContraignants.find(icdt->incTraiteCur_);
@@ -128,7 +128,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : C2.
         //--------------
         fprintf(fr, "C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO COUPEE;\n");
-        for (auto& inc : res_.incidentsRompantConnexite_) {
+        for (const auto& inc : res_.incidentsRompantConnexite_) {
             if (inc->validite_ && inc->pochePerdue_) {
                 string nomInc = inc->nom_;
                 if (inc->parade_) {
@@ -144,7 +144,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     nomInc += str;
                 }
 
-                auto& poche = inc->pochePerdue_;
+                const auto& poche = inc->pochePerdue_;
 
                 if (fabs(poche->prodPerdue_) >= EPSILON_SORTIES || fabs(poche->consoPerdue_) >= EPSILON_SORTIES) {
                     string prodPerdue = fabs(poche->prodPerdue_) >= EPSILON_SORTIES
@@ -182,7 +182,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         fprintf(fr, "C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;\n");
 
         // Incidents generant une menace max sur un ouvrage en N-k
-        for (auto& elemSurv : res_.elementsASurveiller_) {
+        for (const auto& elemSurv : res_.elementsASurveiller_) {
             if (elemSurv->survMaxInc_ == ElementASurveiller::NON_SURVEILLE) {
                 continue;
             }
@@ -200,7 +200,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
 
         // Incidents avec transit
-        for (auto& inc : res_.incidentsAvecTransits_) {
+        for (const auto& inc : res_.incidentsAvecTransits_) {
             incidentsContraignants.insert(std::make_pair(inc, 0));
         }
 
@@ -221,7 +221,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     continue;
                 }
 
-                auto& inc = pbContraintes_[i]->icdt_;
+                const auto& inc = pbContraintes_[i]->icdt_;
                 if (!inc) {
                     continue;
                 }
@@ -243,8 +243,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // numerotation des incidents contraignants
         int numIncidentContraignant = 0;
 
-        for (auto& elem : res_.incidents_) {
-            auto& inc = elem.second;
+        for (const auto& elem : res_.incidents_) {
+            const auto& inc = elem.second;
 
             if (!inc->validite_) {
                 continue;
@@ -297,8 +297,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         std::map<string, double> pertesParRegion;
 
         // pertes Quads
-        for (auto& elem : res_.quads_) {
-            auto& quad = elem.second;
+        for (const auto& elem : res_.quads_) {
+            const auto& quad = elem.second;
 
             if (quad->connecte()) {
                 if (quad->typeQuadripole_ == Quadripole::QUADRIPOLE_REEL) {
@@ -324,8 +324,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // pertes HVDC
         double puissHVDC = 0.;
 
-        for (auto& elem : res_.LigneCCs_) {
-            auto& hvdc = elem.second;
+        for (const auto& elem : res_.LigneCCs_) {
+            const auto& hvdc = elem.second;
             puissHVDC = hvdc->puiCons_ + pbX_[hvdc->numVar_] - pbX_[hvdc->numVar_ + 1];
 
             if (hvdc->type_ == LigneCC::PILOTAGE_EMULATION_AC
@@ -389,8 +389,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;\n");
         }
 
-        for (auto& elem : res_.consos_) {
-            auto& conso = elem.second;
+        for (const auto& elem : res_.consos_) {
+            const auto& conso = elem.second;
 
             if (conso->numVarConso_ >= 0) {
                 if (!config::inputConfiguration().useAllOutputs()) {
@@ -444,8 +444,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (res_.nbConsosCuratifs_ > 0) {
             fprintf(fr, "R1B ;INCIDENT;CONSO;EFFACEMENT;\n");
 
-            for (auto& elem : res_.incidents_) {
-                auto& icdt = elem.second;
+            for (const auto& elem : res_.incidents_) {
+                const auto& icdt = elem.second;
 
                 if (!icdt->validite_) {
                     continue;
@@ -454,7 +454,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 auto tmpListeElemCur = icdt->listeElemCur_;
 
                 if (icdt->paradesActivees_) {
-                    for (auto& parade : icdt->parades_) {
+                    for (const auto& parade : icdt->parades_) {
                         if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
                             tmpListeElemCur = parade->listeElemCur_;
                             break;
@@ -462,7 +462,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     }
                 }
 
-                for (auto& elemC : tmpListeElemCur) {
+                for (const auto& elemC : tmpListeElemCur) {
                     if (elemC->typeElem_ != ElementCuratif::CONSO) {
                         continue;
                     }
@@ -478,7 +478,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                                 continue;
                             }
                             volDelCur += val;
-                            auto& conso = std::dynamic_pointer_cast<ElementCuratifConso>(elemC)->conso_;
+                            const auto& conso = std::dynamic_pointer_cast<ElementCuratifConso>(elemC)->conso_;
                             fprintf(fr,
                                     ("R1B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
                                     incidentsContraignants.find(icdt)->second,
@@ -497,7 +497,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "R1C ;NOM REGROUPEMENT;DELTA_C;\n");
             for (auto& binding : res_.consosCouplees_) {
                 val = 0;
-                for (auto& list : binding->elements_) {
+                for (const auto& list : binding->elements_) {
                     val -= pbX_[list->numVarConso_];
                 }
                 if (!config::inputConfiguration().useAllOutputs() && fabs(val) < EPSILON_SORTIES) {
@@ -527,8 +527,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         string sDeltaHR;
         string sDeltaAR;
 
-        for (auto& elem : res_.groupes_) {
-            auto& grp = elem.second;
+        for (const auto& elem : res_.groupes_) {
+            const auto& grp = elem.second;
 
             if (!grp->etat_) {
                 continue;
@@ -644,8 +644,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2B ;INCIDENT;NOM GROUPE;DELTA_P;\n");
 
-            for (auto& elem : res_.incidents_) {
-                auto& icdt = elem.second;
+            for (const auto& elem : res_.incidents_) {
+                const auto& icdt = elem.second;
 
                 if (!icdt->validite_) {
                     continue;
@@ -665,7 +665,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 vector<double> tmpMaxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
                 vector<double> tmpMaxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
 
-                for (auto& elemC : tmpListeElemCur) {
+                for (const auto& elemC : tmpListeElemCur) {
                     if (elemC->typeElem_ != ElementCuratif::GROUPE) {
                         continue;
                     }
@@ -676,7 +676,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                         pos = elemC->positionVarCurative_;
                         if (pos != -1) {
                             double val = config::constants::valdef;
-                            auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
+                            const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
                             string s = grp->nom_;
 
                             val = pbX_[pos] - pbX_[pos + 1];
@@ -717,9 +717,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             double val;
             int numVar;
             fprintf(fr, "R2C ;NOM REGROUPEMENT;DELTA_P;\n");
-            for (auto& binding : res_.groupesCouples_) {
+            for (const auto& binding : res_.groupesCouples_) {
                 val = 0;
-                for (auto& elem : binding->elements_) {
+                for (const auto& elem : binding->elements_) {
                     numVar = elem->numVarGrp_;
                     val += pbX_[numVar] - pbX_[numVar + 1];
                 }
@@ -737,13 +737,13 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         double transitN;
         fprintf(fr, "R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;\n");
         // identification des quadripoles en limite en N
-        for (auto& elemSurv : res_.elementsASurveiller_) {
+        for (const auto& elemSurv : res_.elementsASurveiller_) {
             if (elemSurv->survMaxN_ == ElementASurveiller::NON_SURVEILLE) {
                 continue;
             }
 
             if (elemSurv->quadsASurv_.size() == 1 && elemSurv->hvdcASurv_.empty()) {
-                auto& quad = elemSurv->quadsASurv_.begin()->first;
+                const auto& quad = elemSurv->quadsASurv_.begin()->first;
 
                 if (quad->typeQuadripole_ != Quadripole::QUADRIPOLE_REEL) {
                     continue;
@@ -809,7 +809,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "\n");
 
             if (res_.nbIncidents_ > 0) {
-                for (auto& elemSurv : res_.elementsASurveiller_) {
+                for (const auto& elemSurv : res_.elementsASurveiller_) {
                     if (elemSurv->survMaxInc_ == ElementASurveiller::NON_SURVEILLE) {
                         continue;
                     }
@@ -836,10 +836,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         //------------------------------------
         if (!res_.transitsSurDefauts_.empty()) {
             fprintf(fr, "R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;\n");
-            for (auto& def : res_.transitsSurDefauts_) {
-                auto& quad = def.first;
+            for (const auto& def : res_.transitsSurDefauts_) {
+                const auto& quad = def.first;
                 const auto& listeIcdt = def.second;
-                for (auto& icdt : listeIcdt) {
+                for (const auto& icdt : listeIcdt) {
                     if (icdt->validite_) {
                         double transit = 0.;
                         if (quad->connecte()) {
@@ -871,8 +871,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R5.
         //--------------
         fprintf(fr, "R5 ;PAR TD;TD;CONSIGNE;PRISE; \n");
-        for (auto& elem : res_.TransfoDephaseurs_) {
-            auto& td = elem.second;
+        for (const auto& elem : res_.TransfoDephaseurs_) {
+            const auto& td = elem.second;
 
             if (!config::inputConfiguration().useAllOutputs()) {
                 if (td->fictif_) {
@@ -903,8 +903,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         //--------------
         fprintf(fr, "R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE; \n");
 
-        for (auto& elem : res_.incidents_) {
-            auto& icdt = elem.second;
+        for (const auto& elem : res_.incidents_) {
+            const auto& icdt = elem.second;
 
             if (!icdt->validite_) {
                 continue;
@@ -913,7 +913,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             auto tmpListeElemCur = icdt->listeElemCur_;
 
             if (icdt->paradesActivees_) {
-                for (auto& parade : icdt->parades_) {
+                for (const auto& parade : icdt->parades_) {
                     if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
                         tmpListeElemCur = parade->listeElemCur_;
                         break;
@@ -921,7 +921,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 }
             }
 
-            for (auto& elemC : tmpListeElemCur) {
+            for (const auto& elemC : tmpListeElemCur) {
                 if (elemC->typeElem_ != ElementCuratif::TD) {
                     if (!config::inputConfiguration().useAllOutputs()
                         || elemC->typeElem_ != ElementCuratif::TD_FICTIF) {
@@ -935,7 +935,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
                     pos = elemC->positionVarCurative_;
                     if (pos != -1) {
-                        auto& td = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_;
+                        const auto& td = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_;
                         string s = td->quadVrai_->nom_;
 
                         if (!config::inputConfiguration().useAllOutputs()
@@ -987,8 +987,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         fprintf(fr, "R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;\n");
         std::map<int, double> vmHvdc;
 
-        for (auto& elem : res_.incidents_) {
-            auto& icdt = elem.second;
+        for (const auto& elem : res_.incidents_) {
+            const auto& icdt = elem.second;
 
             if (!icdt->validite_) {
                 continue;
@@ -1005,7 +1005,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 }
             }
 
-            for (auto& elemC : tmpListeElemCur) {
+            for (const auto& elemC : tmpListeElemCur) {
                 if (elemC->typeElem_ != ElementCuratif::HVDC) {
                     continue;
                 }
@@ -1018,7 +1018,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     if (pos != -1) {
                         double val = config::constants::valdef;
                         double varMarg = 0;
-                        auto& lcc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_;
+                        const auto& lcc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_;
                         string s = lcc->nom_;
 
                         if (!config::inputConfiguration().useAllOutputs()
@@ -1067,7 +1067,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 }
 
                 if (to_display) {
-                    auto& lcc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_;
+                    const auto& lcc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_;
                     std::string str("R6B ;%d;%s;");
                     str += PREC_FLOAT;
                     str += ";";
@@ -1097,8 +1097,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         int numVar;
         string nom;
 
-        for (auto& elem : res_.LigneCCs_) {
-            auto& ligne = elem.second;
+        for (const auto& elem : res_.LigneCCs_) {
+            const auto& ligne = elem.second;
 
             if (!config::inputConfiguration().useAllOutputs() && !config::configuration().showAllAngleTDTransitHVDC()
                 && (ligne->type_ == LigneCC::HORS_SERVICE || ligne->type_ == LigneCC::PILOTAGE_PUISSANCE_IMPOSE)) {
@@ -1111,7 +1111,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
             if (ligne->type_ == LigneCC::PILOTAGE_EMULATION_AC
                 || ligne->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
-                auto& quad = ligne->quadFictif_;
+                const auto& quad = ligne->quadFictif_;
                 tmpVal = val
                          + quad->u2Yij_
                                * (theta[quad->norqua_->num_] - theta[quad->nexqua_->num_]); // transit k*delta_theta
@@ -1197,7 +1197,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (config::configuration().useResPertesDetail()) {
             fprintf(fr, "R8B ;PERTES;REGION;VOLUME CALCULE;\n");
 
-            for (auto& region : pertesParRegion) {
+            for (const auto& region : pertesParRegion) {
                 fprintf(fr, ("R8B ;;%s;" + PREC_FLOAT + ";\n").c_str(), region.first.c_str(), region.second);
             }
         }
@@ -1243,7 +1243,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         advance(incEtParIt, res_.nbIncidentsHorsParades_);
 
         for (; incEtParIt != res_.incidentsEtParades_.end(); ++incEtParIt) {
-            auto& icdt = *incEtParIt;
+            const auto& icdt = *incEtParIt;
 
             if ((!icdt->parade_) || (!icdt->validite_)) {
                 continue;
@@ -1251,7 +1251,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
             // Information sur la parade activee
             if ((icdt->numVarActivation_ != -1) && (pbX_[icdt->numVarActivation_] > 0.5)) {
-                auto& icdtPere = icdt->incTraiteCur_;
+                const auto& icdtPere = icdt->incTraiteCur_;
                 if (!config::inputConfiguration().useAllOutputs() && icdt == *icdtPere->parades_.begin()) {
                     continue; // il n'y a que la parade ne rien faire
                 }
@@ -1293,7 +1293,7 @@ Calculer::getIncidentConstraint(const std::map<std::shared_ptr<Incident>, int>& 
         return boost::none; // Seuil de restitution des resultats
     }
 
-    auto& ctre = pbContraintes_[i];
+    const auto& ctre = pbContraintes_[i];
     std::shared_ptr<Incident> icdt;
     if (pbTypeContrainte_[i] == COUPE_SURETE_N) {
         numIncident = 0;
@@ -1368,8 +1368,8 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         int k;
 
         // recherche des variables en base de type groupe
-        for (auto& elem : res_.groupes_) {
-            auto& grp = elem.second;
+        for (const auto& elem : res_.groupes_) {
+            const auto& grp = elem.second;
 
             int g1 = grp->numVarGrp_;
             if (g1 == -1) {
@@ -1388,8 +1388,8 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         // recherche des variables en base de type delestage
         int nbDelestageEnBase = 0;
         int numVar;
-        for (auto& elem : res_.consos_) {
-            auto& conso = elem.second;
+        for (const auto& elem : res_.consos_) {
+            const auto& conso = elem.second;
             numVar = conso->numVarConso_;
             if (numVar >= 0) {
                 if (pbPositionDeLaVariable_[numVar] == EN_BASE) {
@@ -1510,7 +1510,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         fprintf(fr, "R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;\n");
         for (int i : AskedDetailedConstraints) {
             for (int j = 0; j < ctrOuvr; ++j) {
-                auto& cost_def = cost[i][j];
+                const auto& cost_def = cost[i][j];
                 if (cost_def.skipDisplay) {
                     continue; // On n'affiche que les variations marginales significatives
                 }

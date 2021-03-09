@@ -505,14 +505,14 @@ public:
     int unsigned num_; /* num de la ligne a courant continu*/
     std::string nom_;  /* Nom de la liaison */
 
-    double puiMin_;       /* puissance minimale (pour faire des variantes)*/
-    double puiMax_;       /* puissance maximale (pour faire des variantes)*/
-    double puiCons_;      /* puissance de consigne (pour faire des variantes)*/
-    double puiMinBase_;   /* puissance minimale du cas de base */
-    double puiMaxBase_;   /* puissance maximale du cas de base */
-    double puiConsBase_;  /* puissance de consigne du cas de base */
-    TypePilotageCC type_; /* type de ligne a CC */
-    ModeCuratif mode_;    // La HVDC peut elle agir en curatif
+    double puiMin_;                      /* puissance minimale (pour faire des variantes)*/
+    double puiMax_;                      /* puissance maximale (pour faire des variantes)*/
+    double puiCons_;                     /* puissance de consigne (pour faire des variantes)*/
+    double puiMinBase_;                  /* puissance minimale du cas de base */
+    double puiMaxBase_;                  /* puissance maximale du cas de base */
+    double puiConsBase_;                 /* puissance de consigne du cas de base */
+    TypePilotageCC type_ = HORS_SERVICE; /* type de ligne a CC */
+    ModeCuratif mode_ = PREVENTIF_SEUL;  // La HVDC peut elle agir en curatif
 
     // info pour calculer les pertes a posteriori de la liaison HVDC
     double coeffPertesOr_; // %pertes dans la station  Or

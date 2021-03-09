@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         err::IoDico::configure(dicoPath);
         err::ioDico().add("METRIX");
 
-        auto& config = config::configuration();
+        const auto& config = config::configuration();
 
         // input configuration must be updated after dico is initialized
         options.update_configuration();

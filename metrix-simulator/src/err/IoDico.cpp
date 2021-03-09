@@ -44,7 +44,7 @@ void IoDico::add(const string& filename)
     }
 
     // Construire le basename du file
-    char* langue = getenv("METRIX_DICO_LANGUE");
+    const char* langue = getenv("METRIX_DICO_LANGUE");
     string nom;
     string fic;
     if (langue != nullptr) {
