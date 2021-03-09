@@ -203,12 +203,14 @@ void Logger::logImpl()
 
 void Logger::formatter(const record_view& view, formatting_ostream& os) const
 {
+    static constexpr size_t nb_char_time_formatted = 25; // format Www Mmm dd hh:mm:ss yyyy + EOL
     auto lvl = view.attribute_values()["Severity"].extract<severity::level>().get();
 
     auto time = std::chrono::system_clock::to_time_t(
         view.attribute_values()["Timestamp"].extract<std::chrono::system_clock::time_point>().get());
-    std::string time_formatted = std::ctime(&time);
-    time_formatted.erase(std::remove(time_formatted.begin(), time_formatted.end(), '\n'), time_formatted.end());
+    std::string time_formatted;
+    time_formatted.assign(nb_char_time_formatted, '\0');
+    std::strftime(&time_formatted[0], nb_char_time_formatted, "%a %b %d %H:%M:%S %Y", std::localtime(&time));
 
     os << "[" << time_formatted << "] [" << severities_.at(lvl) << "] "
        << view.attribute_values()["File"].extract<std::string>() << ",l"
