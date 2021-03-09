@@ -232,7 +232,7 @@ private:
     static bool checkLevel(severity::level level) { return level >= config.loggerLevel; }
 
 private:
-    bool check(const boost::log::attribute_value_set& set);
+    bool check(const boost::log::attribute_value_set& set) const;
 
     /**
      * @brief Formatter of logger
@@ -249,11 +249,11 @@ private:
      * @param[in] view the boost log record view containing the attributes to format the log
      * @param[out] os the stream where to put the formatted message
      */
-    void formatter(const boost::log::record_view& view, boost::log::formatting_ostream& os);
+    void formatter(const boost::log::record_view& view, boost::log::formatting_ostream& os) const;
     void logImpl();
     void onTimerExpired(const boost::system::error_code& code);
 
-    void logImplDev();
+    void logImplDev() const;
     void logImplResult();
 
     /**

@@ -96,7 +96,7 @@ public:
     {
     }
 
-    std::string toString();
+    std::string toString() const;
 };
 
 
@@ -132,15 +132,15 @@ public:
     std::vector<double> rho_; // coefficient de report pour une modification EOD en curatif
 
     PositionConnexion
-    position(const std::shared_ptr<Connexion>& branche); /* si noeud ORIGINE alors ORIGINE sinon EXTREMITE*/
+    position(const std::shared_ptr<Connexion>& branche) const; /* si noeud ORIGINE alors ORIGINE sinon EXTREMITE*/
 
-    int nbQuads() { return static_cast<int>(listeQuads_.size()); };
-    int nbTd() { return static_cast<int>(listeTd_.size()); };
-    int nbCC() { return static_cast<int>(listeCC_.size()); };
+    int nbQuads() const { return static_cast<int>(listeQuads_.size()); };
+    int nbTd() const { return static_cast<int>(listeTd_.size()); };
+    int nbCC() const { return static_cast<int>(listeCC_.size()); };
 
     double consoNodale();
 
-    std::string print();
+    std::string print() const;
 
     Noeud(int num, int numRegion);
     ~Noeud() = default;
@@ -220,11 +220,11 @@ public:
     Quadripole(const Quadripole&) = delete;            // Constructeur de copie
     Quadripole& operator=(const Quadripole&) = delete; // Operateur d'affectation
 
-    int unsigned tnnorqua()
+    int unsigned tnnorqua() const
     {
         return norqua_->num_;
     }; /* numero Noeud origine du dipole, fixe pour toutes les variantes */
-    int unsigned tnnexqua()
+    int unsigned tnnexqua() const
     {
         return nexqua_->num_;
     }; /* numero Noeud extremite du dipole, fixe pour toutes les variantes */
@@ -286,10 +286,10 @@ public:
     ElementASurveiller(const ElementASurveiller&) = delete;            // Constructeur de copie
     ElementASurveiller& operator=(const ElementASurveiller&) = delete; // Operateur d'affectation
 
-    void verificationSeuils();
-    double seuilMax(const std::shared_ptr<Incident>& icdt);
-    double seuilMin(const std::shared_ptr<Incident>& icdt);
-    double seuil(const std::shared_ptr<Incident>& icdt, double transit);
+    void verificationSeuils() const;
+    double seuilMax(const std::shared_ptr<Incident>& icdt) const;
+    double seuilMin(const std::shared_ptr<Incident>& icdt) const;
+    double seuil(const std::shared_ptr<Incident>& icdt, double transit) const;
 };
 
 //----------------
@@ -357,7 +357,7 @@ public:
     Groupe& operator=(const Groupe&) = delete; // Operateur d'affectation
 
     int checkCoherencePminMaxObj();
-    bool estAjustable(bool adequacy);
+    bool estAjustable(bool adequacy) const;
 };
 
 class GroupesCouples
@@ -384,7 +384,7 @@ public:
     {
     }
 
-    std::string toString();
+    std::string toString() const;
 };
 
 //-----------------------
@@ -476,10 +476,10 @@ public:
     std::vector<double> rho_; // coefficients de report pour le changement de consigne du TD en curatif
 
     // Convertit un angle de dephasage (en degre) en puissance apparente
-    double angle2Power(double angle);
+    double angle2Power(double angle) const;
 
     // Convertir la puissance apparente en angle (degre)
-    double power2Angle(double power);
+    double power2Angle(double power) const;
 
     // Methodes réalisant des opérations sur les prises de TD
     int getClosestTapPosition(double angleFinal);
@@ -697,7 +697,8 @@ public:
 
     int fusionner(int nZone1, int nZone2, std::map<int, int>& mapZones); /* fusionner deux zones */
     int inclure(int nNoeud, int nZone, std::vector<int>& numZones);      /* inclure un noeud dans une zone */
-    int creer(int nNoeud1, int nNoeud2, std::vector<int>& numZones, int nZoneCourant); /* creer une nouvelle zone */
+    static int
+    creer(int nNoeud1, int nNoeud2, std::vector<int>& numZones, int nZoneCourant); /* creer une nouvelle zone */
     int mapZone(int zone, std::map<int, int>& mapZones); /* trouver le plus petit identifiant de zones connexes */
     int traiterConnexion(int nNoeudOrg,
                          int nNoeudExt,
@@ -857,7 +858,7 @@ public:
     std::string nom_;
     double probabilite_; // probabilite d'un incident (peut être définie à une valeur différente selon la variante).
     double probabiliteBase_; // probabilite de base de l'incident (sert pour les variantes)
-    double getProb();        // fonction renvoi probabilite d'un incident ou d'une parade. Si parade, prob est celle de
+    double getProb() const;  // fonction renvoi probabilite d'un incident ou d'une parade. Si parade, prob est celle de
                              // l'incident de la parade
 
     // gestion des parades topo
@@ -1008,7 +1009,7 @@ public:
     std::map<std::shared_ptr<Quadripole>, std::vector<double>> coefficients_;
     std::shared_ptr<Incident> incidentModifie_;
 
-    std::string print();
+    std::string print() const;
 };
 
 // Fonction pour ordonner les noeuds

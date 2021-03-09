@@ -61,7 +61,7 @@ public:
      *
      * @throw IoDico exceptions if input configuration is invalid
      */
-    void update_configuration();
+    void update_configuration() const;
 
     /**
      * @brief Format usage string displayed when "help" is requested on display

@@ -88,10 +88,13 @@ public:
     bool ecrireContrainte_;
 
     // Quelques methodes
-    string typeDeContrainteToString();
-    string toString() { return "(" + typeDeContrainteToString() + " " + nomInc() + " || " + elemAS_->nom_ + ")"; };
-    string nomInc() { return icdt_ ? icdt_->nom_ : "N"; };
-    int numInc() { return icdt_ ? icdt_->num_ : SITU_N; };
+    string typeDeContrainteToString() const;
+    string toString() const
+    {
+        return "(" + typeDeContrainteToString() + " " + nomInc() + " || " + elemAS_->nom_ + ")";
+    };
+    string nomInc() const { return icdt_ ? icdt_->nom_ : "N"; };
+    int numInc() const { return icdt_ ? icdt_->num_ : SITU_N; };
 
     // constructeur
     Contrainte(const std::shared_ptr<ElementASurveiller>& qdt,
@@ -261,7 +264,7 @@ public:
     static double round(double x, double prec); // utiliser pour arrondir les calculs
     Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees);
     int PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante);
-    void comput_ParticipationGrp(const std::shared_ptr<Incident>& icdt);
+    void comput_ParticipationGrp(const std::shared_ptr<Incident>& icdt) const;
     void fixerVariablesEntieres(); // Fixe les variables entieres pour lancement avec SPX
 
     // Modelisation DODU
@@ -331,7 +334,7 @@ public:
                           std::shared_ptr<Incident> icdt,
                           const vector<double>& theta);
     double transitSurQuadIncidentNonConnexe(const std::shared_ptr<Quadripole>& quad,
-                                            const std::shared_ptr<Incident>& icdt);
+                                            const std::shared_ptr<Incident>& icdt) const;
     void choixContraintesAajouter();
     int ajoutContraintes(bool& existe_contrainte_active,
                          int& nbNewContreParVariante,
@@ -383,11 +386,11 @@ public:
     int calculReportInfluencement();
     int calculCoefsReport(std::shared_ptr<Incident> icdt);
     int calculCoefsInfluencement(const std::shared_ptr<Incident>& icdt);
-    int calculInitCoefs(std::shared_ptr<Incident> icdt);
-    int calculReportLcc(const std::shared_ptr<Incident>& inc);
+    int calculInitCoefs(std::shared_ptr<Incident> icdt) const;
+    int calculReportLcc(const std::shared_ptr<Incident>& inc) const;
     int calculReportLccs();
-    int resetCoefs(std::shared_ptr<Incident> icdt);
-    void resetCoeffQuadsN();
+    int resetCoefs(std::shared_ptr<Incident> icdt) const;
+    void resetCoeffQuadsN() const;
     int calculerCoeffEnN(const std::shared_ptr<Quadripole>& quad);
     int calculCoeffReportTD();
     int calculReportGroupesEtConsos();
@@ -398,11 +401,11 @@ public:
                     vector<double>& BValeurDesTermesDeLaMatrice,
                     vector<int>& BIndicesDeLigne,
                     int nbColones,
-                    vector<vector<double>>& invB);
+                    vector<vector<double>>& invB) const;
     int coeffsRepportPhases(const vector<std::shared_ptr<Quadripole>>& listeQuads,
                             int nbColonnes,
                             const vector<vector<double>>& invB_T,
-                            vector<vector<double>>& g_mk);
+                            vector<vector<double>>& g_mk) const;
 
     // Traces
     void printFctObj(bool silent);

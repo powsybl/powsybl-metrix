@@ -73,7 +73,7 @@ bool compareMenaces(const Menace& menace1, const Menace& menace2)
 // Methodes des differentes des classes du fichier Reseau.h
 //---------------------------------------------------------
 
-string GroupesCouples::toString()
+string GroupesCouples::toString() const
 {
     std::stringstream out;
     vector<int> indices(elements_.size());
@@ -88,7 +88,7 @@ string GroupesCouples::toString()
     return out.str();
 }
 
-string ConsommationsCouplees::toString()
+string ConsommationsCouplees::toString() const
 {
     std::stringstream out;
     vector<int> indices(elements_.size());
@@ -103,7 +103,7 @@ string ConsommationsCouplees::toString()
     return out.str();
 }
 
-bool Groupe::estAjustable(bool adequacy)
+bool Groupe::estAjustable(bool adequacy) const
 {
     if (prodAjust_ == Groupe::NON_HR_AR) {
         return false;
@@ -1210,12 +1210,12 @@ Noeud::Noeud(int num, int numRegion) :
 {
 }
 
-Noeud::PositionConnexion Noeud::position(const std::shared_ptr<Connexion>& branche)
+Noeud::PositionConnexion Noeud::position(const std::shared_ptr<Connexion>& branche) const
 {
     return num_ == branche->norqua_->num_ ? ORIGINE : EXTREMITE;
 }
 
-string Noeud::print()
+string Noeud::print() const
 {
     string txt = c_fmt("%d", num_);
     if (nbConsos_ > 0) {
@@ -1316,7 +1316,7 @@ ElementASurveiller::ElementASurveiller(const string& nom,
 {
 }
 
-double ElementASurveiller::seuilMax(const std::shared_ptr<Incident>& icdt)
+double ElementASurveiller::seuilMax(const std::shared_ptr<Incident>& icdt) const
 {
     if (!icdt) {
         return seuilMaxN_;
@@ -1345,7 +1345,7 @@ double ElementASurveiller::seuilMax(const std::shared_ptr<Incident>& icdt)
     return seuilMaxInc_;
 }
 
-double ElementASurveiller::seuilMin(const std::shared_ptr<Incident>& icdt)
+double ElementASurveiller::seuilMin(const std::shared_ptr<Incident>& icdt) const
 {
     auto checkThreshold = [&icdt, this](double threshold) -> double {
         return (threshold != config::constants::valdef) ? -threshold : -seuilMax(icdt);
@@ -1379,12 +1379,12 @@ double ElementASurveiller::seuilMin(const std::shared_ptr<Incident>& icdt)
     return -seuilMax(icdt);
 }
 
-double ElementASurveiller::seuil(const std::shared_ptr<Incident>& icdt, double transit)
+double ElementASurveiller::seuil(const std::shared_ptr<Incident>& icdt, double transit) const
 {
     return transit >= 0 ? seuilMax(icdt) : seuilMin(icdt);
 }
 
-void ElementASurveiller::verificationSeuils()
+void ElementASurveiller::verificationSeuils() const
 {
     if (seuilMaxN_ <= 0 && (survMaxN_ == ElementASurveiller::SURVEILLE)) {
         LOG_ALL(warning) << err::ioDico().msg("WARNLimiteCourantNegative", nom_, "N", c_fmt("%5.1f", seuilMaxN_));
@@ -1605,12 +1605,12 @@ TransformateurDephaseur::TransformateurDephaseur(int unsigned num,
     }
 }
 
-double TransformateurDephaseur::angle2Power(double angle)
+double TransformateurDephaseur::angle2Power(double angle) const
 {
     return angle * config::constants::pi / 180.0 * quad_->u2Yij_;
 }
 
-double TransformateurDephaseur::power2Angle(double power)
+double TransformateurDephaseur::power2Angle(double power) const
 {
     return power / quad_->u2Yij_ * 180.0 / config::constants::pi;
 }
@@ -2526,7 +2526,7 @@ double TransformateurDephaseur::getPuiMin()
     return puiMin;
 }
 
-double Incident::getProb()
+double Incident::getProb() const
 {
     double prob = config::configuration().probaInc();
     if (parade_) {

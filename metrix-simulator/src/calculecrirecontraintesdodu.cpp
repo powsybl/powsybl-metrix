@@ -2134,7 +2134,7 @@ void enregistreMenaces(const std::shared_ptr<Incident>& icdt,
 
 
 double Calculer::transitSurQuadIncidentNonConnexe(const std::shared_ptr<Quadripole>& quad,
-                                                  const std::shared_ptr<Incident>& icdt)
+                                                  const std::shared_ptr<Incident>& icdt) const
 {
     const auto& quadsInc = icdt->listeQuads_;
     if (find(quadsInc.begin(), quadsInc.end(), quad) != quadsInc.end()) {

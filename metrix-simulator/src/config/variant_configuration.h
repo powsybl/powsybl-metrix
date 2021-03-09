@@ -107,26 +107,26 @@ private:
     static std::tuple<std::string, int> extractInt(std::istringstream& iss);
 
 private:
-    void processGroup(VariantConfig& variant, std::istringstream& iss);
-    void processConso(VariantConfig& variant, std::istringstream& iss);
-    void processCostConso(VariantConfig& variant, std::istringstream& iss);
-    void processImposedGroup(VariantConfig& variant, std::istringstream& iss);
-    void processGroupPmax(VariantConfig& variant, std::istringstream& iss);
-    void processGroupPmin(VariantConfig& variant, std::istringstream& iss);
+    void processGroup(VariantConfig& variant, std::istringstream& iss) const;
+    void processConso(VariantConfig& variant, std::istringstream& iss) const;
+    void processCostConso(VariantConfig& variant, std::istringstream& iss) const;
+    void processImposedGroup(VariantConfig& variant, std::istringstream& iss) const;
+    void processGroupPmax(VariantConfig& variant, std::istringstream& iss) const;
+    void processGroupPmin(VariantConfig& variant, std::istringstream& iss) const;
 
-    void processCost(VariantConfig::CostType cost_type, VariantConfig& variant, std::istringstream& iss);
+    void processCost(VariantConfig::CostType cost_type, VariantConfig& variant, std::istringstream& iss) const;
 
-    void processLine(VariantConfig& variant, std::istringstream& iss);
-    void processHVDCPmax(VariantConfig& variant, std::istringstream& iss);
-    void processHVDCPmin(VariantConfig& variant, std::istringstream& iss);
-    void processHVDCPower(VariantConfig& variant, std::istringstream& iss);
-    void processTDPhasing(VariantConfig& variant, std::istringstream& iss);
+    void processLine(VariantConfig& variant, std::istringstream& iss) const;
+    void processHVDCPmax(VariantConfig& variant, std::istringstream& iss) const;
+    void processHVDCPmin(VariantConfig& variant, std::istringstream& iss) const;
+    void processHVDCPower(VariantConfig& variant, std::istringstream& iss) const;
+    void processTDPhasing(VariantConfig& variant, std::istringstream& iss) const;
 
-    void processThreshold(VariantConfig::Threshold threshold, VariantConfig& variant, std::istringstream& iss);
+    void processThreshold(VariantConfig::Threshold threshold, VariantConfig& variant, std::istringstream& iss) const;
 
-    void processBalancesConsumption(VariantConfig& variant, std::istringstream& iss);
-    void processBalancesProduction(VariantConfig& variant, std::istringstream& iss);
-    void processProbaInc(VariantConfig& variant, std::istringstream& iss);
+    void processBalancesConsumption(VariantConfig& variant, std::istringstream& iss) const;
+    void processBalancesProduction(VariantConfig& variant, std::istringstream& iss) const;
+    void processProbaInc(VariantConfig& variant, std::istringstream& iss) const;
 
 private:
     const std::map<std::string, Processor>

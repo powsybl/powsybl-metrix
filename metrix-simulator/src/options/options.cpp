@@ -201,7 +201,7 @@ Options::Options() :
     positional_.add("paradesFilepath", 1);
 }
 
-void Options::update_configuration()
+void Options::update_configuration() const
 {
     if (config_.firstVariant < 0) {
         throw ErrorI(err::ioDico().msg("ERRFirstVariant"));

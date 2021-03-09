@@ -72,14 +72,14 @@ private:
      */
     IoDico();
 
-    std::string findFile(const std::string& file);
+    static std::string findFile(const std::string& file);
     void readFile(const char* filename);
     std::string findAndReadFile(const std::string& file);
 
 private:
     static std::string path_;
 
-    bool processLine(std::ifstream& in, std::string&key, std::string&value);
+    static bool processLine(std::ifstream& in, std::string& key, std::string& value);
 
 private:
     std::map<std::string, std::string> map_;

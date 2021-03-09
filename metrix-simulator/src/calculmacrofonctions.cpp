@@ -70,7 +70,7 @@ void Contrainte::init(const std::shared_ptr<ElementASurveiller>& qdt,
 }
 
 
-string Contrainte::typeDeContrainteToString()
+string Contrainte::typeDeContrainteToString() const
 {
     string nom = "unknown";
     if (type_ == Contrainte::CONTRAINTE_N) {

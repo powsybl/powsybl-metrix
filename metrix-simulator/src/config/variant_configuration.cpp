@@ -247,7 +247,7 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
     }
 }
 
-void VariantConfiguration::processGroup(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processGroup(VariantConfig& variant, std::istringstream& iss) const
 {
     std::string sub_line;
     getline(iss, sub_line, ';');
@@ -284,7 +284,7 @@ std::tuple<std::string, int> VariantConfiguration::extractInt(std::istringstream
     return std::make_tuple(name, value);
 }
 
-void VariantConfiguration::processConso(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processConso(VariantConfig& variant, std::istringstream& iss) const
 {
     auto conso = extractDouble(iss);
     variant.consos.push_back(conso);
@@ -293,7 +293,7 @@ void VariantConfiguration::processConso(VariantConfig& variant, std::istringstre
                << " with value " << std::get<VALUE>(conso);
 }
 
-void VariantConfiguration::processImposedGroup(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processImposedGroup(VariantConfig& variant, std::istringstream& iss) const
 {
     auto group = extractDouble(iss);
     variant.groups.push_back(group);
@@ -302,7 +302,7 @@ void VariantConfiguration::processImposedGroup(VariantConfig& variant, std::istr
                << " is imposed at value " << std::get<VALUE>(group);
 }
 
-void VariantConfiguration::processGroupPmax(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processGroupPmax(VariantConfig& variant, std::istringstream& iss) const
 {
     auto group = extractDouble(iss);
     variant.pmaxGroups.push_back(group);
@@ -311,7 +311,7 @@ void VariantConfiguration::processGroupPmax(VariantConfig& variant, std::istring
                << " at Pmax value " << std::get<VALUE>(group);
 }
 
-void VariantConfiguration::processGroupPmin(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processGroupPmin(VariantConfig& variant, std::istringstream& iss) const
 {
     auto group = extractDouble(iss);
     variant.pminGroups.push_back(group);
@@ -320,7 +320,7 @@ void VariantConfiguration::processGroupPmin(VariantConfig& variant, std::istring
                << " at Pmin value " << std::get<VALUE>(group);
 }
 
-void VariantConfiguration::processLine(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processLine(VariantConfig& variant, std::istringstream& iss) const
 {
     std::string sub_line;
     getline(iss, sub_line, ';');
@@ -331,7 +331,7 @@ void VariantConfiguration::processLine(VariantConfig& variant, std::istringstrea
     LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : line " << sub_line << " unavailable";
 }
 
-void VariantConfiguration::processHVDCPmax(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processHVDCPmax(VariantConfig& variant, std::istringstream& iss) const
 {
     auto line = extractDouble(iss);
     variant.pmaxHvdc.push_back(line);
@@ -340,7 +340,7 @@ void VariantConfiguration::processHVDCPmax(VariantConfig& variant, std::istrings
                << " Pmax at " << std::get<VALUE>(line);
 }
 
-void VariantConfiguration::processHVDCPmin(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processHVDCPmin(VariantConfig& variant, std::istringstream& iss) const
 {
     auto line = extractDouble(iss);
     variant.pminHvdc.push_back(line);
@@ -349,7 +349,7 @@ void VariantConfiguration::processHVDCPmin(VariantConfig& variant, std::istrings
                << " Pmin at " << std::get<VALUE>(line);
 }
 
-void VariantConfiguration::processHVDCPower(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processHVDCPower(VariantConfig& variant, std::istringstream& iss) const
 {
     auto line = extractDouble(iss);
     variant.powerHvdc.push_back(line);
@@ -358,7 +358,7 @@ void VariantConfiguration::processHVDCPower(VariantConfig& variant, std::istring
                << " power at " << std::get<VALUE>(line);
 }
 
-void VariantConfiguration::processTDPhasing(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processTDPhasing(VariantConfig& variant, std::istringstream& iss) const
 {
     auto td = extractInt(iss);
     variant.tdPhasing.push_back(td);
@@ -367,7 +367,7 @@ void VariantConfiguration::processTDPhasing(VariantConfig& variant, std::istring
                << " phasing at " << std::get<VALUE>(td);
 }
 
-void VariantConfiguration::processCostConso(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processCostConso(VariantConfig& variant, std::istringstream& iss) const
 {
     auto conso = extractDouble(iss);
     variant.deleteConsosCosts.push_back(conso);
@@ -376,7 +376,7 @@ void VariantConfiguration::processCostConso(VariantConfig& variant, std::istring
                << " delete cost at " << std::get<VALUE>(conso);
 }
 
-void VariantConfiguration::processBalancesConsumption(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processBalancesConsumption(VariantConfig& variant, std::istringstream& iss) const
 {
     auto region = extractDouble(iss);
     variant.balancesConso.push_back(region);
@@ -385,7 +385,7 @@ void VariantConfiguration::processBalancesConsumption(VariantConfig& variant, st
                << ", balance objective by consumption value at" << std::get<VALUE>(region);
 }
 
-void VariantConfiguration::processBalancesProduction(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processBalancesProduction(VariantConfig& variant, std::istringstream& iss) const
 {
     auto region = extractDouble(iss);
     variant.balancesProd.push_back(region);
@@ -394,7 +394,7 @@ void VariantConfiguration::processBalancesProduction(VariantConfig& variant, std
                << ", balance objective by production value at" << std::get<VALUE>(region);
 }
 
-void VariantConfiguration::processProbaInc(VariantConfig& variant, std::istringstream& iss)
+void VariantConfiguration::processProbaInc(VariantConfig& variant, std::istringstream& iss) const
 {
     auto incident = extractDouble(iss);
     variant.probas.push_back(incident);
@@ -405,7 +405,7 @@ void VariantConfiguration::processProbaInc(VariantConfig& variant, std::istrings
 
 void VariantConfiguration::processCost(VariantConfig::CostType cost_type,
                                        VariantConfig& variant,
-                                       std::istringstream& iss)
+                                       std::istringstream& iss) const
 {
     auto group = extractDouble(iss);
     variant.costs[cost_type].push_back(group);
@@ -427,7 +427,7 @@ void VariantConfiguration::processCost(VariantConfig::CostType cost_type,
 
 void VariantConfiguration::processThreshold(VariantConfig::Threshold threshold,
                                             VariantConfig& variant,
-                                            std::istringstream& iss)
+                                            std::istringstream& iss) const
 {
     auto quad = extractDouble(iss);
     variant.tresholds[threshold].push_back(quad);

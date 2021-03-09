@@ -140,7 +140,7 @@ Logger& Logger::instance()
     return logger_instance;
 }
 
-bool Logger::check(const boost::log::attribute_value_set& set)
+bool Logger::check(const boost::log::attribute_value_set& set) const
 {
     return checkLevel(set["Severity"].extract<severity::level>().get());
 }
@@ -163,7 +163,7 @@ Logger& Logger::log(severity::level lvl, const std::string& filepath, int line, 
     return *this;
 }
 
-void Logger::logImplDev()
+void Logger::logImplDev() const
 {
     BOOST_LOG_SCOPED_LOGGER_ATTR(
         (*logger_),
@@ -201,7 +201,7 @@ void Logger::logImpl()
     logInfo_.reset();
 }
 
-void Logger::formatter(const record_view& view, formatting_ostream& os)
+void Logger::formatter(const record_view& view, formatting_ostream& os) const
 {
     auto lvl = view.attribute_values()["Severity"].extract<severity::level>().get();
 

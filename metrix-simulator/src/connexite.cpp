@@ -568,7 +568,7 @@ PochePerdue& PochePerdue::operator=(const PochePerdue& other)
 }
 
 
-string PochePerdue::print()
+string PochePerdue::print() const
 {
     string txt = err::ioDico().msg("INFOPochePerdue");
     for (auto& node : noeudsPoche_) {

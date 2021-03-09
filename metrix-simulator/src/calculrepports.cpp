@@ -39,7 +39,7 @@ using std::vector;
 //---------------------------------------------------------
 // REMARQUE : pour le detail des formules que nous utilisons,
 //           consultez "MODERN POWER SYSTEMS CONTROL AND OPERATION (Atif S.Debs)"
-int Calculer::calculInitCoefs(std::shared_ptr<Incident> icdt)
+int Calculer::calculInitCoefs(std::shared_ptr<Incident> icdt) const
 {
     if (icdt->pochePerdue_) {
         if (icdt->pochePerdue_->pocheAvecConsoProd_) {
@@ -61,7 +61,7 @@ int Calculer::calculInitCoefs(std::shared_ptr<Incident> icdt)
     return METRIX_PAS_PROBLEME;
 }
 
-int Calculer::resetCoefs(std::shared_ptr<Incident> icdt)
+int Calculer::resetCoefs(std::shared_ptr<Incident> icdt) const
 {
     if (icdt->pochePerdue_) {
         icdt = icdt->pochePerdue_->incidentModifie_;
@@ -365,7 +365,7 @@ int Calculer::calculReportLccs()
     return codeRet;
 }
 
-int Calculer::calculReportLcc(const std::shared_ptr<Incident>& inc)
+int Calculer::calculReportLcc(const std::shared_ptr<Incident>& inc) const
 {
     // Calcul de sensibilite de toutes les lignes à la HVDC sur des incidents donnees
     int debut = inc->nbLignes_ + inc->nbCouplagesFermes_ + inc->nbGroupes_;
@@ -400,7 +400,7 @@ int Calculer::calculReportLcc(const std::shared_ptr<Incident>& inc)
 int Calculer::coeffsRepportPhases(const vector<std::shared_ptr<Quadripole>>& listeQuads,
                                   int nbColonnes,
                                   const vector<vector<double>>& invB_T,
-                                  vector<vector<double>>& g_mk)
+                                  vector<vector<double>>& g_mk) const
 {
     // Remarque : g_mk[indice colonne : 1...icdt->nbLignes_][indice ligne : 1...res_.nbNoeuds_]
     //           invB[indice colonne : 1...icdt->nbLignes_][indice ligne : 1...icdt->nbLignes_]
@@ -446,7 +446,7 @@ int Calculer::calculeInvB(const std::shared_ptr<Incident>& icdt,
                           vector<double>& BValeurDesTermesDeLaMatrice,
                           vector<int>& BIndicesDeLigne,
                           int nbColones,
-                          vector<vector<double>>& invB)
+                          vector<vector<double>>& invB) const
 {
     MATRICE_A_FACTORISER B;
     MATRICE* Bptr;
@@ -484,7 +484,7 @@ int Calculer::calculeInvB(const std::shared_ptr<Incident>& icdt,
     return METRIX_PAS_PROBLEME;
 }
 
-void Calculer::comput_ParticipationGrp(const std::shared_ptr<Incident>& icdt)
+void Calculer::comput_ParticipationGrp(const std::shared_ptr<Incident>& icdt) const
 {
     // true si groupe qui participe a la compensation (1- connecte 2- Pmax diff Pmin 3- Pas N-k, non impose)
     //     sinon false
@@ -727,7 +727,7 @@ int Calculer::calculReportGroupesEtConsos()
 }
 
 
-void Calculer::resetCoeffQuadsN()
+void Calculer::resetCoeffQuadsN() const
 {
     for (auto& elem : res_.quadsSurv_) {
         elem->coeffN_.resize(0);
