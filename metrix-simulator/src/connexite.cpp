@@ -499,8 +499,7 @@ PochePerdue::PochePerdue(const std::shared_ptr<Incident>& icdt, map<std::shared_
     auto zoneEnd = noeudsPoche_.end();
     set<int> zonesConservees;
 
-    for (auto iQ = icdt->listeQuads_.begin(); iQ != icdt->listeQuads_.end(); ++iQ) {
-        auto& quadIcdt = *iQ;
+    for (const auto& quadIcdt : icdt->listeQuads_) {
         if (!quadIcdt->connecte()) {
             continue;
         }

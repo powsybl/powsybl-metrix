@@ -105,10 +105,10 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
     double coutDelestageMin = res_.nbConsos_ > 0 ? res_.consos_.cbegin()->second->cout_ : 0;
 
     for (int i = 0; i < res_.nbNoeuds_; ++i) {
-        auto& noeud = res_.noeuds_[i];
+        const auto& noeud = res_.noeuds_[i];
 
         for (int j = 0; j < noeud->nbConsos_; ++j) {
-            auto& conso = noeud->listeConsos_[j];
+            const auto& conso = noeud->listeConsos_[j];
             coutDelestageMin = coutDelestageMin < conso->cout_ ? coutDelestageMin : conso->cout_;
 
             puissanceAdemarrer += conso->valeur_;
@@ -117,7 +117,7 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
         }
 
         for (int j = 0; j < noeud->nbCC(); ++j) {
-            auto& lcc = noeud->listeCC_[j];
+            const auto& lcc = noeud->listeCC_[j];
             res_.bilanParZone_[noeud->numCompSynch_] += (lcc->norqua_ == noeud) ? -lcc->puiCons_ : lcc->puiCons_;
         }
     }

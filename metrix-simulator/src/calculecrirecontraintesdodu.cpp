@@ -203,7 +203,7 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
     std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
 
     for (int i = 0; i < res_.nbGroupes_; ++i) {
-        auto& grp = grp_melanges[i];
+        const auto& grp = grp_melanges[i];
 
         if (grp->prodAjust_ == Groupe::NON_HR_AR) {
             continue;
@@ -281,7 +281,7 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
 void Calculer::ajoutRedispatchCostOffsetConsos()
 {
     for (auto cIt = res_.consos_.cbegin(); cIt != res_.consos_.end(); ++cIt) {
-        auto& conso = cIt->second;
+        const auto& conso = cIt->second;
         if (conso->numVarConso_ >= 0) {
             pbCoutLineaire_[conso->numVarConso_] = conso->cout_ + config::configuration().redispatchCostOffset();
             pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
@@ -296,7 +296,7 @@ int Calculer::ecrireContraintesDeBordConsosDodu()
     double consoNodale = 0.;
 
     for (auto cIt = res_.consos_.cbegin(); cIt != res_.consos_.end(); ++cIt) {
-        auto& conso = cIt->second;
+        const auto& conso = cIt->second;
         numVar = conso->numVarConso_;
         if (numVar >= 0) { // La conso peut etre delestee en N
 
@@ -326,7 +326,7 @@ int Calculer::ecrireContraintesDeBordTransformateurDephaseur()
     int numVarTd;
 
     for (auto tdIt = res_.TransfoDephaseurs_.cbegin(); tdIt != res_.TransfoDephaseurs_.end(); ++tdIt) {
-        auto& td = tdIt->second;
+        const auto& td = tdIt->second;
         numVarTd = td->numVar_;
 
         double puiMax;
@@ -396,7 +396,7 @@ int Calculer::ecrireContraintesDeBordLignesCC()
     int numVarCc;
 
     for (auto lccIt = res_.LigneCCs_.cbegin(); lccIt != res_.LigneCCs_.end(); ++lccIt) {
-        auto& lcc = lccIt->second;
+        const auto& lcc = lccIt->second;
         numVarCc = lcc->numVar_;
 
         // Ajout des variables x+ et x- pour avoir la plus petite variation de transit possible autour de P0
@@ -452,7 +452,7 @@ int Calculer::ecrireContrainteBilanEnergetique(bool parZonesSynchr)
 
             if (typeEtat_[i] == LIGNE_CC_H) {
                 if (parZonesSynchr) { // donc pas dans la zone 0
-                    auto& lcc = res_.lccParIndice_[numSupportEtat_[i]];
+                    const auto& lcc = res_.lccParIndice_[numSupportEtat_[i]];
 
                     int numCSOr = lcc->norqua_->numCompSynch_;
                     int numCSEx = lcc->nexqua_->numCompSynch_;
@@ -521,7 +521,7 @@ int Calculer::ecrireContrainteBilanEnergetique(bool parZonesSynchr)
         }
 
         for (int i = 0; i < res_.nbNoeuds_; ++i) {
-            auto& nod = res_.noeuds_[i];
+            const auto& nod = res_.noeuds_[i];
 
             if (parZonesSynchr && nod->numCompSynch_ != b) {
                 continue;
@@ -579,11 +579,7 @@ double valeurVariableReference(GroupesCouples::VariableReference varRef, const s
         case GroupesCouples::VariableReference::PMIN: return grp->puisMin_;
         case GroupesCouples::VariableReference::POBJ: return grp->prod_;
         case GroupesCouples::VariableReference::PMAX_POBJ: return grp->puisMax_ - grp->prod_;
-        default: {
-            std::stringstream ss("Type de variable de reference inconnu : ");
-            ss << varRef;
-            throw ErrorI(ss.str());
-        }
+        default: throw ErrorI("Type de variable de reference inconnu : ");
     }
 }
 
@@ -598,7 +594,7 @@ int Calculer::ajouterContraintesCouplagesConsos()
 
     for (auto& binding : res_.consosCouplees_) {
         auto listeIt = binding->elements_.cbegin();
-        auto& consoRef = *listeIt;
+        const auto& consoRef = *listeIt;
 
         int nbContraintes = 0;
         int numVar;
@@ -659,7 +655,7 @@ int Calculer::ajouterContraintesCouplagesGroupes()
 
     for (auto& binding : res_.groupesCouples_) {
         auto listeIt = binding->elements_.begin();
-        auto& grpRef = *listeIt;
+        const auto& grpRef = *listeIt;
 
         int nbContraintes = 0;
         int numVar;
@@ -744,10 +740,10 @@ int Calculer::ecrireEquationBilanCuratif(
     const std::map<int, std::vector<std::shared_ptr<ElementCuratifHVDC>>>& mapZoneSyncHvdc)
 {
     std::set<int> zoneSync;
-    for (auto& sync : mapZoneSyncGrp) {
+    for (const auto& sync : mapZoneSyncGrp) {
         zoneSync.insert(sync.first);
     }
-    for (auto& sync : mapZoneSyncConso) {
+    for (const auto& sync : mapZoneSyncConso) {
         zoneSync.insert(sync.first);
     }
 
@@ -903,7 +899,7 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
     int nbCCN;
 
     for (int i = 0; i < res_.nbNoeuds_; ++i) {
-        auto& nod = res_.noeuds_[i];
+        const auto& nod = res_.noeuds_[i];
         secondMembre[i] = 0.0;
         secondMembreFixe[i] = 0.0;
 
@@ -959,7 +955,7 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
 
         // parcours des transformateurs-dephaseurs connectees au noeud
         for (int j = 0; j < nbTdN; ++j) {
-            auto& td = nod->listeTd_[j];
+            const auto& td = nod->listeTd_[j];
             int varTd = td->numVar_;
             if (nod->position(td->quad_) == Noeud::ORIGINE) {
                 secondMembreFixe[i] -= td->puiCons_;
@@ -972,7 +968,7 @@ int Calculer::miseAJourSecondMembre(std::vector<double>& secondMembre, std::vect
 
         // parcours des ligne a CC connectees au noeud
         for (int j = 0; j < nbCCN; ++j) {
-            auto& lcc = nod->listeCC_[j];
+            const auto& lcc = nod->listeCC_[j];
             int varLcc = lcc->numVar_;
             if (nod->position(lcc) == Noeud::ORIGINE) {
                 secondMembreFixe[i] -= lcc->puiCons_;
@@ -1004,7 +1000,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
 
         double puissancePerdueTotale = 0.0; // sur tous els groupes composant l incident
         for (int i_p = 0; i_p < icdt->nbGroupes_; ++i_p) {
-            auto& grpe = icdt->listeGroupes_[i_p];
+            const auto& grpe = icdt->listeGroupes_[i_p];
             if (!grpe->etat_) {
                 continue;
             }
@@ -1034,7 +1030,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
 
     // Modif de l injection si incident HVDC ...
     for (int i = 0; i < icdt->nbLccs_; ++i) {
-        auto& lcc = icdt->listeLccs_[i];
+        const auto& lcc = icdt->listeLccs_[i];
         int numVar = lcc->numVar_;
         double injHvdc = lcc->puiCons_ + pbX_[numVar] - pbX_[numVar + 1];
         injectionsNodales[lcc->norqua_->num_] += injHvdc;
@@ -1055,37 +1051,32 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
             switch (elemC->typeElem_) {
                 case ElementCuratif::TD: {
                     varPuiss = pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
-                    auto& quad = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_->quad_;
-                    numOr = quad->norqua_->num_;
-                    numEx = quad->nexqua_->num_;
+                    numOr = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_->quad_->norqua_->num_;
+                    numEx = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_->quad_->nexqua_->num_;
                     break;
                 }
                 case ElementCuratif::TD_FICTIF: {
-                    auto& td = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_;
-                    numVarTd = td->numVar_;
+                    numVarTd = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_->numVar_;
                     varPuiss = pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1]
                                - (pbX_[numVarTd] - pbX_[numVarTd + 1]);
-                    numOr = td->quad_->norqua_->num_;
-                    numEx = td->quad_->nexqua_->num_;
+                    numOr = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_->quad_->norqua_->num_;
+                    numEx = std::dynamic_pointer_cast<ElementCuratifTD>(elemC)->td_->quad_->nexqua_->num_;
                     break;
                 }
                 case ElementCuratif::HVDC: {
-                    auto& lcc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_;
                     varPuiss = pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
-                    numOr = lcc->norqua_->num_;
-                    numEx = lcc->nexqua_->num_;
+                    numOr = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_->norqua_->num_;
+                    numEx = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC)->lcc_->nexqua_->num_;
                     break;
                 }
                 case ElementCuratif::GROUPE: {
-                    auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
                     varPuiss = pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
-                    numEx = grp->numNoeud_;
+                    numEx = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_->numNoeud_;
                     break;
                 }
                 case ElementCuratif::CONSO: {
-                    auto& conso = std::dynamic_pointer_cast<ElementCuratifConso>(elemC)->conso_;
                     varPuiss = -pbX_[elemC->positionVarCurative_] + pbX_[elemC->positionVarCurative_ + 1];
-                    numEx = conso->noeud_->num_;
+                    numEx = std::dynamic_pointer_cast<ElementCuratifConso>(elemC)->conso_->noeud_->num_;
                     break;
                 }
                 default: LOG_ALL(warning) << " unsupported curative element of type " << elemC->typeElem_; break;
@@ -1099,7 +1090,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
     }     // end if
 
     if (icdt->pochePerdue_) {
-        auto& poche = icdt->pochePerdue_;
+        const auto& poche = icdt->pochePerdue_;
 
         if (poche->pocheAvecConsoProd_) {
             double prorataEOD = deltaEODPoche(poche);
@@ -1137,7 +1128,7 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
                                                const std::vector<double>& secondMembreN,
                                                const std::vector<double>& secondMembreFixeN)
 {
-    auto& poche = icdt->pochePerdue_;
+    const auto& poche = icdt->pochePerdue_;
 
     if (!poche->pocheAvecConsoProd_) {
         return METRIX_PAS_PROBLEME;
@@ -1190,7 +1181,7 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
     if (poche->pocheAvecConsoProd_) {
         for (auto& node : poche->noeudsPoche_) {
             for (int j = 0; j < node->nbConsos_; ++j) {
-                auto& conso = node->listeConsos_[j];
+                const auto& conso = node->listeConsos_[j];
                 consoCoupee += conso->valeur_;
                 int numVar = conso->numVarConso_;
                 if (numVar >= 0) {
@@ -1199,7 +1190,7 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
             }
 
             for (int i = 0; i < node->nbGroupes_; ++i) {
-                auto& tmpGrp = node->listeGroupes_[i];
+                const auto& tmpGrp = node->listeGroupes_[i];
                 if (tmpGrp->etat_) {
                     prodCoupee += tmpGrp->prod_;
                     if (tmpGrp->prodAjust_ != Groupe::NON_HR_AR) {
@@ -1230,7 +1221,7 @@ int Calculer::construireJacobienne()
     // construction de la matrice de contraintes d'egalites
     for (int i = 0; i < res_.nbNoeuds_; ++i) {
         // Attention : Pour l ecriture des contraintes il faut commencer par le traitement des quadripoles
-        auto& nod = res_.noeuds_[i];
+        const auto& nod = res_.noeuds_[i];
         nbQuadN = nod->nbQuads();
 
         if (nbQuadN == 0 && nod->nbCC() == 0) {
@@ -1246,9 +1237,9 @@ int Calculer::construireJacobienne()
         elemNod = 0;
         if (!nod->bilan_) {
             for (int j = 0; j < nbQuadN; ++j) {
-                auto& quad = nod->listeQuads_[j];
-                auto& nodO = quad->norqua_;
-                auto& nodE = quad->nexqua_;
+                const auto& quad = nod->listeQuads_[j];
+                const auto& nodO = quad->norqua_;
+                const auto& nodE = quad->nexqua_;
 
                 existDeja = false;
 
@@ -1348,14 +1339,14 @@ int Calculer::modifJacobienneInc(const std::shared_ptr<Incident>& icdt, bool app
     }
 
     // lignes (ou couplages) ouverts
-    for (auto& ligne : icdt->listeQuads_) {
+    for (const auto& ligne : icdt->listeQuads_) {
         if (ligne->connecte()) {
             modifJacobienneLigne(ligne, applique);
         }
     }
 
     // lignes (ou couplages) fermes
-    for (auto& ligne : icdt->listeCouplagesFermes_) {
+    for (const auto& ligne : icdt->listeCouplagesFermes_) {
         if (!ligne->connecte()) {
             modifJacobienneLigne(ligne, !applique);
         }
@@ -1370,7 +1361,7 @@ int Calculer::modifJacobienneVar(const Quadripole::SetQuadripoleSortedByName& qu
     // le boolean applique est a vrai si on modifie la jacobienne
     // sinon on enleve les modifications de la jacobienne pour la variante donnee
 
-    for (auto& set : quads) {
+    for (const auto& set : quads) {
         modifJacobienneLigne(set, applique);
     }
 
@@ -1445,9 +1436,7 @@ int Calculer::ecrireCoupeTransit(const double& maxTprev,
     if (config::configuration().useParadesEquivalentes() && ctre->type_ == Contrainte::CONTRAINTE_PARADE) {
         bool contrainteEquivalente = false;
         incidentPere = icdt->incTraiteCur_;
-        for (unsigned int j = 0; j < incidentPere->contraintes_.size(); ++j) {
-            int cid = incidentPere->contraintes_[j];
-
+        for (int cid : incidentPere->contraintes_) {
             if (cid == -1 || icdt->numVarActivation_ == pbContraintes_[cid]->icdt_->numVarActivation_) {
                 continue;
             }
@@ -1660,7 +1649,7 @@ int Calculer::ajouterContrainteChoixTopo(const std::vector<std::shared_ptr<Incid
 
     pbContraintes_.push_back(nullptr);
     // cout<<pbNombreDeContraintes_<<" ajout d'une contrainte pour activation d'une seule parade ; var :";
-    for (auto& parade : paradesActivees) {
+    for (const auto& parade : paradesActivees) {
         int numVar = parade->numVarActivation_;
 
         // 2: le nombre de coeff sur cette ligne
@@ -1804,7 +1793,7 @@ int Calculer::ajouterContrainteNbMaxActCur(const std::shared_ptr<Incident>& para
     pbCoefficientsDeLaMatriceDesContraintes_.push_back(nbActions);
     nbElmdeMatrContraint_++;
 
-    for (auto& elemC : parade->listeElemCur_) {
+    for (const auto& elemC : parade->listeElemCur_) {
         if (elemC->typeElem_ == ElementCuratif::TD_FICTIF || !elemC->estValide()) {
             continue;
         }
@@ -1945,11 +1934,11 @@ void Calculer::traiterCuratif(const std::shared_ptr<ElementCuratif>& elemCur,
         variationTdCuratif += varPuiss * rho[numOuvrSurv];
 
         for (int i_q = 0; i_q < icdtCourant->nbLignes_; ++i_q) {
-            auto& quad2 = icdtCourant->listeQuads_[i_q];
+            const auto& quad2 = icdtCourant->listeQuads_[i_q];
             varTdSecondOrdre += rho[quad2->num_] * varPuiss * icdtCourant->rho_[i_q][numOuvrSurv];
         }
         for (int i_q = 0; i_q < icdtCourant->nbCouplagesFermes_; ++i_q) {
-            auto& quad2 = icdtCourant->listeCouplagesFermes_[i_q];
+            const auto& quad2 = icdtCourant->listeCouplagesFermes_[i_q];
             varTdSecondOrdre += rho[quad2->num_] * varPuiss
                                 * icdtCourant->rho_[icdtCourant->nbLignes_ + i_q][numOuvrSurv];
         }
@@ -1983,7 +1972,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     int numQuadSurveille = quad->num_;
 
     for (int i_q = 0; i_q < icdt->nbLignes_; ++i_q) {
-        auto& quad2 = icdt->listeQuads_[i_q];
+        const auto& quad2 = icdt->listeQuads_[i_q];
         // verification sur la presence du quad dans l'incident
         if (quad2->num_ == quad->num_) {
             return 0.;
@@ -1993,7 +1982,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     }
 
     for (int i_q = 0; i_q < icdt->nbCouplagesFermes_; ++i_q) {
-        auto& quad2 = icdt->listeCouplagesFermes_[i_q];
+        const auto& quad2 = icdt->listeCouplagesFermes_[i_q];
         // verification sur la presence du quad dans l'incident
         puissance = quad2->u2Yij_ * (theta[quad2->norqua_->num_] - theta[quad2->nexqua_->num_]);
         variationTranSurIncident += puissance * icdt->rho_[icdt->nbLignes_ + i_q][numQuadSurveille];
@@ -2002,7 +1991,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     if (icdt->nbGroupes_ >= 1) {
         int nbQuadsInc = icdt->nbLignes_ + icdt->nbCouplagesFermes_;
         for (int i_p = 0; i_p < icdt->nbGroupes_; ++i_p) {
-            auto& grpe = icdt->listeGroupes_[i_p];
+            const auto& grpe = icdt->listeGroupes_[i_p];
             if (!grpe->etat_) {
                 continue;
             }
@@ -2016,7 +2005,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
             // si incident ligne/groupe combine
             double rhoInc = 0.;
             for (int i_q = 0; i_q < icdt->nbLignes_; ++i_q) {
-                auto& quad2 = icdt->listeQuads_[i_q];
+                const auto& quad2 = icdt->listeQuads_[i_q];
                 rhoInc += icdt->rho_[nbQuadsInc + i_p][quad2->num_] * icdt->rho_[i_q][numQuadSurveille];
             }
             for (int i_q = 0; i_q < icdt->nbCouplagesFermes_; ++i_q) {
@@ -2031,7 +2020,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
 
     if (icdt->nbLccs_ >= 1) {
         for (int i_q = 0; i_q < icdt->nbLccs_; ++i_q) { // ATTENTION AU SIGNE -
-            auto& hvdc = icdt->listeLccs_[i_q];
+            const auto& hvdc = icdt->listeLccs_[i_q];
             if (!hvdc->connecte()) {
                 continue;
             }
@@ -2049,7 +2038,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     for (int i_p = 0; i_p < res_.nbCCEmulAC_; ++i_p) {
         double varPuiss = 0.;
 
-        auto& tdfictif = res_.TDFictifs_[i_p];
+        const auto& tdfictif = res_.TDFictifs_[i_p];
         if (pbX_[tdfictif->numVarEntiere_] > 0.5) {
             varPuiss = pbX_[tdfictif->numVar_] - pbX_[tdfictif->numVar_ + 1];
 
@@ -2058,11 +2047,11 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
                 variationTranSurIncident += varPuiss * rho[numQuadSurveille];
 
                 for (int i_q = 0; i_q < icdt->nbLignes_; ++i_q) {
-                    auto& quad2 = icdt->listeQuads_[i_q];
+                    const auto& quad2 = icdt->listeQuads_[i_q];
                     variationTranSurIncident += rho[quad2->num_] * varPuiss * icdt->rho_[i_q][numQuadSurveille];
                 }
                 for (int i_q = 0; i_q < icdt->nbCouplagesFermes_; ++i_q) {
-                    auto& quad2 = icdt->listeCouplagesFermes_[i_q];
+                    const auto& quad2 = icdt->listeCouplagesFermes_[i_q];
                     variationTranSurIncident += rho[quad2->num_] * varPuiss
                                                 * icdt->rho_[icdt->nbLignes_ + i_q][numQuadSurveille];
                 }
@@ -2074,7 +2063,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     double variationTdCuratif = 0.;
 
     if (incidentInitial->incidentATraiterEncuratif_) {
-        for (auto& elem : incidentInitial->listeElemCur_) {
+        for (const auto& elem : incidentInitial->listeElemCur_) {
             traiterCuratif(elem, icdt, numQuadSurveille, variationTdCuratif, varTdSecondOrdre);
         }
     }
@@ -2142,7 +2131,7 @@ double Calculer::transitSurQuadIncidentNonConnexe(const std::shared_ptr<Quadripo
         return 0.;
     }
 
-    auto& poche = icdt->pochePerdue_;
+    const auto& poche = icdt->pochePerdue_;
     if (poche->noeudsPoche_.find(quad->norqua_) != poche->noeudsPoche_.end()
         || poche->noeudsPoche_.find(quad->nexqua_) != poche->noeudsPoche_.end()) {
         return 0.;
@@ -2167,7 +2156,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
         for (auto elemASIt = res_.elementsASurveillerN_.cbegin();
              elemASIt != res_.elementsASurveillerN_.cend() && nbCtr_ < icdtQdt_.size();
              ++elemASIt) {
-            auto& elemAS = elemASIt->second;
+            const auto& elemAS = elemASIt->second;
             elemAS->depassementEnN_ = 0.;
 
             if ((config::configuration().computationType()
@@ -2188,7 +2177,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
 
             tran = 0.0;
             for (auto& elem : elemAS->quadsASurv_) {
-                auto& quad = elem.first;
+                const auto& quad = elem.first;
                 double coeff = elem.second;
 
                 if (!quad->connecte()) {
@@ -2203,7 +2192,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             } // boucle sur les quadripoles de l'element a surveiller
 
             for (auto& elem : elemAS->hvdcASurv_) {
-                auto& lcc = elem.first;
+                const auto& lcc = elem.first;
                 double coeff = elem.second;
 
                 if (!lcc->connecte()) {
@@ -2242,7 +2231,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             if (!icdtQdt_[nbCtr_]) {
                 icdtQdt_[nbCtr_] = std::make_shared<Contrainte>();
             }
-            auto& ctre = icdtQdt_[nbCtr_];
+            const auto& ctre = icdtQdt_[nbCtr_];
             ctre->elemAS_ = elemAS;
             ctre->icdt_ = nullptr;
             ctre->transit_ = tran;
@@ -2268,7 +2257,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
     for (auto icdtIt = res_.incidentsEtParades_.cbegin();
          icdtIt != res_.incidentsEtParades_.cend() && nbCtr_ < icdtQdt_.size();
          ++icdtIt) {
-        auto& icdt = *icdtIt;
+        const auto& icdt = *icdtIt;
 
         incidentAvecContrainte = false;
 
@@ -2303,7 +2292,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
         for (auto elemASIt = res_.elementsASurveillerNk_.cbegin();
              elemASIt != res_.elementsASurveillerNk_.cend() && nbCtr_ < icdtQdt_.size();
              ++elemASIt) {
-            auto& elemAS = elemASIt->second;
+            const auto& elemAS = elemASIt->second;
 
             if (premierIncidentValide) {
                 // Reset du transit max sur incident
@@ -2315,7 +2304,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             bool quadFictif = false;
 
             transNew = 0.0;
-            for (auto& elem : elemAS->quadsASurv_) {
+            for (const auto& elem : elemAS->quadsASurv_) {
                 quad = elem.first;
                 double coeff = elem.second;
 
@@ -2333,8 +2322,8 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
 
             } // boucle sur les quadripoles de l'element a surveiller
 
-            for (auto& elem : elemAS->hvdcASurv_) {
-                auto& lcc = elem.first;
+            for (const auto& elem : elemAS->hvdcASurv_) {
+                const auto& lcc = elem.first;
                 double coeff = elem.second;
 
                 if (!lcc->connecte()
@@ -2349,7 +2338,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
                     auto itLcc = icdt->lccElemCur_.find(lcc);
 
                     if (itLcc != icdt->lccElemCur_.end()) {
-                        auto& elemC = itLcc->second;
+                        const auto& elemC = itLcc->second;
                         if (elemC->positionVarCurative_ != -1) {
                             puissHVDC += pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
                         }
@@ -2427,7 +2416,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             if (!icdtQdt_[nbCtr_]) {
                 icdtQdt_[nbCtr_] = std::make_shared<Contrainte>();
             }
-            auto& ctre = icdtQdt_[nbCtr_];
+            const auto& ctre = icdtQdt_[nbCtr_];
 
             ctre->elemAS_ = elemAS;
             ctre->icdt_ = icdt;
@@ -2456,7 +2445,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             if (!icdtQdt_[nbCtr_]) {
                 icdtQdt_[nbCtr_] = std::make_shared<Contrainte>();
             }
-            auto& ctre = icdtQdt_[nbCtr_];
+            const auto& ctre = icdtQdt_[nbCtr_];
 
             auto itQuadBegin = res_.elementsASurveillerNk_.begin();
             auto elemAS = itQuadBegin->second;
@@ -2502,7 +2491,7 @@ void Calculer::calculerFluxNk(const std::vector<double>& secondMembre)
 {
     double transNew;
 
-    for (auto& icdt : res_.incidentsEtParades_) {
+    for (const auto& icdt : res_.incidentsEtParades_) {
         if (!icdt->validite_) {
             continue;
         }
@@ -2528,11 +2517,11 @@ void Calculer::calculerFluxNk(const std::vector<double>& secondMembre)
         }
 
         for (int j = 0; j < res_.nbQuadResultNk_; ++j) {
-            auto& elemAS = res_.elementsAvecResultatNk_[j];
+            const auto& elemAS = res_.elementsAvecResultatNk_[j];
 
             transNew = 0.0;
-            for (auto& elem : elemAS->quadsASurv_) {
-                auto& quad = elem.first;
+            for (const auto& elem : elemAS->quadsASurv_) {
+                const auto& quad = elem.first;
                 double coeff = elem.second;
 
                 if (!quad->connecte()
@@ -2546,8 +2535,8 @@ void Calculer::calculerFluxNk(const std::vector<double>& secondMembre)
 
             } // boucle sur les quadripoles de l'element a surveiller
 
-            for (auto& elem : elemAS->hvdcASurv_) {
-                auto& lcc = elem.first;
+            for (const auto& elem : elemAS->hvdcASurv_) {
+                const auto& lcc = elem.first;
                 double coeff = elem.second;
 
                 if (!lcc->connecte()
@@ -2563,7 +2552,7 @@ void Calculer::calculerFluxNk(const std::vector<double>& secondMembre)
                     auto itLcc = icdt->lccElemCur_.find(lcc);
 
                     if (itLcc != icdt->lccElemCur_.end()) {
-                        auto& elemC = itLcc->second;
+                        const auto& elemC = itLcc->second;
                         if (elemC->positionVarCurative_ != -1) {
                             puissHVDC += pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
                         }
@@ -2583,13 +2572,13 @@ void Calculer::choixContraintesAajouter()
     // retourne le nombre de contrainte supprimees (pour ajuster la taille de la matrice)
 
     for (unsigned int i = 0; i < nbCtr_; ++i) {
-        auto& contrainte = icdtQdt_[i];
+        const auto& contrainte = icdtQdt_[i];
         contrainte->elemAS_->listeContraintes_.push_back(i);
     }
 
     for (unsigned int i = 0; i < nbCtr_; ++i) {
-        auto& contrainte = icdtQdt_[i];
-        auto& elemAS = contrainte->elemAS_;
+        const auto& contrainte = icdtQdt_[i];
+        const auto& elemAS = contrainte->elemAS_;
         double tCalcIdt = fabs(contrainte->transit_);
         double tMaxIdt = contrainte->ctrSup_ ? contrainte->maxT_ : -contrainte->minT_;
 
@@ -2603,7 +2592,7 @@ void Calculer::choixContraintesAajouter()
                 continue;
             }
 
-            auto& autreCont = icdtQdt_[index];
+            const auto& autreCont = icdtQdt_[index];
             double tCalcListe = fabs(autreCont->transit_);
             double tMaxListe = autreCont->ctrSup_ ? autreCont->maxT_ : autreCont->minT_;
             if ((contrainte->type_ != autreCont->type_)
@@ -2618,8 +2607,107 @@ void Calculer::choixContraintesAajouter()
     }
 
     // reset pour la prochaine micro iteration
-    for (auto& elem : res_.elementsASurveiller_) {
+    for (const auto& elem : res_.elementsASurveiller_) {
         elem->listeContraintes_.clear();
+    }
+}
+
+void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td, double proba, int numVarCur)
+{
+    // curatif TD
+    typeEtat_.push_back(DEPH_CUR_H);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(std::max(td->puiMax_ - td->puiMin_, 0.));
+    typeEtat_.push_back(DEPH_CUR_B);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(std::max(td->puiMax_ - td->puiMin_, 0.));
+    // Penalisation du curatif
+    if (config::configuration().usePenalisationTD()) {
+        pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
+        pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
+        pbCoutLineaireSansOffset_.push_back(0.);
+        pbCoutLineaireSansOffset_.push_back(0.);
+    } else {
+        pbCoutLineaire_.resize(pbNombreDeVariables_, 0.);
+        pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, 0.);
+    }
+
+    ajouterContraintesBorneCuratif(td->numVar_, numVarCur, td->puiMin_ - td->puiCons_, td->puiMax_ - td->puiCons_);
+}
+
+void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td_fictive)
+{
+    // Le curatif du TD fictif ne prend pas en compte la position preventive
+    typeEtat_.push_back(DEPH_CUR_H);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(td_fictive->puiMax_);
+    typeEtat_.push_back(DEPH_CUR_B);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(-td_fictive->puiMin_);
+    pbCoutLineaire_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
+    pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
+}
+
+void Calculer::addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double proba, int numVarCur)
+{
+    // curatif HVDC
+    typeEtat_.push_back(HVDC_CUR_H);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(std::max(lcc->puiMax_ - lcc->puiMin_, 0.));
+    typeEtat_.push_back(HVDC_CUR_B);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(std::max(lcc->puiMax_ - lcc->puiMin_, 0.));
+    // Penalisation du curatif
+    if (config::configuration().usePenalisationHVDC()) {
+        pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
+        pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
+        pbCoutLineaireSansOffset_.push_back(0.);
+        pbCoutLineaireSansOffset_.push_back(0.);
+    } else {
+        pbCoutLineaire_.resize(pbNombreDeVariables_, 0.);
+        pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, 0.);
+    }
+
+    ajouterContraintesBorneCuratif(lcc->numVar_, numVarCur, lcc->puiMin_ - lcc->puiCons_, lcc->puiMax_ - lcc->puiCons_);
+}
+
+void Calculer::addCurativeVariable(const std::shared_ptr<Groupe>& grp, double proba, int numVarCur)
+{
+    // curatif Groupe
+    typeEtat_.push_back(GRP_CUR_H);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
+    pbCoutLineaire_.push_back((grp->coutHausseAR_ + config::configuration().redispatchCostOffset()) * proba);
+    pbCoutLineaireSansOffset_.push_back((grp->coutHausseAR_) * proba);
+    typeEtat_.push_back(GRP_CUR_B);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
+    pbCoutLineaire_.push_back((grp->coutBaisseAR_ + config::configuration().redispatchCostOffset()) * proba);
+    pbCoutLineaireSansOffset_.push_back((grp->coutBaisseAR_) * proba);
+    ajouterContraintesBorneCuratifGroupe(grp->numVarGrp_, numVarCur, grp);
+}
+
+void Calculer::addCurativeVariable(const std::shared_ptr<Consommation>& conso, double proba, int numVarCur)
+{
+    // curatif Conso
+    typeEtat_.push_back(CONSO_H);
+    pbXmin_.push_back(0.);
+    pbXmax_.push_back(0.);
+    pbCoutLineaire_.push_back((conso->coutEffacement_ + config::configuration().redispatchCostOffset()) * proba);
+    pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
+    typeEtat_.push_back(CONSO_B);
+    pbXmin_.push_back(0.);
+    pbCoutLineaire_.push_back((conso->coutEffacement_ + config::configuration().redispatchCostOffset()) * proba);
+    pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
+    double effacementMax = conso->pourcentEffacement_ * conso->valeur_;
+    if (effacementMax > config::constants::epsilon) {
+        pbXmax_.push_back(effacementMax);
+        if (conso->numVarConso_ >= 0) {
+            ajouterContraintesBorneCuratifConso(
+                conso->numVarConso_, numVarCur, conso->valeur_, conso->pourcentEffacement_);
+        }
+    } else {
+        pbXmax_.push_back(0.);
     }
 }
 
@@ -2648,109 +2736,21 @@ int Calculer::ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& e
     pbX_.push_back(0.);
 
     switch (elem->typeElem_) {
-        case (ElementCuratif::TD): {
-            // curatif TD
-            auto td = std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_;
-            typeEtat_.push_back(DEPH_CUR_H);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(std::max(td->puiMax_ - td->puiMin_, 0.));
-            typeEtat_.push_back(DEPH_CUR_B);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(std::max(td->puiMax_ - td->puiMin_, 0.));
-            // Penalisation du curatif
-            if (config::configuration().usePenalisationTD()) {
-                pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
-                pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
-                pbCoutLineaireSansOffset_.push_back(0.);
-                pbCoutLineaireSansOffset_.push_back(0.);
-            } else {
-                pbCoutLineaire_.resize(pbNombreDeVariables_, 0.);
-                pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, 0.);
-            }
-
-            ajouterContraintesBorneCuratif(
-                td->numVar_, numVarCur, td->puiMin_ - td->puiCons_, td->puiMax_ - td->puiCons_);
+        case (ElementCuratif::TD):
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_, proba, numVarCur);
             break;
-        }
-        case (ElementCuratif::TD_FICTIF): {
-            // Le curatif du TD fictif ne prend pas en compte la position preventive
-            auto td = std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_;
-            typeEtat_.push_back(DEPH_CUR_H);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(td->puiMax_);
-            typeEtat_.push_back(DEPH_CUR_B);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(-td->puiMin_);
-            pbCoutLineaire_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
-            pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
+        case (ElementCuratif::TD_FICTIF):
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_);
             break;
-        }
-        case (ElementCuratif::HVDC): {
-            // curatif HVDC
-            auto lcc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elem)->lcc_;
-            typeEtat_.push_back(HVDC_CUR_H);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(std::max(lcc->puiMax_ - lcc->puiMin_, 0.));
-            typeEtat_.push_back(HVDC_CUR_B);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(std::max(lcc->puiMax_ - lcc->puiMin_, 0.));
-            // Penalisation du curatif
-            if (config::configuration().usePenalisationHVDC()) {
-                pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
-                pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
-                pbCoutLineaireSansOffset_.push_back(0.);
-                pbCoutLineaireSansOffset_.push_back(0.);
-            } else {
-                pbCoutLineaire_.resize(pbNombreDeVariables_, 0.);
-                pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, 0.);
-            }
-
-            ajouterContraintesBorneCuratif(
-                lcc->numVar_, numVarCur, lcc->puiMin_ - lcc->puiCons_, lcc->puiMax_ - lcc->puiCons_);
+        case (ElementCuratif::HVDC):
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifHVDC>(elem)->lcc_, proba, numVarCur);
             break;
-        }
-        case (ElementCuratif::GROUPE): {
-            // curatif Groupe
-            auto grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elem)->groupe_;
-            typeEtat_.push_back(GRP_CUR_H);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-            pbCoutLineaire_.push_back((grp->coutHausseAR_ + config::configuration().redispatchCostOffset()) * proba);
-            pbCoutLineaireSansOffset_.push_back((grp->coutHausseAR_) * proba);
-            typeEtat_.push_back(GRP_CUR_B);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-            pbCoutLineaire_.push_back((grp->coutBaisseAR_ + config::configuration().redispatchCostOffset()) * proba);
-            pbCoutLineaireSansOffset_.push_back((grp->coutBaisseAR_) * proba);
-            ajouterContraintesBorneCuratifGroupe(grp->numVarGrp_, numVarCur, grp);
+        case (ElementCuratif::GROUPE):
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifGroupe>(elem)->groupe_, proba, numVarCur);
             break;
-        }
-        case (ElementCuratif::CONSO): {
-            // curatif Conso
-            auto conso = std::dynamic_pointer_cast<ElementCuratifConso>(elem)->conso_;
-            typeEtat_.push_back(CONSO_H);
-            pbXmin_.push_back(0.);
-            pbXmax_.push_back(0.);
-            pbCoutLineaire_.push_back((conso->coutEffacement_ + config::configuration().redispatchCostOffset())
-                                      * proba);
-            pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
-            typeEtat_.push_back(CONSO_B);
-            pbXmin_.push_back(0.);
-            pbCoutLineaire_.push_back((conso->coutEffacement_ + config::configuration().redispatchCostOffset())
-                                      * proba);
-            pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
-            double effacementMax = conso->pourcentEffacement_ * conso->valeur_;
-            if (effacementMax > config::constants::epsilon) {
-                pbXmax_.push_back(effacementMax);
-                if (conso->numVarConso_ >= 0) {
-                    ajouterContraintesBorneCuratifConso(
-                        conso->numVarConso_, numVarCur, conso->valeur_, conso->pourcentEffacement_);
-                }
-            } else {
-                pbXmax_.push_back(0.);
-            }
+        case (ElementCuratif::CONSO):
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifConso>(elem)->conso_, proba, numVarCur);
             break;
-        }
         default:
             LOG_ALL(error) << "Curative element of type " << elem->typeElem_ << " is unsupported";
             return METRIX_PROBLEME;
@@ -2847,7 +2847,7 @@ int Calculer::coeffPourQuadEnN(const std::shared_ptr<Quadripole>& quad,
         } else if (typeEtat_[j] == CONSO_D) {
             coefs_[j] += coeff * b1[numSupportDeEtat];
         } else if (typeEtat_[j] == DEPH_H) {
-            auto& td = res_.tdParIndice_[numSupportDeEtat];
+            const auto& td = res_.tdParIndice_[numSupportDeEtat];
             double coeffInfl = coeff * (-b1[td->quad_->tnnorqua()] + b1[td->quad_->tnnexqua()]);
             if (config::constants::limit_action_td) {
                 // limitation de l'influence du TD en deea d'un certain seuil
@@ -2862,7 +2862,7 @@ int Calculer::coeffPourQuadEnN(const std::shared_ptr<Quadripole>& quad,
                 coefs_[j] += coeffInfl;
             }
         } else if (typeEtat_[j] == DEPH_B) {
-            auto& td = res_.tdParIndice_[numSupportDeEtat];
+            const auto& td = res_.tdParIndice_[numSupportDeEtat];
             double coeffInfl = coeff * (b1[td->quad_->tnnorqua()] - b1[td->quad_->tnnexqua()]);
             if (config::constants::limit_action_td) {
                 // limitation de l'influence du TD en deea d'un certain seuil
@@ -2878,7 +2878,7 @@ int Calculer::coeffPourQuadEnN(const std::shared_ptr<Quadripole>& quad,
                 coefs_[j] += coeffInfl;
             }
         } else if (typeEtat_[j] == LIGNE_CC_H) {
-            auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+            const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
             double coeffInfl = coeff * (-b1[lcc->norqua_->num_] + b1[lcc->nexqua_->num_]);
             if (config::constants::limit_action_hvdc) {
                 // limitation de l'influence des HVDC en deea d'un certain seuil
@@ -2893,7 +2893,7 @@ int Calculer::coeffPourQuadEnN(const std::shared_ptr<Quadripole>& quad,
                 coefs_[j] += coeffInfl;
             }
         } else if (typeEtat_[j] == LIGNE_CC_B) {
-            auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+            const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
             double coeffInfl = coeff * (b1[lcc->norqua_->num_] - b1[lcc->nexqua_->num_]);
             if (config::constants::limit_action_hvdc) {
                 // limitation de l'influence des HVDC en deea d'un certain seuil
@@ -2928,12 +2928,12 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
 {
     LOG(debug) << "Traitement contrainte : " << ctre->toString();
 
-    auto& icdt = ctre->icdt_;
+    const auto& icdt = ctre->icdt_;
 
     if (!icdt) {
         // Traitement particulier pour les quads representant une HVDC en emulation AC
         if (ctre->type_ == Contrainte::CONTRAINTE_EMUL_AC_N) {
-            auto& td = res_.TransfoDephaseurs_[quad->nom_];
+            const auto& td = res_.TransfoDephaseurs_[quad->nom_];
             ctre->numVarActivation_ = td->numVarEntiere_;
             pbTypeDeBorneDeLaVariable_[td->numVarEntiere_] = VARIABLE_BORNEE_DES_DEUX_COTES;
         }
@@ -2948,7 +2948,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
         std::map<int, std::vector<int>> variablesCurativesConso;
         std::map<int, std::vector<std::shared_ptr<ElementCuratifHVDC>>> variablesCurativesHvdc;
         for (unsigned int u = 0; u < icdt->listeElemCur_.size(); ++u) {
-            auto& elemC = icdt->listeElemCur_[u];
+            const auto& elemC = icdt->listeElemCur_[u];
 
             if (!elemC->estValide()) {
                 continue;
@@ -3012,7 +3012,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
     if (ctre->type_ == Contrainte::CONTRAINTE_EMULATION_AC) {
         auto elemCurIt = icdt->tdFictifsElemCur_.find(quad);
         if (elemCurIt != icdt->tdFictifsElemCur_.end()) {
-            auto& elemC = elemCurIt->second;
+            const auto& elemC = elemCurIt->second;
             ctre->numVarActivation_ = elemC->positionVarEntiereCur_;
             pbTypeDeBorneDeLaVariable_[elemC->positionVarEntiereCur_] = VARIABLE_BORNEE_DES_DEUX_COTES;
         }
@@ -3052,7 +3052,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
 
     // Partie fixe des incidents groupe
     for (int jg = 0; jg < icdtCalcul->nbGroupes_; ++jg) {
-        auto& grp = icdtCalcul->listeGroupes_[jg];
+        const auto& grp = icdtCalcul->listeGroupes_[jg];
 
         if (!grp->etat_) {
             continue;
@@ -3199,7 +3199,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
                 coefs_[j1] += coeffInfl;
             }
         } else if (typeEtat_[j1] == DEPH_B) {
-            auto& td = res_.tdParIndice_[numSupportDeEtat];
+            const auto& td = res_.tdParIndice_[numSupportDeEtat];
 
             if (td->fictif_) { // le dephasage initial ne doit pas etre pris en compte sur incident
                 coefs_[j1] = 0.;
@@ -3222,7 +3222,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
                 coefs_[j1] += coeffInfl;
             }
         } else if (typeEtat_[j1] == LIGNE_CC_H) {
-            auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+            const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
             double coeffInfl = coeff * (b1[lcc->nexqua_->num_] - b1[lcc->norqua_->num_] + coefsIncident);
             if (config::constants::limit_action_hvdc) {
                 // limitation de l'influence des HVDC en deea d'un certain seuil
@@ -3238,7 +3238,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
                 coefs_[j1] += coeffInfl;
             }
         } else if (typeEtat_[j1] == LIGNE_CC_B) {
-            auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+            const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
             double coeffInfl = -coeff * (b1[lcc->nexqua_->num_] - b1[lcc->norqua_->num_] + coefsIncident);
             if (config::constants::limit_action_hvdc) {
                 // limitation de l'influence des HVDC en deca d'un certain seuil
@@ -3260,9 +3260,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
 
     // Actions des elements curatifs
     if (icdt->incidentATraiterEncuratif_) {
-        for (unsigned int jec = 0; jec < icdt->listeElemCur_.size(); ++jec) {
-            auto& elemC = icdt->listeElemCur_[jec];
-
+        for (const auto& elemC : icdt->listeElemCur_) {
             if (!elemC->estValide()) {
                 continue;
             }
@@ -3310,7 +3308,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
                                                double& sumcoeffFixe,
                                                double coeff)
 {
-    auto& poche = icdt->pochePerdue_;
+    const auto& poche = icdt->pochePerdue_;
     std::vector<double>& secondMembreFixe = poche->secondMembreFixe_;
 
     if (poche->coefficients_.find(quad) == poche->coefficients_.end()) {
@@ -3349,7 +3347,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
 
     int numSupportDeEtat;
 
-    auto& noeudsPoche = poche->noeudsPoche_;
+    const auto& noeudsPoche = poche->noeudsPoche_;
 
     int nbVarPrev = res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_ + res_.nbVarCc_;
     for (int j = 0; j < nbVarPrev; ++j) {
@@ -3368,7 +3366,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
 
             coefs_[j] += -coeff * b1[numSupportDeEtat];
         } else if (typeEtat_[j] == DEPH_H) {
-            auto& td = res_.tdParIndice_[numSupportDeEtat];
+            const auto& td = res_.tdParIndice_[numSupportDeEtat];
 
             if (noeudsPoche.find(td->quadVrai_->norqua_) != noeudsPoche.end()) {
                 continue; // cet element est dans la poche
@@ -3394,7 +3392,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
                 coefs_[j] += coeffInfl;
             }
         } else if (typeEtat_[j] == DEPH_B) {
-            auto& td = res_.tdParIndice_[numSupportDeEtat];
+            const auto& td = res_.tdParIndice_[numSupportDeEtat];
 
             if (noeudsPoche.find(td->quadVrai_->norqua_) != noeudsPoche.end()) {
                 continue; // cet element est dans la poche
@@ -3420,7 +3418,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
                 coefs_[j] += coeffInfl;
             }
         } else if (typeEtat_[j] == LIGNE_CC_H) {
-            auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+            const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
             double coeffInfl = -coeff * (b1[lcc->norqua_->num_] - b1[lcc->nexqua_->num_]);
             if (config::constants::limit_action_hvdc) {
                 // limitation de l'influence des HVDC en deea d'un certain seuil
@@ -3435,7 +3433,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
                 coefs_[j] += coeffInfl;
             }
         } else if (typeEtat_[j] == LIGNE_CC_B) {
-            auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+            const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
             double coeffInfl = coeff * (b1[lcc->norqua_->num_] - b1[lcc->nexqua_->num_]);
             if (config::constants::limit_action_hvdc) {
                 // limitation de l'influence des HVDC en deea d'un certain seuil
@@ -3460,7 +3458,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
 
     // Traitement du curatif
     if (icdt->incidentATraiterEncuratif_) {
-        for (auto& elemC : icdt->listeElemCur_) {
+        for (const auto& elemC : icdt->listeElemCur_) {
             if (!elemC->estValide()) {
                 continue;
             }
@@ -3488,7 +3486,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
                 coefs_[j] += -coeff * b1[numSupportDeEtat];
                 coefs_[j + 1] -= -coeff * b1[numSupportDeEtat];
             } else if (typeEtat_[j] == DEPH_CUR_H) {
-                auto& td = res_.tdParIndice_[numSupportDeEtat];
+                const auto& td = res_.tdParIndice_[numSupportDeEtat];
                 if (noeudsPoche.find(td->quadVrai_->norqua_) != noeudsPoche.end()) {
                     continue; // cet element est dans la poche
                 }
@@ -3497,7 +3495,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
                 coefs_[j] += valCoeff;
                 coefs_[j + 1] -= valCoeff;
             } else if (typeEtat_[j] == HVDC_CUR_H) {
-                auto& lcc = res_.lccParIndice_[numSupportDeEtat];
+                const auto& lcc = res_.lccParIndice_[numSupportDeEtat];
                 if (noeudsPoche.find(lcc->norqua_) != noeudsPoche.end()) {
                     continue; // cet element est dans la poche
                 }
@@ -3520,10 +3518,10 @@ bool ouvragesEnContrainteDeconnectes(const std::shared_ptr<Contrainte>& contrain
                                      const std::shared_ptr<Incident>& parade)
 {
     bool ouvragesDeconnectes = true;
-    auto& quadSurv = contrainte->elemAS_->quadsASurv_;
+    const auto& quadSurv = contrainte->elemAS_->quadsASurv_;
 
-    for (auto& elem : quadSurv) {
-        auto& quad = elem.first;
+    for (const auto& elem : quadSurv) {
+        const auto& quad = elem.first;
         if (quad->connecte()) {
             if (std::find(parade->listeQuads_.begin(), parade->listeQuads_.end(), quad) == parade->listeQuads_.end()) {
                 ouvragesDeconnectes = false;
@@ -3607,13 +3605,13 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
     unsigned int cpt = 0;
     unsigned int cptAll = 0; // Compteurs du nombre de contraintes ajoutees dans la microiteration
     for (unsigned int i = 0; (i < nbCtr_) && (cpt < nombreDeContraintesMicroIteration); ++i) {
-        auto& contrainte = icdtQdt_[i];
+        const auto& contrainte = icdtQdt_[i];
 
         if (!contrainte->ecrireContrainte_) {
             continue;
         }
 
-        auto& icdt = contrainte->icdt_;
+        const auto& icdt = contrainte->icdt_;
 
         // C'est la premiere contrainte d'un incident avec parades : ajout de toutes les parades dans le probleme
         if (icdt && !icdt->parades_.empty() && !icdt->paradesActivees_) {
@@ -3625,7 +3623,7 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
             for (unsigned int u = 0; u < icdt->parades_.size(); ++u) {
                 // Lors du 1er ajout de contraintes avec cet incident, (paradesActivees_ = false)
                 // on ajoute toutes les parades possibles sur cet incident
-                auto& parade = icdt->parades_[u];
+                const auto& parade = icdt->parades_[u];
 
                 if (!parade->validite_) {
                     continue;
@@ -3700,8 +3698,8 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
                     if (icdt->parades_.size() > 2
                         && u > 0) { // on ne verifie que s'il y a plus de 2 parades pour cet incident
 
-                        auto& quad = contrainte->elemAS_->quadsASurv_.begin()
-                                         ->first; // il n'y a qu'un quad car pas de sect. surv. en n-k
+                        const auto& quad = contrainte->elemAS_->quadsASurv_.begin()
+                                               ->first; // il n'y a qu'un quad car pas de sect. surv. en n-k
                         double transitApresParade = transitSurQuad(quad, parade, theta);
                         if (fabs(transitApresParade)
                             > config::constants::threshold_heuristic_parade * fabs(contrainte->transit_)) {
@@ -3828,10 +3826,10 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
             // C'est une contrainte N-k liee a une parade, on ajoute egalement les contraintes des autres parades du
             // meme incident
 
-            auto& icdtPere = icdt->incTraiteCur_;
+            const auto& icdtPere = icdt->incTraiteCur_;
 
             for (unsigned int j = 0; j < icdtPere->parades_.size(); ++j) {
-                auto& parade = icdtPere->parades_[j];
+                const auto& parade = icdtPere->parades_[j];
 
                 if ((parade->numVarActivation_ != -1)               // entree dans le pb
                     && (pbXmax_[parade->numVarActivation_] != 0)) { // non inhibee pour cause d'equivalence
@@ -3887,7 +3885,7 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
             // C'est une autre contrainte N-k liee e un incident dont on vient d'activer les parades
 
             for (unsigned int j = 0; j < icdt->parades_.size(); ++j) {
-                auto& parade = icdt->parades_[j];
+                const auto& parade = icdt->parades_[j];
                 if ((parade->numVarActivation_ != -1) // entree dans le pb
                     && (pbTypeDeBorneDeLaVariable_[parade->numVarActivation_]
                         != VARIABLE_FIXE)) { // non inhibee pour cause d'equivalence
@@ -4013,7 +4011,7 @@ int Calculer::ajoutContrainte(const std::shared_ptr<Contrainte>& ctre, const std
     double maxTHorsPartieFixe = 0;
     double minTHorsPartieFixe = 0;
 
-    auto& elemAS = ctre->elemAS_;
+    const auto& elemAS = ctre->elemAS_;
 
     double sumcoeffFixe = 0.;
 
@@ -4021,8 +4019,8 @@ int Calculer::ajoutContrainte(const std::shared_ptr<Contrainte>& ctre, const std
 
     int codeRet;
 
-    for (auto& elem : elemAS->quadsASurv_) {
-        auto& quad = elem.first;
+    for (const auto& elem : elemAS->quadsASurv_) {
+        const auto& quad = elem.first;
         double coeff = elem.second; // 1 si ouvrage et <>1 si section surv.
 
         // calcul des coeffs a mettre dans la matrice du simplexe pour introduire la contrainte
@@ -4032,8 +4030,8 @@ int Calculer::ajoutContrainte(const std::shared_ptr<Contrainte>& ctre, const std
         }
     }
 
-    for (auto& elem : elemAS->hvdcASurv_) {
-        auto& lcc = elem.first;
+    for (const auto& elem : elemAS->hvdcASurv_) {
+        const auto& lcc = elem.first;
         double coeff = elem.second;
 
         if (!lcc->connecte()) {
@@ -4045,12 +4043,12 @@ int Calculer::ajoutContrainte(const std::shared_ptr<Contrainte>& ctre, const std
         coefs_[lcc->numVar_] += coeff;
         coefs_[lcc->numVar_ + 1] -= coeff;
 
-        auto& icdt = ctre->icdt_;
+        const auto& icdt = ctre->icdt_;
         if (icdt && lcc->mode_ == CURATIF_POSSIBLE && icdt->incidentATraiterEncuratif_ && !icdt->lccElemCur_.empty()) {
             auto itLcc = icdt->lccElemCur_.find(lcc);
 
             if (itLcc != icdt->lccElemCur_.end()) {
-                auto& elemC = itLcc->second;
+                const auto& elemC = itLcc->second;
                 if (elemC->positionVarCurative_ != -1) {
                     coefs_[elemC->positionVarCurative_] += coeff;
                     coefs_[elemC->positionVarCurative_ + 1] -= coeff;
@@ -4169,9 +4167,9 @@ int Calculer::ajoutContrainteValorisationPoche(const std::shared_ptr<Incident>& 
 
     int nbTermes = 0;
 
-    auto& poche = parade->pochePerdue_;
-    for (auto& noeud : poche->noeudsPoche_) {
-        for (auto& grp : noeud->listeGroupes_) {
+    const auto& poche = parade->pochePerdue_;
+    for (const auto& noeud : poche->noeudsPoche_) {
+        for (const auto& grp : noeud->listeGroupes_) {
             if (grp->prod_ >= 0) {
                 valoMax += grp->prod_ * config::configuration().costValoEne() * parade->getProb();
                 secondMembre -= grp->prod_ * config::configuration().costValoEne() * parade->getProb();
@@ -4195,7 +4193,7 @@ int Calculer::ajoutContrainteValorisationPoche(const std::shared_ptr<Incident>& 
 
         if (noeud->nbConsos_ > 0) {
             for (int i = 0; i < noeud->nbConsos_; ++i) {
-                auto& conso = noeud->listeConsos_[i];
+                const auto& conso = noeud->listeConsos_[i];
                 if (conso->numVarConso_ != -1) {
                     pbIndicesColonnes_.push_back(conso->numVarConso_);
                     pbCoefficientsDeLaMatriceDesContraintes_.push_back(-config::configuration().costValoEnd()
@@ -4246,8 +4244,8 @@ int Calculer::fixerProdSansReseau()
 
     LOG_ALL(info) << err::ioDico().msg("INFOCoutsAvecReseau");
 
-    for (auto& elem : res_.groupes_) {
-        auto& grpe = elem.second;
+    for (const auto& elem : res_.groupes_) {
+        const auto& grpe = elem.second;
 
         if (grpe->etat_ && grpe->prodAjust_ != Groupe::NON_HR_AR) {
             // Phase AR, on remet la puisMin e sa valeur
@@ -4265,7 +4263,7 @@ int Calculer::fixerProdSansReseau()
             }
 
             if (grpe->prodAjust_ == Groupe::OUI_HR_AR || grpe->prodAjust_ == Groupe::OUI_AR) {
-                auto& config = config::configuration();
+                const auto& config = config::configuration();
                 pbX_[numVar] = 0.0;
                 pbCoutLineaire_[numVar] = (config.computationType()
                                            == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
@@ -4408,7 +4406,7 @@ void Calculer::compareLoadFlowReport()
     // partie independante des variables pbX_ : sum(P0)-sum(conso)
     std::vector<double> secMembFixeInc;
 
-    for (auto& icdt : res_.incidentsEtParades_) {
+    for (const auto& icdt : res_.incidentsEtParades_) {
         if (!icdt->validite_) {
             continue;
         }
@@ -4424,8 +4422,8 @@ void Calculer::compareLoadFlowReport()
 
         LOG(debug) << " on compare pour " << icdt->nom_;
 
-        for (auto& elem : res_.quads_) {
-            auto& quad = elem.second;
+        for (const auto& elem : res_.quads_) {
+            const auto& quad = elem.second;
 
             if (!quad->connecte()
                 || std::find(icdt->listeQuads_.cbegin(), icdt->listeQuads_.cend(), quad) != icdt->listeQuads_.cend()) {
@@ -4457,14 +4455,14 @@ bool Calculer::check_bonneDetectionTouteContrainte(const std::shared_ptr<Inciden
 
     // Check le transit
     std::shared_ptr<Quadripole> quad = nullptr;
-    for (auto& elemAS : res_.elementsASurveiller_) {
+    for (const auto& elemAS : res_.elementsASurveiller_) {
         if (elemAS->survMaxInc_ != ElementASurveiller::SURVEILLE) {
             continue; // si ligne a surveiller
         }
 
         double transit = 0.;
 
-        for (auto& elem : elemAS->quadsASurv_) {
+        for (const auto& elem : elemAS->quadsASurv_) {
             quad = elem.first;
             double coeff = elem.second;
 
@@ -4488,8 +4486,8 @@ bool Calculer::check_bonneDetectionTouteContrainte(const std::shared_ptr<Inciden
                        * (injectionSNodales[quad->norqua_->num_] - injectionSNodales[quad->nexqua_->num_]);
         }
 
-        for (auto& elem : elemAS->hvdcASurv_) {
-            auto& lcc = elem.first;
+        for (const auto& elem : elemAS->hvdcASurv_) {
+            const auto& lcc = elem.first;
             double coeff = elem.second;
 
             if (!lcc->connecte()) {
@@ -4503,7 +4501,7 @@ bool Calculer::check_bonneDetectionTouteContrainte(const std::shared_ptr<Inciden
                 auto itLcc = icdt->lccElemCur_.find(lcc);
 
                 if (itLcc != icdt->lccElemCur_.end()) {
-                    auto& elemC = itLcc->second;
+                    const auto& elemC = itLcc->second;
                     if (elemC->positionVarCurative_ != -1) {
                         puissHVDC += pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
                     }
@@ -4556,7 +4554,7 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
     // Elle modifie la jacobienne et le vecteur d'injection pour faire un load flow sur incident
     // Bien sur elle est tres couteuse en temps donc elle n'est e activer qu en debug
 
-    auto& inc = cont->icdt_;
+    const auto& inc = cont->icdt_;
     if (inc && inc->parade_ && (inc->numVarActivation_ == -1 || pbX_[inc->numVarActivation_] < 0.5)) {
         return true; // on ne peut pas tester un incident non active
     }
@@ -4574,23 +4572,23 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
     miseAJourSecondMembre(injectionSNodales, secondMembreFixe);
 
     bool ok = true;
-    auto& elemAS = cont->elemAS_;
+    const auto& elemAS = cont->elemAS_;
 
     double transit = 0.;
 
     check_calculThetaSurIncident(inc, injectionSNodales, secondMembreFixe);
 
     // Check le transit
-    for (auto& elem : elemAS->quadsASurv_) {
-        auto& quad = elem.first;
+    for (const auto& elem : elemAS->quadsASurv_) {
+        const auto& quad = elem.first;
         double coeff = elem.second;
 
         transit += coeff * quad->u2Yij_
                    * (injectionSNodales[quad->norqua_->num_] - injectionSNodales[quad->nexqua_->num_]);
     }
 
-    for (auto& elem : elemAS->hvdcASurv_) {
-        auto& lcc = elem.first;
+    for (const auto& elem : elemAS->hvdcASurv_) {
+        const auto& lcc = elem.first;
         double coeff = elem.second;
 
         if (!lcc->connecte()) {
@@ -4603,7 +4601,7 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
             auto itLcc = inc->lccElemCur_.find(lcc);
 
             if (itLcc != inc->lccElemCur_.end()) {
-                auto& elemC = itLcc->second;
+                const auto& elemC = itLcc->second;
                 if (elemC->positionVarCurative_ != -1) {
                     puissHVDC += pbX_[elemC->positionVarCurative_] - pbX_[elemC->positionVarCurative_ + 1];
                 }

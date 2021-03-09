@@ -441,6 +441,12 @@ private:
     boost::optional<std::tuple<std::string, int, std::shared_ptr<Incident>>>
     getIncidentConstraint(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants, int i) const;
 
+    void addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td_fictive);
+    void addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<Groupe>& grp, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<Consommation>& conso, double proba, int numVarCur);
+
 private:
     void videMatricesDesContraintes();
 

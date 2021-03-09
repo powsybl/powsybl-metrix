@@ -1015,10 +1015,9 @@ void Reseau::lireDonnees()
         }
 
         if (!inc->listeElemCur_.empty()) {
-            for (unsigned int u = 0; u < inc->listeElemCur_.size(); ++u) {
+            for (const auto& elemCur : inc->listeElemCur_) {
                 string typeCur;
                 string nomElem;
-                auto& elemCur = inc->listeElemCur_[u];
                 switch (elemCur->typeElem_) {
                     case (ElementCuratif::TD):
                         typeCur = "TD";

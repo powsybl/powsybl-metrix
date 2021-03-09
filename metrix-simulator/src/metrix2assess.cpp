@@ -663,8 +663,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 auto tmpListeElemCur = icdt->listeElemCur_;
 
                 if (icdt->paradesActivees_) {
-                    for (unsigned int p = 0; p < icdt->parades_.size(); ++p) {
-                        auto& parade = icdt->parades_[p];
+                    for (const auto& parade : icdt->parades_) {
                         if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
                             tmpListeElemCur = parade->listeElemCur_;
                             break;
@@ -1007,8 +1006,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             auto tmpListeElemCur = icdt->listeElemCur_;
 
             if (icdt->paradesActivees_) {
-                for (unsigned int p = 0; p < icdt->parades_.size(); ++p) {
-                    auto& parade = icdt->parades_[p];
+                for (const auto& parade : icdt->parades_) {
                     if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
                         tmpListeElemCur = parade->listeElemCur_;
                         break;
