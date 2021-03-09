@@ -471,7 +471,7 @@ int Calculer::calculeInvB(const std::shared_ptr<Incident>& icdt,
         return METRIX_PAS_PROBLEME;
     }
 
-    // ATTENTION A verifier ProblemeDeFactorisation;  /* Le code retour ( NON_LU si tout s'est bien passe ) */
+    // ATTENTION A verifier ProblemeDeFactorisation;  Le code retour ( NON_LU si tout s'est bien passe )
     int codeRet = OUI_LU;
     for (int i = 0; i < nbColones; ++i) {
         invB[i][i] = 1;

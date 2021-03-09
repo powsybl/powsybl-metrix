@@ -582,7 +582,9 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
         }
 
         fprintf(file, "BRANCH;");
-        for (int i = 0; i < pbNombreDeVariables_; i++) {
+        int i = 0;
+        while (i < pbNombreDeVariables_) {
+            i++;
             if (i < res_.nbVarGroupes_) {
                 fprintf(file, "%s;", noms[i].c_str());
                 i++;
@@ -601,7 +603,9 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
         for (auto& quad : res_.quadsSurv_) {
             calculerCoeffEnN(quad);
             fprintf(file, "%s;", quad->nom_.c_str());
-            for (int i = 0; i < pbNombreDeVariables_; i++) {
+            int i = 0;
+            while (i < pbNombreDeVariables_) {
+                i++;
                 if (i < res_.nbVarGroupes_) {
                     fprintf(file, "%f;", quad->coeffN_[numSupportEtat_[i]]);
                     i++;

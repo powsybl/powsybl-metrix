@@ -90,7 +90,7 @@ public:
     std::string nomRegroupement_;
     std::set<std::shared_ptr<Consommation>> elements_;
 
-    ConsommationsCouplees(const std::string& nom, std::set<std::shared_ptr<Consommation>>& ids) :
+    ConsommationsCouplees(const std::string& nom, const std::set<std::shared_ptr<Consommation>>& ids) :
         nomRegroupement_(nom),
         elements_(ids)
     {
@@ -377,7 +377,7 @@ public:
     VariableReference reference_;
     SetGroupPtr elements_;
 
-    GroupesCouples(const std::string& nom, SetGroupPtr& ids, VariableReference ref) :
+    GroupesCouples(const std::string& nom, const SetGroupPtr& ids, VariableReference ref) :
         nomRegroupement_(nom),
         reference_(ref),
         elements_(ids)
@@ -550,7 +550,6 @@ public:
 //-------------------
 
 struct CompareSet;
-class Variante;
 using MapQuadinVar
     = std::map<Quadripole::SetQuadripoleSortedByName, std::vector<std::shared_ptr<Variante>>, CompareSet>;
 

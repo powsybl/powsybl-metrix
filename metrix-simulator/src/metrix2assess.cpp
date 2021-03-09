@@ -276,15 +276,6 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "C4 ;;%5d;%s;%s;\n", numIncidentContraignant, typeInc.c_str(), inc->nom_.c_str());
         }
 
-        /*
-        // Utilite ???
-
-        //ecriture : C3.
-        //--------------
-        fprintf(fr,"C3 ;NON CONNEXITE;SUR DECL;\n");
-        fprintf(fr,"C3 ;;%d;\n",0);
-        */
-
         // Ecriture R4 et R4B (variations marginales)
         // -------------------
         if (config::configuration().useResVarMarLigne()

@@ -77,11 +77,9 @@ bool estEnDepassement(const std::shared_ptr<ElementASurveiller>& elemSurv,
 
 bool estEnDepassementAvantManoeuvre(const std::shared_ptr<ElementASurveiller>& elemSurv, double transit)
 {
-    double seuil = 0.0;
+    double seuil = elemSurv->seuilMaxAvantCur_;
     if (elemSurv->seuilsAssymetriques_) {
         seuil = transit >= 0 ? elemSurv->seuilMaxAvantCur_ : -elemSurv->seuilMaxAvantCurExOr_;
-    } else {
-        seuil = transit >= 0 ? elemSurv->seuilMaxAvantCur_ : elemSurv->seuilMaxAvantCur_;
     }
     return (seuil != config::constants::valdef) && (fabs(transit) - seuil > config::constants::acceptable_diff);
 }
@@ -145,7 +143,7 @@ int Calculer::allocationProblemeDodu()
     if (numMicroIteration_<=1){
         for(unsigned int i = 0; i < taille; ++i){
             pbTypeDeVariable_[i]          = REEL;
-            pbCoutLineaire_[i]            = 0.0;//initialisation, mise a jour ulterieurement.
+            pbCoutLineaire_[i]            = 0.0; initialisation, mise a jour ulterieurement.
             pbTypeDeBorneDeLaVariable_[i] = VARIABLE_BORNEE_DES_DEUX_COTES;
         }
     }
