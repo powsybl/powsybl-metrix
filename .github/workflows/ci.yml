@@ -72,7 +72,6 @@ jobs:
           -DCODE_COVERAGE=TRUE
           -DCMAKE_CXX_COMPILER=g++-8
           -DCMAKE_C_COMPILER=gcc-8
-          -DCMAKE_PREFIX_PATH=$BOOST_ROOT_1_72_0
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
