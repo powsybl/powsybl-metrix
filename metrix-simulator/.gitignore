@@ -8,6 +8,8 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
+.idea
+
 install
 coverage
 /tests/*/*/out_s*
@@ -25,6 +27,7 @@ src/config/version.h
 
 # cmake build directory
 build/*
+cmake-build-*/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode

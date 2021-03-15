@@ -32,7 +32,7 @@ Run `./install.sh`
 
 `itools mapping` and `itools metrix` are the command line tools that are provided to use and test the mapping and metrix.
 Their respective usage is detailed in the following sections.\
-For more advanced and intensive usage it is recommended to embedded this package as a library as the time series storage is not optimized.
+For more advanced and intensive usage it is recommended to embed this package as a library as the time series storage is not optimized.
 [Powsybl AFS](https://github.com/powsybl/powsybl-afs) can be use for that matter.  
 
 ### Mapping
