@@ -1,38 +1,41 @@
-name: CI-cpp
+name: QA-PR-CPP
 
-on: [push]
-
-defaults:
-  run:
-    shell: bash
+on:
+  pull_request:
+    types: [opened, synchronize, edited]
 
 jobs:
-  linux:
-    name: Linux
+  clang-tidy:
+    name: clang-tidy
     runs-on: ubuntu-latest
     steps:
       - name: Install Boost
         run: sudo apt update -y && sudo apt install -y libboost-all-dev
+
+      - name: Install clang-tidy
+        run: |
+          sudo apt install -y clang-tidy-9
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-9 100
 
       - name: Checkout sources
         uses: actions/checkout@v1
 
       - name: Configure CMake
         run: >
-          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
-          -DCMAKE_BUILD_TYPE=Release
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_CXX_COMPILER=g++-8
           -DCMAKE_C_COMPILER=gcc-8
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-      - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
-
-      - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
-
+      - name: Clang Tidy
+        run: |
+          export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          if [ -n "$MODIFIED_FILES" ]; then
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
+          fi
   qa:
-    name: QA - CI
+    name: QA - full
     runs-on: ubuntu-latest
     steps:
       - name: Install Java 11
@@ -72,7 +75,6 @@ jobs:
           -DCODE_COVERAGE=TRUE
           -DCMAKE_CXX_COMPILER=g++-8
           -DCMAKE_C_COMPILER=gcc-8
-          -DMETRIX_RUN_ALL_TESTS=OFF
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
@@ -83,7 +85,7 @@ jobs:
 
       - name: Tests
         run: >
-           cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
+           cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j4 --output-on-failure
 
       - name: Code coverage
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
