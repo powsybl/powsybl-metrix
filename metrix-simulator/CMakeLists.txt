@@ -142,6 +142,8 @@ install(EXPORT targets
 )
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 
+option(METRIX_RUN_ALL_TESTS "Run reduced scope of tests" ON)
+
 enable_testing()
 add_subdirectory(tests)
 

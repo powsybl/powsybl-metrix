@@ -20,4 +20,6 @@ metrix_test("delestage_preventif" 4)
 metrix_test("delestage_preventif_cible" 4)
 metrix_test("effacement_curatif" 8)
 metrix_test("delestage_charges_negatives" 2)
+if(METRIX_RUN_ALL_TESTS)
 metrix_test_no_check("curatif_sans_preventif" 4) # order of display
+endif()
