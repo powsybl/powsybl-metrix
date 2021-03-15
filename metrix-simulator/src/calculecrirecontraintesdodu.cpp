@@ -1007,7 +1007,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
 
         double ParticipationGlobale = 0.;
 
-        for (auto& grp : res_.groupesEOD_) {
+        for (const auto& grp : res_.groupesEOD_) {
             double participation = grp->participation_ * puissancePerdueTotale;
             injectionsNodales[grp->noeud_->num_] += participation;
             ParticipationGlobale += participation;
@@ -1086,7 +1086,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
             double prorataEOD = deltaEODPoche(poche);
             LOG(debug) << "Incident " << icdt->nom_ << " : Puissance perdue dans la poche = " << prorataEOD;
 
-            auto& noeudsPoche = poche->noeudsPoche_;
+            const auto& noeudsPoche = poche->noeudsPoche_;
             if (fabs(prorataEOD) > config::constants::zero_power) {
                 if (res_.prodMaxPossible_ - poche->prodMaxPoche_ < config::constants::zero_power) {
                     LOG_ALL(error) << err::ioDico().msg("ERRCompensationInsuffisante");
@@ -1095,9 +1095,9 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
 
                 prorataEOD /= (res_.prodMaxPossible_ - poche->prodMaxPoche_);
 
-                for (auto& grp : res_.groupesEOD_) {
+                for (const auto& grp : res_.groupesEOD_) {
                     if (grp->etat_) {
-                        auto& node = grp->noeud_;
+                        const auto& node = grp->noeud_;
                         // Tous les groupes connectes participent a la compensation au prorata de leur pmax
                         injectionsNodales[node->num_] -= prorataEOD * grp->puisMaxDispo_;
                         secondMembreFixe[node->num_] -= prorataEOD * grp->puisMaxDispo_;
@@ -1105,7 +1105,7 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
                 }
             }
 
-            for (auto& node : noeudsPoche) {
+            for (const auto& node : noeudsPoche) {
                 injectionsNodales[node->num_] = 0.;
                 secondMembreFixe[node->num_] = 0.;
             }
@@ -1291,8 +1291,8 @@ int Calculer::modifJacobienneLigne(const std::shared_ptr<Quadripole>& ligne, boo
 
     double coeffApplication = applique ? 1.0 : -1.0;
 
-    auto& nor = ligne->norqua_;
-    auto& nex = ligne->nexqua_;
+    const auto& nor = ligne->norqua_;
+    const auto& nex = ligne->nexqua_;
 
     // Pour la colonne noeud origine
     if (!nor->bilan_) {
@@ -1414,7 +1414,7 @@ int Calculer::ecrireCoupeTransit(const double& maxTprev,
 
     tmpSecondMembre = round(tmpSecondMembre, config::constants::constraints_precision);
 
-    auto& icdt = ctre->icdt_;
+    const auto& icdt = ctre->icdt_;
     if (icdt && icdt->parade_) {
         tmpSecondMembre += config::constants::pne_factor_inactive_constraint;
     }
@@ -1998,7 +1998,7 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
                 rhoInc += icdt->rho_[nbQuadsInc + i_p][quad2->num_] * icdt->rho_[i_q][numQuadSurveille];
             }
             for (int i_q = 0; i_q < icdt->nbCouplagesFermes_; ++i_q) {
-                auto& quad2 = icdt->listeCouplagesFermes_[i_q];
+                const auto& quad2 = icdt->listeCouplagesFermes_[i_q];
                 rhoInc += icdt->rho_[nbQuadsInc + i_p][quad2->num_]
                           * icdt->rho_[icdt->nbLignes_ + i_q][numQuadSurveille];
             }
@@ -2165,7 +2165,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             bool quadFictif = false;
 
             tran = 0.0;
-            for (auto& elem : elemAS->quadsASurv_) {
+            for (const auto& elem : elemAS->quadsASurv_) {
                 const auto& quad = elem.first;
                 double coeff = elem.second;
 
@@ -2180,7 +2180,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
 
             } // boucle sur les quadripoles de l'element a surveiller
 
-            for (auto& elem : elemAS->hvdcASurv_) {
+            for (const auto& elem : elemAS->hvdcASurv_) {
                 const auto& lcc = elem.first;
                 double coeff = elem.second;
 
@@ -2973,7 +2973,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
                     variablesCurativesConso[elemC->zoneSynchrone()].push_back(elemC->positionVarCurative_);
                 } else if (elemC->typeElem_ == ElementCuratif::HVDC) {
                     auto elemCurHvdc = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemC);
-                    auto& hvdcCur = elemCurHvdc->lcc_;
+                    const auto& hvdcCur = elemCurHvdc->lcc_;
                     if (hvdcCur->norqua_->numCompSynch_ != hvdcCur->nexqua_->numCompSynch_) {
                         variablesCurativesHvdc[hvdcCur->norqua_->numCompSynch_].push_back(elemCurHvdc);
                         variablesCurativesHvdc[hvdcCur->nexqua_->numCompSynch_].push_back(elemCurHvdc);
@@ -3164,7 +3164,7 @@ int Calculer::coeffPourQuadInc(const std::shared_ptr<Quadripole>& quad,
         } else if (typeEtat_[j1] == CONSO_D) {
             coefs_[j1] += coeff * (b1[numSupportDeEtat] + coefsIncident);
         } else if (typeEtat_[j1] == DEPH_H) {
-            auto& td = res_.tdParIndice_[numSupportDeEtat];
+            const auto& td = res_.tdParIndice_[numSupportDeEtat];
 
             if (td->fictif_) {
                 // dans ce cas le dephasage initial ne doit pas etre pris en compte

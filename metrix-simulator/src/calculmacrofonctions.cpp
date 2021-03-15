@@ -119,8 +119,8 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
 
     int i1 = -1;
     int numVar;
-    for (auto& elem : res_.groupes_) {
-        auto& grp = elem.second;
+    for (const auto& elem : res_.groupes_) {
+        const auto& grp = elem.second;
 
         if (grp->prodAjust_ == Groupe::NON_HR_AR) {
             continue;
@@ -135,8 +135,8 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
         numSupportEtat_[numVar + 1] = grp->numNoeud_;
     }
 
-    for (auto& elem : res_.consos_) {
-        auto& conso = elem.second;
+    for (const auto& elem : res_.consos_) {
+        const auto& conso = elem.second;
 
         if (conso->numVarConso_ >= 0) {
             typeEtat_[conso->numVarConso_] = CONSO_D;
@@ -144,8 +144,8 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
         }
     }
 
-    for (auto& elem : res_.TransfoDephaseurs_) {
-        auto& td = elem.second;
+    for (const auto& elem : res_.TransfoDephaseurs_) {
+        const auto& td = elem.second;
         numVar = res_.nbVarGroupes_ + res_.nbVarConsos_ + 2 * td->num_;
         td->numVar_ = numVar;
 
@@ -156,8 +156,8 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
         numSupportEtat_[numVar + 1] = td->num_;
     }
 
-    for (auto& elem : res_.LigneCCs_) {
-        auto& lcc = elem.second;
+    for (const auto& elem : res_.LigneCCs_) {
+        const auto& lcc = elem.second;
         numVar = res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_ + 2 * lcc->num_;
         lcc->numVar_ = numVar;
 
@@ -570,7 +570,7 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
         LOG(debug) << "Création de la matrice des PTDF";
         vector<string> noms;
         noms.resize(res_.nbVarGroupes_ + res_.nbVarConsos_);
-        for (auto& elem : res_.groupes_) {
+        for (const auto& elem : res_.groupes_) {
             if (elem.second->numVarGrp_ != -1) {
                 noms[elem.second->numVarGrp_] = elem.second->nom_;
             }
@@ -637,8 +637,8 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
 
         fprintf(file, "BRANCH;");
         vector<std::shared_ptr<Incident>> listeInc;
-        for (auto& elem : res_.incidents_) {
-            auto& inc = elem.second;
+        for (const auto& elem : res_.incidents_) {
+            const auto& inc = elem.second;
 
             if (!inc->validite_ || inc->nbCouplagesFermes_ + inc->nbGroupes_ > 0 || inc->pochePerdue_ != nullptr) {
                 continue; // On ne met que les défauts valides, lignes ou LCC et qui ne rompent pas la connexite
@@ -659,10 +659,10 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
         }
         fprintf(file, "\n");
 
-        for (auto& quad : res_.quadsSurv_) {
+        for (const auto& quad : res_.quadsSurv_) {
             int numQuad = quad->num_;
             fprintf(file, "%s;", quad->nom_.c_str());
-            for (auto& inc : listeInc) {
+            for (const auto& inc : listeInc) {
                 if (!inc->validite_ || inc->nbCouplagesFermes_ + inc->nbGroupes_ > 0) {
                     continue; // On ne met que les défauts lignes ou LCC
                 }
@@ -681,7 +681,7 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
     // reinitialisation de la production avant l'empilement economique
     //****************************************************************
     for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
-        auto& grp = grpIt->second;
+        const auto& grp = grpIt->second;
         if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
             grp->prod_ = grp->prodPobj_;
         }
@@ -744,7 +744,7 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
     if (res_.nbCCEmulAC_ > 0) {
         // Ajout des contraintes de blocage en N
         for (int i = 0; i < res_.nbCCEmulAC_; ++i) {
-            auto& td = res_.TDFictifs_[i];
+            const auto& td = res_.TDFictifs_[i];
             int numVarInt = ajouterVariableEntiere(td->num_, config::constants::cost_whole_variable * i);
             td->numVarEntiere_ = numVarInt;
             ajouterContrainteDeltaConsVarEntiere(td);
@@ -863,7 +863,7 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
 
                 for (auto icdtIt = res_.incidentsEtParades_.cbegin(); icdtIt != res_.incidentsEtParades_.end();
                      ++icdtIt) {
-                    auto& icdt = *icdtIt;
+                    const auto& icdt = *icdtIt;
                     if (!icdt->validite_) {
                         continue;
                     }
@@ -914,9 +914,7 @@ int Calculer::calculReportInfluencement()
     if (calculeReport) {
         calculReportLccs();
 
-        for (auto icdtIt = res_.incidentsEtParades_.cbegin(); icdtIt != res_.incidentsEtParades_.end(); ++icdtIt) {
-            auto& icdt = *icdtIt;
-
+        for (const auto& icdt : res_.incidentsEtParades_) {
             if (!icdt->validite_) {
                 continue;
             }
@@ -971,8 +969,8 @@ void Calculer::printFctObj(bool silent)
     double sumProdApresEmpilement = 0.0;
     double sumDelestage = 0.0;
 
-    for (auto& elem : res_.groupes_) {
-        auto& grp = elem.second;
+    for (const auto& elem : res_.groupes_) {
+        const auto& grp = elem.second;
 
         if (grp->etat_) {
             sumProdApresEmpilement += grp->prod_;

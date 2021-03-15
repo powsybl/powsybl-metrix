@@ -49,13 +49,13 @@ static void print_threats(FILE* file,
     // Menace max avant parade
     if (threat_before.defaut_ != nullptr) {
         double value_transit = (fabs(threat_before.transit_) < EPSILON_SORTIES) ? 0.0 : threat_before.transit_;
-        auto& inc = threat_before.defaut_->parade_ ? threat_before.defaut_->incTraiteCur_ : threat_before.defaut_;
+        const auto& inc = threat_before.defaut_->parade_ ? threat_before.defaut_->incTraiteCur_ : threat_before.defaut_;
         fprintf(file, "%d;%.1f;", constraints_incidents.find(inc)->second, value_transit);
     } else {
         fprintf(file, ";;");
     }
     for (auto rit = threats.crbegin(); rit != threats.crend(); ++rit) {
-        auto& inc = rit->defaut_->parade_ ? rit->defaut_->incTraiteCur_ : rit->defaut_;
+        const auto& inc = rit->defaut_->parade_ ? rit->defaut_->incTraiteCur_ : rit->defaut_;
         double value_transit = (fabs(rit->transit_) < EPSILON_SORTIES) ? 0.0 : rit->transit_;
         fprintf(file, "%d;%.1f;", constraints_incidents.find(inc)->second, value_transit);
     }
@@ -107,10 +107,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             //--------------
             fprintf(fr, "S1 ;INDISPONIBILITE; OUVRAGE.\n");
             if (var->num_ != -1) {
-                for (auto& grp : var->grpIndispo_) {
+                for (const auto& grp : var->grpIndispo_) {
                     fprintf(fr, "S1 ;;2; %s;\n", grp->nom_.c_str());
                 }
-                for (auto& quad : var->indispoLignes_) {
+                for (const auto& quad : var->indispoLignes_) {
                     fprintf(fr, "S1 ;;1; %s;\n", quad->nom_.c_str());
                 }
             }
@@ -330,7 +330,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
             if (hvdc->type_ == LigneCC::PILOTAGE_EMULATION_AC
                 || hvdc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
-                auto& quad = hvdc->quadFictif_;
+                const auto& quad = hvdc->quadFictif_;
                 puissHVDC += quad->u2Yij_ * (theta[quad->norqua_->num_] - theta[quad->nexqua_->num_]);
             }
 
@@ -495,7 +495,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (res_.nbConsosCouplees_ > 0) {
             double val;
             fprintf(fr, "R1C ;NOM REGROUPEMENT;DELTA_C;\n");
-            for (auto& binding : res_.consosCouplees_) {
+            for (const auto& binding : res_.consosCouplees_) {
                 val = 0;
                 for (const auto& list : binding->elements_) {
                     val -= pbX_[list->numVarConso_];
@@ -845,7 +845,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                         if (quad->connecte()) {
                             if (icdt->paradesActivees_) {
                                 // Recherche de la parade activee
-                                for (auto& parade : icdt->parades_) {
+                                for (const auto& parade : icdt->parades_) {
                                     if (parade->numVarActivation_ != -1 && pbX_[parade->numVarActivation_] > 0.5) {
                                         transit = transitSurQuad(quad, parade, theta);
                                         break;
