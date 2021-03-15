@@ -1321,7 +1321,7 @@ double ElementASurveiller::seuilMax(const std::shared_ptr<Incident>& icdt) const
 
 double ElementASurveiller::seuilMin(const std::shared_ptr<Incident>& icdt) const
 {
-    auto checkThreshold = [&icdt, this](double threshold) -> double {
+    auto checkThreshold = [&icdt, this](double threshold) {
         return (threshold != config::constants::valdef) ? -threshold : -seuilMax(icdt);
     };
     if (seuilsAssymetriques_) {
