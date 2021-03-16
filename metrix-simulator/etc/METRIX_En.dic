@@ -197,6 +197,7 @@ WarnElementDejaDansParade                   Duplicate branch '$1' used in a reme
 //---------------- Variables li�es ---------------------
 ERRConsoNulle								Error: load value is null on bus '$1' used in variable binding '$2'
 ERRVarRefNulle								Error: reference variable is null for generator '$1' used in variable binding '$2' 
-ERRGroupeLieNonModifiable                   Erreur : generator '$1' used in variable binding '$2' is not modifiable
-ERRConsoLieeNonModifiable                   Erreur : load '$1' used in variable binding '$2' is not modifiable
+ERRGrpNonAjustable							Error : non ajustable group '$1' used in variable coupling '$2'
+ERRGroupeLieNonModifiable                   Error : generator '$1' used in variable binding '$2' is not modifiable
+ERRConsoLieeNonModifiable                   Error : load '$1' used in variable binding '$2' is not modifiable
 WarnMargePetiteGrp							Warning: small margins for generator '$1' used in variable binding '$2'

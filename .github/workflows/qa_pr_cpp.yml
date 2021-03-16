@@ -88,7 +88,7 @@ jobs:
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
 
       - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j4 --output-on-failure
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
 
       - name: Code coverage
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
