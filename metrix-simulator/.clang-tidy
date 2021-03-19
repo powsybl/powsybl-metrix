@@ -1,0 +1,30 @@
+# 
+# Copyright (c) 2021, RTE (http://www.rte-france.com)
+# See AUTHORS.txt
+# All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, you can obtain one at http://mozilla.org/MPL/2.0/.
+# SPDX-License-Identifier: MPL-2.0
+# 
+
+# List of all checks
+# https://clang.llvm.org/extra/clang-tidy/
+# https://clang.llvm.org/extra/clang-tidy/checks/list.html
+
+Checks: '-*,
+  llvm-include-order,
+  llvm-namespace-comment,
+  modernize-*,
+  -modernize-pass-by-value,
+  -modernize-use-trailing-return-type,
+  -modernize-replace-random-shuffle,
+  performance-*,
+  readability-*,
+  -readability-convert-member-functions-to-static,
+  -readability-function-size,
+  -readability-magic-numbers,
+  -readability-redundant-declaration,
+'
+HeaderFilterRegex: 'src/.*|log/.*'
+WarningsAsErrors: '*'

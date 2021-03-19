@@ -1,0 +1,174 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_VAQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VAR a une admittance tres grande (100000.0000000000)
+Incident 'INC_YUB' : Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]' '5893 [CONSO_HRS]'
+Incident 'QUAD_JXX' : Noeuds perdus '894 [CONSO_AHL]'
+Incident 'QUAD_QRI' : Noeuds perdus '3995 [CONSO_EWS]'
+Incident 'QUAD_RRN' : Noeuds perdus '4492 [CONSO_FPV]'
+Incident 'INC_YUC' : Noeuds perdus '2873 [CONSO_DFO]' '5898 [CONSO_HRX]'
+Incident 'INC_YUD' : Noeuds perdus '3865 [CONSO_ERS]'
+Incident 'QUAD_UCF' : Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]'
+Incident 'QUAD_PMQ' : Noeuds perdus '3107 [CONSO_DOO]'
+Incident 'INC_YUE' : Noeuds perdus '3848 [CONSO_ERB]' '6043 [CONSO_HXM]'
+Incident 'QUAD_SGU' : Noeuds perdus '5064 [CONSO_GLV]'
+Incident 'QUAD_UDG' : Noeuds perdus '2945 [CONSO_DII]'
+Incident 'QUAD_UDF' : Noeuds perdus '2944 [CONSO_DIH]'
+Incident 'QUAD_PZE' : Noeuds perdus '3363 [CONSO_DYK]'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 56 (sur 56)
+Nombre de regions       = 1
+Nombre total de noeuds  = 6297
+Nombre de consommations = 6283 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 8646 (dont 0 surveillés en N et 10 surveillés sur défaut)
+Nombre de groupes       = 2531 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 14 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+ Nb total d'incidents + parades : 88
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2200 [CONSO_CFR](2)
+                                  <-> 5907 [CONSO_HSG](3)
+
+
+********************************************
+Traitement d'un paquet de 3 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 19939.0527  MW
+Production démarrée                 = 83259.0515  MW
+Puissance à ajuster                 = -63319.9987  MW
+Puissance disponible à la hausse (hors Pimp) = 25224209.9485  MW
+Puissance disponible à la baisse (hors Pimp) = -25390728.0515  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 63319.9987 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   19939.0527 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 5060
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 49107.5125  MW
+Production démarrée                 = 49107.5200  MW
+Puissance à ajuster                 =    -0.0075  MW
+Puissance disponible à la hausse (hors Pimp) = 25258361.4800  MW
+Puissance disponible à la baisse (hors Pimp) = -25356576.5200  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0075 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 5060 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   49107.5125 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 5061
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 49106.0278  MW
+Production démarrée                 = 49106.0550  MW
+Puissance à ajuster                 =    -0.0272  MW
+Puissance disponible à la hausse (hors Pimp) = 25258362.9450  MW
+Puissance disponible à la baisse (hors Pimp) = -25356575.0550  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0272 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 5061 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   49106.0278 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 55
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Ajout de 85 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 87)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 5061 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   49106.0278 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :      21.9745
+Cout des écarts de transit     :      17.5400
+Valeur de la fonction objectif :      39.5145
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 319 (taille de la matrice : 319)
+Pas de contraintes

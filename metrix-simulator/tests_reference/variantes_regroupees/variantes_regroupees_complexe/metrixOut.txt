@@ -1,0 +1,2177 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_AU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_BK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_DE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_DR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_XD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ANU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ASR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_BKD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_BZD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_BZE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CRV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CRW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CRX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CRY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CRZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CVV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_CYS a une admittance tres grande (752.0832519531)
+Attention: Le quadripole QUAD_CYT a une admittance tres grande (752.0832519531)
+Attention: Le quadripole QUAD_DII forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_DIJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_EMJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ERE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_FLS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_FPM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_FRA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_FSH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_FSI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_FSJ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_FXL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GGX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_GHK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GKM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GKN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GMA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GND forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GOD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_GOK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GOM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_GOS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_GQH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_GXD a une admittance tres grande (962.6669921875)
+Attention: Le quadripole QUAD_HGH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HNZ a une admittance tres grande (1137.0086669922)
+Attention: Le quadripole QUAD_HTC forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HTD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HTK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_HYX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IGV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IHL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IIO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IIW a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_IPL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IPT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_IQG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ISB a une admittance tres grande (1110.7692871094)
+Attention: Le quadripole QUAD_IWM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JBA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JBB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JBY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JCI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JEN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JHC forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JIA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JIB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKU a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKW a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JKZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLC a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLE a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLJ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLK a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLL a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLP a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLQ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLR a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLU a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLW a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JLZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMC a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JME a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMJ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMK a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JML a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMP a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMQ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMR a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JMS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JQO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_JRP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JSI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_JSM a une admittance tres grande (1599.9271240234)
+Attention: Le quadripole QUAD_JVY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KBM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_KBV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_KEX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_KFZ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KHQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KJL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_KJQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_OLJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_OQD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_OQG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_QJU a une admittance tres grande (1110.7692871094)
+Attention: Le quadripole QUAD_QYV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RAJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RGB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RRX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RSN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RSX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RTC forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RUP a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_RWO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_RXQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RZQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SAP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SDG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SDH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SEB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SEC a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SEF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SEG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SEH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_SFB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SGG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_SIN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TAR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TIU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TKE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TKF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TKG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TKJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TKK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TKL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TPK a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole QUAD_TPM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_TQQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_TTJ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_TTK a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_UFE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ULK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UMX a une admittance tres grande (627.8260498047)
+Attention: Le quadripole QUAD_UWZ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UXV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UXW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UXX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UXY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_UZK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VDT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_VEY a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VFK a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_VFP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VIG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VMV a une admittance tres grande (722.0002441406)
+Attention: Le quadripole QUAD_VMW a une admittance tres grande (722.0002441406)
+Attention: Le quadripole QUAD_VSH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VSK a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole QUAD_VTO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VVP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VWL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VWM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VWN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_VWU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WAB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_WAC a une admittance tres grande (1250.0000000000)
+Attention: Le quadripole QUAD_WAI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WAY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_WAZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_WBP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_WDL a une admittance tres grande (722.0002441406)
+Attention: Le quadripole QUAD_WDM a une admittance tres grande (722.0002441406)
+Attention: Le quadripole QUAD_WHU a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole QUAD_ZUW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AHVM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AHVN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AHVO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AHVP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ZUW_Td a une admittance tres grande (1000000.0000000000)
+Groupe GROUP_BHDT : Pobj (0.625927) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BHFI : Pobj (0.235866) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BHNU : Pobj (0.190340) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BHNX : Pobj (0.124453) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BHTG : Pobj (0.281850) est superieur a Pmax (0.100873): Pobj mis a Pmax.
+Groupe GROUP_BHTJ : Pobj (0.556379) est superieur a Pmax (0.199127): Pobj mis a Pmax.
+Groupe GROUP_BHWK : Pobj (2.719130) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BIAA : Pobj (4.437714) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BIAC : Pobj (0.400218) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BIES : Pobj (0.188693) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BIET : Pobj (2.376387) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BIIU : Pobj (1.207929) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BIKA : Pobj (2.376387) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BIRI : Pobj (1.690695) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BIRJ : Pobj (1.957930) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BIRL : Pobj (0.109864) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BISZ : Pobj (0.489176) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BITB : Pobj (0.148710) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJAX : Pobj (0.058566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJAZ : Pobj (0.164718) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJBH : Pobj (0.482616) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJBJ : Pobj (0.074550) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJCS : Pobj (0.243729) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJEG : Pobj (6.101366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJEJ : Pobj (0.533624) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJJO : Pobj (0.131774) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJMX : Pobj (10.158600) est superieur a Pmax (7.767902): Pobj mis a Pmax.
+Groupe GROUP_BJMY : Pobj (8.816214) est superieur a Pmax (6.741429): Pobj mis a Pmax.
+Groupe GROUP_BJMZ : Pobj (62.199657) est superieur a Pmax (47.561752): Pobj mis a Pmax.
+Groupe GROUP_BJNA : Pobj (15.256510) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJNC : Pobj (13.115478) est superieur a Pmax (10.028915): Pobj mis a Pmax.
+Groupe GROUP_BJND : Pobj (0.080529) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJPD : Pobj (1.090797) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJPF : Pobj (0.124453) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJRM : Pobj (0.090245) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJRP : Pobj (0.047084) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJRY : Pobj (0.267315) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BJSE : Pobj (1.592758) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKEM : Pobj (3.770683) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKEO : Pobj (0.247194) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKGQ : Pobj (3.805996) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKGS : Pobj (0.502235) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKNK : Pobj (0.332640) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKNL : Pobj (1.501143) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BKNM : Pobj (0.019567) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKRD : Pobj (2.165887) est superieur a Pmax (1.200000): Pobj mis a Pmax.
+Groupe GROUP_BKRE : Pobj (1.757849) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BKSY : Pobj (4.865397) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKTA : Pobj (0.812208) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKUG : Pobj (0.667030) est superieur a Pmax (0.278152): Pobj mis a Pmax.
+Groupe GROUP_BKUI : Pobj (3.060492) est superieur a Pmax (1.276227): Pobj mis a Pmax.
+Groupe GROUP_BKUK : Pobj (0.349210) est superieur a Pmax (0.145621): Pobj mis a Pmax.
+Groupe GROUP_BKWI : Pobj (0.537548) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BKWL : Pobj (0.207957) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLCH : Pobj (5.893409) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLCJ : Pobj (0.494387) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLLU : Pobj (0.490463) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLLW : Pobj (0.113788) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLNQ : Pobj (4.814390) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLNT : Pobj (0.168719) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLOP : Pobj (0.208642) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLOR : Pobj (0.292831) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BLZC : Pobj (0.247194) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BNKH : Pobj (0.553243) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BNMV : Pobj (0.192262) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BNVT : Pobj (1.047630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BNVV : Pobj (1.165341) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BNXN : Pobj (2.376387) est superieur a Pmax (1.900000): Pobj mis a Pmax.
+Groupe GROUP_BOAX : Pobj (1.546887) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BOAY : Pobj (1.077123) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOBC : Pobj (0.302695) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOEN : Pobj (0.494387) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOEP : Pobj (0.204033) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOIF : Pobj (1.133952) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOII : Pobj (0.262888) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOOM : Pobj (0.062615) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOQQ : Pobj (1.177112) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOVI : Pobj (0.415913) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOWI : Pobj (1.981277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOWL : Pobj (0.294833) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BOYJ : Pobj (0.506158) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPBZ : Pobj (1.141799) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPCC : Pobj (0.859292) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPEH : Pobj (5.837691) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPEL : Pobj (0.507113) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPGC : Pobj (0.062615) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPGE : Pobj (0.043047) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPKS : Pobj (0.223651) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPTG : Pobj (0.737657) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPVA : Pobj (0.070441) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPVC : Pobj (0.250458) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPXQ : Pobj (2.209048) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BPXS : Pobj (0.176567) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQAG : Pobj (6.818084) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BQAH : Pobj (8.337880) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQAJ : Pobj (0.231499) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQBO : Pobj (0.702344) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQBQ : Pobj (0.321744) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQCC : Pobj (0.259453) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQFX : Pobj (1.178646) est superieur a Pmax (0.200000): Pobj mis a Pmax.
+Groupe GROUP_BQQD : Pobj (0.109575) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQQI : Pobj (0.313073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQRL : Pobj (0.188338) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQRO : Pobj (0.098093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQRR : Pobj (1.307079) est superieur a Pmax (0.073085): Pobj mis a Pmax.
+Groupe GROUP_BQRS : Pobj (5.570032) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BQRV : Pobj (0.481349) est superieur a Pmax (0.026915): Pobj mis a Pmax.
+Groupe GROUP_BQUQ : Pobj (5.740385) est superieur a Pmax (3.807417): Pobj mis a Pmax.
+Groupe GROUP_BQUR : Pobj (4.858773) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BQUU : Pobj (0.290354) est superieur a Pmax (0.192583): Pobj mis a Pmax.
+Groupe GROUP_BQYR : Pobj (0.355058) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQYU : Pobj (1.181036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BQYW : Pobj (1.666994) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BQYY : Pobj (0.074550) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BRMT : Pobj (1.175950) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BRMU : Pobj (1.360162) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BRMX : Pobj (0.275177) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BRPJ : Pobj (0.046961) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BRQG : Pobj (0.597528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BRQK : Pobj (0.200486) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BRRU : Pobj (0.470845) est superieur a Pmax (0.324910): Pobj mis a Pmax.
+Groupe GROUP_BRRV : Pobj (0.667030) est superieur a Pmax (0.460289): Pobj mis a Pmax.
+Groupe GROUP_BRRZ : Pobj (0.601112) est superieur a Pmax (0.414801): Pobj mis a Pmax.
+Groupe GROUP_BSFK : Pobj (0.065887) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSFN : Pobj (0.054906) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSGB : Pobj (0.058701) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSGD : Pobj (0.011740) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSJY : Pobj (0.023480) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSOB : Pobj (0.749428) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSOG : Pobj (0.757276) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSTG : Pobj (4.936025) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSTJ : Pobj (0.282507) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSYW : Pobj (2.079565) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BSYY : Pobj (0.235422) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTGR : Pobj (0.286971) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTHZ : Pobj (3.316314) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTIC : Pobj (0.201321) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTMA : Pobj (1.228121) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTME : Pobj (0.490463) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTSH : Pobj (8.326108) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BTSJ : Pobj (0.137330) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUBS : Pobj (0.439455) est superieur a Pmax (0.074477): Pobj mis a Pmax.
+Groupe GROUP_BUBV : Pobj (0.721962) est superieur a Pmax (0.122354): Pobj mis a Pmax.
+Groupe GROUP_BUBX : Pobj (15.251452) est superieur a Pmax (2.584738): Pobj mis a Pmax.
+Groupe GROUP_BUCA : Pobj (0.698812) est superieur a Pmax (0.118431): Pobj mis a Pmax.
+Groupe GROUP_BUCS : Pobj (0.431608) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUJH : Pobj (3.322651) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BUJJ : Pobj (3.836759) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUJN : Pobj (0.483526) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUKO : Pobj (0.470845) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUKQ : Pobj (0.086322) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUQC : Pobj (1.006607) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUQE : Pobj (0.195079) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUXV : Pobj (12.292976) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BUYA : Pobj (0.270736) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVEK : Pobj (1.674894) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BVEL : Pobj (1.137875) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVEO : Pobj (0.298202) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVJP : Pobj (0.078268) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVLE : Pobj (2.405233) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVLH : Pobj (0.125559) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVMG : Pobj (0.556379) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVMJ : Pobj (1.610572) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVVE : Pobj (0.695474) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVVI : Pobj (0.530757) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVYL : Pobj (0.498311) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BVYO : Pobj (0.153025) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWBD : Pobj (3.930471) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BWBE : Pobj (4.841856) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWCC : Pobj (0.074550) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWCG : Pobj (0.160872) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWCM : Pobj (1.388993) est superieur a Pmax (0.500000): Pobj mis a Pmax.
+Groupe GROUP_BWFW : Pobj (6.379609) est superieur a Pmax (5.413114): Pobj mis a Pmax.
+Groupe GROUP_BWFX : Pobj (17.898457) est superieur a Pmax (15.186886): Pobj mis a Pmax.
+Groupe GROUP_BWFZ : Pobj (0.608175) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWGC : Pobj (0.608175) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWSG : Pobj (0.478692) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWSI : Pobj (0.125559) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWVV : Pobj (0.306049) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWXT : Pobj (3.011226) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BWXW : Pobj (0.412766) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXEI : Pobj (0.191757) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXGS : Pobj (0.937766) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXGU : Pobj (0.172643) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXLR : Pobj (0.808284) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXLT : Pobj (0.863216) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXUM : Pobj (0.262198) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXUT : Pobj (0.349210) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXYI : Pobj (0.066528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BXYK : Pobj (0.082182) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYAM : Pobj (0.655210) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYAQ : Pobj (0.355058) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYAX : Pobj (2.062367) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYKN : Pobj (0.074355) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYKP : Pobj (0.309159) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYKZ : Pobj (0.066528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYLB : Pobj (0.078268) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BYYG : Pobj (1.975189) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BZCN : Pobj (0.355534) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZEO : Pobj (0.399168) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZER : Pobj (0.344380) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZPH : Pobj (1.307523) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_BZPN : Pobj (0.415913) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZPP : Pobj (0.047084) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZPX : Pobj (0.547877) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZQA : Pobj (0.144796) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZQS : Pobj (0.347737) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_BZQV : Pobj (0.420945) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAGW : Pobj (2.381691) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAGX : Pobj (1.998812) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CAGY : Pobj (0.290354) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAOQ : Pobj (0.110071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAOR : Pobj (2.376387) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAUI : Pobj (0.792715) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAUO : Pobj (0.457487) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAXA : Pobj (1.389042) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CAXB : Pobj (1.026018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CAXE : Pobj (0.279108) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBBF : Pobj (0.066528) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBBJ : Pobj (0.160450) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBCT : Pobj (1.956705) est superieur a Pmax (1.829224): Pobj mis a Pmax.
+Groupe GROUP_CBCX : Pobj (3.028979) est superieur a Pmax (2.831638): Pobj mis a Pmax.
+Groupe GROUP_CBCY : Pobj (0.362773) est superieur a Pmax (0.339138): Pobj mis a Pmax.
+Groupe GROUP_CBDA : Pobj (6.810184) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CBDB : Pobj (8.388887) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBEL : Pobj (2.376387) est superieur a Pmax (0.800000): Pobj mis a Pmax.
+Groupe GROUP_CBEU : Pobj (5.538212) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CBEV : Pobj (6.591829) est superieur a Pmax (0.791623): Pobj mis a Pmax.
+Groupe GROUP_CBEX : Pobj (0.902453) est superieur a Pmax (0.108377): Pobj mis a Pmax.
+Groupe GROUP_CBJC : Pobj (0.530699) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBJF : Pobj (0.353799) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBKG : Pobj (3.707904) est superieur a Pmax (1.100806): Pobj mis a Pmax.
+Groupe GROUP_CBKJ : Pobj (0.670954) est superieur a Pmax (0.199194): Pobj mis a Pmax.
+Groupe GROUP_CBNJ : Pobj (0.424559) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBNX : Pobj (0.498311) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBNZ : Pobj (0.153025) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBSA : Pobj (4.609910) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CBSB : Pobj (5.599131) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBSD : Pobj (0.309973) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBSK : Pobj (0.632908) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBSP : Pobj (0.330213) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBUE : Pobj (0.829643) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBVC : Pobj (0.290354) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBVH : Pobj (0.387428) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CBVI : Pobj (2.014692) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CBVJ : Pobj (0.058701) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CCOD : Pobj (9.014407) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CCOE : Pobj (11.076627) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CCOG : Pobj (0.129482) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CDAQ : Pobj (0.117402) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CDAT : Pobj (0.813989) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CDJX : Pobj (0.392371) est superieur a Pmax (0.342679): Pobj mis a Pmax.
+Groupe GROUP_CDKB : Pobj (0.867139) est superieur a Pmax (0.757321): Pobj mis a Pmax.
+Groupe GROUP_CDLN : Pobj (0.510082) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CDLQ : Pobj (0.274660) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CDWV : Pobj (0.834569) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CEEJ : Pobj (6.756625) est superieur a Pmax (0.098852): Pobj mis a Pmax.
+Groupe GROUP_CEEK : Pobj (2.796757) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CEEM : Pobj (0.078474) est superieur a Pmax (0.001148): Pobj mis a Pmax.
+Groupe GROUP_CENW : Pobj (0.195670) est superieur a Pmax (0.078125): Pobj mis a Pmax.
+Groupe GROUP_CENY : Pobj (0.305246) est superieur a Pmax (0.121875): Pobj mis a Pmax.
+Groupe GROUP_CEPO : Pobj (0.631717) est superieur a Pmax (0.160199): Pobj mis a Pmax.
+Groupe GROUP_CEPR : Pobj (0.156948) est superieur a Pmax (0.039801): Pobj mis a Pmax.
+Groupe GROUP_CERM : Pobj (3.180590) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CERN : Pobj (3.801378) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CERQ : Pobj (0.357731) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CERS : Pobj (1.465533) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CERT : Pobj (0.329591) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CERW : Pobj (0.282507) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CEWT : Pobj (0.156948) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CEYR : Pobj (4.331774) est superieur a Pmax (1.200000): Pobj mis a Pmax.
+Groupe GROUP_CFCG : Pobj (0.211880) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFCI : Pobj (0.408066) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFCM : Pobj (0.511044) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFCP : Pobj (0.141520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFCS : Pobj (4.088504) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFCV : Pobj (0.298202) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFDX : Pobj (0.035380) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFDY : Pobj (2.376387) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CFLT : Pobj (0.106151) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFLW : Pobj (0.208642) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFQS : Pobj (0.086095) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFQU : Pobj (1.264031) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFSY : Pobj (0.215963) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFTE : Pobj (0.029283) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFTQ : Pobj (0.643488) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CFTU : Pobj (0.066703) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGAU : Pobj (0.553243) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGBX : Pobj (0.039134) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGET : Pobj (0.676150) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGEW : Pobj (0.385248) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGSI : Pobj (0.058566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGSL : Pobj (0.076868) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGTY : Pobj (1.322289) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CGUA : Pobj (0.223651) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHBT : Pobj (0.351398) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHBX : Pobj (0.150076) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHMR : Pobj (0.404142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHNM : Pobj (0.502235) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHNO : Pobj (0.149101) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHUD : Pobj (11.337139) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CHUE : Pobj (13.901697) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHUG : Pobj (0.102016) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHVZ : Pobj (0.344380) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHWE : Pobj (0.175699) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CHWG : Pobj (0.669852) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CIFV : Pobj (0.070441) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CIFX : Pobj (0.015654) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CIGX : Pobj (1.702168) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CIMH : Pobj (1.130975) est superieur a Pmax (0.056556): Pobj mis a Pmax.
+Groupe GROUP_CIMK : Pobj (0.868777) est superieur a Pmax (0.043444): Pobj mis a Pmax.
+Groupe GROUP_CION : Pobj (1.000546) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CIOP : Pobj (0.490463) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_CISS : Pobj (2.844160) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe GROUP_CIST : Pobj (3.503871) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Incident 'QUAD_FF' : Noeuds perdus '18049'
+Incident 'QUAD_QU' : Noeuds perdus '5277 [CONSO_ALSM]'
+Incident 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Incident 'QUAD_AIR' : Noeuds perdus '10236 [CONSO_ASEY]'
+Incident 'QUAD_AIU' : Noeuds perdus '18329'
+Incident 'QUAD_ANI' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_BBT' : Noeuds perdus '8526 [CONSO_AQDQ]'
+Incident 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Incident 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Incident 'QUAD_DIA' : Noeuds perdus '18049'
+Incident 'QUAD_DJQ' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Incident 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Incident 'QUAD_ADUH' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_ADUI' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_ADUJ' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_EDW' : Noeuds perdus '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_FCK' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_FCL' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Incident 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Incident 'QUAD_FNC' : Noeuds perdus '8293' '8294'
+Incident 'QUAD_FQZ' : Noeuds perdus '18329'
+Incident 'QUAD_FWA' : Noeuds perdus '8473 [CONSO_AQBW]'
+Incident 'QUAD_GVF' : Noeuds perdus '12299 [CONSO_AUVL]'
+Incident 'QUAD_GVH' : Noeuds perdus '14059 [CONSO_AXDZ]'
+Incident 'QUAD_GVJ' : Noeuds perdus '16644' '16645'
+Incident 'QUAD_GVK' : Noeuds perdus '15604 [CONSO_AZHP]' '18366'
+Incident 'QUAD_GVL' : Noeuds perdus '12300 [CONSO_AUVM]'
+Incident 'QUAD_GVM' : Noeuds perdus '18369'
+Incident 'QUAD_GVV' : Noeuds perdus '15162 [CONSO_AYQF]'
+Incident 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_IDO' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_JSV' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_AEYV' : Noeuds perdus '10670'
+Incident 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Incident 'QUAD_OOH' : Noeuds perdus '11062 [CONSO_ATCH]'
+Incident 'QUAD_OOI' : Noeuds perdus '11063 [CONSO_ATCG]'
+Incident 'QUAD_OXH' : Noeuds perdus '11257' '11258'
+Incident 'QUAD_OXK' : Noeuds perdus '16791' '16792'
+Incident 'QUAD_OXL' : Noeuds perdus '18049'
+Incident 'QUAD_QDR' : Noeuds perdus '12426 [CONSO_AVBE, CONSO_AVBF]'
+Incident 'QUAD_QDS' : Noeuds perdus '16399 [CONSO_BAGI]'
+Incident 'QUAD_QDT' : Noeuds perdus '17788'
+Incident 'QUAD_QDU' : Noeuds perdus '15634 [CONSO_AZJH]' '18371'
+Incident 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_QNJ' : Noeuds perdus '16102 [CONSO_AZWQ]'
+Incident 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Incident 'QUAD_QRN' : Noeuds perdus '16785'
+Incident 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Incident 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Incident 'QUAD_RLI' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_SDU' : Noeuds perdus '12704 [CONSO_AVJQ]' '18170'
+Incident 'QUAD_SUB' : Noeuds perdus '12704 [CONSO_AVJQ]' '18170'
+Incident 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Incident 'QUAD_SZZ' : Noeuds perdus '13423 [CONSO_AWKA, CONSO_AWKB]'
+Incident 'QUAD_TEH' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_TGV' : Noeuds perdus '13788 [CONSO_AWVS, CONSO_AWVT]'
+Incident 'QUAD_TSB' : Noeuds perdus '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Incident 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Incident 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Incident 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Incident 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Incident 'QUAD_TXM' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_TXS' : Noeuds perdus '17741'
+Incident 'QUAD_URX' : Noeuds perdus '15604 [CONSO_AZHP]' '18366'
+Incident 'QUAD_UUY' : Noeuds perdus '18369'
+Incident 'QUAD_UWI' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_VQD' : Noeuds perdus '17984'
+Incident 'QUAD_VQF' : Noeuds perdus '17068'
+Incident 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_VQI' : Noeuds perdus '11659' '18083'
+Incident 'QUAD_VQJ' : Noeuds perdus '18369'
+Incident 'QUAD_ACVB' : Noeuds perdus '5059' '5060'
+Incident 'QUAD_ACVA' : Noeuds perdus '5059' '5060'
+Incident 'QUAD_VTW' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_AZU' : Noeuds perdus '5885 [CONSO_AMOD]'
+Incident 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Incident 'QUAD_ENX' : Noeuds perdus '7915 [CONSO_APHJ, CONSO_APHK]'
+Incident 'QUAD_ENY' : Noeuds perdus '7916 [CONSO_APHL, CONSO_APHM]'
+Incident 'QUAD_EOS' : Noeuds perdus '7921 [CONSO_APHS]'
+Incident 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Incident 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Incident 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Incident 'INC_CJAT' : Noeuds perdus '18329'
+Incident 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_HDM' : Noeuds perdus '9046 [CONSO_AQUH]'
+Incident 'QUAD_HDN' : Noeuds perdus '9047 [CONSO_AQUI]'
+Incident 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Incident 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_VKS' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_KDD' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Incident 'QUAD_JIV' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Incident 'QUAD_JSF' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 304 (sur 304)
+Nombre de regions       = 14
+Nombre total de noeuds  = 18592
+Nombre de consommations = 14198 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 25688 (dont 32 surveillés en N et 32 surveillés sur défaut)
+Nombre de groupes       = 23082 (dont 103 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 106 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 24 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le groupe 'G1121' de la loi 8063 est introuvable
+Le noeud '99121_1' de la loi 8064 de variation de conso est introuvable
+Le groupe 'G1121' de la loi 8064 est introuvable
+Le noeud '99121_1' de la loi 8066 de variation de conso est introuvable
+Le groupe 'G1121' de la loi 8066 est introuvable
+Le groupe 'G1121' de la loi 8067 est introuvable
+Le noeud '99121_1' de la loi 8068 de variation de conso est introuvable
+Le noeud '99121_1' de la loi 8070 de variation de conso est introuvable
+Le groupe 'G1121' de la loi 8071 est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+La branche (ligne ou couplage) 'RONCHL1THILL' mentionnée dans une parade est introuvable
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_BAY' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+La branche (ligne ou couplage) 'RONCHL1THILL' mentionnée dans une parade est introuvable
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_BAY' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QRN' : Noeuds perdus '16785'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_FIM / QUAD_BLR / QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_FIM / QUAD_BLR / QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TXS' : Noeuds perdus '17741'
+L'element 'QUAD_VQG' mentionne dans une parade fait partie de l'incident 'QUAD_UDJ'
+Parade 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_BAY' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+ Nb total d'incidents + parades : 633
+Mode de calcul : OPF
+Noeud bilan : 0
+0(4) <-> 8 [CONSO_AHVQ, CONSO_AHVR](3) <-> 10 [CONSO_AHVU](4)
+                                       <-> 12 [CONSO_AHVW, CONSO_AHVX](2)
+     <-> 9 [CONSO_AHVS, CONSO_AHVT](2) <-> 10 [CONSO_AHVU](4)
+     <-> 15648(4) <-> 10072 [CONSO_ARZD, CONSO_ARZE](5)
+
+Noeud bilan : 1
+1(1) <-> 11 [CONSO_AHVV](6) <-> 2(1)
+                            <-> 3(1)
+                            <-> 5(1)
+                            <-> 6(1)
+                            <-> 7(1)
+                            |=| 6092(7)
+                            |=| 6093(7)
+     |=| 11715(7) <-> 367(13)
+                  <-> 5748(4)
+                  <-> 9298(3)
+                  <-> 13427(1)
+                  <-> 17238(16)
+                  <-> 11713(2)
+                  <-> 11714(5)
+
+
+********************************************
+Traitement d'un paquet de 2 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 293255.3590  MW
+Production démarrée                 = 283197.1985  MW
+Puissance à ajuster                 = 10058.1605  MW
+Puissance disponible à la hausse (hors Pimp) = 293974.6702  MW
+Puissance disponible à la baisse (hors Pimp) = -270805.3298  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -4858.1605 MW
+Zone synchrone 1 (noeud bilan 1), bilan = -5200.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  293255.3590 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :  804652.8401
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  804652.8401
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 3
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_UD' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD / QUAD_BLR / QUAD_FIM' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
+Contraintes equivalentes : 'QUAD_UD / QUAD_BLR / QUAD_FIM' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_DIB)
+Ajout de 10 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 636)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  293255.3590 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 59267 (taille de la matrice : 59267)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  293255.3590 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+
+---------------------
+---------------------
+Variante numéro 8063
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 212740.3100  MW
+Production démarrée                 = 212720.1237  MW
+Puissance à ajuster                 =    20.1863  MW
+Puissance disponible à la hausse (hors Pimp) = 272910.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -291870.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -20.1863 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    1614.9056
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    1614.9056
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 263
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      29.9684
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      29.9684
+
+Des contraintes ont été détectées : 111
+Nb termes dans la matrice : 21246 (taille de la matrice : 21246)
+Contraintes equivalentes : 'QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_EY)
+Ajout de 209 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 5678)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      32.7697
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0088
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     737.7684
+Valeur de la fonction objectif :     770.5470
+
+Des contraintes ont été détectées : 4
+Nb termes dans la matrice : 1412894 (taille de la matrice : 1412894)
+Ajout de 8 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 5686)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      32.7697
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3190
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     737.7684
+Valeur de la fonction objectif :     770.8571
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1468558 (taille de la matrice : 1468558)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8063 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  212740.3100 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      32.7697
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3190
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     737.7684
+Valeur de la fonction objectif :     770.8571
+
+
+********************************************
+Traitement d'un paquet de 9 variante(s)
+********************************************
+Incident 'QUAD_FF' : Noeuds perdus '18049'
+Incident 'QUAD_QU' : Noeuds perdus '5277 [CONSO_ALSM]'
+Incident 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Incident 'QUAD_AIR' : Noeuds perdus '10236 [CONSO_ASEY]'
+Incident 'QUAD_AIU' : Noeuds perdus '18329'
+Incident 'QUAD_ANI' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_BBT' : Noeuds perdus '8526 [CONSO_AQDQ]'
+Incident 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Incident 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Incident 'QUAD_DIA' : Noeuds perdus '18049'
+Incident 'QUAD_DJQ' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Incident 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Incident 'QUAD_ADUH' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_ADUI' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_ADUJ' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_EDW' : Noeuds perdus '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_FCK' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_FCL' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Incident 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Incident 'QUAD_FNC' : Noeuds perdus '8293' '8294'
+Incident 'QUAD_FQZ' : Noeuds perdus '18329'
+Incident 'QUAD_FWA' : Noeuds perdus '8473 [CONSO_AQBW]'
+Incident 'QUAD_GVF' : Noeuds perdus '12299 [CONSO_AUVL]'
+Incident 'QUAD_GVH' : Noeuds perdus '14059 [CONSO_AXDZ]'
+Incident 'QUAD_GVJ' : Noeuds perdus '16644' '16645'
+Incident 'QUAD_GVK' : Noeuds perdus '15604 [CONSO_AZHP]' '18366'
+Incident 'QUAD_GVL' : Noeuds perdus '12300 [CONSO_AUVM]'
+Incident 'QUAD_GVM' : Noeuds perdus '18369'
+Incident 'QUAD_GVV' : Noeuds perdus '15162 [CONSO_AYQF]'
+Incident 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_IDO' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_JSV' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_AEYV' : Noeuds perdus '10670'
+Incident 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Incident 'QUAD_OOH' : Noeuds perdus '11062 [CONSO_ATCH]'
+Incident 'QUAD_OOI' : Noeuds perdus '11063 [CONSO_ATCG]'
+Incident 'QUAD_OXH' : Noeuds perdus '11257' '11258'
+Incident 'QUAD_OXK' : Noeuds perdus '16791' '16792'
+Incident 'QUAD_OXL' : Noeuds perdus '18049'
+Incident 'QUAD_QDR' : Noeuds perdus '12426 [CONSO_AVBE, CONSO_AVBF]'
+Incident 'QUAD_QDS' : Noeuds perdus '16399 [CONSO_BAGI]'
+Incident 'QUAD_QDT' : Noeuds perdus '17788'
+Incident 'QUAD_QDU' : Noeuds perdus '15634 [CONSO_AZJH]' '18371'
+Incident 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_QNJ' : Noeuds perdus '16102 [CONSO_AZWQ]'
+Incident 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Incident 'QUAD_QRN' : Noeuds perdus '16785'
+Incident 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Incident 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Incident 'QUAD_RLI' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_SDU' : Noeuds perdus '12704 [CONSO_AVJQ]' '18170'
+Incident 'QUAD_SUB' : Noeuds perdus '12704 [CONSO_AVJQ]' '18170'
+Incident 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Incident 'QUAD_SZZ' : Noeuds perdus '13423 [CONSO_AWKA, CONSO_AWKB]'
+Incident 'QUAD_TEH' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_TGV' : Noeuds perdus '13788 [CONSO_AWVS, CONSO_AWVT]'
+Incident 'QUAD_TSB' : Noeuds perdus '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Incident 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Incident 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Incident 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Incident 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Incident 'QUAD_TXM' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_TXS' : Noeuds perdus '17741'
+Incident 'QUAD_URX' : Noeuds perdus '15604 [CONSO_AZHP]' '18366'
+Incident 'QUAD_UUY' : Noeuds perdus '18369'
+Incident 'QUAD_UWI' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_VQD' : Noeuds perdus '17984'
+Incident 'QUAD_VQF' : Noeuds perdus '17068'
+Incident 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_VQI' : Noeuds perdus '11659' '18083'
+Incident 'QUAD_VQJ' : Noeuds perdus '18369'
+Incident 'QUAD_ACVB' : Noeuds perdus '5059' '5060'
+Incident 'QUAD_ACVA' : Noeuds perdus '5059' '5060'
+Incident 'QUAD_VTW' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_AZU' : Noeuds perdus '5885 [CONSO_AMOD]'
+Incident 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Incident 'QUAD_ENX' : Noeuds perdus '7915 [CONSO_APHJ, CONSO_APHK]'
+Incident 'QUAD_ENY' : Noeuds perdus '7916 [CONSO_APHL, CONSO_APHM]'
+Incident 'QUAD_EOS' : Noeuds perdus '7921 [CONSO_APHS]'
+Incident 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Incident 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Incident 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Incident 'INC_CJAT' : Noeuds perdus '18329'
+Incident 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_HDM' : Noeuds perdus '9046 [CONSO_AQUH]'
+Incident 'QUAD_HDN' : Noeuds perdus '9047 [CONSO_AQUI]'
+Incident 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Incident 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_VKS' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_KDD' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Incident 'QUAD_JIV' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Incident 'QUAD_JSF' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Parade 'QUAD_AEP_NRF' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_AGY_NRF' sur défaut 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Parade 'QUAD_BEK_NRF' sur défaut 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Parade 'QUAD_CJE_NRF' sur défaut 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_CJF_NRF' sur défaut 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_CJG_NRF' sur défaut 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_DHS_NRF' sur défaut 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Parade 'QUAD_DLA_NRF' sur défaut 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Parade 'QUAD_DLB_NRF' sur défaut 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Parade 'QUAD_EDV_NRF' sur défaut 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Parade 'QUAD_ELK_NRF' sur défaut 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Parade 'QUAD_ACSY_NRF' sur défaut 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_ACSX_NRF' sur défaut 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_GRD_NRF' sur défaut 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_GVM_NRF' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_GVY_NRF' sur défaut 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_HNX_NRF' sur défaut 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_IIZ_NRF' sur défaut 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_IDP_NRF' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_BAY' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_AEYV_NRF' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_BAY' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_JMV_NRF' sur défaut 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_JPV_NRF' sur défaut 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Parade 'QUAD_JZQ_NRF' sur défaut 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_KBK_NRF' sur défaut 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Parade 'QUAD_KLJ_NRF' sur défaut 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_QDV_NRF' sur défaut 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_QPY_NRF' sur défaut 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Parade 'QUAD_QRN_NRF' sur défaut 'QUAD_QRN' : Noeuds perdus '16785'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QRN' : Noeuds perdus '16785'
+Parade 'QUAD_ACQJ_NRF' sur défaut 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_ACQI_NRF' sur défaut 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_RSU_NRF' sur défaut 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_AFRZ_NRF' sur défaut 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_RTU_NRF' sur défaut 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_RTV_NRF' sur défaut 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_SUD_NRF' sur défaut 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_FIM / QUAD_BLR / QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_TUM_NRF' sur défaut 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TWU_NRF' sur défaut 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TWV_NRF' sur défaut 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TWW_NRF' sur défaut 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_FIM / QUAD_BLR / QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_TWX_NRF' sur défaut 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXS_NRF' sur défaut 'QUAD_TXS' : Noeuds perdus '17741'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TXS' : Noeuds perdus '17741'
+Parade 'QUAD_UDJ_NRF' sur défaut 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_UKU_NRF' sur défaut 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_UUY_NRF' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_VQF_NRF' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_BAY' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_VQG_NRF' sur défaut 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQH_NRF' sur défaut 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_VQJ_NRF' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+
+---------------------
+---------------------
+Variante numéro 8064
+---------------------
+---------------------
+
+Attention: incident 199, l'ouvrage QUAD_TXL est deja deconnecte
+Attention: incident 582, l'ouvrage QUAD_TXL est deja deconnecte
+Demarrage des groupes par empilement économique :
+Consommation globale                = 189729.4792  MW
+Production démarrée                 = 189658.5755  MW
+Puissance à ajuster                 =    70.9038  MW
+Puissance disponible à la hausse (hors Pimp) = 272719.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -292061.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -70.9038 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    5672.3016
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    5672.3016
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 263
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
+Ajout de 32 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2747)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      44.2012
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0208
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     131.1651
+Valeur de la fonction objectif :     175.3871
+
+Des contraintes ont été détectées : 111
+Nb termes dans la matrice : 191074 (taille de la matrice : 191074)
+Contraintes equivalentes : 'QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_EY)
+Ajout de 210 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 7160)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      77.5725
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3299
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     705.1679
+Valeur de la fonction objectif :     783.0704
+
+Des contraintes ont été détectées : 5
+Nb termes dans la matrice : 1587401 (taille de la matrice : 1587401)
+Ajout de 10 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 7170)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      77.5725
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3693
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     705.1679
+Valeur de la fonction objectif :     783.1097
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1656977 (taille de la matrice : 1656977)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8064 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189729.4792 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      77.5725
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.3693
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     705.1679
+Valeur de la fonction objectif :     783.1097
+
+ Le nombre le contraintes (7170) est different de la taille de la base : 7169
+
+---------------------
+---------------------
+Variante numéro 8065
+---------------------
+---------------------
+
+Groupe GROUP_BIIR : Pobj (107.476000) est superieur a Pmax (107.475861): Pobj mis a Pmax.
+Demarrage des groupes par empilement économique :
+Consommation globale                = 178801.5046  MW
+Production démarrée                 = 178803.8279  MW
+Puissance à ajuster                 =    -2.3233  MW
+Puissance disponible à la hausse (hors Pimp) = 273115.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -291665.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 2.3233 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     185.8639
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     185.8639
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 299
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
+Ajout de 88 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4055)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      29.5321
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     254.5646
+Valeur de la fonction objectif :     284.0970
+
+Des contraintes ont été détectées : 126
+Nb termes dans la matrice : 429113 (taille de la matrice : 429113)
+Contraintes equivalentes : 'QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_EY)
+Ajout de 238 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 8724)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      50.8874
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0873
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1128.5285
+Valeur de la fonction objectif :    1179.5032
+
+Des contraintes ont été détectées : 3
+Nb termes dans la matrice : 2015051 (taille de la matrice : 2015051)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 8730)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      50.8874
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1798
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1128.5285
+Valeur de la fonction objectif :    1179.5957
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 2056787 (taille de la matrice : 2056787)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8065 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  178801.5046 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      50.8874
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1798
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1128.5285
+Valeur de la fonction objectif :    1179.5957
+
+ Le nombre le contraintes (8730) est different de la taille de la base : 8729
+
+---------------------
+---------------------
+Variante numéro 8066
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 167278.1295  MW
+Production démarrée                 = 167229.9913  MW
+Puissance à ajuster                 =    48.1382  MW
+Puissance disponible à la hausse (hors Pimp) = 273775.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -291005.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -48.1382 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    3851.0599
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    3851.0599
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 294
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
+Ajout de 74 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3209)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      47.7235
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     235.3630
+Valeur de la fonction objectif :     283.0867
+
+Des contraintes ont été détectées : 113
+Nb termes dans la matrice : 357760 (taille de la matrice : 357760)
+Contraintes equivalentes : 'QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_EY)
+Ajout de 205 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 7848)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      72.2014
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1515
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1313.6456
+Valeur de la fonction objectif :    1385.9984
+
+Des contraintes ont été détectées : 3
+Nb termes dans la matrice : 1717335 (taille de la matrice : 1717335)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 7854)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      72.2014
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1701
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1313.6456
+Valeur de la fonction objectif :    1386.0170
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1759083 (taille de la matrice : 1759083)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8066 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  167278.1295 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      72.2014
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.1701
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :    1313.6456
+Valeur de la fonction objectif :    1386.0170
+
+ Le nombre le contraintes (7854) est different de la taille de la base : 7853
+
+---------------------
+---------------------
+Variante numéro 8067
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 162166.2966  MW
+Production démarrée                 = 162167.6636  MW
+Puissance à ajuster                 =    -1.3670  MW
+Puissance disponible à la hausse (hors Pimp) = 274957.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -289823.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 1.3670 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     109.3568
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     109.3568
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 51
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
+Ajout de 97 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4278)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       1.0546
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0112
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     216.9926
+Valeur de la fonction objectif :     218.0585
+
+Des contraintes ont été détectées : 9
+Nb termes dans la matrice : 540883 (taille de la matrice : 540883)
+Ajout de 18 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 4296)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       1.0546
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0256
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     216.9926
+Valeur de la fonction objectif :     218.0728
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 666119 (taille de la matrice : 666119)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8067 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  162166.2966 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       1.0546
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0256
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     216.9926
+Valeur de la fonction objectif :     218.0728
+
+ Le nombre le contraintes (4296) est different de la taille de la base : 4295
+
+---------------------
+---------------------
+Variante numéro 8068
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 159542.1425  MW
+Production démarrée                 = 159480.7635  MW
+Puissance à ajuster                 =    61.3790  MW
+Puissance disponible à la hausse (hors Pimp) = 275241.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -289539.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -61.3790 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8068 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  159542.1425 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4910.3175
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4910.3175
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 35
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
+Ajout de 54 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4026)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8068 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  159542.1425 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     207.3838
+Valeur de la fonction objectif :     207.3840
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 286543 (taille de la matrice : 286543)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8068 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  159542.1425 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     207.3838
+Valeur de la fonction objectif :     207.3840
+
+
+---------------------
+---------------------
+Variante numéro 8069
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 157564.4626  MW
+Production démarrée                 = 157566.7114  MW
+Puissance à ajuster                 =    -2.2488  MW
+Puissance disponible à la hausse (hors Pimp) = 276821.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -287959.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 2.2488 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8069 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  157564.4626 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     179.9076
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     179.9076
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 24
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 34 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2543)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8069 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  157564.4626 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     201.2654
+Valeur de la fonction objectif :     201.2655
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 191128 (taille de la matrice : 191128)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8069 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  157564.4626 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :     201.2654
+Valeur de la fonction objectif :     201.2655
+
+
+---------------------
+---------------------
+Variante numéro 8070
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 160714.7532  MW
+Production démarrée                 = 160650.8131  MW
+Puissance à ajuster                 =    63.9401  MW
+Puissance disponible à la hausse (hors Pimp) = 276251.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -288529.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -63.9401 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8070 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  160714.7532 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    5115.2086
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    5115.2086
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 17
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 27 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1700)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8070 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  160714.7532 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       4.3200
+Valeur de la fonction objectif :       4.3201
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 139238 (taille de la matrice : 139238)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8070 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  160714.7532 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       4.3200
+Valeur de la fonction objectif :       4.3201
+
+
+---------------------
+---------------------
+Variante numéro 8071
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 172025.3942  MW
+Production démarrée                 = 172062.1015  MW
+Puissance à ajuster                 =   -36.7073  MW
+Puissance disponible à la hausse (hors Pimp) = 274087.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -290693.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 35.7063 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 1.0010 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8071 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  172025.3942 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2936.5857
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2936.5857
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 25
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
+Ajout de 43 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3174)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8071 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  172025.3942 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       0.2376
+Valeur de la fonction objectif :       0.2378
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 235966 (taille de la matrice : 235966)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8071 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  172025.3942 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       0.2376
+Valeur de la fonction objectif :       0.2378
+
+
+---------------------
+---------------------
+Variante numéro 8072
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 189737.4638  MW
+Production démarrée                 = 189740.7967  MW
+Puissance à ajuster                 =    -3.3329  MW
+Puissance disponible à la hausse (hors Pimp) = 273972.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -290808.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 3.3329 MW
+Zone synchrone 1 (noeud bilan 1), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8072 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189737.4638 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     266.6290
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     266.6290
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 8
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 12 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1470)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8072 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189737.4638 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 90636 (taille de la matrice : 90636)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8072 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  189737.4638 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
+
+Incident 'QUAD_FF' : Noeuds perdus '18049'
+Incident 'QUAD_QU' : Noeuds perdus '5277 [CONSO_ALSM]'
+Incident 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Incident 'QUAD_AIR' : Noeuds perdus '10236 [CONSO_ASEY]'
+Incident 'QUAD_AIU' : Noeuds perdus '18329'
+Incident 'QUAD_ANI' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_BBT' : Noeuds perdus '8526 [CONSO_AQDQ]'
+Incident 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Incident 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Incident 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Incident 'QUAD_DIA' : Noeuds perdus '18049'
+Incident 'QUAD_DJQ' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Incident 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Incident 'QUAD_ADUH' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_ADUI' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_ADUJ' : Noeuds perdus '7626 [CONSO_AOXW]'
+Incident 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_EDW' : Noeuds perdus '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_FCK' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_FCL' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Incident 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Incident 'QUAD_FNC' : Noeuds perdus '8293' '8294'
+Incident 'QUAD_FQZ' : Noeuds perdus '18329'
+Incident 'QUAD_FWA' : Noeuds perdus '8473 [CONSO_AQBW]'
+Incident 'QUAD_GVF' : Noeuds perdus '12299 [CONSO_AUVL]'
+Incident 'QUAD_GVH' : Noeuds perdus '14059 [CONSO_AXDZ]'
+Incident 'QUAD_GVJ' : Noeuds perdus '16644' '16645'
+Incident 'QUAD_GVK' : Noeuds perdus '15604 [CONSO_AZHP]' '18366'
+Incident 'QUAD_GVL' : Noeuds perdus '12300 [CONSO_AUVM]'
+Incident 'QUAD_GVM' : Noeuds perdus '18369'
+Incident 'QUAD_GVV' : Noeuds perdus '15162 [CONSO_AYQF]'
+Incident 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_IDO' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_JSV' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_AEYV' : Noeuds perdus '10670'
+Incident 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Incident 'QUAD_OOH' : Noeuds perdus '11062 [CONSO_ATCH]'
+Incident 'QUAD_OOI' : Noeuds perdus '11063 [CONSO_ATCG]'
+Incident 'QUAD_OXH' : Noeuds perdus '11257' '11258'
+Incident 'QUAD_OXK' : Noeuds perdus '16791' '16792'
+Incident 'QUAD_OXL' : Noeuds perdus '18049'
+Incident 'QUAD_QDR' : Noeuds perdus '12426 [CONSO_AVBE, CONSO_AVBF]'
+Incident 'QUAD_QDS' : Noeuds perdus '16399 [CONSO_BAGI]'
+Incident 'QUAD_QDT' : Noeuds perdus '17788'
+Incident 'QUAD_QDU' : Noeuds perdus '15634 [CONSO_AZJH]' '18371'
+Incident 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_QNJ' : Noeuds perdus '16102 [CONSO_AZWQ]'
+Incident 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Incident 'QUAD_QRN' : Noeuds perdus '16785'
+Incident 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Incident 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Incident 'QUAD_RLI' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_SDU' : Noeuds perdus '12704 [CONSO_AVJQ]' '18170'
+Incident 'QUAD_SUB' : Noeuds perdus '12704 [CONSO_AVJQ]' '18170'
+Incident 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Incident 'QUAD_SZZ' : Noeuds perdus '13423 [CONSO_AWKA, CONSO_AWKB]'
+Incident 'QUAD_TEH' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_TGV' : Noeuds perdus '13788 [CONSO_AWVS, CONSO_AWVT]'
+Incident 'QUAD_TSB' : Noeuds perdus '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Incident 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Incident 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Incident 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Incident 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Incident 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Incident 'QUAD_TXM' : Noeuds perdus '9743 [CONSO_ARPL]' '17945'
+Incident 'QUAD_TXS' : Noeuds perdus '17741'
+Incident 'QUAD_URX' : Noeuds perdus '15604 [CONSO_AZHP]' '18366'
+Incident 'QUAD_UUY' : Noeuds perdus '18369'
+Incident 'QUAD_UWI' : Noeuds perdus '15690 [CONSO_AZMA]' '18380'
+Incident 'QUAD_VQD' : Noeuds perdus '17984'
+Incident 'QUAD_VQF' : Noeuds perdus '17068'
+Incident 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Incident 'QUAD_VQI' : Noeuds perdus '11659' '18083'
+Incident 'QUAD_VQJ' : Noeuds perdus '18369'
+Incident 'QUAD_ACVB' : Noeuds perdus '5059' '5060'
+Incident 'QUAD_ACVA' : Noeuds perdus '5059' '5060'
+Incident 'QUAD_VTW' : Noeuds perdus '7026 [CONSO_AODN]' '17730'
+Incident 'QUAD_AZU' : Noeuds perdus '5885 [CONSO_AMOD]'
+Incident 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Incident 'QUAD_ENX' : Noeuds perdus '7915 [CONSO_APHJ, CONSO_APHK]'
+Incident 'QUAD_ENY' : Noeuds perdus '7916 [CONSO_APHL, CONSO_APHM]'
+Incident 'QUAD_EOS' : Noeuds perdus '7921 [CONSO_APHS]'
+Incident 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Incident 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Incident 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Incident 'INC_CJAT' : Noeuds perdus '18329'
+Incident 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Incident 'QUAD_HDM' : Noeuds perdus '9046 [CONSO_AQUH]'
+Incident 'QUAD_HDN' : Noeuds perdus '9047 [CONSO_AQUI]'
+Incident 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Incident 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Incident 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Incident 'QUAD_VKS' : Noeuds perdus '12242' '18138'
+Incident 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Incident 'QUAD_KDD' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Incident 'QUAD_JIV' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Incident 'QUAD_JSF' : Noeuds perdus '10251 [CONSO_ASFK]' '10444 [CONSO_ASJN]' '17986'
+Parade 'QUAD_AEP_NRF' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_AGY_NRF' sur défaut 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AGY' : Noeuds perdus '5647 [CONSO_AMEN]'
+Parade 'QUAD_BEK_NRF' sur défaut 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_BEK' : Noeuds perdus '5957 [CONSO_AMRB]'
+Parade 'QUAD_CJE_NRF' sur défaut 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJE' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_CJF_NRF' sur défaut 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJF' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_CJG_NRF' sur défaut 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_CJG' : Noeuds perdus '6505' '6506 [CONSO_ANLX]'
+Parade 'QUAD_DHS_NRF' sur défaut 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DHS' : Noeuds perdus '6929 [CONSO_AOAD]'
+Parade 'QUAD_DLA_NRF' sur défaut 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DLA' : Noeuds perdus '7044 [CONSO_AOEL]'
+Parade 'QUAD_DLB_NRF' sur défaut 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_DLB' : Noeuds perdus '7045 [CONSO_AOEM]'
+Parade 'QUAD_EDV_NRF' sur défaut 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_EDV' : Noeuds perdus '7657 [CONSO_AOYY, CONSO_AOYZ]' '14148 [CONSO_AXHG, CONSO_AXHH]' '16634 [CONSO_BAPU, CONSO_BAPV]'
+Parade 'QUAD_ELK_NRF' sur défaut 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ELK' : Noeuds perdus '7786 [CONSO_APDL]'
+Parade 'QUAD_ACSY_NRF' sur défaut 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACSY' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_ACSX_NRF' sur défaut 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACSX' : Noeuds perdus '4929' '4930'
+Parade 'QUAD_GRD_NRF' sur défaut 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_GRD' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_GVM_NRF' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_GVM' : Noeuds perdus '18369'
+Parade 'QUAD_GVY_NRF' sur défaut 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_GVY' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_HNX_NRF' sur défaut 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_HNX' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_IIZ_NRF' sur défaut 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_IIZ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_IDP_NRF' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_BAY' sur défaut 'QUAD_IDP' : Noeuds perdus '9744 [CONSO_ARPM]'
+Parade 'QUAD_AEYV_NRF' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_BAY' sur défaut 'QUAD_AEYV' : Noeuds perdus '10670'
+Parade 'QUAD_JMV_NRF' sur défaut 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JMV' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_JPV_NRF' sur défaut 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JPV' : Noeuds perdus '12497 [CONSO_AVCS]'
+Parade 'QUAD_JZQ_NRF' sur défaut 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_JZQ' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_KBK_NRF' sur défaut 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_KBK' : Noeuds perdus '10715 [CONSO_ASTD, CONSO_ASTE]'
+Parade 'QUAD_KLJ_NRF' sur défaut 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_KLJ' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_QDV_NRF' sur défaut 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QDV' : Noeuds perdus '10895' '18021'
+Parade 'QUAD_QPY_NRF' sur défaut 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QPY' : Noeuds perdus '14122' '14123'
+Parade 'QUAD_QRN_NRF' sur défaut 'QUAD_QRN' : Noeuds perdus '16785'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_QRN' : Noeuds perdus '16785'
+Parade 'QUAD_ACQJ_NRF' sur défaut 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACQJ' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_ACQI_NRF' sur défaut 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_ACQI' : Noeuds perdus '4838' '4839'
+Parade 'QUAD_RSU_NRF' sur défaut 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_RSU' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_AFRZ_NRF' sur défaut 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AFRZ' : Noeuds perdus '12419' '12421' '18542'
+Parade 'QUAD_RTU_NRF' sur défaut 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_RTU' : Noeuds perdus '8782' '17878'
+Parade 'QUAD_RTV_NRF' sur défaut 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_RTV' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_SUD_NRF' sur défaut 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_FIM / QUAD_BLR / QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_SUD' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_TUM_NRF' sur défaut 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TUM' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TWU_NRF' sur défaut 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWU' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TWV_NRF' sur défaut 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWV' : Noeuds perdus '17085 [CONSO_BBES]'
+Parade 'QUAD_TWW_NRF' sur défaut 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_FIM / QUAD_BLR / QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWW' : Noeuds perdus '13182 [CONSO_AVZY]' '18207'
+Parade 'QUAD_TWX_NRF' sur défaut 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TWX' : Noeuds perdus '14315' '18278'
+Parade 'QUAD_TXS_NRF' sur défaut 'QUAD_TXS' : Noeuds perdus '17741'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_TXS' : Noeuds perdus '17741'
+Parade 'QUAD_UDJ_NRF' sur défaut 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_UDJ' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_UKU_NRF' sur défaut 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_UKU' : Noeuds perdus '10338' '17987'
+Parade 'QUAD_UUY_NRF' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_UUY' : Noeuds perdus '18369'
+Parade 'QUAD_VQF_NRF' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_BAY' sur défaut 'QUAD_VQF' : Noeuds perdus '17068'
+Parade 'QUAD_VQG_NRF' sur défaut 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQD / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' sur défaut 'QUAD_VQG' : Noeuds perdus '14885' '17922'
+Parade 'QUAD_VQH_NRF' sur défaut 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQH' : Noeuds perdus '9831 [CONSO_ARRP, CONSO_ARRQ, CONSO_ARRR]' '17951'
+Parade 'QUAD_VQJ_NRF' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Parade 'QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'

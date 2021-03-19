@@ -1,0 +1,150 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_VLA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VLB a une admittance tres grande (100000.0000000000)
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 1 (sur 1)
+Nombre de regions       = 1
+Nombre total de noeuds  = 6366
+Nombre de consommations = 6352 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 8847 (dont 0 surveillés en N et 7 surveillés sur défaut)
+Nombre de groupes       = 2558 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 14 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+ Nb total d'incidents + parades : 5
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2236 [CONSO_CHB](2)
+                                  <-> 5975 [CONSO_HUW](3)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 84238.6266  MW
+Production démarrée                 = 75964.3344  MW
+Puissance à ajuster                 =  8274.2922  MW
+Puissance disponible à la hausse (hors Pimp) = 25501477.6656  MW
+Puissance disponible à la baisse (hors Pimp) = -25653406.3344  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = -8274.2922 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   84238.6266 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+
+---------------------
+---------------------
+Variante numéro 3247
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 40411.8837  MW
+Production démarrée                 = 40411.9150  MW
+Puissance à ajuster                 =    -0.0313  MW
+Puissance disponible à la hausse (hors Pimp) = 25537030.0850  MW
+Puissance disponible à la baisse (hors Pimp) = -25617853.9150  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0313 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 3247 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   40411.8837 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Ajout de 4 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 6)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 3247 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   40411.8837 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 28 (taille de la matrice : 28)
+Ajout de 8 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 14)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 3247 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   40411.8837 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Cout valorisation ENE/END      :       7.6014
+Valeur de la fonction objectif :       7.6014
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 44 (taille de la matrice : 44)
+Pas de contraintes
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'

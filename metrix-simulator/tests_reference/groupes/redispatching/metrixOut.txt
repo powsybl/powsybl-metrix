@@ -1,0 +1,378 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_VPB_Td a une admittance tres grande (658.2020568848)
+Attention: Le quadripole QUAD_WVH_Td a une admittance tres grande (1451.3214111328)
+L'incident N-k numero 2 (QUAD_QBY) rompt la connexité, il est ignoré
+L'incident N-k numero 4 (QUAD_SNB) rompt la connexité, il est ignoré
+L'incident N-k numero 13 (QUAD_OTF) rompt la connexité, il est ignoré
+L'incident N-k numero 26 (QUAD_SIO) rompt la connexité, il est ignoré
+L'incident N-k numero 34 (QUAD_QKI) rompt la connexité, il est ignoré
+L'incident N-k numero 40 (QUAD_URE) rompt la connexité, il est ignoré
+L'incident N-k numero 46 (QUAD_WZB) rompt la connexité, il est ignoré
+L'incident N-k numero 50 (QUAD_LQX) rompt la connexité, il est ignoré
+L'incident N-k numero 63 (QUAD_LKZ) rompt la connexité, il est ignoré
+L'incident N-k numero 64 (QUAD_MVN) rompt la connexité, il est ignoré
+L'incident N-k numero 65 (QUAD_NVE) rompt la connexité, il est ignoré
+L'incident N-k numero 67 (QUAD_ODQ) rompt la connexité, il est ignoré
+L'incident N-k numero 68 (QUAD_MUR) rompt la connexité, il est ignoré
+L'incident N-k numero 74 (QUAD_QSW) rompt la connexité, il est ignoré
+L'incident N-k numero 83 (QUAD_QXY) rompt la connexité, il est ignoré
+L'incident N-k numero 85 (QUAD_SBV) rompt la connexité, il est ignoré
+L'incident N-k numero 90 (QUAD_SUT) rompt la connexité, il est ignoré
+L'incident N-k numero 101 (QUAD_QTU) rompt la connexité, il est ignoré
+L'incident N-k numero 102 (QUAD_LTQ) rompt la connexité, il est ignoré
+L'incident N-k numero 109 (QUAD_XXR) rompt la connexité, il est ignoré
+L'incident N-k numero 114 (QUAD_NGI) rompt la connexité, il est ignoré
+L'incident N-k numero 122 (QUAD_VCQ) rompt la connexité, il est ignoré
+L'incident N-k numero 123 (QUAD_NFS) rompt la connexité, il est ignoré
+L'incident N-k numero 132 (QUAD_NVG) rompt la connexité, il est ignoré
+L'incident N-k numero 135 (QUAD_LTR) rompt la connexité, il est ignoré
+L'incident N-k numero 146 (QUAD_ONM) rompt la connexité, il est ignoré
+L'incident N-k numero 154 (QUAD_UCO) rompt la connexité, il est ignoré
+L'incident N-k numero 155 (QUAD_XNB) rompt la connexité, il est ignoré
+L'incident N-k numero 164 (QUAD_ODL) rompt la connexité, il est ignoré
+L'incident N-k numero 168 (QUAD_LJT) rompt la connexité, il est ignoré
+L'incident N-k numero 171 (QUAD_TFB) rompt la connexité, il est ignoré
+L'incident N-k numero 173 (QUAD_MYY) rompt la connexité, il est ignoré
+L'incident N-k numero 179 (QUAD_PTY) rompt la connexité, il est ignoré
+L'incident N-k numero 185 (QUAD_SEB) rompt la connexité, il est ignoré
+L'incident N-k numero 194 (QUAD_ONS) rompt la connexité, il est ignoré
+L'incident N-k numero 195 (QUAD_XBB) rompt la connexité, il est ignoré
+L'incident N-k numero 196 (QUAD_NOG) rompt la connexité, il est ignoré
+L'incident N-k numero 199 (QUAD_NCO) rompt la connexité, il est ignoré
+L'incident N-k numero 203 (QUAD_SLV) rompt la connexité, il est ignoré
+L'incident N-k numero 204 (QUAD_NFR) rompt la connexité, il est ignoré
+L'incident N-k numero 211 (QUAD_PNY) rompt la connexité, il est ignoré
+L'incident N-k numero 215 (QUAD_SVS) rompt la connexité, il est ignoré
+L'incident N-k numero 217 (QUAD_TZM) rompt la connexité, il est ignoré
+L'incident N-k numero 221 (QUAD_NGH) rompt la connexité, il est ignoré
+L'incident N-k numero 225 (QUAD_OBX) rompt la connexité, il est ignoré
+L'incident N-k numero 229 (QUAD_QPV) rompt la connexité, il est ignoré
+L'incident N-k numero 235 (QUAD_NZG) rompt la connexité, il est ignoré
+L'incident N-k numero 241 (QUAD_LRD) rompt la connexité, il est ignoré
+L'incident N-k numero 247 (QUAD_QCD) rompt la connexité, il est ignoré
+L'incident N-k numero 251 (QUAD_LBK) rompt la connexité, il est ignoré
+L'incident N-k numero 254 (QUAD_SFP) rompt la connexité, il est ignoré
+L'incident N-k numero 262 (QUAD_KPK) rompt la connexité, il est ignoré
+L'incident N-k numero 268 (QUAD_TIL) rompt la connexité, il est ignoré
+L'incident N-k numero 273 (QUAD_PLV) rompt la connexité, il est ignoré
+L'incident N-k numero 274 (QUAD_NEX) rompt la connexité, il est ignoré
+L'incident N-k numero 275 (QUAD_TQB) rompt la connexité, il est ignoré
+L'incident N-k numero 277 (QUAD_ODS) rompt la connexité, il est ignoré
+L'incident N-k numero 278 (QUAD_SMQ) rompt la connexité, il est ignoré
+L'incident N-k numero 281 (QUAD_SDM) rompt la connexité, il est ignoré
+L'incident N-k numero 286 (QUAD_PTZ) rompt la connexité, il est ignoré
+L'incident N-k numero 293 (QUAD_WRJ) rompt la connexité, il est ignoré
+L'incident N-k numero 321 (QUAD_LLT) rompt la connexité, il est ignoré
+L'incident N-k numero 322 (QUAD_LFS) rompt la connexité, il est ignoré
+L'incident N-k numero 325 (QUAD_TZP) rompt la connexité, il est ignoré
+L'incident N-k numero 327 (QUAD_KRN) rompt la connexité, il est ignoré
+L'incident N-k numero 331 (QUAD_XWZ) rompt la connexité, il est ignoré
+L'incident N-k numero 336 (QUAD_RLR) rompt la connexité, il est ignoré
+L'incident N-k numero 337 (QUAD_PCN) rompt la connexité, il est ignoré
+L'incident N-k numero 345 (QUAD_LJV) rompt la connexité, il est ignoré
+L'incident N-k numero 346 (QUAD_NGT) rompt la connexité, il est ignoré
+L'incident N-k numero 351 (QUAD_LRE) rompt la connexité, il est ignoré
+L'incident N-k numero 353 (QUAD_NOH) rompt la connexité, il est ignoré
+L'incident N-k numero 354 (QUAD_ODM) rompt la connexité, il est ignoré
+L'incident N-k numero 372 (QUAD_LTS) rompt la connexité, il est ignoré
+L'incident N-k numero 373 (QUAD_ONL) rompt la connexité, il est ignoré
+L'incident N-k numero 385 (QUAD_ULJ) rompt la connexité, il est ignoré
+L'incident N-k numero 387 (QUAD_TYR) rompt la connexité, il est ignoré
+L'incident N-k numero 391 (QUAD_MYB) rompt la connexité, il est ignoré
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 16696.159795
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 322 (sur 400)
+Nombre de regions       = 9
+Nombre total de noeuds  = 7130
+Nombre de consommations = 7087 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 10033 (dont 381 surveillés en N et 381 surveillés sur défaut)
+Nombre de groupes       = 9510 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 43 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 10 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG1' de la loi -1 est introuvable
+Le groupe 'DIRIN6TAG2' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG1' de la loi -1 est introuvable
+Le groupe 'BRENC6TAG2' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 2' de la loi -1 est introuvable
+Le groupe 'MQIS -P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'CORD5-P7 TAC 1' de la loi -1 est introuvable
+Le groupe 'BRENN-P6 TAC 5' de la loi -1 est introuvable
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0 [CONSO_J]
+0 [CONSO_J](2) <-> 300 [CONSO_KX](4) <-> 83 [CONSO_CO](2)
+                                     <-> 146 [CONSO_EZ](2)
+                                     <-> 151 [CONSO_FE](2)
+               <-> 326 [CONSO_LX](5) <-> 83 [CONSO_CO](2)
+                                     <-> 474 [CONSO_RP](3)
+                                     <-> 327 [CONSO_LY](4)
+
+Noeud bilan : 58 [CONSO_BP]
+58 [CONSO_BP](1) <-> 446 [CONSO_QN](6) <-> 66 [CONSO_BX](1)
+                                       <-> 88 [CONSO_CT](1)
+                                       <-> 157 [CONSO_FK](1)
+                                       <-> 211 [CONSO_HM](1)
+                                       <-> 306 [CONSO_LD](1)
+                 |=| 3854 [CONSO_ERP](6) <-> 515 [CONSO_TE](13)
+                                         <-> 1120 [CONSO_AQL](4)
+                                         <-> 2898 [CONSO_DGV](3)
+                                         <-> 6263 [CONSO_IGG](8)
+                                         <-> 3852 [CONSO_ERN](2)
+                                         <-> 3853 [CONSO_ERO](5)
+
+
+********************************************
+Traitement d'un paquet de 4 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4163.2500
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4163.2500
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   99018.0013
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   99018.0013
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 2
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247027.1731 MW
+Volume de délestage  =      22.8109 MW
+Résultats sur les couts
+Cout associé aux groupes       :    -114.0547
+Cout associé au délestage      :  250920.3421
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  250806.2874
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 3
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 247049.9840  MW
+Production démarrée                 = 247048.8589  MW
+Puissance à ajuster                 =     1.1251  MW
+Puissance disponible à la hausse (hors Pimp) = 95002.9336  MW
+Puissance disponible à la baisse (hors Pimp) = -44111.7309  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -0.1251 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 15416 (taille de la matrice : 15416)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  247049.9840 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4161.1482
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4161.1482
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24564 (taille de la matrice : 24564)
+Pas de contraintes

@@ -1,0 +1,120 @@
+' Copyright (c) 2021, RTE (http://www.rte-france.com)
+' See AUTHORS.txt
+' All rights reserved.
+' This Source Code Form is subject to the terms of the Mozilla Public
+' License, v. 2.0. If a copy of the MPL was not distributed with this
+' file, you can obtain one at http://mozilla.org/MPL/2.0/.
+' SPDX-License-Identifier: MPL-2.0
+
+@startuml log static diagram
+
+package "metrix::log" as metrix_log {
+    class "Logger" as logger << Singleton >> {
+        + instance()
+        + config: log level, filenames, verbose options...
+        - current_log_info: information about the current log performed
+        - thread: thread runnning the io context
+        - file: result file to write
+        - logImpl(): finish the log
+    }
+}
+
+package boost{
+    package log {
+        class severity_logger
+    }
+
+    package asio{
+        class steady_timer
+        class io_context
+    }
+}
+
+logger *-- "1" severity_logger
+logger *-- "1" steady_timer
+logger *-- "1" io_context
+
+@enduml
+
+@startuml log sequence
+
+participant caller
+participant "Logger" as logger
+box boost #F0F0F0
+    participant timer
+    participant "logger" as boost_logger
+end box
+participant "File" as file
+
+activate caller
+note over caller
+This corresponds to the call of a macro like:
+LOG(lvl) << info1 << info2 << ...;
+end note
+caller -> logger: init log
+note right
+Calls to macro LOG
+end note
+alt If pending log is present
+    logger -> boost_logger: performs log
+    note right
+    If dev file is requested
+    end note
+    boost_logger --> logger
+    logger -> file: write file
+    note right
+    If result file is requested
+    end note
+    file --> logger
+    logger -> logger: clear current log info
+end
+logger -> logger: check level
+alt level accepted
+    logger -> logger: init info
+    note right
+    Store all information necessary to log, 
+    such as source file, line number, etc...
+    end note
+end
+logger --> caller: return itself to continue logging
+loop for all info streamed into current log line
+    caller -> logger: calls
+    alt sync streamed
+        logger -> boost_logger: performs log
+        note right
+        If dev file is requested
+        end note
+        boost_logger --> logger
+        logger -> file: write file
+        note right
+        If result file is requested
+        end note
+        file --> logger
+        logger -> logger: clear current log info
+    end
+    alt log initialized
+        logger -> logger: update stream info
+    end
+    logger --> caller: return itself to continue logging
+end loop
+deactivate caller
+...
+caller -[#hidden]-> caller
+
+activate timer
+note over timer
+periodic timer 100ms
+end note
+[-> timer: awakes
+alt If pending log is present
+    timer -> logger: perform pending log
+    note left
+    Perform same operation 
+    as when sync is received
+    end note
+    logger --> timer
+    timer -> timer: sleeps
+end
+deactivate timer
+
+@enduml
