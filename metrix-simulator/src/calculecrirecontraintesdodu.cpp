@@ -281,8 +281,13 @@ void Calculer::ajoutRedispatchCostOffsetConsos()
     for (auto cIt = res_.consos_.cbegin(); cIt != res_.consos_.end(); ++cIt) {
         const auto& conso = cIt->second;
         if (conso->numVarConso_ >= 0) {
-            pbCoutLineaire_[conso->numVarConso_] = conso->cout_ + config::configuration().redispatchCostOffset();
-            pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
+            if (conso->valeur_ >= 0) {
+                pbCoutLineaire_[conso->numVarConso_] = conso->cout_ + config::configuration().redispatchCostOffset();
+                pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
+            } else {
+                pbCoutLineaire_[conso->numVarConso_] = -(conso->cout_ + config::configuration().redispatchCostOffset());
+                pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
+            }
         }
     }
 }
@@ -572,12 +577,14 @@ int Calculer::ecrireContrainteBilanEnergetique(bool parZonesSynchr)
 
 double valeurVariableReference(GroupesCouples::VariableReference varRef, const std::shared_ptr<Groupe>& grp)
 {
+    std::stringstream ss("Type de variable de reference inconnu : ");
+    ss << varRef;
     switch (varRef) {
         case GroupesCouples::VariableReference::PMAX: return grp->puisMax_;
         case GroupesCouples::VariableReference::PMIN: return grp->puisMin_;
         case GroupesCouples::VariableReference::POBJ: return grp->prod_;
         case GroupesCouples::VariableReference::PMAX_POBJ: return grp->puisMax_ - grp->prod_;
-        default: throw ErrorI("Type de variable de reference inconnu : ");
+        default: throw ErrorI(ss.str());
     }
 }
 

@@ -28,6 +28,7 @@ metrix_test("resultats_equilibrage_et_variations_marginales" 4)
 metrix_test("variations_marginales" 3)
 metrix_test("variations_marginales_with_offset" 3)
 metrix_test("variations_marginales_sur_parades" 3)
+metrix_test("variations_marginales_several_bconstraints" 2)
 metrix_test_check_only_results("temps_calcul_pne" 1) # no check metrix out because CI has an equivalent result during optimization
 if(METRIX_RUN_ALL_TESTS)
 metrix_test("bug_pne" 2)
@@ -37,3 +38,4 @@ if(METRIX_RUN_ALL_TESTS)
 metrix_test("resultats_surcharges_uniquement" 10)
 endif()
 metrix_test_no_check("transits_sur_incidents" 1) # no output check because of random display order
+metrix_test("redispatching_offset" 3)

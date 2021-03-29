@@ -24,6 +24,7 @@ message("Source directory : ${CMAKE_SOURCE_DIR}")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
 
 if(MSVC)
@@ -43,8 +44,24 @@ else()
   set(CMAKE_C_FLAGS_RELEASE "-O3")
 endif(MSVC)
 
-add_subdirectory(LU)
-add_subdirectory(PNE)
+set(Boost_USE_STATIC_LIBS   ON)
+set(Boost_USE_MULTITHREADED ON)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
+
+option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
+if (USE_SIRIUS_SHARED)
+    set(SIRIUS_NAME sirius_solver)
+else()
+    set(SIRIUS_NAME sirius_solver_static)
+endif()
+
+set(${SIRIUS_NAME}_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/sirius_solver CACHE PATH "Path where a Sirius installation already exists")
+find_package(${SIRIUS_NAME} REQUIRED)
+
+# SUITESPARSE
+set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/suitesparse CACHE PATH "Path where an SuiteSparse installation already exists")
+find_package(SuiteSparse REQUIRED)
+
 add_subdirectory(log)
 
 message(STATUS "METRIX")
@@ -95,10 +112,6 @@ set(METRIX_SOURCES
         src/margin_variations_compute.cpp
     )
 
-set(Boost_USE_STATIC_LIBS   ON)
-set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
-
 set(target "metrix-simulator")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config/version.h)
@@ -108,20 +121,42 @@ ${METRIX_HEADERS} ${METRIX_SOURCES})
 
 target_include_directories(${target}
     PRIVATE
-    metrix::lu
-    metrix::pne
     metrix::log
     src
+    ${SIRIUS_NAME}
+    SuiteSparse::SuiteSparse_KLU
+    SuiteSparse::SuiteSparse_AMD
+    SuiteSparse::SuiteSparse_COLAMD
+    SuiteSparse::SuiteSparse_BTF
+    SuiteSparse::SuiteSparse_Config
     ${Boost_INCLUDE_DIRS}
 )
 target_link_libraries(${target}
     PRIVATE
-    metrix::lu
-    metrix::pne
     metrix::log
-    
+    ${SIRIUS_NAME}
+    SuiteSparse::SuiteSparse_KLU
+    SuiteSparse::SuiteSparse_AMD
+    SuiteSparse::SuiteSparse_COLAMD
+    SuiteSparse::SuiteSparse_BTF
+    SuiteSparse::SuiteSparse_Config
     ${Boost_LIBRARIES}
 )
+
+if (USE_SIRIUS_SHARED)
+    # Export sirius library if using shared
+    get_target_property(sirius_PATH_LIB_RELEASE sirius_solver IMPORTED_LOCATION_RELEASE)
+    get_target_property(sirius_PATH_LIB_DEBUG sirius_solver IMPORTED_LOCATION_DEBUG)
+    if (EXISTS ${sirius_PATH_LIB_RELEASE})
+        set(sirius_PATH_LIB ${sirius_PATH_LIB_RELEASE})
+    elseif(EXISTS ${sirius_PATH_LIB_DEBUG})
+        set(sirius_PATH_LIB ${sirius_PATH_LIB_DEBUG})
+    else()
+        # shouldn't happen if find_package worked
+        message(FATAL_ERROR "sirius_solver imported location for debug or release was not found: check external installation")
+    endif()
+    install(FILES ${sirius_PATH_LIB} DESTINATION lib)
+endif()
 
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
@@ -130,7 +165,7 @@ if (CODE_COVERAGE)
     include(cmake/CodeCoverage)
     code_coverage(NAME code-coverage
         OUTPUT_DIR coverage
-        EXCLUDE_DIRS LU PNE tests
+        EXCLUDE_DIRS tests
         DEPENDENCIES metrix-simulator
     )
 endif()

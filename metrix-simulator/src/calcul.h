@@ -426,7 +426,7 @@ private:
                          int indexConstraint,
                          int& numIncident) const;
     bool computeCosts(const std::vector<int>& constraintsToDelail,
-                      const std::shared_ptr<MarginVariationMatrix>& pmatrix,
+                      const std::shared_ptr<MarginVariationMatrix>& marginVariationMatrix,
                       const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants,
                       const std::vector<int>& numVa,
                       const std::vector<int>& typeOu,

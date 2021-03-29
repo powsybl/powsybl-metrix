@@ -705,7 +705,7 @@ void Reseau::lireDonnees()
 
     // Traitement des incidents
     //------------------------
-    // les icidents sont classés dans l'ordre suivant
+    // les incidents sont classés dans l'ordre suivant
     // N-1 groupes systematique
     // N-1 lignes  systematique
     // N-k (groupes et ligne)
