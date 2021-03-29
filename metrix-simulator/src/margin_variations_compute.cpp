@@ -25,7 +25,6 @@ MarginVariationMatrix::MarginVariationMatrix(int nbConstraints,
                                              const std::vector<double>& constraintsMatrixCoeffs,
                                              const std::vector<int>& baseComplement,
                                              const std::vector<char>& sens) :
-    numericMatrix_(nullptr),
     BMatrixTerms_(nbConstraints * nbConstraints, 0.)
 {
     BStartingIndexColumns_.reserve(nbConstraints);
@@ -131,8 +130,8 @@ void MarginVariationMatrix::init(int nbConstraints,
         cpmBase++;
         int ideb = BStartingIndexColumns_[i];
         for (int j = 0; j < baseSize; ++j) {
-            BMatrixTerms_[ideb + j] = convertConstraintIndex(baseComplement[cpmBase]) == j ? (sens[j] == '>' ? -1 : 1)
-                                                                                           : 0;
+            double value = (sens[j] == '>') ? -1 : 1;
+            BMatrixTerms_[ideb + j] = (convertConstraintIndex(baseComplement[cpmBase]) == j) ? value : 0;
         }
     }
 
@@ -159,7 +158,7 @@ void MarginVariationMatrix::init(int nbConstraints,
         BNonZeroStartingIndexColumns.push_back(count);
     }
 
-    nz_ = BNonZeroStartingIndexColumns.size() - 1;
+    nz_ = static_cast<int>(BNonZeroStartingIndexColumns.size()) - 1;
     // Callling klu methods:
     klu_defaults(&commonParameters_);
     // call to klu_analyze: klu_analyze(n, Ap, Ai,common);

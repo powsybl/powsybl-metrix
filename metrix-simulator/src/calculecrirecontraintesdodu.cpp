@@ -58,11 +58,11 @@ double Calculer::round(double x, double prec)
 std::ostream& operator<<(std::ostream& str, const ElementCuratif::TypeElement a)
 {
     switch (a) {
-        case (ElementCuratif::TD): return str << "TD";
-        case (ElementCuratif::TD_FICTIF): return str << "TD_FICTIF";
-        case (ElementCuratif::HVDC): return str << "HVDC";
-        case (ElementCuratif::GROUPE): return str << "GROUPE";
-        case (ElementCuratif::CONSO): return str << "CONSO";
+        case ElementCuratif::TD: return str << "TD";
+        case ElementCuratif::TD_FICTIF: return str << "TD_FICTIF";
+        case ElementCuratif::HVDC: return str << "HVDC";
+        case ElementCuratif::GROUPE: return str << "GROUPE";
+        case ElementCuratif::CONSO: return str << "CONSO";
         default: return str << "Unknown";
     }
 }
@@ -2732,19 +2732,19 @@ int Calculer::ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& e
     pbX_.push_back(0.);
 
     switch (elem->typeElem_) {
-        case (ElementCuratif::TD):
+        case ElementCuratif::TD:
             addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_, proba, numVarCur);
             break;
-        case (ElementCuratif::TD_FICTIF):
+        case ElementCuratif::TD_FICTIF:
             addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_);
             break;
-        case (ElementCuratif::HVDC):
+        case ElementCuratif::HVDC:
             addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifHVDC>(elem)->lcc_, proba, numVarCur);
             break;
-        case (ElementCuratif::GROUPE):
+        case ElementCuratif::GROUPE:
             addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifGroupe>(elem)->groupe_, proba, numVarCur);
             break;
-        case (ElementCuratif::CONSO):
+        case ElementCuratif::CONSO:
             addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifConso>(elem)->conso_, proba, numVarCur);
             break;
         default:

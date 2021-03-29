@@ -36,6 +36,10 @@ public:
                           const std::vector<int>& baseComplement,
                           const std::vector<char>& sens);
     ~MarginVariationMatrix();
+    MarginVariationMatrix(const MarginVariationMatrix&) = delete;
+    MarginVariationMatrix& operator=(MarginVariationMatrix&) = delete;
+    MarginVariationMatrix(MarginVariationMatrix&&) = default;
+    MarginVariationMatrix& operator=(MarginVariationMatrix&&) = default;
 
     klu_numeric* nMatrix() const { return numericMatrix_; }
     klu_symbolic* sMatrix() const { return symbolicMatrix_; }
@@ -75,8 +79,8 @@ private:
               const std::vector<char>& sens);
 
 private:
-    klu_numeric* numericMatrix_;
-    klu_symbolic* symbolicMatrix_;
+    klu_numeric* numericMatrix_ = nullptr;
+    klu_symbolic* symbolicMatrix_ = nullptr;
     klu_common commonParameters_;
     int nz_;
     std::vector<int> BStartingIndexColumns_;

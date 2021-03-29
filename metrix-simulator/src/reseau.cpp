@@ -1019,23 +1019,23 @@ void Reseau::lireDonnees()
                 string typeCur;
                 string nomElem;
                 switch (elemCur->typeElem_) {
-                    case (ElementCuratif::TD):
+                    case ElementCuratif::TD:
                         typeCur = "TD";
                         nomElem = std::dynamic_pointer_cast<ElementCuratifTD>(elemCur)->td_->quad_->nom_;
                         break;
-                    case (ElementCuratif::TD_FICTIF):
+                    case ElementCuratif::TD_FICTIF:
                         typeCur = "TD_FICTIF";
                         nomElem = std::dynamic_pointer_cast<ElementCuratifTD>(elemCur)->td_->quad_->nom_;
                         break;
-                    case (ElementCuratif::HVDC):
+                    case ElementCuratif::HVDC:
                         typeCur = "HVDC";
                         nomElem = std::dynamic_pointer_cast<ElementCuratifHVDC>(elemCur)->lcc_->nom_;
                         break;
-                    case (ElementCuratif::GROUPE):
+                    case ElementCuratif::GROUPE:
                         typeCur = "GROUPE";
                         nomElem = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemCur)->groupe_->nom_;
                         break;
-                    case (ElementCuratif::CONSO):
+                    case ElementCuratif::CONSO:
                         typeCur = "CONSO";
                         nomElem = std::dynamic_pointer_cast<ElementCuratifConso>(elemCur)->conso_->nom_;
                         break;
