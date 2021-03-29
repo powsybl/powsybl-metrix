@@ -165,7 +165,7 @@ if (CODE_COVERAGE)
     include(cmake/CodeCoverage)
     code_coverage(NAME code-coverage
         OUTPUT_DIR coverage
-        EXCLUDE_DIRS tests
+        EXCLUDE_DIRS tests external
         DEPENDENCIES metrix-simulator
     )
 endif()
