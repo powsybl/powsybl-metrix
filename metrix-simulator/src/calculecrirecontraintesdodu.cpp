@@ -198,7 +198,7 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
     for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
         grp_melanges.push_back(grpIt->second);
     }
-    std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
+    std::random_shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::myRandom);
 
     for (int i = 0; i < res_.nbGroupes_; ++i) {
         const auto& grp = grp_melanges[i];

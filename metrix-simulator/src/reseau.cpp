@@ -51,6 +51,8 @@ using std::vector;
 
 std::mt19937 Reseau::random;
 
+int Reseau::myRandom(int i) { return random() % i; }
+
 bool compareGroupeHausse(const std::shared_ptr<Groupe>& grp1, const std::shared_ptr<Groupe>& grp2)
 {
     return (grp1->coutHausseHR_ < grp2->coutHausseHR_);
@@ -1657,6 +1659,8 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 
 int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 {
+    srand(var->num_ + 2); // base case was initialized to 1
+
     // I-Indispo groupes
     //------------------
     // II-1 modification de l'etat et la production objectif
@@ -2004,7 +2008,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
             }
 
             // Bruitage des groupes
-            std::shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), random);
+            std::random_shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), myRandom);
             varGroupesZones_[numRegion] = groupesDeLaZone;
         }
 

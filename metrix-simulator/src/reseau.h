@@ -705,8 +705,7 @@ public:
     void afficheSousReseau(unsigned int numNoeud, unsigned int prof); /* Pour debug */
     void afficheSousReseau(int numNoeud, int numPere, unsigned int prof, int nbIndent, std::stringstream& ss);
 
-    // Pour de l'aleatoire reproductible entre platformes
-    static std::mt19937 random;
+    static int myRandom(int i);
 
 private:
     std::shared_ptr<TransformateurDephaseur> creerTD(const std::shared_ptr<Quadripole>& quadVrai,
@@ -730,6 +729,9 @@ private:
                           const std::shared_ptr<Incident>& icdt,
                           const std::vector<int>& numZones,
                           bool detailsNonConnexite);
+
+    // Pour de l'aleatoire reproductible entre platformes
+    static std::mt19937 random;
 };
 
 
