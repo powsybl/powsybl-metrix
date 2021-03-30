@@ -18,6 +18,17 @@ if [ -z "$INSTALL_DIR" ] ; then
 fi
 echo $INSTALL_DIR
 
+echo "Choose install type (full / metrix) :"
+read INSTALL_TYPE
+if [ -z "$INSTALL_TYPE" ] ; then
+  INSTALL_TYPE="full"
+fi
+if [ $INSTALL_TYPE != "full" -a $INSTALL_TYPE != "metrix" ] ; then
+  echo "Allowed value for install type is metrix or full"
+  exit 1
+fi
+echo $INSTALL_TYPE
+
 echo "Preparing install directory"
 mkdir -p $INSTALL_DIR
 
@@ -32,6 +43,13 @@ cd ..
 cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ..
 cmake --build . --target install
 popd
+
+if [ "$INSTALL_TYPE" == "full" ] ; then
+  echo "Installing powsybl-metrix"
+  pushd $CURDIR
+  mvn clean package
+  popd
+fi
 
 echo "Add to PATH ? (y/n)"
 read ADD_TO_PATH
