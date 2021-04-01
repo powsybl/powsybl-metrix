@@ -296,14 +296,14 @@ Micro itération 2 (nombre de contraintes 5)
 Appel du simplexe
 Solution optimale trouvée pour la variante 7 (code retour = 1)
 Résultats en volume (MW)
-Volume de production =    1294.9976 MW
-Volume de délestage  =      85.0024 MW
+Volume de production =    1294.9796 MW
+Volume de délestage  =      85.0204 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
-Cout associé au délestage      : 1105031.7240
+Cout associé au délestage      : 1105265.7239
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif : 1105031.7240
+Valeur de la fonction objectif : 1105265.7239
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 31 (taille de la matrice : 31)

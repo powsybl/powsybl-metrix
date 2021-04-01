@@ -381,52 +381,52 @@ Micro itération 2 (nombre de contraintes 7)
 Appel du simplexe
 Solution optimale trouvée pour la variante 0 (code retour = 1)
 Résultats en volume (MW)
-Volume de production =  247042.4027 MW
-Volume de délestage  =       7.5713 MW
+Volume de production =  247042.3937 MW
+Volume de délestage  =       7.5803 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :   83284.5310
+Cout associé au délestage      :   83383.5310
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :   83284.5310
+Valeur de la fonction objectif :   83383.5310
 
-Des contraintes ont été détectées : 138
+Des contraintes ont été détectées : 119
 Nb termes dans la matrice : 80881 (taille de la matrice : 80881)
-Ajout de 153 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 172)
+Ajout de 134 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 153)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
 Solution optimale trouvée pour la variante 0 (code retour = 1)
 Résultats en volume (MW)
-Volume de production =  247042.4027 MW
-Volume de délestage  =       7.5713 MW
+Volume de production =  247042.3937 MW
+Volume de délestage  =       7.5803 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :   83284.5310
+Cout associé au délestage      :   83383.5310
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :   83284.5310
+Valeur de la fonction objectif :   83383.5310
 
-Des contraintes ont été détectées : 8909
-Nb termes dans la matrice : 2873032 (taille de la matrice : 2873032)
+Des contraintes ont été détectées : 8908
+Nb termes dans la matrice : 2526301 (taille de la matrice : 2526301)
 Ajout de 285 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 467)
+Micro itération 4 (nombre de contraintes 448)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
 Solution optimale trouvée pour la variante 0 (code retour = 5)
 Résultats en volume (MW)
-Volume de production =  247042.4027 MW
-Volume de délestage  =       7.5713 MW
+Volume de production =  247042.3937 MW
+Volume de délestage  =       7.5803 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :   83284.5310
+Cout associé au délestage      :   83383.5310
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :   83284.5310
+Valeur de la fonction objectif :   83383.5310
 
-Des contraintes ont été détectées : 2603
-Nb termes dans la matrice : 8001206 (taille de la matrice : 8001206)
+Des contraintes ont été détectées : 2581
+Nb termes dans la matrice : 7654475 (taille de la matrice : 7654475)
 Ajout de 68 contraintes dans le probleme
 nombre max d iterations est atteint : 5

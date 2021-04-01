@@ -45,7 +45,7 @@ constexpr unsigned int factor_max_size_dodu = 3;     // ce coeff *nbQuadripole =
 constexpr unsigned int nb_ouvrages_by_incident = 10; // nombre max d ouvrage par incident
 
 constexpr float max_diff = 10000;
-constexpr double acceptable_diff = 1.e-3; // seuil de detection d'une contrainte transit (optimiste)
+constexpr double acceptable_diff = 1.e-2; // seuil de detection d'une contrainte transit (optimiste)
 
 constexpr double zero_power = 0.001;    // seuil a partir duquel la puissance perdue est considere nulle
 constexpr double epsilon_coupe = 1.e-8; // seuil a partir duquel les coeff d'une coupe sont nuls (historiquement 1e-20)

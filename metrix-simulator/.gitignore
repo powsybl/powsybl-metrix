@@ -22,12 +22,13 @@ docs/doc/**
 
 *.orig
 
+external/*/*.tar.gz
+
 # generated version file
 src/config/version.h
 
 # cmake build directory
 build/*
-cmake-build-*/
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode

@@ -741,10 +741,10 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :      45.0388
+Cout de pénalisation TD & HVDC :      45.0673
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     448.7635
-Valeur de la fonction objectif :     493.8024
+Valeur de la fonction objectif :     493.8309
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 8675 (taille de la matrice : 8675)

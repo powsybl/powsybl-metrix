@@ -28,7 +28,6 @@ if [ $INSTALL_TYPE != "full" -a $INSTALL_TYPE != "metrix" ] ; then
   exit 1
 fi
 echo $INSTALL_TYPE
-exit 0
 
 echo "Preparing install directory"
 mkdir -p $INSTALL_DIR
@@ -36,8 +35,12 @@ mkdir -p $INSTALL_DIR
 echo "Installing metrix"
 pushd $CURDIR/metrix-simulator
 mkdir -p build
-cd build
-cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR .
+mkdir -p build/external
+cd build/external
+cmake ../../external
+cmake --build .
+cd ..
+cmake -Wno-dev -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR ..
 cmake --build . --target install
 popd
 
@@ -45,10 +48,6 @@ if [ "$INSTALL_TYPE" == "full" ] ; then
   echo "Installing powsybl-metrix"
   pushd $CURDIR
   mvn clean package
-  cp -r distribution/target/metrix/bin/* $INSTALL_DIR/bin
-  cp -r distribution/target/metrix/etc/* $INSTALL_DIR/etc
-  cp -r distribution/target/metrix/lib $INSTALL_DIR/lib
-  cp -r distribution/target/metrix/share $INSTALL_DIR/share
   popd
 fi
 

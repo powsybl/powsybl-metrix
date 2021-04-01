@@ -19,6 +19,16 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@v1
 
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
+          -DCMAKE_CXX_COMPILER=g++-8
+          -DCMAKE_C_COMPILER=gcc-8
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
+
       - name: Configure CMake
         run: >
           cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
@@ -68,6 +78,16 @@ jobs:
 
       - name: Checkout sources
         uses: actions/checkout@v1
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+          -DCMAKE_CXX_COMPILER=g++-8
+          -DCMAKE_C_COMPILER=gcc-8
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
 
       - name: Configure CMake
         run: >

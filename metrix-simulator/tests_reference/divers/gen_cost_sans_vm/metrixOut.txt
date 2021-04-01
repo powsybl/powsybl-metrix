@@ -555,11 +555,11 @@ Résultats en volume (MW)
 Volume de production =  117524.0077 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :  250993.5892
+Cout associé aux groupes       :  251007.4277
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :  250993.5894
+Valeur de la fonction objectif :  251007.4279
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 58552 (taille de la matrice : 58552)
@@ -571,9 +571,9 @@ Résultats en volume (MW)
 Volume de production =  117524.0077 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :  250993.5892
+Cout associé aux groupes       :  251007.4277
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :  250993.5894
+Valeur de la fonction objectif :  251007.4279
 

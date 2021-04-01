@@ -1449,33 +1449,24 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
 
         // Construction de la matrice B : base du probleme  resolu
         //-------------------------------------------------------
-        std::shared_ptr<MarginVariationMatrix> pmatrix;
+        std::shared_ptr<MarginVariationMatrix> marginVariationMatrix;
         try {
-            pmatrix = std::make_shared<MarginVariationMatrix>(pbNombreDeContraintes_,
-                                                              pbNbVarDeBaseComplementaires_,
-                                                              pbNombreDeVariables_,
-                                                              pbIndicesDebutDeLigne_,
-                                                              pbIndicesColonnes_,
-                                                              pbPositionDeLaVariable_,
-                                                              pbNombreDeTermesDesLignes_,
-                                                              numVarEnBaseDansB,
-                                                              pbCoefficientsDeLaMatriceDesContraintes_,
-                                                              pbComplementDeLaBase_,
-                                                              pbSens_);
+            marginVariationMatrix = std::make_shared<MarginVariationMatrix>(pbNombreDeContraintes_,
+                                                                            pbNbVarDeBaseComplementaires_,
+                                                                            pbNombreDeVariables_,
+                                                                            pbIndicesDebutDeLigne_,
+                                                                            pbIndicesColonnes_,
+                                                                            pbPositionDeLaVariable_,
+                                                                            pbNombreDeTermesDesLignes_,
+                                                                            numVarEnBaseDansB,
+                                                                            pbCoefficientsDeLaMatriceDesContraintes_,
+                                                                            pbComplementDeLaBase_,
+                                                                            pbSens_);
         } catch (MarginVariationMatrix::Exception& e) {
             LOG(error) << e.what();
-            switch (e.location) {
-                case MarginVariationMatrix::Exception::Location::BASE_SIZE:
-                    LOG_ALL(warning) << " Le nombre le contraintes (" << pbNombreDeContraintes_
-                                     << ") est different de la taille de la base : " << e.info;
-                    break;
-                case MarginVariationMatrix::Exception::Location::FACTORIZATION:
-                    LOG_ALL(warning) << "probleme lors de la factorisation de la base : " << e.info;
-                    break;
-                default:
-                    // do nothing (impossible)
-                    break;
-            }
+            LOG_ALL(warning) << " Le nombre le contraintes (" << pbNombreDeContraintes_
+                             << ") est different de la taille de la base : " << e.info;
+
             fprintf(fr, "C1 ;COMPTE RENDU;CODE;\n");
             fprintf(fr, "C1 ;;%d;\n", METRIX_PROBLEME);
             return false;
@@ -1483,7 +1474,8 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
 
         // ecriture : R4 (variations marginale)
         //-------------------------------------
-        if (!computeCosts(constraintsToDelail, pmatrix, incidentsContraignants, numVa, typeOu, ctrOuvr, cost)) {
+        if (!computeCosts(
+                constraintsToDelail, marginVariationMatrix, incidentsContraignants, numVa, typeOu, ctrOuvr, cost)) {
             LOG_ALL(error) << "probleme lors du calcul des variables marginales detaillees : Base * x = b";
             fprintf(fr, "C1 ;COMPTE RENDU;CODE;\n");
             fprintf(fr, "C1 ;;%d;\n", METRIX_PROBLEME);
@@ -1534,7 +1526,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
 }
 
 bool Calculer::computeCosts(const std::vector<int>& constraintsToDelail,
-                            const std::shared_ptr<MarginVariationMatrix>& pmatrix,
+                            const std::shared_ptr<MarginVariationMatrix>& marginVariationMatrix,
                             const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants,
                             const std::vector<int>& numVa,
                             const std::vector<int>& typeOu,
@@ -1542,7 +1534,6 @@ bool Calculer::computeCosts(const std::vector<int>& constraintsToDelail,
                             std::map<int, std::vector<CostDef>>& cost) const
 {
     vector<double> b(pbNombreDeContraintes_, 0.0);
-    int codeRet = 1;
     int numIncident;
     for (int i : constraintsToDelail) {
         cost[i] = std::vector<CostDef>(ctrOuvr);
@@ -1550,13 +1541,16 @@ bool Calculer::computeCosts(const std::vector<int>& constraintsToDelail,
         if (!findNumIncident(incidentsContraignants, i, numIncident)) {
             continue;
         }
-
-        b[i] = 1;
-        LU_LuSolv(pmatrix->matrix(), &b[0], &codeRet, pmatrix->matrixToFactor(), 5, 1.e-8);
-
-        if (codeRet != 0) {
-            return false;
-        }
+        int new_i = marginVariationMatrix->convertConstraintIndex(i);
+        b[new_i] = 1;
+        // Call to klu solve: klu_solve(symbolic, numeric, n, 1, b, commonParam)
+        klu_common common = marginVariationMatrix->cParameters();
+        klu_solve(marginVariationMatrix->sMatrix(),
+                  marginVariationMatrix->nMatrix(),
+                  marginVariationMatrix->nzz(),
+                  1,
+                  b.data(),
+                  &common);
 
         for (int j = 0; j < ctrOuvr; ++j) {
             double varMW = 0.;

@@ -10,6 +10,10 @@
 
 #include "margin_variations_compute.h"
 
+#include <metrix/log.h>
+
+#include <algorithm>
+
 MarginVariationMatrix::MarginVariationMatrix(int nbConstraints,
                                              int nbComplementaryVar,
                                              int nbVars,
@@ -21,11 +25,10 @@ MarginVariationMatrix::MarginVariationMatrix(int nbConstraints,
                                              const std::vector<double>& constraintsMatrixCoeffs,
                                              const std::vector<int>& baseComplement,
                                              const std::vector<char>& sens) :
-    BValeurDesTermesDeLaMatrice_(nbConstraints * nbConstraints, 0.)
+    BMatrixTerms_(nbConstraints * nbConstraints, 0.)
 {
-    BIndexDebutDesColonnes_.reserve(nbConstraints);
-    BNbTermesDesColonnes_.reserve(nbConstraints);
-    BIndicesDeLigne_.reserve(nbConstraints * nbConstraints);
+    BStartingIndexColumns_.reserve(nbConstraints);
+    BLineIndex_.reserve(nbConstraints * nbConstraints);
 
     init(nbConstraints,
          nbComplementaryVar,
@@ -42,9 +45,20 @@ MarginVariationMatrix::MarginVariationMatrix(int nbConstraints,
 
 MarginVariationMatrix::~MarginVariationMatrix()
 {
-    if (pmatrix_ != nullptr) {
-        LU_LibererMemoireLU(pmatrix_);
+    if (numericMatrix_ != nullptr) {
+        klu_free_numeric(&numericMatrix_, &commonParameters_);
     }
+}
+
+// ConvertConstraintIndex method aims at calculating the new index of the constraint in the constraint matrices for the
+// post treatment of marginal variations
+int MarginVariationMatrix::convertConstraintIndex(int num) const
+{
+    int idx = num;
+    for (unsigned int i = 0; i < constraintsToIgnore_.size() && constraintsToIgnore_[i] < num; ++i) {
+        idx--;
+    }
+    return idx;
 }
 
 void MarginVariationMatrix::init(int nbConstraints,
@@ -59,90 +73,100 @@ void MarginVariationMatrix::init(int nbConstraints,
                                  const std::vector<int>& baseComplement,
                                  const std::vector<char>& sens)
 {
+    // Determine the baseSize
     int baseSize = nbComplementaryVar;
     for (int i = 0; i < nbVars && baseSize < nbConstraints; ++i) {
         if (varPosition[i] == EN_BASE) {
             baseSize++;
         }
     }
-
+    // Determine the constraint to be ignored when not all constraints are in base
     if (baseSize > 0 && nbConstraints != baseSize) {
-        throw Exception(Exception::Location::BASE_SIZE, baseSize);
-    }
-
-    // Init de la matrice Indices de lignes
-    // En effet, il y a aussi des termes qui n'interviennt pas mais on les a chaines,
-    // il faut donc bien initialiser BIndicesDeLigne_
-    for (int i = 0; i < nbConstraints; ++i) {
-        for (int j = 0; j < nbConstraints; ++j) {
-            BIndicesDeLigne_.push_back(j);
+        // We look for the contraints that can be ignored (meaning that do not involve basic variables)
+        for (int i = 0; i < nbConstraints; ++i) {
+            if (sens[i] == '=') {
+                bool ignore = true;
+                for (int j = startLineIndexes[i]; j < startLineIndexes[i] + nbTermesLine[i]; ++j) {
+                    if (varPosition[columnIndexes[j]] == EN_BASE && constraintsMatrixCoeffs[j] != 0) {
+                        ignore = false;
+                        break;
+                    }
+                }
+                if (ignore) {
+                    LOG(info) << "Constraint " << i << "is ignored for base size calulation";
+                    constraintsToIgnore_.push_back(i);
+                }
+            }
+        }
+        // Throw exception when new number of constraints doesn't match baseSize
+        if (nbConstraints - static_cast<int>(constraintsToIgnore_.size()) != baseSize) {
+            throw Exception(baseSize);
         }
     }
 
+    // Building a B sub matrix of the constraints matrix with the real basic constraint only
+    //-------------------------------------------------------------------------------------
+    int cnt = -1;
     for (int i = 0; i < nbConstraints; ++i) {
-        BIndexDebutDesColonnes_.push_back(i * baseSize);
-        BNbTermesDesColonnes_.push_back(baseSize);
-        // i : indice de la ligne de B
-        // j : indice de la colonne de dans la matrice des contraintes
-        // j1 : indice de la colonne de B
+        if (std::find(constraintsToIgnore_.begin(), constraintsToIgnore_.end(), i) != constraintsToIgnore_.end()) {
+            continue; // this constraint has to be ignored
+        }
+        BStartingIndexColumns_.push_back(++cnt * baseSize);
+        // i : B line index
+        // j : column index in constraint matrix
+        // j1 : B column index in B
         int ideb = startLineIndexes[i];
         for (int k = 0; k < nbTermesLine[i]; ++k) {
             int j = columnIndexes[ideb + k];
-            if (varPosition[j] == EN_BASE) { // on  a trouve un element
+            if (varPosition[j] == EN_BASE) { // we found a basic element
                 int j1 = numVarEnBaseDansB[j];
-                BValeurDesTermesDeLaMatrice_[j1 * baseSize + i] = constraintsMatrixCoeffs[ideb + k];
-                // BIndicesDeLigne_[j1*nbConstraints+i]              = i;
+                BMatrixTerms_[j1 * baseSize + cnt] = constraintsMatrixCoeffs[ideb + k];
             }
         }
     }
-    // traitement du complement de la base
+    // Treatment of the base complement
     int cpmBase = -1;
     for (int i = baseSize - nbComplementaryVar; i < baseSize; ++i) {
         cpmBase++;
-        int ideb = BIndexDebutDesColonnes_[i];
+        int ideb = BStartingIndexColumns_[i];
         for (int j = 0; j < baseSize; ++j) {
-            double value = 0.;
-            if (baseComplement[cpmBase] == j) {
-                value = sens[j] == '>' ? -1 : 1;
+            double value = (sens[j] == '>') ? -1 : 1;
+            BMatrixTerms_[ideb + j] = (convertConstraintIndex(baseComplement[cpmBase]) == j) ? value : 0;
+        }
+    }
+
+    // Building the tables from Bmatrix for the C KLU methods for the factorization:
+    // inputs are:
+    // - n the size of the matrix called here nz
+    // - Ax table contains the non zero elements of the matrix, which is here BMatrixNonZeroTerms
+    // - Ap table contains for each first element of each matrix colunm the value of the index of this element in Ax
+    // , which is here BNonZeroStartingIndexColumns. Its size is n+1, starts always with 0 and end with Ax.size().
+    // - Ai table contains for each non zero element in Ax the row index of this element in the matrix. We call this
+    // table here BLineIndex_.
+    std::vector<double> BMatrixNonZeroTerms;
+    std::vector<int> BNonZeroStartingIndexColumns;
+    int count = 0;
+    BNonZeroStartingIndexColumns.push_back(0);
+    for (int i = 0; i < baseSize; ++i) {
+        for (int j = 0; j < baseSize; ++j) {
+            if (BMatrixTerms_[i * baseSize + j] != 0) {
+                BMatrixNonZeroTerms.push_back(BMatrixTerms_[i * baseSize + j]);
+                count++;
+                BLineIndex_.push_back(j);
             }
-            BValeurDesTermesDeLaMatrice_[ideb + j] = value;
         }
+        BNonZeroStartingIndexColumns.push_back(count);
     }
 
-
-    B_.NombreDeColonnes = baseSize;
-    B_.UtiliserLesSuperLignes = NON_LU;
-    B_.ContexteDeLaFactorisation = LU_GENERAL;
-    B_.FaireScalingDeLaMatrice = NON_LU;
-    B_.UtiliserLesValeursDePivotNulParDefaut = OUI_LU;
-    B_.LaMatriceEstSymetrique = NON_LU;
-    B_.LaMatriceEstSymetriqueEnStructure = NON_LU;
-    B_.FaireDuPivotageDiagonal = NON_LU;
-    B_.SeuilPivotMarkowitzParDefaut = OUI_LU;
-    B_.IndexDebutDesColonnes = &BIndexDebutDesColonnes_[0];
-    B_.NbTermesDesColonnes = &BNbTermesDesColonnes_[0];
-    B_.ValeurDesTermesDeLaMatrice = &BValeurDesTermesDeLaMatrice_[0];
-    B_.IndicesDeLigne = &BIndicesDeLigne_[0];
-
-    pmatrix_ = LU_Factorisation(&B_);
-
-    if (B_.ProblemeDeFactorisation != NON_LU) {
-        B_.FaireScalingDeLaMatrice = OUI_LU;
-        pmatrix_ = LU_Factorisation(&B_);
-
-        double pivot = 1.e-10;
-        while (B_.ProblemeDeFactorisation != NON_LU && pivot > 1.e-15) {
-            B_.UtiliserLesValeursDePivotNulParDefaut = NON_LU;
-            B_.ValeurDuPivotMin = pivot;
-            B_.ValeurDuPivotMinExtreme = pivot * 0.1;
-
-            pmatrix_ = LU_Factorisation(&B_);
-
-            pivot = pivot * 0.1;
-        }
-
-        if (B_.ProblemeDeFactorisation != NON_LU) {
-            throw Exception(Exception::Location::FACTORIZATION, B_.ProblemeDeFactorisation);
-        }
-    }
+    nz_ = static_cast<int>(BNonZeroStartingIndexColumns.size()) - 1;
+    // Callling klu methods:
+    klu_defaults(&commonParameters_);
+    // call to klu_analyze: klu_analyze(n, Ap, Ai,common);
+    symbolicMatrix_ = klu_analyze(nz_, BNonZeroStartingIndexColumns.data(), BLineIndex_.data(), &commonParameters_);
+    // call to klu_factor(Ap, Ai, Ax, Symbolic, &Common)
+    numericMatrix_ = klu_factor(BNonZeroStartingIndexColumns.data(),
+                                BLineIndex_.data(),
+                                BMatrixNonZeroTerms.data(),
+                                symbolicMatrix_,
+                                &commonParameters_);
 }

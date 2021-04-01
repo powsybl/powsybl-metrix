@@ -171,8 +171,8 @@ public:
 
 // Structure permettant de representer un transit lie a un defaut
 struct Menace {
-    std::shared_ptr<Incident> defaut_;
-    double transit_;
+    std::shared_ptr<Incident> defaut_ = nullptr;
+    double transit_ = 0.0;
 };
 
 
