@@ -64,12 +64,12 @@ public class TimeSeriesProvideTsTest {
                 "}",
                 "provideTsPhaseTapChangers {",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "}",
                 "provideTsRatioTapChangers {",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "}",
                 "provideTsLccConverterStations {",
@@ -111,7 +111,7 @@ public class TimeSeriesProvideTsTest {
                 "    filter {",
                 "        generator.id==\"FSSV.O11_G\"",
                 "    }",
-                "    variables targetP, minP, maxP, targetQ, voltageRegulatorOn, targetV",
+                "    variables targetP, minP, maxP, targetQ, voltageRegulatorOn, targetV, disconnected",
                 "}",
                 "provideTsLoads {",
                 "    filter {",
@@ -133,19 +133,19 @@ public class TimeSeriesProvideTsTest {
                 "}",
                 "provideTsTransformers {",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variables ratedU1, ratedU2",
                 "}",
                 "provideTsPhaseTapChangers {",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variables phaseTapPosition, regulationMode, phaseRegulating, targetDeadband",
                 "}",
                 "provideTsRatioTapChangers {",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variables ratioTapPosition, loadTapChangingCapabilities, ratioRegulating, targetV",
                 "}",
@@ -160,6 +160,12 @@ public class TimeSeriesProvideTsTest {
                 "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
                 "    }",
                 "    variables voltageSetpoint, voltageRegulatorOn, reactivePowerSetpoint",
+                "}",
+                "provideTsLines {",
+                "    filter {",
+                "        line.id==\"FP.AND1  FVERGE1  1\"",
+                "    }",
+                "    variables disconnected",
                 "}");
 
         // create time series space mock
@@ -178,7 +184,8 @@ public class TimeSeriesProvideTsTest {
                                      new MappingKey(EquipmentVariable.maxP, "FSSV.O11_G"),
                                      new MappingKey(EquipmentVariable.targetQ, "FSSV.O11_G"),
                                      new MappingKey(EquipmentVariable.voltageRegulatorOn, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.targetV, "FSSV.O11_G")),
+                                     new MappingKey(EquipmentVariable.targetV, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.disconnected, "FSSV.O11_G")),
                                      mappingConfig.getGeneratorTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"),
                                      new MappingKey(EquipmentVariable.variableActivePower, "FSSV.O11_L"),
@@ -213,6 +220,8 @@ public class TimeSeriesProvideTsTest {
                                      new MappingKey(EquipmentVariable.voltageRegulatorOn, "FSSV.O1_FSSV.O1_HVDC1"),
                                      new MappingKey(EquipmentVariable.reactivePowerSetpoint, "FSSV.O1_FSSV.O1_HVDC1")),
                                      mappingConfig.getVscConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.disconnected, "FP.AND1  FVERGE1  1")),
+                                     mappingConfig.getLineTimeSeries());
     }
 
     @Test

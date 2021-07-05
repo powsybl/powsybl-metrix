@@ -25,20 +25,21 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class TimeSeriesMapper implements TimeSeriesConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMapper.class);
 
-    private static final double EPSILON_COMPARISON = 1e-5;
+    public static final double EPSILON_COMPARISON = 1e-5;
 
     private static final double EPSILON_ZERO_STD_DEV = 1e-6;
 
     public static final int CONSTANT_VARIANT_ID = -1;
 
     public static final int SWITCH_OPEN = 0; // 0 means switch is open
+
+    public static final int DISCONNECTED_VALUE = 0; // 0 means equipment is disconnected
+
+    public static final int CONNECTED_VALUE = 1;
 
     private final TimeSeriesMappingConfig config;
 
@@ -67,6 +68,8 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLccConverterStationsMapping;
 
         private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToVscConverterStationsMapping;
+
+        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLinesMapping;
 
         private Map<IndexedName, Set<MappingKey>> equipmentTimeSeries;
     }
@@ -602,6 +605,11 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToVscConverterStationsMapping = new LinkedHashMap<>();
         identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToVscConverterStationsMapping, constantTimeSeriesToVscConverterStationsMapping, timeSeriesToVscConverterStationsMapping);
 
+        // Check if some lines mappings are constant
+        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLinesMapping = new LinkedHashMap<>();
+        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToLinesMapping = new LinkedHashMap<>();
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToLinesMapping, constantTimeSeriesToLinesMapping, timeSeriesToLinesMapping);
+
         // Check if some equipement mappings are constant
         Map<IndexedName, Set<MappingKey>> equipmentTimeSeries = new HashMap<>();
         Map<IndexedName, Set<MappingKey>> constantEquipmentTimeSeries = new HashMap<>();
@@ -646,6 +654,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 !constantTimeSeriesToRatioTapChangersMapping.isEmpty() ||
                 !constantTimeSeriesToLccConverterStationsMapping.isEmpty() ||
                 !constantTimeSeriesToVscConverterStationsMapping.isEmpty() ||
+                !constantTimeSeriesToLinesMapping.isEmpty() ||
                 !constantEquipmentTimeSeries.isEmpty()) {
 
             mapSinglePoint(table, parameters, version, CONSTANT_VARIANT_ID, firstPoint,
@@ -659,6 +668,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                     constantTimeSeriesToRatioTapChangersMapping,
                     constantTimeSeriesToLccConverterStationsMapping,
                     constantTimeSeriesToVscConverterStationsMapping,
+                    constantTimeSeriesToLinesMapping,
                     constantEquipmentTimeSeries,
                     observer, logger);
         }
@@ -739,6 +749,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 timeSeriesToRatioTapChangersMapping,
                 timeSeriesToLccConverterStationsMapping,
                 timeSeriesToVscConverterStationsMapping,
+                timeSeriesToLinesMapping,
                 equipmentTimeSeries,
                 observer, logger);
 
@@ -760,6 +771,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToRatioTapChangersMapping,
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLccConverterStationsMapping,
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToVscConverterStationsMapping,
+                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLinesMapping,
                                 Map<IndexedName, Set<MappingKey>> equipmentTimeSeries,
                                 TimeSeriesMapperChecker observer, TimeSeriesMappingLogger logger) {
 
@@ -774,6 +786,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         mapToNetwork(table, version, variantId, point, timeSeriesToRatioTapChangersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
         mapToNetwork(table, version, variantId, point, timeSeriesToLccConverterStationsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
         mapToNetwork(table, version, variantId, point, timeSeriesToVscConverterStationsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToLinesMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
 
         if (observer != null) {
             // generic mapping
@@ -810,7 +823,8 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 // load time series involved in the config in a table
                 Set<String> usedTimeSeriesNames = StreamSupport.stream(config.findUsedTimeSeriesNames().spliterator(), false).collect(Collectors.toSet());
                 usedTimeSeriesNames.addAll(parameters.getRequiredTimeseries());
-                TimeSeriesTable table = config.loadToTable(new TreeSet<>(ImmutableSet.of(version)), store, parameters.getPointRange(), usedTimeSeriesNames);
+                ReadOnlyTimeSeriesStore storeWithPlannedOutages = TimeSeriesMappingConfig.buildPlannedOutagesTimeSeriesStore(store, version, config.getTimeSeriesToPlannedOutagesMapping());
+                TimeSeriesTable table = config.loadToTable(new TreeSet<>(ImmutableSet.of(version)), storeWithPlannedOutages, parameters.getPointRange(), usedTimeSeriesNames);
 
                 if (context == null) {
                     context = new MapperContext();
@@ -833,6 +847,8 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                     context.timeSeriesToLccConverterStationsMapping = config.getTimeSeriesToLccConverterStationsMapping().entrySet().stream()
                             .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
                     context.timeSeriesToVscConverterStationsMapping = config.getTimeSeriesToVscConverterStationsMapping().entrySet().stream()
+                            .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
+                    context.timeSeriesToLinesMapping = config.getTimeSeriesToLinesMapping().entrySet().stream()
                             .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
                     context.equipmentTimeSeries = config.getTimeSeriesToEquipment().entrySet().stream()
                             .collect(Collectors.toMap(e -> new IndexedName(e.getKey(), table.getDoubleTimeSeriesIndex(e.getKey())), Map.Entry::getValue));

@@ -29,14 +29,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.*;
 
 /**
  * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
  */
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
-    private static final int ON_VALUE = 1;
+    private static final int OFF_VALUE = 0;
 
     private static final class GeneratorInitialValues {
 
@@ -102,9 +102,11 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 } else if (variable == EquipmentVariable.maxP) {
                     generator.setMaxP((float) equipmentValue);
                 } else if (variable == EquipmentVariable.voltageRegulatorOn) {
-                    generator.setVoltageRegulatorOn(Math.round(equipmentValue) == ON_VALUE);
+                    generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 } else if (variable == EquipmentVariable.targetV) {
                     generator.setTargetV((float) equipmentValue);
+                } else if (variable == EquipmentVariable.disconnected && Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
+                    generator.getTerminal().disconnect();
                 }
             } else if (identifiable instanceof Load) {
                 Load load = network.getLoad(identifiable.getId());
@@ -192,7 +194,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 }
             } else if (identifiable instanceof Switch) {
                 Switch breaker = network.getSwitch(identifiable.getId());
-                breaker.setOpen(equipmentValue == TimeSeriesMapper.SWITCH_OPEN);
+                breaker.setOpen(Math.abs(equipmentValue - TimeSeriesMapper.SWITCH_OPEN) < EPSILON_COMPARISON);
             } else if (identifiable instanceof TwoWindingsTransformer) {
                 TwoWindingsTransformer transformer = network.getTwoWindingsTransformer(identifiable.getId());
                 // mapToTransformers variables
@@ -200,11 +202,14 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                     transformer.setRatedU1(equipmentValue);
                 } else if (variable == EquipmentVariable.ratedU2) {
                     transformer.setRatedU2(equipmentValue);
+                } else if (variable == EquipmentVariable.disconnected && Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
+                    transformer.getTerminal1().disconnect();
+                    transformer.getTerminal2().disconnect();
                 // mapToPhaseTapChangers variables
                 } else if (variable == EquipmentVariable.phaseTapPosition) {
                     transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
                 } else if (variable == EquipmentVariable.phaseRegulating) {
-                    transformer.getPhaseTapChanger().setRegulating(Math.round(equipmentValue) == ON_VALUE);
+                    transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 } else if (variable == EquipmentVariable.targetDeadband) {
                     transformer.getPhaseTapChanger().setTargetDeadband(equipmentValue);
                 } else if (variable == EquipmentVariable.regulationMode) {
@@ -229,9 +234,15 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 } else if (variable == EquipmentVariable.targetV) {
                     transformer.getRatioTapChanger().setTargetV(equipmentValue);
                 } else if (variable == EquipmentVariable.loadTapChangingCapabilities) {
-                    transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.round(equipmentValue) == ON_VALUE);
+                    transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 } else if (variable == EquipmentVariable.ratioRegulating) {
-                    transformer.getRatioTapChanger().setRegulating(Math.round(equipmentValue) == ON_VALUE);
+                    transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+                }
+            } else if (identifiable instanceof Line) {
+                Line line = network.getLine(identifiable.getId());
+                if (variable == EquipmentVariable.disconnected && Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
+                    line.getTerminal1().disconnect();
+                    line.getTerminal2().disconnect();
                 }
             } else if (identifiable instanceof LccConverterStation) {
                 LccConverterStation converter = network.getLccConverterStation(identifiable.getId());
@@ -241,7 +252,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             } else if (identifiable instanceof VscConverterStation) {
                 VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
                 if (variable == EquipmentVariable.voltageRegulatorOn) {
-                    converter.setVoltageRegulatorOn(Math.round(equipmentValue) == ON_VALUE);
+                    converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 } else if (variable == EquipmentVariable.voltageSetpoint) {
                     converter.setVoltageSetpoint(equipmentValue);
                 } else if (variable == EquipmentVariable.reactivePowerSetpoint) {

@@ -19,10 +19,12 @@ import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
+import com.powsybl.timeseries.StringTimeSeries
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.TimeSeriesIndex
 import com.powsybl.timeseries.ast.NodeCalc
 import groovy.transform.CompileStatic
+import org.apache.commons.lang3.StringUtils
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.slf4j.Logger
@@ -316,6 +318,52 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
+    private static void mapPlannedOutages(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config, Closure closure,
+                                          Iterable<FilteringContext> transformersFilteringContext, Iterable<FilteringContext> linesFilteringContext, Iterable<FilteringContext> generatorsFilteringContext, Set<Integer> versions) {
+        Object value = closure.call()
+        if (!value instanceof String) {
+            throw new TimeSeriesMappingException("Closure plannedOutages must return a time series name")
+        }
+
+        String timeSeriesName = String.valueOf(value)
+        timeSeriesExists(timeSeriesName, store, config)
+
+        Set<String> disconnectedIds = new HashSet<>()
+        for (int version : versions) {
+            StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow({ new TimeSeriesMappingException("Invalid planned outages time series name " + timeSeriesName) })
+            String[] array = plannedOutagesTimeSeries.toArray()
+            for (int i = 0; i < array.length; i++) {
+                String[] ids = array[i].split(",")
+                disconnectedIds.addAll(ids)
+            }
+        }
+        disconnectedIds.remove(StringUtils.EMPTY)
+        binding.setVariable("disconnectedIds", disconnectedIds)
+
+        // add time series to the config
+        config.addPlannedOutages(timeSeriesName, disconnectedIds)
+
+        // evaluate equipment filters
+        Collection<Identifiable> filteredTransformers = Filter.evaluate(binding, transformersFilteringContext, MappableEquipmentType.TRANSFORMER.scriptVariable,
+                { e -> return disconnectedIds.contains(((Identifiable) binding.getVariable(MappableEquipmentType.TRANSFORMER.getScriptVariable())).id) })
+        Collection<Identifiable> filteredLines = Filter.evaluate(binding, linesFilteringContext, MappableEquipmentType.LINE.scriptVariable,
+                { e -> return disconnectedIds.contains(((Identifiable) binding.getVariable(MappableEquipmentType.LINE.getScriptVariable())).id) })
+        Collection<Identifiable> filteredGenerators = Filter.evaluate(binding, generatorsFilteringContext, MappableEquipmentType.GENERATOR.scriptVariable,
+                { e -> return disconnectedIds.contains(((Identifiable) binding.getVariable(MappableEquipmentType.GENERATOR.getScriptVariable())).id) })
+
+        // for each filtered equipment, add it to the config
+        for (Identifiable identifiable in filteredTransformers) {
+            config.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+        }
+        for (Identifiable identifiable in filteredLines) {
+            config.addEquipmentMapping(MappableEquipmentType.LINE, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+        }
+        for (Identifiable identifiable in filteredGenerators) {
+            config.addEquipmentMapping(MappableEquipmentType.GENERATOR, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+        }
+    }
+
+    @CompileStatic
     private static void equipmentTimeSeries(Binding binding, TimeSeriesMappingConfig config,
                                             Closure closure, Iterable<FilteringContext> filteringContexts,
                                             MappableEquipmentType equipmentType,
@@ -360,6 +408,7 @@ class TimeSeriesDslLoader {
         def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter)}
         def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter)}
         def transformersFilteringContext = network.getTwoWindingsTransformers().collect { transformer -> new FilteringContext(transformer)}
+        def linesFilteringContext = network.getLines().collect { line -> new FilteringContext(line)}
         def phaseTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.phaseTapChanger != null}
                 .collect { transformer -> new FilteringContext(transformer)}
         def ratioTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.ratioTapChanger != null}
@@ -387,6 +436,9 @@ class TimeSeriesDslLoader {
         binding.mapToTransformers = { Closure closure ->
             mapToEquipments(binding, store, config, closure, transformersFilteringContext, MappableEquipmentType.TRANSFORMER)
         }
+        binding.mapToLines = { Closure closure ->
+            mapToEquipments(binding, store, config, closure, linesFilteringContext, MappableEquipmentType.LINE)
+        }
         binding.mapToPhaseTapChangers = { Closure closure ->
             mapToSimpleVariableEquipments(binding, store, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER)
         }
@@ -401,6 +453,9 @@ class TimeSeriesDslLoader {
         }
         binding.mapToBreakers = { Closure closure ->
             mapToBreakers(binding, store, config, closure, switchesFilteringContext)
+        }
+        binding.mapPlannedOutages = { Closure closure ->
+            mapPlannedOutages(binding, store, config, closure, transformersFilteringContext, linesFilteringContext, generatorsFilteringContext, checkedComputationRange.getVersions())
         }
         // Kept for compatibility
         binding.mapToPsts = { Closure closure ->
@@ -441,6 +496,9 @@ class TimeSeriesDslLoader {
         }
         binding.provideTsTransformers = { Closure closure ->
             equipmentTimeSeries(binding, config, closure, transformersFilteringContext, MappableEquipmentType.TRANSFORMER, out)
+        }
+        binding.provideTsLines = { Closure closure ->
+            equipmentTimeSeries(binding, config, closure, linesFilteringContext, MappableEquipmentType.LINE, out)
         }
         binding.provideTsBoundaryLines = { Closure closure ->
             equipmentTimeSeries(binding, config, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, out)

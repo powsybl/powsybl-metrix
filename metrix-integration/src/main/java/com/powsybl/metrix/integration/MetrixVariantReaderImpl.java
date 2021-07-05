@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixKey;
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixVariableKey;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
 
 /**
  * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
@@ -62,6 +63,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private final Map<String, TDoubleArrayList> pstValues = new HashMap<>();
 
     private final List<String> openBranchList = new ArrayList<>();
+    private final List<String> openGeneratorList = new ArrayList<>();
 
     private final Map<String, List<String>> metrixVariableIds = new HashMap<>();
     private final Map<String, TDoubleArrayList> metrixVariableValues = new HashMap<>();
@@ -223,6 +225,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         addLoadValues();
         try {
             boolean atLeastOneChange = writeVariant(variantNum, "QUADIN", openBranchList);
+            atLeastOneChange |= writeVariant(variantNum, "PRODIN", openGeneratorList);
             atLeastOneChange |= writeVariant(variantNum, generatorIds, generatorValues);
             atLeastOneChange |= writeVariant(variantNum, hvdcLineIds, hvdcLineValues);
             atLeastOneChange |= writeVariant(variantNum, loadIds, loadValues);
@@ -250,6 +253,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         pstIds.clear();
         pstValues.clear();
         openBranchList.clear();
+        openGeneratorList.clear();
         metrixVariableIds.clear();
         metrixVariableValues.clear();
         contingencyIds.clear();
@@ -262,15 +266,24 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     void onGeneratorVariant(Generator generator, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.targetP) {
-            isDifferent = isDifferent(value, generator.getTargetP());
-        } else if (variable == EquipmentVariable.minP) {
-            isDifferent = isDifferent(value, generator.getMinP());
-        } else if (variable == EquipmentVariable.maxP) {
-            isDifferent = isDifferent(value, generator.getMaxP());
-        }
-        if (isDifferent) {
-            addValue(generator.getId(), variable, value, generatorIds, generatorValues, MappableEquipmentType.GENERATOR);
+        if (variable == EquipmentVariable.disconnected) {
+            Terminal t = generator.getTerminal();
+            boolean isConnected = t.isConnected();
+            isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            if (isDifferent) {
+                openGeneratorList.add(generator.getId());
+            }
+        } else {
+            if (variable == EquipmentVariable.targetP) {
+                isDifferent = isDifferent(value, generator.getTargetP());
+            } else if (variable == EquipmentVariable.minP) {
+                isDifferent = isDifferent(value, generator.getMinP());
+            } else if (variable == EquipmentVariable.maxP) {
+                isDifferent = isDifferent(value, generator.getMaxP());
+            }
+            if (isDifferent) {
+                addValue(generator.getId(), variable, value, generatorIds, generatorValues, MappableEquipmentType.GENERATOR);
+            }
         }
     }
 
@@ -328,17 +341,38 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     void onTransformerVariant(TwoWindingsTransformer twc, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.phaseTapPosition) {
-            isDifferent = isDifferent(value, twc.getPhaseTapChanger().getTapPosition());
-        }
-        if (isDifferent) {
-            addValue(twc.getId(), variable, value, pstIds, pstValues, MappableEquipmentType.PHASE_TAP_CHANGER);
+        if (variable == EquipmentVariable.disconnected) {
+            Terminal t1 = twc.getTerminal1();
+            Terminal t2 = twc.getTerminal1();
+            boolean isConnected = t1.isConnected() && t2.isConnected();
+            isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            if (isDifferent) {
+                openBranchList.add(twc.getId());
+            }
+        } else {
+            if (variable == EquipmentVariable.phaseTapPosition) {
+                isDifferent = isDifferent(value, twc.getPhaseTapChanger().getTapPosition());
+            }
+            if (isDifferent) {
+                addValue(twc.getId(), variable, value, pstIds, pstValues, MappableEquipmentType.PHASE_TAP_CHANGER);
+            }
         }
     }
 
     void onSwitchVariant(Switch sw, double value) {
-        if (value == TimeSeriesMapper.SWITCH_OPEN) {
+        if (Math.abs(value - TimeSeriesMapper.SWITCH_OPEN) < EPSILON) {
             metrixNetwork.getMappedBranch(sw).ifPresent(openBranchList::add);
+        }
+    }
+
+    void onLineVariant(Line line, MappingVariable variable, double value) {
+        if (variable == EquipmentVariable.disconnected) {
+            Terminal t = line.getTerminal1();
+            boolean isConnected = t.isConnected();
+            boolean isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            if (isDifferent) {
+                openBranchList.add(line.getId());
+            }
         }
     }
 
@@ -359,6 +393,8 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 onTransformerVariant((TwoWindingsTransformer) identifiable, equipmentVariable, value);
             } else if (identifiable instanceof Switch) {
                 onSwitchVariant((Switch) identifiable, value);
+            } else if (identifiable instanceof Line) {
+                onLineVariant((Line) identifiable, variable, value);
             }
         } else {
             throw new AssertionError("Unsupported variable type " + variable.getClass().getName());

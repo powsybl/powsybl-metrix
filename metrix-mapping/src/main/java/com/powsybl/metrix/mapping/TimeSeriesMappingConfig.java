@@ -38,11 +38,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
+import java.util.stream.Stream;
 
-/**
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
+
 public class TimeSeriesMappingConfig implements TimeSeriesConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
@@ -60,6 +60,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private static final String TSTOPHASETAPCHANGERS = "timeSeriesToPhaseTapChangersMapping";
     private static final String TSTOBREAKERS = "timeSeriesToBreakersMapping";
     private static final String TSTOTRANSFORMERS = "timeSeriesToTransformersMapping";
+    private static final String TSTOLINES = "timeSeriesToLinesMapping";
     private static final String TSTORATIOTAPCHANGERS = "timeSeriesToRatioTapChangersMapping";
     private static final String TSTOLCCCONVERTERSTATIONS = "timeSeriesToLccConverterStationsMapping";
     private static final String TSTOVSCCONVERTERSTATIONS = "timeSeriesToVscConverterStationsMapping";
@@ -70,6 +71,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private static final String PHASETAPCHANGERTOTS = "phaseTapChangerToTimeSeriesMapping";
     private static final String BREAKERTOTS = "breakerToTimeSeriesMapping";
     private static final String TRANSFORMERTOTS = "transformerToTimeSeriesMapping";
+    private static final String LINETOTS = "lineToTimeSeriesMapping";
     private static final String RATIOTAPCHANGERTOTS = "ratioTapChangerToTimeSeriesMapping";
     private static final String LCCCONVERTERSTATIONTOTS = "lccConverterStationToTimeSeriesMapping";
     private static final String VSCCONVERTERSTATIONTOTS = "vscConverterStationToTimeSeriesMapping";
@@ -80,6 +82,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private static final String PHASETAPCHANGERTS = "phaseTapChangerTimeSeries";
     private static final String BREAKERTS = "breakerTimeSeries";
     private static final String TRANSFORMERTS = "transformerTimeSeries";
+    private static final String LINETS = "lineTimeSeries";
     private static final String RATIOTAPCHANGERTS = "ratioTapChangerTimeSeries";
     private static final String LCCCONVERTERSTATIONTS = "lccConverterStationTimeSeries";
     private static final String VSCCONVERTERSTATIONTS = "vscConverterStationTimeSeries";
@@ -112,6 +115,8 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private static final String EQUIPMENTTOTS = "equipmentToTimeSeries";
     private static final String MAPPEDTIMESERIESNAMES = "mappedTimeSeriesNames";
     private static final String IGNORELIMITSTIMESERIESNAMES = "ignoreLimitsTimeSeriesNames";
+    private static final String TSTOPLANNEDOUTAGES = "timeSeriesToPlannedOutagesMapping";
+    private static final String OUTAGES = "outages";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -124,6 +129,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private final Map<MappingKey, List<String>> timeSeriesToPhaseTapChangersMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> timeSeriesToBreakersMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> timeSeriesToTransformersMapping = new LinkedHashMap<>();
+    private final Map<MappingKey, List<String>> timeSeriesToLinesMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> timeSeriesToRatioTapChangersMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> timeSeriesToLccConverterStationsMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> timeSeriesToVscConverterStationsMapping = new LinkedHashMap<>();
@@ -135,6 +141,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private final Map<MappingKey, List<String>> phaseTapChangerToTimeSeriesMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> breakerToTimeSeriesMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> transformerToTimeSeriesMapping = new LinkedHashMap<>();
+    private final Map<MappingKey, List<String>> lineToTimeSeriesMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> ratioTapChangerToTimeSeriesMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> lccConverterStationToTimeSeriesMapping = new LinkedHashMap<>();
     private final Map<MappingKey, List<String>> vscConverterStationToTimeSeriesMapping = new LinkedHashMap<>();
@@ -146,6 +153,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private final Set<MappingKey> phaseTapChangerTimeSeries = new HashSet<>();
     private final Set<MappingKey> breakerTimeSeries = new HashSet<>();
     private final Set<MappingKey> transformerTimeSeries = new HashSet<>();
+    private final Set<MappingKey> lineTimeSeries = new HashSet<>();
     private final Set<MappingKey> ratioTapChangerTimeSeries = new HashSet<>();
     private final Set<MappingKey> lccConverterStationTimeSeries = new HashSet<>();
     private final Set<MappingKey> vscConverterStationTimeSeries = new HashSet<>();
@@ -180,6 +188,8 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private final Map<String, Set<MappingKey>> timeSeriesToEquipmentMap = new HashMap<>();
     private final Map<MappingKey, String> equipmentToTimeSeriesMap = new HashMap<>();
 
+    private final Map<String, Set<String>> timeSeriesToPlannedOutagesMapping = new LinkedHashMap<>();
+
     private final Map<String, NodeCalc> timeSeriesNodes = new HashMap<>();
 
     // time series used in the mapping
@@ -198,6 +208,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 timeSeriesToPhaseTapChangersMapping,
                 timeSeriesToBreakersMapping,
                 timeSeriesToTransformersMapping,
+                timeSeriesToLinesMapping,
                 timeSeriesToRatioTapChangersMapping,
                 timeSeriesToLccConverterStationsMapping,
                 timeSeriesToVscConverterStationsMapping,
@@ -208,6 +219,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 phaseTapChangerToTimeSeriesMapping,
                 breakerToTimeSeriesMapping,
                 transformerToTimeSeriesMapping,
+                lineToTimeSeriesMapping,
                 ratioTapChangerToTimeSeriesMapping,
                 lccConverterStationToTimeSeriesMapping,
                 vscConverterStationToTimeSeriesMapping,
@@ -218,6 +230,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 phaseTapChangerTimeSeries,
                 breakerTimeSeries,
                 transformerTimeSeries,
+                lineTimeSeries,
                 ratioTapChangerTimeSeries,
                 lccConverterStationTimeSeries,
                 vscConverterStationTimeSeries,
@@ -247,7 +260,8 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 timeSeriesToEquipmentMap,
                 equipmentToTimeSeriesMap,
                 mappedTimeSeriesNames,
-                ignoreLimitsTimeSeriesNames
+                ignoreLimitsTimeSeriesNames,
+                timeSeriesToPlannedOutagesMapping
                 );
     }
 
@@ -262,6 +276,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                     && timeSeriesToPhaseTapChangersMapping.equals(other.getTimeSeriesToPhaseTapChangersMapping())
                     && timeSeriesToBreakersMapping.equals(other.getTimeSeriesToBreakersMapping())
                     && timeSeriesToTransformersMapping.equals(other.getTimeSeriesToTransformersMapping())
+                    && timeSeriesToLinesMapping.equals(other.getTimeSeriesToLinesMapping())
                     && timeSeriesToRatioTapChangersMapping.equals(other.getTimeSeriesToRatioTapChangersMapping())
                     && timeSeriesToLccConverterStationsMapping.equals(other.getTimeSeriesToLccConverterStationsMapping())
                     && timeSeriesToVscConverterStationsMapping.equals(other.getTimeSeriesToVscConverterStationsMapping())
@@ -272,6 +287,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                     && phaseTapChangerToTimeSeriesMapping.equals(other.getPhaseTapChangerToTimeSeriesMapping())
                     && breakerToTimeSeriesMapping.equals(other.getBreakerToTimeSeriesMapping())
                     && transformerToTimeSeriesMapping.equals(other.getTransformerToTimeSeriesMapping())
+                    && lineToTimeSeriesMapping.equals(other.getLineToTimeSeriesMapping())
                     && ratioTapChangerToTimeSeriesMapping.equals(other.getRatioTapChangerToTimeSeriesMapping())
                     && lccConverterStationToTimeSeriesMapping.equals(other.getLccConverterStationToTimeSeriesMapping())
                     && vscConverterStationToTimeSeriesMapping.equals(other.getVscConverterStationToTimeSeriesMapping())
@@ -282,6 +298,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                     && phaseTapChangerTimeSeries.equals(other.getPhaseTapChangerTimeSeries())
                     && breakerTimeSeries.equals(other.getBreakerTimeSeries())
                     && transformerTimeSeries.equals(other.getTransformerTimeSeries())
+                    && lineTimeSeries.equals(other.getLineTimeSeries())
                     && ratioTapChangerTimeSeries.equals(other.getRatioTapChangerTimeSeries())
                     && lccConverterStationTimeSeries.equals(other.getLccConverterStationTimeSeries())
                     && vscConverterStationTimeSeries.equals(other.getVscConverterStationTimeSeries())
@@ -311,7 +328,8 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                     && timeSeriesToEquipmentMap.equals(other.getTimeSeriesToEquipment())
                     && equipmentToTimeSeriesMap.equals(other.getEquipmentToTimeSeries())
                     && mappedTimeSeriesNames.equals(other.getMappedTimeSeriesNames())
-                    && ignoreLimitsTimeSeriesNames.equals(other.getIgnoreLimitsTimeSeriesNames());
+                    && ignoreLimitsTimeSeriesNames.equals(other.getIgnoreLimitsTimeSeriesNames())
+                    && timeSeriesToPlannedOutagesMapping.equals(other.getTimeSeriesToPlannedOutagesMapping());
         }
         return false;
     }
@@ -410,6 +428,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
             writeMappingKeyMap(generator, TSTOPHASETAPCHANGERS, config.getTimeSeriesToPhaseTapChangersMapping());
             writeMappingKeyMap(generator, TSTOBREAKERS, config.getTimeSeriesToBreakersMapping());
             writeMappingKeyMap(generator, TSTOTRANSFORMERS, config.getTimeSeriesToTransformersMapping());
+            writeMappingKeyMap(generator, TSTOLINES, config.getTimeSeriesToLinesMapping());
             writeMappingKeyMap(generator, TSTORATIOTAPCHANGERS, config.getTimeSeriesToRatioTapChangersMapping());
             writeMappingKeyMap(generator, TSTOLCCCONVERTERSTATIONS, config.getTimeSeriesToLccConverterStationsMapping());
             writeMappingKeyMap(generator, TSTOVSCCONVERTERSTATIONS, config.getTimeSeriesToVscConverterStationsMapping());
@@ -420,6 +439,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
             writeMappingKeyMap(generator, PHASETAPCHANGERTOTS, config.getPhaseTapChangerToTimeSeriesMapping());
             writeMappingKeyMap(generator, BREAKERTOTS, config.getBreakerToTimeSeriesMapping());
             writeMappingKeyMap(generator, TRANSFORMERTOTS, config.getTransformerToTimeSeriesMapping());
+            writeMappingKeyMap(generator, LINETOTS, config.getLineToTimeSeriesMapping());
             writeMappingKeyMap(generator, RATIOTAPCHANGERTOTS, config.getRatioTapChangerToTimeSeriesMapping());
             writeMappingKeyMap(generator, LCCCONVERTERSTATIONTOTS, config.getLccConverterStationToTimeSeriesMapping());
             writeMappingKeyMap(generator, VSCCONVERTERSTATIONTOTS, config.getVscConverterStationToTimeSeriesMapping());
@@ -430,6 +450,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
             writeMappingKeySet(generator, PHASETAPCHANGERTS, config.getPhaseTapChangerTimeSeries());
             writeMappingKeySet(generator, BREAKERTS, config.getBreakerTimeSeries());
             writeMappingKeySet(generator, TRANSFORMERTS, config.getTransformerTimeSeries());
+            writeMappingKeySet(generator, LINETS, config.getLineTimeSeries());
             writeMappingKeySet(generator, RATIOTAPCHANGERTS, config.getRatioTapChangerTimeSeries());
             writeMappingKeySet(generator, LCCCONVERTERSTATIONTS, config.getLccConverterStationTimeSeries());
             writeMappingKeySet(generator, VSCCONVERTERSTATIONTS, config.getVscConverterStationTimeSeries());
@@ -461,6 +482,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
             writeEquipmentToTimeSeriesMap(generator, EQUIPMENTTOTS, config.getEquipmentToTimeSeries());
             writeMappingSet(generator, MAPPEDTIMESERIESNAMES, config.getMappedTimeSeriesNames());
             writeMappingSet(generator, IGNORELIMITSTIMESERIESNAMES, config.getIgnoreLimitsTimeSeriesNames());
+            writeTimeSeriesToPlannedOutagesMap(generator, TSTOPLANNEDOUTAGES, config.getTimeSeriesToPlannedOutagesMapping());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -481,6 +503,30 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 generator.writeStartArray();
                 for (MappingKey key : e.getValue()) {
                     MappingKey.writeJson(generator, key);
+                }
+                generator.writeEndArray();
+                generator.writeEndObject();
+            }
+            generator.writeEndArray();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    static void writeTimeSeriesToPlannedOutagesMap(JsonGenerator generator, String name, Map<String, Set<String>> plannedOutagesMap) {
+        Objects.requireNonNull(generator);
+        Objects.requireNonNull(plannedOutagesMap);
+        try {
+            generator.writeFieldName(name);
+            generator.writeStartArray();
+            for (Map.Entry<String, Set<String>> e : plannedOutagesMap.entrySet()) {
+                generator.writeStartObject();
+                generator.writeFieldName(TIMESERIESNAME);
+                generator.writeString(e.getKey());
+                generator.writeFieldName(OUTAGES);
+                generator.writeStartArray();
+                for (String id : e.getValue()) {
+                    generator.writeString(id);
                 }
                 generator.writeEndArray();
                 generator.writeEndObject();
@@ -861,6 +907,54 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
+    static Map<String, Set<String>> parseTimeSeriesToPlannedOutages(JsonParser parser) {
+        Objects.requireNonNull(parser);
+        try {
+            Map<String, Set<String>> map = new HashMap<>();
+            String timeSeriesName = null;
+            Set<String> ids = null;
+            JsonToken token;
+            while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+                switch (token) {
+                    case START_OBJECT:
+                        ids = new HashSet<>();
+                        break;
+                    case FIELD_NAME:
+                        String fieldName = parser.getCurrentName();
+                        switch (fieldName) {
+                            case TIMESERIESNAME:
+                                if ((token = parser.nextToken()) == JsonToken.VALUE_STRING) {
+                                    timeSeriesName = parser.getValueAsString();
+                                }
+                                break;
+                            case OUTAGES:
+                                while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+                                    if (token == JsonToken.VALUE_STRING) {
+                                        assert ids != null;
+                                        ids.add(parser.getValueAsString());
+                                    }
+                                }
+                                break;
+                            default:
+                                throw new IllegalStateException("Unexpected field name " + fieldName);
+                        }
+                        break;
+                    case END_OBJECT:
+                        if (timeSeriesName == null || ids == null) {
+                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                        }
+                        map.put(timeSeriesName, ids);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return map;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     public static TimeSeriesMappingConfig parseJson(JsonParser parser) {
         Objects.requireNonNull(parser);
         TimeSeriesMappingConfig config = new TimeSeriesMappingConfig();
@@ -890,6 +984,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                             break;
                         case TSTOTRANSFORMERS:
                             config.setTimeSeriesToTransformersMapping(parseMappingKeyMap(parser));
+                            break;
+                        case TSTOLINES:
+                            config.setTimeSeriesToLinesMapping(parseMappingKeyMap(parser));
                             break;
                         case TSTORATIOTAPCHANGERS:
                             config.setTimeSeriesToRatioTapChangersMapping(parseMappingKeyMap(parser));
@@ -921,6 +1018,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                         case TRANSFORMERTOTS:
                             config.setTransformerToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
+                        case LINETOTS:
+                            config.setLineToTimeSeriesMapping(parseMappingKeyMap(parser));
+                            break;
                         case RATIOTAPCHANGERTOTS:
                             config.setRatioTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
@@ -950,6 +1050,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                             break;
                         case TRANSFORMERTS:
                             config.setTransformerTimeSeries(parseMappingKeySet(parser));
+                            break;
+                        case LINETS:
+                            config.setLineTimeSeries(parseMappingKeySet(parser));
                             break;
                         case RATIOTAPCHANGERTS:
                             config.setRatioTapChangerTimeSeries(parseMappingKeySet(parser));
@@ -1043,6 +1146,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                             break;
                         case IGNORELIMITSTIMESERIESNAMES:
                             config.setIgnoreLimitsTimeSeriesNames(parseMappingSet(parser));
+                            break;
+                        case TSTOPLANNEDOUTAGES:
+                            config.setTimeSeriesToPlannedOutagesMapping(parseTimeSeriesToPlannedOutages(parser));
                             break;
                         default:
                             throw new IllegalStateException("Unexpected field name " + fieldName);
@@ -1251,6 +1357,10 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         timeSeriesToTransformersMapping, transformerToTimeSeriesMapping);
                 break;
+            case LINE:
+                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+                        timeSeriesToLinesMapping, lineToTimeSeriesMapping);
+                break;
             case RATIO_TAP_CHANGER:
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         timeSeriesToRatioTapChangersMapping, ratioTapChangerToTimeSeriesMapping);
@@ -1311,6 +1421,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 case TRANSFORMER:
                     transformerTimeSeries.add(mappingKey);
                     break;
+                case LINE:
+                    lineTimeSeries.add(mappingKey);
+                    break;
                 case PHASE_TAP_CHANGER:
                     phaseTapChangerTimeSeries.add(mappingKey);
                     break;
@@ -1368,6 +1481,11 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return getTimeSeriesToTransformersMapping();
     }
 
+    public Map<MappingKey, List<String>> setTimeSeriesToLinesMapping(Map<MappingKey, List<String>> map) {
+        timeSeriesToLinesMapping.putAll(map);
+        return getTimeSeriesToLinesMapping();
+    }
+
     public Map<MappingKey, List<String>> setTimeSeriesToRatioTapChangersMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToRatioTapChangersMapping.putAll(map);
         return getTimeSeriesToRatioTapChangersMapping();
@@ -1411,6 +1529,10 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableMap(timeSeriesToTransformersMapping);
     }
 
+    public Map<MappingKey, List<String>> getTimeSeriesToLinesMapping() {
+        return Collections.unmodifiableMap(timeSeriesToLinesMapping);
+    }
+
     public Map<MappingKey, List<String>> getTimeSeriesToRatioTapChangersMapping() {
         return Collections.unmodifiableMap(timeSeriesToRatioTapChangersMapping);
     }
@@ -1421,6 +1543,19 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
 
     public Map<MappingKey, List<String>> getTimeSeriesToVscConverterStationsMapping() {
         return Collections.unmodifiableMap(timeSeriesToVscConverterStationsMapping);
+    }
+
+    public Map<String, Set<String>> getTimeSeriesToPlannedOutagesMapping() {
+        return Collections.unmodifiableMap(timeSeriesToPlannedOutagesMapping);
+    }
+
+    public Map<String, Set<String>> setTimeSeriesToPlannedOutagesMapping(Map<String, Set<String>> map) {
+        timeSeriesToPlannedOutagesMapping.putAll(map);
+        return getTimeSeriesToPlannedOutagesMapping();
+    }
+
+    public void addPlannedOutages(String timeSeriesName, Set<String> disconnectedIds) {
+        timeSeriesToPlannedOutagesMapping.put(timeSeriesName, disconnectedIds);
     }
 
     public Map<MappingKey, List<String>> setGeneratorToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
@@ -1446,6 +1581,11 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     public Map<MappingKey, List<String>> setTransformerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         transformerToTimeSeriesMapping.putAll(map);
         return getTransformerToTimeSeriesMapping();
+    }
+
+    public Map<MappingKey, List<String>> setLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+        lineToTimeSeriesMapping.putAll(map);
+        return getLineToTimeSeriesMapping();
     }
 
     public Map<MappingKey, List<String>> setRatioTapChangerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
@@ -1491,6 +1631,10 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
 
     public Map<MappingKey, List<String>> getTransformerToTimeSeriesMapping() {
         return Collections.unmodifiableMap(transformerToTimeSeriesMapping);
+    }
+
+    public Map<MappingKey, List<String>> getLineToTimeSeriesMapping() {
+        return Collections.unmodifiableMap(lineToTimeSeriesMapping);
     }
 
     public Map<MappingKey, List<String>> getRatioTapChangerToTimeSeriesMapping() {
@@ -1546,6 +1690,11 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     public Set<MappingKey> setTransformerTimeSeries(Set<MappingKey> set) {
         transformerTimeSeries.addAll(set);
         return getTransformerTimeSeries();
+    }
+
+    public Set<MappingKey> setLineTimeSeries(Set<MappingKey> set) {
+        lineTimeSeries.addAll(set);
+        return getLineTimeSeries();
     }
 
     public Set<MappingKey> setRatioTapChangerTimeSeries(Set<MappingKey> set) {
@@ -1644,6 +1793,10 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
 
     public Set<MappingKey> getTransformerTimeSeries() {
         return Collections.unmodifiableSet(transformerTimeSeries);
+    }
+
+    public Set<MappingKey> getLineTimeSeries() {
+        return Collections.unmodifiableSet(lineTimeSeries);
     }
 
     public Set<MappingKey> getRatioTapChangerTimeSeries() {
@@ -1833,6 +1986,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     public Iterable<String> findUsedTimeSeriesNames() {
         return Iterables.concat(mappedTimeSeriesNames,
                                 timeSeriesToEquipmentMap.keySet(),
+                                timeSeriesToPlannedOutagesMapping.keySet(),
                                 distributionKeys.values().stream()
                                         .filter(distributionKey -> distributionKey instanceof TimeSeriesDistributionKey)
                                         .map(distributionKey -> ((TimeSeriesDistributionKey) distributionKey).getTimeSeriesName())
@@ -2029,6 +2183,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         keys.addAll(getEquipmentTimeSeriesKeys(getPhaseTapChangerToTimeSeriesMapping().keySet(), getPhaseTapChangerTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(getBreakerToTimeSeriesMapping().keySet(), getBreakerTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(getTransformerToTimeSeriesMapping().keySet(), getTransformerTimeSeries()));
+        keys.addAll(getEquipmentTimeSeriesKeys(getLineToTimeSeriesMapping().keySet(), getLineTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(getRatioTapChangerToTimeSeriesMapping().keySet(), getRatioTapChangerTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(getLccConverterStationToTimeSeriesMapping().keySet(), getLccConverterStationTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(getVscConverterStationToTimeSeriesMapping().keySet(), getVscConverterStationTimeSeries()));
@@ -2044,10 +2199,52 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getPhaseTapChangerToTimeSeriesMapping().keySet(), getPhaseTapChangerTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getBreakerToTimeSeriesMapping().keySet(), getBreakerTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getTransformerToTimeSeriesMapping().keySet(), getTransformerTimeSeries()));
+        keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getLineToTimeSeriesMapping().keySet(), getLineTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getRatioTapChangerToTimeSeriesMapping().keySet(), getRatioTapChangerTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getLccConverterStationToTimeSeriesMapping().keySet(), getLccConverterStationTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(getVscConverterStationToTimeSeriesMapping().keySet(), getVscConverterStationTimeSeries()));
         return keys;
+    }
+
+    public static ReadOnlyTimeSeriesStore buildPlannedOutagesTimeSeriesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
+        List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
+
+        // Check if store already contains equipment outages time series
+        List<String> timeSeries = timeSeriesToPlannedOutagesMapping.entrySet().stream()
+                .map(e -> e.getKey())
+                .filter(ts -> store.timeSeriesExists(ts))
+                .collect(Collectors.toList());
+        if (timeSeries.isEmpty()) {
+            return store;
+        }
+
+        // Build equipment planned outages time series
+        LOGGER.info("Building equipment planned outages time series");
+        TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesToPlannedOutagesMapping.keySet());
+        int nbPoints = index.getPointCount();
+        for (Map.Entry<String, Set<String>> entry : timeSeriesToPlannedOutagesMapping.entrySet()) {
+            String timeSeriesName = entry.getKey();
+            Set<String> disconnectedIds = entry.getValue();
+
+            StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name " + timeSeriesName));
+            String[] array = plannedOutagesTimeSeries.toArray();
+            for (String id : disconnectedIds) {
+                double[] values = new double[nbPoints];
+                Arrays.fill(values, CONNECTED_VALUE);
+                for (int i = 0; i < nbPoints; i++) {
+                    String[] ids = array[i].split(",");
+                    if (Stream.of(ids).anyMatch(e -> e.equals(id))) {
+                        values[i] = DISCONNECTED_VALUE;
+                    }
+                }
+                DoubleTimeSeries doubleTs = new StoredDoubleTimeSeries(
+                        new TimeSeriesMetadata(timeSeriesName + "_" + id, TimeSeriesDataType.DOUBLE, index),
+                        new UncompressedDoubleDataChunk(0, values).tryToCompress());
+                doubleTimeSeries.add(doubleTs);
+            }
+        }
+        return new ReadOnlyTimeSeriesStoreAggregator(new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries), store);
+
     }
 }
 

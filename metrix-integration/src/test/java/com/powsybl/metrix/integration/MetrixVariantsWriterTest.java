@@ -90,6 +90,9 @@ public class MetrixVariantsWriterTest {
                 private Generator createGenerator(String id, double targetP) {
                     Generator g = Mockito.mock(Generator.class);
                     Mockito.when(g.getId()).thenReturn(id);
+                    Terminal t = Mockito.mock(Terminal.class);
+                    Mockito.when(g.getTerminal()).thenReturn(t);
+                    Mockito.when(t.isConnected()).thenReturn(true);
                     Mockito.when(g.getTargetP()).thenReturn(targetP);
                     return g;
                 }
@@ -153,6 +156,12 @@ public class MetrixVariantsWriterTest {
                 private TwoWindingsTransformer createPst(String id, double currentTap) {
                     TwoWindingsTransformer twc = Mockito.mock(TwoWindingsTransformer.class);
                     Mockito.when(twc.getId()).thenReturn(id);
+                    Terminal t1 = Mockito.mock(Terminal.class);
+                    Mockito.when(twc.getTerminal1()).thenReturn(t1);
+                    Terminal t2 = Mockito.mock(Terminal.class);
+                    Mockito.when(twc.getTerminal1()).thenReturn(t2);
+                    Mockito.when(t1.isConnected()).thenReturn(true);
+                    Mockito.when(t2.isConnected()).thenReturn(true);
                     PhaseTapChanger pst = Mockito.mock(PhaseTapChanger.class);
                     Mockito.when(twc.getPhaseTapChanger()).thenReturn(pst);
                     Mockito.when(pst.getTapPosition()).thenReturn((int) currentTap);
@@ -216,6 +225,7 @@ public class MetrixVariantsWriterTest {
                         reader.onEquipmentVariant(g1, EquipmentVariable.targetP, 100.01f + i);
                         reader.onEquipmentVariant(g1, EquipmentVariable.minP, 111f + i);
                         reader.onEquipmentVariant(g1, EquipmentVariable.maxP, 121f + i);
+                        reader.onEquipmentVariant(g1, EquipmentVariable.disconnected, (i + 1) % 2);
 
                         // Load without LoadDetail
                         reader.onEquipmentVariant(l1, EquipmentVariable.p0, 10f + i);
@@ -267,6 +277,8 @@ public class MetrixVariantsWriterTest {
 
                         // Pst
                         reader.onEquipmentVariant(pst1, EquipmentVariable.phaseTapPosition, 17f + i);
+
+                        reader.onEquipmentVariant(pst1, EquipmentVariable.disconnected, (i + 1) % 2);
 
                         reader.onEquipmentVariant(l1, MetrixVariable.curativeCostDown, 10f + i);
 
