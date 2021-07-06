@@ -381,7 +381,8 @@ public class TimeSeriesMappingTest extends AbstractConverterTest {
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 1), false, false, true, mappingParameters.getToleranceThreshold());
 
         // Create observers
         List<TimeSeriesMapperObserver> observers = new ArrayList<>(2);

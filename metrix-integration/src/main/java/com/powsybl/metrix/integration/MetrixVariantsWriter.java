@@ -10,7 +10,7 @@ package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
 import com.powsybl.metrix.mapping.EquipmentVariable;
-import com.powsybl.metrix.mapping.MappingVariable;
+import com.powsybl.metrix.mapping.MappableEquipmentType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +22,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.zip.GZIPOutputStream;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixVariantsWriter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixVariantsWriter.class);
@@ -34,73 +31,98 @@ public class MetrixVariantsWriter {
     private final MetrixVariantProvider variantProvider;
     private final MetrixNetwork metrixNetwork;
 
-    public static String getMetrixKey(MappingVariable variable, String equipmentType) {
-        String key = null;
+    public static String getMetrixKey(EquipmentVariable variable, MappableEquipmentType equipmentType) {
         switch (equipmentType) {
-            case "generator":
-                if (variable == EquipmentVariable.targetP) {
-                    key = "PRODIM";
-                } else if (variable == EquipmentVariable.minP) {
-                    key = "TRPUIMIN";
-                } else if (variable == EquipmentVariable.maxP) {
-                    key = "TRVALPMD";
-                }
-                break;
-            case "load":
-                if (variable == EquipmentVariable.p0) {
-                    key = "CONELE";
-                }
-                break;
-            case "hvdcLine":
-                if (variable == EquipmentVariable.activePowerSetpoint) {
-                    key = "DCIMPPUI";
-                } else if (variable == EquipmentVariable.minP) {
-                    key = "DCMINPUI";
-                } else if (variable == EquipmentVariable.maxP) {
-                    key = "DCMAXPUI";
-                }
-                break;
-            case "pst":
-                if (variable == EquipmentVariable.phaseTapPosition) {
-                    key = "DTVALDEP";
-                }
-                break;
+            case GENERATOR:
+                return getGeneratorKey(variable);
+            case LOAD:
+                return getLoadKey(variable);
+            case HVDC_LINE:
+                return getHvdcKey(variable);
+            case PHASE_TAP_CHANGER:
+                return getPhaseTapChangerKey(variable);
             default:
-                if (variable == MetrixVariable.offGridCostDown) {
-                    key = "COUBHR";
-                } else if (variable == MetrixVariable.offGridCostUp) {
-                    key = "CTORDR";
-                } else if (variable == MetrixVariable.onGridCostDown) {
-                    key = "COUBAR";
-                } else if (variable == MetrixVariable.onGridCostUp) {
-                    key = "COUHAR";
-                } else if (variable == MetrixVariable.thresholdN) {
-                    key = "QATI00MN";
-                } else if (variable == MetrixVariable.thresholdN1) {
-                    key = "QATI5MNS";
-                } else if (variable == MetrixVariable.thresholdNk) {
-                    key = "QATI20MN";
-                } else if (variable == MetrixVariable.thresholdITAM) {
-                    key = "QATITAMN";
-                } else if (variable == MetrixVariable.thresholdITAMNk) {
-                    key = "QATITAMK";
-                } else if (variable == MetrixVariable.thresholdNEndOr) {
-                    key = "QATI00MN2";
-                } else if (variable == MetrixVariable.thresholdN1EndOr) {
-                    key = "QATI5MNS2";
-                } else if (variable == MetrixVariable.thresholdNkEndOr) {
-                    key = "QATI20MN2";
-                } else if (variable == MetrixVariable.thresholdITAMEndOr) {
-                    key = "QATITAMN2";
-                } else if (variable == MetrixVariable.thresholdITAMNkEndOr) {
-                    key = "QATITAMK2";
-                } else if (variable == MetrixVariable.curativeCostDown) {
-                    key = "COUEFF";
-                } else {
-                    LOGGER.warn("Unhandled variable {}", variable);
-                }
+                LOGGER.warn("Unhandled variable {}", variable);
+                return null;
         }
-        return key;
+    }
+
+    public static String getMetrixVariableKey(MetrixVariable variable) {
+        switch (variable) {
+            case offGridCostDown:
+                return "COUBHR";
+            case offGridCostUp:
+                return "CTORDR";
+            case onGridCostDown:
+                return "COUBAR";
+            case onGridCostUp:
+                return "COUHAR";
+            case thresholdN:
+                return "QATI00MN";
+            case thresholdN1:
+                return "QATI5MNS";
+            case thresholdNk:
+                return "QATI20MN";
+            case thresholdITAM:
+                return "QATITAMN";
+            case thresholdITAMNk:
+                return "QATITAMK";
+            case thresholdNEndOr:
+                return "QATI00MN2";
+            case thresholdN1EndOr:
+                return "QATI5MNS2";
+            case thresholdNkEndOr:
+                return "QATI20MN2";
+            case thresholdITAMEndOr:
+                return "QATITAMN2";
+            case thresholdITAMNkEndOr:
+                return "QATITAMK2";
+            case curativeCostDown:
+                return "COUEFF";
+            default:
+                LOGGER.warn("Unhandled variable {}", variable);
+                return null;
+        }
+    }
+
+    private static String getPhaseTapChangerKey(EquipmentVariable variable) {
+        if (variable == EquipmentVariable.phaseTapPosition) {
+            return "DTVALDEP";
+        }
+        return null;
+    }
+
+    private static String getHvdcKey(EquipmentVariable variable) {
+        switch (variable) {
+            case activePowerSetpoint:
+                return "DCIMPPUI";
+            case minP:
+                return "DCMINPUI";
+            case maxP:
+                return "DCMAXPUI";
+            default:
+                return null;
+        }
+    }
+
+    private static String getLoadKey(EquipmentVariable variable) {
+        if (variable == EquipmentVariable.p0) {
+            return "CONELE";
+        }
+        return null;
+    }
+
+    private static String getGeneratorKey(EquipmentVariable variable) {
+        switch (variable) {
+            case targetP:
+                return "PRODIM";
+            case minP:
+                return "TRPUIMIN";
+            case maxP:
+                return "TRVALPMD";
+            default:
+                return null;
+        }
     }
 
     public MetrixVariantsWriter(MetrixVariantProvider variantProvider, MetrixNetwork metrixNetwork) {
