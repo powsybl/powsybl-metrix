@@ -109,7 +109,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
 
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -267,6 +268,20 @@ public class TimeSeriesMapToTest {
                 "    }",
                 "    variable regulationMode",
                 "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable phaseRegulating",
+                "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable targetDeadband",
+                "}",
                 "mapToTransformers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
@@ -300,7 +315,7 @@ public class TimeSeriesMapToTest {
                 "    filter {",
                 "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
-                "    variable regulating",
+                "    variable ratioRegulating",
                 "}",
                 "mapToRatioTapChangers {",
                 "    timeSeriesName 'ts1'",
@@ -352,7 +367,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
 
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -388,15 +404,15 @@ public class TimeSeriesMapToTest {
         assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.activePowerSetpoint, EquipmentVariable.nominalV)));
         assertEquals(2, results.get("HVDC2").size());
         assertTrue(results.get("HVDC2").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
-        assertEquals(8, results.get("FP.AND1  FTDPRA1  1").size());
+        assertEquals(10, results.get("FP.AND1  FTDPRA1  1").size());
         assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(
                 ImmutableList.of(
                         // transformer variables
                         EquipmentVariable.ratedU1, EquipmentVariable.ratedU2,
                         // phaseTapChanger variables
-                        EquipmentVariable.phaseTapPosition, EquipmentVariable.regulationMode,
+                        EquipmentVariable.phaseTapPosition, EquipmentVariable.regulationMode, EquipmentVariable.phaseRegulating, EquipmentVariable.targetDeadband,
                         // ratioTapChanger variables
-                        EquipmentVariable.ratioTapPosition, EquipmentVariable.loadTapChangingCapabilities, EquipmentVariable.regulating, EquipmentVariable.targetV)));
+                        EquipmentVariable.ratioTapPosition, EquipmentVariable.loadTapChangingCapabilities, EquipmentVariable.ratioRegulating, EquipmentVariable.targetV)));
         assertTrue(results.get("FVALDI1_FVALDI1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.powerFactor)));
         assertTrue(results.get("FSSV.O1_FSSV.O1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.voltageRegulatorOn, EquipmentVariable.voltageSetpoint, EquipmentVariable.reactivePowerSetpoint)));
     }
@@ -431,7 +447,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
 
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -479,8 +496,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
-
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override

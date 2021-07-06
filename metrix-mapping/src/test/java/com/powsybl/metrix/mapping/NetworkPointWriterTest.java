@@ -37,14 +37,6 @@ public class NetworkPointWriterTest extends AbstractConverterTest {
 
     private MappingParameters mappingParameters = MappingParameters.load();
 
-    private void compareTxt(ByteArrayOutputStream stream, String directoryName, String fileName) throws Exception {
-        try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
-            try (InputStream actual = new ByteArrayInputStream(stream.toByteArray())) {
-                compareTxt(expected, actual);
-            }
-        }
-    }
-
     @Before
     public void setUp() throws IOException {
         super.setUp();
@@ -120,9 +112,17 @@ public class NetworkPointWriterTest extends AbstractConverterTest {
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), true, false, mappingParameters.getToleranceThreshold());
-
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
         // Launch mapper
         mapper.mapToNetwork(store, parameters, ImmutableList.of(networkPointWriter));
+    }
+
+    private void compareTxt(ByteArrayOutputStream stream, String directoryName, String fileName) throws Exception {
+        try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
+            try (InputStream actual = new ByteArrayInputStream(stream.toByteArray())) {
+                compareTxt(expected, actual);
+            }
+        }
     }
 }

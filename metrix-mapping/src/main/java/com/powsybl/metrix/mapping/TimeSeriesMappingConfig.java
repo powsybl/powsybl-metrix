@@ -1243,7 +1243,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
             case PST:
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         timeSeriesToPhaseTapChangersMapping, phaseTapChangerToTimeSeriesMapping);
-                unmappedPhaseTapChangers.remove(equipmentId);
+                if (variable == EquipmentVariable.phaseTapPosition) {
+                    unmappedPhaseTapChangers.remove(equipmentId);
+                }
                 break;
             case TRANSFORMER:
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,

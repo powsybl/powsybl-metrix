@@ -141,13 +141,13 @@ public class TimeSeriesProvideTsTest {
                 "    filter {",
                 "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
-                "    variables phaseTapPosition, regulationMode",
+                "    variables phaseTapPosition, regulationMode, phaseRegulating, targetDeadband",
                 "}",
                 "provideTsRatioTapChangers {",
                 "    filter {",
                 "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
-                "    variables ratioTapPosition, loadTapChangingCapabilities, regulating, targetV",
+                "    variables ratioTapPosition, loadTapChangingCapabilities, ratioRegulating, targetV",
                 "}",
                 "provideTsLccConverterStations {",
                 "    filter {",
@@ -198,12 +198,14 @@ public class TimeSeriesProvideTsTest {
                                      new MappingKey(EquipmentVariable.ratedU2, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getTransformerTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.regulationMode, "FP.AND1  FTDPRA1  1")),
+                                     new MappingKey(EquipmentVariable.regulationMode, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.phaseRegulating, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.targetDeadband, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getPhaseTapChangerTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
                                      new MappingKey(EquipmentVariable.targetV, "FP.AND1  FTDPRA1  1"),
                                      new MappingKey(EquipmentVariable.loadTapChangingCapabilities, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.regulating, "FP.AND1  FTDPRA1  1")),
+                                     new MappingKey(EquipmentVariable.ratioRegulating, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getRatioTapChangerTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1")),
                                      mappingConfig.getLccConverterStationTimeSeries());

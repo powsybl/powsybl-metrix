@@ -42,10 +42,13 @@ public enum EquipmentVariable implements MappingVariable {
     ratedU1("ratedU1"),
     ratedU2("ratedU2"),
     loadTapChangingCapabilities("loadTapChangingCapabilities"),
-    regulating("regulating"),
+    phaseRegulating("phaseRegulating"),
+    ratioRegulating("ratioRegulating"),
     voltageSetpoint("voltageSetpoint"),
     reactivePowerSetpoint("reactivePowerSetpoint"),
-    powerFactor("powerFactor");
+    powerFactor("powerFactor"),
+    disconnected("disconnected"),
+    targetDeadband("targetDeadband");
 
     private static final String NAME = "equipment";
 
@@ -99,12 +102,14 @@ public enum EquipmentVariable implements MappingVariable {
                                                                             EquipmentVariable.fixedReactivePower,
                                                                             EquipmentVariable.variableReactivePower);
     private static final Set<EquipmentVariable> PHASE_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.phaseTapPosition,
-                                                                                         EquipmentVariable.regulationMode);
+                                                                                         EquipmentVariable.phaseRegulating,
+                                                                                         EquipmentVariable.regulationMode,
+                                                                                         EquipmentVariable.targetDeadband);
     private static final Set<EquipmentVariable> TWO_WINDINGS_TRANSFORMER_VARIABLES = EnumSet.of(EquipmentVariable.ratedU1,
                                                                                    EquipmentVariable.ratedU2);
     private static final Set<EquipmentVariable> RATIO_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.ratioTapPosition,
                                                                                          EquipmentVariable.loadTapChangingCapabilities,
-                                                                                         EquipmentVariable.regulating,
+                                                                                         EquipmentVariable.ratioRegulating,
                                                                                          EquipmentVariable.targetV);
     private static final Set<EquipmentVariable> LCC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.powerFactor);
     private static final Set<EquipmentVariable> VSC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.voltageRegulatorOn,

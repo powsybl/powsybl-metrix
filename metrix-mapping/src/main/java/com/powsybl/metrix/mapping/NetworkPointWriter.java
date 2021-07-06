@@ -31,9 +31,6 @@ import java.util.Objects;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     private static final int ON_VALUE = 1;
@@ -89,163 +86,236 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         return "point-" + index.getInstantAt(point);
     }
 
-    private void mapToEquipmentVariable(Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
-        if (!Double.isNaN(equipmentValue)) {
-            if (identifiable instanceof Generator) {
-                Generator generator = network.getGenerator(identifiable.getId());
-                if (variable == EquipmentVariable.targetP) {
-                    generator.setTargetP((float) equipmentValue);
-                } else if (variable == EquipmentVariable.targetQ) {
-                    generator.setTargetQ((float) equipmentValue);
-                } else if (variable == EquipmentVariable.minP) {
-                    generator.setMinP((float) equipmentValue);
-                } else if (variable == EquipmentVariable.maxP) {
-                    generator.setMaxP((float) equipmentValue);
-                } else if (variable == EquipmentVariable.voltageRegulatorOn) {
-                    generator.setVoltageRegulatorOn(equipmentValue == ON_VALUE);
-                } else if (variable == EquipmentVariable.targetV) {
-                    generator.setTargetV((float) equipmentValue);
+    private void mapToEquipmentVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        if (Double.isNaN(equipmentValue)) {
+            return;
+        }
+
+        if (identifiable instanceof Generator) {
+            mapToGeneratorVariable(identifiable, variable, equipmentValue);
+        } else if (identifiable instanceof Load) {
+            mapToLoadVariable(identifiable, variable, (float) equipmentValue);
+        } else if (identifiable instanceof HvdcLine) {
+            mapToHvdcLineVariable(identifiable, variable, equipmentValue);
+        } else if (identifiable instanceof Switch) {
+            mapToSwitchVariable(identifiable, equipmentValue);
+        } else if (identifiable instanceof TwoWindingsTransformer) {
+            mapToTwoWindingsTransformerVariable(identifiable, variable, equipmentValue);
+        } else if (identifiable instanceof LccConverterStation) {
+            mapToLccConverterStationVariable(identifiable, variable, (float) equipmentValue);
+        } else if (identifiable instanceof VscConverterStation) {
+            mapToVscConverterStationVariable(identifiable, variable, equipmentValue);
+        } else {
+            throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
+        }
+    }
+
+    private void mapToSwitchVariable(Identifiable<?> identifiable, double equipmentValue) {
+        Switch breaker = network.getSwitch(identifiable.getId());
+        breaker.setOpen(equipmentValue == TimeSeriesMapper.SWITCH_OPEN);
+    }
+
+    private void mapToLccConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, float equipmentValue) {
+        LccConverterStation converter = network.getLccConverterStation(identifiable.getId());
+        if (variable == EquipmentVariable.powerFactor) {
+            converter.setPowerFactor(equipmentValue);
+        }
+    }
+
+    private void mapToVscConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
+        switch (variable) {
+            case voltageRegulatorOn:
+                converter.setVoltageRegulatorOn(Math.round(equipmentValue) == ON_VALUE);
+                break;
+            case voltageSetpoint:
+                converter.setVoltageSetpoint(equipmentValue);
+                break;
+            case reactivePowerSetpoint:
+                converter.setReactivePowerSetpoint(equipmentValue);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void mapToTwoWindingsTransformerVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        TwoWindingsTransformer transformer = network.getTwoWindingsTransformer(identifiable.getId());
+        // mapToTransformers variables
+        switch (variable) {
+            case ratedU1:
+                transformer.setRatedU1(equipmentValue);
+                break;
+            case ratedU2:
+                transformer.setRatedU2(equipmentValue);
+                break;
+            // mapToPhaseTapChangers variables
+            case phaseTapPosition:
+                transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
+                break;
+            case phaseRegulating:
+                transformer.getPhaseTapChanger().setRegulating(Math.round(equipmentValue) == ON_VALUE);
+                break;
+            case targetDeadband:
+                transformer.getPhaseTapChanger().setTargetDeadband(equipmentValue);
+                break;
+            case regulationMode:
+                selectRegulationMode(equipmentValue, transformer);
+                break;
+            // mapToRatioTapChanger variables
+            case ratioTapPosition:
+                transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
+                break;
+            case targetV:
+                transformer.getRatioTapChanger().setTargetV(equipmentValue);
+                break;
+            case loadTapChangingCapabilities:
+                transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.round(equipmentValue) == ON_VALUE);
+                break;
+            case ratioRegulating:
+                transformer.getRatioTapChanger().setRegulating(Math.round(equipmentValue) == ON_VALUE);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void selectRegulationMode(double equipmentValue, TwoWindingsTransformer transformer) {
+        PhaseTapChanger.RegulationMode mode;
+        switch ((int) equipmentValue) {
+            case 0 :
+                mode = PhaseTapChanger.RegulationMode.CURRENT_LIMITER;
+                break;
+            case 1 :
+                mode = PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL;
+                break;
+            case 2 :
+                mode = PhaseTapChanger.RegulationMode.FIXED_TAP;
+                break;
+            default :
+                throw new AssertionError("Unsupported regulation mode " + equipmentValue);
+        }
+        transformer.getPhaseTapChanger().setRegulationMode(mode);
+    }
+
+    private void mapToHvdcLineVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        HvdcLine hvdcLine = network.getHvdcLine(identifiable.getId());
+        HvdcOperatorActivePowerRange hvdcRange = addActivePowerRangeExtension(hvdcLine);
+        switch (variable) {
+            case activePowerSetpoint:
+                HvdcAngleDroopActivePowerControl activePowerControl = TimeSeriesMapper.getActivePowerControl(hvdcLine);
+                if (activePowerControl != null) {
+                    activePowerControl.setP0((float) equipmentValue);
+                } else if (equipmentValue >= 0) {
+                    hvdcLine.setConvertersMode(HvdcLine.ConvertersMode.SIDE_1_RECTIFIER_SIDE_2_INVERTER);
+                    hvdcLine.setActivePowerSetpoint((float) equipmentValue);
+                } else {
+                    hvdcLine.setConvertersMode(HvdcLine.ConvertersMode.SIDE_1_INVERTER_SIDE_2_RECTIFIER);
+                    hvdcLine.setActivePowerSetpoint((float) -equipmentValue);
                 }
-            } else if (identifiable instanceof Load) {
-                Load load = network.getLoad(identifiable.getId());
-                if (variable == EquipmentVariable.p0) {
-                    LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                    if (loadDetail != null) {
-                        loadDetail.setFixedActivePower(0f);
-                        loadDetail.setVariableActivePower(0f);
-                    }
-                    load.setP0((float) equipmentValue);
-                } else if (variable == EquipmentVariable.q0) {
-                    LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                    if (loadDetail != null) {
-                        loadDetail.setFixedReactivePower(0f);
-                        loadDetail.setVariableReactivePower(0f);
-                    }
-                    load.setQ0((float) equipmentValue);
-                } else if (variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower) {
-                    LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                    if (loadDetail == null) {
-                        load.newExtension(LoadDetailAdder.class)
-                                .withFixedActivePower(0f)
-                                .withFixedReactivePower(0f)
-                                .withVariableActivePower(0f)
-                                .withVariableReactivePower(0f)
-                                .add();
-                        loadDetail = load.getExtension(LoadDetail.class);
-                    }
-                    if (variable == EquipmentVariable.fixedActivePower) {
-                        loadDetail.setFixedActivePower((float) equipmentValue);
-                    } else {
-                        loadDetail.setVariableActivePower((float) equipmentValue);
-                    }
-                    load.setP0(loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower());
-                } else if (variable == EquipmentVariable.fixedReactivePower || variable == EquipmentVariable.variableReactivePower) {
-                    LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                    if (loadDetail == null) {
-                        load.newExtension(LoadDetailAdder.class)
-                                .withFixedActivePower(0f)
-                                .withFixedReactivePower(0f)
-                                .withVariableActivePower(0f)
-                                .withVariableReactivePower(0f)
-                                .add();
-                        loadDetail = load.getExtension(LoadDetail.class);
-                    }
-                    if (variable == EquipmentVariable.fixedReactivePower) {
-                        loadDetail.setFixedReactivePower((float) equipmentValue);
-                    } else {
-                        loadDetail.setVariableReactivePower((float) equipmentValue);
-                    }
-                    load.setQ0(loadDetail.getFixedReactivePower() + loadDetail.getVariableReactivePower());
+                break;
+            case minP:
+                hvdcRange.setOprFromCS2toCS1((float) Math.abs(equipmentValue));
+                calculateMaxP(equipmentValue, hvdcLine, hvdcRange.getOprFromCS1toCS2());
+                break;
+            case maxP:
+                hvdcRange.setOprFromCS1toCS2((float) Math.abs(equipmentValue));
+                calculateMaxP(equipmentValue, hvdcLine, hvdcRange.getOprFromCS2toCS1());
+                break;
+            case nominalV:
+                hvdcLine.setNominalV(equipmentValue);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void calculateMaxP(double equipmentValue, HvdcLine hvdcLine, float hvdcRange) {
+        double maxP = Math.max(Math.abs(equipmentValue), hvdcRange);
+        if (hvdcLine.getMaxP() < maxP) {
+            hvdcLine.setMaxP(maxP);
+        }
+    }
+
+    private void mapToLoadVariable(Identifiable<?> identifiable, EquipmentVariable variable, float equipmentValue) {
+        Load load = network.getLoad(identifiable.getId());
+        LoadDetail loadDetail = load.getExtension(LoadDetail.class);
+        switch (variable) {
+            case p0:
+                if (loadDetail != null) {
+                    loadDetail.setFixedActivePower(0f);
+                    loadDetail.setVariableActivePower(0f);
                 }
-            } else if (identifiable instanceof HvdcLine) {
-                HvdcLine hvdcLine = network.getHvdcLine(identifiable.getId());
-                HvdcOperatorActivePowerRange hvdcRange = addActivePowerRangeExtension(hvdcLine);
-                if (variable == EquipmentVariable.activePowerSetpoint) {
-                    HvdcAngleDroopActivePowerControl activePowerControl = TimeSeriesMapper.getActivePowerControl(hvdcLine);
-                    if (activePowerControl != null) {
-                        activePowerControl.setP0((float) equipmentValue);
-                    } else {
-                        if (equipmentValue >= 0) {
-                            hvdcLine.setConvertersMode(HvdcLine.ConvertersMode.SIDE_1_RECTIFIER_SIDE_2_INVERTER);
-                            hvdcLine.setActivePowerSetpoint((float) equipmentValue);
-                        } else {
-                            hvdcLine.setConvertersMode(HvdcLine.ConvertersMode.SIDE_1_INVERTER_SIDE_2_RECTIFIER);
-                            hvdcLine.setActivePowerSetpoint((float) -equipmentValue);
-                        }
-                    }
-                } else if (variable == EquipmentVariable.minP || variable == EquipmentVariable.maxP) {
-                    if (variable == EquipmentVariable.minP) {
-                        hvdcRange.setOprFromCS2toCS1((float) Math.abs(equipmentValue));
-                        double maxP = Math.max(Math.abs(equipmentValue), hvdcRange.getOprFromCS1toCS2());
-                        if (hvdcLine.getMaxP() < maxP) {
-                            hvdcLine.setMaxP(maxP);
-                        }
-                    } else {
-                        hvdcRange.setOprFromCS1toCS2((float) Math.abs(equipmentValue));
-                        double maxP = Math.max(Math.abs(equipmentValue), hvdcRange.getOprFromCS2toCS1());
-                        if (hvdcLine.getMaxP() < maxP) {
-                            hvdcLine.setMaxP(maxP);
-                        }
-                    }
-                } else if (variable == EquipmentVariable.nominalV) {
-                    hvdcLine.setNominalV(equipmentValue);
+                load.setP0(equipmentValue);
+                break;
+            case q0:
+                if (loadDetail != null) {
+                    loadDetail.setFixedReactivePower(0f);
+                    loadDetail.setVariableReactivePower(0f);
                 }
-            } else if (identifiable instanceof Switch) {
-                Switch breaker = network.getSwitch(identifiable.getId());
-                breaker.setOpen(equipmentValue == TimeSeriesMapper.SWITCH_OPEN);
-            } else if (identifiable instanceof TwoWindingsTransformer) {
-                TwoWindingsTransformer transformer = network.getTwoWindingsTransformer(identifiable.getId());
-                // mapToTransformers variables
-                if (variable == EquipmentVariable.ratedU1) {
-                    transformer.setRatedU1(equipmentValue);
-                } else if (variable == EquipmentVariable.ratedU2) {
-                    transformer.setRatedU2(equipmentValue);
-                // mapToPhaseTapChangers variables
-                } else if (variable == EquipmentVariable.phaseTapPosition) {
-                    transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
-                } else if (variable == EquipmentVariable.regulationMode) {
-                    PhaseTapChanger.RegulationMode mode;
-                    switch ((int) equipmentValue) {
-                        case 0 :
-                            mode = PhaseTapChanger.RegulationMode.CURRENT_LIMITER;
-                            break;
-                        case 1 :
-                            mode = PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL;
-                            break;
-                        case 2 :
-                            mode = PhaseTapChanger.RegulationMode.FIXED_TAP;
-                            break;
-                        default :
-                            throw new AssertionError("Unsupported regulation mode " + equipmentValue);
-                    }
-                    transformer.getPhaseTapChanger().setRegulationMode(mode);
-                // mapToRatioTapChanger variables
-                } else if (variable == EquipmentVariable.ratioTapPosition) {
-                    transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
-                } else if (variable == EquipmentVariable.targetV) {
-                    transformer.getRatioTapChanger().setTargetV(equipmentValue);
-                } else if (variable == EquipmentVariable.loadTapChangingCapabilities) {
-                    transformer.getRatioTapChanger().setLoadTapChangingCapabilities(equipmentValue == ON_VALUE);
-                } else if (variable == EquipmentVariable.regulating) {
-                    transformer.getRatioTapChanger().setRegulating(equipmentValue == ON_VALUE);
-                }
-            } else if (identifiable instanceof LccConverterStation) {
-                LccConverterStation converter = network.getLccConverterStation(identifiable.getId());
-                if (variable == EquipmentVariable.powerFactor) {
-                    converter.setPowerFactor((float) equipmentValue);
-                }
-            } else if (identifiable instanceof VscConverterStation) {
-                VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
-                if (variable == EquipmentVariable.voltageRegulatorOn) {
-                    converter.setVoltageRegulatorOn(equipmentValue == ON_VALUE);
-                } else if (variable == EquipmentVariable.voltageSetpoint) {
-                    converter.setVoltageSetpoint(equipmentValue);
-                } else if (variable == EquipmentVariable.reactivePowerSetpoint) {
-                    converter.setReactivePowerSetpoint(equipmentValue);
-                }
-            } else {
-                throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
-            }
+                load.setQ0(equipmentValue);
+                break;
+            case fixedActivePower:
+                loadDetail = newLoadDetailExtension(load, loadDetail);
+                loadDetail.setFixedActivePower(equipmentValue);
+                load.setP0(loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower());
+                break;
+            case variableActivePower:
+                loadDetail = newLoadDetailExtension(load, loadDetail);
+                loadDetail.setVariableActivePower(equipmentValue);
+                load.setP0(loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower());
+                break;
+            case fixedReactivePower:
+                loadDetail = newLoadDetailExtension(load, loadDetail);
+                loadDetail.setFixedReactivePower(equipmentValue);
+                load.setQ0(loadDetail.getFixedReactivePower() + loadDetail.getVariableReactivePower());
+                break;
+            case variableReactivePower:
+                loadDetail = newLoadDetailExtension(load, loadDetail);
+                loadDetail.setVariableReactivePower(equipmentValue);
+                load.setQ0(loadDetail.getFixedReactivePower() + loadDetail.getVariableReactivePower());
+                break;
+            default:
+                break;
+        }
+    }
+
+    private LoadDetail newLoadDetailExtension(Load load, LoadDetail loadDetail) {
+        if (loadDetail == null) {
+            load.newExtension(LoadDetailAdder.class)
+                    .withFixedActivePower(0f)
+                    .withFixedReactivePower(0f)
+                    .withVariableActivePower(0f)
+                    .withVariableReactivePower(0f)
+                    .add();
+            return load.getExtension(LoadDetail.class);
+        }
+        return loadDetail;
+    }
+
+    private void mapToGeneratorVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        Generator generator = network.getGenerator(identifiable.getId());
+        switch (variable) {
+            case targetP:
+                generator.setTargetP((float) equipmentValue);
+                break;
+            case targetQ:
+                generator.setTargetQ((float) equipmentValue);
+                break;
+            case minP:
+                generator.setMinP((float) equipmentValue);
+                break;
+            case maxP:
+                generator.setMaxP((float) equipmentValue);
+                break;
+            case voltageRegulatorOn:
+                generator.setVoltageRegulatorOn(Math.round(equipmentValue) == ON_VALUE);
+                break;
+            case targetV:
+                generator.setTargetV((float) equipmentValue);
+                break;
+            default:
+                break;
         }
     }
 
@@ -298,6 +368,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     @Override
     public void start() {
+        //Nothing to do
     }
 
     @Override
@@ -319,32 +390,33 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
         if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
             storeInitialStateValues();
-        } else {
-            // Write variant
-            String suffix = getSuffix(point, index);
-            if (dataSource instanceof MemDataSource) {
-                // for the moment, it is not possible with PowSyBl to import with a suffix different from null ...
-                suffix = null;
-            }
-            try (OutputStream os = dataSource.newOutputStream(suffix, "xiidm", false)) {
-                ExportOptions exportOptions = new ExportOptions();
-                exportOptions.setVersion(MetrixIidmConfiguration.load().getNetworkExportVersion());
-                NetworkXml.write(network, exportOptions, os);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-
-            // Remove variant
-            network.getVariantManager().removeVariant(getStateId(point, index));
-
-            // Return to initial values for attributes not depending on the variant
-            restoreInitialStateValues();
+            return;
         }
+
+        // Write variant
+        String suffix = getSuffix(point, index);
+        if (dataSource instanceof MemDataSource) {
+            // for the moment, it is not possible with PowSyBl to import with a suffix different from null ...
+            suffix = null;
+        }
+        try (OutputStream os = dataSource.newOutputStream(suffix, "xiidm", false)) {
+            ExportOptions exportOptions = new ExportOptions();
+            exportOptions.setVersion(MetrixIidmConfiguration.load().getNetworkExportVersion());
+            NetworkXml.write(network, exportOptions, os);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+
+        // Remove variant
+        network.getVariantManager().removeVariant(getStateId(point, index));
+
+        // Return to initial values for attributes not depending on the variant
+        restoreInitialStateValues();
     }
 
     @Override
     public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
-        mapToEquipmentVariable(identifiable, variable, equipmentValue);
+        mapToEquipmentVariable(identifiable, (EquipmentVariable) variable, equipmentValue);
     }
 
     @Override
