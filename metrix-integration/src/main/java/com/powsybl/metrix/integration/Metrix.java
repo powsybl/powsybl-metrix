@@ -58,7 +58,7 @@ public class Metrix extends AbstractMetrix {
 
     @Override
     protected void executeMetrixChunks(
-            Network network,
+            NetworkSource networkSource,
             MetrixRunParameters runParameters,
             ResultListener listener,
             MetrixConfig metrixConfig,
@@ -73,6 +73,7 @@ public class Metrix extends AbstractMetrix {
 
             for (int chunk = 0; chunk < chunkCount; chunk++) {
                 final int chunkNum = chunk;
+                Network network = networkSource.copy();
                 MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixConfig,
                         remedialActionsReaderSupplier != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV_GZ) : null,
                         commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)),

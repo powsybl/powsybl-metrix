@@ -262,12 +262,13 @@ public class MetrixTool implements Tool {
         NetworkSource networkSource = new NetworkSource() {
             @Override
             public Network copy() {
+                Stopwatch networkLoadingStopwatch = Stopwatch.createStarted();
                 logger.tagged("info").log("Loading case ...");
 
                 Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
 
-                stopwatch.stop();
-                logger.tagged("performance").log("Case loaded in %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+                networkLoadingStopwatch.stop();
+                logger.tagged("performance").log("Case loaded in %d ms", networkLoadingStopwatch.elapsed(TimeUnit.MILLISECONDS));
 
                 return network;
             }
@@ -327,7 +328,7 @@ public class MetrixTool implements Tool {
 
                                 @Override
                                 public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
-                                    resultStore.importTimeSeries(timeSeriesList, version, false);
+                                    resultStore.importTimeSeries(timeSeriesList, version, false, true);
                                 }
 
                                 @Override

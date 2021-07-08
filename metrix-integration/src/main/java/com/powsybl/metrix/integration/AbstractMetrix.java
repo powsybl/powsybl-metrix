@@ -337,7 +337,7 @@ public abstract class AbstractMetrix {
             }
 
             executeMetrixChunks(
-                    network,
+                    networkSource,
                     runParameters,
                     listener,
                     metrixConfig,
@@ -360,7 +360,7 @@ public abstract class AbstractMetrix {
     }
 
     protected abstract void executeMetrixChunks(
-            Network network,
+            NetworkSource network,
             MetrixRunParameters runParameters,
             ResultListener listener,
             MetrixConfig metrixConfig,

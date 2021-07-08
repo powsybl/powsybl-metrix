@@ -38,7 +38,7 @@ public class FileSystemTimeseriesStoreTest extends AbstractConverterTest {
         try (InputStream resourceAsStream = FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv");
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
-            tsStore.importTimeSeries(bufferedReader, true);
+            tsStore.importTimeSeries(bufferedReader, true, false);
         }
 
         assertThat(tsStore.getTimeSeriesNames(null)).isNotEmpty();
