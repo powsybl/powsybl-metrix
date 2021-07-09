@@ -56,9 +56,17 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
         private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToHvdcLinesMapping;
 
-        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToPstMapping;
+        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToPhaseTapChangersMapping;
 
         private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToBreakersMapping;
+
+        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToTransformersMapping;
+
+        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToRatioTapChangersMapping;
+
+        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLccConverterStationsMapping;
+
+        private Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToVscConverterStationsMapping;
 
         private Map<IndexedName, Set<MappingKey>> equipmentTimeSeries;
     }
@@ -346,72 +354,80 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         return new IndexedMappingKey(key, timeSeriesTable.getDoubleTimeSeriesIndex(key.getId()));
     }
 
-    private void identifyConstantTimeSeries(TimeSeriesTable table, int version,
+    private void identifyConstantTimeSeries(boolean forceNoConstantTimeSeries, TimeSeriesTable table, int version,
                                             Map<IndexedMappingKey, List<MappedEquipment>> sourceTimeSeries,
                                             Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeries,
                                             Map<IndexedMappingKey, List<MappedEquipment>> variableTimeSeries) {
-        sourceTimeSeries.forEach((indexedMappingKey, mappedEquipments) -> {
-            int timeSeriesNum = indexedMappingKey.getNum();
-            MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
-            if (variable == EquipmentVariable.targetP ||
-                variable == EquipmentVariable.activePowerSetpoint) {
-                // Active power mapping is not tested in order to allow later correction of values not included in [minP, maxP]
-                variableTimeSeries.put(indexedMappingKey, mappedEquipments);
-            } else {
-                if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                    LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
-                    constantTimeSeries.put(indexedMappingKey, mappedEquipments);
-                } else {
+        if (forceNoConstantTimeSeries) {
+            variableTimeSeries.putAll(sourceTimeSeries);
+        } else {
+            sourceTimeSeries.forEach((indexedMappingKey, mappedEquipments) -> {
+                int timeSeriesNum = indexedMappingKey.getNum();
+                MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
+                if (variable == EquipmentVariable.targetP ||
+                        variable == EquipmentVariable.activePowerSetpoint) {
+                    // Active power mapping is not tested in order to allow later correction of values not included in [minP, maxP]
                     variableTimeSeries.put(indexedMappingKey, mappedEquipments);
+                } else {
+                    if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
+                        LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
+                        constantTimeSeries.put(indexedMappingKey, mappedEquipments);
+                    } else {
+                        variableTimeSeries.put(indexedMappingKey, mappedEquipments);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
-    private void identifyConstantLoadTimeSeries(TimeSeriesTable table, int version,
+    private void identifyConstantLoadTimeSeries(boolean forceNoConstantTimeSeries, TimeSeriesTable table, int version,
                                                 MapperContext context,
                                                 Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeries,
                                                 Map<IndexedMappingKey, List<MappedEquipment>> variableTimeSeries) {
 
-        Map<IndexedMappingKey, List<MappedEquipment>> possiblyConstantLoadDetailsMapping = new HashMap<>();
-        Set<String> variableLoadDetailsIds = new HashSet<>();
+        if (forceNoConstantTimeSeries) {
+            variableTimeSeries.putAll(context.timeSeriesToLoadsMapping);
+        } else {
+            Map<IndexedMappingKey, List<MappedEquipment>> possiblyConstantLoadDetailsMapping = new HashMap<>();
+            Set<String> variableLoadDetailsIds = new HashSet<>();
 
-        context.timeSeriesToLoadsMapping.forEach((indexedMappingKey, mappedEquipments) -> {
-            int timeSeriesNum = indexedMappingKey.getNum();
-            MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
+            context.timeSeriesToLoadsMapping.forEach((indexedMappingKey, mappedEquipments) -> {
+                int timeSeriesNum = indexedMappingKey.getNum();
+                MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
 
-            if (variable != EquipmentVariable.p0 &&
-                variable != EquipmentVariable.fixedActivePower &&
-                variable != EquipmentVariable.variableActivePower) {
-                // Only test if active load power mapping is constant
-                variableTimeSeries.put(indexedMappingKey, mappedEquipments);
-            } else {
-                if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                    LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
-                    if (variable == EquipmentVariable.p0) {
-                        constantTimeSeries.put(indexedMappingKey, mappedEquipments);
-                    } else {
-                        possiblyConstantLoadDetailsMapping.put(indexedMappingKey, mappedEquipments);
-                    }
-                } else {
+                if (variable != EquipmentVariable.p0 &&
+                        variable != EquipmentVariable.fixedActivePower &&
+                        variable != EquipmentVariable.variableActivePower) {
+                    // Only test if active load power mapping is constant
                     variableTimeSeries.put(indexedMappingKey, mappedEquipments);
-                    if (variable != EquipmentVariable.p0) {
-                        variableLoadDetailsIds.addAll(mappedEquipments.stream()
-                            .map(mappedEquipment -> mappedEquipment.getIdentifiable().getId())
-                            .collect(Collectors.toList()));
-                    }
-                }
-            }
-        });
-        possiblyConstantLoadDetailsMapping.forEach((indexedMappingKey, mappedEquipments) -> {
-            mappedEquipments.forEach(mappedEquipment -> {
-                if (variableLoadDetailsIds.contains(mappedEquipment.getIdentifiable().getId())) {
-                    variableTimeSeries.computeIfAbsent(indexedMappingKey, i -> new ArrayList<>()).add(mappedEquipment);
                 } else {
-                    constantTimeSeries.computeIfAbsent(indexedMappingKey, i -> new ArrayList<>()).add(mappedEquipment);
+                    if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
+                        LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
+                        if (variable == EquipmentVariable.p0) {
+                            constantTimeSeries.put(indexedMappingKey, mappedEquipments);
+                        } else {
+                            possiblyConstantLoadDetailsMapping.put(indexedMappingKey, mappedEquipments);
+                        }
+                    } else {
+                        variableTimeSeries.put(indexedMappingKey, mappedEquipments);
+                        if (variable != EquipmentVariable.p0) {
+                            variableLoadDetailsIds.addAll(mappedEquipments.stream()
+                                    .map(mappedEquipment -> mappedEquipment.getIdentifiable().getId())
+                                    .collect(Collectors.toList()));
+                        }
+                    }
                 }
             });
-        });
+            possiblyConstantLoadDetailsMapping.forEach((indexedMappingKey, mappedEquipments) -> {
+                mappedEquipments.forEach(mappedEquipment -> {
+                    if (variableLoadDetailsIds.contains(mappedEquipment.getIdentifiable().getId())) {
+                        variableTimeSeries.computeIfAbsent(indexedMappingKey, i -> new ArrayList<>()).add(mappedEquipment);
+                    } else {
+                        constantTimeSeries.computeIfAbsent(indexedMappingKey, i -> new ArrayList<>()).add(mappedEquipment);
+                    }
+                });
+            });
+        }
     }
 
     private void correctUnmappedGenerator(boolean isUnmappedMinP, boolean isUnmappedMaxP, Generator generator, int version, boolean ignoreLimits, TimeSeriesIndex index, TimeSeriesMappingLogger logger) {
@@ -534,36 +550,57 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
         int firstPoint = parameters.getPointRange() != null ? parameters.getPointRange().lowerEndpoint() : 0;
         int lastPoint = parameters.getPointRange() != null ? parameters.getPointRange().upperEndpoint() : (table.getTableIndex().getPointCount() - 1);
+        boolean forceNoConstantTimeSeries = !parameters.isIdentifyConstantTimeSeries();
 
         // Check if some load mappings are constant
         Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLoadsMapping = new LinkedHashMap<>();
         Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToLoadsMapping = new LinkedHashMap<>();
-        identifyConstantLoadTimeSeries(table, version, context, constantTimeSeriesToLoadsMapping, timeSeriesToLoadsMapping);
+        identifyConstantLoadTimeSeries(forceNoConstantTimeSeries, table, version, context, constantTimeSeriesToLoadsMapping, timeSeriesToLoadsMapping);
 
         // Check if some generator mappings are constant
         Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToGeneratorsMapping = new LinkedHashMap<>();
         Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToGeneratorsMapping = new LinkedHashMap<>();
-        identifyConstantTimeSeries(table, version, context.timeSeriesToGeneratorsMapping, constantTimeSeriesToGeneratorsMapping, timeSeriesToGeneratorsMapping);
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToGeneratorsMapping, constantTimeSeriesToGeneratorsMapping, timeSeriesToGeneratorsMapping);
 
         // Check if some dangling lines mappings are constant
         Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToDanglingLinesMapping = new LinkedHashMap<>();
         Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToDanglingLinesMapping = new LinkedHashMap<>();
-        identifyConstantTimeSeries(table, version, context.timeSeriesToDanglingLinesMapping, constantTimeSeriesToDanglingLinesMapping, timeSeriesToDanglingLinesMapping);
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToDanglingLinesMapping, constantTimeSeriesToDanglingLinesMapping, timeSeriesToDanglingLinesMapping);
 
         // Check if some hvdc lines mappings are constant
         Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToHvdcLinesMapping = new LinkedHashMap<>();
         Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToHvdcLinesMapping = new LinkedHashMap<>();
-        identifyConstantTimeSeries(table, version, context.timeSeriesToHvdcLinesMapping, constantTimeSeriesToHvdcLinesMapping, timeSeriesToHvdcLinesMapping);
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToHvdcLinesMapping, constantTimeSeriesToHvdcLinesMapping, timeSeriesToHvdcLinesMapping);
 
-        // Check if some pst mappings are constant
-        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToPstMapping = new HashMap<>();
-        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToPstMapping = new HashMap<>();
-        identifyConstantTimeSeries(table, version, context.timeSeriesToPstMapping, constantTimeSeriesToPstMapping, timeSeriesToPstMapping);
+        // Check if some phase tap changers mappings are constant
+        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToPhaseTapChangersMapping = new LinkedHashMap<>();
+        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToPhaseTapChangersMapping = new LinkedHashMap<>();
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToPhaseTapChangersMapping, constantTimeSeriesToPhaseTapChangersMapping, timeSeriesToPhaseTapChangersMapping);
 
         // Check if some breaker mappings are constant
         Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToBreakersMapping = new LinkedHashMap<>();
         Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToBreakersMapping = new LinkedHashMap<>();
-        identifyConstantTimeSeries(table, version, context.timeSeriesToBreakersMapping, constantTimeSeriesToBreakersMapping, timeSeriesToBreakersMapping);
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToBreakersMapping, constantTimeSeriesToBreakersMapping, timeSeriesToBreakersMapping);
+
+        // Check if some transformers mappings are constant
+        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToTransformersMapping = new LinkedHashMap<>();
+        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToTransformersMapping = new LinkedHashMap<>();
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToTransformersMapping, constantTimeSeriesToTransformersMapping, timeSeriesToTransformersMapping);
+
+        // Check if some tap changers mappings are constant
+        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToRatioTapChangersMapping = new LinkedHashMap<>();
+        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToRatioTapChangersMapping = new LinkedHashMap<>();
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToRatioTapChangersMapping, constantTimeSeriesToRatioTapChangersMapping, timeSeriesToRatioTapChangersMapping);
+
+        // Check if some lcc converters mappings are constant
+        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLccConverterStationsMapping = new LinkedHashMap<>();
+        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToLccConverterStationsMapping = new LinkedHashMap<>();
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToLccConverterStationsMapping, constantTimeSeriesToLccConverterStationsMapping, timeSeriesToLccConverterStationsMapping);
+
+        // Check if some vsc converters mappings are constant
+        Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToVscConverterStationsMapping = new LinkedHashMap<>();
+        Map<IndexedMappingKey, List<MappedEquipment>> constantTimeSeriesToVscConverterStationsMapping = new LinkedHashMap<>();
+        identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToVscConverterStationsMapping, constantTimeSeriesToVscConverterStationsMapping, timeSeriesToVscConverterStationsMapping);
 
         // Check if some equipement mappings are constant
         Map<IndexedName, Set<MappingKey>> equipmentTimeSeries = new HashMap<>();
@@ -603,8 +640,12 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 !constantTimeSeriesToGeneratorsMapping.isEmpty() ||
                 !constantTimeSeriesToDanglingLinesMapping.isEmpty() ||
                 !constantTimeSeriesToHvdcLinesMapping.isEmpty() ||
-                !constantTimeSeriesToPstMapping.isEmpty() ||
+                !constantTimeSeriesToPhaseTapChangersMapping.isEmpty() ||
                 !constantTimeSeriesToBreakersMapping.isEmpty() ||
+                !constantTimeSeriesToTransformersMapping.isEmpty() ||
+                !constantTimeSeriesToRatioTapChangersMapping.isEmpty() ||
+                !constantTimeSeriesToLccConverterStationsMapping.isEmpty() ||
+                !constantTimeSeriesToVscConverterStationsMapping.isEmpty() ||
                 !constantEquipmentTimeSeries.isEmpty()) {
 
             mapSinglePoint(table, parameters, version, CONSTANT_VARIANT_ID, firstPoint,
@@ -612,8 +653,12 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                     constantTimeSeriesToGeneratorsMapping,
                     constantTimeSeriesToDanglingLinesMapping,
                     constantTimeSeriesToHvdcLinesMapping,
-                    constantTimeSeriesToPstMapping,
+                    constantTimeSeriesToPhaseTapChangersMapping,
                     constantTimeSeriesToBreakersMapping,
+                    constantTimeSeriesToTransformersMapping,
+                    constantTimeSeriesToRatioTapChangersMapping,
+                    constantTimeSeriesToLccConverterStationsMapping,
+                    constantTimeSeriesToVscConverterStationsMapping,
                     constantEquipmentTimeSeries,
                     observer, logger);
         }
@@ -688,8 +733,12 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 timeSeriesToGeneratorsMapping,
                 timeSeriesToDanglingLinesMapping,
                 timeSeriesToHvdcLinesMapping,
-                timeSeriesToPstMapping,
+                timeSeriesToPhaseTapChangersMapping,
                 timeSeriesToBreakersMapping,
+                timeSeriesToTransformersMapping,
+                timeSeriesToRatioTapChangersMapping,
+                timeSeriesToLccConverterStationsMapping,
+                timeSeriesToVscConverterStationsMapping,
                 equipmentTimeSeries,
                 observer, logger);
 
@@ -705,8 +754,12 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToGeneratorsMapping,
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToDanglingLinesMapping,
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToHvdcLinesMapping,
-                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToPstMapping,
+                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToPhaseTapChangersMapping,
                                 Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToBreakersMapping,
+                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToTransformersMapping,
+                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToRatioTapChangersMapping,
+                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToLccConverterStationsMapping,
+                                Map<IndexedMappingKey, List<MappedEquipment>> timeSeriesToVscConverterStationsMapping,
                                 Map<IndexedName, Set<MappingKey>> equipmentTimeSeries,
                                 TimeSeriesMapperChecker observer, TimeSeriesMappingLogger logger) {
 
@@ -715,8 +768,12 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         mapToNetwork(table, version, variantId, point, timeSeriesToGeneratorsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
         mapToNetwork(table, version, variantId, point, timeSeriesToDanglingLinesMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
         mapToNetwork(table, version, variantId, point, timeSeriesToHvdcLinesMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToPstMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToPhaseTapChangersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
         mapToNetwork(table, version, variantId, point, timeSeriesToBreakersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToTransformersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToRatioTapChangersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToLccConverterStationsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToVscConverterStationsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
 
         if (observer != null) {
             // generic mapping
@@ -765,11 +822,17 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                             .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
                     context.timeSeriesToHvdcLinesMapping = config.getTimeSeriesToHvdcLinesMapping().entrySet().stream()
                             .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
-
-                    context.timeSeriesToPstMapping = config.getTimeSeriesToPstMapping().entrySet().stream()
+                    context.timeSeriesToPhaseTapChangersMapping = config.getTimeSeriesToPhaseTapChangersMapping().entrySet().stream()
                             .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
-
                     context.timeSeriesToBreakersMapping = config.getTimeSeriesToBreakersMapping().entrySet().stream()
+                            .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
+                    context.timeSeriesToTransformersMapping = config.getTimeSeriesToTransformersMapping().entrySet().stream()
+                            .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
+                    context.timeSeriesToRatioTapChangersMapping = config.getTimeSeriesToRatioTapChangersMapping().entrySet().stream()
+                            .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
+                    context.timeSeriesToLccConverterStationsMapping = config.getTimeSeriesToLccConverterStationsMapping().entrySet().stream()
+                            .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
+                    context.timeSeriesToVscConverterStationsMapping = config.getTimeSeriesToVscConverterStationsMapping().entrySet().stream()
                             .collect(Collectors.toMap(e -> indexMappingKey(table, e.getKey()), e -> mapEquipments(e.getKey(), e.getValue()), (x, y) -> y, LinkedHashMap::new));
                     context.equipmentTimeSeries = config.getTimeSeriesToEquipment().entrySet().stream()
                             .collect(Collectors.toMap(e -> new IndexedName(e.getKey(), table.getDoubleTimeSeriesIndex(e.getKey())), Map.Entry::getValue));

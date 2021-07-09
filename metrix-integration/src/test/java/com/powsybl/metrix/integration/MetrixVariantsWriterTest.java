@@ -266,7 +266,7 @@ public class MetrixVariantsWriterTest {
                         reader.onEquipmentVariant(g1, MetrixVariable.onGridCostUp, 1141f + i);
 
                         // Pst
-                        reader.onEquipmentVariant(pst1, EquipmentVariable.currentTap, 17f + i);
+                        reader.onEquipmentVariant(pst1, EquipmentVariable.phaseTapPosition, 17f + i);
 
                         reader.onEquipmentVariant(l1, MetrixVariable.curativeCostDown, 10f + i);
 

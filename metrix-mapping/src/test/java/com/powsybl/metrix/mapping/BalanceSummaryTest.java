@@ -89,7 +89,8 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
+                false, false, true, mappingParameters.getToleranceThreshold());
 
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
@@ -150,8 +151,8 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), false, true, mappingParameters.getToleranceThreshold());
-
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
+                false, true, true, mappingParameters.getToleranceThreshold());
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));

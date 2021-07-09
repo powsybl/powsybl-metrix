@@ -20,6 +20,6 @@ Variable synthesis:
 | fixedActivePower    | -          | 0     | -             | -         | -    | -        |
 | variableActivePower | -          | 0     | -             | -         | -    | -        |
 | activePowerSetpoint | -          | -     | -             | 0         | -    | -        |
-| currentTap          | -          | -     | -             | -         | 0    | -        |
+| phaseTapPosition    | -          | -     | -             | -         | 0    | -        |
 | open                | -          | -     | -             | -         | -    | 0        |
 +---------------------+------------+-------+---------------+-----------+------+----------+

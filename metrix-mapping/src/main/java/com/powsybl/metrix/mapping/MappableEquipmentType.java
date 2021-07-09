@@ -18,8 +18,13 @@ public enum MappableEquipmentType {
     HVDC_LINE("hvdcLine"),
     LOAD("load"),
     BOUNDARY_LINE("boundaryLine"),
-    PST("pst"),
-    SWITCH("breaker");
+    SWITCH("breaker"),
+    TRANSFORMER("transformer"),
+    PHASE_TAP_CHANGER("transformer"),
+    RATIO_TAP_CHANGER("transformer"),
+    LCC_CONVERTER_STATION("lccConverterStation"),
+    VSC_CONVERTER_STATION("vscConverterStation"),
+    @Deprecated PST("pst"); // Kept for compatibility
 
     private final String scriptVariable;
 
