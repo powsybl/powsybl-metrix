@@ -468,7 +468,7 @@ public class MetrixNetwork {
                 Identifiable<?> identifiable = network.getIdentifiable(element.getId());
                 if (identifiable == null ||
                         (element.getType() == ContingencyElementType.GENERATOR && !(identifiable instanceof Generator)) ||
-                        (element.getType() == ContingencyElementType.BRANCH && !(identifiable instanceof Branch)) ||
+                        (Arrays.asList(ContingencyElementType.BRANCH, ContingencyElementType.LINE, ContingencyElementType.TWO_WINDINGS_TRANSFORMER).contains(element.getType()) && !(identifiable instanceof Branch)) ||
                         (element.getType() == ContingencyElementType.HVDC_LINE && !(identifiable instanceof HvdcLine))) {
                     elemOk = false;
                 }
