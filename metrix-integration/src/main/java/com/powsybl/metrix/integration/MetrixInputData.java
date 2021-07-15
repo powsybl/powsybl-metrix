@@ -628,6 +628,8 @@ public class MetrixInputData implements MetrixInputConstants {
                     int type;
                     switch (element.getType()) {
                         case BRANCH:
+                        case LINE:
+                        case TWO_WINDINGS_TRANSFORMER:
                             type = ElementType.BRANCH.getType();
                             break;
                         case GENERATOR:
