@@ -39,10 +39,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
-/**
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class TimeSeriesMappingConfig implements TimeSeriesConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
@@ -1189,33 +1185,13 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     }
 
     public void addEquipmentMapping(MappableEquipmentType equipmentType, String timeSeriesName, String equipmentId, DistributionKey distributionKey,
-                                    MappingVariable variable) {
+                                    EquipmentVariable variable) {
         switch (equipmentType) {
             case GENERATOR:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                        timeSeriesToGeneratorsMapping, generatorToTimeSeriesMapping);
-                if (variable == EquipmentVariable.targetP) {
-                    unmappedGenerators.remove(equipmentId);
-                } else if (variable == EquipmentVariable.minP) {
-                    unmappedMinPGenerators.remove(equipmentId);
-                } else if (variable == EquipmentVariable.maxP) {
-                    unmappedMaxPGenerators.remove(equipmentId);
-                }
+                addGeneratorMapping(timeSeriesName, equipmentId, distributionKey, variable);
                 break;
             case LOAD:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                        timeSeriesToLoadsMapping, loadToTimeSeriesMapping);
-                if (variable == EquipmentVariable.p0) {
-                    unmappedLoads.remove(equipmentId);
-                    unmappedFixedActivePowerLoads.remove(equipmentId);
-                    unmappedVariableActivePowerLoads.remove(equipmentId);
-                } else if (variable == EquipmentVariable.fixedActivePower) {
-                    unmappedLoads.remove(equipmentId);
-                    unmappedFixedActivePowerLoads.remove(equipmentId);
-                } else if (variable == EquipmentVariable.variableActivePower) {
-                    unmappedLoads.remove(equipmentId);
-                    unmappedVariableActivePowerLoads.remove(equipmentId);
-                }
+                addLoadMapping(timeSeriesName, equipmentId, distributionKey, variable);
                 break;
             case BOUNDARY_LINE:
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
@@ -1225,15 +1201,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 }
                 break;
             case HVDC_LINE:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                        timeSeriesToHvdcLinesMapping, hvdcLineToTimeSeriesMapping);
-                if (variable == EquipmentVariable.activePowerSetpoint) {
-                    unmappedHvdcLines.remove(equipmentId);
-                } else if (variable == EquipmentVariable.minP) {
-                    unmappedMinPHvdcLines.remove(equipmentId);
-                } else if (variable == EquipmentVariable.maxP) {
-                    unmappedMaxPHvdcLines.remove(equipmentId);
-                }
+                addHvdcLineMapping(timeSeriesName, equipmentId, distributionKey, variable);
                 break;
             case SWITCH:
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
@@ -1265,6 +1233,64 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 break;
             default:
                 throw new AssertionError();
+        }
+    }
+
+    private void addHvdcLineMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, EquipmentVariable variable) {
+        addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+                timeSeriesToHvdcLinesMapping, hvdcLineToTimeSeriesMapping);
+        switch (variable) {
+            case activePowerSetpoint:
+                unmappedHvdcLines.remove(equipmentId);
+                break;
+            case minP:
+                unmappedMinPHvdcLines.remove(equipmentId);
+                break;
+            case maxP:
+                unmappedMaxPHvdcLines.remove(equipmentId);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void addLoadMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, EquipmentVariable variable) {
+        addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+                timeSeriesToLoadsMapping, loadToTimeSeriesMapping);
+        switch (variable) {
+            case p0:
+                unmappedLoads.remove(equipmentId);
+                unmappedFixedActivePowerLoads.remove(equipmentId);
+                unmappedVariableActivePowerLoads.remove(equipmentId);
+                break;
+            case fixedActivePower:
+                unmappedLoads.remove(equipmentId);
+                unmappedFixedActivePowerLoads.remove(equipmentId);
+                break;
+            case variableActivePower:
+                unmappedLoads.remove(equipmentId);
+                unmappedVariableActivePowerLoads.remove(equipmentId);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void addGeneratorMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, EquipmentVariable variable) {
+        addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+                timeSeriesToGeneratorsMapping, generatorToTimeSeriesMapping);
+        switch (variable) {
+            case targetP:
+                unmappedGenerators.remove(equipmentId);
+                break;
+            case minP:
+                unmappedMinPGenerators.remove(equipmentId);
+                break;
+            case maxP:
+                unmappedMaxPGenerators.remove(equipmentId);
+                break;
+            default:
+                break;
         }
     }
 

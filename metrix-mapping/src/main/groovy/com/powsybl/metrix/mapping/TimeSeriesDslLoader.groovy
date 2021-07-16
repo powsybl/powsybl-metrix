@@ -13,7 +13,6 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.Switch
 import com.powsybl.iidm.network.TopologyKind
-import com.powsybl.iidm.network.TwoWindingsTransformer
 import com.powsybl.timeseries.CalculatedTimeSeries
 import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver
@@ -32,9 +31,6 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 class TimeSeriesDslLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoader.class)
@@ -402,8 +398,7 @@ class TimeSeriesDslLoader {
         binding.mapToBreakers = { Closure closure ->
             mapToBreakers(binding, store, config, closure, switchesFilteringContext)
         }
-        // Kept for compatibility
-        binding.mapToPsts = { Closure closure ->
+        binding.mapToPsts = { @Deprecated Closure closure ->
             mapToSimpleVariableEquipments(binding, store, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PST)
         }
 

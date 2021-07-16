@@ -35,9 +35,6 @@ import java.util.stream.Collectors;
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixKey;
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixVariableKey;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixVariantReaderImpl.class);
 
@@ -97,25 +94,15 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     private void addValue(String id, MetrixVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values) {
         String key = getMetrixVariableKey(variable);
-        if (key == null) {
-            LOGGER.warn("Unrecognized key {}", variable);
-            return;
-        }
-        if (ids.containsKey(key)) {
-            ids.get(key).add(id);
-            values.get(key).add(value);
-        } else {
-            List<String> idList = new ArrayList<>();
-            idList.add(id);
-            ids.put(key, idList);
-            TDoubleArrayList valueList = new TDoubleArrayList();
-            valueList.add(value);
-            values.put(key, valueList);
-        }
+        addValue(id, variable, value, ids, values, key);
     }
 
     private void addValue(String id, EquipmentVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, MappableEquipmentType equipmentType) {
         String key = getMetrixKey(variable, equipmentType);
+        addValue(id, variable, value, ids, values, key);
+    }
+
+    private void addValue(String id, MappingVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, String key) {
         if (key == null) {
             LOGGER.warn("Unrecognized key {}", variable);
             return;

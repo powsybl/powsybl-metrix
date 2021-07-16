@@ -10,9 +10,6 @@ package com.powsybl.metrix.mapping;
 
 import java.util.Set;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class ComputationRange {
 
     private Set<Integer> versions;

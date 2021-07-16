@@ -27,9 +27,6 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     private static final int N = 1;
