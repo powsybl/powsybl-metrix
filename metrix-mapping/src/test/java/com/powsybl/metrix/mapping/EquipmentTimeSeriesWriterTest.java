@@ -15,7 +15,6 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
@@ -81,7 +80,6 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
         mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
     }
 
-    @Ignore
     @Test
     public void equipmentTimeSeriesConstantVariantTest() throws Exception {
 

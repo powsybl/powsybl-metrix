@@ -31,9 +31,6 @@ import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class TimeSeriesMapperCheckerTest {
 
     private static final String INFO = "INFO";

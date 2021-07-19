@@ -180,21 +180,13 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
             context.updateValue(balanceValue);
             table.put(index.getInstantAt(point), context.getVersion(), balanceValue);
             if (out != null) {
-                out.println("Balance at " + index.getInstantAt(point) + ": " + String.format("%.1f", balanceValue));
+                out.println("Balance at " + index.getInstantAt(point) + ": " + String.format(Locale.US, "%.1f", balanceValue));
             }
         }
     }
 
-    public void writeCsv(Path mappingSynthesisDir) throws IOException {
-        writeCsv(mappingSynthesisDir, SEPARATOR);
-    }
-
     public void writeCsv(Path mappingSynthesisDir, char separator) throws IOException {
         writeCsv(mappingSynthesisDir, separator, ZoneId.systemDefault());
-    }
-
-    public void writeCsv(Path mappingSynthesisDir, ZoneId zoneId) throws IOException {
-        writeCsv(mappingSynthesisDir, SEPARATOR, zoneId);
     }
 
     public void writeCsv(Path mappingSynthesisDir, char separator, ZoneId zoneId) throws IOException {
@@ -205,10 +197,6 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     public void writeCsv(BufferedWriter writer) throws IOException {
         writeCsvStats(writer, SEPARATOR);
-    }
-
-    public void writeCsv(BufferedWriter writer, char separator) throws IOException {
-        writeCsv(writer, separator, ZoneId.systemDefault());
     }
 
     public void writeCsv(BufferedWriter writer, char separator, ZoneId zoneId) throws IOException {

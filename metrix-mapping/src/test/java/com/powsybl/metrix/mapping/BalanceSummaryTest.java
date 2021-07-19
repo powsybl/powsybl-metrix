@@ -15,16 +15,15 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.*;
 
-@Ignore
 public class BalanceSummaryTest extends AbstractConverterTest {
 
     private static final char SEPARATOR = ';';
@@ -102,7 +101,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(balanceSummaryCsvOutput)) {
-            balanceSummary.writeCsv(bufferedWriter, SEPARATOR);
+            balanceSummary.writeCsv(bufferedWriter, SEPARATOR, ZoneId.of("UTC"));
             bufferedWriter.flush();
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
@@ -163,7 +162,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(balanceSummaryCsvOutput)) {
-            balanceSummary.writeCsv(bufferedWriter, SEPARATOR);
+            balanceSummary.writeCsv(bufferedWriter, SEPARATOR, ZoneId.of("UTC"));
             bufferedWriter.flush();
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceMappingNok.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
