@@ -16,9 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MultipleTimeSeriesMapperObserver implements TimeSeriesMapperObserver {
 
     protected final List<TimeSeriesMapperObserver> observers;

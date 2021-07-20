@@ -23,9 +23,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class EquipmentTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
 
     private static final char SEPARATOR = ';';

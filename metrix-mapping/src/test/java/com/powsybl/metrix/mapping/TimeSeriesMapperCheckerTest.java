@@ -31,9 +31,6 @@ import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class TimeSeriesMapperCheckerTest {
 
     private static final String INFO = "INFO";
@@ -356,7 +353,8 @@ public class TimeSeriesMapperCheckerTest {
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), ignoreLimits, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
 
         BalanceSummary balanceSummary = new BalanceSummary();
         MemDataSource dataSource = new MemDataSource();
@@ -408,7 +406,8 @@ public class TimeSeriesMapperCheckerTest {
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), ignoreLimits, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
 
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);

@@ -15,6 +15,7 @@ import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.mapping.EquipmentVariable;
+import com.powsybl.metrix.mapping.MappableEquipmentType;
 import com.powsybl.metrix.mapping.MappingVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import com.powsybl.timeseries.TimeSeriesTable;
@@ -32,10 +33,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixKey;
+import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixVariableKey;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixVariantReaderImpl.class);
 
@@ -93,8 +92,17 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 .collect(Collectors.groupingBy(contingency -> contingency.getExtension(Probability.class).getProbabilityBase(), Collectors.toList()));
     }
 
-    private void addValue(String id, MappingVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, String equipmentType) {
+    private void addValue(String id, MetrixVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values) {
+        String key = getMetrixVariableKey(variable);
+        addValue(id, variable, value, ids, values, key);
+    }
+
+    private void addValue(String id, EquipmentVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, MappableEquipmentType equipmentType) {
         String key = getMetrixKey(variable, equipmentType);
+        addValue(id, variable, value, ids, values, key);
+    }
+
+    private void addValue(String id, MappingVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, String key) {
         if (key == null) {
             LOGGER.warn("Unrecognized key {}", variable);
             return;
@@ -116,7 +124,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         loadDetails.forEach((load, loadDetail) -> {
             double activePower = loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower();
             if (isDifferent(activePower, load.getP0())) {
-                addValue(load.getId(), EquipmentVariable.p0, activePower, loadIds, loadValues, "load");
+                addValue(load.getId(), EquipmentVariable.p0, activePower, loadIds, loadValues, MappableEquipmentType.LOAD);
             }
         });
     }
@@ -239,7 +247,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         return Math.abs(value1 - value2) > EPSILON;
     }
 
-    void onGeneratorVariant(Generator generator, MappingVariable variable, double value) {
+    void onGeneratorVariant(Generator generator, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
         if (variable == EquipmentVariable.targetP) {
             isDifferent = isDifferent(value, generator.getTargetP());
@@ -249,7 +257,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             isDifferent = isDifferent(value, generator.getMaxP());
         }
         if (isDifferent) {
-            addValue(generator.getId(), variable, value, generatorIds, generatorValues, "generator");
+            addValue(generator.getId(), variable, value, generatorIds, generatorValues, MappableEquipmentType.GENERATOR);
         }
     }
 
@@ -280,10 +288,10 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         }
     }
 
-    void onLoadVariant(Load load, MappingVariable variable, double newActivePower) {
+    void onLoadVariant(Load load, EquipmentVariable variable, double newActivePower) {
         if (variable != EquipmentVariable.fixedActivePower && variable != EquipmentVariable.variableActivePower) {
             if (isDifferent(newActivePower, load.getP0())) {
-                addValue(load.getId(), EquipmentVariable.p0, newActivePower, loadIds, loadValues, "load");
+                addValue(load.getId(), EquipmentVariable.p0, newActivePower, loadIds, loadValues, MappableEquipmentType.LOAD);
             }
         } else {
             LoadDetail loadDetail = loadDetails.computeIfAbsent(load, this::getLoadDetail);
@@ -291,7 +299,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         }
     }
 
-    void onHvdcVariant(HvdcLine hvdcLine, MappingVariable variable, double value) {
+    void onHvdcVariant(HvdcLine hvdcLine, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
         if (variable == EquipmentVariable.activePowerSetpoint) {
             isDifferent = isDifferent(value, MetrixInputData.getHvdcLineSetPoint(hvdcLine));
@@ -301,17 +309,17 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             isDifferent = isDifferent(value, MetrixInputData.getHvdcLineMin(hvdcLine));
         }
         if (isDifferent) {
-            addValue(hvdcLine.getId(), variable, value, hvdcLineIds, hvdcLineValues, "hvdcLine");
+            addValue(hvdcLine.getId(), variable, value, hvdcLineIds, hvdcLineValues, MappableEquipmentType.HVDC_LINE);
         }
     }
 
-    void onPstVariant(TwoWindingsTransformer twc, MappingVariable variable, double value) {
+    void onTransformerVariant(TwoWindingsTransformer twc, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.currentTap) {
+        if (variable == EquipmentVariable.phaseTapPosition) {
             isDifferent = isDifferent(value, twc.getPhaseTapChanger().getTapPosition());
         }
         if (isDifferent) {
-            addValue(twc.getId(), variable, value, pstIds, pstValues, "pst");
+            addValue(twc.getId(), variable, value, pstIds, pstValues, MappableEquipmentType.PHASE_TAP_CHANGER);
         }
     }
 
@@ -325,16 +333,17 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     public void onEquipmentVariant(Identifiable<?> identifiable, MappingVariable variable, double value) {
         if (variable instanceof MetrixVariable) {
             String id = identifiable.getId();
-            addValue(id, variable, value, metrixVariableIds, metrixVariableValues, "");
+            addValue(id, (MetrixVariable) variable, value, metrixVariableIds, metrixVariableValues);
         } else if (variable instanceof EquipmentVariable) {
+            EquipmentVariable equipmentVariable = (EquipmentVariable) variable;
             if (identifiable instanceof Load) {
-                onLoadVariant((Load) identifiable, variable, value);
+                onLoadVariant((Load) identifiable, equipmentVariable, value);
             } else if (identifiable instanceof HvdcLine) {
-                onHvdcVariant((HvdcLine) identifiable, variable, value);
+                onHvdcVariant((HvdcLine) identifiable, equipmentVariable, value);
             } else if (identifiable instanceof Generator) {
-                onGeneratorVariant((Generator) identifiable, variable, value);
+                onGeneratorVariant((Generator) identifiable, equipmentVariable, value);
             } else if (identifiable instanceof TwoWindingsTransformer) {
-                onPstVariant((TwoWindingsTransformer) identifiable, variable, value);
+                onTransformerVariant((TwoWindingsTransformer) identifiable, equipmentVariable, value);
             } else if (identifiable instanceof Switch) {
                 onSwitchVariant((Switch) identifiable, value);
             }

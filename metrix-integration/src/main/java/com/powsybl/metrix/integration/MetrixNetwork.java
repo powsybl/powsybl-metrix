@@ -328,12 +328,12 @@ public class MetrixNetwork {
             if (b1 != null && b2 != null) {
                 if (busList.contains(b1) && busList.contains(b2)) {
                     addTwoWindingsTransformer(twt);
-                    if (twt.getPhaseTapChanger() != null) {
+                    if (twt.hasPhaseTapChanger()) {
                         addPhaseTapChanger(twt);
                     }
                 } else {
                     nbNok++;
-                    if (twt.getPhaseTapChanger() != null) {
+                    if (twt.hasPhaseTapChanger()) {
                         nbPtcNok++;
                     }
                 }

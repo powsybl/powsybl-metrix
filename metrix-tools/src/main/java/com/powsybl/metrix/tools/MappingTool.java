@@ -261,7 +261,8 @@ public class MappingTool implements Tool {
                 TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
                 TimeSeriesIndex index = config.checkIndexUnicity(store);
                 int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
-                TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(versions, Range.closed(firstVariant, lastPoint), ignoreLimits, ignoreEmptyFilter, mappingParameters.getToleranceThreshold());
+                TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(versions, Range.closed(firstVariant, lastPoint), ignoreLimits,
+                        ignoreEmptyFilter, true,  mappingParameters.getToleranceThreshold());
                 mapper.mapToNetwork(store, parameters, observers);
 
                 if (mappingSynthesisDir != null) {

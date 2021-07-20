@@ -13,9 +13,6 @@ import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 
-/**
- * Created by marifunf on 26/02/19.
- */
 public interface MappingVariableProvider<E> {
 
     void writeJson(E variable, JsonGenerator generator) throws IOException;

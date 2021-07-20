@@ -26,9 +26,6 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class TimeSeriesMapToTest {
 
     private Network network;
@@ -44,7 +41,7 @@ public class TimeSeriesMapToTest {
     @Test
     public void mapToDefaultVariableTest() throws Exception {
 
-        Map<String, MappingVariable> results = new HashMap<>();
+        List<MappingKey> results = new LinkedList<>();
 
         // mapping script
         String script = String.join(System.lineSeparator(),
@@ -65,6 +62,36 @@ public class TimeSeriesMapToTest {
                 "    filter {",
                 "        hvdcLine.id==\"HVDC1\"",
                 "    }",
+                "}",
+                "mapToBreakers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        breaker.id==\"FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0\"",
+                "    }",
+                "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "}",
+                "mapToRatioTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "}",
+                "mapToLccConverterStations {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        lccConverterStation.id==\"FVALDI1_FVALDI1_HVDC1\"",
+                "    }",
+                "}",
+                "mapToVscConverterStations {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
+                "    }",
                 "}");
 
         // create time series space mock
@@ -79,21 +106,30 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
 
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override
             public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
                 if (!timeSeriesName.isEmpty()) {
-                    results.put(identifiable.getId(), variable);
+                    results.add(new MappingKey(variable, identifiable.getId()));
                 }
             }
         };
         mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
 
-        assertEquals(3, results.size());
-        assertEquals(ImmutableMap.of("FSSV.O11_G", EquipmentVariable.targetP, "FSSV.O11_L", EquipmentVariable.p0, "HVDC1", EquipmentVariable.activePowerSetpoint), results);
+        assertEquals(8, results.size());
+        assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"),
+                                      new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
+                                      new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
+                                      new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
+                                      new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1"),
+                                      new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1"),
+                                      new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
+                                      new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1")),
+                results);
     }
 
     @Test
@@ -127,9 +163,23 @@ public class TimeSeriesMapToTest {
                 "mapToGenerators {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        generator.id==\"FVALDI11_G\"",
+                "        generator.id==\"FSSV.O12_G\"",
                 "    }",
                 "    variable maxP",
+                "}",
+                "mapToGenerators {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        generator.id==\"FVALDI11_G\"",
+                "    }",
+                "    variable voltageRegulatorOn",
+                "}",
+                "mapToGenerators {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        generator.id==\"FSSV.O11_G\"",
+                "    }",
+                "    variable targetV",
                 "}",
                 "mapToLoads {",
                 "    timeSeriesName 'ts1'",
@@ -194,11 +244,110 @@ public class TimeSeriesMapToTest {
                 "    }",
                 "    variable maxP",
                 "}",
-                "mapToPsts {",
+                "mapToHvdcLines {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        pst.id==\"FP.AND1  FTDPRA1  1\"",
+                "        hvdcLine.id==\"HVDC1\"",
                 "    }",
+                "    variable nominalV",
+                "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable phaseTapPosition",
+                "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable regulationMode",
+                "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable phaseRegulating",
+                "}",
+                "mapToPhaseTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable targetDeadband",
+                "}",
+                "mapToTransformers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable ratedU1",
+                "}",
+                "mapToTransformers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable ratedU2",
+                "}",
+                "mapToRatioTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable ratioTapPosition",
+                "}",
+                "mapToRatioTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable loadTapChangingCapabilities",
+                "}",
+                "mapToRatioTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable ratioRegulating",
+                "}",
+                "mapToRatioTapChangers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable targetV",
+                "}",
+                "mapToLccConverterStations {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        lccConverterStation.id==\"FVALDI1_FVALDI1_HVDC1\"",
+                "    }",
+                "    variable powerFactor",
+                "}",
+                "mapToVscConverterStations {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
+                "    }",
+                "    variable voltageRegulatorOn",
+                "}",
+                "mapToVscConverterStations {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
+                "    }",
+                "    variable voltageSetpoint",
+                "}",
+                "mapToVscConverterStations {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
+                "    }",
+                "    variable reactivePowerSetpoint",
                 "}");
 
         // create time series space mock
@@ -215,7 +364,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
 
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -234,25 +384,34 @@ public class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
 
-        assertEquals(9, results.size());
-        assertEquals(2, results.get("FSSV.O11_G").size());
-        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.targetP, EquipmentVariable.targetQ)));
-        assertEquals(1, results.get("FSSV.O12_G").size());
-        assertTrue(results.get("FSSV.O12_G").containsAll(ImmutableList.of(EquipmentVariable.minP)));
+        assertEquals(11, results.size());
+        assertEquals(3, results.get("FSSV.O11_G").size());
+        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.targetP, EquipmentVariable.targetQ, EquipmentVariable.targetV)));
+        assertEquals(2, results.get("FSSV.O12_G").size());
+        assertTrue(results.get("FSSV.O12_G").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
         assertEquals(1, results.get("FVALDI11_G").size());
-        assertTrue(results.get("FVALDI11_G").containsAll(ImmutableList.of(EquipmentVariable.maxP)));
+        assertTrue(results.get("FVALDI11_G").containsAll(ImmutableList.of(EquipmentVariable.voltageRegulatorOn)));
         assertEquals(2, results.get("FSSV.O11_L").size());
         assertTrue(results.get("FSSV.O11_L").containsAll(ImmutableList.of(EquipmentVariable.p0, EquipmentVariable.q0)));
         assertEquals(2, results.get("FVALDI11_L").size());
         assertTrue(results.get("FVALDI11_L").containsAll(ImmutableList.of(EquipmentVariable.fixedActivePower, EquipmentVariable.fixedReactivePower)));
         assertEquals(2, results.get("FVALDI11_L").size());
         assertTrue(results.get("FVALDI11_L2").containsAll(ImmutableList.of(EquipmentVariable.variableActivePower, EquipmentVariable.variableReactivePower)));
-        assertEquals(1, results.get("HVDC1").size());
-        assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.activePowerSetpoint)));
+        assertEquals(2, results.get("HVDC1").size());
+        assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.activePowerSetpoint, EquipmentVariable.nominalV)));
         assertEquals(2, results.get("HVDC2").size());
         assertTrue(results.get("HVDC2").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
-        assertEquals(1, results.get("FP.AND1  FTDPRA1  1").size());
-        assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(ImmutableList.of(EquipmentVariable.currentTap)));
+        assertEquals(10, results.get("FP.AND1  FTDPRA1  1").size());
+        assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(
+                ImmutableList.of(
+                        // transformer variables
+                        EquipmentVariable.ratedU1, EquipmentVariable.ratedU2,
+                        // phaseTapChanger variables
+                        EquipmentVariable.phaseTapPosition, EquipmentVariable.regulationMode, EquipmentVariable.phaseRegulating, EquipmentVariable.targetDeadband,
+                        // ratioTapChanger variables
+                        EquipmentVariable.ratioTapPosition, EquipmentVariable.loadTapChangingCapabilities, EquipmentVariable.ratioRegulating, EquipmentVariable.targetV)));
+        assertTrue(results.get("FVALDI1_FVALDI1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.powerFactor)));
+        assertTrue(results.get("FSSV.O1_FSSV.O1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.voltageRegulatorOn, EquipmentVariable.voltageSetpoint, EquipmentVariable.reactivePowerSetpoint)));
     }
 
     @Test
@@ -285,7 +444,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
 
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -333,8 +493,8 @@ public class TimeSeriesMapToTest {
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), false, false, mappingParameters.getToleranceThreshold());
-
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override

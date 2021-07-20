@@ -15,16 +15,15 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.*;
 
-@Ignore
 public class BalanceSummaryTest extends AbstractConverterTest {
 
     private static final char SEPARATOR = ';';
@@ -89,7 +88,8 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
+                false, false, true, mappingParameters.getToleranceThreshold());
 
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
@@ -101,7 +101,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(balanceSummaryCsvOutput)) {
-            balanceSummary.writeCsv(bufferedWriter, SEPARATOR);
+            balanceSummary.writeCsv(bufferedWriter, SEPARATOR, ZoneId.of("UTC"));
             bufferedWriter.flush();
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
@@ -150,8 +150,8 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), false, true, mappingParameters.getToleranceThreshold());
-
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
+                false, true, true, mappingParameters.getToleranceThreshold());
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
@@ -162,7 +162,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(balanceSummaryCsvOutput)) {
-            balanceSummary.writeCsv(bufferedWriter, SEPARATOR);
+            balanceSummary.writeCsv(bufferedWriter, SEPARATOR, ZoneId.of("UTC"));
             bufferedWriter.flush();
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceMappingNok.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
