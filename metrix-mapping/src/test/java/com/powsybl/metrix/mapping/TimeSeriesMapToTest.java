@@ -72,13 +72,13 @@ public class TimeSeriesMapToTest {
                 "mapToPhaseTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "}",
                 "mapToRatioTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "}",
                 "mapToLccConverterStations {",
@@ -181,6 +181,13 @@ public class TimeSeriesMapToTest {
                 "    }",
                 "    variable targetV",
                 "}",
+                "mapToGenerators {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        generator.id==\"FSSV.O11_G\"",
+                "    }",
+                "    variable disconnected",
+                "}",
                 "mapToLoads {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
@@ -254,70 +261,77 @@ public class TimeSeriesMapToTest {
                 "mapToPhaseTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable phaseTapPosition",
                 "}",
                 "mapToPhaseTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable regulationMode",
                 "}",
                 "mapToPhaseTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable phaseRegulating",
                 "}",
                 "mapToPhaseTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable targetDeadband",
                 "}",
                 "mapToTransformers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable ratedU1",
                 "}",
                 "mapToTransformers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable ratedU2",
+                "}",
+                "mapToTransformers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "    variable disconnected",
                 "}",
                 "mapToRatioTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable ratioTapPosition",
                 "}",
                 "mapToRatioTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable loadTapChangingCapabilities",
                 "}",
                 "mapToRatioTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable ratioRegulating",
                 "}",
                 "mapToRatioTapChangers {",
                 "    timeSeriesName 'ts1'",
                 "    filter {",
-                "        transformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
                 "    }",
                 "    variable targetV",
                 "}",
@@ -348,9 +362,16 @@ public class TimeSeriesMapToTest {
                 "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
                 "    }",
                 "    variable reactivePowerSetpoint",
+                "}",
+                "mapToLines {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        line.id==\"FP.AND1  FVERGE1  1\"",
+                "    }",
+                "    variable disconnected",
                 "}");
 
-        // create time series space mock
+                // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
@@ -384,9 +405,9 @@ public class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
 
-        assertEquals(11, results.size());
-        assertEquals(3, results.get("FSSV.O11_G").size());
-        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.targetP, EquipmentVariable.targetQ, EquipmentVariable.targetV)));
+        assertEquals(12, results.size());
+        assertEquals(4, results.get("FSSV.O11_G").size());
+        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.targetP, EquipmentVariable.targetQ, EquipmentVariable.targetV, EquipmentVariable.disconnected)));
         assertEquals(2, results.get("FSSV.O12_G").size());
         assertTrue(results.get("FSSV.O12_G").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
         assertEquals(1, results.get("FVALDI11_G").size());
@@ -401,17 +422,18 @@ public class TimeSeriesMapToTest {
         assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.activePowerSetpoint, EquipmentVariable.nominalV)));
         assertEquals(2, results.get("HVDC2").size());
         assertTrue(results.get("HVDC2").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
-        assertEquals(10, results.get("FP.AND1  FTDPRA1  1").size());
+        assertEquals(11, results.get("FP.AND1  FTDPRA1  1").size());
         assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(
                 ImmutableList.of(
                         // transformer variables
-                        EquipmentVariable.ratedU1, EquipmentVariable.ratedU2,
+                        EquipmentVariable.ratedU1, EquipmentVariable.ratedU2, EquipmentVariable.disconnected,
                         // phaseTapChanger variables
                         EquipmentVariable.phaseTapPosition, EquipmentVariable.regulationMode, EquipmentVariable.phaseRegulating, EquipmentVariable.targetDeadband,
                         // ratioTapChanger variables
                         EquipmentVariable.ratioTapPosition, EquipmentVariable.loadTapChangingCapabilities, EquipmentVariable.ratioRegulating, EquipmentVariable.targetV)));
         assertTrue(results.get("FVALDI1_FVALDI1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.powerFactor)));
         assertTrue(results.get("FSSV.O1_FSSV.O1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.voltageRegulatorOn, EquipmentVariable.voltageSetpoint, EquipmentVariable.reactivePowerSetpoint)));
+        assertTrue(results.get("FP.AND1  FVERGE1  1").containsAll(ImmutableList.of(EquipmentVariable.disconnected)));
     }
 
     @Test

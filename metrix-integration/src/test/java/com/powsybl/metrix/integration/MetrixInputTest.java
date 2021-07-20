@@ -35,9 +35,6 @@ import java.util.function.Supplier;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.Assert.*;
 
-/**
- * Created by marifunf on 06/02/17.
- */
 public class MetrixInputTest extends AbstractConverterTest {
 
     @Test

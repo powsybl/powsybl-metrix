@@ -12,9 +12,6 @@ import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.metrix.mapping.MappingVariable;
 import com.powsybl.timeseries.TimeSeriesTable;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public interface MetrixVariantReader {
 
     void onVariantStart(int variantNum);

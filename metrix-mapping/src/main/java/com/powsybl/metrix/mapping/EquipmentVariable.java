@@ -90,7 +90,8 @@ public enum EquipmentVariable implements MappingVariable {
                                                                                  EquipmentVariable.minP,
                                                                                  EquipmentVariable.maxP,
                                                                                  EquipmentVariable.voltageRegulatorOn,
-                                                                                 EquipmentVariable.targetV);
+                                                                                 EquipmentVariable.targetV,
+                                                                                 EquipmentVariable.disconnected);
     private static final Set<EquipmentVariable> HVDC_LINE_VARIABLES = EnumSet.of(EquipmentVariable.activePowerSetpoint,
                                                                                  EquipmentVariable.minP,
                                                                                  EquipmentVariable.maxP,
@@ -106,7 +107,8 @@ public enum EquipmentVariable implements MappingVariable {
                                                                                          EquipmentVariable.regulationMode,
                                                                                          EquipmentVariable.targetDeadband);
     private static final Set<EquipmentVariable> TWO_WINDINGS_TRANSFORMER_VARIABLES = EnumSet.of(EquipmentVariable.ratedU1,
-                                                                                   EquipmentVariable.ratedU2);
+                                                                                                EquipmentVariable.ratedU2,
+                                                                                                EquipmentVariable.disconnected);
     private static final Set<EquipmentVariable> RATIO_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.ratioTapPosition,
                                                                                          EquipmentVariable.loadTapChangingCapabilities,
                                                                                          EquipmentVariable.ratioRegulating,
@@ -115,6 +117,8 @@ public enum EquipmentVariable implements MappingVariable {
     private static final Set<EquipmentVariable> VSC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.voltageRegulatorOn,
                                                                                      EquipmentVariable.voltageSetpoint,
                                                                                      EquipmentVariable.reactivePowerSetpoint);
+
+    private static final Set<EquipmentVariable> LINE_VARIABLES = EnumSet.of(EquipmentVariable.disconnected);
 
     private final String variable;
 
@@ -195,6 +199,9 @@ public enum EquipmentVariable implements MappingVariable {
                 break;
             case VSC_CONVERTER_STATION:
                 compatible = VSC_CONVERTER_VARIABLES.contains(equipmentVariable);
+                break;
+            case LINE:
+                compatible = LINE_VARIABLES.contains(equipmentVariable);
                 break;
             default:
                 throw new AssertionError("Unsupported equipment type " + equipmentType);

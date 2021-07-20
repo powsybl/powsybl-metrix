@@ -29,11 +29,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.*;
 
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
-    private static final int ON_VALUE = 1;
+    private static final int OFF_VALUE = 0;
 
     private static final class GeneratorInitialValues {
 
@@ -105,14 +105,24 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             mapToLccConverterStationVariable(identifiable, variable, (float) equipmentValue);
         } else if (identifiable instanceof VscConverterStation) {
             mapToVscConverterStationVariable(identifiable, variable, equipmentValue);
+        } else if (identifiable instanceof Line) {
+            mapToLineVariable(identifiable, variable, equipmentValue);
         } else {
             throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
         }
     }
 
+    private void mapToLineVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        Line line = network.getLine(identifiable.getId());
+        if (variable == EquipmentVariable.disconnected && Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
+            line.getTerminal1().disconnect();
+            line.getTerminal2().disconnect();
+        }
+    }
+
     private void mapToSwitchVariable(Identifiable<?> identifiable, double equipmentValue) {
         Switch breaker = network.getSwitch(identifiable.getId());
-        breaker.setOpen(equipmentValue == TimeSeriesMapper.SWITCH_OPEN);
+        breaker.setOpen(Math.abs(equipmentValue - TimeSeriesMapper.SWITCH_OPEN) < EPSILON_COMPARISON);
     }
 
     private void mapToLccConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, float equipmentValue) {
@@ -126,7 +136,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
         switch (variable) {
             case voltageRegulatorOn:
-                converter.setVoltageRegulatorOn(Math.round(equipmentValue) == ON_VALUE);
+                converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 break;
             case voltageSetpoint:
                 converter.setVoltageSetpoint(equipmentValue);
@@ -154,7 +164,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
                 break;
             case phaseRegulating:
-                transformer.getPhaseTapChanger().setRegulating(Math.round(equipmentValue) == ON_VALUE);
+                transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 break;
             case targetDeadband:
                 transformer.getPhaseTapChanger().setTargetDeadband(equipmentValue);
@@ -170,10 +180,16 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 transformer.getRatioTapChanger().setTargetV(equipmentValue);
                 break;
             case loadTapChangingCapabilities:
-                transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.round(equipmentValue) == ON_VALUE);
+                transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 break;
             case ratioRegulating:
-                transformer.getRatioTapChanger().setRegulating(Math.round(equipmentValue) == ON_VALUE);
+                transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+                break;
+            case disconnected:
+                if (Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
+                    transformer.getTerminal1().disconnect();
+                    transformer.getTerminal2().disconnect();
+                }
                 break;
             default:
                 break;
@@ -309,10 +325,15 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                 generator.setMaxP((float) equipmentValue);
                 break;
             case voltageRegulatorOn:
-                generator.setVoltageRegulatorOn(Math.round(equipmentValue) == ON_VALUE);
+                generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 break;
             case targetV:
                 generator.setTargetV((float) equipmentValue);
+                break;
+            case disconnected:
+                if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
+                    generator.getTerminal().disconnect();
+                }
                 break;
             default:
                 break;
