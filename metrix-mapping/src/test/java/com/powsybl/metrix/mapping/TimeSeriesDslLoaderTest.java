@@ -74,7 +74,7 @@ public class TimeSeriesDslLoaderTest {
                 "        breaker.voltageLevel.id == 'VL1' && breaker.kind == com.powsybl.iidm.network.SwitchKind.BREAKER",
                 "    }",
                 "}",
-                "mapToPsts {",
+                "mapToPhaseTapChangers {",
                 "    timeSeriesName 'switch_ts'",
                 "}");
 
@@ -100,12 +100,12 @@ public class TimeSeriesDslLoaderTest {
         assertTrue(config.getUnmappedGenerators().isEmpty());
         assertTrue(config.getUnmappedDanglingLines().isEmpty());
         assertTrue(config.getUnmappedHvdcLines().isEmpty());
-        assertTrue(config.getUnmappedPst().isEmpty());
+        assertTrue(config.getUnmappedPhaseTapChangers().isEmpty());
         assertTrue(config.getGeneratorTimeSeries().isEmpty());
         assertTrue(config.getLoadTimeSeries().isEmpty());
         assertTrue(config.getDanglingLineTimeSeries().isEmpty());
         assertTrue(config.getHvdcLineTimeSeries().isEmpty());
-        assertTrue(config.getPstTimeSeries().isEmpty());
+        assertTrue(config.getPhaseTapChangerTimeSeries().isEmpty());
         assertTrue(config.getBreakerTimeSeries().isEmpty());
 
         // 1 generator has been mapped to 'zero': G4

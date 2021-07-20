@@ -25,19 +25,23 @@ public class TimeSeriesMapperParameters {
 
     private final boolean ignoreEmptyFilter;
 
+    private final boolean identifyConstantTimeSeries;
+
     private final float toleranceThreshold;
 
     private final Set<String> requiredTimeseries;
 
-    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, float toleranceThreshold) {
-        this(versions, pointRange, ignoreLimits, ignoreEmptyFilter, Collections.emptySet(), toleranceThreshold);
+    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, boolean identifyConstantTimeSeries, float toleranceThreshold) {
+        this(versions, pointRange, ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, Collections.emptySet(), toleranceThreshold);
     }
 
-    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, Set<String> requiredTimeseries, float toleranceThreshold) {
+    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter,
+                                      boolean identifyConstantTimeSeries, Set<String> requiredTimeseries, float toleranceThreshold) {
         this.versions = new TreeSet<>(Objects.requireNonNull(versions));
         this.pointRange = Objects.requireNonNull(pointRange);
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
+        this.identifyConstantTimeSeries = identifyConstantTimeSeries;
         this.toleranceThreshold = toleranceThreshold;
         this.requiredTimeseries = Objects.requireNonNull(requiredTimeseries);
     }
@@ -56,6 +60,10 @@ public class TimeSeriesMapperParameters {
 
     public boolean isIgnoreEmptyFilter() {
         return ignoreEmptyFilter;
+    }
+
+    public boolean isIdentifyConstantTimeSeries() {
+        return identifyConstantTimeSeries;
     }
 
     public float getToleranceThreshold() {

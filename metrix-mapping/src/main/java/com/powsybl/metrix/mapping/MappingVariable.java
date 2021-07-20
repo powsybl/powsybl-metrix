@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/**
- * Created by marifunf on 17/11/17.
- */
 public interface MappingVariable {
 
     ServiceLoaderCache<MappingVariableProvider> MAPPING_VARIABLE_LOADER = new ServiceLoaderCache<>(MappingVariableProvider.class);

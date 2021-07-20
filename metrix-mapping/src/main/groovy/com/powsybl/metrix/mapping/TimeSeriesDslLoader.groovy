@@ -13,7 +13,6 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.Switch
 import com.powsybl.iidm.network.TopologyKind
-import com.powsybl.iidm.network.TwoWindingsTransformer
 import com.powsybl.timeseries.CalculatedTimeSeries
 import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver
@@ -32,9 +31,6 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 class TimeSeriesDslLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoader.class)
@@ -71,6 +67,15 @@ class TimeSeriesDslLoader {
         void timeSeriesName(String timeSeriesName) {
             assert timeSeriesName != null
             this.timeSeriesName = timeSeriesName
+        }
+    }
+
+    static class SimpleVariableMappingSpec extends SimpleMappingSpec {
+
+        EquipmentVariable variable
+
+        void variable(EquipmentVariable variable) {
+            this.variable = variable
         }
     }
 
@@ -251,30 +256,29 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
-    private static void mapToPsts(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config,
-                                  Closure closure, Iterable<FilteringContext> filteringContexts, Writer out) {
+    private static void mapToSimpleVariableEquipments(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config,
+                                                      Closure closure, Iterable<FilteringContext> filteringContexts, MappableEquipmentType equipmentType) {
         Closure cloned = (Closure) closure.clone()
-        SimpleMappingSpec spec = new SimpleMappingSpec()
+        SimpleVariableMappingSpec spec = new SimpleVariableMappingSpec()
         cloned.delegate = spec
         cloned()
 
         timeSeriesExists(spec.timeSeriesName, store, config)
 
-        def pstType = MappableEquipmentType.PST
+        // check variable
+        EquipmentVariable variable = EquipmentVariable.check(equipmentType, spec.variable)
 
         // evaluate equipment filters
-        Collection<Identifiable> filteredEquipments = Filter.evaluate(binding, filteringContexts, pstType.scriptVariable, spec.filter)
+        Collection<Identifiable> filteredEquipments = Filter.evaluate(binding, filteringContexts, equipmentType.scriptVariable, spec.filter)
 
-        // for each filtered equipment, compute the distribution key and add it to the config
-        if (!filteredEquipments.isEmpty()) {
-            for (Identifiable identifiable in filteredEquipments) {
+        // create at least one entry in the config even if no equipment match the filter (mandatory for ignore-empty-filter option)
+        if (filteredEquipments.size() == 0) {
+            config.addEquipmentMapping(equipmentType, spec.timeSeriesName, null, NumberDistributionKey.ONE, variable)
+        }
 
-                if (((TwoWindingsTransformer) identifiable).phaseTapChanger == null) {
-                    logWarn(out, "TwoWindingsTransformer %s is not a Phase Tap Changer", identifiable)
-                } else {
-                    config.addEquipmentMapping(pstType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.currentTap)
-                }
-            }
+        // for each filtered equipment, add it to the config
+        for (Identifiable identifiable in filteredEquipments) {
+            config.addEquipmentMapping(equipmentType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, variable)
         }
     }
 
@@ -348,9 +352,14 @@ class TimeSeriesDslLoader {
         def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext(injection)}
         def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext(injection)}
         def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext(injection)}
-        def hvdcLinesFilteringContext = network.getHvdcLines().collect { injection -> new FilteringContext(injection)}
-        def pstFilteringContext = network.getTwoWindingsTransformers().findAll {injection -> injection.phaseTapChanger != null}
-                .collect { injection -> new FilteringContext(injection)}
+        def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine)}
+        def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter)}
+        def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter)}
+        def transformersFilteringContext = network.getTwoWindingsTransformers().collect { transformer -> new FilteringContext(transformer)}
+        def phaseTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.phaseTapChanger != null}
+                .collect { transformer -> new FilteringContext(transformer)}
+        def ratioTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.ratioTapChanger != null}
+                .collect { transformer -> new FilteringContext(transformer)}
         def switchesFilteringContext = network.getSwitchStream().collect { s -> new FilteringContext(s)}
 
         // parameters
@@ -371,11 +380,26 @@ class TimeSeriesDslLoader {
         binding.mapToHvdcLines = { Closure closure ->
             mapToEquipments(binding, store, config, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
         }
-        binding.mapToPsts = { Closure closure ->
-            mapToPsts(binding, store, config, closure, pstFilteringContext, out)
+        binding.mapToTransformers = { Closure closure ->
+            mapToEquipments(binding, store, config, closure, transformersFilteringContext, MappableEquipmentType.TRANSFORMER)
+        }
+        binding.mapToPhaseTapChangers = { Closure closure ->
+            mapToSimpleVariableEquipments(binding, store, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER)
+        }
+        binding.mapToRatioTapChangers = { Closure closure ->
+            mapToSimpleVariableEquipments(binding, store, config, closure, ratioTapChangersFilteringContext, MappableEquipmentType.RATIO_TAP_CHANGER)
+        }
+        binding.mapToLccConverterStations =  { Closure closure ->
+            mapToSimpleVariableEquipments(binding, store, config, closure, lccConverterStationsFilteringContext, MappableEquipmentType.LCC_CONVERTER_STATION)
+        }
+        binding.mapToVscConverterStations =  { Closure closure ->
+            mapToSimpleVariableEquipments(binding, store, config, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION)
         }
         binding.mapToBreakers = { Closure closure ->
             mapToBreakers(binding, store, config, closure, switchesFilteringContext)
+        }
+        binding.mapToPsts = { @Deprecated Closure closure ->
+            mapToSimpleVariableEquipments(binding, store, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PST)
         }
 
         // unmapped
@@ -391,8 +415,8 @@ class TimeSeriesDslLoader {
         binding.unmappedHvdcLines = { Closure closure ->
             unmappedEquipments(binding, config, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
         }
-        binding.unmappedPst = { Closure closure ->
-            unmappedEquipments(binding, config, closure, pstFilteringContext, MappableEquipmentType.PST)
+        binding.unmappedPhaseTapChangers = { Closure closure ->
+            unmappedEquipments(binding, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER)
         }
 
         // time series with specific ignore limits
@@ -410,14 +434,26 @@ class TimeSeriesDslLoader {
         binding.provideTsHvdcLines = { Closure closure ->
             equipmentTimeSeries(binding, config, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE, out)
         }
+        binding.provideTsTransformers = { Closure closure ->
+            equipmentTimeSeries(binding, config, closure, transformersFilteringContext, MappableEquipmentType.TRANSFORMER, out)
+        }
         binding.provideTsBoundaryLines = { Closure closure ->
             equipmentTimeSeries(binding, config, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, out)
         }
-        binding.provideTsPsts = { Closure closure ->
-            equipmentTimeSeries(binding, config, closure, pstFilteringContext, MappableEquipmentType.PST, out)
+        binding.provideTsPhaseTapChangers = { Closure closure ->
+            equipmentTimeSeries(binding, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER, out)
+        }
+        binding.provideTsRatioTapChangers = { Closure closure ->
+            equipmentTimeSeries(binding, config, closure, ratioTapChangersFilteringContext, MappableEquipmentType.RATIO_TAP_CHANGER, out)
         }
         binding.provideTsBreakers = { Closure closure ->
             equipmentTimeSeries(binding, config, closure, switchesFilteringContext, MappableEquipmentType.SWITCH, out)
+        }
+        binding.provideTsLccConverterStations = { Closure closure ->
+            equipmentTimeSeries(binding, config, closure, lccConverterStationsFilteringContext, MappableEquipmentType.LCC_CONVERTER_STATION, out)
+        }
+        binding.provideTsVscConverterStations = { Closure closure ->
+            equipmentTimeSeries(binding, config, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION, out)
         }
 
         binding.sum = { NodeCalc tsNode ->

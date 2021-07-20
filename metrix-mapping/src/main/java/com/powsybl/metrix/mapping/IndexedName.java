@@ -10,9 +10,6 @@ package com.powsybl.metrix.mapping;
 
 import java.util.Objects;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class IndexedName {
 
     private final String name;

@@ -22,9 +22,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private Map<String, Map<Integer, TimeSeries>> stringTimeSeries = new HashMap<>();

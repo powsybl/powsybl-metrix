@@ -15,7 +15,6 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
@@ -36,6 +35,8 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
     private boolean ignoreLimits = false;
 
     private boolean ignoreEmptyFilter = false;
+
+    private boolean identifyConstantTimeSeries = true;
 
     private MappingParameters mappingParameters = MappingParameters.load();
 
@@ -79,7 +80,6 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
         mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
     }
 
-    @Ignore
     @Test
     public void equipmentTimeSeriesConstantVariantTest() throws Exception {
 
@@ -90,8 +90,8 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
         EquipmentTimeSeriesWriter equipmentTimeSeriesBufferedWriter = new EquipmentTimeSeriesWriter(new BufferedWriter(equipmentTimeSeriesWriter));
 
         // Create parameters
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), ignoreLimits, ignoreEmptyFilter, mappingParameters.getToleranceThreshold());
-
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 1), ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, mappingParameters.getToleranceThreshold());
         // Launch mapper
         mapper.mapToNetwork(store, parameters, ImmutableList.of(equipmentTimeSeriesBufferedWriter));
 

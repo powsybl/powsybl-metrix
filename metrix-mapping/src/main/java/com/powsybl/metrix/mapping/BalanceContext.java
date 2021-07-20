@@ -8,10 +8,6 @@
 
 package com.powsybl.metrix.mapping;
 
-/**
- * @author Thiyagarasa Pratheep <pratheep.thiyagarasa@rte-france.com>
- */
-
 public class BalanceContext {
 
     private final int version;
