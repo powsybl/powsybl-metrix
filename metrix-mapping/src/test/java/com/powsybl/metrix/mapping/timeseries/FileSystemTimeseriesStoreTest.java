@@ -23,9 +23,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class FileSystemTimeseriesStoreTest extends AbstractConverterTest {
 
     @Test

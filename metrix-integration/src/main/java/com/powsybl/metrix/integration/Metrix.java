@@ -13,6 +13,7 @@ import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeries;
@@ -27,9 +28,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.zip.ZipOutputStream;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class Metrix extends AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Metrix.class);
