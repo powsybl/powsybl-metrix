@@ -18,9 +18,10 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
+import com.powsybl.metrix.integration.io.ResultListener;
+import com.powsybl.metrix.integration.remedials.RemedialReader;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
-import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.ast.*;
 import org.slf4j.Logger;
@@ -31,7 +32,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -45,9 +45,6 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);
@@ -64,47 +61,6 @@ public abstract class AbstractMetrix {
     public static final String OUTAGE_LOAD_PREFIX = "outageLoad_";
     public static final String OUTAGE_OVERLOAD_PREFIX = "outageOverload_";
     public static final String OVERALL_OVERLOAD_PREFIX = "overallOverload_";
-
-    public interface ResultListener {
-
-        void onBegin();
-
-        void onVersionResultBegin(int version);
-
-        void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList);
-
-        void onVersionResultEnd(int version);
-
-        void onEnd();
-    }
-
-    public static class DefaultResultListener implements ResultListener {
-
-        @Override
-        public void onBegin() {
-            // default empty implementation
-        }
-
-        @Override
-        public void onVersionResultBegin(int version) {
-            // default empty implementation
-        }
-
-        @Override
-        public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
-            // default empty implementation
-        }
-
-        @Override
-        public void onVersionResultEnd(int version) {
-            // default empty implementation
-        }
-
-        @Override
-        public void onEnd() {
-            // default empty implementation
-        }
-    }
 
     protected final NetworkSource networkSource;
 
@@ -130,7 +86,7 @@ public abstract class AbstractMetrix {
 
     protected MetrixDslData metrixDslData = null;
 
-    protected Consumer<Future> updateTask;
+    protected Consumer<Future<?>> updateTask;
 
     protected Consumer<MetrixDslData> onResult;
 
@@ -160,14 +116,14 @@ public abstract class AbstractMetrix {
     public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
                           Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier,
                           ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                          MetrixAppLogger appLogger, Consumer<Future> updateTask) {
+                          MetrixAppLogger appLogger, Consumer<Future<?>> updateTask) {
         this(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier, store, resultStore, logArchive, computationManager, appLogger, updateTask, null, null);
     }
 
     public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
                           Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier,
                           ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                          MetrixAppLogger appLogger, Consumer<Future> updateTask, Writer logWriter, Consumer<MetrixDslData> onResult) {
+                          MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixDslData> onResult) {
         this.networkSource = Objects.requireNonNull(networkSource);
         this.mappingReaderSupplier = Objects.requireNonNull(mappingReaderSupplier);
         this.contingenciesProvider = contingenciesProvider;
@@ -209,7 +165,7 @@ public abstract class AbstractMetrix {
             ReadOnlyTimeSeriesStore store,
             Writer writer,
             MetrixAppLogger appLogger,
-            Consumer<Future> updateTask,
+            Consumer<Future<?>> updateTask,
             ComputationRange computationRange) {
         appLogger.tagged("info")
                 .log("Loading time series mapping...");
@@ -235,7 +191,9 @@ public abstract class AbstractMetrix {
         }
     }
 
-    public static MetrixDslData loadMetrixDslData(Supplier<Reader> metrixDslReaderSupplier, Network network, MetrixParameters metrixParameters, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig mappingConfig, Writer writer, MetrixAppLogger appLogger, Consumer<Future> updateTask) {
+    public static MetrixDslData loadMetrixDslData(Supplier<Reader> metrixDslReaderSupplier, Network network,
+                                                  MetrixParameters metrixParameters, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig mappingConfig,
+                                                  Writer writer, MetrixAppLogger appLogger, Consumer<Future<?>> updateTask) {
         appLogger.tagged("info")
                 .log("Loading metrix dsl...");
         Stopwatch stopwatch = Stopwatch.createStarted();
@@ -272,7 +230,7 @@ public abstract class AbstractMetrix {
         Network network = networkSource.copy();
 
         if (remedialActionsReaderSupplier != null) {
-            MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier);
+            RemedialReader.checkFile(remedialActionsReaderSupplier);
         }
 
         try (BufferedWriter writer = logWriter != null ? new BufferedWriter(logWriter) : null) {

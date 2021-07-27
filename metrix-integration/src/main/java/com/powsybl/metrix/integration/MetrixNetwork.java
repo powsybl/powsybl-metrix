@@ -13,10 +13,11 @@ import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
 import com.powsybl.contingency.tasks.AbstractTrippingTask;
 import com.powsybl.iidm.network.*;
+import com.powsybl.metrix.integration.remedials.Remedial;
+import com.powsybl.metrix.integration.remedials.RemedialReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.UncheckedIOException;
@@ -25,10 +26,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-/**
- * Created by marifunf on 12/05/17.
- */
 public class MetrixNetwork {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
@@ -552,9 +552,12 @@ public class MetrixNetwork {
         metrixNetwork.createContingencyList(contingenciesProvider, parameters.isPropagateBranchTripping());
 
         // Create opened and switch-retained lists (network will be modified)
-        Set<String> retainedElements = new HashSet<>();
-        Set<String> openedElements = new HashSet<>();
-        loadCSVRemedialActionFile(remedialActionFile, openedElements, retainedElements);
+        List<Remedial> remedials = RemedialReader.parseFile(remedialActionFile);
+        Set<String> retainedElements = Stream.concat(
+                remedials.stream().flatMap(remedial -> remedial.getBranchToOpen().stream()),
+                remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream())
+        ).collect(Collectors.toSet());
+        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream()).collect(Collectors.toSet());
         if (!Objects.isNull(mappedSwitches)) {
             // close mapped switches as their openness is set via mapping
             for (String switchId : mappedSwitches) {
@@ -679,87 +682,6 @@ public class MetrixNetwork {
             return Optional.ofNullable(mappedSwitchMap.get(sw.getId()));
         }
         return Optional.empty();
-    }
-
-    private static final String SEPARATOR_CHAR = ";";
-
-    /**
-     * Checks CSV remedial action file
-     */
-    static void checkCSVRemedialActionFile(Supplier<Reader> readerSupplier) {
-        try (BufferedReader reader = new BufferedReader(readerSupplier.get())) {
-            String[] actions;
-            String line;
-
-            // Check header
-            if ((line = reader.readLine()) != null) {
-                if (!line.trim().endsWith(SEPARATOR_CHAR)) {
-                    throw new PowsyblException("Missing '" + SEPARATOR_CHAR + "' in remedial action file header");
-                }
-                actions = line.split(SEPARATOR_CHAR);
-                if (actions.length != 2 ||
-                        !"NB".equals(actions[0]) ||
-                        Integer.parseInt(actions[1]) < 0) {
-                    throw new PowsyblException("Malformed remedial action file header");
-                }
-                int lineId = 1;
-                while ((line = reader.readLine()) != null) {
-                    lineId++;
-
-                    if (!line.trim().endsWith(SEPARATOR_CHAR)) {
-                        throw new PowsyblException("Missing '" + SEPARATOR_CHAR + "' in remedial action file, line " + lineId);
-                    }
-
-                    actions = line.split(SEPARATOR_CHAR);
-
-                    if (actions.length < 2) {
-                        throw new PowsyblException("Malformed remedial action file, line : " + lineId);
-                    } else {
-                        for (String action : actions) {
-                            if (action == null || action.isEmpty()) {
-                                throw new PowsyblException("Empty element in remedial action file, line : " + lineId);
-                            }
-                        }
-                    }
-                    if (Integer.parseInt(actions[1]) < 0) {
-                        throw new PowsyblException("Malformed number of actions in remedial action file, line : " + lineId);
-                    }
-
-                }
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    /**
-     * Loads and analyse CSV remedial action file
-     */
-    private static void loadCSVRemedialActionFile(Supplier<Reader> readerSupplier, Set<String> branchesToOpen, Set<String> elementsToRetain) {
-        if (readerSupplier != null) {
-            try (BufferedReader reader = new BufferedReader(readerSupplier.get())) {
-                int i;
-                String[] actions;
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    actions = line.split(SEPARATOR_CHAR);
-
-                    // actions[0] = contingency name
-                    // actions[1] = nb actions
-
-                    for (i = 2; i < actions.length; i++) {
-                        if (actions[i].startsWith("+")) {
-                            actions[i] = actions[i].substring(1);
-                            branchesToOpen.add(actions[i]);
-                        }
-                        elementsToRetain.add(actions[i]);
-                    }
-                }
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        }
     }
 
     public Set<ContingencyElement> getElementsToTrip(Contingency contingency, boolean propagate) {

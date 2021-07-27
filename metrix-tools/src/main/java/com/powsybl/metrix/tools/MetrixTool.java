@@ -16,10 +16,9 @@ import com.powsybl.iidm.import_.ImportConfig;
 import com.powsybl.iidm.import_.Importers;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.compatibility.CsvResultListener;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
-import com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil;
-import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.tools.Command;
 import com.powsybl.tools.Tool;
 import com.powsybl.tools.ToolRunningContext;
@@ -33,7 +32,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
@@ -41,12 +39,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipOutputStream;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 @AutoService(Tool.class)
 public class MetrixTool implements Tool {
 
@@ -324,33 +318,7 @@ public class MetrixTool implements Tool {
             new Metrix(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,
                     store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger)
                     .run(new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter),
-                            new AbstractMetrix.DefaultResultListener() {
-
-                                @Override
-                                public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
-                                    resultStore.importTimeSeries(timeSeriesList, version, false, true);
-                                }
-
-                                @Override
-                                public void onEnd() {
-                                    // csv export
-                                    if (csvResultFilePath != null) {
-                                        stopwatch.reset();
-                                        stopwatch.start();
-
-                                        context.getOutputStream().println("Writing results to CSV file...");
-
-                                        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(csvResultFilePath)), StandardCharsets.UTF_8))) {
-                                            TimeSeriesStoreUtil.writeCsv(resultStore, writer, ';', ZoneId.systemDefault());
-                                        } catch (IOException e) {
-                                            throw new UncheckedIOException(e);
-                                        }
-
-                                        stopwatch.stop();
-                                        context.getOutputStream().println("Results written to CSV file in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
-                                    }
-                                }
-                            });
+                            new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         } finally {

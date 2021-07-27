@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Objects;
 
-/**
- * Created by marifunf on 26/02/19.
- */
 public enum OtherVariable implements MappingVariable {
     OTHER_VARIABLE_1("otherVariable1"),
     OTHER_VARIABLE_2("otherVariable2");

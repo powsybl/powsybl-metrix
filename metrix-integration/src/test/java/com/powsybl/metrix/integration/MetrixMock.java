@@ -11,6 +11,7 @@ package com.powsybl.metrix.integration;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.IOException;
@@ -21,12 +22,14 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.zip.ZipOutputStream;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class MetrixMock extends AbstractMetrix {
-    public MetrixMock(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager, MetrixAppLogger appLogger, Consumer<Future> updateTask, Writer logWriter, Consumer<MetrixDslData> onResult) {
-        super(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier, store, resultStore, logArchive, computationManager, appLogger, updateTask, logWriter, onResult);
+    public MetrixMock(NetworkSource networkSource, ContingenciesProvider contingenciesProvider,
+                      Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier,
+                      Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store,
+                      ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
+                      MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixDslData> onResult) {
+        super(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,
+                store, resultStore, logArchive, computationManager, appLogger, updateTask, logWriter, onResult);
     }
 
     @Override

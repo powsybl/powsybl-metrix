@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.mapping;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public interface TimeSeriesConstants {
 
     char CSV_SEPARATOR = ';';

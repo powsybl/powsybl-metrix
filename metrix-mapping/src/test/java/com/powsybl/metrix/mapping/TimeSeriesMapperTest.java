@@ -28,9 +28,6 @@ import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class TimeSeriesMapperTest {
 
     public enum OtherVariable implements MappingVariable {

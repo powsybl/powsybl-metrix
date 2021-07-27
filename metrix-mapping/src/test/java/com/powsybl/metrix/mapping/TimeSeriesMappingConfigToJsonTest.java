@@ -22,9 +22,6 @@ import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class TimeSeriesMappingConfigToJsonTest {
 
     private TimeSeriesMappingConfig config = new TimeSeriesMappingConfig();

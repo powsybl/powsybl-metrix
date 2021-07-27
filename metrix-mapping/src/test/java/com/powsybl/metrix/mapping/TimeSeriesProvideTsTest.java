@@ -22,9 +22,6 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class TimeSeriesProvideTsTest {
 
     private Network network;

@@ -18,6 +18,7 @@ import com.powsybl.computation.local.LocalComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeries;
@@ -38,9 +39,6 @@ import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class MetrixTest extends AbstractConverterTest {
 
     @Test
@@ -62,7 +60,17 @@ public class MetrixTest extends AbstractConverterTest {
             }
         };
 
-        AbstractMetrix.ResultListener resultListener = new AbstractMetrix.DefaultResultListener();
+        ResultListener resultListener = new ResultListener() {
+            @Override
+            public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
+                // default empty implementation
+            }
+
+            @Override
+            public void onEnd() {
+                // default empty implementation
+            }
+        };
         MetrixAppLogger appLogger = new MetrixAppLogger() {
             @Override
             public void log(String message, Object... args) {

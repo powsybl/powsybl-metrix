@@ -47,7 +47,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
     private final Network network;
 
-    private final TimeSeriesMappingLogger logger;
+    private final TimeSeriesMappingLogger timeSeriesMappingLogger;
 
     private static class MapperContext {
         private EquipmentTimeSerieMap timeSeriesToLoadsMapping = new EquipmentTimeSerieMap();
@@ -64,10 +64,10 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         private Map<IndexedName, Set<MappingKey>> equipmentTimeSeries;
     }
 
-    public TimeSeriesMapper(TimeSeriesMappingConfig config, Network network, TimeSeriesMappingLogger logger) {
+    public TimeSeriesMapper(TimeSeriesMappingConfig config, Network network, TimeSeriesMappingLogger timeSeriesMappingLogger) {
         this.config = Objects.requireNonNull(config);
         this.network = Objects.requireNonNull(network);
-        this.logger = Objects.requireNonNull(logger);
+        this.timeSeriesMappingLogger = Objects.requireNonNull(timeSeriesMappingLogger);
     }
 
     public static void setMax(Identifiable<?> identifiable, double max) {
@@ -213,7 +213,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
     private void mapToNetwork(TimeSeriesTable table, int version, int variantId, int point,
                               IndexedMappingKey mappingKey, List<MappedEquipment> mappedEquipments,
-                              TimeSeriesMapperChecker observer, TimeSeriesMappingLogger logger, boolean ignoreLimits,
+                              TimeSeriesMapperChecker observer, boolean ignoreLimits,
                               boolean ignoreEmptyFilter) {
         String timeSeriesName = mappingKey.getKey().getId();
         MappingVariable variable = mappingKey.getKey().getMappingVariable();
@@ -252,7 +252,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
             if (mappedEquipments.isEmpty()) {
                 TimeSeriesMappingLogger.Log log = new TimeSeriesMappingLogger.EmptyFilterWarning(timeSeriesName, timeSeriesValue, table.getTableIndex(), version, point);
                 if (ignoreEmptyFilter) {
-                    logger.addLog(log);
+                    timeSeriesMappingLogger.addLog(log);
                 } else {
                     throw new TimeSeriesMappingException(log.getMessage());
                 }
@@ -263,16 +263,16 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                         distributionKeys[i] = distributionKey;
                         distributionKeySum += distributionKeys[i];
                     }
-                    logger.addLog(new ZeroDistributionKeyInfo(timeSeriesName, timeSeriesValue, table.getTableIndex(), version, variantId,
+                    timeSeriesMappingLogger.addLog(new ZeroDistributionKeyInfo(timeSeriesName, timeSeriesValue, table.getTableIndex(), version, variantId,
                             mappedEquipments.stream().map(MappedEquipment::getId).collect(Collectors.toList())));
                 }
 
                 if (mappedEquipments.get(0).getIdentifiable() instanceof HvdcLine) {
                     if (variable == EquipmentVariable.maxP && timeSeriesValue < 0) {
-                        logger.addLog(new LimitMaxSign(table.getTableIndex(), version, variantId, timeSeriesName, EquipmentVariable.maxP.getVariableName(), timeSeriesValue));
+                        timeSeriesMappingLogger.addLog(new LimitMaxSign(table.getTableIndex(), version, variantId, timeSeriesName, EquipmentVariable.maxP.getVariableName(), timeSeriesValue));
                         return;
                     } else if (variable == EquipmentVariable.minP && timeSeriesValue > 0) {
-                        logger.addLog(new LimitMinSign(table.getTableIndex(), version, variantId, timeSeriesName, EquipmentVariable.minP.getVariableName(), timeSeriesValue));
+                        timeSeriesMappingLogger.addLog(new LimitMinSign(table.getTableIndex(), version, variantId, timeSeriesName, EquipmentVariable.minP.getVariableName(), timeSeriesValue));
                         return;
                     }
                 }
@@ -296,10 +296,10 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
     private void mapToNetwork(TimeSeriesTable table, int version, int variantId, int point,
                               EquipmentTimeSerieMap timeSeriesToEquipmentsMapping,
-                              TimeSeriesMapperChecker observer, TimeSeriesMappingLogger logger, boolean ignoreLimits,
+                              TimeSeriesMapperChecker observer, boolean ignoreLimits,
                               boolean ignoreEmptyFilter) {
         timeSeriesToEquipmentsMapping.getEquipmentTimeSeries().forEach((mappingKey, mappedEquipments) ->
-            mapToNetwork(table, version, variantId, point, mappingKey, mappedEquipments, observer, logger, ignoreLimits, ignoreEmptyFilter));
+            mapToNetwork(table, version, variantId, point, mappingKey, mappedEquipments, observer, ignoreLimits, ignoreEmptyFilter));
     }
 
     public static IndexedMappingKey indexMappingKey(TimeSeriesTable timeSeriesTable, MappingKey key) {
@@ -322,7 +322,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                     variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
                 } else {
                     if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                        LOGGER.debug("Mapping time-series '" + indexedMappingKey.getKey().getId() + "' is constant");
+                        LOGGER.debug("Mapping time-series '{}' is constant", indexedMappingKey.getKey().getId());
                         constantTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
                     } else {
                         variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
@@ -395,7 +395,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
     }
 
     private void correctUnmappedGenerator(boolean isUnmappedMinP, boolean isUnmappedMaxP, Generator generator,
-                                          int version, boolean ignoreLimits, TimeSeriesIndex index, TimeSeriesMappingLogger logger) {
+                                          int version, boolean ignoreLimits, TimeSeriesIndex index) {
 
         final double minP = generator.getMinP();
         final double maxP = generator.getMaxP();
@@ -410,12 +410,12 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 .version(version)
                 .index(index)
                 .ignoreLimits(ignoreLimits)
-                .setAll(generator, logger);
+                .setAll(generator, timeSeriesMappingLogger);
 
     }
 
     private void correctUnmappedHvdcLine(boolean isUnmappedMinP, boolean isUnmappedMaxP, HvdcLine hvdcLine, int version,
-                                         boolean ignoreLimits, TimeSeriesIndex index, TimeSeriesMappingLogger logger) {
+                                         boolean ignoreLimits, TimeSeriesIndex index) {
 
         final boolean isActivePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class) != null;
         final double minP = TimeSeriesMapper.getMin(hvdcLine);
@@ -445,19 +445,23 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         if (isActivePowerRange && (maxP > hvdcLineMaxP || -minP > hvdcLineMaxP)) {
             if (ignoreLimits) {
                 if (((maxP > hvdcLineMaxP && -minP > hvdcLineMaxP) && maxP > -minP) || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
-                    logger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID, maxPVariableName, EquipmentVariable.maxP.getVariableName(), maxPVariableName, id, 0, hvdcLineMaxP, maxP, maxP));
+                    timeSeriesMappingLogger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                            maxPVariableName, EquipmentVariable.maxP.getVariableName(), maxPVariableName, id, 0, hvdcLineMaxP, maxP, maxP));
                 } else if (((maxP > hvdcLineMaxP && -minP < hvdcLineMaxP) && -minP > maxP) || (-minP > hvdcLineMaxP && maxP <= hvdcLineMaxP)) {
-                    logger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID, minPVariableName, MINUS_MAXP, minPVariableName, id, -hvdcLineMaxP, 0, minP, minP));
+                    timeSeriesMappingLogger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                            minPVariableName, MINUS_MAXP, minPVariableName, id, -hvdcLineMaxP, 0, minP, minP));
                 }
                 hvdcLine.setMaxP(Math.max(maxP, -minP));
             } else {
                 if (maxP > hvdcLineMaxP) {
-                    logger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, maxPVariableName, maxPVariableName, EquipmentVariable.maxP.getVariableName(), id, 0, hvdcLineMaxP, maxP, hvdcLineMaxP));
+                    timeSeriesMappingLogger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                            maxPVariableName, maxPVariableName, EquipmentVariable.maxP.getVariableName(), id, 0, hvdcLineMaxP, maxP, hvdcLineMaxP));
                     hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) hvdcLineMaxP);
                     correctedMaxP = hvdcLineMaxP;
                 }
                 if (minP < -hvdcLineMaxP) {
-                    logger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, minPVariableName, minPVariableName, MINUS_MAXP, id, -hvdcLineMaxP, 0, minP, -hvdcLineMaxP));
+                    timeSeriesMappingLogger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                            minPVariableName, minPVariableName, MINUS_MAXP, id, -hvdcLineMaxP, 0, minP, -hvdcLineMaxP));
                     hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS2toCS1((float) hvdcLineMaxP);
                     correctedMinP = -hvdcLineMaxP;
                 }
@@ -467,25 +471,29 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         // setpoint inconstancy with maxP/CS1toCS2/CS2toCS1
         if (setpoint > correctedMaxP && isUnmappedMaxP) {
             if (ignoreLimits) {
-                logger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID, setPointVariableName, maxPVariableName, setPointVariableName, id, minP, maxP, setpoint, setpoint));
+                timeSeriesMappingLogger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                        setPointVariableName, maxPVariableName, setPointVariableName, id, minP, maxP, setpoint, setpoint));
                 TimeSeriesMapper.setMax(hvdcLine, setpoint);
             } else {
-                logger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, setPointVariableName, setPointVariableName, maxPVariableName, id, minP, maxP, setpoint, maxP));
+                timeSeriesMappingLogger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                        setPointVariableName, setPointVariableName, maxPVariableName, id, minP, maxP, setpoint, maxP));
                 TimeSeriesMapper.setHvdcLineSetPoint(hvdcLine, maxP);
             }
         } else if (setpoint < correctedMinP && isUnmappedMinP) {
             if (ignoreLimits) {
-                logger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID, setPointVariableName, minPVariableName, setPointVariableName, id, minP, maxP, setpoint, setpoint));
+                timeSeriesMappingLogger.addLog(new BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                        setPointVariableName, minPVariableName, setPointVariableName, id, minP, maxP, setpoint, setpoint));
                 TimeSeriesMapper.setMin(hvdcLine, setpoint);
             } else {
-                logger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, setPointVariableName, setPointVariableName, minPVariableName, id, minP, maxP, setpoint, minP));
+                timeSeriesMappingLogger.addLog(new BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID,
+                        setPointVariableName, setPointVariableName, minPVariableName, id, minP, maxP, setpoint, minP));
                 TimeSeriesMapper.setHvdcLineSetPoint(hvdcLine, minP);
             }
         }
     }
 
     private void mapToNetwork(MapperContext context, TimeSeriesTable table, TimeSeriesMapperParameters parameters,
-                              int version, TimeSeriesMapperChecker observer, TimeSeriesMappingLogger logger) {
+                              int version, TimeSeriesMapperChecker observer) {
 
         int firstPoint = parameters.getPointRange() != null ? parameters.getPointRange().lowerEndpoint() : 0;
         int lastPoint = parameters.getPointRange() != null ? parameters.getPointRange().upperEndpoint() : (table.getTableIndex().getPointCount() - 1);
@@ -565,14 +573,14 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 .forEach(g -> {
                     final boolean isMinPUnmapped = config.getUnmappedMinPGenerators().contains(g.getId());
                     final boolean isMaxPUnmapped = config.getUnmappedMaxPGenerators().contains(g.getId());
-                    correctUnmappedGenerator(isMinPUnmapped, isMaxPUnmapped, g, version, parameters.isIgnoreLimits(), table.getTableIndex(), logger);
+                    correctUnmappedGenerator(isMinPUnmapped, isMaxPUnmapped, g, version, parameters.isIgnoreLimits(), table.getTableIndex());
                 });
         network.getHvdcLineStream()
                 .filter(l -> config.getUnmappedHvdcLines().contains(l.getId()))
                 .forEach(l -> {
                     final boolean isMinPUnmapped = config.getUnmappedMinPHvdcLines().contains(l.getId());
                     final boolean isMaxPUnmapped = config.getUnmappedMaxPHvdcLines().contains(l.getId());
-                    correctUnmappedHvdcLine(isMinPUnmapped, isMaxPUnmapped, l, version, parameters.isIgnoreLimits(), table.getTableIndex(), logger);
+                    correctUnmappedHvdcLine(isMinPUnmapped, isMaxPUnmapped, l, version, parameters.isIgnoreLimits(), table.getTableIndex());
                 });
 
         // process constant time series
@@ -606,7 +614,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                     constantTimeSeriesToVscConverterStationsMapping,
                     constantTimeSeriesToLinesMapping,
                     constantEquipmentTimeSeries,
-                    observer, logger);
+                    observer);
         }
 
         // for unmapped equipments, keep base case value which is constant
@@ -687,7 +695,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                 timeSeriesToVscConverterStationsMapping,
                 timeSeriesToLinesMapping,
                 equipmentTimeSeries,
-                observer, logger);
+                observer);
 
             if (observer != null) {
                 observer.timeSeriesMappingEnd(point, table.getTableIndex(), 0);
@@ -709,20 +717,20 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                                 EquipmentTimeSerieMap timeSeriesToVscConverterStationsMapping,
                                 EquipmentTimeSerieMap timeSeriesToLinesMapping,
                                 Map<IndexedName, Set<MappingKey>> equipmentTimeSeries,
-                                TimeSeriesMapperChecker observer, TimeSeriesMappingLogger logger) {
+                                TimeSeriesMapperChecker observer) {
 
         // process time series for mapping
-        mapToNetwork(table, version, variantId, point, timeSeriesToLoadsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToGeneratorsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToDanglingLinesMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToHvdcLinesMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToPhaseTapChangersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToBreakersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToTransformersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToRatioTapChangersMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToLccConverterStationsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToVscConverterStationsMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
-        mapToNetwork(table, version, variantId, point, timeSeriesToLinesMapping, observer, logger, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToLoadsMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToGeneratorsMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToDanglingLinesMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToHvdcLinesMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToPhaseTapChangersMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToBreakersMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToTransformersMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToRatioTapChangersMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToLccConverterStationsMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToVscConverterStationsMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
+        mapToNetwork(table, version, variantId, point, timeSeriesToLinesMapping, observer, parameters.isIgnoreLimits(), parameters.isIgnoreEmptyFilter());
 
         if (observer != null) {
             // generic mapping
@@ -742,10 +750,10 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         }
     }
 
-    public TimeSeriesMappingLogger mapToNetwork(ReadOnlyTimeSeriesStore store, TimeSeriesMapperParameters parameters,
+    public void mapToNetwork(ReadOnlyTimeSeriesStore store, TimeSeriesMapperParameters parameters,
                                                 List<TimeSeriesMapperObserver> observers) {
 
-        TimeSeriesMapperChecker checker = new TimeSeriesMapperChecker(observers, logger, parameters);
+        TimeSeriesMapperChecker checker = new TimeSeriesMapperChecker(observers, timeSeriesMappingLogger, parameters);
 
         checker.start();
 
@@ -779,7 +787,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
                             .collect(Collectors.toMap(e -> new IndexedName(e.getKey(), table.getDoubleTimeSeriesIndex(e.getKey())), Map.Entry::getValue));
                 }
 
-                mapToNetwork(context, table, parameters, version, checker, logger);
+                mapToNetwork(context, table, parameters, version, checker);
             } finally {
                 checker.versionEnd(version);
             }
@@ -787,8 +795,6 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
 
         checker.end();
 
-        logger.printLogSynthesis();
-
-        return logger;
+        timeSeriesMappingLogger.printLogSynthesis();
     }
 }
