@@ -10,20 +10,18 @@ package com.powsybl.metrix.mapping;
 
 import java.util.Objects;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public enum MappableEquipmentType {
     GENERATOR("generator"),
     HVDC_LINE("hvdcLine"),
     LOAD("load"),
     BOUNDARY_LINE("boundaryLine"),
     SWITCH("breaker"),
-    TRANSFORMER("transformer"),
-    PHASE_TAP_CHANGER("transformer"),
-    RATIO_TAP_CHANGER("transformer"),
+    TRANSFORMER("twoWindingsTransformer"),
+    PHASE_TAP_CHANGER("twoWindingsTransformer"),
+    RATIO_TAP_CHANGER("twoWindingsTransformer"),
     LCC_CONVERTER_STATION("lccConverterStation"),
     VSC_CONVERTER_STATION("vscConverterStation"),
+    LINE("line"),
     @Deprecated PST("pst"); // Kept for compatibility
 
     private final String scriptVariable;

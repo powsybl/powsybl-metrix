@@ -15,6 +15,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
@@ -24,6 +25,7 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.util.*;
 
+@Ignore
 public class BalanceSummaryTest extends AbstractConverterTest {
 
     private static final char SEPARATOR = ';';

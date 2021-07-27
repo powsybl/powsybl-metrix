@@ -27,9 +27,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixChunk {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixChunk.class);
@@ -62,21 +59,21 @@ public class MetrixChunk {
 
     private final Path logFileDetail;
 
-    private final MetrixChunkLogger logger;
+    private final MetrixChunkLogger metrixChunkLogger;
 
     public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config, Path remedialActionFile, Path logFile, Path logFileDetail) {
         this(network, computationManager, config, remedialActionFile, logFile, logFileDetail, null);
     }
 
     public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config,
-                       Path remedialActionFile, Path logFile, Path logFileDetail, MetrixChunkLogger logger) {
+                       Path remedialActionFile, Path logFile, Path logFileDetail, MetrixChunkLogger metrixChunkLogger) {
         this.network = Objects.requireNonNull(network);
         this.computationManager = Objects.requireNonNull(computationManager);
         this.config = Objects.requireNonNull(config);
         this.logFile = logFile;
         this.logFileDetail = logFileDetail;
         this.remedialActionFile = remedialActionFile;
-        this.logger = logger;
+        this.metrixChunkLogger = metrixChunkLogger;
     }
 
     private static String getLogLevelValue(int level) {
@@ -139,7 +136,7 @@ public class MetrixChunk {
         Objects.requireNonNull(parameters);
         Objects.requireNonNull(contingenciesProvider);
 
-        Optional<MetrixChunkLogger> optionalLogger = logger != null ? Optional.of(logger) : Optional.empty();
+        Optional<MetrixChunkLogger> optionalLogger = metrixChunkLogger != null ? Optional.of(metrixChunkLogger) : Optional.empty();
         Map<String, String> variables = ImmutableMap.of("PATH", config.getHomeDir().resolve("bin").toString());
 
         return computationManager.execute(new ExecutionEnvironment(variables, WORKING_DIR_PREFIX, config.isDebug()),

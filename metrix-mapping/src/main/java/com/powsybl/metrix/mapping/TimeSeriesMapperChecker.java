@@ -180,7 +180,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
 
     private TimeSeriesIndex index;
 
-    private final TimeSeriesMappingLogger logger;
+    private final TimeSeriesMappingLogger timeSeriesMappingLogger;
 
     private final float toleranceThreshold;
 
@@ -290,9 +290,9 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         super.versionEnd(version);
     }
 
-    public TimeSeriesMapperChecker(List<TimeSeriesMapperObserver> observers, TimeSeriesMappingLogger logger, TimeSeriesMapperParameters parameters) {
+    public TimeSeriesMapperChecker(List<TimeSeriesMapperObserver> observers, TimeSeriesMappingLogger timeSeriesMappingLogger, TimeSeriesMapperParameters parameters) {
         super(observers);
-        this.logger = Objects.requireNonNull(logger);
+        this.timeSeriesMappingLogger = Objects.requireNonNull(timeSeriesMappingLogger);
         this.toleranceThreshold = parameters.getToleranceThreshold();
     }
 
@@ -408,7 +408,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     ScalingDownPowerChange change = isMappedMaxP ? ScalingDownPowerChange.MAPPED_MAXP : ScalingDownPowerChange.BASE_CASE_MAXP;
                     targetPTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(change);
                 } else {
-                    logger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, targetPVariableName, targetPVariableName, maxPVariableName, id, minP, maxP, targetP, maxP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, targetPVariableName, targetPVariableName, maxPVariableName, id, minP, maxP, targetP, maxP));
                 }
                 return maxP;
             } else {
@@ -420,7 +420,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     return targetP;
                 } else if (!isMappedTargetP) {
                     // targetP is not mapped, maxP is mapped -> reduce targetP to maxP
-                    logger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, targetPVariableName, targetPVariableName, maxPVariableName, id, minP, maxP, targetP, maxP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, targetPVariableName, targetPVariableName, maxPVariableName, id, minP, maxP, targetP, maxP));
                     return maxP;
                 } else {
                     targetPTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MAXP_DISABLED);
@@ -436,7 +436,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                         ScalingDownPowerChange change = isMappedMinP ? ScalingDownPowerChange.MAPPED_MINP : ScalingDownPowerChange.BASE_CASE_MINP;
                         targetPTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(change);
                     } else {
-                        logger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, targetPVariableName, targetPVariableName, minPVariableName, id, minP, maxP, targetP, minP));
+                        timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, targetPVariableName, targetPVariableName, minPVariableName, id, minP, maxP, targetP, minP));
                     }
                     return minP;
                 } else {
@@ -448,7 +448,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                         return targetP;
                     } else if (!isMappedTargetP) {
                         // targetP is not mapped, minP is mapped -> increase targetP to minP
-                        logger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, targetPVariableName, targetPVariableName, minPVariableName, id, minP, maxP, targetP, minP));
+                        timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, targetPVariableName, targetPVariableName, minPVariableName, id, minP, maxP, targetP, minP));
                         return minP;
                     } else {
                         targetPTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MINP_DISABLED);
@@ -459,9 +459,9 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                 // targetP is smaller than minP -> increase targetP to 0
                 if (!isMappedTargetP) {
                     if (!ignoreLimits) {
-                        logger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, targetPVariableName, targetPVariableName, "", id, minP, maxP, targetP, 0));
+                        timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, targetPVariableName, targetPVariableName, "", id, minP, maxP, targetP, 0));
                     } else {
-                        logger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, targetPVariableName, targetPVariableName, "", id, minP, maxP, targetP, 0));
+                        timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, targetPVariableName, targetPVariableName, "", id, minP, maxP, targetP, 0));
                     }
                 } else {
                     ScalingDownPowerChange change = ignoreLimits ? ScalingDownPowerChange.ZERO_DISABLED : ScalingDownPowerChange.ZERO;
@@ -481,7 +481,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     //logger.addLog(new ScalingDownMappedMinPViolatedByMappedTargetP(version, index, point, targetPVariableName, targetPVariableName, id, minP, maxP, targetP));
                     //}
                 } else {
-                    logger.addLog(new MappingRangeInfoWithMappedMinPViolatedByTargetP(version, index, point, targetPVariableName, id, minP, maxP, targetP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeInfoWithMappedMinPViolatedByTargetP(version, index, point, targetPVariableName, id, minP, maxP, targetP));
                 }
                 return targetP;
             }
@@ -545,7 +545,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     ScalingDownPowerChange change = isMappedMaxP ? ScalingDownPowerChange.MAPPED_MAXP : (isActivePowerRange ? ScalingDownPowerChange.BASE_CASE_CS1TOCS2 : ScalingDownPowerChange.BASE_CASE_MAXP);
                     setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(change);
                 } else {
-                    logger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.maxP.getVariableName(), id, minP, maxP, setpoint, maxP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.maxP.getVariableName(), id, minP, maxP, setpoint, maxP));
                 }
                 return maxP;
             } else {
@@ -561,7 +561,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     return setpoint;
                 } else if (!isMappedSetpoint) {
                     // setpoint is not mapped, maxP is mapped -> reduce setpoint to maxP
-                    logger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.maxP.getVariableName(), id, minP, maxP, setpoint, maxP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.maxP.getVariableName(), id, minP, maxP, setpoint, maxP));
                     return maxP;
                 } else {
                     setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MAXP_DISABLED);
@@ -576,7 +576,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     ScalingDownPowerChange change = isMappedMinP ? ScalingDownPowerChange.MAPPED_MINP : (isActivePowerRange ? ScalingDownPowerChange.BASE_CASE_CS2TOCS1 : ScalingDownPowerChange.BASE_CASE_MINUS_MAXP);
                     setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(change);
                 } else {
-                    logger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.minP.getVariableName(), id, minP, maxP, setpoint, minP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChange(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.minP.getVariableName(), id, minP, maxP, setpoint, minP));
                 }
                 return minP;
             } else {
@@ -592,7 +592,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
                     return setpoint;
                 } else if (!isMappedSetpoint) {
                     // setpoint is not mapped, minP is mapped -> increase setpoint to minP
-                    logger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.minP.getVariableName(), id, minP, maxP, setpoint, minP));
+                    timeSeriesMappingLogger.addLog(new MappingRangeWarningWithVariableChangeDisabled(version, index, point, setpointVariableName, setpointVariableName, EquipmentVariable.minP.getVariableName(), id, minP, maxP, setpoint, minP));
                     return minP;
                 } else {
                     setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MINP_DISABLED);
@@ -650,37 +650,37 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
     private void addScalingDownLog(String changedVariable, ScalingDownPowerChange change, TimeSeriesIndex index, int version, String timeSeriesName, double value, double sum, int point) {
         switch (change) {
             case BASE_CASE_MINP:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, value, sum, index, version, point));
                 break;
             case BASE_CASE_MAXP:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, value, sum, index, version, point));
                 break;
             case MAPPED_MINP:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariable(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariable(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, value, sum, index, version, point));
                 break;
             case MAPPED_MAXP:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariable(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariable(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, value, sum, index, version, point));
                 break;
             case ZERO:
-                logger.addLog(new ScalingDownWarningChangeToZero(changedVariable, timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToZero(changedVariable, timeSeriesName, value, sum, index, version, point));
                 break;
             case MAPPED_MINP_DISABLED:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariableDisabled(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariableDisabled(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, value, sum, index, version, point));
                 break;
             case MAPPED_MAXP_DISABLED:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariableDisabled(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariableDisabled(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, value, sum, index, version, point));
                 break;
             case ZERO_DISABLED:
-                logger.addLog(new ScalingDownWarningChangeToZeroDisabled(changedVariable, timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToZeroDisabled(changedVariable, timeSeriesName, value, sum, index, version, point));
                 break;
             case BASE_CASE_CS1TOCS2:
-                logger.addLog(new TimeSeriesMappingLogger.ScalingDownWarningChangeToBaseCaseVariable(changedVariable, CS12, timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new TimeSeriesMappingLogger.ScalingDownWarningChangeToBaseCaseVariable(changedVariable, CS12, timeSeriesName, value, sum, index, version, point));
                 break;
             case BASE_CASE_CS2TOCS1:
-                logger.addLog(new TimeSeriesMappingLogger.ScalingDownWarningChangeToBaseCaseVariable(changedVariable, MINUS_CS21, timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new TimeSeriesMappingLogger.ScalingDownWarningChangeToBaseCaseVariable(changedVariable, MINUS_CS21, timeSeriesName, value, sum, index, version, point));
                 break;
             case BASE_CASE_MINUS_MAXP:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, MINUS_MAXP, timeSeriesName, value, sum, index, version, point));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariable(changedVariable, MINUS_MAXP, timeSeriesName, value, sum, index, version, point));
                 break;
             default:
                 throw new AssertionError(String.format("Unhandled scaling operation %s", change.name()));
@@ -690,37 +690,37 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
     private void addScalingDownLogSynthesis(String changedVariable, ScalingDownPowerChange change, int version, String timeSeriesName) {
         switch (change) {
             case BASE_CASE_MINP:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, index, version));
                 break;
             case BASE_CASE_MAXP:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, index, version));
                 break;
             case MAPPED_MINP:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariableSynthesis(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariableSynthesis(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, index, version));
                 break;
             case MAPPED_MAXP:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariableSynthesis(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariableSynthesis(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, index, version));
                 break;
             case ZERO:
-                logger.addLog(new ScalingDownWarningChangeToZeroSynthesis(changedVariable, timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToZeroSynthesis(changedVariable, timeSeriesName, index, version));
                 break;
             case MAPPED_MINP_DISABLED:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariableDisabledSynthesis(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariableDisabledSynthesis(changedVariable, EquipmentVariable.minP.getVariableName(), timeSeriesName, index, version));
                 break;
             case MAPPED_MAXP_DISABLED:
-                logger.addLog(new ScalingDownWarningChangeToMappedVariableDisabledSynthesis(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToMappedVariableDisabledSynthesis(changedVariable, EquipmentVariable.maxP.getVariableName(), timeSeriesName, index, version));
                 break;
             case ZERO_DISABLED:
-                logger.addLog(new ScalingDownWarningChangeToZeroDisabledSynthesis(changedVariable, timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToZeroDisabledSynthesis(changedVariable, timeSeriesName, index, version));
                 break;
             case BASE_CASE_CS1TOCS2:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, CS12, timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, CS12, timeSeriesName, index, version));
                 break;
             case BASE_CASE_CS2TOCS1:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, MINUS_CS21, timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, MINUS_CS21, timeSeriesName, index, version));
                 break;
             case BASE_CASE_MINUS_MAXP:
-                logger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, MINUS_MAXP, timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownWarningChangeToBaseCaseVariableSynthesis(changedVariable, MINUS_MAXP, timeSeriesName, index, version));
                 break;
             default:
                 throw new AssertionError(String.format("Unhandled scaling operation %s", change.name()));
@@ -730,28 +730,28 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
     private void addScalingDownLimitViolationLogSynthesis(ScalingDownLimitViolation change, int version, String timeSeriesName) {
         switch (change) {
             case BASE_CASE_MINP_BY_TARGETP:
-                logger.addLog(new ScalingDownBaseCaseMinPViolatedByMappedTargetPSynthesis(timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownBaseCaseMinPViolatedByMappedTargetPSynthesis(timeSeriesName, index, version));
                 break;
             case MAPPED_MINP_BY_TARGETP:
-                logger.addLog(new ScalingDownMappedMinPViolatedByMappedTargetPSynthesis(timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMappedMinPViolatedByMappedTargetPSynthesis(timeSeriesName, index, version));
                 break;
             case MAXP_BY_TARGETP:
-                logger.addLog(new ScalingDownMaxPChangeSynthesis(EquipmentVariable.maxP.getVariableName(), EquipmentVariable.targetP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMaxPChangeSynthesis(EquipmentVariable.maxP.getVariableName(), EquipmentVariable.targetP.getVariableName(), timeSeriesName, index, version));
                 break;
             case MAXP_BY_ACTIVEPOWER:
-                logger.addLog(new ScalingDownMaxPChangeSynthesis(EquipmentVariable.maxP.getVariableName(), EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMaxPChangeSynthesis(EquipmentVariable.maxP.getVariableName(), EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
                 break;
             case CS1TOCS2_BY_ACTIVEPOWER:
-                logger.addLog(new ScalingDownMaxPChangeSynthesis(CS12, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMaxPChangeSynthesis(CS12, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
                 break;
             case MINP_BY_TARGETP:
-                logger.addLog(new ScalingDownMinPChangeSynthesis(EquipmentVariable.minP.getVariableName(), EquipmentVariable.targetP.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMinPChangeSynthesis(EquipmentVariable.minP.getVariableName(), EquipmentVariable.targetP.getVariableName(), timeSeriesName, index, version));
                 break;
             case MINP_BY_ACTIVEPOWER:
-                logger.addLog(new ScalingDownMinPChangeSynthesis(MINUS_MAXP, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMinPChangeSynthesis(MINUS_MAXP, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
                 break;
             case CS2TOCS1_BY_ACTIVEPOWER:
-                logger.addLog(new ScalingDownMinPChangeSynthesis(MINUS_CS21, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
+                timeSeriesMappingLogger.addLog(new ScalingDownMinPChangeSynthesis(MINUS_CS21, EquipmentVariable.activePowerSetpoint.getVariableName(), timeSeriesName, index, version));
                 break;
             default:
                 throw new AssertionError(String.format("Unhandled scaling operation %s", change.name()));
@@ -762,7 +762,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         if (limitType == MappingLimitType.MIN) {
             equipmentToValues.entrySet().stream()
                     .filter(e -> !Double.isNaN(e.getValue().getLimit()))
-                    .forEach(e -> logger.addLog(new LimitMinInfo(
+                    .forEach(e -> timeSeriesMappingLogger.addLog(new LimitMinInfo(
                             index, version, Integer.MAX_VALUE,
                             e.getKey().getId(),
                             variableToChange,
@@ -773,7 +773,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver im
         } else {
             equipmentToValues.entrySet().stream()
                     .filter(e -> !Double.isNaN(e.getValue().getLimit()))
-                    .forEach(e -> logger.addLog(new LimitMaxInfo(
+                    .forEach(e -> timeSeriesMappingLogger.addLog(new LimitMaxInfo(
                             index, version, Integer.MAX_VALUE,
                             e.getKey().getId(),
                             variableToChange,

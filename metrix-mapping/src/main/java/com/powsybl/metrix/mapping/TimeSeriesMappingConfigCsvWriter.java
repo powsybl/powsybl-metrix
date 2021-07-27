@@ -90,7 +90,8 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
     private static final String HVDC_LINE_TYPE = "hvdc";
     private static final String PHASE_TAP_CHANGER_TYPE = "phaseTapChanger";
     private static final String RATIO_TAP_CHANGER_TYPE = "ratioTapChanger";
-    private static final String TRANSFORMER_TYPE = "transformer";
+    private static final String TRANSFORMER_TYPE = "twoWindingsTransformer";
+    private static final String LINE_TYPE = "line";
     private static final String LCC_CONVERTER_STATION_TYPE = "lccConverterStation";
     private static final String VSC_CONVERTER_STATION_TYPE = "vscConverterStation";
     private static final String BREAKER_TYPE = "breaker";
@@ -324,6 +325,7 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
                 case PHASE_TAP_CHANGER_TYPE:
                 case RATIO_TAP_CHANGER_TYPE:
                 case TRANSFORMER_TYPE:
+                case LINE_TYPE:
                 case LCC_CONVERTER_STATION_TYPE:
                 case VSC_CONVERTER_STATION_TYPE:
                 case BREAKER_TYPE:
@@ -668,6 +670,8 @@ public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, BREAKER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToTransformersMapping());
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, TRANSFORMER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
+            mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToLinesMapping());
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, LINE_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToRatioTapChangersMapping());
             mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, RATIO_TAP_CHANGER_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, null, null, false, null, 1, false));
             mappedTimeSeries = config.findMappedTimeSeries(config.getTimeSeriesToLccConverterStationsMapping());

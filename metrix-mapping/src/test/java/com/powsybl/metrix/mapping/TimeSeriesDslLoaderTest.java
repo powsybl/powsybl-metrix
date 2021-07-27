@@ -17,13 +17,10 @@ import org.threeten.extra.Interval;
 
 import java.io.*;
 import java.time.Duration;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class TimeSeriesDslLoaderTest {
 
     private static final String DEFAULT_SCRIPTS_DELIMITER = "\n\n"; // same as defined in AbstractScript
@@ -31,12 +28,15 @@ public class TimeSeriesDslLoaderTest {
     private MappingParameters parameters = MappingParameters.load();
 
     @Test
-    public void mappingTest() {
+    public void mappingTest() throws IOException {
         // create test network
         Network network = MappingTestNetwork.create();
 
         // mapping script
         String script = String.join(System.lineSeparator(),
+                "mapPlannedOutages {",
+                "   'multiple_ouverture_id'",
+                "}",
                 "timeSeries['zero'] = 0",
                 "mapToGenerators {",
                 "    timeSeriesName 'zero'",
@@ -80,19 +80,34 @@ public class TimeSeriesDslLoaderTest {
 
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
-        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+        ReadOnlyTimeSeriesStoreCache store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("nucl_ts", index, 1d, 1d),
                 TimeSeries.createDouble("hydro_ts", index, 1d, 1d),
                 TimeSeries.createDouble("load1_ts", index, 1d, 1d),
                 TimeSeries.createDouble("load2_ts", index, 1d, 1d),
-                TimeSeries.createDouble("switch_ts", index, 0d, 1d)
-        );
+                TimeSeries.createDouble("switch_ts", index, 0d, 1d),
+                TimeSeries.createDouble("multiple_ouverture_id", index, 1d, 1d)
+        ) {
+            public Optional<StringTimeSeries> getStringTimeSeries(String timeSeriesName, int version) {
+                return Optional.of(TimeSeries.createString("multiple_ouverture_id", index, "1", "G1,twt,L1"));
+            }
+        };
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig config = dsl.load(network, parameters, store, null);
         TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
         csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
+
+        Map<String, Set<String>> timeSeriesToPlannedOutagesMappingExpected = new HashMap<>();
+        Set<String> outages = new HashSet<>();
+        outages.add("1");
+        outages.add("G1");
+        outages.add("twt");
+        outages.add("L1");
+        timeSeriesToPlannedOutagesMappingExpected.put("multiple_ouverture_id", outages);
+        Map<String, Set<String>> timeSeriesToPlannedOutagesMapping = config.getTimeSeriesToPlannedOutagesMapping();
+        assertEquals(timeSeriesToPlannedOutagesMappingExpected, timeSeriesToPlannedOutagesMapping);
 
         // assertions
         assertTrue(config.isMappingComplete());
