@@ -18,6 +18,7 @@ import com.powsybl.computation.local.LocalComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
@@ -32,7 +33,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.zip.ZipOutputStream;
@@ -82,8 +82,7 @@ public class MetrixTest extends AbstractConverterTest {
                 return this;
             }
         };
-        AtomicReference<MetrixDslData> metrixDslDataResult = new AtomicReference<>();
-        Consumer<MetrixDslData> metrixDslDataConsumer = metrixDslDataResult::set;
+        Consumer<MetrixConfigResult> metrixDslDataConsumer = MetrixConfigResult::getMetrixTimeSeriesNodes;
         StringWriter logWriter = new StringWriter();
 
         Supplier<Reader> mappingReader = () -> new StringReader("");

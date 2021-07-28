@@ -11,6 +11,7 @@ package com.powsybl.metrix.integration;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
@@ -27,7 +28,7 @@ public class MetrixMock extends AbstractMetrix {
                       Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier,
                       Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store,
                       ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                      MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixDslData> onResult) {
+                      MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixConfigResult> onResult) {
         super(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,
                 store, resultStore, logArchive, computationManager, appLogger, updateTask, logWriter, onResult);
     }
