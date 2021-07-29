@@ -14,9 +14,6 @@ import com.google.common.collect.ImmutableMap;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * Created by marifunf on 08/06/17.
- */
 public class MetrixDslData {
 
     private static final double OVERLOAD_RATIO = .3; // Assume 30% of monitored branches get overloaded at some point

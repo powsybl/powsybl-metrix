@@ -28,9 +28,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixInputData implements MetrixInputConstants {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixInputData.class);
@@ -247,6 +244,8 @@ public class MetrixInputData implements MetrixInputConstants {
         parameters.getOptionalAdequacyCostOffset().ifPresent(value -> die.setInt("ADEQUAOF", value));
         parameters.getOptionalCurativeRedispatchingLimit().ifPresent(value -> die.setInt("LIMCURGR", value));
         parameters.isShowAllTDandHVDCresults().ifPresent(value -> die.setBoolean("SHTDHVDC", value));
+        parameters.isWithLostLoadDetailedResultsOnContingency().ifPresent(value -> die.setBoolean("LOSTLOAD", value));
+        parameters.getOptionalNbMaxLostLoadDetailedResults().ifPresent(value -> die.setInt("LOSTCMAX", value));
     }
 
     private void writeBranch(String[] cqnomqua, float[] cqadmita, float[] cqresist, int[] qasurvdi, int[] qasurnmk, int[] tnnorqua, int[] tnnexqua,

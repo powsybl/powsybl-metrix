@@ -12,9 +12,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by marifunf on 04/04/17.
- */
 public class MetrixParametersTest {
 
     @Test
@@ -50,11 +47,13 @@ public class MetrixParametersTest {
         assertFalse(p.getOptionalLossThreshold().isPresent());
         assertFalse(p.getOptionalNbMaxIteration().isPresent());
         assertFalse(p.getOptionalNbMaxCurativeAction().isPresent());
+        assertFalse(p.getOptionalNbMaxLostLoadDetailedResults().isPresent());
         assertFalse(p.getOptionalGapVariableCost().isPresent());
         assertFalse(p.getOptionalNbThreatResults().isPresent());
         assertFalse(p.getOptionalRedispatchingCostOffset().isPresent());
         assertFalse(p.getOptionalAdequacyCostOffset().isPresent());
         assertFalse(p.getOptionalCurativeRedispatchingLimit().isPresent());
+        assertFalse(p.isWithLostLoadDetailedResultsOnContingency().isPresent());
 
         p.setWithGridCost(false)
             .setPreCurativeResults(true)
@@ -80,11 +79,13 @@ public class MetrixParametersTest {
             .setLossThreshold(504)
             .setNbMaxIteration(3)
             .setNbMaxCurativeAction(4)
+            .setNbMaxLostLoadDetailedResults(5)
             .setGapVariableCost(10000)
             .setNbThreatResults(2)
             .setRedispatchingCostOffset(50)
             .setAdequacyCostOffset(4)
-            .setCurativeRedispatchingLimit(1500);
+            .setCurativeRedispatchingLimit(1500)
+            .setWithLostLoadDetailedResultsOnContingency(true);
 
         assertFalse(p.isWithGridCost().get());
         assertTrue(p.isPreCurativeResults().get());
@@ -107,6 +108,7 @@ public class MetrixParametersTest {
         assertEquals(-1, p.getOptionalMaxSolverTime().getAsInt());
         assertEquals(3, p.getOptionalNbMaxIteration().getAsInt());
         assertEquals(4, p.getOptionalNbMaxCurativeAction().getAsInt());
+        assertEquals(5, p.getOptionalNbMaxLostLoadDetailedResults().getAsInt());
         assertEquals(10000, p.getOptionalGapVariableCost().getAsInt());
         assertEquals(2, p.getOptionalNbThreatResults().getAsInt());
         assertEquals(4, p.getOptionalAdequacyCostOffset().getAsInt());
@@ -149,6 +151,9 @@ public class MetrixParametersTest {
         assertEquals(p, p.setLossDetailPerCountry(false));
         assertFalse(p.isLossDetailPerCountry().get());
 
+        assertEquals(p, p.setWithLostLoadDetailedResultsOnContingency(true));
+        assertTrue(p.isWithLostLoadDetailedResultsOnContingency().get());
+
         assertEquals(p, p.setMaxSolverTime(60));
         assertEquals(60, p.getOptionalMaxSolverTime().getAsInt());
 
@@ -175,6 +180,9 @@ public class MetrixParametersTest {
 
         assertEquals(p, p.setNbMaxCurativeAction(33));
         assertEquals(33, p.getOptionalNbMaxCurativeAction().getAsInt());
+
+        assertEquals(p, p.setNbMaxLostLoadDetailedResults(67));
+        assertEquals(67, p.getOptionalNbMaxLostLoadDetailedResults().getAsInt());
 
         assertEquals(p, p.setGapVariableCost(15000));
         assertEquals(15000, p.getOptionalGapVariableCost().getAsInt());
@@ -219,11 +227,13 @@ public class MetrixParametersTest {
             .setLossThreshold(504)
             .setNbMaxIteration(3)
             .setNbMaxCurativeAction(4)
+            .setNbMaxLostLoadDetailedResults(5)
             .setGapVariableCost(10000)
             .setNbThreatResults(5)
             .setRedispatchingCostOffset(100)
             .setAdequacyCostOffset(20)
-            .setCurativeRedispatchingLimit(12345);
+            .setCurativeRedispatchingLimit(12345)
+            .setWithLostLoadDetailedResultsOnContingency(true);
 
         expected = "{computationType=OPF, lossFactor=10.0, nominalU=2000, " +
             "withGridCost=true, " +
@@ -239,6 +249,7 @@ public class MetrixParametersTest {
             "lossDetailPerCountry=true, " +
             "overloadResultsOnly=true, " +
             "showAllTDandHVDCresults=true, " +
+            "withLostLoadDetailedResultsOnContingency=true, " +
             "lossNbRelaunch=2, " +
             "lossThreshold=504, " +
             "pstCostPenality=0.001, " +
@@ -250,6 +261,7 @@ public class MetrixParametersTest {
             "maxSolverTime=120, " +
             "nbMaxIteration=3, " +
             "nbMaxCurativeAction=4, " +
+            "nbMaxLostLoadDetailedResults=5, " +
             "gapVariableCost=10000, " +
             "nbThreatResults=5, " +
             "redispatchingCostOffset=100, " +

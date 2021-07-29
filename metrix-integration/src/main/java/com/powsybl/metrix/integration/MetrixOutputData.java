@@ -22,9 +22,6 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * @author Nicolas Lhuillier <nicolas.lhuillier@rte-france.com>
- */
 public class MetrixOutputData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixOutputData.class);
@@ -219,6 +216,16 @@ public class MetrixOutputData {
                     if (!EMPTY_STRING.equals(chunks[5])) {
                         ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
+                    }
+                    break;
+
+                case "C2B ":
+                    if ("NON CONNEXITE".equals(chunks[1])) {
+                        continue; // header
+                    }
+                    if (!EMPTY_STRING.equals(chunks[4])) {
+                        ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[3], chunks[2]);
+                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
                     break;
 

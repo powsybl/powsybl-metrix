@@ -6,11 +6,7 @@
  *
  */
 
-/**
- * Created by marifunf on 28/04/17.
- */
 package com.powsybl.metrix.integration
-
 
 import com.powsybl.dsl.DslLoader
 import com.powsybl.iidm.network.*
@@ -56,6 +52,7 @@ class MetrixDslDataLoader extends DslLoader {
         Boolean lossDetailPerCountry
         Boolean overloadResultsOnly
         Boolean showAllTDandHVDCresults
+        Boolean withLostLoadDetailedResultsOnContingency
         Float lossFactor
         Integer lossNbRelaunch
         Integer lossThreshold
@@ -74,6 +71,7 @@ class MetrixDslDataLoader extends DslLoader {
         Integer maxSolverTime
         Integer redispatchingCostOffset
         Integer adequacyCostOffset
+        Integer nbMaxLostLoadDetailedResults
         
 
         void computationType(MetrixComputationType computationType) {
@@ -132,6 +130,10 @@ class MetrixDslDataLoader extends DslLoader {
             this.showAllTDandHVDCresults = showAllTDandHVDCresults
         }
 
+        void withLostLoadDetailedResultsOnContingency(Boolean withLostLoadDetailedResultsOnContingency) {
+            this.withLostLoadDetailedResultsOnContingency = withLostLoadDetailedResultsOnContingency
+        }
+
         void lossFactor(Float lossFactor) {
             this.lossFactor = lossFactor
         }
@@ -184,6 +186,10 @@ class MetrixDslDataLoader extends DslLoader {
             this.nbMaxCurativeAction = nbMaxCurativeAction
         }
 
+        void nbMaxLostLoadDetailedResults(Integer nbMaxLostLoadDetailedResults) {
+            this.nbMaxLostLoadDetailedResults = nbMaxLostLoadDetailedResults
+        }
+
         void gapVariableCost(Integer gapVariableCost) {
             this.gapVariableCost = gapVariableCost
         }
@@ -203,7 +209,6 @@ class MetrixDslDataLoader extends DslLoader {
         void adequacyCostOffset(Integer adequacyCostOffset) {
             this.adequacyCostOffset = adequacyCostOffset
         }
-
     }
 
     static class PhaseShifterSpec {
@@ -829,6 +834,9 @@ class MetrixDslDataLoader extends DslLoader {
         if (spec.showAllTDandHVDCresults != null) {
             parameters.setShowAllTDandHVDCresults(spec.showAllTDandHVDCresults)
         }
+        if (spec.withLostLoadDetailedResultsOnContingency != null) {
+            parameters.setWithLostLoadDetailedResultsOnContingency(spec.withLostLoadDetailedResultsOnContingency)
+        }
         if (spec.maxSolverTime) {
             parameters.setMaxSolverTime(spec.maxSolverTime)
         }
@@ -876,6 +884,9 @@ class MetrixDslDataLoader extends DslLoader {
         }
         if (spec.nbMaxCurativeAction != null) {
             parameters.setNbMaxCurativeAction(spec.nbMaxCurativeAction)
+        }
+        if (spec.nbMaxLostLoadDetailedResults != null) {
+            parameters.setNbMaxLostLoadDetailedResults(spec.nbMaxLostLoadDetailedResults)
         }
         if (spec.gapVariableCost != null) {
             parameters.setGapVariableCost(spec.gapVariableCost)
