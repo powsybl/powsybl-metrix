@@ -11,30 +11,24 @@ package com.powsybl.metrix.integration;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.metrix.integration.io.MetrixConfigResult;
+import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
+import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
-import java.util.concurrent.Future;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.zip.ZipOutputStream;
 
 public class MetrixMock extends AbstractMetrix {
-    public MetrixMock(NetworkSource networkSource, ContingenciesProvider contingenciesProvider,
-                      Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier,
-                      Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store,
+    public MetrixMock(ContingenciesProvider contingenciesProvider, Reader remedialActionsReader, ReadOnlyTimeSeriesStore store,
                       ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                      MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixConfigResult> onResult) {
-        super(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,
-                store, resultStore, logArchive, computationManager, appLogger, updateTask, logWriter, onResult);
+                      MetrixAppLogger appLogger, MetrixAnalysisResult analysisResult) {
+        super(contingenciesProvider, remedialActionsReader, store, resultStore, logArchive, computationManager, appLogger, analysisResult);
     }
 
     @Override
-    protected void executeMetrixChunks(NetworkSource network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, int chunkCount, int chunkSize) throws IOException {
+    protected void executeMetrixChunks(Network network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, int chunkCount, int chunkSize) throws IOException {
 
     }
 }

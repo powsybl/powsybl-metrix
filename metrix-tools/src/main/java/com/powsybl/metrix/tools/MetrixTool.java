@@ -17,6 +17,9 @@ import com.powsybl.iidm.import_.Importers;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.compatibility.CsvResultListener;
+import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
+import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
+import com.powsybl.metrix.mapping.ComputationRange;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.tools.Command;
@@ -37,7 +40,6 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
@@ -253,7 +255,51 @@ public class MetrixTool implements Tool {
         int firstVariant = line.hasOption("first-variant") ? Integer.parseInt(line.getOptionValue("first-variant")) : 0;
         int variantCount = line.hasOption("variant-count") ? Integer.parseInt(line.getOptionValue("variant-count")) : -1;
 
-        NetworkSource networkSource = new NetworkSource() {
+        NetworkSource networkSource = getNetworkSource(context, caseFile, logger);
+        Reader mappingReader = getReader(mappingFile);
+
+        ContingenciesProvider contingenciesProvider = null;
+        if (contingenciesFile != null) {
+            contingenciesProvider = new GroovyDslContingenciesProvider(contingenciesFile);
+        }
+
+        Reader metrixDslReader = getReader(metrixDslFile);
+        Reader remedialActionsReader = getReader(remedialActionsFile);
+
+        FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
+
+        try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
+            MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter);
+            ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
+            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReader,
+                    store, logger, computationRange);
+            MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis();
+            new Metrix(contingenciesProvider, remedialActionsReader,
+                    store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
+                    .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context));
+
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        } finally {
+            resultStore.delete();
+        }
+
+        context.getOutputStream().println("Done in " + globalStopwatch.elapsed(TimeUnit.SECONDS) + " s");
+    }
+
+    private Reader getReader(Path filePath) {
+        if (filePath != null) {
+            try {
+                return Files.newBufferedReader(filePath, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return null;
+    }
+
+    private NetworkSource getNetworkSource(ToolRunningContext context, Path caseFile, MetrixAppLogger logger) {
+        return new NetworkSource() {
             @Override
             public Network copy() {
                 Stopwatch networkLoadingStopwatch = Stopwatch.createStarted();
@@ -276,56 +322,5 @@ public class MetrixTool implements Tool {
                 }
             }
         };
-
-        Supplier<Reader> mappingReaderSupplier = () -> {
-            try {
-                return Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        };
-
-        ContingenciesProvider contingenciesProvider = null;
-        if (contingenciesFile != null) {
-            contingenciesProvider = new GroovyDslContingenciesProvider(contingenciesFile);
-        }
-
-        Supplier<Reader> metrixDslReaderSupplier = null;
-        if (metrixDslFile != null) {
-            metrixDslReaderSupplier = () -> {
-                try {
-                    return Files.newBufferedReader(metrixDslFile, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            };
-        }
-
-        Supplier<Reader> remedialActionsReaderSupplier = null;
-        if (remedialActionsFile != null) {
-            remedialActionsReaderSupplier = () -> {
-                try {
-                    return Files.newBufferedReader(remedialActionsFile, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            };
-        }
-
-        FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
-
-        try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
-            new Metrix(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier,
-                    store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger)
-                    .run(new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter),
-                            new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        } finally {
-            resultStore.delete();
-        }
-
-        context.getOutputStream().println("Done in " + globalStopwatch.elapsed(TimeUnit.SECONDS) + " s");
     }
-
 }

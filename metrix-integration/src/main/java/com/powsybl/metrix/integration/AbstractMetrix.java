@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-import com.google.common.base.Stopwatch;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.powsybl.commons.PowsyblException;
@@ -16,11 +15,8 @@ import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
-import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
-import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.remedials.RemedialReader;
+import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -28,6 +24,7 @@ import com.powsybl.timeseries.ast.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -35,12 +32,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
@@ -63,15 +54,9 @@ public abstract class AbstractMetrix {
     public static final String OUTAGE_OVERLOAD_PREFIX = "outageOverload_";
     public static final String OVERALL_OVERLOAD_PREFIX = "overallOverload_";
 
-    protected final NetworkSource networkSource;
-
-    protected final Supplier<Reader> mappingReaderSupplier;
-
     protected final ContingenciesProvider contingenciesProvider;
 
-    protected final Supplier<Reader> metrixDslReaderSupplier;
-
-    protected final Supplier<Reader> remedialActionsReaderSupplier;
+    protected final Reader remedialActionsReader;
 
     protected final ReadOnlyTimeSeriesStore store;
 
@@ -83,67 +68,38 @@ public abstract class AbstractMetrix {
 
     protected final MetrixAppLogger appLogger;
 
-    protected TimeSeriesMappingConfig mappingConfig = null;
+    // Fields from analysis
+    protected final TimeSeriesMappingConfig mappingConfig;
 
-    protected MetrixDslData metrixDslData = null;
+    @Nullable
+    protected final MetrixDslData metrixDslData;
 
-    protected Consumer<Future<?>> updateTask;
+    private final Network network;
 
-    private Consumer<MetrixConfigResult> onResult;
+    private final MetrixParameters metrixParameters;
 
-    protected Writer logWriter;
-
-    public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
-                          Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier,
-                          ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive,
-                          ComputationManager computationManager) {
-        this(networkSource,
-            contingenciesProvider,
-            mappingReaderSupplier,
-            metrixDslReaderSupplier,
-            remedialActionsReaderSupplier,
-            store,
-            resultStore,
-            logArchive,
-            computationManager,
-            new NoopAppLogger(),
-            future -> {
-                /* noop */
-            },
-            null,
-            null);
-    }
-
-    public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
-                          Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier,
-                          ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                          MetrixAppLogger appLogger, Consumer<Future<?>> updateTask) {
-        this(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier, store, resultStore, logArchive, computationManager, appLogger, updateTask, null, null);
-    }
-
-    public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
-                          Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier,
-                          ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                          MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixConfigResult> onResult) {
-        this.networkSource = Objects.requireNonNull(networkSource);
-        this.mappingReaderSupplier = Objects.requireNonNull(mappingReaderSupplier);
+    protected AbstractMetrix(ContingenciesProvider contingenciesProvider, Reader remedialActionsReader,
+                             ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
+                             ZipOutputStream logArchive, ComputationManager computationManager,
+                             MetrixAppLogger appLogger, MetrixAnalysisResult analysisResult) {
         this.contingenciesProvider = contingenciesProvider;
-        this.metrixDslReaderSupplier = metrixDslReaderSupplier;
-        this.remedialActionsReaderSupplier = remedialActionsReaderSupplier;
+        this.remedialActionsReader = remedialActionsReader;
         this.store = Objects.requireNonNull(store);
         this.resultStore = Objects.requireNonNull(resultStore);
         this.logArchive = logArchive;
         this.computationManager = Objects.requireNonNull(computationManager);
         this.appLogger = Objects.requireNonNull(appLogger);
-        this.updateTask = Objects.requireNonNull(updateTask);
-        this.logWriter = logWriter;
-        this.onResult = onResult;
+        Objects.requireNonNull(analysisResult);
+        this.mappingConfig = analysisResult.mappingConfig;
+        this.metrixDslData = analysisResult.metrixDslData;
+        this.network = analysisResult.network;
+        this.metrixParameters = analysisResult.metrixParameters;
     }
 
-    protected static void compress(Supplier<Reader> readerSupplier, WorkingDirectory directory, String fileNameGz) {
-        try (BufferedReader reader = new BufferedReader(readerSupplier.get());
+    protected static void compress(Reader reader, WorkingDirectory directory, String fileNameGz) {
+        try (BufferedReader bufferedReader = new BufferedReader(reader);
              Writer writer = new OutputStreamWriter(new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(directory.toPath().resolve(fileNameGz)))), StandardCharsets.UTF_8)) {
-            CharStreams.copy(reader, writer);
+            CharStreams.copy(bufferedReader, writer);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -159,104 +115,18 @@ public abstract class AbstractMetrix {
         }
     }
 
-    public static TimeSeriesMappingConfig loadMappingConfig(
-            Supplier<Reader> mappingReaderSupplier,
-            Network network,
-            MappingParameters mappingParameters,
-            ReadOnlyTimeSeriesStore store,
-            Writer writer,
-            MetrixAppLogger appLogger,
-            Consumer<Future<?>> updateTask,
-            ComputationRange computationRange) {
-        appLogger.tagged("info")
-                .log("Loading time series mapping...");
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        try (Reader mappingReader = mappingReaderSupplier.get()) {
-            CompletableFuture<TimeSeriesMappingConfig> mappingFuture = CompletableFuture.supplyAsync(() -> TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, writer, computationRange));
-            updateTask.accept(mappingFuture);
-            stopwatch.stop();
-            TimeSeriesMappingConfig mappingConfig = mappingFuture.get();
-            appLogger.tagged("performance")
-                    .log("Time series mapping loaded in %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-            return mappingConfig;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new MappingScriptLoadingException(e);
-        } catch (InterruptedException e) {
-            LOGGER.warn("Mapping has been interrupted!", e);
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        } finally {
-            updateTask.accept(null);
-        }
-    }
-
-    public static MetrixDslData loadMetrixDslData(Supplier<Reader> metrixDslReaderSupplier, Network network,
-                                                  MetrixParameters metrixParameters, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig mappingConfig,
-                                                  Writer writer, MetrixAppLogger appLogger, Consumer<Future<?>> updateTask) {
-        appLogger.tagged("info")
-                .log("Loading metrix dsl...");
-        Stopwatch stopwatch = Stopwatch.createStarted();
-        try (Reader metrixDslReader = metrixDslReaderSupplier.get()) {
-            CompletableFuture<MetrixDslData> metrixFuture = CompletableFuture.supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer));
-            updateTask.accept(metrixFuture);
-            stopwatch.stop();
-            MetrixDslData metrixDslData = metrixFuture.get();
-            metrixDslData.setComputationType(metrixParameters.getComputationType());
-            appLogger.tagged("performance")
-                    .log("Metrix dsl data loaded in %d ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-            return metrixDslData;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ExecutionException e) {
-            throw new MetrixScriptLoadingException(e);
-        } catch (InterruptedException e) {
-            LOGGER.warn("Metrix dsl loading has been interrupted!", e);
-            Thread.currentThread().interrupt();
-            throw new RuntimeException(e);
-        } finally {
-            updateTask.accept(null);
-        }
-    }
-
     public MetrixRunResult run(MetrixRunParameters runParameters, ResultListener listener) {
         Objects.requireNonNull(runParameters);
         Objects.requireNonNull(listener);
 
         MetrixConfig metrixConfig = MetrixConfig.load();
-        MetrixParameters metrixParameters = MetrixParameters.load();
-        MappingParameters mappingParameters = MappingParameters.load();
 
-        Network network = networkSource.copy();
-
-        if (remedialActionsReaderSupplier != null) {
-            RemedialReader.checkFile(remedialActionsReaderSupplier);
-        }
-
-        try (BufferedWriter writer = logWriter != null ? new BufferedWriter(logWriter) : null) {
-            if (writer != null) {
-                writer.write("Message");
-                writer.newLine();
+        if (metrixDslData != null) {
+            int estimatedResultNumber = metrixDslData.minResultNumberEstimate(metrixParameters);
+            if (estimatedResultNumber > metrixConfig.getResultNumberLimit()) {
+                throw new PowsyblException(String.format("Metrix configuration will produce more result time-series (%d) than the maximum allowed (%d).\n" +
+                        "Reduce the number of monitored branches and/or number of contingencies.", estimatedResultNumber, metrixConfig.getResultNumberLimit()));
             }
-            ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
-            mappingConfig = loadMappingConfig(mappingReaderSupplier, network, mappingParameters, store, writer, appLogger, updateTask, computationRange);
-            if (metrixDslReaderSupplier != null) {
-                Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
-                Map<String, NodeCalc> timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
-                metrixDslData = loadMetrixDslData(metrixDslReaderSupplier, network, metrixParameters, store, mappingConfig, writer, appLogger, updateTask);
-                if (onResult != null) {
-                    onResult.accept(new MetrixConfigResult(metrixDslData, timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix));
-                }
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        int estimatedResultNumber = metrixDslData.minResultNumberEstimate(metrixParameters);
-        if (estimatedResultNumber > metrixConfig.getResultNumberLimit()) {
-            throw new PowsyblException(String.format("Metrix configuration will produce more result time-series (%d) than the maximum allowed (%d).\n" +
-                    "Reduce the number of monitored branches and/or number of contingencies.", estimatedResultNumber, metrixConfig.getResultNumberLimit()));
         }
 
         TimeSeriesIndex timeSeriesMappingIndex = mappingConfig.checkIndexUnicity(store);
@@ -288,17 +158,17 @@ public abstract class AbstractMetrix {
         ChunkCutter chunkCutter = new ChunkCutter(firstVariant, lastVariant, chunkSize);
         int chunkCount = chunkCutter.getChunkCount();
 
-        LOGGER.info("Running metrix {} on network {}", metrixParameters.getComputationType(), network.getName());
+        LOGGER.info("Running metrix {} on network {}", metrixParameters.getComputationType(), network.getId());
         appLogger.log("Running metrix");
 
         try (WorkingDirectory commonWorkingDir = new WorkingDirectory(computationManager.getLocalDir(), "metrix-commons-", metrixConfig.isDebug())) {
 
-            if (remedialActionsReaderSupplier != null) {
-                compress(remedialActionsReaderSupplier, commonWorkingDir, REMEDIAL_ACTIONS_CSV_GZ);
+            if (remedialActionsReader != null) {
+                compress(remedialActionsReader, commonWorkingDir, REMEDIAL_ACTIONS_CSV_GZ);
             }
 
             executeMetrixChunks(
-                    networkSource,
+                    network,
                     runParameters,
                     listener,
                     metrixConfig,
@@ -321,7 +191,7 @@ public abstract class AbstractMetrix {
     }
 
     protected abstract void executeMetrixChunks(
-            NetworkSource network,
+            Network network,
             MetrixRunParameters runParameters,
             ResultListener listener,
             MetrixConfig metrixConfig,
@@ -513,18 +383,4 @@ public abstract class AbstractMetrix {
             LOGGER.debug("Monitored branch {} not found in network", branch);
         }
     }
-
-    private static class NoopAppLogger implements MetrixAppLogger {
-
-        @Override
-        public void log(String message, Object... args) {
-
-        }
-
-        @Override
-        public MetrixAppLogger tagged(String tag) {
-            return this;
-        }
-    }
-
 }

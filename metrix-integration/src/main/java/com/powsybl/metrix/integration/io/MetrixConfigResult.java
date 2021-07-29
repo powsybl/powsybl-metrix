@@ -1,6 +1,5 @@
 package com.powsybl.metrix.integration.io;
 
-import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.timeseries.ast.NodeCalc;
 
 import java.util.HashMap;
@@ -11,15 +10,9 @@ import java.util.stream.Collectors;
 
 public class MetrixConfigResult {
 
-    private final MetrixDslData metrixDslData;
-
     private final Map<String, NodeCalc> mappingTimeSeriesNodes = new HashMap<>();
 
     private final Map<String, NodeCalc> metrixTimeSeriesNodes = new HashMap<>();
-
-    public MetrixDslData getMetrixDslData() {
-        return metrixDslData;
-    }
 
     public Map<String, NodeCalc> getMappingTimeSeriesNodes() {
         return mappingTimeSeriesNodes;
@@ -29,10 +22,9 @@ public class MetrixConfigResult {
         return metrixTimeSeriesNodes;
     }
 
-    public MetrixConfigResult(MetrixDslData metrixDslData, Map<String, NodeCalc> timeSeriesNodesAfterMapping, Map<String, NodeCalc> timeSeriesNodesAfterMetrix) {
+    public MetrixConfigResult(Map<String, NodeCalc> timeSeriesNodesAfterMapping, Map<String, NodeCalc> timeSeriesNodesAfterMetrix) {
         Objects.requireNonNull(timeSeriesNodesAfterMapping);
         Objects.requireNonNull(timeSeriesNodesAfterMetrix);
-        this.metrixDslData = metrixDslData;
         List<String> overloadedTimeSeriesNames = timeSeriesNodesAfterMapping.keySet().stream()
                 .filter(timeSeriesNodesAfterMetrix::containsKey)
                 .filter(e -> timeSeriesNodesAfterMapping.get(e) != timeSeriesNodesAfterMetrix.get(e))

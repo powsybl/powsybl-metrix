@@ -14,6 +14,7 @@ import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
+import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeries;
@@ -25,38 +26,31 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
 import java.util.zip.ZipOutputStream;
 
 public class Metrix extends AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Metrix.class);
 
-    public Metrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager, MetrixAppLogger logger) {
+    public Metrix(ContingenciesProvider contingenciesProvider, Reader remedialActionsReader,
+                  ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
+                  ZipOutputStream logArchive, ComputationManager computationManager,
+                  MetrixAppLogger logger, MetrixAnalysisResult analysisResult) {
         super(
-            networkSource,
             contingenciesProvider,
-            mappingReaderSupplier,
-            metrixDslReaderSupplier,
-            remedialActionsReaderSupplier,
+            remedialActionsReader,
             store,
             resultStore,
             logArchive,
             computationManager,
             logger,
-            ignore -> {
-                /* noop */
-            }
+            analysisResult
         );
-    }
-
-    public Metrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier, Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager) {
-        super(networkSource, contingenciesProvider, mappingReaderSupplier, metrixDslReaderSupplier, remedialActionsReaderSupplier, store, resultStore, logArchive, computationManager);
     }
 
     @Override
     protected void executeMetrixChunks(
-            NetworkSource networkSource,
+            Network network,
             MetrixRunParameters runParameters,
             ResultListener listener,
             MetrixConfig metrixConfig,
@@ -71,9 +65,8 @@ public class Metrix extends AbstractMetrix {
 
             for (int chunk = 0; chunk < chunkCount; chunk++) {
                 final int chunkNum = chunk;
-                Network network = networkSource.copy();
                 MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixConfig,
-                        remedialActionsReaderSupplier != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV_GZ) : null,
+                        remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV_GZ) : null,
                         commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)),
                         commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)));
                 Range<Integer> range = chunkCutter.getChunkRange(chunk);

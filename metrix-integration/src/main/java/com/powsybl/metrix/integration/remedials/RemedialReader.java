@@ -57,13 +57,13 @@ public final class RemedialReader {
         return parseFile(() -> new StringReader(fileContent));
     }
 
-    public static void checkFile(Supplier<Reader> readerSupplier) {
-        try (BufferedReader reader = new BufferedReader(readerSupplier.get())) {
+    public static void checkFile(Reader reader) {
+        try (BufferedReader bufferedReader = new BufferedReader(reader)) {
             String[] actions;
             String line;
 
             // Check header
-            if ((line = reader.readLine()) != null) {
+            if ((line = bufferedReader.readLine()) != null) {
                 if (!line.trim().endsWith(COLUMN_SEPARATOR)) {
                     throw new PowsyblException("Missing '" + COLUMN_SEPARATOR + "' in remedial action file header");
                 }
@@ -74,7 +74,7 @@ public final class RemedialReader {
                     throw new PowsyblException("Malformed remedial action file header");
                 }
                 int lineId = 1;
-                while ((line = reader.readLine()) != null) {
+                while ((line = bufferedReader.readLine()) != null) {
                     lineId++;
 
                     if (!line.trim().endsWith(COLUMN_SEPARATOR)) {

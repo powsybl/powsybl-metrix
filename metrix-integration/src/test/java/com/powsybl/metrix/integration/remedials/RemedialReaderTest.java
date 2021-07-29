@@ -48,15 +48,13 @@ public class RemedialReaderTest {
 
     @Test
     public void emptyRemedial() {
-        assertThatCode(() -> {
-            RemedialReader.checkFile(() -> new StringReader(""));
-        }).doesNotThrowAnyException();
+        assertThatCode(() -> RemedialReader.checkFile(new StringReader(""))).doesNotThrowAnyException();
     }
 
     @Test
     public void missingEndOfLineHeaderRemedialCheck() {
         // Bad header #1
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "foo;1",
                         "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;")
@@ -68,7 +66,7 @@ public class RemedialReaderTest {
     @Test
     public void firstColumnIncorrectHeaderRemedialCheck() {
         // Bad header #1
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "foo;1;",
                         "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;")
@@ -80,7 +78,7 @@ public class RemedialReaderTest {
     @Test
     public void numberOfElementIncorectHeaderRemedial() {
         // Bad header #2
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;-1;",
                         "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;")
@@ -92,7 +90,7 @@ public class RemedialReaderTest {
     @Test
     public void missingEndOfLineContentRemedialCheck() {
         // Bad content #0
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         "cty1;;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN")
@@ -105,7 +103,7 @@ public class RemedialReaderTest {
     @Test
     public void notEnoughColumnContentRemedialCheck() {
         // Bad content #0
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;",
@@ -118,7 +116,7 @@ public class RemedialReaderTest {
     @Test
     public void badActionNumberContentRemedialCheck() {
         // Bad content #0
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         "cty1;-2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;")
@@ -130,7 +128,7 @@ public class RemedialReaderTest {
     @Test
     public void emptySecondColumnContentRemedialCheck() {
         // Bad content #1
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         "cty1;;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;")
@@ -142,7 +140,7 @@ public class RemedialReaderTest {
     @Test
     public void emptyFirstColumnContentRemedialCheck() {
         // Bad content #2
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         ";2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;")
@@ -155,7 +153,7 @@ public class RemedialReaderTest {
     @Test
     public void emptyColumnContentRemedialCheck() {
         // Bad content #3
-        assertThatThrownBy(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatThrownBy(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         "cty1;3;FS.BIS1_FS.BIS1_DJ_OMN;;FVALDI1_FVALDI1_DJ_OMN;")
@@ -167,7 +165,7 @@ public class RemedialReaderTest {
     @Test
     public void remedialCheckOk() {
         // File ok
-        assertThatCode(() -> RemedialReader.checkFile(() -> new StringReader(
+        assertThatCode(() -> RemedialReader.checkFile(new StringReader(
                 String.join(System.lineSeparator(),
                         "NB;1;",
                         "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;")

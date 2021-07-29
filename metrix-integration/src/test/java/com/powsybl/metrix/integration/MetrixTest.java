@@ -20,6 +20,9 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
+import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
+import com.powsybl.metrix.mapping.MappingParameters;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeries;
@@ -33,8 +36,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,38 +83,39 @@ public class MetrixTest extends AbstractConverterTest {
                 return this;
             }
         };
-        Consumer<MetrixConfigResult> metrixDslDataConsumer = MetrixConfigResult::getMetrixTimeSeriesNodes;
-        StringWriter logWriter = new StringWriter();
 
-        Supplier<Reader> mappingReader = () -> new StringReader("");
-        Supplier<Reader> metrixdslReader = () -> new StringReader("");
-        Supplier<Reader> remedialActionReader = () -> new StringReader("");
+        Reader remedialActionReader = new StringReader("");
 
         InMemoryTimeSeriesStore timeSeriesStore = new InMemoryTimeSeriesStore();
         InMemoryTimeSeriesStore resultStore = new InMemoryTimeSeriesStore();
 
+        MetrixDslData dslData = new MetrixDslData();
+        TimeSeriesMappingConfig timeSeriesMappingConfig = new TimeSeriesMappingConfig();
+        MetrixParameters metrixParameters = new MetrixParameters();
+        MappingParameters mappingParameters = new MappingParameters();
+        MetrixConfigResult metrixConfigResult = new MetrixConfigResult(new HashMap<>(), new HashMap<>());
+
+        // create test network
+        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+
+        MetrixAnalysisResult analysisResult = new MetrixAnalysisResult(dslData, timeSeriesMappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult);
+
         try (ZipOutputStream log = new ZipOutputStream(Files.newOutputStream(tmpDir.resolve("logs.gz")))) {
             MetrixMock metrix = new MetrixMock(
-                source,
                 null,
-                mappingReader,
-                metrixdslReader,
                 remedialActionReader,
                 timeSeriesStore,
                 resultStore,
                 log,
                 computationManager,
                 appLogger,
-                future -> { /* noop */ },
-                logWriter,
-                metrixDslDataConsumer
+                analysisResult
             );
 
             MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true);
 
             MetrixRunResult run = metrix.run(runParameters, resultListener);
             assertThat(run).isNotNull();
-            assertThat(logWriter.toString()).isEqualTo("Message\n");
         }
     }
 
