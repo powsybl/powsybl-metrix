@@ -18,6 +18,7 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
+import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 import com.powsybl.metrix.mapping.*;
@@ -88,7 +89,7 @@ public abstract class AbstractMetrix {
 
     protected Consumer<Future<?>> updateTask;
 
-    protected Consumer<MetrixDslData> onResult;
+    private Consumer<MetrixConfigResult> onResult;
 
     protected Writer logWriter;
 
@@ -123,7 +124,7 @@ public abstract class AbstractMetrix {
     public AbstractMetrix(NetworkSource networkSource, ContingenciesProvider contingenciesProvider, Supplier<Reader> mappingReaderSupplier,
                           Supplier<Reader> metrixDslReaderSupplier, Supplier<Reader> remedialActionsReaderSupplier,
                           ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
-                          MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixDslData> onResult) {
+                          MetrixAppLogger appLogger, Consumer<Future<?>> updateTask, Writer logWriter, Consumer<MetrixConfigResult> onResult) {
         this.networkSource = Objects.requireNonNull(networkSource);
         this.mappingReaderSupplier = Objects.requireNonNull(mappingReaderSupplier);
         this.contingenciesProvider = contingenciesProvider;
@@ -241,9 +242,11 @@ public abstract class AbstractMetrix {
             ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
             mappingConfig = loadMappingConfig(mappingReaderSupplier, network, mappingParameters, store, writer, appLogger, updateTask, computationRange);
             if (metrixDslReaderSupplier != null) {
+                Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
+                Map<String, NodeCalc> timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
                 metrixDslData = loadMetrixDslData(metrixDslReaderSupplier, network, metrixParameters, store, mappingConfig, writer, appLogger, updateTask);
                 if (onResult != null) {
-                    onResult.accept(metrixDslData);
+                    onResult.accept(new MetrixConfigResult(metrixDslData, timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix));
                 }
             }
         } catch (IOException e) {
