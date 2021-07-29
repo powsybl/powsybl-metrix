@@ -382,10 +382,9 @@ public abstract class AbstractMetrix {
         if (ratingTimeSeriesOrEx == ratingTimeSeriesExOr) {
             return createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx);
         } else {
-            NodeCalc negativeRatingTimeSeries = UnaryOperation.negative(ratingTimeSeriesExOr);
             NodeCalc zero = new IntegerNodeCalc(0);
             NodeCalc ratingTimeSeries = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flowTimeSeries, zero), ratingTimeSeriesOrEx),
-                    BinaryOperation.multiply(BinaryOperation.lessThan(flowTimeSeries, zero), negativeRatingTimeSeries));
+                    BinaryOperation.multiply(BinaryOperation.lessThan(flowTimeSeries, zero), ratingTimeSeriesExOr));
             return createLoadTimeSeries(flowTimeSeries, ratingTimeSeries);
         }
     }

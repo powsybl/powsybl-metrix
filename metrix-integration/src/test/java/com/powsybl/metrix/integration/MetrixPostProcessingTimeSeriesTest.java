@@ -35,9 +35,6 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by marifunf on 02/05/17.
- */
 public class MetrixPostProcessingTimeSeriesTest {
 
     private FileSystem fileSystem;
@@ -152,7 +149,7 @@ public class MetrixPostProcessingTimeSeriesTest {
         NodeCalc ratingN2OrEx = new IntegerNodeCalc(1000);
         NodeCalc ratingN2ExOr = new TimeSeriesNameNodeCalc("tsNEndOr");
         NodeCalc ratingN2 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flow2, new IntegerNodeCalc(0)), ratingN2OrEx),
-            BinaryOperation.multiply(BinaryOperation.lessThan(flow2, new IntegerNodeCalc(0)), UnaryOperation.negative(ratingN2ExOr)));
+            BinaryOperation.multiply(BinaryOperation.lessThan(flow2, new IntegerNodeCalc(0)), ratingN2ExOr));
         NodeCalc ratingNk2OrEx = new IntegerNodeCalc(2000);
         NodeCalc ratingNk2ExOr = new TimeSeriesNameNodeCalc("tsN1EndOr");
 
