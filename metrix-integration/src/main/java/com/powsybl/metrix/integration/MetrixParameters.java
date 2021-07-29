@@ -18,9 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixParameters {
 
     private static final MetrixComputationType DEFAULT_COMPUTATION_TYPE = MetrixComputationType.LF;
@@ -53,6 +50,8 @@ public class MetrixParameters {
     private Integer lossThreshold = null;
     private Integer nbMaxIteration = null;
     private Integer nbMaxCurativeAction = null;
+    private Integer nbMaxLostLoadDetailedResults = null;
+    private Boolean withLostLoadDetailedResultsOnContingency = null;
     private Integer gapVariableCost = null;
     private Integer nbThreatResults = null;
     private Integer maxSolverTime = null;
@@ -60,6 +59,7 @@ public class MetrixParameters {
     private Integer adequacyCostOffset = null;
     private Integer curativeRedispatchingLimit = null;
     private Boolean showAllTDandHVDCresults = null;
+    private Boolean withLostLoadDetailedResults = null;
     private boolean propagateBranchTripping = false;
     private Boolean withGridCost = null;
     private Boolean preCurativeResults;
@@ -109,6 +109,11 @@ public class MetrixParameters {
     @JsonGetter
     private Integer getNbMaxCurativeAction() {
         return nbMaxCurativeAction;
+    }
+
+    @JsonGetter
+    private Boolean getWithLostLoadDetailedResultsOnContingency() {
+        return withLostLoadDetailedResultsOnContingency;
     }
 
     @JsonGetter
@@ -184,6 +189,11 @@ public class MetrixParameters {
     @JsonGetter
     private Boolean getShowAllTDandHVDCresults() {
         return showAllTDandHVDCresults;
+    }
+
+    @JsonGetter
+    private Boolean getWithLostLoadDetailedResults() {
+        return withLostLoadDetailedResults;
     }
 
     @JsonGetter
@@ -397,6 +407,16 @@ public class MetrixParameters {
         return this;
     }
 
+    // With lost load detailed results on contingency
+    public Optional<Boolean> isWithLostLoadDetailedResultsOnContingency() {
+        return Optional.ofNullable(withLostLoadDetailedResultsOnContingency);
+    }
+
+    public MetrixParameters setWithLostLoadDetailedResultsOnContingency(Boolean withLostLoadDetailedResultsOnContingency) {
+        this.withLostLoadDetailedResultsOnContingency = withLostLoadDetailedResultsOnContingency;
+        return this;
+    }
+
     // Max solver time
     @JsonIgnore
     public OptionalInt getOptionalMaxSolverTime() {
@@ -551,6 +571,17 @@ public class MetrixParameters {
         return this;
     }
 
+    // Nb max lost load detailed results
+    @JsonIgnore
+    public OptionalInt getOptionalNbMaxLostLoadDetailedResults() {
+        return nbMaxLostLoadDetailedResults == null ? OptionalInt.empty() : OptionalInt.of(nbMaxLostLoadDetailedResults);
+    }
+
+    public MetrixParameters setNbMaxLostLoadDetailedResults(Integer nbMaxLostLoadDetailedResults) {
+        this.nbMaxLostLoadDetailedResults = nbMaxLostLoadDetailedResults;
+        return this;
+    }
+
     // Gap variable cost
     @JsonIgnore
     public OptionalInt getOptionalGapVariableCost() {
@@ -588,6 +619,7 @@ public class MetrixParameters {
                     lossDetailPerCountry,
                     overloadResultsOnly,
                     showAllTDandHVDCresults,
+                    withLostLoadDetailedResults,
                     lossNbRelaunch,
                     lossThreshold,
                     pstCostPenality,
@@ -599,6 +631,8 @@ public class MetrixParameters {
                     maxSolverTime,
                     nbMaxIteration,
                     nbMaxCurativeAction,
+                    withLostLoadDetailedResultsOnContingency,
+                    nbMaxLostLoadDetailedResults,
                     gapVariableCost,
                     nbThreatResults,
                     redispatchingCostOffset,
@@ -623,6 +657,7 @@ public class MetrixParameters {
                     Objects.equals(lossDetailPerCountry, other.lossDetailPerCountry) &&
                     Objects.equals(overloadResultsOnly, other.overloadResultsOnly) &&
                     Objects.equals(showAllTDandHVDCresults, other.showAllTDandHVDCresults) &&
+                    Objects.equals(withLostLoadDetailedResultsOnContingency, other.withLostLoadDetailedResultsOnContingency) &&
                     Objects.equals(lossNbRelaunch, other.lossNbRelaunch) &&
                     Objects.equals(lossThreshold, other.lossThreshold) &&
                     Objects.equals(pstCostPenality, other.pstCostPenality) &&
@@ -634,6 +669,7 @@ public class MetrixParameters {
                     Objects.equals(maxSolverTime, other.maxSolverTime) &&
                     Objects.equals(nbMaxIteration, other.nbMaxIteration) &&
                     Objects.equals(nbMaxCurativeAction, other.nbMaxCurativeAction) &&
+                    Objects.equals(nbMaxLostLoadDetailedResults, other.nbMaxLostLoadDetailedResults) &&
                     Objects.equals(gapVariableCost, other.gapVariableCost) &&
                     Objects.equals(nbThreatResults, other.nbThreatResults) &&
                     Objects.equals(redispatchingCostOffset, other.redispatchingCostOffset) &&
@@ -663,6 +699,7 @@ public class MetrixParameters {
         isLossDetailPerCountry().ifPresent(value -> builder.put("lossDetailPerCountry", value));
         isOverloadResultsOnly().ifPresent(value -> builder.put("overloadResultsOnly", value));
         isShowAllTDandHVDCresults().ifPresent(value -> builder.put("showAllTDandHVDCresults", value));
+        isWithLostLoadDetailedResultsOnContingency().ifPresent(value -> builder.put("withLostLoadDetailedResultsOnContingency", value));
         getOptionalLossNbRelaunch().ifPresent(value -> builder.put("lossNbRelaunch", value));
         getOptionalLossThreshold().ifPresent(value -> builder.put("lossThreshold", value));
         getOptionalPstCostPenality().ifPresent(value -> builder.put("pstCostPenality", value));
@@ -674,6 +711,7 @@ public class MetrixParameters {
         getOptionalMaxSolverTime().ifPresent(value -> builder.put("maxSolverTime", value));
         getOptionalNbMaxIteration().ifPresent(value -> builder.put("nbMaxIteration", value));
         getOptionalNbMaxCurativeAction().ifPresent(value -> builder.put("nbMaxCurativeAction", value));
+        getOptionalNbMaxLostLoadDetailedResults().ifPresent(value -> builder.put("nbMaxLostLoadDetailedResults", value));
         getOptionalGapVariableCost().ifPresent(value -> builder.put("gapVariableCost", value));
         getOptionalNbThreatResults().ifPresent(value -> builder.put("nbThreatResults", value));
         getOptionalRedispatchingCostOffset().ifPresent(value -> builder.put("redispatchingCostOffset", value));

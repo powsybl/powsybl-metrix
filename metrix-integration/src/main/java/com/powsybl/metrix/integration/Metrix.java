@@ -80,6 +80,7 @@ public class Metrix extends AbstractMetrix {
                 MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, MappingParameters.load(),
                         mappingConfig, contingenciesProvider, version, range, runParameters.isIgnoreLimits(),
                         runParameters.isIgnoreEmptyFilter(), System.err);
+                listener.onVersionBefore(version);
                 CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(metrixParameters, contingenciesProvider, metrixDslData, variantProvider);
                 CompletableFuture<Void> info = currentFuture.thenAccept(out -> {
                     // Add log to archive

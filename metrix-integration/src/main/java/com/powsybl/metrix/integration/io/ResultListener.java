@@ -24,5 +24,8 @@ public interface ResultListener {
     }
 
     void onEnd();
-}
 
+    default void onVersionBefore(int version) {
+        // default empty implementation
+    }
+}

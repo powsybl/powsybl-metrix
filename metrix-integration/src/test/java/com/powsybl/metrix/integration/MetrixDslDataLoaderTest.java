@@ -41,9 +41,6 @@ import java.util.Set;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by marifunf on 02/05/17.
- */
 public class MetrixDslDataLoaderTest {
 
     private FileSystem fileSystem;
@@ -529,6 +526,7 @@ public class MetrixDslDataLoaderTest {
                     "    lossDetailPerCountry true",
                     "    overloadResultsOnly true",
                     "    showAllTDandHVDCresults true",
+                    "    withLostLoadDetailedResultsOnContingency true",
                     "    lossFactor 5",
                     "    lossNbRelaunch 1",
                     "    lossThreshold 504",
@@ -542,6 +540,7 @@ public class MetrixDslDataLoaderTest {
                     "    nominalU 103",
                     "    nbMaxIteration 4",
                     "    nbMaxCurativeAction 2",
+                    "    nbMaxLostLoadDetailedResults 2",
                     "    gapVariableCost 9998",
                     "    nbThreatResults 3",
                     "    redispatchingCostOffset 333",
@@ -571,6 +570,7 @@ public class MetrixDslDataLoaderTest {
             assertTrue(parameters.isLossDetailPerCountry().orElse(false));
             assertTrue(parameters.isOverloadResultsOnly().orElse(false));
             assertTrue(parameters.isShowAllTDandHVDCresults().orElse(false));
+            assertTrue(parameters.isWithLostLoadDetailedResultsOnContingency().orElse(true));
             assertEquals(-1, parameters.getOptionalMaxSolverTime().getAsInt());
             assertEquals(1, parameters.getOptionalLossNbRelaunch().getAsInt());
             assertEquals(504, parameters.getOptionalLossThreshold().getAsInt());
@@ -582,6 +582,7 @@ public class MetrixDslDataLoaderTest {
             assertEquals(0.01f, parameters.getOptionalContingenciesProbability().get(), 0f);
             assertEquals(4, parameters.getOptionalNbMaxIteration().getAsInt());
             assertEquals(2, parameters.getOptionalNbMaxCurativeAction().getAsInt());
+            assertEquals(2, parameters.getOptionalNbMaxLostLoadDetailedResults().getAsInt());
             assertEquals(9998, parameters.getOptionalGapVariableCost().getAsInt());
             assertEquals(3, parameters.getOptionalNbThreatResults().getAsInt());
             assertEquals(333, parameters.getOptionalRedispatchingCostOffset().getAsInt());
