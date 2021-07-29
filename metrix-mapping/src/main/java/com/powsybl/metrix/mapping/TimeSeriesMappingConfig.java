@@ -18,6 +18,7 @@ import com.google.common.collect.Range;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
+import com.powsybl.metrix.mapping.json.JsonFieldName;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
@@ -48,75 +49,6 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
     private static final long DESERIALIZATION_EXTENDED_MAX_STACK_SIZE = 4096000L;
     private static final int MIN_NUMBER_OF_POINTS = 50;
-
-    private static final String MAPPINGKEY = "mappingKey";
-    private static final String MAPPINGKEYS = "mappingKeys";
-    private static final String DISTRIBUTIONKEY = "distributionKey";
-    private static final String MAPPINGLIST = "mappingList";
-    private static final String TSTOGENERATORS = "timeSeriesToGeneratorsMapping";
-    private static final String TSTOLOADS = "timeSeriesToLoadsMapping";
-    private static final String TSTODANGLINGLINES = "timeSeriesToDanglingLinesMapping";
-    private static final String TSTOHVDCLINES = "timeSeriesToHvdcLinesMapping";
-    private static final String TSTOPHASETAPCHANGERS = "timeSeriesToPhaseTapChangersMapping";
-    private static final String TSTOBREAKERS = "timeSeriesToBreakersMapping";
-    private static final String TSTOTRANSFORMERS = "timeSeriesToTransformersMapping";
-    private static final String TSTOLINES = "timeSeriesToLinesMapping";
-    private static final String TSTORATIOTAPCHANGERS = "timeSeriesToRatioTapChangersMapping";
-    private static final String TSTOLCCCONVERTERSTATIONS = "timeSeriesToLccConverterStationsMapping";
-    private static final String TSTOVSCCONVERTERSTATIONS = "timeSeriesToVscConverterStationsMapping";
-    private static final String GENERATORTOTS = "generatorToTimeSeriesMapping";
-    private static final String LOADTOTS = "loadToTimeSeriesMapping";
-    private static final String DANGLINGLINETOTS = "danglingLineToTimeSeriesMapping";
-    private static final String HVDCLINETOTS = "hvdcLineToTimeSeriesMapping";
-    private static final String PHASETAPCHANGERTOTS = "phaseTapChangerToTimeSeriesMapping";
-    private static final String BREAKERTOTS = "breakerToTimeSeriesMapping";
-    private static final String TRANSFORMERTOTS = "transformerToTimeSeriesMapping";
-    private static final String LINETOTS = "lineToTimeSeriesMapping";
-    private static final String RATIOTAPCHANGERTOTS = "ratioTapChangerToTimeSeriesMapping";
-    private static final String LCCCONVERTERSTATIONTOTS = "lccConverterStationToTimeSeriesMapping";
-    private static final String VSCCONVERTERSTATIONTOTS = "vscConverterStationToTimeSeriesMapping";
-    private static final String GENERATORTS = "generatorTimeSeries";
-    private static final String LOADTS = "loadTimeSeries";
-    private static final String DANGLINGLINETS = "danglingLineTimeSeries";
-    private static final String HVDCLINETS = "hvdcLineTimeSeries";
-    private static final String PHASETAPCHANGERTS = "phaseTapChangerTimeSeries";
-    private static final String BREAKERTS = "breakerTimeSeries";
-    private static final String TRANSFORMERTS = "transformerTimeSeries";
-    private static final String LINETS = "lineTimeSeries";
-    private static final String RATIOTAPCHANGERTS = "ratioTapChangerTimeSeries";
-    private static final String LCCCONVERTERSTATIONTS = "lccConverterStationTimeSeries";
-    private static final String VSCCONVERTERSTATIONTS = "vscConverterStationTimeSeries";
-    private static final String UNMAPPEDGENERATORS = "unmappedGenerators";
-    private static final String UNMAPPEDLOADS = "unmappedLoads";
-    private static final String UNMAPPEDFIXEDACTIVEPOWERLOADS = "unmappedFixedActivePowerLoads";
-    private static final String UNMAPPEDVARIABLEACTIVEPOWERLOADS = "unmappedVariableActivePowerLoads";
-    private static final String UNMAPPEDDANGLINGLINES = "unmappedDanglingLines";
-    private static final String UNMAPPEDHVDCLINES = "unmappedHvdcLines";
-    private static final String UNMAPPEDPHASETAPCHANGERS = "unmappedPhaseTapChangers";
-    private static final String UNMAPPEDMINPGENERATORS = "unmappedMinPGenerators";
-    private static final String UNMAPPEDMAXPGENERATORS = "unmappedMaxPGenerators";
-    private static final String UNMAPPEDMINPHVDCLINES = "unmappedMinPHvdcLines";
-    private static final String UNMAPPEDMAXPHVDCLINES = "unmappedMaxPHvdcLines";
-    private static final String DISTRIBUTIONKEYS = "distributionKeys";
-    private static final String IGNOREDUNMAPPEDGENERATORS = "ignoredUnmappedGenerators";
-    private static final String IGNOREDUNMAPPEDLOADS = "ignoredUnmappedLoads";
-    private static final String IGNOREDUNMAPPEDDANGLINGLINES = "ignoredUnmappedDanglingLines";
-    private static final String IGNOREDUNMAPPEDHVDCLINES = "ignoredUnmappedHvdcLines";
-    private static final String IGNOREDUNMAPPEDPHASETAPCHANGERS = "ignoredUnmappedPhaseTapChangers";
-    private static final String DISCONNECTEDGENERATORS = "disconnectedGenerators";
-    private static final String DISCONNECTEDLOADS = "disconnectedLoads";
-    private static final String DISCONNECTEDDANGLINGLINES = "disconnectedDanglingLines";
-    private static final String OUTOFMAINCCGENERATORS = "outOfMainCcGenerators";
-    private static final String OUTOFMAINCCLOADS = "outOfMainCcLoads";
-    private static final String OUTOFMAINCCDANGLINGLINES = "outOfMainCcDanglingLines";
-    private static final String TIMESERIESNODES = "timeSeriesNodes";
-    private static final String TIMESERIESNAME = "timeSeriesName";
-    private static final String TSTOEQUIPMENT = "timeSeriesToEquipment";
-    private static final String EQUIPMENTTOTS = "equipmentToTimeSeries";
-    private static final String MAPPEDTIMESERIESNAMES = "mappedTimeSeriesNames";
-    private static final String IGNORELIMITSTIMESERIESNAMES = "ignoreLimitsTimeSeriesNames";
-    private static final String TSTOPLANNEDOUTAGES = "timeSeriesToPlannedOutagesMapping";
-    private static final String OUTAGES = "outages";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -372,7 +304,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
 
     public static double getTimeSeriesMedian(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {
         double[] values = computationRange.getVersions().stream().flatMapToDouble(version -> {
-            CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store, computationRange);
+            CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
             return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getFirstVariant()).limit(computationRange.getVariantCount());
         }).toArray();
         return Arrays.stream(values).sorted().skip(new BigDecimal(values.length / 2).longValue()).limit(1).findFirst().orElse(Double.NaN);
@@ -384,11 +316,11 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
     }
 
     private static DoubleStream getTimeSeriesStream(NodeCalc nodeCalc, int version, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {
-        CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store, computationRange);
+        CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
         return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getFirstVariant()).limit(computationRange.getVariantCount());
     }
 
-    private static CalculatedTimeSeries createCalculatedTimeSeries(NodeCalc nodeCalc, int version, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {
+    private static CalculatedTimeSeries createCalculatedTimeSeries(NodeCalc nodeCalc, int version, ReadOnlyTimeSeriesStore store) {
         CalculatedTimeSeries calculatedTimeSeries = new CalculatedTimeSeries("", nodeCalc, new FromStoreTimeSeriesNameResolver(store, version));
         if (calculatedTimeSeries.getIndex() instanceof InfiniteTimeSeriesIndex) {
             Optional<TimeSeriesIndex> regularIndex = store
@@ -421,85 +353,85 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         Objects.requireNonNull(generator);
         try {
             generator.writeStartObject();
-            writeMappingKeyMap(generator, TSTOGENERATORS, config.getTimeSeriesToGeneratorsMapping());
-            writeMappingKeyMap(generator, TSTOLOADS, config.getTimeSeriesToLoadsMapping());
-            writeMappingKeyMap(generator, TSTODANGLINGLINES, config.getTimeSeriesToDanglingLinesMapping());
-            writeMappingKeyMap(generator, TSTOHVDCLINES, config.getTimeSeriesToHvdcLinesMapping());
-            writeMappingKeyMap(generator, TSTOPHASETAPCHANGERS, config.getTimeSeriesToPhaseTapChangersMapping());
-            writeMappingKeyMap(generator, TSTOBREAKERS, config.getTimeSeriesToBreakersMapping());
-            writeMappingKeyMap(generator, TSTOTRANSFORMERS, config.getTimeSeriesToTransformersMapping());
-            writeMappingKeyMap(generator, TSTOLINES, config.getTimeSeriesToLinesMapping());
-            writeMappingKeyMap(generator, TSTORATIOTAPCHANGERS, config.getTimeSeriesToRatioTapChangersMapping());
-            writeMappingKeyMap(generator, TSTOLCCCONVERTERSTATIONS, config.getTimeSeriesToLccConverterStationsMapping());
-            writeMappingKeyMap(generator, TSTOVSCCONVERTERSTATIONS, config.getTimeSeriesToVscConverterStationsMapping());
-            writeMappingKeyMap(generator, GENERATORTOTS, config.getGeneratorToTimeSeriesMapping());
-            writeMappingKeyMap(generator, LOADTOTS, config.getLoadToTimeSeriesMapping());
-            writeMappingKeyMap(generator, DANGLINGLINETOTS, config.getDanglingLineToTimeSeriesMapping());
-            writeMappingKeyMap(generator, HVDCLINETOTS, config.getHvdcLineToTimeSeriesMapping());
-            writeMappingKeyMap(generator, PHASETAPCHANGERTOTS, config.getPhaseTapChangerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, BREAKERTOTS, config.getBreakerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, TRANSFORMERTOTS, config.getTransformerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, LINETOTS, config.getLineToTimeSeriesMapping());
-            writeMappingKeyMap(generator, RATIOTAPCHANGERTOTS, config.getRatioTapChangerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, LCCCONVERTERSTATIONTOTS, config.getLccConverterStationToTimeSeriesMapping());
-            writeMappingKeyMap(generator, VSCCONVERTERSTATIONTOTS, config.getVscConverterStationToTimeSeriesMapping());
-            writeMappingKeySet(generator, GENERATORTS, config.getGeneratorTimeSeries());
-            writeMappingKeySet(generator, LOADTS, config.getLoadTimeSeries());
-            writeMappingKeySet(generator, DANGLINGLINETS, config.getDanglingLineTimeSeries());
-            writeMappingKeySet(generator, HVDCLINETS, config.getHvdcLineTimeSeries());
-            writeMappingKeySet(generator, PHASETAPCHANGERTS, config.getPhaseTapChangerTimeSeries());
-            writeMappingKeySet(generator, BREAKERTS, config.getBreakerTimeSeries());
-            writeMappingKeySet(generator, TRANSFORMERTS, config.getTransformerTimeSeries());
-            writeMappingKeySet(generator, LINETS, config.getLineTimeSeries());
-            writeMappingKeySet(generator, RATIOTAPCHANGERTS, config.getRatioTapChangerTimeSeries());
-            writeMappingKeySet(generator, LCCCONVERTERSTATIONTS, config.getLccConverterStationTimeSeries());
-            writeMappingKeySet(generator, VSCCONVERTERSTATIONTS, config.getVscConverterStationTimeSeries());
-            writeMappingSet(generator, UNMAPPEDGENERATORS, config.getUnmappedGenerators());
-            writeMappingSet(generator, UNMAPPEDLOADS, config.getUnmappedLoads());
-            writeMappingSet(generator, UNMAPPEDFIXEDACTIVEPOWERLOADS, config.getUnmappedFixedActivePowerLoads());
-            writeMappingSet(generator, UNMAPPEDVARIABLEACTIVEPOWERLOADS, config.getUnmappedVariableActivePowerLoads());
-            writeMappingSet(generator, UNMAPPEDDANGLINGLINES, config.getUnmappedDanglingLines());
-            writeMappingSet(generator, UNMAPPEDHVDCLINES, config.getUnmappedHvdcLines());
-            writeMappingSet(generator, UNMAPPEDPHASETAPCHANGERS, config.getUnmappedPhaseTapChangers());
-            writeMappingSet(generator, UNMAPPEDMINPGENERATORS, config.getUnmappedMinPGenerators());
-            writeMappingSet(generator, UNMAPPEDMAXPGENERATORS, config.getUnmappedMaxPGenerators());
-            writeMappingSet(generator, UNMAPPEDMINPHVDCLINES, config.getUnmappedMinPHvdcLines());
-            writeMappingSet(generator, UNMAPPEDMAXPHVDCLINES, config.getUnmappedMaxPHvdcLines());
-            writeMappingSet(generator, IGNOREDUNMAPPEDGENERATORS, config.getIgnoredUnmappedGenerators());
-            writeMappingSet(generator, IGNOREDUNMAPPEDLOADS, config.getIgnoredUnmappedLoads());
-            writeMappingSet(generator, IGNOREDUNMAPPEDDANGLINGLINES, config.getIgnoredUnmappedDanglingLines());
-            writeMappingSet(generator, IGNOREDUNMAPPEDHVDCLINES, config.getIgnoredUnmappedHvdcLines());
-            writeMappingSet(generator, IGNOREDUNMAPPEDPHASETAPCHANGERS, config.getIgnoredUnmappedPhaseTapChangers());
-            writeMappingSet(generator, DISCONNECTEDGENERATORS, config.getDisconnectedGenerators());
-            writeMappingSet(generator, DISCONNECTEDLOADS, config.getDisconnectedLoads());
-            writeMappingSet(generator, DISCONNECTEDDANGLINGLINES, config.getDisconnectedDanglingLines());
-            writeMappingSet(generator, OUTOFMAINCCGENERATORS, config.getOutOfMainCcGenerators());
-            writeMappingSet(generator, OUTOFMAINCCLOADS, config.getOutOfMainCcLoads());
-            writeMappingSet(generator, OUTOFMAINCCDANGLINGLINES, config.getOutOfMainCcDanglingLines());
-            writeDistributionKeys(generator, DISTRIBUTIONKEYS, config.getDistributionKeys());
-            writeTimeSeriesNodes(generator, TIMESERIESNODES, config.getTimeSeriesNodes());
-            writeTimeSeriesToEquipmentMap(generator, TSTOEQUIPMENT, config.getTimeSeriesToEquipment());
-            writeEquipmentToTimeSeriesMap(generator, EQUIPMENTTOTS, config.getEquipmentToTimeSeries());
-            writeMappingSet(generator, MAPPEDTIMESERIESNAMES, config.getMappedTimeSeriesNames());
-            writeMappingSet(generator, IGNORELIMITSTIMESERIESNAMES, config.getIgnoreLimitsTimeSeriesNames());
-            writeTimeSeriesToPlannedOutagesMap(generator, TSTOPLANNEDOUTAGES, config.getTimeSeriesToPlannedOutagesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_GENERATORS, config.getTimeSeriesToGeneratorsMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_LOADS, config.getTimeSeriesToLoadsMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_DANGLING_LINES, config.getTimeSeriesToDanglingLinesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_HVDC_LINES, config.getTimeSeriesToHvdcLinesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_PHASE_TAP_CHANGERS, config.getTimeSeriesToPhaseTapChangersMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_BREAKERS, config.getTimeSeriesToBreakersMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_TRANSFORMERS, config.getTimeSeriesToTransformersMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_LINES, config.getTimeSeriesToLinesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_RATIO_TAP_CHANGERS, config.getTimeSeriesToRatioTapChangersMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_LCC_CONVERTER_STATIONS, config.getTimeSeriesToLccConverterStationsMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_VSC_CONVERTER_STATIONS, config.getTimeSeriesToVscConverterStationsMapping());
+            writeMappingKeyMap(generator, JsonFieldName.GENERATOR_TO_TS, config.getGeneratorToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.LOAD_TO_TS, config.getLoadToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.DANGLING_LINE_TO_TS, config.getDanglingLineToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.HVDC_LINE_TO_TS, config.getHvdcLineToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.PHASE_TAP_CHANGER_TO_TS, config.getPhaseTapChangerToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.BREAKER_TO_TS, config.getBreakerToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TRANSFORMER_TO_TS, config.getTransformerToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.LINE_TO_TS, config.getLineToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.RATIO_TAP_CHANGER_TO_TS, config.getRatioTapChangerToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.LCC_CONVERTER_STATION_TO_TS, config.getLccConverterStationToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.VSC_CONVERTER_STATION_TO_TS, config.getVscConverterStationToTimeSeriesMapping());
+            writeMappingKeySet(generator, JsonFieldName.GENERATOR_TS, config.getGeneratorTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.LOAD_TS, config.getLoadTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.DANGLING_LINE_TS, config.getDanglingLineTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.HVDC_LINE_TS, config.getHvdcLineTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.PHASE_TAP_CHANGER_TS, config.getPhaseTapChangerTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.BREAKER_TS, config.getBreakerTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.TRANSFORMER_TS, config.getTransformerTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.LINE_TS, config.getLineTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.RATIO_TAP_CHANGER_TS, config.getRatioTapChangerTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.LCC_CONVERTER_STATION_TS, config.getLccConverterStationTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.VSC_CONVERTER_STATION_TS, config.getVscConverterStationTimeSeries());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_GENERATORS, config.getUnmappedGenerators());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_LOADS, config.getUnmappedLoads());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_FIXED_ACTIVE_POWER_LOADS, config.getUnmappedFixedActivePowerLoads());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS, config.getUnmappedVariableActivePowerLoads());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_DANGLING_LINES, config.getUnmappedDanglingLines());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_HVDC_LINES, config.getUnmappedHvdcLines());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_PHASE_TAP_CHANGERS, config.getUnmappedPhaseTapChangers());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_GENERATORS, config.getUnmappedMinPGenerators());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_GENERATORS, config.getUnmappedMaxPGenerators());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_HVDC_LINES, config.getUnmappedMinPHvdcLines());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_HVDC_LINES, config.getUnmappedMaxPHvdcLines());
+            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_GENERATORS, config.getIgnoredUnmappedGenerators());
+            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_LOADS, config.getIgnoredUnmappedLoads());
+            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_DANGLING_LINES, config.getIgnoredUnmappedDanglingLines());
+            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_HVDC_LINES, config.getIgnoredUnmappedHvdcLines());
+            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_PHASE_TAP_CHANGERS, config.getIgnoredUnmappedPhaseTapChangers());
+            writeMappingSet(generator, JsonFieldName.DISCONNECTED_GENERATORS, config.getDisconnectedGenerators());
+            writeMappingSet(generator, JsonFieldName.DISCONNECTED_LOADS, config.getDisconnectedLoads());
+            writeMappingSet(generator, JsonFieldName.DISCONNECTED_DANGLING_LINES, config.getDisconnectedDanglingLines());
+            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_GENERATORS, config.getOutOfMainCcGenerators());
+            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_LOADS, config.getOutOfMainCcLoads());
+            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_DANGLING_LINES, config.getOutOfMainCcDanglingLines());
+            writeDistributionKeys(generator, config.getDistributionKeys());
+            writeTimeSeriesNodes(generator, config.getTimeSeriesNodes());
+            writeTimeSeriesToEquipmentMap(generator, config.getTimeSeriesToEquipment());
+            writeEquipmentToTimeSeriesMap(generator, config.getEquipmentToTimeSeries());
+            writeMappingSet(generator, JsonFieldName.MAPPED_TIME_SERIES_NAMES, config.getMappedTimeSeriesNames());
+            writeMappingSet(generator, JsonFieldName.IGNORE_LIMITS_TIME_SERIES_NAMES, config.getIgnoreLimitsTimeSeriesNames());
+            writeTimeSeriesToPlannedOutagesMap(generator, config.getTimeSeriesToPlannedOutagesMapping());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    static void writeTimeSeriesToEquipmentMap(JsonGenerator generator, String name, Map<String, Set<MappingKey>> equipmentMap) {
+    static void writeTimeSeriesToEquipmentMap(JsonGenerator generator, Map<String, Set<MappingKey>> equipmentMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(equipmentMap);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(JsonFieldName.TS_TO_EQUIPMENT.getFieldName());
             generator.writeStartArray();
             for (Map.Entry<String, Set<MappingKey>> e : equipmentMap.entrySet()) {
                 generator.writeStartObject();
-                generator.writeFieldName(TIMESERIESNAME);
+                generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
                 generator.writeString(e.getKey());
-                generator.writeFieldName(MAPPINGKEYS);
+                generator.writeFieldName(JsonFieldName.MAPPING_KEYS.getFieldName());
                 generator.writeStartArray();
                 for (MappingKey key : e.getValue()) {
                     MappingKey.writeJson(generator, key);
@@ -513,17 +445,17 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    static void writeTimeSeriesToPlannedOutagesMap(JsonGenerator generator, String name, Map<String, Set<String>> plannedOutagesMap) {
+    static void writeTimeSeriesToPlannedOutagesMap(JsonGenerator generator, Map<String, Set<String>> plannedOutagesMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(plannedOutagesMap);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(JsonFieldName.TS_TO_PLANNED_OUTAGES.getFieldName());
             generator.writeStartArray();
             for (Map.Entry<String, Set<String>> e : plannedOutagesMap.entrySet()) {
                 generator.writeStartObject();
-                generator.writeFieldName(TIMESERIESNAME);
+                generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
                 generator.writeString(e.getKey());
-                generator.writeFieldName(OUTAGES);
+                generator.writeFieldName(JsonFieldName.OUTAGES.getFieldName());
                 generator.writeStartArray();
                 for (String id : e.getValue()) {
                     generator.writeString(id);
@@ -537,17 +469,17 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    static void writeEquipmentToTimeSeriesMap(JsonGenerator generator, String name, Map<MappingKey, String> equipmentMap) {
+    static void writeEquipmentToTimeSeriesMap(JsonGenerator generator, Map<MappingKey, String> equipmentMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(equipmentMap);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(JsonFieldName.EQUIPMENT_TO_TS.getFieldName());
             generator.writeStartArray();
             for (Map.Entry<MappingKey, String> e : equipmentMap.entrySet()) {
                 generator.writeStartObject();
-                generator.writeFieldName(MAPPINGKEY);
+                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
                 MappingKey.writeJson(generator, e.getKey());
-                generator.writeFieldName(TIMESERIESNAME);
+                generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
                 generator.writeString(e.getValue());
                 generator.writeEndObject();
             }
@@ -557,17 +489,17 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    void writeMappingKeyMap(JsonGenerator generator, String name, Map<MappingKey, List<String>> mappingKeyMap) {
+    void writeMappingKeyMap(JsonGenerator generator, JsonFieldName jsonFieldName, Map<MappingKey, List<String>> mappingKeyMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(mappingKeyMap);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(jsonFieldName.getFieldName());
             generator.writeStartArray();
             for (Map.Entry<MappingKey, List<String>> e : mappingKeyMap.entrySet()) {
                 generator.writeStartObject();
-                generator.writeFieldName(MAPPINGKEY);
+                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
                 MappingKey.writeJson(generator, e.getKey());
-                generator.writeFieldName(MAPPINGLIST);
+                generator.writeFieldName(JsonFieldName.MAPPING_LIST.getFieldName());
                 mapper.writeValue(generator, e.getValue());
                 generator.writeEndObject();
             }
@@ -577,26 +509,26 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    void writeMappingSet(JsonGenerator generator, String name, Set<String> mappingSet) {
+    void writeMappingSet(JsonGenerator generator, JsonFieldName fieldName, Set<String> mappingSet) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(mappingSet);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(fieldName.getFieldName());
             mapper.writeValue(generator, mappingSet);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    void writeMappingKeySet(JsonGenerator generator, String name, Set<MappingKey> mappingSet) {
+    void writeMappingKeySet(JsonGenerator generator, JsonFieldName jsonFieldName, Set<MappingKey> mappingSet) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(mappingSet);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(jsonFieldName.getFieldName());
             generator.writeStartArray();
             for (MappingKey e : mappingSet) {
                 generator.writeStartObject();
-                generator.writeFieldName(MAPPINGKEY);
+                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
                 MappingKey.writeJson(generator, e);
                 generator.writeEndObject();
             }
@@ -606,17 +538,17 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    static void writeDistributionKeys(JsonGenerator generator, String name, Map<MappingKey, DistributionKey> distributionKeys) {
+    static void writeDistributionKeys(JsonGenerator generator, Map<MappingKey, DistributionKey> distributionKeys) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(distributionKeys);
         try {
-            generator.writeFieldName(name);
+            generator.writeFieldName(JsonFieldName.DISTRIBUTION_KEYS.getFieldName());
             generator.writeStartArray();
             for (Map.Entry<MappingKey, DistributionKey> e : distributionKeys.entrySet()) {
                 generator.writeStartObject();
-                generator.writeFieldName(MAPPINGKEY);
+                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
                 MappingKey.writeJson(generator, e.getKey());
-                generator.writeFieldName(DISTRIBUTIONKEY);
+                generator.writeFieldName(JsonFieldName.DISTRIBUTION.getFieldName());
                 DistributionKey.writeJson(e.getValue(), generator);
                 generator.writeEndObject();
             }
@@ -626,14 +558,14 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    void writeTimeSeriesNodes(JsonGenerator generator, String name, Map<String, NodeCalc> timeSeriesNodes) {
+    void writeTimeSeriesNodes(JsonGenerator generator, Map<String, NodeCalc> timeSeriesNodes) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(timeSeriesNodes);
-        ObjectMapper mapper = JsonUtil.createObjectMapper()
+        ObjectMapper timeSeriesMapper = JsonUtil.createObjectMapper()
                 .registerModule(new TimeSeriesJsonModule());
         try {
-            generator.writeFieldName(name);
-            mapper.writeValue(generator, timeSeriesNodes);
+            generator.writeFieldName(JsonFieldName.TIME_SERIES_NODES.getFieldName());
+            timeSeriesMapper.writeValue(generator, timeSeriesNodes);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -698,7 +630,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 switch (token) {
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
-                        if (fieldName.equals(MAPPINGKEY)) {
+                        if (fieldName.equals(JsonFieldName.MAPPING_KEY.getFieldName())) {
                             mappingKey = MappingKey.parseJson(parser);
                         } else {
                             throw new IllegalStateException("Unexpected field name " + fieldName);
@@ -735,12 +667,12 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                         break;
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
-                        switch (fieldName) {
-                            case MAPPINGKEY:
+                        switch (JsonFieldName.nameOf(fieldName)) {
+                            case MAPPING_KEY:
                                 mappingKey = MappingKey.parseJson(parser);
                                 break;
-                            case MAPPINGLIST:
-                                if ((token = parser.nextToken()) == JsonToken.START_ARRAY) {
+                            case MAPPING_LIST:
+                                if (parser.nextToken() == JsonToken.START_ARRAY) {
                                     assert mappingList != null;
                                     mappingList.addAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)));
                                 }
@@ -776,11 +708,11 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 switch (token) {
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
-                        switch (fieldName) {
-                            case MAPPINGKEY:
+                        switch (JsonFieldName.nameOf(fieldName)) {
+                            case MAPPING_KEY:
                                 mappingKey = MappingKey.parseJson(parser);
                                 break;
-                            case DISTRIBUTIONKEY:
+                            case DISTRIBUTION:
                                 distributionKey = DistributionKey.parseJson(parser);
                                 break;
                             default:
@@ -807,10 +739,9 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         Objects.requireNonNull(parser);
         Map<String, NodeCalc> map = new HashMap<>();
         try {
-            JsonToken token;
             ObjectMapper mapper = JsonUtil.createObjectMapper()
                     .registerModule(new TimeSeriesJsonModule());
-            if ((token = parser.nextToken()) == JsonToken.START_OBJECT) {
+            if (parser.nextToken() == JsonToken.START_OBJECT) {
                 map.putAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructMapType(Map.class, String.class, NodeCalc.class)));
             }
             return map;
@@ -833,13 +764,13 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                         break;
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
-                        switch (fieldName) {
-                            case TIMESERIESNAME:
-                                if ((token = parser.nextToken()) == JsonToken.VALUE_STRING) {
+                        switch (JsonFieldName.nameOf(fieldName)) {
+                            case TIME_SERIES_NAME:
+                                if (parser.nextToken() == JsonToken.VALUE_STRING) {
                                     timeSeriesName = parser.getValueAsString();
                                 }
                                 break;
-                            case MAPPINGKEYS:
+                            case MAPPING_KEYS:
                                 while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                                     if (token == JsonToken.START_OBJECT) {
                                         assert mappingKeys != null;
@@ -878,12 +809,12 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                 switch (token) {
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
-                        switch (fieldName) {
-                            case MAPPINGKEY:
+                        switch (JsonFieldName.nameOf(fieldName)) {
+                            case MAPPING_KEYS:
                                 mappingKey = MappingKey.parseJson(parser);
                                 break;
-                            case TIMESERIESNAME:
-                                if ((token = parser.nextToken()) == JsonToken.VALUE_STRING) {
+                            case TIME_SERIES_NAME:
+                                if (parser.nextToken() == JsonToken.VALUE_STRING) {
                                     timeSeriesName = parser.getValueAsString();
                                 }
                                 break;
@@ -920,7 +851,7 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
                         ids = new HashSet<>();
                         break;
                     case FIELD_NAME:
-                        String newTimeSeriesName = parseFieldName(parser, timeSeriesName, ids);
+                        String newTimeSeriesName = parseFieldName(parser, ids);
                         timeSeriesName = newTimeSeriesName != null ? newTimeSeriesName : timeSeriesName;
                         break;
                     case END_OBJECT:
@@ -939,12 +870,12 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         }
     }
 
-    private static String parseFieldName(JsonParser parser, String timeSeriesName, Set<String> ids) throws IOException {
+    private static String parseFieldName(JsonParser parser, Set<String> ids) throws IOException {
         JsonToken token;
         String fieldName = parser.getCurrentName();
         String newTimeSeriesName = null;
-        switch (fieldName) {
-            case TIMESERIESNAME:
+        switch (JsonFieldName.nameOf(fieldName)) {
+            case TIME_SERIES_NAME:
                 if (parser.nextToken() == JsonToken.VALUE_STRING) {
                     newTimeSeriesName = parser.getValueAsString();
                 }
@@ -971,191 +902,191 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
             while ((token = parser.nextToken()) != null) {
                 if (token == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
-                    switch (fieldName) {
-                        case TSTOGENERATORS:
+                    switch (JsonFieldName.nameOf(fieldName)) {
+                        case TS_TO_GENERATORS:
                             config.setTimeSeriesToGeneratorsMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOLOADS:
+                        case TS_TO_LOADS:
                             config.setTimeSeriesToLoadsMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTODANGLINGLINES:
+                        case TS_TO_DANGLING_LINES:
                             config.setTimeSeriesToDanglingLinesMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOHVDCLINES:
+                        case TS_TO_HVDC_LINES:
                             config.setTimeSeriesToHvdcLinesMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOPHASETAPCHANGERS:
+                        case TS_TO_PHASE_TAP_CHANGERS:
                             config.setTimeSeriesToPhaseTapChangersMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOBREAKERS:
+                        case TS_TO_BREAKERS:
                             config.setTimeSeriesToBreakersMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOTRANSFORMERS:
+                        case TS_TO_TRANSFORMERS:
                             config.setTimeSeriesToTransformersMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOLINES:
+                        case TS_TO_LINES:
                             config.setTimeSeriesToLinesMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTORATIOTAPCHANGERS:
+                        case TS_TO_RATIO_TAP_CHANGERS:
                             config.setTimeSeriesToRatioTapChangersMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOLCCCONVERTERSTATIONS:
+                        case TS_TO_LCC_CONVERTER_STATIONS:
                             config.setTimeSeriesToLccConverterStationsMapping(parseMappingKeyMap(parser));
                             break;
-                        case TSTOVSCCONVERTERSTATIONS:
+                        case TS_TO_VSC_CONVERTER_STATIONS:
                             config.setTimeSeriesToVscConverterStationsMapping(parseMappingKeyMap(parser));
                             break;
-                        case GENERATORTOTS:
+                        case GENERATOR_TO_TS:
                             config.setGeneratorToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case LOADTOTS:
+                        case LOAD_TO_TS:
                             config.setLoadToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case DANGLINGLINETOTS:
+                        case DANGLING_LINE_TO_TS:
                             config.setDanglingLineToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case HVDCLINETOTS:
+                        case HVDC_LINE_TO_TS:
                             config.setHvdcLineToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case PHASETAPCHANGERTOTS:
+                        case PHASE_TAP_CHANGER_TO_TS:
                             config.setPhaseTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case BREAKERTOTS:
+                        case BREAKER_TO_TS:
                             config.setBreakerToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case TRANSFORMERTOTS:
+                        case TRANSFORMER_TO_TS:
                             config.setTransformerToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case LINETOTS:
+                        case LINE_TO_TS:
                             config.setLineToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case RATIOTAPCHANGERTOTS:
+                        case RATIO_TAP_CHANGER_TO_TS:
                             config.setRatioTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case LCCCONVERTERSTATIONTOTS:
+                        case LCC_CONVERTER_STATION_TO_TS:
                             config.setLccConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case VSCCONVERTERSTATIONTOTS:
+                        case VSC_CONVERTER_STATION_TO_TS:
                             config.setVscConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
                             break;
-                        case GENERATORTS:
+                        case GENERATOR_TS:
                             config.setGeneratorTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case LOADTS:
+                        case LOAD_TS:
                             config.setLoadTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case DANGLINGLINETS:
+                        case DANGLING_LINE_TS:
                             config.setDanglingLineTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case HVDCLINETS:
+                        case HVDC_LINE_TS:
                             config.setHvdcLineTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case PHASETAPCHANGERTS:
+                        case PHASE_TAP_CHANGER_TS:
                             config.setPhaseTapChangerTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case BREAKERTS:
+                        case BREAKER_TS:
                             config.setBreakerTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case TRANSFORMERTS:
+                        case TRANSFORMER_TS:
                             config.setTransformerTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case LINETS:
+                        case LINE_TS:
                             config.setLineTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case RATIOTAPCHANGERTS:
+                        case RATIO_TAP_CHANGER_TS:
                             config.setRatioTapChangerTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case LCCCONVERTERSTATIONTS:
+                        case LCC_CONVERTER_STATION_TS:
                             config.setLccConverterStationTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case VSCCONVERTERSTATIONTS:
+                        case VSC_CONVERTER_STATION_TS:
                             config.setVscConverterStationTimeSeries(parseMappingKeySet(parser));
                             break;
-                        case UNMAPPEDGENERATORS:
+                        case UNMAPPED_GENERATORS:
                             config.setUnmappedGenerators(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDLOADS:
+                        case UNMAPPED_LOADS:
                             config.setUnmappedLoads(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDFIXEDACTIVEPOWERLOADS:
+                        case UNMAPPED_FIXED_ACTIVE_POWER_LOADS:
                             config.setUnmappedFixedActivePowerLoads(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDVARIABLEACTIVEPOWERLOADS:
+                        case UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS:
                             config.setUnmappedVariableActivePowerLoads(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDDANGLINGLINES:
+                        case UNMAPPED_DANGLING_LINES:
                             config.setUnmappedDanglingLines(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDHVDCLINES:
+                        case UNMAPPED_HVDC_LINES:
                             config.setUnmappedHvdcLines(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDPHASETAPCHANGERS:
+                        case UNMAPPED_PHASE_TAP_CHANGERS:
                             config.setUnmappedPhaseTapChangers(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDMINPGENERATORS:
+                        case UNMAPPED_MIN_P_GENERATORS:
                             config.setUnmappedMinPGenerators(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDMAXPGENERATORS:
+                        case UNMAPPED_MAX_P_GENERATORS:
                             config.setUnmappedMaxPGenerators(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDMINPHVDCLINES:
+                        case UNMAPPED_MIN_P_HVDC_LINES:
                             config.setUnmappedMinPHvdcLines(parseMappingSet(parser));
                             break;
-                        case UNMAPPEDMAXPHVDCLINES:
+                        case UNMAPPED_MAX_P_HVDC_LINES:
                             config.setUnmappedMaxPHvdcLines(parseMappingSet(parser));
                             break;
-                        case IGNOREDUNMAPPEDGENERATORS:
+                        case IGNORED_UNMAPPED_GENERATORS:
                             config.setIgnoredUnmappedGenerators(parseMappingSet(parser));
                             break;
-                        case IGNOREDUNMAPPEDLOADS:
+                        case IGNORED_UNMAPPED_LOADS:
                             config.setIgnoredUnmappedLoads(parseMappingSet(parser));
                             break;
-                        case IGNOREDUNMAPPEDDANGLINGLINES:
+                        case IGNORED_UNMAPPED_DANGLING_LINES:
                             config.setIgnoredUnmappedDanglingLines(parseMappingSet(parser));
                             break;
-                        case IGNOREDUNMAPPEDHVDCLINES:
+                        case IGNORED_UNMAPPED_HVDC_LINES:
                             config.setIgnoredUnmappedHvdcLines(parseMappingSet(parser));
                             break;
-                        case IGNOREDUNMAPPEDPHASETAPCHANGERS:
+                        case IGNORED_UNMAPPED_PHASE_TAP_CHANGERS:
                             config.setIgnoredUnmappedPhaseTapChangers(parseMappingSet(parser));
                             break;
-                        case DISCONNECTEDGENERATORS:
+                        case DISCONNECTED_GENERATORS:
                             config.setDisconnectedGenerators(parseMappingSet(parser));
                             break;
-                        case DISCONNECTEDLOADS:
+                        case DISCONNECTED_LOADS:
                             config.setDisconnectedLoads(parseMappingSet(parser));
                             break;
-                        case DISCONNECTEDDANGLINGLINES:
+                        case DISCONNECTED_DANGLING_LINES:
                             config.setDisconnectedDanglingLines(parseMappingSet(parser));
                             break;
-                        case OUTOFMAINCCGENERATORS:
+                        case OUT_OF_MAIN_CC_GENERATORS:
                             config.setOutOfMainCcGenerators(parseMappingSet(parser));
                             break;
-                        case OUTOFMAINCCLOADS:
+                        case OUT_OF_MAIN_CC_LOADS:
                             config.setOutOfMainCcLoads(parseMappingSet(parser));
                             break;
-                        case OUTOFMAINCCDANGLINGLINES:
+                        case OUT_OF_MAIN_CC_DANGLING_LINES:
                             config.setOutOfMainCcDanglingLines(parseMappingSet(parser));
                             break;
-                        case DISTRIBUTIONKEYS:
+                        case DISTRIBUTION_KEYS:
                             config.setDistributionKeys(parseDistributionKeys(parser));
                             break;
-                        case TIMESERIESNODES:
+                        case TIME_SERIES_NODES:
                             config.setTimeSeriesNodes(parseTimeSeriesNodes(parser));
                             break;
-                        case TSTOEQUIPMENT:
+                        case TS_TO_EQUIPMENT:
                             config.setTimeSeriesToEquipment(parseTimeSeriesToEquipment(parser));
                             break;
-                        case EQUIPMENTTOTS:
+                        case EQUIPMENT_TO_TS:
                             config.setEquipmentToTimeSeries(parseEquipmentToTimeSeries(parser));
                             break;
-                        case MAPPEDTIMESERIESNAMES:
+                        case MAPPED_TIME_SERIES_NAMES:
                             config.setMappedTimeSeriesNames(parseMappingSet(parser));
                             break;
-                        case IGNORELIMITSTIMESERIESNAMES:
+                        case IGNORE_LIMITS_TIME_SERIES_NAMES:
                             config.setIgnoreLimitsTimeSeriesNames(parseMappingSet(parser));
                             break;
-                        case TSTOPLANNEDOUTAGES:
+                        case TS_TO_PLANNED_OUTAGES:
                             config.setTimeSeriesToPlannedOutagesMapping(parseTimeSeriesToPlannedOutages(parser));
                             break;
                         default:
@@ -1190,9 +1121,8 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         unmappedMaxPHvdcLines.addAll(unmappedHvdcLines);
     }
 
-    public Map<MappingKey, DistributionKey> setDistributionKeys(Map<MappingKey, DistributionKey> keys) {
+    public void setDistributionKeys(Map<MappingKey, DistributionKey> keys) {
         distributionKeys.putAll(keys);
-        return getDistributionKeys();
     }
 
     public Map<MappingKey, DistributionKey> getDistributionKeys() {
@@ -1203,27 +1133,24 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return timeSeriesToEquipmentMap;
     }
 
-    public Map<String, Set<MappingKey>> setTimeSeriesToEquipment(Map<String, Set<MappingKey>> map) {
+    public void setTimeSeriesToEquipment(Map<String, Set<MappingKey>> map) {
         timeSeriesToEquipmentMap.putAll(map);
-        return getTimeSeriesToEquipment();
     }
 
     public Map<MappingKey, String> getEquipmentToTimeSeries() {
         return equipmentToTimeSeriesMap;
     }
 
-    public Map<MappingKey, String> setEquipmentToTimeSeries(Map<MappingKey, String> map) {
+    public void setEquipmentToTimeSeries(Map<MappingKey, String> map) {
         equipmentToTimeSeriesMap.putAll(map);
-        return getEquipmentToTimeSeries();
     }
 
     public Map<String, NodeCalc> getTimeSeriesNodes() {
         return timeSeriesNodes;
     }
 
-    public Map<String, NodeCalc> setTimeSeriesNodes(Map<String, NodeCalc> nodes) {
+    public void setTimeSeriesNodes(Map<String, NodeCalc> nodes) {
         timeSeriesNodes.putAll(nodes);
-        return getTimeSeriesNodes();
     }
 
     public Set<String> getMappedTimeSeriesNames() {
@@ -1234,14 +1161,12 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableSet(ignoreLimitsTimeSeriesNames);
     }
 
-    public Set<String> setMappedTimeSeriesNames(Set<String> timeSeriesNames) {
+    public void setMappedTimeSeriesNames(Set<String> timeSeriesNames) {
         mappedTimeSeriesNames.addAll(timeSeriesNames);
-        return getMappedTimeSeriesNames();
     }
 
-    public Set<String> setIgnoreLimitsTimeSeriesNames(Set<String> timeSeriesNames) {
+    public void setIgnoreLimitsTimeSeriesNames(Set<String> timeSeriesNames) {
         ignoreLimitsTimeSeriesNames.addAll(timeSeriesNames);
-        return getIgnoreLimitsTimeSeriesNames();
     }
 
     public Set<MappingKey> getEquipmentIds(String timeSeriesName) {
@@ -1485,59 +1410,48 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         ignoreLimitsTimeSeriesNames.add(timeSeriesName);
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToGeneratorsMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToGeneratorsMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToGeneratorsMapping.putAll(map);
-        return getTimeSeriesToGeneratorsMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToLoadsMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToLoadsMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToLoadsMapping.putAll(map);
-        return getTimeSeriesToLoadsMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToDanglingLinesMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToDanglingLinesMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToDanglingLinesMapping.putAll(map);
-        return getTimeSeriesToDanglingLinesMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToHvdcLinesMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToHvdcLinesMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToHvdcLinesMapping.putAll(map);
-        return getTimeSeriesToHvdcLinesMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToPhaseTapChangersMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToPhaseTapChangersMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToPhaseTapChangersMapping.putAll(map);
-        return getTimeSeriesToPhaseTapChangersMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToBreakersMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToBreakersMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToBreakersMapping.putAll(map);
-        return getTimeSeriesToBreakersMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToTransformersMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToTransformersMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToTransformersMapping.putAll(map);
-        return getTimeSeriesToTransformersMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToLinesMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToLinesMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToLinesMapping.putAll(map);
-        return getTimeSeriesToLinesMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToRatioTapChangersMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToRatioTapChangersMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToRatioTapChangersMapping.putAll(map);
-        return getTimeSeriesToRatioTapChangersMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToLccConverterStationsMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToLccConverterStationsMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToLccConverterStationsMapping.putAll(map);
-        return getTimeSeriesToLccConverterStationsMapping();
     }
 
-    public Map<MappingKey, List<String>> setTimeSeriesToVscConverterStationsMapping(Map<MappingKey, List<String>> map) {
+    public void setTimeSeriesToVscConverterStationsMapping(Map<MappingKey, List<String>> map) {
         timeSeriesToVscConverterStationsMapping.putAll(map);
-        return getTimeSeriesToVscConverterStationsMapping();
     }
 
     public Map<MappingKey, List<String>> getTimeSeriesToGeneratorsMapping() {
@@ -1588,68 +1502,56 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableMap(timeSeriesToPlannedOutagesMapping);
     }
 
-    public Map<String, Set<String>> setTimeSeriesToPlannedOutagesMapping(Map<String, Set<String>> map) {
+    public void setTimeSeriesToPlannedOutagesMapping(Map<String, Set<String>> map) {
         timeSeriesToPlannedOutagesMapping.putAll(map);
-        return getTimeSeriesToPlannedOutagesMapping();
     }
 
     public void addPlannedOutages(String timeSeriesName, Set<String> disconnectedIds) {
         timeSeriesToPlannedOutagesMapping.put(timeSeriesName, disconnectedIds);
     }
 
-    public Map<MappingKey, List<String>> setGeneratorToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setGeneratorToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         generatorToTimeSeriesMapping.putAll(map);
-        return getGeneratorToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setLoadToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setLoadToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         loadToTimeSeriesMapping.putAll(map);
-        return getLoadToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setDanglingLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setDanglingLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         danglingLineToTimeSeriesMapping.putAll(map);
-        return getDanglingLineToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setBreakerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setBreakerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         breakerToTimeSeriesMapping.putAll(map);
-        return getBreakerToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setTransformerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setTransformerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         transformerToTimeSeriesMapping.putAll(map);
-        return getTransformerToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         lineToTimeSeriesMapping.putAll(map);
-        return getLineToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setRatioTapChangerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setRatioTapChangerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         ratioTapChangerToTimeSeriesMapping.putAll(map);
-        return getRatioTapChangerToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setLccConverterStationToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setLccConverterStationToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         lccConverterStationToTimeSeriesMapping.putAll(map);
-        return getLccConverterStationToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setVscConverterStationToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setVscConverterStationToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         vscConverterStationToTimeSeriesMapping.putAll(map);
-        return getVscConverterStationToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setHvdcLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setHvdcLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         hvdcLineToTimeSeriesMapping.putAll(map);
-        return getHvdcLineToTimeSeriesMapping();
     }
 
-    public Map<MappingKey, List<String>> setPhaseTapChangerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+    public void setPhaseTapChangerToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
         phaseTapChangerToTimeSeriesMapping.putAll(map);
-        return getPhaseTapChangerToTimeSeriesMapping();
     }
 
     public Map<MappingKey, List<String>> getGeneratorToTimeSeriesMapping() {
@@ -1696,114 +1598,92 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableMap(phaseTapChangerToTimeSeriesMapping);
     }
 
-    public Set<MappingKey> setGeneratorTimeSeries(Set<MappingKey> set) {
+    public void setGeneratorTimeSeries(Set<MappingKey> set) {
         generatorTimeSeries.addAll(set);
-        return getGeneratorTimeSeries();
     }
 
-    public Set<MappingKey> setLoadTimeSeries(Set<MappingKey> set) {
+    public void setLoadTimeSeries(Set<MappingKey> set) {
         loadTimeSeries.addAll(set);
-        return getLoadTimeSeries();
     }
 
-    public Set<MappingKey> setDanglingLineTimeSeries(Set<MappingKey> set) {
+    public void setDanglingLineTimeSeries(Set<MappingKey> set) {
         danglingLineTimeSeries.addAll(set);
-        return getDanglingLineTimeSeries();
     }
 
-    public Set<MappingKey> setHvdcLineTimeSeries(Set<MappingKey> set) {
+    public void setHvdcLineTimeSeries(Set<MappingKey> set) {
         hvdcLineTimeSeries.addAll(set);
-        return getHvdcLineTimeSeries();
     }
 
-    public Set<MappingKey> setPhaseTapChangerTimeSeries(Set<MappingKey> set) {
+    public void setPhaseTapChangerTimeSeries(Set<MappingKey> set) {
         phaseTapChangerTimeSeries.addAll(set);
-        return getPhaseTapChangerTimeSeries();
     }
 
-    public Set<MappingKey> setBreakerTimeSeries(Set<MappingKey> set) {
+    public void setBreakerTimeSeries(Set<MappingKey> set) {
         breakerTimeSeries.addAll(set);
-        return getBreakerTimeSeries();
     }
 
-    public Set<MappingKey> setTransformerTimeSeries(Set<MappingKey> set) {
+    public void setTransformerTimeSeries(Set<MappingKey> set) {
         transformerTimeSeries.addAll(set);
-        return getTransformerTimeSeries();
     }
 
-    public Set<MappingKey> setLineTimeSeries(Set<MappingKey> set) {
+    public void setLineTimeSeries(Set<MappingKey> set) {
         lineTimeSeries.addAll(set);
-        return getLineTimeSeries();
     }
 
-    public Set<MappingKey> setRatioTapChangerTimeSeries(Set<MappingKey> set) {
+    public void setRatioTapChangerTimeSeries(Set<MappingKey> set) {
         ratioTapChangerTimeSeries.addAll(set);
-        return getRatioTapChangerTimeSeries();
     }
 
-    public Set<MappingKey> setLccConverterStationTimeSeries(Set<MappingKey> set) {
+    public void setLccConverterStationTimeSeries(Set<MappingKey> set) {
         lccConverterStationTimeSeries.addAll(set);
-        return getLccConverterStationTimeSeries();
     }
 
-    public Set<MappingKey> setVscConverterStationTimeSeries(Set<MappingKey> set) {
+    public void setVscConverterStationTimeSeries(Set<MappingKey> set) {
         vscConverterStationTimeSeries.addAll(set);
-        return getVscConverterStationTimeSeries();
     }
 
-    public Set<String> setUnmappedGenerators(Set<String> set) {
+    public void setUnmappedGenerators(Set<String> set) {
         unmappedGenerators.addAll(set);
-        return getUnmappedGenerators();
     }
 
-    public Set<String> setUnmappedLoads(Set<String> set) {
+    public void setUnmappedLoads(Set<String> set) {
         unmappedLoads.addAll(set);
-        return getUnmappedLoads();
     }
 
-    public Set<String> setUnmappedFixedActivePowerLoads(Set<String> set) {
+    public void setUnmappedFixedActivePowerLoads(Set<String> set) {
         unmappedFixedActivePowerLoads.addAll(set);
-        return getUnmappedFixedActivePowerLoads();
     }
 
-    public Set<String> setUnmappedVariableActivePowerLoads(Set<String> set) {
+    public void setUnmappedVariableActivePowerLoads(Set<String> set) {
         unmappedVariableActivePowerLoads.addAll(set);
-        return getUnmappedVariableActivePowerLoads();
     }
 
-    public Set<String> setUnmappedDanglingLines(Set<String> set) {
+    public void setUnmappedDanglingLines(Set<String> set) {
         unmappedDanglingLines.addAll(set);
-        return getUnmappedDanglingLines();
     }
 
-    public Set<String> setUnmappedHvdcLines(Set<String> set) {
+    public void setUnmappedHvdcLines(Set<String> set) {
         unmappedHvdcLines.addAll(set);
-        return getUnmappedHvdcLines();
     }
 
-    public Set<String> setUnmappedPhaseTapChangers(Set<String> set) {
+    public void setUnmappedPhaseTapChangers(Set<String> set) {
         unmappedPhaseTapChangers.addAll(set);
-        return getUnmappedPhaseTapChangers();
     }
 
-    public Set<String> setUnmappedMinPGenerators(Set<String> set) {
+    public void setUnmappedMinPGenerators(Set<String> set) {
         unmappedMinPGenerators.addAll(set);
-        return getUnmappedMinPGenerators();
     }
 
-    public Set<String> setUnmappedMaxPGenerators(Set<String> set) {
+    public void setUnmappedMaxPGenerators(Set<String> set) {
         unmappedMaxPGenerators.addAll(set);
-        return getUnmappedMaxPGenerators();
     }
 
-    public Set<String> setUnmappedMinPHvdcLines(Set<String> set) {
+    public void setUnmappedMinPHvdcLines(Set<String> set) {
         unmappedMinPHvdcLines.addAll(set);
-        return getUnmappedMinPHvdcLines();
     }
 
-    public Set<String> setUnmappedMaxPHvdcLines(Set<String> set) {
+    public void setUnmappedMaxPHvdcLines(Set<String> set) {
         unmappedMaxPHvdcLines.addAll(set);
-        return getUnmappedMaxPHvdcLines();
     }
 
     public Set<MappingKey> getGeneratorTimeSeries() {
@@ -1894,29 +1774,24 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableSet(unmappedPhaseTapChangers);
     }
 
-    public Set<String> setIgnoredUnmappedGenerators(Set<String> set) {
+    public void setIgnoredUnmappedGenerators(Set<String> set) {
         ignoredUnmappedGenerators.addAll(set);
-        return getIgnoredUnmappedGenerators();
     }
 
-    public Set<String> setIgnoredUnmappedLoads(Set<String> set) {
+    public void setIgnoredUnmappedLoads(Set<String> set) {
         ignoredUnmappedLoads.addAll(set);
-        return getIgnoredUnmappedLoads();
     }
 
-    public Set<String> setIgnoredUnmappedDanglingLines(Set<String> set) {
+    public void setIgnoredUnmappedDanglingLines(Set<String> set) {
         ignoredUnmappedDanglingLines.addAll(set);
-        return getIgnoredUnmappedDanglingLines();
     }
 
-    public Set<String> setIgnoredUnmappedHvdcLines(Set<String> set) {
+    public void setIgnoredUnmappedHvdcLines(Set<String> set) {
         ignoredUnmappedHvdcLines.addAll(set);
-        return getIgnoredUnmappedHvdcLines();
     }
 
-    public Set<String> setIgnoredUnmappedPhaseTapChangers(Set<String> set) {
+    public void setIgnoredUnmappedPhaseTapChangers(Set<String> set) {
         ignoredUnmappedPhaseTapChangers.addAll(set);
-        return getIgnoredUnmappedPhaseTapChangers();
     }
 
     public Set<String> getIgnoredUnmappedGenerators() {
@@ -1939,19 +1814,16 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableSet(ignoredUnmappedPhaseTapChangers);
     }
 
-    public Set<String> setDisconnectedGenerators(Set<String> set) {
+    public void setDisconnectedGenerators(Set<String> set) {
         disconnectedGenerators.addAll(set);
-        return getDisconnectedGenerators();
     }
 
-    public Set<String> setDisconnectedLoads(Set<String> set) {
+    public void setDisconnectedLoads(Set<String> set) {
         disconnectedLoads.addAll(set);
-        return getDisconnectedLoads();
     }
 
-    public Set<String> setDisconnectedDanglingLines(Set<String> set) {
+    public void setDisconnectedDanglingLines(Set<String> set) {
         disconnectedDanglingLines.addAll(set);
-        return getDisconnectedDanglingLines();
     }
 
     public Set<String> getDisconnectedGenerators() {
@@ -1966,19 +1838,16 @@ public class TimeSeriesMappingConfig implements TimeSeriesConstants {
         return Collections.unmodifiableSet(disconnectedDanglingLines);
     }
 
-    public Set<String> setOutOfMainCcGenerators(Set<String> set) {
+    public void setOutOfMainCcGenerators(Set<String> set) {
         outOfMainCcGenerators.addAll(set);
-        return getOutOfMainCcGenerators();
     }
 
-    public Set<String> setOutOfMainCcLoads(Set<String> set) {
+    public void setOutOfMainCcLoads(Set<String> set) {
         outOfMainCcLoads.addAll(set);
-        return getOutOfMainCcLoads();
     }
 
-    public Set<String> setOutOfMainCcDanglingLines(Set<String> set) {
+    public void setOutOfMainCcDanglingLines(Set<String> set) {
         outOfMainCcDanglingLines.addAll(set);
-        return getOutOfMainCcDanglingLines();
     }
 
     public Set<String> getOutOfMainCcGenerators() {

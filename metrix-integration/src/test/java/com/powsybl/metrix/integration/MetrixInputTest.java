@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.powsybl.commons.AbstractConverterTest;
-import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.xml.NetworkXml;
@@ -30,9 +29,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Supplier;
-
-import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.Assert.*;
 
 public class MetrixInputTest extends AbstractConverterTest {
@@ -408,88 +404,6 @@ public class MetrixInputTest extends AbstractConverterTest {
         cty = new Contingency("cty", g, l3);
         assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(g, l3));
         assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(g, l3));
-    }
-
-    @Test
-    public void remedialActionFileTest() throws IOException {
-        Path remedialActionsFile = fileSystem.getPath("/remedialActions.csv");
-        Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8); // create empty file
-
-        Supplier<Reader> remedialActionsReaderSupplier = () -> {
-            try {
-                return Files.newBufferedReader(remedialActionsFile, StandardCharsets.UTF_8);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
-        };
-
-        // Empty file
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier)).doesNotThrowAnyException();
-
-        // Bad header #1
-        try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                    "foo;1;",
-                    "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;"
-            ));
-        }
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
-                .isInstanceOf(PowsyblException.class)
-                .hasMessage("Malformed remedial action file header");
-
-        // Bad header #2
-        try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                    "NB;-1;",
-                    "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;+FVALDI1_FVALDI1_DJ_OMN;"
-            ));
-        }
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
-                .isInstanceOf(PowsyblException.class)
-                .hasMessage("Malformed remedial action file header");
-
-        // Bad content #1
-        try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                    "NB;1;",
-                    "cty1;;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;"
-            ));
-        }
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
-                .isInstanceOf(PowsyblException.class)
-                .hasMessage("Empty element in remedial action file, line : 2");
-
-        // Bad content #2
-        try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                    "NB;1;",
-                    ";2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;"
-            ));
-        }
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
-                .isInstanceOf(PowsyblException.class)
-                .hasMessage("Empty element in remedial action file, line : 2");
-
-        // Bad content #3
-        try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                    "NB;1;",
-                    "cty1;3;FS.BIS1_FS.BIS1_DJ_OMN;;FVALDI1_FVALDI1_DJ_OMN;"
-            ));
-        }
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
-                .isInstanceOf(PowsyblException.class)
-                .hasMessage("Empty element in remedial action file, line : 2");
-
-        // File ok
-        try (Writer writer = Files.newBufferedWriter(remedialActionsFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                    "NB;1;",
-                    "cty1;2;FS.BIS1_FS.BIS1_DJ_OMN;FVALDI1_FVALDI1_DJ_OMN;"
-            ));
-        }
-        assertThatCode(() -> MetrixNetwork.checkCSVRemedialActionFile(remedialActionsReaderSupplier))
-                .doesNotThrowAnyException();
     }
 
     @Test
