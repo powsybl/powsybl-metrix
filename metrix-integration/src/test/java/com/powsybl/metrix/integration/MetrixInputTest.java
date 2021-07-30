@@ -362,7 +362,7 @@ public class MetrixInputTest extends AbstractConverterTest {
             MappingParameters mappingParameters = MappingParameters.load();
             TimeSeriesMappingConfig mappingConfig = TimeSeriesDslLoader.load(mappingReader, n, mappingParameters, store, null, null);
             variantProvider = new MetrixTimeSeriesVariantProvider(n, store, mappingParameters, mappingConfig, network -> Collections.emptyList(), 1,
-                    Range.closed(0, 1), false, false, System.err);
+                    Range.closed(0, 1), false, false, false, System.err);
         }
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, variantProvider.getMappedBreakers(), new MetrixParameters(), (Path) null);

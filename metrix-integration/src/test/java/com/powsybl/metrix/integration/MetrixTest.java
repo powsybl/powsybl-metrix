@@ -24,9 +24,7 @@ import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
-import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.*;
 import org.junit.Test;
 
 import java.io.*;
@@ -48,22 +46,9 @@ public class MetrixTest extends AbstractConverterTest {
         Files.createDirectories(workspace);
         ComputationManager computationManager = new LocalComputationManager(workspace);
 
-        NetworkSource source = new NetworkSource() {
-
-            @Override
-            public Network copy() {
-                return NetworkXml.read(MetrixTest.class.getResourceAsStream("/simpleNetwork.xml"));
-            }
-
-            @Override
-            public void write(OutputStream os) {
-                /* noop */
-            }
-        };
-
         ResultListener resultListener = new ResultListener() {
             @Override
-            public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
+            public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint) {
                 // default empty implementation
             }
 
@@ -72,6 +57,7 @@ public class MetrixTest extends AbstractConverterTest {
                 // default empty implementation
             }
         };
+
         MetrixAppLogger appLogger = new MetrixAppLogger() {
             @Override
             public void log(String message, Object... args) {
@@ -112,7 +98,7 @@ public class MetrixTest extends AbstractConverterTest {
                 analysisResult
             );
 
-            MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true);
+            MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
 
             MetrixRunResult run = metrix.run(runParameters, resultListener);
             assertThat(run).isNotNull();
@@ -121,7 +107,7 @@ public class MetrixTest extends AbstractConverterTest {
 
     @Test
     public void testMetrixChunk() throws IOException, ExecutionException, InterruptedException {
-        Files.createDirectories(fileSystem.getPath("/tmp", "etc"));
+        Path workingDir = Files.createDirectories(fileSystem.getPath("/tmp", "etc"));
         LocalComputationConfig localComputationConfig = LocalComputationConfig.load(PlatformConfig.defaultConfig(), fileSystem);
         LocalCommandExecutor commandExecutor = new LocalCommandExecutor() {
             @Override
@@ -168,14 +154,14 @@ public class MetrixTest extends AbstractConverterTest {
             }
 
             @Override
-            public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader) {
+            public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
 
             }
         };
 
         MetrixConfig metrixConfig = MetrixConfig.load();
         metrixConfig.setHomeDir(fileSystem.getPath("/tmp"));
-        MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixConfig, remedialActionFile, logFile, logDetailFile);
+        MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixConfig, remedialActionFile, logFile, logDetailFile, null);
         CompletableFuture<List<TimeSeries>> run1 = metrixChunk.run(parameters, contingenciesProvider, dslData, variantProvider);
         CompletableFuture<List<TimeSeries>> run2 = metrixChunk.run(parameters, contingenciesProvider, dslData, null);
         run1.join();

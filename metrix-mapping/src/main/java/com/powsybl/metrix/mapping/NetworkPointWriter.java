@@ -437,7 +437,9 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     @Override
     public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
-        mapToEquipmentVariable(identifiable, (EquipmentVariable) variable, equipmentValue);
+        if (variable instanceof EquipmentVariable) {
+            mapToEquipmentVariable(identifiable, (EquipmentVariable) variable, equipmentValue);
+        }
     }
 
     @Override

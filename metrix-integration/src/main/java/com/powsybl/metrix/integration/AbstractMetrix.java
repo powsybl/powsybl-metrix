@@ -44,6 +44,8 @@ public abstract class AbstractMetrix {
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
     protected static final String REMEDIAL_ACTIONS_CSV_GZ = REMEDIAL_ACTIONS_CSV + ".gz";
 
+    protected static final String NETWORK_POINT_XIIDM = "network_point.xiidm";
+
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
 
@@ -127,6 +129,12 @@ public abstract class AbstractMetrix {
                 throw new PowsyblException(String.format("Metrix configuration will produce more result time-series (%d) than the maximum allowed (%d).\n" +
                         "Reduce the number of monitored branches and/or number of contingencies.", estimatedResultNumber, metrixConfig.getResultNumberLimit()));
             }
+        }
+
+        if (runParameters.isNetworkComputation()) {
+            metrixParameters.setComputationType(MetrixComputationType.OPF);
+            metrixParameters.setWithAdequacyResults(true);
+            metrixParameters.setWithRedispatchingResults(true);
         }
 
         TimeSeriesIndex timeSeriesMappingIndex = mappingConfig.checkIndexUnicity(store);

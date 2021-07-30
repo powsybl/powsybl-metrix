@@ -7,6 +7,7 @@
 
 package com.powsybl.metrix.integration.compatibility;
 
+import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
 import com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil;
@@ -42,7 +43,7 @@ public class CsvResultListener implements ResultListener {
     }
 
     @Override
-    public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList) {
+    public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint) {
         resultStore.importTimeSeries(timeSeriesList, version, false, true);
     }
 

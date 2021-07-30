@@ -15,9 +15,6 @@ import org.junit.Test;
 
 import java.util.Collections;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class MetrixToolTest extends AbstractToolTest {
 
     private MetrixTool tool;
@@ -36,7 +33,7 @@ public class MetrixToolTest extends AbstractToolTest {
 
     @Override
     public void assertCommand() {
-        assertCommand(tool.getCommand(), "metrix", 14, 4);
+        assertCommand(tool.getCommand(), "metrix", 15, 4);
         assertOption(tool.getCommand().getOptions(), "case-file", true, true);
     }
 

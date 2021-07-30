@@ -11,11 +11,9 @@ package com.powsybl.metrix.integration;
 import com.google.common.collect.Range;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+import java.nio.file.Path;
 import java.util.Set;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public interface MetrixVariantProvider {
 
     Range<Integer> getVariantRange();
@@ -24,5 +22,5 @@ public interface MetrixVariantProvider {
 
     Set<String> getMappedBreakers();
 
-    void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader);
+    void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir);
 }
