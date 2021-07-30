@@ -12,9 +12,6 @@ import com.powsybl.iidm.network.Network;
 
 import java.io.OutputStream;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public interface NetworkSource {
 
     Network copy();
