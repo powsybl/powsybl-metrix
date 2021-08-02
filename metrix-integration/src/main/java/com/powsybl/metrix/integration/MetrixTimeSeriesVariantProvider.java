@@ -12,18 +12,27 @@ import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.contingency.Probability;
+import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesTable;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
@@ -36,6 +45,8 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
     private final ContingenciesProvider contingenciesProvider;
 
     private final TimeSeriesMappingConfig config;
+
+    private final MetrixDslData metrixDslData;
 
     private final int version;
 
@@ -51,13 +62,15 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final TimeSeriesMapper mapper;
 
-    public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters, TimeSeriesMappingConfig config, ContingenciesProvider contingenciesProvider,
+    public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters,
+                                           TimeSeriesMappingConfig config, MetrixDslData metrixDslData, ContingenciesProvider contingenciesProvider,
                                            int version, Range<Integer> variantRange, boolean ignoreLimits, boolean ignoreEmptyFilter,
                                            boolean isNetworkPointComputation, PrintStream err) {
         this.network = Objects.requireNonNull(network);
         this.store = Objects.requireNonNull(store);
         this.mappingParameters = Objects.requireNonNull(mappingParameters);
         this.config = Objects.requireNonNull(config);
+        this.metrixDslData = Objects.requireNonNull(metrixDslData);
         this.version = version;
         this.variantRange = variantRange;
         this.ignoreLimits = ignoreLimits;
@@ -94,7 +107,28 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         }
         Objects.requireNonNull(reader);
 
-        DefaultTimeSeriesMapperObserver defaultTimeSeriesMapperObserver = new BalanceSummary(err) {
+        List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
+        observers.add(createBalanceSummary(reader));
+        if (isNetworkPointComputation) {
+            observers.add(createNetworkPointWriter(workingDir));
+        }
+        if (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty()) {
+            observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
+        }
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, true, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
+        mapper.mapToNetwork(store, parameters, observers);
+    }
+
+    private Set<String> getContingenciesProbabilitiesTs() {
+        return contingenciesProvider.getContingencies(network)
+                .stream()
+                .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
+                .map(contingency -> ((Contingency) contingency).getExtension(Probability.class).getProbabilityTimeSeriesRef())
+                .collect(Collectors.toSet());
+    }
+
+    private TimeSeriesMapperObserver createBalanceSummary(MetrixVariantReader reader) {
+        return new BalanceSummary(err) {
             @Override
             public void timeSeriesMappingStart(int point, TimeSeriesIndex index) {
                 super.timeSeriesMappingStart(point, index);
@@ -120,31 +154,29 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
                 reader.onVariantEnd(point);
             }
         };
-
-        List<TimeSeriesMapperObserver> observers = new ArrayList<>(Collections.singletonList(defaultTimeSeriesMapperObserver));
-        if (isNetworkPointComputation) {
-            DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
-            DefaultTimeSeriesMapperObserver networkPointWriterObserver = new NetworkPointWriter(network, dataSource) {
-                @Override
-                public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-                    if (point == variantRange.upperEndpoint()) {
-                        super.timeSeriesMappingEnd(point, index, balance);
-                    }
-                }
-            };
-            observers.add(networkPointWriterObserver);
-        }
-
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits,
-                ignoreEmptyFilter, true, getContingenciesProbilitiesTs(), mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store, parameters, observers);
     }
 
-    private Set<String> getContingenciesProbilitiesTs() {
-        return contingenciesProvider.getContingencies(network)
-                .stream()
-                .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
-                .map(contingency -> contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef())
-                .collect(Collectors.toSet());
+    private TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
+        Objects.requireNonNull(workingDir);
+        DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
+        return new NetworkPointWriter(network, dataSource) {
+            @Override
+            public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
+                if (point == variantRange.upperEndpoint().intValue()) {
+                    super.timeSeriesMappingEnd(point, index, balance);
+                }
+            }
+        };
+    }
+
+    private TimeSeriesMapperObserver createInitOptimizedTimeSeriesWriter(Path workingDir, Range<Integer> pointRange) {
+        Objects.requireNonNull(workingDir);
+        Objects.requireNonNull(pointRange);
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(workingDir.resolve(INPUT_OPTIMIZED_FILE_NAME), StandardCharsets.UTF_8);
+            return new InitOptimizedTimeSeriesWriter(network, metrixDslData, pointRange, writer);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
     }
 }

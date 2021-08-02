@@ -29,10 +29,12 @@ public class MetrixDslData {
     private final Map<String, MetrixPtcControlType> ptcControlMap;
     private final Map<String, Integer> ptcLowerTapchangeMap;
     private final Map<String, Integer> ptcUpperTapchangeMap;
+    private final Set<String> pstAngleTapResults;
 
     // Hvdc
     private final Map<String, List<String>> hvdcContingenciesMap;
     private final Map<String, MetrixHvdcControlType> hvdcControlMap;
+    private final Set<String> hvdcFlowResults;
 
     // Section monitoring
     private final Set<MetrixSection> sectionList;
@@ -65,8 +67,10 @@ public class MetrixDslData {
         ptcControlMap = new HashMap<>();
         ptcLowerTapchangeMap = new HashMap<>();
         ptcUpperTapchangeMap = new HashMap<>();
+        pstAngleTapResults = new HashSet<>();
         hvdcContingenciesMap = new HashMap<>();
         hvdcControlMap = new HashMap<>();
+        hvdcFlowResults = new HashSet<>();
         sectionList = new HashSet<>();
         generatorsForAdequacy = new HashSet<>();
         generatorsForRedispatching = new HashSet<>();
@@ -86,10 +90,12 @@ public class MetrixDslData {
                          Map<String, List<String>> contingencyDetailedMarginalVariations,
                          Map<String, List<String>> ptcContingenciesMap,
                          Map<String, MetrixPtcControlType> ptcControlMap,
+                         Set<String> pstAngleTapResults,
                          Map<String, Integer> ptcLowerTapchangeMap,
                          Map<String, Integer> ptcUpperTapchangeMap,
                          Map<String, List<String>> hvdcContingenciesMap,
                          Map<String, MetrixHvdcControlType> hvdcControlMap,
+                         Set<String> hvdcFlowResults,
                          Set<MetrixSection> sectionList,
                          Set<String> generatorsForAdequacy,
                          Set<String> generatorsForRedispatching,
@@ -109,8 +115,10 @@ public class MetrixDslData {
         this.ptcControlMap = ptcControlMap;
         this.ptcLowerTapchangeMap = ptcLowerTapchangeMap;
         this.ptcUpperTapchangeMap = ptcUpperTapchangeMap;
+        this.pstAngleTapResults = pstAngleTapResults;
         this.hvdcContingenciesMap = hvdcContingenciesMap;
         this.hvdcControlMap = hvdcControlMap;
+        this.hvdcFlowResults = hvdcFlowResults;
         this.sectionList = sectionList;
         this.generatorsForAdequacy = generatorsForAdequacy;
         this.generatorsForRedispatching = generatorsForRedispatching;
@@ -134,8 +142,10 @@ public class MetrixDslData {
                 ptcControlMap,
                 ptcLowerTapchangeMap,
                 ptcUpperTapchangeMap,
+                pstAngleTapResults,
                 hvdcContingenciesMap,
                 hvdcControlMap,
+                hvdcFlowResults,
                 sectionList,
                 generatorsForAdequacy,
                 generatorsForRedispatching,
@@ -161,8 +171,10 @@ public class MetrixDslData {
                     ptcControlMap.equals(other.ptcControlMap) &&
                     ptcLowerTapchangeMap.equals(other.ptcLowerTapchangeMap) &&
                     ptcUpperTapchangeMap.equals(other.ptcUpperTapchangeMap) &&
+                    pstAngleTapResults.equals(other.pstAngleTapResults) &&
                     hvdcContingenciesMap.equals(other.hvdcContingenciesMap) &&
                     hvdcControlMap.equals(other.hvdcControlMap) &&
+                    hvdcFlowResults.equals(other.hvdcFlowResults) &&
                     sectionList.equals(other.sectionList) &&
                     generatorsForAdequacy.equals(other.generatorsForAdequacy) &&
                     generatorsForRedispatching.equals(other.generatorsForRedispatching) &&
@@ -189,8 +201,10 @@ public class MetrixDslData {
                 .put("ptcControlMap", ptcControlMap)
                 .put("ptcLowerTapchangeMap", ptcLowerTapchangeMap)
                 .put("ptcUpperTapchangeMap", ptcUpperTapchangeMap)
+                .put("pstAngleTapResults", pstAngleTapResults)
                 .put("hvdcContingenciesMap", hvdcContingenciesMap)
                 .put("hvdcControlMap", hvdcControlMap)
+                .put("hvdcFlowResults", hvdcFlowResults)
                 .put("sectionList", sectionList)
                 .put("generatorsForAdequacy", generatorsForAdequacy)
                 .put("generatorsForRedispatching", generatorsForRedispatching)
@@ -238,12 +252,20 @@ public class MetrixDslData {
         return Collections.unmodifiableMap(ptcUpperTapchangeMap);
     }
 
+    public Set<String> getPstAngleTapResults() {
+        return Collections.unmodifiableSet(pstAngleTapResults);
+    }
+
     public Map<String, List<String>> getHvdcContingenciesMap() {
         return Collections.unmodifiableMap(hvdcContingenciesMap);
     }
 
     public Map<String, MetrixHvdcControlType> getHvdcControlMap() {
         return Collections.unmodifiableMap(hvdcControlMap);
+    }
+
+    public Set<String> getHvdcFlowResults() {
+        return Collections.unmodifiableSet(hvdcFlowResults);
     }
 
     public Set<MetrixSection> getSectionList() {
@@ -444,6 +466,11 @@ public class MetrixDslData {
         }
     }
 
+    public void addPstAngleTapResults(String id) {
+        Objects.requireNonNull(id);
+        pstAngleTapResults.add(id);
+    }
+
     // Hvdc
     @JsonIgnore
     public final Set<String> getHvdcContingenciesList() {
@@ -479,6 +506,11 @@ public class MetrixDslData {
         if (!Objects.isNull(contingencies)) {
             hvdcContingenciesMap.put(id, contingencies);
         }
+    }
+
+    public void addHvdcFlowResults(String id) {
+        Objects.requireNonNull(id);
+        hvdcFlowResults.add(id);
     }
 
     // Section monitoring

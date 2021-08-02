@@ -79,7 +79,7 @@ public class Metrix extends AbstractMetrix {
                         commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)), networkPointFile);
                 Range<Integer> range = chunkCutter.getChunkRange(chunk);
                 MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, MappingParameters.load(),
-                        mappingConfig, contingenciesProvider, version, range, runParameters.isIgnoreLimits(),
+                        mappingConfig, metrixDslData, contingenciesProvider, version, range, runParameters.isIgnoreLimits(),
                         runParameters.isIgnoreEmptyFilter(), runParameters.isNetworkComputation(), System.err);
                 CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(metrixParameters, contingenciesProvider, metrixDslData, variantProvider);
                 Network finalNetworkPoint = networkPoint;

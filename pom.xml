@@ -62,7 +62,7 @@
         <mockito.version>3.3.3</mockito.version>
         <slf4j.version>1.7.22</slf4j.version>
 
-        <powsyblcore.version>4.0.0</powsyblcore.version>
+        <powsyblcore.version>4.2.0</powsyblcore.version>
     </properties>
 
     <profiles>

@@ -1,0 +1,79 @@
+[ {
+  "metadata" : {
+    "name" : "HVDC_HVDC2",
+    "dataType" : "DOUBLE",
+    "tags" : [ {
+      "hvdc" : "HVDC2"
+    }, {
+      "contingency" : "basecase"
+    } ],
+    "regularIndex" : {
+      "startTime" : 1420074000000,
+      "endTime" : 1420077600000,
+      "spacing" : 3600000
+    }
+  },
+  "chunks" : [ {
+    "offset" : 0,
+    "uncompressedLength" : 2,
+    "stepValues" : [ 300.0 ],
+    "stepLengths" : [ 2 ]
+  } ]
+}, {
+  "metadata" : {
+    "name" : "HVDC_HVDC1",
+    "dataType" : "DOUBLE",
+    "tags" : [ {
+      "hvdc" : "HVDC1"
+    }, {
+      "contingency" : "basecase"
+    } ],
+    "regularIndex" : {
+      "startTime" : 1420074000000,
+      "endTime" : 1420077600000,
+      "spacing" : 3600000
+    }
+  },
+  "chunks" : [ {
+    "offset" : 0,
+    "values" : [ 100.0, 110.0 ]
+  } ]
+}, {
+  "metadata" : {
+    "name" : "PST_FP.AND1  FTDPRA1  1",
+    "dataType" : "DOUBLE",
+    "tags" : [ {
+      "pst" : "FP.AND1  FTDPRA1  1"
+    }, {
+      "contingency" : "basecase"
+    } ],
+    "regularIndex" : {
+      "startTime" : 1420074000000,
+      "endTime" : 1420077600000,
+      "spacing" : 3600000
+    }
+  },
+  "chunks" : [ {
+    "offset" : 0,
+    "values" : [ -0.06, -0.05 ]
+  } ]
+}, {
+  "metadata" : {
+    "name" : "PST_TAP_FP.AND1  FTDPRA1  1",
+    "dataType" : "DOUBLE",
+    "tags" : [ {
+      "pst" : "FP.AND1  FTDPRA1  1"
+    }, {
+      "contingency" : "basecase"
+    } ],
+    "regularIndex" : {
+      "startTime" : 1420074000000,
+      "endTime" : 1420077600000,
+      "spacing" : 3600000
+    }
+  },
+  "chunks" : [ {
+    "offset" : 0,
+    "values" : [ 10.0, 11.0 ]
+  } ]
+} ]

@@ -104,8 +104,13 @@ public class MetrixTimeSeriesVariantsProviderTest {
 
         Range<Integer> variantRange = Range.closed(0, 1);
 
+        MetrixDslData metrixDslData = new MetrixDslData();
+        metrixDslData.addHvdcFlowResults("HVDC1");
+        metrixDslData.addHvdcFlowResults("HVDC2");
+        metrixDslData.addPstAngleTapResults("FP.AND1  FTDPRA1  1");
+
         MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
-                mappingConfig, network -> Collections.emptyList(), 1, variantRange, false, false, true, System.err);
+                mappingConfig, metrixDslData, network -> Collections.emptyList(), 1, variantRange, false, false, true, System.err);
 
         try (BufferedWriter writer = Files.newBufferedWriter(variantFile, StandardCharsets.UTF_8)) {
             variantProvider.readVariants(Range.closed(0, 1), new MetrixVariantReaderImpl(metrixNetwork, writer, SEPARATOR), workingDir);
