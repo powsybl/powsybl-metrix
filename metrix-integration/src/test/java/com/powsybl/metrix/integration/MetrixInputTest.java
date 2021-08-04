@@ -356,12 +356,19 @@ public class MetrixInputTest extends AbstractConverterTest {
             }
         }
 
+        ContingenciesProvider contingenciesProvider = new ContingenciesProvider() {
+            @Override
+            public List<Contingency> getContingencies(Network network) {
+                return Collections.emptyList();
+            }
+        };
+
         MetrixVariantProvider variantProvider;
         try (Reader mappingReader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
             ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
             MappingParameters mappingParameters = MappingParameters.load();
             TimeSeriesMappingConfig mappingConfig = TimeSeriesDslLoader.load(mappingReader, n, mappingParameters, store, null, null);
-            variantProvider = new MetrixTimeSeriesVariantProvider(n, store, mappingParameters, mappingConfig, network -> Collections.emptyList(), 1,
+            variantProvider = new MetrixTimeSeriesVariantProvider(n, store, mappingParameters, mappingConfig, new MetrixDslData(), contingenciesProvider, 1,
                     Range.closed(0, 1), false, false, false, System.err);
         }
 

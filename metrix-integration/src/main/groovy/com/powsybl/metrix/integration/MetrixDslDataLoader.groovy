@@ -217,6 +217,7 @@ class MetrixDslDataLoader extends DslLoader {
         MetrixPtcControlType controlType
         Integer preventiveUpperTapRange
         Integer preventiveLowerTapRange
+        Boolean angleTapResults
 
         void onContingencies(String[] onContingencies) {
             this.onContingencies = onContingencies
@@ -234,12 +235,16 @@ class MetrixDslDataLoader extends DslLoader {
         void preventiveLowerTapRange(Integer preventiveLowerTapRange) {
             this.preventiveLowerTapRange = preventiveLowerTapRange
         }
+        void angleTapResults(boolean b) {
+            this.angleTapResults = b
+        }
     }
 
     static class HvdcSpec {
 
         List<String> onContingencies
         MetrixHvdcControlType controlType
+        Boolean flowResults
 
         void onContingencies(String[] onContingencies) {
             this.onContingencies = onContingencies
@@ -251,6 +256,10 @@ class MetrixDslDataLoader extends DslLoader {
 
         void controlType(MetrixHvdcControlType controlType) {
             this.controlType = controlType
+        }
+
+        void flowResults(boolean b) {
+            this.flowResults = b
         }
     }
 
@@ -912,6 +921,9 @@ class MetrixDslDataLoader extends DslLoader {
 
         if (spec.controlType) {
             data.addPtc(id, spec.controlType, spec.onContingencies)
+            if (spec.controlType == MetrixPtcControlType.OPTIMIZED_ANGLE_CONTROL) {
+                data.addPstAngleTapResults(id)
+            }
             logDebug(out, "Found phaseTapChanger for id %s", id)
         }
         if (spec.preventiveLowerTapRange!=null){
@@ -919,6 +931,9 @@ class MetrixDslDataLoader extends DslLoader {
         }
         if (spec.preventiveUpperTapRange!=null){
             data.addUpperTapChange(id, spec.preventiveUpperTapRange)
+        }
+        if (spec.angleTapResults) {
+            data.addPstAngleTapResults(id)
         }
     }
 
@@ -935,7 +950,13 @@ class MetrixDslDataLoader extends DslLoader {
 
         if (spec.controlType) {
             data.addHvdc(id, spec.controlType, spec.onContingencies)
+            if (spec.controlType == MetrixHvdcControlType.OPTIMIZED) {
+                data.addHvdcFlowResults(id)
+            }
             logDebug(out, "Found hvdc for id %s", id)
+        }
+        if (spec.flowResults) {
+            data.addHvdcFlowResults(id)
         }
     }
 

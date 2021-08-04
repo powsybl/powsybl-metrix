@@ -109,31 +109,32 @@ public class MetrixConstantVariantTest {
             mappingConfig = TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, null, null);
         }
 
+        MetrixDslData metrixDslData;
         try (Reader metrixDslReader = Files.newBufferedReader(metrixFile, StandardCharsets.UTF_8)) {
-            MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig);
+            metrixDslData = MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig);
         }
 
         Range<Integer> variantRange = Range.closed(0, 1);
 
         MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
-                mappingConfig, network -> Collections.emptyList(), 1, variantRange, false, false, true, System.err);
+                mappingConfig, metrixDslData, network -> Collections.emptyList(), 1, variantRange, false, false, false, System.err);
 
         // write variants
         MetrixVariantsWriter variantsWriter = new MetrixVariantsWriter(variantProvider, metrixNetwork);
-        variantsWriter.write(Range.closed(0, 1), variantFile, workingDir);
+        variantsWriter.write(Range.closed(0, 1), variantFile, fileSystem.getPath("."));
 
         assertEquals(String.join(System.lineSeparator(),
-            "NT;2;",
-            "-1;CONELE;1;FSSV.O11_L;300;",
-            "-1;QATI00MN;2;FVALDI1  FTDPRA1  1;999;FS.BIS1  FVALDI1  1;500;",
-            "0;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;200;",
-            "0;CONELE;1;FVALDI11_L;400;",
-            "0;QATI00MN;1;FP.AND1  FVERGE1  2;600;",
-            "0;PROBABINC;2;b;200;a;0.002;",
-            "1;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;201;",
-            "1;CONELE;1;FVALDI11_L;401;",
-            "1;QATI00MN;1;FP.AND1  FVERGE1  2;601;",
-            "1;PROBABINC;2;b;201;a;0.002;") + System.lineSeparator(),
-            new String(Files.readAllBytes(variantFile), StandardCharsets.UTF_8));
+                "NT;2;",
+                "-1;CONELE;2;FSSV.O11_L;300;FVERGE11_L;400;",
+                "-1;QATI00MN;2;FVALDI1  FTDPRA1  1;999;FS.BIS1  FVALDI1  1;500;",
+                "0;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;200;",
+                "0;CONELE;2;FVALDI11_L;400;FVALDI11_L2;500;",
+                "0;QATI00MN;1;FP.AND1  FVERGE1  2;600;",
+                "0;PROBABINC;2;b;200;a;0.002;",
+                "1;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;201;",
+                "1;CONELE;2;FVALDI11_L;401;FVALDI11_L2;501;",
+                "1;QATI00MN;1;FP.AND1  FVERGE1  2;601;",
+                "1;PROBABINC;2;b;201;a;0.002;") + System.lineSeparator(),
+                new String(Files.readAllBytes(variantFile), StandardCharsets.UTF_8));
     }
 }

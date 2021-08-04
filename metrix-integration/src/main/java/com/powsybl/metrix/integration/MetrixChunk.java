@@ -29,6 +29,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
+
 public class MetrixChunk {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixChunk.class);
@@ -272,7 +274,13 @@ public class MetrixChunk {
                                     result.readFile(workingDir, variantNum);
                                 }
 
-                                result.createTimeSeries(variantProvider.getIndex(), results);
+                                List<TimeSeries> initOptimizedTimeSeriesList = new ArrayList<>();
+                                Path initOptimizedFilePath = workingDir.resolve(INPUT_OPTIMIZED_FILE_NAME);
+                                if (Files.exists(initOptimizedFilePath)) {
+                                    initOptimizedTimeSeriesList = TimeSeries.parseJson(initOptimizedFilePath);
+                                }
+
+                                result.createTimeSeries(variantProvider.getIndex(), initOptimizedTimeSeriesList, results);
 
                                 optionalLogger.ifPresent(logger -> logger.afterResultParsing(variantCount));
                             } else {
