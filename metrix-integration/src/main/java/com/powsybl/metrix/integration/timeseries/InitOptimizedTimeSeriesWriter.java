@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.integration.MetrixOutputData;
+import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.mapping.DefaultTimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.MappingVariable;
@@ -16,7 +16,7 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.*;
 
-import static com.powsybl.metrix.integration.MetrixOutputData.*;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
 
 public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
 

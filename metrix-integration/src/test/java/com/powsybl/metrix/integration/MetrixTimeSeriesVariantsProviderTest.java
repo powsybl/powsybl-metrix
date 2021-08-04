@@ -9,6 +9,7 @@ import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.contingency.Probability;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
@@ -109,22 +110,26 @@ public class MetrixTimeSeriesVariantsProviderTest {
         metrixDslData.addHvdcFlowResults("HVDC2");
         metrixDslData.addPstAngleTapResults("FP.AND1  FTDPRA1  1");
 
+        MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder()
+                .simpleInit(1, false, false, __ -> Collections.emptyList(),
+                        null, null, null, null).build();
+
         MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
-                mappingConfig, metrixDslData, network -> Collections.emptyList(), 1, variantRange, false, false, true, System.err);
+                mappingConfig, metrixDslData, metrixChunkParam, variantRange, System.err);
 
         try (BufferedWriter writer = Files.newBufferedWriter(variantFile, StandardCharsets.UTF_8)) {
             variantProvider.readVariants(Range.closed(0, 1), new MetrixVariantReaderImpl(metrixNetwork, writer, SEPARATOR), workingDir);
         }
 
         assertEquals(String.join(System.lineSeparator(),
-                "-1;CONELE;1;FSSV.O11_L;300;",
+                "-1;CONELE;2;FSSV.O11_L;300;FVERGE11_L;400;",
                 "-1;QATI00MN;2;FVALDI1  FTDPRA1  1;999;FS.BIS1  FVALDI1  1;500;",
                 "0;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;200;",
-                "0;CONELE;1;FVALDI11_L;400;",
+                "0;CONELE;2;FVALDI11_L;400;FVALDI11_L2;500;",
                 "0;QATI00MN;1;FP.AND1  FVERGE1  2;600;",
                 "0;PROBABINC;2;b;200;a;0.002;",
                 "1;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;201;",
-                "1;CONELE;1;FVALDI11_L;401;",
+                "1;CONELE;2;FVALDI11_L;401;FVALDI11_L2;501;",
                 "1;QATI00MN;1;FP.AND1  FVERGE1  2;601;",
                 "1;PROBABINC;2;b;201;a;0.002;") + System.lineSeparator(),
                 new String(Files.readAllBytes(variantFile), StandardCharsets.UTF_8));

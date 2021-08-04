@@ -6,7 +6,7 @@
  *
  */
 
-package com.powsybl.metrix.integration;
+package com.powsybl.metrix.integration.dataGenerator;
 
 import com.google.common.collect.ImmutableMap;
 import com.powsybl.commons.PowsyblException;
@@ -125,7 +125,7 @@ public class MetrixOutputData {
     /**
      * @param length number of data in each time series
      */
-    MetrixOutputData(int offset, int length) {
+    public MetrixOutputData(int offset, int length) {
         this.offset = offset;
         this.length = length;
     }
@@ -178,7 +178,7 @@ public class MetrixOutputData {
         });
     }
 
-    void readFile(Path workingDir, int varNum) {
+    public void readFile(Path workingDir, int varNum) {
         Path resultFilePath = workingDir.resolve(getFileName(varNum));
         if (!Files.exists(resultFilePath)) {
             LOGGER.error("Result file not found for variant {}", varNum);
@@ -640,7 +640,7 @@ public class MetrixOutputData {
         }
     }
 
-    void createTimeSeries(TimeSeriesIndex index, List<TimeSeries> initOptimizedTimeSeriesList, List<TimeSeries> timeSeriesList) {
+    public void createTimeSeries(TimeSeriesIndex index, List<TimeSeries> initOptimizedTimeSeriesList, List<TimeSeries> timeSeriesList) {
 
         // complete hvdc and pst optimized results with initial values (mapped or base case)
         completeOptimizedTimeSeries(initOptimizedTimeSeriesList);

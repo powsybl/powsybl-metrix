@@ -20,6 +20,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
@@ -161,9 +162,11 @@ public class MetrixTest extends AbstractConverterTest {
 
         MetrixConfig metrixConfig = MetrixConfig.load();
         metrixConfig.setHomeDir(fileSystem.getPath("/tmp"));
-        MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixConfig, remedialActionFile, logFile, logDetailFile, null);
-        CompletableFuture<List<TimeSeries>> run1 = metrixChunk.run(parameters, contingenciesProvider, dslData, variantProvider);
-        CompletableFuture<List<TimeSeries>> run2 = metrixChunk.run(parameters, contingenciesProvider, dslData, null);
+        MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder().simpleInit(1, false, false,
+                contingenciesProvider, null, logFile, logDetailFile, remedialActionFile).build();
+        MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixChunkParam, metrixConfig, null);
+        CompletableFuture<List<TimeSeries>> run1 = metrixChunk.run(parameters, dslData, variantProvider);
+        CompletableFuture<List<TimeSeries>> run2 = metrixChunk.run(parameters, dslData, null);
         run1.join();
         run2.join();
         assertThat(run1.get()).isNotNull();

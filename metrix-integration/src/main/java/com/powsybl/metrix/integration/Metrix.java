@@ -15,6 +15,7 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.io.ResultListener;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -73,15 +74,16 @@ public class Metrix extends AbstractMetrix {
                     networkPointFile = commonWorkingDir.toPath().resolve(NETWORK_POINT_XIIDM);
                     networkPoint = NetworkXml.read(networkPointFile);
                 }
-                MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixConfig,
-                        remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV_GZ) : null,
+                MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder().simpleInit(version, runParameters.isIgnoreLimits(),
+                        runParameters.isIgnoreEmptyFilter(), contingenciesProvider, networkPointFile,
                         commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)),
-                        commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)), networkPointFile);
+                        commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)),
+                        remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV_GZ) : null).build();
+                MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixChunkParam, metrixConfig, null);
                 Range<Integer> range = chunkCutter.getChunkRange(chunk);
                 MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, MappingParameters.load(),
-                        mappingConfig, metrixDslData, contingenciesProvider, version, range, runParameters.isIgnoreLimits(),
-                        runParameters.isIgnoreEmptyFilter(), runParameters.isNetworkComputation(), System.err);
-                CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(metrixParameters, contingenciesProvider, metrixDslData, variantProvider);
+                        mappingConfig, metrixDslData, metrixChunkParam, range, System.err);
+                CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(metrixParameters, metrixDslData, variantProvider);
                 Network finalNetworkPoint = networkPoint;
                 CompletableFuture<Void> info = currentFuture.thenAccept(out -> {
                     // Add log to archive

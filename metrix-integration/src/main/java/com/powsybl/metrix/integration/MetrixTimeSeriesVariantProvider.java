@@ -16,6 +16,7 @@ import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.contingency.Probability;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -63,20 +64,20 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
     private final TimeSeriesMapper mapper;
 
     public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters,
-                                           TimeSeriesMappingConfig config, MetrixDslData metrixDslData, ContingenciesProvider contingenciesProvider,
-                                           int version, Range<Integer> variantRange, boolean ignoreLimits, boolean ignoreEmptyFilter,
-                                           boolean isNetworkPointComputation, PrintStream err) {
+                                           TimeSeriesMappingConfig config, MetrixDslData metrixDslData, MetrixChunkParam metrixChunkParam,
+                                           Range<Integer> variantRange, PrintStream err) {
+
         this.network = Objects.requireNonNull(network);
         this.store = Objects.requireNonNull(store);
         this.mappingParameters = Objects.requireNonNull(mappingParameters);
         this.config = Objects.requireNonNull(config);
         this.metrixDslData = Objects.requireNonNull(metrixDslData);
-        this.version = version;
+        this.version = metrixChunkParam.version;
         this.variantRange = variantRange;
-        this.ignoreLimits = ignoreLimits;
-        this.ignoreEmptyFilter = ignoreEmptyFilter;
-        this.isNetworkPointComputation = isNetworkPointComputation;
-        this.contingenciesProvider = contingenciesProvider;
+        this.ignoreLimits = metrixChunkParam.ignoreLimits;
+        this.ignoreEmptyFilter = metrixChunkParam.ignoreEmptyFilter;
+        this.isNetworkPointComputation = metrixChunkParam.networkPointFile != null;
+        this.contingenciesProvider = metrixChunkParam.contingenciesProvider;
         this.err = Objects.requireNonNull(err);
         mapper = new TimeSeriesMapper(config, network, new TimeSeriesMappingLogger());
     }

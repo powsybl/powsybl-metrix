@@ -15,6 +15,8 @@ import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.*;

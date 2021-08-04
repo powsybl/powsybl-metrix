@@ -15,6 +15,41 @@ import java.nio.file.Path;
 import java.util.Set;
 
 public interface MetrixVariantProvider {
+    class Variants {
+        final int firstVariant;
+        final int lastVariant;
+        final int variantCount;
+
+        Variants(int firstVariant, int lastVariant) {
+            this.firstVariant = firstVariant;
+            this.lastVariant = lastVariant;
+            this.variantCount = lastVariant - firstVariant + 1;
+        }
+
+        public static Variants empty() {
+            return new Variants(-1, -1);
+        }
+
+        public Range<Integer> closedRange() {
+            return Range.closed(firstVariant, lastVariant);
+        }
+
+        public int count() {
+            return variantCount;
+        }
+
+        public int lastVariant() {
+            return lastVariant;
+        }
+
+        public int firstVariant() {
+            return firstVariant;
+        }
+
+        public int variantCount() {
+            return variantCount;
+        }
+    }
 
     Range<Integer> getVariantRange();
 
@@ -23,4 +58,8 @@ public interface MetrixVariantProvider {
     Set<String> getMappedBreakers();
 
     void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir);
+
+    default Variants variants() {
+        return new Variants(getVariantRange().lowerEndpoint(), getVariantRange().upperEndpoint());
+    }
 }

@@ -14,10 +14,9 @@ import com.powsybl.commons.config.PlatformConfig;
 import java.nio.file.Path;
 import java.util.Objects;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixConfig {
+
+    protected  MetrixConfig() { }
 
     private static final boolean DEFAULT_DEBUG = false;
     private static final boolean DEFAULT_CONSTANT_LOAD_FACTOR = false;
@@ -154,5 +153,14 @@ public class MetrixConfig {
     public MetrixConfig setNoDebugLogLevel(int noDebugLogLevel) {
         this.noDebugLogLevel = validateLogLevel(noDebugLogLevel);
         return this;
+    }
+
+    public String logLevel() {
+        int logLevel = isDebug() ? getDebugLogLevel() : getNoDebugLogLevel();
+        String[] logLevels = new String[]{"trace", "debug", "info", "warning", "error", "critical"};
+        if (logLevel >= logLevels.length) {
+            return "";
+        }
+        return logLevels[logLevel];
     }
 }

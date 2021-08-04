@@ -6,13 +6,14 @@
  *
  */
 
-package com.powsybl.metrix.integration;
+package com.powsybl.metrix.integration.dataGenerator;
 
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
@@ -89,7 +90,7 @@ public class MetrixInputData implements MetrixInputConstants {
         }
     }
 
-    MetrixInputData(MetrixNetwork metrixNetwork, MetrixDslData metrixDslData, MetrixParameters parameters) {
+    public MetrixInputData(MetrixNetwork metrixNetwork, MetrixDslData metrixDslData, MetrixParameters parameters) {
         this.metrixNetwork = Objects.requireNonNull(metrixNetwork);
         this.parameters = Objects.requireNonNull(parameters);
         this.dslData = metrixDslData;
@@ -531,11 +532,11 @@ public class MetrixInputData implements MetrixInputConstants {
         die.setFloatArray("TRPUIMIN", trpuimin);
     }
 
-    static float getHvdcLineMax(HvdcLine hvdcLine) {
+    public static float getHvdcLineMax(HvdcLine hvdcLine) {
         return TimeSeriesMapper.getMax(hvdcLine);
     }
 
-    static float getHvdcLineMin(HvdcLine hvdcLine) {
+    public static float getHvdcLineMin(HvdcLine hvdcLine) {
         return TimeSeriesMapper.getMin(hvdcLine);
     }
 
@@ -543,7 +544,7 @@ public class MetrixInputData implements MetrixInputConstants {
         return TimeSeriesMapper.getActivePowerControl(hvdcLine);
     }
 
-    static float getHvdcLineSetPoint(HvdcLine hvdcLine) {
+    public static float getHvdcLineSetPoint(HvdcLine hvdcLine) {
         return TimeSeriesMapper.getHvdcLineSetPoint(hvdcLine);
     }
 

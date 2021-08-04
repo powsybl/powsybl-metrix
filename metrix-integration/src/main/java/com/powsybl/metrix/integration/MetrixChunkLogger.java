@@ -8,24 +8,43 @@
 
 package com.powsybl.metrix.integration;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
+import java.io.IOException;
+
 public interface MetrixChunkLogger {
 
-    void beforeNetworkWriting();
+    static MetrixChunkLogger neverNull(MetrixChunkLogger metrixChunkLogger) {
+        return  metrixChunkLogger != null ? metrixChunkLogger : new MetrixChunkLogger() { };
+    }
 
-    void afterNetworkWriting();
+    default void beforeNetworkWriting() { }
 
-    void beforeVariantsWriting();
+    default void afterNetworkWriting() { }
 
-    void afterVariantsWriting(int variantCount);
+    default void beforeVariantsWriting() { }
 
-    void beforeMetrixExecution();
+    default void afterVariantsWriting(int variantCount) { }
 
-    void afterMetrixExecution();
+    default void beforeMetrixExecution() { }
 
-    void beforeResultParsing();
+    default void afterMetrixExecution() { }
 
-    void afterResultParsing(int resultCount);
+    default void beforeResultParsing() { }
+
+    default void afterResultParsing(int resultCount) { }
+
+    interface RunWithIO {
+        void run() throws IOException;
+    }
+
+    default void writeVariants(int variantCount, RunWithIO writeVariants) throws IOException {
+        beforeVariantsWriting();
+        writeVariants.run();
+        afterVariantsWriting(variantCount);
+    }
+
+    default void writeNetwork(RunWithIO writeVariants) throws IOException {
+        beforeNetworkWriting();
+        writeVariants.run();
+        afterNetworkWriting();
+    }
 }

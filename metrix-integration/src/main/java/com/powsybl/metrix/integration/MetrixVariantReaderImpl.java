@@ -14,6 +14,7 @@ import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.metrix.integration.contingency.Probability;
+import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.MappableEquipmentType;
 import com.powsybl.metrix.mapping.MappingVariable;
