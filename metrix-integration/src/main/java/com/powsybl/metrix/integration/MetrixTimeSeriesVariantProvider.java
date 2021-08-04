@@ -9,6 +9,8 @@
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
+import com.powsybl.commons.datasource.DataSource;
+import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
@@ -19,12 +21,10 @@ import com.powsybl.timeseries.TimeSeriesTable;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.PrintStream;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final Network network;
@@ -45,13 +45,15 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final boolean ignoreEmptyFilter;
 
+    private final boolean isNetworkPointComputation;
+
     private final PrintStream err;
 
     private final TimeSeriesMapper mapper;
 
     public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters, TimeSeriesMappingConfig config, ContingenciesProvider contingenciesProvider,
                                            int version, Range<Integer> variantRange, boolean ignoreLimits, boolean ignoreEmptyFilter,
-                                           PrintStream err) {
+                                           boolean isNetworkPointComputation, PrintStream err) {
         this.network = Objects.requireNonNull(network);
         this.store = Objects.requireNonNull(store);
         this.mappingParameters = Objects.requireNonNull(mappingParameters);
@@ -60,6 +62,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.variantRange = variantRange;
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
+        this.isNetworkPointComputation = isNetworkPointComputation;
         this.contingenciesProvider = contingenciesProvider;
         this.err = Objects.requireNonNull(err);
         mapper = new TimeSeriesMapper(config, network, new TimeSeriesMappingLogger());
@@ -84,7 +87,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
     }
 
     @Override
-    public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader) {
+    public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
         Objects.requireNonNull(variantReadRange);
         if (!variantRange.encloses(variantReadRange)) {
             throw new IllegalArgumentException("Variant range " + variantRange + " do not enclose read range " + variantReadRange);
@@ -118,7 +121,19 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             }
         };
 
-        List<TimeSeriesMapperObserver> observers = Collections.singletonList(defaultTimeSeriesMapperObserver);
+        List<TimeSeriesMapperObserver> observers = new ArrayList<>(Collections.singletonList(defaultTimeSeriesMapperObserver));
+        if (isNetworkPointComputation) {
+            DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
+            DefaultTimeSeriesMapperObserver networkPointWriterObserver = new NetworkPointWriter(network, dataSource) {
+                @Override
+                public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
+                    if (point == variantRange.upperEndpoint()) {
+                        super.timeSeriesMappingEnd(point, index, balance);
+                    }
+                }
+            };
+            observers.add(networkPointWriterObserver);
+        }
 
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits,
                 ignoreEmptyFilter, true, getContingenciesProbilitiesTs(), mappingParameters.getToleranceThreshold());

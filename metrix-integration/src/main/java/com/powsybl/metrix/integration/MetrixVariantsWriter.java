@@ -16,11 +16,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.zip.GZIPOutputStream;
 
 public class MetrixVariantsWriter {
 
@@ -130,19 +128,13 @@ public class MetrixVariantsWriter {
         this.metrixNetwork = metrixNetwork;
     }
 
-    public void write(Range<Integer> variantRange, Path file) throws IOException {
+    public void write(Range<Integer> variantRange, Path file, Path workingDir) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(file, StandardCharsets.UTF_8)) {
-            write(variantRange, writer);
+            write(variantRange, writer, workingDir);
         }
     }
 
-    public void writeGzip(Range<Integer> variantRange, Path fileGz) throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new GZIPOutputStream(Files.newOutputStream(fileGz)), StandardCharsets.UTF_8))) {
-            write(variantRange, writer);
-        }
-    }
-
-    public void write(Range<Integer> variantRange, BufferedWriter writer) throws IOException {
+    public void write(Range<Integer> variantRange, BufferedWriter writer, Path workingDir) throws IOException {
         writer.write("NT");
         writer.write(SEPARATOR);
         if (variantProvider == null) {
@@ -157,7 +149,7 @@ public class MetrixVariantsWriter {
             writer.write(Integer.toString(variantCount));
             writer.write(SEPARATOR);
             writer.newLine();
-            variantProvider.readVariants(variantRange, new MetrixVariantReaderImpl(metrixNetwork, writer, SEPARATOR));
+            variantProvider.readVariants(variantRange, new MetrixVariantReaderImpl(metrixNetwork, writer, SEPARATOR), workingDir);
         }
 
     }

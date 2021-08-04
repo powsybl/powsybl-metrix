@@ -14,6 +14,7 @@ import com.google.common.collect.Range;
 import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.integration.exceptions.MetrixException;
 import com.powsybl.timeseries.TimeSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MetrixChunk {
@@ -59,19 +61,23 @@ public class MetrixChunk {
 
     private final Path logFileDetail;
 
+    private final Path networkPointFile;
+
     private final MetrixChunkLogger metrixChunkLogger;
 
-    public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config, Path remedialActionFile, Path logFile, Path logFileDetail) {
-        this(network, computationManager, config, remedialActionFile, logFile, logFileDetail, null);
+    public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config,
+                       Path remedialActionFile, Path logFile, Path logFileDetail, Path networkPointFile) {
+        this(network, computationManager, config, remedialActionFile, logFile, logFileDetail, networkPointFile, null);
     }
 
-    public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config,
-                       Path remedialActionFile, Path logFile, Path logFileDetail, MetrixChunkLogger metrixChunkLogger) {
+    public MetrixChunk(Network network, ComputationManager computationManager, MetrixConfig config, Path remedialActionFile,
+                       Path logFile, Path logFileDetail, Path networkPointFile, MetrixChunkLogger metrixChunkLogger) {
         this.network = Objects.requireNonNull(network);
         this.computationManager = Objects.requireNonNull(computationManager);
         this.config = Objects.requireNonNull(config);
         this.logFile = logFile;
         this.logFileDetail = logFileDetail;
+        this.networkPointFile = networkPointFile;
         this.remedialActionFile = remedialActionFile;
         this.metrixChunkLogger = metrixChunkLogger;
     }
@@ -170,7 +176,7 @@ public class MetrixChunk {
 
                             // write variants
                             MetrixVariantsWriter variantsWriter = new MetrixVariantsWriter(variantProvider, metrixNetwork);
-                            variantsWriter.write(Range.closed(firstVariant, lastVariant), workingDir.resolve(VARIANTES_FILE_NAME));
+                            variantsWriter.write(Range.closed(firstVariant, lastVariant), workingDir.resolve(VARIANTES_FILE_NAME), workingDir);
 
                             optionalLogger.ifPresent(logger -> logger.afterVariantsWriting(variantCount));
                             optionalLogger.ifPresent(MetrixChunkLogger::beforeNetworkWriting);
@@ -208,7 +214,7 @@ public class MetrixChunk {
 
                             // write variants
                             new MetrixVariantsWriter(null, null)
-                                    .write(null, workingDir.resolve(VARIANTES_FILE_NAME));
+                                    .write(null, workingDir.resolve(VARIANTES_FILE_NAME), workingDir);
 
                             optionalLogger.ifPresent(logger -> logger.afterVariantsWriting(0));
                             optionalLogger.ifPresent(MetrixChunkLogger::beforeNetworkWriting);
@@ -281,6 +287,18 @@ public class MetrixChunk {
                                 Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
                             } else {
                                 LOGGER.warn("Failed to retrieve metrix main log file !");
+                            }
+                        }
+
+                        if (networkPointFile != null) {
+                            try (Stream<Path> paths = Files.list(workingDir)) {
+                                List<Path> files = paths.filter(path -> path.getFileName().toString().matches(network.getId() + "(.*)\\.xiidm")).collect(Collectors.toList());
+                                if (files.size() != 1) {
+                                    LOGGER.error("More than one network point files '{}'", files.size());
+                                    throw new MetrixException("More than one network point files " + files.size());
+                                } else {
+                                    Files.copy(workingDir.resolve(files.get(0)), networkPointFile);
+                                }
                             }
                         }
 

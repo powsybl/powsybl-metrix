@@ -28,6 +28,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 
@@ -40,7 +41,7 @@ public class MetrixVariantsWriterTest {
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             new MetrixVariantsWriter(null, null)
-                    .write(null, bufferedWriter);
+                    .write(null, bufferedWriter, null);
         }
         assertEquals(String.join(System.lineSeparator(),
                 "NT;1;",
@@ -187,7 +188,7 @@ public class MetrixVariantsWriterTest {
                 }
 
                 @Override
-                public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader) {
+                public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
                     Generator g1 = createGenerator("g1", 100f);
                     Load l1 = createLoad("l1", 10f, "", null);
                     Load l2 = createLoad("l2", 15f, "", null);
@@ -302,7 +303,7 @@ public class MetrixVariantsWriterTest {
                     reader.onVariantStart(variantReadRange.upperEndpoint());
                     reader.onVariantEnd(variantReadRange.upperEndpoint());
                 }
-            }, network).write(Range.closed(0, 3), bufferedWriter);
+            }, network).write(Range.closed(0, 3), bufferedWriter, null);
         }
 
         assertEquals(

@@ -12,9 +12,6 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixRunParameters {
 
     private final int firstVariant;
@@ -29,14 +26,17 @@ public class MetrixRunParameters {
 
     private final boolean ignoreEmptyFilter;
 
+    private final boolean isNetworkComputation;
+
     public MetrixRunParameters(int firstVariant, int variantCount, SortedSet<Integer> versions, int chunkSize,
-                               boolean ignoreLimits, boolean ignoreEmptyFilter) {
+                               boolean ignoreLimits, boolean ignoreEmptyFilter, boolean isNetworkComputation) {
         this.firstVariant = firstVariant;
         this.variantCount = variantCount;
         this.versions = new TreeSet<>(versions);
         this.chunkSize = chunkSize;
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
+        this.isNetworkComputation = isNetworkComputation;
     }
 
     public int getFirstVariant() {
@@ -61,5 +61,9 @@ public class MetrixRunParameters {
 
     public boolean isIgnoreEmptyFilter() {
         return ignoreEmptyFilter;
+    }
+
+    public boolean isNetworkComputation() {
+        return isNetworkComputation;
     }
 }

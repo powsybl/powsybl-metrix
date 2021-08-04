@@ -151,6 +151,12 @@ public class MetrixTool implements Tool {
                         .argName("FILE")
                         .desc("name of gzip file containing execution logs")
                         .build());
+                options.addOption(Option.builder()
+                        .longOpt("network-point-file")
+                        .desc("output network point file")
+                        .hasArg()
+                        .argName("FILE")
+                        .build());
                 return options;
             }
 
@@ -269,7 +275,7 @@ public class MetrixTool implements Tool {
         FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
-            MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter);
+            MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
             ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReader,
                     store, logger, computationRange);

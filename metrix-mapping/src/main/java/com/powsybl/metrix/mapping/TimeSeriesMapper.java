@@ -138,7 +138,7 @@ public class TimeSeriesMapper implements TimeSeriesConstants {
         return null;
     }
 
-    private static void setHvdcLineSetPoint(HvdcLine hvdcLine, double setPoint) {
+    public static void setHvdcLineSetPoint(HvdcLine hvdcLine, double setPoint) {
         HvdcAngleDroopActivePowerControl activePowerControl = getActivePowerControl(hvdcLine);
         if (activePowerControl != null) {
             activePowerControl.setP0((float) setPoint);

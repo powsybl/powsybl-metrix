@@ -7,6 +7,7 @@
 
 package com.powsybl.metrix.integration.io;
 
+import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.TimeSeries;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface ResultListener {
         //default empty implementation
     }
 
-    void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList);
+    void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint);
 
     default void onVersionResultEnd(int version) {
         //default empty implementation
