@@ -170,11 +170,11 @@ public class MetrixNetwork {
         return mapper.getInt(MetrixSubset.REGION, country);
     }
 
-    String getGeneratorType(Generator generator) {
+    public String getGeneratorType(Generator generator) {
         return generator.getProperty("genreCvg", generator.getEnergySource().toString());
     }
 
-    String getCountryCode(Substation substation) {
+    public String getCountryCode(Substation substation) {
         String countryCode = substation.getProperty("paysCvg");
         if (countryCode == null) {
             Optional<Country> country = substation.getCountry();

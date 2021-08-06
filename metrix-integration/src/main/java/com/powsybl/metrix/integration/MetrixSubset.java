@@ -9,11 +9,7 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.util.IntCounter;
 
-/**
- * Created by marifunf on 12/05/17.
- */
-
-enum MetrixSubset implements IntCounter {
+public enum MetrixSubset implements IntCounter {
     REGION,
     GROUPE,
     NOEUD,

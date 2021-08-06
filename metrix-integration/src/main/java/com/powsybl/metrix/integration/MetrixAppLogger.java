@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public interface MetrixAppLogger {
 
     void log(String message, Object... args);

@@ -17,6 +17,7 @@ import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.contingency.Probability;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
@@ -115,11 +116,14 @@ public class MetrixConstantVariantTest {
         }
 
         Range<Integer> variantRange = Range.closed(0, 1);
+        MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder()
+                .simpleInit(1, false, false, __ -> Collections.emptyList(),
+                        null, null, null, null).build();
 
         MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
-                mappingConfig, metrixDslData, network -> Collections.emptyList(), 1, variantRange, false, false, false, System.err);
+                mappingConfig, metrixDslData, metrixChunkParam,  variantRange, System.err);
 
-        // write variants
+                // write variants
         MetrixVariantsWriter variantsWriter = new MetrixVariantsWriter(variantProvider, metrixNetwork);
         variantsWriter.write(Range.closed(0, 1), variantFile, fileSystem.getPath("."));
 

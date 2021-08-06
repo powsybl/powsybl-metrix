@@ -13,6 +13,7 @@ import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.network.MetrixNetworkPoint;
 import com.powsybl.timeseries.*;
 import org.junit.Before;
@@ -33,8 +34,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.powsybl.metrix.integration.MetrixOutputData.HVDC_TYPE;
-import static com.powsybl.metrix.integration.MetrixOutputData.PST_TYPE;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.HVDC_TYPE;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.PST_TYPE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
 import static org.junit.Assert.*;
 

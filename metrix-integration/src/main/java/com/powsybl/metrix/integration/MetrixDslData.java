@@ -10,6 +10,7 @@ package com.powsybl.metrix.integration;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ImmutableMap;
+import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 
 import java.util.*;
 import java.util.stream.Collectors;
