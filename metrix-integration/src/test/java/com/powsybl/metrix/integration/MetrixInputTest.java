@@ -324,7 +324,11 @@ public class MetrixInputTest extends AbstractConverterTest {
 
         // Results comparison
         String actual = writer.toString();
-        compareTxt(getClass().getResourceAsStream("/simpleNetwork.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+        try {
+            compareTxt(getClass().getResourceAsStream("/simpleNetwork.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+        } catch (UncheckedIOException e) {
+            fail();
+        }
     }
 
     @Test

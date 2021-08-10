@@ -11,11 +11,11 @@ package com.powsybl.metrix.mapping.timeseries;
 import com.google.common.collect.ImmutableSortedSet;
 import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.timeseries.*;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,9 +25,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
+import static org.junit.Assert.fail;
+
 public class TimeSeriesStoreUtilsTest extends AbstractConverterTest {
 
     @Test
@@ -43,12 +42,14 @@ public class TimeSeriesStoreUtilsTest extends AbstractConverterTest {
         try (Writer writer = Files.newBufferedWriter(output)) {
             TimeSeriesStoreUtil.writeCsv(store, writer, ';', ZoneId.of(ZoneOffset.UTC.getId()), ImmutableSortedSet.of(1), ImmutableSortedSet.of("ts1", "ts2"));
         } catch (IOException e) {
-            Assert.fail();
+            fail();
         }
 
         try (InputStream expected = getClass().getResourceAsStream("/expected/simpleExport.csv")) {
             try (InputStream actual = Files.newInputStream(output)) {
                 compareTxt(expected, actual);
+            } catch (UncheckedIOException ex) {
+                fail();
             }
         }
     }

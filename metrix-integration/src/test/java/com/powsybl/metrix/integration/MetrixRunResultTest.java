@@ -20,10 +20,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.threeten.extra.Interval;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -165,7 +162,12 @@ public class MetrixRunResultTest extends AbstractConverterTest {
             bufferedWriter.flush();
 
             String actual = writer.toString();
-            compareTxt(getClass().getResourceAsStream("/metrixInitOptimizedResults.csv"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+            try {
+                compareTxt(getClass().getResourceAsStream("/metrixInitOptimizedResults.csv"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+            } catch (UncheckedIOException e) {
+                fail();
+            }
+
         }
     }
 }
