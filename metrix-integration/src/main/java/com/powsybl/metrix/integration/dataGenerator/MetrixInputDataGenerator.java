@@ -27,7 +27,7 @@ public class MetrixInputDataGenerator {
     private static final String VARIANTES_FILE_NAME = "variantes.csv";
     private static final String LOGS_FILE_NAME = "logs.txt";
     private static final String METRIX_COMMAND_ID = "metrix";
-    private static final String METRIX_PROGRAM = "metrix";
+    private static final String METRIX_PROGRAM = "metrix-simulator";
     private static final String METRIX_LOG_LEVEL_ARG = "--log-level=";
 
     public static final String REMEDIAL_ACTION_FILE_NAME = "parades.csv";

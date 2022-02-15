@@ -174,7 +174,12 @@ public abstract class AbstractMetrix {
         try (WorkingDirectory commonWorkingDir = new WorkingDirectory(computationManager.getLocalDir(), "metrix-commons-", metrixConfig.isDebug())) {
 
             if (remedialActionsReader != null) {
-                compress(remedialActionsReader, commonWorkingDir, REMEDIAL_ACTIONS_CSV_GZ);
+                try (BufferedReader bufferedReader = new BufferedReader(remedialActionsReader);
+                     Writer writer = new OutputStreamWriter(new BufferedOutputStream(Files.newOutputStream(commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV))), StandardCharsets.UTF_8)) {
+                    CharStreams.copy(bufferedReader, writer);
+                } catch (IOException e) {
+                    throw new UncheckedIOException(e);
+                }
             }
 
             executeMetrixChunks(
@@ -188,6 +193,7 @@ public abstract class AbstractMetrix {
                     chunkCount,
                     chunkSize);
 
+            addLogsToArchive(runParameters, commonWorkingDir, chunkCount);
             listener.onEnd();
 
             MetrixRunResult runResult = new MetrixRunResult();
@@ -197,6 +203,28 @@ public abstract class AbstractMetrix {
 
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    void addLogsToArchive(
+            MetrixRunParameters runParameters,
+            WorkingDirectory commonWorkingDir,
+            int chunkCount
+    ) {
+        if (logArchive == null) {
+            return;
+        }
+        for (int version : runParameters.getVersions()) {
+            for (int chunk = 0; chunk < chunkCount; chunk++) {
+                try {
+                    addLogToArchive(commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)), logArchive);
+                    addLogDetailToArchive(commonWorkingDir.toPath(), getLogDetailFileNameFormat(version, chunk), logArchive);
+                } catch (IOException e) {
+                    LOGGER.error(e.toString(), e);
+                    appLogger.tagged("info")
+                            .log("Log file not found for chunk %d of version %d", chunk, version);
+                }
+            }
         }
     }
 
@@ -230,8 +258,9 @@ public abstract class AbstractMetrix {
             try (InputStream is = gzipped ? new GZIPInputStream(Files.newInputStream(logFile))
                     : Files.newInputStream(logFile)) {
                 ByteStreams.copy(is, logArchive);
+            } finally {
+                logArchive.closeEntry();
             }
-            logArchive.closeEntry();
         }
     }
 
