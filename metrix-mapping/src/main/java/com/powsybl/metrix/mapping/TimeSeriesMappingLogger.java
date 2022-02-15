@@ -123,7 +123,7 @@ public class TimeSeriesMappingLogger {
                     ZonedDateTime dateTime = ZonedDateTime.ofInstant(log.getIndex().getInstantAt(point), zoneId);
                     dateLabel = dateTime.format(config.dateTimeFormatter);
                 }
-                writer.write(log.getType().name());
+                writer.write(log.getLevel().name());
                 writer.write(config.separator);
                 writer.write(log.getLabel());
                 writer.write(config.separator);

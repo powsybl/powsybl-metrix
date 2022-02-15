@@ -216,12 +216,12 @@ public class TimeSeriesMapper {
             throw new TimeSeriesMappingException("Impossible to scale down " + timeSeriesValue + " of ts " + timeSeriesName + " at time index '" + table.getTableIndex().getInstantAt(point) + "' and version " + version);
         }
 
-        LogBuilder logBuilder = new LogBuilder().type(LogType.WARNING).version(version).point(variantId).index(table.getTableIndex());
+        LogBuilder logBuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(version).point(variantId).index(table.getTableIndex());
         if (Math.abs(timeSeriesValue) > 0) {
             // check equipment list is not empty
             if (mappedEquipments.isEmpty()) {
-                EmptyFilter emptyFilter = new EmptyFilter().timeSeriesName(timeSeriesName).timeSeriesValue(timeSeriesValue).build();
-                Log log = logBuilder.point(point).logDescription(emptyFilter).buildLog();
+                LogContent emptyFilter = new EmptyFilter().timeSeriesName(timeSeriesName).timeSeriesValue(timeSeriesValue).build();
+                Log log = logBuilder.point(point).logDescription(emptyFilter).build();
                 if (ignoreEmptyFilter) {
                     timeSeriesMappingLogger.addLog(log);
                 } else {
@@ -230,7 +230,9 @@ public class TimeSeriesMapper {
             } else {
                 distributionKeySum = logDistributionKeySumNull(mappedEquipments, timeSeriesName, distributionKeys, distributionKeySum, timeSeriesValue, logBuilder);
 
-                logHvdcLimitSign(mappedEquipments, timeSeriesName, variable, timeSeriesValue, logBuilder);
+                if (logHvdcLimitSign(mappedEquipments, timeSeriesName, variable, timeSeriesValue, logBuilder)) {
+                    return;
+                }
 
                 // scaling down time series value to mapped equipments
                 for (int i = 0; i < mappedEquipments.size(); i++) {
@@ -249,7 +251,7 @@ public class TimeSeriesMapper {
         }
     }
 
-    private void logHvdcLimitSign(List<MappedEquipment> mappedEquipments, String timeSeriesName, MappingVariable variable, double timeSeriesValue, LogBuilder logBuilder) {
+    private boolean logHvdcLimitSign(List<MappedEquipment> mappedEquipments, String timeSeriesName, MappingVariable variable, double timeSeriesValue, LogBuilder logBuilder) {
         if (mappedEquipments.get(0).getIdentifiable() instanceof HvdcLine) {
             LimitSignBuilder limitSignBuilder = new LimitSignBuilder()
                     .timeSeriesValue(timeSeriesValue)
@@ -257,12 +259,15 @@ public class TimeSeriesMapper {
                     .variable(EquipmentVariable.maxP.getVariableName());
             if (variable == EquipmentVariable.maxP && timeSeriesValue < 0) {
                 limitSignBuilder.max();
-                timeSeriesMappingLogger.addLog(logBuilder.logDescription(limitSignBuilder.build()).buildLog());
+                timeSeriesMappingLogger.addLog(logBuilder.logDescription(limitSignBuilder.build()).build());
+                return true;
             } else if (variable == EquipmentVariable.minP && timeSeriesValue > 0) {
                 limitSignBuilder.min();
-                timeSeriesMappingLogger.addLog(logBuilder.logDescription(limitSignBuilder.build()).buildLog());
+                timeSeriesMappingLogger.addLog(logBuilder.logDescription(limitSignBuilder.build()).build());
+                return true;
             }
         }
+        return false;
     }
 
     private double logDistributionKeySumNull(List<MappedEquipment> mappedEquipments, String timeSeriesName, double[] distributionKeys, double distributionKeySum, double timeSeriesValue, LogBuilder logBuilder) {
@@ -273,9 +278,9 @@ public class TimeSeriesMapper {
                 distributionKeys[i] = distributionKey;
                 resultDistributionKeySum += distributionKeys[i];
             }
-            ZeroDistributionKeyInfo zeroDistributionKeyInfo = new ZeroDistributionKeyInfo(timeSeriesName, timeSeriesValue,
+            LogContent logContent = new ZeroDistributionKeyInfo(timeSeriesName, timeSeriesValue,
                     mappedEquipments.stream().map(MappedEquipment::getId).collect(Collectors.toList())).build();
-            Log log = logBuilder.type(LogType.INFO).logDescription(zeroDistributionKeyInfo).buildLog();
+            Log log = logBuilder.level(System.Logger.Level.INFO).logDescription(logContent).build();
             timeSeriesMappingLogger.addLog(log);
         }
         return resultDistributionKeySum;
@@ -452,39 +457,39 @@ public class TimeSeriesMapper {
         addActivePowerRangeExtension(hvdcLine);
 
         RangeLogWithVariableChanged rangeLogWithVariableChanged = new RangeLogWithVariableChanged().id(id).isBaseCase();
-        LogBuilder logBuilder = new LogBuilder().version(version).index(index).point(CONSTANT_VARIANT_ID).type(LogType.WARNING);
+        LogBuilder logBuilder = new LogBuilder().version(version).index(index).point(CONSTANT_VARIANT_ID).level(System.Logger.Level.WARNING);
         if (ignoreLimits) {
-            logBuilder.type(LogType.INFO);
+            logBuilder.level(System.Logger.Level.INFO);
         }
         // maxP inconstancy with CS1toCS2/CS2toCS1
         if (isActivePowerRange && (maxP > hvdcLineMaxP || -minP > hvdcLineMaxP)) {
             if (ignoreLimits) {
                 if (((maxP > hvdcLineMaxP && -minP > hvdcLineMaxP) && maxP > -minP) || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
-                    rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
+                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
                             .value(maxP).oldValue(EquipmentVariable.maxP.getVariableName()).toVariable(maxPVariableName)
                             .newValue(maxP).build();
-                    Log log = logBuilder.logDescription(rangeLogWithVariableChanged).buildLog();
+                    Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
                 } else if (((maxP > hvdcLineMaxP && -minP < hvdcLineMaxP) && -minP > maxP) || (-minP > hvdcLineMaxP && maxP <= hvdcLineMaxP)) {
-                    rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
+                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
                             .value(minP).oldValue(MINUS_MAXP).toVariable(minPVariableName).newValue(minP).build();
-                    Log log = logBuilder.logDescription(rangeLogWithVariableChanged).buildLog();
+                    Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
                 }
                 hvdcLine.setMaxP(Math.max(maxP, -minP));
             } else {
                 if (maxP > hvdcLineMaxP) {
-                    rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP).value(maxP)
+                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP).value(maxP)
                             .oldValue(maxPVariableName).toVariable(EquipmentVariable.maxP.getVariableName()).newValue(hvdcLineMaxP).build();
-                    Log log = logBuilder.logDescription(rangeLogWithVariableChanged).buildLog();
+                    Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
                     hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) hvdcLineMaxP);
                     correctedMaxP = hvdcLineMaxP;
                 }
                 if (minP < -hvdcLineMaxP) {
-                    rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
+                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
                             .value(minP).oldValue(minPVariableName).toVariable(MINUS_MAXP).newValue(-hvdcLineMaxP).build();
-                    Log log = logBuilder.logDescription(rangeLogWithVariableChanged).buildLog();
+                    Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
                     hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS2toCS1((float) hvdcLineMaxP);
                     correctedMinP = -hvdcLineMaxP;
@@ -499,9 +504,10 @@ public class TimeSeriesMapper {
             return;
         }
         String variableName = isMax ? maxPVariableName : minPVariableName;
+        LogContent logContent;
         // setpoint inconstancy with maxP/CS1toCS2/CS2toCS1
         if (ignoreLimits) {
-            rangeLogWithVariableChanged.oldValue(variableName).toVariable(setPointVariableName).newValue(setpoint).build();
+            logContent = rangeLogWithVariableChanged.oldValue(variableName).toVariable(setPointVariableName).newValue(setpoint).build();
             if (isMax) {
                 TimeSeriesMapper.setHvdcMax(hvdcLine, setpoint);
             } else {
@@ -509,10 +515,10 @@ public class TimeSeriesMapper {
             }
         } else {
             double newValue = isMax ? maxP : minP;
-            rangeLogWithVariableChanged.oldValue(setPointVariableName).toVariable(variableName).newValue(newValue).build();
+            logContent = rangeLogWithVariableChanged.oldValue(setPointVariableName).toVariable(variableName).newValue(newValue).build();
             TimeSeriesMapper.setHvdcLineSetPoint(hvdcLine, newValue);
         }
-        Log log = logBuilder.logDescription(rangeLogWithVariableChanged).buildLog();
+        Log log = logBuilder.logDescription(logContent).build();
         timeSeriesMappingLogger.addLog(log);
     }
 

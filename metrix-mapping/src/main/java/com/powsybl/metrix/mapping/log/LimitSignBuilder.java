@@ -2,7 +2,7 @@ package com.powsybl.metrix.mapping.log;
 
 import java.util.Objects;
 
-public class LimitSignBuilder extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class LimitSignBuilder implements LogDescriptionBuilder {
 
     private String timeSeriesName;
 
@@ -39,9 +39,11 @@ public class LimitSignBuilder extends AbstractLogBuilder implements LogDescripti
         return this;
     }
 
-    public LimitSignBuilder build() {
-        this.label = MAPPING_SIGN_PROBLEM;
-        this.message = "Impossible to map " + variable + " " + formatDouble(timeSeriesValue) + " of ts " + timeSeriesName + sign + variable + " value";
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.label = MAPPING_SIGN_PROBLEM;
+        log.message = String.format("Impossible to map %s %s of ts %s%s%s value", variable, formatDouble(timeSeriesValue),
+                timeSeriesName, sign, variable);
+        return log;
     }
 }

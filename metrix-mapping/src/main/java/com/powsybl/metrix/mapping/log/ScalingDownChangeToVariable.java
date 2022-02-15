@@ -1,6 +1,6 @@
 package com.powsybl.metrix.mapping.log;
 
-public class ScalingDownChangeToVariable extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class ScalingDownChangeToVariable implements LogDescriptionBuilder {
 
     private String toVariable;
     private String type = "";
@@ -56,11 +56,12 @@ public class ScalingDownChangeToVariable extends AbstractLogBuilder implements L
         return this;
     }
 
-    public ScalingDownChangeToVariable build() {
-        this.label = SCALING_DOWN_PROBLEM + "at least one " + changedVariable + " changed to "
-                + type + toVariable + (disabled ? IGNORE_LIMITS_DISABLED : "") + (synthesis ? TS_SYNTHESIS : "");
-        this.message = "Impossible to scale down " + timeSeriesValue + " of ts " + timeSeriesName
-                + (synthesis ? ", modified " : ", ") + changedVariable + sum + " has been applied";
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.label = String.format("%sat least one %s changed to %s%s%s%s", SCALING_DOWN_PROBLEM, changedVariable,
+                type, toVariable, disabled ? IGNORE_LIMITS_DISABLED : "", synthesis ? TS_SYNTHESIS : "");
+        log.message = String.format("Impossible to scale down %s of ts %s%s%s%s has been applied", timeSeriesValue, timeSeriesName,
+                synthesis ? ", modified " : ", ", changedVariable, sum);
+        return log;
     }
 }

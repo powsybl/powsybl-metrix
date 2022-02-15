@@ -3,7 +3,7 @@ package com.powsybl.metrix.mapping.log;
 import java.util.List;
 import java.util.Objects;
 
-public class ZeroDistributionKeyInfo extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class ZeroDistributionKeyInfo implements LogDescriptionBuilder {
 
     private final String timeSeriesName;
 
@@ -18,10 +18,11 @@ public class ZeroDistributionKeyInfo extends AbstractLogBuilder implements LogDe
         this.equipmentIds = Objects.requireNonNull(equipmentIds);
     }
 
-    public ZeroDistributionKeyInfo build() {
-        this.label = "zero distribution key warning";
-        this.message = "Distribution key are all equal to zero in scaling down " + formatDouble(timeSeriesValue) + " of ts '" + timeSeriesName +
-                " on equipments " + equipmentIds + " -> uniform distribution";
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.label = "zero distribution key warning";
+        log.message = String.format("Distribution key are all equal to zero in scaling down %s of ts %s on equipments %s -> uniform distribution",
+                formatDouble(timeSeriesValue), timeSeriesName, equipmentIds);
+        return log;
     }
 }

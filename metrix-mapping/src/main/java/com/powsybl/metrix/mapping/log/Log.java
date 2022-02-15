@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class Log {
 
-    private final LogType type;
+    private final System.Logger.Level level;
 
     private final TimeSeriesIndex index;
 
@@ -18,8 +18,8 @@ public class Log {
 
     private final String message;
 
-    public Log(LogType type, TimeSeriesIndex index, int version, int point, String label, String message) {
-        this.type = type;
+    public Log(System.Logger.Level level, TimeSeriesIndex index, int version, int point, String label, String message) {
+        this.level = level;
         this.index = Objects.requireNonNull(index);
         this.version = version;
         this.point = point;
@@ -39,8 +39,8 @@ public class Log {
         return point;
     }
 
-    public final LogType getType() {
-        return type;
+    public final System.Logger.Level getLevel() {
+        return level;
     }
 
     public final String getLabel() {

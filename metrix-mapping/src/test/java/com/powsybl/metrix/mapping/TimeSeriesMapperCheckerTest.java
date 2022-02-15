@@ -294,7 +294,7 @@ public class TimeSeriesMapperCheckerTest {
             String balanceSummaryCsv = balanceSummaryCsvOutput.toString();
             String[] lines = balanceSummaryCsv.split("\n");
             String[] line1 = lines[1].split(";");
-            double actualBalance = Double.valueOf(line1[1]);
+            double actualBalance = Double.parseDouble(line1[1]);
             assertEquals(expectedBalance, actualBalance, 0);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -418,7 +418,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-01T01:00:00Z"), Duration.ofHours(1));
 
@@ -496,7 +496,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax3Test() throws Exception {
+    public void pmax3Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(200);
         network.getGenerator("N_G").setMaxP(300);
@@ -521,7 +521,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax4Test() throws Exception {
+    public void pmax4Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(300);
 
@@ -545,7 +545,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax5Test() throws Exception {
+    public void pmax5Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(100);
 
@@ -557,7 +557,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin1aTest() throws Exception {
+    public void pmin1aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(-2000);
         network.getGenerator("N_G").setMinP(-1000);
@@ -579,7 +579,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin1bTest() throws Exception {
+    public void pmin1bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(-2000);
         network.getGenerator("N_G").setMaxP(2000);
@@ -599,7 +599,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin1cTest() throws Exception {
+    public void pmin1cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(500);
         network.getGenerator("N_G").setMaxP(2000);
@@ -618,7 +618,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin2aTest() throws Exception {
+    public void pmin2aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMinP(-1000);
 
@@ -638,7 +638,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin2bTest() throws Exception {
+    public void pmin2bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setMinP(500);
@@ -659,7 +659,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin2cTest() throws Exception {
+    public void pmin2cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(750);
         network.getGenerator("N_G").setMaxP(1000);
@@ -678,7 +678,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin3aTest() throws Exception {
+    public void pmin3aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setTargetP(-200);
@@ -698,7 +698,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin3bTest() throws Exception {
+    public void pmin3bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setTargetP(-200);
@@ -718,7 +718,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin3cTest() throws Exception {
+    public void pmin3cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setTargetP(100);
@@ -736,7 +736,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin4aTest() throws Exception {
+    public void pmin4aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(300);
         network.getGenerator("N_G").setMinP(-10);
@@ -757,7 +757,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin4bTest() throws Exception {
+    public void pmin4bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setMinP(-300);
@@ -778,7 +778,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin4cTest() throws Exception {
+    public void pmin4cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setMinP(0);
@@ -811,7 +811,7 @@ public class TimeSeriesMapperCheckerTest {
      */
 
     @Test
-    public void pmax0HvdcLineTest() throws Exception {
+    public void pmax0HvdcLineTest() {
         Network network = createNetwork();
         setHvdcLine(network, "HVDC2", true, false, 0);
         HvdcOperatorActivePowerRange hvdcRange = network.getHvdcLine("HVDC2").getExtension(HvdcOperatorActivePowerRange.class);
@@ -846,7 +846,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax1HvdcLineTest() throws Exception {
+    public void pmax1HvdcLineTest() {
         double baseCaseSetpoint = 2000;
 
         // activePowerSetpoint not mapped
@@ -900,7 +900,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax2HvdcLineTest() throws Exception {
+    public void pmax2HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         final String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_2000, modified activePowerSetpoint has been applied";
@@ -954,7 +954,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax3HvdcLineTest() throws Exception {
+    public void pmax3HvdcLineTest() {
         double baseCaseSetpoint = 500;
 
         String expectedLabel = MAPPING_RANGE_PROBLEM + "activePowerSetpoint changed to mapped maxP";
@@ -1008,7 +1008,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax4HvdcLineTest() throws Exception {
+    public void pmax4HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         final String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_2000, modified activePowerSetpoint has been applied";
@@ -1062,7 +1062,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin0HvdcLineTest() throws Exception {
+    public void pmin0HvdcLineTest() {
         Network network = createNetwork();
         setHvdcLine(network, "HVDC2", true, false, 0);
         HvdcOperatorActivePowerRange hvdcRange = network.getHvdcLine("HVDC2").getExtension(HvdcOperatorActivePowerRange.class);
@@ -1097,7 +1097,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin1HvdcLineTest() throws Exception {
+    public void pmin1HvdcLineTest() {
         double baseCaseSetpoint = -2000;
 
         // activePowerSetpoint not mapped
@@ -1151,7 +1151,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin2HvdcLineTest() throws Exception {
+    public void pmin2HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         // activePowerSetpoint mapped
@@ -1203,7 +1203,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin3HvdcLineTest() throws Exception {
+    public void pmin3HvdcLineTest() {
         double baseCaseSetpoint = -500;
 
         String expectedLabel = MAPPING_RANGE_PROBLEM + "activePowerSetpoint changed to mapped minP";
@@ -1257,7 +1257,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin4HvdcLineTest() throws Exception {
+    public void pmin4HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         final String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_m2000, modified activePowerSetpoint has been applied";

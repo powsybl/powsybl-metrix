@@ -1,6 +1,6 @@
 package com.powsybl.metrix.mapping.log;
 
-public class EmptyFilter extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class EmptyFilter implements LogDescriptionBuilder {
 
     private String timeSeriesName;
 
@@ -16,10 +16,11 @@ public class EmptyFilter extends AbstractLogBuilder implements LogDescriptionBui
         return this;
     }
 
-    public EmptyFilter build() {
-        this.message = "Impossible to scale down " + formatDouble(timeSeriesValue) + " of ts '" + timeSeriesName +
-                " to empty equipment list";
-        this.label = "empty filter error";
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.message = String.format("Impossible to scale down %s of ts %s to empty equipment list",
+                formatDouble(timeSeriesValue), timeSeriesName);
+        log.label = "empty filter error";
+        return log;
     }
 }

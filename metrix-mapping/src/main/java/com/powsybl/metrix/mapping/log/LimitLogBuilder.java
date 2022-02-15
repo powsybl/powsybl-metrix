@@ -2,7 +2,7 @@ package com.powsybl.metrix.mapping.log;
 
 import java.util.Objects;
 
-public class LimitLogBuilder extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class LimitLogBuilder implements LogDescriptionBuilder {
 
     private String id;
     private String variableToChange;
@@ -45,11 +45,12 @@ public class LimitLogBuilder extends AbstractLogBuilder implements LogDescriptio
         return this;
     }
 
-    public LimitLogBuilder build() {
-        this.label = LIMIT_CHANGE + variableToChange;
-        this.message = variableToChange + " of " + id + comparision + variable + " for " + nbViolation +
-                " variants, " + variableToChange + evolution + formatDouble(oldValue) + " to " + formatDouble(newValue);
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.label = LIMIT_CHANGE + variableToChange;
+        log.message = String.format("%s of %s%s%s for %s variants, %s%s%s to %s", variableToChange, id, comparision,
+                variable, nbViolation, variableToChange, evolution, formatDouble(oldValue), formatDouble(newValue));
+        return log;
     }
 
     public LimitLogBuilder isMin() {

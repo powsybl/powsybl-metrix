@@ -1,6 +1,6 @@
 package com.powsybl.metrix.mapping.log;
 
-public class RangeLogWithVariableChanged extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class RangeLogWithVariableChanged implements LogDescriptionBuilder {
 
     private String oldValue;
     private String toVariable;
@@ -39,7 +39,8 @@ public class RangeLogWithVariableChanged extends AbstractLogBuilder implements L
     }
 
     public String getLabel(String problemDescription, String actionDescription) {
-        return problemDescription + oldValue + " changed to " + (toVariable.isEmpty() ? "0" : actionDescription) + toVariable;
+        return String.format("%s%s changed to %s %s", problemDescription, oldValue,
+                toVariable.isEmpty() ? "0" : actionDescription, toVariable);
     }
 
     public RangeLogWithVariableChanged isMapping() {
@@ -79,11 +80,12 @@ public class RangeLogWithVariableChanged extends AbstractLogBuilder implements L
         return this;
     }
 
-    public RangeLogWithVariableChanged build() {
-        this.label = problemDescription + oldValue + " changed to " + (toVariable.isEmpty() ? "0" : actionDescription)
-                + toVariable + (disabled ? IGNORE_LIMITS_DISABLED : "");
-        this.message = notIncludedVariable + " " + value + " of " + id + " not included in "
-                + minValue + " to " + maxValue + ", " + oldValue + " changed to " + newValue;
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.label = String.format("%s%s changed to %s%s%s", problemDescription, oldValue, toVariable.isEmpty() ? "0" : actionDescription,
+                toVariable, disabled ? IGNORE_LIMITS_DISABLED : "");
+        log.message = String.format("%s %s of %s not included in %s to %s, %s changed to %s", notIncludedVariable,
+                value, id, minValue, maxValue, oldValue, newValue);
+        return log;
     }
 }

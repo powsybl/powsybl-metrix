@@ -3,7 +3,7 @@ package com.powsybl.metrix.mapping.log;
 import static com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged.BC_RANGE_PROBLEM;
 import static com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged.MAPPING_RANGE_PROBLEM;
 
-public class RangeWithMinPViolatedByTargetP extends AbstractLogBuilder implements LogDescriptionBuilder {
+public class RangeWithMinPViolatedByTargetP implements LogDescriptionBuilder {
 
     private String notIncludedVariable;
     private String id;
@@ -50,10 +50,11 @@ public class RangeWithMinPViolatedByTargetP extends AbstractLogBuilder implement
         return this;
     }
 
-    public RangeWithMinPViolatedByTargetP build() {
-        this.message = notIncludedVariable + " " + value + " of " + id + " not included in " + minValue
-                + " to " + maxValue + ", but " + notIncludedVariable + " has not been changed";
-        this.label = problem + type + " minP violated by " + type + " targetP";
-        return this;
+    public LogContent build() {
+        LogContent log = new LogContent();
+        log.message = String.format("%s %s of %s not included in %s to %s, but %s has not been changed",
+                notIncludedVariable, value, id, minValue, maxValue, notIncludedVariable);
+        log.label = String.format("%s%s minP violated by %s targetP", problem, type, type);
+        return log;
     }
 }

@@ -3,7 +3,7 @@ package com.powsybl.metrix.mapping.log;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 public class LogBuilder {
-    private LogType type;
+    private System.Logger.Level level;
 
     private TimeSeriesIndex index;
 
@@ -15,14 +15,14 @@ public class LogBuilder {
 
     private String label;
 
-    public LogBuilder logDescription(AbstractLogBuilder logDescription) {
-        this.message = logDescription.message;
-        this.label = logDescription.label;
+    public LogBuilder logDescription(LogContent log) {
+        this.message = log.message;
+        this.label = log.label;
         return this;
     }
 
-    public LogBuilder type(LogType type) {
-        this.type = type;
+    public LogBuilder level(System.Logger.Level level) {
+        this.level = level;
         return this;
     }
 
@@ -41,7 +41,7 @@ public class LogBuilder {
         return this;
     }
 
-    public Log buildLog() {
-        return new Log(type, index, version, point, label, message);
+    public Log build() {
+        return new Log(level, index, version, point, label, message);
     }
 }
