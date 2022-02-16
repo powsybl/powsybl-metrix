@@ -24,6 +24,8 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.TreeSet;
 
+import static org.junit.Assert.fail;
+
 public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
 
     private Network network;
@@ -99,6 +101,8 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + "version_1.csv")) {
             try (InputStream actual = new ByteArrayInputStream(equipmentTimeSeriesWriter.toString().getBytes(StandardCharsets.UTF_8))) {
                 compareTxt(expected, actual);
+            } catch (UncheckedIOException e) {
+                fail();
             }
         }
     }

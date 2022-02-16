@@ -8,23 +8,25 @@
 
 package com.powsybl.metrix.mapping;
 
-public interface TimeSeriesConstants {
+public final class TimeSeriesConstants {
+    private TimeSeriesConstants() {
+        // utilitary class
+    }
 
-    char CSV_SEPARATOR = ';';
-    String GENERATORS = "Generators";
-    String LOADS = "Loads";
-    String BOUNDARY_LINES = "BoundaryLines";
-    String HVDC_LINES = "HvdcLines";
-    String PSTS = "Psts";
-    String BREAKERS = "Breakers";
-    String MAPPED = "Mapped";
-    String UNMAPPED = "Unmapped";
-    String MULTI_MAPPED = "Multi-mapped";
-    String IGNORED_UNMAPPED = "Ignored unmapped";
-    String DISCONNECTED = "Disconnected";
-    String OUT_OF_MAIN_CC = "Out of main cc";
-
-    String CS12 = "CS1toCS2";
-    String MINUS_CS21 = "-CS2toCS1";
-    String MINUS_MAXP = "-maxP";
+    public static final char CSV_SEPARATOR = ';';
+    public static final String GENERATORS = "Generators";
+    public static final String LOADS = "Loads";
+    public static final String BOUNDARY_LINES = "BoundaryLines";
+    public static final String HVDC_LINES = "HvdcLines";
+    public static final String PSTS = "Psts";
+    public static final String BREAKERS = "Breakers";
+    public static final String MAPPED = "Mapped";
+    public static final String UNMAPPED = "Unmapped";
+    public static final String MULTI_MAPPED = "Multi-mapped";
+    public static final String IGNORED_UNMAPPED = "Ignored unmapped";
+    public static final String DISCONNECTED = "Disconnected";
+    public static final String OUT_OF_MAIN_CC = "Out of main cc";
+    public static final String CS12 = "CS1toCS2";
+    public static final String MINUS_CS21 = "-CS2toCS1";
+    public static final String MINUS_MAXP = "-maxP";
 }

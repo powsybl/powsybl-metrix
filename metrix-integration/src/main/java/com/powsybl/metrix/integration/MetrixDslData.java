@@ -638,7 +638,7 @@ public class MetrixDslData {
         }
         nbTimeSeries += nbBranchN;
         nbTimeSeries += 2 * nbBranchNk * parameters.getOptionalNbThreatResults().orElse(1);
-        nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(b -> b ? 1 : 0).orElse(0);
+        nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(b -> Boolean.TRUE.equals(b) ? 1 : 0).orElse(0);
         nbTimeSeries += getContingencyFlowResultList().stream().mapToInt(s -> getContingencyFlowResult(s).size()).sum();
         return nbTimeSeries;
     }

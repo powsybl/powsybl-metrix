@@ -11,6 +11,7 @@ package com.powsybl.metrix.tools;
 import com.google.auto.service.AutoService;
 import com.google.common.base.Stopwatch;
 import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.import_.ImportConfig;
 import com.powsybl.iidm.import_.Importers;
@@ -267,20 +268,23 @@ public class MetrixTool implements Tool {
         ContingenciesProvider contingenciesProvider = null;
         if (contingenciesFile != null) {
             contingenciesProvider = new GroovyDslContingenciesProvider(contingenciesFile);
+        } else {
+            contingenciesProvider = new EmptyContingencyListProvider();
         }
 
         Reader metrixDslReader = getReader(metrixDslFile);
-        Reader remedialActionsReader = getReader(remedialActionsFile);
+        Reader remedialActionsReaderForAnalysis = getReader(remedialActionsFile);
+        Reader remedialActionsReaderForRun = getReader(remedialActionsFile);
 
         FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
             ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
-            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReader,
+            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReaderForAnalysis,
                     store, logger, computationRange);
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis();
-            new Metrix(contingenciesProvider, remedialActionsReader,
+            new Metrix(contingenciesProvider, remedialActionsReaderForRun,
                     store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
                     .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context));
 

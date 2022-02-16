@@ -25,6 +25,8 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.util.*;
 
+import static org.junit.Assert.fail;
+
 @Ignore
 public class BalanceSummaryTest extends AbstractConverterTest {
 
@@ -108,6 +110,8 @@ public class BalanceSummaryTest extends AbstractConverterTest {
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
                     compareTxt(expected, actual);
+                } catch (UncheckedIOException e) {
+                    fail();
                 }
             }
         }
@@ -116,6 +120,8 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.txt")) {
             try (InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
                 compareTxt(expected, actual);
+            } catch (UncheckedIOException e) {
+                fail();
             }
         }
     }

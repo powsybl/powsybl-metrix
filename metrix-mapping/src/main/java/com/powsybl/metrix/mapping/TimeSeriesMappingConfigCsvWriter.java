@@ -31,14 +31,10 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfig.*;
 
-/**
- * /**
- *
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
-public class TimeSeriesMappingConfigCsvWriter implements TimeSeriesConstants {
+public class TimeSeriesMappingConfigCsvWriter {
 
     private static final boolean IS_WITH_BOUNDARY_LINES = false;
 

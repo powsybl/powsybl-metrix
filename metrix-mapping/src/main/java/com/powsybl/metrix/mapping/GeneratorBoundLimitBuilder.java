@@ -1,6 +1,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.Generator;
+import com.powsybl.metrix.mapping.log.*;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 public class GeneratorBoundLimitBuilder {
@@ -74,40 +75,49 @@ public class GeneratorBoundLimitBuilder {
     }
 
     private void setWithLimits(Generator generator, TimeSeriesMappingLogger logger) {
+        RangeLogWithVariableChanged rangeLogWithVariableChanged = new RangeLogWithVariableChanged()
+                .notIncludedVariable(targetPVariableName).id(id).minValue(minP).maxValue(maxP).value(targetP).isBaseCase();
+        LogBuilder logBuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(version).index(index).point(CONSTANT_VARIANT_ID);
         if (!isOkMaxP && isUnmappedMaxP) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    targetPVariableName, maxPVariableName, id, minP, maxP, targetP, maxP));
+            LogContent logContent = rangeLogWithVariableChanged.toVariable(maxPVariableName).newValue(maxP).oldValue(targetPVariableName).build();
+            logger.addLog(logBuilder.logDescription(logContent).build());
             generator.setTargetP(maxP);
         } else if (!isOkMinP && isUnmappedMinP && minP <= 0) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    targetPVariableName, minPVariableName, id, minP, maxP, targetP, minP));
+            LogContent logContent = rangeLogWithVariableChanged.toVariable(minPVariableName).oldValue(targetPVariableName).newValue(minP).build();
+            logger.addLog(logBuilder.logDescription(logContent).build());
             generator.setTargetP(minP);
         } else if (!isOkMinP && isUnmappedMinP && targetP < 0) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeWarningWithVariableChange(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    targetPVariableName, "", id, minP, maxP, targetP, 0));
+            LogContent logContent = rangeLogWithVariableChanged.toVariable("").oldValue(targetPVariableName).newValue(0).build();
+            logger.addLog(logBuilder.logDescription(logContent).build());
             generator.setTargetP(0);
         } else if (!isOkMinP && isUnmappedMinP) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeInfoWithBaseCaseMinPViolatedByBaseCaseTargetP(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    targetPVariableName, id, minP, maxP, targetP));
+            LogContent logContent = new RangeWithMinPViolatedByTargetP()
+                    .notIncludedVariable(targetPVariableName).id(id).minValue(minP).maxValue(maxP).value(targetP).baseCase().build();
+            logger.addLog(logBuilder.level(System.Logger.Level.INFO).logDescription(logContent).build());
         }
     }
 
     private void setWithoutLimits(Generator generator, TimeSeriesMappingLogger logger) {
+        RangeLogWithVariableChanged rangeLogWithVariableChanged = new RangeLogWithVariableChanged()
+                .notIncludedVariable(targetPVariableName).id(id).minValue(minP).maxValue(maxP).value(targetP).isBaseCase();
+        LogBuilder logBuilder = new LogBuilder().level(System.Logger.Level.INFO).version(version).index(index).point(CONSTANT_VARIANT_ID);
         if (!isOkMaxP && isUnmappedMaxP) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    maxPVariableName, targetPVariableName, id, minP, maxP, targetP, targetP));
+            LogContent logContent = rangeLogWithVariableChanged.oldValue(maxPVariableName).toVariable(targetPVariableName).newValue(targetP).build();
+            logger.addLog(logBuilder.logDescription(logContent).build());
             generator.setMaxP(targetP);
         } else if (!isOkMinP && isUnmappedMinP && minP <= 0) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeInfoWithVariableChange(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    minPVariableName, targetPVariableName, id, minP, maxP, targetP, targetP));
+            LogContent logContent = rangeLogWithVariableChanged.oldValue(minPVariableName).toVariable(targetPVariableName).newValue(targetP).build();
+            logger.addLog(logBuilder.logDescription(logContent).build());
             generator.setMinP(targetP);
         } else if (!isOkMinP && isUnmappedMinP && targetP < 0) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeWarningWithVariableChangeDisabled(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    targetPVariableName, "", id, minP, maxP, targetP, 0));
+            LogContent logContent = rangeLogWithVariableChanged.oldValue(targetPVariableName).toVariable("").newValue(0).disabled(true).build();
+            logger.addLog(logBuilder.level(System.Logger.Level.WARNING).logDescription(logContent).build());
             generator.setTargetP(0);
         } else if (!isOkMinP && isUnmappedMinP) {
-            logger.addLog(new TimeSeriesMappingLogger.BaseCaseRangeInfoWithBaseCaseMinPViolatedByBaseCaseTargetP(version, index, CONSTANT_VARIANT_ID, targetPVariableName,
-                    targetPVariableName, id, minP, maxP, targetP));
+            LogContent logContent =  new RangeWithMinPViolatedByTargetP()
+                    .notIncludedVariable(targetPVariableName).id(id).minValue(minP)
+                    .maxValue(maxP).value(targetP).baseCase().build();
+            logger.addLog(logBuilder.logDescription(logContent).build());
         }
     }
 

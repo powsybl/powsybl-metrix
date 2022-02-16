@@ -12,9 +12,6 @@ import com.powsybl.timeseries.ast.NodeCalc;
 
 import java.util.Map;
 
-/**
- * @author Nicolas Lhuillier <nicolas.lhuillier@rte-france.com>
- */
 public class MetrixRunResult {
 
     private Map<String, NodeCalc> postProcessingTimeSeries;

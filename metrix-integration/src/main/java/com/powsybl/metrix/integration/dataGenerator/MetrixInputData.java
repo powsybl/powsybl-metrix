@@ -29,7 +29,11 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MetrixInputData implements MetrixInputConstants {
+public class MetrixInputData {
+
+    private static final float UNDEFINED_VALUE = 99999f;
+    private static final float CQADMITA_SWITCH_VAL = 1.e-5f;
+    private static final float CQRESIST_SWITCH_VAL = 0f;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixInputData.class);
 
@@ -1204,7 +1208,7 @@ public class MetrixInputData implements MetrixInputConstants {
     }
 
     private String replaceSpaces(String txt) {
-        return txt.replaceAll(" ", "_");
+        return txt.replace(" ", "_");
     }
 
 }

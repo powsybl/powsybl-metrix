@@ -44,7 +44,7 @@ import java.util.stream.Stream;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
 
-public class TimeSeriesMappingConfig implements TimeSeriesConstants {
+public class TimeSeriesMappingConfig {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
     private static final long DESERIALIZATION_EXTENDED_MAX_STACK_SIZE = 4096000L;

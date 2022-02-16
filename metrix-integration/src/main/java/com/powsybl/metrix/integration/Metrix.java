@@ -23,7 +23,6 @@ import com.powsybl.timeseries.TimeSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -78,7 +77,7 @@ public class Metrix extends AbstractMetrix {
                         runParameters.isIgnoreEmptyFilter(), contingenciesProvider, networkPointFile,
                         commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)),
                         commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)),
-                        remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV_GZ) : null).build();
+                        remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV) : null).build();
                 MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixChunkParam, metrixConfig, null);
                 Range<Integer> range = chunkCutter.getChunkRange(chunk);
                 MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, MappingParameters.load(),
@@ -86,18 +85,6 @@ public class Metrix extends AbstractMetrix {
                 CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(metrixParameters, metrixDslData, variantProvider);
                 Network finalNetworkPoint = networkPoint;
                 CompletableFuture<Void> info = currentFuture.thenAccept(out -> {
-                    // Add log to archive
-                    if (logArchive != null) {
-                        try {
-                            addLogToArchive(commonWorkingDir.toPath().resolve(getLogFileName(version, chunkNum)), logArchive);
-                            addLogDetailToArchive(commonWorkingDir.toPath(), getLogDetailFileNameFormat(version, chunkNum), logArchive);
-                        } catch (IOException e) {
-                            LOGGER.error(e.toString(), e);
-                            appLogger.tagged("info")
-                                    .log("Log file not found for chunk %d of version %d", chunkCount, version);
-                        }
-                    }
-
                     listener.onChunkResult(version, chunkNum, out, finalNetworkPoint);
                 });
                 futures.add(info);

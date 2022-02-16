@@ -13,6 +13,7 @@ import com.powsybl.commons.AbstractConverterTest;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -20,9 +21,6 @@ import java.nio.file.Paths;
 
 import static org.junit.Assert.*;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixDieTest extends AbstractConverterTest {
 
     @Test
@@ -89,6 +87,10 @@ public class MetrixDieTest extends AbstractConverterTest {
         die.loadFromJson(inputFile);
         Path outputFile = fileSystem.getPath("output.json");
         die.saveToJson(outputFile);
-        compareTxt(Files.newInputStream(inputFile), Files.newInputStream(outputFile));
+        try {
+            compareTxt(Files.newInputStream(inputFile), Files.newInputStream(outputFile));
+        } catch (UncheckedIOException e) {
+            fail();
+        }
     }
 }

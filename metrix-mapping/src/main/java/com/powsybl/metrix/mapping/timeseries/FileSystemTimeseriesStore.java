@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -33,7 +34,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     private final Path fileSystemStorePath;
 
     private final Map<String, TimeSeriesMetadata> existingTimeSeriesMetadataCache;
-    private final Map<String, Object> fileLocks = new HashMap<>();
+    private final Map<String, Object> fileLocks = new ConcurrentHashMap<>();
 
     public FileSystemTimeseriesStore(Path path) throws IOException {
         this.fileSystemStorePath = Objects.requireNonNull(path);
@@ -185,19 +186,13 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                             TimeSeriesDataType dataType = ts.getMetadata().getDataType();
 
                             if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-                                UncompressedDoubleDataChunk tsSingleChunk = new UncompressedDoubleDataChunk(0, Stream
-                                        .concat(((DoubleTimeSeries) existingTs).stream(), ((DoubleTimeSeries) ts).stream())
-                                        .map(DoublePoint::getValue)
-                                        .mapToDouble(d -> d)
-                                        .toArray());
-                                updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), tsSingleChunk);
+                                List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTs).getChunks();
+                                chunks.addAll(((StoredDoubleTimeSeries) ts).getChunks());
+                                updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), chunks);
                             } else {
-                                UncompressedStringDataChunk tsSingleChunk = new UncompressedStringDataChunk(0, Stream
-                                        .concat(((StringTimeSeries) existingTs).stream(), ((StringTimeSeries) ts).stream())
-                                        .map(StringPoint::getValue)
-                                        .collect(Collectors.toList())
-                                        .toArray(new String[]{}));
-                                updatedTs = new StringTimeSeries(existingTs.getMetadata(), tsSingleChunk);
+                                List<StringDataChunk> chunks = ((StringTimeSeries) existingTs).getChunks();
+                                chunks.addAll(((StringTimeSeries) ts).getChunks());
+                                updatedTs = new StringTimeSeries(existingTs.getMetadata(), chunks);
                             }
                         }
                     } else {
