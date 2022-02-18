@@ -30,4 +30,5 @@ metrix_test("inc_connexite_et_quad_deconnecte" 2)
 metrix_test("parade_cree_2_noeuds_isoles" 3)
 metrix_test("reprise_partielle_poche_en_curatif" 7)
 metrix_test("mapping_sectionneurs" 3)
-
+metrix_test("incident_rompant_connexite_detailed" 4)
+metrix_test("isolated_node_after_base_case_and_variant" 1)

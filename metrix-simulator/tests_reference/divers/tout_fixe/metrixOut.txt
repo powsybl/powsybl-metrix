@@ -362,11 +362,11 @@ Résultats en volume (MW)
 Volume de production =  231425.0060 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :    2482.6244
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :    2482.6244
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance
@@ -400,11 +400,11 @@ Résultats en volume (MW)
 Volume de production =  282476.0290 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :       1.0389
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :       1.0389
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance

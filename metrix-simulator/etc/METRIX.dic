@@ -185,6 +185,7 @@ WARNHVDCCurNonTraite						La HVDC $1 ne pourra pas agir en curatif car elle n'es
 WARNHVDCConsigneImposee						Le pilotage de la HVDC $1 est modifié en -- Consigne Imposée --
 WARNQuadBoucle								Attention: Le quadripole $1 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
 WARNPimpInfConso							La production disponible est inférieure à la consommation. Délestage hors réseau nécessaire.
+WARNTooMuchCut                              Le nombre de consommations coupées dépasse le nombre maximal $1 configuré: certaines consommations coupées ne seront pas affichées
 
 //------------- Curatif topologique --------------------
 ERRCurTopoIncidentInconnu					Le défaut $1 mentionné dans la liste des parades topologiques est absent du calcul

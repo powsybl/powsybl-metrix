@@ -201,10 +201,18 @@ int Calculer::resolutionProbleme()
         return METRIX_PROBLEME;
     }
 
-    // Facoriser la jacobienne c'est la meme pour tout le probleme
+    // Factoriser la jacobienne c'est la meme pour tout le probleme
     jacFactorisee_ = LU_Factorisation(&jac_);
     if (jac_.ProblemeDeFactorisation != NON_LU) {
         LOG_ALL(error) << "probleme lors de la factorisation: LU factorization code = " << jac_.ProblemeDeFactorisation;
+        return METRIX_PROBLEME;
+    }
+
+    // Initialisation
+    // Allocation et initialisation des tables
+    status = allocationProblemeDodu();
+    if (status != METRIX_PAS_PROBLEME) {
+        LOG_ALL(error) << "Probleme lors de l'allocation des contraintes ou des variables";
         return METRIX_PROBLEME;
     }
 
@@ -223,10 +231,11 @@ int Calculer::resolutionProbleme()
             status = res_.modifReseauTopo(quads);
 
             if (status != METRIX_PAS_PROBLEME) {
-                LOG_ALL(warning) << "probleme lors de la modification de la jacobienne pour:";
+                LOG_ALL(warning) << "probleme lors de la modification du reseau pour:";
                 afficherVariantesCle(variantesOrdonnees_, quads);
             }
 
+            // Modification de la jacobienne pour prendre en compte les modifications topologiques quadin
             status = modifJacobienneVar(quads, true);
             if (status != METRIX_PAS_PROBLEME) {
                 LOG_ALL(warning) << "probleme lors de la modification de la jacobienne pour:";
@@ -250,6 +259,17 @@ int Calculer::resolutionProbleme()
             jacIncidentsModifies_.clear();
         }
 
+        // LODFs (line outage distribution factors) and PTDFs (power transfer distrbution factors) assessment and print
+        //*******************************************************
+        // LODFs assessment and print:
+        status = calculReportInfluencement();
+
+        // PTDFs assessment and print:
+        string PTDFfileName = "PTDF_matrix.csv";
+        if (config::inputConfiguration().writePTDFfile()) {
+            assessAndPrintPTDF(PTDFfileName);
+        }
+
         auto varEnd = mapVar->second.end();
         for (auto var = mapVar->second.begin(); var != varEnd; ++var) {
             varianteCourante_ = (*var);
@@ -260,13 +280,13 @@ int Calculer::resolutionProbleme()
             LOG_RES() << "---------------------";
             LOG_RES() << "---------------------\n";
 
-            // mise à jour du reste des éléments du réseau pour chaque variante
+            // Update of the remaining elements of the network for each variant
             status = res_.modifReseau(varianteCourante_);
 
             if (status != METRIX_PAS_PROBLEME) {
                 metrix2Assess(varianteCourante_, vector<double>(), METRIX_VARIANTE_IGNOREE);
 
-                // On annule l'application de la variante
+                // We cancel the application of the variant
                 if (res_.resetReseau(varianteCourante_, false) != METRIX_PAS_PROBLEME) {
                     return METRIX_PROBLEME;
                 }
@@ -278,10 +298,10 @@ int Calculer::resolutionProbleme()
             do {
                 status = resolutionUnProblemeDodu(varianteCourante_);
 
-                // liberation du probleme a chaque fin de resolution
+                // Free the problem at the end of the resolution
                 solver_.free();
 
-                // Variante sans solution (mais pas un probleme interne)
+                // No solution variant (but not due to internal problem)
                 if (status == METRIX_PAS_SOLUTION || status == METRIX_NB_MAX_CONT_ATTEINT
                     || status == METRIX_NB_MICROIT) {
                     printFctObj(true);
@@ -552,132 +572,6 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
         return METRIX_PROBLEME;
     }
 
-
-    // calcul des coeffs de repport et d'inflencement
-    //*************************************************
-    calculReportInfluencement();
-
-    string nomFichier;
-    FILE* file;
-    if (config::inputConfiguration().writeSensivityFile()) {
-        // print matrice des sensibilité
-        // ------------------------------
-        nomFichier = "matrice_sensibilites.csv";
-        file = fopen(nomFichier.c_str(), "w+");
-        if (file == nullptr) {
-            throw ErrorI(err::ioDico().msg("ERRPbOuvertureFic", nomFichier));
-        }
-        LOG(debug) << "Création de la matrice des PTDF";
-        vector<string> noms;
-        noms.resize(res_.nbVarGroupes_ + res_.nbVarConsos_);
-        for (const auto& elem : res_.groupes_) {
-            if (elem.second->numVarGrp_ != -1) {
-                noms[elem.second->numVarGrp_] = elem.second->nom_;
-            }
-        }
-        for (auto consoIt = res_.consos_.cbegin(); consoIt != res_.consos_.end(); ++consoIt) {
-            if (consoIt->second->numVarConso_ != -1) {
-                noms[consoIt->second->numVarConso_] = consoIt->second->nom_;
-            }
-        }
-
-        fprintf(file, "BRANCH;");
-        int i = 0;
-        while (i < pbNombreDeVariables_) {
-            i++;
-            if (i < res_.nbVarGroupes_) {
-                fprintf(file, "%s;", noms[i].c_str());
-                i++;
-            } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_) {
-                fprintf(file, "%s;", noms[i].c_str());
-            } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_) {
-                // do nothing
-            } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_ + res_.nbVarCc_) {
-                fprintf(file, "%s;", res_.lccParIndice_[numSupportEtat_[i]]->nom_.c_str());
-                i++;
-            }
-        }
-        fprintf(file, "\n");
-
-        resetCoeffQuadsN();
-        for (const auto& quad : res_.quadsSurv_) {
-            calculerCoeffEnN(quad);
-            fprintf(file, "%s;", quad->nom_.c_str());
-            i = 0;
-            while (i < pbNombreDeVariables_) {
-                i++;
-                if (i < res_.nbVarGroupes_) {
-                    fprintf(file, "%f;", quad->coeffN_[numSupportEtat_[i]]);
-                    i++;
-                } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_) {
-                    fprintf(file, "%f;", quad->coeffN_[numSupportEtat_[i]]);
-                } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_) {
-                    // do nothing
-                } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_ + res_.nbVarCc_) {
-                    fprintf(file,
-                            "%f;",
-                            quad->coeffN_[res_.lccParIndice_[numSupportEtat_[i]]->nexqua_->num_]
-                                - quad->coeffN_[res_.lccParIndice_[numSupportEtat_[i]]->norqua_->num_]);
-                    i++;
-                }
-            }
-            fprintf(file, "\n");
-        }
-        fclose(file);
-    }
-    if (config::inputConfiguration().writeMatrixReport()) {
-        // print matrice des taux de report
-        // ------------------------------
-        nomFichier = "matrice_taux_report.csv";
-        file = fopen(nomFichier.c_str(), "w+");
-        if (file == nullptr) {
-            throw ErrorI(err::ioDico().msg("ERRPbOuvertureFic", nomFichier));
-        }
-        LOG_ALL(debug) << "Création de la matrice des taux de report";
-
-        fprintf(file, "BRANCH;");
-        vector<std::shared_ptr<Incident>> listeInc;
-        for (const auto& elem : res_.incidents_) {
-            const auto& inc = elem.second;
-
-            if (!inc->validite_ || inc->nbCouplagesFermes_ + inc->nbGroupes_ > 0 || inc->pochePerdue_ != nullptr) {
-                continue; // On ne met que les défauts valides, lignes ou LCC et qui ne rompent pas la connexite
-            }
-
-            listeInc.push_back(inc);
-
-            if (inc->nbLignes_ + inc->nbLccs_ == 1) {
-                fprintf(file, "%s;", elem.first.c_str());
-            } else {
-                for (int i = 0; i < inc->nbLignes_; i++) {
-                    fprintf(file, "%s_%s;", elem.first.c_str(), inc->listeQuads_[i]->nom_.c_str());
-                }
-                for (int i = 0; i < inc->nbLccs_; i++) {
-                    fprintf(file, "%s_%s;", elem.first.c_str(), inc->listeLccs_[i]->nom_.c_str());
-                }
-            }
-        }
-        fprintf(file, "\n");
-
-        for (const auto& quad : res_.quadsSurv_) {
-            int numQuad = quad->num_;
-            fprintf(file, "%s;", quad->nom_.c_str());
-            for (const auto& inc : listeInc) {
-                if (!inc->validite_ || inc->nbCouplagesFermes_ + inc->nbGroupes_ > 0) {
-                    continue; // On ne met que les défauts lignes ou LCC
-                }
-                for (int i = 0; i < inc->nbLignes_; i++) {
-                    fprintf(file, "%.4f;", inc->rho_[i][numQuad]);
-                }
-                for (int i = 0; i < inc->nbLccs_; i++) {
-                    fprintf(file, "%.4f;", inc->rho_[inc->nbLignes_ + i][numQuad]);
-                }
-            }
-            fprintf(file, "\n");
-        }
-        fclose(file);
-    }
-
     // reinitialisation de la production avant l'empilement economique
     //****************************************************************
     for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
@@ -890,28 +784,28 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
 
 int Calculer::calculReportInfluencement()
 {
-    // Calcul des coefs de report et d influencement
+    // Assessment of the LODF and distribution factors
 
-    // Remarque 1 : il est important de calculer les coeffs dans cet ordre :
-    // coefs d'influencement.
-    // coefs de report (car il ne dependent pas des groupes et des consos mais de la topo).
+    // First remark : it is important to assess the factor in the following order :
+    // distribution factors.
+    // LODF (as they don't depend on the generation units and loads but they depend on topology).
 
-    // Remarque 2 : il faut metre a jours cet algorithme
-    //             lors de l evolution du type de variantes.
+    // Second remark: this algorithm has to be updated when the type of variants evolves.
 
     int status = METRIX_PAS_PROBLEME;
 
     bool modifInfluencement = res_.defautsGroupesPresents_;
     bool calculeReport = res_.calculerCoeffReport_;
 
-    /*	 Calcul des coefs de repports et d influencement. "
-         ATTENTION : il faut recalculer les coeffs de report si l on "
-         introduit une variante qui modifie la topologie"
+    /*	 Assessment of the distribution factors and LODF"
+         WARNING : we need to reassess the LODF of the variant modifies the topology
     */
-    // les coefficient de report de la HVDC sur les quads a reseau complet
-    // dependent de la topologie
-    // Ils sont a calculer avant les coeff de report d'incident car ces derniers utilisent les reports HVDC
+    // The LODF of the HVDC on the quadripole of the N state network depend on topology
+    // They have to be computed before the LODF for a given contingency as the use the HVDC LODF
     if (calculeReport) {
+        time_t start, end;
+        time(&start);
+
         calculReportLccs();
 
         for (const auto& icdt : res_.incidentsEtParades_) {
@@ -940,13 +834,19 @@ int Calculer::calculReportInfluencement()
                 return METRIX_PROBLEME;
             }
         }
-
+        time(&end);
+        if (config::inputConfiguration().writeLODFfile()) {
+            LOG_ALL(info) << "Temps de calcul des coefficients de report : " << c_fmt("%.1f s.", difftime(end, start));
+        }
         resetCoeffQuadsN();
         calculReportGroupesEtConsos();
         calculCoeffReportTD();
         res_.calculerCoeffReport_ = false;
-    }
 
+        string LODFfileName = "LODF_matrix.csv";
+        printLODF(LODFfileName, config::inputConfiguration().writeLODFfile());
+    }
+    
     return METRIX_PAS_PROBLEME;
 }
 
@@ -1114,4 +1014,124 @@ void Calculer::afficherVariantesCle(const MapQuadinVar& variantesOrdonnees,
         ss << " " << var->num_ << ";";
     }
     LOG_ALL(info) << ss.str();
+}
+
+void Calculer::assessAndPrintPTDF(const string& PTDFfileName)
+{
+    // print PTDFs matrix
+    // ------------------------
+    FILE* file = fopen(PTDFfileName.c_str(), "w+");
+    if (file == nullptr) {
+        throw ErrorI(err::ioDico().msg("ERRPbOuvertureFic", PTDFfileName));
+    }
+    LOG(debug) << "PTDF matrix creation";
+    vector<string> noms;
+    noms.resize(res_.nbVarGroupes_ + res_.nbVarConsos_);
+    for (auto& elem : res_.groupes_) {
+        if (elem.second->numVarGrp_ != -1) {
+            noms[elem.second->numVarGrp_] = elem.second->nom_;
+        }
+    }
+    for (auto consoIt = res_.consos_.cbegin(); consoIt != res_.consos_.end(); ++consoIt) {
+        if (consoIt->second->numVarConso_ != -1) {
+            noms[consoIt->second->numVarConso_] = consoIt->second->nom_;
+        }
+    }
+
+    fprintf(file, "BRANCH;");
+    for (int i = 0; i < pbNombreDeVariables_; i++) {
+        if (i < res_.nbVarGroupes_) {
+            fprintf(file, "%s;", noms[i].c_str());
+            i++;
+        } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_) {
+            fprintf(file, "%s;", noms[i].c_str());
+        } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_) {
+            // do nothing
+        } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_ + res_.nbVarCc_) {
+            fprintf(file, "%s;", res_.lccParIndice_[numSupportEtat_[i]]->nom_.c_str());
+            i++;
+        }
+    }
+    fprintf(file, "\n");
+
+    resetCoeffQuadsN();
+    Quadripole::SetQuadripoleSortedByName quadSet(res_.quadsSurv_.begin(), res_.quadsSurv_.end());
+    for (const auto& quad : quadSet) {
+        calculerCoeffEnN(quad);
+        fprintf(file, "%s;", quad->nom_.c_str());
+        for (int i = 0; i < pbNombreDeVariables_; i++) {
+            if (i < res_.nbVarGroupes_) {
+                fprintf(file, "%f;", quad->coeffN_[numSupportEtat_[i]]);
+                i++;
+            } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_) {
+                fprintf(file, "%f;", quad->coeffN_[numSupportEtat_[i]]);
+            } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_) {
+                // do nothing
+            } else if (i < res_.nbVarGroupes_ + res_.nbVarConsos_ + res_.nbVarTd_ + res_.nbVarCc_) {
+                fprintf(file,
+                        "%f;",
+                        quad->coeffN_[res_.lccParIndice_[numSupportEtat_[i]]->nexqua_->num_]
+                            - quad->coeffN_[res_.lccParIndice_[numSupportEtat_[i]]->norqua_->num_]);
+                i++;
+            }
+        }
+        fprintf(file, "\n");
+    }
+    fclose(file);
+}
+
+void Calculer::printLODF(const string& LODFfileName, bool writeLODFfile) const
+{
+    if (writeLODFfile) {
+        // print Line Outage Distribution Factors matrix
+        // ------------------------------
+        FILE* file = fopen(LODFfileName.c_str(), "w+");
+        if (file == nullptr) {
+            throw ErrorI(err::ioDico().msg("ERRPbOuvertureFic", LODFfileName));
+        }
+        LOG_ALL(debug) << "LODF matrix creation";
+
+        fprintf(file, "BRANCH;");
+        vector<std::shared_ptr<Incident>> listeInc;
+        for (auto& elem : res_.incidents_) {
+            auto& inc = elem.second;
+
+            if (!inc->validite_ || inc->nbCouplagesFermes_ + inc->nbGroupes_ > 0 || inc->pochePerdue_ != nullptr) {
+                continue; // We only put the valid contingencies for lines and HVDC which don't break connectedness
+            }
+
+            listeInc.push_back(inc);
+
+            if (inc->nbLignes_ + inc->nbLccs_ == 1) {
+                fprintf(file, "%s;", elem.first.c_str());
+            } else {
+                for (int i = 0; i < inc->nbLignes_; i++) {
+                    fprintf(file, "%s_%s;", elem.first.c_str(), inc->listeQuads_[i]->nom_.c_str());
+                }
+                for (int i = 0; i < inc->nbLccs_; i++) {
+                    fprintf(file, "%s_%s;", elem.first.c_str(), inc->listeLccs_[i]->nom_.c_str());
+                }
+            }
+        }
+        fprintf(file, "\n");
+
+        Quadripole::SetQuadripoleSortedByName quadSet(res_.quadsSurv_.begin(), res_.quadsSurv_.end());
+        for (const auto& quad : quadSet) {
+            int numQuad = quad->num_;
+            fprintf(file, "%s;", quad->nom_.c_str());
+            for (auto& inc : listeInc) {
+                if (!inc->validite_ || inc->nbCouplagesFermes_ + inc->nbGroupes_ > 0) {
+                    continue; // we only put the lines contingencies or HVDC
+                }
+                for (int i = 0; i < inc->nbLignes_; i++) {
+                    fprintf(file, "%.4f;", inc->rho_[i][numQuad]);
+                }
+                for (int i = 0; i < inc->nbLccs_; i++) {
+                    fprintf(file, "%.4f;", inc->rho_[inc->nbLignes_ + i][numQuad]);
+                }
+            }
+            fprintf(file, "\n");
+        }
+        fclose(file);
+    }
 }

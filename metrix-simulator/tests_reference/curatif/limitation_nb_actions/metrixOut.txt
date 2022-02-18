@@ -371,11 +371,11 @@ Résultats en volume (MW)
 Volume de production =  258610.7738 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :      10.8508
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :      10.8508
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance
@@ -445,11 +445,11 @@ Résultats en volume (MW)
 Volume de production =  258339.8482 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :      11.3648
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :      11.3648
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance
@@ -483,11 +483,11 @@ Résultats en volume (MW)
 Volume de production =  258088.5462 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :      12.2371
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :      12.2371
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance
@@ -557,11 +557,11 @@ Résultats en volume (MW)
 Volume de production =  255083.4081 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :      12.2436
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :      12.2436
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance

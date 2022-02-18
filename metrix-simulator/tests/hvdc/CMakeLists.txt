@@ -16,6 +16,7 @@ set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
 metrix_test("hvdcEmulAC" 8)
 metrix_test("hvdcEmulAC_k5000" 8)
+metrix_test("hvdcWatchSection" 1)
 metrix_test("hvdcEmulAC_curatif" 7)
 metrix_test("hvdcEmulAC_curatifTD" 7)
 metrix_test("hvdcEmulAC_et_seuil_ITAM" 7)

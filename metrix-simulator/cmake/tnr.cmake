@@ -1,3 +1,4 @@
+
 # 
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
@@ -37,8 +38,11 @@ function(check_files files_ expected_files_)
     endforeach()
 endfunction()
 
-execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}
-    RESULT_VARIABLE cmd_result)
+if (WITH_LODF_PTDF)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF  RESULT_VARIABLE cmd_result)
+else()
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  RESULT_VARIABLE cmd_result)
+endif()
 if(cmd_result)
     message(FATAL_ERROR "Error running: ${EXE} returns " ${cmd_result})
 endif()
@@ -48,4 +52,8 @@ check_files("${test_output_files}" "${expected_output_files}")
 
 if(ALL_RESULTS)
     check_file(${WORKING_DIR}/metrixOut.txt ${EXPECTED_DIR}/metrixOut.txt)
+endif()
+if(WITH_LODF_PTDF)
+    check_file(${WORKING_DIR}/LODF_matrix.csv ${EXPECTED_DIR}/LODF_matrix.csv)
+    check_file(${WORKING_DIR}/PTDF_matrix.csv ${EXPECTED_DIR}/PTDF_matrix.csv)
 endif()

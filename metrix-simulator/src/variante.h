@@ -118,6 +118,9 @@ struct CompareSet {
             if (lhs.key_comp()(*lit, *rit)) {
                 return true;
             }
+            if (rhs.key_comp()(*rit, *lit)) {
+                return false;
+            }
             ++lit;
             ++rit;
         }

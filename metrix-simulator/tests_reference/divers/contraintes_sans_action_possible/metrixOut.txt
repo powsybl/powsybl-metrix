@@ -706,13 +706,6 @@ Noeud bilan : 8 [CONSO_AI]
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
-
----------------------
----------------------
-Variante numéro 0
----------------------
----------------------
-
 L'incident N-1 numero 23 (QUAD_AKMX) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.91715e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
 L'incident N-1 numero 140 (QUAD_AYDS) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.25e+07  g_mk[m] 0  -8e-08 denominateur 0  quad 1250
 L'incident N-1 numero 213 (QUAD_AKNC) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.6944e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
@@ -774,6 +767,13 @@ L'incident N-1 numero 3228 (QUAD_AAUI) rompt la connexité, il est ignoré  non 
 L'incident N-1 numero 3282 (QUAD_AGMI) rompt la connexité, il est ignoré  non connexe a cause du denominateur 5.26316e+06  g_mk[m] 7.92691e-20  -1.9e-07 denominateur 4.44089e-16  quad 526.316
 L'incident N-1 numero 3348 (QUAD_ACUF) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.00997e+06  g_mk[m] 4.97519e-07  0 denominateur 0  quad 200.997
 L'incident N-1 numero 3413 (QUAD_AAUH) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
 Demarrage des groupes par empilement économique :
 Consommation globale                = 251268.9837  MW
 Production démarrée                 = 306294.6924  MW
@@ -791,11 +791,11 @@ Résultats en volume (MW)
 Volume de production =  251268.9837 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :   27512.8543
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :   27512.8543
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance
