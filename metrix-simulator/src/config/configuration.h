@@ -169,6 +169,8 @@ public:
     bool useResPertesDetail() const { return res_pertes_detail_; }
     bool displayResultatsSurcharges() const { return resultats_surcharges_; }
     bool showAllAngleTDTransitHVDC() const { return showAllAngleTDTransitHVDC_; }
+    bool showLostLoadDetailed() const { return show_lost_load_detailed_; }
+
     float costTd() const { return cost_td_; }
     float costHvdc() const { return cost_hvdc_; }
     float costFailure() const { return cost_failure_; }
@@ -185,9 +187,15 @@ public:
     int adequacyCostOffset() const { return adequacy_cost_offset_; }
     int redispatchCostOffset() const { return redispatch_cost_offset_; }
     int costEcart() const { return cost_ecart_; }
+    double noiseCost() const { return noise_cost_; }
+
+    unsigned int lostLoadDetailedMax() const { return lost_load_detailed_max_; }
 
     // setters to force their value
     void useItam(bool value) { test_seuil_itam_ = value; }
+
+    // complex getter
+    double thresholdMaxITAM(double thresholdMaxInc, double thresholdMaxBeforeCur) const;
 
 private:
     static std::string pathname_;
@@ -327,6 +335,7 @@ private:
     bool res_pertes_detail_; // sortie des résultats sur les pertes par regions (tableau r9b)
     bool resultats_surcharges_;      // sortie uniquement des résultats sur les flux correspondants à une surcharge
     bool showAllAngleTDTransitHVDC_; // Display in all cases the angle for TDs and HVDCs even if they were not modified
+    bool show_lost_load_detailed_;
 
     float cost_td_;                               // cost of TD actions
     float cost_hvdc_;                             // cost of HVDC action
@@ -344,6 +353,9 @@ private:
     int adequacy_cost_offset_;
     int redispatch_cost_offset_;
     int cost_ecart_;
+    double noise_cost_;
+
+    unsigned int lost_load_detailed_max_;
 
     boost::optional<metrix::log::severity::level> logLevel_; ///< logger level
 };
