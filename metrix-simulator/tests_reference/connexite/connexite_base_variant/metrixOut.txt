@@ -25,6 +25,9 @@ Pénalisation des HVDC dans la fonction coût = 0.1
 
 La ligne 'MUR  L61P.HA5' de la loi -1:QUADIN est introuvable
 Noeud '4176' est hors composante connexe principale (composante -1)
+Les indisponibilités de ligne de la variante N/A rompent la connexité
+probleme lors de la modification du reseau pour la variante de base
+Noeud '4176' est hors composante connexe principale (composante -1)
 Mode de calcul : LOAD-FLOW
 Noeud bilan : 0 [CONSO_NLO, CONSO_NLP]
 0 [CONSO_NLO, CONSO_NLP](1) <-> 354 [CONSO_OKU](3) <-> 321 [CONSO_OID, CONSO_OIE, CONSO_OIF, CONSO_OIG, CONSO_OIH, CONSO_OII, CONSO_OIJ](5)
@@ -90,11 +93,11 @@ Résultats en volume (MW)
 Volume de production =   74330.9060 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :      29.2040
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :      29.2040
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 3)

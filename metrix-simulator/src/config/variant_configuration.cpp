@@ -451,7 +451,7 @@ void VariantConfiguration::processThreshold(VariantConfig::Threshold threshold,
         case VariantConfig::Threshold::MAX_INC_EXOR: str = "MAX INC NExOR"; break;
         case VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR: str = "MAX INC COMPLEX NExOR"; break;
         case VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
-            str = "MAX IBEFORE CUR ExOR";
+            str = "MAX BEFORE CUR ExOR";
             // If thresholds are defined, we force the check of the ITAM threshold
             config::configuration().useItam(true);
             break;

@@ -197,8 +197,7 @@ std::tuple<bool, bool, std::vector<int>> Reseau::checkConnexite(bool choisiNoeud
                     lcc->mode_ = PREVENTIF_SEUL;
                     LOG_ALL(warning) << err::ioDico().msg("WARNHVDCCurNonTraiteEntreCompSyn", lcc->nom_);
                 }
-                if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC
-                    || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+                if (lcc->isEmulationAC()) {
                     LOG_ALL(error) << err::ioDico().msg("ERRHVDCEmulACEntreCompSyn", lcc->nom_);
                     return std::make_tuple(false, false, std::vector<int>{});
                 }
@@ -230,7 +229,7 @@ void Reseau::correctConnexite(bool was_connexe,
         if (icdt && icdt->parade_) {
             const auto& icdtPere = icdt->incTraiteCur_;
             if (icdtPere->pochePerdue_) {
-                // La parade ne rompt plus la connexite
+                // The remedial action doesn't break connectedness
                 LOG(debug) << "La poche de l'incident '" << icdtPere->nom_ << "' est recuperable par la parade : '"
                            << icdt->nom_ << "'";
                 icdtPere->pocheRecuperableEncuratif_ = true;
@@ -240,6 +239,7 @@ void Reseau::correctConnexite(bool was_connexe,
         if (!detailsNonConnexite) {
             icdt->validite_ = false;
         } else {
+            // 1. We assess the number of nodes in each connected zone
             map<int, int> nombreDeNoeudsParZones;
             map<int, int>::const_iterator itN;
             for (int n = 0; n < nbNoeuds_; ++n) {
@@ -251,6 +251,9 @@ void Reseau::correctConnexite(bool was_connexe,
                 }
             }
 
+            // 2. Assessment of the main connected component :
+            // we get the connected zone that contains the greater number of nodes and we get its connected zone number
+            // and number of nodes
             int numZonePrincipale = -1;
             int nombreDeNoeuds = 0; // de la composante principale
             for (itN = nombreDeNoeudsParZones.cbegin(); itN != nombreDeNoeudsParZones.cend(); ++itN) {
@@ -260,6 +263,11 @@ void Reseau::correctConnexite(bool was_connexe,
                 }
             }
 
+
+            // 3. Treatment of nodes that don't belong to the main connected zone:
+            // either we print the nodes that don't belong to the main component in N case
+            // either we store the nodes out of the main component and their component number for the given contingency
+            // (N-k)
             map<std::shared_ptr<Noeud>, int> listeNoeuds;
             for (int n = 0; n < nbNoeuds_; ++n) {
                 if (numZones[n] != numZonePrincipale) {
@@ -273,16 +281,25 @@ void Reseau::correctConnexite(bool was_connexe,
                 }
             }
 
+            // 4. Management of contingencies and remedial actions of the zones that aren't in the main connected zone:
+            // 4.a. we create the lost load object from the list of nodes that are out of main connected zone and that
+            // were previously calculated for the given contingency
+            // 4.b. Then if the contingency or the remedial action is still valid after the lost load creation,
+            // we add it to the contingency list and remedial actions that break connectedness
+            // 4.c Then:
+            // - if it is a remedial action, it becomes invalid if it worsen the connnectedness
+            // else we consider the contingency as recoverable by the remedial action
+            // - if it is a contingency we print the nodes of the lost load.
             if (icdt) {
                 icdt->pochePerdue_ = std::make_shared<PochePerdue>(icdt, listeNoeuds);
 
-                if (icdt->validite_) { // il peut avoir été invalidé lors de la creation de la poche
+                if (icdt->validite_) { // it could have become invalid when the lost load was created
 
                     if (icdt->parade_) {
                         const auto& icdtPere = icdt->incTraiteCur_;
 
                         if (icdtPere->pochePerdue_) {
-                            // L'incident pere rompt deja la connexite, la parade ne doit pas l'aggraver
+                            // The parent contingency breaks the connectedness, the RA shouldn't worsen it
                             if (icdt->pochePerdue_->noeudsPoche_.size() < icdtPere->pochePerdue_->noeudsPoche_.size()) {
                                 LOG(debug) << "La poche de l'incident '" << icdtPere->nom_
                                            << "' est partiellement recuperable par la parade : '" << icdt->nom_ << "'";
@@ -292,14 +309,14 @@ void Reseau::correctConnexite(bool was_connexe,
                                 return;
                             }
                         } else if (!config::configuration().useParRompantConnexite()) {
-                            // L'incident pere ne rompt pas la connexite et la parade ne doit pas le faire
+                            // The parent contingency doesn't break connectedness and the RA shouldn't too.
                             icdt->validite_ = false;
                             return;
                         }
                         LOG_ALL(info) << err::ioDico().msg("INFOParade", icdt->nom_, icdtPere->nom_)
                                       << icdt->pochePerdue_->print().c_str();
                     } else {
-                        // ce n'est pas une parade
+                        // This is not a remedial action
                         LOG_ALL(info) << err::ioDico().msg("INFOIncident", icdt->nom_)
                                       << icdt->pochePerdue_->print().c_str();
                     }
@@ -314,7 +331,7 @@ bool Reseau::connexite() { return connexite(nullptr, true, true); }
 
 bool Reseau::connexite(const std::shared_ptr<Incident>& icdt, bool choisiNoeudsBilan, bool detailsNonConnexite)
 {
-    /*connexite */
+    /*connectedness */
     bool resultat = true;
     bool status = true; // OK
     int n;
@@ -323,7 +340,7 @@ bool Reseau::connexite(const std::shared_ptr<Incident>& icdt, bool choisiNoeudsB
     map<std::shared_ptr<Quadripole>, bool> etatsInitiaux;
 
     if (icdt) {
-        if (icdt->pochePerdue_) { /* On supprime une éventuelle précédente poche */
+        if (icdt->pochePerdue_) { /* We delete a potential previous lost load  */
             icdt->pochePerdue_.reset();
             icdt->pochePerdue_ = nullptr;
             icdt->pocheRecuperableEncuratif_ = false;
@@ -353,7 +370,7 @@ bool Reseau::connexite(const std::shared_ptr<Incident>& icdt, bool choisiNoeudsB
         return false;
     }
 
-    // Remise en etat du réseau
+    // Network state restoration
     std::shared_ptr<LigneCC> tmpHvdcInc;
     bool etatInit;
     if (icdt) {
@@ -382,7 +399,7 @@ bool Reseau::connexite(const std::shared_ptr<Incident>& icdt, bool choisiNoeudsB
 }
 
 
-/** Affiche le sous reseau en partant du noeud fourni sur la profondeur indiquee */
+/** Print the subnetwork starting from the node given by the depth */
 void Reseau::afficheSousReseau(unsigned int numNoeud, unsigned int prof)
 {
     for (int i = 0; i < nbNoeuds_; i++) {
@@ -553,6 +570,7 @@ PochePerdue& PochePerdue::operator=(const PochePerdue& other)
     prodMaxPoche_ = other.prodMaxPoche_;
     prodPerdue_ = 0.;
     consoPerdue_ = 0.;
+    consumptionLosses_.clear();
     pocheAvecConsoProd_ = other.pocheAvecConsoProd_;
     incidentModifie_ = std::make_shared<Incident>(*other.incidentModifie_);
 

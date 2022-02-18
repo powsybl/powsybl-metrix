@@ -32,6 +32,7 @@ Noeud bilan : 0 [FP.AND1_1]
 ********************************************
 Traitement d'un paquet de 6 variante(s)
 ********************************************
+Problème lors de la factorisation LU: l'incident 'faux_incident_connexite' ferait perdre la connexite
 
 ---------------------
 ---------------------
@@ -39,7 +40,6 @@ Variante numéro 0
 ---------------------
 ---------------------
 
-Problème lors de la factorisation LU: l'incident 'faux_incident_connexite' ferait perdre la connexite
 Demarrage des groupes par empilement économique :
 Consommation globale                =  1380.0000  MW
 Production démarrée                 =   960.0000  MW
@@ -56,11 +56,11 @@ Résultats en volume (MW)
 Volume de production =    1380.0000 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :     210.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :     210.0000
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance

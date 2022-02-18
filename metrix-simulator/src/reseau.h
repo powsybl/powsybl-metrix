@@ -243,6 +243,8 @@ public:
     std::string nom_;  /* Nom de la section */
     int unsigned num_; /* num de la section */
 
+    bool isWatchedSection; // watched element is part of watched section
+
     std::map<std::shared_ptr<Quadripole>, double> quadsASurv_; // liste des quads qui forment la section surveillee (qui
                                                                // peut etre reduite a une ligne a surveiller) et coeff
     std::map<std::shared_ptr<LigneCC>, double> hvdcASurv_;     // liste des HVDC qui forment la section surveillee
@@ -283,7 +285,8 @@ public:
                        double seuilN,
                        double seuilInc,
                        double seuilIncComplexe,
-                       double seuilAvantCuratif);
+                       double seuilAvantCuratif,
+                       bool isWatchedSection);
     ElementASurveiller(const ElementASurveiller&) = delete;            // Constructeur de copie
     ElementASurveiller& operator=(const ElementASurveiller&) = delete; // Operateur d'affectation
 
@@ -528,6 +531,8 @@ public:
     // donnees variables d'une variante a l'autre
     std::vector<double> rho_; // coefficient de report pour le changement de consigne de la HVDC
 
+    bool isEmulationAC() const;
+
     LigneCC(int unsigned num,
             const std::string& nom,
             const std::shared_ptr<Noeud>& nor,
@@ -678,34 +683,33 @@ public:
                                                            sur les productions*/
     int modifTauxDePertes(float ancienTx,
                           float nouveauTx); /* modification du reseau pour utiliser un autre taux de pertes */
-    int resetReseau(
-        const std::shared_ptr<Variante>& var,
-        bool toutesConsos); /*remise en etat de base le reseau (toute modification sauf indisponibilité lignes)*/
+    int resetReseau(const std::shared_ptr<Variante>& var,
+                    bool toutesConsos); /*base variant restoration of the network (all modifications except unavailable
+                                           quadripoles)*/
     int resetReseauTopo(const Quadripole::SetQuadripoleSortedByName&
-                            quads); /*remise en etat de base les lignes indisponibles du reseau*/
+                            quads); /*base variant topology restoration of the network (for all unavailable lines)*/
     void miseAjourPmax(double prodEnMoins);
 
-    // Fonctions pour l'analyse de la connexite
+    // Methods for connectedness analysis
     bool connexite(const std::shared_ptr<Incident>& icdt,
                    bool choisiNoeudsBilan,
-                   bool detailsNonConnexite); /* calcul de connexite */
-    bool connexite();                         /* calcul de connexite sur le reseau */
+                   bool detailsNonConnexite); /* connedtedness calculation for a given contingency or remedial action*/
+    bool connexite();                         /* connedtedness calculation for the network */
 
-    int fusionner(int nZone1, int nZone2, std::map<int, int>& mapZones); /* fusionner deux zones */
-    int inclure(int nNoeud, int nZone, std::vector<int>& numZones);      /* inclure un noeud dans une zone */
-    static int
-    creer(int nNoeud1, int nNoeud2, std::vector<int>& numZones, int nZoneCourant); /* creer une nouvelle zone */
-    int mapZone(int zone, std::map<int, int>& mapZones); /* trouver le plus petit identifiant de zones connexes */
+    int fusionner(int nZone1, int nZone2, std::map<int, int>& mapZones); /* merge two zones */
+    int inclure(int nNoeud, int nZone, std::vector<int>& numZones);      /* include a node in a zone */
+    static int creer(int nNoeud1, int nNoeud2, std::vector<int>& numZones, int nZoneCourant); /* create a new zone */
+    int mapZone(int zone, std::map<int, int>& mapZones); /* find the smallest id of connected zones */
     int traiterConnexion(int nNoeudOrg,
                          int nNoeudExt,
                          std::vector<int>& numZones,
                          std::map<int, int>& mapZones,
-                         int numZoneCourant); /* traitement de base d'un quad reliant 2 noeuds */
+                         int numZoneCourant); /* basic treatment of a two nodes connected quadripole */
 
-    void afficheSousReseau(unsigned int numNoeud, unsigned int prof); /* Pour debug */
+    void afficheSousReseau(unsigned int numNoeud, unsigned int prof); /* For debug */
     void afficheSousReseau(int numNoeud, int numPere, unsigned int prof, int nbIndent, std::stringstream& ss);
 
-    // Pour de l'aleatoire reproductible entre platformes
+    // For reproductible random between platforms
     static std::mt19937 random;
 
 private:
@@ -726,10 +730,12 @@ private:
 
     int findRegion(const std::string& name);
     std::tuple<bool, bool, std::vector<int>> checkConnexite(bool choisiNoeudsBilan);
-    void correctConnexite(bool was_connexe,
-                          const std::shared_ptr<Incident>& icdt,
-                          const std::vector<int>& numZones,
-                          bool detailsNonConnexite);
+    void
+    correctConnexite(bool was_connexe,
+                     const std::shared_ptr<Incident>& icdt,
+                     const std::vector<int>& numZones,
+                     bool detailsNonConnexite); /*allows to determine the treatment to be done for the contingencies and
+                                                   remedial actions responisble for a connectedness break */
 };
 
 
@@ -982,6 +988,13 @@ bool compareNoeuds(const std::shared_ptr<Noeud>& noeud1, const std::shared_ptr<N
 class PochePerdue
 {
 public:
+    using NodeSet
+        = std::set<std::shared_ptr<Noeud>, bool (*)(const std::shared_ptr<Noeud>&, const std::shared_ptr<Noeud>&)>;
+    struct ConsumptionSort {
+        bool operator()(const Consommation* lhs, const Consommation* rhs) const { return lhs->nom_ < rhs->nom_; }
+    };
+
+public:
     PochePerdue(const std::shared_ptr<Incident>& icdt, std::map<std::shared_ptr<Noeud>, int>& listeNoeuds);
     PochePerdue& operator=(const PochePerdue& other);
     PochePerdue(const PochePerdue& poche);
@@ -989,13 +1002,11 @@ public:
     PochePerdue& operator=(PochePerdue&&) = default;
     ~PochePerdue() = default;
 
-    std::set<std::shared_ptr<Noeud>, bool (*)(const std::shared_ptr<Noeud>&, const std::shared_ptr<Noeud>&)>
-        noeudsPoche_
-        = std::set<std::shared_ptr<Noeud>, bool (*)(const std::shared_ptr<Noeud>&, const std::shared_ptr<Noeud>&)>(
-            &compareNoeuds);
+    NodeSet noeudsPoche_ = NodeSet(&compareNoeuds);
     double prodMaxPoche_ = 0.0;
     double prodPerdue_ = 0.0;
     double consoPerdue_ = 0.0;
+    std::map<const Consommation*, double, ConsumptionSort> consumptionLosses_;
     bool pocheAvecConsoProd_ = false;
 
     std::vector<double> phases_;

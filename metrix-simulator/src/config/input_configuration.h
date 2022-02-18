@@ -46,8 +46,8 @@ public:
                        boost::optional<metrix::log::severity::level> level,
                        bool write_constraint_file,
                        bool print_constraints_matrix,
-                       bool write_sensivity_file,
-                       bool write_matrix_report,
+                       bool write_PTDF_file,
+                       bool write_LODF_file,
                        CheckConstraintLevel check_constraint_level,
                        bool compare_load_flow_report,
                        bool ignore_incident_group_absent,
@@ -65,8 +65,8 @@ public:
     const boost::optional<metrix::log::severity::level>& logLevel() const { return logLevel_; }
     bool writeConstraintsFile() const { return writeConstraintsFile_; }
     bool printConstraintsMatrix() const { return printConstraintsMatrix_; }
-    bool writeSensivityFile() const { return writeSensivityFile_; }
-    bool writeMatrixReport() const { return writeMatrixReport_; }
+    bool writePTDFfile() const { return writePTDFfile_; }
+    bool writeLODFfile() const { return writeLODFfile_; }
     const CheckConstraintLevel& checkConstraintLevel() const { return checkConstraintLevel_; }
     bool compareLoadFlowReport() const { return compareLoadFlowReport_; }
     bool ignoreIncidentGroupAbsent() const { return ignoreIncidentGroupAbsent_; }
@@ -85,8 +85,8 @@ private:
     boost::optional<metrix::log::severity::level> logLevel_;
     bool writeConstraintsFile_ = false;
     bool printConstraintsMatrix_ = false;
-    bool writeSensivityFile_ = false;
-    bool writeMatrixReport_ = false;
+    bool writePTDFfile_ = false;
+    bool writeLODFfile_ = false;
     CheckConstraintLevel checkConstraintLevel_ = CheckConstraintLevel::NONE;
     bool compareLoadFlowReport_ = false;
     bool ignoreIncidentGroupAbsent_ = false;

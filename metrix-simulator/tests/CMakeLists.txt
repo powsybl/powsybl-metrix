@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 set(MAIN_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
@@ -24,6 +24,7 @@ macro(metrix_test TEST_NAME NB_TESTS)
         -DEXPECTED_DIR=${EXPECTED_DIR}
         -DNB_TESTS=${NB_TESTS}
         -DALL_RESULTS=1
+        -DWITH_LODF_PTDF=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
@@ -44,6 +45,7 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
         -DEXPECTED_DIR=${EXPECTED_DIR}
         -DNB_TESTS=${NB_TESTS}
         -DALL_RESULTS=0
+        -DWITH_LODF_PTDF=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
@@ -66,6 +68,27 @@ macro(metrix_test_no_check TEST_NAME NB_TESTS)
     message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${TEST_NAME} "\" must be checked manually")
 endmacro()
 
+macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
+    set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
+    set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
+    file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
+    list(LENGTH TEST_OUTPUT_FILES RES_LEN)
+    if(RES_LEN GREATER 0)
+        file(REMOVE ${TEST_OUTPUT_FILES})
+    endif()
+    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+        -DEXE=$<TARGET_FILE:metrix-simulator>
+        -DWORKING_DIR=${WORKING_DIR}
+        -DEXPECTED_DIR=${EXPECTED_DIR}
+        -DNB_TESTS=${NB_TESTS}
+        -DALL_RESULTS=1
+        -DWITH_LODF_PTDF=1
+        -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
+        WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
+    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+endmacro()
+
 add_subdirectory(divers)
 add_subdirectory(connexite)
 add_subdirectory(curatif)
@@ -79,3 +102,4 @@ add_subdirectory(variables_couplees)
 add_subdirectory(seuils)
 add_subdirectory(variantes_regroupees)
 add_subdirectory(overload)
+add_subdirectory(LODF_PTDF)
