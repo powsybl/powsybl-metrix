@@ -184,6 +184,8 @@ WARNHVDCCurNonTraiteEntreCompSyn			No curative action possible for HVDC link $1 
 WARNHVDCCurNonTraite						No curative action for HVDC link $1 because it is not adjustable 
 WARNHVDCConsigneImposee						Control mode of HVDC $1 set to -- Imposed --
 WARNQuadBoucle								Warning: Connection $1 creates a loop on the same node. A breaker on one side had to be opened.
+WARNPimpInfConso                            Available production is below consumption. Offgrid curtailment is required
+WARNTooMuchCut                              Number of lost consumptions is greater than the maximum number $1 configured: some lost consumption will not be displayed
 
 //------------- Curatif topologique --------------------
 ERRCurTopoIncidentInconnu					Outage $1 mentionned in the remedial action list cannot be found

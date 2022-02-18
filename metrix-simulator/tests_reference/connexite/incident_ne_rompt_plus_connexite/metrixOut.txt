@@ -139,11 +139,11 @@ Résultats en volume (MW)
 Volume de production =   60612.1333 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :       0.0036
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :       0.0036
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance
@@ -186,6 +186,7 @@ Incident 'INC_ZFX' : Noeuds perdus '500 [CONSO_SH]' '5609 [CONSO_HGU]'
 Incident 'INC_ZFY' : Noeuds perdus '4549 [CONSO_FSA]' '6206 [CONSO_IDT]'
 Parade 'QUAD_OXM_NRF' sur défaut 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'
 Parade 'QUAD_KRC' sur défaut 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'
+Attention: incident 20, l'ouvrage QUAD_KRC est deja deconnecte
 
 ---------------------
 ---------------------
@@ -193,7 +194,6 @@ Variante numéro 0
 ---------------------
 ---------------------
 
-Attention: incident 20, l'ouvrage QUAD_KRC est deja deconnecte
 Demarrage des groupes par empilement économique :
 Consommation globale                = 61884.8760  MW
 Production démarrée                 = 61884.9090  MW
@@ -210,11 +210,11 @@ Résultats en volume (MW)
 Volume de production =   61884.8760 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :       0.0165
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :       0.0165
 
 Prise en compte des couts avec reseau
 Blocage des variables de defaillance

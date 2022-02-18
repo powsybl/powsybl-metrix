@@ -307,6 +307,8 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
+Attention: incident 0, l'ouvrage FS.BIS1 FSSV.O1 1 est deja deconnecte
+Attention: incident 2, l'ouvrage FS.BIS1 FSSV.O1 1 est deja deconnecte
 
 ---------------------
 ---------------------
@@ -314,8 +316,6 @@ Variante numéro 3
 ---------------------
 ---------------------
 
-Attention: incident 0, l'ouvrage FS.BIS1 FSSV.O1 1 est deja deconnecte
-Attention: incident 2, l'ouvrage FS.BIS1 FSSV.O1 1 est deja deconnecte
 Demarrage des groupes par empilement économique :
 Consommation globale                =   960.0000  MW
 Production démarrée                 =   960.0000  MW
@@ -336,6 +336,8 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
+Attention: incident 1, l'ouvrage FVALDI1  FTDPRA1  1 est deja deconnecte
+Attention: incident 4, l'ouvrage FVALDI1  FTDPRA1  1 est deja deconnecte
 
 ---------------------
 ---------------------
@@ -343,8 +345,6 @@ Variante numéro 2
 ---------------------
 ---------------------
 
-Attention: incident 1, l'ouvrage FVALDI1  FTDPRA1  1 est deja deconnecte
-Attention: incident 4, l'ouvrage FVALDI1  FTDPRA1  1 est deja deconnecte
 Demarrage des groupes par empilement économique :
 Consommation globale                =   960.0000  MW
 Production démarrée                 =   960.0000  MW
