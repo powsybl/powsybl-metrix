@@ -8,6 +8,17 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
+// clang-format off
+/*
+ * These two headers SHALL be written in this order and with the undef because ortools library
+ * is using the macro LOG for google log which is in conflict with LOG macro for metrix::log
+ * This ensures that metrix::log logger is used after this inclusion (no garantee for inline 
+ * functions in embeded headers)
+ */
+#include <ortools/linear_solver/linear_solver.h>
+#undef LOG
+#include <metrix/log.h>
+#include "compute/solver.h"
 #include "calcul.h"
 #include "config/configuration.h"
 #include "config/constants.h"
@@ -15,6 +26,7 @@
 #include "cte.h"
 #include "err/IoDico.h"
 #include "err/error.h"
+#include "ortools/solver.h"
 #include "parametres.h"
 #include "pne.h"
 #include "prototypes.h"
@@ -25,7 +37,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <fstream> //attention
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -92,6 +104,14 @@ string Contrainte::typeDeContrainteToString() const
 
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
+    if (config::constants::use_ortools) {
+        solver_simplex_ = std::make_shared<ortools::Solver>();
+        solver_pne_ = solver_simplex_;
+    } else {
+        // use same solver
+        solver_simplex_ = std::make_shared<compute::Solver>();
+        solver_pne_ = solver_simplex_;
+    }
     // Réglage des paramètres en fonction du mode de calcul
     std::stringstream ss;
     ss << "Mode de calcul : ";
@@ -431,7 +451,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Resolution du probleme
         //----------------------
-        solver_.solve(&pbPNE_);
+        solver_->solve(&pbPNE_);
         pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
 
         if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
@@ -517,7 +537,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
             SPX_EcrireProblemeAuFormatMPS(pb_);
         }
 
-        solver_.solve(&pb_);
+        solver_->solve(&pb_);
         pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
         pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
 
@@ -951,6 +971,7 @@ void Calculer::fixerVariablesEntieres()
     }
 }
 
+Calculer::~Calculer() {icdtQdt.clear();}
 
 void Calculer::printStats()
 {

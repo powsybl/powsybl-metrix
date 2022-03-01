@@ -10,10 +10,13 @@
 
 #include "solver.h"
 
+#include <config/constants.h>
 #include <metrix/log.h>
 
 namespace compute
 {
+Solver::Solver() = default;
+
 void Solver::solve(PROBLEME_A_RESOUDRE* pne_problem) { PNE_Solveur(pne_problem); }
 
 void Solver::solve(PROBLEME_SIMPLEXE* spx_problem)

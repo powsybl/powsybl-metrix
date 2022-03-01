@@ -11,13 +11,13 @@
 #ifndef CALCUL_METRIX
 #define CALCUL_METRIX
 
+#include "compute/isolver.h"
 #include "err/error.h"
 #include "margin_variations_compute.h"
 #include "pne.h"
 #include "prototypes.h"
 #include "reseau.h"
 #include "variante.h"
-#include <compute/solver.h>
 
 #include <boost/optional.hpp>
 
@@ -197,7 +197,9 @@ public:
     vector<double> coefs_; // vecteur utilise pour le calcul des coefficients
 
     // specifique au simplexe
-    compute::Solver solver_;
+    std::shared_ptr<compute::ISolver> solver_pne_;
+    std::shared_ptr<compute::ISolver> solver_simplex_;
+
 
     vector<int> pbPositionDeLaVariable_; // defini dans pne ou spx
     // vector<int> pbPositionDeLaVariableVariante0_   ; //defini dans pne ou spx
@@ -255,6 +257,8 @@ public:
     bool problemeAlloue_ = false;
 
     std::map<ListeQuadsIncident, MATRICE*> jacIncidentsModifies_;
+
+    Calculer();
 
     unsigned int numMicroIteration_ = 0; // iterations correspondant au contraintes ajoutees pour une variante (1,2,...)
     int resolutionProbleme();            // resolution de tous les problemes modifies par variante
