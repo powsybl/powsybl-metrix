@@ -32,6 +32,16 @@ class Configuration
 {
 public:
     enum class ComputationType { OPF = 0, LOAD_FLOW, OPF_WITHOUT_REDISPATCH, OPF_WITH_OVERLOAD };
+    // list got from ortools list: only solvers that have linear AND mixed have been extracted
+    enum class SolverChoice {
+        GLPK = 0,
+
+        // Commercial software (need license).
+        GUROBI,
+        CPLEX,
+        SIRIUS,
+        XPRESS, // Must always be the last of the list
+    };
 
 public:
     /**
@@ -187,6 +197,7 @@ public:
     int adequacyCostOffset() const { return adequacy_cost_offset_; }
     int redispatchCostOffset() const { return redispatch_cost_offset_; }
     int costEcart() const { return cost_ecart_; }
+    SolverChoice solverChoice() const { return solver_choice_; }
     double noiseCost() const { return noise_cost_; }
 
     unsigned int lostLoadDetailedMax() const { return lost_load_detailed_max_; }

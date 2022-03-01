@@ -28,6 +28,14 @@ namespace config
  */
 namespace helper
 {
+    static inline void check(bool cond, const std::string& key)
+{
+    if (!cond) {
+        LOG_ALL(error) << err::ioDico().msg("ERRPbLectureParam", key);
+        throw ErrorI(err::ioDico().msg("ERRPbLectureParametres"));
+    }
+}
+
 template<typename T>
 static std::vector<T> asVector(const boost::property_tree::ptree& pt, const boost::property_tree::ptree::key_type& key)
 {
@@ -67,10 +75,7 @@ static void checkRequiredKeyOnce(const std::map<std::string, std::vector<T>>& ra
     // A required key SHALL:
     // - be present
     // - have only one value
-    if (!(raw_map.count(key) > 0 && raw_map.at(key).size() == 1)) {
-        LOG_ALL(error) << err::ioDico().msg("ERRPbLectureParam", key);
-        throw ErrorI(err::ioDico().msg("ERRPbLectureParametres"));
-    }
+    check(raw_map.count(key) > 0 && raw_map.at(key).size() == 1, key);
 }
 
 template<class T>
@@ -122,14 +127,22 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
     helper::checkRequiredKeyOnce(std::get<INTEGER>(raw_config), "UNOMINAL"); // uref
 
     // Check validity log level, if present
-    if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), "LOGLEVEL")) {
+    auto log_level_key = "LOGLEVEL";
+    if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), log_level_key)) {
         // Log level is present once
         // check log level value
-        auto log_level = static_cast<unsigned int>(std::get<INTEGER>(raw_config).at("LOGLEVEL").front());
-        if (log_level > metrix::log::severity::critical) {
-            LOG_ALL(critical) << err::ioDico().msg("ERRPbLectureParam", "LOGLEVEL");
-            throw ErrorI(err::ioDico().msg("ERRPbLectureParametres"));
-        }
+        auto log_level = static_cast<unsigned int>(std::get<INTEGER>(raw_config).at(log_level_key).front());
+        helper::check(log_level <= metrix::log::severity::critical, log_level_key);
+    }
+
+    auto solver_choice_key = "SOLVERCH";
+    if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), solver_choice_key)) {
+        unsigned int solver_choice = std::get<INTEGER>(raw_config).at(solver_choice_key).front();
+        helper::check(solver_choice <= static_cast<unsigned int>(SolverChoice::XPRESS), solver_choice_key);
+#ifndef USE_ORTOOLS
+        // If ortools is not used, only Sirius is allowed
+        helper::check(solver_choice == static_cast<int>(SolverChoice::SIRIUS), solver_choice_key);
+#endif
     }
 }
 
@@ -314,6 +327,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     adequacy_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "ADEQUAOF", 0);
     redispatch_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "REDISPOF", 0);
     cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10);
+    solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "SOLVERCH", SolverChoice::SIRIUS);
     noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
 
     lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);

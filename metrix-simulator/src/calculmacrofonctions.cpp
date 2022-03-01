@@ -109,7 +109,7 @@ string Contrainte::typeDeContrainteToString() const
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
     #ifdef USE_ORTOOLS
-    solver_simplex_ = std::make_shared<ortools::Solver>();
+    solver_simplex_ = std::make_shared<ortools::Solver>(config::configuration().solverChoice());
     solver_pne_ = solver_simplex_;
     #else
     // use same solver
