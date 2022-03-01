@@ -18,7 +18,7 @@ macro(metrix_test TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+    add_test(NAME ${TEST_NAME} COMMAND ${CMAKE_COMMAND}
         -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
@@ -27,8 +27,7 @@ macro(metrix_test TEST_NAME NB_TESTS)
         -DWITH_LODF_PTDF=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
 endmacro()
 
 macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
@@ -48,8 +47,8 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
         -DWITH_LODF_PTDF=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT LD_LIBRARY_PATH=${XPRESS_ROOT}/lib)    
     message(AUTHOR_WARNING "Only checks on output results files performed: metrixOut.txt result file of test \"" ${TEST_NAME} "\" must be checked manually")
 endmacro()
 

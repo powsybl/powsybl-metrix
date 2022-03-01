@@ -38,16 +38,23 @@ function(check_files files_ expected_files_)
     endforeach()
 endfunction()
 
+set(LD_LIBRARY_PATH_tmp $ENV{LD_LIBRARY_PATH})
+set(ENV{LD_LIBRARY_PATH} $ENV{XPRESSDIR}/lib)
+
 if (WITH_LODF_PTDF)
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF  RESULT_VARIABLE cmd_result)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
 else()
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  RESULT_VARIABLE cmd_result)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
 endif()
+
 if(cmd_result)
     message(FATAL_ERROR "Error running: ${EXE} returns " ${cmd_result})
 endif()
 file(GLOB test_output_files ${WORKING_DIR}/out_*)
 file(GLOB expected_output_files ${EXPECTED_DIR}/out_*)
+
+set(ENV{LD_LIBRARY_PATH} ${LD_LIBRARY_PATH_tmp})
+
 check_files("${test_output_files}" "${expected_output_files}")
 
 if(ALL_RESULTS)

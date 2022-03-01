@@ -89,6 +89,8 @@ else()
     GIT_TAG             origin/metrix
 
     CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
+                        -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
+
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
     )

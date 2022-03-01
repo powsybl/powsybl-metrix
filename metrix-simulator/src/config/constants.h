@@ -23,6 +23,12 @@ namespace config
  */
 namespace constants
 {
+#ifdef USE_ORTOOLS
+constexpr bool use_ortools = true; // TODO put in configuration ?
+#else
+constexpr bool use_ortools = false; // TODO put in configuration ?
+#endif
+
 #ifdef M_PI
 constexpr double pi = M_PI;
 #else
