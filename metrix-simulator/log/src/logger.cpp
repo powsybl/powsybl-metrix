@@ -78,6 +78,7 @@ Logger::~Logger()
     }
 
     resultFileStream_.flush();
+    core::get()->flush();
     core::get()->remove_all_sinks();
 }
 

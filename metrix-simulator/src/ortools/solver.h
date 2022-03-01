@@ -1,10 +1,12 @@
 #pragma once
 
 #include "compute/isolver.h"
+#include "config/configuration.h"
 #include "config/constants.h"
 #include "pne.h"
 #include <ortools/linear_solver/linear_solver.h>
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -23,31 +25,27 @@ inline std::vector<T> makeVectorFromPointer(T* array, size_t nb_elements)
 class Solver : public compute::ISolver
 {
 public:
+    explicit Solver(config::Configuration::SolverChoice solver_choice);
+
     void solve(PROBLEME_A_RESOUDRE* pne_problem) final { solve_impl(pne_problem); }
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
     void free() final {}
 
 private:
-    static const std::string solverName_;
+    // First = linear solver choice ; second = mixed solver choice
+    using SolverChoice = std::pair<operations_research::MPSolver::OptimizationProblemType,
+                                   operations_research::MPSolver::OptimizationProblemType>;
 
 private:
-    template<class PROBLEM>
-    static operations_research::MPSolver::OptimizationProblemType type();
+    static const std::string solverName_;
+    static const std::map<config::Configuration::SolverChoice, SolverChoice> solver_choices_;
 
-    template<class PROBLEM>
-    static std::shared_ptr<operations_research::MPSolver> makeMPSolver()
-    {
-        return std::make_shared<operations_research::MPSolver>(solverName_, type<PROBLEM>());
-    }
-
+private:
     template<class PROBLEM>
     static std::shared_ptr<operations_research::MPSolverParameters> makeParams(const PROBLEM& problem);
 
     template<class PROBLEM>
     static void updateProblem(PROBLEM& problem, const std::shared_ptr<operations_research::MPSolver>& solver);
-
-    static std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
-    static std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_SIMPLEXE& problem);
 
     static void transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver,
                                   double const* bMin,
@@ -73,6 +71,16 @@ private:
                       const operations_research::MPSolverParameters& params);
 
 private:
+    
+    template<class PROBLEM>
+    std::shared_ptr<operations_research::MPSolver> makeMPSolver()
+    {
+        return std::make_shared<operations_research::MPSolver>(solverName_, type<PROBLEM>());
+    }
+
+    std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
+    std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_SIMPLEXE& problem);
+
     template<class PROBLEM>
     void solve_impl(PROBLEM* problem)
     {
@@ -96,6 +104,7 @@ private:
 
 private:
     std::shared_ptr<operations_research::MPSolver> solver_;
+    config::Configuration::SolverChoice solver_choice_;
 };
 
 // specializations for ortools
@@ -114,8 +123,8 @@ void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem,
                                               const std::shared_ptr<operations_research::MPSolver>& solver);
 
 template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>();
+operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>() const;
 template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>();
+operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>() const;
 
 } // namespace ortools

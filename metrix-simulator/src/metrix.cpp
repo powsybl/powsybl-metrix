@@ -212,12 +212,12 @@ int main(int argc, char* argv[])
 
         LOG(info) << "Execution time: " << dif << metrix::log::sync;
     } catch (const std::exception& e) {
-        std::cerr << e.what(); // add to cerr also because print on stdout is disabled by default and exception can
-                               // occurs before logger initialization
+        std::cerr << e.what() << std::endl; // add to cerr also because print on stdout is disabled by default 
+                                            // and exception can occurs before logger initialization
         LOG_ALL(critical) << e.what() << metrix::log::sync;
         return METRIX_PAS_SOLUTION;
     } catch (...) {
-        std::cerr << "Unknown error"; // add to cerr also because print on stdout is disabled by default and error can
+        std::cerr << "Unknown error" << std::endl; // add to cerr also because print on stdout is disabled by default and error can
                                       // occurs before logger initialization
         LOG_ALL(critical) << "Unknown error" << metrix::log::sync;
         return METRIX_PAS_SOLUTION;
