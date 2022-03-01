@@ -8,6 +8,26 @@ namespace ortools
 {
 const std::string Solver::solverName_ = "simple_lp_program";
 
+const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
+    std::make_pair(config::Configuration::SolverChoice::GLPK,
+                   std::make_pair(operations_research::MPSolver::GLPK_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::GLPK_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::GUROBI,
+                   std::make_pair(operations_research::MPSolver::GUROBI_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::GUROBI_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::CPLEX,
+                   std::make_pair(operations_research::MPSolver::CPLEX_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::CPLEX_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::SIRIUS,
+                   std::make_pair(operations_research::MPSolver::SIRIUS_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::SIRIUS_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::XPRESS,
+                   std::make_pair(operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
+};
+
+Solver::Solver(config::Configuration::SolverChoice solver_choice) : solver_choice_(solver_choice) {}
+
 void Solver::solve(PROBLEME_SIMPLEXE* spx_problem) { solve_impl(spx_problem); }
 
 static std::string convertTypeDeBorneDeLaVariableToParameterAsString(int nbVar, int* typeDeBorneDeLaVariable)
@@ -254,15 +274,15 @@ void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem,
 }
 
 template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>()
+operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>() const
 {
-    return operations_research::MPSolver::SIRIUS_MIXED_INTEGER_PROGRAMMING;
+    return solver_choices_.at(solver_choice_).second;
 }
 
 template<>
 operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
 {
-    return operations_research::MPSolver::SIRIUS_LINEAR_PROGRAMMING;
+    return solver_choices_.at(solver_choice_).first;
 }
 
 } // namespace ortools
