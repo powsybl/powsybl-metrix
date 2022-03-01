@@ -265,44 +265,4 @@ operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIM
     return operations_research::MPSolver::SIRIUS_LINEAR_PROGRAMMING;
 }
 
-void Solver::updateBounds(const std::vector<double>& bMin,
-                          const std::vector<double>& bMax,
-                          const std::vector<int>& types)
-{
-    if (!solver_ || bMin.size() != bMax.size() || bMin.size() != types.size()) {
-        return;
-    }
-
-    auto& variables = solver_->variables();
-    for (size_t idxVar = 0; idxVar < bMin.size(); ++idxVar) {
-        double min_l = ((types[idxVar] == VARIABLE_NON_BORNEE) || (types[idxVar] == VARIABLE_BORNEE_SUPERIEUREMENT)
-                            ? -MPSolver::infinity()
-                            : bMin[idxVar]);
-        double max_l = ((types[idxVar] == VARIABLE_NON_BORNEE) || (types[idxVar] == VARIABLE_BORNEE_INFERIEUREMENT)
-                            ? MPSolver::infinity()
-                            : bMax[idxVar]);
-        auto& var = variables[idxVar];
-        var->SetBounds(min_l, max_l);
-    }
-}
-
-void Solver::updateRhs(const std::vector<double>& rhs, const std::vector<char>& sens)
-{
-    if (!solver_ || rhs.size() != sens.size()) {
-        return;
-    }
-    auto& constraints = solver_->constraints();
-    for (size_t idxRow = 0; idxRow < rhs.size(); ++idxRow) {
-        if (sens[idxRow] == '=') {
-            constraints[idxRow]->SetBounds(rhs[idxRow], rhs[idxRow]);
-        } else if (sens[idxRow] == '<') {
-            constraints[idxRow]->SetBounds(-MPSolver::infinity(), rhs[idxRow]);
-        } else if (sens[idxRow] == '>') {
-            constraints[idxRow]->SetBounds(rhs[idxRow], MPSolver::infinity());
-        } else {
-            // shouldn't happen: ignore
-        }
-    }
-}
-
 } // namespace ortools

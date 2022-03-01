@@ -27,10 +27,6 @@ public:
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
     void free() final {}
 
-    // TODO not used: Remove ?
-    void updateBounds(const std::vector<double>& bMin, const std::vector<double>& bMax, const std::vector<int>& types);
-    void updateRhs(const std::vector<double>& rhs, const std::vector<char>& sens);
-
 private:
     static const std::string solverName_;
 
