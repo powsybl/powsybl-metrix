@@ -16,27 +16,42 @@ project(MetrixSimulator
     VERSION 7.4.0
     LANGUAGES C CXX)
 
-cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
+cmake_policy(SET CMP0028 NEW) # Fatal error if "::" link is not imported / alias target
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 include(CMakeDependentOption)
+include(InstallLib)
 
 message("Build directory : ${CMAKE_BINARY_DIR}")
 message("Source directory : ${CMAKE_SOURCE_DIR}")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
-if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.12")
-    cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables for find package
-endif()
-cmake_policy(SET CMP0028 NEW) # Fatal error if "::" link is not imported / alias target
 
 add_compile_definitions(
-    USE_XPRESS=1 # Use express
     USE_SIRIUS=1 # Use sirius
 )
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
+option(USE_ORTOOLS "Toggle or-tools usage" OFF) # disable by default
+cmake_dependent_option(USE_XPRESS "Use XPress solver (must be same as 3rd party compilation)" OFF "USE_ORTOOLS" OFF) # not using xpress without ortools
+cmake_dependent_option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF "NOT USE_ORTOOLS" ON) # static if not using ortools
+
+if(USE_ORTOOLS)
+    message(VERBOSE "Use ortools")
+    if(USE_XPRESS)
+        message(VERBOSE "Use xpress with ortools")
+    else()
+        message(VERBOSE "Not using xpress")
+    endif()
+else()
+    message(VERBOSE "Not using ortools")
+    if(USE_SIRIUS_SHARED)
+        message(VERBOSE "Use shared library for sirius solver")
+    else()
+        message(VERBOSE "Use static library for sirius solver")
+    endif()
+endif()
 
 if(MSVC)
   add_compile_definitions(WIN32)
@@ -55,28 +70,24 @@ else()
   set(CMAKE_C_FLAGS_RELEASE "-O3")
 endif(MSVC)
 
-if(NOT ortools_ROOT)
-    message(WARNING "ortools_ROOT not defined: may not find package ortools")
-else()
-    message(STATUS "ortools_ROOT=${ortools_ROOT}")
-endif()
-
+# Boost
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
 
-# case policy of ortools root cannot be done (policy CMP0074)
-if (${CMAKE_VERSION} VERSION_LESS "3.12")
-    list(APPEND CMAKE_PREFIX_PATH "${ortools_ROOT}")
+# Ortools
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+if(USE_ORTOOLS)
+    set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/ortools)
+    find_package(ortools CONFIG REQUIRED)
 endif()
 
-set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
-find_package(ortools CONFIG REQUIRED)
-find_package(XPRESS REQUIRED)
+# Xpress
+if(USE_XPRESS)
+    find_package(XPRESS REQUIRED)
+endif()
 
-option(USE_ORTOOLS "Toggle or-tools usage" OFF) # disable by default
-cmake_dependent_option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF "NOT USE_ORTOOLS" ON)
-
+# Sirius
 if (USE_SIRIUS_SHARED)
     set(SIRIUS_NAME sirius_solver)
 else()
@@ -116,7 +127,6 @@ set(METRIX_HEADERS
         src/config/version.h
         src/compute/solver.h
         src/margin_variations_compute.h
-        src/ortools/solver.h
     )
 
 set(METRIX_SOURCES 
@@ -139,9 +149,17 @@ set(METRIX_SOURCES
         src/cte.cpp
         src/options/options.cpp
         src/compute/solver.cpp
-        src/ortools/solver.cpp
         src/margin_variations_compute.cpp
     )
+ 
+if(USE_ORTOOLS)
+    list(APPEND METRIX_SOURCES
+    src/ortools/solver.cpp
+    )
+    list(APPEND METRIX_HEADERS
+    src/ortools/solver.h
+    )
+endif()
 
 set(target "metrix-simulator")
 
@@ -153,10 +171,8 @@ ${METRIX_HEADERS} ${METRIX_SOURCES})
 target_include_directories(${target}
     PRIVATE
     metrix::log
-    ortools::ortools
-    XPRESS::XPRESS
-    sirius_solver
     src
+
     ${SIRIUS_NAME}
     SuiteSparse::SuiteSparse_KLU
     SuiteSparse::SuiteSparse_AMD
@@ -168,8 +184,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     metrix::log
-    ortools::ortools
-    XPRESS::XPRESS
+
     ${SIRIUS_NAME}
     SuiteSparse::SuiteSparse_KLU
     SuiteSparse::SuiteSparse_AMD
@@ -180,22 +195,39 @@ target_link_libraries(${target}
 )
 
 if(USE_ORTOOLS)
-    target_compile_definitions(${target} PRIVATE USE_ORTOOLS)
+    target_compile_definitions(${target} 
+        PRIVATE 
+        USE_ORTOOLS
+    )
+    target_include_directories(${target}
+        PRIVATE
+        ortools::ortools
+    )
+    target_link_libraries(${target}
+        PRIVATE
+        ortools::ortools
+    )
+    install_lib(ortools::ortools)
+endif()
+
+if(USE_XPRESS)
+    target_compile_definitions(${target} 
+        PRIVATE 
+        USE_XPRESS
+    )
+    target_include_directories(${target}
+        PRIVATE
+        XPRESS::XPRESS
+    )
+    target_link_libraries(${target}
+        PRIVATE
+        XPRESS::XPRESS
+    )
 endif()
 
 if (USE_SIRIUS_SHARED)
     # Export sirius library if using shared
-    get_target_property(sirius_PATH_LIB_RELEASE sirius_solver IMPORTED_LOCATION_RELEASE)
-    get_target_property(sirius_PATH_LIB_DEBUG sirius_solver IMPORTED_LOCATION_DEBUG)
-    if (EXISTS ${sirius_PATH_LIB_RELEASE})
-        set(sirius_PATH_LIB ${sirius_PATH_LIB_RELEASE})
-    elseif(EXISTS ${sirius_PATH_LIB_DEBUG})
-        set(sirius_PATH_LIB ${sirius_PATH_LIB_DEBUG})
-    else()
-        # shouldn't happen if find_package worked
-        message(FATAL_ERROR "sirius_solver imported location for debug or release was not found: check external installation")
-    endif()
-    install(FILES ${sirius_PATH_LIB} DESTINATION lib)
+    install_lib(sirius_solver)
 endif()
 
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")

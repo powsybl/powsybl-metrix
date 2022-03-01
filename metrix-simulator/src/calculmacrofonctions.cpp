@@ -15,8 +15,10 @@
  * This ensures that metrix::log logger is used after this inclusion (no garantee for inline 
  * functions in embeded headers)
  */
-#include <ortools/linear_solver/linear_solver.h>
-#undef LOG
+#ifdef USE_ORTOOLS
+#   include <ortools/linear_solver/linear_solver.h>
+#   undef LOG
+#endif
 #include <metrix/log.h>
 #include "compute/solver.h"
 #include "calcul.h"
@@ -26,7 +28,9 @@
 #include "cte.h"
 #include "err/IoDico.h"
 #include "err/error.h"
-#include "ortools/solver.h"
+#ifdef USE_ORTOOLS
+#    include "ortools/solver.h"
+#endif
 #include "parametres.h"
 #include "pne.h"
 #include "prototypes.h"
@@ -104,14 +108,15 @@ string Contrainte::typeDeContrainteToString() const
 
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
-    if (config::constants::use_ortools) {
-        solver_simplex_ = std::make_shared<ortools::Solver>();
-        solver_pne_ = solver_simplex_;
-    } else {
-        // use same solver
-        solver_simplex_ = std::make_shared<compute::Solver>();
-        solver_pne_ = solver_simplex_;
-    }
+    #ifdef USE_ORTOOLS
+    solver_simplex_ = std::make_shared<ortools::Solver>();
+    solver_pne_ = solver_simplex_;
+    #else
+    // use same solver
+    solver_simplex_ = std::make_shared<compute::Solver>();
+    solver_pne_ = solver_simplex_;
+    #endif
+
     // Réglage des paramètres en fonction du mode de calcul
     std::stringstream ss;
     ss << "Mode de calcul : ";
