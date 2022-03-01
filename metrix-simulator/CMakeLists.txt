@@ -18,11 +18,22 @@ project(MetrixSimulator
 
 cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
 
+include(CMakeDependentOption)
+
 message("Build directory : ${CMAKE_BINARY_DIR}")
 message("Source directory : ${CMAKE_SOURCE_DIR}")
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
+if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.12")
+    cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables for find package
+endif()
+cmake_policy(SET CMP0028 NEW) # Fatal error if "::" link is not imported / alias target
+
+add_compile_definitions(
+    USE_XPRESS=1 # Use express
+    USE_SIRIUS=1 # Use sirius
+)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
@@ -44,11 +55,28 @@ else()
   set(CMAKE_C_FLAGS_RELEASE "-O3")
 endif(MSVC)
 
+if(NOT ortools_ROOT)
+    message(WARNING "ortools_ROOT not defined: may not find package ortools")
+else()
+    message(STATUS "ortools_ROOT=${ortools_ROOT}")
+endif()
+
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
 
-option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
+# case policy of ortools root cannot be done (policy CMP0074)
+if (${CMAKE_VERSION} VERSION_LESS "3.12")
+    list(APPEND CMAKE_PREFIX_PATH "${ortools_ROOT}")
+endif()
+
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+find_package(ortools CONFIG REQUIRED)
+find_package(XPRESS REQUIRED)
+
+option(USE_ORTOOLS "Toggle or-tools usage" OFF) # disable by default
+cmake_dependent_option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF "NOT USE_ORTOOLS" ON)
+
 if (USE_SIRIUS_SHARED)
     set(SIRIUS_NAME sirius_solver)
 else()
@@ -88,6 +116,7 @@ set(METRIX_HEADERS
         src/config/version.h
         src/compute/solver.h
         src/margin_variations_compute.h
+        src/ortools/solver.h
     )
 
 set(METRIX_SOURCES 
@@ -110,6 +139,7 @@ set(METRIX_SOURCES
         src/cte.cpp
         src/options/options.cpp
         src/compute/solver.cpp
+        src/ortools/solver.cpp
         src/margin_variations_compute.cpp
     )
 
@@ -123,6 +153,9 @@ ${METRIX_HEADERS} ${METRIX_SOURCES})
 target_include_directories(${target}
     PRIVATE
     metrix::log
+    ortools::ortools
+    XPRESS::XPRESS
+    sirius_solver
     src
     ${SIRIUS_NAME}
     SuiteSparse::SuiteSparse_KLU
@@ -135,6 +168,8 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     metrix::log
+    ortools::ortools
+    XPRESS::XPRESS
     ${SIRIUS_NAME}
     SuiteSparse::SuiteSparse_KLU
     SuiteSparse::SuiteSparse_AMD
@@ -143,6 +178,10 @@ target_link_libraries(${target}
     SuiteSparse::SuiteSparse_Config
     ${Boost_LIBRARIES}
 )
+
+if(USE_ORTOOLS)
+    target_compile_definitions(${target} PRIVATE USE_ORTOOLS)
+endif()
 
 if (USE_SIRIUS_SHARED)
     # Export sirius library if using shared
