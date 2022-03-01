@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 
 cmake_minimum_required(VERSION 3.9.6 FATAL_ERROR)
@@ -73,6 +73,8 @@ endif()
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 find_package(sirius_solver QUIET)
+unset(sirius_solver_ROOT)
+
 if(sirius_solver_FOUND)
   message(STATUS "Sirius solver already found")
 else()
@@ -94,4 +96,30 @@ else()
   ExternalProject_Get_Property(sirius_solver install_dir)
   set(sirius_solver_ROOT ${install_dir})
   set(sirius_solver_static_ROOT ${install_dir})
+endif()
+
+option(USE_XPRESS "Use XPRESS in ortools" OFF)
+
+set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ortools)
+find_package(ortools QUIET)
+unset(ortools_ROOT)
+
+if(ortools_FOUND)
+  message(STATUS "Ortools already found")
+else()
+  ExternalProject_Add(ortools
+    INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/ortools
+    TMP_DIR             ${TMP_DIR}
+    STAMP_DIR           ${DOWNLOAD_DIR}/ortools-stamp
+    SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/ortools
+    BINARY_DIR          ${DOWNLOAD_DIR}/ortools-build
+    URL                 https://devin-depot.rte-france.com/repository/rte-math-prog-raw/ortools_xp/ortools_xp-8.8.0.tar.gz
+    CONFIGURE_COMMAND   ""
+    BUILD_COMMAND       ""
+    INSTALL_COMMAND     ""
+
+    DEPENDS             sirius_solver
+    )
+  ExternalProject_Get_Property(ortools install_dir)
+  set(ortools_ROOT ${install_dir})
 endif()
