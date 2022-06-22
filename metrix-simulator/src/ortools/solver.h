@@ -71,7 +71,10 @@ private:
                       const operations_research::MPSolverParameters& params);
 
 private:
-    
+
+    template<class PROBLEM>
+    operations_research::MPSolver::OptimizationProblemType type() const;
+
     template<class PROBLEM>
     std::shared_ptr<operations_research::MPSolver> makeMPSolver()
     {

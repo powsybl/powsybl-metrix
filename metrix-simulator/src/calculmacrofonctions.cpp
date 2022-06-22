@@ -324,7 +324,7 @@ int Calculer::resolutionProbleme()
                 status = resolutionUnProblemeDodu(varianteCourante_);
 
                 // Free the problem at the end of the resolution
-                solver_.free();
+                solver_pne_->free();
 
                 // No solution variant (but not due to internal problem)
                 if (status == METRIX_PAS_SOLUTION || status == METRIX_NB_MAX_CONT_ATTEINT
@@ -456,7 +456,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Resolution du probleme
         //----------------------
-        solver_->solve(&pbPNE_);
+        solver_pne_->solve(&pbPNE_);
         pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
 
         if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
@@ -542,7 +542,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
             SPX_EcrireProblemeAuFormatMPS(pb_);
         }
 
-        solver_->solve(&pb_);
+        solver_pne_->solve(&pb_);
         pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
         pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
 
@@ -976,7 +976,7 @@ void Calculer::fixerVariablesEntieres()
     }
 }
 
-Calculer::~Calculer() {icdtQdt.clear();}
+Calculer::~Calculer() { icdtQdt_.clear(); }
 
 void Calculer::printStats()
 {

@@ -364,6 +364,7 @@ private:
     int adequacy_cost_offset_;
     int redispatch_cost_offset_;
     int cost_ecart_;
+    SolverChoice solver_choice_;
     double noise_cost_;
 
     unsigned int lost_load_detailed_max_;

@@ -280,7 +280,7 @@ operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_R
 }
 
 template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
+operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>() const
 {
     return solver_choices_.at(solver_choice_).first;
 }

@@ -259,6 +259,7 @@ public:
     std::map<ListeQuadsIncident, MATRICE*> jacIncidentsModifies_;
 
     Calculer();
+    ~Calculer();
 
     unsigned int numMicroIteration_ = 0; // iterations correspondant au contraintes ajoutees pour une variante (1,2,...)
     int resolutionProbleme();            // resolution de tous les problemes modifies par variante
