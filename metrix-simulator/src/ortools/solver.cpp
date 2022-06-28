@@ -224,15 +224,34 @@ static int extractBasisStatus(operations_research::MPVariable& var)
     // get the variable value
     double solutionValue = var.solution_value();
     // extract and return correct basis status based on bounds comparison
-    int basisStatus = (var.basis_status() == MPSolver::FREE ? HORS_BASE_A_ZERO : EN_BASE);
-    if (basisStatus == HORS_BASE_A_ZERO) {
-        if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
-            basisStatus = HORS_BASE_SUR_BORNE_INF;
-        } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
-            basisStatus = HORS_BASE_SUR_BORNE_SUP;
+    MPSolver::BasisStatus ortoolsBasisStatus = var.basis_status();
+    switch(ortoolsBasisStatus) {
+        case MPSolver::FREE: {
+            if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
+                return HORS_BASE_SUR_BORNE_INF;
+            } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
+                return HORS_BASE_SUR_BORNE_SUP;
+            }
+            return HORS_BASE_A_ZERO;
         }
+        case MPSolver::AT_LOWER_BOUND:
+            return HORS_BASE_SUR_BORNE_INF;
+        case MPSolver::AT_UPPER_BOUND:
+            return HORS_BASE_SUR_BORNE_SUP;
+        case MPSolver::FIXED_VALUE:
+            return HORS_BASE_SUR_BORNE_INF;
+        case MPSolver::BASIC: {
+            if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
+                return EN_BASE_SUR_BORNE_INF;
+            } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
+                return EN_BASE_SUR_BORNE_SUP;
+            }
+            return EN_BASE;
+        }
+        default:
+            assert(false);
+            return 0;
     }
-    return basisStatus;
 }
 
 static int extractBasisStatus(operations_research::MPConstraint& cnt)
