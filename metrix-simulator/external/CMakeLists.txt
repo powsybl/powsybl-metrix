@@ -95,7 +95,7 @@ else()
 endif()
 
 set(ortools_url https://github.com/jdarlay/or-tools)
-set(ortools_tag v9.2-ls_dev1.0)
+set(ortools_tag v9.2-ls_dev1.0.1)
 
 option(USE_XPRESS "Use XPRESS in ortools" OFF)
 if (USE_XPRESS)
