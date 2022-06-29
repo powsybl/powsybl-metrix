@@ -1,4 +1,5 @@
 #include "solver.h"
+#include "err/error.h"
 
 #include <iostream>
 
@@ -248,9 +249,11 @@ static int extractBasisStatus(operations_research::MPVariable& var)
             }
             return EN_BASE;
         }
-        default:
-            assert(false);
-            return 0;
+        default: {
+            std::ostringstream ss;
+            ss << "Unknown ortoolsBasisStatus: " << ortoolsBasisStatus;
+            throw ErrorI(ss.str());
+        }
     }
 }
 
