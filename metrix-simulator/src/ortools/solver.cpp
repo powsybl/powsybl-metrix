@@ -241,14 +241,8 @@ static int extractBasisStatus(operations_research::MPVariable& var)
             return HORS_BASE_SUR_BORNE_SUP;
         case MPSolver::FIXED_VALUE:
             return HORS_BASE_SUR_BORNE_INF;
-        case MPSolver::BASIC: {
-            if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
-                return EN_BASE_SUR_BORNE_INF;
-            } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
-                return EN_BASE_SUR_BORNE_SUP;
-            }
+        case MPSolver::BASIC:
             return EN_BASE;
-        }
         default: {
             std::ostringstream ss;
             ss << "Unknown ortoolsBasisStatus: " << ortoolsBasisStatus;
