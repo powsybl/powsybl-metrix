@@ -52,6 +52,7 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                       problem.CoutLineaire,
                       problem.NombreDeVariables,
                       problem.X,
+                      problem.TypeDeBorneDeLaVariable,
                       problem.TypeDeVariable);
 
     // Create constraints and set coefs
@@ -79,7 +80,7 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
 
     // Create the variables and set objective cost.
     // transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables);
-    transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables, problem.X);
+    transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables, problem.X, problem.TypeDeVariable);
 
     // Create constraints and set coefs
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
@@ -104,6 +105,7 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
                                double* costs,
                                int nbVar,
                                double* xValues,
+                               int const* typeDeBorneDeLaVariable,
                                int const* typeDeVariable)
 {
     // Store current X values to set solution hint
@@ -113,11 +115,35 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
         std::ostringstream oss;
         oss << "x" << idxVar;
-        double min_l = 0.0;
-        if (bMin != nullptr) {
-            min_l = bMin[idxVar];
+
+        double min_l = 0., max_l = 0.;
+        switch (typeDeBorneDeLaVariable[idxVar]) {
+            case VARIABLE_FIXE:
+                min_l = bMin[idxVar];
+                max_l = bMin[idxVar];
+                break;
+            case VARIABLE_BORNEE_DES_DEUX_COTES:
+                min_l = bMin[idxVar];
+                max_l = bMax[idxVar];
+                break;
+            case VARIABLE_BORNEE_INFERIEUREMENT:
+                min_l = bMin[idxVar];
+                max_l = operations_research::MPSolver::infinity();
+                break;
+            case VARIABLE_BORNEE_SUPERIEUREMENT:
+                min_l = -operations_research::MPSolver::infinity();
+                max_l = bMax[idxVar];
+                break;
+            case VARIABLE_NON_BORNEE:
+                min_l = -operations_research::MPSolver::infinity();
+                max_l = operations_research::MPSolver::infinity();
+                break;
+            default: {
+                std::ostringstream ss;
+                ss << "Unknown typeDeBorneDeLaVariable: " << typeDeBorneDeLaVariable[idxVar];
+                ErrorI(ss.str());
+            }
         }
-        double max_l = bMax[idxVar];
 
         operations_research::MPVariable* x(nullptr);
         if (typeDeVariable != nullptr && typeDeVariable[idxVar] == ENTIER) {

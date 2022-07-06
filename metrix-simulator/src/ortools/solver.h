@@ -53,6 +53,7 @@ private:
                                   double* costs,
                                   int nbVar,
                                   double* xValues,
+                                  int const* typeDeBorneDeLaVariable,
                                   int const* typeDeVariable = nullptr);
 
     static void transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
