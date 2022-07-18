@@ -1173,6 +1173,10 @@ public class TimeSeriesMappingConfig {
         return timeSeriesToEquipmentMap.get(timeSeriesName);
     }
 
+    public Set<String> getEquipmentIds() {
+        return getEquipmentToTimeSeries().keySet().stream().map(MappingKey::getId).collect(Collectors.toSet());
+    }
+
     public String getTimeSeriesName(MappingKey key) {
         return equipmentToTimeSeriesMap.get(key);
     }
@@ -1189,6 +1193,21 @@ public class TimeSeriesMappingConfig {
         });
         equipmentToTimeSeriesMap.put(mappingKey, timeSeriesName);
         timeSeriesToEquipmentMap.computeIfAbsent(timeSeriesName, k -> new LinkedHashSet<>()).add(mappingKey);
+    }
+
+    public void removeEquipmentTimeSeries(MappingVariable variable, String id) {
+        MappingKey mappingKey = new MappingKey(variable, id);
+        String timeSeriesName = equipmentToTimeSeriesMap.get(mappingKey);
+        equipmentToTimeSeriesMap.remove(mappingKey);
+        Set<MappingKey> keys = timeSeriesToEquipmentMap.get(timeSeriesName);
+        keys.remove(mappingKey);
+        if (keys.isEmpty()) {
+            timeSeriesToEquipmentMap.remove(timeSeriesName);
+        }
+    }
+
+    public boolean isEquipmentThresholdDefined(MappingVariable variable, String id) {
+        return equipmentToTimeSeriesMap.containsKey(new MappingKey(variable, id));
     }
 
     private static List<String> getMultimapValue(Map<MappingKey, List<String>> multimap, MappingKey key) {
