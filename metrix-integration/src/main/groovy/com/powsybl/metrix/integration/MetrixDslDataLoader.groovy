@@ -911,7 +911,7 @@ class MetrixDslDataLoader extends DslLoader {
             logWarn(out, "transformer id %s not found in the network", id)
             return
         }
-        if (twt.getPhaseTapChanger() == null) {
+        if (!twt.hasPhaseTapChanger()) {
             throw new MetrixException("transformer id '" + id + "' without phase shifter")
         }
         def cloned = closure.clone()

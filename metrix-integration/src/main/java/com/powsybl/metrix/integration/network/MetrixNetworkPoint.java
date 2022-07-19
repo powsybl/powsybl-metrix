@@ -65,7 +65,7 @@ public final class MetrixNetworkPoint {
                 getSuffix(isCurativeMode, defaultId)
         ));
 
-        networkPoint.getTwoWindingsTransformerStream().filter(transformer -> transformer.getPhaseTapChanger() != null).forEach(transformer -> addTimeSeriesToPhaseTapChanger(transformer, store, version, point,
+        networkPoint.getTwoWindingsTransformerStream().filter(transformer -> transformer.hasPhaseTapChanger()).forEach(transformer -> addTimeSeriesToPhaseTapChanger(transformer, store, version, point,
                 isCurativeMode ? "PST_CUR_TAP_" : "PST_TAP_",
                 getSuffix(isCurativeMode, defaultId)
         ));

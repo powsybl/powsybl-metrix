@@ -405,9 +405,9 @@ class TimeSeriesDslLoader {
         def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter)}
         def transformersFilteringContext = network.getTwoWindingsTransformers().collect { transformer -> new FilteringContext(transformer)}
         def linesFilteringContext = network.getLines().collect { line -> new FilteringContext(line)}
-        def phaseTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.phaseTapChanger != null}
+        def phaseTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.hasPhaseTapChanger()}
                 .collect { transformer -> new FilteringContext(transformer)}
-        def ratioTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.ratioTapChanger != null}
+        def ratioTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.hasRatioTapChanger()}
                 .collect { transformer -> new FilteringContext(transformer)}
         def switchesFilteringContext = network.getSwitchStream().collect { s -> new FilteringContext(s)}
 
