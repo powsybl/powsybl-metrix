@@ -283,7 +283,7 @@ public class MetrixTool implements Tool {
             ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReaderForAnalysis,
                     store, logger, computationRange);
-            MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis();
+            MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
             new Metrix(contingenciesProvider, remedialActionsReaderForRun,
                     store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
                     .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context));

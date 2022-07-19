@@ -20,13 +20,11 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.function.Consumer;
 
 public class MetrixAnalysis {
@@ -70,7 +68,7 @@ public class MetrixAnalysis {
         this.computationRange = computationRange;
     }
 
-    public MetrixAnalysisResult runAnalysis() {
+    public MetrixAnalysisResult runAnalysis(String id) {
         if (remedialActionsReader != null) {
             RemedialReader.checkFile(remedialActionsReader);
         }
@@ -90,7 +88,7 @@ public class MetrixAnalysis {
             MetrixDslData metrixDslData = null;
             Map<String, NodeCalc> timeSeriesNodesAfterMetrix = null;
             if (metrixDslReader != null) {
-                metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, writer);
+                metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, writer, id);
                 timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             }
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
@@ -125,14 +123,23 @@ public class MetrixAnalysis {
         }
     }
 
-    private MetrixDslData loadMetrixDslData(Reader metrixDslReader, Network network, MetrixParameters metrixParameters, TimeSeriesMappingConfig mappingConfig, Writer writer) {
+    private MetrixDslData loadMetrixDslData(Reader metrixDslReader, Network network, MetrixParameters metrixParameters, TimeSeriesMappingConfig mappingConfig, Writer writer, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading metrix dsl...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
             CompletableFuture<MetrixDslData> metrixFuture = CompletableFuture.supplyAsync(() ->
-                    MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer));
+                    MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer), Executors.newSingleThreadExecutor(
+                    r -> new Thread(() -> {
+                        long begin = System.currentTimeMillis();
+                        r.run();
+                        long elapsed = System.currentTimeMillis() - begin;
+                        LOGGER.info("Script execution {} time {} ms", id, elapsed);
+
+                    }, "Script_" + id + "_" + Instant.now())
+
+            ));
             updateTask.accept(metrixFuture);
             MetrixDslData metrixDslData = metrixFuture.get();
             metrixDslData.setComputationType(metrixParameters.getComputationType());
