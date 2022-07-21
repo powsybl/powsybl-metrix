@@ -12,9 +12,6 @@ import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
 import com.powsybl.iidm.xml.IidmXmlConstants;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public final class MetrixIidmConfiguration {
 
     private static final String IIDM_EXPORT_VERSION = IidmXmlConstants.CURRENT_IIDM_XML_VERSION.toString(".");

@@ -25,9 +25,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemTimeseriesStore.class);

@@ -9,14 +9,18 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.google.common.collect.ImmutableSortedSet;
-import com.powsybl.commons.AbstractConverterTest;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.powsybl.timeseries.*;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.io.Writer;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -25,13 +29,25 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
-import static org.junit.Assert.fail;
+import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class TimeSeriesStoreUtilsTest extends AbstractConverterTest {
+class TimeSeriesStoreUtilsTest {
+    private FileSystem fileSystem;
+
+    @BeforeEach
+    public void setUp() {
+        this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException {
+        this.fileSystem.close();
+    }
 
     @Test
-    public void export() throws IOException {
-        Path output = tmpDir.resolve("output.csv");
+    void export() throws IOException {
+        Path output = fileSystem.getPath("output.csv");
 
         Instant now = Instant.ofEpochMilli(978303600000L);
         RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now, now.plus(2, ChronoUnit.HOURS), Duration.ofHours(1));
@@ -47,7 +63,7 @@ public class TimeSeriesStoreUtilsTest extends AbstractConverterTest {
 
         try (InputStream expected = getClass().getResourceAsStream("/expected/simpleExport.csv")) {
             try (InputStream actual = Files.newInputStream(output)) {
-                compareTxt(expected, actual);
+                compareStreamTxt(expected, actual);
             } catch (UncheckedIOException ex) {
                 fail();
             }

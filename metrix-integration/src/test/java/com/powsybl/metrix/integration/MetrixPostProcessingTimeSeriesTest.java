@@ -18,9 +18,9 @@ import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.IOException;
@@ -32,11 +32,11 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class MetrixPostProcessingTimeSeriesTest {
+class MetrixPostProcessingTimeSeriesTest {
 
     private FileSystem fileSystem;
 
@@ -48,8 +48,8 @@ public class MetrixPostProcessingTimeSeriesTest {
 
     private final MetrixParameters parameters = new MetrixParameters();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() throws IOException {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
@@ -64,13 +64,13 @@ public class MetrixPostProcessingTimeSeriesTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         fileSystem.close();
     }
 
     @Test
-    public void postProcessingTimeSeriesTest() throws IOException {
+    void postProcessingTimeSeriesTest() throws IOException {
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 

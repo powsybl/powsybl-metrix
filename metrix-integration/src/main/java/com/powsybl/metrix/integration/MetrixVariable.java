@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Objects;
 
-/**
- * Created by marifunf on 23/11/17.
- */
 public enum MetrixVariable implements MappingVariable {
     offGridCostDown("offGridCostDown"),
     offGridCostUp("offGridCostUp"),

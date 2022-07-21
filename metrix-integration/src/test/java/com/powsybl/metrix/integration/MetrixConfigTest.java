@@ -12,38 +12,35 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.config.InMemoryPlatformConfig;
 import com.powsybl.commons.config.MapModuleConfig;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
-public class MetrixConfigTest {
+class MetrixConfigTest {
 
     private FileSystem fileSystem;
 
     private InMemoryPlatformConfig platformConfig;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         platformConfig = new InMemoryPlatformConfig(fileSystem);
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         fileSystem.close();
     }
 
     @Test
-    public void test() {
+    void test() {
         MapModuleConfig config = platformConfig.createModuleConfig("metrix");
         config.setStringProperty("home-dir", "/home");
         config.setStringProperty("debug", "true");
@@ -59,7 +56,7 @@ public class MetrixConfigTest {
     }
 
     @Test
-    public void snakeCaseTest() {
+    void snakeCaseTest() {
         MapModuleConfig config = platformConfig.createModuleConfig("metrix");
         config.setStringProperty("home-dir", "/home");
         config.setStringProperty("debug", "true");

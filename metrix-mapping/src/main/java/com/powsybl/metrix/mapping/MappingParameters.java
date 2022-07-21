@@ -14,9 +14,6 @@ import com.powsybl.commons.config.PlatformConfig;
 
 import java.util.Objects;
 
-/**
- * Created by funfrockmar on 16/06/20.
- */
 public class MappingParameters {
 
     private static final float DEFAULT_TOLERANCE_THRESHOLD = 0.0001f;

@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.integration.io;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 enum AttributeType {
     INTEGER(1),
     FLOAT(2),

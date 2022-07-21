@@ -9,15 +9,14 @@
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.ImmutableMap;
-import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.network.MetrixNetworkPoint;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
@@ -31,18 +30,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.HVDC_TYPE;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.PST_TYPE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MetrixRunResultTest extends AbstractConverterTest {
+class MetrixRunResultTest {
 
     private Path workingDir;
     private TimeSeriesIndex index;
 
-    @Before
-    public void setUpRunResultTest() throws IOException, URISyntaxException {
+    @BeforeEach
+    public void setUpRunResultTest() throws URISyntaxException {
         workingDir = Paths.get(getClass().getResource("/").toURI());
         index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-01-17T00:00:00Z"), Duration.ofDays(1));
     }
@@ -64,7 +64,7 @@ public class MetrixRunResultTest extends AbstractConverterTest {
     }
 
     @Test
-    public void metrixResultTest() throws IOException, URISyntaxException {
+    void metrixResultTest() throws IOException, URISyntaxException {
         // Create results
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
@@ -78,12 +78,13 @@ public class MetrixRunResultTest extends AbstractConverterTest {
             bufferedWriter.flush();
 
             String actual = writer.toString();
-            compareTxt(getClass().getResourceAsStream("/metrixResults.csv"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixResults.csv"),
+                    new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
 
     @Test
-    public void metrixNetworkPointResultTest() throws IOException, URISyntaxException {
+    void metrixNetworkPointResultTest() throws URISyntaxException {
         // Create results
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
@@ -125,7 +126,7 @@ public class MetrixRunResultTest extends AbstractConverterTest {
     }
 
     @Test
-    public void metrixInitOptimizedResultTest() throws IOException, URISyntaxException {
+    void metrixInitOptimizedResultTest() throws IOException, URISyntaxException {
         // Init time series
         List<TimeSeries> initTimeSeriesList = new ArrayList<>();
 
@@ -162,12 +163,8 @@ public class MetrixRunResultTest extends AbstractConverterTest {
             bufferedWriter.flush();
 
             String actual = writer.toString();
-            try {
-                compareTxt(getClass().getResourceAsStream("/metrixInitOptimizedResults.csv"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
-            } catch (UncheckedIOException e) {
-                fail();
-            }
-
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixInitOptimizedResults.csv"),
+                    new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
 }

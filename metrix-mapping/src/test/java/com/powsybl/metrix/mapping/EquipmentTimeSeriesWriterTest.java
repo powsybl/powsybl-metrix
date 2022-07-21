@@ -10,12 +10,11 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
@@ -24,9 +23,10 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.TreeSet;
 
-import static org.junit.Assert.fail;
+import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
+class EquipmentTimeSeriesWriterTest {
 
     private Network network;
 
@@ -34,18 +34,16 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
 
     TimeSeriesMapper mapper;
 
-    private boolean ignoreLimits = false;
+    private final boolean ignoreLimits = false;
 
-    private boolean ignoreEmptyFilter = false;
+    private final boolean ignoreEmptyFilter = false;
 
-    private boolean identifyConstantTimeSeries = true;
+    private final boolean identifyConstantTimeSeries = true;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
-        super.setUp();
-
         // create test network
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
@@ -83,7 +81,7 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
     }
 
     @Test
-    public void equipmentTimeSeriesConstantVariantTest() throws Exception {
+    void equipmentTimeSeriesConstantVariantTest() throws Exception {
 
         String directoryName = "/expected/EquipmentTimeSeriesWriter/";
 
@@ -100,9 +98,7 @@ public class EquipmentTimeSeriesWriterTest extends AbstractConverterTest {
         // Check equipment time series output
         try (InputStream expected = getClass().getResourceAsStream(directoryName + "version_1.csv")) {
             try (InputStream actual = new ByteArrayInputStream(equipmentTimeSeriesWriter.toString().getBytes(StandardCharsets.UTF_8))) {
-                compareTxt(expected, actual);
-            } catch (UncheckedIOException e) {
-                fail();
+                assertNotNull(compareStreamTxt(expected, actual));
             }
         }
     }

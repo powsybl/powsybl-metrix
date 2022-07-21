@@ -10,13 +10,12 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
@@ -25,31 +24,28 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.util.*;
 
-import static org.junit.Assert.fail;
+import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@Ignore
-public class BalanceSummaryTest extends AbstractConverterTest {
+@Disabled
+class BalanceSummaryTest {
 
     private static final char SEPARATOR = ';';
 
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
-        super.setUp();
-
         // create test network
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test
-    public void balanceSummaryTest() throws Exception {
+    void balanceSummaryTest() throws Exception {
 
         String directoryName = "/expected/BalanceSummary/";
-
-        Map<String, List<MappingVariable>> results = new HashMap<>();
 
         // Mapping script
         String script = String.join(System.lineSeparator(),
@@ -109,9 +105,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
             bufferedWriter.flush();
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                    compareTxt(expected, actual);
-                } catch (UncheckedIOException e) {
-                    fail();
+                    assertNotNull(compareStreamTxt(expected, actual));
                 }
             }
         }
@@ -119,15 +113,13 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Check balance summary output
         try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.txt")) {
             try (InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                compareTxt(expected, actual);
-            } catch (UncheckedIOException e) {
-                fail();
+                assertNotNull(compareStreamTxt(expected, actual));
             }
         }
     }
 
     @Test
-    public void balanceMappingNokTest() throws Exception {
+    void balanceMappingNokTest() throws Exception {
 
         String directoryName = "/expected/BalanceSummary/";
 
@@ -174,7 +166,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
             bufferedWriter.flush();
             try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceMappingNok.csv")) {
                 try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                    compareTxt(expected, actual);
+                    assertNotNull(compareStreamTxt(expected, actual));
                 }
             }
         }
@@ -182,7 +174,7 @@ public class BalanceSummaryTest extends AbstractConverterTest {
         // Check balance summary output
         try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceMappingNok.txt")) {
             try (InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                compareTxt(expected, actual);
+                assertNotNull(compareStreamTxt(expected, actual));
             }
         }
     }

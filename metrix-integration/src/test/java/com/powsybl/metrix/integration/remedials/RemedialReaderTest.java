@@ -2,7 +2,7 @@ package com.powsybl.metrix.integration.remedials;
 
 import com.powsybl.commons.PowsyblException;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Java6Assertions.*;
 
-public class RemedialReaderTest {
+class RemedialReaderTest {
 
     @Test
     public void parseFileTest() throws URISyntaxException, IOException {

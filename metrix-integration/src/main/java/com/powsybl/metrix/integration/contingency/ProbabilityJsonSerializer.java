@@ -21,9 +21,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 @AutoService(ExtensionJsonSerializer.class)
 public class ProbabilityJsonSerializer implements ExtensionJsonSerializer<Contingency, Probability> {
     @Override

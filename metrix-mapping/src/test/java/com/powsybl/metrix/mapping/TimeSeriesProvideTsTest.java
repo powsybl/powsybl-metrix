@@ -12,30 +12,30 @@ import com.google.common.collect.ImmutableSet;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TimeSeriesProvideTsTest {
+class TimeSeriesProvideTsTest {
 
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         // create test network
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test
-    public void provideTsDefaultVariableTest() throws Exception {
+    void provideTsDefaultVariableTest() {
 
         // mapping script
         String script = String.join(System.lineSeparator(),
@@ -100,7 +100,7 @@ public class TimeSeriesProvideTsTest {
     }
 
     @Test
-    public void provideTsVariableTest() throws Exception {
+    void provideTsVariableTest() {
 
         // mapping script
         String script = String.join(System.lineSeparator(),
@@ -222,7 +222,7 @@ public class TimeSeriesProvideTsTest {
     }
 
     @Test
-    public void provideTsNotMappedTest() throws Exception {
+    void provideTsNotMappedTest() throws Exception {
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "provideTsGenerators {",
@@ -246,7 +246,7 @@ public class TimeSeriesProvideTsTest {
     }
 
     @Test
-    public void provideTsEmptyFilterTest() throws Exception {
+    void provideTsEmptyFilterTest() throws Exception {
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "provideTsGenerators {",

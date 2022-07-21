@@ -9,7 +9,8 @@
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
-import com.powsybl.commons.AbstractConverterTest;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.config.PlatformConfig;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.computation.local.LocalCommandExecutor;
@@ -26,9 +27,12 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.*;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -39,11 +43,22 @@ import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class MetrixTest extends AbstractConverterTest {
+class MetrixTest {
+    private FileSystem fileSystem;
+
+    @BeforeEach
+    public void setUp() {
+        this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException {
+        this.fileSystem.close();
+    }
 
     @Test
-    public void testMetrix() throws IOException {
-        Path workspace = tmpDir.resolve("workspace");
+    void testMetrix() throws IOException {
+        Path workspace = Files.createDirectory(fileSystem.getPath("/tmp"));
         Files.createDirectories(workspace);
         ComputationManager computationManager = new LocalComputationManager(workspace);
 
@@ -87,7 +102,7 @@ public class MetrixTest extends AbstractConverterTest {
 
         MetrixAnalysisResult analysisResult = new MetrixAnalysisResult(dslData, timeSeriesMappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult);
 
-        try (ZipOutputStream log = new ZipOutputStream(Files.newOutputStream(tmpDir.resolve("logs.gz")))) {
+        try (ZipOutputStream log = new ZipOutputStream(Files.newOutputStream(fileSystem.getPath("logs.gz")))) {
             MetrixMock metrix = new MetrixMock(
                 null,
                 remedialActionReader,
@@ -107,12 +122,12 @@ public class MetrixTest extends AbstractConverterTest {
     }
 
     @Test
-    public void testMetrixChunk() throws IOException, ExecutionException, InterruptedException {
-        Path workingDir = Files.createDirectories(fileSystem.getPath("/tmp", "etc"));
+    void testMetrixChunk() throws IOException, ExecutionException, InterruptedException {
+        Files.createDirectories(fileSystem.getPath("/tmp", "etc"));
         LocalComputationConfig localComputationConfig = LocalComputationConfig.load(PlatformConfig.defaultConfig(), fileSystem);
         LocalCommandExecutor commandExecutor = new LocalCommandExecutor() {
             @Override
-            public int execute(String s, List<String> list, Path path, Path path1, Path path2, Map<String, String> map) throws IOException, InterruptedException {
+            public int execute(String s, List<String> list, Path path, Path path1, Path path2, Map<String, String> map) {
                 return 0;
             }
 
@@ -130,10 +145,10 @@ public class MetrixTest extends AbstractConverterTest {
 
         Network network = NetworkXml.read(MetrixTest.class.getResourceAsStream("/simpleNetwork.xml"));
 
-        Path remedialActionFile = tmpDir.resolve("remedialActionFile.txt");
+        Path remedialActionFile = fileSystem.getPath("remedialActionFile.txt");
         Files.createFile(remedialActionFile);
-        Path logFile = tmpDir.resolve("log");
-        Path logDetailFile = tmpDir.resolve("logDebug");
+        Path logFile = fileSystem.getPath("log");
+        Path logDetailFile = fileSystem.getPath("logDebug");
 
         MetrixParameters parameters = new MetrixParameters();
         ContingenciesProvider contingenciesProvider = network1 -> Collections.emptyList();

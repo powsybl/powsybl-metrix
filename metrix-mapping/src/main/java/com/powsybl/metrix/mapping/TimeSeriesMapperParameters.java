@@ -12,9 +12,6 @@ import com.google.common.collect.Range;
 
 import java.util.*;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class TimeSeriesMapperParameters {
 
     private final TreeSet<Integer> versions;

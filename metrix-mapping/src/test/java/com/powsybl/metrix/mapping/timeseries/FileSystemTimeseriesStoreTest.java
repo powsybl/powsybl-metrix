@@ -8,26 +8,41 @@
 
 package com.powsybl.metrix.mapping.timeseries;
 
-import com.powsybl.commons.AbstractConverterTest;
-import org.junit.Test;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class FileSystemTimeseriesStoreTest extends AbstractConverterTest {
+class FileSystemTimeseriesStoreTest {
+    private FileSystem fileSystem;
+
+    @BeforeEach
+    public void setUp() {
+        this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException {
+        this.fileSystem.close();
+    }
 
     @Test
-    public void testTsStore() throws IOException {
-        Path resDir = Files.createDirectory(fileSystem.getPath("tmp/res"));
+    void testTsStore() throws IOException {
+        Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();

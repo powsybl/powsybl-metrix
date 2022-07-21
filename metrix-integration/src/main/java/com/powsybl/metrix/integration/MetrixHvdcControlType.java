@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-/**
- * Created by marifunf on 06/07/17.
- */
 public enum MetrixHvdcControlType {
     OPTIMIZED(1),
     FIXED(2); // default value

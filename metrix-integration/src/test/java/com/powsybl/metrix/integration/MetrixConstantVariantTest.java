@@ -22,28 +22,26 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.Writer;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MetrixConstantVariantTest {
+class MetrixConstantVariantTest {
 
     private FileSystem fileSystem;
     private Path metrixFile;
@@ -52,7 +50,7 @@ public class MetrixConstantVariantTest {
 
     private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         metrixFile = fileSystem.getPath("/metrix.groovy");
@@ -61,14 +59,13 @@ public class MetrixConstantVariantTest {
         network.getLoad("FVERGE11_L").getTerminal().connect(); // Connect 4th load to use it
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         fileSystem.close();
     }
 
     @Test
-    public void constantVariantTest() throws IOException, URISyntaxException {
-        Path workingDir = Paths.get(getClass().getResource("/").toURI());
+    void constantVariantTest() throws IOException {
         // Creates metrix file
         try (Writer writer = Files.newBufferedWriter(metrixFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -139,6 +136,6 @@ public class MetrixConstantVariantTest {
                 "1;CONELE;2;FVALDI11_L;401;FVALDI11_L2;501;",
                 "1;QATI00MN;1;FP.AND1  FVERGE1  2;601;",
                 "1;PROBABINC;2;b;201;a;0.002;") + System.lineSeparator(),
-                new String(Files.readAllBytes(variantFile), StandardCharsets.UTF_8));
+                Files.readString(variantFile));
     }
 }

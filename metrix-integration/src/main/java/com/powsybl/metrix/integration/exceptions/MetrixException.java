@@ -10,9 +10,6 @@ package com.powsybl.metrix.integration.exceptions;
 
 import java.text.MessageFormat;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixException extends RuntimeException {
 
     public MetrixException(String message) {

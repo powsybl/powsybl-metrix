@@ -24,9 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixDie {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixDie.class);

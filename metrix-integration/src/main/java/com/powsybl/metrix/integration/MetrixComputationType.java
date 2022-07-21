@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-/**
- * Created by marifunf on 17/07/17.
- */
 public enum MetrixComputationType {
     OPF(0),
     LF(1),

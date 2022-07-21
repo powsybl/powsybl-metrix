@@ -10,19 +10,17 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -30,22 +28,23 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.TreeSet;
 
-public class NetworkPointWriterTest extends AbstractConverterTest {
+import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+class NetworkPointWriterTest {
 
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
-    public void setUp() throws IOException {
-        super.setUp();
-
+    @BeforeEach
+    public void setUp() {
         // create test network
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test
-    public void networkPointConstantVariantTest() throws Exception {
+    void networkPointConstantVariantTest() throws Exception {
 
         String directoryName = "/expected/NetworkPointWriter/";
 
@@ -345,7 +344,7 @@ public class NetworkPointWriterTest extends AbstractConverterTest {
                 new Scanner(expected).nextLine();
                 new Scanner(actual).nextLine();
                 new Scanner(actual).nextLine();
-                compareTxt(expected, actual);
+                assertNotNull(compareStreamTxt(expected, actual));
             }
         }
     }

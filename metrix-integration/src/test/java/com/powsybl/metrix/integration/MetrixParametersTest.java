@@ -8,14 +8,14 @@
 
 package com.powsybl.metrix.integration;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MetrixParametersTest {
+class MetrixParametersTest {
 
     @Test
-    public void getSetTest() throws Exception {
+    void getSetTest() {
         MetrixParameters p = new MetrixParameters(
             MetrixComputationType.OPF_WITHOUT_REDISPATCHING,
             10f,
@@ -195,7 +195,7 @@ public class MetrixParametersTest {
     }
 
     @Test
-    public void toStringTest() {
+    void toStringTest() {
         MetrixParameters p = new MetrixParameters();
         String expected = "{computationType=LF, lossFactor=0.0, nominalU=100, propagateBranchTripping=false}";
         assertEquals(expected, p.toString());

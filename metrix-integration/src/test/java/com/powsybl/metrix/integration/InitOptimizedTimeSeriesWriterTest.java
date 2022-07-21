@@ -1,15 +1,22 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
@@ -17,22 +24,21 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.TreeSet;
 
-public class InitOptimizedTimeSeriesWriterTest extends AbstractConverterTest {
+import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
+
+class InitOptimizedTimeSeriesWriterTest {
 
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
-        super.setUp();
-
-        // create test network
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test
-    public void initOptimizedTimeSeriesWriterTest() throws Exception {
+    void initOptimizedTimeSeriesWriterTest() {
         // Mapping script
         String script = String.join(System.lineSeparator(),
                 "mapToPhaseTapChangers {",
@@ -73,6 +79,6 @@ public class InitOptimizedTimeSeriesWriterTest extends AbstractConverterTest {
 
         // Check
         InputStream expected = getClass().getResourceAsStream("/inputs_optimized_time_series.json");
-        compareTxt(expected, writer.toString());
+        Assertions.assertNotNull(compareStreamTxt(expected, writer.toString()));
     }
 }

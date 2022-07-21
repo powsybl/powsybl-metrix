@@ -14,10 +14,8 @@ import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
@@ -26,9 +24,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TimeSeriesMapperTest {
+class TimeSeriesMapperTest {
 
     public enum OtherVariable implements MappingVariable {
         OTHER_VARIABLE_1("otherVariable1");
@@ -58,24 +57,24 @@ public class TimeSeriesMapperTest {
 
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeEach
+    public void setUp() {
         // create test network
         network = MappingTestNetwork.create();
     }
 
     @Test
-    public void mappingTest() throws Exception {
+    void mappingTest() {
 
         List<String> equipmentTimeSeriesNames = new ArrayList<>();
-        List<Identifiable> equipmentIds = new ArrayList<>();
+        List<Identifiable<?>> equipmentIds = new ArrayList<>();
         List<Double> equipmentValues = new ArrayList<>();
         List<String> equipmentVariables = new ArrayList<>();
 
         List<String> otherTimeSeriesNames = new ArrayList<>();
-        List<Identifiable> otherIds = new ArrayList<>();
+        List<Identifiable<?>> otherIds = new ArrayList<>();
         List<Double> otherValues = new ArrayList<>();
         List<String> otherVariables = new ArrayList<>();
 
@@ -100,7 +99,7 @@ public class TimeSeriesMapperTest {
         // launch TimeSeriesMapper test
         TimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override
-            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 if (variable instanceof EquipmentVariable) {
                     equipmentTimeSeriesNames.add(timeSeriesName);
                     equipmentIds.add(identifiable);
@@ -130,7 +129,7 @@ public class TimeSeriesMapperTest {
     }
 
     @Test
-    public void goodIndexTest() throws Exception {
+    void goodIndexTest() {
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
@@ -150,11 +149,8 @@ public class TimeSeriesMapperTest {
         mappingConfig.checkIndexUnicity(store);
     }
 
-    @Rule
-    public ExpectedException exceptions = ExpectedException.none();
-
     @Test
-    public void wrongIndexTest() throws Exception {
+    void wrongIndexTest() {
         // create time series space mock
         TimeSeriesIndex index1 = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
         TimeSeriesIndex index2 = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-03T00:00:00Z"), Duration.ofDays(2));
@@ -172,8 +168,8 @@ public class TimeSeriesMapperTest {
         mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
         mappingConfig.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
 
-        exceptions.expect(TimeSeriesMappingException.class);
-        exceptions.expectMessage("Time series involved in the mapping must have the same index");
-        mappingConfig.checkIndexUnicity(store);
+        assertThrows(TimeSeriesMappingException.class,
+            () -> mappingConfig.checkIndexUnicity(store),
+            "Time series involved in the mapping must have the same index");
     }
 }

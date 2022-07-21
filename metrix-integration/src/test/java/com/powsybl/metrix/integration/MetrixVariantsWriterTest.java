@@ -20,7 +20,7 @@ import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
@@ -32,12 +32,12 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MetrixVariantsWriterTest {
+class MetrixVariantsWriterTest {
 
     @Test
-    public void baseCaseTest() throws IOException {
+    void baseCaseTest() throws IOException {
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             new MetrixVariantsWriter(null, null)
@@ -50,7 +50,7 @@ public class MetrixVariantsWriterTest {
     }
 
     @Test
-    public void variantsTest() throws IOException {
+    void variantsTest() throws IOException {
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(
                 Interval.parse("2015-01-01T00:00:00Z/2015-01-01T01:00:00Z"),
                 Duration.ofMinutes(15));

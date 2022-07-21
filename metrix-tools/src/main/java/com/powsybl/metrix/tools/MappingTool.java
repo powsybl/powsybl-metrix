@@ -42,9 +42,6 @@ import java.util.TreeSet;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 @AutoService(Tool.class)
 public class MappingTool implements Tool {
 
