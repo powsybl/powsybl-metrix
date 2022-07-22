@@ -317,9 +317,8 @@ public class MetrixInputData {
             double r = twt.getR();
             int index = metrixNetwork.getIndex(twt);
 
-            PhaseTapChanger ptc = twt.getPhaseTapChanger();
-
-            if (ptc != null) {
+            if (twt.hasPhaseTapChanger()) {
+                PhaseTapChanger ptc = twt.getPhaseTapChanger();
                 int position = ptc.getTapPosition();
                 x = x * (1 + ptc.getStep(position).getX() / 100);
                 r = r * (1 + ptc.getStep(position).getR() / 100);

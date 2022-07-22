@@ -313,22 +313,22 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         Generator generator = network.getGenerator(identifiable.getId());
         switch (variable) {
             case targetP:
-                generator.setTargetP((float) equipmentValue);
+                generator.setTargetP(equipmentValue);
                 break;
             case targetQ:
-                generator.setTargetQ((float) equipmentValue);
+                generator.setTargetQ(equipmentValue);
                 break;
             case minP:
-                generator.setMinP((float) equipmentValue);
+                generator.setMinP(equipmentValue);
                 break;
             case maxP:
-                generator.setMaxP((float) equipmentValue);
+                generator.setMaxP(equipmentValue);
                 break;
             case voltageRegulatorOn:
                 generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
                 break;
             case targetV:
-                generator.setTargetV((float) equipmentValue);
+                generator.setTargetV(equipmentValue);
                 break;
             case disconnected:
                 if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
