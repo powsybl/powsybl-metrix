@@ -116,7 +116,7 @@ class MetrixPostProcessingTimeSeriesTest {
         TimeSeriesMappingConfig tsConfig = TimeSeriesDslLoader.load(mappingFile, network, mappingParameters, store, null);
         MetrixDslData dslData = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
 
-        Map<String, NodeCalc> postProcessingTimeSeries = AbstractMetrix.getPostProcessingTimeSeries(dslData, tsConfig, store);
+        Map<String, NodeCalc> postProcessingTimeSeries = AbstractMetrix.getPostProcessingTimeSeries(dslData, tsConfig, store, null);
         assertEquals(2 * 5, postProcessingTimeSeries.size());
 
         NodeCalc flow1 = new TimeSeriesNameNodeCalc("FLOW_FVALDI1  FTDPRA1  1");
