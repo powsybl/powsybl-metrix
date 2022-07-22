@@ -52,7 +52,9 @@ jobs:
           java-version: 11
 
       - name: Install gcovr
-        run: sudo pip install gcovr
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcovr
 
       - name: Install Sonar wrapper
         working-directory: ${{ runner.workspace }}
