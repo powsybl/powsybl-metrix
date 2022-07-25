@@ -599,11 +599,11 @@ public class MetrixNetwork {
             Terminal terminal1 = nodeBreakerView.getTerminal1(switchId);
             Terminal terminal2 = nodeBreakerView.getTerminal2(switchId);
 
-            if (terminal1 == null || terminal1.getConnectable().getType() == ConnectableType.BUSBAR_SECTION) {
+            if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
                 terminal1 = terminal2;
             }
 
-            if (terminal1 == null || terminal1.getConnectable().getType() == ConnectableType.BUSBAR_SECTION) {
+            if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
                 sw.setRetained(true);
                 mappedSwitchMap.put(switchId, switchId);
             } else {
@@ -707,10 +707,10 @@ public class MetrixNetwork {
                 }
             }
 
-            Set<ConnectableType> types = EnumSet.of(ConnectableType.LINE,
-                    ConnectableType.TWO_WINDINGS_TRANSFORMER,
-                    ConnectableType.THREE_WINDINGS_TRANSFORMER,
-                    ConnectableType.HVDC_CONVERTER_STATION);
+            Set<IdentifiableType> types = EnumSet.of(IdentifiableType.LINE,
+                    IdentifiableType.TWO_WINDINGS_TRANSFORMER,
+                    IdentifiableType.THREE_WINDINGS_TRANSFORMER,
+                    IdentifiableType.HVDC_CONVERTER_STATION);
 
             // disconnect equipments and open switches
             for (Switch s : switchesToOpen) {
