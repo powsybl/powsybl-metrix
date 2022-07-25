@@ -185,7 +185,8 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeGenerator(BufferedWriter writer, String id) throws IOException {
         Generator generator = network.getGenerator(id);
-        Substation substation = generator.getTerminal().getVoltageLevel().getSubstation();
+        Substation substation = generator.getTerminal().getVoltageLevel().getSubstation()
+                .orElseThrow(() -> new IllegalStateException("No substation for generator [" + id + "]"));
 
         writer.write(substation.getId());
         writer.write(CSV_SEPARATOR);
@@ -205,8 +206,6 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeHvdcLine(BufferedWriter writer, String id) throws IOException {
         HvdcLine hvdcLine = network.getHvdcLine(id);
-        Substation substation1 = hvdcLine.getConverterStation1().getTerminal().getVoltageLevel().getSubstation();
-        Substation substation2 = hvdcLine.getConverterStation2().getTerminal().getVoltageLevel().getSubstation();
 
         float min = (float) -hvdcLine.getMaxP();
         float max = (float) hvdcLine.getMaxP();
@@ -236,7 +235,6 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writePst(BufferedWriter writer, String id) throws IOException {
         TwoWindingsTransformer pst = network.getTwoWindingsTransformer(id);
-        Substation substation = pst.getSubstation();
 
         int currentTap = pst.getPhaseTapChanger().getTapPosition();
 
@@ -250,7 +248,8 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeLoad(BufferedWriter writer, String id) throws IOException {
         Load load = network.getLoad(id);
-        Substation substation = load.getTerminal().getVoltageLevel().getSubstation();
+        Substation substation = load.getTerminal().getVoltageLevel().getSubstation()
+                .orElseThrow(() -> new IllegalStateException("No substation for load [" + id + "]"));
 
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         String fixedActivePower = "";
@@ -278,9 +277,10 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeBreaker(BufferedWriter writer, String id) throws IOException {
         Switch sw = network.getSwitch(id);
-        Substation substation = sw.getVoltageLevel().getSubstation();
+        Substation substation = sw.getVoltageLevel().getSubstation()
+                .orElseThrow(() -> new IllegalStateException("No substation for switch [" + id + "]"));
 
-        String paysCvg = substation.getProperty("paysCvg");
+        String paysCvg = substation.getProperty("payCvg");
         if (paysCvg == null) {
             paysCvg = "";
         }

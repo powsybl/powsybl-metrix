@@ -435,7 +435,8 @@ public class MetrixInputData {
         for (Bus bus : metrixNetwork.getBusList()) {
             int index = metrixNetwork.getIndex(bus);
 
-            Substation substation = bus.getVoltageLevel().getSubstation();
+            Substation substation = bus.getVoltageLevel().getSubstation()
+                    .orElseThrow(() -> new IllegalStateException("No substation for bus [" + bus.getId() + "]"));
             cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(substation));
         }
         die.setIntArray("CPPOSREG", cpposreg);

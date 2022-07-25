@@ -442,7 +442,9 @@ public class MetrixNetwork {
             for (Bus bus : vl.getBusBreakerView().getBuses()) {
                 if (bus.isInMainConnectedComponent()) {
                     addBus(bus);
-                    addCountry(getCountryCode(vl.getSubstation()));
+                    Substation opt = vl.getSubstation()
+                            .orElseThrow(() -> new IllegalStateException("No substation for vl [" + vl.getId() + "]"));
+                    addCountry(getCountryCode(opt));
                 } else {
                     nbNok++;
                 }
