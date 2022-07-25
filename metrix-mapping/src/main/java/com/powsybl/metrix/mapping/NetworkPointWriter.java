@@ -428,11 +428,11 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             throw new UncheckedIOException(e);
         }
 
-        // Remove variant
-        network.getVariantManager().removeVariant(getStateId(point, index));
-
         // Return to initial values for attributes not depending on the variant
         restoreInitialStateValues();
+
+        // Remove variant
+        network.getVariantManager().removeVariant(getStateId(point, index));
     }
 
     @Override
