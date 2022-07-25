@@ -15,9 +15,9 @@ import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.MappingVariable
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
-import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
-import com.powsybl.timeseries.ast.CalculatedTimeSeriesDslAstTransformation
+import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslAstTransformation
+import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
@@ -779,7 +779,7 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
     private static void addEquipmentTimeSeries(Object timeSeriesName, MappingVariable variable, String equipmentId, TimeSeriesMappingConfig tsConfig, Binding binding) {
-        CalculatedTimeSeriesDslLoader.TimeSeriesGroovyObject timeSeries = ((CalculatedTimeSeriesDslLoader.TimeSeriesGroovyObject) binding.getVariable("timeSeries"))
+        CalculatedTimeSeriesGroovyDslLoader.TimeSeriesGroovyObject timeSeries = ((CalculatedTimeSeriesGroovyDslLoader.TimeSeriesGroovyObject) binding.getVariable("timeSeries"))
         if (timeSeriesName instanceof Number && !timeSeries.exists(timeSeriesName.toString())) {
             timeSeries[timeSeriesName.toString()] = timeSeriesName.floatValue()
         } else {
@@ -1058,7 +1058,7 @@ class MetrixDslDataLoader extends DslLoader {
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixHvdcControlType")
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixComputationType")
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixGeneratorsBinding.ReferenceVariable")
-        def astCustomizer = new ASTTransformationCustomizer(new CalculatedTimeSeriesDslAstTransformation())
+        def astCustomizer = new ASTTransformationCustomizer(new CalculatedTimeSeriesGroovyDslAstTransformation())
         def config = new CompilerConfiguration()
         config.addCompilationCustomizers(imports)
         config.addCompilationCustomizers(astCustomizer)
@@ -1149,7 +1149,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         Binding binding = new Binding()
 
-        CalculatedTimeSeriesDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
+        CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
         if (out != null) {
             binding.out = out
@@ -1169,7 +1169,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         Binding binding = new Binding()
 
-        CalculatedTimeSeriesDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
+        CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
         if (out != null) {
             binding.out = out
