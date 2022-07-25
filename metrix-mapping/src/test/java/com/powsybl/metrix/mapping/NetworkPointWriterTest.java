@@ -21,11 +21,11 @@ import org.threeten.extra.Interval;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Scanner;
 import java.util.TreeSet;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
@@ -319,7 +319,7 @@ class NetworkPointWriterTest {
                     try {
                         compareTxt(networkPointWriterOutput, directoryName, fileName);
                     } catch (Exception e) {
-                        throw new AssertionError("Impossible to check " + fileName);
+                        throw new AssertionError("Impossible to check " + fileName, e);
                     }
 
                     networkPointWriterOutput.reset();
@@ -340,11 +340,33 @@ class NetworkPointWriterTest {
     private void compareTxt(ByteArrayOutputStream stream, String directoryName, String fileName) throws Exception {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
             try (InputStream actual = new ByteArrayInputStream(stream.toByteArray())) {
-                new Scanner(expected).nextLine();
-                new Scanner(expected).nextLine();
-                new Scanner(actual).nextLine();
-                new Scanner(actual).nextLine();
+                advanceStream(expected, '\n', 2);
+                advanceStream(actual, '\n', 2);
                 assertNotNull(compareStreamTxt(expected, actual));
+            }
+        }
+    }
+
+    /**
+     * Advance in the provided input stream until target {@code target} has been met {@code targetCount} times.
+     * Progression can also be stopped by the stream total consumption if not enough {@code target} occurrences
+     * are found.
+     *
+     * @param stream       an InputStream
+     * @param target       a character to look for in the stream
+     * @param targetCount  number of times the character needs to be met before stopping
+     * @throws IOException When input stream parameter cannot be read for some reason
+     */
+    private void advanceStream(InputStream stream, char target, int targetCount) throws IOException {
+        int charCode;
+        int counter = 0;
+        while ((charCode = stream.read()) != -1) {
+            char c = (char) charCode;
+            if (c == target) {
+                counter++;
+            }
+            if (counter == targetCount) {
+                break;
             }
         }
     }
