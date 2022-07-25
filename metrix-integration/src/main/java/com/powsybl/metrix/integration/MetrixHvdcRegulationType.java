@@ -8,10 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-/**
- * Created by marifunf on 04/07/17.
- */
-
 public enum MetrixHvdcRegulationType {
     CONTROL_OFF(0), // defined on METRIX side but not used for the moment
     OPTIMIZED_SETPOINT(1),

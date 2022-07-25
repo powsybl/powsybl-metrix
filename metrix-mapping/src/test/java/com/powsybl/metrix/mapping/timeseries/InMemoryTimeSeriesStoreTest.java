@@ -10,7 +10,7 @@ package com.powsybl.metrix.mapping.timeseries;
 
 import com.google.common.collect.Sets;
 import com.powsybl.timeseries.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,16 +21,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
-public class InMemoryTimeSeriesStoreTest {
+class InMemoryTimeSeriesStoreTest {
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         Instant now = Instant.ofEpochMilli(978303600000L);
         RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now, now.plus(2, ChronoUnit.HOURS), Duration.ofHours(1));
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();

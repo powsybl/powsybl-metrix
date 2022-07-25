@@ -13,9 +13,6 @@ import com.google.common.collect.ImmutableMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Created by marifunf on 23/06/17.
- */
 public class MetrixSection {
 
     private String id;

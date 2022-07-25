@@ -19,10 +19,6 @@ import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian at rte-france.com>
- */
 public final class TimeSeriesStoreUtil {
 
     private TimeSeriesStoreUtil() {

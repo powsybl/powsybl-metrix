@@ -11,9 +11,6 @@ package com.powsybl.metrix.mapping
 import com.powsybl.iidm.network.Identifiable
 import groovy.transform.CompileStatic
 
-/**
- * @author Nicolas Lhuillier <nicolas.lhuillier@rte-france.com>
- */
 class Filter {
 
     @CompileStatic

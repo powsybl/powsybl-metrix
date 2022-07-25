@@ -14,16 +14,16 @@ import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class TimeSeriesMappingJsonTest {
+class TimeSeriesMappingJsonTest {
 
     @Test
-    public void test() throws JsonProcessingException {
+    void test() throws JsonProcessingException {
         ObjectMapper objectMapper = JsonUtil.createObjectMapper()
                 .registerModule(new TimeSeriesMappingConfigJsonModule());
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();

@@ -14,7 +14,7 @@ import com.powsybl.timeseries.ast.BinaryOperation;
 import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,10 +26,10 @@ import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class CalculatedTimeseriesStoreTest {
+class CalculatedTimeseriesStoreTest {
 
     @Test
-    public void test() throws IOException {
+    void test() throws IOException {
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(InMemoryTimeSeriesStore.class.getResourceAsStream("/expected/simpleExport.csv")))) {
             store.importTimeSeries(reader);

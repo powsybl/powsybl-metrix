@@ -22,11 +22,9 @@ import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
@@ -40,9 +38,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class MetrixDslDataLoaderTest {
+class MetrixDslDataLoaderTest {
 
     private FileSystem fileSystem;
 
@@ -56,7 +54,7 @@ public class MetrixDslDataLoaderTest {
 
     private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
@@ -78,15 +76,15 @@ public class MetrixDslDataLoaderTest {
         }
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws Exception {
         fileSystem.close();
     }
 
     @Test
-    public void testWrongConfigurations() throws IOException {
+    void testWrongConfigurations() throws IOException {
         try (OutputStream writer = Files.newOutputStream(dslFile);
-             InputStream inputStream = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/badConfiguration.groovy");
+             InputStream inputStream = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/badConfiguration.groovy")
         ) {
             IOUtils.copy(inputStream, writer);
         }
@@ -159,7 +157,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testAutomaticList() throws IOException {
+    void testAutomaticList() throws IOException {
 
         try (OutputStream os = Files.newOutputStream(dslFile);
              InputStream is = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/automaticList.groovy")
@@ -248,7 +246,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testListAsParameter() throws IOException {
+    void testListAsParameter() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -288,7 +286,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testLoadDefaultValue() throws IOException {
+    void testLoadDefaultValue() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -320,7 +318,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testSpaceTimeSeries() throws IOException {
+    void testSpaceTimeSeries() throws IOException {
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
@@ -377,7 +375,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testMixedTimeSeries() throws IOException {
+    void testMixedTimeSeries() throws IOException {
 
         Path mappingFile2 = fileSystem.getPath("/mapping2.dsl");
         try (Writer writer = Files.newBufferedWriter(mappingFile2, StandardCharsets.UTF_8)) {
@@ -447,11 +445,8 @@ public class MetrixDslDataLoaderTest {
         tsConfig.checkIndexUnicity(store);
     }
 
-    @Rule
-    public ExpectedException exceptions = ExpectedException.none();
-
     @Test
-    public void testTimeSeriesNotFound() throws IOException {
+    void testTimeSeriesNotFound() throws IOException {
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(TimeSeries.createDouble("tsFoo", index, 1d, 1d));
 
@@ -478,13 +473,13 @@ public class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = TimeSeriesDslLoader.load(mappingFile, network, mappingParameters, store, null);
 
-        exceptions.expect(TimeSeriesException.class);
-        exceptions.expectMessage("Time Series 'ts' not found");
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        assertThrows(TimeSeriesException.class,
+            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig),
+            "Time Series 'ts' not found");
     }
 
     @Test
-    public void contingencyFlowResultTest() throws IOException {
+    void contingencyFlowResultTest() throws IOException {
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                 "def list = ['FP.AND1  FVERGE1  1', 'FP.AND1  FVERGE1  2', 'FS.BIS1  FVALDI1  1', 'FS.BIS1  FVALDI1  2']",
@@ -509,7 +504,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testParameters() throws IOException {
+    void testParameters() throws IOException {
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "parameters {",
@@ -593,7 +588,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void detailedMarginalVariationsTest() throws IOException {
+    void detailedMarginalVariationsTest() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -624,7 +619,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testWrongId() throws IOException {
+    void testWrongId() throws IOException {
         try (OutputStream os = Files.newOutputStream(dslFile);
              InputStream is = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/wrongId.groovy")
         ) {
@@ -655,7 +650,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testOverloadedConfiguration() throws IOException {
+    void testOverloadedConfiguration() throws IOException {
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
@@ -689,22 +684,19 @@ public class MetrixDslDataLoaderTest {
             ));
         }
 
-        MetrixDslData data;
-        try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
-            TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
-            MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
 
-            assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.thresholdN1, "FVALDI1  FTDPRA1  1"),
-                new MappingKey(MetrixVariable.offGridCostDown, "FSSV.O11_G"),
-                new MappingKey(MetrixVariable.offGridCostUp, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts1"));
-            assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.thresholdN, "FVALDI1  FTDPRA1  1")), mappingConfig.getTimeSeriesToEquipment().get("ts2"));
-            assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.onGridCostDown, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts3"));
-            assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.onGridCostUp, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts4"));
-        }
+        assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.thresholdN1, "FVALDI1  FTDPRA1  1"),
+            new MappingKey(MetrixVariable.offGridCostDown, "FSSV.O11_G"),
+            new MappingKey(MetrixVariable.offGridCostUp, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts1"));
+        assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.thresholdN, "FVALDI1  FTDPRA1  1")), mappingConfig.getTimeSeriesToEquipment().get("ts2"));
+        assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.onGridCostDown, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts3"));
+        assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.onGridCostUp, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts4"));
     }
 
     @Test
-    public void testBoundVariables() throws IOException {
+    void testBoundVariables() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(), "generatorsGroup('binding1') {}", // missing filter -> ignored
@@ -762,7 +754,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void specificContingenciesTest() throws IOException {
+    void specificContingenciesTest() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(), "contingencies {",
@@ -807,7 +799,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void branchRatingsOnSpecificContingenciesTest() throws IOException {
+    void branchRatingsOnSpecificContingenciesTest() throws IOException {
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
@@ -840,9 +832,7 @@ public class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig tsConfig = TimeSeriesDslLoader.load(mappingFile, network, mappingParameters, store, null);
-        try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
-            MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
-        }
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
 
         assertEquals(3, tsConfig.getEquipmentIds("tsN").size());
         assertEquals(2, tsConfig.getEquipmentIds("tsN_1").size());
@@ -865,7 +855,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void branchRatingsEndOrTest() throws IOException {
+    void branchRatingsEndOrTest() throws IOException {
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
@@ -946,7 +936,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testPSTParameters() throws IOException {
+    void testPSTParameters() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -987,7 +977,7 @@ public class MetrixDslDataLoaderTest {
     }
 
     @Test
-    public void testAnalysisBranchMonitoring() throws IOException {
+    void testAnalysisBranchMonitoring() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),

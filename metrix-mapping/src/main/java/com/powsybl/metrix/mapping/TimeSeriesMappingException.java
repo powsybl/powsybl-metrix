@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.mapping;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class TimeSeriesMappingException extends RuntimeException {
 
     public TimeSeriesMappingException(String message) {

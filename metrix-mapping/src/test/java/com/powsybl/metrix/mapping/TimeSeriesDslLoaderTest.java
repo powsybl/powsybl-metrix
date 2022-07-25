@@ -12,23 +12,21 @@ import com.google.common.collect.Sets;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.*;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
 import java.time.Duration;
 import java.util.*;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class TimeSeriesDslLoaderTest {
+class TimeSeriesDslLoaderTest {
 
-    private static final String DEFAULT_SCRIPTS_DELIMITER = "\n\n"; // same as defined in AbstractScript
-
-    private MappingParameters parameters = MappingParameters.load();
+    private final MappingParameters parameters = MappingParameters.load();
 
     @Test
-    public void mappingTest() throws IOException {
+    void mappingTest() {
         // create test network
         Network network = MappingTestNetwork.create();
 
@@ -177,7 +175,7 @@ public class TimeSeriesDslLoaderTest {
     }
 
     @Test
-    public void loadMappingErrorTest() {
+    void loadMappingErrorTest() {
         // create test network
         Network network = MappingTestNetwork.create();
 
@@ -213,7 +211,7 @@ public class TimeSeriesDslLoaderTest {
     }
 
     @Test
-    public void switchMappingErrorTest() {
+    void switchMappingErrorTest() {
         // create test network
         Network network = MappingTestNetwork.create();
 
@@ -241,7 +239,7 @@ public class TimeSeriesDslLoaderTest {
     }
 
     @Test
-    public void tsStatsFunctions() throws IOException {
+    void tsStatsFunctions() throws IOException {
         Network network = MappingTestNetwork.create();
         String script = String.join(System.lineSeparator(),
                 "res_sum = sum(ts['test'])",
@@ -285,7 +283,7 @@ public class TimeSeriesDslLoaderTest {
     }
 
     @Test
-    public void testParameters() throws IOException {
+    void testParameters() {
         Network network = MappingTestNetwork.create();
 
         // mapping script
@@ -300,9 +298,9 @@ public class TimeSeriesDslLoaderTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig config = dsl.load(network, parameters, store, null);
+        dsl.load(network, parameters, store, null);
 
         assertEquals(0.5f, parameters.getToleranceThreshold(), 0f);
-        assertEquals(true, parameters.getWithTimeSeriesStats());
+        assertTrue(parameters.getWithTimeSeriesStats());
     }
 }

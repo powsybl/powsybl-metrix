@@ -9,9 +9,6 @@
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.*
-/**
- * @author Nicolas Lhuillier <nicolas.lhuillier@rte-france.com>
- */
 class FilteringContext {
 
     Identifiable identifiable

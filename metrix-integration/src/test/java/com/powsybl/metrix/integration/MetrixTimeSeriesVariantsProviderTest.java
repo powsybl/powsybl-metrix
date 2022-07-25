@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
@@ -14,9 +21,9 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
@@ -29,9 +36,9 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MetrixTimeSeriesVariantsProviderTest {
+class MetrixTimeSeriesVariantsProviderTest {
     private FileSystem fileSystem;
     private Path metrixFile;
     private Path variantFile;
@@ -41,7 +48,7 @@ public class MetrixTimeSeriesVariantsProviderTest {
 
     private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         metrixFile = fileSystem.getPath("/metrix.groovy");
@@ -50,13 +57,13 @@ public class MetrixTimeSeriesVariantsProviderTest {
         network.getLoad("FVERGE11_L").getTerminal().connect(); // Connect 4th load to use it
     }
 
-    @After
+    @AfterEach
     public void tearDown() throws IOException {
         fileSystem.close();
     }
 
     @Test
-    public void variantsTest() throws IOException, URISyntaxException {
+    void variantsTest() throws IOException, URISyntaxException {
         Path workingDir = Paths.get(getClass().getResource("/").toURI());
         // Creates metrix file
         try (Writer writer = Files.newBufferedWriter(metrixFile, StandardCharsets.UTF_8)) {
@@ -132,6 +139,6 @@ public class MetrixTimeSeriesVariantsProviderTest {
                 "1;CONELE;2;FVALDI11_L;401;FVALDI11_L2;501;",
                 "1;QATI00MN;1;FP.AND1  FVERGE1  2;601;",
                 "1;PROBABINC;2;b;201;a;0.002;") + System.lineSeparator(),
-                new String(Files.readAllBytes(variantFile), StandardCharsets.UTF_8));
+                Files.readString(variantFile));
     }
 }

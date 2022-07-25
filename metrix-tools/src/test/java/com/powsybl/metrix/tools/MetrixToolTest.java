@@ -10,17 +10,17 @@ package com.powsybl.metrix.tools;
 
 import com.powsybl.tools.AbstractToolTest;
 import com.powsybl.tools.Tool;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 
-public class MetrixToolTest extends AbstractToolTest {
+class MetrixToolTest extends AbstractToolTest {
 
     private MetrixTool tool;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         tool = new MetrixTool();
         super.setUp();
@@ -38,7 +38,7 @@ public class MetrixToolTest extends AbstractToolTest {
     }
 
     @Test
-    public void run() {
+    void run() {
 
     }
 }

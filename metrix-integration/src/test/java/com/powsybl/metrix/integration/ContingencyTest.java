@@ -8,38 +8,15 @@
 
 package com.powsybl.metrix.integration;
 
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.contingency.Probability;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.nio.file.FileSystem;
-import java.nio.file.Path;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
-public class ContingencyTest {
-    private FileSystem fileSystem;
-
-    private Path dslFile;
-
-    private Network network;
-
-    @Before
-    public void setUp() {
-        fileSystem = Jimfs.newFileSystem(Configuration.unix());
-        dslFile = fileSystem.getPath("/test.dsl");
-        network = NetworkXml.read(ContingencyTest.class.getResourceAsStream("/simpleNetwork.xml"));
-    }
+class ContingencyTest {
 
     @Test
-    public void testProbability() {
+    void testProbability() {
         Probability a = new Probability(1.2d, null);
         Probability b = new Probability(1.2d, null);
         Probability c = new Probability(1.2d, "somets");

@@ -1257,10 +1257,6 @@ public class TimeSeriesMappingConfigCsvWriter {
         }
     }
 
-    public void printMappingSynthesis() {
-        printMappingSynthesis(System.out, TableFormatterConfig.load());
-    }
-
     public void printMappingSynthesis(PrintStream out) {
         printMappingSynthesis(out, TableFormatterConfig.load());
     }

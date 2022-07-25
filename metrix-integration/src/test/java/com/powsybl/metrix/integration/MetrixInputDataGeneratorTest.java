@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
@@ -10,8 +17,8 @@ import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.assertj.core.api.Assertions;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -22,11 +29,11 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class MetrixInputDataGeneratorTest {
+class MetrixInputDataGeneratorTest {
     private MetrixInputDataGenerator gen;
     private List<String> results;
 
-    @Before
+    @BeforeEach
     public void initMetrixInputDataGenerator() {
         //GIVEN
         results = new ArrayList<>();
@@ -36,7 +43,7 @@ public class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    public void initMetrixInputDataGeneratorWithoutFsu() {
+    void initMetrixInputDataGeneratorWithoutFsu() {
         // GIVEN
         results = new ArrayList<>();
 
@@ -48,7 +55,7 @@ public class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    public void copyDicShouldCopyFilesMetrixAnyDotDic() {
+    void copyDicShouldCopyFilesMetrixAnyDotDic() {
         // WHEN
         List<InputFile> actual = new ArrayList<>();
         gen.copyDic(actual);
@@ -61,7 +68,7 @@ public class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    public void generateInputFileZipDoNotWriteFile() throws IOException {
+    void generateInputFileZipDoNotWriteFile() throws IOException {
         Path remedialActionFile = null;
         MetrixVariantProvider variantProvider = null;
         Network network = null;
@@ -77,7 +84,7 @@ public class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    public void generateInputFileZipDoNotCopyAdditionnalFiles() throws IOException {
+    void generateInputFileZipDoNotCopyAdditionnalFiles() throws IOException {
         //GIVEN
         Path remedialActionFile = Paths.get("remedialActionFile");
         MetrixVariantProvider variantProvider = null;
@@ -94,10 +101,8 @@ public class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    public void generateInputFileZipCallVariantWriter() throws IOException {
+    void generateInputFileZipCallVariantWriter() throws IOException {
         //GIVEN
-        Supplier<
-                MetrixInputData> expected = () -> null;
         gen = new MetrixInputDataGeneratorBuilder().conf(metrixConfig())
                 .path(Paths.get("/testOut"))
                 .fsu(fileSystem())
@@ -135,12 +140,11 @@ public class MetrixInputDataGeneratorTest {
         gen.generateInputFileZip(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
 
         //THEN
-        Assertions.assertThat(results).isNotEmpty();
         Assertions.assertThat(results).containsExactly("1 3");
     }
 
     @Test
-    public void generateInputFileZipCallNetworkWriter() throws IOException {
+    void generateInputFileZipCallNetworkWriter() throws IOException {
         //GIVEN
         Supplier<MetrixInputData> expected = () -> null;
         gen = new MetrixInputDataGeneratorBuilder().conf(metrixConfig())
@@ -169,7 +173,7 @@ public class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    public void generateMetrixInputDataSimpleCommand() throws IOException {
+    void generateMetrixInputDataSimpleCommand() throws IOException {
         //GIVEN
         Path remedialActionFile = null;
         MetrixVariantProvider variantProvider = null;
@@ -186,13 +190,12 @@ public class MetrixInputDataGeneratorTest {
         Assertions.assertThat(commands.get(0).getCommand().getInputFiles().size()).isEqualTo(2);
         Assertions.assertThat(commands.get(0).getCommand().getOutputFiles().size()).isEqualTo(2);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
-        Assertions.assertThat(commands.get(0).getOverloadedVariables().size()).isEqualTo(1);
+        Assertions.assertThat(commands.get(0).getOverloadedVariables()).hasSize(1);
     }
 
     @Test
-    public void generateMetrixInputDataMultipleVariantsCommand() throws IOException {
+    void generateMetrixInputDataMultipleVariantsCommand() throws IOException {
         //GIVEN
-        Supplier<MetrixInputData> expected = () -> null;
         gen = new MetrixInputDataGeneratorBuilder().conf(metrixConfig())
                 .path(Paths.get("/testOut"))
                 .fsu(fileSystem())
@@ -234,7 +237,7 @@ public class MetrixInputDataGeneratorTest {
         Assertions.assertThat(commands.get(0).getCommand().getInputFiles().size()).isEqualTo(2);
         Assertions.assertThat(commands.get(0).getCommand().getOutputFiles().size()).isEqualTo(6);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
-        Assertions.assertThat(commands.get(0).getOverloadedVariables().size()).isEqualTo(1);
+        Assertions.assertThat(commands.get(0).getOverloadedVariables()).hasSize(1);
     }
 
     @NotNull
@@ -246,12 +249,12 @@ public class MetrixInputDataGeneratorTest {
             }
 
             @Override
-            public Stream<Path> list(Path p) throws IOException {
+            public Stream<Path> list(Path p) {
                 return Stream.of(Paths.get("a.txt"), Paths.get("METRIXb.dic"), Paths.get("c.dic"));
             }
 
             @Override
-            public Path copy(Path src, Path dest) throws IOException {
+            public Path copy(Path src, Path dest) {
                 results.add(src.toString() + "->" + dest.toString());
                 return null;
             }
@@ -304,11 +307,6 @@ public class MetrixInputDataGeneratorTest {
 
         public MetrixInputDataGeneratorBuilder fsu(MetrixInputDataGenerator.FileSystemUtils fsu) {
             this.fsu = fsu;
-            return this;
-        }
-
-        public MetrixInputDataGeneratorBuilder createNetwork(CreateNetwork createNetwork) {
-            this.createNetwork = createNetwork;
             return this;
         }
 

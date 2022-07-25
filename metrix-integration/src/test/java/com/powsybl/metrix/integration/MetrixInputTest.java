@@ -13,7 +13,8 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
-import com.powsybl.commons.AbstractConverterTest;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.xml.NetworkXml;
@@ -24,19 +25,36 @@ import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.FileSystem;
 import java.nio.file.Path;
 import java.util.*;
-import static org.junit.Assert.*;
 
-public class MetrixInputTest extends AbstractConverterTest {
+import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.*;
+
+class MetrixInputTest {
+
+    protected FileSystem fileSystem;
+
+    @BeforeEach
+    public void setUp() {
+        this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException {
+        this.fileSystem.close();
+    }
 
     @Test
-    public void metrixNetworkTest() throws IOException {
+    void metrixNetworkTest() throws IOException {
 
         Path remedialActionFile = fileSystem.getPath("/remedialActions.csv");
         try (Writer writer = Files.newBufferedWriter(remedialActionFile, StandardCharsets.UTF_8)) {
@@ -122,7 +140,7 @@ public class MetrixInputTest extends AbstractConverterTest {
     }
 
     @Test
-    public void metrixDefaultInputTest() throws IOException {
+    void metrixDefaultInputTest() throws IOException {
         Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
@@ -131,11 +149,12 @@ public class MetrixInputTest extends AbstractConverterTest {
 
         // Results comparison
         String actual = writer.toString();
-        compareTxt(getClass().getResourceAsStream("/simpleNetworkDefault.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/simpleNetworkDefault.json"),
+                new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
     }
 
     @Test
-    public void metrixInputTest() throws IOException {
+    void metrixInputTest() throws IOException {
         Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Contingencies
@@ -325,14 +344,15 @@ public class MetrixInputTest extends AbstractConverterTest {
         // Results comparison
         String actual = writer.toString();
         try {
-            compareTxt(getClass().getResourceAsStream("/simpleNetwork.json"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/simpleNetwork.json"),
+                    new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         } catch (UncheckedIOException e) {
             fail();
         }
     }
 
     @Test
-    public void mappedBreakerTest() throws IOException {
+    void mappedBreakerTest() throws IOException {
 
         Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
@@ -362,13 +382,6 @@ public class MetrixInputTest extends AbstractConverterTest {
             }
         }
 
-        ContingenciesProvider contingenciesProvider = new ContingenciesProvider() {
-            @Override
-            public List<Contingency> getContingencies(Network network) {
-                return Collections.emptyList();
-            }
-        };
-
         MetrixVariantProvider variantProvider;
         try (Reader mappingReader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
             ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
@@ -396,7 +409,7 @@ public class MetrixInputTest extends AbstractConverterTest {
     }
 
     @Test
-    public void propagateTrippingTest() {
+    void propagateTrippingTest() {
         Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
@@ -423,7 +436,7 @@ public class MetrixInputTest extends AbstractConverterTest {
     }
 
     @Test
-    public void loadBreakTest() throws IOException {
+    void loadBreakTest() throws IOException {
         Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Contingencies

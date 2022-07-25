@@ -3,11 +3,11 @@ package com.powsybl.metrix.mapping.timeseries;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMetadataIndex;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-public class TimeSeriesMetadataIndexTest {
+class TimeSeriesMetadataIndexTest {
     @Test
-    public void crationTest() {
+    void creationTest() {
         RegularTimeSeriesIndex regularTimeSeriesIndex = new RegularTimeSeriesIndex(797558400, 800150400, 60000);
         TimeSeriesMetadataIndex timeSeriesMetadataIndex  = new TimeSeriesMetadataIndex(regularTimeSeriesIndex);
         Assertions.assertThat(timeSeriesMetadataIndex.endTime).isEqualTo(800150400);

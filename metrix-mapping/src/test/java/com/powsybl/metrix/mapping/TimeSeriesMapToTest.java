@@ -16,30 +16,30 @@ import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TimeSeriesMapToTest {
+class TimeSeriesMapToTest {
 
     private Network network;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         // create test network
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test
-    public void mapToDefaultVariableTest() throws Exception {
+    void mapToDefaultVariableTest() {
 
         List<MappingKey> results = new LinkedList<>();
 
@@ -112,7 +112,7 @@ public class TimeSeriesMapToTest {
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override
-            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 if (!timeSeriesName.isEmpty()) {
                     results.add(new MappingKey(variable, identifiable.getId()));
                 }
@@ -133,7 +133,7 @@ public class TimeSeriesMapToTest {
     }
 
     @Test
-    public void mapToVariableTest() throws Exception {
+    void mapToVariableTest() {
 
         Map<String, List<MappingVariable>> results = new HashMap<>();
 
@@ -391,7 +391,7 @@ public class TimeSeriesMapToTest {
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override
-            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 if (!timeSeriesName.isEmpty()) {
                     if (results.containsKey(identifiable.getId())) {
                         results.get(identifiable.getId()).add(variable);
@@ -437,7 +437,7 @@ public class TimeSeriesMapToTest {
     }
 
     @Test
-    public void mapToGeneratorsWithDistributionKeyAllEqualToZeroTest() throws Exception {
+    void mapToGeneratorsWithDistributionKeyAllEqualToZeroTest() {
 
         Map<String, MappingVariable> results = new HashMap<>();
         Map<String, Double> values = new HashMap<>();
@@ -472,7 +472,7 @@ public class TimeSeriesMapToTest {
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override
-            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 if (!timeSeriesName.isEmpty()) {
                     results.put(identifiable.getId(), variable);
                     values.put(identifiable.getId(), equipmentValue);
@@ -488,7 +488,7 @@ public class TimeSeriesMapToTest {
     }
 
     @Test
-    public void mapToGeneratorsWithSpecificIgnoreLimitsTest() throws Exception {
+    void mapToGeneratorsWithSpecificIgnoreLimitsTest() {
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "mapToGenerators {",
@@ -520,7 +520,7 @@ public class TimeSeriesMapToTest {
         // launch TimeSeriesMapper test
         DefaultTimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
             @Override
-            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 if (timeSeriesName.compareTo("ts1") == 0) {
                     assertEquals(0, point);
                     assertEquals("ts1", timeSeriesName);

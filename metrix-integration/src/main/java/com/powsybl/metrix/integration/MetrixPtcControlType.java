@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-/**
- * Created by marifunf on 13/06/17.
- */
 public enum MetrixPtcControlType {
     CONTROL_OFF(0),
     OPTIMIZED_ANGLE_CONTROL(1),

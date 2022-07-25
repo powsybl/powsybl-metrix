@@ -8,9 +8,6 @@
 
 package com.powsybl.metrix.integration.io;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 public class MetrixDieException extends RuntimeException {
 
     public MetrixDieException(String message) {

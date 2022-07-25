@@ -13,9 +13,6 @@ import com.powsybl.contingency.Contingency;
 
 import java.util.Objects;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
 public class Probability extends AbstractExtension<Contingency> {
     static final String EXTENSION_NAME = "ContingencyProbability";
     private final Double probabilityBase;

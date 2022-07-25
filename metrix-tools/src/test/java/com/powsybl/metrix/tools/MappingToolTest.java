@@ -10,8 +10,8 @@ package com.powsybl.metrix.tools;
 
 import com.powsybl.tools.AbstractToolTest;
 import com.powsybl.tools.Tool;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,15 +19,12 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Collections;
 
-/**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
- */
-public class MappingToolTest extends AbstractToolTest {
+class MappingToolTest extends AbstractToolTest {
 
     private MappingTool tool;
 
     @Override
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         tool = new MappingTool();
         super.setUp();
@@ -45,7 +42,7 @@ public class MappingToolTest extends AbstractToolTest {
     }
 
     @Test
-    public void run() throws IOException {
+    void run() throws IOException {
         Files.copy(MappingToolTest.class.getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
         Files.copy(MappingToolTest.class.getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
         Files.copy(MappingToolTest.class.getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));

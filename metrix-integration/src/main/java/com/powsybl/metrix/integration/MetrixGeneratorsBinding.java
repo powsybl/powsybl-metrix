@@ -10,9 +10,6 @@ package com.powsybl.metrix.integration;
 
 import java.util.*;
 
-/**
- * Created by Nicolas.Lhuillier@rte-france.com on 09/11/18.
- */
 public class MetrixGeneratorsBinding {
 
     public enum ReferenceVariable {

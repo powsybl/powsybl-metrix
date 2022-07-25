@@ -14,9 +14,6 @@ import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.json.TimeSeriesJsonDeserializer;
 import com.powsybl.timeseries.json.TimeSeriesJsonSerializer;
 
-/**
- * @author Marianne Funfrock <marianne.funfrock at rte-france.com>
- */
 public class TimeSeriesMappingConfigJsonModule extends SimpleModule {
 
     public TimeSeriesMappingConfigJsonModule() {

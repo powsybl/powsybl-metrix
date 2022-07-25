@@ -15,9 +15,6 @@ import com.google.common.io.LittleEndianDataOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-/**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
- */
 interface Attribute {
 
     String getName();
