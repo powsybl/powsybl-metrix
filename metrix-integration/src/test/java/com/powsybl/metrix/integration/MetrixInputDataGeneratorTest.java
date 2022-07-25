@@ -190,7 +190,6 @@ class MetrixInputDataGeneratorTest {
         Assertions.assertThat(commands.get(0).getCommand().getInputFiles().size()).isEqualTo(2);
         Assertions.assertThat(commands.get(0).getCommand().getOutputFiles().size()).isEqualTo(2);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
-        Assertions.assertThat(commands.get(0).getOverloadedVariables()).hasSize(1);
     }
 
     @Test
@@ -237,7 +236,6 @@ class MetrixInputDataGeneratorTest {
         Assertions.assertThat(commands.get(0).getCommand().getInputFiles().size()).isEqualTo(2);
         Assertions.assertThat(commands.get(0).getCommand().getOutputFiles().size()).isEqualTo(6);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
-        Assertions.assertThat(commands.get(0).getOverloadedVariables()).hasSize(1);
     }
 
     @NotNull

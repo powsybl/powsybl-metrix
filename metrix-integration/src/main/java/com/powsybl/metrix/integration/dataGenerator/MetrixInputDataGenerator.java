@@ -7,7 +7,6 @@
 
 package com.powsybl.metrix.integration.dataGenerator;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
@@ -82,9 +81,7 @@ public class MetrixInputDataGenerator {
     }
 
     private List<CommandExecution> commandExecutionFrom(Command command) {
-        // overload HADES_DIR variable with working dir
-        ImmutableMap<String, String> overloadedVariables = ImmutableMap.of("HADES_DIR", ".");
-        return Collections.singletonList(new CommandExecution(command, 1, 0, null, overloadedVariables));
+        return Collections.singletonList(new CommandExecution(command, 1, 0, null));
     }
 
     private Command command(MetrixConfig config, MetrixVariantProvider.Variants variants, List<InputFile> inputFiles, List<OutputFile> outputFiles) {
