@@ -116,7 +116,7 @@ class MetrixTest {
 
             MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
 
-            MetrixRunResult run = metrix.run(runParameters, resultListener);
+            MetrixRunResult run = metrix.run(runParameters, resultListener, null);
             assertThat(run).isNotNull();
         }
     }

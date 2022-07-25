@@ -286,7 +286,7 @@ public class MetrixTool implements Tool {
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
             new Metrix(contingenciesProvider, remedialActionsReaderForRun,
                     store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
-                    .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context));
+                    .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context), null);
 
         } catch (IOException e) {
             throw new UncheckedIOException(e);

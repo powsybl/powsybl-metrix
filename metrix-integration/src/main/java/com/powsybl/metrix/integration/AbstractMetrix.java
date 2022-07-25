@@ -119,7 +119,7 @@ public abstract class AbstractMetrix {
         }
     }
 
-    public MetrixRunResult run(MetrixRunParameters runParameters, ResultListener listener) {
+    public MetrixRunResult run(MetrixRunParameters runParameters, ResultListener listener, String nullableSchemaName) {
         Objects.requireNonNull(runParameters);
         Objects.requireNonNull(listener);
 
@@ -198,7 +198,7 @@ public abstract class AbstractMetrix {
 
             MetrixRunResult runResult = new MetrixRunResult();
             appLogger.log("Computing postprocessing timeseries");
-            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(metrixDslData, mappingConfig, resultStore));
+            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(metrixDslData, mappingConfig, resultStore, nullableSchemaName));
             return runResult;
 
         } catch (IOException e) {
@@ -276,12 +276,13 @@ public abstract class AbstractMetrix {
     // Post-processing methods
     static Map<String, NodeCalc> getPostProcessingTimeSeries(MetrixDslData dslData,
                                                              TimeSeriesMappingConfig mappingConfig,
-                                                             ReadOnlyTimeSeriesStore store) {
+                                                             ReadOnlyTimeSeriesStore store,
+                                                             String nullableSchemaName) {
         Map<String, NodeCalc> postProcessingTimeSeries = new HashMap<>();
         if (dslData != null && mappingConfig != null) {
             Map<String, NodeCalc> calculatedTimeSeries = new HashMap<>(mappingConfig.getTimeSeriesNodes());
-            createBasecasePostprocessingTimeSeries(dslData, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store);
-            createOutagePostprocessingTimeSeries(dslData, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store);
+            createBasecasePostprocessingTimeSeries(dslData, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
+            createOutagePostprocessingTimeSeries(dslData, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
         }
         return postProcessingTimeSeries;
     }
@@ -317,14 +318,15 @@ public abstract class AbstractMetrix {
                                                                TimeSeriesMappingConfig mappingConfig,
                                                                Map<String, NodeCalc> postProcessingTimeSeries,
                                                                Map<String, NodeCalc> calculatedTimeSeries,
-                                                               ReadOnlyTimeSeriesStore store) {
+                                                               ReadOnlyTimeSeriesStore store,
+                                                               String nullableSchemaName) {
 
         for (String branch : metrixDslData.getBranchMonitoringNList()) {
             MetrixInputData.MonitoringType branchMonitoringN = metrixDslData.getBranchMonitoringN(branch);
             if (branchMonitoringN == MetrixInputData.MonitoringType.MONITORING) {
-                createBasecasePostprocessingTimeSeries(branch, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store);
+                createBasecasePostprocessingTimeSeries(branch, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             } else if (branchMonitoringN == MetrixInputData.MonitoringType.RESULT && mappingConfig.getTimeSeriesName(new MappingKey(MetrixVariable.analysisThresholdN, branch)) != null) {
-                createBasecasePostprocessingTimeSeries(branch, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store);
+                createBasecasePostprocessingTimeSeries(branch, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             }
         }
     }
@@ -335,14 +337,15 @@ public abstract class AbstractMetrix {
                                                                TimeSeriesMappingConfig mappingConfig,
                                                                Map<String, NodeCalc> postProcessingTimeSeries,
                                                                Map<String, NodeCalc> calculatedTimeSeries,
-                                                               ReadOnlyTimeSeriesStore store) {
+                                                               ReadOnlyTimeSeriesStore store,
+                                                               String nullableSchemaName) {
         try {
             if (!store.timeSeriesExists(MetrixOutputData.FLOW_NAME + branch)) {
                 LOGGER.debug("FLOW time-series not found for {}", branch);
                 return;
             }
             LOGGER.debug("Creating basecase postprocessing time-series for {}", branch);
-            NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MetrixOutputData.FLOW_NAME + branch);
+            NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MetrixDataName.getNameWithSchema(MetrixOutputData.FLOW_NAME + branch, nullableSchemaName));
             String ratingTimeSeriesName = mappingConfig.getTimeSeriesName(new MappingKey(thresholdN, branch));
             NodeCalc ratingTimeSeriesOrEx = calculatedTimeSeries.computeIfAbsent(ratingTimeSeriesName, TimeSeriesNameNodeCalc::new);
 
@@ -355,9 +358,9 @@ public abstract class AbstractMetrix {
             }
 
             // Basecase load
-            postProcessingTimeSeries.put(BASECASE_LOAD_PREFIX + branch, createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
+            postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(BASECASE_LOAD_PREFIX + branch, nullableSchemaName), createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
             // Basecase overload
-            postProcessingTimeSeries.put(BASECASE_OVERLOAD_PREFIX + branch, createOverloadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
+            postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(BASECASE_OVERLOAD_PREFIX + branch, nullableSchemaName), createOverloadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
         } catch (IllegalStateException ise) {
             LOGGER.debug("Monitored branch {} not found in network", branch);
         }
@@ -368,14 +371,15 @@ public abstract class AbstractMetrix {
                                                              TimeSeriesMappingConfig mappingConfig,
                                                              Map<String, NodeCalc> postProcessingTimeSeries,
                                                              Map<String, NodeCalc> calculatedTimeSeries,
-                                                             ReadOnlyTimeSeriesStore store) {
+                                                             ReadOnlyTimeSeriesStore store,
+                                                             String nullableSchemaName) {
 
         for (String branch : metrixDslData.getBranchMonitoringNkList()) {
             MetrixInputData.MonitoringType branchMonitoringNk = metrixDslData.getBranchMonitoringNk(branch);
             if (branchMonitoringNk == MetrixInputData.MonitoringType.MONITORING) {
-                createOutagePostprocessingTimeSeries(branch, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store);
+                createOutagePostprocessingTimeSeries(branch, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             } else if (branchMonitoringNk == MetrixInputData.MonitoringType.RESULT && mappingConfig.getTimeSeriesName(new MappingKey(MetrixVariable.analysisThresholdNk, branch)) != null) {
-                createOutagePostprocessingTimeSeries(branch, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store);
+                createOutagePostprocessingTimeSeries(branch, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             }
         }
     }
@@ -386,7 +390,8 @@ public abstract class AbstractMetrix {
                                                              TimeSeriesMappingConfig mappingConfig,
                                                              Map<String, NodeCalc> postProcessingTimeSeries,
                                                              Map<String, NodeCalc> calculatedTimeSeries,
-                                                             ReadOnlyTimeSeriesStore store) {
+                                                             ReadOnlyTimeSeriesStore store,
+                                                             String nullableSchemaName) {
         try {
 
             if (!store.timeSeriesExists(MAX_THREAT_PREFIX + branch)) {
@@ -396,7 +401,7 @@ public abstract class AbstractMetrix {
 
             LOGGER.debug("Creating outage postprocessing time-series for {}", branch);
 
-            NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MAX_THREAT_PREFIX + branch);
+            NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MetrixDataName.getNameWithSchema(MAX_THREAT_PREFIX + branch, nullableSchemaName));
             String ratingTimeSeriesName = mappingConfig.getTimeSeriesName(new MappingKey(thresholdN1, branch));
             NodeCalc ratingTimeSeriesOrEx = calculatedTimeSeries.computeIfAbsent(ratingTimeSeriesName, TimeSeriesNameNodeCalc::new);
 
@@ -410,13 +415,13 @@ public abstract class AbstractMetrix {
             }
 
             // Outage load
-            postProcessingTimeSeries.put(OUTAGE_LOAD_PREFIX + branch, createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
+            postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(OUTAGE_LOAD_PREFIX + branch, nullableSchemaName), createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
             // Outage overload
             NodeCalc outageOverLoadTimeSeries = createOverloadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr);
-            postProcessingTimeSeries.put(OUTAGE_OVERLOAD_PREFIX + branch, outageOverLoadTimeSeries);
+            postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(OUTAGE_OVERLOAD_PREFIX + branch, nullableSchemaName), outageOverLoadTimeSeries);
             NodeCalc basecaseOverLoadTimeSeries = postProcessingTimeSeries.get(BASECASE_OVERLOAD_PREFIX + branch);
             if (!Objects.isNull(basecaseOverLoadTimeSeries)) {
-                postProcessingTimeSeries.put(OVERALL_OVERLOAD_PREFIX + branch, createOverallOverloadTimeSeries(basecaseOverLoadTimeSeries, outageOverLoadTimeSeries));
+                postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(OVERALL_OVERLOAD_PREFIX + branch, nullableSchemaName), createOverallOverloadTimeSeries(basecaseOverLoadTimeSeries, outageOverLoadTimeSeries));
             }
         } catch (IllegalStateException ise) {
             LOGGER.debug("Monitored branch {} not found in network", branch);
