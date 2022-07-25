@@ -116,7 +116,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         if (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty()) {
             observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
         }
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, true, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
         mapper.mapToNetwork(store, parameters, observers);
     }
 
