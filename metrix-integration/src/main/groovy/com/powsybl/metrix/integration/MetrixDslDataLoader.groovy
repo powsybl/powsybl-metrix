@@ -36,6 +36,15 @@ class MetrixDslDataLoader extends DslLoader {
     static final String WARNING = "WARNING - "
     static final String ERROR = "ERROR - "
 
+    static final String BRANCH_RATINGS_BASE_CASE = "branchRatingsBaseCase"
+    static final String BRANCH_ANALYSIS_RATINGS_BASE_CASE = "branchAnalysisRatingsBaseCase"
+    static final String BRANCH_RATINGS_ON_CONTINGENCY = "branchRatingsOnContingency"
+    static final String BRANCH_RATINGS_BEFORE_CURATIVE = "branchRatingsBeforeCurative"
+    static final String BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY = "branchAnalysisRatingsOnContingency"
+    static final String BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY = "branchRatingsOnSpecificContingency"
+    static final String BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY = "branchRatingsBeforeCurativeOnSpecificContingency"
+    static final String END_OR = "EndOr"
+
     static class ParametersSpec {
 
         MetrixComputationType computationType
@@ -528,6 +537,28 @@ class MetrixDslDataLoader extends DslLoader {
         logOut(out, ERROR + formattedString)
     }
 
+    private static void checkBranchThreshold(TimeSeriesMappingConfig tsConfig, Writer out) {
+        Set<String> equipmentIds = tsConfig.getEquipmentIds()
+        equipmentIds.forEach(id -> {
+            checkBranchThreshold(BRANCH_RATINGS_BASE_CASE, tsConfig, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, id, out)
+            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, tsConfig, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, id, out)
+        });
+        equipmentIds.forEach(id -> {
+            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, id, out)
+            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, tsConfig, MetrixVariable.thresholdITAM, MetrixVariable.thresholdITAMEndOr, id, out)
+            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, id, out)
+            checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdNk, MetrixVariable.thresholdNkEndOr, id, out)
+            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdITAMNk, MetrixVariable.thresholdITAMNkEndOr, id, out)
+        });
+    }
+
+    private static void checkBranchThreshold(String thresholdName, TimeSeriesMappingConfig tsConfig, MappingVariable variable, MappingVariable variableEndOr, String id, Writer out) {
+        if (tsConfig.isEquipmentThresholdDefined(variableEndOr, id) && !tsConfig.isEquipmentThresholdDefined(variable, id)) {
+            logError(out, "%s defined for id %s but %s is not -> %s is removed", thresholdName + END_OR, id, thresholdName, thresholdName + END_OR)
+            tsConfig.removeEquipmentTimeSeries(variableEndOr, id)
+        }
+    }
+
     private static branchData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
         Identifiable identifiable = network.getBranch(id)
         if (identifiable == null) {
@@ -541,18 +572,18 @@ class MetrixDslDataLoader extends DslLoader {
         if (branchSpec.branchRatingsBaseCase) {
             addEquipmentTimeSeries(branchSpec.branchRatingsBaseCase, MetrixVariable.thresholdN, id, tsConfig, binding)
             data.addBranchMonitoringN(id)
-            if (branchSpec.branchRatingsBaseCaseEndOr) {
-                addEquipmentTimeSeries(branchSpec.branchRatingsBaseCaseEndOr, MetrixVariable.thresholdNEndOr, id, tsConfig, binding)
-            }
         } else if (branchSpec.branchAnalysisRatingsBaseCase) {
             // analysis threshold
             addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCase, MetrixVariable.analysisThresholdN, id, tsConfig, binding)
             data.addBranchResultN(id)
-            if (branchSpec.branchAnalysisRatingsBaseCaseEndOr) {
-                addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCaseEndOr, MetrixVariable.analysisThresholdNEndOr, id, tsConfig, binding)
-            }
         } else if (branchSpec.baseCaseFlowResults) {
             data.addBranchResultN(id)
+        }
+        if (branchSpec.branchRatingsBaseCaseEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchRatingsBaseCaseEndOr, MetrixVariable.thresholdNEndOr, id, tsConfig, binding)
+        }
+        if (branchSpec.branchAnalysisRatingsBaseCaseEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCaseEndOr, MetrixVariable.analysisThresholdNEndOr, id, tsConfig, binding)
         }
 
 
@@ -560,25 +591,25 @@ class MetrixDslDataLoader extends DslLoader {
         if (branchSpec.branchRatingsOnContingency) {
             addEquipmentTimeSeries(branchSpec.branchRatingsOnContingency, MetrixVariable.thresholdN1, id, tsConfig, binding)
             data.addBranchMonitoringNk(id)
-            if (branchSpec.branchRatingsOnContingencyEndOr) {
-                addEquipmentTimeSeries(branchSpec.branchRatingsOnContingencyEndOr, MetrixVariable.thresholdN1EndOr, id, tsConfig, binding)
-            }
             // Before curative monitoring
             if (branchSpec.branchRatingsBeforeCurative) {
                 addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurative, MetrixVariable.thresholdITAM, id, tsConfig, binding)
-                if (branchSpec.branchRatingsBeforeCurativeEndOr) {
-                    addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeEndOr, MetrixVariable.thresholdITAMEndOr, id, tsConfig, binding)
-                }
             }
         } else if (branchSpec.branchAnalysisRatingsOnContingency) {
             // analysis threshold (n-k)
             addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingency, MetrixVariable.analysisThresholdNk, id, tsConfig, binding)
             data.addBranchResultNk(id)
-            if (branchSpec.branchAnalysisRatingsOnContingencyEndOr) {
-                addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingencyEndOr, MetrixVariable.analysisThresholdNkEndOr, id, tsConfig, binding)
-            }
         } else if (branchSpec.maxThreatFlowResults) {
             data.addBranchResultNk(id)
+        }
+        if (branchSpec.branchRatingsOnContingencyEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchRatingsOnContingencyEndOr, MetrixVariable.thresholdN1EndOr, id, tsConfig, binding)
+        }
+        if (branchSpec.branchRatingsBeforeCurativeEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeEndOr, MetrixVariable.thresholdITAMEndOr, id, tsConfig, binding)
+        }
+        if (branchSpec.branchAnalysisRatingsOnContingencyEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingencyEndOr, MetrixVariable.analysisThresholdNkEndOr, id, tsConfig, binding)
         }
 
 
@@ -587,18 +618,19 @@ class MetrixDslDataLoader extends DslLoader {
         if (branchSpec.branchRatingsOnSpecificContingency) {
             addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingency, MetrixVariable.thresholdNk, id, tsConfig, binding)
             data.addBranchMonitoringNk(id)
-            if (branchSpec.branchRatingsOnSpecificContingencyEndOr) {
-                addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingencyEndOr, MetrixVariable.thresholdNkEndOr, id, tsConfig, binding)
-            }
 
             // Specific before curative monitoring
             if (branchSpec.branchRatingsBeforeCurativeOnSpecificContingency) {
                 addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingency, MetrixVariable.thresholdITAMNk, id, tsConfig, binding)
-                if (branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr) {
-                    addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr, MetrixVariable.thresholdITAMNkEndOr, id, tsConfig, binding)
-                }
             }
         }
+        if (branchSpec.branchRatingsOnSpecificContingencyEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingencyEndOr, MetrixVariable.thresholdNkEndOr, id, tsConfig, binding)
+        }
+        if (branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr) {
+            addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr, MetrixVariable.thresholdITAMNkEndOr, id, tsConfig, binding)
+        }
+
 
         if (branchSpec.contingencyFlowResults != null && branchSpec.contingencyFlowResults.size() > 0) {
             data.addContingencyFlowResults(id, branchSpec.contingencyFlowResults)
@@ -1101,6 +1133,8 @@ class MetrixDslDataLoader extends DslLoader {
         binding.setVariable("network", network)
 
         evaluate(dslSrc, binding)
+
+        checkBranchThreshold(mappingConfig, out)
 
         data
     }
