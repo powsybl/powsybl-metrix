@@ -278,7 +278,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private LoadDetail getLoadDetail(Load load) {
         LoadDetail ld = load.getExtension(LoadDetail.class);
         if (ld != null) {
-            return getLoadDetail(load, ld.getFixedActivePower(), ld.getVariableActivePower());
+            return getLoadDetail(load, (float) ld.getFixedActivePower(), (float) ld.getVariableActivePower());
         } else {
             return getLoadDetail(load, 0, 0);
         }

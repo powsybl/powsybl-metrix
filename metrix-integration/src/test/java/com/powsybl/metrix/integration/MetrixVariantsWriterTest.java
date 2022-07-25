@@ -128,8 +128,8 @@ class MetrixVariantsWriterTest {
 
                 private LoadDetail createLoadDetail(float fixedActivePower, float variableActivePower) {
                     LoadDetail l = Mockito.mock(LoadDetail.class);
-                    Mockito.when(l.getFixedActivePower()).thenReturn(fixedActivePower);
-                    Mockito.when(l.getVariableActivePower()).thenReturn(variableActivePower);
+                    Mockito.when(l.getFixedActivePower()).thenReturn((double) fixedActivePower);
+                    Mockito.when(l.getVariableActivePower()).thenReturn((double) variableActivePower);
                     return l;
                 }
 

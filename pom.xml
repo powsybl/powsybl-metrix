@@ -62,7 +62,7 @@
         <mockito.version>3.9.0</mockito.version>
         <slf4j.version>1.7.32</slf4j.version>
 
-        <powsyblcore.version>4.6.1</powsyblcore.version>
+        <powsyblcore.version>4.7.0</powsyblcore.version>
     </properties>
 
     <profiles>
@@ -168,6 +168,11 @@
             <dependency>
                 <groupId>com.powsybl</groupId>
                 <artifactId>powsybl-iidm-scripting</artifactId>
+                <version>${powsyblcore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-iidm-modification</artifactId>
                 <version>${powsyblcore.version}</version>
             </dependency>
             <dependency>

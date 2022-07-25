@@ -11,7 +11,7 @@ package com.powsybl.metrix.integration;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
-import com.powsybl.contingency.tasks.AbstractTrippingTask;
+import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
@@ -702,8 +702,8 @@ public class MetrixNetwork {
                         element.getType() == ContingencyElementType.HVDC_LINE) {
                     elementsToTrip.add(element);
                 } else {
-                    AbstractTrippingTask task = element.toTask();
-                    task.traverse(network, null, switchesToOpen, terminalsToDisconnect);
+                    Tripping task = element.toModification();
+                    task.traverse(network, switchesToOpen, terminalsToDisconnect);
                 }
             }
 
