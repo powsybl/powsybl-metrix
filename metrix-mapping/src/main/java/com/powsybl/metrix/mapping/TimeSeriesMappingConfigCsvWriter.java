@@ -20,6 +20,7 @@ import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -59,15 +60,9 @@ public class TimeSeriesMappingConfigCsvWriter {
     private static final String UNUSED_TIME_SERIES = "UnusedTimeSeries";
     private static final String VARIABLE = "Variable";
     private static final String STATUS = "Status";
-    private static final String PAYS_CVG = "paysCvg";
-    private static final String PAYS_CVG1 = "paysCvg1";
-    private static final String PAYS_CVG2 = "paysCvg2";
     private static final String VOLTAGE_LEVEL = "voltageLevel";
     private static final String VOLTAGE_LEVEL1 = "voltageLevel1";
     private static final String VOLTAGE_LEVEL2 = "voltageLevel2";
-    private static final String REGION_DI = "regionDI";
-    private static final String GENRE_CVG = "genreCvg";
-    private static final String ENTSOE_CATEGORY = "entsoeCategory";
     private static final String TARGET_P = "targetP";
     private static final String MIN_P = "minP";
     private static final String MAX_P = "maxP";
@@ -185,9 +180,9 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeGenerator(BufferedWriter writer, String id) throws IOException {
         Generator generator = network.getGenerator(id);
-        Substation substation = generator.getTerminal().getVoltageLevel().getSubstation();
+        VoltageLevel voltageLevel = generator.getTerminal().getVoltageLevel();
 
-        writer.write(substation.getId());
+        writer.write(voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY));
         writer.write(CSV_SEPARATOR);
         writer.write(generator.getTerminal().getVoltageLevel().getId());
         writer.write(CSV_SEPARATOR);
@@ -205,8 +200,6 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeHvdcLine(BufferedWriter writer, String id) throws IOException {
         HvdcLine hvdcLine = network.getHvdcLine(id);
-        Substation substation1 = hvdcLine.getConverterStation1().getTerminal().getVoltageLevel().getSubstation();
-        Substation substation2 = hvdcLine.getConverterStation2().getTerminal().getVoltageLevel().getSubstation();
 
         float min = (float) -hvdcLine.getMaxP();
         float max = (float) hvdcLine.getMaxP();
@@ -236,7 +229,6 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writePst(BufferedWriter writer, String id) throws IOException {
         TwoWindingsTransformer pst = network.getTwoWindingsTransformer(id);
-        Substation substation = pst.getSubstation();
 
         int currentTap = pst.getPhaseTapChanger().getTapPosition();
 
@@ -250,7 +242,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeLoad(BufferedWriter writer, String id) throws IOException {
         Load load = network.getLoad(id);
-        Substation substation = load.getTerminal().getVoltageLevel().getSubstation();
+        VoltageLevel voltageLevel = load.getTerminal().getVoltageLevel();
 
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         String fixedActivePower = "";
@@ -260,7 +252,7 @@ public class TimeSeriesMappingConfigCsvWriter {
             variableActivePower = formatDouble(loadDetail.getVariableActivePower());
         }
 
-        writer.write(substation.getId());
+        writer.write(voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY));
         writer.write(CSV_SEPARATOR);
         writer.write(load.getTerminal().getVoltageLevel().getId());
         writer.write(CSV_SEPARATOR);
@@ -278,15 +270,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     protected void writeBreaker(BufferedWriter writer, String id) throws IOException {
         Switch sw = network.getSwitch(id);
-        Substation substation = sw.getVoltageLevel().getSubstation();
 
-        String paysCvg = substation.getProperty("paysCvg");
-        if (paysCvg == null) {
-            paysCvg = "";
-        }
-
-        writer.write(paysCvg);
-        writer.write(CSV_SEPARATOR);
         writer.write(sw.getVoltageLevel().getId());
         writer.write(CSV_SEPARATOR);
     }
@@ -351,10 +335,10 @@ public class TimeSeriesMappingConfigCsvWriter {
             if (values.size() > 1) {
                 writer.write(MULTI_MAPPED);
             } else if (variable == EquipmentVariable.targetP ||
-                    variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower ||
-                    variable == EquipmentVariable.activePowerSetpoint ||
-                    variable == EquipmentVariable.phaseTapPosition ||
-                    variable == EquipmentVariable.open) {
+                       variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower ||
+                       variable == EquipmentVariable.activePowerSetpoint ||
+                       variable == EquipmentVariable.phaseTapPosition ||
+                       variable == EquipmentVariable.open) {
                 writer.write(MAPPED);
             } else {
                 writer.write("");
@@ -373,12 +357,12 @@ public class TimeSeriesMappingConfigCsvWriter {
         }
     }
 
-    private static LoadDetail getLoadDetail(Load load, float fixedActivePower, float variableActivePower) {
+    private static LoadDetail getLoadDetail(Load load, double fixedActivePower, double variableActivePower) {
         load.newExtension(LoadDetailAdder.class)
                 .withFixedActivePower(fixedActivePower)
-                .withFixedReactivePower(0f)
+                .withFixedReactivePower(0)
                 .withVariableActivePower(variableActivePower)
-                .withVariableReactivePower(0f)
+                .withVariableReactivePower(0)
                 .add();
         return load.getExtension(LoadDetail.class);
     }
@@ -1467,10 +1451,9 @@ public class TimeSeriesMappingConfigCsvWriter {
     }
 
     private static int getNbMapped(Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, EquipmentVariable variable) {
-        return equipmentToTimeSeriesMapping.keySet().stream()
+        return (int) equipmentToTimeSeriesMapping.keySet().stream()
                 .filter(key -> key.getMappingVariable() == variable)
-                .collect(Collectors.toList())
-                .size();
+                .count();
     }
 
     protected String formatDouble(double value) {

@@ -11,7 +11,7 @@ package com.powsybl.metrix.integration;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
-import com.powsybl.contingency.tasks.AbstractTrippingTask;
+import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
@@ -32,6 +32,8 @@ import java.util.stream.Stream;
 public class MetrixNetwork {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
+    private static final String PAYS_CVG_PROPERTY = "paysCvg";
+    private static final String PAYS_CVG_UNDEFINED = "Undefined";
 
     private final Network network;
 
@@ -174,17 +176,14 @@ public class MetrixNetwork {
         return generator.getProperty("genreCvg", generator.getEnergySource().toString());
     }
 
-    public String getCountryCode(Substation substation) {
-        String countryCode = substation.getProperty("paysCvg");
-        if (countryCode == null) {
-            Optional<Country> country = substation.getCountry();
-            if (country.isPresent()) {
-                countryCode = country.get().toString();
+    public String getCountryCode(VoltageLevel voltageLevel) {
+        return voltageLevel.getSubstation().map(s -> {
+            if (s.hasProperty(PAYS_CVG_PROPERTY)) {
+                return s.getProperty(PAYS_CVG_PROPERTY);
             } else {
-                countryCode = "Undefined";
+                return s.getCountry().map(Country::toString).orElse(PAYS_CVG_UNDEFINED);
             }
-        }
-        return countryCode;
+        }).orElse(PAYS_CVG_UNDEFINED);
     }
 
     private void addCountry(String country) {
@@ -442,7 +441,7 @@ public class MetrixNetwork {
             for (Bus bus : vl.getBusBreakerView().getBuses()) {
                 if (bus.isInMainConnectedComponent()) {
                     addBus(bus);
-                    addCountry(getCountryCode(vl.getSubstation()));
+                    addCountry(getCountryCode(vl));
                 } else {
                     nbNok++;
                 }
@@ -525,11 +524,11 @@ public class MetrixNetwork {
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
                                        MetrixParameters parameters, Path remedialActionFile) {
         return create(
-            network,
-            contingenciesProvider,
-            mappedSwitches,
-            parameters,
-            remedialActionFile != null ? () -> {
+                network,
+                contingenciesProvider,
+                mappedSwitches,
+                parameters,
+                remedialActionFile != null ? () -> {
                 try {
                     return Files.newBufferedReader(remedialActionFile, StandardCharsets.UTF_8);
                 } catch (IOException e) {
@@ -597,11 +596,11 @@ public class MetrixNetwork {
             Terminal terminal1 = nodeBreakerView.getTerminal1(switchId);
             Terminal terminal2 = nodeBreakerView.getTerminal2(switchId);
 
-            if (terminal1 == null || terminal1.getConnectable().getType() == ConnectableType.BUSBAR_SECTION) {
+            if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
                 terminal1 = terminal2;
             }
 
-            if (terminal1 == null || terminal1.getConnectable().getType() == ConnectableType.BUSBAR_SECTION) {
+            if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
                 sw.setRetained(true);
                 mappedSwitchMap.put(switchId, switchId);
             } else {
@@ -700,15 +699,15 @@ public class MetrixNetwork {
                         element.getType() == ContingencyElementType.HVDC_LINE) {
                     elementsToTrip.add(element);
                 } else {
-                    AbstractTrippingTask task = element.toTask();
-                    task.traverse(network, null, switchesToOpen, terminalsToDisconnect);
+                    Tripping modification = element.toModification();
+                    modification.traverse(network, switchesToOpen, terminalsToDisconnect);
                 }
             }
 
-            Set<ConnectableType> types = EnumSet.of(ConnectableType.LINE,
-                    ConnectableType.TWO_WINDINGS_TRANSFORMER,
-                    ConnectableType.THREE_WINDINGS_TRANSFORMER,
-                    ConnectableType.HVDC_CONVERTER_STATION);
+            Set<IdentifiableType> types = EnumSet.of(IdentifiableType.LINE,
+                    IdentifiableType.TWO_WINDINGS_TRANSFORMER,
+                    IdentifiableType.THREE_WINDINGS_TRANSFORMER,
+                    IdentifiableType.HVDC_CONVERTER_STATION);
 
             // disconnect equipments and open switches
             for (Switch s : switchesToOpen) {

@@ -94,7 +94,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         if (identifiable instanceof Generator) {
             mapToGeneratorVariable(identifiable, variable, equipmentValue);
         } else if (identifiable instanceof Load) {
-            mapToLoadVariable(identifiable, variable, (float) equipmentValue);
+            mapToLoadVariable(identifiable, variable, equipmentValue);
         } else if (identifiable instanceof HvdcLine) {
             mapToHvdcLineVariable(identifiable, variable, equipmentValue);
         } else if (identifiable instanceof Switch) {
@@ -253,21 +253,21 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         }
     }
 
-    private void mapToLoadVariable(Identifiable<?> identifiable, EquipmentVariable variable, float equipmentValue) {
+    private void mapToLoadVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         Load load = network.getLoad(identifiable.getId());
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         switch (variable) {
             case p0:
                 if (loadDetail != null) {
-                    loadDetail.setFixedActivePower(0f);
-                    loadDetail.setVariableActivePower(0f);
+                    loadDetail.setFixedActivePower(0);
+                    loadDetail.setVariableActivePower(0);
                 }
                 load.setP0(equipmentValue);
                 break;
             case q0:
                 if (loadDetail != null) {
-                    loadDetail.setFixedReactivePower(0f);
-                    loadDetail.setVariableReactivePower(0f);
+                    loadDetail.setFixedReactivePower(0);
+                    loadDetail.setVariableReactivePower(0);
                 }
                 load.setQ0(equipmentValue);
                 break;
@@ -299,10 +299,10 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private LoadDetail newLoadDetailExtension(Load load, LoadDetail loadDetail) {
         if (loadDetail == null) {
             load.newExtension(LoadDetailAdder.class)
-                    .withFixedActivePower(0f)
-                    .withFixedReactivePower(0f)
-                    .withVariableActivePower(0f)
-                    .withVariableReactivePower(0f)
+                    .withFixedActivePower(0d)
+                    .withFixedReactivePower(0d)
+                    .withVariableActivePower(0d)
+                    .withVariableReactivePower(0d)
                     .add();
             return load.getExtension(LoadDetail.class);
         }
@@ -430,6 +430,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
         // Remove variant
         network.getVariantManager().removeVariant(getStateId(point, index));
+        network.getVariantManager().setWorkingVariant(VariantManagerConstants.INITIAL_VARIANT_ID);
 
         // Return to initial values for attributes not depending on the variant
         restoreInitialStateValues();

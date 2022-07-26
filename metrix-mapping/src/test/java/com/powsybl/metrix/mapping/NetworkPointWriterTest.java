@@ -10,8 +10,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.datasource.DataSource;
-import com.powsybl.commons.datasource.DataSourceUtil;
+import com.powsybl.commons.datasource.MemDataSource;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
@@ -22,7 +21,6 @@ import org.threeten.extra.Interval;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Scanner;
@@ -305,25 +303,22 @@ class NetworkPointWriterTest {
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
 
         // Create NetworkPointWriter
-        ByteArrayOutputStream networkPointWriterOutput = new ByteArrayOutputStream();
-        DataSource dataSource = DataSourceUtil.createDataSource(Paths.get(getClass().getResource("/").toURI()), network.getId(), null);
+        MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource) {
 
             @Override
             public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
+                super.timeSeriesMappingEnd(point, index, balance);
+                String fileName = NetworkPointWriter.getFileName(network, 1, point, index);
                 if (point != TimeSeriesMapper.CONSTANT_VARIANT_ID) {
-                    NetworkXml.write(network, networkPointWriterOutput);
-
-                    // Check network output file
-                    String fileName = NetworkPointWriter.getFileName(network, 1, point, index);
-                    try {
+                    try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
+                        Network networkPoint = NetworkXml.read(inputStream);
+                        ByteArrayOutputStream networkPointWriterOutput = new ByteArrayOutputStream();
+                        NetworkXml.write(networkPoint, networkPointWriterOutput);
                         compareTxt(networkPointWriterOutput, directoryName, fileName);
                     } catch (Exception e) {
                         throw new AssertionError("Impossible to check " + fileName);
                     }
-
-                    networkPointWriterOutput.reset();
-                    network.getVariantManager().removeVariant("point-" + index.getInstantAt(point));
                 }
             }
         };

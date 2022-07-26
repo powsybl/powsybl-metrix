@@ -14,7 +14,6 @@ import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.Switch
 import com.powsybl.iidm.network.TopologyKind
 import com.powsybl.timeseries.CalculatedTimeSeries
-import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -22,6 +21,7 @@ import com.powsybl.timeseries.StringTimeSeries
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.TimeSeriesIndex
 import com.powsybl.timeseries.ast.NodeCalc
+import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
 import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 import org.codehaus.groovy.control.CompilerConfiguration
@@ -387,7 +387,7 @@ class TimeSeriesDslLoader {
 
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, MappingParameters parameters, TimeSeriesMappingConfig config, Writer out, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = checkComputationRange(computationRange, store);
-        CalculatedTimeSeriesDslLoader.bind(binding, store, config.getTimeSeriesNodes())
+        CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
 
         // map the base case to network variable
         binding.network = network
@@ -574,7 +574,7 @@ class TimeSeriesDslLoader {
         imports.addStaticStars("com.powsybl.iidm.network.EnergySource")
         imports.addStaticStars("com.powsybl.iidm.network.Country")
         imports.addStaticStars("com.powsybl.metrix.mapping.EquipmentVariable")
-        def config = CalculatedTimeSeriesDslLoader.createCompilerConfig()
+        def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
     }
 

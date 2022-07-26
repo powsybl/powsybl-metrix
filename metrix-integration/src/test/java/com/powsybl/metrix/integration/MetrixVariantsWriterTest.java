@@ -126,7 +126,7 @@ class MetrixVariantsWriterTest {
                     return l;
                 }
 
-                private LoadDetail createLoadDetail(float fixedActivePower, float variableActivePower) {
+                private LoadDetail createLoadDetail(double fixedActivePower, double variableActivePower) {
                     LoadDetail l = Mockito.mock(LoadDetail.class);
                     Mockito.when(l.getFixedActivePower()).thenReturn(fixedActivePower);
                     Mockito.when(l.getVariableActivePower()).thenReturn(variableActivePower);
@@ -195,15 +195,15 @@ class MetrixVariantsWriterTest {
                     Load l3 = createLoad("l3", 7f, "", null);
                     Load l4 = createLoad("l4", 10f, "", null);
                     Load l5 = createLoad("l5", 16f, "", null);
-                    LoadDetail l6d = createLoadDetail(3f, 12f);
+                    LoadDetail l6d = createLoadDetail(3d, 12d);
                     Load l6 = createLoad("l6", 15f, "", l6d);
-                    LoadDetail l7d = createLoadDetail(3f, 12f);
+                    LoadDetail l7d = createLoadDetail(3d, 12d);
                     Load l7 = createLoad("l7", 18f, "", l7d);
-                    LoadDetail l8d = createLoadDetail(3f, 12f);
+                    LoadDetail l8d = createLoadDetail(3d, 12d);
                     Load l8 = createLoad("l8", 19f, "", l8d);
-                    LoadDetail l9d = createLoadDetail(3f, 10f);
+                    LoadDetail l9d = createLoadDetail(3d, 10d);
                     Load l9 = createLoad("l9", 15f, "", l9d);
-                    LoadDetail l10d = createLoadDetail(3f, 12f);
+                    LoadDetail l10d = createLoadDetail(3d, 12d);
                     Load l10 = createLoad("l10", 15f, "", l10d);
                     List<Load> loadList = createLoads(Arrays.asList("l11", "l12"), Arrays.asList(12f, 18f), "l1", null);
                     Load l11 = loadList.get(0);
