@@ -147,11 +147,11 @@ class TimeSeriesDslLoader {
         logOut(out, WARNING + formattedString)
     }
 
-    private static timeSeriesExists(String timeSeriesName, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config) {
+    private static timeSeriesExists(String timeSeriesName, Set<String> existingTimeSeriesNames, Map<String, NodeCalc> nodes) {
         if (!timeSeriesName) {
             throw new TimeSeriesMappingException("'timeSeriesName' is not set")
         }
-        if (!store.timeSeriesExists(timeSeriesName) && !config.getTimeSeriesNodes().containsKey(timeSeriesName)) {
+        if (!existingTimeSeriesNames.contains(timeSeriesName) && !nodes.containsKey(timeSeriesName)) {
             throw new TimeSeriesMappingException("Time Series '" + timeSeriesName + "' not found")
         }
     }
@@ -170,7 +170,7 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
-    private static void mapToEquipments(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config,
+    private static void mapToEquipments(Binding binding, Set<String> existingTimeSeriesNames, TimeSeriesMappingConfig config,
                                         Closure closure, Iterable<FilteringContext> filteringContexts,
                                         MappableEquipmentType equipmentType) {
         Closure cloned = (Closure) closure.clone()
@@ -178,7 +178,7 @@ class TimeSeriesDslLoader {
         cloned.delegate = spec
         cloned()
 
-        timeSeriesExists(spec.timeSeriesName, store, config)
+        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
 
         // check variable
         Set<EquipmentVariable> variables = new HashSet<>()
@@ -210,7 +210,7 @@ class TimeSeriesDslLoader {
                 if (value instanceof Number) {
                     distributionKey = new NumberDistributionKey(((Number) value).doubleValue())
                 } else if (value instanceof String) {
-                    timeSeriesExists(String.valueOf(value), store, config);
+                    timeSeriesExists(String.valueOf(value), existingTimeSeriesNames, config.getTimeSeriesNodes());
                     distributionKey = new TimeSeriesDistributionKey(String.valueOf(value))
                 } else {
                     throw new TimeSeriesMappingException("Closure distribution key of equipment '" + identifiable.id
@@ -218,7 +218,7 @@ class TimeSeriesDslLoader {
                 }
                 binding.setVariable(equipmentType.getScriptVariable(), null)
             } else if (spec.timeSeriesNameDistributionKey != null) {
-                timeSeriesExists(spec.timeSeriesNameDistributionKey, store, config);
+                timeSeriesExists(spec.timeSeriesNameDistributionKey, existingTimeSeriesNames, config.getTimeSeriesNodes());
                 distributionKey = new TimeSeriesDistributionKey(spec.timeSeriesNameDistributionKey)
             } else {
                 distributionKey = NumberDistributionKey.ONE;
@@ -230,14 +230,14 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
-    private static void mapToBreakers(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config,
+    private static void mapToBreakers(Binding binding, Set<String> existingTimeSeriesNames, TimeSeriesMappingConfig config,
                                       Closure closure, Iterable<FilteringContext> filteringContexts) {
         Closure cloned = (Closure) closure.clone()
         SimpleMappingSpec spec = new SimpleMappingSpec()
         cloned.delegate = spec
         cloned()
 
-        timeSeriesExists(spec.timeSeriesName, store, config)
+        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
 
         def breakerType = MappableEquipmentType.SWITCH
 
@@ -258,14 +258,14 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
-    private static void mapToSimpleVariableEquipments(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config,
+    private static void mapToSimpleVariableEquipments(Binding binding, Set<String> existingTimeSeriesNames, TimeSeriesMappingConfig config,
                                                       Closure closure, Iterable<FilteringContext> filteringContexts, MappableEquipmentType equipmentType) {
         Closure cloned = (Closure) closure.clone()
         SimpleVariableMappingSpec spec = new SimpleVariableMappingSpec()
         cloned.delegate = spec
         cloned()
 
-        timeSeriesExists(spec.timeSeriesName, store, config)
+        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
 
         // check variable
         EquipmentVariable variable = EquipmentVariable.check(equipmentType, spec.variable)
@@ -303,10 +303,10 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
-    private static void ignoreLimits(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config, Closure closure) {
+    private static void ignoreLimits(Binding binding, Set<String> existingTimeSeriesNames, TimeSeriesMappingConfig config, Closure closure) {
         Object value = closure.call()
         if (value instanceof String) {
-            timeSeriesExists(String.valueOf(value), store, config);
+            timeSeriesExists(String.valueOf(value), existingTimeSeriesNames, config.getTimeSeriesNodes());
             config.addIgnoreLimits(String.valueOf(value))
         } else {
             throw new TimeSeriesMappingException("Closure ignore limits must return a time series name")
@@ -314,7 +314,7 @@ class TimeSeriesDslLoader {
     }
 
     @CompileStatic
-    private static void mapPlannedOutages(Binding binding, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config, Closure closure,
+    private static void mapPlannedOutages(Binding binding, Set<String> existingTimeSeriesNames, ReadOnlyTimeSeriesStore store, TimeSeriesMappingConfig config, Closure closure,
                                           Iterable<FilteringContext> transformersFilteringContext, Iterable<FilteringContext> linesFilteringContext, Iterable<FilteringContext> generatorsFilteringContext, Set<Integer> versions) {
         Object value = closure.call()
         if (!value instanceof String) {
@@ -322,7 +322,7 @@ class TimeSeriesDslLoader {
         }
 
         String timeSeriesName = String.valueOf(value)
-        timeSeriesExists(timeSeriesName, store, config)
+        timeSeriesExists(timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
 
         Set<String> disconnectedIds = new HashSet<>()
         for (int version : versions) {
@@ -386,6 +386,8 @@ class TimeSeriesDslLoader {
     }
 
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, MappingParameters parameters, TimeSeriesMappingConfig config, Writer out, ComputationRange computationRange) {
+        Set<String> existingTimeSeriesNames = store.getTimeSeriesNames(new TimeSeriesFilter())
+
         ComputationRange checkedComputationRange = checkComputationRange(computationRange, store);
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
 
@@ -418,43 +420,43 @@ class TimeSeriesDslLoader {
 
         // mapping
         binding.mapToGenerators = { Closure closure ->
-            mapToEquipments(binding, store, config, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR)
+            mapToEquipments(binding, existingTimeSeriesNames, config, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR)
         }
         binding.mapToLoads = { Closure closure ->
-            mapToEquipments(binding, store, config, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
+            mapToEquipments(binding, existingTimeSeriesNames, config, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.mapToBoundaryLines = { Closure closure ->
-            mapToEquipments(binding, store, config, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            mapToEquipments(binding, existingTimeSeriesNames, config, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.mapToHvdcLines = { Closure closure ->
-            mapToEquipments(binding, store, config, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
+            mapToEquipments(binding, existingTimeSeriesNames, config, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
         }
         binding.mapToTransformers = { Closure closure ->
-            mapToEquipments(binding, store, config, closure, transformersFilteringContext, MappableEquipmentType.TRANSFORMER)
+            mapToEquipments(binding, existingTimeSeriesNames, config, closure, transformersFilteringContext, MappableEquipmentType.TRANSFORMER)
         }
         binding.mapToLines = { Closure closure ->
-            mapToEquipments(binding, store, config, closure, linesFilteringContext, MappableEquipmentType.LINE)
+            mapToEquipments(binding, existingTimeSeriesNames, config, closure, linesFilteringContext, MappableEquipmentType.LINE)
         }
         binding.mapToPhaseTapChangers = { Closure closure ->
-            mapToSimpleVariableEquipments(binding, store, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER)
+            mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER)
         }
         binding.mapToRatioTapChangers = { Closure closure ->
-            mapToSimpleVariableEquipments(binding, store, config, closure, ratioTapChangersFilteringContext, MappableEquipmentType.RATIO_TAP_CHANGER)
+            mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, ratioTapChangersFilteringContext, MappableEquipmentType.RATIO_TAP_CHANGER)
         }
         binding.mapToLccConverterStations =  { Closure closure ->
-            mapToSimpleVariableEquipments(binding, store, config, closure, lccConverterStationsFilteringContext, MappableEquipmentType.LCC_CONVERTER_STATION)
+            mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, lccConverterStationsFilteringContext, MappableEquipmentType.LCC_CONVERTER_STATION)
         }
         binding.mapToVscConverterStations =  { Closure closure ->
-            mapToSimpleVariableEquipments(binding, store, config, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION)
+            mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION)
         }
         binding.mapToBreakers = { Closure closure ->
-            mapToBreakers(binding, store, config, closure, switchesFilteringContext)
+            mapToBreakers(binding, existingTimeSeriesNames, config, closure, switchesFilteringContext)
         }
         binding.mapPlannedOutages = { Closure closure ->
-            mapPlannedOutages(binding, store, config, closure, transformersFilteringContext, linesFilteringContext, generatorsFilteringContext, checkedComputationRange.getVersions())
+            mapPlannedOutages(binding, existingTimeSeriesNames, store, config, closure, transformersFilteringContext, linesFilteringContext, generatorsFilteringContext, checkedComputationRange.getVersions())
         }
         binding.mapToPsts = { @Deprecated Closure closure ->
-            mapToSimpleVariableEquipments(binding, store, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PST)
+            mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PST)
         }
 
         // unmapped
@@ -476,7 +478,7 @@ class TimeSeriesDslLoader {
 
         // time series with specific ignore limits
         binding.ignoreLimits = { Closure closure ->
-            ignoreLimits(binding, store, config, closure)
+            ignoreLimits(binding, existingTimeSeriesNames, config, closure)
         }
 
         // equipments for which time series must be provided
