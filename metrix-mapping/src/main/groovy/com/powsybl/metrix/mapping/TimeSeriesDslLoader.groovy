@@ -147,11 +147,11 @@ class TimeSeriesDslLoader {
         logOut(out, WARNING + formattedString)
     }
 
-    private static timeSeriesExists(String timeSeriesName, Set<String> existingTimeSeriesNames, Map<String, NodeCalc> nodes) {
+    private static timeSeriesExists(String timeSeriesName, Set<String> existingTimeSeriesNames, Set<String> nodeKeys) {
         if (!timeSeriesName) {
             throw new TimeSeriesMappingException("'timeSeriesName' is not set")
         }
-        if (!existingTimeSeriesNames.contains(timeSeriesName) && !nodes.containsKey(timeSeriesName)) {
+        if (!existingTimeSeriesNames.contains(timeSeriesName) && !nodeKeys.contains(timeSeriesName)) {
             throw new TimeSeriesMappingException("Time Series '" + timeSeriesName + "' not found")
         }
     }
@@ -178,7 +178,7 @@ class TimeSeriesDslLoader {
         cloned.delegate = spec
         cloned()
 
-        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
+        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodesKeys())
 
         // check variable
         Set<EquipmentVariable> variables = new HashSet<>()
@@ -210,7 +210,7 @@ class TimeSeriesDslLoader {
                 if (value instanceof Number) {
                     distributionKey = new NumberDistributionKey(((Number) value).doubleValue())
                 } else if (value instanceof String) {
-                    timeSeriesExists(String.valueOf(value), existingTimeSeriesNames, config.getTimeSeriesNodes());
+                    timeSeriesExists(String.valueOf(value), existingTimeSeriesNames, config.getTimeSeriesNodesKeys());
                     distributionKey = new TimeSeriesDistributionKey(String.valueOf(value))
                 } else {
                     throw new TimeSeriesMappingException("Closure distribution key of equipment '" + identifiable.id
@@ -218,7 +218,7 @@ class TimeSeriesDslLoader {
                 }
                 binding.setVariable(equipmentType.getScriptVariable(), null)
             } else if (spec.timeSeriesNameDistributionKey != null) {
-                timeSeriesExists(spec.timeSeriesNameDistributionKey, existingTimeSeriesNames, config.getTimeSeriesNodes());
+                timeSeriesExists(spec.timeSeriesNameDistributionKey, existingTimeSeriesNames, config.getTimeSeriesNodesKeys());
                 distributionKey = new TimeSeriesDistributionKey(spec.timeSeriesNameDistributionKey)
             } else {
                 distributionKey = NumberDistributionKey.ONE;
@@ -237,7 +237,7 @@ class TimeSeriesDslLoader {
         cloned.delegate = spec
         cloned()
 
-        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
+        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodesKeys())
 
         def breakerType = MappableEquipmentType.SWITCH
 
@@ -265,7 +265,7 @@ class TimeSeriesDslLoader {
         cloned.delegate = spec
         cloned()
 
-        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
+        timeSeriesExists(spec.timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodesKeys())
 
         // check variable
         EquipmentVariable variable = EquipmentVariable.check(equipmentType, spec.variable)
@@ -306,7 +306,7 @@ class TimeSeriesDslLoader {
     private static void ignoreLimits(Binding binding, Set<String> existingTimeSeriesNames, TimeSeriesMappingConfig config, Closure closure) {
         Object value = closure.call()
         if (value instanceof String) {
-            timeSeriesExists(String.valueOf(value), existingTimeSeriesNames, config.getTimeSeriesNodes());
+            timeSeriesExists(String.valueOf(value), existingTimeSeriesNames, config.getTimeSeriesNodesKeys());
             config.addIgnoreLimits(String.valueOf(value))
         } else {
             throw new TimeSeriesMappingException("Closure ignore limits must return a time series name")
@@ -322,7 +322,7 @@ class TimeSeriesDslLoader {
         }
 
         String timeSeriesName = String.valueOf(value)
-        timeSeriesExists(timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodes())
+        timeSeriesExists(timeSeriesName, existingTimeSeriesNames, config.getTimeSeriesNodesKeys())
 
         Set<String> disconnectedIds = new HashSet<>()
         for (int version : versions) {

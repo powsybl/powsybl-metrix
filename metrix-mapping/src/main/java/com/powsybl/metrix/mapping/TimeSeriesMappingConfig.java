@@ -1152,6 +1152,10 @@ public class TimeSeriesMappingConfig {
         return timeSeriesNodes;
     }
 
+    public Set<String> getTimeSeriesNodesKeys() {
+        return timeSeriesNodes.keySet();
+    }
+
     public void setTimeSeriesNodes(Map<String, NodeCalc> nodes) {
         timeSeriesNodes.putAll(nodes);
     }
