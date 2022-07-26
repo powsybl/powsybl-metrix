@@ -15,9 +15,9 @@ import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.MappingVariable
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
-import com.powsybl.timeseries.CalculatedTimeSeriesDslLoader
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
-import com.powsybl.timeseries.ast.CalculatedTimeSeriesDslAstTransformation
+import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslAstTransformation
+import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
@@ -81,7 +81,6 @@ class MetrixDslDataLoader extends DslLoader {
         Integer redispatchingCostOffset
         Integer adequacyCostOffset
         Integer nbMaxLostLoadDetailedResults
-        
 
         void computationType(MetrixComputationType computationType) {
             this.computationType = computationType
@@ -235,15 +234,19 @@ class MetrixDslDataLoader extends DslLoader {
         void onContingencies(List<String> onContingencies) {
             this.onContingencies = onContingencies
         }
+
         void controlType(MetrixPtcControlType controlType) {
             this.controlType = controlType
         }
+
         void preventiveUpperTapRange(Integer preventiveUpperTapRange) {
             this.preventiveUpperTapRange = preventiveUpperTapRange
         }
+
         void preventiveLowerTapRange(Integer preventiveLowerTapRange) {
             this.preventiveLowerTapRange = preventiveLowerTapRange
         }
+
         void angleTapResults(boolean b) {
             this.angleTapResults = b
         }
@@ -612,8 +615,6 @@ class MetrixDslDataLoader extends DslLoader {
             addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingencyEndOr, MetrixVariable.analysisThresholdNkEndOr, id, tsConfig, binding)
         }
 
-
-
         // Specific N-k contingencies monitoring
         if (branchSpec.branchRatingsOnSpecificContingency) {
             addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingency, MetrixVariable.thresholdNk, id, tsConfig, binding)
@@ -698,7 +699,7 @@ class MetrixDslDataLoader extends DslLoader {
 
             List<String> generatorIds = filteredGenerators.collect { it -> it.id }
 
-            if (generatorIds. size() > 1) {
+            if (generatorIds.size() > 1) {
                 if (spec.referenceVariable) {
                     data.addGeneratorsBinding(id, generatorIds, spec.referenceVariable)
                 } else {
@@ -732,7 +733,7 @@ class MetrixDslDataLoader extends DslLoader {
             Collection<Identifiable> filteredLoads = Filter.evaluate(binding, filteringContext, "load", spec.filter)
 
             List<String> loadIds = filteredLoads.collect { it -> it.id }
-            if (loadIds. size() > 1) {
+            if (loadIds.size() > 1) {
                 data.addLoadsBinding(id, loadIds)
             } else {
                 logWarn(out, "loads group %s ignored because it contains %d element", id, loadIds.size())
@@ -754,8 +755,7 @@ class MetrixDslDataLoader extends DslLoader {
         if (loadSpec.preventiveSheddingPercentage != null) {
             if (loadSpec.preventiveSheddingPercentage > 100 || loadSpec.preventiveSheddingPercentage < 0) {
                 logWarn(out, "preventive shedding percentage for load %s is not valid", id)
-            }
-            else {
+            } else {
                 data.addPreventiveLoad(id, loadSpec.preventiveSheddingPercentage)
                 if (loadSpec.preventiveSheddingCost != null) {
                     data.addPreventiveLoadCost(id, loadSpec.preventiveSheddingCost)
@@ -765,10 +765,9 @@ class MetrixDslDataLoader extends DslLoader {
 
         if (loadSpec.curativeSheddingPercentage || loadSpec.curativeSheddingCost != null || loadSpec.onContingencies) {
             if (loadSpec.curativeSheddingPercentage && loadSpec.curativeSheddingCost != null && loadSpec.onContingencies) {
-                if (loadSpec.curativeSheddingPercentage > 100 ||loadSpec.curativeSheddingPercentage < 0) {
+                if (loadSpec.curativeSheddingPercentage > 100 || loadSpec.curativeSheddingPercentage < 0) {
                     logWarn(out, "curative shedding percentage for load %s is not valid", id)
-                }
-                else {
+                } else {
                     addEquipmentTimeSeries(loadSpec.curativeSheddingCost, MetrixVariable.curativeCostDown, id, tsConfig, binding)
                     data.addCurativeLoad(id, loadSpec.curativeSheddingPercentage, loadSpec.onContingencies)
                 }
@@ -779,7 +778,7 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
     private static void addEquipmentTimeSeries(Object timeSeriesName, MappingVariable variable, String equipmentId, TimeSeriesMappingConfig tsConfig, Binding binding) {
-        CalculatedTimeSeriesDslLoader.TimeSeriesGroovyObject timeSeries = ((CalculatedTimeSeriesDslLoader.TimeSeriesGroovyObject) binding.getVariable("timeSeries"))
+        CalculatedTimeSeriesGroovyDslLoader.TimeSeriesGroovyObject timeSeries = ((CalculatedTimeSeriesGroovyDslLoader.TimeSeriesGroovyObject) binding.getVariable("timeSeries"))
         if (timeSeriesName instanceof Number && !timeSeries.exists(timeSeriesName.toString())) {
             timeSeries[timeSeriesName.toString()] = timeSeriesName.floatValue()
         } else {
@@ -958,10 +957,10 @@ class MetrixDslDataLoader extends DslLoader {
             }
             logDebug(out, "Found phaseTapChanger for id %s", id)
         }
-        if (spec.preventiveLowerTapRange!=null){
+        if (spec.preventiveLowerTapRange != null){
             data.addLowerTapChange(id, spec.preventiveLowerTapRange)
         }
-        if (spec.preventiveUpperTapRange!=null){
+        if (spec.preventiveUpperTapRange != null){
             data.addUpperTapChange(id, spec.preventiveUpperTapRange)
         }
         if (spec.angleTapResults) {
@@ -998,24 +997,24 @@ class MetrixDslDataLoader extends DslLoader {
         cloned.delegate = spec
         cloned()
         MetrixSection section = new MetrixSection(id)
-        if (! spec.maxFlowN) {
-            logWarn(out, "Section Monitoring '"+id+"' is missing flow limit")
+        if (!spec.maxFlowN) {
+            logWarn(out, "Section Monitoring '" + id + "' is missing flow limit")
             return
         } else {
             section.setMaxFlowN(spec.maxFlowN)
         }
         if (!spec.branchList) {
-            logWarn(out, "Section Monitoring '"+id+"' without branches")
+            logWarn(out, "Section Monitoring '" + id + "' without branches")
             return
         }
         for (Map.Entry<String, Float> branch : spec.branchList) {
             Identifiable identifiable = network.getIdentifiable(branch.getKey())
             if (identifiable == null) {
-                logWarn(out, "sectionMonitoring '"+id+"' branch id '"+branch.getKey()+"' not found in the network")
+                logWarn(out, "sectionMonitoring '" + id + "' branch id '"+branch.getKey()+"' not found in the network")
                 return
             }
             if (!(identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer || identifiable instanceof HvdcLine)) {
-                logWarn(out, "sectionMonitoring '"+id+"' type " + identifiable.getClass().name + " not supported")
+                logWarn(out, "sectionMonitoring '" + id + "' type " + identifiable.getClass().name + " not supported")
                 return
             }
         }
@@ -1058,7 +1057,7 @@ class MetrixDslDataLoader extends DslLoader {
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixHvdcControlType")
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixComputationType")
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixGeneratorsBinding.ReferenceVariable")
-        def astCustomizer = new ASTTransformationCustomizer(new CalculatedTimeSeriesDslAstTransformation())
+        def astCustomizer = new ASTTransformationCustomizer(new CalculatedTimeSeriesGroovyDslAstTransformation())
         def config = new CompilerConfiguration()
         config.addCompilationCustomizers(imports)
         config.addCompilationCustomizers(astCustomizer)
@@ -1149,7 +1148,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         Binding binding = new Binding()
 
-        CalculatedTimeSeriesDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
+        CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
         if (out != null) {
             binding.out = out
@@ -1169,7 +1168,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         Binding binding = new Binding()
 
-        CalculatedTimeSeriesDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
+        CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
         if (out != null) {
             binding.out = out

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<iidm:network xmlns:iidm="http://www.powsybl.org/schema/iidm/1_5" xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF">
+<iidm:network xmlns:iidm="http://www.powsybl.org/schema/iidm/1_7" xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF" minimumValidationLevel="STEADY_STATE_HYPOTHESIS">
     <iidm:substation id="FP.AN" country="FR" tso="RTE">
         <iidm:property name="paysCvg" value="FRANCE"/>
         <iidm:property name="regionCvg" value="LILLE"/>

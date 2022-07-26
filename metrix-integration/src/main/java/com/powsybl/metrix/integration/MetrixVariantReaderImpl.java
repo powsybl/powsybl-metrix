@@ -284,7 +284,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         }
     }
 
-    private LoadDetail getLoadDetail(Load load, float fixedActivePower, float variableActivePower) {
+    private LoadDetail getLoadDetail(Load load, double fixedActivePower, double variableActivePower) {
         load.newExtension(LoadDetailAdder.class)
                 .withFixedActivePower(fixedActivePower)
                 .withFixedReactivePower(0f)
@@ -296,9 +296,9 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     private void updateLoadDetail(LoadDetail loadDetail, MappingVariable variable, double newValue) {
         if (variable == EquipmentVariable.fixedActivePower) {
-            loadDetail.setFixedActivePower((float) newValue);
+            loadDetail.setFixedActivePower(newValue);
         } else if (variable == EquipmentVariable.variableActivePower) {
-            loadDetail.setVariableActivePower((float) newValue);
+            loadDetail.setVariableActivePower(newValue);
         }
     }
 

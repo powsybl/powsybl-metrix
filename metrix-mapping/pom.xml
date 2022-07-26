@@ -59,6 +59,10 @@
             <artifactId>powsybl-time-series-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.powsybl</groupId>
+            <artifactId>powsybl-time-series-dsl</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
