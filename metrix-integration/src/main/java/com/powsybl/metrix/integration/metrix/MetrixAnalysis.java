@@ -57,7 +57,8 @@ public class MetrixAnalysis {
     public MetrixAnalysis(NetworkSource networkSource, Reader mappingReader,
                           Reader metrixDslReader, Reader remedialActionsReader,
                           ReadOnlyTimeSeriesStore store, MetrixAppLogger logger, ComputationRange computationRange) {
-        this(networkSource, mappingReader, metrixDslReader, remedialActionsReader, store, logger, ignore -> { }, null, null, computationRange);
+        this(networkSource, mappingReader, metrixDslReader, remedialActionsReader, store, logger, ignore -> {
+        }, null, null, computationRange);
     }
 
     public MetrixAnalysis(NetworkSource networkSource, Reader mappingReader, Reader metrixDslReader,
@@ -90,7 +91,7 @@ public class MetrixAnalysis {
                 writer.write("Message");
                 writer.newLine();
             }
-            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(mappingReader, network, mappingParameters, writer);
+            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(mappingReader, network, mappingParameters, writer, id);
             Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             MetrixDslData metrixDslData = null;
             Map<String, NodeCalc> timeSeriesNodesAfterMetrix = null;
@@ -105,14 +106,20 @@ public class MetrixAnalysis {
         }
     }
 
-    private TimeSeriesMappingConfig loadMappingConfig(Reader mappingReader, Network network, MappingParameters mappingParameters, Writer writer) {
+    private TimeSeriesMappingConfig loadMappingConfig(Reader mappingReader, Network network, MappingParameters mappingParameters, Writer writer, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading time series mapping...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
             CompletableFuture<TimeSeriesMappingConfig> mappingFuture = CompletableFuture.supplyAsync(() ->
-                    TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, writer, computationRange));
+                TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, writer, computationRange), Executors.newSingleThreadExecutor(
+                    r -> new Thread(() -> {
+                        long begin = System.currentTimeMillis();
+                        r.run();
+                        long elapsed = System.currentTimeMillis() - begin;
+                        LOGGER.info("Script execution {} time {} ms", schemaName, elapsed);
+                    }, "Script_TS_" + id + "_" + Instant.now())));
             updateTask.accept(mappingFuture);
             return mappingFuture.get();
         } catch (ExecutionException e) {
