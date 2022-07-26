@@ -323,15 +323,18 @@ public class TimeSeriesMappingConfig {
     private static CalculatedTimeSeries createCalculatedTimeSeries(NodeCalc nodeCalc, int version, ReadOnlyTimeSeriesStore store) {
         CalculatedTimeSeries calculatedTimeSeries = new CalculatedTimeSeries("", nodeCalc, new FromStoreTimeSeriesNameResolver(store, version));
         if (calculatedTimeSeries.getIndex() instanceof InfiniteTimeSeriesIndex) {
-            Optional<TimeSeriesIndex> regularIndex = store
-                    .getTimeSeriesMetadata(store.getTimeSeriesNames(null))
-                    .stream()
-                    .map(TimeSeriesMetadata::getIndex)
-                    .filter(index -> !(index instanceof InfiniteTimeSeriesIndex))
-                    .findFirst();
-            regularIndex.ifPresent(calculatedTimeSeries::synchronize);
+            getRegularIndex(store).ifPresent(calculatedTimeSeries::synchronize);
         }
         return calculatedTimeSeries;
+    }
+
+    public static Optional<TimeSeriesIndex> getRegularIndex(ReadOnlyTimeSeriesStore store) {
+        return store
+                .getTimeSeriesMetadata(store.getTimeSeriesNames(null))
+                .stream()
+                .map(TimeSeriesMetadata::getIndex)
+                .filter(index -> !(index instanceof InfiniteTimeSeriesIndex))
+                .findFirst();
     }
 
     public static int getNbUnmapped(Set<String> unmapped, Set<String> ignoredUnmapped) {
