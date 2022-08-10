@@ -35,6 +35,8 @@ public:
     // list got from ortools list: only solvers that have linear AND mixed have been extracted
     enum class SolverChoice {
         GLPK = 0,
+        CBC,
+        SCIP_GLOP,
 
         // Commercial software (need license).
         GUROBI,

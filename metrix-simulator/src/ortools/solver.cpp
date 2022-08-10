@@ -13,6 +13,12 @@ const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver
     std::make_pair(config::Configuration::SolverChoice::GLPK,
                    std::make_pair(operations_research::MPSolver::GLPK_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::GLPK_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::CBC,
+                   std::make_pair(operations_research::MPSolver::CLP_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::CBC_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::SCIP_GLOP,
+                   std::make_pair(operations_research::MPSolver::GLOP_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::SCIP_MIXED_INTEGER_PROGRAMMING)),
     std::make_pair(config::Configuration::SolverChoice::GUROBI,
                    std::make_pair(operations_research::MPSolver::GUROBI_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::GUROBI_MIXED_INTEGER_PROGRAMMING)),
@@ -67,9 +73,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
     // set time limit
     solver->set_time_limit(problem.TempsDExecutionMaximum);
 
-    // transfer bounds type
-    solver->SetSolverSpecificParametersAsString(
-        convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeBorneDeLaVariable));
+    if (solver_choice_ == config::Configuration::SolverChoice::SIRIUS) {
+        // transfer bounds type
+        solver->SetSolverSpecificParametersAsString(
+            convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeBorneDeLaVariable));
+    }
 
     return solver;
 }
@@ -91,10 +99,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                    problem.CoefficientsDeLaMatriceDesContraintes,
                    problem.NombreDeContraintes);
 
-    // transfer bounds type
-    solver->SetSolverSpecificParametersAsString(
-        convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeVariable));
-
+    if (solver_choice_ == config::Configuration::SolverChoice::SIRIUS) {
+        // transfer bounds type
+        solver->SetSolverSpecificParametersAsString(
+            convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeVariable));
+    }
 
     return solver;
 }
