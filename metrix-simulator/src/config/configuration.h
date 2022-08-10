@@ -200,6 +200,7 @@ public:
     int redispatchCostOffset() const { return redispatch_cost_offset_; }
     int costEcart() const { return cost_ecart_; }
     SolverChoice solverChoice() const { return solver_choice_; }
+    SolverChoice pcSolverChoice() const { return pc_solver_choice_; }
     double noiseCost() const { return noise_cost_; }
 
     unsigned int lostLoadDetailedMax() const { return lost_load_detailed_max_; }
@@ -367,6 +368,7 @@ private:
     int redispatch_cost_offset_;
     int cost_ecart_;
     SolverChoice solver_choice_;
+    SolverChoice pc_solver_choice_;
     double noise_cost_;
 
     unsigned int lost_load_detailed_max_;

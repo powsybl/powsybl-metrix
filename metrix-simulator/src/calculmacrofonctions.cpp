@@ -111,10 +111,12 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
     #ifdef USE_ORTOOLS
     solver_simplex_ = std::make_shared<ortools::Solver>(config::configuration().solverChoice());
     solver_pne_ = solver_simplex_;
+    pc_solver_ = std::make_shared<ortools::Solver>(config::configuration().pcSolverChoice());
     #else
     // use same solver
     solver_simplex_ = std::make_shared<compute::Solver>();
     solver_pne_ = solver_simplex_;
+    pc_solver_ = solver_simplex_;
     #endif
 
     // Réglage des paramètres en fonction du mode de calcul
@@ -477,7 +479,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Solveur II : utilisation du SIMPLEXE;
         //------------------------------------
-    } else if (typeSolveur == UTILISATION_SIMPLEXE) {
+    } else if (typeSolveur == UTILISATION_SIMPLEXE || typeSolveur == UTILISATION_PC_SIMPLEXE) {
         LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineaireSPX");
 
         for (int i = 0; i < pbNombreDeVariables_; ++i) {
@@ -542,7 +544,11 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
             SPX_EcrireProblemeAuFormatMPS(pb_);
         }
 
-        solver_pne_->solve(&pb_);
+        if (typeSolveur == UTILISATION_PC_SIMPLEXE) {
+            pc_solver_->solve(&pb_);
+        } else {
+            solver_pne_->solve(&pb_);
+        }
         pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
         pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
 

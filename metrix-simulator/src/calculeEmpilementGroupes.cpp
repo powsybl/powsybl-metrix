@@ -179,7 +179,7 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
 
     // utilisation de PneSolveur
     int status = METRIX_PAS_PROBLEME;
-    status = PneSolveur(UTILISATION_SIMPLEXE, varianteCourante);
+    status = PneSolveur(UTILISATION_PC_SIMPLEXE, varianteCourante);
     if (status == METRIX_PROBLEME) {
         LOG_ALL(error) << err::ioDico().msg("ERRAppelSpx");
         LU_LibererMemoireLU(jacFactorisee_);

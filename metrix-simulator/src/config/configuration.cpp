@@ -135,14 +135,15 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
         helper::check(log_level <= metrix::log::severity::critical, log_level_key);
     }
 
-    auto solver_choice_key = "SOLVERCH";
-    if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), solver_choice_key)) {
-        unsigned int solver_choice = std::get<INTEGER>(raw_config).at(solver_choice_key).front();
-        helper::check(solver_choice <= static_cast<unsigned int>(SolverChoice::XPRESS), solver_choice_key);
+    for (auto solver_choice_key : {"SOLVERCH", "PCSOLVERCH"}) {
+        if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), solver_choice_key)) {
+            unsigned int solver_choice = std::get<INTEGER>(raw_config).at(solver_choice_key).front();
+            helper::check(solver_choice <= static_cast<unsigned int>(SolverChoice::XPRESS), solver_choice_key);
 #ifndef USE_ORTOOLS
-        // If ortools is not used, only Sirius is allowed
-        helper::check(solver_choice == static_cast<int>(SolverChoice::SIRIUS), solver_choice_key);
+            // If ortools is not used, only Sirius is allowed
+            helper::check(solver_choice == static_cast<int>(SolverChoice::SIRIUS), solver_choice_key);
 #endif
+        }
     }
 }
 
@@ -328,6 +329,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     redispatch_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "REDISPOF", 0);
     cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10);
     solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "SOLVERCH", SolverChoice::SIRIUS);
+    pc_solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "PCSOLVERCH", SolverChoice::SIRIUS);
     noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
 
     lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);
