@@ -25,7 +25,7 @@ inline std::vector<T> makeVectorFromPointer(T* array, size_t nb_elements)
 class Solver : public compute::ISolver
 {
 public:
-    explicit Solver(config::Configuration::SolverChoice solver_choice);
+    explicit Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params);
 
     void solve(PROBLEME_A_RESOUDRE* pne_problem) final { solve_impl(pne_problem); }
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
@@ -79,7 +79,10 @@ private:
     template<class PROBLEM>
     std::shared_ptr<operations_research::MPSolver> makeMPSolver()
     {
-        return std::make_shared<operations_research::MPSolver>(solverName_, type<PROBLEM>());
+        auto solver = std::make_shared<operations_research::MPSolver>(solverName_, type<PROBLEM>());
+        if (specific_params_.size() > 0)
+            solver->SetSolverSpecificParametersAsString(specific_params_);
+        return solver;
     }
 
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
@@ -109,6 +112,7 @@ private:
 private:
     std::shared_ptr<operations_research::MPSolver> solver_;
     config::Configuration::SolverChoice solver_choice_;
+    std::string specific_params_;
 };
 
 // specializations for ortools

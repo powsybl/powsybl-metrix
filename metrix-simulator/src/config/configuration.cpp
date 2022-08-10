@@ -145,6 +145,11 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
 #endif
         }
     }
+
+    auto specific_solver_params_key = "SPECIFICSOLVERPARAMS";
+    if (helper::checkAtMostKeyOnce(std::get<STRING>(raw_config), specific_solver_params_key)) {
+        helper::check(std::get<STRING>(raw_config).at(specific_solver_params_key).size() == 1, specific_solver_params_key);
+    }
 }
 
 auto Configuration::readRawConfiguration(const std::string& pathname) -> raw_configuration
@@ -330,6 +335,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10);
     solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "SOLVERCH", SolverChoice::SIRIUS);
     pc_solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "PCSOLVERCH", SolverChoice::SIRIUS);
+    specific_solver_params_ = helper::updateValueNumber(std::get<STRING>(raw_config), "SPECIFICSOLVERPARAMS", std::string(""));
     noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
 
     lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);

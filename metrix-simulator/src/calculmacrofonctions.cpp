@@ -108,16 +108,20 @@ string Contrainte::typeDeContrainteToString() const
 
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
-    #ifdef USE_ORTOOLS
-    solver_simplex_ = std::make_shared<ortools::Solver>(config::configuration().solverChoice());
+#ifdef USE_ORTOOLS
+    solver_simplex_ = std::make_shared<ortools::Solver>(
+        config::configuration().solverChoice(),
+        config::configuration().specificSolverParams());
     solver_pne_ = solver_simplex_;
-    pc_solver_ = std::make_shared<ortools::Solver>(config::configuration().pcSolverChoice());
-    #else
+    pc_solver_ = std::make_shared<ortools::Solver>(
+        config::configuration().pcSolverChoice(),
+        config::configuration().specificSolverParams());
+#else
     // use same solver
     solver_simplex_ = std::make_shared<compute::Solver>();
     solver_pne_ = solver_simplex_;
     pc_solver_ = solver_simplex_;
-    #endif
+#endif
 
     // Réglage des paramètres en fonction du mode de calcul
     std::stringstream ss;

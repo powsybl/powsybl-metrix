@@ -33,7 +33,9 @@ const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver
                                   operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
 };
 
-Solver::Solver(config::Configuration::SolverChoice solver_choice) : solver_choice_(solver_choice) {}
+Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params)
+    : solver_choice_(solver_choice),
+      specific_params_(specific_params) {}
 
 void Solver::solve(PROBLEME_SIMPLEXE* spx_problem) { solve_impl(spx_problem); }
 
