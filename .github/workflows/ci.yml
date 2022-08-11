@@ -8,8 +8,12 @@ defaults:
 
 jobs:
   linux:
-    name: Linux
+    name: Linux xprs=${{ matrix.xprs }}
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        xprs: [ON, OFF]
     steps:
       - name: Install Boost
         run: |
@@ -17,97 +21,73 @@ jobs:
           sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
 
-      - name: Configure 3rd parties
-        run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
+      - name: Setup xpress env
+        if: ${{ matrix.xprs == 'ON' }}
+        run: |
+          echo "XPRESSDIR=${{ github.workspace }}/xpressmp813" >> $GITHUB_ENV
+          echo "XPRESS=${{ github.workspace }}/xpressmp813/bin" >> $GITHUB_ENV
 
-      - name: Build 3rd parties
-        run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
-
-      - name: Configure CMake
-        run: >
-          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
-          -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
-
-      - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
-
-      - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
-
-  qa:
-    name: QA - CI
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install Java 11
-        uses: actions/setup-java@v1
+      - name: Checkout Xpress linux
+        if: ${{ matrix.xprs == 'ON' }}
+        uses: actions/checkout@v2
         with:
-          java-version: 11
+          repository: jdarlay/xpressmp813Lin
+          path: ${{ env.XPRESSDIR }}
+          ref: master
+          token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Install gcovr
-        run: sudo pip install gcovr
-
-      - name: Install Sonar wrapper
-        working-directory: ${{ runner.workspace }}
-        run: |
-          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
-
-      - name: Install Sonar scanner
-        working-directory: ${{ runner.workspace }}
-        run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
-          unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
-          ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
-          rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+      - name: Conf Xpress
+        if: ${{ matrix.xprs == 'ON' }}
+        run: 'echo "$AUTH" >"${{ env.XPRESS }}/xpauth.xpr"'
         env:
-          SONAR_SCANNER_VERSION: 3.3.0.1492
-
-      - name: Install Boost
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev
-
-      - name: Checkout sources
-        uses: actions/checkout@v1
+          AUTH: ${{ secrets.XPAUTH }}
 
       - name: Configure 3rd parties
-        run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+        working-directory: metrix-simulator
+        run: |
+          cmake -S external \
+                -B build-linux/external \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DUSE_XPRESS=${{ matrix.xprs }} \
+                -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
       - name: Build 3rd parties
-        run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+        working-directory: metrix-simulator
+        run: cmake --build build-linux/external --parallel 2
 
       - name: Configure CMake
-        run: >
-          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
-          -DCMAKE_BUILD_TYPE=Debug
-          -DCODE_COVERAGE=TRUE
-          -DMETRIX_RUN_ALL_TESTS=OFF
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+        working-directory: metrix-simulator
+        run: |
+          cmake -S . \
+                -B build-linux \
+                -DCMAKE_BUILD_TYPE=Release \
+                -DCMAKE_INSTALL_PREFIX=build-linux/install \
+                -DINSTALL_CMAKE_DIR=. \
+                -DUSE_ORTOOLS=ON \
+                -DUSE_XPRESS=${{ matrix.xprs }} \
+                -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
       - name: Build
-        run: >
-          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
-          --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
+        working-directory: metrix-simulator
+        run: cmake --build build-linux --target install --parallel 2
 
       - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
+        working-directory: metrix-simulator/build-linux
+        run: ctest -j8 --output-on-failure
 
-      - name: Code coverage
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
+      - name: Prepare metrix install
+        id: metrix-install
+        working-directory: metrix-simulator/build-linux
+        run: |
+          [ ${{ matrix.xprs }} == "ON" ] && ARCHIVE_NAME=metrix_xprs || ARCHIVE_NAME=metrix
+          ARCHIVE_PATH="${{ github.workspace }}/metrix-simulator/build-linux/install"
+          echo "::set-output name=archive_name::$ARCHIVE_NAME"
+          echo "::set-output name=archive_path::$ARCHIVE_PATH"
 
-      - name: Sonarcloud
-        working-directory: ${{ runner.workspace }}/powsybl-metrix/metrix-simulator
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: >
-          ${{ runner.workspace }}/sonar/bin/sonar-scanner
-          -Dsonar.host.url=https://sonarcloud.io
+      - name: Upload metrix install artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ steps.metrix-install.outputs.archive_name }}
+          path: ${{ steps.metrix-install.outputs.archive_path }}
