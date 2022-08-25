@@ -14,16 +14,15 @@ import com.powsybl.commons.datasource.MemDataSource;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
+import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Scanner;
 import java.util.TreeSet;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
@@ -335,11 +334,17 @@ class NetworkPointWriterTest {
     private void compareTxt(ByteArrayOutputStream stream, String directoryName, String fileName) throws Exception {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
             try (InputStream actual = new ByteArrayInputStream(stream.toByteArray())) {
-                new Scanner(expected).nextLine();
-                new Scanner(expected).nextLine();
-                new Scanner(actual).nextLine();
-                new Scanner(actual).nextLine();
-                assertNotNull(compareStreamTxt(expected, actual));
+                // skip the two first lines : xml version line and network line (containing extensions)
+                // because extensions are not ordered in the same way for each test launching
+                BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expected));
+                expectedReader.readLine();
+                expectedReader.readLine();
+                BufferedReader actualReader = new BufferedReader(new InputStreamReader(actual));
+                actualReader.readLine();
+                actualReader.readLine();
+                InputStream expectedStream = new ReaderInputStream(expectedReader, StandardCharsets.UTF_8);
+                InputStream actualStream = new ReaderInputStream(actualReader, StandardCharsets.UTF_8);
+                assertNotNull(compareStreamTxt(expectedStream, actualStream));
             }
         }
     }
