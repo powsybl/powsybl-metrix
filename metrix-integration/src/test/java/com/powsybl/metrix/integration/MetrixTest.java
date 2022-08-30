@@ -100,11 +100,10 @@ class MetrixTest {
         // create test network
         Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
-        MetrixAnalysisResult analysisResult = new MetrixAnalysisResult(dslData, timeSeriesMappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult);
+        MetrixAnalysisResult analysisResult = new MetrixAnalysisResult(dslData, timeSeriesMappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, Collections.emptyList(), Collections.emptyList());
 
         try (ZipOutputStream log = new ZipOutputStream(Files.newOutputStream(fileSystem.getPath("logs.gz")))) {
             MetrixMock metrix = new MetrixMock(
-                null,
                 remedialActionReader,
                 timeSeriesStore,
                 resultStore,

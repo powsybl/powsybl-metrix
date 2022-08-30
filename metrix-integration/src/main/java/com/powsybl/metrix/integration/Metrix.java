@@ -11,7 +11,6 @@ package com.powsybl.metrix.integration;
 import com.google.common.collect.Range;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
-import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.io.ResultListener;
@@ -34,12 +33,10 @@ public class Metrix extends AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Metrix.class);
 
-    public Metrix(ContingenciesProvider contingenciesProvider, Reader remedialActionsReader,
-                  ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
+    public Metrix(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
                   ZipOutputStream logArchive, ComputationManager computationManager,
                   MetrixAppLogger logger, MetrixAnalysisResult analysisResult) {
         super(
-            contingenciesProvider,
             remedialActionsReader,
             store,
             resultStore,

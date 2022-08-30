@@ -265,7 +265,7 @@ public class MetrixTool implements Tool {
         NetworkSource networkSource = getNetworkSource(context, caseFile, logger);
         Reader mappingReader = getReader(mappingFile);
 
-        ContingenciesProvider contingenciesProvider = null;
+        ContingenciesProvider contingenciesProvider;
         if (contingenciesFile != null) {
             contingenciesProvider = new GroovyDslContingenciesProvider(contingenciesFile);
         } else {
@@ -281,11 +281,10 @@ public class MetrixTool implements Tool {
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
             ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
-            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReaderForAnalysis,
+            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, logger, computationRange);
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
-            new Metrix(contingenciesProvider, remedialActionsReaderForRun,
-                    store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
+            new Metrix(remedialActionsReaderForRun, store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
                     .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context), null);
 
         } catch (IOException e) {

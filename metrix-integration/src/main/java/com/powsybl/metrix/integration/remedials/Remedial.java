@@ -7,7 +7,9 @@
 
 package com.powsybl.metrix.integration.remedials;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Remedial {
 
@@ -16,13 +18,15 @@ public class Remedial {
     private final List<String> constraint;
     private final List<String> branchToOpen;
     private final List<String> branchToClose;
+    private final String actions;
 
-    public Remedial(int lineFile, String contingency, List<String> constraint, List<String> branchToOpen, List<String> branchToClose) {
+    public Remedial(int lineFile, String contingency, List<String> constraint, List<String> branchToOpen, List<String> branchToClose, String actions) {
         this.lineFile = lineFile;
         this.contingency = contingency;
         this.constraint = constraint;
         this.branchToOpen = branchToOpen;
         this.branchToClose = branchToClose;
+        this.actions = actions;
     }
 
     public int getLineFile() {
@@ -45,4 +49,14 @@ public class Remedial {
         return branchToClose;
     }
 
+    public String getActions() {
+        return actions;
+    }
+
+    public final String getNameFromActions() {
+        List<String> name = new ArrayList<>(); //display branchToOpen ordered then branchToClose ordered
+        name.addAll(branchToOpen.stream().sorted().collect(Collectors.toList()));
+        name.addAll(branchToClose.stream().map(action -> "+" + action).sorted().collect(Collectors.toList()));
+        return String.join(";", name);
+    }
 }

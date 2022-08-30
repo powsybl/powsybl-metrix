@@ -10,7 +10,6 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
-import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
@@ -20,10 +19,10 @@ import java.io.Reader;
 import java.util.zip.ZipOutputStream;
 
 public class MetrixMock extends AbstractMetrix {
-    public MetrixMock(ContingenciesProvider contingenciesProvider, Reader remedialActionsReader, ReadOnlyTimeSeriesStore store,
+    public MetrixMock(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store,
                       ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
                       MetrixAppLogger appLogger, MetrixAnalysisResult analysisResult) {
-        super(contingenciesProvider, remedialActionsReader, store, resultStore, logArchive, computationManager, appLogger, analysisResult);
+        super(remedialActionsReader, store, resultStore, logArchive, computationManager, appLogger, analysisResult);
     }
 
     @Override
