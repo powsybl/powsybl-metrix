@@ -1,4 +1,0 @@
-WARNING;Défauts - hvdcLineId;L'ouvrage de type liaison courant continu ne pourra pas jouer en curatif sur le défaut ctyForHvdcLineId car il n'est pas défini dans le script de défauts
-WARNING;Défauts - generatorId;L'ouvrage de type générateur ne pourra pas jouer en curatif sur le défaut ctyForGeneratorId car il n'est pas défini dans le script de défauts
-WARNING;Défauts - loadId;L'ouvrage de type charge ne pourra pas jouer en curatif sur le défaut ctyForLoadId car il n'est pas défini dans le script de défauts
-WARNING;Défauts - phaseTapChangerId;L'ouvrage de type TD ne pourra pas jouer en curatif sur le défaut ctyForPhaseTapChangerId car il n'est pas défini dans le script de défauts

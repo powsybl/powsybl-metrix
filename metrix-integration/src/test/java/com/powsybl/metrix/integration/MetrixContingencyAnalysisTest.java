@@ -48,7 +48,7 @@ public class MetrixContingencyAnalysisTest {
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
-            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixContingencyAnalysis.csv"),
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/expected/metrixContingencyAnalysis.csv"),
                 new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
@@ -69,7 +69,7 @@ public class MetrixContingencyAnalysisTest {
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
-            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixDslDataContingencyAnalysis.csv"),
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/expected/metrixDslDataContingencyAnalysis.csv"),
                     new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
@@ -88,7 +88,7 @@ public class MetrixContingencyAnalysisTest {
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
-            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixRemedialContingencyAnalysis.csv"),
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/expected/metrixRemedialContingencyAnalysis.csv"),
                     new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }

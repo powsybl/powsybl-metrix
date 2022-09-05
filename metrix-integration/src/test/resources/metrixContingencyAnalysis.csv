@@ -1,5 +1,0 @@
-WARNING;Défauts;Le défaut ctyWithWrongId n'a pas été créé car l'ouvrage wrongId n'existe pas dans le réseau
-WARNING;Défauts;Le défaut ctyWithWrongType n'a pas été créé car l'ouvrage FP.AND1_1 est de type BUSBAR_SECTION
-WARNING;Défauts;Le défaut ctyWithWrongTypeAndId n'a pas été créé car l'ouvrage wrongId n'existe pas dans le réseau
-WARNING;Défauts;Le défaut ctyWithWrongTypeAndId n'a pas été créé car l'ouvrage wrongId est de type BUSBAR_SECTION
-WARNING;Défauts;Le défaut ctyWithWrongTypeForIdentifiable n'a pas été créé car l'ouvrage FSSV.O11_G est de type BRANCH dans le défaut et de type GENERATOR dans le réseau
