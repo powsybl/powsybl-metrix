@@ -1005,6 +1005,19 @@ class MetrixDslDataLoaderTest {
         assertEquals(4, tsConfig.getTimeSeriesToEquipment().size());
     }
 
+    @Test
+    void writeLogTest() throws IOException {
+        String script = "writeLog(\"LOG_TYPE\", \"LOG_SECTION\", \"LOG_MESSAGE\")";
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            MetrixDslDataLoader.load(new StringReader(script), network, parameters, store, new TimeSeriesMappingConfig(), out);
+        }
+
+        String output = outputStream.toString();
+        assertEquals("LOG_TYPE;LOG_SECTION;LOG_MESSAGE", output);
+    }
 }
 
 
