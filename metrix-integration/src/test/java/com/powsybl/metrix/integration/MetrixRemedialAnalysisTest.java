@@ -67,7 +67,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderCommentLineTest() throws IOException {
         remedialTest(
             "// comment",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 contient un commentaire"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 contains a comment"
         );
     }
 
@@ -75,7 +75,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderCommentTest() throws IOException {
         remedialTest(
             "/* comment",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 contient un commentaire"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 contains a comment"
         );
     }
 
@@ -83,7 +83,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineCommentLineTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "// comment"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 contient un commentaire"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains a comment"
         );
     }
 
@@ -91,7 +91,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineCommentTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "/* comment"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 contient un commentaire"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains a comment"
         );
     }
 
@@ -99,7 +99,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderEndLineTest() throws IOException {
         remedialTest(
             "line",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 ne se termine pas par un point virgule"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 does not end with semicolon"
         );
     }
 
@@ -107,7 +107,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineEndLineTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "line"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 ne se termine pas par un point virgule"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 does not end with semicolon"
         );
     }
 
@@ -115,7 +115,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnTest() throws IOException {
         remedialTest(
             "column1;column2;column3;",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 est mal formée (entête)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
         );
     }
 
@@ -123,7 +123,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnEmptyTest() throws IOException {
         remedialTest(
             ";column;",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 est mal formée (entête)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
         );
     }
 
@@ -131,7 +131,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnNumberEmptyTest() throws IOException {
         remedialTest(
             "NB;;",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 est mal formée (entête)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
         );
     }
 
@@ -139,7 +139,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbMissingTest() throws IOException {
         remedialTest(
             "notNB;column;",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 est mal formée (entête)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
         );
     }
 
@@ -147,7 +147,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnNumberMissingTest() throws IOException {
         remedialTest(
             "NB;column;",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 est mal formée (entête)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
         );
     }
 
@@ -155,7 +155,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnNumberWrongIntegerTest() throws IOException {
         remedialTest(
             "NB;-1;",
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 1 est mal formée (entête)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
         );
     }
 
@@ -163,7 +163,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbColumnTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "column;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 est mal formée"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
         );
     }
 
@@ -171,7 +171,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbColumnEmptyTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", ";;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 est mal formée"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
         );
     }
 
@@ -179,7 +179,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbActionMissingTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "ctyId;column;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 est mal formée"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
         );
     }
 
@@ -187,7 +187,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemediaLineNbActionWrongIntegerTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "ctyId;-1;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 est mal formée"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
         );
     }
 
@@ -200,7 +200,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", ";1;FP.AND1  FVERGE1  2;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 contient un élément vide"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
         );
     }
 
@@ -213,7 +213,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;;FP.AND1  FVERGE1  2;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 contient un élément vide"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
         );
     }
 
@@ -226,7 +226,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;1;;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 est mal formée"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
         );
     }
 
@@ -239,7 +239,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;;FP.AND1  FVERGE1  2;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 contient un élément vide"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
         );
     }
 
@@ -252,7 +252,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;action;+FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage action n'existe pas dans le réseau"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment action does not exist in the network"
         );
     }
 
@@ -265,7 +265,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+action;FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage action n'existe pas dans le réseau"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment action does not exist in the network"
         );
     }
 
@@ -278,7 +278,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;FSSV.O11_G;FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage FSSV.O11_G n'est pas de type Branch ni de type Switch"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FSSV.O11_G is not a Branch or Switch type"
         );
     }
 
@@ -291,7 +291,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+FSSV.O11_G;FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage FSSV.O11_G n'est pas de type Branch ni de type Switch"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FSSV.O11_G is not a Branch or Switch type"
         );
     }
 
@@ -304,7 +304,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId|equipment;1;FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage equipment n'existe pas dans le réseau"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment equipment does not exist in the network"
         );
     }
 
@@ -317,7 +317,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId|FSSV.O11_G;1;FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage FSSV.O11_G n'est pas de type Branch"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FSSV.O11_G is not a Branch type"
         );
     }
 
@@ -333,7 +333,7 @@ public class MetrixRemedialAnalysisTest {
             contingenciesProvider,
             metrixDslData,
             String.join(System.lineSeparator(), "NB;1;", "ctyId||FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car la ligne 2 contient un élément vide"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
         );
     }
 
@@ -346,7 +346,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId|FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
-            "WARNING;Parades topologiques;La parade à la ligne 2 ne sera pas prise en compte car l'ouvrage FS.BIS1  FVALDI1  1 n'est pas surveillé sur incident"
+            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FS.BIS1  FVALDI1  1 is not monitored on contingency"
         );
     }
 
@@ -358,7 +358,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;2;", "ctyId;1;FP.AND1  FVERGE1  2;"),
-            "ERROR;Parades topologiques;Le fichier de parades ne sera pas reconnu car le nombre de parades indiqué dans l'entête (NB = 2) est supérieur au nombre de lignes de parades (1)"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 because remedial number in header (NB = 2) is greater than the line number of the remedial (1)"
         );
     }
 
@@ -370,7 +370,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;1;FP.AND1  FVERGE1  2;", "ctyId;1;FS.BIS1  FVALDI1  1;"),
-            "WARNING;Parades topologiques;La parade à la ligne 3 ne sera pas prise en compte car le numéro de ligne de la parade est supérieur au nombre de parades indiqué dans l'entête (NB = 1)"
+            "WARNING;Remedials;The remedial at line 3 will not be taken into account because the line number of the remedial is greater than the remedial number in header (NB = 1)"
         );
     }
 
