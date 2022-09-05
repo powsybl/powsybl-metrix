@@ -303,4 +303,21 @@ class TimeSeriesDslLoaderTest {
         assertEquals(0.5f, parameters.getToleranceThreshold(), 0f);
         assertTrue(parameters.getWithTimeSeriesStats());
     }
+
+    @Test
+    void writeLogTest() throws IOException {
+        Network network = MappingTestNetwork.create();
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
+        String script = "writeLog(\"LOG_TYPE\", \"LOG_SECTION\", \"LOG_MESSAGE\")";
+
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            dsl.load(network, parameters, store, out, null);
+        }
+
+        String output = outputStream.toString();
+        assertEquals("LOG_TYPE;LOG_SECTION;LOG_MESSAGE", output);
+    }
 }

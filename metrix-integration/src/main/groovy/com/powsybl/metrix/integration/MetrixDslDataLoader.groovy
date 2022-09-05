@@ -13,6 +13,7 @@ import com.powsybl.iidm.network.*
 import com.powsybl.metrix.integration.exceptions.MetrixException
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
+import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.MappingVariable
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -30,11 +31,7 @@ import java.nio.file.Path
 
 class MetrixDslDataLoader extends DslLoader {
 
-    static Logger LOGGER = LoggerFactory.getLogger(MetrixDslDataLoader.class)
-
-    static final String DEBUG = "DEBUG - "
-    static final String WARNING = "WARNING - "
-    static final String ERROR = "ERROR - "
+    private static final String METRIX_SCRIPT_SECTION = "Metrix script"
 
     static final String BRANCH_RATINGS_BASE_CASE = "branchRatingsBaseCase"
     static final String BRANCH_ANALYSIS_RATINGS_BASE_CASE = "branchAnalysisRatingsBaseCase"
@@ -501,71 +498,70 @@ class MetrixDslDataLoader extends DslLoader {
 
     }
 
-    private static logOut(Writer out, String message) {
-        if (out != null) {
-            out.write(message + "\n")
+    private static logError(LogDslLoader logDslLoader, String message) {
+        if (logDslLoader == null) {
+            return;
         }
+        logDslLoader.logError(METRIX_SCRIPT_SECTION, message)
     }
 
-    private static logDebug(Writer out, String message) {
-        LOGGER.debug(message)
-        //logOut(out, DEBUG + message)
-    }
-
-    private static logWarn(Writer out, String message) {
-        LOGGER.warn(message)
-        logOut(out, WARNING + message)
-    }
-
-    private static logError(Writer out, String message) {
-        LOGGER.error(message)
-        logOut(out, ERROR + message)
-    }
-
-    private static logDebug(Writer out, String pattern, Object... arguments) {
+    private static logError(LogDslLoader logDslLoader, String pattern, Object... arguments) {
+        if (logDslLoader == null) {
+            return;
+        }
         String formattedString = String.format(pattern, arguments);
-        LOGGER.debug(formattedString);
-        //logOut(out, DEBUG + formattedString)
+        logDslLoader.logError(METRIX_SCRIPT_SECTION, formattedString)
     }
 
-    private static logWarn(Writer out, String pattern, Object... arguments) {
+    private static logWarn(LogDslLoader logDslLoader, String message) {
+        if (logDslLoader == null) {
+            return;
+        }
+        logDslLoader.logWarn(METRIX_SCRIPT_SECTION, message)
+    }
+
+    private static logWarn(LogDslLoader logDslLoader, String pattern, Object... arguments) {
+        if (logDslLoader == null) {
+            return;
+        }
         String formattedString = String.format(pattern, arguments);
-        LOGGER.warn(formattedString)
-        logOut(out, WARNING + formattedString)
+        logDslLoader.logWarn(METRIX_SCRIPT_SECTION, formattedString)
     }
 
-    private static logError(Writer out, String pattern, Object... arguments) {
+    private static logDebug(LogDslLoader logDslLoader, String pattern, Object... arguments) {
+        if (logDslLoader == null) {
+            return;
+        }
         String formattedString = String.format(pattern, arguments);
-        LOGGER.error(formattedString)
-        logOut(out, ERROR + formattedString)
+        logDslLoader.logDebug(METRIX_SCRIPT_SECTION, formattedString)
     }
 
-    private static void checkBranchThreshold(TimeSeriesMappingConfig tsConfig, Writer out) {
+    private static void checkBranchThreshold(TimeSeriesMappingConfig tsConfig, LogDslLoader logDslLoader) {
         Set<String> equipmentIds = tsConfig.getEquipmentIds()
         equipmentIds.forEach(id -> {
-            checkBranchThreshold(BRANCH_RATINGS_BASE_CASE, tsConfig, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, id, out)
-            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, tsConfig, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, id, out)
+            checkBranchThreshold(BRANCH_RATINGS_BASE_CASE, tsConfig, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, id, logDslLoader)
+            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, tsConfig, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, id, logDslLoader)
         });
         equipmentIds.forEach(id -> {
-            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, id, out)
-            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, tsConfig, MetrixVariable.thresholdITAM, MetrixVariable.thresholdITAMEndOr, id, out)
-            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, id, out)
-            checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdNk, MetrixVariable.thresholdNkEndOr, id, out)
-            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdITAMNk, MetrixVariable.thresholdITAMNkEndOr, id, out)
+            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, id, logDslLoader)
+            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, tsConfig, MetrixVariable.thresholdITAM, MetrixVariable.thresholdITAMEndOr, id, logDslLoader)
+            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, id, logDslLoader)
+            checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdNk, MetrixVariable.thresholdNkEndOr, id, logDslLoader)
+            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdITAMNk, MetrixVariable.thresholdITAMNkEndOr, id, logDslLoader)
         });
     }
 
-    private static void checkBranchThreshold(String thresholdName, TimeSeriesMappingConfig tsConfig, MappingVariable variable, MappingVariable variableEndOr, String id, Writer out) {
+    private static void checkBranchThreshold(String thresholdName, TimeSeriesMappingConfig tsConfig, MappingVariable variable, MappingVariable variableEndOr, String id, LogDslLoader logDslLoader) {
         if (tsConfig.isEquipmentThresholdDefined(variableEndOr, id) && !tsConfig.isEquipmentThresholdDefined(variable, id)) {
-            logError(out, "%s defined for id %s but %s is not -> %s is removed", thresholdName + END_OR, id, thresholdName, thresholdName + END_OR)
+            logError(logDslLoader, "%s defined for id %s but %s is not -> %s is removed", thresholdName + END_OR, id, thresholdName, thresholdName + END_OR)
             tsConfig.removeEquipmentTimeSeries(variableEndOr, id)
         }
     }
 
-    private static branchData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
+    private static branchData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, LogDslLoader logDslLoader) {
         Identifiable identifiable = network.getBranch(id)
         if (identifiable == null) {
-            logWarn(out, "Branch %s not found in the network", id)
+            logWarn(logDslLoader, "Branch %s not found in the network", id)
             return
         }
 
@@ -643,10 +639,10 @@ class MetrixDslDataLoader extends DslLoader {
     }
 
 
-    private static generatorData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
+    private static generatorData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, LogDslLoader logDslLoader) {
         Identifiable identifiable = network.getGenerator(id)
         if (identifiable == null) {
-            logWarn(out, "generator id %s not found in the network", id)
+            logWarn(logDslLoader, "generator id %s not found in the network", id)
             return
         }
 
@@ -659,9 +655,9 @@ class MetrixDslDataLoader extends DslLoader {
                     addEquipmentTimeSeries(spec.adequacyUpCosts, MetrixVariable.offGridCostUp, id, tsConfig, binding)
                     data.addGeneratorForAdequacy(id)
                 } else if (spec.adequacyUpCosts == null) {
-                    logDebug(out, "generator %s is missing adequacy up-cost time-series to be properly configured", id)
+                    logDebug(logDslLoader, "generator %s is missing adequacy up-cost time-series to be properly configured", id)
                 } else {
-                    logDebug(out, "generator %s is missing adequacy down-cost time-series to be properly configured", id)
+                    logDebug(logDslLoader, "generator %s is missing adequacy down-cost time-series to be properly configured", id)
                 }
             }
             if (spec.redispatchingUpCosts != null || spec.redispatchingDownCosts != null) {
@@ -670,21 +666,21 @@ class MetrixDslDataLoader extends DslLoader {
                     addEquipmentTimeSeries(spec.redispatchingUpCosts, MetrixVariable.onGridCostUp, id, tsConfig, binding)
                     data.addGeneratorForRedispatching(id, spec.onContingencies)
                 } else if (spec.redispatchingUpCosts == null) {
-                    logDebug(out, "generator %s is missing redispatching up-cost time-series to be properly configured", id)
+                    logDebug(logDslLoader, "generator %s is missing redispatching up-cost time-series to be properly configured", id)
                 } else {
-                    logDebug(out, "generator %s is missing redispatching down-cost time-series to be properly configured", id)
+                    logDebug(logDslLoader, "generator %s is missing redispatching down-cost time-series to be properly configured", id)
                 }
             }
         }
     }
 
-    private static generatorsBindingData(Binding binding, Closure closure, String id, Network network, MetrixDslData data, Writer out) {
+    private static generatorsBindingData(Binding binding, Closure closure, String id, Network network, MetrixDslData data, LogDslLoader logDslLoader) {
 
         if (id == "") {
-            logError(out, "missing generators group name")
+            logError(logDslLoader, "missing generators group name")
             return
         } else if (id.indexOf(';') != -1) {
-            logError(out, "semi-colons are forbidden in generators group name %s", id)
+            logError(logDslLoader, "semi-colons are forbidden in generators group name %s", id)
             return
         }
 
@@ -706,21 +702,21 @@ class MetrixDslDataLoader extends DslLoader {
                     data.addGeneratorsBinding(id, generatorIds)
                 }
             } else {
-                logWarn(out, "generators group %s ignored because it contains %d element", id, generatorIds.size())
+                logWarn(logDslLoader, "generators group %s ignored because it contains %d element", id, generatorIds.size())
             }
         } else {
-            logError(out, "missing filter for generators group %s", id)
+            logError(logDslLoader, "missing filter for generators group %s", id)
         }
     }
 
 
-    private static loadsBindingData(Binding binding, Closure closure, String id, Network network, MetrixDslData data, Writer out) {
+    private static loadsBindingData(Binding binding, Closure closure, String id, Network network, MetrixDslData data, LogDslLoader logDslLoader) {
 
         if (id == "") {
-            logWarn(out, "missing a name for loads group")
+            logWarn(logDslLoader, "missing a name for loads group")
             return
         } else if (id.indexOf(';') != -1) {
-            logError(out, "semi-colons are forbidden in loads group name %s", id)
+            logError(logDslLoader, "semi-colons are forbidden in loads group name %s", id)
             return
         }
 
@@ -736,17 +732,17 @@ class MetrixDslDataLoader extends DslLoader {
             if (loadIds.size() > 1) {
                 data.addLoadsBinding(id, loadIds)
             } else {
-                logWarn(out, "loads group %s ignored because it contains %d element", id, loadIds.size())
+                logWarn(logDslLoader, "loads group %s ignored because it contains %d element", id, loadIds.size())
             }
         } else {
-            logError(out, "missing filter for loads group %s", id)
+            logError(logDslLoader, "missing filter for loads group %s", id)
         }
     }
 
-    private static loadData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, Writer out) {
+    private static loadData(Binding binding, Closure closure, String id, Network network, TimeSeriesMappingConfig tsConfig, MetrixDslData data, LogDslLoader logDslLoader) {
         Identifiable identifiable = network.getLoad(id)
         if (identifiable == null) {
-            logWarn(out, "load id %s not found in the network", id)
+            logWarn(logDslLoader, "load id %s not found in the network", id)
             return
         }
 
@@ -754,7 +750,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         if (loadSpec.preventiveSheddingPercentage != null) {
             if (loadSpec.preventiveSheddingPercentage > 100 || loadSpec.preventiveSheddingPercentage < 0) {
-                logWarn(out, "preventive shedding percentage for load %s is not valid", id)
+                logWarn(logDslLoader, "preventive shedding percentage for load %s is not valid", id)
             } else {
                 data.addPreventiveLoad(id, loadSpec.preventiveSheddingPercentage)
                 if (loadSpec.preventiveSheddingCost != null) {
@@ -766,13 +762,13 @@ class MetrixDslDataLoader extends DslLoader {
         if (loadSpec.curativeSheddingPercentage || loadSpec.curativeSheddingCost != null || loadSpec.onContingencies) {
             if (loadSpec.curativeSheddingPercentage && loadSpec.curativeSheddingCost != null && loadSpec.onContingencies) {
                 if (loadSpec.curativeSheddingPercentage > 100 || loadSpec.curativeSheddingPercentage < 0) {
-                    logWarn(out, "curative shedding percentage for load %s is not valid", id)
+                    logWarn(logDslLoader, "curative shedding percentage for load %s is not valid", id)
                 } else {
                     addEquipmentTimeSeries(loadSpec.curativeSheddingCost, MetrixVariable.curativeCostDown, id, tsConfig, binding)
                     data.addCurativeLoad(id, loadSpec.curativeSheddingPercentage, loadSpec.onContingencies)
                 }
             } else {
-                logWarn(out, "configuration error for load %s : curative costs, percentage and contingencies list must be set altogether", id)
+                logWarn(logDslLoader, "configuration error for load %s : curative costs, percentage and contingencies list must be set altogether", id)
             }
         }
     }
@@ -936,10 +932,10 @@ class MetrixDslDataLoader extends DslLoader {
         }
     }
 
-    private static phaseShifterData(Closure closure, String id, Network network, MetrixDslData data, Writer out) {
+    private static phaseShifterData(Closure closure, String id, Network network, MetrixDslData data, LogDslLoader logDslLoader) {
         Identifiable twt = network.getTwoWindingsTransformer(id)
         if (twt == null) {
-            logWarn(out, "transformer id %s not found in the network", id)
+            logWarn(logDslLoader, "transformer id %s not found in the network", id)
             return
         }
         if (!twt.hasPhaseTapChanger()) {
@@ -955,7 +951,7 @@ class MetrixDslDataLoader extends DslLoader {
             if (spec.controlType == MetrixPtcControlType.OPTIMIZED_ANGLE_CONTROL) {
                 data.addPstAngleTapResults(id)
             }
-            logDebug(out, "Found phaseTapChanger for id %s", id)
+            logDebug(logDslLoader, "Found phaseTapChanger for id %s", id)
         }
         if (spec.preventiveLowerTapRange != null){
             data.addLowerTapChange(id, spec.preventiveLowerTapRange)
@@ -968,10 +964,10 @@ class MetrixDslDataLoader extends DslLoader {
         }
     }
 
-    private static hvdcData(Closure closure, String id, Network network, MetrixDslData data, Writer out) {
+    private static hvdcData(Closure closure, String id, Network network, MetrixDslData data, LogDslLoader logDslLoader) {
         Identifiable identifiable = network.getHvdcLine(id)
         if (identifiable == null) {
-            logWarn(out, "hvdc id %s not found in the network", id)
+            logWarn(logDslLoader, "hvdc id %s not found in the network", id)
             return
         }
         def cloned = closure.clone()
@@ -984,46 +980,46 @@ class MetrixDslDataLoader extends DslLoader {
             if (spec.controlType == MetrixHvdcControlType.OPTIMIZED) {
                 data.addHvdcFlowResults(id)
             }
-            logDebug(out, "Found hvdc for id %s", id)
+            logDebug(logDslLoader, "Found hvdc for id %s", id)
         }
         if (spec.flowResults) {
             data.addHvdcFlowResults(id)
         }
     }
 
-    private static sectionMonitoringData(Closure closure, String id, Network network, MetrixDslData data, Writer out) {
+    private static sectionMonitoringData(Closure closure, String id, Network network, MetrixDslData data, LogDslLoader logDslLoader) {
         def cloned = closure.clone()
         SectionMonitoring spec = new SectionMonitoring()
         cloned.delegate = spec
         cloned()
         MetrixSection section = new MetrixSection(id)
         if (!spec.maxFlowN) {
-            logWarn(out, "Section Monitoring '" + id + "' is missing flow limit")
+            logWarn(logDslLoader, "Section Monitoring '" + id + "' is missing flow limit")
             return
         } else {
             section.setMaxFlowN(spec.maxFlowN)
         }
         if (!spec.branchList) {
-            logWarn(out, "Section Monitoring '" + id + "' without branches")
+            logWarn(logDslLoader, "Section Monitoring '" + id + "' without branches")
             return
         }
         for (Map.Entry<String, Float> branch : spec.branchList) {
             Identifiable identifiable = network.getIdentifiable(branch.getKey())
             if (identifiable == null) {
-                logWarn(out, "sectionMonitoring '" + id + "' branch id '"+branch.getKey()+"' not found in the network")
+                logWarn(logDslLoader, "sectionMonitoring '" + id + "' branch id '"+branch.getKey()+"' not found in the network")
                 return
             }
             if (!(identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer || identifiable instanceof HvdcLine)) {
-                logWarn(out, "sectionMonitoring '" + id + "' type " + identifiable.getClass().name + " not supported")
+                logWarn(logDslLoader, "sectionMonitoring '" + id + "' type " + identifiable.getClass().name + " not supported")
                 return
             }
         }
         section.setCoefFlowList(spec.branchList)
         data.addSection(section)
-        logDebug(out, "Found sectionMonitoring %s", id)
+        logDebug(logDslLoader, "Found sectionMonitoring %s", id)
     }
 
-    private static contingenciesData(Closure closure, MetrixDslData data, Writer out) {
+    private static contingenciesData(Closure closure, MetrixDslData data, LogDslLoader logDslLoader) {
         def cloned = closure.clone()
         ContingenciesSpec spec = new ContingenciesSpec()
         cloned.delegate = spec
@@ -1031,7 +1027,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         if (spec.specificContingencies != null) {
             data.setSpecificContingenciesList(spec.specificContingencies)
-            logDebug(out, "Specific contingencies list : %s", data.getSpecificContingenciesList())
+            logDebug(logDslLoader, "Specific contingencies list : %s", data.getSpecificContingenciesList())
         }
     }
 
@@ -1073,10 +1069,8 @@ class MetrixDslDataLoader extends DslLoader {
         load(new Binding(), network, parameters, mappingConfig, null)
     }
 
-    MetrixDslData load(Binding binding, Network network, MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, Writer out) {
+    MetrixDslData load(Binding binding, Network network, MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, LogDslLoader logDslLoader) {
         MetrixDslData data = new MetrixDslData()
-
-        logDebug(out, "Loading DSL %s", dslSrc.getName())
 
         // parameters
         binding.parameters = { Closure<Void> closure ->
@@ -1085,47 +1079,47 @@ class MetrixDslDataLoader extends DslLoader {
 
         // branch monitoring
         binding.branch = { String id, Closure<Void> closure ->
-            branchData(binding, closure, id, network, mappingConfig, data, out)
+            branchData(binding, closure, id, network, mappingConfig, data, logDslLoader)
         }
 
         // generator costs
         binding.generator = { String id, Closure<Void> closure ->
-            generatorData(binding, closure, id, network, mappingConfig, data, out)
+            generatorData(binding, closure, id, network, mappingConfig, data, logDslLoader)
         }
 
         // load shedding costs
         binding.load = { String id, Closure<Void> closure ->
-            loadData(binding, closure, id, network, mappingConfig, data, out)
+            loadData(binding, closure, id, network, mappingConfig, data, logDslLoader)
         }
 
         // phase tap changer
         binding.phaseShifter = { String id, Closure<Void> closure ->
-            phaseShifterData(closure, id, network, data, out)
+            phaseShifterData(closure, id, network, data, logDslLoader)
         }
 
         // hvdc
         binding.hvdc = { String id, Closure<Void> closure ->
-            hvdcData(closure, id, network, data, out)
+            hvdcData(closure, id, network, data, logDslLoader)
         }
 
         // section monitoring
         binding.sectionMonitoring = { String id, Closure<Void> closure ->
-            sectionMonitoringData(closure, id, network, data, out)
+            sectionMonitoringData(closure, id, network, data, logDslLoader)
         }
 
         // bound generators
         binding.generatorsGroup = { String id, Closure<Void> closure ->
-            generatorsBindingData(binding, closure, id, network, data, out)
+            generatorsBindingData(binding, closure, id, network, data, logDslLoader)
         }
 
         // bound loads
         binding.loadsGroup = { String id, Closure<Void> closure ->
-            loadsBindingData(binding, closure, id, network, data, out)
+            loadsBindingData(binding, closure, id, network, data, logDslLoader)
         }
 
         // specific contingency list
         binding.contingencies = { Closure<Void> closure ->
-            contingenciesData(closure, data, out)
+            contingenciesData(closure, data, logDslLoader)
         }
 
         // set base network
@@ -1133,7 +1127,7 @@ class MetrixDslDataLoader extends DslLoader {
 
         evaluate(dslSrc, binding)
 
-        checkBranchThreshold(mappingConfig, out)
+        checkBranchThreshold(mappingConfig, logDslLoader)
 
         data
     }
@@ -1147,15 +1141,12 @@ class MetrixDslDataLoader extends DslLoader {
                               TimeSeriesMappingConfig mappingConfig, Writer out) {
 
         Binding binding = new Binding()
+        LogDslLoader logDslLoader = LogDslLoader.create(binding, out)
 
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
-        if (out != null) {
-            binding.out = out
-        }
-
         MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, "metrixDsl.groovy")
-        dslLoader.load(binding, network, parameters, mappingConfig, out)
+        dslLoader.load(binding, network, parameters, mappingConfig, logDslLoader)
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
@@ -1167,16 +1158,13 @@ class MetrixDslDataLoader extends DslLoader {
                               TimeSeriesMappingConfig mappingConfig, Writer out) {
 
         Binding binding = new Binding()
+        LogDslLoader logDslLoader = LogDslLoader.create(binding, out)
 
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
-        if (out != null) {
-            binding.out = out
-        }
-
         Files.newBufferedReader(metrixDslFile, StandardCharsets.UTF_8).withReader { Reader reader ->
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, metrixDslFile.getFileName().toString())
-            dslLoader.load(binding, network, parameters, mappingConfig, out)
+            dslLoader.load(binding, network, parameters, mappingConfig, logDslLoader)
         }
     }
 }
