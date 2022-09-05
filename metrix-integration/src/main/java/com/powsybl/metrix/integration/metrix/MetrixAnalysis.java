@@ -8,12 +8,12 @@
 package com.powsybl.metrix.integration.metrix;
 
 import com.google.common.base.Stopwatch;
+import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
-import com.powsybl.metrix.integration.remedials.RemedialReader;
 import com.powsybl.metrix.mapping.ComputationRange;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
@@ -47,60 +47,58 @@ public class MetrixAnalysis {
     private final Reader mappingReader;
     private final Reader metrixDslReader;
     private final Reader remedialActionsReader;
+    private final ContingenciesProvider contingenciesProvider;
     private final ReadOnlyTimeSeriesStore store;
     private final MetrixAppLogger appLogger;
     private final Consumer<Future<?>> updateTask;
-    private final Writer logWriter;
+    private final Writer scriptLogWriter;
+    private final Writer inputLogWriter;
     private final String schemaName;
     private final ComputationRange computationRange;
 
     public MetrixAnalysis(NetworkSource networkSource, Reader mappingReader,
-                          Reader metrixDslReader, Reader remedialActionsReader,
+                          Reader metrixDslReader, Reader remedialActionsReader, ContingenciesProvider contingenciesProvider,
                           ReadOnlyTimeSeriesStore store, MetrixAppLogger logger, ComputationRange computationRange) {
-        this(networkSource, mappingReader, metrixDslReader, remedialActionsReader, store, logger, ignore -> {
-        }, null, null, computationRange);
+        this(networkSource, mappingReader, metrixDslReader, remedialActionsReader, contingenciesProvider, store, logger, ignore -> {
+        }, null, null, null, computationRange);
     }
 
     public MetrixAnalysis(NetworkSource networkSource, Reader mappingReader, Reader metrixDslReader,
-                          Reader remedialActionsReader, ReadOnlyTimeSeriesStore store, MetrixAppLogger appLogger,
-                          Consumer<Future<?>> updateTask, Writer logWriter, String schemaName, ComputationRange computationRange) {
+                          Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, ReadOnlyTimeSeriesStore store, MetrixAppLogger appLogger,
+                          Consumer<Future<?>> updateTask, Writer scriptLogWriter, Writer inputLogWriter, String schemaName, ComputationRange computationRange) {
         this.networkSource = Objects.requireNonNull(networkSource);
         this.mappingReader = Objects.requireNonNull(mappingReader);
         this.metrixDslReader = metrixDslReader;
         this.remedialActionsReader = remedialActionsReader;
+        this.contingenciesProvider = contingenciesProvider;
         this.store = store;
         this.appLogger = appLogger;
         this.updateTask = updateTask;
-        this.logWriter = logWriter;
+        this.scriptLogWriter = scriptLogWriter;
+        this.inputLogWriter = inputLogWriter;
         this.schemaName = schemaName != null ? schemaName : DEFAULT_SCHEMA_NAME;
         this.computationRange = computationRange;
     }
 
     public MetrixAnalysisResult runAnalysis(String id) {
-        if (remedialActionsReader != null) {
-            RemedialReader.checkFile(remedialActionsReader);
-        }
-
         MetrixParameters metrixParameters = MetrixParameters.load();
         MappingParameters mappingParameters = MappingParameters.load();
 
         Network network = networkSource.copy();
 
-        try (BufferedWriter writer = logWriter != null ? new BufferedWriter(logWriter) : null) {
-            if (writer != null) {
-                writer.write("Message");
-                writer.newLine();
-            }
-            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(mappingReader, network, mappingParameters, writer, id);
+        try (BufferedWriter scriptLogBufferedWriter = scriptLogWriter != null ? new BufferedWriter(scriptLogWriter) : null;
+             BufferedWriter inputLogBufferedWriter = inputLogWriter != null ? new BufferedWriter(inputLogWriter) : null) {
+            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(mappingReader, network, mappingParameters, scriptLogBufferedWriter, id);
             Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             MetrixDslData metrixDslData = null;
             Map<String, NodeCalc> timeSeriesNodesAfterMetrix = null;
             if (metrixDslReader != null) {
-                metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, writer, id);
+                metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, scriptLogBufferedWriter, id);
                 timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             }
+            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, inputLogBufferedWriter).runAnalysis();
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
-            return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult);
+            return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.getContingencies(), inputs.getRemedials());
         } catch (IOException | RuntimeException e) {
             throw new RuntimeException(e);
         }

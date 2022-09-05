@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
@@ -40,12 +39,6 @@ public class MetrixChunk {
     private static final String LOGS_FILE_NAME = "logs.txt";
     private static final String LOGS_FILE_DETAIL_PREFIX = "metrix";
     private static final String LOGS_FILE_DETAIL_SUFFIX = ".log";
-    private static final List<InputFile> FORT_FILE_NAMES = ImmutableList.of(new InputFile("fort.2"),
-            new InputFile("fort.44_BIN"),
-            new InputFile("fort.45_BIN"),
-            new InputFile("fort.46_BIN"),
-            new InputFile("fort.47_BIN"),
-            new InputFile("fort.48_BIN"));
 
     private final Network network;
 

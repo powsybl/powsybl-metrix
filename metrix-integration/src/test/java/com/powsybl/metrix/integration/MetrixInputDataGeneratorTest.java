@@ -16,7 +16,6 @@ import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.assertj.core.api.Assertions;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -238,7 +237,6 @@ class MetrixInputDataGeneratorTest {
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
     }
 
-    @NotNull
     private MetrixInputDataGenerator.FileSystemUtils fileSystem() {
         return new MetrixInputDataGenerator.FileSystemUtils() {
             @Override

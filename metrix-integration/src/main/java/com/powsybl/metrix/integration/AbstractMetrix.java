@@ -58,8 +58,6 @@ public abstract class AbstractMetrix {
     public static final String OUTAGE_OVERLOAD_PREFIX = "outageOverload_";
     public static final String OVERALL_OVERLOAD_PREFIX = "overallOverload_";
 
-    protected final ContingenciesProvider contingenciesProvider;
-
     protected final Reader remedialActionsReader;
 
     protected final ReadOnlyTimeSeriesStore store;
@@ -73,6 +71,8 @@ public abstract class AbstractMetrix {
     protected final MetrixAppLogger appLogger;
 
     // Fields from analysis
+    protected final ContingenciesProvider contingenciesProvider;
+
     protected final TimeSeriesMappingConfig mappingConfig;
 
     @Nullable
@@ -82,11 +82,9 @@ public abstract class AbstractMetrix {
 
     private final MetrixParameters metrixParameters;
 
-    protected AbstractMetrix(ContingenciesProvider contingenciesProvider, Reader remedialActionsReader,
-                             ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
+    protected AbstractMetrix(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
                              ZipOutputStream logArchive, ComputationManager computationManager,
                              MetrixAppLogger appLogger, MetrixAnalysisResult analysisResult) {
-        this.contingenciesProvider = contingenciesProvider;
         this.remedialActionsReader = remedialActionsReader;
         this.store = Objects.requireNonNull(store);
         this.resultStore = Objects.requireNonNull(resultStore);
@@ -94,6 +92,7 @@ public abstract class AbstractMetrix {
         this.computationManager = Objects.requireNonNull(computationManager);
         this.appLogger = Objects.requireNonNull(appLogger);
         Objects.requireNonNull(analysisResult);
+        this.contingenciesProvider = network -> analysisResult.contingencies;
         this.mappingConfig = analysisResult.mappingConfig;
         this.metrixDslData = analysisResult.metrixDslData;
         this.network = analysisResult.network;

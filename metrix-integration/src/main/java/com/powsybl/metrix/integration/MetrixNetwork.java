@@ -13,6 +13,7 @@ import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.*;
+import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 import org.slf4j.Logger;
@@ -25,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -465,10 +465,7 @@ public class MetrixNetwork {
             for (ContingencyElement element : contingency.getElements()) {
                 boolean elemOk = true;
                 Identifiable<?> identifiable = network.getIdentifiable(element.getId());
-                if (identifiable == null ||
-                        (element.getType() == ContingencyElementType.GENERATOR && !(identifiable instanceof Generator)) ||
-                        (Arrays.asList(ContingencyElementType.BRANCH, ContingencyElementType.LINE, ContingencyElementType.TWO_WINDINGS_TRANSFORMER).contains(element.getType()) && !(identifiable instanceof Branch)) ||
-                        (element.getType() == ContingencyElementType.HVDC_LINE && !(identifiable instanceof HvdcLine))) {
+                if (identifiable == null || !MetrixInputAnalysis.isValidContingencyElement(identifiable.getType(), element.getType())) {
                     elemOk = false;
                 }
                 if (!elemOk) {
@@ -523,24 +520,26 @@ public class MetrixNetwork {
 
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
                                        MetrixParameters parameters, Path remedialActionFile) {
+        Reader reader = null;
+        if (remedialActionFile != null) {
+            try {
+                reader = Files.newBufferedReader(remedialActionFile, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                LOGGER.error("Failed to read remedialActionFile {}", remedialActionFile, e);
+                throw new UncheckedIOException(e);
+            }
+        }
         return create(
                 network,
                 contingenciesProvider,
                 mappedSwitches,
                 parameters,
-                remedialActionFile != null ? () -> {
-                try {
-                    return Files.newBufferedReader(remedialActionFile, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    LOGGER.error("Failed to read remedialActionFile {}", remedialActionFile, e);
-                    throw new UncheckedIOException(e);
-                }
-            } : null
+                reader
         );
     }
 
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
-                                       MetrixParameters parameters, Supplier<Reader> remedialActionFile) {
+                                       MetrixParameters parameters, Reader remedialActionReader) {
 
         Objects.requireNonNull(network);
         Objects.requireNonNull(parameters);
@@ -551,7 +550,7 @@ public class MetrixNetwork {
         metrixNetwork.createContingencyList(contingenciesProvider, parameters.isPropagateBranchTripping());
 
         // Create opened and switch-retained lists (network will be modified)
-        List<Remedial> remedials = RemedialReader.parseFile(remedialActionFile);
+        List<Remedial> remedials = RemedialReader.parseFile(remedialActionReader);
         Set<String> retainedElements = Stream.concat(
                 remedials.stream().flatMap(remedial -> remedial.getBranchToOpen().stream()),
                 remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream())

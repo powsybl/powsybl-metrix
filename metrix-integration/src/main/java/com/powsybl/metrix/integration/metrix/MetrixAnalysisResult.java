@@ -7,14 +7,17 @@
 
 package com.powsybl.metrix.integration.metrix;
 
+import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
+import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class MetrixAnalysisResult {
     @Nullable
@@ -24,14 +27,19 @@ public class MetrixAnalysisResult {
     public final MetrixParameters metrixParameters;
     public final MappingParameters mappingParameters;
     public final MetrixConfigResult metrixConfigResult;
+    public final List<Contingency> contingencies;
+    public final List<Remedial> remedials;
 
     public MetrixAnalysisResult(@Nullable MetrixDslData metrixDslData, TimeSeriesMappingConfig mappingConfig, Network network,
-                          MetrixParameters metrixParameters, MappingParameters mappingParameters, MetrixConfigResult metrixConfigResult) {
+                                MetrixParameters metrixParameters, MappingParameters mappingParameters, MetrixConfigResult metrixConfigResult,
+                                List<Contingency> contingencies, List<Remedial> remedials) {
         this.metrixDslData = metrixDslData;
         this.mappingConfig = mappingConfig;
         this.network = network;
         this.metrixParameters = metrixParameters;
         this.mappingParameters = mappingParameters;
         this.metrixConfigResult = metrixConfigResult;
+        this.contingencies = contingencies;
+        this.remedials = remedials;
     }
 }
