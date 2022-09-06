@@ -14,6 +14,7 @@ import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
+import com.powsybl.metrix.integration.utils.LocalThreadExecutor;
 import com.powsybl.metrix.mapping.ComputationRange;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
@@ -27,7 +28,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -110,14 +110,8 @@ public class MetrixAnalysis {
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
-            CompletableFuture<TimeSeriesMappingConfig> mappingFuture = CompletableFuture.supplyAsync(() ->
-                TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, writer, computationRange), Executors.newSingleThreadExecutor(
-                    r -> new Thread(() -> {
-                        long begin = System.currentTimeMillis();
-                        r.run();
-                        long elapsed = System.currentTimeMillis() - begin;
-                        LOGGER.info("Script execution {} time {} ms", schemaName, elapsed);
-                    }, "Script_TS_" + id + "_" + Instant.now())));
+            CompletableFuture<TimeSeriesMappingConfig> mappingFuture = new LocalThreadExecutor<TimeSeriesMappingConfig>("Script_TS_" + id)
+                    .supplyAsync(() -> TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, writer, computationRange));
             updateTask.accept(mappingFuture);
             return mappingFuture.get();
         } catch (ExecutionException e) {
@@ -141,17 +135,8 @@ public class MetrixAnalysis {
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
-            CompletableFuture<MetrixDslData> metrixFuture = CompletableFuture.supplyAsync(() ->
-                    MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer), Executors.newSingleThreadExecutor(
-                    r -> new Thread(() -> {
-                        long begin = System.currentTimeMillis();
-                        r.run();
-                        long elapsed = System.currentTimeMillis() - begin;
-                        LOGGER.info("Script execution {} time {} ms", id, elapsed);
-
-                    }, "Script_" + id + "_" + Instant.now())
-
-            ));
+            CompletableFuture<MetrixDslData> metrixFuture = new LocalThreadExecutor<MetrixDslData>("Script_M_" + id)
+                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer));
             updateTask.accept(metrixFuture);
             MetrixDslData metrixDslData = metrixFuture.get();
             metrixDslData.setComputationType(metrixParameters.getComputationType());
