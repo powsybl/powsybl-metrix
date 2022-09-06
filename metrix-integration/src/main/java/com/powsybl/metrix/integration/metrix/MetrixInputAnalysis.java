@@ -14,6 +14,7 @@ import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.contingency.ContingencyElementType;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 
@@ -123,8 +124,14 @@ public class MetrixInputAnalysis {
      * @return list of contingencies
      */
     private List<Contingency> loadContingencies() {
+        List<Contingency> allContingencies;
+        try {
+            allContingencies = contingenciesProvider.getContingencies(network);
+        } catch (RuntimeException e) {
+            throw new ContingenciesScriptLoadingException(e);
+        }
         List<Contingency> contingencies = new ArrayList<>();
-        for (Contingency cty : contingenciesProvider.getContingencies(network)) {
+        for (Contingency cty : allContingencies) {
             if (isValidContingency(cty)) {
                 contingencies.add(cty);
             }
