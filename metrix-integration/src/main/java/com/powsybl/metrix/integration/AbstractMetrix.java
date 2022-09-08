@@ -15,7 +15,6 @@ import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
@@ -325,11 +324,10 @@ public abstract class AbstractMetrix {
                                                                String nullableSchemaName) {
 
         for (String branch : metrixDslData.getBranchMonitoringNList()) {
-            MetrixInputData.MonitoringType branchMonitoringN = metrixDslData.getBranchMonitoringN(branch);
-            if (branchMonitoringN == MetrixInputData.MonitoringType.MONITORING) {
-                createBasecasePostprocessingTimeSeries(branch, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
-            } else if (branchMonitoringN == MetrixInputData.MonitoringType.RESULT && mappingConfig.getTimeSeriesName(new MappingKey(MetrixVariable.analysisThresholdN, branch)) != null) {
-                createBasecasePostprocessingTimeSeries(branch, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
+            MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdN(branch);
+            MetrixVariable thresholdEndOr = threshold == MetrixVariable.thresholdN ? MetrixVariable.thresholdNEndOr : MetrixVariable.analysisThresholdNEndOr;
+            if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
+                createBasecasePostprocessingTimeSeries(branch, threshold, thresholdEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             }
         }
     }
@@ -378,11 +376,10 @@ public abstract class AbstractMetrix {
                                                              String nullableSchemaName) {
 
         for (String branch : metrixDslData.getBranchMonitoringNkList()) {
-            MetrixInputData.MonitoringType branchMonitoringNk = metrixDslData.getBranchMonitoringNk(branch);
-            if (branchMonitoringNk == MetrixInputData.MonitoringType.MONITORING) {
-                createOutagePostprocessingTimeSeries(branch, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
-            } else if (branchMonitoringNk == MetrixInputData.MonitoringType.RESULT && mappingConfig.getTimeSeriesName(new MappingKey(MetrixVariable.analysisThresholdNk, branch)) != null) {
-                createOutagePostprocessingTimeSeries(branch, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
+            MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdNk(branch);
+            MetrixVariable thresholdEndOr = threshold == MetrixVariable.thresholdN1 ? MetrixVariable.thresholdN1EndOr : MetrixVariable.analysisThresholdNkEndOr;
+            if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
+                createOutagePostprocessingTimeSeries(branch, threshold, thresholdEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             }
         }
     }
