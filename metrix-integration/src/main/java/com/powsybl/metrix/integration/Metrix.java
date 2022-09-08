@@ -57,12 +57,13 @@ public class Metrix extends AbstractMetrix {
             WorkingDirectory commonWorkingDir,
             ChunkCutter chunkCutter,
             int chunkCount,
-            int chunkSize) {
+            int chunkSize,
+            int chunkOffset) {
 
         List<CompletableFuture> futures = new ArrayList<>();
         for (int version : runParameters.getVersions()) {
 
-            for (int chunk = 0; chunk < chunkCount; chunk++) {
+            for (int chunk = chunkOffset; chunk < chunkCount; chunk++) {
                 final int chunkNum = chunk;
                 Network networkPoint = null;
                 Path networkPointFile = null;

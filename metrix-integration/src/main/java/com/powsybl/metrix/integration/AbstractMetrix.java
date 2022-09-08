@@ -166,6 +166,7 @@ public abstract class AbstractMetrix {
 
         ChunkCutter chunkCutter = new ChunkCutter(firstVariant, lastVariant, chunkSize);
         int chunkCount = chunkCutter.getChunkCount();
+        int chunkOffset = chunkCutter.getChunkOffset();
 
         LOGGER.info("Running metrix {} on network {}", metrixParameters.getComputationType(), network.getId());
         appLogger.log("Running metrix");
@@ -190,9 +191,10 @@ public abstract class AbstractMetrix {
                     commonWorkingDir,
                     chunkCutter,
                     chunkCount,
-                    chunkSize);
+                    chunkSize,
+                    chunkOffset);
 
-            addLogsToArchive(runParameters, commonWorkingDir, chunkCount);
+            addLogsToArchive(runParameters, commonWorkingDir, chunkCount, chunkOffset);
             listener.onEnd();
 
             MetrixRunResult runResult = new MetrixRunResult();
@@ -208,13 +210,14 @@ public abstract class AbstractMetrix {
     void addLogsToArchive(
             MetrixRunParameters runParameters,
             WorkingDirectory commonWorkingDir,
-            int chunkCount
+            int chunkCount,
+            int chunkOffset
     ) {
         if (logArchive == null) {
             return;
         }
         for (int version : runParameters.getVersions()) {
-            for (int chunk = 0; chunk < chunkCount; chunk++) {
+            for (int chunk = chunkOffset; chunk < chunkCount; chunk++) {
                 try {
                     addLogToArchive(commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)), logArchive);
                     addLogDetailToArchive(commonWorkingDir.toPath(), getLogDetailFileNameFormat(version, chunk), logArchive);
@@ -236,7 +239,8 @@ public abstract class AbstractMetrix {
             WorkingDirectory commonWorkingDir,
             ChunkCutter chunkCutter,
             int chunkCount,
-            int chunkSize
+            int chunkSize,
+            int chunkOffset
     ) throws IOException;
 
     protected static String getLogFileName(int version, int chunk) {

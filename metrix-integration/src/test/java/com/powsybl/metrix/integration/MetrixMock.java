@@ -26,7 +26,7 @@ public class MetrixMock extends AbstractMetrix {
     }
 
     @Override
-    protected void executeMetrixChunks(Network network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, int chunkCount, int chunkSize) {
+    protected void executeMetrixChunks(Network network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, int chunkCount, int chunkSize, int chunkOffset) {
 
     }
 }

@@ -34,8 +34,12 @@ public class ChunkCutter {
         this.chunkSize = chunkSize;
     }
 
+    public int getChunkOffset() {
+        return (int) Math.floor((float) firstVariant / chunkSize);
+    }
+
     public int getChunkCount() {
-        return (int) Math.ceil((float) (lastVariant - firstVariant + 1) / chunkSize);
+        return (int) Math.ceil((float) (lastVariant + 1) / chunkSize) - getChunkOffset();
     }
 
     public Range<Integer> getChunkRange(int chunk) {
@@ -45,7 +49,7 @@ public class ChunkCutter {
         if (chunk < -1 || chunk >= getChunkCount()) {
             throw new IllegalArgumentException("Chunk " + chunk + " is out of range [0, " + getChunkCount() + "]");
         }
-        return Range.closed(firstVariant + chunk * chunkSize,
-                            Math.min(lastVariant, firstVariant + (chunk + 1) * chunkSize - 1));
+        return Range.closed(Math.max(firstVariant, (chunk + getChunkOffset()) * chunkSize),
+            Math.min(lastVariant, (chunk + getChunkOffset() + 1) * chunkSize - 1));
     }
 }
