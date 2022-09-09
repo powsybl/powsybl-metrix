@@ -1105,7 +1105,7 @@ public class MetrixInputData {
         }
     }
 
-    private void write(Path dir, boolean write, boolean writeJson, BufferedWriter writer, boolean constantLossFactor) throws IOException {
+    private void write(Path dir, boolean writeJson, BufferedWriter writer, boolean constantLossFactor) throws IOException {
         MetrixDie die = new MetrixDie();
         writeGeneral(die);
         writeOptions(die);
@@ -1123,11 +1123,6 @@ public class MetrixInputData {
         writeGeneratorsBindings(die);
         writeLoadsBindings(die);
 
-        //die.print(System.out);
-
-        if (write && dir != null) {
-            die.save(dir);
-        }
         if (writeJson && dir != null) {
             die.saveToJson(dir.resolve("fort.json"));
         }
@@ -1137,11 +1132,11 @@ public class MetrixInputData {
     }
 
     public void write(Path dir, boolean debug, boolean constantLossFactor) throws IOException {
-        write(dir, true, debug, null, constantLossFactor);
+        write(dir, debug, null, constantLossFactor);
     }
 
     public void writeJson(StringWriter writer) throws IOException {
-        write(null, false, false, new BufferedWriter(writer), false);
+        write(null, false, new BufferedWriter(writer), false);
     }
 
     /**
