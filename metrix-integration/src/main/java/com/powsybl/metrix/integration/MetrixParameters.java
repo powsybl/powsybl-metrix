@@ -59,7 +59,6 @@ public class MetrixParameters {
     private Integer adequacyCostOffset = null;
     private Integer curativeRedispatchingLimit = null;
     private Boolean showAllTDandHVDCresults = null;
-    private Boolean withLostLoadDetailedResults = null;
     private boolean propagateBranchTripping = false;
     private Boolean withGridCost = null;
     private Boolean preCurativeResults;
@@ -189,11 +188,6 @@ public class MetrixParameters {
     @JsonGetter
     private Boolean getShowAllTDandHVDCresults() {
         return showAllTDandHVDCresults;
-    }
-
-    @JsonGetter
-    private Boolean getWithLostLoadDetailedResults() {
-        return withLostLoadDetailedResults;
     }
 
     @JsonGetter
@@ -619,7 +613,6 @@ public class MetrixParameters {
                     lossDetailPerCountry,
                     overloadResultsOnly,
                     showAllTDandHVDCresults,
-                    withLostLoadDetailedResults,
                     lossNbRelaunch,
                     lossThreshold,
                     pstCostPenality,
