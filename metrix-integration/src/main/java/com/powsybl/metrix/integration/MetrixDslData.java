@@ -22,6 +22,8 @@ public class MetrixDslData {
     // Branch monitoring
     private final Map<String, MetrixInputData.MonitoringType> branchMonitoringListN;
     private final Map<String, MetrixInputData.MonitoringType> branchMonitoringListNk;
+    private final Map<String, MetrixVariable> branchMonitoringStatisticsThresholdN;
+    private final Map<String, MetrixVariable> branchMonitoringStatisticsThresholdNk;
     private final Map<String, List<String>> contingencyFlowResults;
     private final Map<String, List<String>> contingencyDetailedMarginalVariations;
 
@@ -62,6 +64,8 @@ public class MetrixDslData {
     public MetrixDslData() {
         branchMonitoringListN = new HashMap<>();
         branchMonitoringListNk = new HashMap<>();
+        branchMonitoringStatisticsThresholdN = new HashMap<>();
+        branchMonitoringStatisticsThresholdNk = new HashMap<>();
         contingencyFlowResults = new LinkedHashMap<>();
         contingencyDetailedMarginalVariations = new LinkedHashMap<>();
         ptcContingenciesMap = new HashMap<>();
@@ -87,6 +91,8 @@ public class MetrixDslData {
 
     public MetrixDslData(Map<String, MetrixInputData.MonitoringType> branchMonitoringListN,
                          Map<String, MetrixInputData.MonitoringType> branchMonitoringListNk,
+                         Map<String, MetrixVariable> branchMonitoringStatisticsThresholdN,
+                         Map<String, MetrixVariable> branchMonitoringStatisticsThresholdNk,
                          Map<String, List<String>> contingencyFlowResults,
                          Map<String, List<String>> contingencyDetailedMarginalVariations,
                          Map<String, List<String>> ptcContingenciesMap,
@@ -110,6 +116,8 @@ public class MetrixDslData {
                          Set<String> specificContingenciesList) {
         this.branchMonitoringListN = branchMonitoringListN;
         this.branchMonitoringListNk = branchMonitoringListNk;
+        this.branchMonitoringStatisticsThresholdN = branchMonitoringStatisticsThresholdN;
+        this.branchMonitoringStatisticsThresholdNk = branchMonitoringStatisticsThresholdNk;
         this.contingencyFlowResults = contingencyFlowResults;
         this.contingencyDetailedMarginalVariations = contingencyDetailedMarginalVariations;
         this.ptcContingenciesMap = ptcContingenciesMap;
@@ -137,6 +145,8 @@ public class MetrixDslData {
     public int hashCode() {
         return Objects.hash(branchMonitoringListN,
                 branchMonitoringListNk,
+                branchMonitoringStatisticsThresholdN,
+                branchMonitoringStatisticsThresholdNk,
                 contingencyFlowResults,
                 contingencyDetailedMarginalVariations,
                 ptcContingenciesMap,
@@ -166,6 +176,8 @@ public class MetrixDslData {
             MetrixDslData other = (MetrixDslData) obj;
             return branchMonitoringListN.equals(other.branchMonitoringListN) &&
                     branchMonitoringListNk.equals(other.branchMonitoringListNk) &&
+                    branchMonitoringStatisticsThresholdN.equals(other.branchMonitoringStatisticsThresholdN) &&
+                    branchMonitoringStatisticsThresholdNk.equals(other.branchMonitoringStatisticsThresholdNk) &&
                     contingencyFlowResults.equals(other.contingencyFlowResults) &&
                     contingencyDetailedMarginalVariations.equals(other.contingencyDetailedMarginalVariations) &&
                     ptcContingenciesMap.equals(other.ptcContingenciesMap) &&
@@ -196,6 +208,8 @@ public class MetrixDslData {
         ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object>builder()
                 .put("branchMonitoringListN", branchMonitoringListN)
                 .put("branchMonitoringListNk", branchMonitoringListNk)
+                .put("branchMonitoringStatisticsThresholdN", branchMonitoringStatisticsThresholdN)
+                .put("branchMonitoringStatisticsThresholdNk", branchMonitoringStatisticsThresholdNk)
                 .put("contingencyFlowResults", contingencyFlowResults)
                 .put("contingencyDetailedMarginalVariations", contingencyDetailedMarginalVariations)
                 .put("ptcContingenciesMap", ptcContingenciesMap)
@@ -227,6 +241,14 @@ public class MetrixDslData {
 
     public Map<String, MetrixInputData.MonitoringType> getBranchMonitoringListNk() {
         return Collections.unmodifiableMap(branchMonitoringListNk);
+    }
+
+    public Map<String, MetrixVariable> getBranchMonitoringStatisticsThresholdN() {
+        return Collections.unmodifiableMap(branchMonitoringStatisticsThresholdN);
+    }
+
+    public Map<String, MetrixVariable> getBranchMonitoringStatisticsThresholdNk() {
+        return Collections.unmodifiableMap(branchMonitoringStatisticsThresholdNk);
     }
 
     public Map<String, List<String>> getContingencyFlowResults() {
@@ -327,9 +349,17 @@ public class MetrixDslData {
         return branchMonitoringListNk.getOrDefault(id, MetrixInputData.MonitoringType.NO);
     }
 
+    public final MetrixVariable getBranchMonitoringStatisticsThresholdN(String id) {
+        return branchMonitoringStatisticsThresholdN.get(id);
+    }
+
     @JsonIgnore
     public final Set<String> getBranchMonitoringNkList() {
         return branchMonitoringListNk.keySet();
+    }
+
+    public final MetrixVariable getBranchMonitoringStatisticsThresholdNk(String id) {
+        return branchMonitoringStatisticsThresholdNk.get(id);
     }
 
     @JsonIgnore
@@ -358,21 +388,31 @@ public class MetrixDslData {
 
     public void addBranchMonitoringN(String id) {
         Objects.requireNonNull(id);
+        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.thresholdN);
         branchMonitoringListN.put(id, MetrixInputData.MonitoringType.MONITORING);
     }
 
     public void addBranchResultN(String id) {
         Objects.requireNonNull(id);
+        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.analysisThresholdN);
+        if (getBranchMonitoringN(id) == MetrixInputData.MonitoringType.MONITORING) {
+            return;
+        }
         branchMonitoringListN.put(id, MetrixInputData.MonitoringType.RESULT);
     }
 
     public void addBranchMonitoringNk(String id) {
         Objects.requireNonNull(id);
+        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.thresholdN1);
         branchMonitoringListNk.put(id, MetrixInputData.MonitoringType.MONITORING);
     }
 
     public void addBranchResultNk(String id) {
         Objects.requireNonNull(id);
+        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.analysisThresholdNk);
+        if (getBranchMonitoringNk(id) == MetrixInputData.MonitoringType.MONITORING) {
+            return;
+        }
         branchMonitoringListNk.put(id, MetrixInputData.MonitoringType.RESULT);
     }
 
