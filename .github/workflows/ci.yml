@@ -38,12 +38,6 @@ jobs:
           ref: master
           token: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Conf Xpress
-        if: ${{ matrix.xprs == 'ON' }}
-        run: 'echo "$AUTH" >"${{ env.XPRESS }}/xpauth.xpr"'
-        env:
-          AUTH: ${{ secrets.XPAUTH }}
-
       - name: Configure 3rd parties
         working-directory: metrix-simulator
         run: |
