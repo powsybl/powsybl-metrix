@@ -13,13 +13,9 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.Switch
 import com.powsybl.iidm.network.TopologyKind
-import com.powsybl.timeseries.CalculatedTimeSeries
-import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver
-import com.powsybl.timeseries.InfiniteTimeSeriesIndex
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.StringTimeSeries
 import com.powsybl.timeseries.TimeSeriesFilter
-import com.powsybl.timeseries.TimeSeriesIndex
 import com.powsybl.timeseries.ast.NodeCalc
 import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
 import groovy.transform.CompileStatic
@@ -137,7 +133,7 @@ class TimeSeriesDslLoader {
 
     private static logWarn(LogDslLoader logDslLoader, String message) {
         if (logDslLoader == null) {
-            return;
+            return
         }
         logDslLoader.logWarn(MAPPING_SCRIPT_SECTION, message)
     }
@@ -241,7 +237,7 @@ class TimeSeriesDslLoader {
         // for each filtered equipment, compute the distribution key and add it to the config
         if (!filteredEquipments.isEmpty()) {
 
-            if (((Switch)filteredEquipments[0]).voltageLevel.topologyKind == TopologyKind.BUS_BREAKER) {
+            if (((Switch) filteredEquipments[0]).voltageLevel.topologyKind == TopologyKind.BUS_BREAKER) {
                 throw new TimeSeriesMappingException("Bus breaker topology not supported for switch mapping")
             }
 
@@ -383,6 +379,7 @@ class TimeSeriesDslLoader {
         Set<String> existingTimeSeriesNames = store.getTimeSeriesNames(new TimeSeriesFilter())
 
         ComputationRange checkedComputationRange = checkComputationRange(computationRange, store)
+        ComputationRange fullComputationRange = checkComputationRange(null, store)
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
 
         // map the base case to network variable
@@ -393,19 +390,19 @@ class TimeSeriesDslLoader {
             bus != null && bus.isInMainConnectedComponent()
         }
 
-        def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext(injection)}
-        def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext(injection)}
-        def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext(injection)}
-        def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine)}
-        def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter)}
-        def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter)}
-        def transformersFilteringContext = network.getTwoWindingsTransformers().collect { transformer -> new FilteringContext(transformer)}
-        def linesFilteringContext = network.getLines().collect { line -> new FilteringContext(line)}
-        def phaseTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.hasPhaseTapChanger()}
-                .collect { transformer -> new FilteringContext(transformer)}
-        def ratioTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.hasRatioTapChanger()}
-                .collect { transformer -> new FilteringContext(transformer)}
-        def switchesFilteringContext = network.getSwitchStream().collect { s -> new FilteringContext(s)}
+        def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext(injection) }
+        def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext(injection) }
+        def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext(injection) }
+        def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine) }
+        def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter) }
+        def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter) }
+        def transformersFilteringContext = network.getTwoWindingsTransformers().collect { transformer -> new FilteringContext(transformer) }
+        def linesFilteringContext = network.getLines().collect { line -> new FilteringContext(line) }
+        def phaseTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.hasPhaseTapChanger() }
+                .collect { transformer -> new FilteringContext(transformer) }
+        def ratioTapChangersFilteringContext = network.getTwoWindingsTransformers().findAll {transformer -> transformer.hasRatioTapChanger() }
+                .collect { transformer -> new FilteringContext(transformer) }
+        def switchesFilteringContext = network.getSwitchStream().collect { s -> new FilteringContext(s) }
 
         // parameters
         binding.parameters = { Closure<Void> closure ->
@@ -437,10 +434,10 @@ class TimeSeriesDslLoader {
         binding.mapToRatioTapChangers = { Closure closure ->
             mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, ratioTapChangersFilteringContext, MappableEquipmentType.RATIO_TAP_CHANGER)
         }
-        binding.mapToLccConverterStations =  { Closure closure ->
+        binding.mapToLccConverterStations = { Closure closure ->
             mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, lccConverterStationsFilteringContext, MappableEquipmentType.LCC_CONVERTER_STATION)
         }
-        binding.mapToVscConverterStations =  { Closure closure ->
+        binding.mapToVscConverterStations = { Closure closure ->
             mapToSimpleVariableEquipments(binding, existingTimeSeriesNames, config, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION)
         }
         binding.mapToBreakers = { Closure closure ->
@@ -510,31 +507,51 @@ class TimeSeriesDslLoader {
             equipmentTimeSeries(binding, config, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION, logDslLoader)
         }
 
-        binding.sum = { NodeCalc tsNode ->
-            TimeSeriesMappingConfig.getTimeSeriesSum(tsNode, store, checkedComputationRange)
+        binding.sum = { NodeCalc tsNode, Boolean all_versions = false ->
+            if (all_versions) {
+                TimeSeriesMappingConfig.getTimeSeriesSum(tsNode, store, fullComputationRange)
+            } else {
+                TimeSeriesMappingConfig.getTimeSeriesSum(tsNode, store, checkedComputationRange)
+            }
         }
 
-        binding.min = { NodeCalc tsNode ->
-            TimeSeriesMappingConfig.getTimeSeriesMin(tsNode, store, checkedComputationRange)
+        binding.min = { NodeCalc tsNode, Boolean all_versions = false ->
+            if (all_versions) {
+                TimeSeriesMappingConfig.getTimeSeriesMin(tsNode, store, fullComputationRange)
+            } else {
+                TimeSeriesMappingConfig.getTimeSeriesMin(tsNode, store, checkedComputationRange)
+            }
         }
 
-        binding.max = { NodeCalc tsNode ->
-            TimeSeriesMappingConfig.getTimeSeriesMax(tsNode, store, checkedComputationRange)
+        binding.max = { NodeCalc tsNode, Boolean all_versions = false ->
+            if (all_versions) {
+                TimeSeriesMappingConfig.getTimeSeriesMax(tsNode, store, fullComputationRange)
+            } else {
+                TimeSeriesMappingConfig.getTimeSeriesMax(tsNode, store, checkedComputationRange)
+            }
         }
 
-        binding.avg = { NodeCalc tsNode ->
-            TimeSeriesMappingConfig.getTimeSeriesAvg(tsNode, store, checkedComputationRange)
+        binding.avg = { NodeCalc tsNode, Boolean all_versions = false ->
+            if (all_versions) {
+                TimeSeriesMappingConfig.getTimeSeriesAvg(tsNode, store, fullComputationRange)
+            } else {
+                TimeSeriesMappingConfig.getTimeSeriesAvg(tsNode, store, checkedComputationRange)
+            }
         }
 
-        binding.median = { NodeCalc tsNode ->
-            TimeSeriesMappingConfig.getTimeSeriesMedian(tsNode, store, checkedComputationRange)
+        binding.median = { NodeCalc tsNode, Boolean all_versions = false ->
+            if (all_versions) {
+                TimeSeriesMappingConfig.getTimeSeriesMedian(tsNode, store, fullComputationRange)
+            } else {
+                TimeSeriesMappingConfig.getTimeSeriesMedian(tsNode, store, checkedComputationRange)
+            }
         }
     }
 
     private static ComputationRange checkComputationRange(ComputationRange computationRange, ReadOnlyTimeSeriesStore store) {
         ComputationRange fixed = computationRange
         if (computationRange == null) {
-            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), 0, TimeSeriesMappingConfig.checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).pointCount);
+            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), 0, TimeSeriesMappingConfig.checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).pointCount)
         }
         if (fixed.versions == null || fixed.versions.isEmpty()) {
             fixed.setVersions(store.getTimeSeriesDataVersions())
@@ -548,7 +565,7 @@ class TimeSeriesDslLoader {
         if (fixed.getVariantCount() == -1) {
             fixed.setVariantCount(TimeSeriesMappingConfig.checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).pointCount)
         }
-        return fixed;
+        return fixed
     }
 
     private static CompilerConfiguration createCompilerConfig() {
@@ -603,11 +620,11 @@ class TimeSeriesDslLoader {
 
         config.checkMappedVariables()
         Set<MappingKey> keys = config.checkEquipmentTimeSeries()
-        keys.forEach( { key ->
+        keys.forEach({ key ->
             logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.getId() + " because id is not mapped on " + key.getMappingVariable().getVariableName())
         })
 
-        LOGGER.trace("Dsl Loading done in {} ms", (System.currentTimeMillis() -start))
+        LOGGER.trace("Dsl Loading done in {} ms", (System.currentTimeMillis() - start))
 
         config
     }
