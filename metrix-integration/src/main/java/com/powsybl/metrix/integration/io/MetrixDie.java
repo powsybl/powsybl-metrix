@@ -13,8 +13,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
-import com.google.common.io.LittleEndianDataInputStream;
-import com.google.common.io.LittleEndianDataOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,164 +28,17 @@ public class MetrixDie {
 
     private static final int ATTRIBUTE_NAME_LENGTH = 8;
 
-    private String integerFileName = "fort.44_BIN";
-    private String floatFileName = "fort.45_BIN";
-    private String doubleFileName = "fort.46_BIN";
-    private String stringFileName = "fort.47_BIN";
-    private String booleanFileName = "fort.48_BIN";
+    private String integerFileName = "IntegerFile";
+    private String floatFileName = "FloatFile";
+    private String doubleFileName = "DoubleFile";
+    private String stringFileName = "StringFile";
+    private String booleanFileName = "BooleanFile";
 
     private final Map<String, IntAttribute> intAttributes = new LinkedHashMap<>();
     private final Map<String, FloatAttribute> floatAttributes = new LinkedHashMap<>();
     private final Map<String, DoubleAttribute> doubleAttributes = new LinkedHashMap<>();
     private final Map<String, StringAttribute> stringAttributes = new LinkedHashMap<>();
     private final Map<String, BooleanAttribute> booleanAttributes = new LinkedHashMap<>();
-
-    private interface AttributeFactory<T extends Attribute> {
-
-        T create(String name, int n1, int n2);
-    }
-
-    private static Path fort2path(Path dir) {
-        return dir.resolve("fort.2");
-    }
-
-    private void loadFort2(Path dir) throws IOException {
-        try (BufferedReader reader = Files.newBufferedReader(fort2path(dir), StandardCharsets.US_ASCII)) {
-            integerFileName = reader.readLine();
-            floatFileName = reader.readLine();
-            doubleFileName = reader.readLine();
-            stringFileName = reader.readLine();
-            booleanFileName = reader.readLine();
-        }
-    }
-
-    private static int getRecordMaxValueCount(Map<String, ? extends Attribute> attributes) {
-        return attributes.values().stream().map(Attribute::getValueCount).max(Integer::compare).orElse(0);
-    }
-
-    private static int getRecordMaxSize(Map<String, ? extends Attribute> attributes) {
-        return attributes.values().stream().map(Attribute::getSize).max(Integer::compare).orElse(0);
-    }
-
-    private void saveFort2(Path dir) throws IOException {
-        try (BufferedWriter writer = Files.newBufferedWriter(fort2path(dir), StandardCharsets.US_ASCII)) {
-            writer.write(integerFileName);
-            writer.newLine();
-            writer.write(floatFileName);
-            writer.newLine();
-            writer.write(doubleFileName);
-            writer.newLine();
-            writer.write(stringFileName);
-            writer.newLine();
-            writer.write(booleanFileName);
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxValueCount(intAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxValueCount(floatAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxValueCount(doubleAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxValueCount(stringAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxValueCount(booleanAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxSize(intAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxSize(floatAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxSize(doubleAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxSize(stringAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(getRecordMaxSize(booleanAttributes)));
-            writer.newLine();
-            writer.write(Integer.toString(10));
-            writer.newLine();
-            writer.write(Integer.toString(15));
-            writer.newLine();
-            writer.write(Integer.toString(15));
-            writer.newLine();
-            writer.write(Integer.toString(8));
-            writer.newLine();
-            writer.write(Integer.toString(60));
-            writer.newLine();
-            writer.write(Integer.toString(1));
-            writer.newLine();
-            writer.write(Integer.toString(0));
-            writer.newLine();
-        }
-    }
-
-    private static <T extends Attribute, U extends AttributeFactory<T>> void loadFort4X(Path file, U attributeFactory, Map<String, T> attributes) throws IOException {
-        if (!Files.exists(file)) {
-            return;
-        }
-        try (LittleEndianDataInputStream is = new LittleEndianDataInputStream(new BufferedInputStream(Files.newInputStream(file)))) {
-            while (is.available() > 0) {
-                byte[] buffer = new byte[ATTRIBUTE_NAME_LENGTH];
-                is.readFully(buffer);
-                String attributeName = new String(buffer, StandardCharsets.US_ASCII);
-                int attributeType = is.readInt();
-                int valueCount = is.readInt();
-                int firstIndexMaxValue = is.readInt();
-                int secondIndexMaxValue = is.readInt();
-                int firstValueIndex = is.readInt();
-                int lastValueIndex = is.readInt();
-
-                LOGGER.trace("attributeName={}, attributeType={}, valueCount={}, firstIndexMaxValue={}, secondIndexMaxValue={}, firstValueIndex={}, lastValueIndex={}",
-                        attributeName, attributeType, valueCount, firstIndexMaxValue, secondIndexMaxValue, firstValueIndex, lastValueIndex);
-
-                T attribute = attributes.get(attributeName);
-                if (attribute == null) {
-                    attribute = attributeFactory.create(attributeName, firstIndexMaxValue, secondIndexMaxValue);
-                    attributes.put(attributeName, attribute);
-                }
-
-                for (int index = firstValueIndex; index <= lastValueIndex; index++) {
-                    int i = (index - 1) / firstIndexMaxValue;
-                    int j = (index - 1) % firstIndexMaxValue;
-                    attribute.read(is, i, j);
-                }
-            }
-        }
-    }
-
-    private static <T extends Attribute> void saveFort4x(Path file, Map<String, T> attributes) throws IOException {
-        try (LittleEndianDataOutputStream os = new LittleEndianDataOutputStream(new BufferedOutputStream(Files.newOutputStream(file)))) {
-            for (T attribute : attributes.values()) {
-                os.write(attribute.getName().getBytes(StandardCharsets.US_ASCII));
-                os.writeInt(attribute.getType().getValue());
-                os.writeInt(attribute.getValueCount());
-                os.writeInt(attribute.getFirstIndexMaxValue());
-                os.writeInt(attribute.getSecondIndexMaxValue());
-                os.writeInt(1);
-                os.writeInt(attribute.getValueCount());
-                attribute.write(os);
-            }
-        }
-    }
-
-    public void load(Path dir) throws IOException {
-        long start = System.currentTimeMillis();
-        loadFort2(dir);
-        loadFort4X(dir.resolve(integerFileName), (name, n1, n2) -> new IntAttribute(name, n1), intAttributes);
-        loadFort4X(dir.resolve(floatFileName), (name, n1, n2) -> new FloatAttribute(name, n1), floatAttributes);
-        loadFort4X(dir.resolve(doubleFileName), (name, n1, n2) -> new DoubleAttribute(name, n1), doubleAttributes);
-        loadFort4X(dir.resolve(stringFileName), StringAttribute::new, stringAttributes);
-        loadFort4X(dir.resolve(booleanFileName), (name, n1, n2) -> new BooleanAttribute(name, n1), booleanAttributes);
-        LOGGER.info("fort.* loaded in {} ms", System.currentTimeMillis() - start);
-    }
-
-    public void save(Path dir) throws IOException {
-        long start = System.currentTimeMillis();
-        saveFort2(dir);
-        saveFort4x(dir.resolve(integerFileName), intAttributes);
-        saveFort4x(dir.resolve(floatFileName), floatAttributes);
-        saveFort4x(dir.resolve(doubleFileName), doubleAttributes);
-        saveFort4x(dir.resolve(stringFileName), stringAttributes);
-        saveFort4x(dir.resolve(booleanFileName), booleanAttributes);
-        LOGGER.info("fort.* saved in {} ms", System.currentTimeMillis() - start);
-    }
 
     private static <T extends Attribute> void saveFort4xToJson(JsonGenerator generator, String fileName, Map<String, T> attributes) throws IOException {
         generator.writeStartObject();
