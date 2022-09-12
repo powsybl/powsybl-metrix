@@ -29,32 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class TimeSeriesMapperTest {
 
-    public enum OtherVariable implements MappingVariable {
-        OTHER_VARIABLE_1("otherVariable1");
-
-        static final String NAME = "other";
-
-        static String getName() {
-            return NAME;
-        }
-
-        @Override
-        public String getFieldName() {
-            return getName();
-        }
-
-        private final String variable;
-
-        OtherVariable(String variable) {
-            this.variable = variable;
-        }
-
-        @Override
-        public String getVariableName() {
-            return variable;
-        }
-    }
-
     private Network network;
 
     private final MappingParameters mappingParameters = MappingParameters.load();
@@ -88,7 +62,7 @@ class TimeSeriesMapperTest {
         // create mapping config
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
         mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "equipment_ts", "LD2", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentTimeSeries("other_ts", OtherVariable.OTHER_VARIABLE_1, "L1");
+        mappingConfig.addEquipmentTimeSeries("other_ts", OtherVariable.OTHER_VARIABLE, "L1");
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -125,7 +99,7 @@ class TimeSeriesMapperTest {
         assertEquals(ImmutableList.of("other_ts"), otherTimeSeriesNames);
         assertEquals(ImmutableList.of(network.getIdentifiable("L1")), otherIds);
         assertEquals(ImmutableList.of(2.0), otherValues);
-        assertEquals(ImmutableList.of("otherVariable1"), otherVariables);
+        assertEquals(ImmutableList.of("otherVariable"), otherVariables);
     }
 
     @Test
