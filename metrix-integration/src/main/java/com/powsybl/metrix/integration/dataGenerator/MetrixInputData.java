@@ -106,8 +106,6 @@ public class MetrixInputData {
     private int trnbgrou = 0;
     private int cqnbquad = 0;
     private int dtnbtrde = 0;
-    private int dtnblrtd = 0;
-    private int dtnburtd = 0;
     private int dcnblies = 0;
     private int dcnbdroo = 0;
     private int tnnbntot = 0;
@@ -195,8 +193,6 @@ public class MetrixInputData {
 
         if (dslData != null) {
             sectnbse = dslData.getSectionList().size();
-            dtnblrtd = dslData.getPtcLowerTapChangeList().size();
-            dtnburtd = dslData.getPtcUpperTapChangeList().size();
         }
     }
 

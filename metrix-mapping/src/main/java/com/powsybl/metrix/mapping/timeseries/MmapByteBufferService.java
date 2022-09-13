@@ -37,8 +37,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * Main purpose of this utility class is to overcome a Java issue on Windows with memory mapped file.
  * Once Random access file is closed, file cannot be delete until buffer has been garbage collected.
  * The workaround used here is to start a "cleaner" thread that try to delete the file every minute.
- *
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
  */
 public class MmapByteBufferService {
 

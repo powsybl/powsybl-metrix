@@ -31,7 +31,7 @@ public final class TimeSeriesStoreUtil {
         List<String> fileNames = new ArrayList<>();
         try {
             TimeSeriesTable table = toTable(store, size -> {
-                String fileName = "csv_export_" + UUID.randomUUID().toString();
+                String fileName = "csv_export_" + UUID.randomUUID();
                 ByteBuffer buffer = MmapByteBufferService.INSTANCE.create(fileName, size);
                 fileNames.add(fileName);
                 return buffer;

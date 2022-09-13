@@ -56,7 +56,7 @@ public class MetrixChunk {
 
     private final MetrixChunkLogger metrixChunkLogger;
 
-    private ContingenciesProvider contingenciesProvider;
+    private final ContingenciesProvider contingenciesProvider;
 
     public MetrixChunk(Network network, ComputationManager computationManager, MetrixChunkParam metrixChunkParam, MetrixConfig config, MetrixChunkLogger metrixChunkLogger) {
         this.network = Objects.requireNonNull(network);

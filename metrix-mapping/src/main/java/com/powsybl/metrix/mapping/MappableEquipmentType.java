@@ -22,7 +22,7 @@ public enum MappableEquipmentType {
     LCC_CONVERTER_STATION("lccConverterStation"),
     VSC_CONVERTER_STATION("vscConverterStation"),
     LINE("line"),
-    @Deprecated PST("pst"); // Kept for compatibility
+    @Deprecated PST("pst");
 
     private final String scriptVariable;
 

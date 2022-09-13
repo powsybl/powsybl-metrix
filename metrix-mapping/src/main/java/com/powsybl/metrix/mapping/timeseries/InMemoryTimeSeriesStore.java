@@ -24,8 +24,8 @@ import java.util.stream.Stream;
 
 public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
-    private Map<String, Map<Integer, TimeSeries>> stringTimeSeries = new HashMap<>();
-    private Map<String, Map<Integer, TimeSeries>> doubleTimeSeries = new HashMap<>();
+    private final Map<String, Map<Integer, TimeSeries>> stringTimeSeries = new HashMap<>();
+    private final Map<String, Map<Integer, TimeSeries>> doubleTimeSeries = new HashMap<>();
 
     @Override
     public Set<String> getTimeSeriesNames(TimeSeriesFilter filter) {

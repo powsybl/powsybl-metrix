@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.indexMappingKey;
 
-public class EquipmentTimeSerieMap {
-    private Map<IndexedMappingKey, List<MappedEquipment>> equimentTimeSeries = new LinkedHashMap<>();
+public class EquipmentTimeSeriesMap {
+    private final Map<IndexedMappingKey, List<MappedEquipment>> equimentTimeSeries = new LinkedHashMap<>();
 
-    public void init(EquipmentTimeSerieMap map) {
+    public void init(EquipmentTimeSeriesMap map) {
         equimentTimeSeries.putAll(map.equimentTimeSeries);
     }
 
