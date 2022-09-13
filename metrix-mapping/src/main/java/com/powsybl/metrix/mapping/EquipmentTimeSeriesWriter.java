@@ -68,7 +68,7 @@ public class EquipmentTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
     }
 
     @Override
-    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable identifiable, MappingVariable variable, double equipmentValue) {
+    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         if (!Double.isNaN(equipmentValue) && !timeSeriesName.isEmpty()) {
             if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
                 constantValues.put(identifiable.getId() + "_" + variable.getVariableName(), equipmentValue);

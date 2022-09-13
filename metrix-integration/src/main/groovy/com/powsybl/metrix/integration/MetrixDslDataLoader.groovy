@@ -22,8 +22,6 @@ import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -500,39 +498,39 @@ class MetrixDslDataLoader extends DslLoader {
 
     private static logError(LogDslLoader logDslLoader, String message) {
         if (logDslLoader == null) {
-            return;
+            return
         }
         logDslLoader.logError(METRIX_SCRIPT_SECTION, message)
     }
 
     private static logError(LogDslLoader logDslLoader, String pattern, Object... arguments) {
         if (logDslLoader == null) {
-            return;
+            return
         }
-        String formattedString = String.format(pattern, arguments);
+        String formattedString = String.format(pattern, arguments)
         logDslLoader.logError(METRIX_SCRIPT_SECTION, formattedString)
     }
 
     private static logWarn(LogDslLoader logDslLoader, String message) {
         if (logDslLoader == null) {
-            return;
+            return
         }
         logDslLoader.logWarn(METRIX_SCRIPT_SECTION, message)
     }
 
     private static logWarn(LogDslLoader logDslLoader, String pattern, Object... arguments) {
         if (logDslLoader == null) {
-            return;
+            return
         }
-        String formattedString = String.format(pattern, arguments);
+        String formattedString = String.format(pattern, arguments)
         logDslLoader.logWarn(METRIX_SCRIPT_SECTION, formattedString)
     }
 
     private static logDebug(LogDslLoader logDslLoader, String pattern, Object... arguments) {
         if (logDslLoader == null) {
-            return;
+            return
         }
-        String formattedString = String.format(pattern, arguments);
+        String formattedString = String.format(pattern, arguments)
         logDslLoader.logDebug(METRIX_SCRIPT_SECTION, formattedString)
     }
 
@@ -541,14 +539,14 @@ class MetrixDslDataLoader extends DslLoader {
         equipmentIds.forEach(id -> {
             checkBranchThreshold(BRANCH_RATINGS_BASE_CASE, tsConfig, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, id, logDslLoader)
             checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, tsConfig, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, id, logDslLoader)
-        });
+        })
         equipmentIds.forEach(id -> {
             checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, id, logDslLoader)
             checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, tsConfig, MetrixVariable.thresholdITAM, MetrixVariable.thresholdITAMEndOr, id, logDslLoader)
             checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, tsConfig, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, id, logDslLoader)
             checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdNk, MetrixVariable.thresholdNkEndOr, id, logDslLoader)
             checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY, tsConfig, MetrixVariable.thresholdITAMNk, MetrixVariable.thresholdITAMNkEndOr, id, logDslLoader)
-        });
+        })
     }
 
     private static void checkBranchThreshold(String thresholdName, TimeSeriesMappingConfig tsConfig, MappingVariable variable, MappingVariable variableEndOr, String id, LogDslLoader logDslLoader) {

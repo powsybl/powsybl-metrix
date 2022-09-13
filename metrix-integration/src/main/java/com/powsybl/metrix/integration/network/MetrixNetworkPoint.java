@@ -134,7 +134,7 @@ public final class MetrixNetworkPoint {
                 isToOpen = false;
                 id = id.substring(1);
             }
-            Identifiable identifiable = networkPoint.getIdentifiable(id);
+            Identifiable<?> identifiable = networkPoint.getIdentifiable(id);
             if (identifiable instanceof Branch) {
                 Branch branch = (Branch) identifiable;
                 if (isToOpen) {

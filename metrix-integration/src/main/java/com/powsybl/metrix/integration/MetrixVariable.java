@@ -50,7 +50,7 @@ public enum MetrixVariable implements MappingVariable {
         return NAME;
     }
 
-    static void writeJson(MetrixVariable variable, JsonGenerator generator) throws IOException {
+    static void writeJson(MetrixVariable variable, JsonGenerator generator) {
         Objects.requireNonNull(generator);
         try {
             generator.writeStartObject();

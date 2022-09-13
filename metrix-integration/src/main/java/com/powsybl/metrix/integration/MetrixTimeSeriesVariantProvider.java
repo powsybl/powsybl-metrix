@@ -12,7 +12,6 @@ import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.contingency.Probability;
@@ -124,7 +123,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         return contingenciesProvider.getContingencies(network)
                 .stream()
                 .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
-                .map(contingency -> ((Contingency) contingency).getExtension(Probability.class).getProbabilityTimeSeriesRef())
+                .map(contingency -> contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef())
                 .collect(Collectors.toSet());
     }
 
@@ -163,7 +162,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         return new NetworkPointWriter(network, dataSource) {
             @Override
             public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-                if (point == variantRange.upperEndpoint().intValue()) {
+                if (point == variantRange.upperEndpoint()) {
                     super.timeSeriesMappingEnd(point, index, balance);
                 }
             }

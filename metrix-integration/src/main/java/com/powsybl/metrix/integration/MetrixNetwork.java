@@ -124,11 +124,11 @@ public class MetrixNetwork {
         return Collections.unmodifiableList(contingencyList);
     }
 
-    public Set<Identifiable> getDisconnectedElements() {
+    public Set<Identifiable<?>> getDisconnectedElements() {
         return Collections.unmodifiableSet(disconnectedElements);
     }
 
-    public int getIndex(Identifiable identifiable) {
+    public int getIndex(Identifiable<?> identifiable) {
         MetrixSubset subset = MetrixSubset.QUAD;
         if (identifiable instanceof Generator) {
             subset = MetrixSubset.GROUPE;
