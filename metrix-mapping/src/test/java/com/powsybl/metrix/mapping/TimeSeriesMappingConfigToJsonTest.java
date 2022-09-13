@@ -88,6 +88,8 @@ class TimeSeriesMappingConfigToJsonTest {
 
     private final Map<String, NodeCalc> timeSeriesNodes = ImmutableMap.of("ts", new IntegerNodeCalc(10));
     private final Map<MappingKey, DistributionKey> distributionKeys = ImmutableMap.of(new MappingKey(EquipmentVariable.targetP, "id"), new NumberDistributionKey(2.0));
+    private final Map<String, Set<MappingKey>> timeSeriesToEquipment = ImmutableMap.of("ts", ImmutableSet.of(new MappingKey(OtherVariable.OTHER_VARIABLE, "id")));
+    private final Map<MappingKey, String> equipmentToTimeSeries = ImmutableMap.of(new MappingKey(OtherVariable.OTHER_VARIABLE, "id"), "ts");
     private final Set<String> mappedTimeSeriesNames = ImmutableSet.of("ts1", "ts2");
     private final Set<String> ignoreLimitsTimeSeriesNames = ImmutableSet.of("tsIL1", "tsIL2");
 
@@ -157,6 +159,8 @@ class TimeSeriesMappingConfigToJsonTest {
 
         config.setTimeSeriesNodes(timeSeriesNodes);
         config.setDistributionKeys(distributionKeys);
+        config.setTimeSeriesToEquipment(timeSeriesToEquipment);
+        config.setEquipmentToTimeSeries(equipmentToTimeSeries);
         config.setMappedTimeSeriesNames(mappedTimeSeriesNames);
         config.setIgnoreLimitsTimeSeriesNames(ignoreLimitsTimeSeriesNames);
 
@@ -227,6 +231,8 @@ class TimeSeriesMappingConfigToJsonTest {
 
         assertEquals(timeSeriesNodes, config.getTimeSeriesNodes());
         assertEquals(distributionKeys, config.getDistributionKeys());
+        assertEquals(timeSeriesToEquipment, config.getTimeSeriesToEquipment());
+        assertEquals(equipmentToTimeSeries, config.getEquipmentToTimeSeries());
         assertEquals(mappedTimeSeriesNames, config.getMappedTimeSeriesNames());
         assertEquals(ignoreLimitsTimeSeriesNames, config.getIgnoreLimitsTimeSeriesNames());
         assertEquals(timeSeriesToPlannedOutages, config.getTimeSeriesToPlannedOutagesMapping());

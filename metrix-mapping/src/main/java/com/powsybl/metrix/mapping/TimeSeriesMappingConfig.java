@@ -813,7 +813,7 @@ public class TimeSeriesMappingConfig {
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
                         switch (JsonFieldName.nameOf(fieldName)) {
-                            case MAPPING_KEYS:
+                            case MAPPING_KEY:
                                 mappingKey = MappingKey.parseJson(parser);
                                 break;
                             case TIME_SERIES_NAME:
