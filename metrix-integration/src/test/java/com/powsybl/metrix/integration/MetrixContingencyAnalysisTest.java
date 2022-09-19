@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.ResourceBundle;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -48,7 +49,8 @@ public class MetrixContingencyAnalysisTest {
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
-            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/expected/metrixContingencyAnalysis.csv"),
+            String expectedFilePath = ResourceBundle.getBundle("expected.contents").getString("metrix_contingency_analysis.file");
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream(expectedFilePath),
                 new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
@@ -69,7 +71,8 @@ public class MetrixContingencyAnalysisTest {
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
-            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/expected/metrixDslDataContingencyAnalysis.csv"),
+            String expectedFilePath = ResourceBundle.getBundle("expected.contents").getString("metrix_dsl_data_contingency_analysis.file");
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream(expectedFilePath),
                     new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
@@ -88,7 +91,8 @@ public class MetrixContingencyAnalysisTest {
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
-            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/expected/metrixRemedialContingencyAnalysis.csv"),
+            String expectedFilePath = ResourceBundle.getBundle("expected.contents").getString("metrix_remedial_contingency_analysis.file");
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream(expectedFilePath),
                     new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
