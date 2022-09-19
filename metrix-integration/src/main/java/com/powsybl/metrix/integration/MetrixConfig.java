@@ -30,7 +30,8 @@ public class MetrixConfig {
     }
 
     public static MetrixConfig load(PlatformConfig platformConfig) {
-        ModuleConfig moduleConfig = platformConfig.getModuleConfig("metrix");
+        ModuleConfig moduleConfig = platformConfig.getOptionalModuleConfig("metrix")
+                .orElseThrow(() -> new IllegalStateException("Metrix module configuration could not be found"));
         Path homeDir = moduleConfig.getPathProperty("home-dir");
         boolean debug = moduleConfig.getBooleanProperty("debug", DEFAULT_DEBUG);
         boolean constantLossFactor = moduleConfig.getOptionalBooleanProperty("constant-loss-factor").orElse(DEFAULT_CONSTANT_LOAD_FACTOR);
