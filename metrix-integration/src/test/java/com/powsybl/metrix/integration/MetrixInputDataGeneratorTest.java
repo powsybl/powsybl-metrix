@@ -20,6 +20,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -63,7 +64,8 @@ class MetrixInputDataGeneratorTest {
         Assertions.assertThat(actual).hasSize(1);
         Assertions.assertThat(actual.get(0).getName(0)).isEqualTo("METRIXb.dic");
         Assertions.assertThat(results).hasSize(1);
-        Assertions.assertThat(results.get(0)).isEqualTo("METRIXb.dic->/testOut/METRIXb.dic");
+        String fSep = FileSystems.getDefault().getSeparator();
+        Assertions.assertThat(results.get(0)).isEqualTo("METRIXb.dic->" + fSep + "testOut" + fSep + "METRIXb.dic");
     }
 
     @Test
