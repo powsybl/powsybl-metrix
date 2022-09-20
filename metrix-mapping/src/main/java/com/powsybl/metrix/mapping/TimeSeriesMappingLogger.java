@@ -111,8 +111,8 @@ public class TimeSeriesMappingLogger {
             writer.write("Version");
             writer.write(config.separator);
             writer.write("Message");
-            writer.newLine();
             for (Log log : logs) {
+                writer.newLine();
                 int point = log.getPoint();
                 String pointLabel = "";
                 String dateLabel = "";
@@ -134,7 +134,6 @@ public class TimeSeriesMappingLogger {
                 writer.write(Integer.toString(log.getVersion()));
                 writer.write(config.separator);
                 writer.write(log.getMessage());
-                writer.newLine();
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
