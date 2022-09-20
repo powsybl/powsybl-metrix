@@ -269,6 +269,7 @@ class TimeSeriesDslLoaderTest {
         }
 
         String output = outputStream.toString();
+        output = output.replaceAll("\r\n", "\n");
         assertEquals("1.0\n0.2\n-5.0\n3.0\n1.0\n", output);
 
         outputStream.reset();
@@ -279,6 +280,7 @@ class TimeSeriesDslLoaderTest {
         }
 
         output = outputStream.toString();
+        output = output.replaceAll("\r\n", "\n");
         assertEquals("6.0\n2.0\n1.0\n3.0\n2.0\n", output);
     }
 

@@ -306,7 +306,7 @@ class TimeSeriesMapperCheckerTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(loggerCsvOutput)) {
             logger.writeCsv(bufferedWriter);
             bufferedWriter.flush();
-            String loggerCsv = loggerCsvOutput.toString();
+            String loggerCsv = loggerCsvOutput.toString().replaceAll("\r\n", "\n");
             String[] lines = loggerCsv.split("\n");
             int nbLines = lines.length;
             int nbExpectedLines = 1;
