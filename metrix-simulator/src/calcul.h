@@ -136,7 +136,11 @@ bool compareGroupeBaisse(const std::shared_ptr<Groupe>& grp1, const std::shared_
 class Calculer
 {
 public:
-    enum TypeDeSolveur { UTILISATION_PNE_SOLVEUR = 1, UTILISATION_SIMPLEXE = 2 };
+    enum TypeDeSolveur {
+        UTILISATION_PNE_SOLVEUR = 1,
+        UTILISATION_SIMPLEXE = 2,
+        UTILISATION_PC_SIMPLEXE = 3
+    };
 
     enum TypeCoupes {
         COUPE_SURETE_N = 1,
@@ -198,6 +202,7 @@ public:
 
     // specifique au simplexe
     std::shared_ptr<compute::ISolver> solver_pne_;
+    std::shared_ptr<compute::ISolver> pc_solver_;
     std::shared_ptr<compute::ISolver> solver_simplex_;
 
 
@@ -259,6 +264,7 @@ public:
     std::map<ListeQuadsIncident, MATRICE*> jacIncidentsModifies_;
 
     Calculer();
+    ~Calculer();
 
     unsigned int numMicroIteration_ = 0; // iterations correspondant au contraintes ajoutees pour une variante (1,2,...)
     int resolutionProbleme();            // resolution de tous les problemes modifies par variante

@@ -1,0 +1,627 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_YGE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YGF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YGG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_WAG_Td a une admittance tres grande (715.9455871582)
+Attention: Le quadripole QUAD_WVI_Td a une admittance tres grande (1444.0118408203)
+Groupe GROUP_YSP : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_YUQ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_YXN : Pobj (0.000160) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZAG : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZCJ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZDT : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZDV : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZED : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZGG : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZHZ : Pobj (0.000279) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZKB : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZMK : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZOL : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZOR : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZPW : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZRL : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZRO : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZSV : Pobj (0.000362) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZTI : Pobj (0.000121) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZUT : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ZZY : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAAC : Pobj (0.000411) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAGF : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAIA : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAKW : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AALQ : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AALR : Pobj (0.001503) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AALU : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAMW : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AARX : Pobj (0.000295) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAUT : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAXK : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AAYM : Pobj (0.004074) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABBE : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABBM : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABCH : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABDF : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABFY : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABHD : Pobj (0.000566) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABIO : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABJC : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABJX : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABKG : Pobj (0.008626) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABKU : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABSM : Pobj (0.000054) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ABVK : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACAZ : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACDE : Pobj (0.003287) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACEE : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACEZ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACGA : Pobj (0.002502) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACHM : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACIJ : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACIO : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACIT : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACJG : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACJK : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACLP : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACLV : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACNW : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACON : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACQB : Pobj (0.003000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACRO : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACRT : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACSZ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACTB : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACTR : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACUF : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACVE : Pobj (0.001919) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ACVK : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADBD : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADCV : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADGQ : Pobj (0.000630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADGS : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADHP : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADHV : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADIN : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADNA : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADPW : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADSY : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADWA : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADWQ : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADXJ : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ADYL : Pobj (0.004313) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEDX : Pobj (0.000080) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEEB : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEGT : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEHC : Pobj (0.000098) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEIF : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEJT : Pobj (0.014881) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEKY : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AELO : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEMG : Pobj (0.001932) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEMZ : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEOV : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEPR : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AEQV : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AESV : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AESW : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFAM : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFAZ : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFDW : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFGV : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFGW : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFJB : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFJD : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFJK : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFOZ : Pobj (0.003426) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFPF : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFPT : Pobj (0.000731) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFPX : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFQR : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFTA : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFTO : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFWL : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AFWW : Pobj (0.000093) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGAT : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGBM : Pobj (0.009422) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGBZ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGDA : Pobj (0.003605) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGIT : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGJD : Pobj (0.000142) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGNX : Pobj (0.003000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGOX : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGOY : Pobj (0.001503) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGRD : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGSB : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGTX : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGVO : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGWN : Pobj (0.003837) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGWS : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGXA : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AGYR : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHAB : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHBW : Pobj (0.000432) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHDU : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHEN : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHFE : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHJF : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHJG : Pobj (0.022321) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHLQ : Pobj (0.000630) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHMC : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHNE : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHTQ : Pobj (0.000555) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHUY : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AHXQ : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIDK : Pobj (0.002356) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIDX : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIFS : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIHB : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIHR : Pobj (0.014881) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIJU : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIOG : Pobj (0.000394) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIOZ : Pobj (0.001520) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIRW : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIUK : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIUM : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIWJ : Pobj (0.001513) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AIWX : Pobj (0.000274) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJDN : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJJN : Pobj (0.000054) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJOO : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJOR : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJTH : Pobj (0.000760) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJUP : Pobj (0.004711) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJUU : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJUZ : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJVI : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AJWF : Pobj (0.004313) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKEZ : Pobj (0.000411) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKFO : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKGK : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKGX : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKJX : Pobj (0.000366) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKKY : Pobj (0.000073) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKNE : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKNM : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKOK : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKQO : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKTI : Pobj (0.000242) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKUC : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKUP : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKVA : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKXF : Pobj (0.000483) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AKZW : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALAQ : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALBY : Pobj (0.007067) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALCM : Pobj (0.001000) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALCQ : Pobj (0.000186) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALFU : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALFZ : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALHL : Pobj (0.000959) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALMV : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALPU : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALQV : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALRM : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALRU : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALSR : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALST : Pobj (0.000277) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALTC : Pobj (0.000072) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALTT : Pobj (0.001713) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALTW : Pobj (0.000071) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALVC : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALVQ : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_ALWT : Pobj (0.000018) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMAJ : Pobj (0.000036) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMAY : Pobj (0.000220) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMCL : Pobj (0.000107) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMGQ : Pobj (0.000040) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMHO : Pobj (0.000752) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+Groupe GROUP_AMHP : Pobj (0.000137) est superieur a Pmax (0.000000): Pobj mis a Pmax.
+L'incident N-k numero 2 (QUAD_QBZ) rompt la connexité, il est ignoré
+L'incident N-k numero 4 (QUAD_SNC) rompt la connexité, il est ignoré
+L'incident N-k numero 13 (QUAD_OTG) rompt la connexité, il est ignoré
+L'incident N-k numero 26 (QUAD_SIP) rompt la connexité, il est ignoré
+L'incident N-k numero 34 (QUAD_QKJ) rompt la connexité, il est ignoré
+L'incident N-k numero 40 (QUAD_URF) rompt la connexité, il est ignoré
+L'incident N-k numero 46 (QUAD_WZB) rompt la connexité, il est ignoré
+L'incident N-k numero 50 (QUAD_LQZ) rompt la connexité, il est ignoré
+L'incident N-k numero 63 (QUAD_LLB) rompt la connexité, il est ignoré
+L'incident N-k numero 64 (QUAD_MVP) rompt la connexité, il est ignoré
+L'incident N-k numero 65 (QUAD_NVG) rompt la connexité, il est ignoré
+L'incident N-k numero 67 (QUAD_ODS) rompt la connexité, il est ignoré
+L'incident N-k numero 68 (QUAD_MUT) rompt la connexité, il est ignoré
+L'incident N-k numero 74 (QUAD_QSX) rompt la connexité, il est ignoré
+L'incident N-k numero 83 (QUAD_QXZ) rompt la connexité, il est ignoré
+L'incident N-k numero 85 (QUAD_SBW) rompt la connexité, il est ignoré
+L'incident N-k numero 90 (QUAD_SUU) rompt la connexité, il est ignoré
+L'incident N-k numero 101 (QUAD_QTV) rompt la connexité, il est ignoré
+L'incident N-k numero 102 (QUAD_LTS) rompt la connexité, il est ignoré
+L'incident N-k numero 109 (QUAD_XXR) rompt la connexité, il est ignoré
+L'incident N-k numero 114 (QUAD_NGK) rompt la connexité, il est ignoré
+L'incident N-k numero 121 (QUAD_VCR) rompt la connexité, il est ignoré
+L'incident N-k numero 122 (QUAD_NFU) rompt la connexité, il est ignoré
+L'incident N-k numero 131 (QUAD_NVI) rompt la connexité, il est ignoré
+L'incident N-k numero 134 (QUAD_LTT) rompt la connexité, il est ignoré
+L'incident N-k numero 145 (QUAD_ONN) rompt la connexité, il est ignoré
+L'incident N-k numero 153 (QUAD_UCP) rompt la connexité, il est ignoré
+L'incident N-k numero 154 (QUAD_XNB) rompt la connexité, il est ignoré
+L'incident N-k numero 163 (QUAD_ODN) rompt la connexité, il est ignoré
+L'incident N-k numero 167 (QUAD_LJV) rompt la connexité, il est ignoré
+L'incident N-k numero 170 (QUAD_TFC) rompt la connexité, il est ignoré
+L'incident N-k numero 172 (QUAD_MZA) rompt la connexité, il est ignoré
+L'incident N-k numero 178 (QUAD_PTZ) rompt la connexité, il est ignoré
+L'incident N-k numero 184 (QUAD_SEC) rompt la connexité, il est ignoré
+L'incident N-k numero 193 (QUAD_ONT) rompt la connexité, il est ignoré
+L'incident N-k numero 194 (QUAD_XBB) rompt la connexité, il est ignoré
+L'incident N-k numero 195 (QUAD_NOI) rompt la connexité, il est ignoré
+L'incident N-k numero 198 (QUAD_NCQ) rompt la connexité, il est ignoré
+L'incident N-k numero 202 (QUAD_SLW) rompt la connexité, il est ignoré
+L'incident N-k numero 203 (QUAD_NFT) rompt la connexité, il est ignoré
+L'incident N-k numero 210 (QUAD_PNZ) rompt la connexité, il est ignoré
+L'incident N-k numero 214 (QUAD_SVT) rompt la connexité, il est ignoré
+L'incident N-k numero 216 (QUAD_TZN) rompt la connexité, il est ignoré
+L'incident N-k numero 220 (QUAD_NGJ) rompt la connexité, il est ignoré
+L'incident N-k numero 224 (QUAD_OBZ) rompt la connexité, il est ignoré
+L'incident N-k numero 228 (QUAD_QPW) rompt la connexité, il est ignoré
+L'incident N-k numero 234 (QUAD_NZI) rompt la connexité, il est ignoré
+L'incident N-k numero 240 (QUAD_LRF) rompt la connexité, il est ignoré
+L'incident N-k numero 246 (QUAD_QCE) rompt la connexité, il est ignoré
+L'incident N-k numero 250 (QUAD_LBM) rompt la connexité, il est ignoré
+L'incident N-k numero 253 (QUAD_SFQ) rompt la connexité, il est ignoré
+L'incident N-k numero 261 (QUAD_KPM) rompt la connexité, il est ignoré
+L'incident N-k numero 267 (QUAD_TIM) rompt la connexité, il est ignoré
+L'incident N-k numero 272 (QUAD_PLW) rompt la connexité, il est ignoré
+L'incident N-k numero 273 (QUAD_NEZ) rompt la connexité, il est ignoré
+L'incident N-k numero 274 (QUAD_TQC) rompt la connexité, il est ignoré
+L'incident N-k numero 276 (QUAD_ODU) rompt la connexité, il est ignoré
+L'incident N-k numero 277 (QUAD_SMR) rompt la connexité, il est ignoré
+L'incident N-k numero 280 (QUAD_SDN) rompt la connexité, il est ignoré
+L'incident N-k numero 285 (QUAD_PUA) rompt la connexité, il est ignoré
+L'incident N-k numero 292 (QUAD_WRK) rompt la connexité, il est ignoré
+L'incident N-k numero 320 (QUAD_LLV) rompt la connexité, il est ignoré
+L'incident N-k numero 321 (QUAD_LFU) rompt la connexité, il est ignoré
+L'incident N-k numero 324 (QUAD_TZQ) rompt la connexité, il est ignoré
+L'incident N-k numero 326 (QUAD_KRP) rompt la connexité, il est ignoré
+L'incident N-k numero 330 (QUAD_XWZ) rompt la connexité, il est ignoré
+L'incident N-k numero 335 (QUAD_RLS) rompt la connexité, il est ignoré
+L'incident N-k numero 336 (QUAD_PCO) rompt la connexité, il est ignoré
+L'incident N-k numero 344 (QUAD_LJX) rompt la connexité, il est ignoré
+L'incident N-k numero 345 (QUAD_NGV) rompt la connexité, il est ignoré
+L'incident N-k numero 350 (QUAD_LRG) rompt la connexité, il est ignoré
+L'incident N-k numero 352 (QUAD_NOJ) rompt la connexité, il est ignoré
+L'incident N-k numero 353 (QUAD_ODO) rompt la connexité, il est ignoré
+L'incident N-k numero 371 (QUAD_LTU) rompt la connexité, il est ignoré
+L'incident N-k numero 372 (QUAD_ONM) rompt la connexité, il est ignoré
+L'incident N-k numero 384 (QUAD_ULK) rompt la connexité, il est ignoré
+L'incident N-k numero 386 (QUAD_TYS) rompt la connexité, il est ignoré
+L'incident N-k numero 390 (QUAD_MYD) rompt la connexité, il est ignoré
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 17270.731409
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 321 (sur 399)
+Nombre de regions       = 9
+Nombre total de noeuds  = 7132
+Nombre de consommations = 7089 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 10034 (dont 384 surveillés en N et 384 surveillés sur défaut)
+Nombre de groupes       = 9510 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 43 (dont 1 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 10 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Nombre max d'action(s) curative(s) autorisée(s) sur incident : 3
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le noeud 'BRESSP4_4' de la loi 0 de variation de conso est introuvable
+Le noeud 'AIRVAP4_2' de la loi 0 de variation de conso est introuvable
+Le noeud 'BRESSP4_4' de la loi 1 de variation de conso est introuvable
+Le noeud 'AIRVAP4_2' de la loi 1 de variation de conso est introuvable
+Le noeud 'BRESSP4_4' de la loi 2 de variation de conso est introuvable
+Le noeud 'AIRVAP4_2' de la loi 2 de variation de conso est introuvable
+Le noeud 'BRESSP4_4' de la loi 3 de variation de conso est introuvable
+Le noeud 'AIRVAP4_2' de la loi 3 de variation de conso est introuvable
+L'incident parade numero QUAD_MMA (QUAD_MLZ / QUAD_MFK) rompt la connexité, il est ignoré
+ Nb total d'incidents + parades : 439
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [CONSO_J]
+0 [CONSO_J](2) <-> 300 [CONSO_KX](4) <-> 83 [CONSO_CO](2)
+                                     <-> 146 [CONSO_EZ](2)
+                                     <-> 151 [CONSO_FE](2)
+               <-> 326 [CONSO_LX](5) <-> 83 [CONSO_CO](2)
+                                     <-> 474 [CONSO_RP](3)
+                                     <-> 327 [CONSO_LY](4)
+
+Noeud bilan : 58 [CONSO_BP]
+58 [CONSO_BP](1) <-> 446 [CONSO_QN](6) <-> 66 [CONSO_BX](1)
+                                       <-> 88 [CONSO_CT](1)
+                                       <-> 157 [CONSO_FK](1)
+                                       <-> 211 [CONSO_HM](1)
+                                       <-> 306 [CONSO_LD](1)
+                 |=| 3854 [CONSO_ERP](6) <-> 515 [CONSO_TE](13)
+                                         <-> 1120 [CONSO_AQL](4)
+                                         <-> 2898 [CONSO_DGV](3)
+                                         <-> 6265 [CONSO_IGI](8)
+                                         <-> 3852 [CONSO_ERN](2)
+                                         <-> 3853 [CONSO_ERO](5)
+
+
+********************************************
+Traitement d'un paquet de 4 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 258610.7738  MW
+Production démarrée                 = 258589.0722  MW
+Puissance à ajuster                 =    21.7016  MW
+Puissance disponible à la hausse (hors Pimp) = 1468484.0752  MW
+Puissance disponible à la baisse (hors Pimp) = -275014.7722  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -21.7016 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258610.7738 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      10.8508
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      10.8508
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 16
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258610.7738 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :      10.0812
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      10.0812
+
+Des contraintes ont été détectées : 309
+Nb termes dans la matrice : 6 (taille de la matrice : 6)
+Ajout de 40 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 78)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258610.7738 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :      10.0812
+Cout des écarts de transit     :    1038.4807
+Valeur de la fonction objectif :    1048.5619
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 177 (taille de la matrice : 177)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 258339.8482  MW
+Production démarrée                 = 258317.1185  MW
+Puissance à ajuster                 =    22.7297  MW
+Puissance disponible à la hausse (hors Pimp) = 1468756.0290  MW
+Puissance disponible à la baisse (hors Pimp) = -274742.8185  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -21.7297 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258339.8482 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      11.3648
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      11.3648
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 14
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Ajout de 0 contraintes dans le probleme
+
+---------------------
+---------------------
+Variante numéro 2
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 258088.5462  MW
+Production démarrée                 = 258064.0720  MW
+Puissance à ajuster                 =    24.4742  MW
+Puissance disponible à la hausse (hors Pimp) = 1469009.0755  MW
+Puissance disponible à la baisse (hors Pimp) = -274489.7720  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -23.4742 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = -1.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258088.5462 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      12.2371
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      12.2371
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 17
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Ajout de 9 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 10)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258088.5462 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :      64.0863
+Cout des écarts de transit     :      49.4478
+Valeur de la fonction objectif :     113.5341
+
+Des contraintes ont été détectées : 313
+Nb termes dans la matrice : 33 (taille de la matrice : 33)
+Ajout de 39 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 84)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  258088.5462 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :      64.0863
+Cout des écarts de transit     :     880.7284
+Valeur de la fonction objectif :     944.8148
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 198 (taille de la matrice : 198)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 3
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 255083.4081  MW
+Production démarrée                 = 255058.9208  MW
+Puissance à ajuster                 =    24.4873  MW
+Puissance disponible à la hausse (hors Pimp) = 1472014.2266  MW
+Puissance disponible à la baisse (hors Pimp) = -271484.6208  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_J]), bilan = -24.4873 MW
+Zone synchrone 1 (noeud bilan 58 [CONSO_BP]), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  255083.4081 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      12.2436
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      12.2436
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 309
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Ajout de 341 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 361)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  255083.4081 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :     242.6736
+Cout des écarts de transit     :    7131.3984
+Valeur de la fonction objectif :    7374.0720
+
+Des contraintes ont été détectées : 622
+Nb termes dans la matrice : 1210 (taille de la matrice : 1210)
+Ajout de 388 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 765)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  255083.4081 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :     236.4358
+Cout des écarts de transit     :  133909.4118
+Valeur de la fonction objectif :  134145.8476
+
+Des contraintes ont été détectées : 9
+Nb termes dans la matrice : 2482 (taille de la matrice : 2482)
+Ajout de 26 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 791)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  255083.4081 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :     236.4565
+Cout des écarts de transit     :  134395.0282
+Valeur de la fonction objectif :  134631.4848
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 2606 (taille de la matrice : 2606)
+Pas de contraintes

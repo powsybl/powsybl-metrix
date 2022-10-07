@@ -108,14 +108,20 @@ string Contrainte::typeDeContrainteToString() const
 
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
-    #ifdef USE_ORTOOLS
-    solver_simplex_ = std::make_shared<ortools::Solver>(config::configuration().solverChoice());
+#ifdef USE_ORTOOLS
+    solver_simplex_ = std::make_shared<ortools::Solver>(
+        config::configuration().solverChoice(),
+        config::configuration().specificSolverParams());
     solver_pne_ = solver_simplex_;
-    #else
+    pc_solver_ = std::make_shared<ortools::Solver>(
+        config::configuration().pcSolverChoice(),
+        config::configuration().specificSolverParams());
+#else
     // use same solver
     solver_simplex_ = std::make_shared<compute::Solver>();
     solver_pne_ = solver_simplex_;
-    #endif
+    pc_solver_ = solver_simplex_;
+#endif
 
     // Réglage des paramètres en fonction du mode de calcul
     std::stringstream ss;
@@ -324,7 +330,7 @@ int Calculer::resolutionProbleme()
                 status = resolutionUnProblemeDodu(varianteCourante_);
 
                 // Free the problem at the end of the resolution
-                solver_.free();
+                solver_pne_->free();
 
                 // No solution variant (but not due to internal problem)
                 if (status == METRIX_PAS_SOLUTION || status == METRIX_NB_MAX_CONT_ATTEINT
@@ -456,7 +462,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Resolution du probleme
         //----------------------
-        solver_->solve(&pbPNE_);
+        solver_pne_->solve(&pbPNE_);
         pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
 
         if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
@@ -477,7 +483,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Solveur II : utilisation du SIMPLEXE;
         //------------------------------------
-    } else if (typeSolveur == UTILISATION_SIMPLEXE) {
+    } else if (typeSolveur == UTILISATION_SIMPLEXE || typeSolveur == UTILISATION_PC_SIMPLEXE) {
         LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineaireSPX");
 
         for (int i = 0; i < pbNombreDeVariables_; ++i) {
@@ -542,7 +548,11 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
             SPX_EcrireProblemeAuFormatMPS(pb_);
         }
 
-        solver_->solve(&pb_);
+        if (typeSolveur == UTILISATION_PC_SIMPLEXE) {
+            pc_solver_->solve(&pb_);
+        } else {
+            solver_pne_->solve(&pb_);
+        }
         pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
         pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
 
@@ -976,7 +986,7 @@ void Calculer::fixerVariablesEntieres()
     }
 }
 
-Calculer::~Calculer() {icdtQdt.clear();}
+Calculer::~Calculer() { icdtQdt_.clear(); }
 
 void Calculer::printStats()
 {

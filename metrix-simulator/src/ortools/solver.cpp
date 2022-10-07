@@ -1,4 +1,5 @@
 #include "solver.h"
+#include "err/error.h"
 
 #include <iostream>
 
@@ -12,6 +13,12 @@ const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver
     std::make_pair(config::Configuration::SolverChoice::GLPK,
                    std::make_pair(operations_research::MPSolver::GLPK_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::GLPK_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::CBC,
+                   std::make_pair(operations_research::MPSolver::CLP_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::CBC_MIXED_INTEGER_PROGRAMMING)),
+    std::make_pair(config::Configuration::SolverChoice::SCIP_GLOP,
+                   std::make_pair(operations_research::MPSolver::GLOP_LINEAR_PROGRAMMING,
+                                  operations_research::MPSolver::SCIP_MIXED_INTEGER_PROGRAMMING)),
     std::make_pair(config::Configuration::SolverChoice::GUROBI,
                    std::make_pair(operations_research::MPSolver::GUROBI_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::GUROBI_MIXED_INTEGER_PROGRAMMING)),
@@ -26,7 +33,9 @@ const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver
                                   operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
 };
 
-Solver::Solver(config::Configuration::SolverChoice solver_choice) : solver_choice_(solver_choice) {}
+Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params)
+    : solver_choice_(solver_choice),
+      specific_params_(specific_params) {}
 
 void Solver::solve(PROBLEME_SIMPLEXE* spx_problem) { solve_impl(spx_problem); }
 
@@ -51,6 +60,7 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                       problem.CoutLineaire,
                       problem.NombreDeVariables,
                       problem.X,
+                      problem.TypeDeBorneDeLaVariable,
                       problem.TypeDeVariable);
 
     // Create constraints and set coefs
@@ -65,9 +75,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
     // set time limit
     solver->set_time_limit(problem.TempsDExecutionMaximum);
 
-    // transfer bounds type
-    solver->SetSolverSpecificParametersAsString(
-        convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeBorneDeLaVariable));
+    if (solver_choice_ == config::Configuration::SolverChoice::SIRIUS) {
+        // transfer bounds type
+        solver->SetSolverSpecificParametersAsString(
+            convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeBorneDeLaVariable));
+    }
 
     return solver;
 }
@@ -78,7 +90,7 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
 
     // Create the variables and set objective cost.
     // transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables);
-    transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables, problem.X);
+    transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables, problem.X, problem.TypeDeVariable);
 
     // Create constraints and set coefs
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
@@ -89,10 +101,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                    problem.CoefficientsDeLaMatriceDesContraintes,
                    problem.NombreDeContraintes);
 
-    // transfer bounds type
-    solver->SetSolverSpecificParametersAsString(
-        convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeVariable));
-
+    if (solver_choice_ == config::Configuration::SolverChoice::SIRIUS) {
+        // transfer bounds type
+        solver->SetSolverSpecificParametersAsString(
+            convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeVariable));
+    }
 
     return solver;
 }
@@ -103,6 +116,7 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
                                double* costs,
                                int nbVar,
                                double* xValues,
+                               int const* typeDeBorneDeLaVariable,
                                int const* typeDeVariable)
 {
     // Store current X values to set solution hint
@@ -112,11 +126,39 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
         std::ostringstream oss;
         oss << "x" << idxVar;
-        double min_l = 0.0;
-        if (bMin != nullptr) {
-            min_l = bMin[idxVar];
+
+        double min_l = 0., max_l = 0.;
+        switch (typeDeBorneDeLaVariable[idxVar]) {
+            case VARIABLE_FIXE:
+                if (typeDeVariable == nullptr && nullptr != xValues) {
+                    min_l = max_l = xValues[idxVar];
+                } else {
+                    min_l = bMin[idxVar];
+                    max_l = bMin[idxVar];
+                }
+                break;
+            case VARIABLE_BORNEE_DES_DEUX_COTES:
+                min_l = bMin[idxVar];
+                max_l = bMax[idxVar];
+                break;
+            case VARIABLE_BORNEE_INFERIEUREMENT:
+                min_l = bMin[idxVar];
+                max_l = operations_research::MPSolver::infinity();
+                break;
+            case VARIABLE_BORNEE_SUPERIEUREMENT:
+                min_l = -operations_research::MPSolver::infinity();
+                max_l = bMax[idxVar];
+                break;
+            case VARIABLE_NON_BORNEE:
+                min_l = -operations_research::MPSolver::infinity();
+                max_l = operations_research::MPSolver::infinity();
+                break;
+            default: {
+                std::ostringstream ss;
+                ss << "Unknown typeDeBorneDeLaVariable: " << typeDeBorneDeLaVariable[idxVar];
+                ErrorI(ss.str());
+            }
         }
-        double max_l = bMax[idxVar];
 
         operations_research::MPVariable* x(nullptr);
         if (typeDeVariable != nullptr && typeDeVariable[idxVar] == ENTIER) {
@@ -224,15 +266,30 @@ static int extractBasisStatus(operations_research::MPVariable& var)
     // get the variable value
     double solutionValue = var.solution_value();
     // extract and return correct basis status based on bounds comparison
-    int basisStatus = (var.basis_status() == MPSolver::FREE ? HORS_BASE_A_ZERO : EN_BASE);
-    if (basisStatus == HORS_BASE_A_ZERO) {
-        if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
-            basisStatus = HORS_BASE_SUR_BORNE_INF;
-        } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
-            basisStatus = HORS_BASE_SUR_BORNE_SUP;
+    MPSolver::BasisStatus ortoolsBasisStatus = var.basis_status();
+    switch(ortoolsBasisStatus) {
+        case MPSolver::FREE: {
+            if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
+                return HORS_BASE_SUR_BORNE_INF;
+            } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
+                return HORS_BASE_SUR_BORNE_SUP;
+            }
+            return HORS_BASE_A_ZERO;
+        }
+        case MPSolver::AT_LOWER_BOUND:
+            return HORS_BASE_SUR_BORNE_INF;
+        case MPSolver::AT_UPPER_BOUND:
+            return HORS_BASE_SUR_BORNE_SUP;
+        case MPSolver::FIXED_VALUE:
+            return HORS_BASE_SUR_BORNE_INF;
+        case MPSolver::BASIC:
+            return EN_BASE;
+        default: {
+            std::ostringstream ss;
+            ss << "Unknown ortoolsBasisStatus: " << ortoolsBasisStatus;
+            throw ErrorI(ss.str());
         }
     }
-    return basisStatus;
 }
 
 static int extractBasisStatus(operations_research::MPConstraint& cnt)
@@ -280,7 +337,7 @@ operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_R
 }
 
 template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
+operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>() const
 {
     return solver_choices_.at(solver_choice_).first;
 }

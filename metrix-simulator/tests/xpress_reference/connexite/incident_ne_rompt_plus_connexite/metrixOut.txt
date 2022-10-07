@@ -1,0 +1,253 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_VLA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VLB a une admittance tres grande (100000.0000000000)
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4542 [CONSO_FRT]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'QUAD_PIQ' : Noeuds perdus '2967 [CONSO_DJE]'
+Incident 'QUAD_RYM' : Noeuds perdus '4539 [CONSO_FRQ]'
+Incident 'QUAD_JLE' : Noeuds perdus '712 [CONSO_AAL]'
+Incident 'QUAD_RAQ' : Noeuds perdus '5418 [CONSO_GZL]'
+Incident 'QUAD_SQN' : Noeuds perdus '5418 [CONSO_GZL]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4541 [CONSO_FRS]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '6288 [CONSO_IGX]'
+Incident 'INC_ZFP' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFQ' : Noeuds perdus '3671 [CONSO_EKG]' '6077 [CONSO_HYU]' '6146 [CONSO_IBL]'
+Incident 'INC_ZFR' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFS' : Noeuds perdus '3911 [CONSO_ETM]'
+Incident 'INC_ZFT' : Noeuds perdus '4541 [CONSO_FRS]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFU' : Noeuds perdus '5451 [CONSO_HAS]'
+Incident 'INC_ZFV' : Noeuds perdus '3097 [CONSO_DOE]' '5989 [CONSO_HVK]'
+Incident 'INC_ZFW' : Noeuds perdus '407 [CONSO_OS]'
+Incident 'INC_ZFX' : Noeuds perdus '500 [CONSO_SH]' '5609 [CONSO_HGU]'
+Incident 'INC_ZFY' : Noeuds perdus '4549 [CONSO_FSA]' '6206 [CONSO_IDT]'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 99 (sur 99)
+Nombre de regions       = 1
+Nombre total de noeuds  = 6366
+Nombre de consommations = 6352 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 8847 (dont 0 surveillés en N et 5 surveillés sur défaut)
+Nombre de groupes       = 2558 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 14 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Parade 'QUAD_KRC' sur défaut 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'
+Le défaut ISSOIL61PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut LANGEL31PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SALZUL31Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut ISSOIY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut ISSOIY632 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MARGEY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MARGEY632 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MARGEL61PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PRATCL61TREVA mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PRATCY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PRATCL61SANSS mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut RIVIEL61SANSS mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut RIVIEL61TREVA mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTGROY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SANSSY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SANSSY632 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut LANG8L31MTGRO mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PUY  L31TAULH mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BOUDEL61C.RHO mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PRATCL31SANSS mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SSSIGL31Z2bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut A.NORL31Z2bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BLAVOL31PUY mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut LANG8L31Z4bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut M.ALLL31PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut TREVAY632 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut TREVAY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MARGEL61RUEYR mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTPEZY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PRATCL31TAULH mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PUY  L31SANSS mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PUY  L32SANSS mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BOUDEL61MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BOUDEL61MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BOUDEL61MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BOUDEL61MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut GRANDL61PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTGROL61MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BARJAL61CROI6 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BOUDEL61C.RHO mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTGROY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTGROY631 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut LANG8L31MTGRO mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut GRANDL61Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MARGEL61RUEYR mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTGROL62MTPEZ mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MARGEL61PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BARJAL61Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BESSEL31SALEL mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut MTPEZL31Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut BESSEL31Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut M.ALLL31PRATC mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut TEIL L31VALS mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut TEIL L31TEIL5 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SALINL31Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut ANCELL31Z3bou mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut LAUSSL31TAULH mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SSSIGL31TREVA mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut PRATCL61SANSS mentionné dans la liste des parades topologiques est absent du calcul
+ Nb total d'incidents + parades : 101
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2236 [CONSO_CHB](2)
+                                  <-> 5975 [CONSO_HUW](3)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 60612.1333  MW
+Production démarrée                 = 60612.1260  MW
+Puissance à ajuster                 =     0.0073  MW
+Puissance disponible à la hausse (hors Pimp) = 25516829.8740  MW
+Puissance disponible à la baisse (hors Pimp) = -25638054.1260  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = -0.0073 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   60612.1333 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0036
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0036
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4542 [CONSO_FRT]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'QUAD_PIQ' : Noeuds perdus '2967 [CONSO_DJE]'
+Incident 'QUAD_RYM' : Noeuds perdus '4539 [CONSO_FRQ]'
+Incident 'QUAD_JLE' : Noeuds perdus '712 [CONSO_AAL]'
+Incident 'QUAD_RAQ' : Noeuds perdus '5418 [CONSO_GZL]'
+Incident 'QUAD_SQN' : Noeuds perdus '5418 [CONSO_GZL]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4541 [CONSO_FRS]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '6288 [CONSO_IGX]'
+Incident 'INC_ZFP' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFQ' : Noeuds perdus '3671 [CONSO_EKG]' '6077 [CONSO_HYU]' '6146 [CONSO_IBL]'
+Incident 'INC_ZFR' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFS' : Noeuds perdus '3911 [CONSO_ETM]'
+Incident 'INC_ZFT' : Noeuds perdus '4541 [CONSO_FRS]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFU' : Noeuds perdus '5451 [CONSO_HAS]'
+Incident 'INC_ZFV' : Noeuds perdus '3097 [CONSO_DOE]' '5989 [CONSO_HVK]'
+Incident 'INC_ZFW' : Noeuds perdus '407 [CONSO_OS]'
+Incident 'INC_ZFX' : Noeuds perdus '500 [CONSO_SH]' '5609 [CONSO_HGU]'
+Incident 'INC_ZFY' : Noeuds perdus '4549 [CONSO_FSA]' '6206 [CONSO_IDT]'
+Parade 'QUAD_OXM_NRF' sur défaut 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'
+Parade 'QUAD_KRC' sur défaut 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'
+Attention: incident 20, l'ouvrage QUAD_KRC est deja deconnecte
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 61884.8760  MW
+Production démarrée                 = 61884.9090  MW
+Puissance à ajuster                 =    -0.0330  MW
+Puissance disponible à la hausse (hors Pimp) = 25515557.0910  MW
+Puissance disponible à la baisse (hors Pimp) = -25639326.9090  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0330 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   61884.8760 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0165
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0165
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4542 [CONSO_FRT]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'QUAD_PIQ' : Noeuds perdus '2967 [CONSO_DJE]'
+Incident 'QUAD_RYM' : Noeuds perdus '4539 [CONSO_FRQ]'
+Incident 'QUAD_JLE' : Noeuds perdus '712 [CONSO_AAL]'
+Incident 'QUAD_RAQ' : Noeuds perdus '5418 [CONSO_GZL]'
+Incident 'QUAD_SQN' : Noeuds perdus '5418 [CONSO_GZL]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4541 [CONSO_FRS]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '6288 [CONSO_IGX]'
+Incident 'INC_ZFP' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFQ' : Noeuds perdus '3671 [CONSO_EKG]' '6077 [CONSO_HYU]' '6146 [CONSO_IBL]'
+Incident 'INC_ZFR' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFS' : Noeuds perdus '3911 [CONSO_ETM]'
+Incident 'INC_ZFT' : Noeuds perdus '4541 [CONSO_FRS]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFU' : Noeuds perdus '5451 [CONSO_HAS]'
+Incident 'INC_ZFV' : Noeuds perdus '3097 [CONSO_DOE]' '5989 [CONSO_HVK]'
+Incident 'INC_ZFW' : Noeuds perdus '407 [CONSO_OS]'
+Incident 'INC_ZFX' : Noeuds perdus '500 [CONSO_SH]' '5609 [CONSO_HGU]'
+Incident 'INC_ZFY' : Noeuds perdus '4549 [CONSO_FSA]' '6206 [CONSO_IDT]'
+Parade 'QUAD_KRC' sur défaut 'QUAD_OXM' : Noeuds perdus '5106 [CONSO_GNL]'

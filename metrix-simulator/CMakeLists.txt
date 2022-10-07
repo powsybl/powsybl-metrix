@@ -75,6 +75,16 @@ set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
 
+# Sirius
+if (USE_SIRIUS_SHARED)
+    set(SIRIUS_NAME sirius_solver)
+else()
+    set(SIRIUS_NAME sirius_solver_static)
+endif()
+
+set(${SIRIUS_NAME}_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/sirius_solver CACHE PATH "Path where a Sirius installation already exists")
+find_package(${SIRIUS_NAME} REQUIRED)
+
 # Ortools
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 if(USE_ORTOOLS)
@@ -86,16 +96,6 @@ endif()
 if(USE_XPRESS)
     find_package(XPRESS REQUIRED)
 endif()
-
-# Sirius
-if (USE_SIRIUS_SHARED)
-    set(SIRIUS_NAME sirius_solver)
-else()
-    set(SIRIUS_NAME sirius_solver_static)
-endif()
-
-set(${SIRIUS_NAME}_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/sirius_solver CACHE PATH "Path where a Sirius installation already exists")
-find_package(${SIRIUS_NAME} REQUIRED)
 
 # SUITESPARSE
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/suitesparse CACHE PATH "Path where an SuiteSparse installation already exists")

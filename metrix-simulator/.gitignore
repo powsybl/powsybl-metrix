@@ -11,13 +11,14 @@
 .idea
 install
 coverage
-/tests/*/*/out_s*
-/tests/*/*/metrixOut.txt
-tests/*/*/metrix*.log
-tests/*/*/result.txt
+/tests/**/out_s*
+/tests/**/metrixOut.txt
+/tests/**/metrix*.log
+/tests/**/result.txt
+/tests/**/LODF_matrix.csv
+/tests/**/PTDF_matrix.csv
+!tests/*_reference/**/*
 out/**
-/tests/*/*/LODF_matrix.csv
-/tests/*/*/PTDF_matrix.csv
 
 docs/doc/**
 
