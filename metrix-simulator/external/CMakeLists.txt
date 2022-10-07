@@ -67,12 +67,9 @@ else()
   set(SUITESPARSE_HOME ${install_dir})
 endif()
 
-set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
-
-if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
-  get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
-  set(sirius_solver_url ${SIRIUS_URL})
-endif()
+set(sirius_solver_url https://github.com/jdarlay/sirius-solver)
+set(sirius_tag "metrix-integration-v0.1")
+set(sirius_asset "ubuntu-20.04_sirius-solver.zip")
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 find_package(sirius_solver QUIET)
@@ -85,23 +82,27 @@ else()
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/sirius_solver-stamp
-    SOURCE_DIR          ${DOWNLOAD_DIR}/sirius_solver
+    SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
     BINARY_DIR          ${DOWNLOAD_DIR}/sirius_solver-build
-    GIT_REPOSITORY      ${sirius_solver_url}
-    GIT_TAG             origin/metrix
-
-    CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
-                        -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
-
-    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-                        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    URL                 ${sirius_solver_url}/releases/download/${sirius_tag}/${sirius_asset}
+    CONFIGURE_COMMAND   ""
+    BUILD_COMMAND       ""
+    INSTALL_COMMAND     ""
     )
   ExternalProject_Get_Property(sirius_solver install_dir)
   set(sirius_solver_ROOT ${install_dir})
   set(sirius_solver_static_ROOT ${install_dir})
 endif()
 
+set(ortools_url https://github.com/jdarlay/or-tools)
+set(ortools_tag v9.2-ls_dev1.0.5)
+
 option(USE_XPRESS "Use XPRESS in ortools" OFF)
+if (USE_XPRESS)
+  set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix_xprs.zip")
+else()
+  set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix.zip")
+endif()
 
 set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ortools)
 find_package(ortools QUIET)
@@ -116,12 +117,10 @@ else()
     STAMP_DIR           ${DOWNLOAD_DIR}/ortools-stamp
     SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/ortools
     BINARY_DIR          ${DOWNLOAD_DIR}/ortools-build
-    URL                 https://devin-depot.rte-france.com/repository/rte-math-prog-raw/ortools_xp/ortools_xp-8.8.0.tar.gz
+    URL                 ${ortools_url}/releases/download/${ortools_tag}/${ortools_asset}
     CONFIGURE_COMMAND   ""
     BUILD_COMMAND       ""
     INSTALL_COMMAND     ""
-
-    DEPENDS             sirius_solver
     )
   ExternalProject_Get_Property(ortools install_dir)
   set(ortools_ROOT ${install_dir})
