@@ -1,0 +1,569 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_AJA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_BOZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_BPA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_BZU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CCW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_CSN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DKZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DLJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DMM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_DVK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_FIQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_FIR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GHW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GHX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GHY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GHZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GID a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GIM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GJZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GKS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GLZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GMQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GNH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GNI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GNJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GNQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GNR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GNS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GOZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GPU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GQY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GRB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GRC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GRD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GRI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GRZ a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_GSE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GSF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GSQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GSS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GST a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GSZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GTU a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_GUA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GUZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GVA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GWF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GWG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GWR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GWS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GWT a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_GWU a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_GXR a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_GXS a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_GYJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GYK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_GZY a une admittance tres grande (1443.9642333984)
+Attention: Le quadripole QUAD_HAP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HAQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HAR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HBH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HBI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HBJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HBK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HBS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HCN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HDA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HII a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HJG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HJH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HJI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HMD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HMX a une admittance tres grande (975.6755981445)
+Attention: Le quadripole QUAD_HNJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HNK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HNS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HNT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HOF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HOG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HOM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HON a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HOO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HOQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HOR a une admittance tres grande (1128.1250000000)
+Attention: Le quadripole QUAD_HOV a une admittance tres grande (1110.7691650391)
+Attention: Le quadripole QUAD_HOW a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_HOX a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_HOY a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_HOZ a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_HPD a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_HPZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HQZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HRH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HTU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HTV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HVQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HVR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HVU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HVV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HVZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HWB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HWD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HWP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HXF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HXM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HYZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_HZY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IAQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IBU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IBW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ICC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ICF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ICO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ICS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ICW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IDH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IDR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IEG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IEH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IEI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_IEL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_INR a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_IOD a une admittance tres grande (730.0304565430)
+Attention: Le quadripole QUAD_KUN a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_LDX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_LGU a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_LHE a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_LHF a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_LIX a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_NNT a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_OFF a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_PBA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_PBD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_RVM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_RWH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_RWI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_SST a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLJ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_TLK a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLL a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLM a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLN a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLO a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLP a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_TLQ a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLR a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLS a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLT a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLU a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLV a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLW a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_TLY a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TLZ a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_TMA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_UQX a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole QUAD_UVZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VDI a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VDL a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VDQ a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VDR a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VDS a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VDU a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VDX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_VNW a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_VQW a une admittance tres grande (627.8261108398)
+Attention: Le quadripole QUAD_WBI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_WBJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_WDO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_WKJ a une admittance tres grande (1443.9998779297)
+Attention: Le quadripole QUAD_WKT a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_WRL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_XEO a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_XGG a une admittance tres grande (1600.0000000000)
+Attention: Le quadripole QUAD_XRE a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_XRJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_XRX a une admittance tres grande (999.9030151367)
+Attention: Le quadripole QUAD_XRY a une admittance tres grande (999.9030151367)
+Attention: Le quadripole QUAD_XWI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_XWR a une admittance tres grande (1600.0000000000)
+Groupe GROUP_BLXV : Pobj (264.403992) est superieur a Pmax (250.000000): Pobj mis a Pmax.
+Groupe GROUP_BRAH : Pobj (19.700001) est superieur a Pmax (11.866601): Pobj mis a Pmax.
+Groupe GROUP_BWJY : Pobj (35.000000) est superieur a Pmax (30.985401): Pobj mis a Pmax.
+Groupe GROUP_CBHY : Pobj (5.800000) est superieur a Pmax (4.647901): Pobj mis a Pmax.
+Groupe GROUP_CBMJ : Pobj (4.800000) est superieur a Pmax (3.695481): Pobj mis a Pmax.
+Groupe GROUP_CDGT : Pobj (5.000000) est superieur a Pmax (4.700000): Pobj mis a Pmax.
+Groupe GROUP_CDIU : Pobj (1.000000) est superieur a Pmax (0.800000): Pobj mis a Pmax.
+Groupe GROUP_CGUA : Pobj (8.000000) est superieur a Pmax (7.082377): Pobj mis a Pmax.
+Groupe GROUP_CHNF : Pobj (56.700001) est superieur a Pmax (52.321659): Pobj mis a Pmax.
+Groupe GROUP_CHNG : Pobj (56.700001) est superieur a Pmax (52.321659): Pobj mis a Pmax.
+Groupe GROUP_CHNH : Pobj (55.500000) est superieur a Pmax (52.321659): Pobj mis a Pmax.
+Groupe GROUP_CILM : Pobj (13.300000) est superieur a Pmax (11.907662): Pobj mis a Pmax.
+Groupe GROUP_CILN : Pobj (13.300000) est superieur a Pmax (11.907662): Pobj mis a Pmax.
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 19 (sur 19)
+Nombre de regions       = 17
+Nombre total de noeuds  = 17936
+Nombre de consommations = 12993 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 25546 (dont 18 surveillés en N et 18 surveillés sur défaut)
+Nombre de groupes       = 21917 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 127 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 27 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 3
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0 [CONSO_AJUM]
+0 [CONSO_AJUM](7) <-> 543 [CONSO_AJZW](12) <-> 8784 [CONSO_AROV](6)
+                                           <-> 10228 [CONSO_ATIS](4)
+                                           <-> 10469(3)
+                                           <-> 10470(3)
+                                           <-> 8772 [CONSO_AROO](2)
+                                           <-> 166(3)
+                                           <-> 246(3)
+                                           <-> 299(3)
+                                           <-> 326(3)
+                  <-> 8772 [CONSO_AROO](2) <-> 543 [CONSO_AJZW](12)
+                  <-> 4 [CONSO_AJUQ](5) <-> 5661 [CONSO_AMWR](2)
+                                        <-> 16 [CONSO_AJUU](3)
+                                        <-> 10(1)
+                  <-> 18 [CONSO_AJUW](2) <-> 584 [CONSO_AKAN](13)
+                  <-> 16508 [CONSO_BCPM](2) <-> 584 [CONSO_AKAN](13)
+                  <-> 8(1)
+
+Noeud bilan : 21
+21(1) <-> 50 [CONSO_AJVV](10) <-> 22(1)
+                              <-> 23(1)
+                              <-> 27(1)
+                              <-> 30(1)
+                              <-> 31(1)
+                              <-> 37(1)
+                              <-> 38(1)
+                              <-> 42(1)
+                              <-> 51(1)
+      |=| 11489(7) <-> 1338(13)
+                   <-> 6120(4)
+                   <-> 9443(3)
+                   <-> 13156(1)
+                   <-> 16553(16)
+                   <-> 11486(2)
+                   <-> 11488(2)
+
+Noeud bilan : 40 [CONSO_AJVO]
+40 [CONSO_AJVO](1) <-> 41(1)
+                   |=| 16847(1) <-> 2904(4)
+                   |=| 16808(1) <-> 5090(13)
+                   |=| 39 [CONSO_AJVN](11) <-> 53(1)
+                                           <-> 54(1)
+                                           <-> 55(1)
+                                           <-> 16823(2)
+                                           <-> 16824(2)
+                                           <-> 16830(2)
+                                           <-> 16831(2)
+                                           <-> 16848(2)
+                                           <-> 16849(2)
+                                           <-> 56(1)
+                                           <-> 57(1)
+                                           |=| 51(1)
+                   |=| 37(1) <-> 50 [CONSO_AJVV](10)
+                   |=| 42(1) <-> 50 [CONSO_AJVV](10)
+                   |=| 16825(1) <-> 525(2)
+                   |=| 16915(1) <-> 14756(9)
+
+
+********************************************
+Traitement d'un paquet de 2 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 272747.2039  MW
+Production démarrée                 = 238756.0243  MW
+Puissance à ajuster                 = 33991.1796  MW
+Puissance disponible à la hausse (hors Pimp) = 71746.5856  MW
+Puissance disponible à la baisse (hors Pimp) = -84693.4144  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_AJUM]), bilan = -3291.1796 MW
+Zone synchrone 1 (noeud bilan 21), bilan = -25700.0000 MW
+Zone synchrone 2 (noeud bilan 40 [CONSO_AJVO]), bilan = -5000.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  271202.6099 MW
+Volume de délestage  =    1544.5940 MW
+Résultats sur les couts
+Cout associé aux groupes       :   16223.2928
+Cout associé au délestage      : 20079722.2067
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif : 20095945.4995
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 3)
+-------------------- : 
+
+Des contraintes ont été détectées : 5
+Nb termes dans la matrice : 2223 (taille de la matrice : 2223)
+Ajout de 5 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 8)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  271202.6099 MW
+Volume de délestage  =    1544.5940 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      : 20079722.2067
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif : 20079722.2067
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 5607 (taille de la matrice : 5607)
+Ajout de 1 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 9)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  271202.6099 MW
+Volume de délestage  =    1544.5940 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      : 20079722.2067
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif : 20079722.2067
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 7284 (taille de la matrice : 7284)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 426
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 283377.0106  MW
+Production démarrée                 = 283381.0799  MW
+Puissance à ajuster                 =    -4.0692  MW
+Puissance disponible à la hausse (hors Pimp) = 74068.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -82372.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_AJUM]), bilan = 4.0692 MW
+Zone synchrone 1 (noeud bilan 21), bilan = 0.0000 MW
+Zone synchrone 2 (noeud bilan 40 [CONSO_AJVO]), bilan = 0.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 426 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  283377.0106 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       2.0346
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       2.0346
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 3)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 2223 (taille de la matrice : 2223)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 5)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 426 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  283377.0106 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    3675.2929
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    3675.2929
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 6457 (taille de la matrice : 6457)
+Pas de contraintes
+ Le nombre le contraintes (5) est different de la taille de la base : 2

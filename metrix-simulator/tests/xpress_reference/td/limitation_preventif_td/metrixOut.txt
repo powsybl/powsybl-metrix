@@ -1,0 +1,607 @@
+Use dictionnary file METRIX.dic
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 2 (sur 2)
+Nombre de regions       = 1
+Nombre total de noeuds  = 7
+Nombre de consommations = 4 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 14 (dont 13 surveillés en N et 13 surveillés sur défaut)
+Nombre de groupes       = 4 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 1 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 2 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0
+0(5) <-> 5 [FVERGE11_L](4) <-> 1(5)
+     <-> 3 [FSSV.O11_L](4) <-> 2(4)
+                           |=| 4 [FVALDI11_L, FVALDI11_L2](4)
+     <-> 6(2) <-> 1(5)
+
+
+********************************************
+Traitement d'un paquet de 10 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   16643.7624
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       5.0405
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   16648.8029
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 23 (taille de la matrice : 23)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   82643.7261
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       5.0405
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   82648.7666
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 34 (taille de la matrice : 34)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 2
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 3
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 3 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   42643.7250
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       5.0405
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   42648.7655
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 48 (taille de la matrice : 48)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 3
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   84323.8889
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       5.0405
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   84328.9294
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 34 (taille de la matrice : 34)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 4
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 4 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 4 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2004.0517
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       5.0405
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2009.0922
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24 (taille de la matrice : 24)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 5
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 5 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 5 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       6.0059
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       6.0059
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24 (taille de la matrice : 24)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 6
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 6 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 6 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4445.2128
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       7.5607
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4452.7735
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 24 (taille de la matrice : 24)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 7
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 7 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 3)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 7 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   84965.4565
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       7.5607
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   84973.0172
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 36 (taille de la matrice : 36)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 8
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la hausse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 23
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 23 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 24)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 8 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :  122769.1650
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :    2277.6021
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  125046.7671
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 242 (taille de la matrice : 242)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 9
+---------------------
+---------------------
+
+le TD FP.AND1  FTDPRA1  1 est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                =  1380.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =   420.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -420.0000 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 9 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     420.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     420.0000
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 23
+Nb termes dans la matrice : 12 (taille de la matrice : 12)
+Ajout de 23 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 24)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 9 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   43526.3708
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :    2275.0819
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   45801.4527
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 242 (taille de la matrice : 242)
+Ajout de 1 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 25)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 9 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    1380.0000 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   48004.8145
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :    2268.3642
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   50273.1788
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 252 (taille de la matrice : 252)
+Pas de contraintes

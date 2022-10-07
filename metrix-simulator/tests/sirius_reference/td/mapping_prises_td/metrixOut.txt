@@ -1,0 +1,255 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_LNU_Td a une admittance tres grande (715.9455871582)
+Attention: Le quadripole QUAD_MIT_Td a une admittance tres grande (1444.0116882324)
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 10
+Nombre total de noeuds  = 7130
+Nombre de consommations = 7836 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 10032 (dont 0 surveillés en N et 0 surveillés sur défaut)
+Nombre de groupes       = 9510 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 43 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 10 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Pour le td 'QUAD_LBQ' la prise souhaitée -1 est introuvable pour la variante 3
+Pour le td 'QUAD_LCK' la prise souhaitée -1 est introuvable pour la variante 3
+Pour le td 'QUAD_LFH' la prise souhaitée -1 est introuvable pour la variante 3
+Pour le td 'QUAD_LBQ' la prise souhaitée 25 est introuvable pour la variante 4
+Pour le td 'QUAD_LCK' la prise souhaitée 31 est introuvable pour la variante 4
+Pour le td 'QUAD_LFH' la prise souhaitée 33 est introuvable pour la variante 4
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0
+0(2) <-> 300 [CONSO_OOU, CONSO_OOV, CONSO_OOW, CONSO_OOX, CONSO_OOY, CONSO_OOZ, CONSO_OPA](4) <-> 83(2)
+                                                                                              <-> 146 [CONSO_ODZ, CONSO_OEA, CONSO_OEB, CONSO_OEC, CONSO_OED](2)
+                                                                                              <-> 151 [CONSO_OEO, CONSO_OEP, CONSO_OEQ](2)
+     <-> 326 [CONSO_ORF](5) <-> 83(2)
+                            <-> 474 [CONSO_PCT, CONSO_PCU, CONSO_PCV](3)
+                            <-> 327(4)
+
+Noeud bilan : 58
+58(1) <-> 446 [CONSO_PAN](6) <-> 66(1)
+                             <-> 88(1)
+                             <-> 157(1)
+                             <-> 211(1)
+                             <-> 306(1)
+      |=| 3853(6) <-> 515(13)
+                  <-> 1120(4)
+                  <-> 2897(3)
+                  <-> 6263(8)
+                  <-> 3851(2)
+                  <-> 3852(5)
+
+
+********************************************
+Traitement d'un paquet de 5 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la hausse
+le TD QUAD_LFH est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                = 231425.0054  MW
+Production démarrée                 = 236389.7571  MW
+Puissance à ajuster                 = -4964.7517  MW
+Puissance disponible à la hausse (hors Pimp) = 1490683.3903  MW
+Puissance disponible à la baisse (hors Pimp) = -252815.4571  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -0.2483 MW
+Zone synchrone 1 (noeud bilan 58), bilan = 4965.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  231425.0054 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2482.6242
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2482.6242
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 26873 (taille de la matrice : 26873)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LFH est limite a la hausse
+Demarrage des groupes par empilement économique :
+Consommation globale                = 231425.0054  MW
+Production démarrée                 = 236389.7571  MW
+Puissance à ajuster                 = -4964.7517  MW
+Puissance disponible à la hausse (hors Pimp) = 1490683.3903  MW
+Puissance disponible à la baisse (hors Pimp) = -252815.4571  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -0.2483 MW
+Zone synchrone 1 (noeud bilan 58), bilan = 4965.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  231425.0054 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2482.6242
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2482.6242
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 26873 (taille de la matrice : 26873)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 2
+---------------------
+---------------------
+
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                = 231425.0054  MW
+Production démarrée                 = 236389.7571  MW
+Puissance à ajuster                 = -4964.7517  MW
+Puissance disponible à la hausse (hors Pimp) = 1490683.3903  MW
+Puissance disponible à la baisse (hors Pimp) = -252815.4571  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -0.2483 MW
+Zone synchrone 1 (noeud bilan 58), bilan = 4965.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  231425.0054 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2482.6242
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2482.6242
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 26873 (taille de la matrice : 26873)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 3
+---------------------
+---------------------
+
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la hausse
+le TD QUAD_LFH est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                = 231425.0054  MW
+Production démarrée                 = 236389.7571  MW
+Puissance à ajuster                 = -4964.7517  MW
+Puissance disponible à la hausse (hors Pimp) = 1490683.3903  MW
+Puissance disponible à la baisse (hors Pimp) = -252815.4571  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -0.2483 MW
+Zone synchrone 1 (noeud bilan 58), bilan = 4965.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 3 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  231425.0054 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2482.6242
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2482.6242
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 26873 (taille de la matrice : 26873)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 4
+---------------------
+---------------------
+
+le TD QUAD_LBQ est limite a la hausse
+le TD QUAD_LCK est limite a la baisse
+le TD QUAD_LFH est limite a la hausse
+le TD QUAD_LFH est limite a la baisse
+Demarrage des groupes par empilement économique :
+Consommation globale                = 231425.0054  MW
+Production démarrée                 = 236389.7571  MW
+Puissance à ajuster                 = -4964.7517  MW
+Puissance disponible à la hausse (hors Pimp) = 1490683.3903  MW
+Puissance disponible à la baisse (hors Pimp) = -252815.4571  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -0.2483 MW
+Zone synchrone 1 (noeud bilan 58), bilan = 4965.0000 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 4 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  231425.0054 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    2482.6242
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    2482.6242
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 26873 (taille de la matrice : 26873)
+Pas de contraintes
