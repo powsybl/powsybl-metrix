@@ -30,8 +30,10 @@ public class MetrixConfigResult {
     }
 
     public MetrixConfigResult(Map<String, NodeCalc> timeSeriesNodesAfterMapping, Map<String, NodeCalc> timeSeriesNodesAfterMetrix) {
+        if (timeSeriesNodesAfterMetrix == null) {
+            return;
+        }
         Objects.requireNonNull(timeSeriesNodesAfterMapping);
-        Objects.requireNonNull(timeSeriesNodesAfterMetrix);
         List<String> overloadedTimeSeriesNames = timeSeriesNodesAfterMapping.keySet().stream()
                 .filter(timeSeriesNodesAfterMetrix::containsKey)
                 .filter(e -> timeSeriesNodesAfterMapping.get(e) != timeSeriesNodesAfterMetrix.get(e))

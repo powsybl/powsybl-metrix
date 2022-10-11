@@ -42,10 +42,10 @@ public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);
 
+    protected static final String DEFAULT_SCHEMA_NAME = "default";
+
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
     protected static final String REMEDIAL_ACTIONS_CSV_GZ = REMEDIAL_ACTIONS_CSV + ".gz";
-
-    protected static final String NETWORK_POINT_XIIDM = "network_point.xiidm";
 
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
@@ -77,9 +77,11 @@ public abstract class AbstractMetrix {
     @Nullable
     protected final MetrixDslData metrixDslData;
 
-    private final Network network;
+    protected final Network network;
 
-    private final MetrixParameters metrixParameters;
+    protected final MetrixParameters metrixParameters;
+
+    protected final MappingParameters mappingParameters;
 
     protected AbstractMetrix(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
                              ZipOutputStream logArchive, ComputationManager computationManager,
@@ -96,6 +98,7 @@ public abstract class AbstractMetrix {
         this.metrixDslData = analysisResult.metrixDslData;
         this.network = analysisResult.network;
         this.metrixParameters = analysisResult.metrixParameters;
+        this.mappingParameters = analysisResult.mappingParameters;
     }
 
     protected static void compress(Reader reader, WorkingDirectory directory, String fileNameGz) {
@@ -120,6 +123,7 @@ public abstract class AbstractMetrix {
     public MetrixRunResult run(MetrixRunParameters runParameters, ResultListener listener, String nullableSchemaName) {
         Objects.requireNonNull(runParameters);
         Objects.requireNonNull(listener);
+        String schemaName = nullableSchemaName != null ? nullableSchemaName : DEFAULT_SCHEMA_NAME;
 
         MetrixConfig metrixConfig = MetrixConfig.load();
 
@@ -132,7 +136,6 @@ public abstract class AbstractMetrix {
         }
 
         if (runParameters.isNetworkComputation()) {
-            metrixParameters.setComputationType(MetrixComputationType.OPF);
             metrixParameters.setWithAdequacyResults(true);
             metrixParameters.setWithRedispatchingResults(true);
         }
@@ -167,19 +170,10 @@ public abstract class AbstractMetrix {
         int chunkCount = chunkCutter.getChunkCount();
         int chunkOffset = chunkCutter.getChunkOffset();
 
-        LOGGER.info("Running metrix {} on network {}", metrixParameters.getComputationType(), network.getId());
-        appLogger.log("Running metrix");
+        LOGGER.info("Running metrix {} on network {}", metrixParameters.getComputationType(), network.getNameOrId());
+        appLogger.log("[%s] Running metrix", schemaName);
 
         try (WorkingDirectory commonWorkingDir = new WorkingDirectory(computationManager.getLocalDir(), "metrix-commons-", metrixConfig.isDebug())) {
-
-            if (remedialActionsReader != null) {
-                try (BufferedReader bufferedReader = new BufferedReader(remedialActionsReader);
-                     Writer writer = new OutputStreamWriter(new BufferedOutputStream(Files.newOutputStream(commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV))), StandardCharsets.UTF_8)) {
-                    CharStreams.copy(bufferedReader, writer);
-                } catch (IOException e) {
-                    throw new UncheckedIOException(e);
-                }
-            }
 
             executeMetrixChunks(
                     network,
@@ -187,8 +181,10 @@ public abstract class AbstractMetrix {
                     listener,
                     metrixConfig,
                     metrixParameters,
+                    mappingParameters,
                     commonWorkingDir,
                     chunkCutter,
+                    schemaName,
                     chunkCount,
                     chunkSize,
                     chunkOffset);
@@ -197,7 +193,7 @@ public abstract class AbstractMetrix {
             listener.onEnd();
 
             MetrixRunResult runResult = new MetrixRunResult();
-            appLogger.log("Computing postprocessing timeseries");
+            appLogger.log("[%s] Computing postprocessing timeseries", schemaName);
             runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(metrixDslData, mappingConfig, resultStore, nullableSchemaName));
             return runResult;
 
@@ -235,8 +231,10 @@ public abstract class AbstractMetrix {
             ResultListener listener,
             MetrixConfig metrixConfig,
             MetrixParameters metrixParameters,
+            MappingParameters mappingParameters,
             WorkingDirectory commonWorkingDir,
             ChunkCutter chunkCutter,
+            String schemaName,
             int chunkCount,
             int chunkSize,
             int chunkOffset
@@ -276,7 +274,7 @@ public abstract class AbstractMetrix {
     }
 
     // Post-processing methods
-    static Map<String, NodeCalc> getPostProcessingTimeSeries(MetrixDslData dslData,
+    public static Map<String, NodeCalc> getPostProcessingTimeSeries(MetrixDslData dslData,
                                                              TimeSeriesMappingConfig mappingConfig,
                                                              ReadOnlyTimeSeriesStore store,
                                                              String nullableSchemaName) {

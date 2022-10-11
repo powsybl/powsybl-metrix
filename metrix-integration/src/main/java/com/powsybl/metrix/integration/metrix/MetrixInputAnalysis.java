@@ -55,7 +55,6 @@ public class MetrixInputAnalysis {
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network, MetrixDslData metrixDslData, BufferedWriter writer) {
         Objects.requireNonNull(contingenciesProvider);
         Objects.requireNonNull(network);
-        Objects.requireNonNull(metrixDslData);
         this.remedialActionsReader = remedialActionsReader;
         this.contingenciesProvider = contingenciesProvider;
         this.network = network;
@@ -73,6 +72,9 @@ public class MetrixInputAnalysis {
     }
 
     private void runMetrixDslDataAnalysis(Set<String> contingencyIds) {
+        if (metrixDslData == null) {
+            return;
+        }
         checkMetrixDslContingencies(contingencyIds, HVDC_LINE_TYPE, metrixDslData.getHvdcContingenciesMap());
         checkMetrixDslContingencies(contingencyIds, GENERATOR_TYPE, metrixDslData.getGeneratorContingenciesMap());
         checkMetrixDslContingencies(contingencyIds, LOAD_TYPE, metrixDslData.getLoadContingenciesMap());
@@ -410,6 +412,9 @@ public class MetrixInputAnalysis {
         if (!(identifiable instanceof Branch)) {
             String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialConstraintType"), identifiable.getId());
             writeRemedialLog(line, message);
+            return;
+        }
+        if (metrixDslData == null) {
             return;
         }
         if (!metrixDslData.getBranchMonitoringListNk().containsKey(constraint)) {

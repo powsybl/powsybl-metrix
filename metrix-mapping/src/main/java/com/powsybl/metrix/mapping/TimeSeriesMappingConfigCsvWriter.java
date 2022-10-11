@@ -184,7 +184,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
         writer.write(voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY));
         writer.write(CSV_SEPARATOR);
-        writer.write(generator.getTerminal().getVoltageLevel().getId());
+        writer.write(voltageLevel.getId());
         writer.write(CSV_SEPARATOR);
         writer.write(formatDouble(generator.getTargetP()));
         writer.write(CSV_SEPARATOR);
@@ -254,7 +254,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
         writer.write(voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY));
         writer.write(CSV_SEPARATOR);
-        writer.write(load.getTerminal().getVoltageLevel().getId());
+        writer.write(voltageLevel.getId());
         writer.write(CSV_SEPARATOR);
         writer.write(formatDouble(load.getP0()));
         writer.write(CSV_SEPARATOR);
@@ -1186,16 +1186,10 @@ public class TimeSeriesMappingConfigCsvWriter {
         Set<String> mappedTimeSeriesNames = config.getMappedTimeSeriesNames();
         writer.write("timeSeries");
         writer.write(CSV_SEPARATOR);
-        writer.write("spaces");
-        writer.write(CSV_SEPARATOR);
-        writer.write("always zero");
-        writer.write(CSV_SEPARATOR);
         writer.write("mapped");
         writer.newLine();
         for (String timeSeriesName : store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))) {
             writer.write(timeSeriesName);
-            writer.write(CSV_SEPARATOR);
-            writer.write("");
             writer.write(CSV_SEPARATOR);
             writer.write(Boolean.toString(mappedTimeSeriesNames.contains(timeSeriesName)));
             writer.newLine();

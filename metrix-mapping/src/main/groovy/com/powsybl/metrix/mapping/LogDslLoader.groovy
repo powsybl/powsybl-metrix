@@ -36,6 +36,9 @@ class LogDslLoader {
 
     private static void bindLog(Binding binding, LogDslLoader logDslLoader) {
         binding.writeLog = { String type, String section, String message ->
+            if (logDslLoader.out == null) {
+                return
+            }
             logDslLoader.out.write(type + SEPARATOR + section + SEPARATOR + message)
         }
     }

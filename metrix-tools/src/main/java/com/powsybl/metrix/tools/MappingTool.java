@@ -30,8 +30,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -169,13 +168,23 @@ public class MappingTool implements Tool {
         return file;
     }
 
+    private Writer getWriter(Path filePath) {
+        if (filePath != null) {
+            try {
+                return Files.newBufferedWriter(filePath, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return null;
+    }
+
     @Override
     public void run(CommandLine line, ToolRunningContext context) throws Exception {
         try {
             Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
             Path mappingFile = context.getFileSystem().getPath(line.getOptionValue("mapping-file"));
-            List<String> tsCsvs = null;
-            tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+            List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
             if (tsCsvs.isEmpty()) {
                 throw new IllegalArgumentException("Space list is empty");
             }
@@ -209,10 +218,13 @@ public class MappingTool implements Tool {
             TimeSeriesMappingConfig config;
             MappingParameters mappingParameters = MappingParameters.load();
             ComputationRange computationRange = new ComputationRange(versions != null ? versions : store.getTimeSeriesDataVersions(), firstVariant, maxVariantCount);
-            try (Reader reader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
+            TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+            try (Reader reader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8);
+                 Writer scriptLogWriter = mappingSynthesisDir != null ? getWriter(mappingSynthesisDir.resolve("script-logs.csv")) : null) {
                 TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString());
                 Stopwatch stopwatch = Stopwatch.createStarted();
-                config = dslLoader.load(network, mappingParameters, store, computationRange);
+                network.addListener(new NetworkTopographyChangeNotifier("extern tool", logger));
+                config = dslLoader.load(network, mappingParameters, store, scriptLogWriter, computationRange);
                 context.getOutputStream().println("Mapping done in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
             }
 
@@ -243,7 +255,6 @@ public class MappingTool implements Tool {
             if (checkEquipmentTimeSeries) {
                 context.getOutputStream().println("Computing equipment time series...");
 
-                TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
                 BalanceSummary balanceSummary = new BalanceSummary(context.getOutputStream());
                 List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
                 observers.add(balanceSummary);
@@ -264,8 +275,11 @@ public class MappingTool implements Tool {
 
                 if (mappingSynthesisDir != null) {
                     balanceSummary.writeCsv(mappingSynthesisDir, SEPARATOR);
-                    logger.writeCsv(mappingSynthesisDir.resolve("mapping-logs.csv"));
                 }
+            }
+
+            if (mappingSynthesisDir != null) {
+                logger.writeCsv(mappingSynthesisDir.resolve("mapping-logs.csv"));
             }
         } catch (Exception e) {
             Throwable rootCause = StackTraceUtils.sanitizeRootCause(e);

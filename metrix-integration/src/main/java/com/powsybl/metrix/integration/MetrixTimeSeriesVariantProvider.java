@@ -70,7 +70,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.store = Objects.requireNonNull(store);
         this.mappingParameters = Objects.requireNonNull(mappingParameters);
         this.config = Objects.requireNonNull(config);
-        this.metrixDslData = Objects.requireNonNull(metrixDslData);
+        this.metrixDslData = metrixDslData;
         this.version = metrixChunkParam.version;
         this.variantRange = variantRange;
         this.ignoreLimits = metrixChunkParam.ignoreLimits;
@@ -112,7 +112,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         if (isNetworkPointComputation) {
             observers.add(createNetworkPointWriter(workingDir));
         }
-        if (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty()) {
+        if (metrixDslData != null && (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty())) {
             observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
         }
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
@@ -156,17 +156,10 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         };
     }
 
-    private TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
+    protected TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
         Objects.requireNonNull(workingDir);
         DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
-        return new NetworkPointWriter(network, dataSource) {
-            @Override
-            public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-                if (point == variantRange.upperEndpoint()) {
-                    super.timeSeriesMappingEnd(point, index, balance);
-                }
-            }
-        };
+        return new NetworkPointWriter(network, dataSource);
     }
 
     private TimeSeriesMapperObserver createInitOptimizedTimeSeriesWriter(Path workingDir, Range<Integer> pointRange) {
