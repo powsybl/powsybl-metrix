@@ -9,6 +9,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
+import com.powsybl.commons.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
@@ -22,7 +23,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class TimeSeriesProvideTsTest {
+class TimeSeriesProviderTsTest {
 
     private Network network;
 
@@ -241,7 +242,7 @@ class TimeSeriesProvideTsTest {
         try (StringWriter sw = new StringWriter()) {
             TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, sw, null);
             assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
-            assertEquals("WARNING;Mapping script;provideTs - Time series can not be provided for id FSSV.O11_G because id is not mapped on targetP\n", sw.toString().replace("\r\n", "\n"));
+            assertEquals("WARNING;Mapping script;provideTs - Time series can not be provided for id FSSV.O11_G because id is not mapped on targetP\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }
     }
 
@@ -265,7 +266,7 @@ class TimeSeriesProvideTsTest {
         try (StringWriter sw = new StringWriter()) {
             TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, sw, null);
             assertEquals(Collections.emptySet(), mappingConfig.getGeneratorTimeSeries());
-            assertEquals("WARNING;Mapping script;provideTs - Empty filtered list for equipment type GENERATOR and variables [targetP]\n", sw.toString().replaceAll("\r\n", "\n"));
+            assertEquals("WARNING;Mapping script;provideTs - Empty filtered list for equipment type GENERATOR and variables [targetP]\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }
     }
 }
