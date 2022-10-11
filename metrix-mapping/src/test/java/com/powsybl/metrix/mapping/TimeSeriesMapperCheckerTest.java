@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
+import com.powsybl.commons.TestUtil;
 import com.powsybl.commons.datasource.MemDataSource;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
@@ -306,7 +307,7 @@ class TimeSeriesMapperCheckerTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(loggerCsvOutput)) {
             logger.writeCsv(bufferedWriter);
             bufferedWriter.flush();
-            String loggerCsv = loggerCsvOutput.toString().replaceAll("\r\n", "\n");
+            String loggerCsv = TestUtil.normalizeLineSeparator(loggerCsvOutput.toString());
             String[] lines = loggerCsv.split("\n");
             int nbLines = lines.length;
             int nbExpectedLines = 1;

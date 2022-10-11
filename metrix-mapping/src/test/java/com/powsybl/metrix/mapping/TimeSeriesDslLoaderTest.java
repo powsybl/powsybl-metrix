@@ -9,6 +9,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Sets;
+import com.powsybl.commons.TestUtil;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.*;
@@ -268,8 +269,7 @@ class TimeSeriesDslLoaderTest {
             csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
         }
 
-        String output = outputStream.toString();
-        output = output.replaceAll("\r\n", "\n");
+        String output = TestUtil.normalizeLineSeparator(outputStream.toString());
         assertEquals("1.0\n0.2\n-5.0\n3.0\n1.0\n", output);
 
         outputStream.reset();
@@ -279,8 +279,7 @@ class TimeSeriesDslLoaderTest {
             csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
         }
 
-        output = outputStream.toString();
-        output = output.replaceAll("\r\n", "\n");
+        output = TestUtil.normalizeLineSeparator(outputStream.toString());
         assertEquals("6.0\n2.0\n1.0\n3.0\n2.0\n", output);
     }
 
