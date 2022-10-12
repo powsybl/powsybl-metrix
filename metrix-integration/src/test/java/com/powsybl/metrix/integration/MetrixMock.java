@@ -13,6 +13,7 @@ import com.powsybl.computation.ComputationManager;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
+import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.Reader;
@@ -26,7 +27,6 @@ public class MetrixMock extends AbstractMetrix {
     }
 
     @Override
-    protected void executeMetrixChunks(Network network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, int chunkCount, int chunkSize, int chunkOffset) {
-
+    protected void executeMetrixChunks(Network network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, MappingParameters mappingParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName, int chunkCount, int chunkSize, int chunkOffset) {
     }
 }

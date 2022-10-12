@@ -10,17 +10,24 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.datasource.MemDataSource;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
+import com.powsybl.commons.datasource.DataSource;
+import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;
 import org.apache.commons.io.input.ReaderInputStream;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.TreeSet;
@@ -30,20 +37,28 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class NetworkPointWriterTest {
 
+    private FileSystem fileSystem;
     private Network network;
 
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
     public void setUp() {
-        // create test network
+        this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+    }
+
+    @AfterEach
+    public void tearDown() throws IOException {
+        this.fileSystem.close();
     }
 
     @Test
     void networkPointConstantVariantTest() throws Exception {
 
-        String directoryName = "/expected/NetworkPointWriter/";
+        Path networkOutputDir = fileSystem.getPath(".");
+
+        String expectedDirectoryName = "/expected/NetworkPointWriter/";
 
         // Mapping script
         String script = String.join(System.lineSeparator(),
@@ -302,25 +317,8 @@ class NetworkPointWriterTest {
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
 
         // Create NetworkPointWriter
-        MemDataSource dataSource = new MemDataSource();
-        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource) {
-
-            @Override
-            public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-                super.timeSeriesMappingEnd(point, index, balance);
-                String fileName = NetworkPointWriter.getFileName(network, 1, point, index);
-                if (point != TimeSeriesMapper.CONSTANT_VARIANT_ID) {
-                    try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
-                        Network networkPoint = NetworkXml.read(inputStream);
-                        ByteArrayOutputStream networkPointWriterOutput = new ByteArrayOutputStream();
-                        NetworkXml.write(networkPoint, networkPointWriterOutput);
-                        compareTxt(networkPointWriterOutput, directoryName, fileName);
-                    } catch (Exception e) {
-                        throw new AssertionError("Impossible to check " + fileName);
-                    }
-                }
-            }
-        };
+        DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir, network.getId(), null);
+        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -329,11 +327,17 @@ class NetworkPointWriterTest {
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
         // Launch mapper
         mapper.mapToNetwork(store, parameters, ImmutableList.of(networkPointWriter));
+
+        for (int point = 0; point < index.getPointCount(); point++) {
+            String fileName = NetworkPointWriter.getFileName(network, 1, point, index);
+            Path actualFilePath = fileSystem.getPath(fileName + ".xiidm");
+            compareTxt(actualFilePath, expectedDirectoryName, fileName);
+        }
     }
 
-    private void compareTxt(ByteArrayOutputStream stream, String directoryName, String fileName) throws Exception {
+    private void compareTxt(Path actualPath, String directoryName, String fileName) throws Exception {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
-            try (InputStream actual = new ByteArrayInputStream(stream.toByteArray())) {
+            try (InputStream actual = Files.newInputStream(actualPath)) {
                 // skip the two first lines : xml version line and network line (containing extensions)
                 // because extensions are not ordered in the same way for each test launching
                 BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expected));

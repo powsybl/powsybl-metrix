@@ -8,8 +8,10 @@
 
 package com.powsybl.metrix.tools;
 
-import com.powsybl.tools.AbstractToolTest;
+import com.powsybl.tools.Command;
+import com.powsybl.tools.CommandLineTools;
 import com.powsybl.tools.Tool;
+import org.apache.commons.cli.Options;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -36,29 +38,41 @@ class MappingToolTest extends AbstractToolTest {
     }
 
     @Override
+    @Test
     public void assertCommand() {
-        assertCommand(tool.getCommand(), "mapping", 13, 3);
-        assertOption(tool.getCommand().getOptions(), "case-file", true, true);
+        Command command = tool.getCommand();
+        Options options = command.getOptions();
+        assertCommand(command, "mapping", 13, 3);
+        assertOption(options, "case-file", true, true);
+        assertOption(options, "mapping-file", true, true);
+        assertOption(options, "time-series", true, true);
+        assertOption(options, "mapping-synthesis-dir", false, true);
+        assertOption(options, "check-equipment-time-series", false, false);
+        assertOption(options, "check-versions", false, true);
+        assertOption(options, "mapping-status-file", false, true);
+        assertOption(options, "network-output-dir", false, true);
+        assertOption(options, "equipment-time-series-dir", false, true);
+        assertOption(options, "first-variant", false, true);
+        assertOption(options, "max-variant-count", false, true);
+        assertOption(options, "ignore-limits", false, false);
+        assertOption(options, "ignore-empty-filter", false, false);
     }
 
     @Test
     void run() throws IOException {
-        Files.copy(MappingToolTest.class.getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
-        Files.copy(MappingToolTest.class.getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
-        Files.copy(MappingToolTest.class.getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        Files.copy(getClass().getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
+        Files.copy(getClass().getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(getClass().getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
         StringBuilder expected = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(MappingToolTest.class.getResourceAsStream("/mapping_result.txt")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mapping_result.txt")))) {
             expected.append(reader.readLine());
         }
 
-        assertCommand(new String[]{
-            "mapping",
-            "--case-file",
-            "/network.xiidm",
-            "--mapping-file",
-            "/mapping.groovy",
-            "--time-series",
-            "/timeseries.csv"
-        }, 0, expected.toString(), "Mapping is incomplete\n");
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv"
+        };
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
     }
 }

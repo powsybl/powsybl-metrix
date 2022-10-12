@@ -152,12 +152,6 @@ public class MetrixTool implements Tool {
                         .argName("FILE")
                         .desc("name of gzip file containing execution logs")
                         .build());
-                options.addOption(Option.builder()
-                        .longOpt("network-point-file")
-                        .desc("output network point file")
-                        .hasArg()
-                        .argName("FILE")
-                        .build());
                 return options;
             }
 

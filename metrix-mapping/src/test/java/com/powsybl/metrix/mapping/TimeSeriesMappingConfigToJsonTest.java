@@ -240,8 +240,8 @@ class TimeSeriesMappingConfigToJsonTest {
 
     @Test
     void testJson() {
-        String json = TimeSeriesMappingConfig.toJson(config);
-        TimeSeriesMappingConfig config2 = TimeSeriesMappingConfig.parseJson(json);
+        String json = TimeSeriesMappingConfigJson.toJson(config);
+        TimeSeriesMappingConfig config2 = TimeSeriesMappingConfigJson.parseJson(json);
         assertEquals(config, config2);
     }
 }

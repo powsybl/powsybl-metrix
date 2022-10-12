@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfigJson;
 
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class TimeSeriesMappingConfigJsonDeserializer extends StdDeserializer<Tim
     @Override
     public TimeSeriesMappingConfig deserialize(JsonParser parser, DeserializationContext deserializationContext) {
         Objects.requireNonNull(parser);
-        return TimeSeriesMappingConfig.parseJsonWithExtendedThreadStackSize(parser);
+        return TimeSeriesMappingConfigJson.parseJsonWithExtendedThreadStackSize(parser);
     }
 
 }

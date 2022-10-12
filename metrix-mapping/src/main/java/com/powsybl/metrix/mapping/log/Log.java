@@ -9,8 +9,6 @@ package com.powsybl.metrix.mapping.log;
 
 import com.powsybl.timeseries.TimeSeriesIndex;
 
-import java.util.Objects;
-
 public class Log {
 
     private final System.Logger.Level level;
@@ -27,7 +25,7 @@ public class Log {
 
     public Log(System.Logger.Level level, TimeSeriesIndex index, int version, int point, String label, String message) {
         this.level = level;
-        this.index = Objects.requireNonNull(index);
+        this.index = index;
         this.version = version;
         this.point = point;
         this.label = label;

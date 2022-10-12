@@ -378,8 +378,8 @@ class TimeSeriesDslLoader {
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, MappingParameters parameters, TimeSeriesMappingConfig config, LogDslLoader logDslLoader, ComputationRange computationRange) {
         Set<String> existingTimeSeriesNames = store.getTimeSeriesNames(new TimeSeriesFilter())
 
-        ComputationRange checkedComputationRange = checkComputationRange(computationRange, store)
-        ComputationRange fullComputationRange = checkComputationRange(null, store)
+        ComputationRange checkedComputationRange = ComputationRangeChecker.check(computationRange, store)
+        ComputationRange fullComputationRange = ComputationRangeChecker.check(null, store)
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
 
         // map the base case to network variable
@@ -546,26 +546,6 @@ class TimeSeriesDslLoader {
                 TimeSeriesMappingConfig.getTimeSeriesMedian(tsNode, store, checkedComputationRange)
             }
         }
-    }
-
-    private static ComputationRange checkComputationRange(ComputationRange computationRange, ReadOnlyTimeSeriesStore store) {
-        ComputationRange fixed = computationRange
-        if (computationRange == null) {
-            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), 0, TimeSeriesMappingConfig.checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).pointCount)
-        }
-        if (fixed.versions == null || fixed.versions.isEmpty()) {
-            fixed.setVersions(store.getTimeSeriesDataVersions())
-        }
-        if (fixed.versions.isEmpty()) {
-            fixed.setVersions(Collections.singleton(1))
-        }
-        if (fixed.getFirstVariant() == -1) {
-            fixed.setFirstVariant(0)
-        }
-        if (fixed.getVariantCount() == -1) {
-            fixed.setVariantCount(TimeSeriesMappingConfig.checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).pointCount)
-        }
-        return fixed
     }
 
     private static CompilerConfiguration createCompilerConfig() {
