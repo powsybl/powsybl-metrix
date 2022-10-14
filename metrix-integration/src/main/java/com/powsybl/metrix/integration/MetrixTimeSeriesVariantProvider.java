@@ -36,6 +36,26 @@ import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesW
 
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
+    private static final Set<EquipmentVariable> METRIX_EQUIPMENT_VARIABLES = EnumSet.of(EquipmentVariable.targetP,
+            EquipmentVariable.minP,
+            EquipmentVariable.maxP,
+            EquipmentVariable.activePowerSetpoint,
+            EquipmentVariable.p0,
+            EquipmentVariable.fixedActivePower,
+            EquipmentVariable.variableActivePower,
+            EquipmentVariable.phaseTapPosition,
+            EquipmentVariable.open,
+            EquipmentVariable.disconnected);
+
+    public static boolean isMetrixVariable(MappingVariable variable) {
+        if (variable instanceof MetrixVariable) {
+            return true;
+        } else if (variable instanceof EquipmentVariable) {
+            return METRIX_EQUIPMENT_VARIABLES.contains(variable);
+        }
+        return false;
+    }
+
     private final Network network;
 
     private final ReadOnlyTimeSeriesStore store;
@@ -143,7 +163,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             @Override
             public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 super.timeSeriesMappedToEquipment(point, timeSeriesName, identifiable, variable, equipmentValue);
-                if (!Double.isNaN(equipmentValue)) {
+                if (isMetrixVariable(variable) && !Double.isNaN(equipmentValue)) {
                     reader.onEquipmentVariant(identifiable, variable, equipmentValue);
                 }
             }

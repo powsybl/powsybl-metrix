@@ -22,7 +22,6 @@ public enum MetrixVariable implements MappingVariable {
     offGridCostUp("offGridCostUp"),
     onGridCostDown("onGridCostDown"),
     onGridCostUp("onGridCostUp"),
-    activePowerSetpoint("activePowerSetpoint"),
     analysisThresholdN("analysisThresholdN"),
     analysisThresholdNk("analysisThresholdNk"),
     analysisThresholdNEndOr("analysisThresholdNEndOr"),
