@@ -179,7 +179,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbActionMissingTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "ctyId;column;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed (number of actions)"
         );
     }
 
@@ -187,7 +187,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemediaLineNbActionWrongIntegerTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "ctyId;-1;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed (number of actions)"
         );
     }
 
@@ -213,7 +213,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;;FP.AND1  FVERGE1  2;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
+            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed (number of actions)"
         );
     }
 
@@ -401,6 +401,21 @@ public class MetrixRemedialAnalysisTest {
                 contingenciesProvider,
                 metrixDslData,
                 String.join(System.lineSeparator(), "NB;1;", "ctyId  |FS.BIS1  FVALDI1  1    ;1;FP.AND1  FVERGE1  2        ;"),
+                "");
+    }
+
+    @Test
+    void validRemedialFileNoActionTest() throws IOException {
+        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
+        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
+        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
+        MetrixDslData metrixDslData = new MetrixDslData();
+        metrixDslData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
+
+        remedialTest(
+                contingenciesProvider,
+                metrixDslData,
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;0;"),
                 "");
     }
 }
