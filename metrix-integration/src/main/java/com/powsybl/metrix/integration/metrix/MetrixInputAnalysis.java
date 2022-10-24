@@ -227,9 +227,6 @@ public class MetrixInputAnalysis {
     }
 
     private boolean checkNumber(String number, int lineId, String message) {
-        if (number.isEmpty()) {
-            return false;
-        }
         try {
             if (Integer.parseInt(number) < 0) {
                 writeRemedialFileLog(lineId, message);
@@ -312,7 +309,15 @@ public class MetrixInputAnalysis {
         }
 
         String[] actions = line.split(RemedialReader.COLUMN_SEPARATOR);
-        if (actions.length <= RemedialReader.FIRST_ACTION_INDEX) {
+        if (actions.length >= RemedialReader.FIRST_ACTION_INDEX) {
+            String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileAction"), lineId);
+            if (!checkNumber(actions[1], lineId, message)) {
+                return;
+            }
+        }
+
+        boolean isNbActionsEqualToZero = actions.length >= RemedialReader.FIRST_ACTION_INDEX ? Integer.parseInt(actions[1]) == 0 : false;
+        if (actions.length <= RemedialReader.FIRST_ACTION_INDEX && !isNbActionsEqualToZero) {
             String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileLine"), lineId);
             writeRemedialFileLog(lineId, message);
             return;
@@ -334,9 +339,6 @@ public class MetrixInputAnalysis {
                 writeRemedialFileLog(lineId, message);
             }
         }
-
-        String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileAction"), lineId);
-        checkNumber(actions[1], lineId, message);
     }
 
     /**
