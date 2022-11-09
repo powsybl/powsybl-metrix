@@ -8,13 +8,14 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
-Release note for Version 1.0.0
+Release note for Version 7.4.0
 
 incompatibilities with previous versions:
 N/A
 
 bug fixes:
-N/A
+- #71 : HVDC in AC emulation mode not taken into account in monitored sections
+- #72 : Isolated node due to lost connectedness after base variant QUADIN application and N-2 contingencies and leading to singular jacobian matrix
 
 features:
-- initial code extracted from project metrix 7.1.0
+N/A

@@ -18,7 +18,8 @@ out_regex = re.compile(r"out_s\d+")
 
 
 def must_copy_file(basename):
-    return basename == "metrixOut" or (out_regex.match(basename) != None)
+    return basename == "metrixOut" or basename == "LODF_matrix" or basename == "PTDF_matrix" or (out_regex.match(basename) != None)
+
 
 if __name__ == "__main__":
     root_dir = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
@@ -30,4 +31,8 @@ if __name__ == "__main__":
         for file in files:
             file_without_ext = os.path.splitext(file)[0]
             if must_copy_file(file_without_ext):
-                shutil.copyfile(os.path.join(root, file), os.path.join(dest_root, file))
+                dest_file = os.path.join(dest_root, file)
+                if not os.path.exists(os.path.dirname(dest_file)):
+                    os.mkdir(os.path.dirname(dest_file))
+                shutil.copyfile(os.path.join(root, file), dest_file)
+                print("Update reference " + dest_file)

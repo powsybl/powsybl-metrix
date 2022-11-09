@@ -92,8 +92,8 @@ private:
         boost::optional<metrix::log::severity::level> logLevel;
         bool writeConstraintsFile = false;
         bool printConstraintsMatrix = false;
-        bool writeSensivityFile = false;
-        bool writeMatrixReport = false;
+        bool writePTDFfile = false;
+        bool writeLODFfile = false;
         config::InputConfiguration::CheckConstraintLevel checkConstraintLevel
             = config::InputConfiguration::CheckConstraintLevel::NONE;
         bool compareLoadFlowReport = false;

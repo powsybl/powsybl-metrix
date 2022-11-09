@@ -10,6 +10,7 @@
 
 #include "configuration.h"
 
+#include "constants.h"
 #include "err/IoDico.h"
 #include "err/error.h"
 
@@ -293,6 +294,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     res_pertes_detail_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "LOSSDETA", false);
     resultats_surcharges_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "OVRLDRES", false);
     showAllAngleTDTransitHVDC_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "SHTDHVDC", false);
+    show_lost_load_detailed_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "LOSTLOAD", false);
 
     cost_td_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "TDPENALI", 1.e-2F);
     cost_hvdc_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "HVDCPENA", 0.1F);
@@ -312,6 +314,9 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     adequacy_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "ADEQUAOF", 0);
     redispatch_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "REDISPOF", 0);
     cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10);
+    noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
+
+    lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);
 
     // log level
     auto& map = std::get<INTEGER>(raw_config);
@@ -335,6 +340,19 @@ Configuration::Configuration(const std::string& pathname)
         LOG_ALL(error) << "Cannot read json configuration \"" << pathname << "\": " << e.what();
         throw ErrorI(err::ioDico().msg("ERRPbLectureParametres"));
     }
+}
+
+double Configuration::thresholdMaxITAM(double thresholdMaxInc, double thresholdMaxBeforeCur) const
+{
+    // In case threshold max before curative is defined but not threshold max inc,
+    // we'll use threshold max before curative instead for threshold max inc
+
+    if (!test_seuil_itam_ || thresholdMaxInc != constants::valdef) {
+        return thresholdMaxInc;
+    }
+
+    // This implies that in case both equal valdef, we return valdef
+    return thresholdMaxBeforeCur;
 }
 
 } // namespace config

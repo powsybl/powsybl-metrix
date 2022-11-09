@@ -1,13 +1,3 @@
-//
-// Copyright (c) 2021, RTE (http://www.rte-france.com)
-// See AUTHORS.txt
-// All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, you can obtain one at http://mozilla.org/MPL/2.0/.
-// SPDX-License-Identifier: MPL-2.0
-//
-
 /**
  * \mainpage
  * \tableofcontents
@@ -44,8 +34,8 @@
  * - "--verbose-constraints": activate supplementary logs for constraint detection (see @a Logger class)
  * - "--write-constraints": write constraints in a dedicated file
  * - "--print-constraints": Trace in logs the constraints matrix
- * - "--write-sensitivity": write the sensivity matrix in a dedicated file
- * - "--write-report": write the rate matrix report in a dedicated file
+ * - "--write-PTDF": write the power transfer distribution factor matrix in a dedicated file
+ * - "--write-LODF": write the line outage distribution factor matrix in a dedicated file
  * - "--all-outputs": display all values in results file, not just the reduced outputs
  *
  * \subsubsection input_format Input files format
@@ -130,10 +120,10 @@
  * "contraintes_<NUM>_<ITER>.txt" are written, where NUM is the current variant number and ITER the current micro
  * iteration index. ... TODO ... purpose ?
  *
- * __sensitivity file__: if "--write-sensitivity" option is activated, the sensivity file "matrice_sensibilites.csv" is
+ * __PTDF file__: if "--write-PTDF" option is activated, the PTDF file "matrice_sensibilites.csv" is
  * written. ... TODO ... purpose ?
  *
- * __report file__: if "--write-report" option is activated, the report file "matrice_taux_report.csv" is written.
+ * __LODF file__: if "--write-LODF" option is activated, the LODF file "matrice_taux_report.csv" is written.
  * ... TODO ...
  *
  * \subsubsection out_format Output files format

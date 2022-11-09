@@ -9,7 +9,6 @@
 # 
 
 .idea
-
 install
 coverage
 /tests/*/*/out_s*
@@ -17,6 +16,8 @@ coverage
 tests/*/*/metrix*.log
 tests/*/*/result.txt
 out/**
+/tests/*/*/LODF_matrix.csv
+/tests/*/*/PTDF_matrix.csv
 
 docs/doc/**
 

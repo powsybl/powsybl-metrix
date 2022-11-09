@@ -147,12 +147,12 @@ Options::Options()
         "print-constraints",
         po::bool_switch(&config_.printConstraintsMatrix)->default_value(false),
         "Trace in logs the constraints matrix (time consuming even if trace logs are not active), log level at trace "
-        "is required")("write-sensitivity",
-                       po::bool_switch(&config_.writeSensivityFile)->default_value(false),
-                       "Write the sensivity matrix in a dedicated file")(
-        "write-report",
-        po::bool_switch(&config_.writeMatrixReport)->default_value(false),
-        "Write the rate matrix report in a dedicated file")(
+        "is required")("write-PTDF",
+                       po::bool_switch(&config_.writePTDFfile)->default_value(false),
+                       "Write the power transfer distribution factors matrix in a dedicated file")(
+        "write-LODF",
+        po::bool_switch(&config_.writeLODFfile)->default_value(false),
+        "Write the line outage distribution factors matrix report in a dedicated file")(
         "check-constraints-level",
         po::value<ParsedCheckConstraintLevel>(),
         "Check adding constraints:\n"
@@ -224,8 +224,8 @@ void Options::update_configuration() const
                                                                    config_.logLevel,
                                                                    config_.writeConstraintsFile,
                                                                    config_.printConstraintsMatrix,
-                                                                   config_.writeSensivityFile,
-                                                                   config_.writeMatrixReport,
+                                                                   config_.writePTDFfile,
+                                                                   config_.writeLODFfile,
                                                                    config_.checkConstraintLevel,
                                                                    config_.compareLoadFlowReport,
                                                                    config_.ignoreIncidentGroupAbsent,

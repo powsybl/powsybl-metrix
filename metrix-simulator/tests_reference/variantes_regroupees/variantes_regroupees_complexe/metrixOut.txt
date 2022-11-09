@@ -1174,6 +1174,8 @@ Parade 'QUAD_VQJ_NRF' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
 Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
 Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
 Parade 'QUAD_BAY' sur défaut 'QUAD_VQJ' : Noeuds perdus '18369'
+Attention: incident 199, l'ouvrage QUAD_TXL est deja deconnecte
+Attention: incident 582, l'ouvrage QUAD_TXL est deja deconnecte
 
 ---------------------
 ---------------------
@@ -1181,8 +1183,6 @@ Variante numéro 8064
 ---------------------
 ---------------------
 
-Attention: incident 199, l'ouvrage QUAD_TXL est deja deconnecte
-Attention: incident 582, l'ouvrage QUAD_TXL est deja deconnecte
 Demarrage des groupes par empilement économique :
 Consommation globale                = 189729.4792  MW
 Production démarrée                 = 189658.5755  MW

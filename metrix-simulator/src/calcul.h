@@ -259,6 +259,8 @@ public:
     unsigned int numMicroIteration_ = 0; // iterations correspondant au contraintes ajoutees pour une variante (1,2,...)
     int resolutionProbleme();            // resolution de tous les problemes modifies par variante
     int metrix2Assess(const std::shared_ptr<Variante>& var, const vector<double>& theta, int status);
+    void printCutDetailed(FILE* fr);
+    void printCut(FILE* fr);
     int getClosestTapPosition(TransformateurDephaseur* td, double angleFinal);
     bool calculVariationsMarginales(FILE* fr, const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants);
     static double round(double x, double prec); // utiliser pour arrondir les calculs
@@ -409,6 +411,7 @@ public:
 
     // Traces
     void printFctObj(bool silent);
+
 private:
     struct CostDef {
         std::string type;
@@ -434,6 +437,8 @@ private:
                       CostDefMap& cost) const;
     boost::optional<std::tuple<std::string, int, std::shared_ptr<Incident>>>
     getIncidentConstraint(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants, int i) const;
+    void assessAndPrintPTDF(const string& PTDFfileName);
+    void printLODF(const string& LODFfileName, bool writeLODFfile) const;
 
     void addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td, double proba, int numVarCur);
     void addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td_fictive);
