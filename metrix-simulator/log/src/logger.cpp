@@ -8,7 +8,7 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-#include <metrix/log/logger.h>
+#include <metrix/log.h>
 
 #include <boost/core/null_deleter.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
@@ -110,8 +110,8 @@ Logger::Logger() : timer_(context_)
 
     auto sink_file = boost::make_shared<async_sink_file>(backend);
 
-    sink_file->set_filter(std::bind(&Logger::check, this, std::placeholders::_1));
-    sink_file->set_formatter(std::bind(&Logger::formatter, this, std::placeholders::_1, std::placeholders::_2));
+    sink_file->set_filter([this](const boost::log::attribute_value_set& set) { return Logger::check(set); });
+    sink_file->set_formatter([this](const record_view& view, formatting_ostream& os1){ return Logger::formatter(view, os1); });
 
     core::get()->add_sink(sink_file);
 
@@ -120,8 +120,8 @@ Logger::Logger() : timer_(context_)
         auto sink = boost::make_shared<async_sink_stream>();
         sink->locked_backend()->add_stream(boost::shared_ptr<std::ostream>(&std::clog, boost::null_deleter()));
         sink->locked_backend()->auto_flush(true);
-        sink->set_filter(std::bind(&Logger::check, this, std::placeholders::_1));
-        sink->set_formatter(std::bind(&Logger::formatter, this, std::placeholders::_1, std::placeholders::_2));
+        sink->set_filter([this](const boost::log::attribute_value_set& set) { return Logger::check(set); });
+        sink->set_formatter([this](const record_view& view, formatting_ostream& os1){ return Logger::formatter(view, os1); });
         core::get()->add_sink(sink);
     }
 
@@ -129,7 +129,7 @@ Logger::Logger() : timer_(context_)
 
     thread_ = std::unique_ptr<std::thread>(new std::thread([this]() {
         timer_.expires_from_now(Logger::synk_timeout);
-        timer_.async_wait(std::bind(&Logger::onTimerExpired, this, std::placeholders::_1));
+        timer_.async_wait([this](const boost::system::error_code& code){return Logger::onTimerExpired(code); });
 
         context_.run();
     }));
@@ -202,7 +202,7 @@ void Logger::logImpl()
     logInfo_.reset();
 }
 
-void Logger::formatter(const record_view& view, formatting_ostream& os) const
+void Logger::formatter(const record_view& view, formatting_ostream& os1) const
 {
     static constexpr size_t nb_char_time_formatted = 25; // format Www Mmm dd hh:mm:ss yyyy + EOL
     auto lvl = view.attribute_values()["Severity"].extract<severity::level>().get();
@@ -215,7 +215,7 @@ void Logger::formatter(const record_view& view, formatting_ostream& os) const
     localtime_r(&time, &l_tm);
     std::strftime((char*)time_formatted.data(), nb_char_time_formatted, "%a %b %d %H:%M:%S %Y", &l_tm);
 
-    os << "[" << time_formatted << "] [" << severities_.at(lvl) << "] "
+    os1 << "[" << time_formatted << "] [" << severities_.at(lvl) << "] "
        << view.attribute_values()["File"].extract<std::string>() << ",l"
        << view.attribute_values()["Line"].extract<int>() << " : "
        << view.attribute_values()["Message"].extract<std::string>();
@@ -230,7 +230,7 @@ void Logger::onTimerExpired(const boost::system::error_code& code)
 
     // refresh timer: simpler than trigger it only when a log is requested
     timer_.expires_from_now(Logger::synk_timeout);
-    timer_.async_wait(std::bind(&Logger::onTimerExpired, this, std::placeholders::_1));
+    timer_.async_wait([this](const boost::system::error_code &code){return Logger::onTimerExpired(code); });
 }
 
 } // namespace log

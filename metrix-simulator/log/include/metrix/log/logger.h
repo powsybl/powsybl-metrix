@@ -161,10 +161,9 @@ public:
         DEV      ///< dev file only
     };
 
-public:
+
     static LoggerConfiguration config; ///< configuration, MUST be set before the first call of @a instance
 
-public:
     /**
      * @brief Retrieve the logger instance
      *
@@ -179,7 +178,7 @@ public:
      */
     ~Logger();
 
-public:
+
     /**
      * @brief Start a log input
      *
@@ -222,16 +221,11 @@ private:
         std::stringstream stream;
     };
 
-private:
     static const std::map<severity::level, std::string>
         severities_; ///< dictionnary to convert level into its string representation
     static const std::chrono::milliseconds synk_timeout; ///< timeout for synchronizer timer
-
-private:
     static std::string computeDevfilePattern(const std::string& filepath);
     static bool checkLevel(severity::level level) { return level >= config.loggerLevel; }
-
-private:
     bool check(const boost::log::attribute_value_set& set) const;
 
     /**
@@ -247,9 +241,9 @@ private:
      * - message is the log message
      *
      * @param[in] view the boost log record view containing the attributes to format the log
-     * @param[out] os the stream where to put the formatted message
+     * @param[out] os1 the stream where to put the formatted message
      */
-    void formatter(const boost::log::record_view& view, boost::log::formatting_ostream& os) const;
+    void formatter(const boost::log::record_view& view, boost::log::formatting_ostream& os1) const;
     void logImpl();
     void onTimerExpired(const boost::system::error_code& code);
 
@@ -262,8 +256,6 @@ private:
      * Private constructor to implement the singleton
      */
     Logger();
-
-private:
     std::unique_ptr<LogInfo> logInfo_;
 
     // underlying loggers
