@@ -8,7 +8,13 @@
 
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.TimeSeriesFilter;
+
+import java.util.Collections;
 import java.util.Set;
+
+import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkIndexUnicity;
 
 public class ComputationRange {
 
@@ -47,5 +53,29 @@ public class ComputationRange {
 
     public void setVariantCount(int variantCount) {
         this.variantCount = variantCount;
+    }
+
+    public static ComputationRange check(ReadOnlyTimeSeriesStore store) {
+        return check(null, store);
+    }
+
+    public static ComputationRange check(ComputationRange computationRange, ReadOnlyTimeSeriesStore store) {
+        ComputationRange fixed = computationRange;
+        if (computationRange == null) {
+            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), 0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount());
+        }
+        if (fixed.getVersions() == null || fixed.getVersions().isEmpty()) {
+            fixed.setVersions(store.getTimeSeriesDataVersions());
+        }
+        if (fixed.getVersions().isEmpty()) {
+            fixed.setVersions(Collections.singleton(1));
+        }
+        if (fixed.getFirstVariant() == -1) {
+            fixed.setFirstVariant(0);
+        }
+        if (fixed.getVariantCount() == -1) {
+            fixed.setVariantCount(checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount());
+        }
+        return fixed;
     }
 }

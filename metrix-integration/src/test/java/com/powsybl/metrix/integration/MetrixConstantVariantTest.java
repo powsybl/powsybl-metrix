@@ -109,7 +109,7 @@ class MetrixConstantVariantTest {
 
         MetrixDslData metrixDslData;
         try (Reader metrixDslReader = Files.newBufferedReader(metrixFile, StandardCharsets.UTF_8)) {
-            metrixDslData = MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig);
+            metrixDslData = MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, null);
         }
 
         Range<Integer> variantRange = Range.closed(0, 1);

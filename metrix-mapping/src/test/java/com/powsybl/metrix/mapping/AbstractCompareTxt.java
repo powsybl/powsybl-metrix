@@ -40,11 +40,6 @@ public abstract class AbstractCompareTxt {
         try {
             String expectedStr = normalizeLineSeparator(new String(ByteStreams.toByteArray(expected), StandardCharsets.UTF_8));
             String actualStr = normalizeLineSeparator(actual);
-            System.out.println("expectedStr -------------------------------------------");
-            System.out.println(expectedStr);
-            System.out.println("actualStr -------------------------------------------");
-            System.out.println(actualStr);
-            System.out.println("-------------------------------------------");
             assertEquals(expectedStr, actualStr);
             return "";
         } catch (IOException var4) {

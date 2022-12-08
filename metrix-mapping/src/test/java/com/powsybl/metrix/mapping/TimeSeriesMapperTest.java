@@ -61,8 +61,9 @@ class TimeSeriesMapperTest {
 
         // create mapping config
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "equipment_ts", "LD2", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentTimeSeries("other_ts", OtherVariable.OTHER_VARIABLE, "L1");
+        TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(mappingConfig, store.getTimeSeriesNames(new TimeSeriesFilter()));
+        loader.addEquipmentMapping(MappableEquipmentType.LOAD, "equipment_ts", "LD2", NumberDistributionKey.ONE, EquipmentVariable.p0);
+        loader.addEquipmentTimeSeries("other_ts", OtherVariable.OTHER_VARIABLE, "L1");
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -116,11 +117,12 @@ class TimeSeriesMapperTest {
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
 
         mappingConfig.getTimeSeriesNodes().put("calculated", new FloatNodeCalc(10f));
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "calculated", "l1", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
+        TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(mappingConfig, store.getTimeSeriesNames(new TimeSeriesFilter()));
+        loader.addEquipmentMapping(MappableEquipmentType.LOAD, "calculated", "l1", NumberDistributionKey.ONE, EquipmentVariable.p0);
+        loader.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
+        loader.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
 
-        mappingConfig.checkIndexUnicity(store);
+        new TimeSeriesMappingConfigTableLoader(mappingConfig, store).checkIndexUnicity();
     }
 
     @Test
@@ -138,12 +140,13 @@ class TimeSeriesMapperTest {
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
 
         mappingConfig.getTimeSeriesNodes().put("calculated", new FloatNodeCalc(10f));
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "calculated", "l1", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
-        mappingConfig.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
+        TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(mappingConfig, store.getTimeSeriesNames(new TimeSeriesFilter()));
+        loader.addEquipmentMapping(MappableEquipmentType.LOAD, "calculated", "l1", NumberDistributionKey.ONE, EquipmentVariable.p0);
+        loader.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
+        loader.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
 
         assertThrows(TimeSeriesMappingException.class,
-            () -> mappingConfig.checkIndexUnicity(store),
+            () -> new TimeSeriesMappingConfigTableLoader(mappingConfig, store).checkIndexUnicity(),
             "Time series involved in the mapping must have the same index");
     }
 }
