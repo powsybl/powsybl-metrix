@@ -1,4 +1,0 @@
-WARNING;Contingencies - hvdcLineId;The HVDC will not be able to operate in curative on contingency ctyForHvdcLineId because it is not defined in contingencies script
-WARNING;Contingencies - generatorId;The generator will not be able to operate in curative on contingency ctyForGeneratorId because it is not defined in contingencies script
-WARNING;Contingencies - loadId;The load will not be able to operate in curative on contingency ctyForLoadId because it is not defined in contingencies script
-WARNING;Contingencies - phaseTapChangerId;The PST will not be able to operate in curative on contingency ctyForPhaseTapChangerId because it is not defined in contingencies script

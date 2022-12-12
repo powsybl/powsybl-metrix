@@ -19,14 +19,34 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.util.Collections;
+import java.util.ResourceBundle;
+
+import static com.powsybl.metrix.mapping.LogDslLoader.LogType.ERROR;
+import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
 
 public class MetrixRemedialAnalysisTest {
+
+    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("lang.MetrixAnalysis");
 
     private Network network;
 
     @BeforeEach
     public void setUp() {
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+    }
+
+    private String getErrorInvalidRemedialFile(int line) {
+        String message = ERROR + ";";
+        message += RESOURCE_BUNDLE.getString("remedialsSection") + ";";
+        message += String.format(RESOURCE_BUNDLE.getString("invalidRemedialFile"), line) + " ";
+        return message;
+    }
+
+    private String getWarningInvalidRemedial(int line) {
+        String message = WARNING + ";";
+        message += RESOURCE_BUNDLE.getString("remedialsSection") + ";";
+        message += String.format(RESOURCE_BUNDLE.getString("invalidRemedial"), line) + " ";
+        return message;
     }
 
     private void remedialTest(String remedialScript, String expected) throws IOException {
@@ -67,7 +87,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderCommentLineTest() throws IOException {
         remedialTest(
             "// comment",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 contains a comment"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileComment")
         );
     }
 
@@ -75,7 +95,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderCommentTest() throws IOException {
         remedialTest(
             "/* comment",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 contains a comment"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileComment")
         );
     }
 
@@ -83,7 +103,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineCommentLineTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "// comment"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains a comment"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileComment")
         );
     }
 
@@ -91,7 +111,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineCommentTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "/* comment"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains a comment"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileComment")
         );
     }
 
@@ -99,7 +119,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderEndLineTest() throws IOException {
         remedialTest(
             "line",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 does not end with semicolon"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileEndLine")
         );
     }
 
@@ -107,7 +127,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineEndLineTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "line"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 does not end with semicolon"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEndLine")
         );
     }
 
@@ -115,7 +135,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnTest() throws IOException {
         remedialTest(
             "column1;column2;column3;",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
+             getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileHeader")
         );
     }
 
@@ -123,7 +143,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnEmptyTest() throws IOException {
         remedialTest(
             ";column;",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileHeader")
         );
     }
 
@@ -131,7 +151,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnNumberEmptyTest() throws IOException {
         remedialTest(
             "NB;;",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileHeader")
         );
     }
 
@@ -139,7 +159,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbMissingTest() throws IOException {
         remedialTest(
             "notNB;column;",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileHeader")
         );
     }
 
@@ -147,7 +167,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnNumberMissingTest() throws IOException {
         remedialTest(
             "NB;column;",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileHeader")
         );
     }
 
@@ -155,7 +175,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialHeaderNbColumnNumberWrongIntegerTest() throws IOException {
         remedialTest(
             "NB;-1;",
-            "ERROR;Remedials;Remedial file will not be recognized because line 1 is malformed (header)"
+            getErrorInvalidRemedialFile(1) + RESOURCE_BUNDLE.getString("invalidRemedialFileHeader")
         );
     }
 
@@ -163,7 +183,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbColumnTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "column;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileLine")
         );
     }
 
@@ -171,7 +191,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbColumnEmptyTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", ";;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileLine")
         );
     }
 
@@ -179,7 +199,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemedialLineNbActionMissingTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "ctyId;column;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed (number of actions)"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileAction")
         );
     }
 
@@ -187,7 +207,7 @@ public class MetrixRemedialAnalysisTest {
     void invalidRemediaLineNbActionWrongIntegerTest() throws IOException {
         remedialTest(
             String.join(System.lineSeparator(), "NB;1;", "ctyId;-1;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed (number of actions)"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileAction")
         );
     }
 
@@ -200,7 +220,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", ";1;FP.AND1  FVERGE1  2;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
         );
     }
 
@@ -213,7 +233,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;;FP.AND1  FVERGE1  2;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed (number of actions)"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileAction")
         );
     }
 
@@ -226,7 +246,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;1;;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 is malformed"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileLine")
         );
     }
 
@@ -239,7 +259,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;;FP.AND1  FVERGE1  2;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
         );
     }
 
@@ -252,7 +272,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;action;+FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment action does not exist in the network"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "action")
         );
     }
 
@@ -265,7 +285,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+action;FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment action does not exist in the network"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "action")
         );
     }
 
@@ -278,7 +298,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;FSSV.O11_G;FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FSSV.O11_G is not a Branch or Switch type"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), "FSSV.O11_G")
         );
     }
 
@@ -291,7 +311,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+FSSV.O11_G;FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FSSV.O11_G is not a Branch or Switch type"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), "FSSV.O11_G")
         );
     }
 
@@ -304,7 +324,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId|equipment;1;FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment equipment does not exist in the network"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "equipment")
         );
     }
 
@@ -317,7 +337,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId|FSSV.O11_G;1;FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FSSV.O11_G is not a Branch type"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialConstraintType"), "FSSV.O11_G")
         );
     }
 
@@ -333,7 +353,7 @@ public class MetrixRemedialAnalysisTest {
             contingenciesProvider,
             metrixDslData,
             String.join(System.lineSeparator(), "NB;1;", "ctyId||FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 contains an empty element"
+            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
         );
     }
 
@@ -346,7 +366,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId|FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
-            "WARNING;Remedials;The remedial at line 2 will not be taken into account because equipment FS.BIS1  FVALDI1  1 is not monitored on contingency"
+            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidMetrixRemedialConstraint"), "FS.BIS1  FVALDI1  1")
         );
     }
 
@@ -358,7 +378,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;2;", "ctyId;1;FP.AND1  FVERGE1  2;"),
-            "ERROR;Remedials;Remedial file will not be recognized because line 2 because remedial number in header (NB = 2) is greater than the line number of the remedial (1)"
+            getErrorInvalidRemedialFile(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileNbRemedialMoreLines"), 2, 1)
         );
     }
 
@@ -370,7 +390,7 @@ public class MetrixRemedialAnalysisTest {
         remedialTest(
             contingenciesProvider,
             String.join(System.lineSeparator(), "NB;1;", "ctyId;1;FP.AND1  FVERGE1  2;", "ctyId;1;FS.BIS1  FVALDI1  1;"),
-            "WARNING;Remedials;The remedial at line 3 will not be taken into account because the line number of the remedial is greater than the remedial number in header (NB = 1)"
+            getWarningInvalidRemedial(3) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNbRemedialLessLines"), 1)
         );
     }
 

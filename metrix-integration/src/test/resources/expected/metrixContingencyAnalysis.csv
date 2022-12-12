@@ -1,5 +1,0 @@
-WARNING;Contingencies;Contingency ctyWithWrongId has not been created because equipment wrongId does not exist in the network
-WARNING;Contingencies;Contingency ctyWithWrongType has not been created because equipment FP.AND1_1 is of BUSBAR_SECTION type
-WARNING;Contingencies;Contingency ctyWithWrongTypeAndId has not been created because equipment wrongId does not exist in the network
-WARNING;Contingencies;Contingency ctyWithWrongTypeAndId has not been created because equipment wrongId is of BUSBAR_SECTION type
-WARNING;Contingencies;Contingency ctyWithWrongTypeForIdentifiable has not been created because equipment FSSV.O11_G in of BRANCH type in contingency and of GENERATOR type in the network
