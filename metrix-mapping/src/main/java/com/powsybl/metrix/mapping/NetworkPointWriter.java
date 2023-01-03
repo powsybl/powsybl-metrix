@@ -260,14 +260,14 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case p0:
                 if (loadDetail != null) {
                     loadDetail.setFixedActivePower(0);
-                    loadDetail.setVariableActivePower(0);
+                    loadDetail.setVariableActivePower(equipmentValue);
                 }
                 load.setP0(equipmentValue);
                 break;
             case q0:
                 if (loadDetail != null) {
                     loadDetail.setFixedReactivePower(0);
-                    loadDetail.setVariableReactivePower(0);
+                    loadDetail.setVariableReactivePower(equipmentValue);
                 }
                 load.setQ0(equipmentValue);
                 break;
