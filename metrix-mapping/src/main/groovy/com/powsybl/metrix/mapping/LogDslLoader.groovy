@@ -42,6 +42,7 @@ class LogDslLoader {
                 return
             }
             logDslLoader.out.write(type + SEPARATOR + section + SEPARATOR + message)
+            logDslLoader.out.write(System.lineSeparator())
         }
     }
 

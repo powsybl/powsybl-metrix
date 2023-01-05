@@ -319,6 +319,7 @@ class TimeSeriesDslLoaderTest {
         }
 
         String output = outputStream.toString();
-        assertEquals("LOG_TYPE;LOG_SECTION;LOG_MESSAGE", output);
+        String expectedMessage = "LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
+        assertEquals(expectedMessage, output);
     }
 }
