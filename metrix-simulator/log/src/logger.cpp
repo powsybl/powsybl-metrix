@@ -73,7 +73,7 @@ Logger::~Logger()
     if (!context_.stopped()) {
         context_.stop();
     }
-    if (thread_ && thread_->get_id() != std::this_thread::get_id()) {
+    if (thread_ && !(thread_->get_id() == std::this_thread::get_id())) {
         thread_->join();
     }
 

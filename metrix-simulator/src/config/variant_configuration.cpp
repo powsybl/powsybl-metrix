@@ -157,6 +157,9 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
                                  std::placeholders::_1,
                                  std::placeholders::_2)),
         std::make_pair(
+            "GROURAND",
+            std::bind(&VariantConfiguration::processRandomGroups, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
             "DTVALDEP",
             std::bind(&VariantConfiguration::processTDPhasing, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
@@ -384,6 +387,18 @@ void VariantConfiguration::processBalancesConsumption(VariantConfig& variant, st
     LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : region " << std::get<NAME>(region)
                << ", balance objective by consumption value at" << std::get<VALUE>(region);
 }
+
+void VariantConfiguration::processRandomGroups(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    rtrim(sub_line);
+    variant.randomGroups.push_back(sub_line);
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : group " << sub_line << 
+    "is in position " << variant.randomGroups.size()-1;
+}
+
 
 void VariantConfiguration::processBalancesProduction(VariantConfig& variant, std::istringstream& iss) const
 {

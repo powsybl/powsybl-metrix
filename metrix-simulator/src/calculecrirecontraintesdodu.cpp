@@ -194,11 +194,18 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
 
     // melange des groupes: afin que l'on n'ait pas besoin de bruiter les couts
     std::vector<std::shared_ptr<Groupe>> grp_melanges;
-    grp_melanges.reserve(res_.nbGroupes_);
-    for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
-        grp_melanges.push_back(grpIt->second);
+    // Si la variante possède une liste de groupe GROURAND, elle va l'utiliser
+    if (!varianteCourante_->randomGroups_.empty() && static_cast<int> (varianteCourante_->randomGroups_.size()) == res_.nbGroupes_){
+        grp_melanges = varianteCourante_->randomGroups_;
     }
-    std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
+    else{
+        //Sinon le code prend la liste de base et la mélange lui-même.
+        grp_melanges.reserve(res_.nbGroupes_);
+        for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
+            grp_melanges.push_back(grpIt->second);
+        }
+        std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
+    }
 
     for (int i = 0; i < res_.nbGroupes_; ++i) {
         const auto& grp = grp_melanges[i];
@@ -260,7 +267,6 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
             // A la hausse
             pbXmin_[numVar] = 0.;
             pbXmax_[numVar] = 0.;
-            pbCoutLineaire_[numVar] = config::configuration().noiseCost();
             // A la baisse
             pbXmin_[numVar + 1] = 0.;
             pbXmax_[numVar + 1] = 0.;

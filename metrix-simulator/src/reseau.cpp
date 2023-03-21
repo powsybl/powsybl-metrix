@@ -2734,7 +2734,6 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-
     Quadripole::SetQuadripoleSortedByName indispoLignesBase;
     for (const auto& line : config.unavailableLines) {
             auto quadsIt = quads_.find(line);
@@ -2775,7 +2774,6 @@ void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfigur
             return;
         }
         variant_index++;
-
         updateVariant(mapping, pair.second);
     }
 }
@@ -3030,6 +3028,15 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
             variant->probabinc_.insert(std::pair<std::shared_ptr<Incident>, double>(icIt->second, var_dbl));
         } else {
             LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& group : config.randomGroups) {
+        auto groupesIt = groupes_.find(group);
+        if (groupesIt != groupes_.end()) {
+            variant->randomGroups_.push_back(groupesIt->second);
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", group, c_fmt("%d", config.num));
         }
     }
     
