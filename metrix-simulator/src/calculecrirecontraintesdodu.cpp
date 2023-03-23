@@ -195,7 +195,7 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
     // melange des groupes: afin que l'on n'ait pas besoin de bruiter les couts
     std::vector<std::shared_ptr<Groupe>> grp_melanges;
     // Si la variante possède une liste de groupe GROURAND, elle va l'utiliser
-    if (!varianteCourante_->randomGroups_.empty() && static_cast<int> (varianteCourante_->randomGroups_.size()) == res_.nbGroupes_){
+    if (!varianteCourante_->randomGroups_.empty()){
         grp_melanges = varianteCourante_->randomGroups_;
     }
     else{
