@@ -69,6 +69,10 @@ public:
         std::vector<double_value> balancesProd;
 
         std::vector<double_value> probas;
+
+        //Stores the randomized list of groups returned by the G++9 compiler
+        //Used for the testsof the CI
+        std::vector<std::string> randomGroups;
     };
     using VariantMap = std::map<int, VariantConfig>;
 
@@ -128,6 +132,7 @@ private:
     void processBalancesProduction(VariantConfig& variant, std::istringstream& iss) const;
     void processProbaInc(VariantConfig& variant, std::istringstream& iss) const;
 
+    void processRandomGroups(VariantConfig& variant, std::istringstream& iss) const;
 private:
     const std::map<std::string, Processor>
         line_processors_; ///< map containing all functions to process each type of data read in the file

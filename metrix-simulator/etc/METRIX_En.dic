@@ -120,6 +120,7 @@ ERRPasDeconsoSurNoeud						There is no load on node $1
 ERRApplLoiBilanGrpNonImp					Error on the exchange law because the production unit $1 is adjustable
 ERRApplLoiBilanDelta						Error : impossible to set the balance law on region $1 (balance - target value = $2)
 ERRFinFichierIntrouvable					Error : the end of the file $1 is not detected.
+ERRGrpRandomDifferentGrp                    Error : Variant $1 : lists groupes_ and randomGroups do not contain the same name of groups.
 
 //------Messages d'erreur lors de la lecture du reseau
 ERRPbOuvertureBase							Error while opening the base DIE during the reading parameters routine

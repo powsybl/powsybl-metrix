@@ -121,6 +121,7 @@ ERRPasDeconsoSurNoeud						Il n'y a pas de conso sur le noeud $1
 ERRApplLoiBilanGrpNonImp					Erreur sur l'application de la variante de bilan, le groupe $1 n etant pas impose
 ERRApplLoiBilanDelta						Erreur : impossible d'appliquer la loi de bilan sur la région $1 (bilan - valeur cible = $2)
 ERRFinFichierIntrouvable					Erreur : la fin du fichier $1 est introuvable
+ERRGrpRandomDifferentGrp                    Erreur : Variante $1 : les listes groupes_ et randomGroups ne contiennent pas les mêmes groupes 
 
 //------ Messages d'erreur lors de la lecture du reseau --------
 ERRPbOuvertureBase							Problème d'ouverture de la base lors du sous-programme lecture_parametres
