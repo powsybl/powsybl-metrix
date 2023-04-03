@@ -160,6 +160,9 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
             "DTVALDEP",
             std::bind(&VariantConfiguration::processTDPhasing, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
+            "GROURAND",
+            std::bind(&VariantConfiguration::processRandomGroups, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
             "PROBABINC",
             std::bind(&VariantConfiguration::processProbaInc, this, std::placeholders::_1, std::placeholders::_2))}
 {
@@ -291,6 +294,17 @@ void VariantConfiguration::processConso(VariantConfig& variant, std::istringstre
 
     LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : conso " << std::get<NAME>(conso)
                << " with value " << std::get<VALUE>(conso);
+}
+
+void VariantConfiguration::processRandomGroups(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    rtrim(sub_line);
+    variant.randomGroups.push_back(sub_line);
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : group " << sub_line << 
+    "is in position " << variant.randomGroups.size()-1;
 }
 
 void VariantConfiguration::processImposedGroup(VariantConfig& variant, std::istringstream& iss) const

@@ -3032,6 +3032,22 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
             LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
         }
     }
+
+    for (const auto& group : config.randomGroups) {
+        auto groupesIt = groupes_.find(group);
+        if (groupesIt != groupes_.end()) {
+            variant->randomGroups_.push_back(groupesIt->second);
+        } else {
+            throw ErrorI(err::ioDico().msg("ERRGrpRandomDifferentGrp", c_fmt("%d", variant->num_)));
+        }
+    }
+    if (!config.randomGroups.empty()){
+        for (const auto& group : groupes_){
+            if (std::find(config.randomGroups.begin(), config.randomGroups.end(), group.first) == config.randomGroups.end()){
+                throw ErrorI(err::ioDico().msg("ERRGrpRandomDifferentGrp", c_fmt("%d", variant->num_)));
+            }
+        }
+    }
     
     mapping[variant->indispoLignes_].push_back(variant);
 }
