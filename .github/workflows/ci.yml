@@ -33,7 +33,7 @@ jobs:
         if: ${{ matrix.xprs == 'ON' }}
         uses: actions/checkout@v2
         with:
-          repository: jdarlay/xpressmp813Lin
+          repository: powsybl/xpressmp813Lin
           path: ${{ env.XPRESSDIR }}
           ref: master
           token: ${{ secrets.ACCESS_TOKEN }}
