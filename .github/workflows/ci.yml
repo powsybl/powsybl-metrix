@@ -36,7 +36,7 @@ jobs:
           repository: powsybl/xpressmp813Lin
           path: ${{ env.XPRESSDIR }}
           ref: master
-          token: ${{ secrets.ACCESS_TOKEN }}
+          # token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Configure 3rd parties
         working-directory: metrix-simulator
