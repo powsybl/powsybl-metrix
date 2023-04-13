@@ -25,5 +25,7 @@ Checks: '-*,
   -readability-function-size,
   -readability-magic-numbers,
   -readability-redundant-declaration,
+  -readability-redundant-access-specifiers,
+  -readability-identifier-length,
 '
 HeaderFilterRegex: 'src/.*|log/.*'
