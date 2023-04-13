@@ -9,7 +9,6 @@
 //
 
 #include "converter.h"
-//TEST
 #include <err/IoDico.h>
 #include <err/error.h>
 #include <metrix/log.h>
