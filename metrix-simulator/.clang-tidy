@@ -27,4 +27,3 @@ Checks: '-*,
   -readability-redundant-declaration,
 '
 HeaderFilterRegex: 'src/.*|log/.*'
-<!-- WarningsAsErrors: '*' -->
