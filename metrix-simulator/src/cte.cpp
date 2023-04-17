@@ -14,7 +14,7 @@ std::string c_fmt(const char* format, ...)
     va_list ap;
     va_start(ap, format);
     vsnprintf(buf, max, format, ap);
-    if (strlen(buf) >= sizeof(buf)) {
+    if (strnlen(buf, max) >= sizeof(buf)) {
         std::string msg = "pb de conversion en string c_fmt";
         throw ErrorI(msg);
     }
