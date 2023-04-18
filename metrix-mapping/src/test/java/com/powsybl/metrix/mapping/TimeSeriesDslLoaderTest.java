@@ -94,7 +94,7 @@ class TimeSeriesDslLoaderTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig config = dsl.load(network, parameters, store, null);
-        TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
+        TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
         csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
 
         Map<String, Set<String>> timeSeriesToPlannedOutagesMappingExpected = new HashMap<>();
@@ -108,7 +108,7 @@ class TimeSeriesDslLoaderTest {
         assertEquals(timeSeriesToPlannedOutagesMappingExpected, timeSeriesToPlannedOutagesMapping);
 
         // assertions
-        assertTrue(config.isMappingComplete());
+        assertTrue(new TimeSeriesMappingConfigChecker(config).isMappingComplete());
         assertTrue(config.getUnmappedLoads().isEmpty());
         assertTrue(config.getUnmappedGenerators().isEmpty());
         assertTrue(config.getUnmappedDanglingLines().isEmpty());
@@ -264,7 +264,7 @@ class TimeSeriesDslLoaderTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             TimeSeriesMappingConfig config = dsl.load(network, parameters, store, out, null);
-            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
+            TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
             csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
         }
 
@@ -274,7 +274,7 @@ class TimeSeriesDslLoaderTest {
         outputStream.reset();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             TimeSeriesMappingConfig config = dsl.load(network, parameters, store, out, new ComputationRange(Collections.singleton(1), 0, 3));
-            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
+            TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
             csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
         }
 

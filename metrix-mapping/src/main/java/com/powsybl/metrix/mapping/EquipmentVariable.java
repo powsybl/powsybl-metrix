@@ -165,48 +165,40 @@ public enum EquipmentVariable implements MappingVariable {
         return equipmentVariables;
     }
 
-    public static void checkVariableCompatibility(MappableEquipmentType equipmentType, EquipmentVariable equipmentVariable) {
-        Objects.requireNonNull(equipmentType);
-        boolean compatible;
+    public static boolean isVariableCompatible(MappableEquipmentType equipmentType, EquipmentVariable equipmentVariable) {
         switch (equipmentType) {
             case GENERATOR:
-                compatible = GENERATOR_VARIABLES.contains(equipmentVariable);
-                break;
+                return GENERATOR_VARIABLES.contains(equipmentVariable);
             case HVDC_LINE:
-                compatible = HVDC_LINE_VARIABLES.contains(equipmentVariable);
-                break;
+                return HVDC_LINE_VARIABLES.contains(equipmentVariable);
             case LOAD:
-                compatible = LOAD_VARIABLES.contains(equipmentVariable);
-                break;
+                return LOAD_VARIABLES.contains(equipmentVariable);
             case BOUNDARY_LINE:
-                compatible = equipmentVariable == EquipmentVariable.p0;
-                break;
+                return equipmentVariable == EquipmentVariable.p0;
             case SWITCH:
-                compatible = equipmentVariable == EquipmentVariable.open;
-                break;
+                return equipmentVariable == EquipmentVariable.open;
             case PHASE_TAP_CHANGER:
             case PST:
-                compatible = PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
-                break;
+                return PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
             case TRANSFORMER:
-                compatible = TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);
-                break;
+                return TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);
             case RATIO_TAP_CHANGER:
-                compatible = RATIO_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
-                break;
+                return RATIO_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
             case LCC_CONVERTER_STATION:
-                compatible = LCC_CONVERTER_VARIABLES.contains(equipmentVariable);
-                break;
+                return LCC_CONVERTER_VARIABLES.contains(equipmentVariable);
             case VSC_CONVERTER_STATION:
-                compatible = VSC_CONVERTER_VARIABLES.contains(equipmentVariable);
-                break;
+                return VSC_CONVERTER_VARIABLES.contains(equipmentVariable);
             case LINE:
-                compatible = LINE_VARIABLES.contains(equipmentVariable);
-                break;
+                return LINE_VARIABLES.contains(equipmentVariable);
             default:
                 throw new AssertionError("Unsupported equipment type " + equipmentType);
         }
-        if (!compatible) {
+    }
+
+    public static void checkVariableCompatibility(MappableEquipmentType equipmentType, EquipmentVariable equipmentVariable) {
+        Objects.requireNonNull(equipmentType);
+        Objects.requireNonNull(equipmentVariable);
+        if (!isVariableCompatible(equipmentType, equipmentVariable)) {
             throw new AssertionError("Variable type " + equipmentVariable + " not compatible with equipment type " + equipmentType);
         }
     }

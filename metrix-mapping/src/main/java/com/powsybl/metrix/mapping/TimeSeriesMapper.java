@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableSet;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
@@ -25,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 
@@ -795,10 +793,7 @@ public class TimeSeriesMapper {
 
             try {
                 // load time series involved in the config in a table
-                Set<String> usedTimeSeriesNames = StreamSupport.stream(config.findUsedTimeSeriesNames().spliterator(), false).collect(Collectors.toSet());
-                usedTimeSeriesNames.addAll(parameters.getRequiredTimeseries());
-                ReadOnlyTimeSeriesStore storeWithPlannedOutages = TimeSeriesMappingConfig.buildPlannedOutagesTimeSeriesStore(store, version, config.getTimeSeriesToPlannedOutagesMapping());
-                table = config.loadToTable(new TreeSet<>(ImmutableSet.of(version)), storeWithPlannedOutages, parameters.getPointRange(), usedTimeSeriesNames);
+                table = new TimeSeriesMappingConfigTableLoader(config, store).load(version, parameters.getRequiredTimeseries(), parameters.getPointRange());
 
                 if (context == null) {
                     context = new MapperContext();

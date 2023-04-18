@@ -20,13 +20,15 @@ class LogDslLoader {
     private static final char SEPARATOR = ';'
 
     private final Writer out
+    private final String section
 
-    LogDslLoader(Writer out) {
+    LogDslLoader(Writer out, String section) {
         this.out = out
+        this.section = section
     }
 
-    static LogDslLoader create(Binding binding, Writer out) {
-        LogDslLoader logDslLoader = new LogDslLoader(out)
+    static LogDslLoader create(Binding binding, Writer out, String section) {
+        LogDslLoader logDslLoader = new LogDslLoader(out, section)
         if (out != null) {
             binding.out = out
         }
@@ -43,46 +45,46 @@ class LogDslLoader {
         }
     }
 
-    private void logOut(String type, String section, String message) {
+    private void logOut(String type, String message) {
         if (out != null) {
             out.write(type + SEPARATOR + section + SEPARATOR + message)
             out.write(System.lineSeparator())
         }
     }
 
-    void logError(String section, String pattern, Object... arguments) {
+    void logError(String pattern, Object... arguments) {
         String formattedString = String.format(pattern, arguments)
-        logOut(String.valueOf(LogType.ERROR), section, formattedString)
+        logOut(String.valueOf(LogType.ERROR), formattedString)
     }
 
-    void logError(String section, String message) {
-        logOut(String.valueOf(LogType.ERROR), section, message)
+    void logError(String message) {
+        logOut(String.valueOf(LogType.ERROR), message)
     }
 
-    void logWarn(String section, String pattern, Object... arguments) {
+    void logWarn(String pattern, Object... arguments) {
         String formattedString = String.format(pattern, arguments)
-        logOut(String.valueOf(LogType.WARNING), section, formattedString)
+        logOut(String.valueOf(LogType.WARNING), formattedString)
     }
 
-    void logWarn(String section, String message) {
-        logOut(String.valueOf(LogType.WARNING), section, message)
+    void logWarn(String message) {
+        logOut(String.valueOf(LogType.WARNING), message)
     }
 
-    void logInfo(String section, String pattern, Object... arguments) {
+    void logInfo(String pattern, Object... arguments) {
         String formattedString = String.format(pattern, arguments)
-        logOut(String.valueOf(LogType.INFO), section, formattedString)
+        logOut(String.valueOf(LogType.INFO), formattedString)
     }
 
-    void logInfo(String section, String message) {
-        logOut(String.valueOf(LogType.INFO), section, message)
+    void logInfo(String message) {
+        logOut(String.valueOf(LogType.INFO), message)
     }
 
-    void logDebug(String section, String pattern, Object... arguments) {
+    void logDebug(String pattern, Object... arguments) {
         String formattedString = String.format(pattern, arguments)
-        logOut(String.valueOf(LogType.DEBUG), section, formattedString)
+        logOut(String.valueOf(LogType.DEBUG), formattedString)
     }
 
-    void logDebug(String section, String message) {
-        logOut(String.valueOf(LogType.DEBUG), section, message)
+    void logDebug(String message) {
+        logOut(String.valueOf(LogType.DEBUG), message)
     }
 }

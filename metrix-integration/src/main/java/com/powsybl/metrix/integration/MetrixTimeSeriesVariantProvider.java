@@ -108,7 +108,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     @Override
     public TimeSeriesIndex getIndex() {
-        return config.checkIndexUnicity(store);
+        return new TimeSeriesMappingConfigTableLoader(config, store).checkIndexUnicity();
     }
 
     @Override

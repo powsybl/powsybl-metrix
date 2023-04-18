@@ -140,8 +140,9 @@ public abstract class AbstractMetrix {
             metrixParameters.setWithRedispatchingResults(true);
         }
 
-        TimeSeriesIndex timeSeriesMappingIndex = mappingConfig.checkIndexUnicity(store);
-        mappingConfig.checkValues(store, runParameters.getVersions());
+        TimeSeriesMappingConfigTableLoader loader = new TimeSeriesMappingConfigTableLoader(mappingConfig, store);
+        TimeSeriesIndex timeSeriesMappingIndex = loader.checkIndexUnicity();
+        loader.checkValues(runParameters.getVersions());
 
         int firstVariant;
         if (runParameters.getFirstVariant() != -1) {

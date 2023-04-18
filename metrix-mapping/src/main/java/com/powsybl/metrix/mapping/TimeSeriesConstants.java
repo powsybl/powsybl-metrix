@@ -20,6 +20,12 @@ public final class TimeSeriesConstants {
     public static final String HVDC_LINES = "HvdcLines";
     public static final String PSTS = "Psts";
     public static final String BREAKERS = "Breakers";
+    public static final String GENERATOR = "Generator";
+    public static final String LOAD = "Load";
+    public static final String BOUNDARY_LINE = "BoundaryLine";
+    public static final String HVDC_LINE = "HvdcLine";
+    public static final String PST = "Pst";
+    public static final String BREAKER = "Breaker";
     public static final String MAPPED = "Mapped";
     public static final String UNMAPPED = "Unmapped";
     public static final String MULTI_MAPPED = "Multi-mapped";
@@ -29,4 +35,9 @@ public final class TimeSeriesConstants {
     public static final String CS12 = "CS1toCS2";
     public static final String MINUS_CS21 = "-CS2toCS1";
     public static final String MINUS_MAXP = "-maxP";
+    public static final String VARIABLE = "Variable";
+    public static final String STATUS = "Status";
+    public static final String NETWORK_POWER = "NetworkPower";
+    public static final String APPLIED_TIME_SERIES = "AppliedTimeSeries";
+    public static final String UNUSED_TIME_SERIES = "UnusedTimeSeries";
 }

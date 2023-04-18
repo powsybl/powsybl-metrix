@@ -1,4 +1,4 @@
-Synthesis;Generators;Loads;HvdcLines;Pst;Breakers
+Synthesis;Generators;Loads;HvdcLines;Psts;Breakers
 Mapped;3;0;0;0;0
 Unmapped;4;3;2;1;-
 Multi-mapped;2;0;0;0;0

@@ -22,6 +22,7 @@ import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreAggregator;
 import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.tools.Command;
 import com.powsybl.tools.Tool;
 import com.powsybl.tools.ToolRunningContext;
@@ -34,10 +35,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -179,6 +177,13 @@ public class MappingTool implements Tool {
         return null;
     }
 
+    private ReadOnlyTimeSeriesStoreAggregator getStoreAggregator(Map<String, NodeCalc> nodes, ReadOnlyTimeSeriesStore store) {
+        List<ReadOnlyTimeSeriesStore> stores = new ArrayList<>(2);
+        stores.add(new CalculatedTimeSeriesStore(nodes, store));
+        stores.add(store);
+        return new ReadOnlyTimeSeriesStoreAggregator(stores);
+    }
+
     @Override
     public void run(CommandLine line, ToolRunningContext context) throws Exception {
         try {
@@ -228,28 +233,26 @@ public class MappingTool implements Tool {
                 context.getOutputStream().println("Mapping done in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
             }
 
-            if (!config.isMappingComplete()) {
+            if (!new TimeSeriesMappingConfigChecker(config).isMappingComplete()) {
                 context.getErrorStream().println("Mapping is incomplete");
             }
 
-            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
-            csvWriter.printMappingSynthesis(context.getOutputStream());
+            TimeSeriesMappingConfigSynthesisCsvWriter csvSynthesisWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
+            csvSynthesisWriter.printMappingSynthesis(context.getOutputStream());
 
             if (mappingSynthesisDir != null) {
                 context.getOutputStream().println("Writing mapping synthesis to " + mappingSynthesisDir + "...");
-                csvWriter.writeMappingSynthesis(mappingSynthesisDir);
+                csvSynthesisWriter.writeMappingSynthesis(mappingSynthesisDir);
 
-                List<ReadOnlyTimeSeriesStore> stores = new ArrayList<>(2);
-                stores.add(new CalculatedTimeSeriesStore(config.getTimeSeriesNodes(), store));
-                stores.add(store);
-                ReadOnlyTimeSeriesStoreAggregator storeAggregator = new ReadOnlyTimeSeriesStoreAggregator(stores);
-                csvWriter.writeMappingCsv(mappingSynthesisDir, storeAggregator, computationRange, mappingParameters);
-                csvWriter.writeMappingSynthesisCsv(mappingSynthesisDir);
+                ReadOnlyTimeSeriesStore storeAggregator = getStoreAggregator(config.getTimeSeriesNodes(), store);
+                TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network, storeAggregator, computationRange, mappingParameters.getWithTimeSeriesStats());
+                csvWriter.writeMappingCsv(mappingSynthesisDir);
+                csvSynthesisWriter.writeMappingSynthesisCsv(mappingSynthesisDir);
             }
 
             if (mappingStatusFile != null) {
                 context.getOutputStream().println("Writing time series mapping status to " + mappingStatusFile + "...");
-                csvWriter.writeTimeSeriesMappingStatus(store, mappingStatusFile);
+                new TimeSeriesMappingConfigStatusCsvWriter(config, store).writeTimeSeriesMappingStatus(mappingStatusFile);
             }
 
             if (checkEquipmentTimeSeries) {
@@ -267,7 +270,7 @@ public class MappingTool implements Tool {
                 }
 
                 TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
-                TimeSeriesIndex index = config.checkIndexUnicity(store);
+                TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(config, store).checkIndexUnicity();
                 int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
                 TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(versions, Range.closed(firstVariant, lastPoint), ignoreLimits,
                         ignoreEmptyFilter, true,  mappingParameters.getToleranceThreshold());
