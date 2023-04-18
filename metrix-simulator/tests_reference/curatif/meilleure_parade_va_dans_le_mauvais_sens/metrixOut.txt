@@ -471,6 +471,9 @@ Noeud bilan : 0 [CONSO_K]
 ********************************************
 Traitement d'un paquet de 2 variante(s)
 ********************************************
+Attention: incident 620, l'ouvrage QUAD_QAV est deja deconnecte
+Attention: incident 652, l'ouvrage QUAD_QHG est deja deconnecte
+Attention: incident 889, l'ouvrage QUAD_SRH est deja deconnecte
 
 ---------------------
 ---------------------
@@ -478,9 +481,6 @@ Variante numéro 0
 ---------------------
 ---------------------
 
-Attention: incident 620, l'ouvrage QUAD_QAV est deja deconnecte
-Attention: incident 652, l'ouvrage QUAD_QHG est deja deconnecte
-Attention: incident 889, l'ouvrage QUAD_SRH est deja deconnecte
 Demarrage des groupes par empilement économique :
 Consommation globale                = 114888.3443  MW
 Production démarrée                 = 117520.3357  MW
@@ -497,11 +497,11 @@ Résultats en volume (MW)
 Volume de production =  114888.3443 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :    1315.9957
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :    1315.9957
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
@@ -533,11 +533,11 @@ Résultats en volume (MW)
 Volume de production =  117524.0077 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       0.0000
+Cout associé aux groupes       :     151.8360
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :       0.0000
+Valeur de la fonction objectif :     151.8360
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
@@ -555,11 +555,11 @@ Résultats en volume (MW)
 Volume de production =  117524.0077 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :  177118.4776
+Cout associé aux groupes       :  177207.0369
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :  177118.4778
+Valeur de la fonction objectif :  177207.0371
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 31437 (taille de la matrice : 31437)
@@ -571,9 +571,9 @@ Résultats en volume (MW)
 Volume de production =  117524.0077 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :  177118.4776
+Cout associé aux groupes       :  177207.0369
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :  177118.4778
+Valeur de la fonction objectif :  177207.0371
 

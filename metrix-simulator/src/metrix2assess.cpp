@@ -66,6 +66,20 @@ static void print_threats(FILE* file,
     fprintf(file, "\n");
 }
 
+static std::string computeC2IncidentName(const std::shared_ptr<Incident>& inc)
+{
+    string nomInc = inc->nom_;
+    if (inc->parade_) {
+        nomInc = inc->incTraiteCur_->nom_;
+    } else if (inc->paradesActivees_) {
+        auto str = nomInc;
+        nomInc = "BEFORE_CURATIVE_";
+        nomInc += str;
+    }
+
+    return nomInc;
+}
+
 bool Calculer::findNumIncident(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants,
                                int indexConstraint,
                                int& numIncident) const
@@ -89,6 +103,75 @@ bool Calculer::findNumIncident(const std::map<std::shared_ptr<Incident>, int>& i
     }
 
     return true;
+}
+
+void Calculer::printCutDetailed(FILE* fr)
+{
+    unsigned int nb_display = 0;
+    fprintf(fr, "C2B ;NON CONNEXITE;INCIDENT;CONSO;CONSO COUPEE;\n");
+    for (const auto& inc : res_.incidentsRompantConnexite_) {
+        if (!inc->validite_ || !inc->pochePerdue_) {
+            continue;
+        }
+
+        // on n'affiche que les parades activees
+        if (inc->parade_ && (inc->numVarActivation_ == -1 || pbX_[inc->numVarActivation_] < 0.5)) {
+            continue;
+        }
+
+        auto nomInc = computeC2IncidentName(inc);
+
+        const auto& poche = inc->pochePerdue_;
+        for (const auto& pair : poche->consumptionLosses_) {
+            if (fabs(pair.second) < EPSILON_SORTIES) {
+                continue;
+            }
+
+            if (nb_display >= config::configuration().lostLoadDetailedMax()) {
+                LOG(warning) << err::ioDico().msg("WARNTooMuchCut",
+                                                  c_fmt("%lu", config::configuration().showLostLoadDetailed()));
+                return;
+            }
+
+            auto value_str = c_fmt(PREC_FLOAT.c_str(), pair.second);
+            fprintf(fr, "C2B ;;%s;%s;%s;\n", nomInc.c_str(), pair.first->nom_.c_str(), value_str.c_str());
+            nb_display++;
+        }
+    }
+}
+
+void Calculer::printCut(FILE* fr)
+{
+    fprintf(fr, "C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO COUPEE;\n");
+    for (const auto& inc : res_.incidentsRompantConnexite_) {
+        if (!inc->validite_ || !inc->pochePerdue_) {
+            continue;
+        }
+
+        // on n'affiche que les parades activees
+        if (inc->parade_ && (inc->numVarActivation_ == -1 || pbX_[inc->numVarActivation_] < 0.5)) {
+            continue;
+        }
+
+        auto nomInc = computeC2IncidentName(inc);
+
+        const auto& poche = inc->pochePerdue_;
+
+        if (fabs(poche->prodPerdue_) >= EPSILON_SORTIES || fabs(poche->consoPerdue_) >= EPSILON_SORTIES) {
+            string prodPerdue = fabs(poche->prodPerdue_) >= EPSILON_SORTIES
+                                    ? c_fmt(PREC_FLOAT.c_str(), poche->prodPerdue_)
+                                    : EMPTY_STRING;
+            string consoPerdue = fabs(poche->consoPerdue_) >= EPSILON_SORTIES
+                                     ? c_fmt(PREC_FLOAT.c_str(), poche->consoPerdue_)
+                                     : EMPTY_STRING;
+            fprintf(fr,
+                    "C2 ;;%s;%lu;%s;%s;\n",
+                    nomInc.c_str(),
+                    poche->noeudsPoche_.size(),
+                    prodPerdue.c_str(),
+                    consoPerdue.c_str());
+        }
+    }
 }
 
 int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<double>& theta, int status)
@@ -127,40 +210,11 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         // ecriture : C2.
         //--------------
-        fprintf(fr, "C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO COUPEE;\n");
-        for (const auto& inc : res_.incidentsRompantConnexite_) {
-            if (inc->validite_ && inc->pochePerdue_) {
-                string nomInc = inc->nom_;
-                if (inc->parade_) {
-                    // on n'affiche que les parades activees
-                    if (inc->numVarActivation_ == -1 || pbX_[inc->numVarActivation_] < 0.5) {
-                        continue;
-                    }
-
-                    nomInc = inc->incTraiteCur_->nom_;
-                } else if (inc->paradesActivees_) {
-                    auto str = nomInc;
-                    nomInc = "BEFORE_CURATIVE_";
-                    nomInc += str;
-                }
-
-                const auto& poche = inc->pochePerdue_;
-
-                if (fabs(poche->prodPerdue_) >= EPSILON_SORTIES || fabs(poche->consoPerdue_) >= EPSILON_SORTIES) {
-                    string prodPerdue = fabs(poche->prodPerdue_) >= EPSILON_SORTIES
-                                            ? c_fmt(PREC_FLOAT.c_str(), poche->prodPerdue_)
-                                            : EMPTY_STRING;
-                    string consoPerdue = fabs(poche->consoPerdue_) >= EPSILON_SORTIES
-                                             ? c_fmt(PREC_FLOAT.c_str(), poche->consoPerdue_)
-                                             : EMPTY_STRING;
-                    fprintf(fr,
-                            "C2 ;;%s;%lu;%s;%s;\n",
-                            nomInc.c_str(),
-                            poche->noeudsPoche_.size(),
-                            prodPerdue.c_str(),
-                            consoPerdue.c_str());
-                }
-            }
+        printCut(fr);
+        // writing : C2B
+        // detailed consumption losses
+        if (config::configuration().showLostLoadDetailed()) {
+            printCutDetailed(fr);
         }
 
         // ecriture : C1. si probleme
@@ -328,8 +382,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             const auto& hvdc = elem.second;
             puissHVDC = hvdc->puiCons_ + pbX_[hvdc->numVar_] - pbX_[hvdc->numVar_ + 1];
 
-            if (hvdc->type_ == LigneCC::PILOTAGE_EMULATION_AC
-                || hvdc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+            if (hvdc->isEmulationAC()) {
                 const auto& quad = hvdc->quadFictif_;
                 puissHVDC += quad->u2Yij_ * (theta[quad->norqua_->num_] - theta[quad->nexqua_->num_]);
             }
@@ -1109,8 +1162,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             numVar = ligne->numVar_;
             val = ligne->puiCons_ + pbX_[numVar] - pbX_[numVar + 1];
 
-            if (ligne->type_ == LigneCC::PILOTAGE_EMULATION_AC
-                || ligne->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+            if (ligne->isEmulationAC()) {
                 const auto& quad = ligne->quadFictif_;
                 tmpVal = val
                          + quad->u2Yij_

@@ -66,7 +66,6 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
 
     // I-calcul du second membre (b) + consommation prod_Imposee prod_Max
     //------------------------------------------------------------------
-    double coutMaxGrp = 0;
     for (size_t i = 0; i < res_.numNoeudBilanParZone_.size(); ++i) {
         res_.bilanParZone_[static_cast<int>(i)] = 0.;
     }
@@ -88,9 +87,6 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
         res_.bilanParZone_[grp->noeud_->numCompSynch_] += grp->prodPobj_;
 
         if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
-            coutMaxGrp = coutMaxGrp < grp->coutHausseHR_ + config::configuration().adequacyCostOffset()
-                             ? grp->coutHausseHR_ + config::configuration().adequacyCostOffset()
-                             : coutMaxGrp;
             sumProductionsMax += grp->puisMax_ - grp->prodPobj_;
             sumProductionsMin += grp->prodPobj_ - grp->puisMin_;
             if (grp->puisMin_ != 0.0) {

@@ -209,7 +209,8 @@ void Reseau::lireDonnees()
                 config::constants::valdef,
                 config::constants::valdef,
                 config::constants::valdef,
-                config::constants::valdef);
+                config::constants::valdef,
+                false);
             elemAS->quadsASurv_[quad] = 1.;
             quad->elemAS_ = elemAS;
 
@@ -393,8 +394,7 @@ void Reseau::lireDonnees()
             lccParIndice_.push_back(ligneCC);
 
             // Traitement des lignes CC en emulation AC
-            if (ligneCC->type_ == LigneCC::PILOTAGE_EMULATION_AC
-                || ligneCC->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+            if (ligneCC->isEmulationAC()) {
                 actionsPreventivesPossibles_ = true;
 
                 if (cptEmulAC >= nbCCEmulAC_) {
@@ -457,7 +457,8 @@ void Reseau::lireDonnees()
                                                                    ligneCC->puiMax_,
                                                                    ligneCC->puiMax_,
                                                                    ligneCC->puiMax_,
-                                                                   ligneCC->puiMax_);
+                                                                   ligneCC->puiMax_,
+                                                                   false);
 
                 elemAS->seuilsAssymetriques_ = true;
                 double seuilMin = -ligneCC->puiMin_;
@@ -656,7 +657,8 @@ void Reseau::lireDonnees()
     //-------------------
     if (!connexite()) {
         // ConstructionChainage();
-        // afficheSousReseau("A.20W6_1",5);
+        //It is possible to display the subnetwork by calling the afficheSousReseau(node number,depth level) method
+        // where node number is the center node of the subnetwork and depth level is the distance in nodes depth from that center.
         ostringstream errMsg;
         errMsg << err::ioDico().msg("ERRReseauNonConnexe");
         throw ErrorI(errMsg.str());
@@ -679,7 +681,8 @@ void Reseau::lireDonnees()
                                                            seuilN,
                                                            config::constants::valdef,
                                                            config::constants::valdef,
-                                                           config::constants::valdef);
+                                                           config::constants::valdef,
+                                                           true);
 
         elemAS->seuilsAssymetriques_ = true;
 
@@ -692,6 +695,9 @@ void Reseau::lireDonnees()
             } else if (type == HVDC) {
                 const auto& lcc = lccParIndice_[config.sectnumqDIE()[j + cptTableDescr] - 1];
                 elemAS->hvdcASurv_[lcc] = config.sectcoefDIE()[j + cptTableDescr];
+                if (lcc->isEmulationAC()) {
+                    elemAS->quadsASurv_[lcc->quadFictif_] = config.sectcoefDIE()[j + cptTableDescr];
+                }
             } else {
                 LOG_ALL(error) << " Objet dans section surveillee non traite : type " << type;
             }
@@ -1277,9 +1283,11 @@ ElementASurveiller::ElementASurveiller(const string& nom,
                                        double seuilN,
                                        double seuilInc,
                                        double seuilIncComplexe,
-                                       double seuilAvantCuratif) :
+                                       double seuilAvantCuratif,
+                                       bool isWatchedSection) :
     nom_(nom),
     num_(num),
+    isWatchedSection(isWatchedSection),
     survMaxN_(survN),
     survMaxInc_(survInc),
     seuilMaxN_(seuilN),
@@ -1292,6 +1300,7 @@ ElementASurveiller::ElementASurveiller(const string& nom,
 
 double ElementASurveiller::seuilMax(const std::shared_ptr<Incident>& icdt) const
 {
+    const auto& config = config::configuration();
     if (!icdt) {
         return seuilMaxN_;
     }
@@ -1313,14 +1322,15 @@ double ElementASurveiller::seuilMax(const std::shared_ptr<Incident>& icdt) const
     }
 
     if (icdt->incidentComplexe_ && seuilMaxIncComplexe_ != config::constants::valdef) {
-        return seuilMaxIncComplexe_;
+        return config.thresholdMaxITAM(seuilMaxIncComplexe_, seuilMaxAvantCurIncComplexe_);
     }
 
-    return seuilMaxInc_;
+    return config.thresholdMaxITAM(seuilMaxInc_, seuilMaxAvantCur_);
 }
 
 double ElementASurveiller::seuilMin(const std::shared_ptr<Incident>& icdt) const
 {
+    const auto& config = config::configuration();
     auto checkThreshold = [&icdt, this](double threshold) {
         return (threshold != config::constants::valdef) ? -threshold : -seuilMax(icdt);
     };
@@ -1344,10 +1354,12 @@ double ElementASurveiller::seuilMin(const std::shared_ptr<Incident>& icdt) const
         }
 
         if (icdt->incidentComplexe_) {
-            return checkThreshold(seuilMaxIncComplexeExOr_);
+            double threshold = config.thresholdMaxITAM(seuilMaxIncComplexeExOr_, seuilMaxAvantCurIncComplexeExOr_);
+            return checkThreshold(threshold);
         }
 
-        return checkThreshold(seuilMaxIncExOr_);
+        double threshold = config.thresholdMaxITAM(seuilMaxIncExOr_, seuilMaxAvantCurExOr_);
+        return checkThreshold(threshold);
     }
 
     return -seuilMax(icdt);
@@ -1600,6 +1612,11 @@ LigneCC::LigneCC(int unsigned num,
 {
 }
 
+bool LigneCC::isEmulationAC() const
+{
+    return type_ == PILOTAGE_EMULATION_AC || type_ == PILOTAGE_EMULATION_AC_OPTIMISE;
+}
+
 //--------------------
 // Reseau::interfaceDIE
 //--------------------
@@ -1822,7 +1839,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         const auto& lcc = lccIt->first;
         lcc->puiMin_ = lccIt->second;
 
-        if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+        if (lcc->isEmulationAC()) {
             // Mise a jour du quad fictif surveille
             const auto& elemAS = lcc->quadFictif_->elemAS_;
             double minT = -lcc->puiMin_;
@@ -1838,7 +1855,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         const auto& lcc = elem.first;
         lcc->puiMax_ = elem.second;
 
-        if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+        if (lcc->isEmulationAC()) {
             // Mise à jour du quad fictif surveillé
             auto& elemAS = lcc->quadFictif_->elemAS_;
             elemAS->seuilMaxN_ = lcc->puiMax_;
@@ -2194,7 +2211,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
             const auto& lcc = lccIt->first;
             lcc->puiMin_ = lcc->puiMinBase_;
 
-            if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+            if (lcc->isEmulationAC()) {
                 // Mise a jour du quad fictif surveille
                 auto& quad = lcc->quadFictif_->elemAS_;
                 quad->seuilMaxNExOr_ = lcc->puiMin_;
@@ -2210,7 +2227,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
             const auto& lcc = lccIt->first;
             lcc->puiMax_ = lcc->puiMaxBase_;
 
-            if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+            if (lcc->isEmulationAC()) {
                 // Mise a jour du quad fictif surveille
                 const auto& quad = lcc->quadFictif_->elemAS_;
                 quad->seuilMaxN_ = lcc->puiMax_;
@@ -2583,19 +2600,6 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (const auto& line : config.unavailableLines) {
-        auto quadsIt = quads_.find(line);
-        if (quadsIt != quads_.end()) {
-            const auto& quad = quadsIt->second;
-            quad->etatExBase_ = false;
-            quad->etatEx_ = false;
-            quad->etatOrBase_ = false;
-            quad->etatOr_ = false;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
-        }
-    }
-
     for (const auto& line : config.pmaxHvdc) {
         const auto& str = std::get<VariantConfiguration::NAME>(line);
         auto lccIt = LigneCCs_.find(str);
@@ -2605,7 +2609,7 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
             lcc->puiMaxBase_ = var_dbl;
             lcc->puiMax_ = var_dbl;
 
-            if (lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC_OPTIMISE) {
+            if (lcc->isEmulationAC()) {
                 // Mise à jour du quad fictif surveillé
                 const auto& elemAS = lcc->quadFictif_->elemAS_;
                 elemAS->seuilMaxN_ = lcc->puiMax_;
@@ -2729,6 +2733,26 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
             LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
         }
     }
+
+    Quadripole::SetQuadripoleSortedByName indispoLignesBase;
+    for (const auto& line : config.unavailableLines) {
+            auto quadsIt = quads_.find(line);
+            if (quadsIt != quads_.end()) {
+                indispoLignesBase.insert(quadsIt->second);
+                const auto& quad = quadsIt->second;
+                quad->etatExBase_ = false;
+                quad->etatOrBase_ = false;
+                } else {
+                LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
+            }
+
+        }
+        int status = modifReseauTopo(indispoLignesBase);
+
+        if (status != METRIX_PAS_PROBLEME) {
+            LOG_ALL(warning) << "probleme lors de la modification du reseau pour la variante de base";
+        }
+
 }
 
 void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfiguration& config)
@@ -2750,7 +2774,6 @@ void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfigur
             return;
         }
         variant_index++;
-
         updateVariant(mapping, pair.second);
     }
 }
@@ -3008,6 +3031,22 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
+    for (const auto& group : config.randomGroups) {
+        auto groupesIt = groupes_.find(group);
+        if (groupesIt != groupes_.end()) {
+            variant->randomGroups_.push_back(groupesIt->second);
+        } else {
+            throw ErrorI(err::ioDico().msg("ERRGrpRandomDifferentGrp", c_fmt("%d", variant->num_)));
+        }
+    }
+    if (!config.randomGroups.empty()){
+        for (const auto& group : groupes_){
+            if (std::find(config.randomGroups.begin(), config.randomGroups.end(), group.first) == config.randomGroups.end()){
+                throw ErrorI(err::ioDico().msg("ERRGrpRandomDifferentGrp", c_fmt("%d", variant->num_)));
+            }
+        }
+    }
+    
     mapping[variant->indispoLignes_].push_back(variant);
 }
 

@@ -13,7 +13,7 @@ cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 include(CMakePackageConfigHelpers)
 
 project(MetrixSimulator 
-    VERSION 1.0.0
+    VERSION 7.4.0
     LANGUAGES C CXX)
 
 cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
@@ -107,6 +107,7 @@ set(METRIX_SOURCES
         src/config/parades_configuration.cpp
         src/config/converter.cpp
         src/config/version_def.cpp
+        src/cte.cpp
         src/options/options.cpp
         src/compute/solver.cpp
         src/margin_variations_compute.cpp
@@ -161,10 +162,12 @@ endif()
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
     message(STATUS "CODE COVERAGE")
+	set(CMAKE_BUILD_TYPE "Debug")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
     include(cmake/CodeCoverage)
-    code_coverage(NAME code-coverage
+    CODE_COVERAGE(NAME code-coverage
         OUTPUT_DIR coverage
+        ROOT_DIR src
         EXCLUDE_DIRS tests external
         DEPENDENCIES metrix-simulator
     )
@@ -181,6 +184,7 @@ option(METRIX_RUN_ALL_TESTS "Run reduced scope of tests" ON)
 
 enable_testing()
 add_subdirectory(tests)
+
 
 write_basic_package_version_file(
     "${CMAKE_CURRENT_BINARY_DIR}/metrix-simulator-config.cmake"

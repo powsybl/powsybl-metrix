@@ -45,7 +45,7 @@ public:
             MAX_INC_EXOR,
             MAX_INC_COMPLEX_EXOR,
             MAX_BEFORE_CUR_EXOR,
-            MAX_BEFORE_CUR_COMPLEX_EXOR
+            MAX_BEFORE_CUR_COMPLEX_EXOR,
         };
 
         int num = variant_base;
@@ -69,6 +69,10 @@ public:
         std::vector<double_value> balancesProd;
 
         std::vector<double_value> probas;
+
+        //Stores the randomized list of groups returned by the G++9 compiler
+        //Used for the testsof the CI
+        std::vector<std::string> randomGroups;
     };
     using VariantMap = std::map<int, VariantConfig>;
 
@@ -127,6 +131,8 @@ private:
     void processBalancesConsumption(VariantConfig& variant, std::istringstream& iss) const;
     void processBalancesProduction(VariantConfig& variant, std::istringstream& iss) const;
     void processProbaInc(VariantConfig& variant, std::istringstream& iss) const;
+
+    void processRandomGroups(VariantConfig& variant, std::istringstream& iss) const;
 
 private:
     const std::map<std::string, Processor>

@@ -121,6 +121,7 @@ ERRPasDeconsoSurNoeud						Il n'y a pas de conso sur le noeud $1
 ERRApplLoiBilanGrpNonImp					Erreur sur l'application de la variante de bilan, le groupe $1 n etant pas impose
 ERRApplLoiBilanDelta						Erreur : impossible d'appliquer la loi de bilan sur la région $1 (bilan - valeur cible = $2)
 ERRFinFichierIntrouvable					Erreur : la fin du fichier $1 est introuvable
+ERRGrpRandomDifferentGrp                    Erreur : Variante $1 : les listes groupes_ et randomGroups ne contiennent pas les mêmes groupes
 
 //------ Messages d'erreur lors de la lecture du reseau --------
 ERRPbOuvertureBase							Problème d'ouverture de la base lors du sous-programme lecture_parametres
@@ -185,6 +186,7 @@ WARNHVDCCurNonTraite						La HVDC $1 ne pourra pas agir en curatif car elle n'es
 WARNHVDCConsigneImposee						Le pilotage de la HVDC $1 est modifié en -- Consigne Imposée --
 WARNQuadBoucle								Attention: Le quadripole $1 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
 WARNPimpInfConso							La production disponible est inférieure à la consommation. Délestage hors réseau nécessaire.
+WARNTooMuchCut                              Le nombre de consommations coupées dépasse le nombre maximal $1 configuré: certaines consommations coupées ne seront pas affichées
 
 //------------- Curatif topologique --------------------
 ERRCurTopoIncidentInconnu					Le défaut $1 mentionné dans la liste des parades topologiques est absent du calcul

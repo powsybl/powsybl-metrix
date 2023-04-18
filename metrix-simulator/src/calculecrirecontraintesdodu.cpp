@@ -194,11 +194,18 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
 
     // melange des groupes: afin que l'on n'ait pas besoin de bruiter les couts
     std::vector<std::shared_ptr<Groupe>> grp_melanges;
-    grp_melanges.reserve(res_.nbGroupes_);
-    for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
-        grp_melanges.push_back(grpIt->second);
+    // Si la variante possède une liste de groupe GROURAND, elle va l'utiliser
+    if (!varianteCourante_->randomGroups_.empty()){
+        grp_melanges = varianteCourante_->randomGroups_;
     }
-    std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
+    else{
+        //Sinon le code prend la liste de base et la mélange lui-même.
+        grp_melanges.reserve(res_.nbGroupes_);
+        for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
+            grp_melanges.push_back(grpIt->second);
+        }
+        std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
+    }
 
     for (int i = 0; i < res_.nbGroupes_; ++i) {
         const auto& grp = grp_melanges[i];
@@ -224,42 +231,46 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
                     // A la hausse
                     pbXmin_[numVar] = 0.0;
                     pbXmax_[numVar] = grp->puisMax_ - grp->prodPobj_;
-                    pbCoutLineaire_[numVar] = grp->coutHausseHR_ + config::configuration().adequacyCostOffset();
+                    pbCoutLineaire_[numVar] = std::max(grp->coutHausseHR_, config::configuration().noiseCost())
+                                              + config::configuration().adequacyCostOffset();
                     // A la baisse
                     pbXmin_[numVar + 1] = 0.0;
                     pbXmax_[numVar + 1] = grp->prodPobj_ - grp->puisMin_;
-                    pbCoutLineaire_[numVar + 1] = grp->coutBaisseHR_ + config::configuration().adequacyCostOffset();
+                    pbCoutLineaire_[numVar + 1] = std::max(grp->coutBaisseHR_, config::configuration().noiseCost())
+                                                  + config::configuration().adequacyCostOffset();
 
                 } else { // P_min>P_0
                     // A la hausse
                     pbXmin_[numVar] = grp->puisMin_ - grp->prodPobj_;
                     pbXmax_[numVar] = grp->puisMax_ - grp->prodPobj_;
-                    pbCoutLineaire_[numVar] = grp->coutHausseHR_ + config::configuration().adequacyCostOffset();
+                    pbCoutLineaire_[numVar] = std::max(grp->coutHausseHR_, config::configuration().noiseCost())
+                                              + config::configuration().adequacyCostOffset();
                     // A la baisse
                     pbXmin_[numVar + 1] = 0.0;
                     pbXmax_[numVar + 1] = 0.0;
-                    pbCoutLineaire_[numVar + 1] = 0.0;
+                    pbCoutLineaire_[numVar + 1] = config::configuration().noiseCost();
                 }
             } else {
                 // P_min<0
                 // A la hausse
                 pbXmin_[numVar] = 0.;
                 pbXmax_[numVar] = grp->puisMax_ - grp->prodPobj_;
-                pbCoutLineaire_[numVar] = grp->coutHausseHR_ + config::configuration().adequacyCostOffset();
+                pbCoutLineaire_[numVar] = std::max(grp->coutHausseHR_, config::configuration().noiseCost())
+                                          + config::configuration().adequacyCostOffset();
                 // A la baisse
                 pbXmin_[numVar + 1] = 0.;
                 pbXmax_[numVar + 1] = grp->prodPobj_ - grp->puisMin_;
-                pbCoutLineaire_[numVar + 1] = grp->coutBaisseHR_ + config::configuration().adequacyCostOffset();
+                pbCoutLineaire_[numVar + 1] = std::max(grp->coutBaisseHR_, config::configuration().noiseCost())
+                                              + config::configuration().adequacyCostOffset();
             }
         } else { // Groupe deconnecte ou fixe HR
             // A la hausse
             pbXmin_[numVar] = 0.;
             pbXmax_[numVar] = 0.;
-            pbCoutLineaire_[numVar] = 0.;
             // A la baisse
             pbXmin_[numVar + 1] = 0.;
             pbXmax_[numVar + 1] = 0.;
-            pbCoutLineaire_[numVar + 1] = 0.;
+            pbCoutLineaire_[numVar + 1] = config::configuration().noiseCost();
         }
 
         if (pbXmax_[numVar] - pbXmin_[numVar] < config::constants::epsilon) {
@@ -278,14 +289,18 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
 
 void Calculer::ajoutRedispatchCostOffsetConsos()
 {
+    const auto& config = config::configuration();
     for (auto cIt = res_.consos_.cbegin(); cIt != res_.consos_.end(); ++cIt) {
         const auto& conso = cIt->second;
         if (conso->numVarConso_ >= 0) {
             if (conso->valeur_ >= 0) {
-                pbCoutLineaire_[conso->numVarConso_] = conso->cout_ + config::configuration().redispatchCostOffset();
+                pbCoutLineaire_[conso->numVarConso_] = std::max(conso->cout_, config.noiseCost())
+                                                       + config.redispatchCostOffset();
                 pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
             } else {
-                pbCoutLineaire_[conso->numVarConso_] = -(conso->cout_ + config::configuration().redispatchCostOffset());
+                // consumption cost is negative so we use min instead of max to compare to cost noise
+                pbCoutLineaire_[conso->numVarConso_] = -(std::min(conso->cout_, -config.noiseCost())
+                                                         + config.redispatchCostOffset());
                 pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
             }
         }
@@ -308,11 +323,13 @@ int Calculer::ecrireContraintesDeBordConsosDodu()
             if (consoNodale >= 0) {
                 pbXmin_[numVar] = 0.0;
                 pbXmax_[numVar] = conso->seuil_ * consoNodale;
-                pbCoutLineaire_[numVar] = conso->cout_ + config::configuration().adequacyCostOffset();
+                pbCoutLineaire_[numVar] = std::max(conso->cout_, config::configuration().noiseCost())
+                                          + config::configuration().adequacyCostOffset();
             } else {
                 pbXmin_[numVar] = conso->seuil_ * consoNodale;
                 pbXmax_[numVar] = 0.0;
-                pbCoutLineaire_[numVar] = -(conso->cout_ + config::configuration().adequacyCostOffset());
+                pbCoutLineaire_[numVar] = -(std::max(conso->cout_, config::configuration().noiseCost())
+                                            + config::configuration().adequacyCostOffset());
             }
 
             if (pbXmax_[numVar] - pbXmin_[numVar] < config::constants::epsilon) {
@@ -1178,11 +1195,13 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
     if (poche->pocheAvecConsoProd_) {
         for (const auto& node : poche->noeudsPoche_) {
             for (const auto& conso : node->listeConsos_) {
-                consoCoupee += conso->valeur_;
+                double cut = conso->valeur_;
                 int numVar = conso->numVarConso_;
                 if (numVar >= 0) {
-                    consoCoupee -= pbX_[numVar];
+                    cut -= pbX_[numVar];
                 }
+                consoCoupee += cut;
+                poche->consumptionLosses_[conso] = cut;
             }
 
             for (const auto& tmpGrp : node->listeGroupes_) {
@@ -2180,7 +2199,10 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
                     continue;
                 }
 
-                quadFictif |= (quad->typeQuadripole_ == Quadripole::QUADRIPOLE_EMULATION_AC);
+                if (!elemAS->isWatchedSection) {
+                    // In case of watched section, the TD shall not be controllable through constraints
+                    quadFictif |= (quad->typeQuadripole_ == Quadripole::QUADRIPOLE_EMULATION_AC);
+                }
 
                 double transiQuad = transitSurQuad(quad, nullptr, secondMembre);
                 tran += coeff * transiQuad;
@@ -2673,12 +2695,16 @@ void Calculer::addCurativeVariable(const std::shared_ptr<Groupe>& grp, double pr
     typeEtat_.push_back(GRP_CUR_H);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-    pbCoutLineaire_.push_back((grp->coutHausseAR_ + config::configuration().redispatchCostOffset()) * proba);
+    double value = std::max(grp->coutHausseAR_, config::configuration().noiseCost())
+                   + config::configuration().redispatchCostOffset();
+    pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((grp->coutHausseAR_) * proba);
     typeEtat_.push_back(GRP_CUR_B);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-    pbCoutLineaire_.push_back((grp->coutBaisseAR_ + config::configuration().redispatchCostOffset()) * proba);
+    value = std::max(grp->coutBaisseAR_, config::configuration().noiseCost())
+            + config::configuration().redispatchCostOffset();
+    pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((grp->coutBaisseAR_) * proba);
     ajouterContraintesBorneCuratifGroupe(grp->numVarGrp_, numVarCur, grp);
 }
@@ -2689,11 +2715,15 @@ void Calculer::addCurativeVariable(const std::shared_ptr<Consommation>& conso, d
     typeEtat_.push_back(CONSO_H);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(0.);
-    pbCoutLineaire_.push_back((conso->coutEffacement_ + config::configuration().redispatchCostOffset()) * proba);
+    double value = std::max(conso->coutEffacement_, config::configuration().noiseCost())
+                   + config::configuration().redispatchCostOffset();
+    pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
     typeEtat_.push_back(CONSO_B);
     pbXmin_.push_back(0.);
-    pbCoutLineaire_.push_back((conso->coutEffacement_ + config::configuration().redispatchCostOffset()) * proba);
+    value = std::max(conso->coutEffacement_, config::configuration().noiseCost())
+            + config::configuration().redispatchCostOffset();
+    pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
     double effacementMax = conso->pourcentEffacement_ * conso->valeur_;
     if (effacementMax > config::constants::epsilon) {
@@ -4265,12 +4295,14 @@ int Calculer::fixerProdSansReseau()
                 pbCoutLineaire_[numVar] = (config.computationType()
                                            == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
                                               ? 0.
-                                              : grpe->coutHausseAR_ + config::configuration().redispatchCostOffset();
+                                              : std::max(grpe->coutHausseAR_, config::configuration().noiseCost())
+                                                    + config::configuration().redispatchCostOffset();
                 pbX_[numVar + 1] = 0.0;
-                pbCoutLineaire_[numVar + 1]
-                    = (config.computationType() == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
-                          ? 0.
-                          : grpe->coutBaisseAR_ + config::configuration().redispatchCostOffset();
+                pbCoutLineaire_[numVar + 1] = (config.computationType()
+                                               == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
+                                                  ? 0.
+                                                  : std::max(grpe->coutBaisseAR_, config::configuration().noiseCost())
+                                                        + config::configuration().redispatchCostOffset();
                 pbXmin_[numVar] = 0.0;
                 pbXmax_[numVar] = (config.computationType()
                                    == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
@@ -4285,8 +4317,8 @@ int Calculer::fixerProdSansReseau()
                 }
                 pbXmax_[numVar + 1] = value;
             } else {
-                pbCoutLineaire_[numVar] = 0.;
-                pbCoutLineaire_[numVar + 1] = 0.;
+                pbCoutLineaire_[numVar] = config::configuration().noiseCost();
+                pbCoutLineaire_[numVar + 1] = config::configuration().noiseCost();
                 pbXmin_[numVar] = 0.;
                 pbXmax_[numVar] = 0.;
                 pbXmin_[numVar + 1] = 0.;
