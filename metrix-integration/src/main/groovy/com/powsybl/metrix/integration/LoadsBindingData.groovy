@@ -27,28 +27,28 @@ class LoadsBindingData {
         if (id.isEmpty()) {
             logDslLoader.logWarn("missing a name for loads group")
             return
-        } else if (id.contains(';')) {
+        }
+        if (id.contains(';')) {
             logDslLoader.logError("semi-colons are forbidden in loads group name %s", id)
             return
         }
 
         LoadsBindingData spec = loadsBindingData(closure)
 
-        if (spec && spec.filter) {
-
-            // evaluate filter
-            def filteringContext = network.getLoads().collect { l -> new FilteringContext(l) }
-            Collection<Identifiable> filteredLoads = Filter.evaluate(binding, filteringContext, "load", spec.filter)
-
-            List<String> loadIds = filteredLoads.collect { it -> it.id }
-            if (loadIds.size() > 1) {
-                data.addLoadsBinding(id, loadIds)
-            } else {
-                logDslLoader.logWarn("loads group %s ignored because it contains %d element", id, loadIds.size())
-            }
-        } else {
+        if (!spec || !spec.filter) {
             logDslLoader.logError("missing filter for loads group %s", id)
+            return
         }
+
+        // evaluate filter
+        def filteringContext = network.getLoads().collect { l -> new FilteringContext(l) }
+        Collection<Identifiable> filteredLoads = Filter.evaluate(binding, filteringContext, "load", spec.filter)
+        List<String> loadIds = filteredLoads.collect { it -> it.id }
+        if (loadIds.size() <= 1) {
+            logDslLoader.logWarn("loads group %s ignored because it contains %d element", id, loadIds.size())
+            return
+        }
+        data.addLoadsBinding(id, loadIds)
     }
 
     protected static LoadsBindingData loadsBindingData(Closure closure) {

@@ -27,32 +27,32 @@ class GeneratorsBindingData extends LoadsBindingData {
         if (id.isEmpty()) {
             logDslLoader.logError("missing generators group name")
             return
-        } else if (id.contains(';')) {
+        }
+        if (id.contains(';')) {
             logDslLoader.logError("semi-colons are forbidden in generators group name %s", id)
             return
         }
 
         GeneratorsBindingData spec = generatorsBindingData(closure)
 
-        if (spec && spec.filter) {
-
-            // evaluate filter
-            def filteringContext = network.getGenerators().collect { g -> new FilteringContext(g) }
-            Collection<Identifiable> filteredGenerators = Filter.evaluate(binding, filteringContext, "generator", spec.filter)
-
-            List<String> generatorIds = filteredGenerators.collect { it -> it.id }
-
-            if (generatorIds.size() > 1) {
-                if (spec.referenceVariable) {
-                    data.addGeneratorsBinding(id, generatorIds, spec.referenceVariable)
-                } else {
-                    data.addGeneratorsBinding(id, generatorIds)
-                }
-            } else {
-                logDslLoader.logWarn("generators group %s ignored because it contains %d element", id, generatorIds.size())
-            }
-        } else {
+        if (!spec || !spec.filter) {
             logDslLoader.logError("missing filter for generators group %s", id)
+            return
+        }
+
+        // evaluate filter
+        def filteringContext = network.getGenerators().collect { g -> new FilteringContext(g) }
+        Collection<Identifiable> filteredGenerators = Filter.evaluate(binding, filteringContext, "generator", spec.filter)
+        List<String> generatorIds = filteredGenerators.collect { it -> it.id }
+        if (generatorIds.size() <= 1) {
+            logDslLoader.logWarn("generators group %s ignored because it contains %d element", id, generatorIds.size())
+            return
+        }
+
+        if (spec.referenceVariable) {
+            data.addGeneratorsBinding(id, generatorIds, spec.referenceVariable)
+        } else {
+            data.addGeneratorsBinding(id, generatorIds)
         }
     }
 
