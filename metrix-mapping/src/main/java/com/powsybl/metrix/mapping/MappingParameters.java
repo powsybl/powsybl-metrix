@@ -9,7 +9,6 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableMap;
-import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
 
 import java.util.Objects;
@@ -20,13 +19,9 @@ public class MappingParameters {
 
     public static MappingParameters load() {
         MappingParameters parameters = new MappingParameters();
-        if (PlatformConfig.defaultConfig().moduleExists("mapping-default-parameters")) {
-            ModuleConfig config = PlatformConfig.defaultConfig().getModuleConfig("mapping-default-parameters");
-            if (config != null) {
-                parameters.setToleranceThreshold(config.getOptionalFloatProperty("tolerance-threshold")
-                        .orElseGet(() -> config.getFloatProperty("toleranceThreshold", DEFAULT_TOLERANCE_THRESHOLD)));
-            }
-        }
+        PlatformConfig.defaultConfig().getOptionalModuleConfig("mapping-default-parameters")
+                .ifPresent(config -> parameters.setToleranceThreshold(config.getOptionalFloatProperty("tolerance-threshold")
+                        .orElseGet(() -> config.getFloatProperty("toleranceThreshold", DEFAULT_TOLERANCE_THRESHOLD))));
         return parameters;
     }
 

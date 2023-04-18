@@ -22,8 +22,8 @@ public final class MetrixIidmConfiguration {
     }
 
     public static MetrixIidmConfiguration load(PlatformConfig platformConfig) {
-        ModuleConfig moduleConfig = platformConfig.getModuleConfig("metrix");
-
+        ModuleConfig moduleConfig = platformConfig.getOptionalModuleConfig("metrix")
+                .orElseThrow(() -> new IllegalStateException("Metrix module configuration could not be found"));
         String iidmExportVersion = moduleConfig.getOptionalStringProperty("iidm-export-version")
                 .orElseGet(() -> moduleConfig.getStringProperty("iidmExportVersion", IIDM_EXPORT_VERSION));
         return new MetrixIidmConfiguration(iidmExportVersion);
