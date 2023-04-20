@@ -456,14 +456,14 @@ public class TimeSeriesMappingConfigJson {
     static Map<String, Set<MappingKey>> parseTimeSeriesToEquipment(JsonParser parser) {
         Objects.requireNonNull(parser);
         try {
-            Map<String, Set<MappingKey>> map = new HashMap<>();
+            Map<String, Set<MappingKey>> map = new LinkedHashMap<>();
             String timeSeriesName = null;
             Set<MappingKey> mappingKeys = null;
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case START_OBJECT:
-                        mappingKeys = new HashSet<>();
+                        mappingKeys = new LinkedHashSet<>();
                         break;
                     case FIELD_NAME:
                         String fieldName = parser.getCurrentName();
@@ -504,7 +504,7 @@ public class TimeSeriesMappingConfigJson {
     static Map<MappingKey, String> parseEquipmentToTimeSeries(JsonParser parser) {
         Objects.requireNonNull(parser);
         try {
-            Map<MappingKey, String> map = new HashMap<>();
+            Map<MappingKey, String> map = new LinkedHashMap<>();
             String timeSeriesName = null;
             MappingKey mappingKey = null;
             JsonToken token;

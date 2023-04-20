@@ -25,124 +25,75 @@ public class TimeSeriesMappingConfig {
 
     // Time series to equipments
     protected final Map<MappingKey, List<String>> timeSeriesToGeneratorsMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToLoadsMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToDanglingLinesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToHvdcLinesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToPhaseTapChangersMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToBreakersMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToTransformersMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToLinesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToRatioTapChangersMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToLccConverterStationsMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> timeSeriesToVscConverterStationsMapping = new LinkedHashMap<>();
 
     // Equipment to time series
     protected final Map<MappingKey, List<String>> generatorToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> loadToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> danglingLineToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> hvdcLineToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> phaseTapChangerToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> breakerToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> transformerToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> lineToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> ratioTapChangerToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> lccConverterStationToTimeSeriesMapping = new LinkedHashMap<>();
-
     protected final Map<MappingKey, List<String>> vscConverterStationToTimeSeriesMapping = new LinkedHashMap<>();
 
-    //
+    // Equipment time series (thresholds and costs)
     protected final Map<String, Set<MappingKey>> timeSeriesToEquipmentMap = new LinkedHashMap<>();
-
     protected final Map<MappingKey, String> equipmentToTimeSeriesMap = new LinkedHashMap<>();
 
     // Equipments for which time series must be provided
     protected final Set<MappingKey> generatorTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> loadTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> danglingLineTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> hvdcLineTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> phaseTapChangerTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> breakerTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> transformerTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> lineTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> ratioTapChangerTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> lccConverterStationTimeSeries = new HashSet<>();
-
     protected final Set<MappingKey> vscConverterStationTimeSeries = new HashSet<>();
 
     // Unmapped equipments
     protected final Set<String> unmappedGenerators = new HashSet<>();
-
     protected final Set<String> unmappedLoads = new HashSet<>();
-
     protected final Set<String> unmappedFixedActivePowerLoads = new HashSet<>();
-
     protected final Set<String> unmappedVariableActivePowerLoads = new HashSet<>();
-
     protected final Set<String> unmappedDanglingLines = new HashSet<>();
-
     protected final Set<String> unmappedHvdcLines = new HashSet<>();
-
     protected final Set<String> unmappedPhaseTapChangers = new HashSet<>();
-
     protected final Set<String> unmappedMinPGenerators = new HashSet<>();
-
     protected final Set<String> unmappedMaxPGenerators = new HashSet<>();
-
     protected final Set<String> unmappedMinPHvdcLines = new HashSet<>();
-
     protected final Set<String> unmappedMaxPHvdcLines = new HashSet<>();
 
     // Equipments to ignore concerning unmapped equipments
     protected final Set<String> ignoredUnmappedGenerators = new HashSet<>();
-
     protected final Set<String> ignoredUnmappedLoads = new HashSet<>();
-
     protected final Set<String> ignoredUnmappedDanglingLines = new HashSet<>();
-
     protected final Set<String> ignoredUnmappedHvdcLines = new HashSet<>();
-
     protected final Set<String> ignoredUnmappedPhaseTapChangers = new HashSet<>();
 
     // Disconnected equipments
     protected final Set<String> disconnectedGenerators = new HashSet<>();
-
     protected final Set<String> disconnectedLoads = new HashSet<>();
-
     protected final Set<String> disconnectedDanglingLines = new HashSet<>();
 
     // Out of main Cc equipments
     protected final Set<String> outOfMainCcGenerators = new HashSet<>();
-
     protected final Set<String> outOfMainCcLoads = new HashSet<>();
-
     protected final Set<String> outOfMainCcDanglingLines = new HashSet<>();
 
     // Planned outages

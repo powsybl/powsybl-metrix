@@ -583,8 +583,8 @@ public class TimeSeriesMapper {
         identifyConstantTimeSeries(forceNoConstantTimeSeries, table, version, context.timeSeriesToLinesMapping, constantTimeSeriesToLinesMapping, timeSeriesToLinesMapping);
 
         // Check if some equipement mappings are constant
-        Map<IndexedName, Set<MappingKey>> equipmentTimeSeries = new HashMap<>();
-        Map<IndexedName, Set<MappingKey>> constantEquipmentTimeSeries = new HashMap<>();
+        Map<IndexedName, Set<MappingKey>> equipmentTimeSeries = new LinkedHashMap<>();
+        Map<IndexedName, Set<MappingKey>> constantEquipmentTimeSeries = new LinkedHashMap<>();
         context.equipmentTimeSeries.forEach((indexedName, mappingKeys) -> {
             int timeSeriesNum = indexedName.getNum();
             if (table.getStdDev(version, timeSeriesNum) < EPSILON_COMPARISON) { // std dev == 0 means time-series is constant
@@ -696,7 +696,7 @@ public class TimeSeriesMapper {
             if (danglingLine == null) {
                 throw new TimeSeriesMappingException("Dangling line '" + id + "' not found");
             }
-            constantBalance += -danglingLine.getP0();
+            constantBalance -= danglingLine.getP0();
         }
 
         if (observer != null) {
@@ -809,7 +809,7 @@ public class TimeSeriesMapper {
                     context.timeSeriesToVscConverterStationsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToVscConverterStationsMapping(), table, network, config);
                     context.timeSeriesToLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToLinesMapping(), table, network, config);
                     context.equipmentTimeSeries = config.getTimeSeriesToEquipment().entrySet().stream()
-                            .collect(Collectors.toMap(e -> new IndexedName(e.getKey(), table.getDoubleTimeSeriesIndex(e.getKey())), Map.Entry::getValue));
+                            .collect(Collectors.toMap(e -> new IndexedName(e.getKey(), table.getDoubleTimeSeriesIndex(e.getKey())), Map.Entry::getValue, (x, y) -> y, LinkedHashMap::new));
                 }
 
                 mapToNetwork(context, parameters, version, checker);
