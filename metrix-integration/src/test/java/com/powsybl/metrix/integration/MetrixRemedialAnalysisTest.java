@@ -35,6 +35,18 @@ public class MetrixRemedialAnalysisTest {
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
+    private ContingenciesProvider getBranchContingenciesProvider() {
+        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
+        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
+        return network -> ImmutableList.of(cty);
+    }
+
+    private MetrixDslData getBranchMonitoringMetrixDslData() {
+        MetrixDslData metrixDslData = new MetrixDslData();
+        metrixDslData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
+        return metrixDslData;
+    }
+
     private String getErrorInvalidRemedialFile(int line) {
         String message = ERROR + ";";
         message += RESOURCE_BUNDLE.getString("remedialsSection") + ";";
@@ -213,228 +225,154 @@ public class MetrixRemedialAnalysisTest {
 
     @Test
     void invalidRemedialLineContingencyEmptyTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", ";1;FP.AND1  FVERGE1  2;"),
-            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", ";1;FP.AND1  FVERGE1  2;"),
+                getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
         );
     }
 
     @Test
     void invalidRemedialLineNbActionEmptyTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;;FP.AND1  FVERGE1  2;"),
-            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileAction")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;;FP.AND1  FVERGE1  2;"),
+                getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileAction")
         );
     }
 
     @Test
     void invalidRemedialLineNoActionTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;1;;"),
-            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileLine")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;1;;"),
+                getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileLine")
         );
     }
 
     @Test
     void invalidRemedialLineActionEmptyTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;2;;FP.AND1  FVERGE1  2;"),
-            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;2;;FP.AND1  FVERGE1  2;"),
+                getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
         );
     }
 
     @Test
     void invalidRemedialLineBranchToOpenActionTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;2;action;+FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "action")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;2;action;+FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "action")
         );
     }
 
     @Test
     void invalidRemedialLineBranchToCloseActionTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+action;FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "action")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+action;FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "action")
         );
     }
 
     @Test
     void invalidRemedialLineBranchToOpenTypeTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;2;FSSV.O11_G;FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), "FSSV.O11_G")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;2;FSSV.O11_G;FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), "FSSV.O11_G")
         );
     }
 
     @Test
     void invalidRemedialLineBranchToCloseTypeTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+FSSV.O11_G;FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), "FSSV.O11_G")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;2;+FSSV.O11_G;FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), "FSSV.O11_G")
         );
     }
 
     @Test
     void invalidRemedialLineConstraintTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId|equipment;1;FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "equipment")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId|equipment;1;FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), "equipment")
         );
     }
 
     @Test
     void invalidRemedialLineConstraintTypeTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId|FSSV.O11_G;1;FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialConstraintType"), "FSSV.O11_G")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId|FSSV.O11_G;1;FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialConstraintType"), "FSSV.O11_G")
         );
     }
 
     @Test
     void invalidRemedialLineEmptyConstraintTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-        MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
-
         remedialTest(
-            contingenciesProvider,
-            metrixDslData,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId||FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
-            getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
+                getBranchContingenciesProvider(),
+                getBranchMonitoringMetrixDslData(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId||FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
+                getErrorInvalidRemedialFile(2) + RESOURCE_BUNDLE.getString("invalidRemedialFileEmptyElement")
         );
     }
 
     @Test
     void invalidRemedialLineConstraintMonitoredTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId|FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
-            getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidMetrixRemedialConstraint"), "FS.BIS1  FVALDI1  1")
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId|FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
+                getWarningInvalidRemedial(2) + String.format(RESOURCE_BUNDLE.getString("invalidMetrixRemedialConstraint"), "FS.BIS1  FVALDI1  1")
         );
     }
 
     @Test
     void invalidNbRemedialMoreLinesTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;2;", "ctyId;1;FP.AND1  FVERGE1  2;"),
-            getErrorInvalidRemedialFile(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileNbRemedialMoreLines"), 2, 1)
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;2;", "ctyId;1;FP.AND1  FVERGE1  2;"),
+                getErrorInvalidRemedialFile(2) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileNbRemedialMoreLines"), 2, 1)
         );
     }
 
     @Test
     void invalidNbRemedialLessLinesTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
         remedialTest(
-            contingenciesProvider,
-            String.join(System.lineSeparator(), "NB;1;", "ctyId;1;FP.AND1  FVERGE1  2;", "ctyId;1;FS.BIS1  FVALDI1  1;"),
-            getWarningInvalidRemedial(3) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNbRemedialLessLines"), 1)
+                getBranchContingenciesProvider(),
+                String.join(System.lineSeparator(), "NB;1;", "ctyId;1;FP.AND1  FVERGE1  2;", "ctyId;1;FS.BIS1  FVALDI1  1;"),
+                getWarningInvalidRemedial(3) + String.format(RESOURCE_BUNDLE.getString("invalidRemedialNbRemedialLessLines"), 1)
         );
     }
 
     @Test
     void validRemedialFileTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-        MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
-
         remedialTest(
-                contingenciesProvider,
-                metrixDslData,
+                getBranchContingenciesProvider(),
+                getBranchMonitoringMetrixDslData(),
                 String.join(System.lineSeparator(), "NB;1;", "ctyId|FS.BIS1  FVALDI1  1;1;FP.AND1  FVERGE1  2;"),
                 "");
     }
 
     @Test
     void validRemedialFileTrimTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-        MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
-
         remedialTest(
-                contingenciesProvider,
-                metrixDslData,
+                getBranchContingenciesProvider(),
+                getBranchMonitoringMetrixDslData(),
                 String.join(System.lineSeparator(), "NB;1;", "ctyId  |FS.BIS1  FVALDI1  1    ;1;FP.AND1  FVERGE1  2        ;"),
                 "");
     }
 
     @Test
     void validRemedialFileNoActionTest() throws IOException {
-        ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
-        Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        ContingenciesProvider contingenciesProvider = network -> ImmutableList.of(cty);
-        MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
-
         remedialTest(
-                contingenciesProvider,
-                metrixDslData,
+                getBranchContingenciesProvider(),
+                getBranchMonitoringMetrixDslData(),
                 String.join(System.lineSeparator(), "NB;1;", "ctyId;0;"),
                 "");
     }
