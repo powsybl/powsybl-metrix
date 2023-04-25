@@ -37,6 +37,7 @@ public class MetrixOutputData {
     public static final String LOAD_COST = "LOAD_COST";
     public static final String FLOW_NAME = "FLOW_";
     public static final String MAX_THREAT_NAME = "MAX_THREAT_";
+    public static final String MAX_TMP_THREAT_FLOW = "MAX_TMP_THREAT_FLOW_";
     public static final String GEN_VOL_UP = "GEN_VOL_UP_";
     public static final String GEN_VOL_DOWN = "GEN_VOL_DOWN_";
     public static final String LOSSES = "LOSSES";
@@ -332,7 +333,7 @@ public class MetrixOutputData {
                         outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
                         sts.insertResult(varNum - offset, outageName);
 
-                        ts = getDoubleTimeSeries("MAX_TMP_THREAT_FLOW_", chunks[2]);
+                        ts = getDoubleTimeSeries(MAX_TMP_THREAT_FLOW, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
                     int i = 0;

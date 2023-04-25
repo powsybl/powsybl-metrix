@@ -8,8 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-import com.google.common.jimfs.Configuration;
-import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
@@ -18,17 +16,11 @@ import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.*;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.IOException;
-import java.io.Writer;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Map;
 
@@ -38,84 +30,191 @@ import static org.mockito.Mockito.when;
 
 class MetrixPostProcessingTimeSeriesTest {
 
-    private FileSystem fileSystem;
-
-    private Path dslFile;
-
-    private Path mappingFile;
-
     private Network network;
 
     private final MetrixParameters parameters = new MetrixParameters();
 
+    private final String mappingScript = String.join(System.lineSeparator(),
+            "timeSeries['tsN'] = 1000",
+            "timeSeries['tsN1'] = 2000",
+            "timeSeries['tsITAM'] = 2500",
+            "timeSeries['tsAnalysisN'] = 3000",
+            "timeSeries['tsAnalysisNk'] = 4000",
+            "timeSeries['tsAnalysisITAM'] = 5000");
+
+    private final String metrixConfigurationScript = String.join(System.lineSeparator(),
+            "branch('FS.BIS1  FVALDI1  1') {",
+            "}",
+            "branch('FS.BIS1  FVALDI1  2') {",
+            "    baseCaseFlowResults true",
+            "    maxThreatFlowResults true",
+            "}",
+            "branch('FVALDI1  FTDPRA1  1') {",
+            "    branchRatingsBaseCase 'tsN'",
+            "    branchRatingsOnContingency 'tsN1'",
+            "    branchRatingsBeforeCurative 'tsITAM'",
+            "}",
+            "branch('FP.AND1  FVERGE1  1') {", // this branch is opened in the network
+            "    branchRatingsBaseCase 'tsN'",
+            "    branchRatingsOnContingency 'tsN1'",
+            "    branchRatingsBeforeCurative 'tsITAM'",
+            "}",
+            "branch('FVALDI1  FTDPRA1  2') {",
+            "    branchRatingsBaseCase 'tsN'",
+            "    branchRatingsBaseCaseEndOr 'tsNEndOr'",
+            "    branchRatingsOnContingency 'tsN1'",
+            "    branchRatingsOnContingencyEndOr 'tsN1EndOr'",
+            "    branchRatingsBeforeCurative 'tsITAM'",
+            "    branchRatingsBeforeCurativeEndOr 'tsITAMEndOr'",
+            "}",
+            "branch('FTDPRA1  FVERGE1  2') {",
+            "    branchRatingsBaseCase 'tsN'",
+            "}",
+            "branch('FTDPRA1  FVERGE1  2') {",
+            "    branchAnalysisRatingsBaseCase 'tsAnalysisN'",
+            "}",
+            "branch('FTDPRA1  FVERGE1  2') {",
+            "    branchAnalysisRatingsOnContingency 'tsAnalysisNk'",
+            "}",
+            "branch('FTDPRA1  FVERGE1  2') {",
+            "    branchRatingsOnContingency 'tsN1'",
+            "    branchRatingsBeforeCurative 'tsITAM'",
+            "}"
+    );
+
+    Map<String, NodeCalc> postProcessingTimeSeries;
+
     @BeforeEach
     public void setUp() throws IOException {
-        fileSystem = Jimfs.newFileSystem(Configuration.unix());
-        dslFile = fileSystem.getPath("/test.dsl");
-        mappingFile = fileSystem.getPath("/mapping.dsl");
         network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
-
-        // Create mapping file for use in all tests
-        try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                "timeSeries['tsN'] = 1000",
-                "timeSeries['tsN1'] = 2000",
-                "timeSeries['tsAnalysisN'] = 3000",
-                "timeSeries['tsAnalysisNk'] = 4000"
-            ));
-        }
     }
 
-    @AfterEach
-    public void tearDown() throws Exception {
-        fileSystem.close();
+    private void verifyBasecaseLoad(String branchName, NodeCalc flow, NodeCalc ratingN) {
+        NodeCalc expectedBasecaseLoad = BinaryOperation.multiply(BinaryOperation.div(flow, ratingN), new FloatNodeCalc(100f));
+        assertEquals(expectedBasecaseLoad, postProcessingTimeSeries.get("basecaseLoad_" + branchName));
+    }
+
+    private void verifyLoad(String branchName, NodeCalc maxThreat, NodeCalc rating, String loadPrefix) {
+        NodeCalc outageLoad1 = BinaryOperation.multiply(BinaryOperation.div(maxThreat, rating), new FloatNodeCalc(100f));
+        assertEquals(outageLoad1, postProcessingTimeSeries.get(loadPrefix + branchName));
+    }
+
+    private void verifyOutageLoad(String branchName, NodeCalc maxThreat, NodeCalc ratingNk) {
+        verifyLoad(branchName, maxThreat, ratingNk, "outageLoad_");
+    }
+
+    private void verifyItamLoad(String branchName, NodeCalc maxThreat, NodeCalc ratingItam) {
+        verifyLoad(branchName, maxThreat, ratingItam, "itamLoad_");
+    }
+
+    private NodeCalc verifyBasecaseOverload(String branchName, NodeCalc flow, NodeCalc ratingN) {
+        NodeCalc basecaseOverload = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flow, ratingN),
+                        BinaryOperation.minus(flow, ratingN)),
+                BinaryOperation.multiply(BinaryOperation.lessThan(flow, UnaryOperation.negative(ratingN)),
+                        BinaryOperation.minus(flow, UnaryOperation.negative(ratingN))));
+        assertEquals(basecaseOverload, postProcessingTimeSeries.get("basecaseOverload_" + branchName));
+        return basecaseOverload;
+    }
+
+    private NodeCalc verifyOverload(String branchName, NodeCalc maxThreat, NodeCalc ratingNkExOr, NodeCalc ratingNkOrEx, String overloadPrefix) {
+        NodeCalc outageOverload = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(maxThreat, ratingNkExOr),
+                        BinaryOperation.minus(maxThreat, ratingNkExOr)),
+                BinaryOperation.multiply(BinaryOperation.lessThan(maxThreat, UnaryOperation.negative(ratingNkOrEx)),
+                        BinaryOperation.minus(maxThreat, UnaryOperation.negative(ratingNkOrEx))));
+        assertEquals(outageOverload, postProcessingTimeSeries.get(overloadPrefix + branchName));
+        return outageOverload;
+    }
+
+    private NodeCalc verifyOutageOverload(String branchName, NodeCalc maxThreat, NodeCalc ratingNkOrEx, NodeCalc ratingNkExOr) {
+        return verifyOverload(branchName, maxThreat, ratingNkOrEx, ratingNkExOr, "outageOverload_");
+    }
+
+    private NodeCalc verifyItamOverload(String branchName, NodeCalc maxThreat, NodeCalc ratingItamOrEx, NodeCalc ratingItamExOr) {
+        return verifyOverload(branchName, maxThreat, ratingItamOrEx, ratingItamExOr, "itamOverload_");
+    }
+
+    private void verifyOverallOverload(String branchName, NodeCalc basecaseOverload, NodeCalc outageOverload, String overallOverloadPrefix) {
+        NodeCalc overallOverload = BinaryOperation.plus(UnaryOperation.abs(basecaseOverload), UnaryOperation.abs(outageOverload));
+        assertEquals(overallOverload, postProcessingTimeSeries.get(overallOverloadPrefix + branchName));
+    }
+
+    private void verifyOverallOverload(String branchName, NodeCalc basecaseOverload, NodeCalc outageOverload) {
+        verifyOverallOverload(branchName, basecaseOverload, outageOverload, "overallOverload_");
+    }
+
+    private void verifyOverallItamOverload(String branchName, NodeCalc basecaseOverload, NodeCalc outageOverload) {
+        verifyOverallOverload(branchName, basecaseOverload, outageOverload, "overallItamOverload_");
+    }
+
+    private void verifySimpleBranchPostProcessing() {
+        final String branchName = "FVALDI1  FTDPRA1  1";
+        NodeCalc flow = new TimeSeriesNameNodeCalc("FLOW_" + branchName);
+        NodeCalc maxThreat = new TimeSeriesNameNodeCalc("MAX_THREAT_1_FLOW_" + branchName);
+        NodeCalc maxTmpThreat = new TimeSeriesNameNodeCalc("MAX_TMP_THREAT_FLOW_" + branchName);
+        NodeCalc ratingN = new IntegerNodeCalc(1000);
+        NodeCalc ratingNk = new IntegerNodeCalc(2000);
+        NodeCalc ratingItam = new IntegerNodeCalc(2500);
+
+        verifyBasecaseLoad(branchName, flow, ratingN);
+        verifyOutageLoad(branchName, maxThreat, ratingNk);
+        verifyItamLoad(branchName, maxTmpThreat, ratingItam);
+        NodeCalc basecaseOverload = verifyBasecaseOverload(branchName, flow, ratingN);
+        NodeCalc outageOverload = verifyOutageOverload(branchName, maxThreat, ratingNk, ratingNk);
+        NodeCalc itamOverload = verifyItamOverload(branchName, maxTmpThreat, ratingItam, ratingItam);
+        verifyOverallOverload(branchName, basecaseOverload, outageOverload);
+        verifyOverallItamOverload(branchName, basecaseOverload, itamOverload);
+    }
+
+    private void verifyExOrBranchPostProcessing() {
+        final String branchName = "FVALDI1  FTDPRA1  2";
+        NodeCalc flow = new TimeSeriesNameNodeCalc("FLOW_" + branchName);
+        NodeCalc maxThreat = new TimeSeriesNameNodeCalc("MAX_THREAT_1_FLOW_" + branchName);
+        NodeCalc maxTmpThreat = new TimeSeriesNameNodeCalc("MAX_TMP_THREAT_FLOW_" + branchName);
+        NodeCalc ratingNOrEx = new IntegerNodeCalc(1000);
+        NodeCalc ratingNExOr = new TimeSeriesNameNodeCalc("tsNEndOr");
+        NodeCalc ratingN = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flow, new IntegerNodeCalc(0)), ratingNOrEx),
+                BinaryOperation.multiply(BinaryOperation.lessThan(flow, new IntegerNodeCalc(0)), ratingNExOr));
+        NodeCalc ratingNkOrEx = new IntegerNodeCalc(2000);
+        NodeCalc ratingNkExOr = new TimeSeriesNameNodeCalc("tsN1EndOr");
+        NodeCalc ratingItamOrEx = new IntegerNodeCalc(2500);
+        NodeCalc ratingItamExOr = new TimeSeriesNameNodeCalc("tsITAMEndOr");
+
+        verifyBasecaseLoad(branchName, flow, ratingN);
+        verifyOutageOverload(branchName, maxThreat, ratingNkOrEx, ratingNkExOr);
+        verifyItamOverload(branchName, maxTmpThreat, ratingItamOrEx, ratingItamExOr);
+    }
+
+    private void verifySeparatedConfigBranchPostProcessing() {
+        // For this branch, ratings are configured in separated branch() instructions
+        final String branchName = "FTDPRA1  FVERGE1  2";
+        NodeCalc flow = new TimeSeriesNameNodeCalc("FLOW_" + branchName);
+        NodeCalc maxThreat = new TimeSeriesNameNodeCalc("MAX_THREAT_1_FLOW_" + branchName);
+        NodeCalc maxTmpThreat = new TimeSeriesNameNodeCalc("MAX_TMP_THREAT_FLOW_" + branchName);
+        NodeCalc ratingN = new IntegerNodeCalc(3000);
+        NodeCalc ratingNk = new IntegerNodeCalc(2000);
+        NodeCalc ratingItam = new IntegerNodeCalc(2500);
+
+        verifyBasecaseLoad(branchName, flow, ratingN);
+        verifyOutageLoad(branchName, maxThreat, ratingNk);
+        verifyItamLoad(branchName, maxTmpThreat, ratingItam);
+        NodeCalc basecaseOverload = verifyBasecaseOverload(branchName, flow, ratingN);
+        NodeCalc outageOverload = verifyOutageOverload(branchName, maxThreat, ratingNk, ratingNk);
+        NodeCalc itamOverload = verifyItamOverload(branchName, maxTmpThreat, ratingItam, ratingItam);
+        verifyOverallOverload(branchName, basecaseOverload, outageOverload);
+        verifyOverallItamOverload(branchName, basecaseOverload, itamOverload);
     }
 
     @Test
-    void postProcessingTimeSeriesTest() throws IOException {
-
+    void postProcessingTimeSeriesTest() {
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
         ReadOnlyTimeSeriesStore metrixResultTimeSeries = mock(ReadOnlyTimeSeriesStore.class);
         ReadOnlyTimeSeriesStoreAggregator store = new ReadOnlyTimeSeriesStoreAggregator(new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsNEndOr", index, 1500d, 1500d),
-                TimeSeries.createDouble("tsN1EndOr", index, 2500d, 2500d)
+                TimeSeries.createDouble("tsN1EndOr", index, 2500d, 2500d),
+                TimeSeries.createDouble("tsITAM", index, 3500d, 3500d),
+                TimeSeries.createDouble("tsITAMEndOr", index, 4500d, 4500d)
         ), metrixResultTimeSeries);
-
-        try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(), "branch('FS.BIS1  FVALDI1  1') {",
-                "}",
-                "branch('FS.BIS1  FVALDI1  2') {",
-                "    baseCaseFlowResults true",
-                "    maxThreatFlowResults true",
-                "}",
-                "branch('FVALDI1  FTDPRA1  1') {",
-                "    branchRatingsBaseCase 'tsN'",
-                "    branchRatingsOnContingency 'tsN1'",
-                "}",
-                "branch('FP.AND1  FVERGE1  1') {", // this branch is opened in the network
-                "    branchRatingsBaseCase 'tsN'",
-                "    branchRatingsOnContingency 'tsN1'",
-                "}",
-                "branch('FVALDI1  FTDPRA1  2') {",
-                "    branchRatingsBaseCase 'tsN'",
-                "    branchRatingsBaseCaseEndOr 'tsNEndOr'",
-                "    branchRatingsOnContingency 'tsN1'",
-                "    branchRatingsOnContingencyEndOr 'tsN1EndOr'",
-                "}",
-                "branch('FTDPRA1  FVERGE1  2') {",
-                "    branchRatingsBaseCase 'tsN'",
-                "}",
-                "branch('FTDPRA1  FVERGE1  2') {",
-                "    branchAnalysisRatingsBaseCase 'tsAnalysisN'",
-                "}",
-                "branch('FTDPRA1  FVERGE1  2') {",
-                "    branchAnalysisRatingsOnContingency 'tsAnalysisNk'",
-                "}",
-                "branch('FTDPRA1  FVERGE1  2') {",
-                "    branchRatingsOnContingency 'tsN1'",
-                "}"));
-        }
 
         when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.FLOW_NAME + "FVALDI1  FTDPRA1  1")).thenReturn(true);
         when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.FLOW_NAME + "FVALDI1  FTDPRA1  2")).thenReturn(true);
@@ -126,87 +225,24 @@ class MetrixPostProcessingTimeSeriesTest {
         when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FVALDI1  FTDPRA1  2")).thenReturn(true);
         when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FS.BIS1  FVALDI1  2")).thenReturn(true);
         when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FP.AND1  FVERGE1  1")).thenReturn(false);
-        when(metrixResultTimeSeries.timeSeriesExists(Metrix.MAX_THREAT_PREFIX + "FTDPRA1  FVERGE1  2")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(AbstractMetrix.MAX_THREAT_PREFIX + "FTDPRA1  FVERGE1  2")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.MAX_TMP_THREAT_FLOW + "FVALDI1  FTDPRA1  1")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.MAX_TMP_THREAT_FLOW + "FVALDI1  FTDPRA1  2")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.MAX_TMP_THREAT_FLOW + "FS.BIS1  FVALDI1  2")).thenReturn(true);
+        when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.MAX_TMP_THREAT_FLOW + "FP.AND1  FVERGE1  1")).thenReturn(false);
+        when(metrixResultTimeSeries.timeSeriesExists(MetrixOutputData.MAX_TMP_THREAT_FLOW + "FTDPRA1  FVERGE1  2")).thenReturn(true);
 
         MappingParameters mappingParameters = MappingParameters.load();
-        TimeSeriesMappingConfig tsConfig = TimeSeriesDslLoader.load(mappingFile, network, mappingParameters, store, null);
-        MetrixDslData dslData = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingScript);
+        TimeSeriesMappingConfig mappingConfig = timeSeriesDslLoader.load(network, mappingParameters, store, null);
+        MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
+        MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, mappingConfig, null);
 
-        Map<String, NodeCalc> postProcessingTimeSeries = AbstractMetrix.getPostProcessingTimeSeries(dslData, tsConfig, store, null);
-        assertEquals(3 * 5, postProcessingTimeSeries.size());
+        postProcessingTimeSeries = MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries(dslData, mappingConfig, store, null);
+        assertEquals(3 * 8, postProcessingTimeSeries.size());
 
-        NodeCalc flow1 = new TimeSeriesNameNodeCalc("FLOW_FVALDI1  FTDPRA1  1");
-        NodeCalc maxThreat1 = new TimeSeriesNameNodeCalc("MAX_THREAT_1_FLOW_FVALDI1  FTDPRA1  1");
-        NodeCalc ratingN1 = new IntegerNodeCalc(1000);
-        NodeCalc ratingNk1 = new IntegerNodeCalc(2000);
-
-        NodeCalc basecaseLoad1 =  BinaryOperation.multiply(BinaryOperation.div(flow1, ratingN1), new FloatNodeCalc(100f));
-        assertEquals(basecaseLoad1, postProcessingTimeSeries.get("basecaseLoad_FVALDI1  FTDPRA1  1"));
-
-        NodeCalc outageLoad1 = BinaryOperation.multiply(BinaryOperation.div(maxThreat1, ratingNk1), new FloatNodeCalc(100f));
-        assertEquals(outageLoad1, postProcessingTimeSeries.get("outageLoad_FVALDI1  FTDPRA1  1"));
-
-        NodeCalc basecaseOverload1 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flow1, ratingN1),
-            BinaryOperation.minus(flow1, ratingN1)),
-            BinaryOperation.multiply(BinaryOperation.lessThan(flow1, UnaryOperation.negative(ratingN1)),
-                BinaryOperation.minus(flow1, UnaryOperation.negative(ratingN1))));
-        assertEquals(basecaseOverload1, postProcessingTimeSeries.get("basecaseOverload_FVALDI1  FTDPRA1  1"));
-
-        NodeCalc outageOverload1 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(maxThreat1, ratingNk1),
-            BinaryOperation.minus(maxThreat1, ratingNk1)),
-            BinaryOperation.multiply(BinaryOperation.lessThan(maxThreat1, UnaryOperation.negative(ratingNk1)),
-                BinaryOperation.minus(maxThreat1, UnaryOperation.negative(ratingNk1))));
-        assertEquals(outageOverload1, postProcessingTimeSeries.get("outageOverload_FVALDI1  FTDPRA1  1"));
-
-        NodeCalc overallOverload1 = BinaryOperation.plus(UnaryOperation.abs(basecaseOverload1), UnaryOperation.abs(outageOverload1));
-        assertEquals(overallOverload1, postProcessingTimeSeries.get("overallOverload_FVALDI1  FTDPRA1  1"));
-
-        NodeCalc flow2 = new TimeSeriesNameNodeCalc("FLOW_FVALDI1  FTDPRA1  2");
-        NodeCalc maxThreat2 = new TimeSeriesNameNodeCalc("MAX_THREAT_1_FLOW_FVALDI1  FTDPRA1  2");
-        NodeCalc ratingN2OrEx = new IntegerNodeCalc(1000);
-        NodeCalc ratingN2ExOr = new TimeSeriesNameNodeCalc("tsNEndOr");
-        NodeCalc ratingN2 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flow2, new IntegerNodeCalc(0)), ratingN2OrEx),
-            BinaryOperation.multiply(BinaryOperation.lessThan(flow2, new IntegerNodeCalc(0)), ratingN2ExOr));
-        NodeCalc ratingNk2OrEx = new IntegerNodeCalc(2000);
-        NodeCalc ratingNk2ExOr = new TimeSeriesNameNodeCalc("tsN1EndOr");
-
-        NodeCalc basecaseLoad2 = BinaryOperation.multiply(BinaryOperation.div(flow2, ratingN2), new FloatNodeCalc(100f));
-        assertEquals(basecaseLoad2, postProcessingTimeSeries.get("basecaseLoad_FVALDI1  FTDPRA1  2"));
-
-        NodeCalc outageOverload2 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(maxThreat2, ratingNk2OrEx),
-            BinaryOperation.minus(maxThreat2, ratingNk2OrEx)),
-            BinaryOperation.multiply(BinaryOperation.lessThan(maxThreat2, UnaryOperation.negative(ratingNk2ExOr)),
-                BinaryOperation.minus(maxThreat2, UnaryOperation.negative(ratingNk2ExOr))));
-        assertEquals(outageOverload2, postProcessingTimeSeries.get("outageOverload_FVALDI1  FTDPRA1  2"));
-
-        NodeCalc flow3 = new TimeSeriesNameNodeCalc("FLOW_FTDPRA1  FVERGE1  2");
-        NodeCalc maxThreat3 = new TimeSeriesNameNodeCalc("MAX_THREAT_1_FLOW_FTDPRA1  FVERGE1  2");
-        NodeCalc ratingN3 = new IntegerNodeCalc(3000);
-        NodeCalc ratingNk3 = new IntegerNodeCalc(2000);
-
-        NodeCalc basecaseLoad3 = BinaryOperation.multiply(BinaryOperation.div(flow3, ratingN3), new FloatNodeCalc(100f));
-        assertEquals(basecaseLoad3, postProcessingTimeSeries.get("basecaseLoad_FTDPRA1  FVERGE1  2"));
-
-        NodeCalc outageLoad3 = BinaryOperation.multiply(BinaryOperation.div(maxThreat3, ratingNk3), new FloatNodeCalc(100f));
-        assertEquals(outageLoad3, postProcessingTimeSeries.get("outageLoad_FTDPRA1  FVERGE1  2"));
-
-        NodeCalc basecaseOverload3 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(flow3, ratingN3),
-                        BinaryOperation.minus(flow3, ratingN3)),
-                BinaryOperation.multiply(BinaryOperation.lessThan(flow3, UnaryOperation.negative(ratingN3)),
-                        BinaryOperation.minus(flow3, UnaryOperation.negative(ratingN3))));
-        assertEquals(basecaseOverload3, postProcessingTimeSeries.get("basecaseOverload_FTDPRA1  FVERGE1  2"));
-
-        NodeCalc outageOverload3 = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(maxThreat3, ratingNk3),
-                        BinaryOperation.minus(maxThreat3, ratingNk3)),
-                BinaryOperation.multiply(BinaryOperation.lessThan(maxThreat3, UnaryOperation.negative(ratingNk3)),
-                        BinaryOperation.minus(maxThreat3, UnaryOperation.negative(ratingNk3))));
-        assertEquals(outageOverload3, postProcessingTimeSeries.get("outageOverload_FTDPRA1  FVERGE1  2"));
-
-        NodeCalc overallOverload3 = BinaryOperation.plus(UnaryOperation.abs(basecaseOverload3), UnaryOperation.abs(outageOverload3));
-        assertEquals(overallOverload3, postProcessingTimeSeries.get("overallOverload_FTDPRA1  FVERGE1  2"));
+        verifySimpleBranchPostProcessing();
+        verifyExOrBranchPostProcessing();
+        verifySeparatedConfigBranchPostProcessing();
     }
 }
-
-
-
-
