@@ -229,7 +229,7 @@ public class MappingTool implements Tool {
                 TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString());
                 Stopwatch stopwatch = Stopwatch.createStarted();
                 network.addListener(new NetworkTopographyChangeNotifier("extern tool", logger));
-                config = dslLoader.load(network, mappingParameters, store, scriptLogWriter, computationRange);
+                config = dslLoader.load(network, mappingParameters, store, new DataTableStore(), scriptLogWriter, computationRange);
                 context.getOutputStream().println("Mapping done in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
             }
 

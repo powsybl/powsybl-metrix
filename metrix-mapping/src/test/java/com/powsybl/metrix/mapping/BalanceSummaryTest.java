@@ -83,7 +83,7 @@ class BalanceSummaryTest {
 
         // Load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -145,7 +145,7 @@ class BalanceSummaryTest {
 
         // Load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();

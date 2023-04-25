@@ -18,6 +18,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
+import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
@@ -104,7 +105,7 @@ class MetrixConstantVariantTest {
 
         TimeSeriesMappingConfig mappingConfig;
         try (Reader mappingReader = new InputStreamReader(MetrixConstantVariantTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy"), StandardCharsets.UTF_8)) {
-            mappingConfig = TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, null, null);
+            mappingConfig = TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, new DataTableStore(), null, null);
         }
 
         MetrixDslData metrixDslData;

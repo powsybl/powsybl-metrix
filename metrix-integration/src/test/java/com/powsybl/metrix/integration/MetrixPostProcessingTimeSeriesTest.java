@@ -11,6 +11,7 @@ package com.powsybl.metrix.integration;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
+import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
@@ -234,7 +235,7 @@ class MetrixPostProcessingTimeSeriesTest {
 
         MappingParameters mappingParameters = MappingParameters.load();
         TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingScript);
-        TimeSeriesMappingConfig mappingConfig = timeSeriesDslLoader.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = timeSeriesDslLoader.load(network, mappingParameters, store, new DataTableStore(), null);
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
         MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, mappingConfig, null);
 

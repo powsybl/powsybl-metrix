@@ -88,7 +88,7 @@ class TimeSeriesProviderTsTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.variableActivePower, "FSSV.O11_L"), new MappingKey(EquipmentVariable.fixedActivePower, "FSSV.O11_L")), mappingConfig.getLoadTimeSeries());
@@ -175,7 +175,7 @@ class TimeSeriesProviderTsTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
                                      new MappingKey(EquipmentVariable.minP, "FSSV.O11_G"),
@@ -240,7 +240,7 @@ class TimeSeriesProviderTsTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try (StringWriter sw = new StringWriter()) {
-            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, sw, null);
+            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), sw, null);
             assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
             assertEquals("WARNING;Mapping script;provideTs - Time series can not be provided for id FSSV.O11_G because id is not mapped on targetP\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }
@@ -264,7 +264,7 @@ class TimeSeriesProviderTsTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try (StringWriter sw = new StringWriter()) {
-            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, sw, null);
+            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), sw, null);
             assertEquals(Collections.emptySet(), mappingConfig.getGeneratorTimeSeries());
             assertEquals("WARNING;Mapping script;provideTs - Empty filtered list for equipment type GENERATOR and variables [targetP]\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }
