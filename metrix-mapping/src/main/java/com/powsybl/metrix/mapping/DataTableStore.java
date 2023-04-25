@@ -16,9 +16,6 @@ public class DataTableStore {
 
     private final Map<String, DataTable> tables = new HashMap<>();
 
-    public DataTableStore() {
-    }
-
     public Set<String> names() {
         return tables.keySet();
     }
