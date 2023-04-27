@@ -15,10 +15,7 @@ import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.utils.LocalThreadExecutor;
-import com.powsybl.metrix.mapping.ComputationRange;
-import com.powsybl.metrix.mapping.MappingParameters;
-import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.NodeCalc;
 import org.slf4j.Logger;
@@ -111,7 +108,7 @@ public class MetrixAnalysis {
         boolean inError = false;
         try {
             CompletableFuture<TimeSeriesMappingConfig> mappingFuture = new LocalThreadExecutor<TimeSeriesMappingConfig>("Script_TS_" + id)
-                    .supplyAsync(() -> TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, writer, computationRange));
+                    .supplyAsync(() -> TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, new DataTableStore(), writer, computationRange));
             updateTask.accept(mappingFuture);
             return mappingFuture.get();
         } catch (ExecutionException e) {

@@ -80,10 +80,11 @@ class TimeSeriesDslLoader {
         shell.evaluate(dslSrc)
     }
 
-    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, MappingParameters parameters, TimeSeriesMappingConfig config, LogDslLoader logDslLoader, ComputationRange computationRange) {
+    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, LogDslLoader logDslLoader, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = ComputationRange.check(computationRange, store)
         ComputationRange fullComputationRange = ComputationRange.check(store)
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
+        DataTableDslLoader.bind(binding, dataTableStore)
         TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(config, store.getTimeSeriesNames(new TimeSeriesFilter()))
         TimeSeriesMappingConfigStats stats = new TimeSeriesMappingConfigStats(store, checkedComputationRange)
 
@@ -230,33 +231,33 @@ class TimeSeriesDslLoader {
         }
     }
 
-    static TimeSeriesMappingConfig load(Reader reader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, Writer out, ComputationRange computationRange) {
+    static TimeSeriesMappingConfig load(Reader reader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
         TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, "mapping.groovy")
-        dslLoader.load(network, parameters, store, out, computationRange)
+        dslLoader.load(network, parameters, store, dataTableStore, out, computationRange)
     }
 
-    static TimeSeriesMappingConfig load(Path mappingFile, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {
-        load(mappingFile, network, parameters, store, null, computationRange)
+    static TimeSeriesMappingConfig load(Path mappingFile, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {
+        load(mappingFile, network, parameters, store, dataTableStore, null, computationRange)
     }
 
-    static TimeSeriesMappingConfig load(Path mappingFile, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, Writer out, ComputationRange computationRange) {
+    static TimeSeriesMappingConfig load(Path mappingFile, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
         Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8).withReader { Reader reader ->
             TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString())
-            dslLoader.load(network, parameters, store, out, computationRange)
+            dslLoader.load(network, parameters, store, dataTableStore, out, computationRange)
         }
     }
 
-    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {
-        load(network, parameters, store, null, computationRange)
+    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {
+        load(network, parameters, store, dataTableStore, null, computationRange)
     }
 
-    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, Writer out, ComputationRange computationRange) {
+    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
         long start = System.currentTimeMillis()
 
         TimeSeriesMappingConfig config = new TimeSeriesMappingConfig(network)
         Binding binding = new Binding()
         LogDslLoader logDslLoader = LogDslLoader.create(binding, out, MAPPING_SCRIPT_SECTION)
-        bind(binding, network, store, parameters, config, logDslLoader, computationRange)
+        bind(binding, network, store, dataTableStore, parameters, config, logDslLoader, computationRange)
 
         if (out != null) {
             binding.out = out

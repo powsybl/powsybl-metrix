@@ -94,7 +94,7 @@ class TimeSeriesDslLoaderTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig config = dsl.load(network, parameters, store, null);
+        TimeSeriesMappingConfig config = dsl.load(network, parameters, store, new DataTableStore(), null);
         TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
         csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
 
@@ -204,7 +204,7 @@ class TimeSeriesDslLoaderTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try {
-            dsl.load(network, parameters, store, null);
+            dsl.load(network, parameters, store, new DataTableStore(), null);
             fail();
         } catch (TimeSeriesMappingException e) {
             assertEquals("Load 'LD1' is mapped on p0 and on one of the detailed variables (fixedActivePower/variableActivePower)", e.getMessage());
@@ -233,7 +233,7 @@ class TimeSeriesDslLoaderTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try {
-            dsl.load(network, parameters, store, null);
+            dsl.load(network, parameters, store, new DataTableStore(), null);
             fail();
         } catch (groovy.lang.MissingMethodException ignored) {
         }
@@ -264,7 +264,7 @@ class TimeSeriesDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            TimeSeriesMappingConfig config = dsl.load(network, parameters, store, out, null);
+            TimeSeriesMappingConfig config = dsl.load(network, parameters, store, new DataTableStore(), out, null);
             TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
             csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
         }
@@ -274,7 +274,7 @@ class TimeSeriesDslLoaderTest {
 
         outputStream.reset();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            TimeSeriesMappingConfig config = dsl.load(network, parameters, store, out, new ComputationRange(Collections.singleton(1), 0, 3));
+            TimeSeriesMappingConfig config = dsl.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
             TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
             csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
         }
@@ -299,7 +299,7 @@ class TimeSeriesDslLoaderTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        dsl.load(network, parameters, store, null);
+        dsl.load(network, parameters, store, new DataTableStore(), null);
 
         assertEquals(0.5f, parameters.getToleranceThreshold(), 0f);
         assertTrue(parameters.getWithTimeSeriesStats());
@@ -315,7 +315,7 @@ class TimeSeriesDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dsl.load(network, parameters, store, out, null);
+            dsl.load(network, parameters, store, new DataTableStore(), out, null);
         }
 
         String output = outputStream.toString();

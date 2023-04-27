@@ -352,7 +352,7 @@ class TimeSeriesMapperCheckerTest {
                       String expectedType, String expectedLabel, String expectedSynthesisLabel, String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
@@ -405,7 +405,7 @@ class TimeSeriesMapperCheckerTest {
                               String expectedType, String expectedVariant, String expectedLabel, String expectedSynthesisLabel, String expectedMessage, String expectedSynthesisMessage) {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());

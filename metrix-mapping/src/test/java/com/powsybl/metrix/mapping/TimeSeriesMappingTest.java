@@ -328,7 +328,7 @@ class TimeSeriesMappingTest {
         // Load mapping script
         StringWriter output = new StringWriter();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, output, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), output, null);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();

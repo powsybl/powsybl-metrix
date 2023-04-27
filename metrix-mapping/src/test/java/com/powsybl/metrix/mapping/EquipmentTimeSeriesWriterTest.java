@@ -28,24 +28,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class EquipmentTimeSeriesWriterTest {
 
-    private Network network;
-
     ReadOnlyTimeSeriesStore store;
 
     TimeSeriesMapper mapper;
-
-    private final boolean ignoreLimits = false;
-
-    private final boolean ignoreEmptyFilter = false;
-
-    private final boolean identifyConstantTimeSeries = true;
 
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
     public void setUp() throws IOException {
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Mapping script
         String script = String.join(System.lineSeparator(),
@@ -75,7 +67,7 @@ class EquipmentTimeSeriesWriterTest {
 
         // Load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
     }
@@ -90,6 +82,9 @@ class EquipmentTimeSeriesWriterTest {
         EquipmentTimeSeriesWriter equipmentTimeSeriesBufferedWriter = new EquipmentTimeSeriesWriter(new BufferedWriter(equipmentTimeSeriesWriter));
 
         // Create parameters
+        final boolean ignoreLimits = false;
+        final boolean ignoreEmptyFilter = false;
+        final boolean identifyConstantTimeSeries = true;
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, mappingParameters.getToleranceThreshold());
         // Launch mapper

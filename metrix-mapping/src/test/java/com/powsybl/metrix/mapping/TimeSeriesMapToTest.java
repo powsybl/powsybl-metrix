@@ -101,7 +101,7 @@ class TimeSeriesMapToTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -380,7 +380,7 @@ class TimeSeriesMapToTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -461,7 +461,7 @@ class TimeSeriesMapToTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
@@ -506,7 +506,7 @@ class TimeSeriesMapToTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // assertions
         assertEquals(1, mappingConfig.getIgnoreLimitsTimeSeriesNames().size());
