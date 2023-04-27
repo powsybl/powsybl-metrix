@@ -33,7 +33,7 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.*;
 
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
-    private static final int OFF_VALUE = 0;
+    public static final int OFF_VALUE = 0;
 
     private static final class GeneratorInitialValues {
 

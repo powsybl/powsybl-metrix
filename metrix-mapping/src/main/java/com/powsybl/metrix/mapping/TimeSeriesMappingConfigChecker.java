@@ -58,7 +58,7 @@ public class TimeSeriesMappingConfigChecker {
         checkMappedAndUnmapped(config.phaseTapChangerToTimeSeriesMapping, config.unmappedPhaseTapChangers, config.ignoredUnmappedPhaseTapChangers);
     }
 
-    public Set<MappingKey> checkEquipmentTimeSeries() {
+    public Set<MappingKey> getNotMappedEquipmentTimeSeriesKeys() {
         Set<MappingKey> keys = new HashSet<>();
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getGeneratorToTimeSeriesMapping().keySet(), config.getGeneratorTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getLoadToTimeSeriesMapping().keySet(), config.getLoadTimeSeries()));
