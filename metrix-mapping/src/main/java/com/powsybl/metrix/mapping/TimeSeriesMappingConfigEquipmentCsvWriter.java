@@ -85,7 +85,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
             VOLTAGE_LEVEL));
 
     private final TimeSeriesMappingConfig config;
-    private final Network network;
+    protected final Network network;
 
     public TimeSeriesMappingConfigEquipmentCsvWriter(TimeSeriesMappingConfig config, Network network) {
         this.config = Objects.requireNonNull(config);

@@ -96,9 +96,15 @@ public class TimeSeriesMappingConfigCsvWriter {
         this.config = Objects.requireNonNull(config);
         this.network = Objects.requireNonNull(network);
         this.withTimeSeriesStats = withTimeSeriesStats;
-        Objects.requireNonNull(config);
-        Objects.requireNonNull(network);
         this.equipmentWriter = new TimeSeriesMappingConfigEquipmentCsvWriter(config, network);
+        this.stats = new TimeSeriesMappingConfigStats(store, Objects.requireNonNull(computationRange));
+    }
+
+    public TimeSeriesMappingConfigCsvWriter(TimeSeriesMappingConfigEquipmentCsvWriter equipmentWriter, TimeSeriesMappingConfig config, Network network, ReadOnlyTimeSeriesStore store, ComputationRange computationRange, boolean withTimeSeriesStats) {
+        this.config = Objects.requireNonNull(config);
+        this.network = Objects.requireNonNull(network);
+        this.withTimeSeriesStats = withTimeSeriesStats;
+        this.equipmentWriter = Objects.requireNonNull(equipmentWriter);
         this.stats = new TimeSeriesMappingConfigStats(store, Objects.requireNonNull(computationRange));
     }
 
