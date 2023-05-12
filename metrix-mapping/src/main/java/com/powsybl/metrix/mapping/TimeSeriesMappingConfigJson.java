@@ -118,6 +118,8 @@ public class TimeSeriesMappingConfigJson {
             writeMappingSet(generator, JsonFieldName.MAPPED_TIME_SERIES_NAMES, config.getMappedTimeSeriesNames());
             writeMappingSet(generator, JsonFieldName.IGNORE_LIMITS_TIME_SERIES_NAMES, config.getIgnoreLimitsTimeSeriesNames());
             writeTimeSeriesToPlannedOutagesMap(generator, config.getTimeSeriesToPlannedOutagesMapping());
+            writeGroupTimeSeriesMap(generator, JsonFieldName.GENERATORGROUPTS, config.getGeneratorGroupTimeSeries());
+            writeGroupTimeSeriesMap(generator, JsonFieldName.LOADGROUPTS, config.getLoadGroupTimeSeries());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -184,6 +186,30 @@ public class TimeSeriesMappingConfigJson {
                 MappingKey.writeJson(generator, e.getKey());
                 generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
                 generator.writeString(e.getValue());
+                generator.writeEndObject();
+            }
+            generator.writeEndArray();
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    static void writeGroupTimeSeriesMap(JsonGenerator generator, JsonFieldName jsonFieldName, Map<String, Set<String>> groupMap) {
+        Objects.requireNonNull(generator);
+        Objects.requireNonNull(groupMap);
+        try {
+            generator.writeFieldName(jsonFieldName.getFieldName());
+            generator.writeStartArray();
+            for (Map.Entry<String, Set<String>> e : groupMap.entrySet()) {
+                generator.writeStartObject();
+                generator.writeFieldName(JsonFieldName.EQUIPMENTID.getFieldName());
+                generator.writeString(e.getKey());
+                generator.writeFieldName(JsonFieldName.TIMESERIESNAMES.getFieldName());
+                generator.writeStartArray();
+                for (String id : e.getValue()) {
+                    generator.writeString(id);
+                }
+                generator.writeEndArray();
                 generator.writeEndObject();
             }
             generator.writeEndArray();
@@ -541,6 +567,54 @@ public class TimeSeriesMappingConfigJson {
         }
     }
 
+    static Map<String, Set<String>> parseGroupTimeSeries(JsonParser parser) {
+        Objects.requireNonNull(parser);
+        try {
+            Map<String, Set<String>> map = new HashMap<>();
+            String id = null;
+            Set<String> names = null;
+            JsonToken token;
+            while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+                switch (token) {
+                    case START_OBJECT:
+                        names = new HashSet<>();
+                        break;
+                    case FIELD_NAME:
+                        String fieldName = parser.getCurrentName();
+                        switch (JsonFieldName.nameOf(fieldName)) {
+                            case EQUIPMENTID:
+                                if (parser.nextToken() == JsonToken.VALUE_STRING) {
+                                    id = parser.getValueAsString();
+                                }
+                                break;
+                            case TIMESERIESNAMES:
+                                while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+                                    if (token == JsonToken.VALUE_STRING) {
+                                        assert names != null;
+                                        names.add(parser.getValueAsString());
+                                    }
+                                }
+                                break;
+                            default:
+                                throw new IllegalStateException("Unexpected field name " + fieldName);
+                        }
+                        break;
+                    case END_OBJECT:
+                        if (id == null || names == null) {
+                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                        }
+                        map.put(id, names);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return map;
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
     static Map<String, Set<String>> parseTimeSeriesToPlannedOutages(JsonParser parser) {
         Objects.requireNonNull(parser);
         try {
@@ -791,6 +865,12 @@ public class TimeSeriesMappingConfigJson {
                             break;
                         case TS_TO_PLANNED_OUTAGES:
                             config.setTimeSeriesToPlannedOutagesMapping(parseTimeSeriesToPlannedOutages(parser));
+                            break;
+                        case GENERATORGROUPTS:
+                            config.setGeneratorGroupTimeSeries(parseGroupTimeSeries(parser));
+                            break;
+                        case LOADGROUPTS:
+                            config.setLoadGroupTimeSeries(parseGroupTimeSeries(parser));
                             break;
                         default:
                             throw new IllegalStateException("Unexpected field name " + fieldName);

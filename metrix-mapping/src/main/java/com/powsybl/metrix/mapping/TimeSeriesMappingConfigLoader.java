@@ -8,9 +8,13 @@
 
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.*;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+
+import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
 
 public class TimeSeriesMappingConfigLoader {
 
@@ -24,6 +28,45 @@ public class TimeSeriesMappingConfigLoader {
 
     private static List<String> getMultimapValue(Map<MappingKey, List<String>> multimap, MappingKey key) {
         return multimap.computeIfAbsent(key, k -> new LinkedList<>());
+    }
+
+    protected String computeGroupName(Injection<?> injection, EquipmentGroupType equipmentGroupType) {
+        VoltageLevel voltageLevel = injection.getTerminal().getVoltageLevel();
+        String name = StringUtils.EMPTY;
+        if (!(equipmentGroupType instanceof SimpleEquipmentGroupType)) {
+            return name;
+        }
+        SimpleEquipmentGroupType type = (SimpleEquipmentGroupType) equipmentGroupType;
+        switch (type) {
+            case SUBSTATION:
+                name = getSubstation(voltageLevel);
+                break;
+            case VOLTAGE_LEVEL:
+                name = voltageLevel.getId();
+                break;
+            default:
+                throw new TimeSeriesMappingException("Unknown group type " + equipmentGroupType);
+        }
+        return name;
+    }
+
+    protected String computePowerTypeName(Generator generator) {
+        return StringUtils.EMPTY;
+    }
+
+    private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {
+        String name = computeGroupName(generator, equipmentGroupType);
+        if (withPowerType != null) {
+            String powerTypeName = computePowerTypeName(generator);
+            if (!powerTypeName.isEmpty()) {
+                name += "_" + powerTypeName;
+            }
+        }
+        return name;
+    }
+
+    private String computeLoadTsName(Load load, EquipmentGroupType equipmentGroupType) {
+        return computeGroupName(load, equipmentGroupType);
     }
 
     private void addMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, MappingVariable variable,
@@ -248,6 +291,16 @@ public class TimeSeriesMappingConfigLoader {
                     throw new AssertionError();
             }
         }
+    }
+
+    protected void addGroupGeneratorTimeSeries(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {
+        String name = computeGeneratorTsName(generator, equipmentGroupType, withPowerType);
+        config.generatorGroupToTimeSeriesMapping.computeIfAbsent(generator.getId(), k -> new HashSet<>()).add(name);
+    }
+
+    protected void addGroupLoadTimeSeries(Load load, EquipmentGroupType equipmentGroupType) {
+        String name = computeLoadTsName(load, equipmentGroupType);
+        config.loadGroupToTimeSeriesMapping.computeIfAbsent(load.getId(), k -> new HashSet<>()).add(name);
     }
 
     protected void addIgnoreLimits(String timeSeriesName) {

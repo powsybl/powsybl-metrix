@@ -28,7 +28,9 @@ import java.nio.file.Path
 import static com.powsybl.metrix.mapping.EquipmentMappingData.mapToEquipments
 import static com.powsybl.metrix.mapping.EquipmentTsData.equipmentTimeSeries
 import static com.powsybl.metrix.mapping.FilteredData.unmappedEquipments
+import static com.powsybl.metrix.mapping.GeneratorGroupTsData.generatorGroupTimeSeries
 import static com.powsybl.metrix.mapping.IgnoreLimitsData.ignoreLimits
+import static com.powsybl.metrix.mapping.LoadGroupTsData.loadGroupTimeSeries
 import static com.powsybl.metrix.mapping.ParametersData.parametersData
 import static com.powsybl.metrix.mapping.PlannedOutagesData.mapPlannedOutages
 import static com.powsybl.metrix.mapping.SimpleMappingData.mapToBreakers
@@ -65,27 +67,27 @@ class TimeSeriesDslLoader {
         logDslLoader.logWarn(message)
     }
 
-    private static CompilerConfiguration createCompilerConfig() {
+    protected List<String> getStaticStars() {
+        List<String> staticStars = new ArrayList<>()
+        staticStars.add("com.powsybl.metrix.mapping.SimpleEquipmentGroupType")
+        return staticStars
+    }
+
+    private CompilerConfiguration createCompilerConfig() {
         def imports = new ImportCustomizer()
         imports.addStaticStars("com.powsybl.iidm.network.EnergySource")
         imports.addStaticStars("com.powsybl.iidm.network.Country")
         imports.addStaticStars("com.powsybl.metrix.mapping.EquipmentVariable")
+        getStaticStars().forEach(staticStars -> imports.addStaticStars(staticStars))
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
     }
 
-    static void evaluate(GroovyCodeSource dslSrc, Binding binding) {
-        def config = createCompilerConfig()
-        def shell = new GroovyShell(binding, config)
-        shell.evaluate(dslSrc)
-    }
-
-    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, LogDslLoader logDslLoader, ComputationRange computationRange) {
+    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, LogDslLoader logDslLoader, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = ComputationRange.check(computationRange, store)
         ComputationRange fullComputationRange = ComputationRange.check(store)
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
         DataTableDslLoader.bind(binding, dataTableStore)
-        TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(config, store.getTimeSeriesNames(new TimeSeriesFilter()))
         TimeSeriesMappingConfigStats stats = new TimeSeriesMappingConfigStats(store, checkedComputationRange)
 
         // map the base case to network variable
@@ -212,6 +214,12 @@ class TimeSeriesDslLoader {
         binding.provideTsVscConverterStations = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, vscConverterStationsFilteringContext, MappableEquipmentType.VSC_CONVERTER_STATION, logDslLoader)
         }
+        binding.provideGroupTsGenerators = { Closure closure ->
+            generatorGroupTimeSeries(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR, logDslLoader)
+        }
+        binding.provideGroupTsLoads = { Closure closure ->
+            loadGroupTimeSeries(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD, logDslLoader)
+        }
 
         // statistics
         binding.sum = { NodeCalc tsNode, Boolean all_versions = false ->
@@ -229,6 +237,26 @@ class TimeSeriesDslLoader {
         binding.median = { NodeCalc tsNode, Boolean all_versions = false ->
             stats.getTimeSeriesMedian(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
+    }
+
+    protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
+        Binding binding = new Binding()
+        LogDslLoader logDslLoader = LogDslLoader.create(binding, out, MAPPING_SCRIPT_SECTION)
+        bind(binding, network, store, dataTableStore, parameters, config, loader, logDslLoader, computationRange)
+
+        if (out != null) {
+            binding.out = out
+        }
+
+        def shell = new GroovyShell(binding, createCompilerConfig())
+        shell.evaluate(dslSrc)
+
+        TimeSeriesMappingConfigChecker configChecker = new TimeSeriesMappingConfigChecker(config)
+        configChecker.checkMappedVariables()
+        Set<MappingKey> keys = configChecker.getNotMappedEquipmentTimeSeriesKeys()
+        keys.forEach({ key ->
+            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.getId() + " because id is not mapped on " + key.getMappingVariable().getVariableName())
+        })
     }
 
     static TimeSeriesMappingConfig load(Reader reader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
@@ -253,25 +281,9 @@ class TimeSeriesDslLoader {
 
     TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
         long start = System.currentTimeMillis()
-
         TimeSeriesMappingConfig config = new TimeSeriesMappingConfig(network)
-        Binding binding = new Binding()
-        LogDslLoader logDslLoader = LogDslLoader.create(binding, out, MAPPING_SCRIPT_SECTION)
-        bind(binding, network, store, dataTableStore, parameters, config, logDslLoader, computationRange)
-
-        if (out != null) {
-            binding.out = out
-        }
-
-        evaluate(dslSrc, binding)
-
-        TimeSeriesMappingConfigChecker configChecker = new TimeSeriesMappingConfigChecker(config)
-        configChecker.checkMappedVariables()
-        Set<MappingKey> keys = configChecker.getNotMappedEquipmentTimeSeriesKeys()
-        keys.forEach({ key ->
-            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.getId() + " because id is not mapped on " + key.getMappingVariable().getVariableName())
-        })
-
+        TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(config, store.getTimeSeriesNames(new TimeSeriesFilter()))
+        evaluate(config, loader, network, parameters, store, dataTableStore, out, computationRange)
         LOGGER.trace("Dsl Loading done in {} ms", (System.currentTimeMillis() - start))
 
         config
