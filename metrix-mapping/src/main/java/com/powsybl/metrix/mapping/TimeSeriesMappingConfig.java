@@ -66,6 +66,10 @@ public class TimeSeriesMappingConfig {
     protected final Set<MappingKey> lccConverterStationTimeSeries = new HashSet<>();
     protected final Set<MappingKey> vscConverterStationTimeSeries = new HashSet<>();
 
+    // Groups for which time series must be provided
+    protected final Map<String, Set<String>> generatorGroupToTimeSeriesMapping = new LinkedHashMap<>();
+    protected final Map<String, Set<String>> loadGroupToTimeSeriesMapping = new LinkedHashMap<>();
+
     // Unmapped equipments
     protected final Set<String> unmappedGenerators = new HashSet<>();
     protected final Set<String> unmappedLoads = new HashSet<>();
@@ -145,6 +149,8 @@ public class TimeSeriesMappingConfig {
                 ratioTapChangerTimeSeries,
                 lccConverterStationTimeSeries,
                 vscConverterStationTimeSeries,
+                generatorGroupToTimeSeriesMapping,
+                loadGroupToTimeSeriesMapping,
                 unmappedGenerators,
                 unmappedLoads,
                 unmappedFixedActivePowerLoads,
@@ -214,6 +220,8 @@ public class TimeSeriesMappingConfig {
                     && ratioTapChangerTimeSeries.equals(other.getRatioTapChangerTimeSeries())
                     && lccConverterStationTimeSeries.equals(other.getLccConverterStationTimeSeries())
                     && vscConverterStationTimeSeries.equals(other.getVscConverterStationTimeSeries())
+                    && generatorGroupToTimeSeriesMapping.equals(other.getGeneratorGroupTimeSeries())
+                    && loadGroupToTimeSeriesMapping.equals(other.getLoadGroupTimeSeries())
                     && unmappedGenerators.equals(other.getUnmappedGenerators())
                     && unmappedLoads.equals(other.getUnmappedLoads())
                     && unmappedFixedActivePowerLoads.equals(other.getUnmappedFixedActivePowerLoads())
@@ -619,6 +627,25 @@ public class TimeSeriesMappingConfig {
 
     public Set<MappingKey> getVscConverterStationTimeSeries() {
         return Collections.unmodifiableSet(vscConverterStationTimeSeries);
+    }
+
+    // Groups for which time series must be provided
+    public Map<String, Set<String>> setGeneratorGroupTimeSeries(Map<String, Set<String>> map) {
+        generatorGroupToTimeSeriesMapping.putAll(map);
+        return getGeneratorGroupTimeSeries();
+    }
+
+    public Map<String, Set<String>> setLoadGroupTimeSeries(Map<String, Set<String>> map) {
+        loadGroupToTimeSeriesMapping.putAll(map);
+        return getLoadGroupTimeSeries();
+    }
+
+    public Map<String, Set<String>> getGeneratorGroupTimeSeries() {
+        return generatorGroupToTimeSeriesMapping;
+    }
+
+    public Map<String, Set<String>> getLoadGroupTimeSeries() {
+        return loadGroupToTimeSeriesMapping;
     }
 
     // Unmapped equipments

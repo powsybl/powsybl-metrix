@@ -78,7 +78,11 @@ public enum JsonFieldName {
     MAPPED_TIME_SERIES_NAMES("mappedTimeSeriesNames"),
     IGNORE_LIMITS_TIME_SERIES_NAMES("ignoreLimitsTimeSeriesNames"),
     TS_TO_PLANNED_OUTAGES("timeSeriesToPlannedOutagesMapping"),
-    OUTAGES("outages");
+    OUTAGES("outages"),
+    GENERATORGROUPTS("generatorGroupTimeSeries"),
+    LOADGROUPTS("loadGroupTimeSeries"),
+    TIMESERIESNAMES("timeSeriesNames"),
+    EQUIPMENTID("id");
 
     private final String fieldName;
 

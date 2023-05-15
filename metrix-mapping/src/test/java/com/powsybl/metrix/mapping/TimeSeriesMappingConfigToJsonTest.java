@@ -95,6 +95,9 @@ class TimeSeriesMappingConfigToJsonTest {
 
     private final Map<String, Set<String>> timeSeriesToPlannedOutages = ImmutableMap.of("tsOutages", ImmutableSet.of("id1", "id2"));
 
+    private Map<String, Set<String>> generatorGroupToTimeSeries = ImmutableMap.of("g1", ImmutableSet.of("name1", "name2"));
+    private Map<String, Set<String>> loadGroupToTimeSeries = ImmutableMap.of("l1", ImmutableSet.of("name1", "name2"));
+
     @BeforeEach
     public void setUp() {
         config.setTimeSeriesToGeneratorsMapping(timeSeriesToGenerators);
@@ -165,6 +168,9 @@ class TimeSeriesMappingConfigToJsonTest {
         config.setIgnoreLimitsTimeSeriesNames(ignoreLimitsTimeSeriesNames);
 
         config.setTimeSeriesToPlannedOutagesMapping(timeSeriesToPlannedOutages);
+
+        config.setGeneratorGroupTimeSeries(generatorGroupToTimeSeries);
+        config.setLoadGroupTimeSeries(loadGroupToTimeSeries);
     }
 
     @Test
@@ -236,6 +242,9 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(mappedTimeSeriesNames, config.getMappedTimeSeriesNames());
         assertEquals(ignoreLimitsTimeSeriesNames, config.getIgnoreLimitsTimeSeriesNames());
         assertEquals(timeSeriesToPlannedOutages, config.getTimeSeriesToPlannedOutagesMapping());
+
+        assertEquals(generatorGroupToTimeSeries, config.getGeneratorGroupTimeSeries());
+        assertEquals(loadGroupToTimeSeries, config.getLoadGroupTimeSeries());
     }
 
     @Test

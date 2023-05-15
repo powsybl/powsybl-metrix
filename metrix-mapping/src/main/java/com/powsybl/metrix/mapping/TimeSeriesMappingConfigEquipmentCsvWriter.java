@@ -92,6 +92,10 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
         this.network = Objects.requireNonNull(network);
     }
 
+    public static String getSubstation(VoltageLevel voltageLevel) {
+        return voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY);
+    }
+
     public int writeEquipmentHeader(BufferedWriter writer, String equipmentType) {
         try {
             List<String> header;
@@ -143,7 +147,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
         Generator generator = network.getGenerator(id);
         VoltageLevel voltageLevel = generator.getTerminal().getVoltageLevel();
 
-        writer.write(voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY));
+        writer.write(getSubstation(voltageLevel));
         writer.write(CSV_SEPARATOR);
         writer.write(voltageLevel.getId());
         writer.write(CSV_SEPARATOR);
@@ -213,7 +217,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
             variableActivePower = formatDouble(loadDetail.getVariableActivePower());
         }
 
-        writer.write(voltageLevel.getSubstation().map(Identifiable::getId).orElse(StringUtils.EMPTY));
+        writer.write(getSubstation(voltageLevel));
         writer.write(CSV_SEPARATOR);
         writer.write(voltageLevel.getId());
         writer.write(CSV_SEPARATOR);
