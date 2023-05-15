@@ -34,7 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class EquipmentGroupTimeSeriesMapperObserverTest {
+class EquipmentGroupTimeSeriesMapperObserverTest {
 
     private final int chunkSize = 2;
     private final MappingParameters mappingParameters = MappingParameters.load();
@@ -107,8 +107,7 @@ public class EquipmentGroupTimeSeriesMapperObserverTest {
                 assertThat(index).isEqualTo(regularIndex);
                 assertThat(pointRange).isEqualTo(Range.closed(0, chunkSize - 1));
                 assertThat(values).isEqualTo(new double[]{10 + 480, 11 + 480});
-                assertTrue(tags.containsKey("equipment"));
-                assertThat(tags.get("equipment")).isEqualTo(GROUP);
+                assertThat(tags).containsEntry("equipment", GROUP);
             }
         };
 
@@ -121,8 +120,7 @@ public class EquipmentGroupTimeSeriesMapperObserverTest {
         assertThat(version).isEqualTo(1);
         assertThat(index).isEqualTo(regularIndex);
         assertThat(pointRange).isEqualTo(Range.closed(0, chunkSize - 1));
-        assertThat(tags.get("equipment")).isEqualTo(GROUP);
-        assertTrue(tags.containsKey("equipment"));
+        assertThat(tags).containsEntry("equipment", GROUP);
     }
 
     private void loadTest(TimeSeriesMappingConfig mappingConfig, double[] expectedVariableActivePowerValues, double[] expectedFixedActivePowerValues) {

@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.Identifiable;
@@ -215,6 +214,6 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
     }
 
     private static Map<String, String> computeTags() {
-        return ImmutableMap.of(EQUIPMENT, GROUP);
+        return Map.of(EQUIPMENT, GROUP);
     }
 }
