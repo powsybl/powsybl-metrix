@@ -59,7 +59,7 @@ public class EquipmentTimeSeriesWriter {
                 TimeSeriesMetadata metadata = new TimeSeriesMetadata(timeSeriesName, TimeSeriesDataType.DOUBLE, index);
                 timeSeriesList.add(new StoredDoubleTimeSeries(metadata, chunks));
             }
-            if (timeSeriesList.size() > 0) {
+            if (!timeSeriesList.isEmpty()) {
                 ReadOnlyTimeSeriesStoreCache store = new ReadOnlyTimeSeriesStoreCache(timeSeriesList);
                 TimeSeriesStoreUtil.writeCsv(store, writer, SEPARATOR, ZoneId.of("UTC"), ImmutableSortedSet.of(version), doubleTimeSeries.keySet());
             }
