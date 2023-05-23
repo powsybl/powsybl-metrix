@@ -8,8 +8,10 @@
 
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.timeseries.TimeSeriesIndex;
+import com.google.common.collect.ImmutableSortedSet;
+import com.google.common.collect.Range;
+import com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil;
+import com.powsybl.timeseries.*;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,104 +19,52 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
+import java.time.ZoneId;
+import java.util.*;
 
-public class EquipmentTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
+public class EquipmentTimeSeriesWriter {
 
     private static final char SEPARATOR = ';';
+    private static final String OUTPUT_FILE_EXTENSION = ".csv";
 
     private final Path dir;
+    private final String filename;
+    private final Map<String, List<DoubleDataChunk>> doubleTimeSeries = new HashMap<>();
+    private TimeSeriesIndex index;
 
-    private BufferedWriter writer;
-
-    private final Map<String, Double> values = new HashMap<>();
-    private final Map<String, Double> constantValues = new HashMap<>();
-
-    private List<String> columnNames;
-
-    private boolean header;
-
-    public EquipmentTimeSeriesWriter(Path dir) {
+    public EquipmentTimeSeriesWriter(Path dir, String filename) {
         this.dir = Objects.requireNonNull(dir);
+        this.filename = Objects.requireNonNull(filename);
     }
 
-    public EquipmentTimeSeriesWriter(BufferedWriter writer) {
-        this.dir = null;
-        this.writer = Objects.requireNonNull(writer);
-    }
-
-    @Override
-    public void versionStart(int version) {
-        try {
-            if (dir != null) {
-                writer = Files.newBufferedWriter(dir.resolve("version_" + version + ".csv"), StandardCharsets.UTF_8);
-            }
-            header = true;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+    public void addTimeSeries(String timeSeriesName, Range<Integer> pointRange, double[] values, TimeSeriesIndex index) {
+        this.index = Objects.requireNonNull(index);
+        DoubleDataChunk chunk;
+        if (values.length == 1 && !pointRange.upperEndpoint().equals(pointRange.lowerEndpoint())) {
+            int length = pointRange.upperEndpoint() + 1;
+            chunk = new CompressedDoubleDataChunk(pointRange.lowerEndpoint(), length, new double[]{values[0]}, new int[]{length});
+        } else {
+            chunk = new UncompressedDoubleDataChunk(pointRange.lowerEndpoint(), values).tryToCompress();
         }
+        doubleTimeSeries.computeIfAbsent(timeSeriesName, k -> new ArrayList<>());
+        doubleTimeSeries.get(timeSeriesName).add(chunk);
     }
 
-    @Override
-    public void timeSeriesMappingStart(int point, TimeSeriesIndex index) {
-        values.clear();
-        if (point != TimeSeriesMapper.CONSTANT_VARIANT_ID) {
-            values.putAll(constantValues);
-        }
-    }
-
-    @Override
-    public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
-        if (!Double.isNaN(equipmentValue) && !timeSeriesName.isEmpty()) {
-            if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
-                constantValues.put(identifiable.getId() + "_" + variable.getVariableName(), equipmentValue);
-            } else {
-                values.put(identifiable.getId() + "_" + variable.getVariableName(), equipmentValue);
-            }
-        }
-    }
-
-    @Override
-    public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-        try {
-            if (point != TimeSeriesMapper.CONSTANT_VARIANT_ID) {
-                if (header) {
-                    writer.write("time");
-                    columnNames = values.keySet().stream().sorted().collect(Collectors.toList());
-                    for (String columnName : columnNames) {
-                        writer.write(SEPARATOR);
-                        writer.write(columnName);
-                    }
-                    header = false;
-                }
-
-                writer.newLine();
-
-                writer.write(index.getInstantAt(point).toString());
-
-                for (String columnName : columnNames) {
-                    double value = values.get(columnName);
-                    writer.write(SEPARATOR);
-                    writer.write(Double.isNaN(value) ? "" : Double.toString(value));
-                }
-            }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    @Override
     public void versionEnd(int version) {
-        try {
-            writer.close();
+        try (BufferedWriter writer = Files.newBufferedWriter(dir.resolve(filename + version + OUTPUT_FILE_EXTENSION), StandardCharsets.UTF_8)) {
+            List<DoubleTimeSeries> timeSeriesList = new ArrayList<>();
+            for (Map.Entry<String, List<DoubleDataChunk>> e : doubleTimeSeries.entrySet()) {
+                String timeSeriesName = e.getKey();
+                List<DoubleDataChunk> chunks = e.getValue();
+                TimeSeriesMetadata metadata = new TimeSeriesMetadata(timeSeriesName, TimeSeriesDataType.DOUBLE, index);
+                timeSeriesList.add(new StoredDoubleTimeSeries(metadata, chunks));
+            }
+            if (!timeSeriesList.isEmpty()) {
+                ReadOnlyTimeSeriesStoreCache store = new ReadOnlyTimeSeriesStoreCache(timeSeriesList);
+                TimeSeriesStoreUtil.writeCsv(store, writer, SEPARATOR, ZoneId.of("UTC"), ImmutableSortedSet.of(version), doubleTimeSeries.keySet());
+            }
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-
-        constantValues.clear();
     }
 }

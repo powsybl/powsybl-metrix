@@ -340,10 +340,6 @@ class TimeSeriesMappingTest {
         // Create observers
         List<TimeSeriesMapperObserver> observers = new ArrayList<>(2);
 
-        StringWriter equipmentTimeSeriesWriter = new StringWriter();
-        EquipmentTimeSeriesWriter equipmentTimeSeriesBufferedWriter = new EquipmentTimeSeriesWriter(new BufferedWriter(equipmentTimeSeriesWriter));
-        observers.add(equipmentTimeSeriesBufferedWriter);
-
         // Launch TimeSeriesMapper test
         mapper.mapToNetwork(store, parameters, observers);
 
@@ -356,9 +352,6 @@ class TimeSeriesMappingTest {
             bufferedWriter.flush();
             assertNotNull(compareStreamTxt(timeSeriesMappingStatusWriter.toString().getBytes(StandardCharsets.UTF_8), directoryName, "status.csv"));
         }
-
-        // Check equipment time series output
-        assertNotNull(compareStreamTxt(equipmentTimeSeriesWriter.toString().getBytes(StandardCharsets.UTF_8), directoryName, "version_1.csv"));
 
         // Check mapping output
         assertNotNull(compareStreamTxt(output.toString().getBytes(StandardCharsets.UTF_8), directoryName, "output.txt"));

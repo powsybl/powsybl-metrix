@@ -257,6 +257,9 @@ public class MappingTool implements Tool {
 
             if (checkEquipmentTimeSeries) {
                 context.getOutputStream().println("Computing equipment time series...");
+                TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(config, store).checkIndexUnicity();
+                int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
+                Range<Integer> range = Range.closed(firstVariant, lastPoint);
 
                 BalanceSummary balanceSummary = new BalanceSummary(context.getOutputStream());
                 List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
@@ -266,14 +269,13 @@ public class MappingTool implements Tool {
                     observers.add(new NetworkPointWriter(network, dataSource));
                 }
                 if (equipmentTimeSeriesDir != null) {
-                    observers.add(new EquipmentTimeSeriesWriter(equipmentTimeSeriesDir));
+                    observers.add(new EquipmentTimeSeriesWriterObserver(network, config, maxVariantCount, range, equipmentTimeSeriesDir));
+                    observers.add(new EquipmentGroupTimeSeriesWriterObserver(network, config, maxVariantCount, range, equipmentTimeSeriesDir));
                 }
 
                 TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
-                TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(config, store).checkIndexUnicity();
-                int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
-                TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(versions, Range.closed(firstVariant, lastPoint), ignoreLimits,
-                        ignoreEmptyFilter, true,  mappingParameters.getToleranceThreshold());
+                TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(versions, range, ignoreLimits,
+                        ignoreEmptyFilter, false, mappingParameters.getToleranceThreshold());
                 mapper.mapToNetwork(store, parameters, observers);
 
                 if (mappingSynthesisDir != null) {
