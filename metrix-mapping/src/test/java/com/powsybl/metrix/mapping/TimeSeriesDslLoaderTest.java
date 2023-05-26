@@ -264,9 +264,7 @@ class TimeSeriesDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            TimeSeriesMappingConfig config = dsl.load(network, parameters, store, new DataTableStore(), out, null);
-            TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
-            csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
+            dsl.load(network, parameters, store, new DataTableStore(), out, null);
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -274,9 +272,7 @@ class TimeSeriesDslLoaderTest {
 
         outputStream.reset();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            TimeSeriesMappingConfig config = dsl.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
-            TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
-            csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
+            dsl.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
         }
 
         output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -321,5 +317,33 @@ class TimeSeriesDslLoaderTest {
         String output = outputStream.toString();
         String expectedMessage = "LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
         assertEquals(expectedMessage, output);
+    }
+
+    @Test
+    void tsMetadataTest() throws IOException {
+        Network network = MappingTestNetwork.create();
+
+        // mapping script
+        String script = String.join(System.lineSeparator(),
+                "ts['one'] = 1",
+                "metadata_ts = metadata(ts['test'])",
+                "metadata_int = metadata(ts['one'])",
+                "println metadata_ts",
+                "println metadata_int"
+        );
+
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+                new StoredDoubleTimeSeries(
+                        new TimeSeriesMetadata("test", TimeSeriesDataType.DOUBLE, Map.of("tag", "value"), index),
+                        new UncompressedDoubleDataChunk(0, new double[]{1d})));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+        }
+
+        String output = TestUtil.normalizeLineSeparator(outputStream.toString());
+        assertEquals("[tag:value]\n[:]\n", output);
     }
 }

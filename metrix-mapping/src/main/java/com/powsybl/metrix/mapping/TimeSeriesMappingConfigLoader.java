@@ -9,7 +9,9 @@
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
+import com.powsybl.timeseries.ast.NodeCalc;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -52,6 +54,14 @@ public class TimeSeriesMappingConfigLoader {
 
     protected String computePowerTypeName(Generator generator) {
         return StringUtils.EMPTY;
+    }
+
+    protected Map<String, String> tsMetadata(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
+        return TsMetadata.tsMetadata(nodeCalc, store);
+    }
+
+    protected Object nodeMetadata(ReadOnlyTimeSeriesStore store) {
+        return Collections.emptyMap();
     }
 
     private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {

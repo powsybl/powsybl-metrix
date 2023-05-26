@@ -138,10 +138,9 @@ public class MetrixInputDataGenerator {
     }
 
     private MetrixVariantProvider.Variants defineVariantValue(MetrixVariantProvider variantProvider) {
-        MetrixVariantProvider.Variants variants = variantProvider == null
+        return variantProvider == null
                 ? MetrixVariantProvider.Variants.empty()
                 : variantProvider.variants();
-        return variants;
     }
 
     private void writeFileData(MetrixVariantProvider variantProvider,
@@ -186,7 +185,7 @@ public class MetrixInputDataGenerator {
     }
 
     public interface FileSystemUtils {
-        final FileSystemUtils DEFAULT = new FileSystemUtils() {
+        FileSystemUtils DEFAULT = new FileSystemUtils() {
             @Override
             public boolean isRegularFile(Path p) {
                 return Files.isRegularFile(p);
