@@ -320,7 +320,7 @@ class TimeSeriesDslLoaderTest {
     }
 
     @Test
-    void tsMetadataTest() throws IOException {
+    void metadataTest() throws IOException {
         Network network = MappingTestNetwork.create();
 
         // mapping script
@@ -328,8 +328,16 @@ class TimeSeriesDslLoaderTest {
                 "ts['one'] = 1",
                 "metadata_ts = metadata(ts['test'])",
                 "metadata_int = metadata(ts['one'])",
+                "string_metadatas = stringMetadatas()",
+                "double_metadatas = doubleMetadatas()",
+                "int_metadatas = intMetadatas()",
+                "boolean_metadatas = booleanMetadatas()",
                 "println metadata_ts",
-                "println metadata_int"
+                "println metadata_int",
+                "println string_metadatas",
+                "println double_metadatas",
+                "println int_metadatas",
+                "println boolean_metadatas"
         );
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
@@ -344,6 +352,6 @@ class TimeSeriesDslLoaderTest {
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
-        assertEquals("[tag:value]\n[:]\n", output);
+        assertEquals("[tag:value]\n[:]\n[:]\n[:]\n[:]\n[:]\n", output);
     }
 }
