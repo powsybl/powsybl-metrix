@@ -18,7 +18,7 @@ import java.util.*;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
 
-public class TimeSeriesMappingConfigLoader {
+public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
 
     private final TimeSeriesMappingConfig config;
     private final Set<String> existingTimeSeriesNames;
@@ -58,10 +58,6 @@ public class TimeSeriesMappingConfigLoader {
 
     protected Map<String, String> tsMetadata(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
         return TsMetadata.tsMetadata(nodeCalc, store);
-    }
-
-    protected Object nodeMetadata(ReadOnlyTimeSeriesStore store) {
-        return Collections.emptyMap();
     }
 
     private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {
