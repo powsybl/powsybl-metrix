@@ -1,2 +1,3 @@
 metrix:
     home-dir: /tmp
+    command: metrix-simulator

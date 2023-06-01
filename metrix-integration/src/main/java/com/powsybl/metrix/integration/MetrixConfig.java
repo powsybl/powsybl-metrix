@@ -33,6 +33,7 @@ public class MetrixConfig {
         ModuleConfig moduleConfig = platformConfig.getOptionalModuleConfig("metrix")
                 .orElseThrow(() -> new IllegalStateException("Metrix module configuration could not be found"));
         Path homeDir = moduleConfig.getPathProperty("home-dir");
+        String command = moduleConfig.getStringProperty("command");
         boolean debug = moduleConfig.getBooleanProperty("debug", DEFAULT_DEBUG);
         boolean constantLossFactor = moduleConfig.getOptionalBooleanProperty("constant-loss-factor").orElse(DEFAULT_CONSTANT_LOAD_FACTOR);
 
@@ -52,10 +53,12 @@ public class MetrixConfig {
                 .orElseGet(() -> moduleConfig.getOptionalIntProperty("logLevel")
                         .orElse(DEFAULT_LOG_LEVEL));
 
-        return new MetrixConfig(homeDir, debug, constantLossFactor, chunkSize, resultNumberLimit, debugLogLevel, noDebugLogLevel);
+        return new MetrixConfig(homeDir, command, debug, constantLossFactor, chunkSize, resultNumberLimit, debugLogLevel, noDebugLogLevel);
     }
 
     private Path homeDir;
+
+    private String command;
 
     private boolean debug;
 
@@ -83,8 +86,9 @@ public class MetrixConfig {
         return logLevel;
     }
 
-    public MetrixConfig(Path homeDir, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, int debugLogLevel, int noDebugLogLevel) {
+    public MetrixConfig(Path homeDir, String command, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, int debugLogLevel, int noDebugLogLevel) {
         this.homeDir = Objects.requireNonNull(homeDir);
+        this.command = Objects.requireNonNull(command);
         this.debug = debug;
         this.constantLossFactor = constantLossFactor;
         this.chunkSize = validateChunkSize(chunkSize);
@@ -99,6 +103,15 @@ public class MetrixConfig {
 
     public MetrixConfig setHomeDir(Path homeDir) {
         this.homeDir = homeDir;
+        return this;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public MetrixConfig setCommand(String command) {
+        this.command = command;
         return this;
     }
 

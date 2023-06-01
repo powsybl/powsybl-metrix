@@ -1,3 +1,4 @@
 metrix:
   home-dir: /tmp
+  command: metrix-simulator
   computation-retry-delay: 10
