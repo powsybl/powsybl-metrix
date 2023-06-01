@@ -50,7 +50,7 @@ class MetrixConfigTest {
         config.setStringProperty("resultLimit", "20000");
         MetrixConfig metrixConfig = MetrixConfig.load(platformConfig);
         assertEquals(fileSystem.getPath("/home"), metrixConfig.getHomeDir());
-        assertEquals(metrixConfig.getCommand(), "metrix-simulator");
+        assertEquals("metrix-simulator", metrixConfig.getCommand());
         assertTrue(metrixConfig.isDebug());
         assertTrue(metrixConfig.isConstantLossFactor());
         assertEquals(333, metrixConfig.getChunkSize());
