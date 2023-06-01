@@ -176,6 +176,7 @@ class MetrixTest {
 
         MetrixConfig metrixConfig = MetrixConfig.load();
         metrixConfig.setHomeDir(fileSystem.getPath("/tmp"));
+        metrixConfig.setCommand("metrix-simulator");
         MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder().simpleInit(1, false, false,
                 contingenciesProvider, null, logFile, logDetailFile, remedialActionFile).build();
         MetrixChunk metrixChunk = new MetrixChunk(network, computationManager, metrixChunkParam, metrixConfig, null);

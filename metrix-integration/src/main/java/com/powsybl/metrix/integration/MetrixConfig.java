@@ -33,6 +33,7 @@ public class MetrixConfig {
         ModuleConfig moduleConfig = platformConfig.getOptionalModuleConfig("metrix")
                 .orElseThrow(() -> new IllegalStateException("Metrix module configuration could not be found"));
         Path homeDir = moduleConfig.getPathProperty("home-dir");
+        String command = moduleConfig.getStringProperty("command");
         boolean debug = moduleConfig.getBooleanProperty("debug", DEFAULT_DEBUG);
         boolean constantLossFactor = moduleConfig.getOptionalBooleanProperty("constant-loss-factor").orElse(DEFAULT_CONSTANT_LOAD_FACTOR);
 
@@ -48,14 +49,16 @@ public class MetrixConfig {
                 .orElseGet(() -> moduleConfig.getOptionalIntProperty("debugLogLevel")
                         .orElse(DEFAULT_DEBUG_LOG_LEVEL));
 
-        int noDebugLogLevel = moduleConfig.getOptionalIntProperty("log-level")
+        int logLevel = moduleConfig.getOptionalIntProperty("log-level")
                 .orElseGet(() -> moduleConfig.getOptionalIntProperty("logLevel")
                         .orElse(DEFAULT_LOG_LEVEL));
 
-        return new MetrixConfig(homeDir, debug, constantLossFactor, chunkSize, resultNumberLimit, debugLogLevel, noDebugLogLevel);
+        return new MetrixConfig(homeDir, command, debug, constantLossFactor, chunkSize, resultNumberLimit, debugLogLevel, logLevel);
     }
 
     private Path homeDir;
+
+    private String command;
 
     private boolean debug;
 
@@ -67,7 +70,7 @@ public class MetrixConfig {
 
     private int debugLogLevel;
 
-    private int noDebugLogLevel;
+    private int logLevel;
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize < 1) {
@@ -83,14 +86,15 @@ public class MetrixConfig {
         return logLevel;
     }
 
-    public MetrixConfig(Path homeDir, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, int debugLogLevel, int noDebugLogLevel) {
+    public MetrixConfig(Path homeDir, String command, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, int debugLogLevel, int logLevel) {
         this.homeDir = Objects.requireNonNull(homeDir);
+        this.command = Objects.requireNonNull(command);
         this.debug = debug;
         this.constantLossFactor = constantLossFactor;
         this.chunkSize = validateChunkSize(chunkSize);
         this.resultNumberLimit = resultNumberLimit;
         this.debugLogLevel = validateLogLevel(debugLogLevel);
-        this.noDebugLogLevel = validateLogLevel(noDebugLogLevel);
+        this.logLevel = validateLogLevel(logLevel);
     }
 
     public Path getHomeDir() {
@@ -99,6 +103,15 @@ public class MetrixConfig {
 
     public MetrixConfig setHomeDir(Path homeDir) {
         this.homeDir = homeDir;
+        return this;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public MetrixConfig setCommand(String command) {
+        this.command = command;
         return this;
     }
 
@@ -147,21 +160,21 @@ public class MetrixConfig {
         return this;
     }
 
-    public int getNoDebugLogLevel() {
-        return noDebugLogLevel;
+    public int getLogLevel() {
+        return logLevel;
     }
 
-    public MetrixConfig setNoDebugLogLevel(int noDebugLogLevel) {
-        this.noDebugLogLevel = validateLogLevel(noDebugLogLevel);
+    public MetrixConfig setLogLevel(int logLevel) {
+        this.logLevel = validateLogLevel(logLevel);
         return this;
     }
 
     public String logLevel() {
-        int logLevel = isDebug() ? getDebugLogLevel() : getNoDebugLogLevel();
+        int level = isDebug() ? getDebugLogLevel() : getLogLevel();
         String[] logLevels = new String[]{"trace", "debug", "info", "warning", "error", "critical"};
-        if (logLevel >= logLevels.length) {
+        if (level >= logLevels.length) {
             return "";
         }
-        return logLevels[logLevel];
+        return logLevels[level];
     }
 }

@@ -43,12 +43,14 @@ class MetrixConfigTest {
     void test() {
         MapModuleConfig config = platformConfig.createModuleConfig("metrix");
         config.setStringProperty("home-dir", "/home");
+        config.setStringProperty("command", "metrix-simulator");
         config.setStringProperty("debug", "true");
         config.setStringProperty("constant-loss-factor", "true");
         config.setStringProperty("chunkSize", "333");
         config.setStringProperty("resultLimit", "20000");
         MetrixConfig metrixConfig = MetrixConfig.load(platformConfig);
         assertEquals(fileSystem.getPath("/home"), metrixConfig.getHomeDir());
+        assertEquals("metrix-simulator", metrixConfig.getCommand());
         assertTrue(metrixConfig.isDebug());
         assertTrue(metrixConfig.isConstantLossFactor());
         assertEquals(333, metrixConfig.getChunkSize());
@@ -59,6 +61,7 @@ class MetrixConfigTest {
     void snakeCaseTest() {
         MapModuleConfig config = platformConfig.createModuleConfig("metrix");
         config.setStringProperty("home-dir", "/home");
+        config.setStringProperty("command", "metrix-simulator");
         config.setStringProperty("debug", "true");
         config.setStringProperty("constant-loss-factor", "true");
         config.setStringProperty("chunk-size", "333");

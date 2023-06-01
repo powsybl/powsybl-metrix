@@ -265,6 +265,11 @@ class MetrixInputDataGeneratorTest {
             public Path getHomeDir() {
                 return Paths.get("/test");
             }
+
+            @Override
+            public String getCommand() {
+                return "metrix-simulator";
+            }
         };
     }
 

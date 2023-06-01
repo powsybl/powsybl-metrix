@@ -221,6 +221,23 @@ class TimeSeriesDslLoader {
             loadGroupTimeSeries(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD, logDslLoader)
         }
 
+        // metadatas
+        binding.stringMetadatas = { Closure closure ->
+            loader.stringMetadatas(store)
+        }
+        binding.doubleMetadatas = { Closure closure ->
+            loader.doubleMetadatas(store)
+        }
+        binding.intMetadatas = { Closure closure ->
+            loader.intMetadatas(store)
+        }
+        binding.booleanMetadatas = { Closure closure ->
+            loader.booleanMetadatas(store)
+        }
+        binding.metadata = { NodeCalc tsNode ->
+            loader.tsMetadata(tsNode, store)
+        }
+
         // statistics
         binding.sum = { NodeCalc tsNode, Boolean all_versions = false ->
             stats.getTimeSeriesSum(tsNode, all_versions ? fullComputationRange : checkedComputationRange)

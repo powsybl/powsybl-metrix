@@ -33,7 +33,6 @@ public class MetrixInputDataGenerator {
     private static final String VARIANTES_FILE_NAME = "variantes.csv";
     private static final String LOGS_FILE_NAME = "logs.txt";
     private static final String METRIX_COMMAND_ID = "metrix";
-    private static final String METRIX_PROGRAM = "metrix-simulator";
     private static final String METRIX_LOG_LEVEL_ARG = "--log-level=";
 
     public static final String REMEDIAL_ACTION_FILE_NAME = "parades.csv";
@@ -87,7 +86,7 @@ public class MetrixInputDataGenerator {
     private Command command(MetrixConfig config, MetrixVariantProvider.Variants variants, List<InputFile> inputFiles, List<OutputFile> outputFiles) {
         return new SimpleCommandBuilder()
                 .id(METRIX_COMMAND_ID)
-                .program(METRIX_PROGRAM)
+                .program(config.getCommand())
                 .args(LOGS_FILE_NAME,
                         VARIANTES_FILE_NAME,
                         MetrixOutputData.FILE_NAME_PREFIX,
@@ -138,10 +137,9 @@ public class MetrixInputDataGenerator {
     }
 
     private MetrixVariantProvider.Variants defineVariantValue(MetrixVariantProvider variantProvider) {
-        MetrixVariantProvider.Variants variants = variantProvider == null
+        return variantProvider == null
                 ? MetrixVariantProvider.Variants.empty()
                 : variantProvider.variants();
-        return variants;
     }
 
     private void writeFileData(MetrixVariantProvider variantProvider,
@@ -186,7 +184,7 @@ public class MetrixInputDataGenerator {
     }
 
     public interface FileSystemUtils {
-        final FileSystemUtils DEFAULT = new FileSystemUtils() {
+        FileSystemUtils DEFAULT = new FileSystemUtils() {
             @Override
             public boolean isRegularFile(Path p) {
                 return Files.isRegularFile(p);
