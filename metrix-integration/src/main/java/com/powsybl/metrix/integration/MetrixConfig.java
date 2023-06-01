@@ -170,11 +170,11 @@ public class MetrixConfig {
     }
 
     public String logLevel() {
-        int logLevel = isDebug() ? getDebugLogLevel() : getLogLevel();
+        int level = isDebug() ? getDebugLogLevel() : getLogLevel();
         String[] logLevels = new String[]{"trace", "debug", "info", "warning", "error", "critical"};
-        if (logLevel >= logLevels.length) {
+        if (level >= logLevels.length) {
             return "";
         }
-        return logLevels[logLevel];
+        return logLevels[level];
     }
 }
