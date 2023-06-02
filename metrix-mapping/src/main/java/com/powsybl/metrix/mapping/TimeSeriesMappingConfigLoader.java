@@ -62,11 +62,15 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
 
     private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {
         String name = computeGroupName(generator, equipmentGroupType);
-        if (withPowerType != null) {
-            String powerTypeName = computePowerTypeName(generator);
-            if (!powerTypeName.isEmpty()) {
-                name += "_" + powerTypeName;
-            }
+        if (withPowerType == null) {
+            return name;
+        }
+        if (!withPowerType) {
+            return name;
+        }
+        String powerTypeName = computePowerTypeName(generator);
+        if (!powerTypeName.isEmpty()) {
+            name += "_" + powerTypeName;
         }
         return name;
     }
