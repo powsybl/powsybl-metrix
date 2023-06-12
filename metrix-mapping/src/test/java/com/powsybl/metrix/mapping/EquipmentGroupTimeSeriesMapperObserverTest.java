@@ -322,7 +322,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
 
         // Run mapping
         runMapping(mappingConfig, observer);
-        assertThat(actualTimeSeriesNames.size()).isEqualTo(2);
+        assertThat(actualTimeSeriesNames).hasSize(2);
         assertTrue(actualTimeSeriesNames.contains("FVALDI1_userGivenName_variableActivePower"));
         assertTrue(actualTimeSeriesNames.contains("FVALDI1_userGivenName_fixedActivePower"));
     }
