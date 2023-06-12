@@ -33,7 +33,7 @@ class LoadGroupTsData extends EquipmentGroupTsData {
 
         // for each filtered equipment, add it to the equipment time series config
         filteredEquipments.forEach({ Identifiable identifiable ->
-            configLoader.addGroupLoadTimeSeries((Load) identifiable, spec.group)
+            configLoader.addGroupLoadTimeSeries((Load) identifiable, spec.group, spec.name)
         })
     }
 }

@@ -39,7 +39,7 @@ class GeneratorGroupTsData extends EquipmentGroupTsData {
 
         // for each filtered equipment, add it to the equipment time series config
         filteredEquipments.forEach({ Identifiable identifiable ->
-            configLoader.addGroupGeneratorTimeSeries((Generator) identifiable, spec.group, spec.withPowerType)
+            configLoader.addGroupGeneratorTimeSeries((Generator) identifiable, spec.group, spec.withPowerType, spec.name)
         })
     }
 }

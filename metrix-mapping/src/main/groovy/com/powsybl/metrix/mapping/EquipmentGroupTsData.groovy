@@ -12,7 +12,13 @@ class EquipmentGroupTsData extends FilteredData {
 
     EquipmentGroupType group
 
+    String name
+
     void group(EquipmentGroupType group) {
         this.group = group
+    }
+
+    void withName(String name) {
+        this.name = name
     }
 }

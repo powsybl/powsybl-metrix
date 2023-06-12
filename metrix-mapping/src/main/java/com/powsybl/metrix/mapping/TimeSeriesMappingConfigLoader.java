@@ -60,23 +60,41 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         return TsMetadata.tsMetadata(nodeCalc, store);
     }
 
-    private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {
-        String name = computeGroupName(generator, equipmentGroupType);
-        if (withPowerType == null) {
-            return name;
-        }
-        if (!withPowerType) {
-            return name;
-        }
-        String powerTypeName = computePowerTypeName(generator);
-        if (!powerTypeName.isEmpty()) {
-            name += "_" + powerTypeName;
+    private static String nameWithDelimiter(String name) {
+        return !name.isEmpty() ? "_" + name : StringUtils.EMPTY;
+    }
+
+    private static String computeSpecificName(String name) {
+        if (name == null) {
+            return StringUtils.EMPTY;
         }
         return name;
     }
 
-    private String computeLoadTsName(Load load, EquipmentGroupType equipmentGroupType) {
-        return computeGroupName(load, equipmentGroupType);
+    private static boolean isWithPowerType(Boolean withPowerType) {
+        if (withPowerType == null) {
+            return false;
+        }
+        if (!withPowerType) {
+            return false;
+        }
+        return true;
+    }
+
+    private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType, String name) {
+        String groupName = computeGroupName(generator, equipmentGroupType);
+        String specificName = computeSpecificName(name);
+        if (!isWithPowerType(withPowerType)) {
+            return groupName + nameWithDelimiter(specificName);
+        }
+        String powerTypeName = computePowerTypeName(generator);
+        return groupName + nameWithDelimiter(powerTypeName) + nameWithDelimiter(specificName);
+    }
+
+    private String computeLoadTsName(Load load, EquipmentGroupType equipmentGroupType, String name) {
+        String groupName = computeGroupName(load, equipmentGroupType);
+        String specificName = computeSpecificName(name);
+        return groupName + nameWithDelimiter(specificName);
     }
 
     private void addMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, MappingVariable variable,
@@ -303,14 +321,14 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         }
     }
 
-    protected void addGroupGeneratorTimeSeries(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType) {
-        String name = computeGeneratorTsName(generator, equipmentGroupType, withPowerType);
-        config.generatorGroupToTimeSeriesMapping.computeIfAbsent(generator.getId(), k -> new HashSet<>()).add(name);
+    protected void addGroupGeneratorTimeSeries(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType, String name) {
+        String timeSeriesName = computeGeneratorTsName(generator, equipmentGroupType, withPowerType, name);
+        config.generatorGroupToTimeSeriesMapping.computeIfAbsent(generator.getId(), k -> new HashSet<>()).add(timeSeriesName);
     }
 
-    protected void addGroupLoadTimeSeries(Load load, EquipmentGroupType equipmentGroupType) {
-        String name = computeLoadTsName(load, equipmentGroupType);
-        config.loadGroupToTimeSeriesMapping.computeIfAbsent(load.getId(), k -> new HashSet<>()).add(name);
+    protected void addGroupLoadTimeSeries(Load load, EquipmentGroupType equipmentGroupType, String name) {
+        String timeSeriesName = computeLoadTsName(load, equipmentGroupType, name);
+        config.loadGroupToTimeSeriesMapping.computeIfAbsent(load.getId(), k -> new HashSet<>()).add(timeSeriesName);
     }
 
     protected void addIgnoreLimits(String timeSeriesName) {
