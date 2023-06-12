@@ -24,10 +24,7 @@ import org.threeten.extra.Interval;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import static com.powsybl.metrix.mapping.EquipmentGroupTimeSeriesMapperObserver.GROUP;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,6 +70,13 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
             "    group %s",
             "}");
 
+    final String provideGroupWithNameTsGenerators = String.join(System.lineSeparator(),
+            "provideGroupTsGenerators {",
+            "    filter { generator.terminal.voltageLevel.id == 'FSSV.O1' }",
+            "    group VOLTAGE_LEVEL",
+            "    withName 'userGivenName'",
+            "}");
+
     final String mapToLoadsScript = String.join(System.lineSeparator(),
             "mapToLoads {",
             "    timeSeriesName %s",
@@ -84,6 +88,13 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
             "provideGroupTsLoads {",
             "    filter { load.terminal.voltageLevel.id == 'FVALDI1' }",
             "    group VOLTAGE_LEVEL",
+            "}");
+
+    final String provideGroupWithNameTsLoadsVoltageLevel = String.join(System.lineSeparator(),
+            "provideGroupTsLoads {",
+            "    filter { load.terminal.voltageLevel.id == 'FVALDI1' }",
+            "    group VOLTAGE_LEVEL",
+            "    withName 'userGivenName'",
             "}");
 
     private TimeSeriesMappingConfig loadMappingConfig(String script) {
@@ -192,6 +203,16 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
         generatorTest(mappingConfig, expectedTimeSeriesName);
     }
 
+    @Test
+    void generatorWithNameTest() {
+        String script = String.join(System.lineSeparator(),
+                mapToGeneratorsScript,
+                provideGroupWithNameTsGenerators);
+        TimeSeriesMappingConfig mappingConfig = loadMappingConfig(script);
+        final String expectedTimeSeriesName = "FSSV.O1_userGivenName_" + EquipmentVariable.targetP.getVariableName();
+        generatorTest(mappingConfig, expectedTimeSeriesName);
+    }
+
     /*
      * LOAD TEST
      * 2 loads in FVALDI1 voltageLevel :
@@ -282,5 +303,27 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
                 provideGroupTsLoadsVoltageLevel);
         TimeSeriesMappingConfig mappingConfig = loadMappingConfig(script);
         loadTest(mappingConfig, new double[]{70 + 10, 70 + 11}, new double[]{400 + 20, 400 + 21});
+    }
+
+    @Test
+    void loadMapToP0WithNameTest() {
+        String script = String.join(System.lineSeparator(),
+                String.format(mapToLoadsScript, "\"ts_10\"", "p0", "\"FVALDI11_L2\""),
+                provideGroupWithNameTsLoadsVoltageLevel);
+        TimeSeriesMappingConfig mappingConfig = loadMappingConfig(script);
+        Set<String> actualTimeSeriesNames = new HashSet<>();
+        // Create observer
+        TimeSeriesMapperObserver observer = new EquipmentGroupTimeSeriesMapperObserver(network, mappingConfig, chunkSize, Range.closed(0, chunkSize)) {
+            @Override
+            public void addTimeSeries(String timeSeriesName, int version, Range<Integer> pointRange, double[] values, Map<String, String> tags, TimeSeriesIndex index) {
+                actualTimeSeriesNames.add(timeSeriesName);
+            }
+        };
+
+        // Run mapping
+        runMapping(mappingConfig, observer);
+        assertThat(actualTimeSeriesNames).hasSize(2);
+        assertTrue(actualTimeSeriesNames.contains("FVALDI1_userGivenName_variableActivePower"));
+        assertTrue(actualTimeSeriesNames.contains("FVALDI1_userGivenName_fixedActivePower"));
     }
 }
