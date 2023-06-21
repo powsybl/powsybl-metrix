@@ -9,8 +9,7 @@
 package com.powsybl.metrix.integration;
 
 import com.powsybl.computation.ComputationManager;
-import com.powsybl.iidm.import_.ImportConfig;
-import com.powsybl.iidm.import_.Importers;
+import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +34,7 @@ public class DefaultNetworkSourceImpl implements NetworkSource {
 
     @Override
     public Network copy() {
-        return Importers.loadNetwork(caseFile, computationManager, ImportConfig.load(), null);
+        return Network.read(caseFile, computationManager, ImportConfig.load(), null);
     }
 
     @Override

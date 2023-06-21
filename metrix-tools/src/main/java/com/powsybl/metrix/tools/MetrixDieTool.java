@@ -11,8 +11,7 @@ package com.powsybl.metrix.tools;
 import com.google.auto.service.AutoService;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
-import com.powsybl.iidm.import_.ImportConfig;
-import com.powsybl.iidm.import_.Importers;
+import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
@@ -116,7 +115,7 @@ public class MetrixDieTool implements Tool {
 
         context.getOutputStream().println("Loading case ...");
 
-        Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
+        Network network = Network.read(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
 
         MetrixParameters parameters = MetrixParameters.load();
 
