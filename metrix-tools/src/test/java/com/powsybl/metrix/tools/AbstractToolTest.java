@@ -11,7 +11,7 @@ package com.powsybl.metrix.tools;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.config.InMemoryPlatformConfig;
-import com.powsybl.computation.ComputationManager;
+import com.powsybl.computation.*;
 import com.powsybl.computation.local.LocalCommandExecutor;
 import com.powsybl.computation.local.LocalComputationConfig;
 import com.powsybl.computation.local.LocalComputationManager;
@@ -27,12 +27,16 @@ import org.junit.jupiter.api.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
 import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -88,7 +92,21 @@ public abstract class AbstractToolTest {
                 public void stopForcibly(Path path) {
                 }
             };
-            ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor());
+            ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor()) {
+                @Override
+                public <R> CompletableFuture<R> execute(ExecutionEnvironment executionEnvironment, ExecutionHandler<R> executionHandler) {
+                    return CompletableFutureTask.runAsync(() -> {
+                        try {
+                            Path path = fileSystem.getPath("/working-dir");
+                            Files.createDirectory(path);
+                            return executionHandler.after(path, new DefaultExecutionReport(path));
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    }, ForkJoinPool.commonPool());
+
+                }
+            };
             ToolInitializationContext toolInitializationContext = new ToolInitializationContext() {
                 @Override
                 public PrintStream getOutputStream() {

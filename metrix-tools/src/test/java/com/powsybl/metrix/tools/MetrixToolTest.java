@@ -9,6 +9,7 @@
 package com.powsybl.metrix.tools;
 
 import com.powsybl.tools.Command;
+import com.powsybl.tools.CommandLineTools;
 import com.powsybl.tools.Tool;
 import org.apache.commons.cli.Options;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,6 +75,6 @@ class MetrixToolTest extends AbstractToolTest {
             "--time-series", "/timeseries.csv",
             "--versions", "1"
         };
-        //assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "");
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "");
     }
 }
