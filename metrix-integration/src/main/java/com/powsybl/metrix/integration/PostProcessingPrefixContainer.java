@@ -1,5 +1,7 @@
 package com.powsybl.metrix.integration;
 
+import java.util.List;
+
 public class PostProcessingPrefixContainer {
     public String postProcessingType;
     public String loadPrefix;
@@ -13,5 +15,9 @@ public class PostProcessingPrefixContainer {
         this.overloadPrefix = overloadPrefix;
         this.overallOverloadPrefix = overallOverloadPrefix;
         this.maxThreatPrefix = maxThreatPrefix;
+    }
+
+    public List<String> postProcessingPrefixList() {
+        return List.of(loadPrefix, overloadPrefix, overallOverloadPrefix, maxThreatPrefix);
     }
 }
