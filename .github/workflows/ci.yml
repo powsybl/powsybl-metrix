@@ -19,6 +19,12 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y libboost-all-dev
+      
+      - name : Install Python Xpress
+        run: |
+          pip install xpress
+          cd /home/runner/.local/lib/python3.10/site-packages/xpress/lib
+          ln -s libxprs.so* libxprs.so
 
       - name: Checkout sources
         uses: actions/checkout@v2
@@ -26,17 +32,9 @@ jobs:
       - name: Setup xpress env
         if: ${{ matrix.xprs == 'ON' }}
         run: |
-          echo "XPRESSDIR=${{ github.workspace }}/xpressmp813" >> $GITHUB_ENV
-          echo "XPRESS=${{ github.workspace }}/xpressmp813/bin" >> $GITHUB_ENV
-
-      - name: Checkout Xpress linux
-        if: ${{ matrix.xprs == 'ON' }}
-        uses: actions/checkout@v2
-        with:
-          repository: powsybl/xpressmp813Lin
-          path: ${{ env.XPRESSDIR }}
-          ref: master
-          # token: ${{ secrets.ACCESS_TOKEN }}
+          echo "XPRESSDIR=/home/runner/.local/lib/python3.10/site-packages/xpress" >> $GITHUB_ENV
+          echo "XPRESS=/home/runner/.local/lib/python3.10/site-packages/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=/home/runner/.local/lib/python3.10/site-packages/xpress/lib" >> $GITHUB_ENV
 
       - name: Configure 3rd parties
         working-directory: metrix-simulator

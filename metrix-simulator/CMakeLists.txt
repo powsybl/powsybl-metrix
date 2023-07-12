@@ -92,10 +92,10 @@ if(USE_ORTOOLS)
     find_package(ortools CONFIG REQUIRED)
 endif()
 
-# Xpress
-if(USE_XPRESS)
-    find_package(XPRESS REQUIRED)
-endif()
+# # Xpress
+# if(USE_XPRESS)
+#     find_package(XPRESS REQUIRED)
+# endif()
 
 # SUITESPARSE
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/suitesparse CACHE PATH "Path where an SuiteSparse installation already exists")

@@ -94,15 +94,11 @@ else()
   set(sirius_solver_static_ROOT ${install_dir})
 endif()
 
-set(ortools_url https://github.com/jdarlay/or-tools)
-set(ortools_tag v9.2-ls_dev1.0.5)
+set(ortools_url https://github.com/rte-france/or-tools)
+set(ortools_tag v9.5-rte2.0)
 
 option(USE_XPRESS "Use XPRESS in ortools" OFF)
-if (USE_XPRESS)
-  set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix_xprs.zip")
-else()
-  set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix.zip")
-endif()
+set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix.zip")
 
 set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ortools)
 find_package(ortools QUIET)
