@@ -215,14 +215,14 @@ if(USE_XPRESS)
         PRIVATE 
         USE_XPRESS
     )
-    target_include_directories(${target}
-        PRIVATE
-        XPRESS::XPRESS
-    )
-    target_link_libraries(${target}
-        PRIVATE
-        XPRESS::XPRESS
-    )
+    # target_include_directories(${target}
+    #     PRIVATE
+    #     XPRESS::XPRESS
+    # )
+    # target_link_libraries(${target}
+    #     PRIVATE
+    #     XPRESS::XPRESS
+    # )
 endif()
 
 if (USE_SIRIUS_SHARED)
