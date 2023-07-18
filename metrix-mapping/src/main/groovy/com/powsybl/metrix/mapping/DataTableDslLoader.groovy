@@ -42,5 +42,8 @@ class DataTableDslLoader {
         def dt = new DataTableGroovyObject(store)
         binding.dataTable = dt
         binding.dt = dt
+        binding.toDataTable = { List<String> columnNames, List<List<String>> values ->
+            DataTable::toDataTable(columnNames, values)
+        }
     }
 }
