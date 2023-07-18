@@ -66,7 +66,8 @@ class DataTableDslLoaderTest {
         String script = String.join(System.lineSeparator(),
                 "dataTable['other']"
         );
-        DataTableException e = assertThrows(DataTableException.class, () -> new TimeSeriesDslLoader(script).load(network, parameters, store, dataTableStore, null));
+        TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(script);
+        DataTableException e = assertThrows(DataTableException.class, () -> timeSeriesDslLoader.load(network, parameters, store, dataTableStore, null));
         assertTrue(e.getMessage().contains("Data table 'other' not found"));
     }
 
