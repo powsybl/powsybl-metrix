@@ -11,7 +11,7 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DataTableTest {
+class DataTableTest {
 
     final List<String> columnNames = List.of("columnName1", "columnName2");
     final List<String> row1 = List.of("value1", "value2");
@@ -64,12 +64,38 @@ public class DataTableTest {
     }
 
     @Test
-    void checkTest() {
-        assertThrows(DataTableException.class, () -> dataTable.data("other"));
-        assertThrows(DataTableException.class, () -> dataTable.get("other"));
-        assertThrows(DataTableException.class, () -> DataTable.toDataTable(Collections.emptyList(), List.of(row1, row2, row3)));
-        assertThrows(DataTableException.class, () -> DataTable.toDataTable(List.of("columnName1", "columnName1"), List.of(row1, row2, row3)));
-        assertThrows(DataTableException.class, () -> DataTable.toDataTable(List.of("columnName1"), List.of(row1, row2, row3)));
-        assertThrows(DataTableException.class, () -> dataTable.searchFirstValue("other", Map.of("columnName2", List.of("value4"))));
+    void unknownColumnNamesDataExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> dataTable.data("other"));
+        assertTrue(e.getMessage().contains("Unknown data table column names '[other]'"));
+    }
+
+    @Test
+    void unknownColumnNamesGetExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> dataTable.get("other"));
+        assertTrue(e.getMessage().contains("Unknown data table column names '[other]'"));
+    }
+
+    @Test
+    void emptyColumnNamesExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> DataTable.toDataTable(Collections.emptyList(), List.of(row1, row2, row3)));
+        assertTrue(e.getMessage().contains("Empty data table column list"));
+    }
+
+    @Test
+    void sameColumnNamesExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> DataTable.toDataTable(List.of("columnName1", "columnName1"), List.of(row1, row2, row3)));
+        assertTrue(e.getMessage().contains("Several columns with same names '[columnName1]'"));
+    }
+
+    @Test
+    void sizeColumnNamesExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> DataTable.toDataTable(List.of("columnName1"), List.of(row1, row2, row3)));
+        assertTrue(e.getMessage().contains("Number of columns '1' different from number of values '2' at row '1'"));
+    }
+
+    @Test
+    void unknownColumnNamesSearchExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> dataTable.searchFirstValue("other", Map.of("columnName2", List.of("value4"))));
+        assertTrue(e.getMessage().contains("Unknown data table column names '[other]'"));
     }
 }

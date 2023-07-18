@@ -26,7 +26,7 @@ class DataTableDslLoaderTest {
     private final Network network = MappingTestNetwork.create();
     private final ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
     private final DataTable dataTable = DataTable.toDataTable(List.of("columnName"), List.of(List.of("value")));
-    private DataTableStore dataTableStore = new DataTableStore();
+    private final DataTableStore dataTableStore = new DataTableStore();
 
     @BeforeEach
     public void setUp() {
@@ -61,12 +61,18 @@ class DataTableDslLoaderTest {
     }
 
     @Test
-    void checkTest() {
+    void notFoundExceptionTest() {
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "dataTable['other']"
         );
-        assertThrows(DataTableException.class, () -> new TimeSeriesDslLoader(script).load(network, parameters, store, dataTableStore, null));
-        assertThrows(DataTableException.class, () -> dataTableStore.addTable("tableName", dataTable));
+        DataTableException e = assertThrows(DataTableException.class, () -> new TimeSeriesDslLoader(script).load(network, parameters, store, dataTableStore, null));
+        assertTrue(e.getMessage().contains("Data table 'other' not found"));
+    }
+
+    @Test
+    void sameNameExceptionTest() {
+        DataTableException e = assertThrows(DataTableException.class, () -> dataTableStore.addTable("tableName", dataTable));
+        assertTrue(e.getMessage().contains("A data table with the name 'tableName' is already loaded"));
     }
 }

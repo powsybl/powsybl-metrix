@@ -45,7 +45,7 @@ public class AttributeNameToValue {
     public AttributeNameToValue filterSelectedColumns(List<String> selectedColumns) {
         AttributeNameToValue filteredInfo = new AttributeNameToValue();
         filteredInfo.attributeNameToValue = attributeNameToValue.entrySet().stream()
-                .filter(attributeNameToValue -> selectedColumns.contains(attributeNameToValue.getKey()))
+                .filter(attributeInfo -> selectedColumns.contains(attributeInfo.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         return filteredInfo;
     }

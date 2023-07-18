@@ -16,9 +16,6 @@ public class ContentFilter {
     private String columnName;
     private List<String> values = new ArrayList<>();
 
-    public ContentFilter() {
-    }
-
     public String getColumnName() {
         return columnName;
     }

@@ -16,9 +16,6 @@ public class QueryFilter {
     private List<String> selectedColumns = new ArrayList<>();
     private List<ContentFilter> contentFilters = new ArrayList<>();
 
-    public QueryFilter() {
-    }
-
     public List<String> getSelectedColumns() {
         return Collections.unmodifiableList(selectedColumns);
     }
