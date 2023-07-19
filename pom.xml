@@ -6,7 +6,7 @@
     <parent>
         <artifactId>powsybl-parent</artifactId>
         <groupId>com.powsybl</groupId>
-        <version>3</version>
+        <version>12</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>

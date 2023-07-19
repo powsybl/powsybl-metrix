@@ -246,7 +246,6 @@ public class MetrixParameters {
         return this;
     }
 
-
     // Loss factor
     public float getLossFactor() {
         return lossFactor;
@@ -256,7 +255,6 @@ public class MetrixParameters {
         this.lossFactor = lossFactor;
         return this;
     }
-
 
     // Nominal U
     public int getNominalU() {

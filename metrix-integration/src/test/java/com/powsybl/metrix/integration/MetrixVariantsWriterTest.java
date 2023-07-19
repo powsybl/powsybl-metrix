@@ -56,7 +56,7 @@ class MetrixVariantsWriterTest {
                 Duration.ofMinutes(15));
         StringWriter writer = new StringWriter();
 
-        MetrixNetwork network =  Mockito.mock(MetrixNetwork.class);
+        MetrixNetwork network = Mockito.mock(MetrixNetwork.class);
         Mockito.when(network.getIndex(MetrixSubset.LOAD, "l1")).thenReturn(2);
         Mockito.when(network.getIndex(MetrixSubset.LOAD, "l2")).thenReturn(1);
         Mockito.when(network.getIndex(MetrixSubset.LOAD, "l3")).thenReturn(1);
@@ -73,7 +73,7 @@ class MetrixVariantsWriterTest {
             new MetrixVariantsWriter(new MetrixVariantProvider() {
                 @Override
                 public Range<Integer> getVariantRange() {
-                    return Range.closed(0,  3);
+                    return Range.closed(0, 3);
                 }
 
                 @Override

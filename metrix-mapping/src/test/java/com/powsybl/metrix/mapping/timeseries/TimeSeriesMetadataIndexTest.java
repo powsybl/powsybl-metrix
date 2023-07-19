@@ -9,7 +9,7 @@ class TimeSeriesMetadataIndexTest {
     @Test
     void creationTest() {
         RegularTimeSeriesIndex regularTimeSeriesIndex = new RegularTimeSeriesIndex(797558400, 800150400, 60000);
-        TimeSeriesMetadataIndex timeSeriesMetadataIndex  = new TimeSeriesMetadataIndex(regularTimeSeriesIndex);
+        TimeSeriesMetadataIndex timeSeriesMetadataIndex = new TimeSeriesMetadataIndex(regularTimeSeriesIndex);
         Assertions.assertThat(timeSeriesMetadataIndex.endTime).isEqualTo(800150400);
         Assertions.assertThat(timeSeriesMetadataIndex.startTime).isEqualTo(797558400);
         Assertions.assertThat(timeSeriesMetadataIndex.pointCount).isEqualTo(44);

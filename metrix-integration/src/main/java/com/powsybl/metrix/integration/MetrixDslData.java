@@ -636,7 +636,6 @@ public class MetrixDslData {
         return Collections.emptyList();
     }
 
-
     // Bound variables
     public void addGeneratorsBinding(String id, Collection<String> generatorsIds, MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
         generatorsBindings.put(id, new MetrixGeneratorsBinding(id, generatorsIds, referenceVariable));

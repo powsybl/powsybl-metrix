@@ -17,7 +17,7 @@ public enum MetrixHvdcRegulationType {
 
     private final int type;
 
-    MetrixHvdcRegulationType(int type)  {
+    MetrixHvdcRegulationType(int type) {
         this.type = type;
     }
 
