@@ -121,7 +121,7 @@ public class GeneratorBoundLimitBuilder {
             logger.addLog(logBuilder.level(System.Logger.Level.WARNING).logDescription(logContent).build());
             generator.setTargetP(0);
         } else if (!isOkMinP && isUnmappedMinP) {
-            LogContent logContent =  new RangeWithMinPViolatedByTargetP()
+            LogContent logContent = new RangeWithMinPViolatedByTargetP()
                     .notIncludedVariable(targetPVariableName).id(id).minValue(minP)
                     .maxValue(maxP).value(targetP).baseCase().build();
             logger.addLog(logBuilder.logDescription(logContent).build());

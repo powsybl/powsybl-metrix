@@ -119,7 +119,7 @@ class MetrixConstantVariantTest {
                         null, null, null, null).build();
 
         MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
-                mappingConfig, metrixDslData, metrixChunkParam,  variantRange, System.err);
+                mappingConfig, metrixDslData, metrixChunkParam, variantRange, System.err);
 
                 // write variants
         MetrixVariantsWriter variantsWriter = new MetrixVariantsWriter(variantProvider, metrixNetwork);

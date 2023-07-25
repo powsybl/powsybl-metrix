@@ -362,7 +362,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
             newValue = 0;
             rangeLogWithVariableChanged.toVariable("").newValue(newValue);
         } else if (!isOkMinP) {
-            LogContent logContent =  new RangeWithMinPViolatedByTargetP()
+            LogContent logContent = new RangeWithMinPViolatedByTargetP()
                     .notIncludedVariable(TARGET_P_VARIABLE_NAME).id(id).minValue(minP)
                     .maxValue(maxP).value(value).mapped().build();
             Log log = logbuilder.level(System.Logger.Level.INFO).logDescription(logContent).build();
@@ -405,7 +405,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         }
     }
 
-    private void addHvdcLineLimitValue(HvdcLine hvdcLine, boolean isMappedSetpoint, boolean isActivePowerRange,  double setpoint) {
+    private void addHvdcLineLimitValue(HvdcLine hvdcLine, boolean isMappedSetpoint, boolean isActivePowerRange, double setpoint) {
         if (ignoreLimits && isMappedSetpoint) {
             if (!isMappedMaxP) {
                 addLimitValueChange(MappingLimitType.MAX, isActivePowerRange ? hvdcLineToCS1toCS2Values : hvdcLineToMaxValues, hvdcLine, TimeSeriesMapper.getMax(hvdcLine), setpoint);

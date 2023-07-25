@@ -9,7 +9,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Sets;
-import com.powsybl.commons.TestUtil;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.*;

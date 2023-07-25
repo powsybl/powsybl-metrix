@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class MetrixConfig {
 
-    protected  MetrixConfig() { }
+    protected MetrixConfig() { }
 
     private static final boolean DEFAULT_DEBUG = false;
     private static final boolean DEFAULT_CONSTANT_LOAD_FACTOR = false;
