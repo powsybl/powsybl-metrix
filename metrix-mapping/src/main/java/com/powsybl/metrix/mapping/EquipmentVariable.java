@@ -150,6 +150,9 @@ public enum EquipmentVariable implements MappingVariable {
                 return EquipmentVariable.powerFactor;
             case VSC_CONVERTER_STATION:
                 return EquipmentVariable.voltageSetpoint;
+            case TRANSFORMER:
+            case LINE:
+                return EquipmentVariable.disconnected;
             default:
                 throw new AssertionError("Unsupported equipment type " + equipmentType);
         }

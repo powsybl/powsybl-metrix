@@ -92,6 +92,18 @@ class TimeSeriesMapToTest {
                 "    filter {",
                 "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
                 "    }",
+                "}",
+                "mapToTransformers {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
+                "    }",
+                "}",
+                "mapToLines {",
+                "    timeSeriesName 'ts1'",
+                "    filter {",
+                "        line.id==\"FP.AND1  FVERGE1  1\"",
+                "    }",
                 "}");
 
         // create time series space mock
@@ -120,15 +132,17 @@ class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
 
-        assertEquals(8, results.size());
+        assertEquals(10, results.size());
         assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"),
-                                      new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
-                                      new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
-                                      new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
-                                      new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1"),
-                                      new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1"),
-                                      new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
-                                      new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1")),
+                        new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
+                        new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
+                        new MappingKey(EquipmentVariable.disconnected, "FP.AND1  FTDPRA1  1"),
+                        new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
+                        new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1"),
+                        new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1"),
+                        new MappingKey(EquipmentVariable.disconnected, "FP.AND1  FVERGE1  1"),
+                        new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
+                        new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1")),
                 results);
     }
 
