@@ -84,9 +84,9 @@ public class Metrix extends AbstractMetrix {
                 MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
                         mappingConfig, metrixDslData, metrixChunkParam, range, System.err);
                 CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(metrixParameters, metrixDslData, variantProvider);
-                CompletableFuture<Void> info = currentFuture.thenAccept(timeSeriesList -> {
-                    listener.onChunkResult(version, chunkNum, timeSeriesList, null);
-                });
+                CompletableFuture<Void> info = currentFuture.thenAccept(timeSeriesList ->
+                        listener.onChunkResult(version, chunkNum, timeSeriesList, null)
+                );
                 futures.add(info);
             }
         }

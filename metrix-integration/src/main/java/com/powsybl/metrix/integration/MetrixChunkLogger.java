@@ -13,7 +13,7 @@ import java.io.IOException;
 public interface MetrixChunkLogger {
 
     static MetrixChunkLogger neverNull(MetrixChunkLogger metrixChunkLogger) {
-        return  metrixChunkLogger != null ? metrixChunkLogger : new MetrixChunkLogger() { };
+        return metrixChunkLogger != null ? metrixChunkLogger : new MetrixChunkLogger() { };
     }
 
     default void beforeNetworkWriting() { }

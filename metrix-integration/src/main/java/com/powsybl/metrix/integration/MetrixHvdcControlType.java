@@ -14,7 +14,7 @@ public enum MetrixHvdcControlType {
 
     private final int type;
 
-    MetrixHvdcControlType(int type)  {
+    MetrixHvdcControlType(int type) {
         this.type = type;
     }
 

@@ -448,7 +448,7 @@ public class TimeSeriesMappingConfigCsvWriter {
             writeMappedTimeSeries(writer, config.getTimeSeriesToVscConverterStationsMapping(), VSC_CONVERTER_STATION_TYPE);
 
             Map<MappingKey, Set<String>> mappedTimeSeries = findDistributionKeyTimeSeries(config.getDistributionKeys());
-            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, EMPTY_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids,  false,  null, 1, false));
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, EMPTY_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, false, null, 1, false));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

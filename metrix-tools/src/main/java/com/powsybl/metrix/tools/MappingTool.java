@@ -13,8 +13,7 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
-import com.powsybl.iidm.import_.ImportConfig;
-import com.powsybl.iidm.import_.Importers;
+import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.metrix.mapping.timeseries.CalculatedTimeSeriesStore;
@@ -217,7 +216,7 @@ public class MappingTool implements Tool {
             store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
 
             context.getOutputStream().println("Loading case...");
-            Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
+            Network network = Network.read(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
 
             context.getOutputStream().println("Mapping time series to case...");
             TimeSeriesMappingConfig config;

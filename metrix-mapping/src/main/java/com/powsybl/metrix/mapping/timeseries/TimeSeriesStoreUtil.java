@@ -56,7 +56,7 @@ public final class TimeSeriesStoreUtil {
         Objects.requireNonNull(store);
 
         Set<String> storeNames = store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(false));
-        if (storeNames.isEmpty())  {
+        if (storeNames.isEmpty()) {
             throw new IllegalArgumentException("Empty store");
         }
 
@@ -77,7 +77,7 @@ public final class TimeSeriesStoreUtil {
         Objects.requireNonNull(store);
 
         Set<String> storeNames = store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(includeDependencies));
-        if (storeNames.isEmpty())  {
+        if (storeNames.isEmpty()) {
             throw new IllegalArgumentException("Empty store");
         }
 

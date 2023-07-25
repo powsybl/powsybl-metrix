@@ -122,7 +122,6 @@ public class MetrixOutputData {
         }
     }
 
-
     /**
      * @param length number of data in each time series
      */

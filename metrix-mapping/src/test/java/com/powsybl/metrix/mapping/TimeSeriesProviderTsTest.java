@@ -9,7 +9,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
-import com.powsybl.commons.TestUtil;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.xml.NetworkXml;
 import com.powsybl.timeseries.*;

@@ -17,7 +17,7 @@ public enum MetrixPtcControlType {
 
     private final int type;
 
-    MetrixPtcControlType(int type)  {
+    MetrixPtcControlType(int type) {
         this.type = type;
     }
 

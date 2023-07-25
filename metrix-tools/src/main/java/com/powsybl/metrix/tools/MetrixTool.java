@@ -13,8 +13,7 @@ import com.google.common.base.Stopwatch;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
-import com.powsybl.iidm.import_.ImportConfig;
-import com.powsybl.iidm.import_.Importers;
+import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.compatibility.CsvResultListener;
@@ -308,7 +307,7 @@ public class MetrixTool implements Tool {
                 Stopwatch networkLoadingStopwatch = Stopwatch.createStarted();
                 logger.tagged("info").log("Loading case ...");
 
-                Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
+                Network network = Network.read(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
 
                 networkLoadingStopwatch.stop();
                 logger.tagged("performance").log("Case loaded in %d ms", networkLoadingStopwatch.elapsed(TimeUnit.MILLISECONDS));
