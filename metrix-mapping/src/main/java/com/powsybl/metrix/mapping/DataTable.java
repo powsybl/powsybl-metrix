@@ -10,10 +10,10 @@ package com.powsybl.metrix.mapping;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.powsybl.metrix.mapping.exception.DataTableException;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DataTable {
@@ -75,6 +75,7 @@ public class DataTable {
     }
 
     public List<String> values(String columnName, boolean isWithName) {
+        checkColumnNames(columnName);
         return tabValues.stream().map(attributeNameToValue -> getValue(columnName, isWithName) + attributeNameToValue.getValue(columnName))
                 .collect(Collectors.toList());
     }
@@ -88,6 +89,7 @@ public class DataTable {
     }
 
     public static DataTable toDataTable(List<String> header, List<List<String>> content) {
+        checkData(header, content);
         DataTable dataTable = new DataTable();
         content.forEach(line -> {
             AttributeNameToValue attributeNameToValue = new AttributeNameToValue();
@@ -97,5 +99,94 @@ public class DataTable {
             dataTable.addAttributeNameToValue(attributeNameToValue);
         });
         return dataTable;
+    }
+
+    private static void checkNbValues(int nbColumns, List<String> values, int row) {
+        if (nbColumns != values.size()) {
+            throw new DataTableException(String.format("Number of columns '%s' different from number of values '%s' at row '%s'", nbColumns, values.size(), row + 1));
+        }
+    }
+
+    private static void checkData(List<String> header, List<List<String>> content) {
+        checkEmptyColumnNames(header);
+        checkDuplicateColumnNames(header);
+        int nbColumns = header.size();
+        content.forEach(values -> checkNbValues(nbColumns, values, content.indexOf(values)));
+    }
+
+    private void removeNotSelectedColumns(List<String> selectedColumns) {
+        this.tabValues = this.tabValues.stream()
+                .map(attributeNameToValue -> attributeNameToValue.filterSelectedColumns(selectedColumns))
+                .collect(Collectors.toList());
+    }
+
+    private void filterOnParameter(String parameter, List<String> tabValueToFilter) {
+        this.tabValues = this.tabValues.stream()
+                .filter(attributeNameToValue -> tabValueToFilter.stream().anyMatch(filterValue -> StringUtils.containsIgnoreCase(attributeNameToValue.getValue(parameter), filterValue)))
+                .collect(Collectors.toList());
+    }
+
+    private void filterInfos(QueryFilter filter) {
+        filter.getContentFilters().forEach(contentFilter -> filterOnParameter(contentFilter.getColumnName(), contentFilter.getValues()));
+        removeNotSelectedColumns(filter.getSelectedColumns());
+        tabColumns = new ArrayList<>(filter.getSelectedColumns());
+    }
+
+    private static void checkEmptyColumnNames(List<String> columns) {
+        if (columns.isEmpty()) {
+            throw new DataTableException("Empty data table column list");
+        }
+    }
+
+    private static void checkDuplicateColumnNames(List<String> columns) {
+        Set<String> duplicateColumnNames = columns.stream().distinct()
+                .filter(i -> Collections.frequency(columns, i) > 1)
+                .collect(Collectors.toSet());
+        if (!duplicateColumnNames.isEmpty()) {
+            throw new DataTableException(String.format("Several columns with same names '%s'", duplicateColumnNames));
+        }
+    }
+
+    private void checkColumnNames(List<String> columns) {
+        checkEmptyColumnNames(columns);
+        Set<String> unknownColumns = new HashSet<>(columns);
+        columnNames().forEach(unknownColumns::remove);
+        if (!unknownColumns.isEmpty()) {
+            throw new DataTableException(String.format("Unknown data table column names '%s'", unknownColumns));
+        }
+    }
+
+    private void checkColumnNames(String column) {
+        checkColumnNames(List.of(column));
+    }
+
+    public DataTable filter(List<String> selectedColumns, Map<String, List<String>> filter) {
+        checkColumnNames(selectedColumns);
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setSelectedColumns(selectedColumns);
+        List<ContentFilter> contentFilters = new ArrayList<>();
+        filter.forEach((columnName, values) -> {
+            ContentFilter contentFilter = new ContentFilter();
+            contentFilter.setColumnName(columnName);
+            contentFilter.setValues(filter.get(columnName));
+            contentFilters.add(contentFilter);
+        });
+        queryFilter.setContentFilters(contentFilters);
+        DataTable filteredDataTable = new DataTable(tabColumns, tabValues);
+        filteredDataTable.filterInfos(queryFilter);
+        return filteredDataTable;
+    }
+
+    public String searchFirstValue(String selectedColumn, Map<String, List<String>> filter) {
+        checkColumnNames(selectedColumn);
+        DataTable filteredDataTable = filter(List.of(selectedColumn), filter);
+        List<String> values = filteredDataTable.data(selectedColumn);
+        return values.isEmpty() ? null : values.get(0);
+    }
+
+    public List<String> searchValueList(String selectedColumn, Map<String, List<String>> filter) {
+        checkColumnNames(selectedColumn);
+        DataTable filteredDataTable = filter(List.of(selectedColumn), filter);
+        return filteredDataTable.data(selectedColumn);
     }
 }

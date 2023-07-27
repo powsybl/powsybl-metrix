@@ -12,8 +12,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AttributeNameToValue {
     @JsonProperty("attributeNameToValue")
@@ -38,5 +40,13 @@ public class AttributeNameToValue {
 
     public Set<String> getAttributeNames() {
         return attributeNameToValue.keySet();
+    }
+
+    public AttributeNameToValue filterSelectedColumns(List<String> selectedColumns) {
+        AttributeNameToValue filteredInfo = new AttributeNameToValue();
+        filteredInfo.attributeNameToValue = attributeNameToValue.entrySet().stream()
+                .filter(attributeInfo -> selectedColumns.contains(attributeInfo.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        return filteredInfo;
     }
 }
