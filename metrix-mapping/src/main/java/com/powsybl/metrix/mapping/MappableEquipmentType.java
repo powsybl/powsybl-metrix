@@ -21,8 +21,7 @@ public enum MappableEquipmentType {
     RATIO_TAP_CHANGER("twoWindingsTransformer"),
     LCC_CONVERTER_STATION("lccConverterStation"),
     VSC_CONVERTER_STATION("vscConverterStation"),
-    LINE("line"),
-    @Deprecated PST("pst");
+    LINE("line");
 
     private final String scriptVariable;
 

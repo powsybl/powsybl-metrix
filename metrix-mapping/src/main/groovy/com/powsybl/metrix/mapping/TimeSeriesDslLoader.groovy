@@ -154,9 +154,6 @@ class TimeSeriesDslLoader {
         binding.mapPlannedOutages = { Closure closure ->
             mapPlannedOutages(binding, store, loader, closure, transformersFilteringContext, linesFilteringContext, generatorsFilteringContext, checkedComputationRange.getVersions())
         }
-        binding.mapToPsts = { @Deprecated Closure closure ->
-            mapToSimpleVariableEquipments(binding, loader, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PST)
-        }
 
         // unmapped
         binding.unmappedGenerators = { Closure closure ->

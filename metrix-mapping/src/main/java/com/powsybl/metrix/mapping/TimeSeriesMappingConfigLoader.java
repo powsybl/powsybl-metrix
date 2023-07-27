@@ -224,7 +224,6 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
                         config.timeSeriesToBreakersMapping, config.breakerToTimeSeriesMapping);
                 break;
             case PHASE_TAP_CHANGER:
-            case PST:
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         config.timeSeriesToPhaseTapChangersMapping, config.phaseTapChangerToTimeSeriesMapping);
                 if (variable == EquipmentVariable.phaseTapPosition) {
