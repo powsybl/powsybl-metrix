@@ -181,7 +181,6 @@ public enum EquipmentVariable implements MappingVariable {
             case SWITCH:
                 return equipmentVariable == EquipmentVariable.open;
             case PHASE_TAP_CHANGER:
-            case PST:
                 return PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
             case TRANSFORMER:
                 return TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);
