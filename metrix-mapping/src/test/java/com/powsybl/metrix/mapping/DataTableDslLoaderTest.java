@@ -8,7 +8,7 @@
 
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.commons.TestUtil;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.exception.DataTableException;
 import com.powsybl.timeseries.*;

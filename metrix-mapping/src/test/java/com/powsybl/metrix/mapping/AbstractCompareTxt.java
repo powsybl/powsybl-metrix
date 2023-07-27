@@ -9,6 +9,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.io.ByteStreams;
+import com.powsybl.commons.test.TestUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -38,16 +39,12 @@ public abstract class AbstractCompareTxt {
 
     public static Object compareStreamTxt(InputStream expected, String actual) {
         try {
-            String expectedStr = normalizeLineSeparator(new String(ByteStreams.toByteArray(expected), StandardCharsets.UTF_8));
-            String actualStr = normalizeLineSeparator(actual);
+            String expectedStr = TestUtil.normalizeLineSeparator(new String(ByteStreams.toByteArray(expected), StandardCharsets.UTF_8));
+            String actualStr = TestUtil.normalizeLineSeparator(actual);
             assertEquals(expectedStr, actualStr);
             return "";
         } catch (IOException var4) {
             throw new UncheckedIOException(var4);
         }
-    }
-
-    private static String normalizeLineSeparator(String str) {
-        return str.replace("\r\n", "\n").replace("\r", "\n");
     }
 }
