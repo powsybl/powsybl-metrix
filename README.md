@@ -65,38 +65,38 @@ Network network = NetworkXml.read(Paths.get("/path/to/network.xiidm"));
 MappingParameters mappingParameters = MappingParameters.load();
 int firstVariant = ...
 int maxVariantCount = ...
-        ComputationRange computationRange=new ComputationRange(store.getTimeSeriesDataVersions(),firstVariant,maxVariantCount);
+ComputationRange computationRange = new ComputationRange(store.getTimeSeriesDataVersions(), firstVariant, maxVariantCount);
 
 // Generate mapping configuration
-        TimeSeriesMappingConfig config;
-        try(Reader reader=Files.newBufferedReader(mappingFile,StandardCharsets.UTF_8)){
-        TimeSeriesDslLoader dslLoader=new TimeSeriesDslLoader(reader,mappingFile.getFileName().toString());
-        config=dslLoader.load(network,mappingParameters,store,new DataTableStore(),computationRange);
-        }
+TimeSeriesMappingConfig config;
+try (Reader reader = Files.newBufferedReader(mappingFile,StandardCharsets.UTF_8)) {
+    TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader,mappingFile.getFileName().toString());
+    config = dslLoader.load(network, mappingParameters, store, new DataTableStore(), computationRange);
+}
 
 // Export result in csv
-        TimeSeriesMappingConfigCsvWriter csvWriter=new TimeSeriesMappingConfigCsvWriter(config,network,store,computationRange,mappingParameters.getWithTimeSeriesStats());
-        csvWriter.writeMappingCsv(Paths.get("/path/to/output"));
+TimeSeriesMappingConfigCsvWriter csvWriter=new TimeSeriesMappingConfigCsvWriter(config, network, store, computationRange, mappingParameters.getWithTimeSeriesStats());
+csvWriter.writeMappingCsv(Paths.get("/path/to/output"));
 
 // Compute mapping on network
-        TimeSeriesMappingLogger logger=new TimeSeriesMappingLogger();
-        List<TimeSeriesMapperObserver> observers=new ArrayList<>();
+TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+List<TimeSeriesMapperObserver> observers = new ArrayList<>();
 
 // Add network generation computation
-        DataSource dataSource=DataSourceUtil.createDataSource(Paths.get("/path/to/networkOutputDir"),network.getId(),null);
-        observers.add(new NetworkPointWriter(network,dataSource));
+DataSource dataSource=DataSourceUtil.createDataSource(Paths.get("/path/to/networkOutputDir"),network.getId(),null);
+observers.add(new NetworkPointWriter(network,dataSource));
 
 // Add timeseries mapping export
-        TimeSeriesIndex index=new TimeSeriesMappingConfigTableLoader(config,store).checkIndexUnicity();
-        int lastPoint=Math.min(firstVariant+maxVariantCount,index.getPointCount())-1;
-        Range<Integer> range=Range.closed(firstVariant,lastPoint);
-        observers.add(new EquipmentTimeSeriesWriterObserver(network,config,maxVariantCount,range,Paths.get("/path/to/equipmentTimeSeriesDir")));
-        observers.add(new EquipmentGroupTimeSeriesWriterObserver(network,config,maxVariantCount,range,Paths.get("/path/to/equipmentTimeSeriesDir")));
+TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(config,store).checkIndexUnicity();
+int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
+Range<Integer> range = Range.closed(firstVariant, lastPoint);
+observers.add(new EquipmentTimeSeriesWriterObserver(network, config, maxVariantCount, range, Paths.get("/path/to/equipmentTimeSeriesDir")));
+observers.add(new EquipmentGroupTimeSeriesWriterObserver(network, config, maxVariantCount, range, Paths.get("/path/to/equipmentTimeSeriesDir")));
 
 // Apply mapping to network
-        TimeSeriesMapper mapper=new TimeSeriesMapper(config,network,logger);
-        TimeSeriesMapperParameters parameters=new TimeSeriesMapperParameters(store.getTimeSeriesDataVersions(),range,true,true,false,mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store,parameters,observers);
+TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
+TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(store.getTimeSeriesDataVersions(), range, true, true, false, mappingParameters.getToleranceThreshold());
+mapper.mapToNetwork(store, parameters, observers);
 ```
 
 Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/mapping.html) on our website.
@@ -134,23 +134,21 @@ Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get
 FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));
 
 // Result listener
-        ResultListener listener=new ResultListener(){
-
-@Override
-public void onChunkResult(int version,int chunk,List<TimeSeries> timeSeriesList,Network networkPoint){
-        resultStore.importTimeSeries(timeSeriesList,version,false);
-        }
-
-        }
+ResultListener listener = new ResultListener() {
+    @Override
+    public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint){
+        resultStore.importTimeSeries(timeSeriesList, version, false);
+    }
+}
 
 // Run metrix configuration analysis
-        MetrixAnalysis metrixAnalysis=new MetrixAnalysis(networkSource,mappingReader,metrixDslReader,remedialActionsReader,contingenciesProvider,store,logger,computationRange);
-        MetrixAnalysisResult analysisResult=metrixAnalysis.runAnalysis("extern tool");
+MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReader, contingenciesProvider, store, logger, computationRange);
+MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
 
 // Run metrix
-        Metrix metrix=new Metrix(remedialActionsReader,store,resultStore,logArchive,computationManager,logger,analysisResult)
-        MetrixRunParameters runParams=new MetrixRunParameters(firstVariant,variantCount,versions,chunkSize,true,true,false);
-        metrix.run(runParams,listener);
+Metrix metrix = new Metrix(remedialActionsReader, store, resultStore, logArchive, computationManager, logger, analysisResult)
+MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, true, true, false);
+metrix.run(runParams, listener);
 ```
 
 Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/metrix) on our website.
