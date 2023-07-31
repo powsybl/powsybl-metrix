@@ -69,13 +69,13 @@ ComputationRange computationRange = new ComputationRange(store.getTimeSeriesData
 
 // Generate mapping configuration
 TimeSeriesMappingConfig config;
-try (Reader reader = Files.newBufferedReader(mappingFile,StandardCharsets.UTF_8)) {
-    TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader,mappingFile.getFileName().toString());
+try (Reader reader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
+    TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString());
     config = dslLoader.load(network, mappingParameters, store, new DataTableStore(), computationRange);
 }
 
 // Export result in csv
-TimeSeriesMappingConfigCsvWriter csvWriter=new TimeSeriesMappingConfigCsvWriter(config, network, store, computationRange, mappingParameters.getWithTimeSeriesStats());
+TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network, store, computationRange, mappingParameters.getWithTimeSeriesStats());
 csvWriter.writeMappingCsv(Paths.get("/path/to/output"));
 
 // Compute mapping on network
@@ -83,8 +83,8 @@ TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
 List<TimeSeriesMapperObserver> observers = new ArrayList<>();
 
 // Add network generation computation
-DataSource dataSource=DataSourceUtil.createDataSource(Paths.get("/path/to/networkOutputDir"),network.getId(),null);
-observers.add(new NetworkPointWriter(network,dataSource));
+DataSource dataSource = DataSourceUtil.createDataSource(Paths.get("/path/to/networkOutputDir"), network.getId(), null);
+observers.add(new NetworkPointWriter(network, dataSource));
 
 // Add timeseries mapping export
 TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(config,store).checkIndexUnicity();
@@ -116,17 +116,23 @@ Then you need :
 ```java
 
 ComputationManager computationManager = LocalComputationManager.getDefault();
+
 // Network
 NetworkSource networkSource = new DefaultNetworkSourceImpl(Paths.get("/path/to/case.xiidm"), computationManager)
+    
 // Timeseries
 InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
 store.importTimeSeries(Collections.singletonList(Paths.get("/path/to/timeseries.csv")));
+
 // Contingencies
 ContingenciesProvider contingenciesProvider = new GroovyDslContingenciesProvider(Paths.get("/path/to/contingencies.groovy"));
+
 // Mapping
 Supplier<Reader> mappingReader = () -> Files.newBufferedReader(Paths.get("/path/to/mapping.groovy"), StandardCharsets.UTF_8);
+
 // Metrix config
 Supplier<Reader> metrixDslReader = () -> Files.newBufferedReader(Paths.get("/path/to/metrixConfig.groovy"), StandardCharsets.UTF_8);
+
 // Remedial actions
 Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get("/path/to/remedialActions.txt"), StandardCharsets.UTF_8);
 
