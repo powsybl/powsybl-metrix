@@ -45,7 +45,7 @@ public:
             MAX_INC_EXOR,
             MAX_INC_COMPLEX_EXOR,
             MAX_BEFORE_CUR_EXOR,
-            MAX_BEFORE_CUR_COMPLEX_EXOR,
+            MAX_BEFORE_CUR_COMPLEX_EXOR
         };
 
         int num = variant_base;
