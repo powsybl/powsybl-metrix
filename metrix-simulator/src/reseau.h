@@ -709,8 +709,7 @@ public:
     void afficheSousReseau(unsigned int numNoeud, unsigned int prof); /* For debug */
     void afficheSousReseau(int numNoeud, int numPere, unsigned int prof, int nbIndent, std::stringstream& ss);
 
-    // For reproductible random between platforms
-    static std::mt19937 random;
+    static int myRandom(int i);
 
 private:
     std::shared_ptr<TransformateurDephaseur> creerTD(const std::shared_ptr<Quadripole>& quadVrai,
@@ -736,6 +735,8 @@ private:
                      const std::vector<int>& numZones,
                      bool detailsNonConnexite); /*allows to determine the treatment to be done for the contingencies and
                                                    remedial actions responisble for a connectedness break */
+    // For reproductible random between platforms
+    static std::mt19937 random;
 };
 
 
