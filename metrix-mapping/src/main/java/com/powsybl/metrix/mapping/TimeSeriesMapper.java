@@ -462,13 +462,15 @@ public class TimeSeriesMapper {
         // maxP inconstancy with CS1toCS2/CS2toCS1
         if (isActivePowerRange && (maxP > hvdcLineMaxP || -minP > hvdcLineMaxP)) {
             if (ignoreLimits) {
-                if (((maxP > hvdcLineMaxP && -minP > hvdcLineMaxP) && maxP > -minP) || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
+                if (maxP > hvdcLineMaxP && -minP > hvdcLineMaxP && maxP > -minP
+                        || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
                     LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
                             .value(maxP).oldValue(EquipmentVariable.maxP.getVariableName()).toVariable(maxPVariableName)
                             .newValue(maxP).build();
                     Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
-                } else if (((maxP > hvdcLineMaxP && -minP < hvdcLineMaxP) && -minP > maxP) || (-minP > hvdcLineMaxP && maxP <= hvdcLineMaxP)) {
+                } else if (maxP > hvdcLineMaxP && -minP < hvdcLineMaxP && -minP > maxP
+                        || -minP > hvdcLineMaxP && maxP <= hvdcLineMaxP) {
                     LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
                             .value(minP).oldValue(MINUS_MAXP).toVariable(minPVariableName).newValue(minP).build();
                     Log log = logBuilder.logDescription(logContent).build();

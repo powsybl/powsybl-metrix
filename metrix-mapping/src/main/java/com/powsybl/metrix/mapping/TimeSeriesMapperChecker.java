@@ -464,16 +464,18 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     }
 
     private void addLimitValueChange(MappingLimitType limitType, Map<Identifiable<?>, LimitChange> equipmentToLimitValues, Identifiable<?> identifiable, double oldLimit, double newLimit) {
-        if ((limitType == MappingLimitType.MAX) || (limitType == MappingLimitType.MIN)) {
+        if (limitType == MappingLimitType.MAX || limitType == MappingLimitType.MIN) {
             equipmentToLimitValues.computeIfAbsent(identifiable, e -> new LimitChange(oldLimit, Double.NaN));
-            if ((limitType == MappingLimitType.MAX && newLimit > oldLimit + toleranceThreshold) || (limitType == MappingLimitType.MIN && newLimit < oldLimit - toleranceThreshold)) {
+            if (limitType == MappingLimitType.MAX && newLimit > oldLimit + toleranceThreshold
+                    || limitType == MappingLimitType.MIN && newLimit < oldLimit - toleranceThreshold) {
                 LimitChange limitChange = equipmentToLimitValues.get(identifiable);
                 limitChange.setLimit(newLimit);
             }
         }
         equipmentToLimitValues.computeIfPresent(identifiable, (k, v) -> {
             LimitChange limitChange = equipmentToLimitValues.get(identifiable);
-            if (!Double.isNaN(limitChange.getLimit()) && (limitType == MappingLimitType.MAX && newLimit > limitChange.getBaseCaseLimit()) || (limitType == MappingLimitType.MIN && newLimit < limitChange.getBaseCaseLimit())) {
+            if (!Double.isNaN(limitChange.getLimit()) && limitType == MappingLimitType.MAX && newLimit > limitChange.getBaseCaseLimit()
+                    || limitType == MappingLimitType.MIN && newLimit < limitChange.getBaseCaseLimit()) {
                 limitChange.setBaseCaseLimitNbOfViolation(limitChange.getBaseCaseLimitNbOfViolation() + 1);
             }
             return v;

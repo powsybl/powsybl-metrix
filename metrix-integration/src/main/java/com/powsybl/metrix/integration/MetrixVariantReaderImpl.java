@@ -257,7 +257,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         if (variable == EquipmentVariable.disconnected) {
             Terminal t = generator.getTerminal();
             boolean isConnected = t.isConnected();
-            isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
                 openGeneratorList.add(generator.getId());
             }
@@ -333,7 +333,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             Terminal t1 = twc.getTerminal1();
             Terminal t2 = twc.getTerminal1();
             boolean isConnected = t1.isConnected() && t2.isConnected();
-            isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
                 openBranchList.add(twc.getId());
             }
@@ -357,7 +357,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         if (variable == EquipmentVariable.disconnected) {
             Terminal t = line.getTerminal1();
             boolean isConnected = t.isConnected();
-            boolean isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            boolean isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
                 openBranchList.add(line.getId());
             }

@@ -6,7 +6,7 @@
     <parent>
         <artifactId>powsybl-parent</artifactId>
         <groupId>com.powsybl</groupId>
-        <version>12</version>
+        <version>13</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -48,7 +48,7 @@
     </developers>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
 
         <assertj.version>3.19.0</assertj.version>
         <autoservice.version>1.0-rc2</autoservice.version>
