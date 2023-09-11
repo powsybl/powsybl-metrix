@@ -35,14 +35,8 @@ include(CloneUrl)
 set(suitesparse_github_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
 set(suitesparse_tag_version v5.4.0)
 
-if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
-  message(STATUS "NNI and NNI_PASSWORD are defined")
-  #get_url(NAME suitesparse URL ${suitesparse_github_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
-  #set(suitesparse_github_url ${SUITEPARSE_URL})
-endif()
-
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
-set(SUITESPARSE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
+#set(SUITESPARSE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
@@ -66,17 +60,11 @@ else()
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
-  set(SUITESPARSE_ROOT ${install_dir})
-  set(SUITESPARSE_static_ROOT ${install_dir})
+  #set(SUITESPARSE_ROOT ${install_dir})
+  #set(SUITESPARSE_static_ROOT ${install_dir})
 endif()
 
 set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
-
-if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
-  message(STATUS "NNI and NNI_PASSWORD are defined")
-  #get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
-  #set(sirius_solver_url ${SIRIUS_URL})
-endif()
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 find_package(sirius_solver QUIET)
@@ -92,12 +80,6 @@ else()
     BINARY_DIR          ${DOWNLOAD_DIR}/sirius_solver-build
     GIT_REPOSITORY      ${sirius_solver_url}
     GIT_TAG             origin/metrix
-    LOG_DOWNLOAD        TRUE
-    LOG_UPDATE          TRUE
-    LOG_PATCH           TRUE
-    LOG_CONFIGURE       TRUE
-    LOG_BUILD           TRUE
-    LOG_INSTALL         TRUE
 
     CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
