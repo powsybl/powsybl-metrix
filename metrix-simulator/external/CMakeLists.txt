@@ -36,7 +36,6 @@ set(suitesparse_github_url https://github.com/DrTimothyAldenDavis/SuiteSparse.gi
 set(suitesparse_tag_version v5.4.0)
 
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
-#set(SUITESPARSE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
@@ -60,8 +59,6 @@ else()
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
-  #set(SUITESPARSE_ROOT ${install_dir})
-  #set(SUITESPARSE_static_ROOT ${install_dir})
 endif()
 
 set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
