@@ -47,7 +47,7 @@ if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
   add_custom_target(suitesparse)
 else()
-  ExternalProject_Add(suitesparses
+  ExternalProject_Add(suitesparse
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/suitesparse
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/suitesparse-stamp
