@@ -10,7 +10,7 @@
 
 
 cmake_minimum_required(VERSION 3.9.6 FATAL_ERROR)
-
+message(${CMAKE_VERSION})
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel (CMake defaults)")
 
 if(POLICY CMP0074)
@@ -32,15 +32,16 @@ include(ExternalProject)
 include(GetPatchCommand)
 include(CloneUrl)
 
-set(suitesparse_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
+set(suitesparse_github_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
 set(suitesparse_tag_version v5.4.0)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
-  get_url(NAME suitesparse URL ${suitesparse_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
-  set(suitesparse_url ${SUITEPARSE_URL})
+  get_url(NAME suitesparse URL ${suitesparse_github_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  set(suitesparse_github_url ${SUITEPARSE_URL})
 endif()
 
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
+set(SUITESPARSE_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
@@ -52,7 +53,7 @@ else()
     STAMP_DIR           ${DOWNLOAD_DIR}/suitesparse-stamp
     SOURCE_DIR          ${DOWNLOAD_DIR}/suitesparse
     BINARY_DIR          ${DOWNLOAD_DIR}/suitesparse-build
-    GIT_REPOSITORY      ${suitesparse_url}
+    GIT_REPOSITORY      ${suitesparse_github_url}
     GIT_TAG             refs/tags/${suitesparse_tag_version}
     PATCH_COMMAND       ${suitesparse_patch}
 
@@ -63,6 +64,8 @@ else()
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
+  set(SUITESPARSE_ROOT ${install_dir})
+  set(SUITESPARSE_static_ROOT ${install_dir})
 endif()
 
 set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
