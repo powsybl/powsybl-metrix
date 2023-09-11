@@ -92,6 +92,12 @@ else()
     BINARY_DIR          ${DOWNLOAD_DIR}/sirius_solver-build
     GIT_REPOSITORY      ${sirius_solver_url}
     GIT_TAG             origin/metrix
+    LOG_DOWNLOAD        TRUE
+    LOG_UPDATE          TRUE
+    LOG_PATCH           TRUE
+    LOG_CONFIGURE       TRUE
+    LOG_BUILD           TRUE
+    LOG_INSTALL         TRUE
 
     CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
