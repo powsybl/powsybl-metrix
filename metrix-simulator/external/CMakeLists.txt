@@ -40,6 +40,7 @@ if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
   set(suitesparse_url ${SUITEPARSE_URL})
 endif()
 
+set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
