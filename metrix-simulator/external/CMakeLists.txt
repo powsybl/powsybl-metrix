@@ -36,6 +36,7 @@ set(suitesparse_github_url https://github.com/DrTimothyAldenDavis/SuiteSparse.gi
 set(suitesparse_tag_version v5.4.0)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  message(STATUS "NNI and NNI_PASSWORD are defined")
   get_url(NAME suitesparse URL ${suitesparse_github_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
   set(suitesparse_github_url ${SUITEPARSE_URL})
 endif()
@@ -47,6 +48,7 @@ if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
   add_custom_target(suitesparse)
 else()
+  message(STATUS "Downloading SuiteSparse")
   ExternalProject_Add(suitesparse
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/suitesparse
     TMP_DIR             ${TMP_DIR}
@@ -71,6 +73,7 @@ endif()
 set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  message(STATUS "NNI and NNI_PASSWORD are defined")
   get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
   set(sirius_solver_url ${SIRIUS_URL})
 endif()
@@ -80,6 +83,7 @@ find_package(sirius_solver QUIET)
 if(sirius_solver_FOUND)
   message(STATUS "Sirius solver already found")
 else()
+  message(STATUS "Downloading Sirius solver")
   ExternalProject_Add(sirius_solver
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
     TMP_DIR             ${TMP_DIR}
