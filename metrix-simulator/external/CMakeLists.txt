@@ -10,7 +10,7 @@
 
 
 cmake_minimum_required(VERSION 3.9.6 FATAL_ERROR)
-message(${CMAKE_VERSION})
+
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel (CMake defaults)")
 
 if(POLICY CMP0074)
