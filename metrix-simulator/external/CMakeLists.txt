@@ -41,7 +41,6 @@ if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
 endif()
 
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
-message(${SUITESPARSE_HOME})
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
@@ -61,14 +60,6 @@ else()
 
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
-
-    LOG_DOWNLOAD        TRUE
-    LOG_UPDATE          TRUE
-    LOG_PATCH           TRUE
-    LOG_CONFIGURE       TRUE
-    LOG_BUILD           TRUE
-    LOG_INSTALL         TRUE
-    LOG_TEST            TRUE
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
@@ -82,7 +73,6 @@ if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
 endif()
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
-message(${sirius_solver_ROOT})
 find_package(sirius_solver QUIET)
 if(sirius_solver_FOUND)
   message(STATUS "Sirius solver already found")
