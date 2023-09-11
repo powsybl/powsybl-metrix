@@ -37,8 +37,8 @@ set(suitesparse_tag_version v5.4.0)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
   message(STATUS "NNI and NNI_PASSWORD are defined")
-  get_url(NAME suitesparse URL ${suitesparse_github_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
-  set(suitesparse_github_url ${SUITEPARSE_URL})
+  #get_url(NAME suitesparse URL ${suitesparse_github_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  #set(suitesparse_github_url ${SUITEPARSE_URL})
 endif()
 
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
@@ -74,8 +74,8 @@ set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
   message(STATUS "NNI and NNI_PASSWORD are defined")
-  get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
-  set(sirius_solver_url ${SIRIUS_URL})
+  #get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  #set(sirius_solver_url ${SIRIUS_URL})
 endif()
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
