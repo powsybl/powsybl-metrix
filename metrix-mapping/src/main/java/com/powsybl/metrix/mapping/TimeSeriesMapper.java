@@ -81,10 +81,9 @@ public class TimeSeriesMapper {
     }
 
     public static float getMax(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
-            return (float) ((Generator) identifiable).getMaxP();
-        } else if (identifiable instanceof HvdcLine) {
-            HvdcLine hvdcLine = (HvdcLine) identifiable;
+        if (identifiable instanceof Generator generator) {
+            return (float) generator.getMaxP();
+        } else if (identifiable instanceof HvdcLine hvdcLine) {
             HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
             if (activePowerRange != null) {
                 return activePowerRange.getOprFromCS1toCS2();
@@ -97,10 +96,9 @@ public class TimeSeriesMapper {
     }
 
     public static float getMin(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
-            return (float) ((Generator) identifiable).getMinP();
-        } else if (identifiable instanceof HvdcLine) {
-            HvdcLine hvdcLine = (HvdcLine) identifiable;
+        if (identifiable instanceof Generator generator) {
+            return (float) generator.getMinP();
+        } else if (identifiable instanceof HvdcLine hvdcLine) {
             HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
             if (activePowerRange != null) {
                 return -activePowerRange.getOprFromCS2toCS1();
@@ -462,8 +460,7 @@ public class TimeSeriesMapper {
         // maxP inconstancy with CS1toCS2/CS2toCS1
         if (isActivePowerRange && (maxP > hvdcLineMaxP || -minP > hvdcLineMaxP)) {
             if (ignoreLimits) {
-                if (maxP > hvdcLineMaxP && -minP > hvdcLineMaxP && maxP > -minP
-                        || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
+                if (maxP > hvdcLineMaxP && maxP > -minP) {
                     LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
                             .value(maxP).oldValue(EquipmentVariable.maxP.getVariableName()).toVariable(maxPVariableName)
                             .newValue(maxP).build();
