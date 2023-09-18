@@ -32,15 +32,13 @@ include(ExternalProject)
 include(GetPatchCommand)
 include(CloneUrl)
 
-set(suitesparse_version  5.4.0)
-set(suitesparse_name     SuiteSparse-${suitesparse_version}.tar.gz)
-set(suitesparse_prefix_url http://faculty.cse.tamu.edu/davis/SuiteSparse)
-set(suitesparse_url      ${suitesparse_prefix_url}/${suitesparse_name})
-set(suitesparse_md5      4A6D4E74FC44C503F52996AE95CAD03A)
+set(suitesparse_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
+set(suitesparse_tag_version v5.4.0)
 
-set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
-find_package(SuiteSparse QUIET)
-unset(SUITESPARSE_HOME)
+if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  get_url(NAME suitesparse URL ${suitesparse_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  set(suitesparse_url ${SUITEPARSE_URL})
+endif()
 
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
@@ -49,13 +47,12 @@ if(SuiteSparse_FOUND)
 else()
   ExternalProject_Add(suitesparse
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/suitesparse
-    DOWNLOAD_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/suitesparse
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/suitesparse-stamp
     SOURCE_DIR          ${DOWNLOAD_DIR}/suitesparse
     BINARY_DIR          ${DOWNLOAD_DIR}/suitesparse-build
-    URL                 ${suitesparse_url}
-    URL_MD5             ${suitesparse_md5}
+    GIT_REPOSITORY      ${suitesparse_url}
+    GIT_TAG             refs/tags/${suitesparse_tag_version}
     PATCH_COMMAND       ${suitesparse_patch}
 
     CMAKE_CACHE_ARGS    -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
