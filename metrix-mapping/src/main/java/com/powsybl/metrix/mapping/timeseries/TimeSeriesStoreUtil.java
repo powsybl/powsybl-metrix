@@ -123,7 +123,7 @@ public final class TimeSeriesStoreUtil {
 
         TimeSeriesTable table = new TimeSeriesTable(versions.first(), versions.last(), indexes.iterator().next(), byteBufferAllocator);
         for (int version : versions) {
-            List<DoubleTimeSeries> doubleTimeSeries = doubleTimeSeriesNames.isEmpty() ? Collections.emptyList()
+            List<DoubleTimeSeries> doubleTimeSeries = doubleTimeSeriesNames.isEmpty() ? new ArrayList<>()
                     : store.getDoubleTimeSeries(doubleTimeSeriesNames, version);
 
             // complete time series list to have the same list for each version
@@ -131,7 +131,7 @@ public final class TimeSeriesStoreUtil {
             missingDoubleTimeSeriesNames.removeAll(doubleTimeSeries.stream().map(ts -> ts.getMetadata().getName()).collect(Collectors.toList()));
             doubleTimeSeries.addAll(missingDoubleTimeSeriesNames.stream().map(name -> new StoredDoubleTimeSeries(metadataMap.get(name))).collect(Collectors.toList()));
 
-            List<StringTimeSeries> stringTimeSeries = stringTimeSeriesNames.isEmpty() ? Collections.emptyList()
+            List<StringTimeSeries> stringTimeSeries = stringTimeSeriesNames.isEmpty() ? new ArrayList<>()
                     : store.getStringTimeSeries(stringTimeSeriesNames, version);
 
             // complete time series list to have the same list for each version
