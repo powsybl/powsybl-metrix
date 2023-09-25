@@ -466,7 +466,7 @@ public class TimeSeriesMapper {
                             .newValue(maxP).build();
                     Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
-                } else if (maxP > hvdcLineMaxP && -minP < hvdcLineMaxP && -minP > maxP
+                } else if (maxP < -minP && -minP < hvdcLineMaxP
                         || -minP > hvdcLineMaxP && maxP <= hvdcLineMaxP) {
                     LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
                             .value(minP).oldValue(MINUS_MAXP).toVariable(minPVariableName).newValue(minP).build();
