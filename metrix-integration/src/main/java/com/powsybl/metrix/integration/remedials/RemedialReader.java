@@ -80,8 +80,8 @@ public final class RemedialReader {
         List<String> branchToOpen = new ArrayList<>();
         List<String> branchToClose = new ArrayList<>();
         List<String> actions = new ArrayList<>();
-        Arrays.stream(columns).skip(FIRST_ACTION_INDEX).forEach(action -> {
-            action = rTrim(action);
+        Arrays.stream(columns).skip(FIRST_ACTION_INDEX).forEach(a -> {
+            String action = rTrim(a);
             actions.add(action);
             if (action.startsWith(BRANCH_TO_CLOSE_SYMBOL)) {
                 branchToClose.add(action.substring(1));
