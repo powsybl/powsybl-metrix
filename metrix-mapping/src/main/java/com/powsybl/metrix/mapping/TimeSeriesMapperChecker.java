@@ -433,7 +433,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         setpoint = applyToleranceThresholdOnTargetP(isMappedSetpoint, setpoint);
 
         if (hvdcLine.getMaxP() < 0) {
-            throw new AssertionError(String.format("Equipment '%s' : invalid active limits maxP %s at point %s", id, hvdcLine.getMaxP(), point));
+            throw new AssertionError(String.format("Equipment '%s' : invalid active limit maxP %s at point %s", id, hvdcLine.getMaxP(), point));
         } else if (isActivePowerRange && (minP > 0 || maxP < 0)) {
             throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
         }
