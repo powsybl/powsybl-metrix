@@ -36,6 +36,7 @@ public class TimeSeriesMapper {
     public static final int SWITCH_OPEN = 0; // 0 means switch is open
     public static final int DISCONNECTED_VALUE = 0; // 0 means equipment is disconnected
     public static final int CONNECTED_VALUE = 1;
+    private static final String LOAD_NOT_FOUND_MESSAGE = "Load '%s' not found";
 
     private final TimeSeriesMappingConfig config;
     private final Network network;
@@ -660,7 +661,7 @@ public class TimeSeriesMapper {
         for (String id : unmappedLoads) {
             Load load = network.getLoad(id);
             if (load == null) {
-                throw new TimeSeriesMappingException(String.format("Load '%s' not found", id));
+                throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
             }
             constantBalance += -load.getP0();
         }
@@ -668,7 +669,7 @@ public class TimeSeriesMapper {
             if (!unmappedLoads.contains(id)) {
                 Load load = network.getLoad(id);
                 if (load == null) {
-                    throw new TimeSeriesMappingException(String.format("Load '%s' not found", id));
+                    throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
                 }
                 LoadDetail loadDetail = load.getExtension(LoadDetail.class);
                 if (loadDetail == null) {
@@ -681,7 +682,7 @@ public class TimeSeriesMapper {
             if (!unmappedLoads.contains(id)) {
                 Load load = network.getLoad(id);
                 if (load == null) {
-                    throw new TimeSeriesMappingException(String.format("Load '%s' not found", id));
+                    throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
                 }
                 LoadDetail loadDetail = load.getExtension(LoadDetail.class);
                 if (loadDetail == null) {
