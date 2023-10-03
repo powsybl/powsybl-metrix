@@ -97,7 +97,7 @@ class NetworkTopographyChangeNotifierTest {
                 "vl = 'FP.AND1'",
                 "bbs = network.getVoltageLevel(vl).nodeBreakerView.busbarSections[0]",
                 "loadId = bbs.id + '_NEW'",
-                "nextNode = network.getVoltageLevel(vl).nodeBreakerView.nodeCount + 1 ",
+                "nextNode = network.getVoltageLevel(vl).nodeBreakerView.getMaximumNodeIndex() + 1 ",
                 "network.getVoltageLevel(vl).newLoad()",
                 "        .setId(loadId)",
                 "        .setNode(nextNode)",
