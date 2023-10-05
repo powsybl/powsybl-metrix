@@ -1,0 +1,115 @@
+name: CI-cpp
+
+on: [push]
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
+
+  qa:
+    name: QA - CI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Java 11
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Install gcovr
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcovr
+
+      - name: Install Sonar wrapper
+        working-directory: ${{ runner.workspace }}
+        run: |
+          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+
+      - name: Install Sonar scanner
+        working-directory: ${{ runner.workspace }}
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+          unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+          ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
+          rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+        env:
+          SONAR_SCANNER_VERSION: 3.3.0.1492
+
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCODE_COVERAGE=TRUE
+          -DMETRIX_RUN_ALL_TESTS=OFF
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+
+      - name: Build
+        run: >
+          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
+          --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
+
+      - name: Code coverage
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
+
+      - name: Sonarcloud
+        working-directory: ${{ runner.workspace }}/powsybl-metrix/metrix-simulator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          ${{ runner.workspace }}/sonar/bin/sonar-scanner
+          -Dsonar.host.url=https://sonarcloud.io
