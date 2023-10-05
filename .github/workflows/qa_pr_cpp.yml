@@ -92,7 +92,7 @@ jobs:
         run: >
           cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Debug
-          -DCODE_COVERAGE=TRUE
+          -DCODE_COVERAGE=FALSE
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
