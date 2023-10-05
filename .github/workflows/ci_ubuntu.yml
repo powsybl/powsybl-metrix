@@ -1,4 +1,4 @@
-name: CI-cpp
+name: CI-cpp-ubuntu
 
 on: [push]
 
@@ -101,9 +101,6 @@ jobs:
 
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
-
-      - name: Code coverage
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
 
       - name: Sonarcloud
         working-directory: ${{ runner.workspace }}/powsybl-metrix/metrix-simulator
