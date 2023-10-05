@@ -82,7 +82,7 @@ int main(int argc, char* argv[])
         const auto& input_config = config::inputConfiguration();
 
         // configure metrix log
-        // other than critical level logs are forbidden before this point, because the logger is not configured yet
+        // other than critical level logs are forbidden before this point, because the logger is not configured yet.
 
         metrix::log::Logger::config.resultFilepath = input_config.filepathError();
         metrix::log::Logger::config.printLog = input_config.printLog();
