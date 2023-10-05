@@ -1,11 +1,11 @@
-name: CI
+name: CI-ubuntu
 
-on:
-  push:
-    branches:
-      - 'main'
-      - 'release-v**'
-  pull_request:
+on: [push]
+  # push:
+  #   branches:
+  #     - 'main'
+  #     - 'release-v**'
+  # pull_request:
 
 jobs:
   build:
