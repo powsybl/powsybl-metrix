@@ -1,16 +1,12 @@
-name: CI
+name: CI_centos7
 
-on:
-  push:
-    branches:
-      - 'main'
-      - 'release-v**'
-  pull_request:
+on: [push]
 
 jobs:
   build:
     name: Build OS ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    container: 'centos:centos7'
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -20,21 +16,19 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 11
-          
+      
       - name: Checkout sources
         uses: actions/checkout@v1
 
-      - name: Build with Maven
-        run: mvn --batch-mode package
+      - name: Set-up Maven
+        run: |
+          yum install -y wget
+          wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz --no-check-certificate
+          tar xzvf apache-maven-3.9.4-bin.tar.gz
 
-      - name: Run SonarCloud analysis
-        if: matrix.os == 'ubuntu-latest'
-        run: >
-          mvn --batch-mode -Pjacoco verify sonar:sonar
-          -Dsonar.host.url=https://sonarcloud.io
-          -Dsonar.organization=powsybl-ci-github
-          -Dsonar.projectKey=com.powsybl:powsybl-metrix
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Build with Maven
+        run: |
+          export PATH=$PATH:$(pwd)/apache-maven-3.9.4/bin
+          mvn --batch-mode package
+
 
