@@ -1,0 +1,59 @@
+name: CI-cpp-ubuntu
+
+on:
+  workflow_dispatch: {}
+  push: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  linux:
+    name: Linux
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
+      
+      - name: Prepare Metrix install
+        if: github.event_name == 'workflow_dispatch'
+        id: metrix-install
+        run: |
+          ARCHIVE_NAME="metrix-simulator-centos7.zip"
+          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
+          zip $ARCHIVE_PATH /__w/powsybl-metrix/powsybl-metrix/metrix-simulator/build-centos7/install/bin/metrix-simulator
+          echo "::set-output name=archive_name::$ARCHIVE_NAME"
+          echo "::set-output name=archive_path::$ARCHIVE_PATH"
+
+      - name: Upload OR-Tools install artifact
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.metrix-install.outputs.archive_name }}
+          path: ${{ steps.metrix-install.outputs.archive_path }}
