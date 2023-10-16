@@ -35,7 +35,7 @@ jobs:
           repo: 'ARnDOSrte/Boost'
           file: 'boost_1_73_0.zip'
           target: 'boost_1_73_0.zip'
-          token: ${{ secrets.TEST_TOKEN_RELEASE }}
+          token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Unzip Boost  
         run: unzip boost_1_73_0.zip
