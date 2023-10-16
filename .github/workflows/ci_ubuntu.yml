@@ -40,20 +40,3 @@ jobs:
 
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
-      
-      - name: Prepare Metrix install
-        if: github.event_name == 'workflow_dispatch'
-        id: metrix-install
-        run: |
-          ARCHIVE_NAME="metrix-simulator-centos7.zip"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          zip $ARCHIVE_PATH /__w/powsybl-metrix/powsybl-metrix/metrix-simulator/build-centos7/install/bin/metrix-simulator
-          echo "::set-output name=archive_name::$ARCHIVE_NAME"
-          echo "::set-output name=archive_path::$ARCHIVE_PATH"
-
-      - name: Upload OR-Tools install artifact
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.metrix-install.outputs.archive_name }}
-          path: ${{ steps.metrix-install.outputs.archive_path }}
