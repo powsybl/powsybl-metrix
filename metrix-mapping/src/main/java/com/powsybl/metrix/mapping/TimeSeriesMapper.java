@@ -36,6 +36,7 @@ public class TimeSeriesMapper {
     public static final int SWITCH_OPEN = 0; // 0 means switch is open
     public static final int DISCONNECTED_VALUE = 0; // 0 means equipment is disconnected
     public static final int CONNECTED_VALUE = 1;
+    private static final String LOAD_NOT_FOUND_MESSAGE = "Load '%s' not found";
 
     private final TimeSeriesMappingConfig config;
     private final Network network;
@@ -81,10 +82,9 @@ public class TimeSeriesMapper {
     }
 
     public static float getMax(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
-            return (float) ((Generator) identifiable).getMaxP();
-        } else if (identifiable instanceof HvdcLine) {
-            HvdcLine hvdcLine = (HvdcLine) identifiable;
+        if (identifiable instanceof Generator generator) {
+            return (float) generator.getMaxP();
+        } else if (identifiable instanceof HvdcLine hvdcLine) {
             HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
             if (activePowerRange != null) {
                 return activePowerRange.getOprFromCS1toCS2();
@@ -97,10 +97,9 @@ public class TimeSeriesMapper {
     }
 
     public static float getMin(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
-            return (float) ((Generator) identifiable).getMinP();
-        } else if (identifiable instanceof HvdcLine) {
-            HvdcLine hvdcLine = (HvdcLine) identifiable;
+        if (identifiable instanceof Generator generator) {
+            return (float) generator.getMinP();
+        } else if (identifiable instanceof HvdcLine hvdcLine) {
             HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
             if (activePowerRange != null) {
                 return -activePowerRange.getOprFromCS2toCS1();
@@ -151,10 +150,10 @@ public class TimeSeriesMapper {
     }
 
     public static float getP(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
-            return (float) ((Generator) identifiable).getTargetP();
-        } else if (identifiable instanceof HvdcLine) {
-            return getHvdcLineSetPoint((HvdcLine) identifiable);
+        if (identifiable instanceof Generator generator) {
+            return (float) generator.getTargetP();
+        } else if (identifiable instanceof HvdcLine hvdcLine) {
+            return getHvdcLineSetPoint(hvdcLine);
         } else {
             return Float.MIN_VALUE;
         }
@@ -289,13 +288,13 @@ public class TimeSeriesMapper {
         for (int i = 0; i < mappedEquipments.size(); i++) {
             MappedEquipment mappedEquipment = mappedEquipments.get(i);
             DistributionKey distributionKey = mappedEquipment.getDistributionKey();
-            if (distributionKey instanceof NumberDistributionKey) {
-                distributionKeys[i] = ((NumberDistributionKey) distributionKey).getValue();
-            } else if (distributionKey instanceof TimeSeriesDistributionKey) {
-                int timeSeriesNum = ((TimeSeriesDistributionKey) distributionKey).getTimeSeriesNum();
+            if (distributionKey instanceof NumberDistributionKey numberDistributionKey) {
+                distributionKeys[i] = numberDistributionKey.getValue();
+            } else if (distributionKey instanceof TimeSeriesDistributionKey timeSeriesDistributionKey) {
+                int timeSeriesNum = timeSeriesDistributionKey.getTimeSeriesNum();
                 if (timeSeriesNum == -1) {
-                    timeSeriesNum = table.getDoubleTimeSeriesIndex(((TimeSeriesDistributionKey) distributionKey).getTimeSeriesName());
-                    ((TimeSeriesDistributionKey) distributionKey).setTimeSeriesNum(timeSeriesNum);
+                    timeSeriesNum = table.getDoubleTimeSeriesIndex(timeSeriesDistributionKey.getTimeSeriesName());
+                    timeSeriesDistributionKey.setTimeSeriesNum(timeSeriesNum);
                 }
                 distributionKeys[i] = Math.abs(table.getDoubleValue(version, timeSeriesNum, point));
             } else {
@@ -462,13 +461,14 @@ public class TimeSeriesMapper {
         // maxP inconstancy with CS1toCS2/CS2toCS1
         if (isActivePowerRange && (maxP > hvdcLineMaxP || -minP > hvdcLineMaxP)) {
             if (ignoreLimits) {
-                if (((maxP > hvdcLineMaxP && -minP > hvdcLineMaxP) && maxP > -minP) || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
+                if (maxP > hvdcLineMaxP && maxP > -minP) {
                     LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
                             .value(maxP).oldValue(EquipmentVariable.maxP.getVariableName()).toVariable(maxPVariableName)
                             .newValue(maxP).build();
                     Log log = logBuilder.logDescription(logContent).build();
                     timeSeriesMappingLogger.addLog(log);
-                } else if (((maxP > hvdcLineMaxP && -minP < hvdcLineMaxP) && -minP > maxP) || (-minP > hvdcLineMaxP && maxP <= hvdcLineMaxP)) {
+                } else if (maxP < -minP && -minP < hvdcLineMaxP
+                        || -minP > hvdcLineMaxP && maxP <= hvdcLineMaxP) {
                     LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
                             .value(minP).oldValue(MINUS_MAXP).toVariable(minPVariableName).newValue(minP).build();
                     Log log = logBuilder.logDescription(logContent).build();
@@ -653,7 +653,7 @@ public class TimeSeriesMapper {
         for (String id : unmappedGenerators) {
             Generator generator = network.getGenerator(id);
             if (generator == null) {
-                throw new TimeSeriesMappingException("Generator '" + id + "' not found");
+                throw new TimeSeriesMappingException(String.format("Generator '%s' not found", id));
             }
             constantBalance += generator.getTargetP();
         }
@@ -661,7 +661,7 @@ public class TimeSeriesMapper {
         for (String id : unmappedLoads) {
             Load load = network.getLoad(id);
             if (load == null) {
-                throw new TimeSeriesMappingException("Load '" + id + "' not found");
+                throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
             }
             constantBalance += -load.getP0();
         }
@@ -669,11 +669,11 @@ public class TimeSeriesMapper {
             if (!unmappedLoads.contains(id)) {
                 Load load = network.getLoad(id);
                 if (load == null) {
-                    throw new TimeSeriesMappingException("Load '" + id + "' not found");
+                    throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
                 }
                 LoadDetail loadDetail = load.getExtension(LoadDetail.class);
                 if (loadDetail == null) {
-                    throw new TimeSeriesMappingException("LoadDetail '" + id + "' not found");
+                    throw new TimeSeriesMappingException(String.format("LoadDetail '%s' not found", id));
                 }
                 constantBalance += -loadDetail.getFixedActivePower();
             }
@@ -682,11 +682,11 @@ public class TimeSeriesMapper {
             if (!unmappedLoads.contains(id)) {
                 Load load = network.getLoad(id);
                 if (load == null) {
-                    throw new TimeSeriesMappingException("Load '" + id + "' not found");
+                    throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
                 }
                 LoadDetail loadDetail = load.getExtension(LoadDetail.class);
                 if (loadDetail == null) {
-                    throw new TimeSeriesMappingException("LoadDetail '" + id + "' not found");
+                    throw new TimeSeriesMappingException(String.format("LoadDetail '%s' not found", id));
                 }
                 constantBalance += -loadDetail.getVariableActivePower();
             }
@@ -694,7 +694,7 @@ public class TimeSeriesMapper {
         for (String id : config.getUnmappedDanglingLines()) {
             DanglingLine danglingLine = network.getDanglingLine(id);
             if (danglingLine == null) {
-                throw new TimeSeriesMappingException("Dangling line '" + id + "' not found");
+                throw new TimeSeriesMappingException(String.format("Dangling line '%s' not found", id));
             }
             constantBalance -= danglingLine.getP0();
         }

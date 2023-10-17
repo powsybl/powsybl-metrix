@@ -86,7 +86,8 @@ class NetworkTopographyChangeNotifierTest {
                 String expectedLabel = "network update";
                 String actualMessage = log.getMessage();
                 String expectedMessage = "Network update not applied : Creation of item FP.AND1_1_NEW";
-                hit.set(hit.get() || (actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0));
+                hit.set(hit.get()
+                        || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
             }
             return null;
         }).when(logger).addLog(Mockito.any(Log.class));
@@ -96,7 +97,7 @@ class NetworkTopographyChangeNotifierTest {
                 "vl = 'FP.AND1'",
                 "bbs = network.getVoltageLevel(vl).nodeBreakerView.busbarSections[0]",
                 "loadId = bbs.id + '_NEW'",
-                "nextNode = network.getVoltageLevel(vl).nodeBreakerView.nodeCount + 1 ",
+                "nextNode = network.getVoltageLevel(vl).nodeBreakerView.getMaximumNodeIndex() + 1 ",
                 "network.getVoltageLevel(vl).newLoad()",
                 "        .setId(loadId)",
                 "        .setNode(nextNode)",
@@ -120,7 +121,8 @@ class NetworkTopographyChangeNotifierTest {
                 String expectedLabel = "network update";
                 String actualMessage = log.getMessage();
                 String expectedMessage = "Network update not applied : Update of item Disj FSSV.O11_L";
-                hit.set(hit.get() || (actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0));
+                hit.set(hit.get()
+                        || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
             }
             return null;
         }).when(logger).addLog(Mockito.any(Log.class));
@@ -145,7 +147,8 @@ class NetworkTopographyChangeNotifierTest {
                 String expectedLabel = "network update";
                 String actualMessage = log.getMessage();
                 String expectedMessage = "Network update not applied : Remove of item FP.AND1  FVERGE1  1";
-                hit.set(hit.get() || (actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0));
+                hit.set(hit.get()
+                        || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
             }
             return null;
         }).when(logger).addLog(Mockito.any(Log.class));

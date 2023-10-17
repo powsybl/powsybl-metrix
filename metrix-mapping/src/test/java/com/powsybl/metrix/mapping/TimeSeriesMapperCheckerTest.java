@@ -1075,6 +1075,7 @@ class TimeSeriesMapperCheckerTest {
 
         String expectedLabel = BASE_CASE_RANGE_PROBLEM + "-CS2toCS1 changed to base case -maxP";
         String expectedLabelIL = BASE_CASE_RANGE_PROBLEM + "-maxP changed to base case -CS2toCS1";
+        String expectedLabelCase1 = BASE_CASE_RANGE_PROBLEM + "maxP changed to base case CS1toCS2";
 
         // without ignore limits
         // -> CS2toCS1 reduced to minP
@@ -1095,6 +1096,52 @@ class TimeSeriesMapperCheckerTest {
                 expectedLabelIL,
                 "-CS2toCS1 -2000 of HVDC2 not included in -1011 to 0, -maxP changed to -2000",
                 null);
+
+        // with ignore limits
+        // -> maxP changed to CS1toCS2
+        network.getHvdcLine("HVDC2").setMaxP(950);
+        hvdcRange.setOprFromCS2toCS1(975);
+        testHvdcLine(NetworkXml.copy(network), emptyScript, true, "HVDC2", 0, 1000, 975, 1000,
+            INFO,
+            VARIANT_ALL,
+            expectedLabelCase1,
+            expectedLabelCase1,
+            "CS1toCS2 1000 of HVDC2 not included in 0 to 950, maxP changed to 1000",
+            null);
+
+        // with ignore limits
+        // -> maxP changed to CS1toCS2
+        hvdcRange.setOprFromCS2toCS1(925);
+        testHvdcLine(NetworkXml.copy(network), emptyScript, true, "HVDC2", 0, 1000, 925, 1000,
+            INFO,
+            VARIANT_ALL,
+            expectedLabelCase1,
+            expectedLabelCase1,
+            "CS1toCS2 1000 of HVDC2 not included in 0 to 950, maxP changed to 1000",
+            null);
+
+        // with ignore limits
+        // -> no change
+        network.getHvdcLine("HVDC2").setMaxP(1011);
+        testHvdcLine(NetworkXml.copy(network), emptyScript, true, "HVDC2", 0, 1011, 925, 1000,
+            INFO,
+            VARIANT_ALL,
+            null,
+            null,
+            null,
+            null);
+
+        // with ignore limits
+        // -> no change
+        network.getHvdcLine("HVDC2").setMaxP(950);
+        hvdcRange.setOprFromCS2toCS1(2000);
+        testHvdcLine(NetworkXml.copy(network), emptyScript, true, "HVDC2", 0, 2000, 2000, 1000,
+            INFO,
+            VARIANT_ALL,
+            null,
+            null,
+            null,
+            null);
     }
 
     @Test
