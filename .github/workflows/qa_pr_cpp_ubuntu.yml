@@ -1,4 +1,4 @@
-name: QA-PR-CPP
+name: QA-PR-CPP-UBUNTU
 
 on:
   pull_request:
