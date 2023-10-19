@@ -197,11 +197,11 @@ jobs:
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
 
       - name: Sonarcloud
-        # working-directory: $GITHUB_WORKSPACE/metrix-simulator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
+          cd metrix-simulator
           /__w/powsybl-metrix/sonar/bin/sonar-scanner -Dsonar.host.url=https://sonarcloud.io
       
       - name: Prepare Metrix install
