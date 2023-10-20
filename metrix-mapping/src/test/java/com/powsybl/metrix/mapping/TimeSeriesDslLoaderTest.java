@@ -26,6 +26,14 @@ class TimeSeriesDslLoaderTest {
 
     private final MappingParameters parameters = MappingParameters.load();
 
+    private final String tagScript = String.join(System.lineSeparator(),
+            "ts['one'] = 1",
+            "ts['test'] = %s",
+            "tag(ts['test'], 'calculatedTag', 'calculatedParam')",
+            "metadata_value = metadata(ts['test'])",
+            "println metadata_value"
+    );
+
     @Test
     void mappingTest() {
         // create test network
@@ -353,5 +361,66 @@ class TimeSeriesDslLoaderTest {
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
         assertEquals("[tag:value]\n[:]\n[:]\n[:]\n[:]\n[:]\n", output);
+    }
+
+    void tagTest(String expression) throws IOException {
+        tagTest(expression, "[calculatedTag:calculatedParam]");
+
+    }
+
+    void tagTest(String expression, String expectedTag) throws IOException {
+        Network network = MappingTestNetwork.create();
+
+        // mapping script
+        String script = String.format(tagScript, expression);
+
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+                new StoredDoubleTimeSeries(
+                        new TimeSeriesMetadata("test", TimeSeriesDataType.DOUBLE, Map.of("storedTag", "storedParam"), index),
+                        new UncompressedDoubleDataChunk(0, new double[]{1d})));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+        }
+
+        String output = TestUtil.normalizeLineSeparator(outputStream.toString());
+        assertEquals(TestUtil.normalizeLineSeparator(expectedTag + "\n"), output);
+    }
+
+    @Test
+    void calculatedTagTest() throws IOException {
+        // IntegerNodeCalc
+        tagTest("new Integer(1)");
+
+        // FloatNodeCalc
+        tagTest("new Float(0.1)");
+
+        // DoubleNodeCalc
+        tagTest("new Double(0.1)");
+
+        // BigDecimal
+        tagTest("new BigDecimal(0.1)");
+
+        // BinaryOperation
+        tagTest("ts['test'] + 1");
+
+        // UnaryOperation
+        tagTest("- ts['test']");
+
+        // MinNodeCalc
+        tagTest("ts['one'].min(1)");
+
+        // MaxNodeCalc
+        tagTest("ts['one'].max(1)");
+
+        // TimeNodeCalc
+        tagTest("ts['one'].time()");
+    }
+
+    @Test
+    void storedTagTest() throws IOException {
+        tagTest("ts['test']", "[storedTag:storedParam]");
     }
 }
