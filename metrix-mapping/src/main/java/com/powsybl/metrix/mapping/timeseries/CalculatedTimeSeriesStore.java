@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.mapping.timeseries;
 
-import com.google.common.collect.ImmutableMap;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.*;
 
@@ -31,7 +30,7 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     public CalculatedTimeSeriesStore(Map<String, NodeCalc> nodes, ReadOnlyTimeSeriesStore store) {
-        this(nodes, ImmutableMap.of(), store);
+        this(nodes, Map.of(), store);
     }
 
     public NodeCalc getTimeSeriesNodeCalc(String timeSeriesName) {
@@ -75,7 +74,7 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         TimeSeriesIndex index = optFstOrderNodeCalc
                 .map(this::computeIndex)
                 .orElse(InfiniteTimeSeriesIndex.INSTANCE);
-        Map<String, String> timeSeriesTags = tags.containsKey(timeSeriesName) ? tags.get(timeSeriesName) : ImmutableMap.of();
+        Map<String, String> timeSeriesTags = tags.containsKey(timeSeriesName) ? tags.get(timeSeriesName) : Map.of();
         return Optional.of(new TimeSeriesMetadata(timeSeriesName, TimeSeriesDataType.DOUBLE, timeSeriesTags, index));
     }
 
