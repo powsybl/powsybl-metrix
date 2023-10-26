@@ -210,7 +210,8 @@ jobs:
         run: |
           ARCHIVE_NAME="metrix-simulator-centos7.zip"
           ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          zip $ARCHIVE_PATH /__w/powsybl-metrix/powsybl-metrix/metrix-simulator/build-linux/install/bin/metrix-simulator
+          cd metrix-simulator/build/install/
+          zip -r $ARCHIVE_PATH bin etc
           echo "::set-output name=archive_name::$ARCHIVE_NAME"
           echo "::set-output name=archive_path::$ARCHIVE_PATH"
 
