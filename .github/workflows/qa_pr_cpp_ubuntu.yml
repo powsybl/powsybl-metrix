@@ -3,6 +3,8 @@ name: QA-PR-CPP-UBUNTU
 on:
   pull_request:
     types: [opened, synchronize]
+  release:
+    types: [created, published, released]
 
 jobs:
   clang-tidy:
