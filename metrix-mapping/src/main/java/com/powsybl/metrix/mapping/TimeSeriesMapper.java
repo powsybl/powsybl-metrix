@@ -344,68 +344,6 @@ public class TimeSeriesMapper {
         }
     }
 
-    private void identifyConstantLoadTimeSeries(boolean forceNoConstantTimeSeries, TimeSeriesTable table, int version,
-                                                MapperContext context,
-                                                EquipmentTimeSeriesMap constantTimeSeries,
-                                                EquipmentTimeSeriesMap variableTimeSeries) {
-
-        if (forceNoConstantTimeSeries) {
-            variableTimeSeries.init(context.timeSeriesToLoadsMapping);
-            return;
-        }
-
-        EquipmentTimeSeriesMap possiblyConstantLoadDetailsMapping = new EquipmentTimeSeriesMap();
-        Set<String> variableLoadDetailsIds = new HashSet<>();
-
-        context.timeSeriesToLoadsMapping.getEquipmentTimeSeries().forEach((indexedMappingKey, mappedEquipments) ->
-            identifyConstantLoadOneTimeSerie(table, version, constantTimeSeries, variableTimeSeries,
-                    possiblyConstantLoadDetailsMapping, variableLoadDetailsIds, indexedMappingKey, mappedEquipments));
-
-        possiblyConstantLoadDetailsMapping.getEquipmentTimeSeries().forEach((indexedMappingKey, mappedEquipments) ->
-            mappedEquipments.forEach(mappedEquipment -> {
-                if (variableLoadDetailsIds.contains(mappedEquipment.getIdentifiable().getId())) {
-                    variableTimeSeries.computeIfAbsent(indexedMappingKey, mappedEquipment);
-                } else {
-                    constantTimeSeries.computeIfAbsent(indexedMappingKey, mappedEquipment);
-                }
-            })
-        );
-    }
-
-    private void identifyConstantLoadOneTimeSerie(TimeSeriesTable table, int version,
-                                                  EquipmentTimeSeriesMap constantTimeSeries,
-                                                  EquipmentTimeSeriesMap variableTimeSeries,
-                                                  EquipmentTimeSeriesMap possiblyConstantLoadDetailsMapping,
-                                                  Set<String> variableLoadDetailsIds, IndexedMappingKey indexedMappingKey,
-                                                  List<MappedEquipment> mappedEquipments) {
-        int timeSeriesNum = indexedMappingKey.getNum();
-        MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
-
-        if (variable != EquipmentVariable.p0 &&
-                variable != EquipmentVariable.fixedActivePower &&
-                variable != EquipmentVariable.variableActivePower) {
-            // Only test if active load power mapping is constant
-            variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
-            return;
-        }
-
-        if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-            LOGGER.debug("Mapping time-series '{}' is constant", indexedMappingKey.getKey().getId());
-            if (variable == EquipmentVariable.p0) {
-                constantTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
-            } else {
-                possiblyConstantLoadDetailsMapping.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
-            }
-        } else {
-            variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
-            if (variable != EquipmentVariable.p0) {
-                variableLoadDetailsIds.addAll(mappedEquipments.stream()
-                        .map(mappedEquipment -> mappedEquipment.getIdentifiable().getId())
-                        .collect(Collectors.toList()));
-            }
-        }
-    }
-
     private void correctUnmappedGenerator(boolean isUnmappedMinP, boolean isUnmappedMaxP, Generator generator,
                                           int version, boolean ignoreLimits, TimeSeriesIndex index) {
 
@@ -527,10 +465,10 @@ public class TimeSeriesMapper {
         int lastPoint = parameters.getPointRange() != null ? parameters.getPointRange().upperEndpoint() : (table.getTableIndex().getPointCount() - 1);
         boolean forceNoConstantTimeSeries = !parameters.isIdentifyConstantTimeSeries();
 
-        // Check if some load mappings are constant
+        // Load mappings are always variable time series to ensure data consistency (p0/LoadDetail)
         EquipmentTimeSeriesMap timeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
         EquipmentTimeSeriesMap constantTimeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
-        identifyConstantLoadTimeSeries(forceNoConstantTimeSeries, table, version, context, constantTimeSeriesToLoadsMapping, timeSeriesToLoadsMapping);
+        identifyConstantTimeSeries(true, table, version, context.timeSeriesToLoadsMapping, constantTimeSeriesToLoadsMapping, timeSeriesToLoadsMapping);
 
         // Check if some generator mappings are constant
         EquipmentTimeSeriesMap timeSeriesToGeneratorsMapping = new EquipmentTimeSeriesMap();
