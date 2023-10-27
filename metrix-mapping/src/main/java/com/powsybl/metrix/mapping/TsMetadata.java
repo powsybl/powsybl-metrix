@@ -30,9 +30,6 @@ public final class TsMetadata {
     }
 
     static Map<String, String> tsMetadata(String tsName, Map<String, Map<String, String>> tags) {
-        if (tags.containsKey(tsName)) {
-            return tags.get(tsName);
-        }
-        return Collections.emptyMap();
+        return tags.getOrDefault(tsName, Collections.emptyMap());
     }
 }
