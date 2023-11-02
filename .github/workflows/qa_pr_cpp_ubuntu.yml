@@ -2,7 +2,7 @@ name: QA-PR-CPP-UBUNTU
 
 on:
   pull_request:
-    types: [opened, synchronize]
+    types: [opened, ready_for_review]
   release:
     types: [created, published, released]
 
@@ -117,3 +117,21 @@ jobs:
         run: >
           ${{ runner.workspace }}/sonar/bin/sonar-scanner
           -Dsonar.host.url=https://sonarcloud.io
+
+      - name: Prepare Metrix install
+        if: github.event_name == 'release'
+        id: metrix-install
+        run: |
+          ARCHIVE_NAME="metrix-simulator-ubuntu.zip"
+          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
+          cd metrix-simulator/build/install/
+          zip -r $ARCHIVE_PATH bin etc
+          echo "::set-output name=archive_name::$ARCHIVE_NAME"
+          echo "::set-output name=archive_path::$ARCHIVE_PATH"
+
+      - name: Upload OR-Tools install artifact
+        if: github.event_name == 'release'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.metrix-install.outputs.archive_name }}
+          path: ${{ steps.metrix-install.outputs.archive_path }}

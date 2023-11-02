@@ -2,7 +2,10 @@ name: CI-cpp-ubuntu
 
 on:
   workflow_dispatch: {}
-  push: {}
+  pull_request: 
+    types: [opened, synchronize, ready_for_review]
+  push:
+  release:
 
 defaults:
   run:
@@ -40,28 +43,13 @@ jobs:
 
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
-      
-      - name: Prepare Metrix install
-        if: github.event_name == 'workflow_dispatch'
-        id: metrix-install
-        run: |
-          ARCHIVE_NAME="metrix-simulator-ubuntu.zip"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build-linux/install/
-          zip -r $ARCHIVE_PATH bin etc
-          echo "::set-output name=archive_name::$ARCHIVE_NAME"
-          echo "::set-output name=archive_path::$ARCHIVE_PATH"
-
-      - name: Upload OR-Tools install artifact
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.metrix-install.outputs.archive_name }}
-          path: ${{ steps.metrix-install.outputs.archive_path }}
 
   qa:
     name: QA - CI
     runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review') || 
+      (github.event_name == 'pull_request' && github.event.action == 'opened')
     steps:
       - name: Install Java 17
         uses: actions/setup-java@v1

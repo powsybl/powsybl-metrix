@@ -7,6 +7,7 @@ on:
       - 'release-v**'
       - 'full-sonar-analysis-**'
   pull_request:
+  release:
 
 jobs:
   build:
