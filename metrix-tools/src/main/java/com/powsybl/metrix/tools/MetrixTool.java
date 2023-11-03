@@ -248,6 +248,7 @@ public class MetrixTool implements Tool {
         };
 
         Stopwatch globalStopwatch = Stopwatch.createStarted();
+
         Stopwatch stopwatch = Stopwatch.createStarted();
 
         // define variant range to compute
