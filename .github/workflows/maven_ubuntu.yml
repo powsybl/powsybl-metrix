@@ -1,4 +1,4 @@
-name: CI-UBUNTU
+name: CI-java-ubuntu
 
 on:
   push:
@@ -7,10 +7,11 @@ on:
       - 'release-v**'
       - 'full-sonar-analysis-**'
   pull_request:
+  release:
 
 jobs:
   build:
-    name: Build OS ${{ matrix.os }}
+    name: Build Java on OS ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -21,7 +22,7 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 17
-          
+
       - name: Checkout sources
         uses: actions/checkout@v1
 
