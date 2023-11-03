@@ -53,7 +53,7 @@ jobs:
       - name: Install Java 17
         uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: 'temurin'
           java-version: '17'
 
       - name: Install gcovr
