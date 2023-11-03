@@ -61,6 +61,7 @@ int Calculer::calculInitCoefs(std::shared_ptr<Incident> icdt) const
     return METRIX_PAS_PROBLEME;
 }
 
+
 int Calculer::resetCoefs(std::shared_ptr<Incident> icdt) const
 {
     if (icdt->pochePerdue_) {
