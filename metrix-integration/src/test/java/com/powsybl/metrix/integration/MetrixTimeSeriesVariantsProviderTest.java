@@ -85,6 +85,7 @@ class MetrixTimeSeriesVariantsProviderTest {
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
+                TimeSeries.createDouble("constant_ts4", index, 100d, 100d),
                 TimeSeries.createDouble("variable_ts1", index, 200d, 201d),
                 TimeSeries.createDouble("constant_ts2", index, 300d, 300d),
                 TimeSeries.createDouble("variable_ts2", index, 400d, 401d),
@@ -103,7 +104,7 @@ class MetrixTimeSeriesVariantsProviderTest {
         MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, new MetrixParameters(), (Path) null);
 
         TimeSeriesMappingConfig mappingConfig;
-        try (Reader mappingReader = new InputStreamReader(MetrixConstantVariantTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy"), StandardCharsets.UTF_8)) {
+        try (Reader mappingReader = new InputStreamReader(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy"), StandardCharsets.UTF_8)) {
             mappingConfig = TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, new DataTableStore(), null, null);
         }
 
@@ -130,14 +131,13 @@ class MetrixTimeSeriesVariantsProviderTest {
         }
 
         assertEquals(String.join(System.lineSeparator(),
-                "-1;CONELE;2;FSSV.O11_L;300;FVERGE11_L;400;",
                 "-1;QATI00MN;2;FVALDI1  FTDPRA1  1;999;FS.BIS1  FVALDI1  1;500;",
                 "0;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;200;",
-                "0;CONELE;2;FVALDI11_L;400;FVALDI11_L2;500;",
+                "0;CONELE;4;FSSV.O11_L;300;FVALDI11_L;400;FVALDI11_L2;500;FVERGE11_L;400;",
                 "0;QATI00MN;1;FP.AND1  FVERGE1  2;600;",
                 "0;PROBABINC;2;b;200;a;0.002;",
                 "1;PRODIM;2;FSSV.O11_G;100;FSSV.O12_G;201;",
-                "1;CONELE;2;FVALDI11_L;401;FVALDI11_L2;501;",
+                "1;CONELE;4;FSSV.O11_L;300;FVALDI11_L;401;FVALDI11_L2;501;FVERGE11_L;400;",
                 "1;QATI00MN;1;FP.AND1  FVERGE1  2;601;",
                 "1;PROBABINC;2;b;201;a;0.002;") + System.lineSeparator(),
                 Files.readString(variantFile));

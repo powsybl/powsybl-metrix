@@ -39,7 +39,7 @@ mapToLoads {
     }
 }
 mapToLoads {
-    timeSeriesName 'constant_ts1'
+    timeSeriesName 'constant_ts4'
     filter {
         load.id == 'FVALDI11_L2'
     }
