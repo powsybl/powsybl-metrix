@@ -2,10 +2,7 @@ name: CI-cpp-ubuntu
 
 on:
   workflow_dispatch: {}
-  pull_request: 
-    types: [opened, synchronize, ready_for_review]
-  push:
-  release:
+  push: {}
 
 defaults:
   run:
@@ -47,9 +44,6 @@ jobs:
   qa:
     name: QA - CI
     runs-on: ubuntu-latest
-    if: |
-      (github.event_name == 'pull_request' && github.event.action == 'ready_for_review') || 
-      (github.event_name == 'pull_request' && github.event.action == 'opened')
     steps:
       - name: Install Java 17
         uses: actions/setup-java@v1

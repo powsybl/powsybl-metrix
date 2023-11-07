@@ -2,10 +2,7 @@ name: CI-cpp-centos7
 
 on:
   workflow_dispatch: {}
-  pull_request:
-    types: [opened, synchronize, ready_for_review]
-  push:
-  release:
+  push: {}
 
 defaults:
   run:
