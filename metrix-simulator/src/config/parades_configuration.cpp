@@ -40,6 +40,7 @@ ParadesConfiguration::ParadesConfiguration(const std::string& pathname)
     try {
         if (!getline(fic, line)) {
             throw ErrorI(err::ioDico().msg("ERRLectureFichier", pathname));
+            
         }
         iss.str(line);
         getline(iss, sub_line, ';');
