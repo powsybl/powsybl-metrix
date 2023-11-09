@@ -259,7 +259,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         if (variable == EquipmentVariable.disconnected) {
             Terminal t = generator.getTerminal();
             boolean isConnected = t.isConnected();
-            isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
                 openGeneratorList.add(generator.getId());
             }
@@ -335,7 +335,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             Terminal t1 = twc.getTerminal1();
             Terminal t2 = twc.getTerminal1();
             boolean isConnected = t1.isConnected() && t2.isConnected();
-            isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
                 openBranchList.add(twc.getId());
             }
@@ -359,7 +359,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         if (variable == EquipmentVariable.disconnected) {
             Terminal t = line.getTerminal1();
             boolean isConnected = t.isConnected();
-            boolean isDifferent = (Math.abs(value - DISCONNECTED_VALUE) < EPSILON) && isConnected;
+            boolean isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
                 openBranchList.add(line.getId());
             }
@@ -368,23 +368,22 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     @Override
     public void onEquipmentVariant(Identifiable<?> identifiable, MappingVariable variable, double value) {
-        if (variable instanceof MetrixVariable) {
+        if (variable instanceof MetrixVariable metrixVariable) {
             String id = identifiable.getId();
-            addValue(id, (MetrixVariable) variable, value, metrixVariableIds, metrixVariableValues);
-        } else if (variable instanceof EquipmentVariable) {
-            EquipmentVariable equipmentVariable = (EquipmentVariable) variable;
-            if (identifiable instanceof Load) {
-                onLoadVariant((Load) identifiable, equipmentVariable, value);
-            } else if (identifiable instanceof HvdcLine) {
-                onHvdcVariant((HvdcLine) identifiable, equipmentVariable, value);
-            } else if (identifiable instanceof Generator) {
-                onGeneratorVariant((Generator) identifiable, equipmentVariable, value);
-            } else if (identifiable instanceof TwoWindingsTransformer) {
-                onTransformerVariant((TwoWindingsTransformer) identifiable, equipmentVariable, value);
-            } else if (identifiable instanceof Switch) {
-                onSwitchVariant((Switch) identifiable, value);
-            } else if (identifiable instanceof Line) {
-                onLineVariant((Line) identifiable, variable, value);
+            addValue(id, metrixVariable, value, metrixVariableIds, metrixVariableValues);
+        } else if (variable instanceof EquipmentVariable equipmentVariable) {
+            if (identifiable instanceof Load load) {
+                onLoadVariant(load, equipmentVariable, value);
+            } else if (identifiable instanceof HvdcLine hvdcLine) {
+                onHvdcVariant(hvdcLine, equipmentVariable, value);
+            } else if (identifiable instanceof Generator generator) {
+                onGeneratorVariant(generator, equipmentVariable, value);
+            } else if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer) {
+                onTransformerVariant(twoWindingsTransformer, equipmentVariable, value);
+            } else if (identifiable instanceof Switch switchEquipment) {
+                onSwitchVariant(switchEquipment, value);
+            } else if (identifiable instanceof Line line) {
+                onLineVariant(line, variable, value);
             }
         } else {
             throw new AssertionError("Unsupported variable type " + variable.getClass().getName());

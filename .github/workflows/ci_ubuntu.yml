@@ -1,12 +1,21 @@
-name: QA-PR-CPP
+name: CI-cpp-ubuntu
 
 on:
+  workflow_dispatch: {}
   pull_request:
-    types: [opened, synchronize, edited]
+    types: [opened, ready_for_review, reopened]
+  push:
+    paths:
+      - 'metrix-simulator/**'
+  release:
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  clang-tidy:
-    name: clang-tidy
+  linux:
+    name: Tests C++ Ubuntu
     runs-on: ubuntu-latest
     steps:
       - name: Install Boost
@@ -14,42 +23,38 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y libboost-all-dev
 
-      - name: Install clang-tidy
-        run: |
-          sudo apt install -y clang-tidy-14
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
-
       - name: Checkout sources
         uses: actions/checkout@v1
 
       - name: Configure 3rd parties
         run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
 
       - name: Configure CMake
         run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
-          -DCMAKE_BUILD_TYPE=Debug
-          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
 
-      - name: Clang Tidy
-        run: |
-          export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
-          if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
-          fi
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
+
   qa:
-    name: QA - full
+    name: Short QA C++ Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - name: Install Java 11
-        uses: actions/setup-java@v1
+      - name: Install Java 17
+        uses: actions/setup-java@v3
         with:
-          java-version: 11
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Install gcovr
         run: |
@@ -93,6 +98,7 @@ jobs:
           cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Debug
           -DCODE_COVERAGE=TRUE
+          -DMETRIX_RUN_ALL_TESTS=OFF
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
