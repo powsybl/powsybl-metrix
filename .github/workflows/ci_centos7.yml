@@ -2,7 +2,12 @@ name: CI-cpp-centos7
 
 on:
   workflow_dispatch: {}
-  push: {}
+  pull_request:
+    types: [opened, ready_for_review, reopened]
+  push:
+    paths:
+      - 'metrix-simulator/**'
+  release:
 
 defaults:
   run:
@@ -10,11 +15,11 @@ defaults:
 
 jobs:
   linux:
-    name: Linux
+    name: Tests C++ CentOS
     runs-on: ubuntu-latest
     container: 'centos:centos7'
     steps:
-      - name: Install Dependancies
+      - name: Install Dependencies
         run: |
           yum update -y
           yum install -y epel-release
@@ -25,7 +30,7 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v1.13
         with:
           cmake-version: '3.22.x'
-      
+
       - name: Checkout sources
         uses: actions/checkout@v1
 
@@ -36,15 +41,15 @@ jobs:
           file: 'boost_1_73_0.zip'
           target: 'boost_1_73_0.zip'
           token: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Unzip Boost  
+
+      - name: Unzip Boost
         run: unzip boost_1_73_0.zip
-        
+
       - name: Configure 3rd parties
         run: |
           source /opt/rh/devtoolset-9/enable
           cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-centos7/external
-        
+
       - name: Build 3rd parties
         run: |
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-centos7/external --parallel 2
@@ -59,20 +64,3 @@ jobs:
 
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build-centos7 && ctest -j2 --output-on-failure
-      
-      - name: Prepare Metrix install
-        if: github.event_name == 'workflow_dispatch'
-        id: metrix-install
-        run: |
-          ARCHIVE_NAME="metrix-simulator-centos7.zip"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          zip $ARCHIVE_PATH /__w/powsybl-metrix/powsybl-metrix/metrix-simulator/build-centos7/install/bin/metrix-simulator
-          echo "::set-output name=archive_name::$ARCHIVE_NAME"
-          echo "::set-output name=archive_path::$ARCHIVE_PATH"
-
-      - name: Upload OR-Tools install artifact
-        if: github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.metrix-install.outputs.archive_name }}
-          path: ${{ steps.metrix-install.outputs.archive_path }}
