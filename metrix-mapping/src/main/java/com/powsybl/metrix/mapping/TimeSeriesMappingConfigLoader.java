@@ -93,10 +93,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     }
 
     private static boolean isWithPowerType(Boolean withPowerType) {
-        if (withPowerType == null) {
-            return false;
-        }
-        return withPowerType;
+        return withPowerType != null && withPowerType;
     }
 
     private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType, String name) {
