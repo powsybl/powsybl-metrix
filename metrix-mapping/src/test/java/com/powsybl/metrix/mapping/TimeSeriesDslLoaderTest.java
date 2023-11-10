@@ -423,4 +423,46 @@ class TimeSeriesDslLoaderTest {
     void storedTagTest() throws IOException {
         tagTest("ts['test']", "[storedTag:storedParam]");
     }
+
+    @Test
+    void tagOnAbsentTimeSeries() throws IOException {
+        String expression = "new Integer(1)";
+        String tagScriptError = String.join(System.lineSeparator(),
+            "ts['one'] = 1",
+            "ts['test'] = %s"
+        );
+        Map<String, String> newInsideTags = new HashMap<>();
+        newInsideTags.put("testTag", "testParam");
+        Map<String, Map<String, String>> newTags = new HashMap<>();
+        newTags.put("test", newInsideTags);
+
+        Network network = MappingTestNetwork.create();
+
+        // mapping script
+        String script = String.format(tagScriptError, expression);
+
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            new StoredDoubleTimeSeries(
+                new TimeSeriesMetadata("test", TimeSeriesDataType.DOUBLE, Map.of("storedTag", "storedParam"), index),
+                new UncompressedDoubleDataChunk(0, new double[]{1d})));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        TimeSeriesMappingConfig timeSeriesMappingConfig;
+        Map<String, Map<String, String>> tags;
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            timeSeriesMappingConfig = new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+
+            timeSeriesMappingConfig.setTimeSeriesNodeTags(newTags);
+            timeSeriesMappingConfig.addTag("testError", "calculatedTagError", "calculatedParamError");
+            tags = timeSeriesMappingConfig.getTimeSeriesNodeTags();
+        }
+
+        assertTrue(tags.containsKey("test"));
+        assertTrue(tags.get("test").containsKey("testTag"));
+        assertEquals("testParam", tags.get("test").get("testTag"));
+        assertFalse(tags.containsKey("testError"));
+        assertFalse(tags.get("test").containsKey("calculatedTagError"));
+
+    }
 }
