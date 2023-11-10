@@ -102,9 +102,6 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         if (!dependentTsNamesToVerify.isEmpty()) {
             indexSet.add(CalculatedTimeSeries.computeIndex(node, new FromStoreTimeSeriesNameResolver(store, -1)));
             dependentTsNamesVerified.addAll(dependentTsNames);
-            if (indexSet.size() != 1) {
-                throw new TimeSeriesException("Time series must have the same index");
-            }
         }
         return indexSet.iterator().next();
     }
