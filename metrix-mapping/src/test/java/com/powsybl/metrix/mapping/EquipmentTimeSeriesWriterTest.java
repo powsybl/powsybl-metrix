@@ -76,6 +76,7 @@ class EquipmentTimeSeriesWriterTest {
                 "}",
                 "provideGroupTsGenerators {",
                 "    group VOLTAGE_LEVEL",
+                "    withPowerType false",
                 "}");
 
         // Load mapping script
