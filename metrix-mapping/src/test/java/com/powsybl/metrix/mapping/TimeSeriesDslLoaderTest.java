@@ -9,6 +9,8 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Sets;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.iidm.network.Network;
@@ -17,6 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 
@@ -25,12 +32,42 @@ import static org.junit.jupiter.api.Assertions.*;
 class TimeSeriesDslLoaderTest {
 
     private final MappingParameters parameters = MappingParameters.load();
+    private final Network network = MappingTestNetwork.create();
+    private final FileSystem fileSystem = Jimfs.newFileSystem(Configuration.unix());
+
+    @Test
+    void mappingFileTest() throws URISyntaxException {
+        File mappingFile = new File(getClass().getResource("/emptyScript.groovy").toURI());
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(mappingFile).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
+        assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+    }
+
+    @Test
+    void mappingScriptTest() {
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader("").load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
+        assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+    }
+
+    @Test
+    void mappingReaderTest() throws IOException {
+        try (Reader reader = new InputStreamReader(TimeSeriesDslLoaderTest.class.getResourceAsStream("/emptyScript.groovy"), StandardCharsets.UTF_8)) {
+            TimeSeriesMappingConfig config = new TimeSeriesDslLoader(reader).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null, null);
+            assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+        }
+    }
+
+    @Test
+    void mappingPathTest() throws IOException {
+        Path mappingFile = fileSystem.getPath("/emptyScript.groovy");
+        try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
+            writer.write(String.join(System.lineSeparator(), ""));
+        }
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(mappingFile).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
+        assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+    }
 
     @Test
     void mappingTest() {
-        // create test network
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "mapPlannedOutages {",
@@ -177,9 +214,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void loadMappingErrorTest() {
-        // create test network
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "timeSeries['zero'] = 0",
@@ -213,9 +247,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void switchMappingErrorTest() {
-        // create test network
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "timeSeries['zero'] = 0",
@@ -241,7 +272,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void tsStatsFunctions() throws IOException {
-        Network network = MappingTestNetwork.create();
         String script = String.join(System.lineSeparator(),
                 "res_sum = sum(ts['test'])",
                 "res_avg = avg(ts['test'])",
@@ -281,8 +311,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void testParameters() {
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "parameters {",
@@ -303,7 +331,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void writeLogTest() throws IOException {
-        Network network = MappingTestNetwork.create();
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         String script = "writeLog(\"LOG_TYPE\", \"LOG_SECTION\", \"LOG_MESSAGE\")";
 
@@ -321,8 +348,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void metadataTest() throws IOException {
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "ts['one'] = 1",

@@ -41,7 +41,7 @@ public class MetrixAnalysis {
     public static final String METRIX_DSL_DATA_LOADING_ERROR = "[%s] Error loading Metrix dsl data after %d ms";
 
     private final NetworkSource networkSource;
-    private final Reader mappingReader;
+    private final TimeSeriesDslLoader timeSeriesDslLoader;
     private final Reader metrixDslReader;
     private final Reader remedialActionsReader;
     private final ContingenciesProvider contingenciesProvider;
@@ -53,18 +53,18 @@ public class MetrixAnalysis {
     private final String schemaName;
     private final ComputationRange computationRange;
 
-    public MetrixAnalysis(NetworkSource networkSource, Reader mappingReader,
+    public MetrixAnalysis(NetworkSource networkSource, TimeSeriesDslLoader timeSeriesDslLoader,
                           Reader metrixDslReader, Reader remedialActionsReader, ContingenciesProvider contingenciesProvider,
                           ReadOnlyTimeSeriesStore store, MetrixAppLogger logger, ComputationRange computationRange) {
-        this(networkSource, mappingReader, metrixDslReader, remedialActionsReader, contingenciesProvider, store, logger, ignore -> {
+        this(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReader, contingenciesProvider, store, logger, ignore -> {
         }, null, null, null, computationRange);
     }
 
-    public MetrixAnalysis(NetworkSource networkSource, Reader mappingReader, Reader metrixDslReader,
+    public MetrixAnalysis(NetworkSource networkSource, TimeSeriesDslLoader timeSeriesDslLoader, Reader metrixDslReader,
                           Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, ReadOnlyTimeSeriesStore store, MetrixAppLogger appLogger,
                           Consumer<Future<?>> updateTask, Writer scriptLogWriter, Writer inputLogWriter, String schemaName, ComputationRange computationRange) {
         this.networkSource = Objects.requireNonNull(networkSource);
-        this.mappingReader = Objects.requireNonNull(mappingReader);
+        this.timeSeriesDslLoader = Objects.requireNonNull(timeSeriesDslLoader);
         this.metrixDslReader = metrixDslReader;
         this.remedialActionsReader = remedialActionsReader;
         this.contingenciesProvider = contingenciesProvider;
@@ -85,7 +85,7 @@ public class MetrixAnalysis {
 
         try (BufferedWriter scriptLogBufferedWriter = scriptLogWriter != null ? new BufferedWriter(scriptLogWriter) : null;
              BufferedWriter inputLogBufferedWriter = inputLogWriter != null ? new BufferedWriter(inputLogWriter) : null) {
-            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(mappingReader, network, mappingParameters, scriptLogBufferedWriter, id);
+            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(timeSeriesDslLoader, network, mappingParameters, scriptLogBufferedWriter, id);
             Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             MetrixDslData metrixDslData = null;
             Map<String, NodeCalc> timeSeriesNodesAfterMetrix = null;
@@ -101,14 +101,14 @@ public class MetrixAnalysis {
         }
     }
 
-    private TimeSeriesMappingConfig loadMappingConfig(Reader mappingReader, Network network, MappingParameters mappingParameters, Writer writer, String id) {
+    private TimeSeriesMappingConfig loadMappingConfig(TimeSeriesDslLoader timeSeriesDslLoader, Network network, MappingParameters mappingParameters, Writer writer, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading time series mapping...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
             CompletableFuture<TimeSeriesMappingConfig> mappingFuture = new LocalThreadExecutor<TimeSeriesMappingConfig>("Script_TS_" + id)
-                    .supplyAsync(() -> TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, new DataTableStore(), writer, computationRange));
+                    .supplyAsync(() -> timeSeriesDslLoader.load(network, mappingParameters, store, new DataTableStore(), writer, computationRange));
             updateTask.accept(mappingFuture);
             return mappingFuture.get();
         } catch (ExecutionException e) {
