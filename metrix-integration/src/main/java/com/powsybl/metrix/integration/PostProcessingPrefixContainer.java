@@ -18,6 +18,6 @@ public class PostProcessingPrefixContainer {
     }
 
     public List<String> postProcessingPrefixList() {
-        return List.of(loadPrefix, overloadPrefix, overallOverloadPrefix, maxThreatPrefix);
+        return List.of(loadPrefix, overloadPrefix, overallOverloadPrefix);
     }
 }
