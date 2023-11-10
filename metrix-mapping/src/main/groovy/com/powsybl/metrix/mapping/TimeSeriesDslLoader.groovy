@@ -21,7 +21,6 @@ import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -41,6 +40,7 @@ class TimeSeriesDslLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoader.class)
 
     private static final String MAPPING_SCRIPT_SECTION = "Mapping script"
+    protected static final String DEFAULT_MAPPING_SCRIPT_NAME = "mapping.groovy"
 
     protected final GroovyCodeSource dslSrc
 
@@ -56,8 +56,16 @@ class TimeSeriesDslLoader {
         this(new GroovyCodeSource(script, "script", GroovyShell.DEFAULT_CODE_BASE))
     }
 
+    TimeSeriesDslLoader(Reader reader) {
+        this(new GroovyCodeSource(reader, DEFAULT_MAPPING_SCRIPT_NAME, GroovyShell.DEFAULT_CODE_BASE))
+    }
+
     TimeSeriesDslLoader(Reader reader, String fileName) {
         this(new GroovyCodeSource(reader, fileName, GroovyShell.DEFAULT_CODE_BASE))
+    }
+
+    TimeSeriesDslLoader(Path path) {
+        this(Files.newBufferedReader(path), path.getFileName().toString())
     }
 
     private static logWarn(LogDslLoader logDslLoader, String message) {
@@ -271,22 +279,6 @@ class TimeSeriesDslLoader {
         keys.forEach({ key ->
             logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.getId() + " because id is not mapped on " + key.getMappingVariable().getVariableName())
         })
-    }
-
-    static TimeSeriesMappingConfig load(Reader reader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
-        TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, "mapping.groovy")
-        dslLoader.load(network, parameters, store, dataTableStore, out, computationRange)
-    }
-
-    static TimeSeriesMappingConfig load(Path mappingFile, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {
-        load(mappingFile, network, parameters, store, dataTableStore, null, computationRange)
-    }
-
-    static TimeSeriesMappingConfig load(Path mappingFile, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
-        Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8).withReader { Reader reader ->
-            TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString())
-            dslLoader.load(network, parameters, store, dataTableStore, out, computationRange)
-        }
     }
 
     TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {

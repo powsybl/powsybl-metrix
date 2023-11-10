@@ -387,7 +387,7 @@ class MetrixInputTest {
         try (Reader mappingReader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
             ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
             MappingParameters mappingParameters = MappingParameters.load();
-            TimeSeriesMappingConfig mappingConfig = TimeSeriesDslLoader.load(mappingReader, n, mappingParameters, store, new DataTableStore(), null, null);
+            TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingReader).load(n, mappingParameters, store, new DataTableStore(), null, null);
             MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder()
                     .simpleInit(1, false, false, __ -> Collections.emptyList(),
                             null, null, null, null).build();
