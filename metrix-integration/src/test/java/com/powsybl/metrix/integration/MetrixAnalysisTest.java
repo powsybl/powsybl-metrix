@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MetrixAnalysisTest {
+class MetrixAnalysisTest {
     private FileSystem fileSystem;
     private Network network;
     private NetworkSource networkSource;
