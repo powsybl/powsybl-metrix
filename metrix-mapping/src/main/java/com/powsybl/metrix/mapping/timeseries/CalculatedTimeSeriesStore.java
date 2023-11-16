@@ -9,8 +9,7 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.timeseries.*;
-import com.powsybl.timeseries.ast.NodeCalc;
-import com.powsybl.timeseries.ast.TimeSeriesNames;
+import com.powsybl.timeseries.ast.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,12 +17,20 @@ import java.util.stream.Collectors;
 public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private final Map<String, NodeCalc> nodes;
+    private final Map<String, Map<String, String>> tags;
+    private final Set<TimeSeriesIndex> indexSet = new HashSet<>();
+    private final Set<String> dependentTsNamesVerified = new HashSet<>();
 
     private final ReadOnlyTimeSeriesStore store;
 
-    public CalculatedTimeSeriesStore(Map<String, NodeCalc> nodes, ReadOnlyTimeSeriesStore store) {
+    public CalculatedTimeSeriesStore(Map<String, NodeCalc> nodes, Map<String, Map<String, String>> tags, ReadOnlyTimeSeriesStore store) {
         this.nodes = Objects.requireNonNull(nodes);
+        this.tags = Objects.requireNonNull(tags);
         this.store = Objects.requireNonNull(store);
+    }
+
+    public CalculatedTimeSeriesStore(Map<String, NodeCalc> nodes, ReadOnlyTimeSeriesStore store) {
+        this(nodes, Map.of(), store);
     }
 
     public NodeCalc getTimeSeriesNodeCalc(String timeSeriesName) {
@@ -65,14 +72,15 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
         Optional<NodeCalc> optFstOrderNodeCalc = findFirstOrderNodeCalc(node, store.getTimeSeriesNames(null));
         TimeSeriesIndex index = optFstOrderNodeCalc
-                .map(fstOrderNodeCalc -> CalculatedTimeSeries.computeIndex(fstOrderNodeCalc, new FromStoreTimeSeriesNameResolver(store, -1)))
+                .map(this::computeIndex)
                 .orElse(InfiniteTimeSeriesIndex.INSTANCE);
-        return Optional.of(new TimeSeriesMetadata(timeSeriesName, TimeSeriesDataType.DOUBLE, index));
+        Map<String, String> timeSeriesTags = tags.containsKey(timeSeriesName) ? tags.get(timeSeriesName) : Map.of();
+        return Optional.of(new TimeSeriesMetadata(timeSeriesName, TimeSeriesDataType.DOUBLE, timeSeriesTags, index));
     }
 
-    private Optional<NodeCalc> findFirstOrderNodeCalc(NodeCalc node, Set<String> storedTimeseriesNames) {
+    private Optional<NodeCalc> findFirstOrderNodeCalc(NodeCalc node, Set<String> storedTimeSeriesNames) {
         Set<String> dependentTsNames = TimeSeriesNames.list(node);
-        if (dependentTsNames.stream().anyMatch(storedTimeseriesNames::contains)) {
+        if (dependentTsNames.stream().anyMatch(storedTimeSeriesNames::contains)) {
             return Optional.of(node);
         }
         if (dependentTsNames.isEmpty()) {
@@ -81,16 +89,27 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return nodes.entrySet()
                 .stream()
                 .filter(tsNode -> dependentTsNames.contains(tsNode.getKey()))
-                .map(tsNode -> findFirstOrderNodeCalc(tsNode.getValue(), storedTimeseriesNames))
+                .map(tsNode -> findFirstOrderNodeCalc(tsNode.getValue(), storedTimeSeriesNames))
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findFirst();
     }
 
+    private TimeSeriesIndex computeIndex(NodeCalc node) {
+        Set<String> dependentTsNames = TimeSeriesNames.list(node);
+        Set<String> dependentTsNamesToVerify = new HashSet<>(dependentTsNames);
+        dependentTsNamesToVerify.removeAll(dependentTsNamesVerified);
+        if (!dependentTsNamesToVerify.isEmpty()) {
+            indexSet.add(CalculatedTimeSeries.computeIndex(node, new FromStoreTimeSeriesNameResolver(store, -1)));
+            dependentTsNamesVerified.addAll(dependentTsNames);
+        }
+        return indexSet.iterator().next();
+    }
+
     @Override
     public List<TimeSeriesMetadata> getTimeSeriesMetadata(Set<String> timeSeriesNames) {
         Objects.requireNonNull(timeSeriesNames);
-        return timeSeriesNames.stream().map(this::getTimeSeriesMetadata)
+        return timeSeriesNames.stream().filter(this::timeSeriesExists).map(this::getTimeSeriesMetadata)
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .collect(Collectors.toList());

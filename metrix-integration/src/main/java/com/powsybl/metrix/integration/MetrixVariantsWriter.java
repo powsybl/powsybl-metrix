@@ -78,7 +78,7 @@ public class MetrixVariantsWriter {
             case curativeCostDown:
                 return "COUEFF";
             default:
-                LOGGER.warn("Unhandled variable {}", variable);
+                LOGGER.debug("Unhandled variable {}", variable);
                 return null;
         }
     }

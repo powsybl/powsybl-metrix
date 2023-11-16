@@ -28,4 +28,8 @@ public final class TsMetadata {
         }
         return Collections.emptyMap();
     }
+
+    static Map<String, String> tsMetadata(String tsName, Map<String, Map<String, String>> tags) {
+        return tags.getOrDefault(tsName, Collections.emptyMap());
+    }
 }

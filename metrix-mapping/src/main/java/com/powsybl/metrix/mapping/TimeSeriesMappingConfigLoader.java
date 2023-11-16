@@ -12,9 +12,11 @@ import com.powsybl.iidm.network.*;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
 
@@ -30,6 +32,12 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
 
     private static List<String> getMultimapValue(Map<MappingKey, List<String>> multimap, MappingKey key) {
         return multimap.computeIfAbsent(key, k -> new LinkedList<>());
+    }
+
+    private static <K, V> Stream<K> keys(Map<K, V> map, V value) {
+        return map.entrySet().stream()
+                .filter(entry -> value == entry.getValue())
+                .map(Map.Entry::getKey);
     }
 
     protected String computeGroupName(Injection<?> injection, EquipmentGroupType equipmentGroupType) {
@@ -57,7 +65,20 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     }
 
     protected Map<String, String> tsMetadata(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
-        return TsMetadata.tsMetadata(nodeCalc, store);
+        if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
+            return TsMetadata.tsMetadata(nodeCalc, store);
+        } else {
+            String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
+            return TsMetadata.tsMetadata(tsName, config.getTimeSeriesNodeTags());
+        }
+    }
+
+    protected void tag(NodeCalc nodeCalc, String tag, String parameter) {
+        if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
+            return;
+        }
+        String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
+        config.addTag(tsName, tag, parameter);
     }
 
     private static String nameWithDelimiter(String name) {
@@ -72,13 +93,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     }
 
     private static boolean isWithPowerType(Boolean withPowerType) {
-        if (withPowerType == null) {
-            return false;
-        }
-        if (!withPowerType) {
-            return false;
-        }
-        return true;
+        return withPowerType != null && withPowerType;
     }
 
     private String computeGeneratorTsName(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType, String name) {
