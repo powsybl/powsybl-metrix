@@ -5,7 +5,7 @@ on:
   pull_request:
     types: [opened, ready_for_review, reopened]
   release:
-    types: [created, published, released]
+    types: [published]
 
 jobs:
   clang-tidy:
