@@ -131,8 +131,8 @@ jobs:
           ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
           cd metrix-simulator/build/install/
           zip -r $ARCHIVE_PATH bin etc
-          echo "::set-output name=archive_name::$ARCHIVE_NAME"
-          echo "::set-output name=archive_path::$ARCHIVE_PATH"
+          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload OR-Tools install artifact
         if: |
