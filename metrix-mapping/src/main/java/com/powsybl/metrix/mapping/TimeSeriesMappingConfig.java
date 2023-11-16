@@ -105,6 +105,7 @@ public class TimeSeriesMappingConfig {
 
     // Calculated time series
     protected final Map<String, NodeCalc> timeSeriesNodes = new HashMap<>();
+    protected final Map<String, Map<String, String>> timeSeriesNodeTags = new HashMap<>();
 
     // Time series used in the mapping
     protected final Set<String> mappedTimeSeriesNames = new HashSet<>();
@@ -848,6 +849,21 @@ public class TimeSeriesMappingConfig {
 
     public Set<String> getTimeSeriesNodesKeys() {
         return timeSeriesNodes.keySet();
+    }
+
+    public void setTimeSeriesNodeTags(Map<String, Map<String, String>> tags) {
+        timeSeriesNodeTags.putAll(tags);
+    }
+
+    public Map<String, Map<String, String>> getTimeSeriesNodeTags() {
+        return timeSeriesNodeTags;
+    }
+
+    public void addTag(String timeSeriesName, String tag, String parameter) {
+        if (timeSeriesNodes.containsKey(timeSeriesName)) {
+            timeSeriesNodeTags.computeIfAbsent(timeSeriesName, k -> new HashMap<>());
+            timeSeriesNodeTags.get(timeSeriesName).putIfAbsent(tag, parameter);
+        }
     }
 
     // Time series used in the mapping

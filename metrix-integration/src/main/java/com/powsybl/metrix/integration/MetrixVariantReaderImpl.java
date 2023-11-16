@@ -97,7 +97,9 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     private void addValue(String id, MetrixVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values) {
         String key = getMetrixVariableKey(variable);
-        addValue(id, variable, value, ids, values, key);
+        if (key != null) {
+            addValue(id, variable, value, ids, values, key);
+        }
     }
 
     private void addValue(String id, EquipmentVariable variable, double value, Map<String, List<String>> ids, Map<String, TDoubleArrayList> values, MappableEquipmentType equipmentType) {
