@@ -72,7 +72,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 'centos:centos7'
     steps:
-      - name: Install Dependancies
+      - name: Install Dependencies
         run: |
           yum update -y
           yum install -y epel-release
