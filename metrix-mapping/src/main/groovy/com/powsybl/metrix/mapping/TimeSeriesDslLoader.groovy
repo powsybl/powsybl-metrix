@@ -16,6 +16,7 @@ import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.ast.NodeCalc
 import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
+import org.apache.commons.lang3.StringUtils
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.slf4j.Logger
@@ -241,6 +242,9 @@ class TimeSeriesDslLoader {
         }
         binding.metadata = { NodeCalc tsNode ->
             loader.tsMetadata(tsNode, store)
+        }
+        binding.tag = { NodeCalc tsNode, String tag, String parameter = StringUtils.EMPTY ->
+            loader.tag(tsNode, tag, parameter)
         }
 
         // statistics
