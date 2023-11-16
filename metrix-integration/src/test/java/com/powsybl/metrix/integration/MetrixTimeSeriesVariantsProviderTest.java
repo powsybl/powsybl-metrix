@@ -105,7 +105,7 @@ class MetrixTimeSeriesVariantsProviderTest {
 
         TimeSeriesMappingConfig mappingConfig;
         try (Reader mappingReader = new InputStreamReader(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy"), StandardCharsets.UTF_8)) {
-            mappingConfig = TimeSeriesDslLoader.load(mappingReader, network, mappingParameters, store, new DataTableStore(), null, null);
+            mappingConfig = new TimeSeriesDslLoader(mappingReader).load(network, mappingParameters, store, new DataTableStore(), null, null);
         }
 
         try (Reader metrixDslReader = Files.newBufferedReader(metrixFile, StandardCharsets.UTF_8)) {
