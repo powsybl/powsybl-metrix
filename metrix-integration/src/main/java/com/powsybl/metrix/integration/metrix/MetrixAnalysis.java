@@ -47,34 +47,54 @@ public class MetrixAnalysis {
     private final ContingenciesProvider contingenciesProvider;
     private final ReadOnlyTimeSeriesStore store;
     private final MetrixAppLogger appLogger;
-    private final Consumer<Future<?>> updateTask;
-    private final Writer scriptLogWriter;
-    private final Writer inputLogWriter;
-    private final String schemaName;
     private final ComputationRange computationRange;
+    private final DataTableStore dataTableStore;
 
-    public MetrixAnalysis(NetworkSource networkSource, TimeSeriesDslLoader timeSeriesDslLoader,
-                          Reader metrixDslReader, Reader remedialActionsReader, ContingenciesProvider contingenciesProvider,
-                          ReadOnlyTimeSeriesStore store, MetrixAppLogger logger, ComputationRange computationRange) {
-        this(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReader, contingenciesProvider, store, logger, ignore -> {
-        }, null, null, null, computationRange);
+    private Consumer<Future<?>> updateTask;
+    private Writer scriptLogWriter;
+    private Writer inputLogWriter;
+    private String schemaName;
+
+    public void setUpdateTask(Consumer<Future<?>> updateTask) {
+        this.updateTask = updateTask;
+    }
+
+    public void setScriptLogWriter(Writer scriptLogWriter) {
+        this.scriptLogWriter = scriptLogWriter;
+    }
+
+    public void setInputLogWriter(Writer inputLogWriter) {
+        this.inputLogWriter = inputLogWriter;
+    }
+
+    public void setSchemaName(String schemaName) {
+        if (schemaName != null) {
+            this.schemaName = schemaName;
+        }
+    }
+
+    private void initDefaultParameters() {
+        this.updateTask = ignore -> {
+        };
+        this.scriptLogWriter = null;
+        this.inputLogWriter = null;
+        this.schemaName = DEFAULT_SCHEMA_NAME;
     }
 
     public MetrixAnalysis(NetworkSource networkSource, TimeSeriesDslLoader timeSeriesDslLoader, Reader metrixDslReader,
-                          Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, ReadOnlyTimeSeriesStore store, MetrixAppLogger appLogger,
-                          Consumer<Future<?>> updateTask, Writer scriptLogWriter, Writer inputLogWriter, String schemaName, ComputationRange computationRange) {
+                          Reader remedialActionsReader, ContingenciesProvider contingenciesProvider,
+                          ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MetrixAppLogger appLogger,
+                          ComputationRange computationRange) {
         this.networkSource = Objects.requireNonNull(networkSource);
         this.timeSeriesDslLoader = Objects.requireNonNull(timeSeriesDslLoader);
+        this.store = Objects.requireNonNull(store);
+        this.dataTableStore = Objects.requireNonNull(dataTableStore);
+        this.appLogger = Objects.requireNonNull(appLogger);
         this.metrixDslReader = metrixDslReader;
         this.remedialActionsReader = remedialActionsReader;
         this.contingenciesProvider = contingenciesProvider;
-        this.store = store;
-        this.appLogger = appLogger;
-        this.updateTask = updateTask;
-        this.scriptLogWriter = scriptLogWriter;
-        this.inputLogWriter = inputLogWriter;
-        this.schemaName = schemaName != null ? schemaName : DEFAULT_SCHEMA_NAME;
         this.computationRange = computationRange;
+        initDefaultParameters();
     }
 
     public MetrixAnalysisResult runAnalysis(String id) {
@@ -108,7 +128,7 @@ public class MetrixAnalysis {
         boolean inError = false;
         try {
             CompletableFuture<TimeSeriesMappingConfig> mappingFuture = new LocalThreadExecutor<TimeSeriesMappingConfig>("Script_TS_" + id)
-                    .supplyAsync(() -> timeSeriesDslLoader.load(network, mappingParameters, store, new DataTableStore(), writer, computationRange));
+                    .supplyAsync(() -> timeSeriesDslLoader.load(network, mappingParameters, store, dataTableStore, writer, computationRange));
             updateTask.accept(mappingFuture);
             return mappingFuture.get();
         } catch (ExecutionException e) {
