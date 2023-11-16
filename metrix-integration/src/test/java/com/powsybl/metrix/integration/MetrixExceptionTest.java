@@ -21,6 +21,7 @@ import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -96,8 +97,9 @@ public class MetrixExceptionTest {
         NetworkXml.write(network, networkFile);
         NetworkSource networkSource = new DefaultNetworkSourceImpl(networkFile, computationManager);
         Reader mappingReader = Files.newBufferedReader(wrongDslFile, StandardCharsets.UTF_8);
-        MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, null, null, null,
-            new ReadOnlyTimeSeriesStoreCache(), appLogger, null);
+        TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
+        MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, null, null, null,
+                new ReadOnlyTimeSeriesStoreCache(), appLogger, null);
         assertThrows(MappingScriptLoadingException.class, () -> metrixAnalysis.runAnalysis(""));
     }
 
@@ -108,7 +110,8 @@ public class MetrixExceptionTest {
         NetworkSource networkSource = new DefaultNetworkSourceImpl(networkFile, computationManager);
         Reader metrixDslReader = Files.newBufferedReader(wrongDslFile, StandardCharsets.UTF_8);
         Reader mappingReader = Files.newBufferedReader(emptyDslFile, StandardCharsets.UTF_8);
-        MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, null, null,
+        TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
+        MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, null, null,
                 new ReadOnlyTimeSeriesStoreCache(), appLogger, null);
         assertThrows(MetrixScriptLoadingException.class, () -> metrixAnalysis.runAnalysis(""));
     }

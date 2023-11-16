@@ -20,6 +20,7 @@ import com.powsybl.metrix.integration.compatibility.CsvResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.ComputationRange;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.tools.Command;
@@ -274,7 +275,8 @@ public class MetrixTool implements Tool {
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
             ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
-            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, mappingReader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
+            TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
+            MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, logger, computationRange);
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
             new Metrix(remedialActionsReaderForRun, store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
