@@ -9,6 +9,8 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Sets;
+import com.google.common.jimfs.Configuration;
+import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.iidm.network.Network;
@@ -17,6 +19,11 @@ import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
 
@@ -25,12 +32,50 @@ import static org.junit.jupiter.api.Assertions.*;
 class TimeSeriesDslLoaderTest {
 
     private final MappingParameters parameters = MappingParameters.load();
+    private final Network network = MappingTestNetwork.create();
+    private final FileSystem fileSystem = Jimfs.newFileSystem(Configuration.unix());
+
+    private final String tagScript = String.join(System.lineSeparator(),
+            "ts['one'] = 1",
+            "ts['test'] = %s",
+            "tag(ts['test'], 'calculatedTag', 'calculatedParam')",
+            "metadata_value = metadata(ts['test'])",
+            "println metadata_value"
+    );
+
+    @Test
+    void mappingFileTest() throws URISyntaxException {
+        File mappingFile = new File(getClass().getResource("/emptyScript.groovy").toURI());
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(mappingFile).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
+        assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+    }
+
+    @Test
+    void mappingScriptTest() {
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader("").load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
+        assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+    }
+
+    @Test
+    void mappingReaderTest() throws IOException {
+        try (Reader reader = new InputStreamReader(TimeSeriesDslLoaderTest.class.getResourceAsStream("/emptyScript.groovy"), StandardCharsets.UTF_8)) {
+            TimeSeriesMappingConfig config = new TimeSeriesDslLoader(reader).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null, null);
+            assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+        }
+    }
+
+    @Test
+    void mappingPathTest() throws IOException {
+        Path mappingFile = fileSystem.getPath("/emptyScript.groovy");
+        try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
+            writer.write(String.join(System.lineSeparator(), ""));
+        }
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(mappingFile).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
+        assertTrue(config.getMappedTimeSeriesNames().isEmpty());
+    }
 
     @Test
     void mappingTest() {
-        // create test network
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "mapPlannedOutages {",
@@ -177,9 +222,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void loadMappingErrorTest() {
-        // create test network
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "timeSeries['zero'] = 0",
@@ -213,9 +255,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void switchMappingErrorTest() {
-        // create test network
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "timeSeries['zero'] = 0",
@@ -241,7 +280,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void tsStatsFunctions() throws IOException {
-        Network network = MappingTestNetwork.create();
         String script = String.join(System.lineSeparator(),
                 "res_sum = sum(ts['test'])",
                 "res_avg = avg(ts['test'])",
@@ -281,8 +319,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void testParameters() {
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "parameters {",
@@ -303,7 +339,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void writeLogTest() throws IOException {
-        Network network = MappingTestNetwork.create();
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         String script = "writeLog(\"LOG_TYPE\", \"LOG_SECTION\", \"LOG_MESSAGE\")";
 
@@ -321,8 +356,6 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void metadataTest() throws IOException {
-        Network network = MappingTestNetwork.create();
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "ts['one'] = 1",
@@ -353,5 +386,108 @@ class TimeSeriesDslLoaderTest {
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
         assertEquals("[tag:value]\n[:]\n[:]\n[:]\n[:]\n[:]\n", output);
+    }
+
+    void tagTest(String expression) throws IOException {
+        tagTest(expression, "[calculatedTag:calculatedParam]");
+
+    }
+
+    void tagTest(String expression, String expectedTag) throws IOException {
+        Network network = MappingTestNetwork.create();
+
+        // mapping script
+        String script = String.format(tagScript, expression);
+
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+                new StoredDoubleTimeSeries(
+                        new TimeSeriesMetadata("test", TimeSeriesDataType.DOUBLE, Map.of("storedTag", "storedParam"), index),
+                        new UncompressedDoubleDataChunk(0, new double[]{1d})));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+        }
+
+        String output = TestUtil.normalizeLineSeparator(outputStream.toString());
+        assertEquals(TestUtil.normalizeLineSeparator(expectedTag + "\n"), output);
+    }
+
+    @Test
+    void calculatedTagTest() throws IOException {
+        // IntegerNodeCalc
+        tagTest("new Integer(1)");
+
+        // FloatNodeCalc
+        tagTest("new Float(0.1)");
+
+        // DoubleNodeCalc
+        tagTest("new Double(0.1)");
+
+        // BigDecimal
+        tagTest("new BigDecimal(0.1)");
+
+        // BinaryOperation
+        tagTest("ts['test'] + 1");
+
+        // UnaryOperation
+        tagTest("- ts['test']");
+
+        // MinNodeCalc
+        tagTest("ts['one'].min(1)");
+
+        // MaxNodeCalc
+        tagTest("ts['one'].max(1)");
+
+        // TimeNodeCalc
+        tagTest("ts['one'].time()");
+    }
+
+    @Test
+    void storedTagTest() throws IOException {
+        tagTest("ts['test']", "[storedTag:storedParam]");
+    }
+
+    @Test
+    void tagOnAbsentTimeSeries() throws IOException {
+        String expression = "new Integer(1)";
+        String tagScriptError = String.join(System.lineSeparator(),
+            "ts['one'] = 1",
+            "ts['test'] = %s"
+        );
+        Map<String, String> newInsideTags = new HashMap<>();
+        newInsideTags.put("testTag", "testParam");
+        Map<String, Map<String, String>> newTags = new HashMap<>();
+        newTags.put("test", newInsideTags);
+
+        Network network = MappingTestNetwork.create();
+
+        // mapping script
+        String script = String.format(tagScriptError, expression);
+
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            new StoredDoubleTimeSeries(
+                new TimeSeriesMetadata("test", TimeSeriesDataType.DOUBLE, Map.of("storedTag", "storedParam"), index),
+                new UncompressedDoubleDataChunk(0, new double[]{1d})));
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        TimeSeriesMappingConfig timeSeriesMappingConfig;
+        Map<String, Map<String, String>> tags;
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            timeSeriesMappingConfig = new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+
+            timeSeriesMappingConfig.setTimeSeriesNodeTags(newTags);
+            timeSeriesMappingConfig.addTag("testError", "calculatedTagError", "calculatedParamError");
+            tags = timeSeriesMappingConfig.getTimeSeriesNodeTags();
+        }
+
+        assertTrue(tags.containsKey("test"));
+        assertTrue(tags.get("test").containsKey("testTag"));
+        assertEquals("testParam", tags.get("test").get("testTag"));
+        assertFalse(tags.containsKey("testError"));
+        assertFalse(tags.get("test").containsKey("calculatedTagError"));
+
     }
 }
