@@ -21,6 +21,7 @@ import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
+import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
@@ -99,7 +100,7 @@ public class MetrixExceptionTest {
         Reader mappingReader = Files.newBufferedReader(wrongDslFile, StandardCharsets.UTF_8);
         TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
         MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, null, null, null,
-                new ReadOnlyTimeSeriesStoreCache(), appLogger, null);
+                new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), appLogger, null);
         assertThrows(MappingScriptLoadingException.class, () -> metrixAnalysis.runAnalysis(""));
     }
 
@@ -112,7 +113,7 @@ public class MetrixExceptionTest {
         Reader mappingReader = Files.newBufferedReader(emptyDslFile, StandardCharsets.UTF_8);
         TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
         MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, null, null,
-                new ReadOnlyTimeSeriesStoreCache(), appLogger, null);
+                new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), appLogger, null);
         assertThrows(MetrixScriptLoadingException.class, () -> metrixAnalysis.runAnalysis(""));
     }
 }
