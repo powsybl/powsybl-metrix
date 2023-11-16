@@ -7,10 +7,11 @@ on:
       - 'release-v**'
       - 'full-sonar-analysis-**'
   pull_request:
+  release:
 
 jobs:
   build:
-    name: Build OS ${{ matrix.os }}
+    name: Build Java on OS ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
