@@ -74,7 +74,7 @@ class CalculatedTimeseriesStoreTest {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(InMemoryTimeSeriesStore.class.getResourceAsStream("/expected/simpleExport.csv")))) {
             store.importTimeSeries(reader);
         }
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(InMemoryTimeSeriesStore.class.getResourceAsStream("/expected/additionalTimeSeries.csv")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(InMemoryTimeSeriesStore.class.getResourceAsStream("/additionalTimeSeries.csv")))) {
             store.importTimeSeries(reader);
         }
         CalculatedTimeSeriesStore timeSeriesStore = getCalculatedTimeSeriesStore(store);
