@@ -8,10 +8,7 @@ on:
     paths:
       - 'metrix-simulator/**'
   release:
-
-defaults:
-  run:
-    shell: bash
+    types: [published]
 
 # Cancel previous workflows if they are the same workflow on same ref (branch/tags)
 # with the same event (push/pull_request) even they are in progress.
@@ -19,6 +16,10 @@ defaults:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   linux:
