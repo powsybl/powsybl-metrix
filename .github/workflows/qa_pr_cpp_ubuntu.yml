@@ -159,7 +159,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
 
       - name: Prepare Metrix install
         id: metrix-install

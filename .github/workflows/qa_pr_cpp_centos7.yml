@@ -217,7 +217,7 @@ jobs:
           cmake -S $GITHUB_WORKSPACE/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install -B $GITHUB_WORKSPACE/metrix-simulator/build
 
       - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-centos7 --target install --parallel 2
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
 
       - name: Prepare Metrix install
         id: metrix-install
