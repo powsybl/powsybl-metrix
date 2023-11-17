@@ -61,7 +61,7 @@ jobs:
       - name: Clang Tidy Release
         if: github.event_name == 'release'
         run: |
-          export MODIFIED_FILES=$(find $GITHUB_WORKSPACE/metrix-simulator/log/*.cpp $GITHUB_WORKSPACE/metrix-simulator/log/*.hpp $GITHUB_WORKSPACE/metrix-simulator/src/*.cpp $GITHUB_WORKSPACE/metrix-simulator/src/*.hpp -type f)
+          export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
           fi
