@@ -69,6 +69,9 @@ jobs:
       - name: Clang Tidy PR
         if: github.event_name == 'pull_request'
         run: |
+          echo $GITHUB_WORKSPACE
+          pwd
+          ls -l
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           echo $MODIFIED_FILES
           if [ -n "$MODIFIED_FILES" ]; then
@@ -78,7 +81,10 @@ jobs:
       - name: Clang Tidy Release
         if: github.event_name == 'release'
         run: |
-          export MODIFIED_FILES=$(find $GITHUB_WORKSPACE/metrix-simulator/log/*.cpp $GITHUB_WORKSPACE/metrix-simulator/log/*.hpp $GITHUB_WORKSPACE/metrix-simulator/src/*.cpp $GITHUB_WORKSPACE/metrix-simulator/src/*.hpp -type f)
+          echo $GITHUB_WORKSPACE
+          pwd
+          ls -Rl .
+          export MODIFIED_FILES=$(find metrix-simulator/log/*.cpp metrix-simulator/log/*.hpp metrix-simulator/src/*.cpp metrix-simulator/src/*.hpp -type f)
           if [ -n "$MODIFIED_FILES" ]; then
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
           fi
