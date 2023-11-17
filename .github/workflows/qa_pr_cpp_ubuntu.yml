@@ -55,16 +55,22 @@ jobs:
         run: |
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > clan_tidy_report.txt
           fi
 
       - name: Clang Tidy Release
-        if: github.event_name == 'release'
+        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
         run: |
           export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > clan_tidy_report.txt
           fi
+
+      - name: Upload OR-Tools install artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: clan_tidy_report.txt
+          path: clan_tidy_report.txt
 
   qa:
     name: Full QA C++ Ubuntu
