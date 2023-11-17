@@ -22,7 +22,6 @@ jobs:
   clang-tidy:
     name: Clang-tidy Ubuntu
     runs-on: ubuntu-latest'
-    if: github.event_name == 'pull_request'
     steps:
       - name: Install Boost
         run: |
@@ -51,9 +50,18 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-      - name: Clang Tidy
+      - name: Clang Tidy PR
+        if: github.event_name == 'pull_request'
         run: |
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          if [ -n "$MODIFIED_FILES" ]; then
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
+          fi
+
+      - name: Clang Tidy Release
+        if: github.event_name == 'release'
+        run: |
+          export MODIFIED_FILES=$(find $GITHUB_WORKSPACE/metrix-simulator/log/*.cpp $GITHUB_WORKSPACE/metrix-simulator/log/*.hpp $GITHUB_WORKSPACE/metrix-simulator/src/*.cpp $GITHUB_WORKSPACE/metrix-simulator/src/*.hpp -type f)
           if [ -n "$MODIFIED_FILES" ]; then
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
           fi
@@ -136,7 +144,6 @@ jobs:
   release:
     name: Release Ubuntu
     runs-on: ubuntu-latest
-    container: 'centos:centos7'
     needs: qa
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     steps:
