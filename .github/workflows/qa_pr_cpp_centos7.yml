@@ -169,7 +169,7 @@ jobs:
           /__w/powsybl-metrix/sonar/bin/sonar-scanner -Dsonar.host.url=https://sonarcloud.io
 
   release:
-    name: Release
+    name: Release CentOS7
     runs-on: ubuntu-latest
     container: 'centos:centos7'
     needs: qa
