@@ -19,6 +19,7 @@ jobs:
     name: Clang-tidy CentOS
     runs-on: ubuntu-latest
     container: 'centos:centos7'
+    if: github.event_name == 'pull_request'
     steps:
       - name: Install Dependancies
         run: |
