@@ -172,7 +172,8 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     container: 'centos:centos7'
-    if: jobs.qa.if.success && (github.event_name == 'release' || github.event_name == 'workflow_dispatch')
+    needs: qa
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Install Dependencies
         run: |
