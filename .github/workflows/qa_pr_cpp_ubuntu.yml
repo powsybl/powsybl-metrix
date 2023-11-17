@@ -128,10 +128,39 @@ jobs:
           ${{ runner.workspace }}/sonar/bin/sonar-scanner
           -Dsonar.host.url=https://sonarcloud.io
 
+  release:
+    name: Release Ubuntu
+    runs-on: ubuntu-latest
+    container: 'centos:centos7'
+    needs: qa
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
+
       - name: Prepare Metrix install
-        if: |
-          github.event_name == 'release' ||
-          github.event_name == 'workflow_dispatch'
         id: metrix-install
         run: |
           ARCHIVE_NAME="metrix-simulator-ubuntu"
@@ -142,9 +171,6 @@ jobs:
           echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload OR-Tools install artifact
-        if: |
-          github.event_name == 'release' ||
-          github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.metrix-install.outputs.archive_name }}.zip
