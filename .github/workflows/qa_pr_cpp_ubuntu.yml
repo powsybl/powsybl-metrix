@@ -60,15 +60,15 @@ jobs:
           if [ -n "$MODIFIED_FILES" ]; then
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME
           fi
-          echo "archive_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+          echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+          echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload Clang Tidy report - PR
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.clang-pr.outputs.report_name }}.zip
-          path: ${{ steps.clang-pr.outputs.report_path }}.zip
+          name: ${{ steps.clang-pr.outputs.report_name }}
+          path: ${{ steps.clang-pr.outputs.report_path }}
 
       - name: Clang Tidy Release
         id: clang-release
@@ -93,8 +93,8 @@ jobs:
         if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.clang-release.outputs.report_name }}.zip
-          path: ${{ steps.clang-release.outputs.report_path }}.zip
+          name: ${{ steps.clang-release.outputs.report_name }}
+          path: ${{ steps.clang-release.outputs.report_path }}
 
   qa:
     name: Full QA C++ Ubuntu

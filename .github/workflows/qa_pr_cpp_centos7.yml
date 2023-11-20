@@ -71,24 +71,27 @@ jobs:
         if: github.event_name == 'pull_request'
         run: |
           REPORT_NAME="clang_tidy_report_centos.txt"
+          REPORT_PATH="$PWD/${REPORT_NAME}"
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build-centos7 > $REPORT_NAME
           fi
-          echo "archive_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+          echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+          echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload Clang Tidy report - PR
         if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.clang-pr.outputs.report_name }}.zip
-          path: ${{ steps.clang-pr.outputs.report_path }}.zip
+          name: ${{ steps.clang-pr.outputs.report_name }}
+          path: ${{ steps.clang-pr.outputs.report_path }}
 
 #      - name: Clang Tidy Release
 #        id: clang-release
 #        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
 #        run: |
+#          REPORT_NAME="clang_tidy_report_centos.txt"
+#          REPORT_PATH="$PWD/${REPORT_NAME}"
 #          export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
 #          if [ -n "$MODIFIED_FILES" ]; then
 #              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
@@ -99,15 +102,15 @@ jobs:
 #                  exit $exit_code
 #              fi
 #          fi
-#          echo "archive_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
-#          echo "archive_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+#          echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+#          echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
 #
 #      - name: Upload Clang Tidy report - Release
 #        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
 #        uses: actions/upload-artifact@v3
 #        with:
-#          name: ${{ steps.clang-release.outputs.report_name }}.zip
-#          path: ${{ steps.clang-release.outputs.report_path }}.zip
+#          name: ${{ steps.clang-release.outputs.report_name }}
+#          path: ${{ steps.clang-release.outputs.report_path }}
 
   qa:
     name: Full QA C++ CentOS
