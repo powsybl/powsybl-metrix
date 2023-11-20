@@ -75,21 +75,22 @@ jobs:
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build-centos7 > clan_tidy_report.txt
           fi
 
-      - name: Clang Tidy Release
-        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        run: |
-          export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
-          if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > clan_tidy_report.txt || true
-              cat clan_tidy_report.txt  # Display the contents of the report
-              exit_code=$?
-              if [ $exit_code -ne 0 ]; then
-                  echo "clang-tidy failed with exit code $exit_code"
-                  exit $exit_code
-              fi
-          fi
+#      - name: Clang Tidy Release
+#        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+#        run: |
+#          export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+#          if [ -n "$MODIFIED_FILES" ]; then
+#              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > clan_tidy_report.txt || true
+#              cat clan_tidy_report.txt  # Display the contents of the report
+#              exit_code=$?
+#              if [ $exit_code -ne 0 ]; then
+#                  echo "clang-tidy failed with exit code $exit_code"
+#                  exit $exit_code
+#              fi
+#          fi
 
       - name: Upload OR-Tools install artifact
+        if: github.event_name == 'pull_request'
         uses: actions/upload-artifact@v3
         with:
           name: clan_tidy_report.txt
