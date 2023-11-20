@@ -48,11 +48,11 @@ jobs:
 
       - name: Install clang-tidy
         run: |
-          yum search llvm-toolset
+          yum info llvm-toolset-7.0
           yum install -y centos-release-scl
-          yum install -y llvm-toolset-14.0
+          yum localinstall  https://buildlogs.centos.org/c7-llvm-toolset-14.0.x86_64/llvm-toolset-14.0/20221102112009/14.0.6-1.el7_9.x86_64/llvm-toolset-14.0-14.0.6-1.el7_9.x86_64.rpm
           scl enable llvm-toolset-14.0 bash
-          clang --version
+          clang-tidy --version
 
       - name: Configure 3rd parties
         run: |
