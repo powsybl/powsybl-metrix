@@ -51,7 +51,6 @@ jobs:
           yum install -y centos-release-scl
           yum install -y llvm-toolset-7.0
           scl enable llvm-toolset-7.0 bash
-          clang --version
 
       - name: Configure 3rd parties
         run: |
