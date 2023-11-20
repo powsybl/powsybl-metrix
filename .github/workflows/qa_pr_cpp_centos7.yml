@@ -50,7 +50,12 @@ jobs:
         run: |
           yum info llvm-toolset-7.0
           yum install -y centos-release-scl
-          yum localinstall  https://buildlogs.centos.org/c7-llvm-toolset-14.0.x86_64/llvm-toolset-14.0/20221102112009/14.0.6-1.el7_9.x86_64/llvm-toolset-14.0-14.0.6-1.el7_9.x86_64.rpm
+          yum localinstall https://buildlogs.centos.org/c7-llvm-toolset-13.0.x86_64/llvm-toolset-13.0/20220930144810/13.0.1-5.el7_9.x86_64/llvm-toolset-13.0-runtime-13.0.1-5.el7_9.x86_64.rpm
+          yum localinstall https://buildlogs.centos.org/c7-llvm-toolset-13.0.x86_64/llvm-toolset-13.0-clang/20220930210624/13.0.1-1.el7_9.x86_64/llvm-toolset-13.0-clang-13.0.1-1.el7_9.x86_64.rpm
+          yum localinstall https://buildlogs.centos.org/c7-llvm-toolset-13.0.x86_64/llvm-toolset-13.0-llvm/20220930153544/13.0.1-3.el7_9.x86_64/llvm-toolset-13.0-llvm-13.0.1-3.el7_9.x86_64.rpm
+          yum localinstall https://buildlogs.centos.org/c7-llvm-toolset-13.0.x86_64/llvm-toolset-13.0-lld/20220930210626/13.0.1-2.el7_9.x86_64/llvm-toolset-13.0-lld-13.0.1-2.el7_9.x86_64.rpm
+          yum localinstall https://buildlogs.centos.org/c7-llvm-toolset-13.0.x86_64/llvm-toolset-13.0-python-lit/20220930200954/13.0.1-1.el7_9.x86_64/llvm-toolset-13.0-python-lit-13.0.1-1.el7_9.src.rpm
+          yum localinstall https://buildlogs.centos.org/c7-llvm-toolset-13.0.x86_64/llvm-toolset-13.0/20220930144810/13.0.1-5.el7_9.x86_64/llvm-toolset-13.0-13.0.1-5.el7_9.x86_64.rpm
           scl enable llvm-toolset-14.0 bash
           clang-tidy --version
 
