@@ -49,8 +49,9 @@ jobs:
       - name: Install clang-tidy
         run: |
           yum install -y centos-release-scl
-          yum install -y llvm-toolset-10.0-clang-tools-extra
-          clang-tidy --version
+          yum install -y llvm-toolset-13.0
+          scl enable llvm-toolset-13.0 bash
+          clang --version
 
       - name: Configure 3rd parties
         run: |
