@@ -5,7 +5,18 @@ on:
   pull_request:
     types: [opened, ready_for_review, reopened]
   release:
-    types: [created, published, released]
+    types: [published]
+
+# Cancel previous workflows if they are the same workflow on same ref (branch/tags)
+# with the same event (push/pull_request) even they are in progress.
+# This setting will help reduce the number of duplicated workflows.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
   clang-tidy:
@@ -19,8 +30,8 @@ jobs:
 
       - name: Install clang-tidy
         run: |
-          sudo apt install -y clang-tidy-14
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-14 100
+          sudo apt install -y clang-tidy-15
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
 
       - name: Checkout sources
         uses: actions/checkout@v1
@@ -39,12 +50,45 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-      - name: Clang Tidy
+      - name: Clang Tidy PR
+        id: clang-pr
+        if: github.event_name == 'pull_request'
         run: |
+          REPORT_NAME="clang_tidy_report_ubuntu.txt"
+          REPORT_PATH="$PWD/${REPORT_NAME}"
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
           fi
+          echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+          echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Clang Tidy report - PR
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.clang-pr.outputs.report_name }}
+          path: ${{ steps.clang-pr.outputs.report_path }}
+
+      - name: Clang Tidy Release
+        id: clang-release
+        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+        run: |
+          REPORT_NAME="clang_tidy_report_ubuntu.txt"
+          REPORT_PATH="$PWD/${REPORT_NAME}"
+          export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          if [ -n "$MODIFIED_FILES" ]; then
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
+          fi
+          echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+          echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Clang Tidy report - Release
+        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.clang-release.outputs.report_name }}
+          path: ${{ steps.clang-release.outputs.report_path }}
 
   qa:
     name: Full QA C++ Ubuntu
@@ -121,24 +165,55 @@ jobs:
           ${{ runner.workspace }}/sonar/bin/sonar-scanner
           -Dsonar.host.url=https://sonarcloud.io
 
+  release:
+    name: Release Ubuntu
+    runs-on: ubuntu-latest
+    needs: qa
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@v1
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
+
       - name: Prepare Metrix install
-        if: |
-          github.event_name == 'release' ||
-          github.event_name == 'workflow_dispatch'
         id: metrix-install
         run: |
-          ARCHIVE_NAME="metrix-simulator-ubuntu.zip"
+          ARCHIVE_NAME="metrix-simulator-ubuntu"
           ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
           cd metrix-simulator/build/install/
           zip -r $ARCHIVE_PATH bin etc
-          echo "::set-output name=archive_name::$ARCHIVE_NAME"
-          echo "::set-output name=archive_path::$ARCHIVE_PATH"
+          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload OR-Tools install artifact
-        if: |
-          github.event_name == 'release' ||
-          github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.metrix-install.outputs.archive_name }}
-          path: ${{ steps.metrix-install.outputs.archive_path }}
+          name: ${{ steps.metrix-install.outputs.archive_name }}.zip
+          path: ${{ steps.metrix-install.outputs.archive_path }}.zip
+
+      - name: Upload asset to release
+        uses: softprops/action-gh-release@v1
+        if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ steps.metrix-install.outputs.archive_name }}.zip
