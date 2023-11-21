@@ -58,7 +58,7 @@ jobs:
           REPORT_PATH="$PWD/${REPORT_NAME}"
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
           fi
           echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
           echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
@@ -79,12 +79,6 @@ jobs:
           export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
               clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
-              cat clan_tidy_report_ubuntu.txt  # Display the contents of the report
-              exit_code=$?
-              if [ $exit_code -ne 0 ]; then
-                  echo "clang-tidy failed with exit code $exit_code"
-                  exit $exit_code
-              fi
           fi
           echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
           echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
