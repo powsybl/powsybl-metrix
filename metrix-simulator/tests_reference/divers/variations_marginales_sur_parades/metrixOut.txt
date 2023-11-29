@@ -3025,7 +3025,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :  122820.8599
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 166170 (taille de la matrice : 166170)
+Nb termes dans la matrice : 165545 (taille de la matrice : 165545)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -3092,7 +3092,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :  122782.9760
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 166195 (taille de la matrice : 166195)
+Nb termes dans la matrice : 165570 (taille de la matrice : 165570)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -3159,7 +3159,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :  122787.9653
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 166170 (taille de la matrice : 166170)
+Nb termes dans la matrice : 165545 (taille de la matrice : 165545)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe

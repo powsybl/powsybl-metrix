@@ -397,7 +397,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       6.5608
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 52 (taille de la matrice : 52)
+Nb termes dans la matrice : 51 (taille de la matrice : 51)
 Pas de contraintes
 
 ---------------------

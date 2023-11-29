@@ -4308,6 +4308,9 @@ int Calculer::fixerProdSansReseau()
                                    == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
                                       ? 0.
                                       : grpe->puisMax_ - grpe->prod_;
+                if (grpe->puisMin_ > 0.0 && grpe->prod_ < grpe->puisMin_){
+                    pbXmax_[numVar] = 0.;
+                }
                 pbXmin_[numVar + 1] = 0.;
 
                 double value = 0.0;
