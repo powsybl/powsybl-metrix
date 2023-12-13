@@ -271,6 +271,7 @@ public:
     int metrix2Assess(const std::shared_ptr<Variante>& var, const vector<double>& theta, int status);
     void printCutDetailed(FILE* fr);
     void printCut(FILE* fr);
+    static double cutDecimals(double x); //utilisé quand le round ne suffit pas, pour R3 et R3B
     int getClosestTapPosition(TransformateurDephaseur* td, double angleFinal);
     bool calculVariationsMarginales(FILE* fr, const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants);
     static double round(double x, double prec); // utiliser pour arrondir les calculs

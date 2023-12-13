@@ -26,6 +26,7 @@
 #include <iostream>
 #include <numeric>
 #include <string>
+#include <iomanip>
 
 using cte::c_fmt;
 
@@ -40,6 +41,33 @@ static const string EMPTY_STRING;
 static const string PREC_FLOAT_BIS = "%.4f";
 static constexpr double EPSILON_SORTIES_BIS = 0.0001;
 
+double Calculer::cutDecimals(double x)
+{
+    std::stringstream stream;
+    stream << std::fixed << std::setprecision(15)<<x;
+    std::string x_string = stream.str();
+    if (x_string.find("9999") != std::string::npos and x_string.find(".") != std::string::npos){
+
+        int dot_position = x_string.find(".");
+        int substr_position = x_string.find("9999");
+        if (dot_position < substr_position){
+            if (dot_position + 1 == substr_position){
+                return x;
+            }else{
+                int precision = dot_position - substr_position;
+                if (x>=0){
+                    return x + 2*pow(10,precision);
+                }else{
+                    return x - 2*pow(10,precision);
+                }
+            }
+        }else{
+            return x;
+        }      
+    }
+    return x;
+}
+
 static void print_threats(FILE* file,
                           const Menace& threat_before,
                           const std::map<std::shared_ptr<Incident>, int>& constraints_incidents,
@@ -52,14 +80,14 @@ static void print_threats(FILE* file,
     if (threat_before.defaut_ != nullptr) {
         double value_transit = (fabs(threat_before.transit_) < EPSILON_SORTIES) ? 0.0 : threat_before.transit_;
         const auto& inc = threat_before.defaut_->parade_ ? threat_before.defaut_->incTraiteCur_ : threat_before.defaut_;
-        fprintf(file, "%d;%.1f;", constraints_incidents.find(inc)->second, value_transit);
+        fprintf(file, "%d;%.1f;", constraints_incidents.find(inc)->second, Calculer::cutDecimals(value_transit));
     } else {
         fprintf(file, ";;");
     }
     for (auto rit = threats.crbegin(); rit != threats.crend(); ++rit) {
         const auto& inc = rit->defaut_->parade_ ? rit->defaut_->incTraiteCur_ : rit->defaut_;
         double value_transit = (fabs(rit->transit_) < EPSILON_SORTIES) ? 0.0 : rit->transit_;
-        fprintf(file, "%d;%.1f;", constraints_incidents.find(inc)->second, value_transit);
+        fprintf(file, "%d;%.1f;", constraints_incidents.find(inc)->second, Calculer::cutDecimals(value_transit));
     }
 
     for (unsigned int j = 0; j < config::configuration().nbThreats() - threats.size(); ++j) {
@@ -836,7 +864,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                             transitN = 0.0;
                         }
 
-                        fprintf(fr, ("R3 ;;%s;" + PREC_FLOAT + ";\n").c_str(), quad->nom_.c_str(), transitN);
+                        fprintf(fr, ("R3 ;;%s;" + PREC_FLOAT + ";\n").c_str(), quad->nom_.c_str(), Calculer::cutDecimals(transitN));
                     } else {
                         fprintf(fr,
                                 "R3 ;;%s;%.1f;%.1f;%.1f;%.1f;\n",
