@@ -641,6 +641,9 @@ void Reseau::lireDonnees()
         conso->coutHR_ = (i >= config.tnvacouDIE().size() || config.tnvacouDIE()[i] == config::constants::valdef)
                            ? config::configuration().costFailure()
                            : config.tnvacouDIE()[i];
+        conso->coutAR_ = (i >= config.tnvacouDIE().size() || config.tnvacouDIE()[i] == config::constants::valdef)
+                           ? config::configuration().costFailure()
+                           : config.tnvacouDIE()[i];
 
         // Lecture des incidents a traiter en curatif:
         if (config::configuration().computationType() == config::Configuration::ComputationType::OPF
@@ -1783,6 +1786,12 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
                    << " est modife, nouvelle valeur est: " << elem.first->cout_;
     }
 
+    for (const auto& elem : var->coutEffaceAr_) {
+        elem.first->coutAR_ = elem.second;
+        LOG(debug) << "le cout d'effacement en preventif : " << elem.first->nom_
+                   << " est modife, nouvelle valeur est: " << elem.first->coutAR_;
+    }
+
     // X - bilan zonal en jouant sur la consommation
     //-------------------------------------------------------
     double bilanCourant = 0.0; // bilan actuel apres application de toutes les autres lois
@@ -2212,7 +2221,7 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
             const auto& conso = consosIt->first;
             conso->coutEffacement_ = conso->coutEffacementBase_;
 
-            LOG(debug) << "le cout a la baisse AR : " << conso->nom_ << " est remis a jour a son etat de base";
+            LOG(debug) << "le cout a la baisse en curatif : " << conso->nom_ << " est remis a jour a son etat de base";
         }
 
         // Couts a la baisse des consommations (effacements)
@@ -2221,6 +2230,14 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
             conso->coutHR_ = conso->cout_;
 
             LOG(debug) << "le cout a la baisse HR : " << conso->nom_ << " est remis a jour a son etat de base";
+        }
+
+        // Couts a la baisse des consommations (effacements)
+        for (auto consosIt = var->coutEffaceAr_.cbegin(); consosIt != var->coutEffaceAr_.end(); ++consosIt) {
+            const auto& conso = consosIt->first;
+            conso->coutAR_ = conso->cout_;
+
+            LOG(debug) << "le cout a la baisse AR préventif : " << conso->nom_ << " est remis a jour a son etat de base";
         }
 
         // X-limitation des HVDC
@@ -2749,6 +2766,16 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
+    for (const auto& conso_cfg : config.deleteConsosCostsAr){
+        const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
+        auto consosIt = consos_.find(str);
+        if (consosIt != consos_.end()) {
+            auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
+            const auto& conso = consosIt->second;
+            conso->coutAR_ = var_dbl;
+        }
+    }
+
     for (auto& incident : config.probas) {
         const auto& str = std::get<VariantConfiguration::NAME>(incident);
         auto icIt = incidents_.find(str);
@@ -3036,6 +3063,17 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         if (consosIt != consos_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
             variant->coutEffaceHr_.insert(std::pair<std::shared_ptr<Consommation>, double>(consosIt->second, var_dbl));
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& conso_cfg : config.deleteConsosCostsAr) {
+        const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
+        auto consosIt = consos_.find(str);
+        if (consosIt != consos_.end()) {
+            auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
+            variant->coutEffaceAr_.insert(std::pair<std::shared_ptr<Consommation>, double>(consosIt->second, var_dbl));
         } else {
             LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
         }

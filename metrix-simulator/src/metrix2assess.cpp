@@ -462,9 +462,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     }
                     string resRedispatching = EMPTY_STRING;
 
-                    if (fabs(valRedispatching) >= EPSILON_SORTIES) {
+                    if (fabs(valRedispatching) >= EPSILON_SORTIES_BIS) {
                         volDel += valRedispatching;
-                        resRedispatching = c_fmt(PREC_FLOAT.c_str(), valRedispatching);
+                        resRedispatching = c_fmt(PREC_FLOAT_BIS.c_str(), valRedispatching);
                     }
 
                     if (resEquilibrage != EMPTY_STRING || resRedispatching != EMPTY_STRING) {
@@ -631,9 +631,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     if (fabs(deltaHR) >= EPSILON_SORTIES_BIS) { // seuil resultat equilibrage
                         sDeltaHR = c_fmt(PREC_FLOAT_BIS.c_str(), deltaHR);
                     }
-                    if (config::configuration().displayResultatsRedispatch()
-                        && fabs(deltaAR) >= EPSILON_SORTIES) { // seuil resultat redispatching preventif
-                        sDeltaAR = c_fmt(PREC_FLOAT.c_str(), deltaAR);
+                    if (fabs(deltaAR) >= EPSILON_SORTIES_BIS) { // seuil resultat redispatching preventif
+                        sDeltaAR = c_fmt(PREC_FLOAT_BIS.c_str(), deltaAR);
                     }
 
                     if (sDeltaHR == EMPTY_STRING && sDeltaAR == EMPTY_STRING) {

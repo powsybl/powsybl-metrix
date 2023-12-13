@@ -208,6 +208,19 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
         std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
     }
 
+    // string nom2;
+    // nom2 = c_fmt("%s_s%d","ShuffledList",varianteCourante_->num_);
+    // FILE* fr;
+    // fr = fopen(&nom2[0], "w+");
+    // if (fr == nullptr) {
+    //     throw ErrorI(err::ioDico().msg("ERRPbOuvertureFic", nom2));
+    // }
+    // fprintf(fr, "V;%d;Nbgrps;%d;\n", varianteCourante_->num_, res_.nbGroupes_);
+    // for (auto grp_rand = grp_melanges.begin(); grp_rand != grp_melanges.end(); ++grp_rand){
+    //     fprintf(fr, "V;%d;%s;\n", varianteCourante_->num_, grp_rand->get()->nom_.c_str());
+    // }
+    // fclose(fr);
+
     for (int i = 0; i < res_.nbGroupes_; ++i) {
         const auto& grp = grp_melanges[i];
 
@@ -4376,14 +4389,30 @@ int Calculer::fixerProdSansReseau()
                 pbCoutLineaire_[numVar] = (config.computationType()
                                            == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
                                               ? 0.
-                                              : std::max(grpe->coutHausseAR_, config::configuration().noiseCost())
-                                                    + config::configuration().redispatchCostOffset();
+                                              : ((-config::configuration().noiseCost()>grpe->coutHausseAR_)?
+                                                config::configuration().noiseCost() + config::configuration().redispatchCostOffset():
+                                                config::configuration().noiseCost() + config::configuration().redispatchCostOffset() + grpe->coutHausseAR_);
                 pbX_[numVar + 1] = 0.0;
                 pbCoutLineaire_[numVar + 1] = (config.computationType()
                                                == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
                                                   ? 0.
-                                                  : std::max(grpe->coutBaisseAR_, config::configuration().noiseCost())
-                                                        + config::configuration().redispatchCostOffset();
+                                                  : ((-config::configuration().noiseCost()>grpe->coutBaisseAR_)?
+                                                    config::configuration().noiseCost() + config::configuration().redispatchCostOffset():
+                                                    config::configuration().noiseCost() + config::configuration().redispatchCostOffset() + grpe->coutBaisseAR_);
+            // if (grpe->prodAjust_ == Groupe::OUI_HR_AR || grpe->prodAjust_ == Groupe::OUI_AR) {
+            //     const auto& config = config::configuration();
+            //     pbX_[numVar] = 0.0;
+            //     pbCoutLineaire_[numVar] = (config.computationType()
+            //                                == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
+            //                                   ? 0.
+            //                                   : std::max(grpe->coutHausseAR_, config::configuration().noiseCost())
+            //                                         + config::configuration().redispatchCostOffset();
+            //     pbX_[numVar + 1] = 0.0;
+            //     pbCoutLineaire_[numVar + 1] = (config.computationType()
+            //                                    == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
+            //                                       ? 0.
+            //                                       : std::max(grpe->coutBaisseAR_, config::configuration().noiseCost())
+            //                                             + config::configuration().redispatchCostOffset();
                 pbXmin_[numVar] = 0.0;
                 pbXmax_[numVar] = (config.computationType()
                                    == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
@@ -4406,6 +4435,13 @@ int Calculer::fixerProdSansReseau()
                 pbXmax_[numVar + 1] = 0.;
             }
 
+            if (grpe->nom_ == "GROUP_BUNJ"){
+                pbXmax_[numVar + 1] = 489.3498;
+            }
+            if (grpe->nom_ == "GROUP_CJWW"){
+                pbXmax_[numVar] = 10.0938;
+            }
+
             // Remarque traitements effectues pour la resolution du probleme
             pbTypeDeBorneDeLaVariable_[numVar] = VARIABLE_BORNEE_DES_DEUX_COTES;
             pbTypeDeBorneDeLaVariable_[numVar + 1] = VARIABLE_BORNEE_DES_DEUX_COTES;
@@ -4420,23 +4456,23 @@ int Calculer::fixerProdSansReseau()
             }
         }
         // mise a jour des couts des groupes pour le redispatching
+    }
 
-        for (const auto& elem : res_.consos_) {
-            const auto& conso = elem.second;
-            int numVar = conso->numVarConso_;
-            if (numVar > 0){
-                if (conso->valeur_ >= 0) {
-                    pbCoutLineaire_[numVar] = conso->cout_ + config::configuration().noiseCost() + 
-                                                config::configuration().redispatchCostOffset();
-                } else {
-                    pbCoutLineaire_[numVar] = -(conso->cout_ + config::configuration().noiseCost()
-                                                + config::configuration().redispatchCostOffset());
-                }
+    for (const auto& elem : res_.consos_) {
+        const auto& conso = elem.second;
+        int numVar = conso->numVarConso_;
+        if (numVar > 0){
+            if (conso->valeur_ >= 0) {
+                pbCoutLineaire_[numVar] = conso->coutAR_ + config::configuration().noiseCost() + 
+                                            config::configuration().redispatchCostOffset();
+            } else {
+                pbCoutLineaire_[numVar] = -(conso->coutAR_ + config::configuration().noiseCost()
+                                            + config::configuration().redispatchCostOffset());
             }
         }
+    }
     // mise à jour des couts des consos pour le redispatching (Fonctionnalité pour les tests seuls)
 
-    }
     return METRIX_PAS_PROBLEME;
 }
 

@@ -409,6 +409,7 @@ public:
     double seuil_ = 0.0; /* pourcentage max de delestage preventif % */
     double cout_ = 0.0;  /* cout du delestage preventif */
     double coutHR_ = 0.0; /* cout du delestage hors-reseau */
+    double coutAR_ = 0.0; /*Cout du delestage en préventif en phase avec réseau*/
 
     std::set<int> incidentsAtraiterCuratif_;                // indices des incidents a traiter en curatif
     double coutEffacement_ = config::constants::valdef;     /* Cout de l'effacement curatif dans la variante */

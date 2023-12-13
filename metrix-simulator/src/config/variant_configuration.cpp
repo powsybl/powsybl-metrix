@@ -88,6 +88,9 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
             "COUEFFHR",
             std::bind(&VariantConfiguration::processCostConsoHr, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
+            "COUEFFAR",
+            std::bind(&VariantConfiguration::processCostConsoAr, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
             "QUADIN",
             std::bind(&VariantConfiguration::processLine, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
@@ -400,6 +403,15 @@ void VariantConfiguration::processCostConsoHr(VariantConfig& variant, std::istri
 
     LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : conso " << std::get<NAME>(conso)
                << " HR delete cost at " << std::get<VALUE>(conso);
+}
+
+void VariantConfiguration::processCostConsoAr(VariantConfig& variant, std::istringstream& iss) const
+{
+    auto conso = extractDouble(iss);
+    variant.deleteConsosCostsAr.push_back(conso);
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : conso " << std::get<NAME>(conso)
+               << " delete cost at " << std::get<VALUE>(conso);
 }
 
 void VariantConfiguration::processBalancesConsumption(VariantConfig& variant, std::istringstream& iss) const

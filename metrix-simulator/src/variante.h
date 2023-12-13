@@ -50,6 +50,7 @@ public:
     std::map<std::shared_ptr<Consommation>, double> valeurConso_; /*consommation variable : numero conso, valeur */
     std::map<std::shared_ptr<Consommation>, double> coutEfface_;  /*cout effacement conso : numero conso, cout */
     std::map<std::shared_ptr<Consommation>, double> coutEffaceHr_;  /*cout effacement conso : numero conso, cout preventif*/
+    std::map<std::shared_ptr<Consommation>, double> coutEffaceAr_;  /*cout effacement conso : numero conso, cout preventif*/
 
     std::map<std::shared_ptr<Groupe>, double> grpHausseHR_; /*cout a la hausse HR: numero grp, valeur*/
     std::map<std::shared_ptr<Groupe>, double> grpBaisseHR_; /*cout a la baisse HR: numero grp, valeur*/
@@ -91,6 +92,8 @@ public:
     int nbBilanProd() const { return static_cast<int>(varBilanProd_.size()); }
     int nbConsommation() const { return static_cast<int>(valeurConso_.size()); }
     int nbCoutEfface() const { return static_cast<int>(coutEfface_.size()); }
+    int nbCoutEffaceHr() const { return static_cast<int>(coutEffaceHr_.size()); }
+    int nbCoutEffaceAr() const { return static_cast<int>(coutEffaceAr_.size()); }
     int nbIndispoLignes() const { return static_cast<int>(indispoLignes_.size()); }
     int nbDcPuissMin() const { return static_cast<int>(dcPuissMin_.size()); }
     int nbDcPuissMax() const { return static_cast<int>(dcPuissMax_.size()); }
