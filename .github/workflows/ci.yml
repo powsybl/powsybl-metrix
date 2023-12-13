@@ -23,6 +23,7 @@ jobs:
       - name : Install Python Xpress
         run: |
           pip install xpress
+          ls /home/runner/.local/lib/python3.10/site-packages/xpress/lib
           cd /home/runner/.local/lib/python3.10/site-packages/xpress/lib
           ln -s libxprs.so* libxprs.so
 
@@ -42,6 +43,7 @@ jobs:
           cmake -S external \
                 -B build-linux/external \
                 -DCMAKE_BUILD_TYPE=Release \
+                -DUSE_CENTOS7=OFF \
                 -DUSE_XPRESS=${{ matrix.xprs }} \
                 -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
@@ -58,6 +60,7 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX=build-linux/install \
                 -DINSTALL_CMAKE_DIR=. \
                 -DUSE_ORTOOLS=ON \
+                -DUSE_CENTOS7=OFF \
                 -DUSE_XPRESS=${{ matrix.xprs }} \
                 -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
