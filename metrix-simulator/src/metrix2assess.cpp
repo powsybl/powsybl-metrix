@@ -37,6 +37,8 @@ using std::vector;
 static constexpr double EPSILON_SORTIES = 0.05; // seuil de precision pour les sorties
 static const string PREC_FLOAT = "%.1f";        // Doit etre coherent avec EPSILON_SORTIE
 static const string EMPTY_STRING;
+static const string PREC_FLOAT_BIS = "%.4f";
+static constexpr double EPSILON_SORTIES_BIS = 0.0001;
 
 static void print_threats(FILE* file,
                           const Menace& threat_before,
@@ -450,14 +452,13 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     double valEquilibrage = pbXhR_[conso->numVarConso_];
                     double valRedispatching = pbX_[conso->numVarConso_];
 
-                    if (fabs(valEquilibrage) < EPSILON_SORTIES && fabs(valRedispatching) < EPSILON_SORTIES) {
+                    if (fabs(valEquilibrage) < EPSILON_SORTIES_BIS && fabs(valRedispatching) < EPSILON_SORTIES_BIS) {
                         continue;
                     }
 
                     string resEquilibrage = EMPTY_STRING;
-                    if (config::configuration().displayResultatsEquilibrage()
-                        && fabs(valEquilibrage) >= EPSILON_SORTIES) {
-                        resEquilibrage = c_fmt(PREC_FLOAT.c_str(), valEquilibrage);
+                    if (fabs(valEquilibrage) >= EPSILON_SORTIES_BIS) {
+                        resEquilibrage = c_fmt(PREC_FLOAT_BIS.c_str(), valEquilibrage);
                     }
                     string resRedispatching = EMPTY_STRING;
 
@@ -468,7 +469,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
                     if (resEquilibrage != EMPTY_STRING || resRedispatching != EMPTY_STRING) {
                         fprintf(fr,
-                                ("R1 ;;%s;" + PREC_FLOAT + ";%s;%s;\n").c_str(),
+                                ("R1 ;;%s;" + PREC_FLOAT_BIS + ";%s;%s;\n").c_str(),
                                 conso->nom_.c_str(),
                                 conso->valeur_,
                                 resEquilibrage.c_str(),
@@ -627,9 +628,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 if (!config::inputConfiguration().useAllOutputs()) {
                     sDeltaHR = EMPTY_STRING;
                     sDeltaAR = EMPTY_STRING;
-                    if (config::configuration().displayResultatsEquilibrage()
-                        && fabs(deltaHR) >= EPSILON_SORTIES) { // seuil resultat equilibrage
-                        sDeltaHR = c_fmt(PREC_FLOAT.c_str(), deltaHR);
+                    if (fabs(deltaHR) >= EPSILON_SORTIES_BIS) { // seuil resultat equilibrage
+                        sDeltaHR = c_fmt(PREC_FLOAT_BIS.c_str(), deltaHR);
                     }
                     if (config::configuration().displayResultatsRedispatch()
                         && fabs(deltaAR) >= EPSILON_SORTIES) { // seuil resultat redispatching preventif
@@ -641,9 +641,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     }
 
                     std::string str("R2 ;;%s;");
-                    str += PREC_FLOAT;
+                    str += PREC_FLOAT_BIS;
                     str += ";";
-                    str += PREC_FLOAT;
+                    str += PREC_FLOAT_BIS;
                     str += ";%s;%s;\n";
                     fprintf(fr,
                             str.c_str(),

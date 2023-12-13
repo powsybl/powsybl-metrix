@@ -105,7 +105,7 @@ int Calculer::empilementEconomiqueDesGroupes(const std::shared_ptr<Variante>& va
 
         for (int j = 0; j < noeud->nbConsos_; ++j) {
             const auto& conso = noeud->listeConsos_[j];
-            coutDelestageMin = coutDelestageMin < conso->cout_ ? coutDelestageMin : conso->cout_;
+            coutDelestageMin = coutDelestageMin < conso->coutHR_ ? coutDelestageMin : conso->coutHR_;
 
             puissanceAdemarrer += conso->valeur_;
             sumConsommations += conso->valeur_;

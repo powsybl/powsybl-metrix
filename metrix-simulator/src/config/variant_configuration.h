@@ -51,6 +51,7 @@ public:
         int num = variant_base;
         std::vector<double_value> consos;
         std::vector<double_value> deleteConsosCosts;
+        std::vector<double_value> deleteConsosCostsHr;
 
         std::vector<std::string> unavailableGroups;
         std::vector<double_value> groups;
@@ -114,6 +115,7 @@ private:
     void processGroup(VariantConfig& variant, std::istringstream& iss) const;
     void processConso(VariantConfig& variant, std::istringstream& iss) const;
     void processCostConso(VariantConfig& variant, std::istringstream& iss) const;
+    void processCostConsoHr(VariantConfig& variant, std::istringstream& iss) const;
     void processImposedGroup(VariantConfig& variant, std::istringstream& iss) const;
     void processGroupPmax(VariantConfig& variant, std::istringstream& iss) const;
     void processGroupPmin(VariantConfig& variant, std::istringstream& iss) const;
@@ -133,6 +135,7 @@ private:
     void processProbaInc(VariantConfig& variant, std::istringstream& iss) const;
 
     void processRandomGroups(VariantConfig& variant, std::istringstream& iss) const;
+
 private:
     const std::map<std::string, Processor>
         line_processors_; ///< map containing all functions to process each type of data read in the file
