@@ -1891,6 +1891,11 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         elem.first->puiCons_ = elem.second;
     }
 
+    for (auto& elem : var->dcVariantCost_) {
+        const auto& lcc = elem.first;
+        lcc->coutLigneCC_ = elem.second;
+    }
+
     // Vérification PCons, Pmin et Pmax (si pilotage puissance imposée)
     // ----------------------------------------------------------------
     for (auto lIt = LigneCCs_.cbegin(); lIt != LigneCCs_.end(); ++lIt) {
@@ -1910,6 +1915,11 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
             continue;
         }
         td->puiCons_ = elem.second;
+    }
+
+    for (auto& elem : var->tdVariantCost_) {
+        const auto& td = elem.first;
+        td->coutTD_ = elem.second;
     }
 
     // XIV-Seuils des quadripoles
@@ -2284,6 +2294,13 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
                        << " est remis a jour a son etat de base";
         }
 
+        for (auto lccIt = var->dcVariantCost_.cbegin(); lccIt != var->dcVariantCost_.end(); ++lccIt) {
+            const auto& lcc = lccIt->first;
+            lcc->coutLigneCC_ = 0.0;
+
+            LOG(debug) << "le coût de la liaison HVDC : " << lcc->nom_ << " est remis a jour a son etat de base";
+        }
+
         // XII-dephasage des TDs
         //----------------------
         for (auto tdIt = var->dtValDep_.cbegin(); tdIt != var->dtValDep_.end(); ++tdIt) {
@@ -2292,6 +2309,13 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
             td->puiCons_ = td->puiConsBase_;
 
             LOG(debug) << "le dephasage du TD : " << td->quadVrai_->nom_ << " est remis a jour a son etat de base";
+        }
+
+        for (auto tdIt = var->tdVariantCost_.cbegin(); tdIt != var->tdVariantCost_.end(); ++tdIt) {
+            const auto& td = tdIt->first;
+            td->coutTD_ = 0.0;
+
+            LOG(debug) << "le coût du TD: " << td->num_ << " est remis a jour a son etat de base";
         }
 
         // XIV - Bilans zonaux
@@ -2935,6 +2959,24 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
             variant->indispoLignes_.insert(quadsIt->second);
         } else {
             LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
+        }
+    }
+
+    for (const auto& line : config.variantCostHvdc) {
+        const auto& str = std::get<VariantConfiguration::NAME>(line);
+        auto lccIt = LigneCCs_.find(str);
+        if (lccIt != LigneCCs_.end()) {
+            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
+            variant->dcVariantCost_.insert(std::pair<std::shared_ptr<LigneCC>, double>(lccIt->second, var_dbl));
+        }
+    }
+
+    for (const auto& quad : config.variantCostTd) {
+        const auto& str = std::get<VariantConfiguration::NAME>(quad);
+        auto tdIt = TransfoDephaseurs_.find(str);
+        if (tdIt != TransfoDephaseurs_.end()) {
+            auto var_dbl = std::get<VariantConfiguration::VALUE>(quad);
+            variant->tdVariantCost_.insert(std::pair<std::shared_ptr<TransformateurDephaseur>, double>(tdIt->second, var_dbl));
         }
     }
 

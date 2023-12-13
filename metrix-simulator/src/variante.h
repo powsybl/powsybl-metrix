@@ -57,9 +57,12 @@ public:
     std::map<std::shared_ptr<Groupe>, double> grpHausseAR_; /*cout a la hausse AR: numero grp, valeur*/
     std::map<std::shared_ptr<Groupe>, double> grpBaisseAR_; /*cout a la baisse AR: numero grp, valeur*/
 
+    std::map<std::shared_ptr<LigneCC>, double> dcVariantCost_; /*Cout de transit sur liaisons DC (POUR TESTS SEULEMENT)*/
     std::map<std::shared_ptr<LigneCC>, double> dcPuissMin_; /*puissance minimale de liaisons DC*/
     std::map<std::shared_ptr<LigneCC>, double> dcPuissMax_; /*puissance minimale de liaisons DC*/
     std::map<std::shared_ptr<LigneCC>, double> dcPuissImp_; /*consigne de puissance imposée de la liaison DC*/
+
+    std::map<std::shared_ptr<TransformateurDephaseur>, double> tdVariantCost_; /*Cout de transit sur TDs (POUR TESTS SEULEMENT)*/
 
     std::map<std::shared_ptr<TransformateurDephaseur>, double> dtValDep_; /*dephasage initial du TD*/
 
@@ -94,6 +97,8 @@ public:
     int nbCoutEfface() const { return static_cast<int>(coutEfface_.size()); }
     int nbCoutEffaceHr() const { return static_cast<int>(coutEffaceHr_.size()); }
     int nbCoutEffaceAr() const { return static_cast<int>(coutEffaceAr_.size()); }
+    int nbDcVariantCost() const { return static_cast<int>(dcVariantCost_.size()); }
+    int nbTdVariantCost() const { return static_cast<int>(tdVariantCost_.size()); }
     int nbIndispoLignes() const { return static_cast<int>(indispoLignes_.size()); }
     int nbDcPuissMin() const { return static_cast<int>(dcPuissMin_.size()); }
     int nbDcPuissMax() const { return static_cast<int>(dcPuissMax_.size()); }

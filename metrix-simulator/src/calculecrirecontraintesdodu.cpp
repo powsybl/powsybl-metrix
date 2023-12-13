@@ -474,13 +474,37 @@ int Calculer::ecrireContraintesDeBordTransformateurDephaseur()
         }
 
         // Ajout des variables x+ et x- pour penaliser le dephasage autour de la position initiale
+        // // x+
+        // pbX_[numVarTd] = 0.0;
+        // pbXmin_[numVarTd] = 0.0;
+        // pbXmax_[numVarTd] = max(puiMax - td->puiCons_, 0.);
+        // pbCoutLineaire_[numVarTd] = (config::configuration().usePenalisationTD() && !td->fictif_)
+        //                                 ? config::configuration().costTd()
+        //                                 : config::constants::zero_cost_variable;
+        // pbTypeDeBorneDeLaVariable_[numVarTd] = VARIABLE_BORNEE_DES_DEUX_COTES;
+
+        // if (pbXmax_[numVarTd] - pbXmin_[numVarTd] < config::constants::epsilon) {
+        //     pbTypeDeBorneDeLaVariable_[numVarTd] = VARIABLE_FIXE;
+        // }
+
+        // // x-
+        // pbX_[numVarTd + 1] = 0.0;
+        // pbXmin_[numVarTd + 1] = 0.0;
+        // pbXmax_[numVarTd + 1] = max(td->puiCons_ - puiMin, 0.);
+        // pbCoutLineaire_[numVarTd + 1] = (config::configuration().usePenalisationTD() && !td->fictif_)
+        //                                     ? config::configuration().costTd()
+        //                                     : config::constants::zero_cost_variable;
+        // pbTypeDeBorneDeLaVariable_[numVarTd + 1] = VARIABLE_BORNEE_DES_DEUX_COTES;
+
         // x+
         pbX_[numVarTd] = 0.0;
         pbXmin_[numVarTd] = 0.0;
         pbXmax_[numVarTd] = max(puiMax - td->puiCons_, 0.);
-        pbCoutLineaire_[numVarTd] = (config::configuration().usePenalisationTD() && !td->fictif_)
-                                        ? config::configuration().costTd()
-                                        : config::constants::zero_cost_variable;
+        if (config::configuration().usePenalisationTD() && !td->fictif_){
+            pbCoutLineaire_[numVarTd] = (td->coutTD_ > 0.0)
+                                        ? td->coutTD_
+                                        : config::configuration().costTd();
+        }else {pbCoutLineaire_[numVarTd] = config::constants::zero_cost_variable;}
         pbTypeDeBorneDeLaVariable_[numVarTd] = VARIABLE_BORNEE_DES_DEUX_COTES;
 
         if (pbXmax_[numVarTd] - pbXmin_[numVarTd] < config::constants::epsilon) {
@@ -491,9 +515,14 @@ int Calculer::ecrireContraintesDeBordTransformateurDephaseur()
         pbX_[numVarTd + 1] = 0.0;
         pbXmin_[numVarTd + 1] = 0.0;
         pbXmax_[numVarTd + 1] = max(td->puiCons_ - puiMin, 0.);
-        pbCoutLineaire_[numVarTd + 1] = (config::configuration().usePenalisationTD() && !td->fictif_)
-                                            ? config::configuration().costTd()
-                                            : config::constants::zero_cost_variable;
+        if (config::configuration().usePenalisationTD() && !td->fictif_){
+            if (td->coutTD_ > 0.0){
+                std::cout<<td->quadVrai_->nom_<<" : coutTD non nul, vaut "<<td->coutTD_<<std::endl;
+            }
+            pbCoutLineaire_[numVarTd + 1] = (td->coutTD_ > 0.0)
+                                        ? td->coutTD_
+                                        : config::configuration().costTd();
+        }else {pbCoutLineaire_[numVarTd + 1] = config::constants::zero_cost_variable;}
         pbTypeDeBorneDeLaVariable_[numVarTd + 1] = VARIABLE_BORNEE_DES_DEUX_COTES;
 
 
@@ -514,17 +543,38 @@ int Calculer::ecrireContraintesDeBordLignesCC()
         numVarCc = lcc->numVar_;
 
         // Ajout des variables x+ et x- pour avoir la plus petite variation de transit possible autour de P0
+        // // x+
+        // pbX_[numVarCc] = 0.0;
+        // pbXmin_[numVarCc] = 0.0;
+        // pbCoutLineaire_[numVarCc] = (config::configuration().usePenalisationHVDC()) ? config::configuration().costHvdc()
+        //                                                                             : 0.;
+        // // x-
+        // pbX_[numVarCc + 1] = 0.0;
+        // pbXmin_[numVarCc + 1] = 0.0;
+        // pbCoutLineaire_[numVarCc + 1] = (config::configuration().usePenalisationHVDC())
+        //                                     ? config::configuration().costHvdc()
+        //                                     : 0.;
+
         // x+
         pbX_[numVarCc] = 0.0;
         pbXmin_[numVarCc] = 0.0;
-        pbCoutLineaire_[numVarCc] = (config::configuration().usePenalisationHVDC()) ? config::configuration().costHvdc()
+        if (lcc->coutLigneCC_ != 0.0){
+            std::cout<<"LCC "<<lcc->nom_<<" : coutLigneCC non nul vaut "<<lcc->coutLigneCC_<<std::endl;
+            pbCoutLineaire_[numVarCc] = lcc->coutLigneCC_;
+        }else{
+            std::cout<<"LCC "<<lcc->nom_<<" : coutLigneCC = 0.0"<<std::endl;
+            pbCoutLineaire_[numVarCc] = (config::configuration().usePenalisationHVDC()) ? config::configuration().costHvdc()
                                                                                     : 0.;
+        }
         // x-
         pbX_[numVarCc + 1] = 0.0;
         pbXmin_[numVarCc + 1] = 0.0;
-        pbCoutLineaire_[numVarCc + 1] = (config::configuration().usePenalisationHVDC())
-                                            ? config::configuration().costHvdc()
-                                            : 0.;
+        if (lcc->coutLigneCC_ != 0.0){
+            pbCoutLineaire_[numVarCc + 1] = lcc->coutLigneCC_;
+        }else{
+            pbCoutLineaire_[numVarCc + 1] = (config::configuration().usePenalisationHVDC()) ? config::configuration().costHvdc()
+                                                                                    : 0.;
+        }
 
         if (lcc->type_ == LigneCC::PILOTAGE_PUISSANCE_IMPOSE || lcc->type_ == LigneCC::PILOTAGE_EMULATION_AC) {
             pbXmax_[numVarCc] = 0.;

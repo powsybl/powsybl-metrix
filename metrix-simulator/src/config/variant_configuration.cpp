@@ -91,6 +91,12 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
             "COUEFFAR",
             std::bind(&VariantConfiguration::processCostConsoAr, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
+            "COUTLCC",
+            std::bind(&VariantConfiguration::processVariantCostLCC, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
+            "COUTTD",
+            std::bind(&VariantConfiguration::processVariantCostTD, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
             "QUADIN",
             std::bind(&VariantConfiguration::processLine, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
@@ -349,6 +355,24 @@ void VariantConfiguration::processLine(VariantConfig& variant, std::istringstrea
     variant.unavailableLines.push_back(sub_line);
 
     LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : line " << sub_line << " unavailable";
+}
+
+void VariantConfiguration::processVariantCostLCC(VariantConfig& variant, std::istringstream& iss) const
+{
+    auto hvdc = extractDouble(iss);
+    variant.variantCostHvdc.push_back(hvdc);
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : hvdc " << std::get<NAME>(hvdc)
+               << " Cost at " << std::get<VALUE>(hvdc);
+}
+
+void VariantConfiguration::processVariantCostTD(VariantConfig& variant, std::istringstream& iss) const
+{
+    auto td = extractDouble(iss);
+    variant.variantCostTd.push_back(td);
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : td " << std::get<NAME>(td)
+               << " Cost at " << std::get<VALUE>(td);
 }
 
 void VariantConfiguration::processHVDCPmax(VariantConfig& variant, std::istringstream& iss) const

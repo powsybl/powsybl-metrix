@@ -60,6 +60,8 @@ public:
         std::vector<double_value> pminGroups;
         std::map<CostType, std::vector<double_value>> costs;
 
+        std::vector<double_value> variantCostHvdc;
+        std::vector<double_value> variantCostTd;
         std::vector<std::string> unavailableLines;
         std::vector<double_value> pmaxHvdc;
         std::vector<double_value> pminHvdc;
@@ -118,6 +120,8 @@ private:
     void processCostConso(VariantConfig& variant, std::istringstream& iss) const;
     void processCostConsoHr(VariantConfig& variant, std::istringstream& iss) const;
     void processCostConsoAr(VariantConfig& variant, std::istringstream& iss) const;
+    void processVariantCostLCC(VariantConfig& variant, std::istringstream& iss) const;
+    void processVariantCostTD(VariantConfig& variant, std::istringstream& iss) const;
     void processImposedGroup(VariantConfig& variant, std::istringstream& iss) const;
     void processGroupPmax(VariantConfig& variant, std::istringstream& iss) const;
     void processGroupPmin(VariantConfig& variant, std::istringstream& iss) const;

@@ -459,6 +459,7 @@ public:
     int uppran_;                             /* borne maximale de variation de prises du td */
     std::set<int> incidentsAtraiterCuratif_; // indices des incidents a traiter en curatif
     int numVar_ = -1;                        // numero de la position de sa consigne en N dans le vecteur variable
+    double coutTD_ = 0.0;                    // coût des TDs (Seulement pour les TNRs)
     int numVarEntiere_ = -1;                 // numero de la variable entiere d'activation (td fictif)
 
     TransformateurDephaseur(int unsigned num,
@@ -524,6 +525,7 @@ public:
     double coeffPertesEx_; // %pertes dans la station  Ex
     double r_;             // resistance du cable DC
     double vdc_;           // tension du cable DC
+    double coutLigneCC_ = 0.0; /* coût des LCCs (Seulement pour les TNRs)*/
 
     int numVar_ = -1;                        // numero de la position de sa consigne en N dans le vecteur variable
     std::set<int> incidentsAtraiterCuratif_; // indices des incidents a traiter en curatif

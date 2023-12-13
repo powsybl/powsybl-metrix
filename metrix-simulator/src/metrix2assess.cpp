@@ -977,7 +977,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             } else {
                 priseFinale = config::constants::valdef;
             }
-            fprintf(fr, "R5 ;;%s;%.2f;%d; \n", s.c_str(), td->power2Angle(val), priseFinale);
+            fprintf(fr, "R5 ;;%s;%.4f;%d; \n", s.c_str(), td->power2Angle(val), priseFinale);
         }
         // ecriture : R5B: Td en mode curatif
         //--------------
@@ -1225,13 +1225,13 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 if (itVm != vmHvdc.end() && varMargGlob < itVm->second) {
                     varMargGlob = itVm->second;
                 }
-                fprintf(fr, ("R6 ;;%s;" + PREC_FLOAT + ";%.3f;\n").c_str(), nom.c_str(), val, -varMargGlob);
+                fprintf(fr, ("R6 ;;%s;" + PREC_FLOAT_BIS + ";%.4f;\n").c_str(), nom.c_str(), val, -varMargGlob);
                 if (config::inputConfiguration().useAllOutputs()) {
                     auto valHR = ligne->puiCons_ + pbXhR_[numVar] - pbXhR_[numVar + 1];
-                    fprintf(fr, "R6 ;;%s;%.1f;%.3f;%.3f;%.1f;\n", nom.c_str(), val, -varMargPrev, -varMargGlob, valHR);
+                    fprintf(fr, "R6 ;;%s;%.4f;%.4f;%.4f;%.4f;\n", nom.c_str(), val, -varMargPrev, -varMargGlob, valHR);
                 }
             } else {
-                fprintf(fr, ("R6 ;;%s;" + PREC_FLOAT + ";;\n").c_str(), nom.c_str(), val);
+                fprintf(fr, ("R6 ;;%s;" + PREC_FLOAT_BIS + ";;\n").c_str(), nom.c_str(), val);
             }
         }
 
