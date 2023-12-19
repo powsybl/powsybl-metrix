@@ -451,11 +451,11 @@ private:
     void assessAndPrintPTDF(const string& PTDFfileName);
     void printLODF(const string& LODFfileName, bool writeLODFfile) const;
 
-    void addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td, double proba, int numVarCur);
-    void addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td_fictive);
-    void addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double proba, int numVarCur);
-    void addCurativeVariable(const std::shared_ptr<Groupe>& grp, double proba, int numVarCur);
-    void addCurativeVariable(const std::shared_ptr<Consommation>& conso, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<ElementCuratifTD>& elemCurTD, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<ElementCuratifTD>& elemCurTDFictif, double proba);
+    void addCurativeVariable(const std::shared_ptr<ElementCuratifHVDC>& elemCurHVDC, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<ElementCuratifGroupe>& elemCurGrp, double proba, int numVarCur);
+    void addCurativeVariable(const std::shared_ptr<ElementCuratifConso>& elemCurConso, double proba, int numVarCur);
 
 private:
     void videMatricesDesContraintes();

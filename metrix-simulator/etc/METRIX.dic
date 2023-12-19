@@ -111,6 +111,7 @@ ERRPremiereVarIntrouvable					Le numéro de la première variante est introuvabl
 ERRFormatNombre                             Format de nombre incorrect : '$2' pour la loi $1
 ERRRegionIntrouvable						La région '$1' de la loi $2 est introuvable
 ERRGroupeIntrouvable						Le groupe '$1' de la loi $2 est introuvable
+ERRElemCurIntrouvable                       L'élément curatif '$1' de l'incident '$2' pour la variante '$3' est introuvable.
 ERRTDPriseIntrouvable						Pour le td '$1' la prise souhaitée $2 est introuvable pour la variante $3
 ERRNoeudConsoIntrouvable					Le noeud '$1' de la loi $2 de variation de conso est introuvable
 ERRQuadIntrouvable							La ligne '$1' de la loi $2:$3 est introuvable

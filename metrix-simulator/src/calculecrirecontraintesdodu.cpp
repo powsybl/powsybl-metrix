@@ -208,19 +208,6 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
         std::shuffle(grp_melanges.begin(), grp_melanges.end(), Reseau::random);
     }
 
-    // string nom2;
-    // nom2 = c_fmt("%s_s%d","ShuffledList",varianteCourante_->num_);
-    // FILE* fr;
-    // fr = fopen(&nom2[0], "w+");
-    // if (fr == nullptr) {
-    //     throw ErrorI(err::ioDico().msg("ERRPbOuvertureFic", nom2));
-    // }
-    // fprintf(fr, "V;%d;Nbgrps;%d;\n", varianteCourante_->num_, res_.nbGroupes_);
-    // for (auto grp_rand = grp_melanges.begin(); grp_rand != grp_melanges.end(); ++grp_rand){
-    //     fprintf(fr, "V;%d;%s;\n", varianteCourante_->num_, grp_rand->get()->nom_.c_str());
-    // }
-    // fclose(fr);
-
     for (int i = 0; i < res_.nbGroupes_; ++i) {
         const auto& grp = grp_melanges[i];
 
@@ -2774,8 +2761,9 @@ void Calculer::choixContraintesAajouter()
     }
 }
 
-void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td, double proba, int numVarCur)
+void Calculer::addCurativeVariable(const std::shared_ptr<ElementCuratifTD>& elemCurTD, double proba, int numVarCur)
 {
+    std::shared_ptr<TransformateurDephaseur> td = elemCurTD->td_;
     // curatif TD
     typeEtat_.push_back(DEPH_CUR_H);
     pbXmin_.push_back(0.);
@@ -2785,8 +2773,13 @@ void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur
     pbXmax_.push_back(std::max(td->puiMax_ - td->puiMin_, 0.));
     // Penalisation du curatif
     if (config::configuration().usePenalisationTD()) {
-        pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
-        pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
+        if (elemCurTD->coutHausse_ != -config::constants::valdef){
+            pbCoutLineaire_.push_back(elemCurTD->coutHausse_ * proba);
+            pbCoutLineaire_.push_back(elemCurTD->coutHausse_ * proba);
+        }else{
+            pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
+            pbCoutLineaire_.push_back(config::configuration().costTd() * proba);
+        }
         pbCoutLineaireSansOffset_.push_back(0.);
         pbCoutLineaireSansOffset_.push_back(0.);
     } else {
@@ -2797,8 +2790,9 @@ void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur
     ajouterContraintesBorneCuratif(td->numVar_, numVarCur, td->puiMin_ - td->puiCons_, td->puiMax_ - td->puiCons_);
 }
 
-void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur>& td_fictive)
+void Calculer::addCurativeVariable(const std::shared_ptr<ElementCuratifTD>& elemCurTDFictif, double proba)
 {
+    std::shared_ptr<TransformateurDephaseur>& td_fictive = elemCurTDFictif->td_;
     // Le curatif du TD fictif ne prend pas en compte la position preventive
     typeEtat_.push_back(DEPH_CUR_H);
     pbXmin_.push_back(0.);
@@ -2806,12 +2800,19 @@ void Calculer::addCurativeVariable(const std::shared_ptr<TransformateurDephaseur
     typeEtat_.push_back(DEPH_CUR_B);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(-td_fictive->puiMin_);
-    pbCoutLineaire_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
-    pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
+    if (elemCurTDFictif->coutHausse_ != -config::constants::valdef){
+        pbCoutLineaire_.push_back(elemCurTDFictif->coutHausse_ * proba);
+        pbCoutLineaire_.push_back(elemCurTDFictif->coutHausse_ * proba);
+    }else{
+        pbCoutLineaire_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
+        pbCoutLineaireSansOffset_.resize(pbNombreDeVariables_, config::constants::zero_cost_variable);
+    }
+    
 }
 
-void Calculer::addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double proba, int numVarCur)
+void Calculer::addCurativeVariable(const std::shared_ptr<ElementCuratifHVDC>& elemCurHVDC, double proba, int numVarCur)
 {
+    std::shared_ptr<LigneCC>& lcc = elemCurHVDC->lcc_;
     // curatif HVDC
     typeEtat_.push_back(HVDC_CUR_H);
     pbXmin_.push_back(0.);
@@ -2821,8 +2822,15 @@ void Calculer::addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double p
     pbXmax_.push_back(std::max(lcc->puiMax_ - lcc->puiMin_, 0.));
     // Penalisation du curatif
     if (config::configuration().usePenalisationHVDC()) {
-        pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
-        pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
+        if (elemCurHVDC->coutHausse_ != -config::constants::valdef){
+            std::cout<<"Pour le curatif de LCC "<<lcc->nom_<<" on utilise coutHausse qui vaut "<<elemCurHVDC->coutHausse_<<std::endl;
+            pbCoutLineaire_.push_back(elemCurHVDC->coutHausse_ * proba);
+            pbCoutLineaire_.push_back(elemCurHVDC->coutHausse_ * proba);
+        }else{
+            pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
+            pbCoutLineaire_.push_back(config::configuration().costHvdc() * proba);
+            std::cout<<"Pour le curatif de LCC "<<lcc->nom_<<" on utilise costHvdc() qui vaut "<<config::configuration().costHvdc() <<std::endl;
+        }
         pbCoutLineaireSansOffset_.push_back(0.);
         pbCoutLineaireSansOffset_.push_back(0.);
     } else {
@@ -2833,48 +2841,86 @@ void Calculer::addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double p
     ajouterContraintesBorneCuratif(lcc->numVar_, numVarCur, lcc->puiMin_ - lcc->puiCons_, lcc->puiMax_ - lcc->puiCons_);
 }
 
-void Calculer::addCurativeVariable(const std::shared_ptr<Groupe>& grp, double proba, int numVarCur)
+void Calculer::addCurativeVariable(const std::shared_ptr<ElementCuratifGroupe>& elemCurGrp, double proba, int numVarCur)
 {
+    const std::shared_ptr<Groupe>& grp = elemCurGrp->groupe_;
     // curatif Groupe
     typeEtat_.push_back(GRP_CUR_H);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-    double value = std::max(grp->coutHausseAR_, config::configuration().noiseCost())
-                   + config::configuration().redispatchCostOffset();
-    pbCoutLineaire_.push_back(value * proba);
-    pbCoutLineaireSansOffset_.push_back((grp->coutHausseAR_) * proba);
+    if (elemCurGrp->coutHausse_ != -config::constants::valdef){
+        double value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset() + elemCurGrp->coutHausse_;
+        if (value < 0.0) {
+            LOG(debug) << "cout total curatif de "<<grp->nom_<<" (numVarCur = "<<numVarCur<<
+                ") < 0 ; on pose value = noiseCost + RedispatchCostOffset";
+            value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset();
+        }
+        pbCoutLineaire_.push_back(value * proba);
+        pbCoutLineaireSansOffset_.push_back((elemCurGrp->coutHausse_) * proba);
+    }else{
+        double value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset() + grp->coutHausseAR_;
+        if (value < 0.0) {
+            LOG(debug) << "cout total curatif de "<<grp->nom_<<" (numVarCur = "<<numVarCur<<
+                ") < 0 ; on pose value = noiseCost + RedispatchCostOffset";
+            value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset();
+        }
+        pbCoutLineaire_.push_back(value * proba);
+        pbCoutLineaireSansOffset_.push_back((grp->coutHausseAR_) * proba);
+    }
     typeEtat_.push_back(GRP_CUR_B);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-    value = std::max(grp->coutBaisseAR_, config::configuration().noiseCost())
-            + config::configuration().redispatchCostOffset();
-    pbCoutLineaire_.push_back(value * proba);
-    pbCoutLineaireSansOffset_.push_back((grp->coutBaisseAR_) * proba);
+    if (elemCurGrp->coutBaisse_ != -config::constants::valdef){
+        double value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset() + elemCurGrp->coutBaisse_;
+        if (value < 0.0) {
+            LOG(debug) << "cout total curatif de "<<grp->nom_<<" (numVarCur = "<<numVarCur<<
+                ") < 0 ; on pose value = noiseCost + RedispatchCostOffset";
+            value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset();
+        }
+        pbCoutLineaire_.push_back(value * proba);
+        pbCoutLineaireSansOffset_.push_back((elemCurGrp->coutBaisse_) * proba);
+    }else{
+        double value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset() + grp->coutBaisseAR_;
+        if (value < 0.0) {
+            LOG(debug) << "cout total curatif de "<<grp->nom_<<" (numVarCur = "<<numVarCur<<
+                ") < 0 ; on pose value = noiseCost + RedispatchCostOffset";
+            value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset();
+        }
+        pbCoutLineaire_.push_back(value * proba);
+        pbCoutLineaireSansOffset_.push_back((grp->coutBaisseAR_) * proba);
+    }
     ajouterContraintesBorneCuratifGroupe(grp->numVarGrp_, numVarCur, grp);
 }
 
-void Calculer::addCurativeVariable(const std::shared_ptr<Consommation>& conso, double proba, int numVarCur)
+void Calculer::addCurativeVariable(const std::shared_ptr<ElementCuratifConso>& elemCurConso, double proba, int numVarCur)
 {
     // curatif Conso
     typeEtat_.push_back(CONSO_H);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(0.);
-    double value = std::max(conso->coutEffacement_, config::configuration().noiseCost())
-                   + config::configuration().redispatchCostOffset();
+    double value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset();
+    if (elemCurConso->coutBaisse_ != -config::constants::valdef){
+        value += elemCurConso->coutBaisse_;
+    }else{
+        value += elemCurConso->conso_->coutEffacement_;
+    }
+    if (value < 0.0){ 
+        value = config::configuration().noiseCost() + config::configuration().redispatchCostOffset();
+        LOG(debug) << "cout total curatif de "<<elemCurConso->conso_->nom_<<" (numVarCur = "<<numVarCur<<
+                ") négatif ; on pose value = noiseCost + RedispatchCostOffset";
+    }
     pbCoutLineaire_.push_back(value * proba);
-    pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
+    pbCoutLineaireSansOffset_.push_back((value - (config::configuration().noiseCost() + config::configuration().redispatchCostOffset())) * proba);
     typeEtat_.push_back(CONSO_B);
     pbXmin_.push_back(0.);
-    value = std::max(conso->coutEffacement_, config::configuration().noiseCost())
-            + config::configuration().redispatchCostOffset();
     pbCoutLineaire_.push_back(value * proba);
-    pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
-    double effacementMax = conso->pourcentEffacement_ * conso->valeur_;
+    pbCoutLineaireSansOffset_.push_back((value - (config::configuration().noiseCost() + config::configuration().redispatchCostOffset())) * proba);
+    double effacementMax = elemCurConso->conso_->pourcentEffacement_ * elemCurConso->conso_->valeur_;
     if (effacementMax > config::constants::epsilon) {
         pbXmax_.push_back(effacementMax);
-        if (conso->numVarConso_ >= 0) {
+        if (elemCurConso->conso_->numVarConso_ >= 0) {
             ajouterContraintesBorneCuratifConso(
-                conso->numVarConso_, numVarCur, conso->valeur_, conso->pourcentEffacement_);
+                elemCurConso->conso_->numVarConso_, numVarCur, elemCurConso->conso_->valeur_, elemCurConso->conso_->pourcentEffacement_);
         }
     } else {
         pbXmax_.push_back(0.);
@@ -2907,19 +2953,19 @@ int Calculer::ajouterVariablesCuratives(const std::shared_ptr<ElementCuratif>& e
 
     switch (elem->typeElem_) {
         case ElementCuratif::TD:
-            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_, proba, numVarCur);
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem), proba, numVarCur);
             break;
         case ElementCuratif::TD_FICTIF:
-            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem)->td_);
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifTD>(elem), proba);
             break;
         case ElementCuratif::HVDC:
-            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifHVDC>(elem)->lcc_, proba, numVarCur);
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifHVDC>(elem), proba, numVarCur);
             break;
         case ElementCuratif::GROUPE:
-            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifGroupe>(elem)->groupe_, proba, numVarCur);
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifGroupe>(elem), proba, numVarCur);
             break;
         case ElementCuratif::CONSO:
-            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifConso>(elem)->conso_, proba, numVarCur);
+            addCurativeVariable(std::dynamic_pointer_cast<ElementCuratifConso>(elem), proba, numVarCur);
             break;
         default:
             LOG_ALL(error) << "Curative element of type " << elem->typeElem_ << " is unsupported";
@@ -4483,13 +4529,6 @@ int Calculer::fixerProdSansReseau()
                 pbXmax_[numVar] = 0.;
                 pbXmin_[numVar + 1] = 0.;
                 pbXmax_[numVar + 1] = 0.;
-            }
-
-            if (grpe->nom_ == "GROUP_BUNJ"){
-                pbXmax_[numVar + 1] = 489.3498;
-            }
-            if (grpe->nom_ == "GROUP_CJWW"){
-                pbXmax_[numVar] = 10.0938;
             }
 
             // Remarque traitements effectues pour la resolution du probleme

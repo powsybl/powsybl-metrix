@@ -176,7 +176,23 @@ VariantConfiguration::VariantConfiguration(const std::string& pathname) :
             std::bind(&VariantConfiguration::processRandomGroups, this, std::placeholders::_1, std::placeholders::_2)),
         std::make_pair(
             "PROBABINC",
-            std::bind(&VariantConfiguration::processProbaInc, this, std::placeholders::_1, std::placeholders::_2))}
+            std::bind(&VariantConfiguration::processProbaInc, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
+            "INCGRPCOUH",
+            std::bind(&VariantConfiguration::processUsedCurGroupH, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
+            "INCGRPCOUB",
+            std::bind(&VariantConfiguration::processUsedCurGroupB, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
+            "COUEFFCUR",
+            std::bind(&VariantConfiguration::processUsedCurConso, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
+            "INCLCCCOU",
+            std::bind(&VariantConfiguration::processUsedCurHVDC, this, std::placeholders::_1, std::placeholders::_2)),
+        std::make_pair(
+            "INCTDCOU",
+            std::bind(&VariantConfiguration::processUsedCurTD, this, std::placeholders::_1, std::placeholders::_2))
+        }
 {
     std::ifstream fic(pathname);
     if (!fic) {
@@ -463,6 +479,112 @@ void VariantConfiguration::processProbaInc(VariantConfig& variant, std::istrings
 
     LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : incident " << std::get<NAME>(incident)
                << " probability at" << std::get<VALUE>(incident);
+}
+
+void VariantConfiguration::processUsedCurGroupH(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    auto nameIncident = sub_line;
+    rtrim(nameIncident);
+
+    auto incGrpH = extractDouble(iss);
+
+    if (variant.usedCurativeGrpH.find(nameIncident) == variant.usedCurativeGrpH.end()){
+        std::vector<std::tuple<std::string,double>> vectIncGrpH;
+        vectIncGrpH.push_back(incGrpH);
+        variant.usedCurativeGrpH.insert({nameIncident, vectIncGrpH});
+    }else{
+        variant.usedCurativeGrpH[nameIncident].push_back(incGrpH);
+
+    }
+    std::cout<<"On a fini d'utiliser processUsedCurGroupH"<<std::endl;
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : incident " << nameIncident
+               << " uses " << std::get<NAME>(incGrpH) << " as a curative element by increasing its power value";
+}
+
+void VariantConfiguration::processUsedCurGroupB(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    auto nameIncident = sub_line;
+    rtrim(nameIncident);
+
+    auto incGrpB = extractDouble(iss);
+
+    if (variant.usedCurativeGrpB.find(nameIncident) == variant.usedCurativeGrpB.end()){
+        std::vector<std::tuple<std::string,double>> vectIncGrpB;
+        vectIncGrpB.push_back(incGrpB);
+        variant.usedCurativeGrpB.insert({nameIncident, vectIncGrpB});
+    }else{
+        variant.usedCurativeGrpB[nameIncident].push_back(incGrpB);
+    }
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : incident " << nameIncident
+               << " uses " << std::get<NAME>(incGrpB) << " as a curative element by decreasing its power value";
+}
+
+void VariantConfiguration::processUsedCurTD(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    auto nameIncident = sub_line;
+    rtrim(nameIncident);
+
+    auto incTD = extractDouble(iss);
+
+    if (variant.usedCurativeTD.find(nameIncident) == variant.usedCurativeTD.end()){
+        std::vector<std::tuple<std::string,double>> vectIncTD;
+        vectIncTD.push_back(incTD);
+        variant.usedCurativeTD.insert({nameIncident, vectIncTD});
+    }else{
+        variant.usedCurativeTD[nameIncident].push_back(incTD);
+    }
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : incident " << nameIncident
+               << " uses " << std::get<NAME>(incTD) << " as a curative element by decreasing its power value";
+}
+
+void VariantConfiguration::processUsedCurHVDC(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    auto nameIncident = sub_line;
+    rtrim(nameIncident);
+
+    auto incHVDC = extractDouble(iss);
+
+    if (variant.usedCurativeHVDC.find(nameIncident) == variant.usedCurativeHVDC.end()){
+        std::vector<std::tuple<std::string,double>> vectIncHVDC;
+        vectIncHVDC.push_back(incHVDC);
+        variant.usedCurativeHVDC.insert({nameIncident, vectIncHVDC});
+    }else{
+        variant.usedCurativeHVDC[nameIncident].push_back(incHVDC);
+    }
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : incident " << nameIncident
+               << " uses " << std::get<NAME>(incHVDC) << " as a curative element by decreasing its power value";
+}
+
+void VariantConfiguration::processUsedCurConso(VariantConfig& variant, std::istringstream& iss) const
+{
+    std::string sub_line;
+    getline(iss, sub_line, ';');
+    auto nameIncident = sub_line;
+    rtrim(nameIncident);
+
+    auto incHVDC = extractDouble(iss);
+
+    if (variant.usedCurativeConso.find(nameIncident) == variant.usedCurativeConso.end()){
+        std::vector<std::tuple<std::string,double>> vectIncHVDC;
+        vectIncHVDC.push_back(incHVDC);
+        variant.usedCurativeConso.insert({nameIncident, vectIncHVDC});
+    }else{
+        variant.usedCurativeConso[nameIncident].push_back(incHVDC);
+    }
+
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : incident " << nameIncident
+               << " uses " << std::get<NAME>(incHVDC) << " as a curative element by decreasing its power value";
 }
 
 void VariantConfiguration::processCost(VariantConfig::CostType cost_type,

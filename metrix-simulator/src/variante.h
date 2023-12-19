@@ -83,6 +83,13 @@ public:
     std::map<std::shared_ptr<ElementASurveiller>, double>
         quatitamkExOr_; /* seuil max avant curatif Ext -> Or (regime incident complexe) */
     
+    //Map des éléments curatifs utilisés par incidents
+    std::map<std::shared_ptr<Incident>, std::vector<std::tuple<std::shared_ptr<ElementCuratifGroupe>, double>>> usedCurativeGroupH_;
+    std::map<std::shared_ptr<Incident>, std::vector<std::tuple<std::shared_ptr<ElementCuratifGroupe>, double>>> usedCurativeGroupB_;
+    std::map<std::shared_ptr<Incident>, std::vector<std::tuple<std::shared_ptr<ElementCuratifHVDC>, double>>> usedCurativeHVDC_;
+    std::map<std::shared_ptr<Incident>, std::vector<std::tuple<std::shared_ptr<ElementCuratifTD>, double>>> usedCurativeTD_;
+    std::map<std::shared_ptr<Incident>, std::vector<std::tuple<std::shared_ptr<ElementCuratifConso>, double>>> usedCurativeConso_;
+    
     // Liste des groupes renvoyées par le shuffle de calculecrirecontraintesdodu.cpp en G++9:
     //(utilisée pour les tests)
     std::vector<std::shared_ptr<Groupe>> randomGroups_;

@@ -71,6 +71,11 @@ public:
 
         std::vector<double_value> balancesConso;
         std::vector<double_value> balancesProd;
+        std::map<std::string,std::vector<double_value>> usedCurativeGrpH;
+        std::map<std::string,std::vector<double_value>> usedCurativeGrpB;
+        std::map<std::string,std::vector<double_value>> usedCurativeHVDC;
+        std::map<std::string,std::vector<double_value>> usedCurativeTD;
+        std::map<std::string,std::vector<double_value>> usedCurativeConso;
 
         std::vector<double_value> probas;
 
@@ -141,6 +146,11 @@ private:
     void processProbaInc(VariantConfig& variant, std::istringstream& iss) const;
 
     void processRandomGroups(VariantConfig& variant, std::istringstream& iss) const;
+    void processUsedCurGroupH(VariantConfig& variant, std::istringstream& iss) const;
+    void processUsedCurGroupB(VariantConfig& variant, std::istringstream& iss) const;
+    void processUsedCurHVDC(VariantConfig& variant, std::istringstream& iss) const;
+    void processUsedCurTD(VariantConfig& variant, std::istringstream& iss) const;
+    void processUsedCurConso(VariantConfig& variant, std::istringstream& iss) const;
 
 private:
     const std::map<std::string, Processor>

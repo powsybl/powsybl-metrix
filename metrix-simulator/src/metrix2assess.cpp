@@ -556,13 +556,13 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                         if (pos != -1) {
                             double val = pbX_[pos] - pbX_[pos + 1];
 
-                            if (!config::inputConfiguration().useAllOutputs() && fabs(val) < EPSILON_SORTIES) {
+                            if (fabs(val) < EPSILON_SORTIES_BIS) {
                                 continue;
                             }
                             volDelCur += val;
                             const auto& conso = std::dynamic_pointer_cast<ElementCuratifConso>(elemC)->conso_;
                             fprintf(fr,
-                                    ("R1B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
+                                    ("R1B ;%d;%s;" + PREC_FLOAT_BIS + ";\n").c_str(),
                                     incidentsContraignants.find(icdt)->second,
                                     conso->nom_.c_str(),
                                     val);
@@ -770,11 +770,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                                 }
                             }
 
-                            if (config::inputConfiguration().useAllOutputs()
-                                || (config::configuration().displayResultatsRedispatch()
-                                    && fabs(val) >= EPSILON_SORTIES)) {
+                            if (fabs(val) >= EPSILON_SORTIES_BIS) {
                                 fprintf(fr,
-                                        ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
+                                        ("R2B ;%d;%s;" + PREC_FLOAT_BIS + ";\n").c_str(),
                                         incidentsContraignants.find(icdt)->second,
                                         s.c_str(),
                                         val);

@@ -834,6 +834,9 @@ void Reseau::lireDonnees()
 
             icdt->nom_ = nom;
         }
+        if (icdt->nom_.length() != 0 && icdt->nom_[icdt->nom_.length()-1] == ';'){
+            icdt->nom_.pop_back();
+        }
         incidents_.insert(std::pair<string, std::shared_ptr<Incident>>(icdt->nom_, icdt));
         incidentsEtParades_.push_back(icdt);
 
@@ -937,6 +940,7 @@ void Reseau::lireDonnees()
             auto elemC = std::make_shared<ElementCuratifTD>(td);
 
             inc->listeElemCur_.push_back(elemC);
+            inc->tdNameElemCur_.insert({td->quadVrai_->nom_, elemC});
             if (td->fictif_) {
                 inc->tdFictifsElemCur_.insert(
                     std::pair<std::shared_ptr<Quadripole>, std::shared_ptr<ElementCuratifTD>>(td->quadVrai_, elemC));
@@ -996,6 +1000,8 @@ void Reseau::lireDonnees()
 
             auto elemC = std::make_shared<ElementCuratifGroupe>(grp);
             inc->listeElemCur_.push_back(elemC);
+            inc->grpNameElemCur_.insert(
+                std::pair<std::string, std::shared_ptr<ElementCuratifGroupe>>(grp->nom_, elemC));
         }
     }
 
@@ -1017,7 +1023,9 @@ void Reseau::lireDonnees()
 
             auto elemC = std::make_shared<ElementCuratifConso>(conso);
             inc->listeElemCur_.push_back(elemC);
-        }
+            inc->consoNameElemCur_.insert(
+                std::pair<std::string, std::shared_ptr<ElementCuratifConso>>(conso->nom_, elemC));
+        }         
     }
 
     for (const auto& elem : incidents_) {
@@ -1985,6 +1993,57 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         icdt->probabilite_ = elem.second;
     }
 
+    // XVI-Cout des éléments curatifs
+    //----------------------------
+    for (const auto& ict : var->usedCurativeGroupH_) {
+        //Modification du coût à la hausse des groupes en curatif
+        for(const auto& elemCurCost : ict.second){
+            // const auto& tt = elemCurCost[0];
+            const auto& elemCur = std::get<config::VariantConfiguration::NAME>(elemCurCost);
+            double cost = std::get<config::VariantConfiguration::VALUE>(elemCurCost);
+            elemCur->coutHausse_ = cost;
+        }
+    }
+
+    for (const auto& ict : var->usedCurativeGroupB_) {
+        //Modification du coût à la hausse des groupes en curatif
+        for(const auto& elemCurCost : ict.second){
+            const auto& elemCur = std::get<config::VariantConfiguration::NAME>(elemCurCost);
+            double cost = std::get<config::VariantConfiguration::VALUE>(elemCurCost);
+            elemCur->coutBaisse_ = cost;
+        }
+    }
+
+    for (const auto& ict : var->usedCurativeHVDC_) {
+        //Modification du coût à la hausse des groupes en curatif
+        for(const auto& elemCurCost : ict.second){
+            const auto& elemCur = std::get<config::VariantConfiguration::NAME>(elemCurCost);
+            double cost = std::get<config::VariantConfiguration::VALUE>(elemCurCost);
+            elemCur->coutBaisse_ = cost;
+            elemCur->coutHausse_ = cost;
+        }
+    }
+
+    for (const auto& ict : var->usedCurativeTD_) {
+        //Modification du coût à la hausse des groupes en curatif
+        for(const auto& elemCurCost : ict.second){
+            const auto& elemCur = std::get<config::VariantConfiguration::NAME>(elemCurCost);
+            double cost = std::get<config::VariantConfiguration::VALUE>(elemCurCost);
+            elemCur->coutBaisse_ = cost;
+            elemCur->coutHausse_ = cost;
+        }
+    }
+
+    for (const auto& ict : var->usedCurativeConso_) {
+        //Modification du coût à la hausse des groupes en curatif
+        for(const auto& elemCurCost : ict.second){
+            const auto& elemCur = std::get<config::VariantConfiguration::NAME>(elemCurCost);
+            double cost = std::get<config::VariantConfiguration::VALUE>(elemCurCost);
+            elemCur->coutBaisse_ = cost;
+            elemCur->coutHausse_ = cost;
+        }
+    }
+
     // A la fin : Application des bilans zonaux (ex-X)
     return modifBilans(var);
 }
@@ -2340,6 +2399,54 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
         for (auto icIt = var->probabinc_.cbegin(); icIt != var->probabinc_.end(); ++icIt) {
             const auto& icdt = icIt->first;
             icdt->probabilite_ = icdt->probabiliteBase_;
+        }
+
+        // XVII - Coût des groupes à la hausse en curatif (POUR TNRs SEULEMENT)
+        //--------------------
+        for (auto icIt = var->usedCurativeGroupH_.cbegin(); icIt != var->usedCurativeGroupH_.end(); ++icIt) {
+            for(unsigned int i = 0; i != icIt->second.size(); ++i){
+                std::shared_ptr<ElementCuratifGroupe> elemCurGrp = std::get<0>(icIt->second[i]);
+                elemCurGrp->coutHausse_ = -config::constants::valdef;
+            }
+        }
+
+        // XVIII - Coût des groupes à la baisse en curatif (POUR TNRs SEULEMENT)
+        //--------------------
+        for (auto icIt = var->usedCurativeGroupB_.cbegin(); icIt != var->usedCurativeGroupB_.end(); ++icIt) {
+            for (unsigned int i = 0; i != icIt->second.size(); ++i){
+                std::shared_ptr<ElementCuratifGroupe> elemCurGrp = std::get<0>(icIt->second[i]);
+                elemCurGrp->coutBaisse_ = -config::constants::valdef;
+            }
+        }
+
+        // XIX - Coût des TD en curatif (POUR TNRs SEULEMENT)
+        //--------------------
+        for (auto icIt = var->usedCurativeTD_.cbegin(); icIt != var->usedCurativeTD_.end(); ++icIt) {
+            for (unsigned int i = 0; i != icIt->second.size(); ++i){
+                std::shared_ptr<ElementCuratifTD> elemCurGrp = std::get<0>(icIt->second[i]);
+                elemCurGrp->coutBaisse_ = -config::constants::valdef;
+                elemCurGrp->coutHausse_ = -config::constants::valdef;
+            }
+        }
+
+        // XX - Coût des HVDC en curatif (POUR TNRs SEULEMENT)
+        //--------------------
+        for (auto icIt = var->usedCurativeHVDC_.cbegin(); icIt != var->usedCurativeHVDC_.end(); ++icIt) {
+            for (unsigned int i = 0; i != icIt->second.size(); ++i){
+                std::shared_ptr<ElementCuratifHVDC> elemCurGrp = std::get<0>(icIt->second[i]);
+                elemCurGrp->coutBaisse_ = -config::constants::valdef;
+                elemCurGrp->coutHausse_ = -config::constants::valdef;
+            }
+        }
+
+        // XXI - Coût des Conso en curatif (POUR TNRs SEULEMENT)
+        //--------------------
+        for (auto icIt = var->usedCurativeConso_.cbegin(); icIt != var->usedCurativeConso_.end(); ++icIt) {
+            for (unsigned int i = 0; i != icIt->second.size(); ++i){
+                std::shared_ptr<ElementCuratifConso> elemCurGrp = std::get<0>(icIt->second[i]);
+                elemCurGrp->coutBaisse_ = -config::constants::valdef;
+                elemCurGrp->coutHausse_ = -config::constants::valdef;
+            }
         }
     }
 
@@ -3147,6 +3254,143 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         if (icIt != incidents_.end()) {
             auto var_dbl = std::get<VariantConfiguration::VALUE>(incident);
             variant->probabinc_.insert(std::pair<std::shared_ptr<Incident>, double>(icIt->second, var_dbl));
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& incidentElemCurCost : config.usedCurativeGrpH) {
+        const auto& str = incidentElemCurCost.first;
+        auto icIt = incidents_.find(str);
+        if (icIt != incidents_.end()) {
+            for (const auto& elemCur : incidentElemCurCost.second){
+                auto incident = icIt->second;
+                auto elCur = incident->grpNameElemCur_.find(std::get<VariantConfiguration::NAME>(elemCur));
+                if (elCur != incident->grpNameElemCur_.end()){
+                    auto var_dbl = std::get<VariantConfiguration::VALUE>(elemCur);
+                    if (variant->usedCurativeGroupH_.find(incident) != variant->usedCurativeGroupH_.end()){
+                        variant->usedCurativeGroupH_[incident].push_back(std::make_tuple(elCur->second,var_dbl));
+                    }else{
+                        std::vector<std::tuple<std::shared_ptr<ElementCuratifGroupe>, double>> vect;
+                        vect.push_back(std::make_tuple(elCur->second,var_dbl));
+                        variant->usedCurativeGroupH_.insert({incident,vect});
+                    }
+                }
+                else{
+                    LOG_ALL(warning) << err::ioDico().msg("ERRElemCurIntrouvable", std::get<VariantConfiguration::NAME>(elemCur), str, c_fmt("%d", config.num));
+                }
+            }
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& incidentElemCurCost : config.usedCurativeGrpB) {
+        const auto& str = incidentElemCurCost.first;
+        auto icIt = incidents_.find(str);
+        if (icIt != incidents_.end()) {
+            for (const auto& elemCur : incidentElemCurCost.second){
+                auto incident = icIt->second;
+                auto elCur = incident->grpNameElemCur_.find(std::get<VariantConfiguration::NAME>(elemCur));
+                if (elCur != incident->grpNameElemCur_.end()){
+                    auto var_dbl = std::get<VariantConfiguration::VALUE>(elemCur);
+                    if (variant->usedCurativeGroupB_.find(incident) != variant->usedCurativeGroupB_.end()){
+                        variant->usedCurativeGroupB_[incident].push_back(std::make_tuple(elCur->second,var_dbl));
+                    }else{
+                        std::vector<std::tuple<std::shared_ptr<ElementCuratifGroupe>, double>> vect;
+                        vect.push_back(std::make_tuple(elCur->second,var_dbl));
+                        variant->usedCurativeGroupB_.insert({incident,vect});
+                    }
+                }
+                else{
+                    LOG_ALL(warning) << err::ioDico().msg("ERRElemCurIntrouvable", std::get<VariantConfiguration::NAME>(elemCur), str, c_fmt("%d", config.num));
+                }
+            }
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& incidentElemCurCost : config.usedCurativeTD) {
+        const auto& str = incidentElemCurCost.first;
+        auto icIt = incidents_.find(str);
+        if (icIt != incidents_.end()) {
+            for (const auto& elemCur : incidentElemCurCost.second){
+                auto incident = icIt->second;
+                auto td = Reseau::TransfoDephaseurs_.find(std::get<VariantConfiguration::NAME>(elemCur));
+                if (td == Reseau::TransfoDephaseurs_.end()){
+                    LOG_ALL(warning) << err::ioDico().msg("ERRElemCurIntrouvable", std::get<VariantConfiguration::NAME>(elemCur), str, c_fmt("%d", config.num));
+                    continue;
+                }
+                auto elCur = incident->tdFictifsElemCur_.find(td->second->quadVrai_);
+                if (elCur != incident->tdFictifsElemCur_.end()){
+                    auto var_dbl = std::get<VariantConfiguration::VALUE>(elemCur);
+                    if (variant->usedCurativeTD_.find(incident) != variant->usedCurativeTD_.end()){
+                        variant->usedCurativeTD_[incident].push_back(std::make_tuple(elCur->second,var_dbl));
+                    }else{
+                        std::vector<std::tuple<std::shared_ptr<ElementCuratifTD>, double>> vect;
+                        vect.push_back(std::make_tuple(elCur->second,var_dbl));
+                        variant->usedCurativeTD_.insert({incident,vect});
+                    }
+                }
+                else{
+                    LOG_ALL(warning) << err::ioDico().msg("ERRElemCurIntrouvable", std::get<VariantConfiguration::NAME>(elemCur), str, c_fmt("%d", config.num));
+                }
+            }
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& incidentElemCurCost : config.usedCurativeHVDC) {
+        const auto& str = incidentElemCurCost.first;
+        auto icIt = incidents_.find(str);
+        if (icIt != incidents_.end()) {
+            for (const auto& elemCur : incidentElemCurCost.second){
+                auto incident = icIt->second;
+                auto lcc = Reseau::LigneCCs_.find(std::get<VariantConfiguration::NAME>(elemCur));
+                auto elCur = incident->lccElemCur_.find(lcc->second);
+                if (elCur != incident->lccElemCur_.end()){
+                    auto var_dbl = std::get<VariantConfiguration::VALUE>(elemCur);
+                    if (variant->usedCurativeHVDC_.find(incident) != variant->usedCurativeHVDC_.end()){
+                        variant->usedCurativeHVDC_[incident].push_back(std::make_tuple(elCur->second,var_dbl));
+                    }else{
+                        std::vector<std::tuple<std::shared_ptr<ElementCuratifHVDC>, double>> vect;
+                        vect.push_back(std::make_tuple(elCur->second,var_dbl));
+                        variant->usedCurativeHVDC_.insert({incident,vect});
+                    }
+                }
+                else{
+                    LOG_ALL(warning) << err::ioDico().msg("ERRElemCurIntrouvable", std::get<VariantConfiguration::NAME>(elemCur), str, c_fmt("%d", config.num));
+                }
+            }
+        } else {
+            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        }
+    }
+
+    for (const auto& incidentElemCurCost : config.usedCurativeConso) {
+        const auto& str = incidentElemCurCost.first;
+        auto icIt = incidents_.find(str);
+        if (icIt != incidents_.end()) {
+            for (const auto& elemCur : incidentElemCurCost.second){
+                auto incident = icIt->second;
+                auto conso = Reseau::consos_.find(std::get<VariantConfiguration::NAME>(elemCur));
+                auto elCur = incident->consoNameElemCur_.find(conso->first);
+                if (elCur != incident->consoNameElemCur_.end()){
+                    auto var_dbl = std::get<VariantConfiguration::VALUE>(elemCur);
+                    if (variant->usedCurativeConso_.find(incident) != variant->usedCurativeConso_.end()){
+                        variant->usedCurativeConso_[incident].push_back(std::make_tuple(elCur->second,var_dbl));
+                    }else{
+                        std::vector<std::tuple<std::shared_ptr<ElementCuratifConso>, double>> vect;
+                        vect.push_back(std::make_tuple(elCur->second,var_dbl));
+                        variant->usedCurativeConso_.insert({incident,vect});
+                    }
+                }
+                else{
+                    LOG_ALL(warning) << err::ioDico().msg("ERRElemCurIntrouvable", std::get<VariantConfiguration::NAME>(elemCur), str, c_fmt("%d", config.num));
+                }
+            }
         } else {
             LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
         }

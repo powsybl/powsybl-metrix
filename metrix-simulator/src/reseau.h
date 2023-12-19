@@ -38,6 +38,8 @@ class ElementASurveiller;
 class PochePerdue;
 class ElementCuratifHVDC;
 class ElementCuratifTD;
+class ElementCuratifGroupe;
+class ElementCuratifConso;
 
 
 enum ModeCuratif { PREVENTIF_SEUL = 0, CURATIF_POSSIBLE = 1 };
@@ -68,6 +70,10 @@ public:
     int positionVarEntiereCur_ = -1; // pointe dans la place dans le vect. variable, la variable entiere qui active ou
                                      // desactive l'action
 
+    bool usedElCur_ = false; //true if the element is used in this variant (FOR DETERMINISM PURPOSE with the Tests)
+    double coutHausse_ = -config::constants::valdef; //Cost used only for determinism purposes in the Tests.
+    double coutBaisse_ = -config::constants::valdef; //Cost used only for determinism purposes in the Tests.
+    
     void reset();
     virtual bool estValide() = 0;
     virtual int numVarPrev() = 0;
@@ -845,6 +851,13 @@ public:
         lccElemCur_; // pour rechercher les hvdc curatifs sur l'incident
     std::map<std::shared_ptr<Quadripole>, std::shared_ptr<ElementCuratifTD>>
         tdFictifsElemCur_; // pour rechercher les td fictif de l'incident
+    std::map<std::string, std::shared_ptr<ElementCuratifGroupe>>
+        grpNameElemCur_; // pour rechercher les groupes de l'incident
+    std::map<std::string, std::shared_ptr<ElementCuratifConso>>
+        consoNameElemCur_; // pour rechercher les consommations de l'incident
+    std::map<std::string, std::shared_ptr<ElementCuratifTD>>
+        tdNameElemCur_; // pour rechercher les TD de l'incident d'après le nom de TD->quadVrai_
+
 
     // Donnees pour les fermetures de couplages (uniquement pour une parade) :
     int nbCouplagesFermes_ = 0;
