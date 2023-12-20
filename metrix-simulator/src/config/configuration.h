@@ -211,6 +211,7 @@ public:
 
     // complex getter
     double thresholdMaxITAM(double thresholdMaxInc, double thresholdMaxBeforeCur) const;
+    std::tuple<std::string, double> nameThresholdMaxITAM(double thresholdMaxInc, std::string nameThresholdMaxInc, double thresholdMaxBeforeCur, std::string nameThresholdMaxBeforeCur) const;
 
 private:
     static std::string pathname_;

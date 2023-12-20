@@ -1384,6 +1384,80 @@ double ElementASurveiller::seuil(const std::shared_ptr<Incident>& icdt, double t
     return transit >= 0 ? seuilMax(icdt) : seuilMin(icdt);
 }
 
+std::string ElementASurveiller::nomSeuilMax(const std::shared_ptr<Incident>& icdt) const
+{
+    const auto& config = config::configuration();
+    if (!icdt) {
+        return "QATI00MN";
+    }
+
+    if (icdt->parade_) {
+        if (icdt->incTraiteCur_->incidentComplexe_ && seuilMaxIncComplexe_ != config::constants::valdef) {
+            return "QATI20MN";
+        }
+
+        return "QATI5MNS";
+    }
+
+    if (icdt->paradesActivees_) {
+        if (icdt->incidentComplexe_ && seuilMaxAvantCurIncComplexe_ != config::constants::valdef) {
+            return "QATITAMK";
+        }
+
+        return "QATITAMN";
+    }
+
+    if (icdt->incidentComplexe_ && seuilMaxIncComplexe_ != config::constants::valdef) {
+        auto tupleThreshold = config.nameThresholdMaxITAM(seuilMaxIncComplexe_, "QATI20MN", seuilMaxAvantCurIncComplexe_, "QATITAMK");
+        return std::get<0>(tupleThreshold);
+    }
+
+    auto tupleThreshold = config.nameThresholdMaxITAM(seuilMaxInc_, "QATI5MNS", seuilMaxAvantCur_, "QATITAMN");
+    return std::get<0>(tupleThreshold);
+}
+
+std::string ElementASurveiller::nomSeuilMin(const std::shared_ptr<Incident>& icdt) const
+{
+    const auto& config = config::configuration();
+    auto checkNameThreshold = [&icdt, this](double threshold, string nomThreshold) {
+        return (threshold != config::constants::valdef) ? nomThreshold : nomSeuilMax(icdt);
+    };
+    if (seuilsAssymetriques_) {
+        if (!icdt) {
+            return "QATI00MN2";
+        }
+
+        if (icdt->parade_) {
+            if (icdt->incTraiteCur_->incidentComplexe_) {
+                return checkNameThreshold(seuilMaxIncComplexeExOr_, "QATI20MN2");
+            }
+            return checkNameThreshold(seuilMaxIncExOr_, "QATI5MNS2");
+        }
+
+        if (icdt->paradesActivees_) {
+            if (icdt->incidentComplexe_) {
+                return checkNameThreshold(seuilMaxAvantCurIncComplexeExOr_, "QATITAMK2");
+            }
+            return checkNameThreshold(seuilMaxAvantCurExOr_, "QATITAMN2");
+        }
+
+        if (icdt->incidentComplexe_) {
+            auto tupleThreshold = config.nameThresholdMaxITAM(seuilMaxIncComplexeExOr_, "QATI20MN2", seuilMaxAvantCurIncComplexeExOr_, "QATITAMK2");
+            return checkNameThreshold(std::get<1>(tupleThreshold), std::get<0>(tupleThreshold));
+        }
+
+        auto  tupleThreshold = config.nameThresholdMaxITAM(seuilMaxIncExOr_, "QATI5MNS2", seuilMaxAvantCurExOr_, "QATITAMN2");
+        return checkNameThreshold(std::get<1>(tupleThreshold), std::get<0>(tupleThreshold));
+    }
+
+    return nomSeuilMax(icdt);
+}
+
+std::string ElementASurveiller::nomSeuil(const std::shared_ptr<Incident>& icdt, double transit) const
+{
+    return transit >= 0 ? nomSeuilMax(icdt) : nomSeuilMin(icdt);
+}
+
 void ElementASurveiller::verificationSeuils() const
 {
     if (seuilMaxN_ <= 0 && (survMaxN_ == ElementASurveiller::SURVEILLE)) {

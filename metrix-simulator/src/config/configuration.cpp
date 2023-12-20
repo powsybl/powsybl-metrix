@@ -377,4 +377,17 @@ double Configuration::thresholdMaxITAM(double thresholdMaxInc, double thresholdM
     return thresholdMaxBeforeCur;
 }
 
+std::tuple<std::string, double> Configuration::nameThresholdMaxITAM(double thresholdMaxInc, std::string nameThresholdMaxInc, double thresholdMaxBeforeCur, std::string nameThresholdMaxBeforeCur) const
+{
+    std::tuple<std::string, double> thresholdAndName;
+    if (!test_seuil_itam_ || thresholdMaxInc != constants::valdef) {
+        thresholdAndName = make_tuple(nameThresholdMaxInc, thresholdMaxInc);
+        
+    }else{
+        // This implies that in case both equal valdef, we return valdef
+        thresholdAndName = make_tuple(nameThresholdMaxBeforeCur, thresholdMaxBeforeCur);
+    }
+    return thresholdAndName;
+}
+
 } // namespace config

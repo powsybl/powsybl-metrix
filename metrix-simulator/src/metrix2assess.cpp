@@ -1402,7 +1402,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
     vector<string> nomOu; // nom de l'ouvrage
 
     // Tableau R4
-    fprintf(fr, "R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;\n");
+    fprintf(fr, "R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;SECTION SEUIL;\n");
     int numIncident;
     vector<int> AskedDetailedConstraints;
     std::vector<int> constraintsToDelail;
@@ -1567,13 +1567,18 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         }
         string nom;
         std::tie(nom, numIncident, std::ignore) = (*opt_inc);
+        string section_seuil;
+        std::shared_ptr<Contrainte> ctre = pbContraintes_[i];
+        double transitSurContrainte = ctre->transit_;
+        std::shared_ptr<Incident> incidentSurContrainte = ctre->icdt_;
+        string nomSectionSeuil = ctre->elemAS_->nomSeuil(incidentSurContrainte, transitSurContrainte);
         double costVal = (config::configuration().redispatchCostOffset() > 0)
                              ? std::accumulate(cost[i].begin(),
                                                cost[i].end(),
                                                0.0,
                                                [](const double& sum, const CostDef& def) { return sum + def.cost; })
                              : pbCoutsMarginauxDesContraintes_[i];
-        fprintf(fr, "R4 ;;%s;%d;%.3f;\n", nom.c_str(), numIncident, costVal);
+        fprintf(fr, "R4 ;;%s;%d;%.3f;%s;\n", nom.c_str(), numIncident, costVal, nomSectionSeuil.c_str());
     }
     if (!AskedDetailedConstraints.empty()) {
         fprintf(fr, "R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;\n");

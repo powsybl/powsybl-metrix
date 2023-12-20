@@ -300,6 +300,9 @@ public:
     double seuilMax(const std::shared_ptr<Incident>& icdt) const;
     double seuilMin(const std::shared_ptr<Incident>& icdt) const;
     double seuil(const std::shared_ptr<Incident>& icdt, double transit) const;
+    std::string nomSeuil(const std::shared_ptr<Incident>& icdt, double transit) const;
+    std::string nomSeuilMax(const std::shared_ptr<Incident>& icdt) const;
+    std::string nomSeuilMin(const std::shared_ptr<Incident>& icdt) const;
 };
 
 //----------------
