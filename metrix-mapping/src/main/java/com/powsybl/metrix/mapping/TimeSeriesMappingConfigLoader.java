@@ -65,18 +65,18 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     }
 
     protected Map<String, String> tsMetadata(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
-        if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
-            return TsMetadata.tsMetadata(nodeCalc, store);
-        } else {
+        Map<String, String> tsMetadata = new HashMap<>();
+        if (config.getTimeSeriesNodes().containsValue(nodeCalc)) {
             String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
-            return TsMetadata.tsMetadata(tsName, config.getTimeSeriesNodeTags());
+            tsMetadata.putAll(TsMetadata.tsMetadata(tsName, config.getTimeSeriesNodeTags()));
         }
+        if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
+            tsMetadata.putAll(TsMetadata.tsMetadata(nodeCalc, store));
+        }
+        return tsMetadata;
     }
 
     protected void tag(NodeCalc nodeCalc, String tag, String parameter) {
-        if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
-            return;
-        }
         String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
         config.addTag(tsName, tag, parameter);
     }
