@@ -10,7 +10,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.mapping.log.Log;
 import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +21,7 @@ import org.threeten.extra.Interval;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -43,7 +44,7 @@ class NetworkTopographyChangeNotifierTest {
     @BeforeEach
     public void setUp() {
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         logger = Mockito.mock(TimeSeriesMappingLogger.class);
     }

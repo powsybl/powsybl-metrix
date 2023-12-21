@@ -11,7 +11,7 @@ package com.powsybl.metrix.integration;
 import com.google.common.collect.ImmutableMap;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.network.MetrixNetworkPoint;
 import com.powsybl.timeseries.*;
@@ -29,6 +29,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.HVDC_TYPE;
@@ -89,7 +90,7 @@ class MetrixRunResultTest {
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
         // Preventive time series
-        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, false, "NIORTL41SSFLO", timeSeriesList, network);
         assertEquals(480 + 4.9, network.getGenerator("FSSV.O11_G").getTargetP(), EPSILON_COMPARISON);
         assertEquals(480 - 45.155, network.getLoad("FSSV.O11_L").getP0(), EPSILON_COMPARISON);
@@ -99,28 +100,28 @@ class MetrixRunResultTest {
         assertFalse(network.getSwitch("FVERGE1_FP.AND1  FVERGE1  2_DJ7").isOpen());
 
         // Generator curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 12, true, "MELLEL41ZMAGD", timeSeriesList, network);
         assertEquals(480 - 150, network.getGenerator("FSSV.O12_G").getTargetP(), EPSILON_COMPARISON);
 
         // Load curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 12, true, "MELLEL41ZMAGD", timeSeriesList, network);
         assertEquals(480 + 50, network.getLoad("FSSV.O11_L").getP0(), EPSILON_COMPARISON);
 
         // Hvdc curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, true, "I.JOUL41LAITI", timeSeriesList, network);
         assertEquals(HvdcLine.ConvertersMode.SIDE_1_INVERTER_SIDE_2_RECTIFIER, network.getHvdcLine("HVDC1").getConvertersMode());
         assertEquals(500.0, network.getHvdcLine("HVDC1").getActivePowerSetpoint(), EPSILON_COMPARISON);
 
         // PhaseTapChanger curative timme series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, true, "MELLEL41ZMAGD", timeSeriesList, network);
         assertEquals(12, network.getTwoWindingsTransformer("FP.AND1  FTDPRA1  1").getPhaseTapChanger().getTapPosition());
 
         // Topology curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, true, "NIORTL41SSFLO", timeSeriesList, network);
         assertTrue(network.getSwitch("FVERGE1_FP.AND1  FVERGE1  2_DJ7").isOpen()); // Topology time series
     }

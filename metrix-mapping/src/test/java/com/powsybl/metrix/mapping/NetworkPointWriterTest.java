@@ -15,7 +15,7 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.timeseries.*;
 import org.apache.commons.io.input.ReaderInputStream;
 import org.junit.jupiter.api.AfterEach;
@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Objects;
 import java.util.TreeSet;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
@@ -45,7 +46,7 @@ class NetworkPointWriterTest {
     @BeforeEach
     public void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @AfterEach

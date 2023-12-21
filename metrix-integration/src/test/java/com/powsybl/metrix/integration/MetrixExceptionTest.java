@@ -15,7 +15,7 @@ import com.powsybl.computation.local.LocalComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
@@ -77,7 +77,7 @@ public class MetrixExceptionTest {
         emptyDslFile = fileSystem.getPath("/emptyTest.dsl");
         writeToDslFile(wrongDslFile, "wrongKeyword");
         writeToDslFile(emptyDslFile, "");
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @AfterEach
@@ -95,7 +95,7 @@ public class MetrixExceptionTest {
     @Test
     void loadMappingScriptExceptionTest() throws IOException {
         Path networkFile = fileSystem.getPath("/simpleNetwork.xml");
-        NetworkXml.write(network, networkFile);
+        NetworkSerDe.write(network, networkFile);
         NetworkSource networkSource = new DefaultNetworkSourceImpl(networkFile, computationManager);
         Reader mappingReader = Files.newBufferedReader(wrongDslFile, StandardCharsets.UTF_8);
         TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
@@ -107,7 +107,7 @@ public class MetrixExceptionTest {
     @Test
     void loadMetrixScriptExceptionTest() throws IOException {
         Path networkFile = fileSystem.getPath("/simpleNetwork.xml");
-        NetworkXml.write(network, networkFile);
+        NetworkSerDe.write(network, networkFile);
         NetworkSource networkSource = new DefaultNetworkSourceImpl(networkFile, computationManager);
         Reader metrixDslReader = Files.newBufferedReader(wrongDslFile, StandardCharsets.UTF_8);
         Reader mappingReader = Files.newBufferedReader(emptyDslFile, StandardCharsets.UTF_8);

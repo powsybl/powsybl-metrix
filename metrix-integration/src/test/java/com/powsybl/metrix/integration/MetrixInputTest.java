@@ -17,7 +17,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.mapping.DataTableStore;
@@ -65,7 +65,7 @@ class MetrixInputTest {
             ));
         }
 
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, new MetrixParameters(), remedialActionFile);
         Set<Switch> retainedSwitchList = new HashSet<>();
@@ -142,7 +142,7 @@ class MetrixInputTest {
 
     @Test
     void metrixDefaultInputTest() throws IOException {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
         new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
@@ -156,7 +156,7 @@ class MetrixInputTest {
 
     @Test
     void metrixInputTest() throws IOException {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  1");
@@ -355,7 +355,7 @@ class MetrixInputTest {
     @Test
     void mappedBreakerTest() throws IOException {
 
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         String[] mappedBreakers = {
             "FP.AND1_FP.AND1  FTDPRA1  1_DJ13", // PST breaker
@@ -411,7 +411,7 @@ class MetrixInputTest {
 
     @Test
     void propagateTrippingTest() {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
         Contingency cty = new Contingency("cty", l);
@@ -438,7 +438,7 @@ class MetrixInputTest {
 
     @Test
     void loadBreakTest() throws IOException {
-        Network n = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  2");

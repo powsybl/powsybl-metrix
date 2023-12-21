@@ -18,7 +18,7 @@ import com.powsybl.computation.local.LocalComputationConfig;
 import com.powsybl.computation.local.LocalComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
@@ -98,7 +98,7 @@ class MetrixTest {
         MetrixConfigResult metrixConfigResult = new MetrixConfigResult(new HashMap<>(), new HashMap<>());
 
         // create test network
-        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         MetrixAnalysisResult analysisResult = new MetrixAnalysisResult(dslData, timeSeriesMappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, Collections.emptyList(), Collections.emptyList());
 
@@ -142,7 +142,7 @@ class MetrixTest {
         };
         ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor());
 
-        Network network = NetworkXml.read(MetrixTest.class.getResourceAsStream("/simpleNetwork.xml"));
+        Network network = NetworkSerDe.read(Objects.requireNonNull(MetrixTest.class.getResourceAsStream("/simpleNetwork.xml")));
 
         Path remedialActionFile = fileSystem.getPath("remedialActionFile.txt");
         Files.createFile(remedialActionFile);
