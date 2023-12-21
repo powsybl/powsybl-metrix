@@ -240,7 +240,7 @@ class TimeSeriesDslLoader {
         binding.booleanMetadatas = { Closure closure ->
             loader.booleanMetadatas(store)
         }
-        binding.metadata = { NodeCalc tsNode ->
+        binding.getMetadataTags = { NodeCalc tsNode ->
             loader.tsMetadata(tsNode, store)
         }
         binding.tag = { NodeCalc tsNode, String tag, String parameter = StringUtils.EMPTY ->

@@ -39,7 +39,7 @@ class TimeSeriesDslLoaderTest {
             "ts['one'] = 1",
             "ts['test'] = %s",
             "tag(ts['test'], 'calculatedTag', 'calculatedParam')",
-            "metadata_value = metadata(ts['test'])",
+            "metadata_value = getMetadataTags(ts['test'])",
             "println metadata_value"
     );
 
@@ -359,8 +359,8 @@ class TimeSeriesDslLoaderTest {
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "ts['one'] = 1",
-                "metadata_ts = metadata(ts['test'])",
-                "metadata_int = metadata(ts['one'])",
+                "metadata_ts = getMetadataTags(ts['test'])",
+                "metadata_int = getMetadataTags(ts['one'])",
                 "string_metadatas = stringMetadatas()",
                 "double_metadatas = doubleMetadatas()",
                 "int_metadatas = intMetadatas()",
@@ -388,16 +388,12 @@ class TimeSeriesDslLoaderTest {
         assertEquals("[tag:value]\n[:]\n[:]\n[:]\n[:]\n[:]\n", output);
     }
 
-    void tagTest(String expression) throws IOException {
-        tagTest(expression, "[calculatedTag:calculatedParam]");
-
+    void simpleCalculatedTagTest(String expression) throws IOException {
+        tagTest(String.format(tagScript, expression), "[calculatedTag:calculatedParam]");
     }
 
-    void tagTest(String expression, String expectedTag) throws IOException {
+    void tagTest(String script, String expectedTag) throws IOException {
         Network network = MappingTestNetwork.create();
-
-        // mapping script
-        String script = String.format(tagScript, expression);
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
@@ -415,38 +411,64 @@ class TimeSeriesDslLoaderTest {
     }
 
     @Test
-    void calculatedTagTest() throws IOException {
+    void simpleCalculatedTagTest() throws IOException {
         // IntegerNodeCalc
-        tagTest("new Integer(1)");
+        simpleCalculatedTagTest("new Integer(1)");
 
         // FloatNodeCalc
-        tagTest("new Float(0.1)");
+        simpleCalculatedTagTest("new Float(0.1)");
 
         // DoubleNodeCalc
-        tagTest("new Double(0.1)");
+        simpleCalculatedTagTest("new Double(0.1)");
 
         // BigDecimal
-        tagTest("new BigDecimal(0.1)");
+        simpleCalculatedTagTest("new BigDecimal(0.1)");
 
         // BinaryOperation
-        tagTest("ts['test'] + 1");
+        simpleCalculatedTagTest("ts['test'] + 1");
 
         // UnaryOperation
-        tagTest("- ts['test']");
+        simpleCalculatedTagTest("- ts['test']");
 
         // MinNodeCalc
-        tagTest("ts['one'].min(1)");
+        simpleCalculatedTagTest("ts['one'].min(1)");
 
         // MaxNodeCalc
-        tagTest("ts['one'].max(1)");
+        simpleCalculatedTagTest("ts['one'].max(1)");
 
         // TimeNodeCalc
-        tagTest("ts['one'].time()");
+        simpleCalculatedTagTest("ts['one'].time()");
     }
 
     @Test
     void storedTagTest() throws IOException {
-        tagTest("ts['test']", "[storedTag:storedParam]");
+        String script = String.join(System.lineSeparator(),
+                "metadata_test = getMetadataTags(ts['test'])",
+                "println metadata_test",
+                "ts['test'] = ts['test']",
+                "metadata_test = getMetadataTags(ts['test'])",
+                "println metadata_test",
+                "tag(ts['test'], 'calculatedTag', 'calculatedParam')",
+                "metadata_test = getMetadataTags(ts['test'])",
+                "println metadata_test"
+        );
+        tagTest(script, "[storedTag:storedParam]\n[storedTag:storedParam]\n[calculatedTag:calculatedParam, storedTag:storedParam]");
+    }
+
+    @Test
+    void calculatedTimeSeriesTagTest() throws IOException {
+        // mapping script
+        String script = String.join(System.lineSeparator(),
+                "ts['calculated'] = ts['test']",
+                "ts['calculated_same_as_previous_one'] = ts['test']",
+                "tag(ts['calculated'], 'tag', 'param')",
+                "tag(ts['calculated_same_as_previous_one'], 'tag_same_as_previous_one', 'param_same_as_previous_one')",
+                "metadata_calculated = getMetadataTags(ts['calculated'])",
+                "metadata_calculated_same_as_previous_one = getMetadataTags(ts['calculated_same_as_previous_one'])",
+                "println metadata_calculated",
+                "println metadata_calculated_same_as_previous_one"
+        );
+        tagTest(script, "[tag:param, storedTag:storedParam]\n[tag_same_as_previous_one:param_same_as_previous_one, storedTag:storedParam]");
     }
 
     @Test
