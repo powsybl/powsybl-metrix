@@ -341,14 +341,21 @@ class NetworkPointWriterTest {
             try (InputStream actual = Files.newInputStream(actualPath)) {
                 // skip the two first lines : xml version line and network line (containing extensions)
                 // because extensions are not ordered in the same way for each test launching
+                assertNotNull(expected);
                 BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expected));
                 expectedReader.readLine();
                 expectedReader.readLine();
                 BufferedReader actualReader = new BufferedReader(new InputStreamReader(actual));
                 actualReader.readLine();
                 actualReader.readLine();
-                InputStream expectedStream = new ReaderInputStream(expectedReader, StandardCharsets.UTF_8);
-                InputStream actualStream = new ReaderInputStream(actualReader, StandardCharsets.UTF_8);
+                InputStream expectedStream = ReaderInputStream.builder()
+                    .setReader(expectedReader)
+                    .setCharset(StandardCharsets.UTF_8)
+                    .get();
+                InputStream actualStream = ReaderInputStream.builder()
+                    .setReader(actualReader)
+                    .setCharset(StandardCharsets.UTF_8)
+                    .get();
                 assertNotNull(compareStreamTxt(expectedStream, actualStream));
             }
         }
