@@ -403,7 +403,8 @@ public class MetrixOutputData {
                     ts = getDoubleTimeSeries(PST_CUR_TAP_NAME, PST_TYPE, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
                 }
-                case "R6 " -> {// HVDC Basecase
+                case "R6 " -> {
+                    // HVDC Basecase
                     if (" PAR LCC".equals(chunks[1])) {
                         continue; // header
                     }
@@ -415,7 +416,8 @@ public class MetrixOutputData {
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
                 }
-                case "R6B " -> {// HVDC Curative
+                case "R6B " -> {
+                    // HVDC Curative
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
@@ -423,7 +425,8 @@ public class MetrixOutputData {
                     ts = getDoubleTimeSeries("HVDC_CUR_", HVDC_TYPE, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                 }
-                case "R7 " -> {// Redispatching by generator types
+                case "R7 " -> {
+                    // Redispatching by generator types
                     if ("PAR FILIERE".equals(chunks[1])) {
                         continue; // header
                     }
