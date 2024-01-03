@@ -51,9 +51,9 @@
         <java.version>17</java.version>
 
         <sonar.coverage.jacoco.xmlReportPaths>
-            ../metrix-distribution/target/site/jacoco-aggregate/jacoco.xml,
-            ../../metrix-distribution/target/site/jacoco-aggregate/jacoco.xml,
-            ../../../metrix-distribution/target/site/jacoco-aggregate/jacoco.xml
+            ../metrix-tools/target/site/jacoco-aggregate/jacoco.xml,
+            ../../metrix-tools/target/site/jacoco-aggregate/jacoco.xml,
+            ../../../metrix-tools/target/site/jacoco-aggregate/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
 
         <assertj.version>3.19.0</assertj.version>
