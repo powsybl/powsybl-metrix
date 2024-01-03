@@ -53,9 +53,7 @@ public interface DistributionKey {
         try {
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
-                if (token == JsonToken.START_OBJECT) {
-                    // skip
-                } else {
+                if (token != JsonToken.START_OBJECT) {
                     return parseJson(parser, token);
                 }
             }
