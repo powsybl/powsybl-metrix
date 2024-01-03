@@ -46,11 +46,10 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         if (!(equipmentGroupType instanceof SimpleEquipmentGroupType type)) {
             return name;
         }
-        name = switch (type) {
+        return switch (type) {
             case SUBSTATION -> getSubstation(voltageLevel);
             case VOLTAGE_LEVEL -> voltageLevel.getId();
         };
-        return name;
     }
 
     protected String computePowerTypeName(Generator generator) {
@@ -139,17 +138,12 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToHvdcLinesMapping, config.hvdcLineToTimeSeriesMapping);
         switch (variable) {
-            case activePowerSetpoint:
-                config.unmappedHvdcLines.remove(equipmentId);
-                break;
-            case minP:
-                config.unmappedMinPHvdcLines.remove(equipmentId);
-                break;
-            case maxP:
-                config.unmappedMaxPHvdcLines.remove(equipmentId);
-                break;
-            default:
-                break;
+            case activePowerSetpoint -> config.unmappedHvdcLines.remove(equipmentId);
+            case minP -> config.unmappedMinPHvdcLines.remove(equipmentId);
+            case maxP -> config.unmappedMaxPHvdcLines.remove(equipmentId);
+            default -> {
+                // Do nothing
+            }
         }
     }
 
@@ -157,21 +151,22 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToLoadsMapping, config.loadToTimeSeriesMapping);
         switch (variable) {
-            case p0:
+            case p0 -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedFixedActivePowerLoads.remove(equipmentId);
                 config.unmappedVariableActivePowerLoads.remove(equipmentId);
-                break;
-            case fixedActivePower:
+            }
+            case fixedActivePower -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedFixedActivePowerLoads.remove(equipmentId);
-                break;
-            case variableActivePower:
+            }
+            case variableActivePower -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedVariableActivePowerLoads.remove(equipmentId);
-                break;
-            default:
-                break;
+            }
+            default -> {
+                // Do nothing
+            }
         }
     }
 
@@ -179,17 +174,12 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToGeneratorsMapping, config.generatorToTimeSeriesMapping);
         switch (variable) {
-            case targetP:
-                config.unmappedGenerators.remove(equipmentId);
-                break;
-            case minP:
-                config.unmappedMinPGenerators.remove(equipmentId);
-                break;
-            case maxP:
-                config.unmappedMaxPGenerators.remove(equipmentId);
-                break;
-            default:
-                break;
+            case targetP -> config.unmappedGenerators.remove(equipmentId);
+            case minP -> config.unmappedMinPGenerators.remove(equipmentId);
+            case maxP -> config.unmappedMaxPGenerators.remove(equipmentId);
+            default -> {
+                // Do nothing
+            }
         }
     }
 
@@ -211,77 +201,47 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     protected void addEquipmentMapping(MappableEquipmentType equipmentType, String timeSeriesName, String equipmentId, DistributionKey distributionKey,
                                     EquipmentVariable variable) {
         switch (equipmentType) {
-            case GENERATOR:
-                addGeneratorMapping(timeSeriesName, equipmentId, distributionKey, variable);
-                break;
-            case LOAD:
-                addLoadMapping(timeSeriesName, equipmentId, distributionKey, variable);
-                break;
-            case BOUNDARY_LINE:
+            case GENERATOR -> addGeneratorMapping(timeSeriesName, equipmentId, distributionKey, variable);
+            case LOAD -> addLoadMapping(timeSeriesName, equipmentId, distributionKey, variable);
+            case BOUNDARY_LINE -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                        config.timeSeriesToDanglingLinesMapping, config.danglingLineToTimeSeriesMapping);
+                    config.timeSeriesToDanglingLinesMapping, config.danglingLineToTimeSeriesMapping);
                 if (variable == EquipmentVariable.p0) {
                     config.unmappedDanglingLines.remove(equipmentId);
                 }
-                break;
-            case HVDC_LINE:
-                addHvdcLineMapping(timeSeriesName, equipmentId, distributionKey, variable);
-                break;
-            case SWITCH:
+            }
+            case HVDC_LINE -> addHvdcLineMapping(timeSeriesName, equipmentId, distributionKey, variable);
+            case SWITCH -> addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+                config.timeSeriesToBreakersMapping, config.breakerToTimeSeriesMapping);
+            case PHASE_TAP_CHANGER -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                        config.timeSeriesToBreakersMapping, config.breakerToTimeSeriesMapping);
-                break;
-            case PHASE_TAP_CHANGER:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                        config.timeSeriesToPhaseTapChangersMapping, config.phaseTapChangerToTimeSeriesMapping);
+                    config.timeSeriesToPhaseTapChangersMapping, config.phaseTapChangerToTimeSeriesMapping);
                 if (variable == EquipmentVariable.phaseTapPosition) {
                     config.unmappedPhaseTapChangers.remove(equipmentId);
                 }
-                break;
-            case TRANSFORMER:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+            }
+            case TRANSFORMER -> addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         config.timeSeriesToTransformersMapping, config.transformerToTimeSeriesMapping);
-                break;
-            case LINE:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+            case LINE -> addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         config.timeSeriesToLinesMapping, config.lineToTimeSeriesMapping);
-                break;
-            case RATIO_TAP_CHANGER:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+            case RATIO_TAP_CHANGER -> addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         config.timeSeriesToRatioTapChangersMapping, config.ratioTapChangerToTimeSeriesMapping);
-                break;
-            case LCC_CONVERTER_STATION:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+            case LCC_CONVERTER_STATION -> addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         config.timeSeriesToLccConverterStationsMapping, config.lccConverterStationToTimeSeriesMapping);
-                break;
-            case VSC_CONVERTER_STATION:
-                addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+            case VSC_CONVERTER_STATION -> addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                         config.timeSeriesToVscConverterStationsMapping, config.vscConverterStationToTimeSeriesMapping);
-                break;
-            default:
-                throw new AssertionError();
+            default -> throw new AssertionError();
         }
     }
 
     protected void addUnmappedEquipment(MappableEquipmentType equipmentType, String equipmentId) {
         switch (equipmentType) {
-            case GENERATOR:
-                config.ignoredUnmappedGenerators.add(equipmentId);
-                break;
-            case LOAD:
-                config.ignoredUnmappedLoads.add(equipmentId);
-                break;
-            case BOUNDARY_LINE:
-                config.ignoredUnmappedDanglingLines.add(equipmentId);
-                break;
-            case HVDC_LINE:
-                config.ignoredUnmappedHvdcLines.add(equipmentId);
-                break;
-            case PHASE_TAP_CHANGER:
-                config.ignoredUnmappedPhaseTapChangers.add(equipmentId);
-                break;
-            default:
-                throw new AssertionError();
+            case GENERATOR -> config.ignoredUnmappedGenerators.add(equipmentId);
+            case LOAD -> config.ignoredUnmappedLoads.add(equipmentId);
+            case BOUNDARY_LINE -> config.ignoredUnmappedDanglingLines.add(equipmentId);
+            case HVDC_LINE -> config.ignoredUnmappedHvdcLines.add(equipmentId);
+            case PHASE_TAP_CHANGER -> config.ignoredUnmappedPhaseTapChangers.add(equipmentId);
+            default -> throw new AssertionError();
         }
     }
 
@@ -289,41 +249,18 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         for (EquipmentVariable equipmentVariable : equipmentVariables) {
             MappingKey mappingKey = new MappingKey(equipmentVariable, equipmentId);
             switch (equipmentType) {
-                case GENERATOR:
-                    config.generatorTimeSeries.add(mappingKey);
-                    break;
-                case LOAD:
-                    config.loadTimeSeries.add(mappingKey);
-                    break;
-                case BOUNDARY_LINE:
-                    config.danglingLineTimeSeries.add(mappingKey);
-                    break;
-                case HVDC_LINE:
-                    config.hvdcLineTimeSeries.add(mappingKey);
-                    break;
-                case SWITCH:
-                    config.breakerTimeSeries.add(mappingKey);
-                    break;
-                case TRANSFORMER:
-                    config.transformerTimeSeries.add(mappingKey);
-                    break;
-                case LINE:
-                    config.lineTimeSeries.add(mappingKey);
-                    break;
-                case PHASE_TAP_CHANGER:
-                    config.phaseTapChangerTimeSeries.add(mappingKey);
-                    break;
-                case RATIO_TAP_CHANGER:
-                    config.ratioTapChangerTimeSeries.add(mappingKey);
-                    break;
-                case LCC_CONVERTER_STATION:
-                    config.lccConverterStationTimeSeries.add(mappingKey);
-                    break;
-                case VSC_CONVERTER_STATION:
-                    config.vscConverterStationTimeSeries.add(mappingKey);
-                    break;
-                default:
-                    throw new AssertionError();
+                case GENERATOR -> config.generatorTimeSeries.add(mappingKey);
+                case LOAD -> config.loadTimeSeries.add(mappingKey);
+                case BOUNDARY_LINE -> config.danglingLineTimeSeries.add(mappingKey);
+                case HVDC_LINE -> config.hvdcLineTimeSeries.add(mappingKey);
+                case SWITCH -> config.breakerTimeSeries.add(mappingKey);
+                case TRANSFORMER -> config.transformerTimeSeries.add(mappingKey);
+                case LINE -> config.lineTimeSeries.add(mappingKey);
+                case PHASE_TAP_CHANGER -> config.phaseTapChangerTimeSeries.add(mappingKey);
+                case RATIO_TAP_CHANGER -> config.ratioTapChangerTimeSeries.add(mappingKey);
+                case LCC_CONVERTER_STATION -> config.lccConverterStationTimeSeries.add(mappingKey);
+                case VSC_CONVERTER_STATION -> config.vscConverterStationTimeSeries.add(mappingKey);
+                default -> throw new AssertionError();
             }
         }
     }

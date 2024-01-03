@@ -609,7 +609,7 @@ public class MetrixInputData {
 
     private void writeContingencies(MetrixDie die) {
         int index = 0;
-        float maxGeneratorOutage = 0.f;
+        double maxGeneratorOutage = 0.f;
         List<Integer> dmptdefk = new ArrayList<>();
         List<String> dmnomdek = new ArrayList<>();
         List<Integer> dmdescrk = new ArrayList<>();
@@ -618,26 +618,19 @@ public class MetrixInputData {
 
             List<Integer> elementsToTrip = new ArrayList<>();
 
-            float generatorPowerLost = 0.f;
+            double generatorPowerLost = 0.f;
 
             for (ContingencyElement element : contingency.getElements()) {
                 try {
                     int type;
                     switch (element.getType()) {
-                        case BRANCH:
-                        case LINE:
-                        case TWO_WINDINGS_TRANSFORMER:
-                            type = ElementType.BRANCH.getType();
-                            break;
-                        case GENERATOR:
+                        case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> type = ElementType.BRANCH.getType();
+                        case GENERATOR -> {
                             type = ElementType.GENERATOR.getType();
                             generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
-                            break;
-                        case HVDC_LINE:
-                            type = ElementType.HVDC.getType();
-                            break;
-                        default:
-                            throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
+                        }
+                        case HVDC_LINE -> type = ElementType.HVDC.getType();
+                        default -> throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
                     }
                     int elementIndex = metrixNetwork.getIndex(element.getId()); // may throw an exception if element not found in MCC
                     elementsToTrip.add(type);

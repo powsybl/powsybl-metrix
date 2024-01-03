@@ -294,7 +294,7 @@ public class TimeSeriesMappingConfigJson {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(timeSeriesNodes);
         ObjectMapper timeSeriesMapper = JsonUtil.createObjectMapper()
-                .registerModule(new TimeSeriesJsonModule());
+            .registerModule(new TimeSeriesJsonModule());
         try {
             generator.writeFieldName(JsonFieldName.TIME_SERIES_NODES.getFieldName());
             timeSeriesMapper.writeValue(generator, timeSeriesNodes);
@@ -360,22 +360,23 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case FIELD_NAME:
+                    case FIELD_NAME -> {
                         String fieldName = parser.getCurrentName();
                         if (fieldName.equals(JsonFieldName.MAPPING_KEY.getFieldName())) {
                             mappingKey = MappingKey.parseJson(parser);
                         } else {
                             throw new IllegalStateException("Unexpected field name " + fieldName);
                         }
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (mappingKey == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         set.add(mappingKey);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return set;
@@ -389,17 +390,14 @@ public class TimeSeriesMappingConfigJson {
         ObjectMapper mapper = new ObjectMapper();
         MappingKey newMappingKey = null;
         switch (JsonFieldName.nameOf(fieldName)) {
-            case MAPPING_KEY:
-                newMappingKey = MappingKey.parseJson(parser);
-                break;
-            case MAPPING_LIST:
+            case MAPPING_KEY -> newMappingKey = MappingKey.parseJson(parser);
+            case MAPPING_LIST -> {
                 if (parser.nextToken() == JsonToken.START_ARRAY) {
                     assert mappingList != null;
                     mappingList.addAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)));
                 }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected field name " + fieldName);
+            }
+            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
         }
         return newMappingKey;
     }
@@ -413,21 +411,20 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case START_OBJECT:
-                        mappingList = new LinkedList<>();
-                        break;
-                    case FIELD_NAME:
+                    case START_OBJECT -> mappingList = new LinkedList<>();
+                    case FIELD_NAME -> {
                         MappingKey newMappingKey = parseMappingKeyFieldName(parser, mappingList);
                         mappingKey = newMappingKey != null ? newMappingKey : mappingKey;
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (mappingKey == null || mappingList == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         map.put(mappingKey, mappingList);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return map;
@@ -445,27 +442,23 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case FIELD_NAME:
+                    case FIELD_NAME -> {
                         String fieldName = parser.getCurrentName();
                         switch (JsonFieldName.nameOf(fieldName)) {
-                            case MAPPING_KEY:
-                                mappingKey = MappingKey.parseJson(parser);
-                                break;
-                            case DISTRIBUTION:
-                                distributionKey = DistributionKey.parseJson(parser);
-                                break;
-                            default:
-                                throw new IllegalStateException("Unexpected field name " + fieldName);
+                            case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
+                            case DISTRIBUTION -> distributionKey = DistributionKey.parseJson(parser);
+                            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
                         }
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (mappingKey == null || distributionKey == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         map.put(mappingKey, distributionKey);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return map;
@@ -479,7 +472,7 @@ public class TimeSeriesMappingConfigJson {
         Map<String, NodeCalc> map = new HashMap<>();
         try {
             ObjectMapper mapper = JsonUtil.createObjectMapper()
-                    .registerModule(new TimeSeriesJsonModule());
+                .registerModule(new TimeSeriesJsonModule());
             if (parser.nextToken() == JsonToken.START_OBJECT) {
                 map.putAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructMapType(Map.class, String.class, NodeCalc.class)));
             }
@@ -494,21 +487,20 @@ public class TimeSeriesMappingConfigJson {
         String newTimeSeriesName = null;
         String fieldName = parser.getCurrentName();
         switch (JsonFieldName.nameOf(fieldName)) {
-            case TIME_SERIES_NAME:
+            case TIME_SERIES_NAME -> {
                 if (parser.nextToken() == JsonToken.VALUE_STRING) {
                     newTimeSeriesName = parser.getValueAsString();
                 }
-                break;
-            case MAPPING_KEYS:
+            }
+            case MAPPING_KEYS -> {
                 while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                     if (token == JsonToken.START_OBJECT) {
                         assert mappingKeys != null;
                         mappingKeys.add(MappingKey.parseJson(parser));
                     }
                 }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected field name " + fieldName);
+            }
+            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
         }
         return newTimeSeriesName;
     }
@@ -522,21 +514,20 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case START_OBJECT:
-                        mappingKeys = new LinkedHashSet<>();
-                        break;
-                    case FIELD_NAME:
+                    case START_OBJECT -> mappingKeys = new LinkedHashSet<>();
+                    case FIELD_NAME -> {
                         String newTimeSeriesName = parseTimeSeriesToEquipmentFieldName(parser, mappingKeys);
                         timeSeriesName = newTimeSeriesName != null ? newTimeSeriesName : timeSeriesName;
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (timeSeriesName == null || mappingKeys == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         map.put(timeSeriesName, mappingKeys);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return map;
@@ -554,29 +545,27 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case FIELD_NAME:
+                    case FIELD_NAME -> {
                         String fieldName = parser.getCurrentName();
                         switch (JsonFieldName.nameOf(fieldName)) {
-                            case MAPPING_KEY:
-                                mappingKey = MappingKey.parseJson(parser);
-                                break;
-                            case TIME_SERIES_NAME:
+                            case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
+                            case TIME_SERIES_NAME -> {
                                 if (parser.nextToken() == JsonToken.VALUE_STRING) {
                                     timeSeriesName = parser.getValueAsString();
                                 }
-                                break;
-                            default:
-                                throw new IllegalStateException("Unexpected field name " + fieldName);
+                            }
+                            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
                         }
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (mappingKey == null || timeSeriesName == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         map.put(mappingKey, timeSeriesName);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return map;
@@ -606,14 +595,9 @@ public class TimeSeriesMappingConfigJson {
         String newId = null;
         String fieldName = parser.getCurrentName();
         switch (JsonFieldName.nameOf(fieldName)) {
-            case EQUIPMENTID:
-                newId = parseGroupTimeSeriesEquipmentId(parser);
-                break;
-            case TIMESERIESNAMES:
-                parseGroupTimeSeriesNames(parser, names);
-                break;
-            default:
-                throw new IllegalStateException("Unexpected field name " + fieldName);
+            case EQUIPMENTID -> newId = parseGroupTimeSeriesEquipmentId(parser);
+            case TIMESERIESNAMES -> parseGroupTimeSeriesNames(parser, names);
+            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
         }
         return newId;
     }
@@ -627,21 +611,20 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case START_OBJECT:
-                        names = new HashSet<>();
-                        break;
-                    case FIELD_NAME:
+                    case START_OBJECT -> names = new HashSet<>();
+                    case FIELD_NAME -> {
                         String newId = parseGroupTimeSeriesFieldName(parser, names);
                         id = newId != null ? newId : id;
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (id == null || names == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         map.put(id, names);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return map;
@@ -659,21 +642,20 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
-                    case START_OBJECT:
-                        ids = new HashSet<>();
-                        break;
-                    case FIELD_NAME:
+                    case START_OBJECT -> ids = new HashSet<>();
+                    case FIELD_NAME -> {
                         String newTimeSeriesName = parseTimeSeriesToPlannedOutagesFieldName(parser, ids);
                         timeSeriesName = newTimeSeriesName != null ? newTimeSeriesName : timeSeriesName;
-                        break;
-                    case END_OBJECT:
+                    }
+                    case END_OBJECT -> {
                         if (timeSeriesName == null || ids == null) {
                             throw new TimeSeriesException("Invalid time series mapping config JSON");
                         }
                         map.put(timeSeriesName, ids);
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Do nothing
+                    }
                 }
             }
             return map;
@@ -687,221 +669,91 @@ public class TimeSeriesMappingConfigJson {
         String fieldName = parser.getCurrentName();
         String newTimeSeriesName = null;
         switch (JsonFieldName.nameOf(fieldName)) {
-            case TIME_SERIES_NAME:
+            case TIME_SERIES_NAME -> {
                 if (parser.nextToken() == JsonToken.VALUE_STRING) {
                     newTimeSeriesName = parser.getValueAsString();
                 }
-                break;
-            case OUTAGES:
+            }
+            case OUTAGES -> {
                 while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                     if (token == JsonToken.VALUE_STRING) {
                         assert ids != null;
                         ids.add(parser.getValueAsString());
                     }
                 }
-                break;
-            default:
-                throw new IllegalStateException("Unexpected field name " + fieldName);
+            }
+            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
         }
         return newTimeSeriesName;
     }
 
     public static void parseJson(JsonParser parser, String fieldName, TimeSeriesMappingConfig config) {
         switch (JsonFieldName.nameOf(fieldName)) {
-            case TS_TO_GENERATORS:
-                config.setTimeSeriesToGeneratorsMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_LOADS:
-                config.setTimeSeriesToLoadsMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_DANGLING_LINES:
-                config.setTimeSeriesToDanglingLinesMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_HVDC_LINES:
-                config.setTimeSeriesToHvdcLinesMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_PHASE_TAP_CHANGERS:
-                config.setTimeSeriesToPhaseTapChangersMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_BREAKERS:
-                config.setTimeSeriesToBreakersMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_TRANSFORMERS:
-                config.setTimeSeriesToTransformersMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_LINES:
-                config.setTimeSeriesToLinesMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_RATIO_TAP_CHANGERS:
-                config.setTimeSeriesToRatioTapChangersMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_LCC_CONVERTER_STATIONS:
-                config.setTimeSeriesToLccConverterStationsMapping(parseMappingKeyMap(parser));
-                break;
-            case TS_TO_VSC_CONVERTER_STATIONS:
-                config.setTimeSeriesToVscConverterStationsMapping(parseMappingKeyMap(parser));
-                break;
-            case GENERATOR_TO_TS:
-                config.setGeneratorToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case LOAD_TO_TS:
-                config.setLoadToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case DANGLING_LINE_TO_TS:
-                config.setDanglingLineToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case HVDC_LINE_TO_TS:
-                config.setHvdcLineToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case PHASE_TAP_CHANGER_TO_TS:
-                config.setPhaseTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case BREAKER_TO_TS:
-                config.setBreakerToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case TRANSFORMER_TO_TS:
-                config.setTransformerToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case LINE_TO_TS:
-                config.setLineToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case RATIO_TAP_CHANGER_TO_TS:
-                config.setRatioTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case LCC_CONVERTER_STATION_TO_TS:
-                config.setLccConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case VSC_CONVERTER_STATION_TO_TS:
-                config.setVscConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
-                break;
-            case GENERATOR_TS:
-                config.setGeneratorTimeSeries(parseMappingKeySet(parser));
-                break;
-            case LOAD_TS:
-                config.setLoadTimeSeries(parseMappingKeySet(parser));
-                break;
-            case DANGLING_LINE_TS:
-                config.setDanglingLineTimeSeries(parseMappingKeySet(parser));
-                break;
-            case HVDC_LINE_TS:
-                config.setHvdcLineTimeSeries(parseMappingKeySet(parser));
-                break;
-            case PHASE_TAP_CHANGER_TS:
-                config.setPhaseTapChangerTimeSeries(parseMappingKeySet(parser));
-                break;
-            case BREAKER_TS:
-                config.setBreakerTimeSeries(parseMappingKeySet(parser));
-                break;
-            case TRANSFORMER_TS:
-                config.setTransformerTimeSeries(parseMappingKeySet(parser));
-                break;
-            case LINE_TS:
-                config.setLineTimeSeries(parseMappingKeySet(parser));
-                break;
-            case RATIO_TAP_CHANGER_TS:
-                config.setRatioTapChangerTimeSeries(parseMappingKeySet(parser));
-                break;
-            case LCC_CONVERTER_STATION_TS:
-                config.setLccConverterStationTimeSeries(parseMappingKeySet(parser));
-                break;
-            case VSC_CONVERTER_STATION_TS:
-                config.setVscConverterStationTimeSeries(parseMappingKeySet(parser));
-                break;
-            case UNMAPPED_GENERATORS:
-                config.setUnmappedGenerators(parseMappingSet(parser));
-                break;
-            case UNMAPPED_LOADS:
-                config.setUnmappedLoads(parseMappingSet(parser));
-                break;
-            case UNMAPPED_FIXED_ACTIVE_POWER_LOADS:
-                config.setUnmappedFixedActivePowerLoads(parseMappingSet(parser));
-                break;
-            case UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS:
-                config.setUnmappedVariableActivePowerLoads(parseMappingSet(parser));
-                break;
-            case UNMAPPED_DANGLING_LINES:
-                config.setUnmappedDanglingLines(parseMappingSet(parser));
-                break;
-            case UNMAPPED_HVDC_LINES:
-                config.setUnmappedHvdcLines(parseMappingSet(parser));
-                break;
-            case UNMAPPED_PHASE_TAP_CHANGERS:
-                config.setUnmappedPhaseTapChangers(parseMappingSet(parser));
-                break;
-            case UNMAPPED_MIN_P_GENERATORS:
-                config.setUnmappedMinPGenerators(parseMappingSet(parser));
-                break;
-            case UNMAPPED_MAX_P_GENERATORS:
-                config.setUnmappedMaxPGenerators(parseMappingSet(parser));
-                break;
-            case UNMAPPED_MIN_P_HVDC_LINES:
-                config.setUnmappedMinPHvdcLines(parseMappingSet(parser));
-                break;
-            case UNMAPPED_MAX_P_HVDC_LINES:
-                config.setUnmappedMaxPHvdcLines(parseMappingSet(parser));
-                break;
-            case IGNORED_UNMAPPED_GENERATORS:
-                config.setIgnoredUnmappedGenerators(parseMappingSet(parser));
-                break;
-            case IGNORED_UNMAPPED_LOADS:
-                config.setIgnoredUnmappedLoads(parseMappingSet(parser));
-                break;
-            case IGNORED_UNMAPPED_DANGLING_LINES:
-                config.setIgnoredUnmappedDanglingLines(parseMappingSet(parser));
-                break;
-            case IGNORED_UNMAPPED_HVDC_LINES:
-                config.setIgnoredUnmappedHvdcLines(parseMappingSet(parser));
-                break;
-            case IGNORED_UNMAPPED_PHASE_TAP_CHANGERS:
-                config.setIgnoredUnmappedPhaseTapChangers(parseMappingSet(parser));
-                break;
-            case DISCONNECTED_GENERATORS:
-                config.setDisconnectedGenerators(parseMappingSet(parser));
-                break;
-            case DISCONNECTED_LOADS:
-                config.setDisconnectedLoads(parseMappingSet(parser));
-                break;
-            case DISCONNECTED_DANGLING_LINES:
-                config.setDisconnectedDanglingLines(parseMappingSet(parser));
-                break;
-            case OUT_OF_MAIN_CC_GENERATORS:
-                config.setOutOfMainCcGenerators(parseMappingSet(parser));
-                break;
-            case OUT_OF_MAIN_CC_LOADS:
-                config.setOutOfMainCcLoads(parseMappingSet(parser));
-                break;
-            case OUT_OF_MAIN_CC_DANGLING_LINES:
-                config.setOutOfMainCcDanglingLines(parseMappingSet(parser));
-                break;
-            case DISTRIBUTION_KEYS:
-                config.setDistributionKeys(parseDistributionKeys(parser));
-                break;
-            case TIME_SERIES_NODES:
-                config.setTimeSeriesNodes(parseTimeSeriesNodes(parser));
-                break;
-            case TS_TO_EQUIPMENT:
-                config.setTimeSeriesToEquipment(parseTimeSeriesToEquipment(parser));
-                break;
-            case EQUIPMENT_TO_TS:
-                config.setEquipmentToTimeSeries(parseEquipmentToTimeSeries(parser));
-                break;
-            case MAPPED_TIME_SERIES_NAMES:
-                config.setMappedTimeSeriesNames(parseMappingSet(parser));
-                break;
-            case IGNORE_LIMITS_TIME_SERIES_NAMES:
-                config.setIgnoreLimitsTimeSeriesNames(parseMappingSet(parser));
-                break;
-            case TS_TO_PLANNED_OUTAGES:
-                config.setTimeSeriesToPlannedOutagesMapping(parseTimeSeriesToPlannedOutages(parser));
-                break;
-            case GENERATORGROUPTS:
-                config.setGeneratorGroupTimeSeries(parseGroupTimeSeries(parser));
-                break;
-            case LOADGROUPTS:
-                config.setLoadGroupTimeSeries(parseGroupTimeSeries(parser));
-                break;
-            default:
-                throw new IllegalStateException("Unexpected field name " + fieldName);
+            case TS_TO_GENERATORS -> config.setTimeSeriesToGeneratorsMapping(parseMappingKeyMap(parser));
+            case TS_TO_LOADS -> config.setTimeSeriesToLoadsMapping(parseMappingKeyMap(parser));
+            case TS_TO_DANGLING_LINES -> config.setTimeSeriesToDanglingLinesMapping(parseMappingKeyMap(parser));
+            case TS_TO_HVDC_LINES -> config.setTimeSeriesToHvdcLinesMapping(parseMappingKeyMap(parser));
+            case TS_TO_PHASE_TAP_CHANGERS -> config.setTimeSeriesToPhaseTapChangersMapping(parseMappingKeyMap(parser));
+            case TS_TO_BREAKERS -> config.setTimeSeriesToBreakersMapping(parseMappingKeyMap(parser));
+            case TS_TO_TRANSFORMERS -> config.setTimeSeriesToTransformersMapping(parseMappingKeyMap(parser));
+            case TS_TO_LINES -> config.setTimeSeriesToLinesMapping(parseMappingKeyMap(parser));
+            case TS_TO_RATIO_TAP_CHANGERS -> config.setTimeSeriesToRatioTapChangersMapping(parseMappingKeyMap(parser));
+            case TS_TO_LCC_CONVERTER_STATIONS -> config.setTimeSeriesToLccConverterStationsMapping(parseMappingKeyMap(parser));
+            case TS_TO_VSC_CONVERTER_STATIONS -> config.setTimeSeriesToVscConverterStationsMapping(parseMappingKeyMap(parser));
+            case GENERATOR_TO_TS -> config.setGeneratorToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case LOAD_TO_TS -> config.setLoadToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case DANGLING_LINE_TO_TS -> config.setDanglingLineToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case HVDC_LINE_TO_TS -> config.setHvdcLineToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case PHASE_TAP_CHANGER_TO_TS -> config.setPhaseTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case BREAKER_TO_TS -> config.setBreakerToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case TRANSFORMER_TO_TS -> config.setTransformerToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case LINE_TO_TS -> config.setLineToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case RATIO_TAP_CHANGER_TO_TS -> config.setRatioTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case LCC_CONVERTER_STATION_TO_TS -> config.setLccConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case VSC_CONVERTER_STATION_TO_TS -> config.setVscConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case GENERATOR_TS -> config.setGeneratorTimeSeries(parseMappingKeySet(parser));
+            case LOAD_TS -> config.setLoadTimeSeries(parseMappingKeySet(parser));
+            case DANGLING_LINE_TS -> config.setDanglingLineTimeSeries(parseMappingKeySet(parser));
+            case HVDC_LINE_TS -> config.setHvdcLineTimeSeries(parseMappingKeySet(parser));
+            case PHASE_TAP_CHANGER_TS -> config.setPhaseTapChangerTimeSeries(parseMappingKeySet(parser));
+            case BREAKER_TS -> config.setBreakerTimeSeries(parseMappingKeySet(parser));
+            case TRANSFORMER_TS -> config.setTransformerTimeSeries(parseMappingKeySet(parser));
+            case LINE_TS -> config.setLineTimeSeries(parseMappingKeySet(parser));
+            case RATIO_TAP_CHANGER_TS -> config.setRatioTapChangerTimeSeries(parseMappingKeySet(parser));
+            case LCC_CONVERTER_STATION_TS -> config.setLccConverterStationTimeSeries(parseMappingKeySet(parser));
+            case VSC_CONVERTER_STATION_TS -> config.setVscConverterStationTimeSeries(parseMappingKeySet(parser));
+            case UNMAPPED_GENERATORS -> config.setUnmappedGenerators(parseMappingSet(parser));
+            case UNMAPPED_LOADS -> config.setUnmappedLoads(parseMappingSet(parser));
+            case UNMAPPED_FIXED_ACTIVE_POWER_LOADS -> config.setUnmappedFixedActivePowerLoads(parseMappingSet(parser));
+            case UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS -> config.setUnmappedVariableActivePowerLoads(parseMappingSet(parser));
+            case UNMAPPED_DANGLING_LINES -> config.setUnmappedDanglingLines(parseMappingSet(parser));
+            case UNMAPPED_HVDC_LINES -> config.setUnmappedHvdcLines(parseMappingSet(parser));
+            case UNMAPPED_PHASE_TAP_CHANGERS -> config.setUnmappedPhaseTapChangers(parseMappingSet(parser));
+            case UNMAPPED_MIN_P_GENERATORS -> config.setUnmappedMinPGenerators(parseMappingSet(parser));
+            case UNMAPPED_MAX_P_GENERATORS -> config.setUnmappedMaxPGenerators(parseMappingSet(parser));
+            case UNMAPPED_MIN_P_HVDC_LINES -> config.setUnmappedMinPHvdcLines(parseMappingSet(parser));
+            case UNMAPPED_MAX_P_HVDC_LINES -> config.setUnmappedMaxPHvdcLines(parseMappingSet(parser));
+            case IGNORED_UNMAPPED_GENERATORS -> config.setIgnoredUnmappedGenerators(parseMappingSet(parser));
+            case IGNORED_UNMAPPED_LOADS -> config.setIgnoredUnmappedLoads(parseMappingSet(parser));
+            case IGNORED_UNMAPPED_DANGLING_LINES -> config.setIgnoredUnmappedDanglingLines(parseMappingSet(parser));
+            case IGNORED_UNMAPPED_HVDC_LINES -> config.setIgnoredUnmappedHvdcLines(parseMappingSet(parser));
+            case IGNORED_UNMAPPED_PHASE_TAP_CHANGERS -> config.setIgnoredUnmappedPhaseTapChangers(parseMappingSet(parser));
+            case DISCONNECTED_GENERATORS -> config.setDisconnectedGenerators(parseMappingSet(parser));
+            case DISCONNECTED_LOADS -> config.setDisconnectedLoads(parseMappingSet(parser));
+            case DISCONNECTED_DANGLING_LINES -> config.setDisconnectedDanglingLines(parseMappingSet(parser));
+            case OUT_OF_MAIN_CC_GENERATORS -> config.setOutOfMainCcGenerators(parseMappingSet(parser));
+            case OUT_OF_MAIN_CC_LOADS -> config.setOutOfMainCcLoads(parseMappingSet(parser));
+            case OUT_OF_MAIN_CC_DANGLING_LINES -> config.setOutOfMainCcDanglingLines(parseMappingSet(parser));
+            case DISTRIBUTION_KEYS -> config.setDistributionKeys(parseDistributionKeys(parser));
+            case TIME_SERIES_NODES -> config.setTimeSeriesNodes(parseTimeSeriesNodes(parser));
+            case TS_TO_EQUIPMENT -> config.setTimeSeriesToEquipment(parseTimeSeriesToEquipment(parser));
+            case EQUIPMENT_TO_TS -> config.setEquipmentToTimeSeries(parseEquipmentToTimeSeries(parser));
+            case MAPPED_TIME_SERIES_NAMES -> config.setMappedTimeSeriesNames(parseMappingSet(parser));
+            case IGNORE_LIMITS_TIME_SERIES_NAMES -> config.setIgnoreLimitsTimeSeriesNames(parseMappingSet(parser));
+            case TS_TO_PLANNED_OUTAGES -> config.setTimeSeriesToPlannedOutagesMapping(parseTimeSeriesToPlannedOutages(parser));
+            case GENERATORGROUPTS -> config.setGeneratorGroupTimeSeries(parseGroupTimeSeries(parser));
+            case LOADGROUPTS -> config.setLoadGroupTimeSeries(parseGroupTimeSeries(parser));
+            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
         }
     }
 

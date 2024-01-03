@@ -87,16 +87,9 @@ public final class TimeSeriesStoreUtil {
         Set<String> stringTimeSeriesNames = new HashSet<>();
         for (TimeSeriesMetadata metadata : metadataList) {
             switch (metadata.getDataType()) {
-                case DOUBLE:
-                    doubleTimeSeriesNames.add(metadata.getName());
-                    break;
-
-                case STRING:
-                    stringTimeSeriesNames.add(metadata.getName());
-                    break;
-
-                default:
-                    throw new AssertionError("Unexpected data type " + metadata.getDataType());
+                case DOUBLE -> doubleTimeSeriesNames.add(metadata.getName());
+                case STRING -> stringTimeSeriesNames.add(metadata.getName());
+                default -> throw new AssertionError("Unexpected data type " + metadata.getDataType());
             }
         }
         writeCsv(store, writer, separator, zoneId, versions, metadataList, doubleTimeSeriesNames, stringTimeSeriesNames);

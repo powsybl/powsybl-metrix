@@ -581,11 +581,11 @@ public class MetrixNetwork {
             Switch sw = network.getSwitch(breakerId);
 
             if (sw == null) {
-                LOGGER.debug(String.format("Switch '%s' not found or not a switch", breakerId));
+                LOGGER.debug("Switch '{}' not found or not a switch", breakerId);
                 continue;
             }
             if (sw.isOpen()) {
-                LOGGER.warn(String.format("Switch '%s' is opened in basecase", breakerId));
+                LOGGER.warn("Switch '{}' is opened in basecase", breakerId);
                 continue;
             }
 
@@ -604,27 +604,20 @@ public class MetrixNetwork {
                 mappedSwitchMap.put(switchId, switchId);
             } else {
                 switch (terminal1.getConnectable().getType()) {
-                    case LINE:
-                    case TWO_WINDINGS_TRANSFORMER:
+                    case LINE, TWO_WINDINGS_TRANSFORMER -> {
                         sw.setRetained(true);
                         mappedSwitchMap.put(switchId, terminal1.getConnectable().getId());
-                        break;
-                    case LOAD:
-                    case GENERATOR:
+                    }
+                    case LOAD, GENERATOR -> {
                         sw.setRetained(true);
                         mappedSwitchMap.put(switchId, switchId);
-                        break;
-                    case DANGLING_LINE:
-                    case HVDC_CONVERTER_STATION:
-                    case SHUNT_COMPENSATOR:
-                    case STATIC_VAR_COMPENSATOR:
-                    case THREE_WINDINGS_TRANSFORMER:
+                    }
+                    case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR, THREE_WINDINGS_TRANSFORMER -> {
                         if (LOGGER.isWarnEnabled()) {
                             LOGGER.warn(String.format("Unsupported connectable type (%s) for switch '%s'", terminal1.getConnectable().getType(), breakerId));
                         }
-                        break;
-                    default:
-                        throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
+                    }
+                    default -> throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
                 }
             }
         }
@@ -646,12 +639,12 @@ public class MetrixNetwork {
                     }
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Unsupported open branch type : %s", identifiable.getClass()));
+                        LOGGER.warn("Unsupported open branch type : {}", identifiable.getClass());
                     }
                 }
             } else {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Opened branch '%s' is missing in the network", branchId));
+                    LOGGER.warn("Opened branch '{}' is missing in the network", branchId);
                 }
             }
         }
@@ -661,16 +654,16 @@ public class MetrixNetwork {
         branchToClose.getTerminal1().connect();
         branchToClose.getTerminal2().connect();
         if (branchToClose.getTerminal1().isConnected() && branchToClose.getTerminal2().isConnected()) {
-            LOGGER.debug(String.format("Reconnecting open branch : %s", branchToClose.getId()));
+            LOGGER.debug("Reconnecting open branch : {}", branchToClose.getId());
         } else {
-            LOGGER.warn(String.format("Unable to reconnect open branch : %s", branchToClose.getId()));
+            LOGGER.warn("Unable to reconnect open branch : {}", branchToClose.getId());
         }
     }
 
     private void closeSwitch(Switch switchToClose) {
         switchToClose.setOpen(false);
         switchToClose.setRetained(true);
-        LOGGER.debug(String.format("Reconnecting open switch : %s", switchToClose.getId()));
+        LOGGER.debug("Reconnecting open switch : {}", switchToClose.getId());
     }
 
     Optional<String> getMappedBranch(Switch sw) {

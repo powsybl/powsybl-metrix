@@ -97,24 +97,14 @@ public class MappingKeyNetworkValue {
     }
 
     private double getHvdcLineValue(HvdcLine hvdcLine, EquipmentVariable variable) {
-        double value;
-        switch (variable) {
-            case activePowerSetpoint:
-                value = TimeSeriesMapper.getHvdcLineSetPoint(hvdcLine);
-                break;
-            case maxP:
-                value = TimeSeriesMapper.getMax(hvdcLine);
-                break;
-            case minP:
-                value = TimeSeriesMapper.getMin(hvdcLine);
-                break;
-            case nominalV:
-                value = hvdcLine.getNominalV();
-                break;
-            default:
+        return switch (variable) {
+            case activePowerSetpoint -> TimeSeriesMapper.getHvdcLineSetPoint(hvdcLine);
+            case maxP -> TimeSeriesMapper.getMax(hvdcLine);
+            case minP -> TimeSeriesMapper.getMin(hvdcLine);
+            case nominalV -> hvdcLine.getNominalV();
+            default ->
                 throw new TimeSeriesMappingException("Unknown variable " + variable + " for hvdcLine " + hvdcLine.getId());
-        }
-        return value;
+        };
     }
 
     private double getSwitchValue(Switch sw, EquipmentVariable variable) {
@@ -125,65 +115,34 @@ public class MappingKeyNetworkValue {
     }
 
     private int getRegulationModeValue(PhaseTapChanger.RegulationMode mode) {
-        int value;
-        switch (mode) {
-            case CURRENT_LIMITER:
-                value = 0;
-                break;
-            case ACTIVE_POWER_CONTROL:
-                value = 1;
-                break;
-            case FIXED_TAP:
-                value = 2;
-                break;
-            default:
-                throw new TimeSeriesMappingException("Unsupported regulation mode " + mode);
-        }
-        return value;
+        return switch (mode) {
+            case CURRENT_LIMITER -> 0;
+            case ACTIVE_POWER_CONTROL -> 1;
+            case FIXED_TAP -> 2;
+        };
     }
 
     private double getTwoWindingsTransformerValue(TwoWindingsTransformer twoWindingsTransformer, EquipmentVariable variable) {
-        double value;
-        switch (variable) {
-            case ratedU1:
-                value = twoWindingsTransformer.getRatedU1();
-                break;
-            case ratedU2:
-                value = twoWindingsTransformer.getRatedU2();
-                break;
-            case disconnected:
-                value = !twoWindingsTransformer.getTerminal1().isConnected() || !twoWindingsTransformer.getTerminal2().isConnected() ? ON_VALUE : OFF_VALUE;
-                break;
+        return switch (variable) {
+            case ratedU1 -> twoWindingsTransformer.getRatedU1();
+            case ratedU2 -> twoWindingsTransformer.getRatedU2();
+            case disconnected ->
+                !twoWindingsTransformer.getTerminal1().isConnected() || !twoWindingsTransformer.getTerminal2().isConnected() ? ON_VALUE : OFF_VALUE;
             // mapToPhaseTapChangers variables
-            case phaseTapPosition:
-                value = twoWindingsTransformer.getPhaseTapChanger().getTapPosition();
-                break;
-            case phaseRegulating:
-                value = twoWindingsTransformer.getPhaseTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
-                break;
-            case targetDeadband:
-                value = twoWindingsTransformer.getPhaseTapChanger().getTargetDeadband();
-                break;
-            case regulationMode:
-                value = getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode());
-                break;
+            case phaseTapPosition -> twoWindingsTransformer.getPhaseTapChanger().getTapPosition();
+            case phaseRegulating -> twoWindingsTransformer.getPhaseTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
+            case targetDeadband -> twoWindingsTransformer.getPhaseTapChanger().getTargetDeadband();
+            case regulationMode ->
+                getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode());
             // mapToRatioTapChanger variables
-            case ratioTapPosition:
-                value = twoWindingsTransformer.getRatioTapChanger().getTapPosition();
-                break;
-            case targetV:
-                value = twoWindingsTransformer.getRatioTapChanger().getTargetV();
-                break;
-            case loadTapChangingCapabilities:
-                value = twoWindingsTransformer.getRatioTapChanger().hasLoadTapChangingCapabilities() ? ON_VALUE : OFF_VALUE;
-                break;
-            case ratioRegulating:
-                value = twoWindingsTransformer.getRatioTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
-                break;
-            default:
+            case ratioTapPosition -> twoWindingsTransformer.getRatioTapChanger().getTapPosition();
+            case targetV -> twoWindingsTransformer.getRatioTapChanger().getTargetV();
+            case loadTapChangingCapabilities ->
+                twoWindingsTransformer.getRatioTapChanger().hasLoadTapChangingCapabilities() ? ON_VALUE : OFF_VALUE;
+            case ratioRegulating -> twoWindingsTransformer.getRatioTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
+            default ->
                 throw new TimeSeriesMappingException("Unknown variable " + variable + " for twoWindingsTransformer " + twoWindingsTransformer.getId());
-        }
-        return value;
+        };
     }
 
     private double getLccConverterStationValue(LccConverterStation lccConverterStation, EquipmentVariable variable) {
@@ -194,21 +153,13 @@ public class MappingKeyNetworkValue {
     }
 
     private double getVscConverterStationValue(VscConverterStation vscConverterStation, EquipmentVariable variable) {
-        double value;
-        switch (variable) {
-            case voltageRegulatorOn:
-                value = vscConverterStation.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
-                break;
-            case voltageSetpoint:
-                value = vscConverterStation.getVoltageSetpoint();
-                break;
-            case reactivePowerSetpoint:
-                value = vscConverterStation.getReactivePowerSetpoint();
-                break;
-            default:
+        return switch (variable) {
+            case voltageRegulatorOn -> vscConverterStation.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
+            case voltageSetpoint -> vscConverterStation.getVoltageSetpoint();
+            case reactivePowerSetpoint -> vscConverterStation.getReactivePowerSetpoint();
+            default ->
                 throw new TimeSeriesMappingException("Unknown variable " + variable + " for vscConverterStation " + vscConverterStation.getId());
-        }
-        return value;
+        };
     }
 
     private double getLineValue(Line line, EquipmentVariable variable) {

@@ -205,16 +205,16 @@ public class MetrixOutputData {
         while ((line = reader.readLine()) != null) {
             empty = false;
             chunks = line.split(";", -1);
+            int outageId;
             switch (chunks[0]) {
-                case "C1 ":
+                case "C1 " -> {
                     if ("COMPTE RENDU".equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries(ERROR_CODE_NAME);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                    break;
-
-                case "C2 ":
+                }
+                case "C2 " -> {
                     if ("NON CONNEXITE".equals(chunks[1])) {
                         continue; // header
                     }
@@ -226,9 +226,8 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
                     }
-                    break;
-
-                case "C2B ":
+                }
+                case "C2B " -> {
                     if ("NON CONNEXITE".equals(chunks[1])) {
                         continue; // header
                     }
@@ -236,24 +235,24 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[3], chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
-                    break;
-
-                case "C4 ": // outage ids
+                }
+                case "C4 " -> {
+                    // outage ids
                     if ("INCIDENTS".equals(chunks[1])) {
                         continue; // header
                     }
                     outageNames.put(Integer.parseInt(chunks[2].trim()), chunks[4]);
-                    break;
-
-                case "C5 ": // initial balancing for synchronous areas
+                }
+                case "C5 " -> {
+                    // initial balancing for synchronous areas
                     if ("ZONE SYNC".equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries("INIT_BAL_AREA_" + chunks[2]);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    break;
-
-                case "R1 ": // Preventive load shedding
+                }
+                case "R1 " -> {
+                    // Preventive load shedding
                     if ("PAR CONSO".equals(chunks[1])) {
                         continue; // header
                     }
@@ -265,26 +264,26 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("LOAD_", "load", chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
                     }
-                    break;
-
-                case "R1B ": // Curative Loads
+                }
+                case "R1B " -> {
+                    // Curative Loads
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
                     outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
                     ts = getDoubleTimeSeries("LOAD_CUR_", "load", chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    break;
-
-                case "R1C ": // Loads bindings
+                }
+                case "R1C " -> {
+                    // Loads bindings
                     if ("NOM REGROUPEMENT".equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries("LOAD_", "load binding", chunks[1]);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                    break;
-
-                case "R2 ": // Preventive redispatching
+                }
+                case "R2 " -> {
+                    // Preventive redispatching
                     if ("PAR GROUPE".equals(chunks[1])) {
                         continue; // header
                     }
@@ -296,34 +295,34 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("GEN_", "generator", chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
                     }
-                    break;
-
-                case "R2B ": // Generator Curative
+                }
+                case "R2B " -> {
+                    // Generator Curative
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
                     outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
                     ts = getDoubleTimeSeries("GEN_CUR_", "generator", chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    break;
-
-                case "R2C ": // Generators bindings
+                }
+                case "R2C " -> {
+                    // Generators bindings
                     if ("NOM REGROUPEMENT".equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries("GEN_", "generator binding", chunks[1]);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                    break;
-
-                case "R3 ": // Basecase flows
+                }
+                case "R3 " -> {
+                    // Basecase flows
                     if (PAR_LIGNE.equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries(FLOW_NAME, "branch", chunks[2]);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    break;
-
-                case "R3B ": // max outage flows
+                }
+                case "R3B " -> {
+                    // max outage flows
                     if (PAR_LIGNE.equals(chunks[1])) {
                         continue; // header
                     }
@@ -338,7 +337,7 @@ public class MetrixOutputData {
                     int i = 0;
                     int chunkNum;
                     while ((chunkNum = 5 + 2 * i) < chunks.length &&
-                            !EMPTY_STRING.equals(chunks[chunkNum])) {
+                        !EMPTY_STRING.equals(chunks[chunkNum])) {
                         i++;
                         sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_NAME_", "branch", chunks[2]);
                         sts.insertResult(varNum - offset, outageNames.get(Integer.parseInt(chunks[chunkNum])));
@@ -346,22 +345,22 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries(MAX_THREAT_NAME + i + "_" + FLOW_NAME, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[chunkNum + 1]));
                     }
-                    break;
-
-                case "R3C ": // Detailed outage flows
+                }
+                case "R3C " -> {
+                    // Detailed outage flows
                     if (PAR_LIGNE.equals(chunks[1])) {
                         continue; // header
                     }
                     outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
                     ts = getDoubleTimeSeries("FLOW_", "branch", chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    break;
-
-                case "R4 ": // Marginal costs
+                }
+                case "R4 " -> {
+                    // Marginal costs
                     if ("VAR. MARGINALES".equals(chunks[1])) {
                         continue; // header
                     }
-                    int outageId = Integer.parseInt(chunks[3]);
+                    outageId = Integer.parseInt(chunks[3]);
                     if (outageId == 0) {
                         ts = getDoubleTimeSeries("MV_", "branch", chunks[2]);
                     } else {
@@ -369,9 +368,9 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("MV_", "branch", chunks[2], outageName);
                     }
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    break;
-
-                case "R4B ": // Detailed marginal costs
+                }
+                case "R4B " -> {
+                    // Detailed marginal costs
                     if ("VAR. MARGINALES".equals(chunks[1])) {
                         continue; // header
                     }
@@ -382,9 +381,9 @@ public class MetrixOutputData {
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
                     ts = getDetailedMVTimeSeries("MV_COST", chunks[2], chunks[5], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
-                    break;
-
-                case "R5 ": // PST Basecase
+                }
+                case "R5 " -> {
+                    // PST Basecase
                     if ("PAR TD".equals(chunks[1])) {
                         continue; // header
                     }
@@ -392,9 +391,9 @@ public class MetrixOutputData {
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                     ts = getDoubleTimeSeries(PST_TAP_NAME, PST_TYPE, chunks[2]);
                     ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
-                    break;
-
-                case "R5B ": // PST Curative
+                }
+                case "R5B " -> {
+                    // PST Curative
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
@@ -403,9 +402,8 @@ public class MetrixOutputData {
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                     ts = getDoubleTimeSeries(PST_CUR_TAP_NAME, PST_TYPE, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
-                    break;
-
-                case "R6 ": // HVDC Basecase
+                }
+                case "R6 " -> {// HVDC Basecase
                     if (" PAR LCC".equals(chunks[1])) {
                         continue; // header
                     }
@@ -416,19 +414,16 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("MV_", HVDC_TYPE, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
-                    break;
-
-                case "R6B ": // HVDC Curative
+                }
+                case "R6B " -> {// HVDC Curative
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
                     outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
                     ts = getDoubleTimeSeries("HVDC_CUR_", HVDC_TYPE, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-
-                    break;
-
-                case "R7 ": // Redispatching by generator types
+                }
+                case "R7 " -> {// Redispatching by generator types
                     if ("PAR FILIERE".equals(chunks[1])) {
                         continue; // header
                     }
@@ -448,25 +443,25 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("GEN_CUR_VOL_UP_", "generator-type", chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
                     }
-                    break;
-
-                case "R8 ": // Losses
+                }
+                case "R8 " -> {
+                    // Losses
                     if ("PERTES".equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries(LOSSES);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                    break;
-
-                case "R8B ": // Pertes
+                }
+                case "R8B " -> {
+                    // Pertes
                     if ("PERTES".equals(chunks[1])) {
                         continue; // header
                     }
                     ts = getDoubleTimeSeries(LOSSES_BY_COUNTRY, "losses", chunks[2]);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    break;
-
-                case "R9 ": // Fonction objectif de l'optimisation
+                }
+                case "R9 " -> {
+                    // Fonction objectif de l'optimisation
                     if ("FCT OBJECTIF".equals(chunks[1])) {
                         continue; // header
                     }
@@ -489,19 +484,16 @@ public class MetrixOutputData {
                         ts = getDoubleTimeSeries("LOAD_CUR_COST");
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
                     }
-                    break;
-
-                case "R10": // Topological remedial actions
+                }
+                case "R10" -> {
+                    // Topological remedial actions
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
                     sts = getStringTimeSeries("TOPOLOGY_", CONTINGENCY_TYPE, chunks[2]);
                     sts.insertResult(varNum - offset, chunks[4]);
-                    break;
-
-                default:
-                    LOGGER.error("Unexpected content for variant {} ({})", varNum, line);
-                    break;
+                }
+                default -> LOGGER.error("Unexpected content for variant {} ({})", varNum, line);
             }
         }
         if (empty) {

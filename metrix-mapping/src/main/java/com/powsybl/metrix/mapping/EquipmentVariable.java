@@ -132,30 +132,17 @@ public enum EquipmentVariable implements MappingVariable {
     }
 
     public static EquipmentVariable getByDefaultVariable(MappableEquipmentType equipmentType) {
-        switch (equipmentType) {
-            case GENERATOR:
-                return EquipmentVariable.targetP;
-            case HVDC_LINE:
-                return EquipmentVariable.activePowerSetpoint;
-            case LOAD:
-            case BOUNDARY_LINE:
-                return EquipmentVariable.p0;
-            case SWITCH:
-                return EquipmentVariable.open;
-            case PHASE_TAP_CHANGER:
-                return EquipmentVariable.phaseTapPosition;
-            case RATIO_TAP_CHANGER:
-                return EquipmentVariable.ratioTapPosition;
-            case LCC_CONVERTER_STATION:
-                return EquipmentVariable.powerFactor;
-            case VSC_CONVERTER_STATION:
-                return EquipmentVariable.voltageSetpoint;
-            case TRANSFORMER:
-            case LINE:
-                return EquipmentVariable.disconnected;
-            default:
-                throw new AssertionError("Unsupported equipment type " + equipmentType);
-        }
+        return switch (equipmentType) {
+            case GENERATOR -> EquipmentVariable.targetP;
+            case HVDC_LINE -> EquipmentVariable.activePowerSetpoint;
+            case LOAD, BOUNDARY_LINE -> EquipmentVariable.p0;
+            case SWITCH -> EquipmentVariable.open;
+            case PHASE_TAP_CHANGER -> EquipmentVariable.phaseTapPosition;
+            case RATIO_TAP_CHANGER -> EquipmentVariable.ratioTapPosition;
+            case LCC_CONVERTER_STATION -> EquipmentVariable.powerFactor;
+            case VSC_CONVERTER_STATION -> EquipmentVariable.voltageSetpoint;
+            case TRANSFORMER, LINE -> EquipmentVariable.disconnected;
+        };
     }
 
     public static Set<EquipmentVariable> getByDefaultVariables(MappableEquipmentType equipmentType) {
@@ -169,32 +156,19 @@ public enum EquipmentVariable implements MappingVariable {
     }
 
     public static boolean isVariableCompatible(MappableEquipmentType equipmentType, EquipmentVariable equipmentVariable) {
-        switch (equipmentType) {
-            case GENERATOR:
-                return GENERATOR_VARIABLES.contains(equipmentVariable);
-            case HVDC_LINE:
-                return HVDC_LINE_VARIABLES.contains(equipmentVariable);
-            case LOAD:
-                return LOAD_VARIABLES.contains(equipmentVariable);
-            case BOUNDARY_LINE:
-                return equipmentVariable == EquipmentVariable.p0;
-            case SWITCH:
-                return equipmentVariable == EquipmentVariable.open;
-            case PHASE_TAP_CHANGER:
-                return PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
-            case TRANSFORMER:
-                return TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);
-            case RATIO_TAP_CHANGER:
-                return RATIO_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
-            case LCC_CONVERTER_STATION:
-                return LCC_CONVERTER_VARIABLES.contains(equipmentVariable);
-            case VSC_CONVERTER_STATION:
-                return VSC_CONVERTER_VARIABLES.contains(equipmentVariable);
-            case LINE:
-                return LINE_VARIABLES.contains(equipmentVariable);
-            default:
-                throw new AssertionError("Unsupported equipment type " + equipmentType);
-        }
+        return switch (equipmentType) {
+            case GENERATOR -> GENERATOR_VARIABLES.contains(equipmentVariable);
+            case HVDC_LINE -> HVDC_LINE_VARIABLES.contains(equipmentVariable);
+            case LOAD -> LOAD_VARIABLES.contains(equipmentVariable);
+            case BOUNDARY_LINE -> equipmentVariable == EquipmentVariable.p0;
+            case SWITCH -> equipmentVariable == EquipmentVariable.open;
+            case PHASE_TAP_CHANGER -> PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
+            case TRANSFORMER -> TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);
+            case RATIO_TAP_CHANGER -> RATIO_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
+            case LCC_CONVERTER_STATION -> LCC_CONVERTER_VARIABLES.contains(equipmentVariable);
+            case VSC_CONVERTER_STATION -> VSC_CONVERTER_VARIABLES.contains(equipmentVariable);
+            case LINE -> LINE_VARIABLES.contains(equipmentVariable);
+        };
     }
 
     public static void checkVariableCompatibility(MappableEquipmentType equipmentType, EquipmentVariable equipmentVariable) {

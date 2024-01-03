@@ -81,8 +81,9 @@ public interface DistributionKey {
                 case TimeSeriesDistributionKey.NAME:
                     return TimeSeriesDistributionKey.parseJson(parser);
 
-                default:
-                    break;
+                default  -> {
+                    // Do nothing
+}
             }
         }
         throw createUnexpectedToken(token);
