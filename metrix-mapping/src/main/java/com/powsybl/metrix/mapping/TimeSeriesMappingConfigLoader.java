@@ -43,20 +43,13 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     protected String computeGroupName(Injection<?> injection, EquipmentGroupType equipmentGroupType) {
         VoltageLevel voltageLevel = injection.getTerminal().getVoltageLevel();
         String name = StringUtils.EMPTY;
-        if (!(equipmentGroupType instanceof SimpleEquipmentGroupType)) {
+        if (!(equipmentGroupType instanceof SimpleEquipmentGroupType type)) {
             return name;
         }
-        SimpleEquipmentGroupType type = (SimpleEquipmentGroupType) equipmentGroupType;
-        switch (type) {
-            case SUBSTATION:
-                name = getSubstation(voltageLevel);
-                break;
-            case VOLTAGE_LEVEL:
-                name = voltageLevel.getId();
-                break;
-            default:
-                throw new TimeSeriesMappingException("Unknown group type " + equipmentGroupType);
-        }
+        name = switch (type) {
+            case SUBSTATION -> getSubstation(voltageLevel);
+            case VOLTAGE_LEVEL -> voltageLevel.getId();
+        };
         return name;
     }
 
@@ -354,8 +347,8 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     }
 
     public void addEquipmentTimeSeries(Object timeSeriesName, MappingVariable variable, String equipmentId) {
-        if (timeSeriesName instanceof Number) {
-            addNumberTimeSeries(timeSeriesName.toString(), ((Number) timeSeriesName).floatValue());
+        if (timeSeriesName instanceof Number number) {
+            addNumberTimeSeries(timeSeriesName.toString(), number.floatValue());
         } else {
             timeSeriesExists(timeSeriesName.toString());
         }

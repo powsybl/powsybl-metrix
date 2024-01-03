@@ -36,8 +36,7 @@ public class IndexedMappingKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof IndexedMappingKey) {
-            IndexedMappingKey other = (IndexedMappingKey) obj;
+        if (obj instanceof IndexedMappingKey other) {
             return key.equals(other.key) && num == other.num;
         }
         return false;

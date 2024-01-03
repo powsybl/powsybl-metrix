@@ -102,8 +102,7 @@ public class MappingKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MappingKey) {
-            MappingKey other = (MappingKey) obj;
+        if (obj instanceof MappingKey other) {
             return id.equals(other.id) && mappingVariable.equals(other.mappingVariable);
         }
         return false;

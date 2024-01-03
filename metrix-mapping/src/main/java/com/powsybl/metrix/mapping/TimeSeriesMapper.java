@@ -270,7 +270,7 @@ public class TimeSeriesMapper {
     private double logDistributionKeySumNull(List<MappedEquipment> mappedEquipments, String timeSeriesName, double[] distributionKeys, double distributionKeySum, double timeSeriesValue, LogBuilder logBuilder) {
         double resultDistributionKeySum = distributionKeySum;
         if (resultDistributionKeySum == 0) {
-            double distributionKey = NumberDistributionKey.ONE.getValue();
+            double distributionKey = NumberDistributionKey.ONE.value();
             for (int i = 0; i < mappedEquipments.size(); i++) {
                 distributionKeys[i] = distributionKey;
                 resultDistributionKeySum += distributionKeys[i];
@@ -289,7 +289,7 @@ public class TimeSeriesMapper {
             MappedEquipment mappedEquipment = mappedEquipments.get(i);
             DistributionKey distributionKey = mappedEquipment.getDistributionKey();
             if (distributionKey instanceof NumberDistributionKey numberDistributionKey) {
-                distributionKeys[i] = numberDistributionKey.getValue();
+                distributionKeys[i] = numberDistributionKey.value();
             } else if (distributionKey instanceof TimeSeriesDistributionKey timeSeriesDistributionKey) {
                 int timeSeriesNum = timeSeriesDistributionKey.getTimeSeriesNum();
                 if (timeSeriesNum == -1) {

@@ -135,8 +135,7 @@ public final class MetrixNetworkPoint {
                 id = id.substring(1);
             }
             Identifiable<?> identifiable = networkPoint.getIdentifiable(id);
-            if (identifiable instanceof Branch) {
-                Branch branch = (Branch) identifiable;
+            if (identifiable instanceof Branch<?> branch) {
                 if (isToOpen) {
                     branch.getTerminal1().disconnect();
                     branch.getTerminal2().disconnect();
@@ -144,8 +143,7 @@ public final class MetrixNetworkPoint {
                     branch.getTerminal1().connect();
                     branch.getTerminal2().connect();
                 }
-            } else if (identifiable instanceof Switch) {
-                Switch sw = (Switch) identifiable;
+            } else if (identifiable instanceof Switch sw) {
                 sw.setOpen(isToOpen);
             }
         }

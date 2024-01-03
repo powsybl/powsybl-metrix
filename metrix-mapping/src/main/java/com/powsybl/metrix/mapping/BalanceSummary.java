@@ -97,10 +97,9 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     public double getInjection(Identifiable<?> identifiable, MappingVariable variable) {
         if (identifiable instanceof Injection) {
-            if (identifiable instanceof Generator) {
-                return ((Generator) identifiable).getTargetP();
-            } else if (identifiable instanceof Load) {
-                Load load = (Load) identifiable;
+            if (identifiable instanceof Generator generator) {
+                return generator.getTargetP();
+            } else if (identifiable instanceof Load load) {
                 // in case of scaling down error on fixedActivePower + variableActivePower, dont't count p0 twice
                 if (variable == EquipmentVariable.p0) {
                     return -load.getP0();
@@ -121,8 +120,8 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
                         return -load.getP0();
                     }
                 }
-            } else if (identifiable instanceof DanglingLine) {
-                return -((DanglingLine) identifiable).getP0();
+            } else if (identifiable instanceof DanglingLine danglingLine) {
+                return -danglingLine.getP0();
             }
         }
         return 0;

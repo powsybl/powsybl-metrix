@@ -630,8 +630,7 @@ public class MetrixParameters {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MetrixParameters) {
-            MetrixParameters other = (MetrixParameters) obj;
+        if (obj instanceof MetrixParameters other) {
             return propagateBranchTripping == other.propagateBranchTripping &&
                     Objects.equals(withGridCost, other.withGridCost) &&
                     Objects.equals(preCurativeResults, other.preCurativeResults) &&

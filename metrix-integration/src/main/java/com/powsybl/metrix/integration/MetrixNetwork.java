@@ -634,14 +634,12 @@ public class MetrixNetwork {
         for (String branchId : openedBranches) {
             Identifiable<?> identifiable = network.getIdentifiable(branchId);
             if (identifiable != null) {
-                if (identifiable instanceof Branch) {
-                    Branch<?> branchToClose = (Branch<?>) identifiable;
+                if (identifiable instanceof Branch<?> branchToClose) {
                     if (!branchToClose.getTerminal1().isConnected() || !branchToClose.getTerminal2().isConnected()) {
                         closeBranch(branchToClose);
                         disconnectedElements.add(branchToClose);
                     }
-                } else if (identifiable instanceof Switch) {
-                    Switch switchToClose = (Switch) identifiable;
+                } else if (identifiable instanceof Switch switchToClose) {
                     if (switchToClose.isOpen()) {
                         closeSwitch(switchToClose);
                         disconnectedElements.add(switchToClose);

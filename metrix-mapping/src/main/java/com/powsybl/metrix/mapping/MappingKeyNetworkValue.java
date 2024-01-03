@@ -34,96 +34,66 @@ public class MappingKeyNetworkValue {
             throw new TimeSeriesMappingException("Unknown identifiable " + key.getId());
         }
         MappingVariable variable = key.getMappingVariable();
-        if (variable instanceof EquipmentVariable) {
-            return getValue(identifiable, (EquipmentVariable) variable);
+        if (variable instanceof EquipmentVariable equipmentVariable) {
+            return getValue(identifiable, equipmentVariable);
         }
         throw new TimeSeriesMappingException("Unknown variable type " + variable.getClass().getName() + " for identifiable " + identifiable.getId());
     }
 
     private double getValue(Identifiable<?> identifiable, EquipmentVariable variable) {
-        if (identifiable instanceof Generator) {
-            return getGeneratorValue((Generator) identifiable, variable);
+        if (identifiable instanceof Generator generator) {
+            return getGeneratorValue(generator, variable);
         }
-        if (identifiable instanceof Load) {
-            return getLoadValue((Load) identifiable, variable);
+        if (identifiable instanceof Load load) {
+            return getLoadValue(load, variable);
         }
-        if (identifiable instanceof HvdcLine) {
-            return getHvdcLineValue((HvdcLine) identifiable, variable);
+        if (identifiable instanceof HvdcLine hvdcLine) {
+            return getHvdcLineValue(hvdcLine, variable);
         }
-        if (identifiable instanceof Switch) {
-            return getSwitchValue((Switch) identifiable, variable);
+        if (identifiable instanceof Switch sw) {
+            return getSwitchValue(sw, variable);
         }
-        if (identifiable instanceof TwoWindingsTransformer) {
-            return getTwoWindingsTransformerValue((TwoWindingsTransformer) identifiable, variable);
+        if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer) {
+            return getTwoWindingsTransformerValue(twoWindingsTransformer, variable);
         }
-        if (identifiable instanceof LccConverterStation) {
-            return getLccConverterStationValue((LccConverterStation) identifiable, variable);
+        if (identifiable instanceof LccConverterStation lccConverterStation) {
+            return getLccConverterStationValue(lccConverterStation, variable);
         }
-        if (identifiable instanceof VscConverterStation) {
-            return getVscConverterStationValue((VscConverterStation) identifiable, variable);
+        if (identifiable instanceof VscConverterStation vscConverterStation) {
+            return getVscConverterStationValue(vscConverterStation, variable);
         }
-        if (identifiable instanceof Line) {
-            return getLineValue((Line) identifiable, variable);
+        if (identifiable instanceof Line line) {
+            return getLineValue(line, variable);
         }
         throw new TimeSeriesMappingException("Unknown equipment type " + identifiable.getClass().getName());
     }
 
     private double getGeneratorValue(Generator generator, EquipmentVariable variable) {
-        double value;
-        switch (variable) {
-            case targetP:
-                value = generator.getTargetP();
-                break;
-            case targetQ:
-                value = generator.getTargetQ();
-                break;
-            case minP:
-                value = generator.getMinP();
-                break;
-            case maxP:
-                value = generator.getMaxP();
-                break;
-            case voltageRegulatorOn:
-                value = generator.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
-                break;
-            case targetV:
-                value = generator.getTargetV();
-                break;
-            case disconnected:
-                value = generator.getTerminal().isConnected() ? OFF_VALUE : ON_VALUE;
-                break;
-            default:
+        return switch (variable) {
+            case targetP -> generator.getTargetP();
+            case targetQ -> generator.getTargetQ();
+            case minP -> generator.getMinP();
+            case maxP -> generator.getMaxP();
+            case voltageRegulatorOn -> generator.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
+            case targetV -> generator.getTargetV();
+            case disconnected -> generator.getTerminal().isConnected() ? OFF_VALUE : ON_VALUE;
+            default ->
                 throw new TimeSeriesMappingException("Unknown variable " + variable + " for generator " + generator.getId());
-        }
-        return value;
+        };
     }
 
     private double getLoadValue(Load load, EquipmentVariable variable) {
-        double value;
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-        switch (variable) {
-            case p0:
-                value = load.getP0();
-                break;
-            case q0:
-                value = load.getQ0();
-                break;
-            case fixedActivePower:
-                value = loadDetail != null ? loadDetail.getFixedActivePower() : 0;
-                break;
-            case variableActivePower:
-                value = loadDetail != null ? loadDetail.getVariableActivePower() : load.getP0();
-                break;
-            case fixedReactivePower:
-                value = loadDetail != null ? loadDetail.getFixedReactivePower() : 0;
-                break;
-            case variableReactivePower:
-                value = loadDetail != null ? loadDetail.getVariableReactivePower() : load.getQ0();
-                break;
-            default:
+        return switch (variable) {
+            case p0 -> load.getP0();
+            case q0 -> load.getQ0();
+            case fixedActivePower -> loadDetail != null ? loadDetail.getFixedActivePower() : 0;
+            case variableActivePower -> loadDetail != null ? loadDetail.getVariableActivePower() : load.getP0();
+            case fixedReactivePower -> loadDetail != null ? loadDetail.getFixedReactivePower() : 0;
+            case variableReactivePower -> loadDetail != null ? loadDetail.getVariableReactivePower() : load.getQ0();
+            default ->
                 throw new TimeSeriesMappingException("Unknown variable " + variable + " for load " + load.getId());
-        }
-        return value;
+        };
     }
 
     private double getHvdcLineValue(HvdcLine hvdcLine, EquipmentVariable variable) {

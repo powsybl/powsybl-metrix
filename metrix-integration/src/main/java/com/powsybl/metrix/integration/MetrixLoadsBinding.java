@@ -39,10 +39,9 @@ public class MetrixLoadsBinding {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MetrixLoadsBinding)) {
+        if (!(obj instanceof MetrixLoadsBinding other)) {
             return false;
         }
-        MetrixLoadsBinding other = (MetrixLoadsBinding) obj;
         return name.equals(other.name) && loadsIds.equals(other.loadsIds);
     }
 

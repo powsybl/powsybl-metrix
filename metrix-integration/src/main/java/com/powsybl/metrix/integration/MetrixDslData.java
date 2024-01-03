@@ -172,8 +172,7 @@ public class MetrixDslData {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MetrixDslData) {
-            MetrixDslData other = (MetrixDslData) obj;
+        if (obj instanceof MetrixDslData other) {
             return branchMonitoringListN.equals(other.branchMonitoringListN) &&
                     branchMonitoringListNk.equals(other.branchMonitoringListNk) &&
                     branchMonitoringStatisticsThresholdN.equals(other.branchMonitoringStatisticsThresholdN) &&

@@ -66,8 +66,7 @@ public class MetrixSection {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MetrixSection) {
-            MetrixSection other = (MetrixSection) obj;
+        if (obj instanceof MetrixSection other) {
             return id.equals(other.id) && maxFlowN == other.maxFlowN && coefFlowList.equals(other.coefFlowList);
         }
         return false;
