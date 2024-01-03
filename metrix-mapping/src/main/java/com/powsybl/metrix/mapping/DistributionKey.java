@@ -75,15 +75,15 @@ public interface DistributionKey {
         if (token == JsonToken.FIELD_NAME) {
             String fieldName = parser.getCurrentName();
             switch (fieldName) {
-                case NumberDistributionKey.NAME:
+                case NumberDistributionKey.NAME -> {
                     return NumberDistributionKey.parseJson(parser);
-
-                case TimeSeriesDistributionKey.NAME:
+                }
+                case TimeSeriesDistributionKey.NAME -> {
                     return TimeSeriesDistributionKey.parseJson(parser);
-
-                default  -> {
+                }
+                default -> {
                     // Do nothing
-}
+                }
             }
         }
         throw createUnexpectedToken(token);
