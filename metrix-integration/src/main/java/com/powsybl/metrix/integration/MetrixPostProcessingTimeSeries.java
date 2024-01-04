@@ -160,7 +160,7 @@ public final class MetrixPostProcessingTimeSeries {
                                                        PostProcessingPrefixContainer postProcessingPrefixContainer) {
         try {
             if (!store.timeSeriesExists(postProcessingPrefixContainer.maxThreatPrefix + branch)) {
-                LOGGER.debug("{} time-series not found", postProcessingPrefixContainer.maxThreatPrefix + branch);
+                LOGGER.debug("{}{} time-series not found", postProcessingPrefixContainer.maxThreatPrefix, branch);
                 return;
             }
 

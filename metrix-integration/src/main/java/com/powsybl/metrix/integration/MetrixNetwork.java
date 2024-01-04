@@ -73,59 +73,59 @@ public class MetrixNetwork {
     }
 
     public List<String> getCountryList() {
-        return Collections.unmodifiableList(new ArrayList<>(countryList));
+        return List.copyOf(countryList);
     }
 
     public List<Load> getLoadList() {
-        return Collections.unmodifiableList(new ArrayList<>(loadList));
+        return List.copyOf(loadList);
     }
 
     public List<Generator> getGeneratorList() {
-        return Collections.unmodifiableList(new ArrayList<>(generatorList));
+        return List.copyOf(generatorList);
     }
 
     public List<String> getGeneratorTypeList() {
-        return Collections.unmodifiableList(new ArrayList<>(generatorTypeList));
+        return List.copyOf(generatorTypeList);
     }
 
     public List<Line> getLineList() {
-        return Collections.unmodifiableList(new ArrayList<>(lineList));
+        return List.copyOf(lineList);
     }
 
     public List<TwoWindingsTransformer> getTwoWindingsTransformerList() {
-        return Collections.unmodifiableList(new ArrayList<>(twoWindingsTransformerList));
+        return List.copyOf(twoWindingsTransformerList);
     }
 
     public List<ThreeWindingsTransformer> getThreeWindingsTransformerList() {
-        return Collections.unmodifiableList(new ArrayList<>(threeWindingsTransformerList));
+        return List.copyOf(threeWindingsTransformerList);
     }
 
     public List<DanglingLine> getDanglingLineList() {
-        return Collections.unmodifiableList(new ArrayList<>(danglingLineList));
+        return List.copyOf(danglingLineList);
     }
 
     public List<Switch> getSwitchList() {
-        return Collections.unmodifiableList(new ArrayList<>(switchList));
+        return List.copyOf(switchList);
     }
 
     public List<PhaseTapChanger> getPhaseTapChangerList() {
-        return Collections.unmodifiableList(new ArrayList<>(phaseTapChangerList));
+        return List.copyOf(phaseTapChangerList);
     }
 
     public List<HvdcLine> getHvdcLineList() {
-        return Collections.unmodifiableList(new ArrayList<>(hvdcLineList));
+        return List.copyOf(hvdcLineList);
     }
 
     public List<Bus> getBusList() {
-        return Collections.unmodifiableList(new ArrayList<>(busList));
+        return List.copyOf(busList);
     }
 
     public List<Contingency> getContingencyList() {
-        return Collections.unmodifiableList(contingencyList);
+        return List.copyOf(contingencyList);
     }
 
     public Set<Identifiable<?>> getDisconnectedElements() {
-        return Collections.unmodifiableSet(disconnectedElements);
+        return Set.copyOf(disconnectedElements);
     }
 
     public int getIndex(Identifiable<?> identifiable) {
