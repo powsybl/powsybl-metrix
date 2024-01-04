@@ -67,7 +67,7 @@ public class DataTable {
     }
 
     private void addColumns(AttributeNameToValue attributeNameToValue) {
-        this.tabColumns.addAll(attributeNameToValue.getAttributeNames().stream().filter(colName -> !tabColumns.contains(colName)).distinct().collect(Collectors.toList()));
+        this.tabColumns.addAll(attributeNameToValue.getAttributeNames().stream().filter(colName -> !tabColumns.contains(colName)).distinct().toList());
     }
 
     private String getValue(String name, boolean isWithName) {
@@ -77,15 +77,15 @@ public class DataTable {
     public List<String> values(String columnName, boolean isWithName) {
         checkColumnNames(columnName);
         return tabValues.stream().map(attributeNameToValue -> getValue(columnName, isWithName) + attributeNameToValue.getValue(columnName))
-                .collect(Collectors.toList());
+            .toList();
     }
 
     private List<List<String>> values(boolean isWithName) {
         return tabValues.stream().map(values ->
-                        values.getAttributeNames().stream()
-                                .map(attributeName -> getValue(attributeName, isWithName) + values.getValue(attributeName))
-                                .collect(Collectors.toList()))
-                .collect(Collectors.toList());
+                values.getAttributeNames().stream()
+                    .map(attributeName -> getValue(attributeName, isWithName) + values.getValue(attributeName))
+                    .toList())
+            .toList();
     }
 
     public static DataTable toDataTable(List<String> header, List<List<String>> content) {
@@ -116,14 +116,14 @@ public class DataTable {
 
     private void removeNotSelectedColumns(List<String> selectedColumns) {
         this.tabValues = this.tabValues.stream()
-                .map(attributeNameToValue -> attributeNameToValue.filterSelectedColumns(selectedColumns))
-                .collect(Collectors.toList());
+            .map(attributeNameToValue -> attributeNameToValue.filterSelectedColumns(selectedColumns))
+            .toList();
     }
 
     private void filterOnParameter(String parameter, List<String> tabValueToFilter) {
         this.tabValues = this.tabValues.stream()
-                .filter(attributeNameToValue -> tabValueToFilter.stream().anyMatch(filterValue -> StringUtils.containsIgnoreCase(attributeNameToValue.getValue(parameter), filterValue)))
-                .collect(Collectors.toList());
+            .filter(attributeNameToValue -> tabValueToFilter.stream().anyMatch(filterValue -> StringUtils.containsIgnoreCase(attributeNameToValue.getValue(parameter), filterValue)))
+            .toList();
     }
 
     private void filterInfos(QueryFilter filter) {
@@ -140,8 +140,8 @@ public class DataTable {
 
     private static void checkDuplicateColumnNames(List<String> columns) {
         Set<String> duplicateColumnNames = columns.stream().distinct()
-                .filter(i -> Collections.frequency(columns, i) > 1)
-                .collect(Collectors.toSet());
+            .filter(i -> Collections.frequency(columns, i) > 1)
+            .collect(Collectors.toSet());
         if (!duplicateColumnNames.isEmpty()) {
             throw new DataTableException(String.format("Several columns with same names '%s'", duplicateColumnNames));
         }

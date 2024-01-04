@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
 import com.powsybl.timeseries.*;
@@ -48,7 +47,7 @@ public class TimeSeriesMappingConfigTableLoader {
         Set<String> timeSeriesNamesToLoad = findTimeSeriesNamesToLoad(usedTimeSeriesNames);
 
         TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesNamesToLoad);
-        checkValues(store, new TreeSet<>(ImmutableSet.of(version)), timeSeriesNamesToLoad);
+        checkValues(store, new TreeSet<>(Set.of(version)), timeSeriesNamesToLoad);
 
         TimeSeriesTable table = new TimeSeriesTable(version, version, index);
 

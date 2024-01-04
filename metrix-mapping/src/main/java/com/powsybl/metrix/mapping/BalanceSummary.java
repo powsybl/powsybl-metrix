@@ -100,7 +100,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
             if (identifiable instanceof Generator generator) {
                 return generator.getTargetP();
             } else if (identifiable instanceof Load load) {
-                // in case of scaling down error on fixedActivePower + variableActivePower, dont't count p0 twice
+                // in case of scaling down error on fixedActivePower + variableActivePower, don't count p0 twice
                 if (variable == EquipmentVariable.p0) {
                     return -load.getP0();
                 } else if (variable == EquipmentVariable.fixedActivePower) {

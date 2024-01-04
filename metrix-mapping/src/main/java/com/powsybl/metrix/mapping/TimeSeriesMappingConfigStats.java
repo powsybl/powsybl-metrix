@@ -94,6 +94,10 @@ public final class TimeSeriesMappingConfigStats {
 
     public double getTimeSeriesMedian(String timeSeriesName) {
         NodeCalc nodeCalc = new TimeSeriesNameNodeCalc(timeSeriesName);
-        return computationRange.getVersions().stream().mapToDouble(version -> getTimeSeriesStream(nodeCalc, version, computationRange).sum()).sum();
+        double[] values = computationRange.getVersions().stream().flatMapToDouble(version -> {
+            CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
+            return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getFirstVariant()).limit(computationRange.getVariantCount());
+        }).toArray();
+        return Arrays.stream(values).sorted().skip(new BigDecimal(values.length / 2).longValue()).limit(1).findFirst().orElse(Double.NaN);
     }
 }

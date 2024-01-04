@@ -78,7 +78,7 @@ public class MappingKeyNetworkValue {
             case targetV -> generator.getTargetV();
             case disconnected -> generator.getTerminal().isConnected() ? OFF_VALUE : ON_VALUE;
             default ->
-                throw new TimeSeriesMappingException("Unknown variable " + variable + " for generator " + generator.getId());
+                throw new TimeSeriesMappingException(String.format("Unknown variable %s for generator %s", variable, generator.getId()));
         };
     }
 
@@ -92,7 +92,7 @@ public class MappingKeyNetworkValue {
             case fixedReactivePower -> loadDetail != null ? loadDetail.getFixedReactivePower() : 0;
             case variableReactivePower -> loadDetail != null ? loadDetail.getVariableReactivePower() : load.getQ0();
             default ->
-                throw new TimeSeriesMappingException("Unknown variable " + variable + " for load " + load.getId());
+                throw new TimeSeriesMappingException(String.format("Unknown variable %s for load %s", variable, load.getId()));
         };
     }
 
@@ -103,7 +103,7 @@ public class MappingKeyNetworkValue {
             case minP -> TimeSeriesMapper.getMin(hvdcLine);
             case nominalV -> hvdcLine.getNominalV();
             default ->
-                throw new TimeSeriesMappingException("Unknown variable " + variable + " for hvdcLine " + hvdcLine.getId());
+                throw new TimeSeriesMappingException(String.format("Unknown variable %s for hvdcLine %s", variable, hvdcLine.getId()));
         };
     }
 
@@ -111,7 +111,7 @@ public class MappingKeyNetworkValue {
         if (variable == EquipmentVariable.open) {
             return sw.isOpen() ? ON_VALUE : OFF_VALUE;
         }
-        throw new TimeSeriesMappingException("Unknown variable " + variable + " for switch " + sw.getId());
+        throw new TimeSeriesMappingException(String.format("Unknown variable %s for switch %s", variable, sw.getId()));
     }
 
     private int getRegulationModeValue(PhaseTapChanger.RegulationMode mode) {
@@ -141,7 +141,7 @@ public class MappingKeyNetworkValue {
                 twoWindingsTransformer.getRatioTapChanger().hasLoadTapChangingCapabilities() ? ON_VALUE : OFF_VALUE;
             case ratioRegulating -> twoWindingsTransformer.getRatioTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
             default ->
-                throw new TimeSeriesMappingException("Unknown variable " + variable + " for twoWindingsTransformer " + twoWindingsTransformer.getId());
+                throw new TimeSeriesMappingException(String.format("Unknown variable %s for twoWindingsTransformer %s", variable, twoWindingsTransformer.getId()));
         };
     }
 
@@ -149,7 +149,7 @@ public class MappingKeyNetworkValue {
         if (variable == EquipmentVariable.powerFactor) {
             return lccConverterStation.getPowerFactor();
         }
-        throw new TimeSeriesMappingException("Unknown variable " + variable + " for lccConverterStation " + lccConverterStation.getId());
+        throw new TimeSeriesMappingException(String.format("Unknown variable %s for lccConverterStation %s", variable, lccConverterStation.getId()));
     }
 
     private double getVscConverterStationValue(VscConverterStation vscConverterStation, EquipmentVariable variable) {
@@ -158,7 +158,7 @@ public class MappingKeyNetworkValue {
             case voltageSetpoint -> vscConverterStation.getVoltageSetpoint();
             case reactivePowerSetpoint -> vscConverterStation.getReactivePowerSetpoint();
             default ->
-                throw new TimeSeriesMappingException("Unknown variable " + variable + " for vscConverterStation " + vscConverterStation.getId());
+                throw new TimeSeriesMappingException(String.format("Unknown variable %s for vscConverterStation %s", variable, vscConverterStation.getId()));
         };
     }
 
@@ -166,6 +166,6 @@ public class MappingKeyNetworkValue {
         if (variable == EquipmentVariable.disconnected) {
             return !line.getTerminal1().isConnected() || !line.getTerminal2().isConnected() ? ON_VALUE : OFF_VALUE;
         }
-        throw new TimeSeriesMappingException("Unknown variable " + variable + " for line " + line.getId());
+        throw new TimeSeriesMappingException(String.format("Unknown variable %s for line %s", variable, line.getId()));
     }
 }

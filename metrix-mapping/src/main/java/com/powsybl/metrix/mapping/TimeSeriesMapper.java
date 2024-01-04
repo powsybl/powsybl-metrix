@@ -276,7 +276,7 @@ public class TimeSeriesMapper {
                 resultDistributionKeySum += distributionKeys[i];
             }
             LogContent logContent = new ZeroDistributionKeyInfo(timeSeriesName, timeSeriesValue,
-                    mappedEquipments.stream().map(MappedEquipment::getId).collect(Collectors.toList())).build();
+                    mappedEquipments.stream().map(MappedEquipment::getId).toList()).build();
             Log log = logBuilder.level(System.Logger.Level.INFO).logDescription(logContent).build();
             timeSeriesMappingLogger.addLog(log);
         }

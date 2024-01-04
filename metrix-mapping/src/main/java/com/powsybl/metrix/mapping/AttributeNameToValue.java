@@ -19,32 +19,32 @@ import java.util.stream.Collectors;
 
 public class AttributeNameToValue {
     @JsonProperty("attributeNameToValue")
-    private Map<String, String> attributeNameToValue;
+    private Map<String, String> attributeNameToValueVariable;
 
     @JsonCreator
     public AttributeNameToValue(Map<String, String> attributeNameToValue) {
-        this.attributeNameToValue = new LinkedHashMap<>(attributeNameToValue);
+        this.attributeNameToValueVariable = new LinkedHashMap<>(attributeNameToValue);
     }
 
     public AttributeNameToValue() {
-        this.attributeNameToValue = new LinkedHashMap<>();
+        this.attributeNameToValueVariable = new LinkedHashMap<>();
     }
 
     public void put(String attributeName, String value) {
-        this.attributeNameToValue.putIfAbsent(attributeName, value);
+        this.attributeNameToValueVariable.putIfAbsent(attributeName, value);
     }
 
     public String getValue(String attributeName) {
-        return this.attributeNameToValue.get(attributeName);
+        return this.attributeNameToValueVariable.get(attributeName);
     }
 
     public Set<String> getAttributeNames() {
-        return attributeNameToValue.keySet();
+        return attributeNameToValueVariable.keySet();
     }
 
     public AttributeNameToValue filterSelectedColumns(List<String> selectedColumns) {
         AttributeNameToValue filteredInfo = new AttributeNameToValue();
-        filteredInfo.attributeNameToValue = attributeNameToValue.entrySet().stream()
+        filteredInfo.attributeNameToValueVariable = attributeNameToValueVariable.entrySet().stream()
                 .filter(attributeInfo -> selectedColumns.contains(attributeInfo.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         return filteredInfo;

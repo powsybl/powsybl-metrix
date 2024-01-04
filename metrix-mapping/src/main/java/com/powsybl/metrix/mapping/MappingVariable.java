@@ -47,7 +47,7 @@ public interface MappingVariable {
             while ((token = parser.nextToken()) != null) {
                 if (token == JsonToken.FIELD_NAME) {
                     String fieldName = parser.getCurrentName();
-                    List<MappingVariableProvider> providers = mappingVariableProviders.stream().filter(p -> p.getFieldName().equals(fieldName)).collect(Collectors.toList());
+                    List<MappingVariableProvider> providers = mappingVariableProviders.stream().filter(p -> p.getFieldName().equals(fieldName)).toList();
                     if (providers.size() != 1) {
                         throw new IllegalStateException("No MappingVariable provider found for fieldName " + fieldName);
                     }
