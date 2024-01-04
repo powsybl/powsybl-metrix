@@ -9,7 +9,6 @@ package com.powsybl.metrix.integration.remedials;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Remedial {
 
@@ -55,8 +54,8 @@ public class Remedial {
 
     public final String getNameFromActions() {
         List<String> name = new ArrayList<>(); //display branchToOpen ordered then branchToClose ordered
-        name.addAll(branchToOpen.stream().sorted().collect(Collectors.toList()));
-        name.addAll(branchToClose.stream().map(action -> "+" + action).sorted().collect(Collectors.toList()));
+        name.addAll(branchToOpen.stream().sorted().toList());
+        name.addAll(branchToClose.stream().map(action -> "+" + action).sorted().toList());
         return String.join(";", name);
     }
 }

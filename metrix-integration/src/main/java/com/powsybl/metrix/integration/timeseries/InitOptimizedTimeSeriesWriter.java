@@ -7,7 +7,6 @@
 
 package com.powsybl.metrix.integration.timeseries;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.MetrixDslData;
@@ -29,11 +28,11 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
 
     public static final String INPUT_OPTIMIZED_FILE_NAME = "input_optimized_time_series.json";
 
-    private Network network;
-    private int length;
-    private int offset;
+    private final Network network;
+    private final int length;
+    private final int offset;
     private TimeSeriesIndex index;
-    private Writer writer;
+    private final Writer writer;
 
     Map<String, MetrixOutputData.DoubleResultChunk> constantDoubleTimeSeries = new HashMap<>();
     Map<String, MetrixOutputData.DoubleResultChunk> doubleTimeSeries = new HashMap<>();
@@ -68,7 +67,7 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
     private void addTimeSeriesValue(int point, String timeSeriesName, String id, String type, double value) {
         if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
             constantDoubleTimeSeries.computeIfAbsent(timeSeriesName, k -> {
-                Map<String, String> tags = ImmutableMap.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
+                Map<String, String> tags = Map.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
                 return new MetrixOutputData.DoubleResultChunk(length, tags);
             });
             for (int i = 0; i < length; i++) {
@@ -76,7 +75,7 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
             }
         } else {
             doubleTimeSeries.computeIfAbsent(timeSeriesName, k -> {
-                Map<String, String> tags = ImmutableMap.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
+                Map<String, String> tags = Map.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
                 return new MetrixOutputData.DoubleResultChunk(length, tags);
             });
             doubleTimeSeries.get(timeSeriesName).insertResult(point - offset, value);
@@ -108,12 +107,12 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
     @Override
     public void versionStart(int version) {
         super.versionStart(version);
-        hvdcToInit.stream().forEach(id -> {
+        hvdcToInit.forEach(id -> {
             HvdcLine hvdcLine = network.getHvdcLine(id);
             double activePowerSetpoint = hvdcLine.getActivePowerSetpoint();
             addHvdcTimeSeries(TimeSeriesMapper.CONSTANT_VARIANT_ID, hvdcLine, activePowerSetpoint);
         });
-        phaseTapChangerToInit.stream().forEach(id -> {
+        phaseTapChangerToInit.forEach(id -> {
             TwoWindingsTransformer twoWindingsTransformer = network.getTwoWindingsTransformer(id);
             PhaseTapChanger phaseTapChanger = twoWindingsTransformer.getPhaseTapChanger();
             int tapPosition = phaseTapChanger.getTapPosition();
@@ -132,9 +131,9 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
     public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
         if (identifiable instanceof HvdcLine && hvdcToInit.contains(identifiable.getId()) && variable == EquipmentVariable.activePowerSetpoint) {
             addHvdcTimeSeries(point, identifiable, equipmentValue);
-        } else if (identifiable instanceof TwoWindingsTransformer && phaseTapChangerToInit.contains(identifiable.getId()) && variable == EquipmentVariable.phaseTapPosition) {
+        } else if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer && phaseTapChangerToInit.contains(identifiable.getId()) && variable == EquipmentVariable.phaseTapPosition) {
             int tapPosition = (int) equipmentValue;
-            double alpha = ((TwoWindingsTransformer) identifiable).getPhaseTapChanger().getStep(tapPosition).getAlpha();
+            double alpha = twoWindingsTransformer.getPhaseTapChanger().getStep(tapPosition).getAlpha();
             addPhaseTapChangerTimeSeries(point, identifiable, tapPosition, alpha);
         }
     }

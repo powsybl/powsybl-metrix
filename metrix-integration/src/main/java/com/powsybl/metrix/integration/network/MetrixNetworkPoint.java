@@ -14,7 +14,6 @@ import com.powsybl.timeseries.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 public final class MetrixNetworkPoint {
 
@@ -32,7 +31,7 @@ public final class MetrixNetworkPoint {
         List<DoubleTimeSeries> doubleTimeSeries = timeSeries.stream()
                 .filter(ts -> ts.getMetadata().getDataType() == TimeSeriesDataType.DOUBLE)
                 .map(ts -> (DoubleTimeSeries) ts)
-                .collect(Collectors.toList());
+                .toList();
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries);
         addTimeSeriesValues(version, point, isCurativeTimeSeriesAdding, defaultId, store, networkPoint);
         if (isCurativeMode) {
@@ -43,7 +42,7 @@ public final class MetrixNetworkPoint {
         List<StringTimeSeries> stringTimeSeries = timeSeries.stream()
                 .filter(ts -> isCurativeMode && ts.getMetadata().getDataType() == TimeSeriesDataType.STRING && ts.getMetadata().getName().compareTo("TOPOLOGY_" + defaultId) == 0)
                 .map(ts -> (StringTimeSeries) ts)
-                .collect(Collectors.toList());
+                .toList();
         addTopologyTimeSeries(point, stringTimeSeries, networkPoint);
     }
 
@@ -72,7 +71,7 @@ public final class MetrixNetworkPoint {
                 getSuffix(isCurativeMode, defaultId)
         ));
 
-        networkPoint.getTwoWindingsTransformerStream().filter(transformer -> transformer.hasPhaseTapChanger()).forEach(transformer -> addTimeSeriesToPhaseTapChanger(transformer, store, version, point,
+        networkPoint.getTwoWindingsTransformerStream().filter(PhaseTapChangerHolder::hasPhaseTapChanger).forEach(transformer -> addTimeSeriesToPhaseTapChanger(transformer, store, version, point,
                 isCurativeMode ? "PST_CUR_TAP_" : "PST_TAP_",
                 getSuffix(isCurativeMode, defaultId)
         ));
@@ -127,8 +126,7 @@ public final class MetrixNetworkPoint {
         String[] values = topologyTimeSeries.toArray();
         String value = values[point];
         String[] ids = value.split(ID_SEPARATOR);
-        for (int i = 0; i < ids.length; i++) {
-            String id = ids[i];
+        for (String id : ids) {
             boolean isToOpen = true;
             if (id.startsWith(ID_TO_CLOSE)) {
                 isToOpen = false;

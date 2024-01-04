@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
 public final class RemedialReader {
 
@@ -51,7 +50,7 @@ public final class RemedialReader {
                     .map(s -> s.split(COLUMN_SEPARATOR))
                     .filter(columns -> columns.length >= FIRST_ACTION_INDEX + 1)
                     .map(columns -> createRemedialFromLine(columns, line.getAndIncrement()))
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (IOException e) {
             throw new UncheckedIOException("Erreur lors de la lecture des parades", e);
         }
@@ -67,7 +66,7 @@ public final class RemedialReader {
         return Arrays.stream(nameAndConstraint)
                 .skip(1) //skip contingency
                 .map(RemedialReader::rTrim)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static Remedial createRemedialFromLine(String[] columns, int line) {
