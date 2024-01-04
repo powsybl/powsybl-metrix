@@ -155,10 +155,10 @@ public class MetrixInputDataGenerator {
     }
 
     protected void writeNetworkInLogger(Supplier<MetrixInputData> metrixInputData, boolean isConstantLossFactor) throws IOException {
-        metrixChunkLogger.writeNetwork(() -> {
+        metrixChunkLogger.writeNetwork(() ->
             // write DIE
-            metrixInputData.get().write(workingDir, true, isConstantLossFactor);
-        });
+            metrixInputData.get().write(workingDir, true, isConstantLossFactor)
+        );
     }
 
     protected Supplier<MetrixInputData> createMetrixInputData(MetrixParameters parameters, MetrixDslData metrixDslData, MetrixNetwork metrixNetwork) {
