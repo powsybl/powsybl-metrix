@@ -30,10 +30,10 @@ import com.google.common.base.Stopwatch;
 
 public class CsvResultListener implements ResultListener {
 
-    private Path csvResultFilePath;
-    private FileSystemTimeseriesStore resultStore;
-    private Stopwatch stopwatch;
-    private ToolRunningContext context;
+    private final Path csvResultFilePath;
+    private final FileSystemTimeseriesStore resultStore;
+    private final Stopwatch stopwatch;
+    private final ToolRunningContext context;
 
     public CsvResultListener(Path csvResultFilePath, FileSystemTimeseriesStore resultStore, Stopwatch stopwatch, ToolRunningContext context) {
         this.csvResultFilePath = csvResultFilePath;
