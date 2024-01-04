@@ -72,8 +72,8 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
         Optional<NodeCalc> optFstOrderNodeCalc = findFirstOrderNodeCalc(node, store.getTimeSeriesNames(null));
         TimeSeriesIndex index = optFstOrderNodeCalc
-                .map(this::computeIndex)
-                .orElse(InfiniteTimeSeriesIndex.INSTANCE);
+            .map(this::computeIndex)
+            .orElse(InfiniteTimeSeriesIndex.INSTANCE);
         Map<String, String> timeSeriesTags = tags.containsKey(timeSeriesName) ? tags.get(timeSeriesName) : Map.of();
         return Optional.of(new TimeSeriesMetadata(timeSeriesName, TimeSeriesDataType.DOUBLE, timeSeriesTags, index));
     }
@@ -87,12 +87,12 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
             return Optional.empty();
         }
         return nodes.entrySet()
-                .stream()
-                .filter(tsNode -> dependentTsNames.contains(tsNode.getKey()))
-                .map(tsNode -> findFirstOrderNodeCalc(tsNode.getValue(), storedTimeSeriesNames))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .findFirst();
+            .stream()
+            .filter(tsNode -> dependentTsNames.contains(tsNode.getKey()))
+            .map(tsNode -> findFirstOrderNodeCalc(tsNode.getValue(), storedTimeSeriesNames))
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .findFirst();
     }
 
     private TimeSeriesIndex computeIndex(NodeCalc node) {
@@ -110,9 +110,9 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     public List<TimeSeriesMetadata> getTimeSeriesMetadata(Set<String> timeSeriesNames) {
         Objects.requireNonNull(timeSeriesNames);
         return timeSeriesNames.stream().filter(this::timeSeriesExists).map(this::getTimeSeriesMetadata)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
     }
 
     private CalculatedTimeSeries createCalculatedTimeSeries(String timeSeriesName, NodeCalc nodeCalc, int version) {
@@ -134,16 +134,16 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     @Override
     public List<DoubleTimeSeries> getDoubleTimeSeries(Set<String> timeSeriesNames, int version) {
         return timeSeriesNames.stream().map(timeSeriesName -> getDoubleTimeSeries(timeSeriesName, version))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
     }
 
     @Override
     public List<DoubleTimeSeries> getDoubleTimeSeries(int version) {
         return nodes.entrySet().stream()
-                .map(e -> createCalculatedTimeSeries(e.getKey(), e.getValue(), version))
-                .collect(Collectors.toList());
+            .map(e -> createCalculatedTimeSeries(e.getKey(), e.getValue(), version))
+            .collect(Collectors.toList());
     }
 
     @Override

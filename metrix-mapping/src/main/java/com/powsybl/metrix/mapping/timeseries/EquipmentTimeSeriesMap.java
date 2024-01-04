@@ -13,7 +13,6 @@ import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.TimeSeriesTable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.indexMappingKey;
 
@@ -26,7 +25,7 @@ public class EquipmentTimeSeriesMap {
 
     public void convertToEquipmentTimeSeriesMap(Map<MappingKey, List<String>> timeSerieMap, TimeSeriesTable table, Network network, TimeSeriesMappingConfig config) {
         equimentTimeSeries.clear();
-        timeSerieMap.entrySet().stream().forEach(timeSeries -> equimentTimeSeries
+        timeSerieMap.entrySet().forEach(timeSeries -> equimentTimeSeries
                 .put(indexMappingKey(table, timeSeries.getKey()), mapEquipments(timeSeries.getKey(), timeSeries.getValue(), network, config)));
     }
 
@@ -35,7 +34,7 @@ public class EquipmentTimeSeriesMap {
             Identifiable<?> identifiable = getIdentifiable(network, equipmentId);
             DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.getMappingVariable(), equipmentId));
             return new MappedEquipment(identifiable, distributionKey);
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private static Identifiable<?> getIdentifiable(Network network, String equipmentId) {
