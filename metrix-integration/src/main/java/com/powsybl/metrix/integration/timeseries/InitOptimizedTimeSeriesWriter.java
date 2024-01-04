@@ -7,6 +7,7 @@
 
 package com.powsybl.metrix.integration.timeseries;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.MetrixDslData;
@@ -67,7 +68,7 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
     private void addTimeSeriesValue(int point, String timeSeriesName, String id, String type, double value) {
         if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
             constantDoubleTimeSeries.computeIfAbsent(timeSeriesName, k -> {
-                Map<String, String> tags = Map.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
+                Map<String, String> tags = ImmutableMap.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
                 return new MetrixOutputData.DoubleResultChunk(length, tags);
             });
             for (int i = 0; i < length; i++) {
@@ -75,7 +76,7 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
             }
         } else {
             doubleTimeSeries.computeIfAbsent(timeSeriesName, k -> {
-                Map<String, String> tags = Map.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
+                Map<String, String> tags = ImmutableMap.of(type, id, CONTINGENCY_TYPE, BASECASE_TYPE);
                 return new MetrixOutputData.DoubleResultChunk(length, tags);
             });
             doubleTimeSeries.get(timeSeriesName).insertResult(point - offset, value);
