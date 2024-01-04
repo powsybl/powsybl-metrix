@@ -48,8 +48,12 @@ public class MetrixOutputData {
     public static final String PST_CUR_TAP_NAME = "PST_CUR_TAP_";
     public static final String HVDC_TYPE = "hvdc";
     public static final String PST_TYPE = "pst";
+    public static final String GEN_TYPE = "generator-type";
+    public static final String GENERATOR = "generator";
+    public static final String BRANCH = "branch";
     public static final String CONTINGENCY_TYPE = "contingency";
     public static final String BASECASE_TYPE = "basecase";
+    private static final String UNKNOWN_OUTAGE = "Unknown outage";
 
     private static final String INCIDENT = "INCIDENT";
     private static final String PAR_LIGNE = "PAR LIGNE";
@@ -148,7 +152,7 @@ public class MetrixOutputData {
     private DoubleResultChunk getDoubleTimeSeries(String prefix, String id) {
         String name = prefix + id;
         return doubleTimeSeries.computeIfAbsent(name, k -> {
-            Map<String, String> tags = Map.of("branch", id);
+            Map<String, String> tags = Map.of(BRANCH, id);
             return new DoubleResultChunk(length, tags);
         });
     }
@@ -170,7 +174,7 @@ public class MetrixOutputData {
         Optional<String> optOutage = Optional.ofNullable(outage);
         String name = prefix + id + optOutage.map(s -> "_" + s).orElse(EMPTY_STRING) + "_" + element;
         return doubleTimeSeries.computeIfAbsent(name, k -> {
-            Map<String, String> tags = Map.of("branch", id,
+            Map<String, String> tags = Map.of(BRANCH, id,
                     "action", element,
                         CONTINGENCY_TYPE, optOutage.orElse(BASECASE_TYPE));
             return new DoubleResultChunk(length, tags);
@@ -218,7 +222,7 @@ public class MetrixOutputData {
                         continue; // header
                     }
                     if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries("LOST_GEN_", "generator", chunks[2]);
+                        ts = getDoubleTimeSeries("LOST_GEN_", GENERATOR, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
                     if (!EMPTY_STRING.equals(chunks[5])) {
@@ -269,7 +273,7 @@ public class MetrixOutputData {
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
+                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
                     ts = getDoubleTimeSeries("LOAD_CUR_", "load", chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                 }
@@ -287,11 +291,11 @@ public class MetrixOutputData {
                         continue; // header
                     }
                     if (!EMPTY_STRING.equals(chunks[5])) {
-                        ts = getDoubleTimeSeries("INIT_BAL_GEN_", "generator", chunks[2]);
+                        ts = getDoubleTimeSeries("INIT_BAL_GEN_", GENERATOR, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
                     }
                     if (!EMPTY_STRING.equals(chunks[6])) {
-                        ts = getDoubleTimeSeries("GEN_", "generator", chunks[2]);
+                        ts = getDoubleTimeSeries("GEN_", GENERATOR, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
                     }
                 }
@@ -300,8 +304,8 @@ public class MetrixOutputData {
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
-                    ts = getDoubleTimeSeries("GEN_CUR_", "generator", chunks[2], outageName);
+                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+                    ts = getDoubleTimeSeries("GEN_CUR_", GENERATOR, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                 }
                 case "R2C " -> {
@@ -317,7 +321,7 @@ public class MetrixOutputData {
                     if (PAR_LIGNE.equals(chunks[1])) {
                         continue; // header
                     }
-                    ts = getDoubleTimeSeries(FLOW_NAME, "branch", chunks[2]);
+                    ts = getDoubleTimeSeries(FLOW_NAME, BRANCH, chunks[2]);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                 }
                 case "R3B " -> {
@@ -326,8 +330,8 @@ public class MetrixOutputData {
                         continue; // header
                     }
                     if (!EMPTY_STRING.equals(chunks[3])) {
-                        sts = getStringTimeSeries("MAX_TMP_THREAT_NAME_", "branch", chunks[2]);
-                        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
+                        sts = getStringTimeSeries("MAX_TMP_THREAT_NAME_", BRANCH, chunks[2]);
+                        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
                         sts.insertResult(varNum - offset, outageName);
 
                         ts = getDoubleTimeSeries(MAX_TMP_THREAT_FLOW, chunks[2]);
@@ -338,7 +342,7 @@ public class MetrixOutputData {
                     while ((chunkNum = 5 + 2 * i) < chunks.length &&
                         !EMPTY_STRING.equals(chunks[chunkNum])) {
                         i++;
-                        sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_NAME_", "branch", chunks[2]);
+                        sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_NAME_", BRANCH, chunks[2]);
                         sts.insertResult(varNum - offset, outageNames.get(Integer.parseInt(chunks[chunkNum])));
 
                         ts = getDoubleTimeSeries(MAX_THREAT_NAME + i + "_" + FLOW_NAME, chunks[2]);
@@ -350,8 +354,8 @@ public class MetrixOutputData {
                     if (PAR_LIGNE.equals(chunks[1])) {
                         continue; // header
                     }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
-                    ts = getDoubleTimeSeries(FLOW_NAME, "branch", chunks[2], outageName);
+                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+                    ts = getDoubleTimeSeries(FLOW_NAME, BRANCH, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                 }
                 case "R4 " -> {
@@ -361,10 +365,10 @@ public class MetrixOutputData {
                     }
                     outageId = Integer.parseInt(chunks[3]);
                     if (outageId == 0) {
-                        ts = getDoubleTimeSeries("MV_", "branch", chunks[2]);
+                        ts = getDoubleTimeSeries("MV_", BRANCH, chunks[2]);
                     } else {
-                        outageName = Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException("Unknown outage"));
-                        ts = getDoubleTimeSeries("MV_", "branch", chunks[2], outageName);
+                        outageName = Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+                        ts = getDoubleTimeSeries("MV_", BRANCH, chunks[2], outageName);
                     }
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                 }
@@ -375,7 +379,7 @@ public class MetrixOutputData {
                     }
 
                     outageId = Integer.parseInt(chunks[3]);
-                    outageName = outageId == 0 ? null : Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException("Unknown outage"));
+                    outageName = outageId == 0 ? null : Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
                     ts = getDetailedMVTimeSeries("MV_POW", chunks[2], chunks[5], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
                     ts = getDetailedMVTimeSeries("MV_COST", chunks[2], chunks[5], outageName);
@@ -396,7 +400,7 @@ public class MetrixOutputData {
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
+                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
                     ts = getDoubleTimeSeries(PST_CUR_NAME, PST_TYPE, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                     ts = getDoubleTimeSeries(PST_CUR_TAP_NAME, PST_TYPE, chunks[2], outageName);
@@ -420,7 +424,7 @@ public class MetrixOutputData {
                     if (INCIDENT.equals(chunks[1])) {
                         continue; // header
                     }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
+                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
                     ts = getDoubleTimeSeries("HVDC_CUR_", HVDC_TYPE, chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                 }
@@ -430,19 +434,19 @@ public class MetrixOutputData {
                         continue; // header
                     }
                     if (!EMPTY_STRING.equals(chunks[3])) {
-                        ts = getDoubleTimeSeries(GEN_VOL_DOWN, "generator-type", chunks[2]);
+                        ts = getDoubleTimeSeries(GEN_VOL_DOWN, GEN_TYPE, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
                     }
                     if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries(GEN_VOL_UP, "generator-type", chunks[2]);
+                        ts = getDoubleTimeSeries(GEN_VOL_UP, GEN_TYPE, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                     }
                     if (!EMPTY_STRING.equals(chunks[5])) {
-                        ts = getDoubleTimeSeries("GEN_CUR_VOL_DOWN_", "generator-type", chunks[2]);
+                        ts = getDoubleTimeSeries("GEN_CUR_VOL_DOWN_", GEN_TYPE, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
                     }
                     if (!EMPTY_STRING.equals(chunks[6])) {
-                        ts = getDoubleTimeSeries("GEN_CUR_VOL_UP_", "generator-type", chunks[2]);
+                        ts = getDoubleTimeSeries("GEN_CUR_VOL_UP_", GEN_TYPE, chunks[2]);
                         ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
                     }
                 }
