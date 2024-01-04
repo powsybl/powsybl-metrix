@@ -188,7 +188,7 @@ public class MappingTool implements Tool {
         try {
             Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
             Path mappingFile = context.getFileSystem().getPath(line.getOptionValue("mapping-file"));
-            List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+            List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).toList();
             if (tsCsvs.isEmpty()) {
                 throw new IllegalArgumentException("Space list is empty");
             }
@@ -213,7 +213,7 @@ public class MappingTool implements Tool {
             boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
             InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-            store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
+            store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).toList());
 
             context.getOutputStream().println("Loading case...");
             Network network = Network.read(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);

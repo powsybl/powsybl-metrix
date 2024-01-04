@@ -205,7 +205,7 @@ public class MetrixTool implements Tool {
         boolean ignoreLimits = line.hasOption("ignore-limits");
         boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
-        List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+        List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).toList();
 
         int chunkSize = line.hasOption("chunk-size") ? Integer.parseInt(line.getOptionValue("chunk-size")) : -1;
 
@@ -228,7 +228,7 @@ public class MetrixTool implements Tool {
         }
 
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-        store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
+        store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).toList());
 
         MetrixAppLogger logger = new MetrixAppLogger() {
             private String tag = "INFO";
@@ -236,7 +236,8 @@ public class MetrixTool implements Tool {
             @Override
             public void log(String message, Object... args) {
                 try {
-                    IOUtils.write(String.format(tag + "\t" + message + "\n", args), context.getOutputStream(), Charset.defaultCharset());
+                    String stringToFormat = tag + "\t" + message + "\n";
+                    IOUtils.write(String.format(stringToFormat, args), context.getOutputStream(), Charset.defaultCharset());
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
