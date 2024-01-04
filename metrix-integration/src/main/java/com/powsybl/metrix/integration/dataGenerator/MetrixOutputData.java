@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.integration.dataGenerator;
 
-import com.google.common.collect.ImmutableMap;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.timeseries.*;
 import org.slf4j.Logger;
@@ -137,7 +136,7 @@ public class MetrixOutputData {
     private StringResultChunk getStringTimeSeries(String prefix, String type, String id) {
         String name = prefix + id;
         return stringTimeSeries.computeIfAbsent(name, k -> {
-            Map<String, String> tags = ImmutableMap.of(type, id);
+            Map<String, String> tags = Map.of(type, id);
             return new StringResultChunk(length, tags);
         });
     }
@@ -149,7 +148,7 @@ public class MetrixOutputData {
     private DoubleResultChunk getDoubleTimeSeries(String prefix, String id) {
         String name = prefix + id;
         return doubleTimeSeries.computeIfAbsent(name, k -> {
-            Map<String, String> tags = ImmutableMap.of("branch", id);
+            Map<String, String> tags = Map.of("branch", id);
             return new DoubleResultChunk(length, tags);
         });
     }
@@ -162,7 +161,7 @@ public class MetrixOutputData {
         Optional<String> optOutage = Optional.ofNullable(outage);
         String name = prefix + id + optOutage.map(s -> "_" + s).orElse(EMPTY_STRING);
         return doubleTimeSeries.computeIfAbsent(name, k -> {
-            Map<String, String> tags = ImmutableMap.of(type, id, CONTINGENCY_TYPE, optOutage.orElse(BASECASE_TYPE));
+            Map<String, String> tags = Map.of(type, id, CONTINGENCY_TYPE, optOutage.orElse(BASECASE_TYPE));
             return new DoubleResultChunk(length, tags);
         });
     }
@@ -171,7 +170,7 @@ public class MetrixOutputData {
         Optional<String> optOutage = Optional.ofNullable(outage);
         String name = prefix + id + optOutage.map(s -> "_" + s).orElse(EMPTY_STRING) + "_" + element;
         return doubleTimeSeries.computeIfAbsent(name, k -> {
-            Map<String, String> tags = ImmutableMap.of("branch", id,
+            Map<String, String> tags = Map.of("branch", id,
                     "action", element,
                         CONTINGENCY_TYPE, optOutage.orElse(BASECASE_TYPE));
             return new DoubleResultChunk(length, tags);
@@ -352,7 +351,7 @@ public class MetrixOutputData {
                         continue; // header
                     }
                     outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException("Unknown outage"));
-                    ts = getDoubleTimeSeries("FLOW_", "branch", chunks[2], outageName);
+                    ts = getDoubleTimeSeries(FLOW_NAME, "branch", chunks[2], outageName);
                     ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
                 }
                 case "R4 " -> {
@@ -528,26 +527,17 @@ public class MetrixOutputData {
         if (type.equals(PST_TYPE)) {
             if (preventiveTimeSeriesName.startsWith(PST_TAP_NAME)) {
                 // PST_TAP_ <-> PST_CUR_TAP_
-                if (!timeSeriesName.startsWith(PST_CUR_TAP_NAME)) {
-                    return false;
-                }
+                return timeSeriesName.startsWith(PST_CUR_TAP_NAME);
             } else if (preventiveTimeSeriesName.startsWith(PST_NAME)) {
                 // PST_  <-> PST_CUR_
-                if (timeSeriesName.startsWith(PST_CUR_TAP_NAME) || !timeSeriesName.startsWith(PST_CUR_NAME)) {
-                    return false;
-                }
+                return !timeSeriesName.startsWith(PST_CUR_TAP_NAME) && timeSeriesName.startsWith(PST_CUR_NAME);
             }
         }
         return true;
     }
 
     public static boolean isPreventiveTimeSeries(Map<String, String> tags) {
-        if (tags.containsKey(HVDC_TYPE) || tags.containsKey(PST_TYPE)) {
-            if (tags.containsKey(CONTINGENCY_TYPE) && tags.get(CONTINGENCY_TYPE).equals(BASECASE_TYPE)) {
-                return true;
-            }
-        }
-        return false;
+        return (tags.containsKey(HVDC_TYPE) || tags.containsKey(PST_TYPE)) && tags.containsKey(CONTINGENCY_TYPE) && tags.get(CONTINGENCY_TYPE).equals(BASECASE_TYPE);
     }
 
     public static String getId(Map<String, String> tags) {
