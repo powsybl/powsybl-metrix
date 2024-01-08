@@ -193,6 +193,18 @@ public class MetrixTool implements Tool {
         return null;
     }
 
+    private Path getCsvResultsFilePath(CommandLine line, ToolRunningContext context) {
+        if (line.hasOption(CSV_RESULTS_FILE)) {
+            String csvResultsFile = line.getOptionValue(CSV_RESULTS_FILE);
+            if (!csvResultsFile.endsWith(".gz")) {
+                csvResultsFile += ".gz";
+            }
+            return context.getFileSystem().getPath(csvResultsFile);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void run(CommandLine line, ToolRunningContext context) throws IOException {
         Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
@@ -225,16 +237,7 @@ public class MetrixTool implements Tool {
             throw new IllegalArgumentException("Empty version list");
         }
 
-        final Path csvResultFilePath;
-        if (line.hasOption(CSV_RESULTS_FILE)) {
-            String csvResultsFile = line.getOptionValue(CSV_RESULTS_FILE);
-            if (!csvResultsFile.endsWith(".gz")) {
-                csvResultsFile += ".gz";
-            }
-            csvResultFilePath = context.getFileSystem().getPath(csvResultsFile);
-        } else {
-            csvResultFilePath = null;
-        }
+        final Path csvResultFilePath = getCsvResultsFilePath(line, context);
 
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
         store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).toList());
