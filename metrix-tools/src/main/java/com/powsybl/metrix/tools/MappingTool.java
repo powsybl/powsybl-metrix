@@ -189,7 +189,7 @@ public class MappingTool implements Tool {
     }
 
     @Override
-    public void run(CommandLine line, ToolRunningContext context) throws Exception {
+    public void run(CommandLine line, ToolRunningContext context) {
         try {
             Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
             Path mappingFile = context.getFileSystem().getPath(line.getOptionValue("mapping-file"));
