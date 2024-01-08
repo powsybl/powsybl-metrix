@@ -142,7 +142,7 @@ jobs:
           yum -y install libxml2-devel libxslt-devel 
           yum -y clean all
           pip3 install wheel
-          pip3 install gcovr cpplint
+          pip3 install gcovr cpplint lxml==4.9.4
 
       - name: Install Sonar wrapper
         working-directory: /__w/powsybl-metrix
