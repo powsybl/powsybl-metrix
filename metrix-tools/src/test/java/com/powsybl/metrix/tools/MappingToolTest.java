@@ -75,4 +75,70 @@ class MappingToolTest extends AbstractToolTest {
         };
         assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
     }
+
+    @Test
+    void runCheckVersions() throws IOException {
+        Files.copy(getClass().getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
+        Files.copy(getClass().getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(getClass().getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mapping_result.txt")))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--check-versions", "0"
+        };
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
+    }
+
+    @Test
+    void runCheckEquipmentTSError() throws IOException {
+        Files.copy(getClass().getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
+        Files.copy(getClass().getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(getClass().getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mapping_result.txt")))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--check-equipment-time-series"
+        };
+        // Command seems OK but no result + error message
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, "", "check-versions has to be set when check-equipment-time-series is set");
+    }
+
+    @Test
+    void runFullOptions() throws IOException {
+        Files.copy(getClass().getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
+        Files.copy(getClass().getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(getClass().getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mapping_result.txt")))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--first-variant", "0",
+            "--max-variant-count", "9999",
+            "--mapping-synthesis-dir", "./temp_mapping/",
+            "--mapping-status-file", "./temp_mapping/",
+            "--check-versions", "0",
+            "--check-equipment-time-series",
+            "--equipment-time-series-dir", "./temp_mapping/",
+            "--network-output-dir", "./temp_mapping/"
+        };
+        // Command seems OK but no result + error message
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
+    }
 }
