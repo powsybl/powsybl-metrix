@@ -54,7 +54,7 @@ public final class TimeSeriesMappingConfigStats {
 
     public double getTimeSeriesMin(String timeSeriesName) {
         NodeCalc nodeCalc = new TimeSeriesNameNodeCalc(timeSeriesName);
-        return computationRange.getVersions().stream().mapToDouble(version -> getTimeSeriesStream(nodeCalc, version, computationRange).min().orElse(Double.NaN)).min().orElse(Double.NaN);
+        return getTimeSeriesMin(nodeCalc, computationRange);
     }
 
     public double getTimeSeriesMax(NodeCalc nodeCalc, ComputationRange computationRange) {
@@ -63,7 +63,7 @@ public final class TimeSeriesMappingConfigStats {
 
     public double getTimeSeriesMax(String timeSeriesName) {
         NodeCalc nodeCalc = new TimeSeriesNameNodeCalc(timeSeriesName);
-        return computationRange.getVersions().stream().mapToDouble(version -> getTimeSeriesStream(nodeCalc, version, computationRange).max().orElse(Double.NaN)).max().orElse(Double.NaN);
+        return getTimeSeriesMax(nodeCalc, computationRange);
     }
 
     public double getTimeSeriesAvg(NodeCalc nodeCalc, ComputationRange computationRange) {
@@ -72,7 +72,7 @@ public final class TimeSeriesMappingConfigStats {
 
     public double getTimeSeriesAvg(String timeSeriesName) {
         NodeCalc nodeCalc = new TimeSeriesNameNodeCalc(timeSeriesName);
-        return computationRange.getVersions().stream().mapToDouble(version -> getTimeSeriesStream(nodeCalc, version, computationRange).average().orElse(Double.NaN)).average().orElse(Double.NaN);
+        return getTimeSeriesAvg(nodeCalc, computationRange);
     }
 
     public double getTimeSeriesSum(NodeCalc nodeCalc, ComputationRange computationRange) {
@@ -81,7 +81,7 @@ public final class TimeSeriesMappingConfigStats {
 
     public double getTimeSeriesSum(String timeSeriesName) {
         NodeCalc nodeCalc = new TimeSeriesNameNodeCalc(timeSeriesName);
-        return computationRange.getVersions().stream().mapToDouble(version -> getTimeSeriesStream(nodeCalc, version, computationRange).sum()).sum();
+        return getTimeSeriesSum(nodeCalc, computationRange);
     }
 
     public double getTimeSeriesMedian(NodeCalc nodeCalc, ComputationRange computationRange) {
@@ -94,10 +94,6 @@ public final class TimeSeriesMappingConfigStats {
 
     public double getTimeSeriesMedian(String timeSeriesName) {
         NodeCalc nodeCalc = new TimeSeriesNameNodeCalc(timeSeriesName);
-        double[] values = computationRange.getVersions().stream().flatMapToDouble(version -> {
-            CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
-            return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getFirstVariant()).limit(computationRange.getVariantCount());
-        }).toArray();
-        return Arrays.stream(values).sorted().skip(new BigDecimal(values.length / 2).longValue()).limit(1).findFirst().orElse(Double.NaN);
+        return getTimeSeriesMedian(nodeCalc, computationRange);
     }
 }
