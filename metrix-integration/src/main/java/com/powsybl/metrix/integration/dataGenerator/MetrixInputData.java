@@ -609,7 +609,7 @@ public class MetrixInputData {
 
     private void writeContingencies(MetrixDie die) {
         int index = 0;
-        double maxGeneratorOutage = 0.f;
+        double maxGeneratorOutage = 0.d;
         List<Integer> dmptdefk = new ArrayList<>();
         List<String> dmnomdek = new ArrayList<>();
         List<Integer> dmdescrk = new ArrayList<>();
@@ -618,7 +618,7 @@ public class MetrixInputData {
 
             List<Integer> elementsToTrip = new ArrayList<>();
 
-            double generatorPowerLost = 0.f;
+            double generatorPowerLost = 0.d;
 
             for (ContingencyElement element : contingency.getElements()) {
                 try {
