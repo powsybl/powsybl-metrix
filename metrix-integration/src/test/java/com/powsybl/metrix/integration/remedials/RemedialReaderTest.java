@@ -24,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RemedialReaderTest {
 
     @Test
-    public void parseFileTest() throws URISyntaxException, IOException {
+    void parseFileTest() throws URISyntaxException, IOException {
         File file = new File(getClass().getResource("/remedial.txt").toURI());
         String s = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         List<Remedial> remedials = RemedialReader.parseFile(s);

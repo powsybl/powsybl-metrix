@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class RemedialTest {
 
     @Test
-    public void remedialTest() {
+    void remedialTest() {
         Remedial remedial = new Remedial(1, "cty", List.of("constraint"), List.of("branchToOpen"), List.of("branchToClose"), "actions");
         assertEquals("cty", remedial.getContingency());
         assertEquals(List.of("constraint"), remedial.getConstraint());
@@ -28,7 +28,7 @@ public class RemedialTest {
     }
 
     @Test
-    public void remedialNameFromActionsTest() {
+    void remedialNameFromActionsTest() {
         Remedial remedial = new Remedial(1, "", Collections.emptyList(), List.of("branchToOpen"), List.of("branchToClose"), "");
         assertEquals("branchToOpen;+branchToClose", remedial.getNameFromActions());
     }
