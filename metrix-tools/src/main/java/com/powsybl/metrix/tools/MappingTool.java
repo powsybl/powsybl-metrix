@@ -241,7 +241,7 @@ public class MappingTool implements Tool {
             LocalParameters localParameters = new LocalParameters(config, store, network, versions);
 
             // Mapping Synthesis
-            writeMappingSynthesis(context, config, store, network, computationRange, mappingParameters, mappingSynthesisDir);
+            writeMappingSynthesis(context, localParameters, computationRange, mappingParameters, mappingSynthesisDir);
 
             // Mapping Status file
             writeMappingStatusFile(mappingStatusFile, context, localParameters);
@@ -258,20 +258,19 @@ public class MappingTool implements Tool {
         }
     }
 
-    private void writeMappingSynthesis(ToolRunningContext context, TimeSeriesMappingConfig config,
-                                       InMemoryTimeSeriesStore store, Network network,
+    private void writeMappingSynthesis(ToolRunningContext context, LocalParameters localParameters,
                                        ComputationRange computationRange, MappingParameters mappingParameters,
                                        Path mappingSynthesisDir) {
 
-        TimeSeriesMappingConfigSynthesisCsvWriter csvSynthesisWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
+        TimeSeriesMappingConfigSynthesisCsvWriter csvSynthesisWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(localParameters.config());
         csvSynthesisWriter.printMappingSynthesis(context.getOutputStream());
 
         if (mappingSynthesisDir != null) {
             context.getOutputStream().println("Writing mapping synthesis to " + mappingSynthesisDir + "...");
             csvSynthesisWriter.writeMappingSynthesis(mappingSynthesisDir);
 
-            ReadOnlyTimeSeriesStore storeAggregator = getStoreAggregator(config.getTimeSeriesNodes(), store);
-            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network, storeAggregator, computationRange, mappingParameters.getWithTimeSeriesStats());
+            ReadOnlyTimeSeriesStore storeAggregator = getStoreAggregator(localParameters.config().getTimeSeriesNodes(), localParameters.store());
+            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(localParameters.config(), localParameters.network(), storeAggregator, computationRange, mappingParameters.getWithTimeSeriesStats());
             csvWriter.writeMappingCsv(mappingSynthesisDir);
             csvSynthesisWriter.writeMappingSynthesisCsv(mappingSynthesisDir);
         }
