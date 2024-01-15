@@ -95,9 +95,9 @@ class MappingToolTest extends AbstractToolTest {
         }
 
         String[] commandLine = new String[] {
-                "mapping", "--case-file", "/network.xiidm",
-                "--mapping-file", "/mapping.groovy",
-                "--time-series", "/timeseries.csv"
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv"
         };
         assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
     }
