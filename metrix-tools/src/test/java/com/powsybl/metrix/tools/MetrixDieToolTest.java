@@ -52,8 +52,8 @@ class MetrixDieToolTest extends AbstractToolTest {
         assertOption(options, "metrix-dsl-file", false, true);
         assertOption(options, "remedial-actions-file", false, true);
         assertOption(options, "output-dir", false, true);
-        assertEquals(command.getTheme(), "Metrix");
-        assertEquals(command.getDescription(), "Generate Metrix DIE files");
+        assertEquals("Metrix", command.getTheme());
+        assertEquals("Generate Metrix DIE files", command.getDescription());
         assertNull(command.getUsageFooter());
     }
 

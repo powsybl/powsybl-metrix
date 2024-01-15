@@ -61,8 +61,8 @@ class MappingToolTest extends AbstractToolTest {
         assertOption(options, "max-variant-count", false, true);
         assertOption(options, "ignore-limits", false, false);
         assertOption(options, "ignore-empty-filter", false, false);
-        assertEquals(command.getTheme(), "Metrix");
-        assertEquals(command.getDescription(), "Time serie to network mapping tool");
+        assertEquals("Metrix", command.getTheme());
+        assertEquals("Time serie to network mapping tool", command.getDescription());
         assertNull(command.getUsageFooter());
     }
 

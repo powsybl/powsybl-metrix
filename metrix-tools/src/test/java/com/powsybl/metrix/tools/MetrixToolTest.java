@@ -60,8 +60,8 @@ class MetrixToolTest extends AbstractToolTest {
         assertOption(options, "csv-results-file", false, true);
         assertOption(options, "chunk-size", false, true);
         assertOption(options, "log-archive", false, true);
-        assertEquals(command.getTheme(), "Metrix");
-        assertEquals(command.getDescription(), "Run Metrix");
+        assertEquals("Metrix", command.getTheme());
+        assertEquals("Run Metrix", command.getDescription());
         assertEquals(command.getUsageFooter(), null);
     }
 
