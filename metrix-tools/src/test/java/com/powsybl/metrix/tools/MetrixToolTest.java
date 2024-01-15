@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MetrixToolTest extends AbstractToolTest {
 
@@ -62,7 +63,7 @@ class MetrixToolTest extends AbstractToolTest {
         assertOption(options, "log-archive", false, true);
         assertEquals("Metrix", command.getTheme());
         assertEquals("Run Metrix", command.getDescription());
-        assertEquals(command.getUsageFooter(), null);
+        assertNull(command.getUsageFooter());
     }
 
     @Test
