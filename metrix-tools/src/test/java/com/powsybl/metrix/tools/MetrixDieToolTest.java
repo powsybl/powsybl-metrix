@@ -19,8 +19,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Collections;
+import java.util.Objects;
 
 import static com.powsybl.tools.CommandLineTools.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MetrixDieToolTest extends AbstractToolTest {
 
@@ -49,11 +52,14 @@ class MetrixDieToolTest extends AbstractToolTest {
         assertOption(options, "metrix-dsl-file", false, true);
         assertOption(options, "remedial-actions-file", false, true);
         assertOption(options, "output-dir", false, true);
+        assertEquals(command.getTheme(), "Metrix");
+        assertEquals(command.getDescription(), "Generate Metrix DIE files");
+        assertNull(command.getUsageFooter());
     }
 
     @Test
     void run() throws IOException {
-        Files.copy(MetrixDieToolTest.class.getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(MetrixDieToolTest.class.getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
         StringBuilder expected = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(MetrixDieToolTest.class.getResourceAsStream("/mapping_result.txt")))) {
             expected.append(reader.readLine());
