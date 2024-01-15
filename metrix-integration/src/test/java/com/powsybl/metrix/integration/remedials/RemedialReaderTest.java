@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ *
+ */
+
 package com.powsybl.metrix.integration.remedials;
 
 import org.apache.commons.io.FileUtils;
@@ -16,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class RemedialReaderTest {
 
     @Test
-    public void parseFileTest() throws URISyntaxException, IOException {
+    void parseFileTest() throws URISyntaxException, IOException {
         File file = new File(getClass().getResource("/remedial.txt").toURI());
         String s = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
         List<Remedial> remedials = RemedialReader.parseFile(s);

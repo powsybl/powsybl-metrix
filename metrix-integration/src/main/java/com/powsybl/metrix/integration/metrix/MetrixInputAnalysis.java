@@ -162,10 +162,7 @@ public class MetrixInputAnalysis {
         if (elementType == ContingencyElementType.GENERATOR && identifiableType == IdentifiableType.GENERATOR) {
             return true;
         }
-        if (elementType == ContingencyElementType.HVDC_LINE && identifiableType == IdentifiableType.HVDC_LINE) {
-            return true;
-        }
-        return false;
+        return elementType == ContingencyElementType.HVDC_LINE && identifiableType == IdentifiableType.HVDC_LINE;
     }
 
     public static boolean isValidContingencyElement(IdentifiableType identifiableType, ContingencyElementType elementType) {
@@ -316,7 +313,7 @@ public class MetrixInputAnalysis {
             }
         }
 
-        boolean isNbActionsEqualToZero = actions.length >= RemedialReader.FIRST_ACTION_INDEX ? Integer.parseInt(actions[1]) == 0 : false;
+        boolean isNbActionsEqualToZero = actions.length >= RemedialReader.FIRST_ACTION_INDEX && Integer.parseInt(actions[1]) == 0;
         if (actions.length <= RemedialReader.FIRST_ACTION_INDEX && !isNbActionsEqualToZero) {
             String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileLine"), lineId);
             writeRemedialFileLog(lineId, message);

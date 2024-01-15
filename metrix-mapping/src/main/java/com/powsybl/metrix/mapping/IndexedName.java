@@ -36,8 +36,7 @@ public class IndexedName {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof IndexedName) {
-            IndexedName other = (IndexedName) obj;
+        if (obj instanceof IndexedName other) {
             return name.equals(other.name) && num == other.num;
         }
         return false;

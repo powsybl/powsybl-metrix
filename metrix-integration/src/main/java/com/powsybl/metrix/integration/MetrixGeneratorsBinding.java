@@ -69,10 +69,9 @@ public class MetrixGeneratorsBinding {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MetrixGeneratorsBinding)) {
+        if (!(obj instanceof MetrixGeneratorsBinding other)) {
             return false;
         }
-        MetrixGeneratorsBinding other = (MetrixGeneratorsBinding) obj;
         return name.equals(other.name) && reference == other.reference && generatorsIds.equals(other.generatorsIds);
     }
 

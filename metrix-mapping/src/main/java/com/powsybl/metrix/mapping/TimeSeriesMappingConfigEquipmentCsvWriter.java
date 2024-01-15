@@ -98,35 +98,15 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     public int writeEquipmentHeader(BufferedWriter writer, String equipmentType) {
         try {
-            List<String> header;
-            switch (equipmentType) {
-                case GENERATOR:
-                    header = getGeneratorHeader();
-                    break;
-
-                case LOAD:
-                    header = getLoadHeader();
-                    break;
-
-                case HVDC_LINE:
-                    header = getHvdcLineHeader();
-                    break;
-
-                case PST:
-                    header = getPstHeader();
-                    break;
-
-                case BOUNDARY_LINE:
-                    header = BOUNDARY_LINE_HEADER;
-                    break;
-
-                case BREAKER:
-                    header = getBreakerHeader();
-                    break;
-
-                default:
-                    throw new AssertionError("Unsupported equipment type " + equipmentType);
-            }
+            List<String> header = switch (equipmentType) {
+                case GENERATOR -> getGeneratorHeader();
+                case LOAD -> getLoadHeader();
+                case HVDC_LINE -> getHvdcLineHeader();
+                case PST -> getPstHeader();
+                case BOUNDARY_LINE -> BOUNDARY_LINE_HEADER;
+                case BREAKER -> getBreakerHeader();
+                default -> throw new AssertionError("Unsupported equipment type " + equipmentType);
+            };
 
             for (String col : header) {
                 writer.write(col);
@@ -243,52 +223,21 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
     public void writeEquipment(BufferedWriter writer, String equipmentType, String id) {
         try {
             switch (equipmentType) {
-                case GENERATOR:
-                    writeGenerator(writer, id);
-                    break;
-
-                case HVDC_LINE:
-                    writeHvdcLine(writer, id);
-                    break;
-
-                case PST:
-                    writePst(writer, id);
-                    break;
-
-                case LOAD:
-                    writeLoad(writer, id);
-                    break;
-
-                case BREAKER:
-                    writeBreaker(writer, id);
-                    break;
-
-                case GENERATOR_TYPE:
-                case LOAD_TYPE:
-                case BOUNDARY_LINE_TYPE:
-                case HVDC_LINE_TYPE:
-                case PHASE_TAP_CHANGER_TYPE:
-                case RATIO_TAP_CHANGER_TYPE:
-                case TRANSFORMER_TYPE:
-                case LINE_TYPE:
-                case LCC_CONVERTER_STATION_TYPE:
-                case VSC_CONVERTER_STATION_TYPE:
-                case BREAKER_TYPE:
-                case EMPTY_TYPE:
-                case BOUNDARY_LINE:
+                case GENERATOR -> writeGenerator(writer, id);
+                case HVDC_LINE -> writeHvdcLine(writer, id);
+                case PST -> writePst(writer, id);
+                case LOAD -> writeLoad(writer, id);
+                case BREAKER -> writeBreaker(writer, id);
+                case GENERATOR_TYPE, LOAD_TYPE, BOUNDARY_LINE_TYPE, HVDC_LINE_TYPE, PHASE_TAP_CHANGER_TYPE,
+                    RATIO_TAP_CHANGER_TYPE, TRANSFORMER_TYPE, LINE_TYPE, LCC_CONVERTER_STATION_TYPE,
+                    VSC_CONVERTER_STATION_TYPE, BREAKER_TYPE, EMPTY_TYPE, BOUNDARY_LINE -> {
                     writer.write(equipmentType);
                     writer.write(CSV_SEPARATOR);
-                    break;
-
-                case GENERATORS:
-                case LOADS:
-                case HVDC_LINES:
-                case PSTS:
-                case BREAKERS:
-                    break;
-
-                default:
-                    throw new AssertionError("Unsupported equipment type " + equipmentType);
+                }
+                case GENERATORS, LOADS, HVDC_LINES, PSTS, BREAKERS -> {
+                    // Do nothing
+                }
+                default -> throw new AssertionError("Unsupported equipment type " + equipmentType);
             }
         } catch (IOException e) {
             throw new UncheckedIOException(e);

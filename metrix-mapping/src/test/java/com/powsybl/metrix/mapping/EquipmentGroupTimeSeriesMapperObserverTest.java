@@ -149,17 +149,15 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
             public void addTimeSeries(String timeSeriesName, int version, Range<Integer> pointRange, double[] values, Map<String, String> tags, TimeSeriesIndex index) {
                 checkLoadTest(expectedTimeSeriesNames, timeSeriesName, version, pointRange, tags, index);
                 switch (timeSeriesName) {
-                    case variableActivePowerTimeSeriesName:
+                    case variableActivePowerTimeSeriesName -> {
                         isVariableActivePowerTimeSeriesOk = true;
                         assertThat(values).isEqualTo(expectedVariableActivePowerValues);
-                        break;
-                    case fixedActivePowerTimeSeriesName:
+                    }
+                    case fixedActivePowerTimeSeriesName -> {
                         isFixedActivePowerTimeSeriesOk = true;
                         assertThat(values).isEqualTo(expectedFixedActivePowerValues);
-                        break;
-                    default:
-                        fail();
-                        break;
+                    }
+                    default -> fail();
                 }
             }
 

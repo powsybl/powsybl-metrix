@@ -185,8 +185,7 @@ public class TimeSeriesMappingConfig {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TimeSeriesMappingConfig) {
-            TimeSeriesMappingConfig other = (TimeSeriesMappingConfig) obj;
+        if (obj instanceof TimeSeriesMappingConfig other) {
             return distributionKeys.equals(other.getDistributionKeys())
                     && timeSeriesToGeneratorsMapping.equals(other.getTimeSeriesToGeneratorsMapping())
                     && timeSeriesToLoadsMapping.equals(other.getTimeSeriesToLoadsMapping())

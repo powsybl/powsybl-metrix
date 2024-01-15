@@ -56,15 +56,12 @@ public class MappingKey {
                 if (token.equals(JsonToken.FIELD_NAME)) {
                     String fieldName = parser.getCurrentName();
                     switch (fieldName) {
-                        case "mappingVariable":
-                            mappingVariable = MappingVariable.parseJson(parser);
-                            break;
-                        case "id":
+                        case "mappingVariable" -> mappingVariable = MappingVariable.parseJson(parser);
+                        case "id" -> {
                             parser.nextToken();
                             id = parser.getValueAsString();
-                            break;
-                        default:
-                            throw new IllegalStateException("Unexpected field name " + fieldName);
+                        }
+                        default -> throw new IllegalStateException("Unexpected field name " + fieldName);
                     }
                 } else if (token.equals(JsonToken.END_OBJECT)) {
                     if (mappingVariable != null && id != null) {
@@ -102,8 +99,7 @@ public class MappingKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MappingKey) {
-            MappingKey other = (MappingKey) obj;
+        if (obj instanceof MappingKey other) {
             return id.equals(other.id) && mappingVariable.equals(other.mappingVariable);
         }
         return false;

@@ -15,25 +15,15 @@ import com.powsybl.timeseries.TimeSeriesException;
 
 import java.io.IOException;
 
-public class NumberDistributionKey implements DistributionKey {
+public record NumberDistributionKey(double value) implements DistributionKey {
 
     static final String NAME = "number";
 
     public static final NumberDistributionKey ONE = new NumberDistributionKey(1);
 
-    private final double value;
-
     @Override
     public void writeJson(JsonGenerator generator) throws IOException {
         generator.writeNumberField(NAME, value);
-    }
-
-    public NumberDistributionKey(double value) {
-        this.value = value;
-    }
-
-    public double getValue() {
-        return value;
     }
 
     static NumberDistributionKey parseJson(JsonParser parser) throws IOException {
@@ -57,8 +47,7 @@ public class NumberDistributionKey implements DistributionKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof NumberDistributionKey) {
-            NumberDistributionKey other = (NumberDistributionKey) obj;
+        if (obj instanceof NumberDistributionKey other) {
             return value == other.value;
         }
         return false;

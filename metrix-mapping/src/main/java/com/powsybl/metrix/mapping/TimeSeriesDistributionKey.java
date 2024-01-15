@@ -64,8 +64,7 @@ public class TimeSeriesDistributionKey implements DistributionKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof TimeSeriesDistributionKey) {
-            TimeSeriesDistributionKey other = (TimeSeriesDistributionKey) obj;
+        if (obj instanceof TimeSeriesDistributionKey other) {
             return timeSeriesName.equals(other.timeSeriesName);
         }
         return false;

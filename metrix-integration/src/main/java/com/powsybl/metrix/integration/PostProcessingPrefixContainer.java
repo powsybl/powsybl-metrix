@@ -3,11 +3,11 @@ package com.powsybl.metrix.integration;
 import java.util.List;
 
 public class PostProcessingPrefixContainer {
-    public String postProcessingType;
-    public String loadPrefix;
-    public String overloadPrefix;
-    public String overallOverloadPrefix;
-    public String maxThreatPrefix;
+    public final String postProcessingType;
+    public final String loadPrefix;
+    public final String overloadPrefix;
+    public final String overallOverloadPrefix;
+    public final String maxThreatPrefix;
 
     public PostProcessingPrefixContainer(String postProcessingType, String loadPrefix, String overloadPrefix, String overallOverloadPrefix, String maxThreatPrefix) {
         this.postProcessingType = postProcessingType;

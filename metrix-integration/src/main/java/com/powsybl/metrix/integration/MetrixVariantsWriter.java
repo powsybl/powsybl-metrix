@@ -30,57 +30,40 @@ public class MetrixVariantsWriter {
     private final MetrixNetwork metrixNetwork;
 
     public static String getMetrixKey(EquipmentVariable variable, MappableEquipmentType equipmentType) {
-        switch (equipmentType) {
-            case GENERATOR:
-                return getGeneratorKey(variable);
-            case LOAD:
-                return getLoadKey(variable);
-            case HVDC_LINE:
-                return getHvdcKey(variable);
-            case PHASE_TAP_CHANGER:
-                return getPhaseTapChangerKey(variable);
-            default:
+        return switch (equipmentType) {
+            case GENERATOR -> getGeneratorKey(variable);
+            case LOAD -> getLoadKey(variable);
+            case HVDC_LINE -> getHvdcKey(variable);
+            case PHASE_TAP_CHANGER -> getPhaseTapChangerKey(variable);
+            default -> {
                 LOGGER.warn("Unhandled variable {}", variable);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 
     public static String getMetrixVariableKey(MetrixVariable variable) {
-        switch (variable) {
-            case offGridCostDown:
-                return "COUBHR";
-            case offGridCostUp:
-                return "CTORDR";
-            case onGridCostDown:
-                return "COUBAR";
-            case onGridCostUp:
-                return "COUHAR";
-            case thresholdN:
-                return "QATI00MN";
-            case thresholdN1:
-                return "QATI5MNS";
-            case thresholdNk:
-                return "QATI20MN";
-            case thresholdITAM:
-                return "QATITAMN";
-            case thresholdITAMNk:
-                return "QATITAMK";
-            case thresholdNEndOr:
-                return "QATI00MN2";
-            case thresholdN1EndOr:
-                return "QATI5MNS2";
-            case thresholdNkEndOr:
-                return "QATI20MN2";
-            case thresholdITAMEndOr:
-                return "QATITAMN2";
-            case thresholdITAMNkEndOr:
-                return "QATITAMK2";
-            case curativeCostDown:
-                return "COUEFF";
-            default:
+        return switch (variable) {
+            case offGridCostDown -> "COUBHR";
+            case offGridCostUp -> "CTORDR";
+            case onGridCostDown -> "COUBAR";
+            case onGridCostUp -> "COUHAR";
+            case thresholdN -> "QATI00MN";
+            case thresholdN1 -> "QATI5MNS";
+            case thresholdNk -> "QATI20MN";
+            case thresholdITAM -> "QATITAMN";
+            case thresholdITAMNk -> "QATITAMK";
+            case thresholdNEndOr -> "QATI00MN2";
+            case thresholdN1EndOr -> "QATI5MNS2";
+            case thresholdNkEndOr -> "QATI20MN2";
+            case thresholdITAMEndOr -> "QATITAMN2";
+            case thresholdITAMNkEndOr -> "QATITAMK2";
+            case curativeCostDown -> "COUEFF";
+            default -> {
                 LOGGER.debug("Unhandled variable {}", variable);
-                return null;
-        }
+                yield null;
+            }
+        };
     }
 
     private static String getPhaseTapChangerKey(EquipmentVariable variable) {
@@ -91,16 +74,12 @@ public class MetrixVariantsWriter {
     }
 
     private static String getHvdcKey(EquipmentVariable variable) {
-        switch (variable) {
-            case activePowerSetpoint:
-                return "DCIMPPUI";
-            case minP:
-                return "DCMINPUI";
-            case maxP:
-                return "DCMAXPUI";
-            default:
-                return null;
-        }
+        return switch (variable) {
+            case activePowerSetpoint -> "DCIMPPUI";
+            case minP -> "DCMINPUI";
+            case maxP -> "DCMAXPUI";
+            default -> null;
+        };
     }
 
     private static String getLoadKey(EquipmentVariable variable) {
@@ -111,16 +90,12 @@ public class MetrixVariantsWriter {
     }
 
     private static String getGeneratorKey(EquipmentVariable variable) {
-        switch (variable) {
-            case targetP:
-                return "PRODIM";
-            case minP:
-                return "TRPUIMIN";
-            case maxP:
-                return "TRVALPMD";
-            default:
-                return null;
-        }
+        return switch (variable) {
+            case targetP -> "PRODIM";
+            case minP -> "TRPUIMIN";
+            case maxP -> "TRVALPMD";
+            default -> null;
+        };
     }
 
     public MetrixVariantsWriter(MetrixVariantProvider variantProvider, MetrixNetwork metrixNetwork) {

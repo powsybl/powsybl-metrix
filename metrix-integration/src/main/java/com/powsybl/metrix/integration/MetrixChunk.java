@@ -8,7 +8,6 @@
 
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableMap;
 import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
@@ -75,7 +74,7 @@ public class MetrixChunk {
         Objects.requireNonNull(contingenciesProvider);
 
         Optional<MetrixChunkLogger> optionalLogger = metrixChunkLogger != null ? Optional.of(metrixChunkLogger) : Optional.empty();
-        Map<String, String> variables = ImmutableMap.of("PATH", config.getHomeDir().resolve("bin").toString());
+        Map<String, String> variables = Map.of("PATH", config.getHomeDir().resolve("bin").toString());
 
         return computationManager.execute(new ExecutionEnvironment(variables, WORKING_DIR_PREFIX, config.isDebug()),
                 new AbstractExecutionHandler<List<TimeSeries>>() {

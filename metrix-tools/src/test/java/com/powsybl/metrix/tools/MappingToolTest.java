@@ -12,6 +12,7 @@ import com.powsybl.tools.Command;
 import com.powsybl.tools.CommandLineTools;
 import com.powsybl.tools.Tool;
 import org.apache.commons.cli.Options;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,6 +21,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Collections;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MappingToolTest extends AbstractToolTest {
 
@@ -56,15 +61,36 @@ class MappingToolTest extends AbstractToolTest {
         assertOption(options, "max-variant-count", false, true);
         assertOption(options, "ignore-limits", false, false);
         assertOption(options, "ignore-empty-filter", false, false);
+        assertEquals("Metrix", command.getTheme());
+        assertEquals("Time serie to network mapping tool", command.getDescription());
+        assertNull(command.getUsageFooter());
     }
 
     @Test
     void run() throws IOException {
-        Files.copy(getClass().getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
-        Files.copy(getClass().getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
-        Files.copy(getClass().getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
         StringBuilder expected = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream("/mapping_result.txt")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/mapping_result.txt"))))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv"
+        };
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), StringUtils.EMPTY);
+    }
+
+    @Test
+    void runMappingIsIncomplete() throws IOException {
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/incomplete_mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/mapping_result.txt"))))) {
             expected.append(reader.readLine());
         }
 
@@ -74,5 +100,70 @@ class MappingToolTest extends AbstractToolTest {
             "--time-series", "/timeseries.csv"
         };
         assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
+    }
+
+    @Test
+    void runCheckVersions() throws IOException {
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/mapping_result.txt"))))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--check-versions", "1"
+        };
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), StringUtils.EMPTY);
+    }
+
+    @Test
+    void runCheckEquipmentTSError() throws IOException {
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/mapping_result.txt"))))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--check-equipment-time-series"
+        };
+        // Command seems OK but no result + error message
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, "", "check-versions has to be set when check-equipment-time-series is set");
+    }
+
+    @Test
+    void runFullOptions() throws IOException {
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/mapping_result.txt"))))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[] {
+            "mapping", "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--first-variant", "0",
+            "--max-variant-count", "9999",
+            "--mapping-synthesis-dir", "./temp_mapping_dir/",
+            "--mapping-status-file", "./temp_mapping_file/",
+            "--check-versions", "1",
+            "--check-equipment-time-series",
+            "--equipment-time-series-dir", "./temp_mapping_dir/",
+            "--network-output-dir", "./temp_mapping_dir/"
+        };
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), StringUtils.EMPTY);
     }
 }

@@ -69,7 +69,7 @@ public class Metrix extends AbstractMetrix {
             }
         }
 
-        List<CompletableFuture> futures = new ArrayList<>();
+        List<CompletableFuture<?>> futures = new ArrayList<>();
         for (int version : runParameters.getVersions()) {
 
             for (int chunk = chunkOffset; chunk < chunkCount; chunk++) {
@@ -92,7 +92,7 @@ public class Metrix extends AbstractMetrix {
         }
 
         if (!futures.isEmpty()) {
-            for (CompletableFuture future : futures) {
+            for (CompletableFuture<?> future : futures) {
                 future.join();
             }
         }

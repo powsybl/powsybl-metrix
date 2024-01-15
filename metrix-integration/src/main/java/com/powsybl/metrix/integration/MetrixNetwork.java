@@ -73,59 +73,59 @@ public class MetrixNetwork {
     }
 
     public List<String> getCountryList() {
-        return Collections.unmodifiableList(new ArrayList<>(countryList));
+        return List.copyOf(countryList);
     }
 
     public List<Load> getLoadList() {
-        return Collections.unmodifiableList(new ArrayList<>(loadList));
+        return List.copyOf(loadList);
     }
 
     public List<Generator> getGeneratorList() {
-        return Collections.unmodifiableList(new ArrayList<>(generatorList));
+        return List.copyOf(generatorList);
     }
 
     public List<String> getGeneratorTypeList() {
-        return Collections.unmodifiableList(new ArrayList<>(generatorTypeList));
+        return List.copyOf(generatorTypeList);
     }
 
     public List<Line> getLineList() {
-        return Collections.unmodifiableList(new ArrayList<>(lineList));
+        return List.copyOf(lineList);
     }
 
     public List<TwoWindingsTransformer> getTwoWindingsTransformerList() {
-        return Collections.unmodifiableList(new ArrayList<>(twoWindingsTransformerList));
+        return List.copyOf(twoWindingsTransformerList);
     }
 
     public List<ThreeWindingsTransformer> getThreeWindingsTransformerList() {
-        return Collections.unmodifiableList(new ArrayList<>(threeWindingsTransformerList));
+        return List.copyOf(threeWindingsTransformerList);
     }
 
     public List<DanglingLine> getDanglingLineList() {
-        return Collections.unmodifiableList(new ArrayList<>(danglingLineList));
+        return List.copyOf(danglingLineList);
     }
 
     public List<Switch> getSwitchList() {
-        return Collections.unmodifiableList(new ArrayList<>(switchList));
+        return List.copyOf(switchList);
     }
 
     public List<PhaseTapChanger> getPhaseTapChangerList() {
-        return Collections.unmodifiableList(new ArrayList<>(phaseTapChangerList));
+        return List.copyOf(phaseTapChangerList);
     }
 
     public List<HvdcLine> getHvdcLineList() {
-        return Collections.unmodifiableList(new ArrayList<>(hvdcLineList));
+        return List.copyOf(hvdcLineList);
     }
 
     public List<Bus> getBusList() {
-        return Collections.unmodifiableList(new ArrayList<>(busList));
+        return List.copyOf(busList);
     }
 
     public List<Contingency> getContingencyList() {
-        return Collections.unmodifiableList(contingencyList);
+        return List.copyOf(contingencyList);
     }
 
     public Set<Identifiable<?>> getDisconnectedElements() {
-        return Collections.unmodifiableSet(disconnectedElements);
+        return Set.copyOf(disconnectedElements);
     }
 
     public int getIndex(Identifiable<?> identifiable) {
@@ -581,11 +581,11 @@ public class MetrixNetwork {
             Switch sw = network.getSwitch(breakerId);
 
             if (sw == null) {
-                LOGGER.debug(String.format("Switch '%s' not found or not a switch", breakerId));
+                LOGGER.debug("Switch '{}' not found or not a switch", breakerId);
                 continue;
             }
             if (sw.isOpen()) {
-                LOGGER.warn(String.format("Switch '%s' is opened in basecase", breakerId));
+                LOGGER.warn("Switch '{}' is opened in basecase", breakerId);
                 continue;
             }
 
@@ -604,27 +604,20 @@ public class MetrixNetwork {
                 mappedSwitchMap.put(switchId, switchId);
             } else {
                 switch (terminal1.getConnectable().getType()) {
-                    case LINE:
-                    case TWO_WINDINGS_TRANSFORMER:
+                    case LINE, TWO_WINDINGS_TRANSFORMER -> {
                         sw.setRetained(true);
                         mappedSwitchMap.put(switchId, terminal1.getConnectable().getId());
-                        break;
-                    case LOAD:
-                    case GENERATOR:
+                    }
+                    case LOAD, GENERATOR -> {
                         sw.setRetained(true);
                         mappedSwitchMap.put(switchId, switchId);
-                        break;
-                    case DANGLING_LINE:
-                    case HVDC_CONVERTER_STATION:
-                    case SHUNT_COMPENSATOR:
-                    case STATIC_VAR_COMPENSATOR:
-                    case THREE_WINDINGS_TRANSFORMER:
+                    }
+                    case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR, THREE_WINDINGS_TRANSFORMER -> {
                         if (LOGGER.isWarnEnabled()) {
                             LOGGER.warn(String.format("Unsupported connectable type (%s) for switch '%s'", terminal1.getConnectable().getType(), breakerId));
                         }
-                        break;
-                    default:
-                        throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
+                    }
+                    default -> throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
                 }
             }
         }
@@ -634,26 +627,24 @@ public class MetrixNetwork {
         for (String branchId : openedBranches) {
             Identifiable<?> identifiable = network.getIdentifiable(branchId);
             if (identifiable != null) {
-                if (identifiable instanceof Branch) {
-                    Branch<?> branchToClose = (Branch<?>) identifiable;
+                if (identifiable instanceof Branch<?> branchToClose) {
                     if (!branchToClose.getTerminal1().isConnected() || !branchToClose.getTerminal2().isConnected()) {
                         closeBranch(branchToClose);
                         disconnectedElements.add(branchToClose);
                     }
-                } else if (identifiable instanceof Switch) {
-                    Switch switchToClose = (Switch) identifiable;
+                } else if (identifiable instanceof Switch switchToClose) {
                     if (switchToClose.isOpen()) {
                         closeSwitch(switchToClose);
                         disconnectedElements.add(switchToClose);
                     }
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Unsupported open branch type : %s", identifiable.getClass()));
+                        LOGGER.warn("Unsupported open branch type : {}", identifiable.getClass());
                     }
                 }
             } else {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Opened branch '%s' is missing in the network", branchId));
+                    LOGGER.warn("Opened branch '{}' is missing in the network", branchId);
                 }
             }
         }
@@ -663,16 +654,16 @@ public class MetrixNetwork {
         branchToClose.getTerminal1().connect();
         branchToClose.getTerminal2().connect();
         if (branchToClose.getTerminal1().isConnected() && branchToClose.getTerminal2().isConnected()) {
-            LOGGER.debug(String.format("Reconnecting open branch : %s", branchToClose.getId()));
+            LOGGER.debug("Reconnecting open branch : {}", branchToClose.getId());
         } else {
-            LOGGER.warn(String.format("Unable to reconnect open branch : %s", branchToClose.getId()));
+            LOGGER.warn("Unable to reconnect open branch : {}", branchToClose.getId());
         }
     }
 
     private void closeSwitch(Switch switchToClose) {
         switchToClose.setOpen(false);
         switchToClose.setRetained(true);
-        LOGGER.debug(String.format("Reconnecting open switch : %s", switchToClose.getId()));
+        LOGGER.debug("Reconnecting open switch : {}", switchToClose.getId());
     }
 
     Optional<String> getMappedBranch(Switch sw) {

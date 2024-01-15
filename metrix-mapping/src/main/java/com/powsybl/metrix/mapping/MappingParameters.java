@@ -63,8 +63,7 @@ public class MappingParameters {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MappingParameters) {
-            MappingParameters other = (MappingParameters) obj;
+        if (obj instanceof MappingParameters other) {
             return toleranceThreshold == other.toleranceThreshold && withTimeSeriesStats == other.withTimeSeriesStats;
         }
         return false;

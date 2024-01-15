@@ -155,7 +155,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             double[] probabilityValues = new double[value.size()];
             Arrays.fill(probabilityValues, getValue.apply(key));
             contingencyProbabilityValues.add(probabilityValues);
-            contingencyIds.addAll(value.stream().map(Contingency::getId).collect(Collectors.toList()));
+            contingencyIds.addAll(value.stream().map(Contingency::getId).toList());
         });
     }
 

@@ -36,8 +36,9 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     public FileSystemTimeseriesStore(Path path) throws IOException {
         this.fileSystemStorePath = Objects.requireNonNull(path);
         this.existingTimeSeriesMetadataCache = initExistingTimeSeriesCache();
-
-        assert Files.isDirectory(path);
+        if (!Files.isDirectory(path)) {
+            throw new IllegalArgumentException(String.format("Path %s is not a directory", path));
+        }
     }
 
     @Override
@@ -60,7 +61,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
 
     @Override
     public List<TimeSeriesMetadata> getTimeSeriesMetadata(Set<String> set) {
-        return getTimeSeriesMetadata(timeSeriesMetadata -> set.contains(timeSeriesMetadata.getName())).collect(Collectors.toList());
+        return getTimeSeriesMetadata(timeSeriesMetadata -> set.contains(timeSeriesMetadata.getName())).toList();
     }
 
     @Override
@@ -99,9 +100,9 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     @Override
     public List<DoubleTimeSeries> getDoubleTimeSeries(Set<String> set, int i) {
         return set.stream().map(tsName -> getDoubleTimeSeries(tsName, i))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
     }
 
     @Override
@@ -117,9 +118,9 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     @Override
     public List<StringTimeSeries> getStringTimeSeries(Set<String> set, int i) {
         return set.stream().map(tsName -> getStringTimeSeries(tsName, i))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toList());
+            .filter(Optional::isPresent)
+            .map(Optional::get)
+            .toList();
     }
 
     private Object getFileLock(String tsFilePath) {
@@ -141,7 +142,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                     return timeSerieTypeClass.cast(ts);
                 }
                 throw new PowsyblException(String.format("Wrong data type for timeseries %s", name));
-            }).collect(Collectors.toList());
+            }).toList();
             if (timeSeries.size() != 1) {
                 throw new PowsyblException("Found more than one timeseries");
             }
@@ -160,21 +161,21 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, boolean overwriteExisting, boolean append) {
-        timeSeriesList.stream().forEach(ts -> {
+        timeSeriesList.forEach(ts -> {
             String tsName = ts.getMetadata().getName();
             existingTimeSeriesMetadataCache.put(tsName, ts.getMetadata());
             try {
                 Path tsFolder = Files.createDirectories(fileSystemStorePath.resolve(tsName));
                 Path versionFile = tsFolder.resolve(String.valueOf(version));
                 if (!append && !overwriteExisting && Files.exists(versionFile)) {
-                    throw new RuntimeException(String.format("Timeserie %s already exist", tsName));
+                    throw new PowsyblException(String.format("Timeserie %s already exist", tsName));
                 }
                 synchronized (getFileLock(versionFile.toString())) {
                     TimeSeries updatedTs = ts;
                     if (Files.exists(versionFile)) {
                         List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
                         if (existingTsList.size() != 1) {
-                            throw new RuntimeException("Existing ts file should contain one and only one ts");
+                            throw new PowsyblException("Existing ts file should contain one and only one ts");
                         }
                         TimeSeries existingTs = existingTsList.get(0);
                         if (append && InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())) {
@@ -218,25 +219,25 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         assert Files.isDirectory(fileSystemStorePath);
 
         try (Stream<Path> children = Files.list(fileSystemStorePath)) {
-            return children.filter(path -> Files.isDirectory(path))
-                    .map(path -> {
-                        try {
-                            return Files.list(path);
-                        } catch (IOException e) {
-                            throw new PowsyblException(String.format("Failed to list timeserie version file resources for %s", path));
-                        }
-                    })
-                    .map(versionPaths ->
-                            versionPaths.findFirst().orElseThrow(() -> new PowsyblException("Failed to find a timeserie version resource"))
-                    )
-                    .map(TimeSeries::parseJson)
-                    .map(tsList -> {
-                        if (tsList.size() == 1) {
-                            return tsList.get(0).getMetadata();
-                        }
-                        throw new PowsyblException("Invalid timeseries resource count");
-                    })
-                    .collect(Collectors.toMap(TimeSeriesMetadata::getName, tsMeta -> tsMeta));
+            return children.filter(Files::isDirectory)
+                .map(path -> {
+                    try {
+                        return Files.list(path);
+                    } catch (IOException e) {
+                        throw new PowsyblException(String.format("Failed to list timeserie version file resources for %s", path));
+                    }
+                })
+                .map(versionPaths ->
+                    versionPaths.findFirst().orElseThrow(() -> new PowsyblException("Failed to find a timeserie version resource"))
+                )
+                .map(TimeSeries::parseJson)
+                .map(tsList -> {
+                    if (tsList.size() == 1) {
+                        return tsList.get(0).getMetadata();
+                    }
+                    throw new PowsyblException("Invalid timeseries resource count");
+                })
+                .collect(Collectors.toMap(TimeSeriesMetadata::getName, tsMeta -> tsMeta));
         }
     }
 
@@ -251,7 +252,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     private static void deleteRecursive(Path path) throws IOException {
         if (Files.isDirectory(path)) {
             try (Stream<Path> childlist = Files.list(path)) {
-                for (Path child : childlist.collect(Collectors.toList())) {
+                for (Path child : childlist.toList()) {
                     deleteRecursive(child);
                 }
             }
