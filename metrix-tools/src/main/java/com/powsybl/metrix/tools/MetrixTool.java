@@ -48,6 +48,15 @@ import java.util.zip.ZipOutputStream;
 @AutoService(Tool.class)
 public class MetrixTool implements Tool {
 
+    private static final String CONTINGENCIES_FILE = "contingencies-file";
+    private static final String METRIX_DSL_FILE = "metrix-dsl-file";
+    private static final String REMEDIAL_ACTIONS_FILE = "remedial-actions-file";
+    private static final String FIRST_VARIANT = "first-variant";
+    private static final String VARIANT_COUNT = "variant-count";
+    private static final String CSV_RESULTS_FILE = "csv-results-file";
+    private static final String CHUNK_SIZE = "chunk-size";
+    private static final String LOG_ARCHIVE = "log-archive";
+
     @Override
     public Command getCommand() {
         return new Command() {
@@ -84,19 +93,19 @@ public class MetrixTool implements Tool {
                         .required()
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("contingencies-file")
+                        .longOpt(CONTINGENCIES_FILE)
                         .desc("Groovy DSL file that describes contingencies")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("metrix-dsl-file")
+                        .longOpt(METRIX_DSL_FILE)
                         .desc("Groovy DSL file that describes the branch monitoring and the phase shifter actions")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("remedial-actions-file")
+                        .longOpt(REMEDIAL_ACTIONS_FILE)
                         .desc("Name of the remedial actions file")
                         .hasArg()
                         .argName("FILE")
@@ -116,13 +125,13 @@ public class MetrixTool implements Tool {
                         .required()
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("first-variant")
+                        .longOpt(FIRST_VARIANT)
                         .desc("first variant to simulate")
                         .hasArg()
                         .argName("NUM")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("variant-count")
+                        .longOpt(VARIANT_COUNT)
                         .desc("number of variants simulated")
                         .hasArg()
                         .argName("COUNT")
@@ -136,19 +145,19 @@ public class MetrixTool implements Tool {
                         .desc("ignore empty filter with non zero time series value")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("csv-results-file")
+                        .longOpt(CSV_RESULTS_FILE)
                         .desc("CSV file results")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("chunk-size")
+                        .longOpt(CHUNK_SIZE)
                         .desc("chunk size")
                         .hasArg()
                         .argName("SIZE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("log-archive")
+                        .longOpt(LOG_ARCHIVE)
                         .hasArg()
                         .argName("FILE")
                         .desc("name of gzip file containing execution logs")
@@ -164,13 +173,13 @@ public class MetrixTool implements Tool {
     }
 
     private static ZipOutputStream createLogArchive(CommandLine line, ToolRunningContext context, TreeSet<Integer> versions) {
-        if (line.hasOption("log-archive")) {
+        if (line.hasOption(LOG_ARCHIVE)) {
 
             if (versions.size() > 1) {
                 throw new IllegalArgumentException("Log archive option can only be used with a single version");
             }
 
-            String logfileName = line.getOptionValue("log-archive");
+            String logfileName = line.getOptionValue(LOG_ARCHIVE);
             if (!logfileName.endsWith(".zip")) {
                 logfileName += ".zip";
             }
@@ -184,30 +193,42 @@ public class MetrixTool implements Tool {
         return null;
     }
 
+    private Path getCsvResultsFilePath(CommandLine line, ToolRunningContext context) {
+        if (line.hasOption(CSV_RESULTS_FILE)) {
+            String csvResultsFile = line.getOptionValue(CSV_RESULTS_FILE);
+            if (!csvResultsFile.endsWith(".gz")) {
+                csvResultsFile += ".gz";
+            }
+            return context.getFileSystem().getPath(csvResultsFile);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public void run(CommandLine line, ToolRunningContext context) throws IOException {
         Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
 
         Path mappingFile = context.getFileSystem().getPath(line.getOptionValue("mapping-file"));
 
-        Path contingenciesFile = line.hasOption("contingencies-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("contingencies-file"))
+        Path contingenciesFile = line.hasOption(CONTINGENCIES_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(CONTINGENCIES_FILE))
                 : null;
 
-        Path metrixDslFile = line.hasOption("metrix-dsl-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("metrix-dsl-file"))
+        Path metrixDslFile = line.hasOption(METRIX_DSL_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(METRIX_DSL_FILE))
                 : null;
 
-        Path remedialActionsFile = line.hasOption("remedial-actions-file") ?
-                context.getFileSystem().getPath(line.getOptionValue("remedial-actions-file"))
+        Path remedialActionsFile = line.hasOption(REMEDIAL_ACTIONS_FILE) ?
+                context.getFileSystem().getPath(line.getOptionValue(REMEDIAL_ACTIONS_FILE))
                 : null;
 
         boolean ignoreLimits = line.hasOption("ignore-limits");
         boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
 
-        List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+        List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).toList();
 
-        int chunkSize = line.hasOption("chunk-size") ? Integer.parseInt(line.getOptionValue("chunk-size")) : -1;
+        int chunkSize = line.hasOption(CHUNK_SIZE) ? Integer.parseInt(line.getOptionValue(CHUNK_SIZE)) : -1;
 
         TreeSet<Integer> versions = Arrays.stream(line.getOptionValue("versions").split(","))
                 .map(Integer::valueOf)
@@ -216,19 +237,10 @@ public class MetrixTool implements Tool {
             throw new IllegalArgumentException("Empty version list");
         }
 
-        final Path csvResultFilePath;
-        if (line.hasOption("csv-results-file")) {
-            String csvResultsFile = line.getOptionValue("csv-results-file");
-            if (!csvResultsFile.endsWith(".gz")) {
-                csvResultsFile += ".gz";
-            }
-            csvResultFilePath = context.getFileSystem().getPath(csvResultsFile);
-        } else {
-            csvResultFilePath = null;
-        }
+        final Path csvResultFilePath = getCsvResultsFilePath(line, context);
 
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-        store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
+        store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).toList());
 
         MetrixAppLogger logger = new MetrixAppLogger() {
             private String tag = "INFO";
@@ -236,7 +248,8 @@ public class MetrixTool implements Tool {
             @Override
             public void log(String message, Object... args) {
                 try {
-                    IOUtils.write(String.format(tag + "\t" + message + "\n", args), context.getOutputStream(), Charset.defaultCharset());
+                    String stringToFormat = tag + "\t" + message + "\n";
+                    IOUtils.write(String.format(stringToFormat, args), context.getOutputStream(), Charset.defaultCharset());
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -254,8 +267,8 @@ public class MetrixTool implements Tool {
         Stopwatch stopwatch = Stopwatch.createStarted();
 
         // define variant range to compute
-        int firstVariant = line.hasOption("first-variant") ? Integer.parseInt(line.getOptionValue("first-variant")) : 0;
-        int variantCount = line.hasOption("variant-count") ? Integer.parseInt(line.getOptionValue("variant-count")) : -1;
+        int firstVariant = line.hasOption(FIRST_VARIANT) ? Integer.parseInt(line.getOptionValue(FIRST_VARIANT)) : 0;
+        int variantCount = line.hasOption(VARIANT_COUNT) ? Integer.parseInt(line.getOptionValue(VARIANT_COUNT)) : -1;
 
         NetworkSource networkSource = getNetworkSource(context, caseFile, logger);
         Reader mappingReader = getReader(mappingFile);

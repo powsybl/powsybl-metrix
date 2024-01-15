@@ -172,8 +172,7 @@ public class MetrixDslData {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MetrixDslData) {
-            MetrixDslData other = (MetrixDslData) obj;
+        if (obj instanceof MetrixDslData other) {
             return branchMonitoringListN.equals(other.branchMonitoringListN) &&
                     branchMonitoringListNk.equals(other.branchMonitoringListNk) &&
                     branchMonitoringStatisticsThresholdN.equals(other.branchMonitoringStatisticsThresholdN) &&
@@ -464,11 +463,7 @@ public class MetrixDslData {
     }
 
     public final Integer getPtcLowerTapChange(String id) {
-        if (ptcLowerTapchangeMap.containsKey(id)) {
-            return ptcLowerTapchangeMap.get(id);
-        } else {
-            return null;
-        }
+        return ptcLowerTapchangeMap.getOrDefault(id, null);
     }
 
     @JsonIgnore
@@ -477,11 +472,7 @@ public class MetrixDslData {
     }
 
     public final Integer getPtcUpperTapChange(String id) {
-        if (ptcUpperTapchangeMap.containsKey(id)) {
-            return ptcUpperTapchangeMap.get(id);
-        } else {
-            return null;
-        }
+        return ptcUpperTapchangeMap.getOrDefault(id, null);
     }
 
     public void addPtc(String id, MetrixPtcControlType type, List<String> contingencies) {

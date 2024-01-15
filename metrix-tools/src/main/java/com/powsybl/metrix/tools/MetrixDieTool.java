@@ -30,6 +30,11 @@ import java.nio.file.Path;
 @AutoService(Tool.class)
 public class MetrixDieTool implements Tool {
 
+    private static final String CONTINGENCIES_FILE = "contingencies-file";
+    private static final String METRIX_DSL_FILE = "metrix-dsl-file";
+    private static final String REMEDIAL_ACTIONS_FILE = "remedial-actions-file";
+    private static final String OUTPUT_DIR = "output-dir";
+
     @Override
     public Command getCommand() {
         return new Command() {
@@ -59,25 +64,25 @@ public class MetrixDieTool implements Tool {
                         .required()
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("contingencies-file")
+                        .longOpt(CONTINGENCIES_FILE)
                         .desc("Groovy DSL file that describes contingencies")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("metrix-dsl-file")
+                        .longOpt(METRIX_DSL_FILE)
                         .desc("Groovy DSL file that describes the branch monitoring and the phase shifter actions")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("remedial-actions-file")
+                        .longOpt(REMEDIAL_ACTIONS_FILE)
                         .desc("name of the remedial actions file")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("output-dir")
+                        .longOpt(OUTPUT_DIR)
                         .desc("Output directory")
                         .hasArg()
                         .argName("DIR")
@@ -97,20 +102,20 @@ public class MetrixDieTool implements Tool {
 
         Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
 
-        Path contingenciesFile = line.hasOption("contingencies-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("contingencies-file"))
+        Path contingenciesFile = line.hasOption(CONTINGENCIES_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(CONTINGENCIES_FILE))
                 : null;
 
-        Path metrixDslFile = line.hasOption("metrix-dsl-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("metrix-dsl-file"))
+        Path metrixDslFile = line.hasOption(METRIX_DSL_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(METRIX_DSL_FILE))
                 : null;
 
-        Path remedialActionFile = line.hasOption("remedial-actions-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("remedial-actions-file"))
+        Path remedialActionFile = line.hasOption(REMEDIAL_ACTIONS_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(REMEDIAL_ACTIONS_FILE))
                 : null;
 
-        Path outputDir = line.hasOption("output-dir")
-                ? context.getFileSystem().getPath(line.getOptionValue("output-dir"))
+        Path outputDir = line.hasOption(OUTPUT_DIR)
+                ? context.getFileSystem().getPath(line.getOptionValue(OUTPUT_DIR))
                 : null;
 
         context.getOutputStream().println("Loading case ...");

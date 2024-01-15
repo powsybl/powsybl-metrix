@@ -22,7 +22,9 @@ import com.powsybl.tools.ToolInitializationContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -141,7 +143,7 @@ public abstract class AbstractToolTest {
             status = tools.run(args, toolInitializationContext);
         }
         if (expectedErr != null) {
-            assertMatches(expectedErr, berr.toString(StandardCharsets.UTF_8.name()));
+            assertMatches(expectedErr, berr.toString(StandardCharsets.UTF_8));
         }
         assertEquals(expectedStatus, status);
         if (expectedOut != null) {

@@ -105,15 +105,9 @@ public class EquipmentTimeSeriesMapperObserverTest {
                 assertThat(version).isEqualTo(1);
                 assertThat(index).isEqualTo(regularIndex);
                 switch (timeSeriesName) {
-                    case mappedGeneratorTsName:
-                        checkMappedEquipment(pointRange, values, tags);
-                        break;
-                    case unmappedGeneratorTsName:
-                        checkNotMappedEquipment(pointRange, values, tags);
-                        break;
-                    default:
-                        fail();
-                        break;
+                    case mappedGeneratorTsName -> checkMappedEquipment(pointRange, values, tags);
+                    case unmappedGeneratorTsName -> checkNotMappedEquipment(pointRange, values, tags);
+                    default -> fail();
                 }
                 nbTs++;
             }

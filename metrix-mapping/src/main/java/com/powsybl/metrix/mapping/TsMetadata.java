@@ -22,8 +22,8 @@ public final class TsMetadata {
     }
 
     static Map<String, String> tsMetadata(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
-        if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
-            var timeSeriesMetadata = store.getTimeSeriesMetadata(((TimeSeriesNameNodeCalc) nodeCalc).getTimeSeriesName());
+        if (nodeCalc instanceof TimeSeriesNameNodeCalc timeSeriesNameNodeCalc) {
+            var timeSeriesMetadata = store.getTimeSeriesMetadata(timeSeriesNameNodeCalc.getTimeSeriesName());
             return timeSeriesMetadata.map(TimeSeriesMetadata::getTags).orElse(Collections.emptyMap());
         }
         return Collections.emptyMap();

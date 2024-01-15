@@ -21,6 +21,7 @@ import java.io.UncheckedIOException;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,7 +77,7 @@ public class MmapByteBufferService {
                         it.remove();
                     }
                 }
-            } catch (Throwable t) {
+            } catch (Exception t) {
                 LOGGER.error(t.toString(), t);
             } finally {
                 lock.unlock();
@@ -115,13 +116,12 @@ public class MmapByteBufferService {
 
     private boolean tryToDelete(BufferContext context) {
         try {
-            if (context.file.delete()) {
-                if (LOGGER.isInfoEnabled()) {
-                    LOGGER.info("Buffer {} deleted", context.file);
-                }
-                context.file = null;
+            Files.delete(context.file.toPath());
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info("Buffer {} deleted", context.file);
             }
-        } catch (Exception e) {
+            context.file = null;
+        } catch (IOException e) {
             LOGGER.trace(e.toString(), e);
         }
         if (context.file != null) {

@@ -58,6 +58,7 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
 
     @Override
     public void afterRemoval(String s) {
+        // Do nothing
     }
 
     @Override
@@ -69,5 +70,6 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
 
     @Override
     public void onUpdate(Identifiable identifiable, String s, Object o, Object o1) {
+        // Do nothing
     }
 }

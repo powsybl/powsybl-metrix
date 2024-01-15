@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.util.Collections;
+import java.util.Objects;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class MetrixToolTest extends AbstractToolTest {
 
@@ -57,15 +61,18 @@ class MetrixToolTest extends AbstractToolTest {
         assertOption(options, "csv-results-file", false, true);
         assertOption(options, "chunk-size", false, true);
         assertOption(options, "log-archive", false, true);
+        assertEquals("Metrix", command.getTheme());
+        assertEquals("Run Metrix", command.getDescription());
+        assertNull(command.getUsageFooter());
     }
 
     @Test
     void run() throws IOException {
-        Files.copy(getClass().getResourceAsStream("/simple-network.xiidm"), fileSystem.getPath("/network.xiidm"));
-        Files.copy(getClass().getResourceAsStream("/mapping.groovy"), fileSystem.getPath("/mapping.groovy"));
-        Files.copy(getClass().getResourceAsStream("/time-series-sample.csv"), fileSystem.getPath("/timeseries.csv"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
         StringBuilder expected = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(MetrixToolTest.class.getResourceAsStream("/mapping_result.txt")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MetrixToolTest.class.getResourceAsStream("/mapping_result.txt"))))) {
             expected.append(reader.readLine());
         }
 

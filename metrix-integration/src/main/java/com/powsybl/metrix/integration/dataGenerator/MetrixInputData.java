@@ -118,7 +118,7 @@ public class MetrixInputData {
         double admittance = x * nominalU * nominalU / (uNom * uNom);
         if (admittance == 0) {
             admittance = CQADMITA_SWITCH_VAL;
-            LOGGER.debug(String.format("x = 0 for branch <%s> -> replaced by x = %f", id, CQADMITA_SWITCH_VAL));
+            LOGGER.debug("x = 0 for branch <{}> -> replaced by x = {}", id, CQADMITA_SWITCH_VAL);
         }
         return admittance;
     }
@@ -323,7 +323,7 @@ public class MetrixInputData {
                     if (val >= 0) {
                         x = (float) Math.sqrt(val);
                     }
-                    LOGGER.debug(String.format("constantLossFactor -> twt <%s> x = <%f>", twt.getId(), x));
+                    LOGGER.debug("constantLossFactor -> twt <{}> x = <{}>", twt.getId(), x);
                 }
 
                 MetrixPtcControlType mode = MetrixPtcControlType.FIXED_ANGLE_CONTROL;
@@ -609,7 +609,7 @@ public class MetrixInputData {
 
     private void writeContingencies(MetrixDie die) {
         int index = 0;
-        float maxGeneratorOutage = 0.f;
+        double maxGeneratorOutage = 0.d;
         List<Integer> dmptdefk = new ArrayList<>();
         List<String> dmnomdek = new ArrayList<>();
         List<Integer> dmdescrk = new ArrayList<>();
@@ -618,26 +618,19 @@ public class MetrixInputData {
 
             List<Integer> elementsToTrip = new ArrayList<>();
 
-            float generatorPowerLost = 0.f;
+            double generatorPowerLost = 0.d;
 
             for (ContingencyElement element : contingency.getElements()) {
                 try {
                     int type;
                     switch (element.getType()) {
-                        case BRANCH:
-                        case LINE:
-                        case TWO_WINDINGS_TRANSFORMER:
-                            type = ElementType.BRANCH.getType();
-                            break;
-                        case GENERATOR:
+                        case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> type = ElementType.BRANCH.getType();
+                        case GENERATOR -> {
                             type = ElementType.GENERATOR.getType();
                             generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
-                            break;
-                        case HVDC_LINE:
-                            type = ElementType.HVDC.getType();
-                            break;
-                        default:
-                            throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
+                        }
+                        case HVDC_LINE -> type = ElementType.HVDC.getType();
+                        default -> throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
                     }
                     int elementIndex = metrixNetwork.getIndex(element.getId()); // may throw an exception if element not found in MCC
                     elementsToTrip.add(type);
@@ -1163,7 +1156,7 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getPtcControlList().size();
             nbTimeSeries += dslData.getPtcContingenciesList().stream().mapToInt(s -> dslData.getPtcContingencies(s).size()).sum();
             // HVDC preventive and curative
-            long nbOptimizedHvdc = dslData.getHvdcControlList().size();
+            int nbOptimizedHvdc = dslData.getHvdcControlList().size();
             nbTimeSeries += nbOptimizedHvdc;
             nbTimeSeries += dslData.getHvdcContingenciesList().stream().mapToInt(s -> dslData.getHvdcContingencies(s).size()).sum();
             // Generator adequacy, preventive and curative results
@@ -1176,14 +1169,14 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getCurativeLoadsList().stream().mapToInt(s -> dslData.getLoadContingencies(s).size()).sum();
             //Marginal variation results
             if (parameters.isMarginalVariationsOnBranches().orElse(!dslData.getContingencyDetailedMarginalVariationsList().isEmpty())) {
-                nbTimeSeries += dslData.getBranchMonitoringNList().stream()
+                nbTimeSeries += (int) dslData.getBranchMonitoringNList().stream()
                         .filter(b -> dslData.getBranchMonitoringN(b) == MonitoringType.MONITORING)
                         .count();
                 nbTimeSeries += dslData.getSectionList().size();
-                nbTimeSeries += metrixNetwork.getContingencyList().size() * dslData.getBranchMonitoringNkList()
-                        .stream()
-                        .filter(b -> dslData.getBranchMonitoringNk(b) == MonitoringType.MONITORING)
-                        .count();
+                nbTimeSeries += (int) (metrixNetwork.getContingencyList().size() * dslData.getBranchMonitoringNkList()
+                                        .stream()
+                                        .filter(b -> dslData.getBranchMonitoringNk(b) == MonitoringType.MONITORING)
+                                        .count());
                 nbTimeSeries += 2 * dslData.getContingencyDetailedMarginalVariationsList()
                         .stream()
                         .mapToInt(s -> dslData.getContingencyDetailedMarginalVariations(s).size()).sum();

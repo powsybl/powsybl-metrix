@@ -537,29 +537,19 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
     private void addScalingDownLogSynthesis(String changedVariable, ScalingDownPowerChange change, int version, String timeSeriesName) {
         ScalingDownChangeToVariable scalingDownChangeToVariable = new ScalingDownChangeToVariable()
-                .changedVariable(changedVariable).timeSeriesName(timeSeriesName);
+                .changedVariable(changedVariable).timeSeriesName(timeSeriesName).synthesis(true);
         LogContent logContent = switch (change) {
-            case BASE_CASE_MINP ->
-                scalingDownChangeToVariable.toVariable(MIN_P_VARIABLE_NAME).basecase().synthesis(true).build();
-            case BASE_CASE_MAXP ->
-                scalingDownChangeToVariable.toVariable(MAX_P_VARIABLE_NAME).basecase().synthesis(true).build();
-            case MAPPED_MINP ->
-                scalingDownChangeToVariable.toVariable(MIN_P_VARIABLE_NAME).mapped().synthesis(true).build();
-            case MAPPED_MAXP ->
-                scalingDownChangeToVariable.toVariable(MAX_P_VARIABLE_NAME).mapped().synthesis(true).build();
-            case ZERO -> scalingDownChangeToVariable.toVariable("0").synthesis(true).build();
-            case MAPPED_MINP_DISABLED ->
-                scalingDownChangeToVariable.toVariable(MIN_P_VARIABLE_NAME).mapped().disabled(true).synthesis(true).build();
-            case MAPPED_MAXP_DISABLED ->
-                scalingDownChangeToVariable.toVariable(MAX_P_VARIABLE_NAME).mapped().disabled(true).synthesis(true).build();
-            case ZERO_DISABLED -> scalingDownChangeToVariable.toVariable("0").disabled(true).synthesis(true).build();
-            case BASE_CASE_CS1TOCS2 ->
-                scalingDownChangeToVariable.toVariable(TimeSeriesConstants.CS12).basecase().synthesis(true).build();
-            case BASE_CASE_CS2TOCS1 ->
-                scalingDownChangeToVariable.toVariable(TimeSeriesConstants.MINUS_CS21).basecase().synthesis(true).build();
-            case BASE_CASE_MINUS_MAXP ->
-                scalingDownChangeToVariable.toVariable(TimeSeriesConstants.MINUS_MAXP).basecase().synthesis(true).build();
-            default -> throw new AssertionError(String.format(UNHANDLED_SCALING_OPERATION_ERROR, change.name()));
+            case BASE_CASE_MINP -> scalingDownChangeToVariable.toVariable(MIN_P_VARIABLE_NAME).basecase().build();
+            case BASE_CASE_MAXP -> scalingDownChangeToVariable.toVariable(MAX_P_VARIABLE_NAME).basecase().build();
+            case MAPPED_MINP -> scalingDownChangeToVariable.toVariable(MIN_P_VARIABLE_NAME).mapped().build();
+            case MAPPED_MAXP -> scalingDownChangeToVariable.toVariable(MAX_P_VARIABLE_NAME).mapped().build();
+            case ZERO -> scalingDownChangeToVariable.toVariable("0").build();
+            case MAPPED_MINP_DISABLED -> scalingDownChangeToVariable.toVariable(MIN_P_VARIABLE_NAME).mapped().disabled(true).build();
+            case MAPPED_MAXP_DISABLED -> scalingDownChangeToVariable.toVariable(MAX_P_VARIABLE_NAME).mapped().disabled(true).build();
+            case ZERO_DISABLED -> scalingDownChangeToVariable.toVariable("0").disabled(true).build();
+            case BASE_CASE_CS1TOCS2 -> scalingDownChangeToVariable.toVariable(TimeSeriesConstants.CS12).basecase().build();
+            case BASE_CASE_CS2TOCS1 -> scalingDownChangeToVariable.toVariable(TimeSeriesConstants.MINUS_CS21).basecase().build();
+            case BASE_CASE_MINUS_MAXP -> scalingDownChangeToVariable.toVariable(TimeSeriesConstants.MINUS_MAXP).basecase().build();
         };
         Log log = new LogBuilder().index(index).version(version).level(System.Logger.Level.WARNING).point(Integer.MAX_VALUE).logDescription(logContent).build();
         timeSeriesMappingLogger.addLog(log);
@@ -585,7 +575,6 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
             case CS2TOCS1_BY_ACTIVEPOWER ->
                 scalingDownLimitChangeSynthesis.violatedVariable(TimeSeriesConstants.MINUS_CS21).min()
                     .variable(EquipmentVariable.activePowerSetpoint.getVariableName()).buildLimitChange();
-            default -> throw new AssertionError(String.format(UNHANDLED_SCALING_OPERATION_ERROR, change.name()));
         };
         Log log = new LogBuilder().index(index).version(version).level(System.Logger.Level.INFO).point(Integer.MAX_VALUE)
                 .logDescription(logContent).build();

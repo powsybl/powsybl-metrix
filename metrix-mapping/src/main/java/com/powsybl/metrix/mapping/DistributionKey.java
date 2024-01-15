@@ -53,9 +53,7 @@ public interface DistributionKey {
         try {
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
-                if (token == JsonToken.START_OBJECT) {
-                    // skip
-                } else {
+                if (token != JsonToken.START_OBJECT) {
                     return parseJson(parser, token);
                 }
             }
@@ -75,14 +73,15 @@ public interface DistributionKey {
         if (token == JsonToken.FIELD_NAME) {
             String fieldName = parser.getCurrentName();
             switch (fieldName) {
-                case NumberDistributionKey.NAME:
+                case NumberDistributionKey.NAME -> {
                     return NumberDistributionKey.parseJson(parser);
-
-                case TimeSeriesDistributionKey.NAME:
+                }
+                case TimeSeriesDistributionKey.NAME -> {
                     return TimeSeriesDistributionKey.parseJson(parser);
-
-                default:
-                    break;
+                }
+                default -> {
+                    // Do nothing
+                }
             }
         }
         throw createUnexpectedToken(token);

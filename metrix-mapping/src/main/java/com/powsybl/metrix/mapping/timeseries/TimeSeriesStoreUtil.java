@@ -87,16 +87,9 @@ public final class TimeSeriesStoreUtil {
         Set<String> stringTimeSeriesNames = new HashSet<>();
         for (TimeSeriesMetadata metadata : metadataList) {
             switch (metadata.getDataType()) {
-                case DOUBLE:
-                    doubleTimeSeriesNames.add(metadata.getName());
-                    break;
-
-                case STRING:
-                    stringTimeSeriesNames.add(metadata.getName());
-                    break;
-
-                default:
-                    throw new AssertionError("Unexpected data type " + metadata.getDataType());
+                case DOUBLE -> doubleTimeSeriesNames.add(metadata.getName());
+                case STRING -> stringTimeSeriesNames.add(metadata.getName());
+                default -> throw new AssertionError("Unexpected data type " + metadata.getDataType());
             }
         }
         writeCsv(store, writer, separator, zoneId, versions, metadataList, doubleTimeSeriesNames, stringTimeSeriesNames);
@@ -128,16 +121,16 @@ public final class TimeSeriesStoreUtil {
 
             // complete time series list to have the same list for each version
             Set<String> missingDoubleTimeSeriesNames = new HashSet<>(doubleTimeSeriesNames);
-            missingDoubleTimeSeriesNames.removeAll(doubleTimeSeries.stream().map(ts -> ts.getMetadata().getName()).collect(Collectors.toList()));
-            doubleTimeSeries.addAll(missingDoubleTimeSeriesNames.stream().map(name -> new StoredDoubleTimeSeries(metadataMap.get(name))).collect(Collectors.toList()));
+            doubleTimeSeries.stream().map(ts -> ts.getMetadata().getName()).toList().forEach(missingDoubleTimeSeriesNames::remove);
+            doubleTimeSeries.addAll(missingDoubleTimeSeriesNames.stream().map(name -> new StoredDoubleTimeSeries(metadataMap.get(name))).toList());
 
             List<StringTimeSeries> stringTimeSeries = stringTimeSeriesNames.isEmpty() ? new ArrayList<>()
                     : store.getStringTimeSeries(stringTimeSeriesNames, version);
 
             // complete time series list to have the same list for each version
             Set<String> missingStringTimeSeriesNames = new HashSet<>(stringTimeSeriesNames);
-            missingStringTimeSeriesNames.removeAll(stringTimeSeries.stream().map(ts -> ts.getMetadata().getName()).collect(Collectors.toList()));
-            stringTimeSeries.addAll(missingStringTimeSeriesNames.stream().map(name -> new StringTimeSeries(metadataMap.get(name))).collect(Collectors.toList()));
+            stringTimeSeries.stream().map(ts -> ts.getMetadata().getName()).toList().forEach(missingStringTimeSeriesNames::remove);
+            stringTimeSeries.addAll(missingStringTimeSeriesNames.stream().map(name -> new StringTimeSeries(metadataMap.get(name))).toList());
 
             table.load(version, doubleTimeSeries, stringTimeSeries);
         }
