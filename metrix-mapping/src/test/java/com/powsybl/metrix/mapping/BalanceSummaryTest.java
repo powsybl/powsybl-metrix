@@ -11,7 +11,7 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -39,7 +39,7 @@ class BalanceSummaryTest {
     @BeforeEach
     public void setUp() throws IOException {
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @Test

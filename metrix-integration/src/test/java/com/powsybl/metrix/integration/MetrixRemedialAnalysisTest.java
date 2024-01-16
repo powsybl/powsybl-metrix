@@ -11,7 +11,7 @@ package com.powsybl.metrix.integration;
 import com.google.common.collect.ImmutableList;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ public class MetrixRemedialAnalysisTest {
 
     @BeforeEach
     public void setUp() {
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     private ContingenciesProvider getBranchContingenciesProvider() {

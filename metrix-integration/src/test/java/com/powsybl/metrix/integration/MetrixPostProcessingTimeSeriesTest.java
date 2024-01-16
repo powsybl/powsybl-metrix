@@ -9,7 +9,7 @@
 package com.powsybl.metrix.integration;
 
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
@@ -87,7 +87,7 @@ class MetrixPostProcessingTimeSeriesTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     private void verifyBasecaseLoad(String branchName, NodeCalc flow, NodeCalc ratingN) {

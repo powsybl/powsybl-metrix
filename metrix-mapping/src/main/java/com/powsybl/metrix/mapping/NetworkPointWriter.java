@@ -15,8 +15,8 @@ import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
-import com.powsybl.iidm.xml.ExportOptions;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.ExportOptions;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.mapping.common.MetrixIidmConfiguration;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
@@ -380,7 +380,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         try (OutputStream os = dataSource.newOutputStream(suffix, "xiidm", false)) {
             ExportOptions exportOptions = new ExportOptions();
             exportOptions.setVersion(MetrixIidmConfiguration.load().getNetworkExportVersion());
-            NetworkXml.write(network, exportOptions, os);
+            NetworkSerDe.write(network, exportOptions, os);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

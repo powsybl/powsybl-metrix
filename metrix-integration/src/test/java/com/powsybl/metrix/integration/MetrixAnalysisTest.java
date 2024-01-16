@@ -4,7 +4,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
 import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
@@ -50,7 +50,7 @@ class MetrixAnalysisTest {
     @BeforeEach
     public void setUp() throws IOException {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
-        this.network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        this.network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
         this.networkSource = new NetworkSource() {
             @Override
             public Network copy() {

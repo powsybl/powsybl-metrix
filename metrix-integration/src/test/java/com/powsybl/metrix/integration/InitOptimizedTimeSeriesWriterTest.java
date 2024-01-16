@@ -10,7 +10,7 @@ package com.powsybl.metrix.integration;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.timeseries.*;
@@ -34,7 +34,7 @@ class InitOptimizedTimeSeriesWriterTest {
 
     @BeforeEach
     public void setUp() throws IOException {
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
     @Test

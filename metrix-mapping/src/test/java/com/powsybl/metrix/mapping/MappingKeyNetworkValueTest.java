@@ -8,18 +8,20 @@
 
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
+
+import java.util.Objects;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-public class MappingKeyNetworkValueTest {
+class MappingKeyNetworkValueTest {
 
     private final Offset<Double> offset = Offset.offset(EPSILON_COMPARISON);
-    private final MappingKeyNetworkValue key = new MappingKeyNetworkValue(NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml")));
+    private final MappingKeyNetworkValue key = new MappingKeyNetworkValue(NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml"))));
 
     private void checkValue(double actual, double expected) {
         assertThat(actual).isCloseTo(expected, offset);

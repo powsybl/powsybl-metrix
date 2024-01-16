@@ -13,10 +13,10 @@ import com.google.common.io.CharStreams;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeries;
@@ -79,7 +79,7 @@ public class Metrix extends AbstractMetrix {
                         commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)),
                         commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)),
                         remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV) : null).build();
-                MetrixChunk metrixChunk = new MetrixChunk(NetworkXml.copy(network), computationManager, metrixChunkParam, metrixConfig, null);
+                MetrixChunk metrixChunk = new MetrixChunk(NetworkSerDe.copy(network), computationManager, metrixChunkParam, metrixConfig, null);
                 Range<Integer> range = chunkCutter.getChunkRange(chunk);
                 MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,
                         mappingConfig, metrixDslData, metrixChunkParam, range, System.err);
