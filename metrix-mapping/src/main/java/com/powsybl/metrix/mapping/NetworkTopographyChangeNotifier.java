@@ -8,6 +8,7 @@
 
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.commons.extensions.Extension;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.NetworkListener;
 import com.powsybl.metrix.mapping.log.Log;
@@ -58,6 +59,26 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
 
     @Override
     public void afterRemoval(String s) {
+        // Do nothing
+    }
+
+    @Override
+    public void onExtensionCreation(Extension<?> extension) {
+        // Do nothing
+    }
+
+    @Override
+    public void onExtensionAfterRemoval(Identifiable<?> identifiable, String s) {
+        // Do nothing
+    }
+
+    @Override
+    public void onExtensionBeforeRemoval(Extension<?> extension) {
+        // Do nothing
+    }
+
+    @Override
+    public void onExtensionUpdate(Extension<?> extension, String s, Object o, Object o1) {
         // Do nothing
     }
 
