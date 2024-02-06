@@ -133,7 +133,10 @@ public class MetrixChunk {
 
                         if (networkPointFile != null) {
                             try (Stream<Path> paths = Files.list(workingDir)) {
-                                List<Path> files = paths.filter(path -> path.getFileName().toString().matches(network.getId() + "(.*)\\.xiidm")).collect(Collectors.toList());
+                                List<Path> files = paths.filter(path -> {
+                                    String fileName = path.getFileName().toString();
+                                    return fileName.startsWith(network.getId()) && fileName.endsWith("xiidm");
+                                }).collect(Collectors.toList());
                                 if (files.size() != 1) {
                                     LOGGER.error("More than one network point files '{}'", files.size());
                                     throw new MetrixException("More than one network point files " + files.size());
