@@ -95,7 +95,7 @@ class TimeSeriesDslLoader {
 
         // Add a check on thread interruption in every loop (for, while) in the script
         config.addCompilationCustomizers(
-                new ASTTransformationCustomizer(ThreadInterrupt.class));
+                new ASTTransformationCustomizer(ThreadInterrupt.class))
     }
 
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, LogDslLoader logDslLoader, ComputationRange computationRange) {

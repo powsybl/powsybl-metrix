@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class TimeSeriesDslLoaderInterruptionTest {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoaderInterruptionTest.class);
-
     private final MappingParameters parameters = MappingParameters.load();
     private final Network network = MappingTestNetwork.create();
     private final ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
