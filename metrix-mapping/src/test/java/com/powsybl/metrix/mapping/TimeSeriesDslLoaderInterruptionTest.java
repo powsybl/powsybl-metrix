@@ -85,7 +85,7 @@ class TimeSeriesDslLoaderInterruptionTest {
     @ParameterizedTest
     @Timeout(2)
     @Order(1)
-    @ValueSource(booleans= {false, true})
+    @ValueSource(booleans = {false, true})
     void testCancelJava(boolean isDelayed) throws Exception {
         CompletableFuture<Object> task = CompletableFutureTask.runAsync(() -> {
             waitForStart.countDown();
@@ -111,13 +111,13 @@ class TimeSeriesDslLoaderInterruptionTest {
     @ParameterizedTest
     @Timeout(2)
     @Order(2)
-    @ValueSource(booleans= {false, true})
+    @ValueSource(booleans = {false, true})
     void testCancelGroovyLongScript(boolean isDelayed) throws Exception {
         String script = """
-                            for (int i = 0; i < 10; i++) {
-                                sleep(500)
-                            }
-                        """;
+                for (int i = 0; i < 10; i++) {
+                    sleep(500)
+                }
+            """;
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         CompletableFuture<Object> task = CompletableFutureTask.runAsync(() -> {
             waitForStart.countDown();
@@ -142,7 +142,7 @@ class TimeSeriesDslLoaderInterruptionTest {
 
     @ParameterizedTest
     @Timeout(3)
-    @ValueSource(booleans= {false, true})
+    @ValueSource(booleans = {false, true})
     @Order(3)
     void testCancelGroovyShortScript(boolean isDelayed) throws Exception {
         String script = "writeLog(\"LOG_TYPE\", \"LOG_SECTION\", \"LOG_MESSAGE\")";
