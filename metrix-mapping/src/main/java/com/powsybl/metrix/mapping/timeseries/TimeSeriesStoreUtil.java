@@ -21,7 +21,25 @@ import java.util.stream.Collectors;
 
 public final class TimeSeriesStoreUtil {
 
+    public static final int NOT_VERSIONED_NUMBER = 0;
+
     private TimeSeriesStoreUtil() {
+    }
+
+    public static boolean isNotVersioned(Set<Integer> existingVersions) {
+        return Set.of(NOT_VERSIONED_NUMBER).equals(existingVersions);
+    }
+
+    public static int getStoredVersion(ReadOnlyTimeSeriesStore store, int version) {
+        return isNotVersioned(store.getTimeSeriesDataVersions()) ? NOT_VERSIONED_NUMBER : version;
+    }
+
+    public static int getTimeSeriesStoredVersion(ReadOnlyTimeSeriesStore store, String timeSeriesName, int version) {
+        return isNotVersioned(store.getTimeSeriesDataVersions(timeSeriesName)) ? NOT_VERSIONED_NUMBER : version;
+    }
+
+    public static void removeNotVersioned(Set<Integer> versions) {
+        versions.remove(NOT_VERSIONED_NUMBER);
     }
 
     private static void writeCsv(ReadOnlyTimeSeriesStore store, Writer writer, char separator, ZoneId zoneId,
