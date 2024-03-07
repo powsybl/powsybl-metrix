@@ -58,6 +58,7 @@
 
         <assertj.version>3.24.2</assertj.version>
         <autoservice.version>1.1.1</autoservice.version>
+        <awaitility.version>4.2.0</awaitility.version>
         <commonscli.version>1.5.0</commonscli.version>
         <!-- groovy.version : Same as powsybl-core -->
         <groovy.version>4.0.14</groovy.version>
@@ -69,7 +70,7 @@
         <mockito.version>5.5.0</mockito.version>
         <slf4j.version>2.0.9</slf4j.version>
 
-        <powsyblcore.version>6.2.0</powsyblcore.version>
+        <powsyblcore.version>6.3.0-SNAPSHOT</powsyblcore.version>
 
         <!-- Parameters used to generate the javadoc for groovy and java classes.
              See the pom file in powsybl-parent for more explanations. -->
@@ -256,6 +257,15 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
                 <version>${junit-jupiter.version}</version>
+            </dependency>
+
+            <!-- Test dependencies -->
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-computation</artifactId>
+                <type>test-jar</type>
+                <scope>test</scope>
+                <version>${powsyblcore.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
