@@ -76,13 +76,13 @@ class TimeSeriesDslLoader {
         logDslLoader.logWarn(message)
     }
 
-    protected static List<String> getStaticStars() {
+    protected List<String> getStaticStars() {
         List<String> staticStars = new ArrayList<>()
         staticStars.add("com.powsybl.metrix.mapping.SimpleEquipmentGroupType")
         return staticStars
     }
 
-    private static CompilerConfiguration createCompilerConfig() {
+    private CompilerConfiguration createCompilerConfig() {
         def imports = new ImportCustomizer()
         imports.addStaticStars("com.powsybl.iidm.network.EnergySource")
         imports.addStaticStars("com.powsybl.iidm.network.Country")
