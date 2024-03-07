@@ -15,7 +15,9 @@ import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
+import groovy.transform.ThreadInterrupt
 import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 import java.nio.charset.StandardCharsets
@@ -105,7 +107,15 @@ class MetrixDslDataLoader {
 
     static void evaluate(GroovyCodeSource dslSrc, Binding binding) {
         def config = createCompilerConfig()
+
+        // Add a check on thread interruption in every loop (for, while) in the script
+        config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class))
+
         def shell = new GroovyShell(binding, config)
+
+        // Check for thread interruption right before beginning the evaluation
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedException("Execution Interrupted")
+
         shell.evaluate(dslSrc)
     }
 
