@@ -6,7 +6,7 @@
     <parent>
         <artifactId>powsybl-parent</artifactId>
         <groupId>com.powsybl</groupId>
-        <version>17</version>
+        <version>18</version>
         <relativePath/>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -73,6 +73,7 @@
 
         <!-- Parameters used to generate the javadoc for groovy and java classes.
              See the pom file in powsybl-parent for more explanations. -->
+        <groovydoc.attach>true</groovydoc.attach>
         <groovydoc.classifier>javadoc</groovydoc.classifier>
         <groovydoc.groovyDocJavaSources>true</groovydoc.groovyDocJavaSources>
         <maven.javadoc.skip>true</maven.javadoc.skip>
@@ -87,34 +88,8 @@
             <build>
                 <plugins>
                     <plugin>
-                        <!-- This part was added in order to generate javadoc and groovydoc and deploy it.
-                          It was necessary to copy it from powsybl-parent since the line "<attach>true</attach>"
-                           has no parameter to configure it yet. It might be interesting to add a parameter  for
-                           this in powsybl-parent -->
                         <groupId>org.codehaus.gmavenplus</groupId>
                         <artifactId>gmavenplus-plugin</artifactId>
-                        <version>${maven.gmavenplus.version}</version>
-                        <executions>
-                            <execution>
-                                <id>groovydoc-jar</id>
-                                <goals>
-                                    <goal>groovydoc-jar</goal>
-                                </goals>
-                                <configuration>
-                                    <attach>true</attach>
-                                    <includeClasspath>PROJECT_AND_PLUGIN</includeClasspath>
-                                    <classifier>${groovydoc.classifier}</classifier>
-                                    <groovyDocJavaSources>${groovydoc.groovyDocJavaSources}</groovyDocJavaSources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.apache.groovy</groupId>
-                                <artifactId>groovy-groovydoc</artifactId>
-                                <version>${maven.groovydoc.version}</version>
-                            </dependency>
-                        </dependencies>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
