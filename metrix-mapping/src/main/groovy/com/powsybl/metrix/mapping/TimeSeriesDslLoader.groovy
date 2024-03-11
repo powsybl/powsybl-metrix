@@ -44,6 +44,7 @@ class TimeSeriesDslLoader {
     protected static final String DEFAULT_MAPPING_SCRIPT_NAME = "mapping.groovy"
 
     protected final GroovyCodeSource dslSrc
+    protected String equipmentGroupTypes = "com.powsybl.metrix.mapping.SimpleEquipmentGroupType"
 
     TimeSeriesDslLoader(GroovyCodeSource dslSrc) {
         this.dslSrc = Objects.requireNonNull(dslSrc)
@@ -76,13 +77,13 @@ class TimeSeriesDslLoader {
         logDslLoader.logWarn(message)
     }
 
-    protected static List<String> getStaticStars() {
+    protected List<String> getStaticStars() {
         List<String> staticStars = new ArrayList<>()
-        staticStars.add("com.powsybl.metrix.mapping.SimpleEquipmentGroupType")
+        staticStars.add(equipmentGroupTypes)
         return staticStars
     }
 
-    private static CompilerConfiguration createCompilerConfig() {
+    private CompilerConfiguration createCompilerConfig() {
         def imports = new ImportCustomizer()
         imports.addStaticStars("com.powsybl.iidm.network.EnergySource")
         imports.addStaticStars("com.powsybl.iidm.network.Country")
