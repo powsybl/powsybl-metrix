@@ -21,7 +21,16 @@ import java.util.stream.Collectors;
 
 public final class TimeSeriesStoreUtil {
 
+    public static final int DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES = 0;
+
     private TimeSeriesStoreUtil() {
+    }
+
+    /**
+     * Check if a set of version numbers corresponds to set containing single number for not versioned time series
+     */
+    public static boolean isNotVersioned(Set<Integer> existingVersions) {
+        return Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES).equals(existingVersions);
     }
 
     private static void writeCsv(ReadOnlyTimeSeriesStore store, Writer writer, char separator, ZoneId zoneId,

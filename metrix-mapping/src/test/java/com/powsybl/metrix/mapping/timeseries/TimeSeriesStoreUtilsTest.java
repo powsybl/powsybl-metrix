@@ -28,9 +28,11 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
+import java.util.Set;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.fail;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSeriesStoreUtilsTest {
     private FileSystem fileSystem;
@@ -70,4 +72,10 @@ class TimeSeriesStoreUtilsTest {
         }
     }
 
+    @Test
+    void notVersionedSingleNumberTest() {
+        assertTrue(isNotVersioned(Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES)));
+        assertFalse(isNotVersioned(Set.of(1)));
+        assertFalse(isNotVersioned(Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES, 1)));
+    }
 }

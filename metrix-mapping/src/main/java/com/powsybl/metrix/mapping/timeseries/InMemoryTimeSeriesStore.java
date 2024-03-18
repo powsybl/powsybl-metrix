@@ -22,6 +22,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
+
 public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private final Map<String, Map<Integer, TimeSeries>> stringTimeSeries = new HashMap<>();
@@ -73,9 +76,8 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     public Set<Integer> getTimeSeriesDataVersions() {
         return Stream
             .concat(stringTimeSeries.values().stream(), doubleTimeSeries.values().stream())
-            .findFirst()
-            .map(Map::keySet)
-            .orElse(Collections.emptySet());
+            .flatMap(values -> values.keySet().stream())
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -83,10 +85,8 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return Stream
             .concat(stringTimeSeries.entrySet().stream(), doubleTimeSeries.entrySet().stream())
             .filter(timeSeries -> timeSeriesName.equals(timeSeries.getKey()))
-            .map(Map.Entry::getValue)
-            .map(Map::keySet)
-            .findFirst()
-            .orElse(Collections.emptySet());
+            .flatMap(timeSeries -> timeSeries.getValue().keySet().stream())
+            .collect(Collectors.toSet());
     }
 
     @Override
@@ -122,11 +122,25 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return getTimeSeries(stringTimeSeries, StringTimeSeries.class, timeSeriesNames, version);
     }
 
+    /**
+     * Returns the stored version number of the timeSeriesName depending on if the timeSeriesName is versioned or not
+     */
+    private int getTimeSeriesStoredVersion(String timeSeriesName, int version) {
+        return isNotVersioned(getTimeSeriesDataVersions(timeSeriesName)) ? DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES : version;
+    }
+
+    /**
+     * Returns TimeSeries of the timeSeriesName depending on if the timeSeriesName is versioned or not
+     */
+    private TimeSeries getTimeSeries(String timeSeriesName, Map<Integer, TimeSeries> timeSeriesPerVersion, int version) {
+        int storedVersion = getTimeSeriesStoredVersion(timeSeriesName, version);
+        return timeSeriesPerVersion.get(storedVersion);
+    }
+
     private <T extends TimeSeries> List<T> getTimeSeries(Map<String, Map<Integer, TimeSeries>> timeSeriesList, Class<T> timeSeriesTypeClass, Set<String> timeSeriesNames, int version) {
         return timeSeriesList.entrySet().stream()
             .filter(timeSeries -> timeSeriesNames.contains(timeSeries.getKey()))
-            .map(Map.Entry::getValue)
-            .map(timeSeriesVersions -> timeSeriesVersions.get(version))
+            .map(timeSeries -> getTimeSeries(timeSeries.getKey(), timeSeries.getValue(), version))
             .filter(Objects::nonNull)
             .map(timeSeriesTypeClass::cast)
             .toList();
