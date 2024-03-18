@@ -67,14 +67,9 @@ class InMemoryTimeSeriesStoreTest {
                 new TimeSeriesMetadata("ts1", TimeSeriesDataType.DOUBLE, index),
                 new TimeSeriesMetadata("ts2", TimeSeriesDataType.DOUBLE, index),
                 new TimeSeriesMetadata("notVersionedTs", TimeSeriesDataType.DOUBLE, index));
-        assertEquals(store.getTimeSeriesDataVersions(), Set.of(0, 1));
+        assertEquals(Set.of(0, 1), store.getTimeSeriesDataVersions());
         assertThat(store.getTimeSeriesDataVersions("notVersionedTs")).containsExactly(0);
         assertThat(store.getDoubleTimeSeries("notVersionedTs", 0).orElseThrow(AssertionError::new).toArray()).isEqualTo(new double[]{10d, 20d, 30d});
         assertThat(store.getDoubleTimeSeries("notVersionedTs", 1).orElseThrow(AssertionError::new).toArray()).isEqualTo(new double[]{10d, 20d, 30d});
-
-        assertEquals(NOT_VERSIONED_NUMBER, getStoredVersion(store, NOT_VERSIONED_NUMBER));
-        assertEquals(1, getStoredVersion(store, 1));
-        assertEquals(NOT_VERSIONED_NUMBER, getTimeSeriesStoredVersion(store, "notVersionedTs", NOT_VERSIONED_NUMBER));
-        assertEquals(1, getTimeSeriesStoredVersion(store, "ts1", 1));
     }
 }

@@ -28,12 +28,10 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
 import java.util.Set;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.*;
-import static java.util.Collections.emptySet;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSeriesStoreUtilsTest {
@@ -76,28 +74,8 @@ class TimeSeriesStoreUtilsTest {
 
     @Test
     void notVersionedSingleNumberTest() {
-        assertTrue(isNotVersioned(Set.of(NOT_VERSIONED_NUMBER)));
+        assertTrue(isNotVersioned(Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES)));
         assertFalse(isNotVersioned(Set.of(1)));
-        assertFalse(isNotVersioned(Set.of(NOT_VERSIONED_NUMBER, 1)));
-    }
-
-    @Test
-    void removeNotVersionedTest() {
-        Set<Integer> versions = new HashSet<>();
-
-        versions.add(NOT_VERSIONED_NUMBER);
-        removeNotVersioned(versions);
-        assertEquals(emptySet(), versions);
-
-        versions.clear();
-        versions.add(1);
-        removeNotVersioned(versions);
-        assertEquals(Set.of(1), versions);
-
-        versions.clear();
-        versions.add(NOT_VERSIONED_NUMBER);
-        versions.add(1);
-        removeNotVersioned(versions);
-        assertEquals(Set.of(1), versions);
+        assertFalse(isNotVersioned(Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES, 1)));
     }
 }

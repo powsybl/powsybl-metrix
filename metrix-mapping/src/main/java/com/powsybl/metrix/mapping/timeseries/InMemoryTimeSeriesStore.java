@@ -22,7 +22,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.getTimeSeriesStoredVersion;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
 public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
@@ -121,8 +122,18 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return getTimeSeries(stringTimeSeries, StringTimeSeries.class, timeSeriesNames, version);
     }
 
+    /**
+     * Returns the stored version number of the timeSeriesName depending on if the timeSeriesName is versioned or not
+     */
+    private int getTimeSeriesStoredVersion(String timeSeriesName, int version) {
+        return isNotVersioned(getTimeSeriesDataVersions(timeSeriesName)) ? DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES : version;
+    }
+
+    /**
+     * Returns TimeSeries of the timeSeriesName depending on if the timeSeriesName is versioned or not
+     */
     private TimeSeries getTimeSeries(String timeSeriesName, Map<Integer, TimeSeries> timeSeriesPerVersion, int version) {
-        int storedVersion = getTimeSeriesStoredVersion(this, timeSeriesName, version);
+        int storedVersion = getTimeSeriesStoredVersion(timeSeriesName, version);
         return timeSeriesPerVersion.get(storedVersion);
     }
 
