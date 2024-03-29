@@ -19,9 +19,9 @@ import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
-public final class TimeSeriesStoreUtil {
+import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 
-    public static final int DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES = 0;
+public final class TimeSeriesStoreUtil {
 
     private TimeSeriesStoreUtil() {
     }

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -67,8 +66,9 @@ class InMemoryTimeSeriesStoreTest {
                 new TimeSeriesMetadata("ts1", TimeSeriesDataType.DOUBLE, index),
                 new TimeSeriesMetadata("ts2", TimeSeriesDataType.DOUBLE, index),
                 new TimeSeriesMetadata("notVersionedTs", TimeSeriesDataType.DOUBLE, index));
-        assertEquals(Set.of(0, 1), store.getTimeSeriesDataVersions());
-        assertThat(store.getTimeSeriesDataVersions("notVersionedTs")).containsExactly(0);
+        assertEquals(Set.of(-1, 1), store.getTimeSeriesDataVersions());
+        assertThat(store.getTimeSeriesDataVersions("notVersionedTs")).containsExactly(-1);
+        assertThat(store.getDoubleTimeSeries("notVersionedTs", -1).orElseThrow(AssertionError::new).toArray()).isEqualTo(new double[]{10d, 20d, 30d});
         assertThat(store.getDoubleTimeSeries("notVersionedTs", 0).orElseThrow(AssertionError::new).toArray()).isEqualTo(new double[]{10d, 20d, 30d});
         assertThat(store.getDoubleTimeSeries("notVersionedTs", 1).orElseThrow(AssertionError::new).toArray()).isEqualTo(new double[]{10d, 20d, 30d});
     }

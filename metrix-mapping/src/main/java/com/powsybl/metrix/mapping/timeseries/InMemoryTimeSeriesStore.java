@@ -9,6 +9,7 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.commons.PowsyblException;
+import com.powsybl.commons.report.ReportNode;
 import com.powsybl.timeseries.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
@@ -17,13 +18,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
+import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 
 public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
@@ -157,7 +159,8 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     public void importTimeSeries(BufferedReader reader) {
-        Map<Integer, List<TimeSeries>> timeSeries = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
+        TimeSeriesCsvConfig config = new TimeSeriesCsvConfig(ZoneId.systemDefault(), ';', true, TimeSeries.TimeFormat.DATE_TIME, 20000, false);
+        Map<Integer, List<TimeSeries>> timeSeries = TimeSeries.parseCsv(reader, config, ReportNode.NO_OP);
         HashMap<TimeSeriesDataType, HashMap<String, Map<Integer, TimeSeries>>> tsByType = timeSeries.entrySet().stream()
             .flatMap(tsVersionEntry ->
                 tsVersionEntry.getValue().stream().map(tsVersion -> Pair.of(tsVersion, tsVersionEntry.getKey()))

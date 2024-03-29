@@ -32,6 +32,7 @@ import java.util.Set;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.*;
+import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSeriesStoreUtilsTest {

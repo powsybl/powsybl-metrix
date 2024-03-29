@@ -9,6 +9,7 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.commons.PowsyblException;
+import com.powsybl.commons.report.ReportNode;
 import com.powsybl.timeseries.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
@@ -207,7 +208,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
-        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
+        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
         integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting, append));
     }
 
