@@ -17,6 +17,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Objects;
@@ -90,6 +91,7 @@ class MetrixToolTest extends AbstractToolTest {
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/conf.groovy")), fileSystem.getPath("/conf.groovy"));
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/contingencies.groovy")), fileSystem.getPath("/contingencies.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/expected_results.csv")), fileSystem.getPath("/expected_results.csv"));
         StringBuilder expected = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MetrixToolTest.class.getResourceAsStream("/mapping_result.txt"))))) {
             expected.append(reader.readLine());
@@ -112,8 +114,8 @@ class MetrixToolTest extends AbstractToolTest {
         try (InputStream fis = Files.newInputStream(fileSystem.getPath("results.csv.gz"));
              BufferedInputStream bis = new BufferedInputStream(fis);
              InputStream is = new GzipCompressorInputStream(bis);
-             InputStream expectedIS = new BufferedInputStream(Files.newInputStream(fileSystem.getPath("/timeseries.csv")))) {
-//            assertEquals(new String(expectedIS.readAllBytes(), StandardCharsets.UTF_8), new String(is.readAllBytes(), StandardCharsets.UTF_8));
+             InputStream expectedIS = new BufferedInputStream(Files.newInputStream(fileSystem.getPath("/expected_results.csv")))) {
+            assertEquals(new String(expectedIS.readAllBytes(), StandardCharsets.UTF_8), new String(is.readAllBytes(), StandardCharsets.UTF_8));
         } catch (Exception e) {
             fail();
         }
