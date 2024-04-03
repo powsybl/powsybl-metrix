@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -46,7 +47,7 @@ class FileSystemTimeseriesStoreTest {
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
 
-        try (InputStream resourceAsStream = FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv");
+        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv"));
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
             tsStore.importTimeSeries(bufferedReader, true, false);
