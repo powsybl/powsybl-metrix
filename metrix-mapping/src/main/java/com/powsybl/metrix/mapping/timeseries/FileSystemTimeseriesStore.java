@@ -67,22 +67,15 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
 
     @Override
     public Set<Integer> getTimeSeriesDataVersions() {
-        return getTimeSeriesMetadata(ts -> true).findFirst().map(tsMeta -> {
-            Path tsPath = fileSystemStorePath.resolve(tsMeta.getName());
-            try {
-                return Files.list(tsPath).map(path -> Integer.parseInt(path.getFileName().toString())).collect(Collectors.toSet());
-            } catch (IOException e) {
-                throw new PowsyblException(String.format("Failed to list versions for timeserie %s", tsMeta.getName()));
-            }
-        }).orElse(Collections.emptySet());
+        return getTimeSeriesDataVersions("");
     }
 
     @Override
     public Set<Integer> getTimeSeriesDataVersions(String s) {
-        return getTimeSeriesMetadata(timeSeriesMetadata -> timeSeriesMetadata.getName().equals(s)).findFirst().map(tsMeta -> {
+        return getTimeSeriesMetadata(timeSeriesMetadata -> s.isEmpty() || timeSeriesMetadata.getName().equals(s)).findFirst().map(tsMeta -> {
             Path tsPath = fileSystemStorePath.resolve(tsMeta.getName());
-            try {
-                return Files.list(tsPath).map(path -> Integer.parseInt(path.getFileName().toString())).collect(Collectors.toSet());
+            try (Stream<Path> paths = Files.list(tsPath)) {
+                return paths.map(path -> Integer.parseInt(path.getFileName().toString())).collect(Collectors.toSet());
             } catch (IOException e) {
                 throw new PowsyblException(String.format("Failed to list versions for timeserie %s", tsMeta.getName()));
             }
