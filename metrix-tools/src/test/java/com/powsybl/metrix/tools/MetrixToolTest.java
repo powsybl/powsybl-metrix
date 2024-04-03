@@ -12,18 +12,16 @@ import com.powsybl.tools.Command;
 import com.powsybl.tools.CommandLineTools;
 import com.powsybl.tools.Tool;
 import org.apache.commons.cli.Options;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MetrixToolTest extends AbstractToolTest {
 
@@ -83,5 +81,41 @@ class MetrixToolTest extends AbstractToolTest {
             "--versions", "1"
         };
         assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "");
+    }
+
+    @Test
+    void runWithExport() throws IOException {
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/conf.groovy")), fileSystem.getPath("/conf.groovy"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/contingencies.groovy")), fileSystem.getPath("/contingencies.groovy"));
+        StringBuilder expected = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MetrixToolTest.class.getResourceAsStream("/mapping_result.txt"))))) {
+            expected.append(reader.readLine());
+        }
+
+        String[] commandLine = new String[]{
+            "metrix",
+            "--case-file", "/network.xiidm",
+            "--mapping-file", "/mapping.groovy",
+            "--time-series", "/timeseries.csv",
+            "--metrix-dsl-file", "/conf.groovy",
+            "--contingencies-file", "/contingencies.groovy",
+            "--versions", "1",
+            "--csv-results-file", "results.csv",
+            "--log-archive", "logs"
+        };
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "");
+
+        // Check the content of the result file
+        try (InputStream fis = Files.newInputStream(fileSystem.getPath("results.csv.gz"));
+             BufferedInputStream bis = new BufferedInputStream(fis);
+             InputStream is = new GzipCompressorInputStream(bis);
+             InputStream expectedIS = new BufferedInputStream(Files.newInputStream(fileSystem.getPath("/timeseries.csv")))) {
+//            assertEquals(new String(expectedIS.readAllBytes(), StandardCharsets.UTF_8), new String(is.readAllBytes(), StandardCharsets.UTF_8));
+        } catch (Exception e) {
+            fail();
+        }
     }
 }

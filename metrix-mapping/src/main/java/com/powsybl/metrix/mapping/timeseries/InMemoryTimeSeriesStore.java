@@ -130,7 +130,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
             .map(timeSeriesVersions -> timeSeriesVersions.get(version))
             .filter(Objects::nonNull)
             .map(timeSeriesTypeClass::cast)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Override

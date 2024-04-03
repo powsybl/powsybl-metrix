@@ -103,7 +103,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         return set.stream().map(tsName -> getDoubleTimeSeries(tsName, i))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -121,7 +121,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         return set.stream().map(tsName -> getStringTimeSeries(tsName, i))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private Object getFileLock(String tsFilePath) {
