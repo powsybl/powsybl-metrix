@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping.common;
 
 import com.powsybl.commons.config.ModuleConfig;
