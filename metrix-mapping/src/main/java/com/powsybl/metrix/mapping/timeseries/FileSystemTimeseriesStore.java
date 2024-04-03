@@ -165,39 +165,43 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                     throw new PowsyblException(String.format("Timeserie %s already exist", tsName));
                 }
                 synchronized (getFileLock(versionFile.toString())) {
-                    TimeSeries updatedTs = ts;
-                    if (Files.exists(versionFile)) {
-                        List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
-                        if (existingTsList.size() != 1) {
-                            throw new PowsyblException("Existing ts file should contain one and only one ts");
-                        }
-                        TimeSeries existingTs = existingTsList.get(0);
-                        if (append && InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())) {
-                            throw new PowsyblException("Cannot append to a calculated timeserie");
-                        } else {
-                            TimeSeriesDataType dataType = ts.getMetadata().getDataType();
-
-                            if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-                                List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTs).getChunks();
-                                chunks.addAll(((StoredDoubleTimeSeries) ts).getChunks());
-                                updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), chunks);
-                            } else {
-                                List<StringDataChunk> chunks = ((StringTimeSeries) existingTs).getChunks();
-                                chunks.addAll(((StringTimeSeries) ts).getChunks());
-                                updatedTs = new StringTimeSeries(existingTs.getMetadata(), chunks);
-                            }
-                        }
-                    } else {
-                        Files.createFile(versionFile);
-                    }
-                    try (BufferedWriter bf = Files.newBufferedWriter(versionFile)) {
-                        bf.write(updatedTs.toJson());
-                    }
+                    manageVersionFile(ts, versionFile, append);
                 }
             } catch (IOException e) {
                 throw new PowsyblException("Failed to write timeseries", e);
             }
         });
+    }
+
+    private void manageVersionFile(TimeSeries ts, Path versionFile, boolean append) throws IOException {
+        TimeSeries updatedTs = ts;
+        if (Files.exists(versionFile)) {
+            List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
+            if (existingTsList.size() != 1) {
+                throw new PowsyblException("Existing ts file should contain one and only one ts");
+            }
+            TimeSeries existingTs = existingTsList.get(0);
+            if (append && InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())) {
+                throw new PowsyblException("Cannot append to a calculated timeserie");
+            } else {
+                TimeSeriesDataType dataType = ts.getMetadata().getDataType();
+
+                if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
+                    List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTs).getChunks();
+                    chunks.addAll(((StoredDoubleTimeSeries) ts).getChunks());
+                    updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), chunks);
+                } else {
+                    List<StringDataChunk> chunks = ((StringTimeSeries) existingTs).getChunks();
+                    chunks.addAll(((StringTimeSeries) ts).getChunks());
+                    updatedTs = new StringTimeSeries(existingTs.getMetadata(), chunks);
+                }
+            }
+        } else {
+            Files.createFile(versionFile);
+        }
+        try (BufferedWriter bf = Files.newBufferedWriter(versionFile)) {
+            bf.write(updatedTs.toJson());
+        }
     }
 
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
