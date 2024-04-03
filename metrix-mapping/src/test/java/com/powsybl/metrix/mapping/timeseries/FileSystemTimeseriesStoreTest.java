@@ -24,8 +24,7 @@ import java.nio.file.Path;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class FileSystemTimeseriesStoreTest {
     private FileSystem fileSystem;
@@ -58,5 +57,8 @@ class FileSystemTimeseriesStoreTest {
 
         assertTrue(tsStore.timeSeriesExists("BALANCE"));
         assertFalse(tsStore.timeSeriesExists("tsY"));
+
+        assertEquals(Set.of(1), tsStore.getTimeSeriesDataVersions());
+        assertEquals(Set.of(1), tsStore.getTimeSeriesDataVersions("BALANCE"));
     }
 }
