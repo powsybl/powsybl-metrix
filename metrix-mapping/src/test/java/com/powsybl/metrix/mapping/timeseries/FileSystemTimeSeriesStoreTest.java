@@ -26,7 +26,7 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileSystemTimeseriesStoreTest {
+class FileSystemTimeSeriesStoreTest {
     private FileSystem fileSystem;
 
     @BeforeEach
@@ -42,11 +42,11 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testTsStore() throws IOException {
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
 
-        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv"));
+        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeSeriesStoreTest.class.getResourceAsStream("/testStore.csv"));
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
             tsStore.importTimeSeries(bufferedReader, true, false);

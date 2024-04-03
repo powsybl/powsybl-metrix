@@ -25,15 +25,15 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
+public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemTimeseriesStore.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemTimeSeriesStore.class);
     private final Path fileSystemStorePath;
 
     private final Map<String, TimeSeriesMetadata> existingTimeSeriesMetadataCache;
     private final Map<String, Object> fileLocks = new ConcurrentHashMap<>();
 
-    public FileSystemTimeseriesStore(Path path) throws IOException {
+    public FileSystemTimeSeriesStore(Path path) throws IOException {
         this.fileSystemStorePath = Objects.requireNonNull(path);
         this.existingTimeSeriesMetadataCache = initExistingTimeSeriesCache();
         if (!Files.isDirectory(path)) {
