@@ -18,9 +18,18 @@ import java.util.*;
 import java.util.function.IntFunction;
 import java.util.stream.Collectors;
 
+import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
+
 public final class TimeSeriesStoreUtil {
 
     private TimeSeriesStoreUtil() {
+    }
+
+    /**
+     * Check if a set of version numbers corresponds to set containing single number for not versioned time series
+     */
+    public static boolean isNotVersioned(Set<Integer> existingVersions) {
+        return Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES).equals(existingVersions);
     }
 
     private static void writeCsv(ReadOnlyTimeSeriesStore store, Writer writer, char separator, ZoneId zoneId,

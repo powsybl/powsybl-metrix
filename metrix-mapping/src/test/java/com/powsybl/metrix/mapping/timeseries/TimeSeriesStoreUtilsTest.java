@@ -32,7 +32,8 @@ import java.util.*;
 import java.util.function.IntFunction;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.toTable;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.*;
+import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSeriesStoreUtilsTest {
@@ -71,6 +72,13 @@ class TimeSeriesStoreUtilsTest {
                 fail();
             }
         }
+    }
+
+    @Test
+    void notVersionedSingleNumberTest() {
+        assertTrue(isNotVersioned(Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES)));
+        assertFalse(isNotVersioned(Set.of(1)));
+        assertFalse(isNotVersioned(Set.of(DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES, 1)));
     }
 
     @Test

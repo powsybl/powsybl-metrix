@@ -21,6 +21,7 @@ import java.util.stream.StreamSupport;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
 public class TimeSeriesMappingConfigTableLoader {
 
@@ -187,7 +188,7 @@ public class TimeSeriesMappingConfigTableLoader {
     public static void checkValues(ReadOnlyTimeSeriesStore store, Set<Integer> versions, Set<String> timeSeriesNamesToLoad) {
         timeSeriesNamesToLoad.forEach(timeSeriesName -> {
             Set<Integer> existingVersions = store.getTimeSeriesDataVersions(timeSeriesName);
-            if (!existingVersions.isEmpty() && !existingVersions.containsAll(versions)) {
+            if (!isNotVersioned(existingVersions) && !existingVersions.isEmpty() && !existingVersions.containsAll(versions)) {
                 Set<Integer> undefinedVersions = new HashSet<>(versions);
                 undefinedVersions.removeAll(existingVersions);
                 throw new TimeSeriesMappingException("The time series store does not contain values for ts " + timeSeriesName + " and version(s) " + undefinedVersions);
