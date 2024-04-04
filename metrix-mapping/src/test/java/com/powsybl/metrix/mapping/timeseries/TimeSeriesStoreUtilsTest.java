@@ -84,7 +84,6 @@ class TimeSeriesStoreUtilsTest {
         StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
         StringTimeSeries ts3 = TimeSeries.createString("ts3", index, "a", "b", "c");
 
-
         // TimeSeries metadata
         TimeSeriesMetadata ts1Metadata = new TimeSeriesMetadata("ts1", TimeSeriesDataType.DOUBLE, index);
         TimeSeriesMetadata ts2Metadata = new TimeSeriesMetadata("ts2", TimeSeriesDataType.STRING, index);
@@ -142,7 +141,6 @@ class TimeSeriesStoreUtilsTest {
         StoredDoubleTimeSeries ts2 = TimeSeries.createDouble("ts2", infiniteIndex, 1d, 5d);
         StoredDoubleTimeSeries ts4 = TimeSeries.createDouble("ts4", otherIndex, 1d, 3d, 5d);
 
-
         // TimeSeries metadata
         TimeSeriesMetadata ts1Metadata = new TimeSeriesMetadata("ts1", TimeSeriesDataType.DOUBLE, index);
         TimeSeriesMetadata ts2Metadata = new TimeSeriesMetadata("ts3", TimeSeriesDataType.DOUBLE, infiniteIndex);
@@ -184,5 +182,4 @@ class TimeSeriesStoreUtilsTest {
         assertEquals("Not yet implemented", unsupportedOperationException.getMessage());
         assertEquals(1, fileNames.size()); // a file name was created since the exception comes late in the process
     }
-
 }
