@@ -182,6 +182,7 @@ class TimeSeriesStoreUtilsTest {
         UnsupportedOperationException unsupportedOperationException = assertThrows(UnsupportedOperationException.class,
             () -> toTable(tsStore, byteBufferAllocator, versions, timeSeriesMetadataListCase2, doubleTimeSeriesNamesCase2, stringTimeSeriesNamesCase2));
         assertEquals("Not yet implemented", unsupportedOperationException.getMessage());
+        assertEquals(1, fileNames.size()); // a file name was created since the exception comes late in the process
     }
 
 }
