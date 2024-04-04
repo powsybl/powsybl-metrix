@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.commons.PowsyblException;
@@ -96,7 +95,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         return set.stream().map(tsName -> getDoubleTimeSeries(tsName, i))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -114,7 +113,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         return set.stream().map(tsName -> getStringTimeSeries(tsName, i))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private Object getFileLock(String tsFilePath) {
