@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.timeseries.*;
@@ -125,16 +124,24 @@ public final class TimeSeriesStoreUtil {
 
         TimeSeriesTable table = new TimeSeriesTable(versions.first(), versions.last(), indexes.iterator().next(), byteBufferAllocator);
         for (int version : versions) {
-            List<DoubleTimeSeries> doubleTimeSeries = doubleTimeSeriesNames.isEmpty() ? new ArrayList<>()
-                    : store.getDoubleTimeSeries(doubleTimeSeriesNames, version);
+            // Initialise mutable lists
+            List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
+            List<StringTimeSeries> stringTimeSeries = new ArrayList<>();
+
+            // Add the DoubleTimeSeries from the store
+            if (!doubleTimeSeriesNames.isEmpty()) {
+                doubleTimeSeries.addAll(store.getDoubleTimeSeries(doubleTimeSeriesNames, version));
+            }
 
             // complete time series list to have the same list for each version
             Set<String> missingDoubleTimeSeriesNames = new HashSet<>(doubleTimeSeriesNames);
             doubleTimeSeries.stream().map(ts -> ts.getMetadata().getName()).toList().forEach(missingDoubleTimeSeriesNames::remove);
             doubleTimeSeries.addAll(missingDoubleTimeSeriesNames.stream().map(name -> new StoredDoubleTimeSeries(metadataMap.get(name))).toList());
 
-            List<StringTimeSeries> stringTimeSeries = stringTimeSeriesNames.isEmpty() ? new ArrayList<>()
-                    : store.getStringTimeSeries(stringTimeSeriesNames, version);
+            // Add the StringTimeSeries from the store
+            if (!stringTimeSeriesNames.isEmpty()) {
+                stringTimeSeries.addAll(store.getStringTimeSeries(stringTimeSeriesNames, version));
+            }
 
             // complete time series list to have the same list for each version
             Set<String> missingStringTimeSeriesNames = new HashSet<>(stringTimeSeriesNames);
