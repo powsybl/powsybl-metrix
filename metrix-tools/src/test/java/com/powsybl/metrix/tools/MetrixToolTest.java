@@ -16,9 +16,15 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Objects;
 
@@ -111,13 +117,56 @@ class MetrixToolTest extends AbstractToolTest {
         assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "");
 
         // Check the content of the result file
-        try (InputStream fis = Files.newInputStream(fileSystem.getPath("results.csv.gz"));
-             BufferedInputStream bis = new BufferedInputStream(fis);
-             InputStream is = new GzipCompressorInputStream(bis);
-             InputStream expectedIS = new BufferedInputStream(Files.newInputStream(fileSystem.getPath("/expected_results.csv")))) {
-            assertEquals(new String(expectedIS.readAllBytes(), StandardCharsets.UTF_8), new String(is.readAllBytes(), StandardCharsets.UTF_8));
-        } catch (Exception e) {
-            fail();
+        assertTimeSeriesCsvEquals(fileSystem.getPath("/expected_results.csv"), fileSystem.getPath("results.csv.gz"));
+    }
+
+    /**
+     * Compare TimeSeries CSV by comparing line-by-line the index as datetime first (since the datetime formatting in
+     * the CSV depends on <code>ZoneId.systemDefault()</code>, it is timezone dependent) and then the rest of the line.
+     */
+    private void assertTimeSeriesCsvEquals(Path expectedCsv, Path actualCsv) {
+        // Date-time formatter
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.systemDefault());
+
+        // Open the two files
+        try (BufferedReader expectedReader = Files.newBufferedReader(expectedCsv);
+             InputStream fis = Files.newInputStream(actualCsv);
+             GzipCompressorInputStream gis = new GzipCompressorInputStream(fis);
+             InputStreamReader inputStreamReader = new InputStreamReader(gis);
+             BufferedReader actualReader = new BufferedReader(inputStreamReader)) {
+            // Compare the first lines
+            String csvLineExpected = expectedReader.readLine();
+            String csvLineActual = actualReader.readLine();
+            assertEquals(csvLineExpected, csvLineActual);
+
+            // Read the next line
+            csvLineExpected = expectedReader.readLine();
+            csvLineActual = actualReader.readLine();
+
+            // Read line by line
+            while (csvLineExpected != null && csvLineActual != null) {
+                // Split the lines on separator
+                String[] dataExpected = csvLineExpected.split(";", 2);
+                String[] dataActual = csvLineActual.split(";", 2);
+
+                // Compare the datetime elements (the value should be the same but formatting can differ due to different timezone)
+                ZonedDateTime dateTimeExpected = ZonedDateTime.parse(dataExpected[0]);
+                ZonedDateTime dateTimeActual = ZonedDateTime.parse(dataActual[0], dateTimeFormatter);
+                assertEquals(dateTimeExpected.toInstant(), dateTimeActual.toInstant());
+
+                // Compare the rest of the line as a single string
+                assertEquals(dataExpected[1], dataActual[1]);
+
+                // Read the next line
+                csvLineExpected = expectedReader.readLine();
+                csvLineActual = actualReader.readLine();
+            }
+            // Check same number of lines
+            assertTrue(csvLineExpected == null && csvLineActual == null);
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
     }
 }
