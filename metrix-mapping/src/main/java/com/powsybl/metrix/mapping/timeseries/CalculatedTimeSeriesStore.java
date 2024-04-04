@@ -135,7 +135,7 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return timeSeriesNames.stream().map(timeSeriesName -> getDoubleTimeSeries(timeSeriesName, version))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Override
