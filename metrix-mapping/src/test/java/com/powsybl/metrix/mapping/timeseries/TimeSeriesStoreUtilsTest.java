@@ -97,7 +97,7 @@ class TimeSeriesStoreUtilsTest {
 
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts3), 1, false, true);
         tsStore.importTimeSeries(List.of(ts1, ts3), 2, false, true);
 
@@ -155,7 +155,7 @@ class TimeSeriesStoreUtilsTest {
 
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 1, false, true);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 2, false, true);
 
