@@ -66,22 +66,15 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
 
     @Override
     public Set<Integer> getTimeSeriesDataVersions() {
-        return getTimeSeriesMetadata(ts -> true).findFirst().map(tsMeta -> {
-            Path tsPath = fileSystemStorePath.resolve(tsMeta.getName());
-            try {
-                return Files.list(tsPath).map(path -> Integer.parseInt(path.getFileName().toString())).collect(Collectors.toSet());
-            } catch (IOException e) {
-                throw new PowsyblException(String.format("Failed to list versions for timeserie %s", tsMeta.getName()));
-            }
-        }).orElse(Collections.emptySet());
+        return getTimeSeriesDataVersions("");
     }
 
     @Override
     public Set<Integer> getTimeSeriesDataVersions(String s) {
-        return getTimeSeriesMetadata(timeSeriesMetadata -> timeSeriesMetadata.getName().equals(s)).findFirst().map(tsMeta -> {
+        return getTimeSeriesMetadata(timeSeriesMetadata -> s.isEmpty() || timeSeriesMetadata.getName().equals(s)).findFirst().map(tsMeta -> {
             Path tsPath = fileSystemStorePath.resolve(tsMeta.getName());
-            try {
-                return Files.list(tsPath).map(path -> Integer.parseInt(path.getFileName().toString())).collect(Collectors.toSet());
+            try (Stream<Path> paths = Files.list(tsPath)) {
+                return paths.map(path -> Integer.parseInt(path.getFileName().toString())).collect(Collectors.toSet());
             } catch (IOException e) {
                 throw new PowsyblException(String.format("Failed to list versions for timeserie %s", tsMeta.getName()));
             }
@@ -171,39 +164,43 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                     throw new PowsyblException(String.format("Timeserie %s already exist", tsName));
                 }
                 synchronized (getFileLock(versionFile.toString())) {
-                    TimeSeries updatedTs = ts;
-                    if (Files.exists(versionFile)) {
-                        List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
-                        if (existingTsList.size() != 1) {
-                            throw new PowsyblException("Existing ts file should contain one and only one ts");
-                        }
-                        TimeSeries existingTs = existingTsList.get(0);
-                        if (append && InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())) {
-                            throw new PowsyblException("Cannot append to a calculated timeserie");
-                        } else {
-                            TimeSeriesDataType dataType = ts.getMetadata().getDataType();
-
-                            if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-                                List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTs).getChunks();
-                                chunks.addAll(((StoredDoubleTimeSeries) ts).getChunks());
-                                updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), chunks);
-                            } else {
-                                List<StringDataChunk> chunks = ((StringTimeSeries) existingTs).getChunks();
-                                chunks.addAll(((StringTimeSeries) ts).getChunks());
-                                updatedTs = new StringTimeSeries(existingTs.getMetadata(), chunks);
-                            }
-                        }
-                    } else {
-                        Files.createFile(versionFile);
-                    }
-                    try (BufferedWriter bf = Files.newBufferedWriter(versionFile)) {
-                        bf.write(updatedTs.toJson());
-                    }
+                    manageVersionFile(ts, versionFile, append);
                 }
             } catch (IOException e) {
                 throw new PowsyblException("Failed to write timeseries", e);
             }
         });
+    }
+
+    private void manageVersionFile(TimeSeries ts, Path versionFile, boolean append) throws IOException {
+        TimeSeries updatedTs = ts;
+        if (Files.exists(versionFile)) {
+            List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
+            if (existingTsList.size() != 1) {
+                throw new PowsyblException("Existing ts file should contain one and only one ts");
+            }
+            TimeSeries existingTs = existingTsList.get(0);
+            if (append && InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())) {
+                throw new PowsyblException("Cannot append to a calculated timeserie");
+            } else {
+                TimeSeriesDataType dataType = ts.getMetadata().getDataType();
+
+                if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
+                    List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTs).getChunks();
+                    chunks.addAll(((StoredDoubleTimeSeries) ts).getChunks());
+                    updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), chunks);
+                } else {
+                    List<StringDataChunk> chunks = ((StringTimeSeries) existingTs).getChunks();
+                    chunks.addAll(((StringTimeSeries) ts).getChunks());
+                    updatedTs = new StringTimeSeries(existingTs.getMetadata(), chunks);
+                }
+            }
+        } else {
+            Files.createFile(versionFile);
+        }
+        try (BufferedWriter bf = Files.newBufferedWriter(versionFile)) {
+            bf.write(updatedTs.toJson());
+        }
     }
 
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
