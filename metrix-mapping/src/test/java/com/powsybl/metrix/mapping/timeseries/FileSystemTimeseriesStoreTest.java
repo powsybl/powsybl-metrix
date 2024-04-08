@@ -198,12 +198,12 @@ class FileSystemTimeseriesStoreTest {
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
 
         // Add a file with multiple TimeSeries
-        Files.createDirectory(fileSystem.getPath("/tmp/ts1"));
+        Files.createDirectory(fileSystem.getPath("/tmp/ts2"));
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/timeseries.json")),
-            fileSystem.getPath("/tmp/ts1/1"));
+            fileSystem.getPath("/tmp/ts2/1"));
 
         // An exception is thrown since there are mutiple TimeSeries in the file
-        PowsyblException exception = assertThrows(PowsyblException.class, () -> tsStore.getDoubleTimeSeries("ts1", 1));
+        PowsyblException exception = assertThrows(PowsyblException.class, () -> tsStore.getDoubleTimeSeries("ts2", 1));
         assertEquals("Found more than one timeseries", exception.getMessage());
     }
 }
