@@ -49,7 +49,6 @@ class FileSystemTimeSeriesStoreTest {
 
     @Test
     void testTsStore() throws IOException {
-        Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
         FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
