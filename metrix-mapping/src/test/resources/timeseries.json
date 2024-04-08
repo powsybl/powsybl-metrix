@@ -1,0 +1,31 @@
+[{
+  "metadata" : {
+    "name" : "ts1",
+    "dataType" : "DOUBLE",
+    "tags" : [ ],
+    "regularIndex" : {
+      "startTime" : 978303600000,
+      "endTime" : 978310800000,
+      "spacing" : 3600000
+    }
+  },
+  "chunks" : [ {
+    "offset" : 0,
+    "values" : [ 1.0, 2.0, 3.0 ]
+  } ]
+}, {
+  "metadata" : {
+    "name" : "ts5",
+    "dataType" : "DOUBLE",
+    "tags" : [ ],
+    "regularIndex" : {
+      "startTime" : 978303600000,
+      "endTime" : 978310800000,
+      "spacing" : 3600000
+    }
+  },
+  "chunks" : [ {
+    "offset" : 0,
+    "values" : [ 1.0, 2.0, 3.0 ]
+  } ]
+}]

@@ -34,11 +34,22 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     private final Map<String, Object> fileLocks = new ConcurrentHashMap<>();
 
     public FileSystemTimeSeriesStore(Path path) throws IOException {
-        this.fileSystemStorePath = Objects.requireNonNull(path);
-        this.existingTimeSeriesMetadataCache = initExistingTimeSeriesCache();
-        if (!Files.isDirectory(path)) {
+        if (Files.exists(path) && !Files.isDirectory(path)) {
             throw new IllegalArgumentException(String.format("Path %s is not a directory", path));
         }
+        this.fileSystemStorePath = Objects.requireNonNull(path);
+        this.existingTimeSeriesMetadataCache = initExistingTimeSeriesCache();
+    }
+
+    private static void deleteRecursive(Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            try (Stream<Path> childlist = Files.list(path)) {
+                for (Path child : childlist.toList()) {
+                    deleteRecursive(child);
+                }
+            }
+        }
+        Files.delete(path);
     }
 
     @Override
@@ -86,31 +97,31 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     @Override
-    public Optional<DoubleTimeSeries> getDoubleTimeSeries(String s, int i) {
-        return getTimeSeries(DoubleTimeSeries.class, s, i);
+    public Optional<DoubleTimeSeries> getDoubleTimeSeries(String s, int version) {
+        return getTimeSeries(DoubleTimeSeries.class, s, version);
     }
 
     @Override
-    public List<DoubleTimeSeries> getDoubleTimeSeries(Set<String> set, int i) {
-        return set.stream().map(tsName -> getDoubleTimeSeries(tsName, i))
+    public List<DoubleTimeSeries> getDoubleTimeSeries(Set<String> set, int version) {
+        return set.stream().map(tsName -> getDoubleTimeSeries(tsName, version))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<DoubleTimeSeries> getDoubleTimeSeries(int i) {
-        return getDoubleTimeSeries(existingTimeSeriesMetadataCache.keySet(), i);
+    public List<DoubleTimeSeries> getDoubleTimeSeries(int version) {
+        return getDoubleTimeSeries(existingTimeSeriesMetadataCache.keySet(), version);
     }
 
     @Override
-    public Optional<StringTimeSeries> getStringTimeSeries(String s, int i) {
-        return getTimeSeries(StringTimeSeries.class, s, i);
+    public Optional<StringTimeSeries> getStringTimeSeries(String s, int version) {
+        return getTimeSeries(StringTimeSeries.class, s, version);
     }
 
     @Override
-    public List<StringTimeSeries> getStringTimeSeries(Set<String> set, int i) {
-        return set.stream().map(tsName -> getStringTimeSeries(tsName, i))
+    public List<StringTimeSeries> getStringTimeSeries(Set<String> set, int version) {
+        return set.stream().map(tsName -> getStringTimeSeries(tsName, version))
             .filter(Optional::isPresent)
             .map(Optional::get)
             .collect(Collectors.toList());
@@ -128,18 +139,21 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
             }
 
             List<T> timeSeries = TimeSeries.parseJson(tsPath).stream().map(ts -> {
-                if (timeSerieTypeClass.isAssignableFrom(DoubleTimeSeries.class) && TimeSeriesDataType.DOUBLE.equals(ts.getMetadata().getDataType())) {
-                    return timeSerieTypeClass.cast(ts);
+                Optional<T> optionalTimeSeries = Optional.empty();
+                if (timeSerieTypeClass.isAssignableFrom(DoubleTimeSeries.class) && TimeSeriesDataType.DOUBLE.equals(ts.getMetadata().getDataType())
+                    || timeSerieTypeClass.isAssignableFrom(StringTimeSeries.class) && TimeSeriesDataType.STRING.equals(ts.getMetadata().getDataType())) {
+                    optionalTimeSeries = Optional.of(timeSerieTypeClass.cast(ts));
                 }
-                if (timeSerieTypeClass.isAssignableFrom(StringTimeSeries.class) && TimeSeriesDataType.STRING.equals(ts.getMetadata().getDataType())) {
-                    return timeSerieTypeClass.cast(ts);
-                }
-                throw new PowsyblException(String.format("Wrong data type for timeseries %s", name));
-            }).toList();
-            if (timeSeries.size() != 1) {
-                throw new PowsyblException("Found more than one timeseries");
-            }
-            return Optional.of(timeSeries.get(0));
+                return optionalTimeSeries;
+            })
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+            return switch (timeSeries.size()) {
+                case 0 -> Optional.empty();
+                case 1 -> Optional.of(timeSeries.get(0));
+                default -> throw new PowsyblException("Found more than one timeseries");
+            };
         }
     }
 
@@ -244,17 +258,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         } catch (IOException e) {
             LOGGER.error("Failed to delete filesystem timeserie store", e);
         }
-    }
-
-    private static void deleteRecursive(Path path) throws IOException {
-        if (Files.isDirectory(path)) {
-            try (Stream<Path> childlist = Files.list(path)) {
-                for (Path child : childlist.toList()) {
-                    deleteRecursive(child);
-                }
-            }
-        }
-        Files.delete(path);
     }
 
 }
