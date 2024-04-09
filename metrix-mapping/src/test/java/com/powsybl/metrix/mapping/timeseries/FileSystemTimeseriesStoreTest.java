@@ -11,6 +11,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.timeseries.*;
+import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -205,5 +206,114 @@ class FileSystemTimeseriesStoreTest {
         // An exception is thrown since there are mutiple TimeSeries in the file
         PowsyblException exception = assertThrows(PowsyblException.class, () -> tsStore.getDoubleTimeSeries("ts2", 1));
         assertEquals("Found more than one timeseries", exception.getMessage());
+    }
+
+    @Test
+    void testTimeSeriesStoreListener() throws IOException {
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // Add or remove listener
+        assertThrows(NotImplementedException.class, () -> tsStore.addListener(null), "Not impletemented");
+        assertThrows(NotImplementedException.class, () -> tsStore.removeListener(null), "Not impletemented");
+    }
+
+    @Test
+    void testExceptionOnImport() throws IOException {
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now, now.plus(2, ChronoUnit.HOURS), Duration.ofHours(1));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+
+        // List of TimeSeries
+        List<TimeSeries> timeSeriesList = List.of(ts1);
+
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // Works the first time
+        tsStore.importTimeSeries(timeSeriesList, 1, false, true);
+
+        // Fails since it already exists
+        assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(timeSeriesList, 1, false, false),
+            "Timeserie ts1 already exist");
+    }
+
+    @Test
+    void testExistingFileWithMultipleTimeSeries() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // Add a file with multiple TimeSeries
+        Files.createDirectory(fileSystem.getPath("/tmp/ts1"));
+        Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/timeseries.json")),
+            fileSystem.getPath("/tmp/ts1/1"));
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now, now.plus(2, ChronoUnit.HOURS), Duration.ofHours(1));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+
+        // List of TimeSeries
+        List<TimeSeries> timeSeriesList = List.of(ts1);
+
+        // An exception is thrown since there are mutiple TimeSeries in the file
+        assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(timeSeriesList, 1, false, false),
+            "Existing ts file should contain one and only one ts");
+    }
+
+    @Test
+    void testExistingFileWithInfiniteIndex() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", new InfiniteTimeSeriesIndex(), 1d, 2d);
+
+        // List of TimeSeries
+        List<TimeSeries> timeSeriesList = List.of(ts1);
+
+        // Works the first time
+        tsStore.importTimeSeries(timeSeriesList, 1, false, true);
+
+        // Fails since it already exists
+        assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(timeSeriesList, 1, false, true),
+            "Cannot append to a calculated timeserie");
+    }
+
+    @Test
+    void testManageVersionFile() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex index2 = RegularTimeSeriesIndex.create(now.plus(3, ChronoUnit.HOURS),
+            now.plus(5, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+        StoredDoubleTimeSeries ts1bis = TimeSeries.createDouble("ts1", index2, 4d, 5d, 6d);
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1), 1, false, true);
+        tsStore.importTimeSeries(List.of(ts1bis), 1, false, true);
+
+        // Assertions
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        DoubleTimeSeries storedDoubleTimeSeries = tsStore.getDoubleTimeSeries("ts1", 1).get();
+
+        // Values should be concatenated
+        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedDoubleTimeSeries.toArray());
     }
 }
