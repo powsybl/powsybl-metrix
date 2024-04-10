@@ -32,7 +32,9 @@ import java.util.*;
 import java.util.function.IntFunction;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.*;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFiles.APPEND;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
+import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.toTable;
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -98,8 +100,8 @@ class TimeSeriesStoreUtilsTest {
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
-        tsStore.importTimeSeries(List.of(ts1, ts3), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1, ts3), 2, false, true);
+        tsStore.importTimeSeries(List.of(ts1, ts3), 1, APPEND);
+        tsStore.importTimeSeries(List.of(ts1, ts3), 2, APPEND);
 
         // Versions
         NavigableSet<Integer> versions = new TreeSet<>(List.of(1, 2));
@@ -156,8 +158,8 @@ class TimeSeriesStoreUtilsTest {
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 2, false, true);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 1, APPEND);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 2, APPEND);
 
         // Versions
         NavigableSet<Integer> versions = new TreeSet<>(List.of(1, 2));

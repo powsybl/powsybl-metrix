@@ -50,7 +50,8 @@ class FileSystemTimeseriesStoreTest {
     }
 
     @Test
-    void testTsStore() throws IOException {
+    @Deprecated(since = "2.3.0")
+    void testTsStoreDeprecatedMethod() throws IOException {
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
@@ -59,6 +60,28 @@ class FileSystemTimeseriesStoreTest {
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
             tsStore.importTimeSeries(bufferedReader, true, false);
+        }
+
+        assertThat(tsStore.getTimeSeriesNames(null)).isNotEmpty();
+        assertThat(tsStore.getTimeSeriesNames(null)).containsExactlyInAnyOrder("BALANCE", "tsX");
+
+        assertTrue(tsStore.timeSeriesExists("BALANCE"));
+        assertFalse(tsStore.timeSeriesExists("tsY"));
+
+        assertEquals(Set.of(1), tsStore.getTimeSeriesDataVersions());
+        assertEquals(Set.of(1), tsStore.getTimeSeriesDataVersions("BALANCE"));
+    }
+
+    @Test
+    void testTsStore() throws IOException {
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
+        assertThat(emptyTimeSeriesNames).isEmpty();
+
+        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv"));
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
+        ) {
+            tsStore.importTimeSeries(bufferedReader, OVERWRITE);
         }
 
         assertThat(tsStore.getTimeSeriesNames(null)).isNotEmpty();
@@ -498,10 +521,9 @@ class FileSystemTimeseriesStoreTest {
         assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
         assertEquals(2, storedTs1.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
-        IrregularTimeSeriesIndex storedIndex1= (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        IrregularTimeSeriesIndex storedIndex1 = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
         assertEquals(978303600000L, storedIndex1.getTimeAt(0));
         assertEquals(978343200000L, storedIndex1.getTimeAt(storedIndex1.getPointCount() - 1));
-
 
         assertTrue(tsStore.getDoubleTimeSeries("ts2", 1).isPresent());
         StoredDoubleTimeSeries storedTs2 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts2", 1).get();
@@ -541,7 +563,7 @@ class FileSystemTimeseriesStoreTest {
         assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
         assertEquals(2, storedTs1.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
-        IrregularTimeSeriesIndex storedIndex1= (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        IrregularTimeSeriesIndex storedIndex1 = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
         assertEquals(978303600000L, storedIndex1.getTimeAt(0));
         assertEquals(978332400000L, storedIndex1.getTimeAt(storedIndex1.getPointCount() - 1));
     }

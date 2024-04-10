@@ -194,7 +194,6 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         importTimeSeries(timeSeriesList, version, existingFiles);
     }
 
-
     /**
      * Import a list of TimeSeries in the current FileSystemTimeseriesStore.<br>
      * If a file already exists for such TimeSeries, the new TimeSeries will be appended to it
@@ -388,9 +387,24 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         }
     }
 
+    /**
+     * Import a list of TimeSeries in the current FileSystemTimeseriesStore
+     * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFiles)}  instead
+     */
+    @Deprecated(since = "2.3.0")
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
         Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
         integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting, append));
+    }
+
+    /**
+     * Import a list of TimeSeries in the current FileSystemTimeseriesStore.<br>
+     * If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
+     * be kept as it is, overwritten or the new TimeSeries will be appended to it
+     */
+    public void importTimeSeries(BufferedReader reader, ExistingFiles existingFiles) {
+        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
+        integerListMap.forEach((key, value) -> importTimeSeries(value, key, existingFiles));
     }
 
     private Map<String, TimeSeriesMetadata> initExistingTimeSeriesCache() throws IOException {
