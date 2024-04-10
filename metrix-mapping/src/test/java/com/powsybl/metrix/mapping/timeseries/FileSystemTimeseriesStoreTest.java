@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFiles.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -91,8 +92,8 @@ class FileSystemTimeseriesStoreTest {
 
         // TimeSeriesStore
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
-        tsStore.importTimeSeries(List.of(ts1), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1), 2, false, true);
+        tsStore.importTimeSeries(List.of(ts1), 1, APPEND);
+        tsStore.importTimeSeries(List.of(ts1), 2, APPEND);
 
         // Case 1: TimeSeries is present
         assertTrue(tsStore.getTimeSeriesMetadata("ts1").isPresent());
@@ -115,8 +116,8 @@ class FileSystemTimeseriesStoreTest {
 
         // TimeSeriesStore
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 2, false, true);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 1, APPEND);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 2, APPEND);
 
         // Case 1: a specific TimeSeries is asked
         assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
@@ -144,8 +145,8 @@ class FileSystemTimeseriesStoreTest {
 
         // TimeSeriesStore
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 2, false, true);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 1, APPEND);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 2, APPEND);
 
         // Case 1: a specific TimeSeries is asked
         assertTrue(tsStore.getStringTimeSeries("ts1", 1).isPresent());
@@ -170,8 +171,8 @@ class FileSystemTimeseriesStoreTest {
 
         // TimeSeriesStore
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts3, ts4), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1, ts2, ts3, ts4), 2, false, true);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts3, ts4), 1, APPEND);
+        tsStore.importTimeSeries(List.of(ts1, ts2, ts3, ts4), 2, APPEND);
 
         // Case 1: a specific TimeSeries is asked
         assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
@@ -233,12 +234,12 @@ class FileSystemTimeseriesStoreTest {
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
 
         // Works the first time
-        tsStore.importTimeSeries(timeSeriesList, 1, false, true);
+        tsStore.importTimeSeries(timeSeriesList, 1, KEEP_EXISTING);
 
         // Fails since it already exists
-        assertThrows(PowsyblException.class,
-            () -> tsStore.importTimeSeries(timeSeriesList, 1, false, false),
-            "Timeserie ts1 already exist");
+        PowsyblException exception = assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(timeSeriesList, 1, KEEP_EXISTING));
+        assertEquals("Timeserie ts1 already exist", exception.getMessage());
     }
 
     @Test
@@ -262,9 +263,9 @@ class FileSystemTimeseriesStoreTest {
         List<TimeSeries> timeSeriesList = List.of(ts1);
 
         // An exception is thrown since there are mutiple TimeSeries in the file
-        assertThrows(PowsyblException.class,
-            () -> tsStore.importTimeSeries(timeSeriesList, 1, false, false),
-            "Existing ts file should contain one and only one ts");
+        PowsyblException exception = assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(timeSeriesList, 1, APPEND));
+        assertEquals("Existing ts file should contain one and only one ts", exception.getMessage());
     }
 
     @Test
@@ -272,19 +273,31 @@ class FileSystemTimeseriesStoreTest {
         // TimeSeriesStore
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
 
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+
         // TimeSeries
         StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", new InfiniteTimeSeriesIndex(), 1d, 2d);
+        StoredDoubleTimeSeries ts2 = TimeSeries.createDouble("ts2", index, 1d, 2d, 3d);
 
         // List of TimeSeries
-        List<TimeSeries> timeSeriesList = List.of(ts1);
+        List<TimeSeries> timeSeriesList = List.of(ts1, ts2);
 
         // Works the first time
-        tsStore.importTimeSeries(timeSeriesList, 1, false, true);
+        tsStore.importTimeSeries(timeSeriesList, 1, APPEND);
 
         // Fails since it already exists
-        assertThrows(PowsyblException.class,
-            () -> tsStore.importTimeSeries(timeSeriesList, 1, false, true),
-            "Cannot append to a calculated timeserie");
+        List<TimeSeries> list1 = List.of(ts1);
+        List<TimeSeries> list2 = List.of(TimeSeries.createDouble("ts2", new InfiniteTimeSeriesIndex(), 1d, 2d));
+        PowsyblException exception = assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(list1, 1, APPEND));
+        assertEquals("Cannot append a TimeSeries with infinite index", exception.getMessage());
+        exception = assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(list2, 1, APPEND));
+        assertEquals("Cannot append a TimeSeries with infinite index", exception.getMessage());
     }
 
     @Test
@@ -297,23 +310,239 @@ class FileSystemTimeseriesStoreTest {
         RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
             now.plus(2, ChronoUnit.HOURS),
             Duration.ofHours(1));
-        RegularTimeSeriesIndex index2 = RegularTimeSeriesIndex.create(now.plus(3, ChronoUnit.HOURS),
+        RegularTimeSeriesIndex indexBis = RegularTimeSeriesIndex.create(now.plus(3, ChronoUnit.HOURS),
+            now.plus(5, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexTer = RegularTimeSeriesIndex.create(now.plus(-3, ChronoUnit.HOURS),
+            now.plus(-1, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexOther = RegularTimeSeriesIndex.create(now.plus(4, ChronoUnit.HOURS),
+            now.plus(6, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexOverlap = RegularTimeSeriesIndex.create(now.plus(1, ChronoUnit.HOURS),
+            now.plus(3, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+        StoredDoubleTimeSeries ts1bis = TimeSeries.createDouble("ts1", indexBis, 4d, 5d, 6d);
+        StoredDoubleTimeSeries ts1ter = TimeSeries.createDouble("ts1", indexTer, 7d, 8d, 9d);
+        StringTimeSeries ts2 = TimeSeries.createString("ts2", index, "a", "b", "c");
+        StringTimeSeries ts2bis = TimeSeries.createString("ts2", indexOther, "d", "e", "f");
+        StoredDoubleTimeSeries ts1Overlap = TimeSeries.createDouble("ts1", indexOverlap, 7d, 8d, 9d);
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1), 1);
+        tsStore.importTimeSeries(List.of(ts1bis), 1);
+        tsStore.importTimeSeries(List.of(ts2), 1);
+        tsStore.importTimeSeries(List.of(ts2bis), 1);
+
+        // Assertions for Double
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        StoredDoubleTimeSeries storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
+        assertEquals(2, storedTs1.getChunks().size());
+        assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
+        RegularTimeSeriesIndex storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        assertEquals(978303600000L, storedIndex.getStartTime());
+        assertEquals(978321600000L, storedIndex.getEndTime());
+        assertEquals(3600000L, storedIndex.getSpacing());
+
+        // Assertions for String
+        assertTrue(tsStore.getStringTimeSeries("ts2", 1).isPresent());
+        StringTimeSeries storedTs2 = tsStore.getStringTimeSeries("ts2", 1).get();
+        assertArrayEquals(new String[] {"a", "b", "c", "d", "e", "f"}, storedTs2.toArray());
+        assertEquals(2, storedTs2.getChunks().size());
+        assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs2.getMetadata().getIndex());
+        IrregularTimeSeriesIndex storedIndex2 = (IrregularTimeSeriesIndex) storedTs2.getMetadata().getIndex();
+        assertEquals(978303600000L, storedIndex2.getTimeAt(0));
+        assertEquals(978325200000L, storedIndex2.getTimeAt(storedIndex2.getPointCount() - 1));
+
+        // Add another TimeSeries
+        tsStore.importTimeSeries(List.of(ts1ter), 1);
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {7d, 8d, 9d, 1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
+        assertEquals(3, storedTs1.getChunks().size());
+        assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
+        storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        assertEquals(978292800000L, storedIndex.getStartTime());
+        assertEquals(978321600000L, storedIndex.getEndTime());
+        assertEquals(3600000L, storedIndex.getSpacing());
+
+        // Test with overlapping indexes
+        List<TimeSeries> list1 = List.of(ts1Overlap);
+        PowsyblException exception = assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(list1, 1, APPEND));
+        assertEquals("Indexes to concatenate cannot overlap", exception.getMessage());
+    }
+
+    @Test
+    void testManageVersionFileWithOverwrite() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexBis = RegularTimeSeriesIndex.create(now.plus(3, ChronoUnit.HOURS),
             now.plus(5, ChronoUnit.HOURS),
             Duration.ofHours(1));
 
         // TimeSeries
         StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
-        StoredDoubleTimeSeries ts1bis = TimeSeries.createDouble("ts1", index2, 4d, 5d, 6d);
+        StoredDoubleTimeSeries ts1bis = TimeSeries.createDouble("ts1", indexBis, 4d, 5d, 6d);
 
         // Append the TimeSeries
-        tsStore.importTimeSeries(List.of(ts1), 1, false, true);
-        tsStore.importTimeSeries(List.of(ts1bis), 1, false, true);
+        tsStore.importTimeSeries(List.of(ts1), 1);
+        tsStore.importTimeSeries(List.of(ts1bis), 1, OVERWRITE);
 
-        // Assertions
+        // Assertions for Double
         assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
-        DoubleTimeSeries storedDoubleTimeSeries = tsStore.getDoubleTimeSeries("ts1", 1).get();
+        StoredDoubleTimeSeries storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {4d, 5d, 6d}, storedTs1.toArray());
+        assertEquals(1, storedTs1.getChunks().size());
+        assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
+        RegularTimeSeriesIndex storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        assertEquals(978314400000L, storedIndex.getStartTime());
+        assertEquals(978321600000L, storedIndex.getEndTime());
+        assertEquals(3600000L, storedIndex.getSpacing());
+    }
 
-        // Values should be concatenated
-        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedDoubleTimeSeries.toArray());
+    @Test
+    void testAppendDifferentTypes() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+        StringTimeSeries ts2 = TimeSeries.createString("ts1", index, "a", "b", "c");
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1), 1);
+        List<TimeSeries> list2 = List.of(ts2);
+        PowsyblException exception = assertThrows(PowsyblException.class,
+            () -> tsStore.importTimeSeries(list2, 1, APPEND));
+        assertEquals("Cannot append to a TimeSeries with different data type", exception.getMessage());
+    }
+
+    @Test
+    void testAppendTimeSeriesIndex() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexBefore = RegularTimeSeriesIndex.create(now.plus(-5, ChronoUnit.HOURS),
+            now.plus(-3, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+        StoredDoubleTimeSeries ts1Before = TimeSeries.createDouble("ts1", indexBefore, 4d, 5d, 6d);
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1), 1);
+
+        // Assertions for index before
+        tsStore.importTimeSeries(List.of(ts1Before), 1);
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        StoredDoubleTimeSeries storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {4d, 5d, 6d, 1d, 2d, 3d}, storedTs1.toArray());
+        assertEquals(2, storedTs1.getChunks().size());
+        assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
+        IrregularTimeSeriesIndex storedIndexBefore = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        assertEquals(978285600000L, storedIndexBefore.getTimeAt(0));
+        assertEquals(978310800000L, storedIndexBefore.getTimeAt(storedIndexBefore.getPointCount() - 1));
+    }
+
+    @Test
+    void testAppendTimeSeriesIndexIrregularIndexes() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        IrregularTimeSeriesIndex indexIrregular = IrregularTimeSeriesIndex.create(
+            now.plus(8, ChronoUnit.HOURS),
+            now.plus(10, ChronoUnit.HOURS),
+            now.plus(11, ChronoUnit.HOURS));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1Regular = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+        StoredDoubleTimeSeries ts1Irregular = TimeSeries.createDouble("ts1", indexIrregular, 4d, 5d, 6d);
+        StoredDoubleTimeSeries ts2Irregular = TimeSeries.createDouble("ts2", indexIrregular, 4d, 5d, 6d);
+        StoredDoubleTimeSeries ts2Regular = TimeSeries.createDouble("ts2", index, 1d, 2d, 3d);
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1Regular, ts2Irregular), 1);
+        tsStore.importTimeSeries(List.of(ts1Irregular, ts2Regular), 1);
+
+        // Assertions for index before
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        StoredDoubleTimeSeries storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
+        assertEquals(2, storedTs1.getChunks().size());
+        assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
+        IrregularTimeSeriesIndex storedIndex1= (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        assertEquals(978303600000L, storedIndex1.getTimeAt(0));
+        assertEquals(978343200000L, storedIndex1.getTimeAt(storedIndex1.getPointCount() - 1));
+
+
+        assertTrue(tsStore.getDoubleTimeSeries("ts2", 1).isPresent());
+        StoredDoubleTimeSeries storedTs2 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts2", 1).get();
+        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs2.toArray());
+        assertEquals(2, storedTs2.getChunks().size());
+        assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs2.getMetadata().getIndex());
+        IrregularTimeSeriesIndex storedIndex2 = (IrregularTimeSeriesIndex) storedTs2.getMetadata().getIndex();
+        assertEquals(978303600000L, storedIndex2.getTimeAt(0));
+        assertEquals(978343200000L, storedIndex2.getTimeAt(storedIndex2.getPointCount() - 1));
+    }
+
+    @Test
+    void testAppendTimeSeriesIndexDifferentSpacing() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexDifferentSpacing = RegularTimeSeriesIndex.create(now.plus(4, ChronoUnit.HOURS),
+            now.plus(8, ChronoUnit.HOURS),
+            Duration.ofHours(2));
+
+        // TimeSeries
+        StoredDoubleTimeSeries ts1Regular = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+        StoredDoubleTimeSeries ts1DifferentSpacing = TimeSeries.createDouble("ts1", indexDifferentSpacing, 4d, 5d, 6d);
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1Regular), 1);
+        tsStore.importTimeSeries(List.of(ts1DifferentSpacing), 1);
+
+        // Assertions for index before
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        StoredDoubleTimeSeries storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
+        assertEquals(2, storedTs1.getChunks().size());
+        assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
+        IrregularTimeSeriesIndex storedIndex1= (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
+        assertEquals(978303600000L, storedIndex1.getTimeAt(0));
+        assertEquals(978332400000L, storedIndex1.getTimeAt(storedIndex1.getPointCount() - 1));
     }
 }
