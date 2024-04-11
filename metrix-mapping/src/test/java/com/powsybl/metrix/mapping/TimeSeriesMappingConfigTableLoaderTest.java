@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkValues;
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFiles.APPEND;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFilePolicy.APPEND;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**

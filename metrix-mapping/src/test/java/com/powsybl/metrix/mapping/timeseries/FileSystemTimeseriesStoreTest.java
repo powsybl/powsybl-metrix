@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFiles.*;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFilePolicy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -257,11 +257,11 @@ class FileSystemTimeseriesStoreTest {
         FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
 
         // Works the first time
-        tsStore.importTimeSeries(timeSeriesList, 1, KEEP_EXISTING);
+        tsStore.importTimeSeries(timeSeriesList, 1, THROW_EXCEPTION);
 
         // Fails since it already exists
         PowsyblException exception = assertThrows(PowsyblException.class,
-            () -> tsStore.importTimeSeries(timeSeriesList, 1, KEEP_EXISTING));
+            () -> tsStore.importTimeSeries(timeSeriesList, 1, THROW_EXCEPTION));
         assertEquals("Timeserie ts1 already exist", exception.getMessage());
     }
 

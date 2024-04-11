@@ -32,7 +32,7 @@ import java.util.*;
 import java.util.function.IntFunction;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFiles.APPEND;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFilePolicy.APPEND;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.toTable;
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;

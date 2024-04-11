@@ -45,8 +45,8 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         this.existingTimeSeriesMetadataCache = initExistingTimeSeriesCache();
     }
 
-    public enum ExistingFiles {
-        KEEP_EXISTING,
+    public enum ExistingFilePolicy {
+        THROW_EXCEPTION,
         OVERWRITE,
         APPEND
     }
@@ -179,45 +179,45 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
 
     /**
      * Import a list of TimeSeries in the current FileSystemTimeseriesStore
-     * @deprecated use {@link #importTimeSeries(List, int, ExistingFiles)} instead
+     * @deprecated use {@link #importTimeSeries(List, int, ExistingFilePolicy)} instead
      */
     @Deprecated(since = "2.3.0")
     public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, boolean overwriteExisting, boolean append) {
-        ExistingFiles existingFiles;
+        ExistingFilePolicy existingFilePolicy;
         if (append) {
-            existingFiles = ExistingFiles.APPEND;
+            existingFilePolicy = ExistingFilePolicy.APPEND;
         } else if (overwriteExisting) {
-            existingFiles = ExistingFiles.OVERWRITE;
+            existingFilePolicy = ExistingFilePolicy.OVERWRITE;
         } else {
-            existingFiles = ExistingFiles.KEEP_EXISTING;
+            existingFilePolicy = ExistingFilePolicy.THROW_EXCEPTION;
         }
-        importTimeSeries(timeSeriesList, version, existingFiles);
+        importTimeSeries(timeSeriesList, version, existingFilePolicy);
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeseriesStore.<br>
-     * If a file already exists for such TimeSeries, the new TimeSeries will be appended to it
+     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>If a file already exists for such TimeSeries, the new TimeSeries will be appended to it</p>
      */
     public void importTimeSeries(List<TimeSeries> timeSeriesList, int version) {
-        importTimeSeries(timeSeriesList, version, ExistingFiles.APPEND);
+        importTimeSeries(timeSeriesList, version, ExistingFilePolicy.APPEND);
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeseriesStore.<br>
-     * If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
-     * be kept as it is, overwritten or the new TimeSeries will be appended to it
+     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
+     * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
      */
-    public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, ExistingFiles existingFiles) {
+    public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, ExistingFilePolicy existingFilePolicy) {
         timeSeriesList.forEach(ts -> {
             String tsName = ts.getMetadata().getName();
             try {
                 Path tsFolder = Files.createDirectories(fileSystemStorePath.resolve(tsName));
                 Path versionFile = tsFolder.resolve(String.valueOf(version));
-                if (existingFiles == ExistingFiles.KEEP_EXISTING && Files.exists(versionFile)) {
+                if (existingFilePolicy == ExistingFilePolicy.THROW_EXCEPTION && Files.exists(versionFile)) {
                     throw new PowsyblException(String.format("Timeserie %s already exist", tsName));
                 }
                 synchronized (getFileLock(versionFile.toString())) {
-                    manageVersionFile(ts, versionFile, existingFiles);
+                    manageVersionFile(ts, versionFile, existingFilePolicy);
                 }
             } catch (IOException e) {
                 throw new PowsyblException("Failed to write timeseries", e);
@@ -225,12 +225,13 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         });
     }
 
-    private void manageVersionFile(TimeSeries ts, Path versionFile, ExistingFiles existingFiles) throws IOException {
+    private void manageVersionFile(TimeSeries ts, Path versionFile, ExistingFilePolicy existingFilePolicy) throws IOException {
         TimeSeries updatedTs = ts;
         if (Files.exists(versionFile)) {
             // A file already exists
 
-            if (existingFiles == ExistingFiles.APPEND) {
+            // The case THROW_EXCEPTION cannot happen here as it was already tested before calling this method
+            if (existingFilePolicy == ExistingFilePolicy.APPEND) {
                 // Get the existing TimeSeries
                 List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
                 if (existingTsList.size() != 1) {
@@ -319,12 +320,15 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         // Sort the chunks
         List<T> firstChunks;
         List<T> lastChunks;
+        TimeSeriesIndex lastIndex;
         if (existingComesFirst) {
             firstChunks = existingChunks;
             lastChunks = newChunks;
+            lastIndex = newIndex;
         } else {
             firstChunks = newChunks;
             lastChunks = existingChunks;
+            lastIndex = existingIndex;
         }
 
         // Add the first chunks
@@ -338,7 +342,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                 chunkWithOffset = (T) new UncompressedDoubleDataChunk(
                     offset.get(),
                     doubleChunk
-                        .stream(newIndex)
+                        .stream(lastIndex)
                         .map(DoublePoint::getValue)
                         .mapToDouble(Double::doubleValue)
                         .toArray()).tryToCompress();
@@ -346,7 +350,7 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
                 chunkWithOffset = (T) new UncompressedStringDataChunk(
                     offset.get(),
                     stringChunk
-                        .stream(newIndex)
+                        .stream(lastIndex)
                         .map(StringPoint::getValue)
                         .toArray(String[]::new)).tryToCompress();
             } else {
@@ -359,17 +363,25 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         return chunks;
     }
 
+    private boolean compareSpacingWithDurationBetweenIndexes(RegularTimeSeriesIndex firstIndex, RegularTimeSeriesIndex lastIndex) {
+        return Duration.between(
+                firstIndex.getInstantAt(firstIndex.getPointCount() - 1),
+                lastIndex.getInstantAt(0))
+            .toMillis() == firstIndex.getSpacing();
+    }
+
+    /**
+     * Generate a LongStream with the times of a TimeSeriesIndex
+     */
+    private LongStream extractTimesFromIndex(TimeSeriesIndex timeSeriesIndex) {
+        return timeSeriesIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue);
+    }
+
     private TimeSeriesIndex appendTimeSeriesIndex(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex, boolean existingComesFirst) {
         if (existingIndex instanceof RegularTimeSeriesIndex regularExistingTimeSeriesIndex && newIndex instanceof RegularTimeSeriesIndex regularNewTimeSeriesIndex
             && regularExistingTimeSeriesIndex.getSpacing() == regularNewTimeSeriesIndex.getSpacing()
-            && (existingComesFirst && Duration.between(
-                regularExistingTimeSeriesIndex.getInstantAt(regularExistingTimeSeriesIndex.getPointCount() - 1),
-                regularNewTimeSeriesIndex.getInstantAt(0))
-            .toMillis() == regularExistingTimeSeriesIndex.getSpacing()
-            || !existingComesFirst && Duration.between(
-                regularNewTimeSeriesIndex.getInstantAt(regularNewTimeSeriesIndex.getPointCount() - 1),
-                regularExistingTimeSeriesIndex.getInstantAt(0))
-            .toMillis() == regularExistingTimeSeriesIndex.getSpacing())) {
+            && (existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularExistingTimeSeriesIndex, regularNewTimeSeriesIndex)
+            || !existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularNewTimeSeriesIndex, regularExistingTimeSeriesIndex))) {
             // If both indexes are regular, both spacing are equals and the space between the first and the second index is equal to the spacing, the updated index is also regular
             return existingComesFirst ?
                 new RegularTimeSeriesIndex(regularExistingTimeSeriesIndex.getStartTime(), regularNewTimeSeriesIndex.getEndTime(), regularExistingTimeSeriesIndex.getSpacing()) :
@@ -377,19 +389,15 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
         } else {
             // Else the index is irregular
             return new IrregularTimeSeriesIndex(existingComesFirst ?
-                LongStream.concat(
-                    existingIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue),
-                    newIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue)).toArray() :
-                LongStream.concat(
-                    newIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue),
-                    existingIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue)).toArray()
+                LongStream.concat(extractTimesFromIndex(existingIndex), extractTimesFromIndex(newIndex)).toArray() :
+                LongStream.concat(extractTimesFromIndex(newIndex), extractTimesFromIndex(existingIndex)).toArray()
             );
         }
     }
 
     /**
      * Import a list of TimeSeries in the current FileSystemTimeseriesStore
-     * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFiles)}  instead
+     * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFilePolicy)}  instead
      */
     @Deprecated(since = "2.3.0")
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
@@ -398,13 +406,13 @@ public class FileSystemTimeseriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeseriesStore.<br>
-     * If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
-     * be kept as it is, overwritten or the new TimeSeries will be appended to it
+     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
+     * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
      */
-    public void importTimeSeries(BufferedReader reader, ExistingFiles existingFiles) {
+    public void importTimeSeries(BufferedReader reader, ExistingFilePolicy existingFilePolicy) {
         Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
-        integerListMap.forEach((key, value) -> importTimeSeries(value, key, existingFiles));
+        integerListMap.forEach((key, value) -> importTimeSeries(value, key, existingFilePolicy));
     }
 
     private Map<String, TimeSeriesMetadata> initExistingTimeSeriesCache() throws IOException {
