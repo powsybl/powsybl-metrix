@@ -94,9 +94,9 @@ observers.add(new EquipmentTimeSeriesWriterObserver(network, config, maxVariantC
 observers.add(new EquipmentGroupTimeSeriesWriterObserver(network, config, maxVariantCount, range, Paths.get("/path/to/equipmentTimeSeriesDir")));
 
 // Apply mapping to network
-TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
 TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(store.getTimeSeriesDataVersions(), range, true, true, false, mappingParameters.getToleranceThreshold());
-mapper.mapToNetwork(store, parameters, observers);
+TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, logger);
+mapper.mapToNetwork(store, observers);
 ```
 
 Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/mapping.html) on our website.
