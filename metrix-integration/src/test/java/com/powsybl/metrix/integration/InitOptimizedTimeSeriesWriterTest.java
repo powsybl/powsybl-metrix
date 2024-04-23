@@ -71,11 +71,11 @@ class InitOptimizedTimeSeriesWriterTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(initOptimizedTimeSeriesWriter));
+        mapper.mapToNetwork(store, ImmutableList.of(initOptimizedTimeSeriesWriter));
 
         // Check
         InputStream expected = getClass().getResourceAsStream("/inputs_optimized_time_series.json");

@@ -81,8 +81,6 @@ class EquipmentTimeSeriesWriterTest {
         // Load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
-
-        mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
     }
 
     @AfterEach
@@ -107,7 +105,8 @@ class EquipmentTimeSeriesWriterTest {
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 4), ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, mappingParameters.getToleranceThreshold());
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, List.of(equipmentTimeSeriesObserver, equipmentGroupTimeSeriesObserver));
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, List.of(equipmentTimeSeriesObserver, equipmentGroupTimeSeriesObserver));
 
         Path expectedFile = Paths.get(Objects.requireNonNull(getClass().getResource(directoryName + "version_1.csv")).toURI());
         Path actualFile = fileSystem.getPath("version_1.csv");

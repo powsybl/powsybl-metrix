@@ -331,16 +331,16 @@ class TimeSeriesMappingTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
         ComputationRange computationRange = new ComputationRange(ImmutableSet.of(1), 0, 1);
 
         // Create observers
         List<TimeSeriesMapperObserver> observers = new ArrayList<>(2);
 
         // Launch TimeSeriesMapper test
-        mapper.mapToNetwork(store, parameters, observers);
+        mapper.mapToNetwork(store, observers);
 
         network.getVariantManager().setWorkingVariant(VariantManagerConstants.INITIAL_VARIANT_ID);
 

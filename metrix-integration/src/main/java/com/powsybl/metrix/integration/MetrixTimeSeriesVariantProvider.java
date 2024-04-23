@@ -79,8 +79,6 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final PrintStream err;
 
-    private final TimeSeriesMapper mapper;
-
     public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters,
                                            TimeSeriesMappingConfig config, MetrixDslData metrixDslData, MetrixChunkParam metrixChunkParam,
                                            Range<Integer> variantRange, PrintStream err) {
@@ -97,7 +95,6 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.isNetworkPointComputation = metrixChunkParam.networkPointFile != null;
         this.contingenciesProvider = metrixChunkParam.contingenciesProvider;
         this.err = Objects.requireNonNull(err);
-        mapper = new TimeSeriesMapper(config, network, new TimeSeriesMappingLogger());
     }
 
     @Override
@@ -135,7 +132,8 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
         }
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store, parameters, observers);
+        TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, observers);
     }
 
     private Set<String> getContingenciesProbabilitiesTs() {

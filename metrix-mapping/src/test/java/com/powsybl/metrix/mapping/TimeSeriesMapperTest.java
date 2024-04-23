@@ -66,9 +66,9 @@ class TimeSeriesMapperTest {
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // launch TimeSeriesMapper test
         TimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -87,7 +87,7 @@ class TimeSeriesMapperTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, ImmutableList.of(observer));
 
         assertEquals(1, equipmentTimeSeriesNames.size());
         assertEquals(ImmutableList.of("equipment_ts"), equipmentTimeSeriesNames);

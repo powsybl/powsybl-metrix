@@ -67,11 +67,11 @@ class NetworkTopographyChangeNotifierTest {
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // Create mapper
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), true, false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, Collections.emptyList());
+        mapper.mapToNetwork(store, Collections.emptyList());
     }
 
     @Test

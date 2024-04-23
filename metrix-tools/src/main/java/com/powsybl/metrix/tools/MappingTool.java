@@ -318,10 +318,10 @@ public class MappingTool implements Tool {
                 observers.add(new EquipmentGroupTimeSeriesWriterObserver(localParameters.network(), localParameters.config(), maxVariantCount, range, equipmentTimeSeriesDir));
             }
 
-            TimeSeriesMapper mapper = new TimeSeriesMapper(localParameters.config(), localParameters.network(), logger);
             TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(localParameters.versions(), range, ignoreLimits,
                 ignoreEmptyFilter, false, mappingParameters.getToleranceThreshold());
-            mapper.mapToNetwork(localParameters.store(), parameters, observers);
+            TimeSeriesMapper mapper = new TimeSeriesMapper(localParameters.config(), parameters, localParameters.network(), logger);
+            mapper.mapToNetwork(localParameters.store(), observers);
 
             if (mappingSynthesisDir != null) {
                 balanceSummary.writeCsv(mappingSynthesisDir, SEPARATOR);

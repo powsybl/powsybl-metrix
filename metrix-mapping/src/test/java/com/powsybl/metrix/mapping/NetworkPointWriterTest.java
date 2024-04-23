@@ -322,11 +322,11 @@ class NetworkPointWriterTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
 
         for (int point = 0; point < index.getPointCount(); point++) {
             String fileName = NetworkPointWriter.getFileName(network, 1, point, index);

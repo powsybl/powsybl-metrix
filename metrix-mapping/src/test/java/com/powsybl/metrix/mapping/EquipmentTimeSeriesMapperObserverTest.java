@@ -118,9 +118,9 @@ public class EquipmentTimeSeriesMapperObserverTest {
         };
 
         // Launch mapper with observer
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, ImmutableList.of(observer));
     }
 }
