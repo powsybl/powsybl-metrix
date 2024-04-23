@@ -369,89 +369,18 @@ public class TimeSeriesMapper {
         final double hvdcLineMaxP = hvdcLine.getMaxP();
         final double setPoint = TimeSeriesMapper.getHvdcLineSetPoint(hvdcLine);
 
-        final String id = hvdcLine.getId();
-
-        final String setPointVariableName = EquipmentVariable.activePowerSetpoint.getVariableName();
-        final String maxPVariableName = isActivePowerRange ? CS12 : EquipmentVariable.maxP.getVariableName();
-        final String minPVariableName = isActivePowerRange ? MINUS_CS21 : "-" + EquipmentVariable.maxP.getVariableName();
-
-        if (hvdcLineMaxP < 0) {
-            throw new AssertionError("Equipment '" + hvdcLine.getId() + "' : invalid active limit maxP " + hvdcLineMaxP + " in base case");
-        } else if (isActivePowerRange && (minP > 0 || maxP < 0)) {
-            throw new AssertionError("Equipment '" + hvdcLine.getId() + "' : invalid active limits [" + minP + ", " + maxP + "] in base case");
-        }
-
-        double correctedMaxP = maxP;
-        double correctedMinP = minP;
-
-        // Add activePowerRangeExtension
-        addActivePowerRangeExtension(hvdcLine);
-
-        RangeLogWithVariableChanged rangeLogWithVariableChanged = new RangeLogWithVariableChanged().id(id).isBaseCase();
-        LogBuilder logBuilder = new LogBuilder().version(version).index(table.getTableIndex()).point(CONSTANT_VARIANT_ID).level(System.Logger.Level.WARNING);
-        if (parameters.isIgnoreLimits()) {
-            logBuilder.level(System.Logger.Level.INFO);
-        }
-        // maxP inconstancy with CS1toCS2/CS2toCS1
-        if (isActivePowerRange && (maxP > hvdcLineMaxP || -minP > hvdcLineMaxP)) {
-            if (parameters.isIgnoreLimits()) {
-                if (maxP > hvdcLineMaxP && -minP > hvdcLineMaxP && maxP > -minP || maxP > hvdcLineMaxP && -minP <= hvdcLineMaxP) {
-                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
-                            .value(maxP).oldValue(EquipmentVariable.maxP.getVariableName()).toVariable(maxPVariableName)
-                            .newValue(maxP).build();
-                    Log log = logBuilder.logDescription(logContent).build();
-                    timeSeriesMappingLogger.addLog(log);
-                } else if (maxP < -minP && -minP < hvdcLineMaxP
-                        || -minP > hvdcLineMaxP && maxP <= hvdcLineMaxP) {
-                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
-                            .value(minP).oldValue(MINUS_MAXP).toVariable(minPVariableName).newValue(minP).build();
-                    Log log = logBuilder.logDescription(logContent).build();
-                    timeSeriesMappingLogger.addLog(log);
-                }
-                hvdcLine.setMaxP(Math.max(maxP, -minP));
-            } else {
-                if (maxP > hvdcLineMaxP) {
-                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP).value(maxP)
-                            .oldValue(maxPVariableName).toVariable(EquipmentVariable.maxP.getVariableName()).newValue(hvdcLineMaxP).build();
-                    Log log = logBuilder.logDescription(logContent).build();
-                    timeSeriesMappingLogger.addLog(log);
-                    hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) hvdcLineMaxP);
-                    correctedMaxP = hvdcLineMaxP;
-                }
-                if (minP < -hvdcLineMaxP) {
-                    LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(minPVariableName).minValue(-hvdcLineMaxP).maxValue(0)
-                            .value(minP).oldValue(minPVariableName).toVariable(MINUS_MAXP).newValue(-hvdcLineMaxP).build();
-                    Log log = logBuilder.logDescription(logContent).build();
-                    timeSeriesMappingLogger.addLog(log);
-                    hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS2toCS1((float) hvdcLineMaxP);
-                    correctedMinP = -hvdcLineMaxP;
-                }
-            }
-        }
-
-        rangeLogWithVariableChanged.notIncludedVariable(setPointVariableName).minValue(minP).maxValue(maxP).value(setPoint);
-        boolean isMin = setPoint < correctedMinP && isUnmappedMinP;
-        boolean isMax = setPoint > correctedMaxP && isUnmappedMaxP;
-        if (!isMin && !isMax) {
-            return;
-        }
-        String variableName = isMax ? maxPVariableName : minPVariableName;
-        LogContent logContent;
-        // setPoint inconstancy with maxP/CS1toCS2/CS2toCS1
-        if (parameters.isIgnoreLimits()) {
-            logContent = rangeLogWithVariableChanged.oldValue(variableName).toVariable(setPointVariableName).newValue(setPoint).build();
-            if (isMax) {
-                TimeSeriesMapper.setHvdcMax(hvdcLine, setPoint);
-            } else {
-                TimeSeriesMapper.setHvdcMin(hvdcLine, setPoint);
-            }
-        } else {
-            double newValue = isMax ? maxP : minP;
-            logContent = rangeLogWithVariableChanged.oldValue(setPointVariableName).toVariable(variableName).newValue(newValue).build();
-            TimeSeriesMapper.setHvdcLineSetPoint(hvdcLine, newValue);
-        }
-        Log log = logBuilder.logDescription(logContent).build();
-        timeSeriesMappingLogger.addLog(log);
+        new HvdcBoundLimitBuilder()
+                .isActivePowerRange(isActivePowerRange)
+                .minP(minP)
+                .maxP(maxP)
+                .hvdcLineMaxP(hvdcLineMaxP)
+                .setPoint(setPoint)
+                .isUnmappedMinP(isUnmappedMinP)
+                .isUnmappedMaxP(isUnmappedMaxP)
+                .version(version)
+                .index(table.getTableIndex())
+                .ignoreLimits(parameters.isIgnoreLimits())
+                .setAll(hvdcLine, timeSeriesMappingLogger);
     }
 
     private void mapToNetwork(MapperContext context, int version) {
