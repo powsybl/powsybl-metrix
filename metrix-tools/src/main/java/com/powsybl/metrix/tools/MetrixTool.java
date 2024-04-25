@@ -21,7 +21,7 @@ import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.ComputationRange;
 import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
+import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.tools.Command;
 import com.powsybl.tools.Tool;
@@ -283,7 +283,7 @@ public class MetrixTool implements Tool {
         Reader remedialActionsReaderForAnalysis = getReader(remedialActionsFile);
         Reader remedialActionsReaderForRun = getReader(remedialActionsFile);
 
-        FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
+        FileSystemTimeSeriesStore resultStore = new FileSystemTimeSeriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
