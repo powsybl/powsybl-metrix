@@ -615,11 +615,11 @@ public class TimeSeriesMapper {
             }
 
             // process equipment time series
-            mapEquipmentToNetwork(version, variantId, point, context.equipmentTimeSeries);
+            mapEquipmentToNetwork(version, point, context.equipmentTimeSeries);
         }
     }
 
-    private void mapEquipmentToNetwork(int version, int variantId, int point,
+    private void mapEquipmentToNetwork(int version, int point,
                                        Map<IndexedName, Set<MappingKey>> equipmentTimeSeries) {
         for (Map.Entry<IndexedName, Set<MappingKey>> e : equipmentTimeSeries.entrySet()) {
             String timeSeriesName = e.getKey().getName();
