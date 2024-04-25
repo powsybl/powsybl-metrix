@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.integration.compatibility;
 
+import com.google.common.base.Stopwatch;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
@@ -26,8 +27,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPOutputStream;
 
-import com.google.common.base.Stopwatch;
-
 public class CsvResultListener implements ResultListener {
 
     private final Path csvResultFilePath;
@@ -44,7 +43,7 @@ public class CsvResultListener implements ResultListener {
 
     @Override
     public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint) {
-        resultStore.importTimeSeries(timeSeriesList, version, false, true);
+        resultStore.importTimeSeries(timeSeriesList, version, FileSystemTimeseriesStore.ExistingFilePolicy.APPEND);
     }
 
     @Override
