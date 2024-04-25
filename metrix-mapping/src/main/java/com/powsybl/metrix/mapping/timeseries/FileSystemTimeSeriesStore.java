@@ -19,10 +19,14 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
@@ -39,6 +43,12 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
         this.fileSystemStorePath = Objects.requireNonNull(path);
         this.existingTimeSeriesMetadataCache = initExistingTimeSeriesCache();
+    }
+
+    public enum ExistingFilePolicy {
+        THROW_EXCEPTION,
+        OVERWRITE,
+        APPEND
     }
 
     private static void deleteRecursive(Path path) throws IOException {
@@ -167,18 +177,47 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         throw new NotImplementedException("Not impletemented");
     }
 
+    /**
+     * Import a list of TimeSeries in the current FileSystemTimeseriesStore
+     * @deprecated use {@link #importTimeSeries(List, int, ExistingFilePolicy)} instead
+     */
+    @Deprecated(since = "2.3.0")
     public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, boolean overwriteExisting, boolean append) {
+        ExistingFilePolicy existingFilePolicy;
+        if (append) {
+            existingFilePolicy = ExistingFilePolicy.APPEND;
+        } else if (overwriteExisting) {
+            existingFilePolicy = ExistingFilePolicy.OVERWRITE;
+        } else {
+            existingFilePolicy = ExistingFilePolicy.THROW_EXCEPTION;
+        }
+        importTimeSeries(timeSeriesList, version, existingFilePolicy);
+    }
+
+    /**
+     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>If a file already exists for such TimeSeries, the new TimeSeries will be appended to it</p>
+     */
+    public void importTimeSeries(List<TimeSeries> timeSeriesList, int version) {
+        importTimeSeries(timeSeriesList, version, ExistingFilePolicy.APPEND);
+    }
+
+    /**
+     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
+     * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
+     */
+    public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, ExistingFilePolicy existingFilePolicy) {
         timeSeriesList.forEach(ts -> {
             String tsName = ts.getMetadata().getName();
-            existingTimeSeriesMetadataCache.put(tsName, ts.getMetadata());
             try {
                 Path tsFolder = Files.createDirectories(fileSystemStorePath.resolve(tsName));
                 Path versionFile = tsFolder.resolve(String.valueOf(version));
-                if (!append && !overwriteExisting && Files.exists(versionFile)) {
+                if (existingFilePolicy == ExistingFilePolicy.THROW_EXCEPTION && Files.exists(versionFile)) {
                     throw new PowsyblException(String.format("Timeserie %s already exist", tsName));
                 }
                 synchronized (getFileLock(versionFile.toString())) {
-                    manageVersionFile(ts, versionFile, append);
+                    manageVersionFile(ts, versionFile, existingFilePolicy);
                 }
             } catch (IOException e) {
                 throw new PowsyblException("Failed to write timeseries", e);
@@ -186,40 +225,194 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         });
     }
 
-    private void manageVersionFile(TimeSeries ts, Path versionFile, boolean append) throws IOException {
+    private void manageVersionFile(TimeSeries ts, Path versionFile, ExistingFilePolicy existingFilePolicy) throws IOException {
         TimeSeries updatedTs = ts;
         if (Files.exists(versionFile)) {
-            List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
-            if (existingTsList.size() != 1) {
-                throw new PowsyblException("Existing ts file should contain one and only one ts");
-            }
-            TimeSeries existingTs = existingTsList.get(0);
-            if (append && InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())) {
-                throw new PowsyblException("Cannot append to a calculated timeserie");
-            } else {
+            // A file already exists
+
+            // The case THROW_EXCEPTION cannot happen here as it was already tested before calling this method
+            if (existingFilePolicy == ExistingFilePolicy.APPEND) {
+                // Get the existing TimeSeries
+                List<TimeSeries> existingTsList = TimeSeries.parseJson(versionFile);
+                if (existingTsList.size() != 1) {
+                    throw new PowsyblException("Existing ts file should contain one and only one ts");
+                }
+                TimeSeries existingTs = existingTsList.get(0);
+
+                // You cannot append to an infinite TimeSeries
+                if (InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())
+                    || InfiniteTimeSeriesIndex.INSTANCE.getType().equals(ts.getMetadata().getIndex().getType())) {
+                    throw new PowsyblException("Cannot append a TimeSeries with infinite index");
+                }
+
+                // Type of the new TimeSeries
                 TimeSeriesDataType dataType = ts.getMetadata().getDataType();
 
-                if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-                    List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTs).getChunks();
-                    chunks.addAll(((StoredDoubleTimeSeries) ts).getChunks());
-                    updatedTs = new StoredDoubleTimeSeries(existingTs.getMetadata(), chunks);
-                } else {
-                    List<StringDataChunk> chunks = ((StringTimeSeries) existingTs).getChunks();
-                    chunks.addAll(((StringTimeSeries) ts).getChunks());
-                    updatedTs = new StringTimeSeries(existingTs.getMetadata(), chunks);
+                // You cannot append to a TimeSeries of a different type
+                if (!dataType.equals(existingTs.getMetadata().getDataType())) {
+                    throw new PowsyblException("Cannot append to a TimeSeries with different data type");
                 }
+
+                // Append the data
+                updatedTs = appendTimeSeries(existingTs, ts, dataType);
             }
         } else {
+            // Initialize a new empty file
             Files.createFile(versionFile);
         }
         try (BufferedWriter bf = Files.newBufferedWriter(versionFile)) {
             bf.write(updatedTs.toJson());
         }
+
+        // Update the Metadata cache
+        existingTimeSeriesMetadataCache.put(updatedTs.getMetadata().getName(), updatedTs.getMetadata());
     }
 
+    private TimeSeries appendTimeSeries(TimeSeries existingTimeSeries, TimeSeries newTimeSeries, TimeSeriesDataType dataType) {
+        // Indexes to concatenate
+        TimeSeriesIndex existingIndex = existingTimeSeries.getMetadata().getIndex();
+        TimeSeriesIndex newIndex = newTimeSeries.getMetadata().getIndex();
+
+        // Sort the indexes
+        boolean existingComesFirst;
+        if (existingIndex.getInstantAt(existingIndex.getPointCount() - 1).isBefore(newIndex.getInstantAt(0))) {
+            existingComesFirst = true;
+        } else if (newIndex.getInstantAt(newIndex.getPointCount() - 1).isBefore(existingIndex.getInstantAt(0))) {
+            existingComesFirst = false;
+        } else {
+            throw new PowsyblException("Indexes to concatenate cannot overlap");
+        }
+
+        // Append the indexes
+        TimeSeriesIndex updatedIndex = appendTimeSeriesIndex(existingIndex, newIndex, existingComesFirst);
+
+        // Append the tags
+        Map<String, String> updatedTags = new HashMap<>(existingTimeSeries.getMetadata().getTags());
+        updatedTags.putAll(newTimeSeries.getMetadata().getTags());
+
+        // New metadata
+        TimeSeriesMetadata updatedMetadata = new TimeSeriesMetadata(existingTimeSeries.getMetadata().getName(), dataType, updatedTags, updatedIndex);
+
+        // Append the chunks
+        if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
+            // Chunks
+            List<DoubleDataChunk> chunks = appendChunks(
+                ((StoredDoubleTimeSeries) existingTimeSeries).getChunks(),
+                ((StoredDoubleTimeSeries) newTimeSeries).getChunks(),
+                existingIndex, newIndex,
+                existingComesFirst);
+            return new StoredDoubleTimeSeries(updatedMetadata, chunks);
+        } else {
+            // Chunks
+            List<StringDataChunk> chunks = appendChunks(
+                ((StringTimeSeries) existingTimeSeries).getChunks(),
+                ((StringTimeSeries) newTimeSeries).getChunks(),
+                existingIndex, newIndex,
+                existingComesFirst);
+            return new StringTimeSeries(updatedMetadata, chunks);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends DataChunk> List<T> appendChunks(List<T> existingChunks, List<T> newChunks,
+                                                       TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex,
+                                                       boolean existingComesFirst) {
+        // Sort the chunks
+        List<T> firstChunks;
+        List<T> lastChunks;
+        TimeSeriesIndex lastIndex;
+        if (existingComesFirst) {
+            firstChunks = existingChunks;
+            lastChunks = newChunks;
+            lastIndex = newIndex;
+        } else {
+            firstChunks = newChunks;
+            lastChunks = existingChunks;
+            lastIndex = existingIndex;
+        }
+
+        // Add the first chunks
+        List<T> chunks = new ArrayList<>(firstChunks);
+        final AtomicInteger offset = new AtomicInteger(existingComesFirst ? existingIndex.getPointCount() : newIndex.getPointCount());
+
+        // Add the other chunks
+        lastChunks.forEach(chunk -> {
+            T chunkWithOffset;
+            if (chunk instanceof DoubleDataChunk doubleChunk) {
+                chunkWithOffset = (T) new UncompressedDoubleDataChunk(
+                    offset.get(),
+                    doubleChunk
+                        .stream(lastIndex)
+                        .map(DoublePoint::getValue)
+                        .mapToDouble(Double::doubleValue)
+                        .toArray()).tryToCompress();
+            } else if (chunk instanceof StringDataChunk stringChunk) {
+                chunkWithOffset = (T) new UncompressedStringDataChunk(
+                    offset.get(),
+                    stringChunk
+                        .stream(lastIndex)
+                        .map(StringPoint::getValue)
+                        .toArray(String[]::new)).tryToCompress();
+            } else {
+                // This case should not happen
+                throw new PowsyblException("Unsupported chunk type: " + chunk.getClass().getName());
+            }
+            offset.addAndGet(chunkWithOffset.getLength());
+            chunks.add(chunkWithOffset);
+        });
+        return chunks;
+    }
+
+    private boolean compareSpacingWithDurationBetweenIndexes(RegularTimeSeriesIndex firstIndex, RegularTimeSeriesIndex lastIndex) {
+        return Duration.between(
+                firstIndex.getInstantAt(firstIndex.getPointCount() - 1),
+                lastIndex.getInstantAt(0))
+            .toMillis() == firstIndex.getSpacing();
+    }
+
+    /**
+     * Generate a LongStream with the times of a TimeSeriesIndex
+     */
+    private LongStream extractTimesFromIndex(TimeSeriesIndex timeSeriesIndex) {
+        return timeSeriesIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue);
+    }
+
+    private TimeSeriesIndex appendTimeSeriesIndex(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex, boolean existingComesFirst) {
+        if (existingIndex instanceof RegularTimeSeriesIndex regularExistingTimeSeriesIndex && newIndex instanceof RegularTimeSeriesIndex regularNewTimeSeriesIndex
+            && regularExistingTimeSeriesIndex.getSpacing() == regularNewTimeSeriesIndex.getSpacing()
+            && (existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularExistingTimeSeriesIndex, regularNewTimeSeriesIndex)
+            || !existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularNewTimeSeriesIndex, regularExistingTimeSeriesIndex))) {
+            // If both indexes are regular, both spacing are equals and the space between the first and the second index is equal to the spacing, the updated index is also regular
+            return existingComesFirst ?
+                new RegularTimeSeriesIndex(regularExistingTimeSeriesIndex.getStartTime(), regularNewTimeSeriesIndex.getEndTime(), regularExistingTimeSeriesIndex.getSpacing()) :
+                new RegularTimeSeriesIndex(regularNewTimeSeriesIndex.getStartTime(), regularExistingTimeSeriesIndex.getEndTime(), regularExistingTimeSeriesIndex.getSpacing());
+        } else {
+            // Else the index is irregular
+            return new IrregularTimeSeriesIndex(existingComesFirst ?
+                LongStream.concat(extractTimesFromIndex(existingIndex), extractTimesFromIndex(newIndex)).toArray() :
+                LongStream.concat(extractTimesFromIndex(newIndex), extractTimesFromIndex(existingIndex)).toArray()
+            );
+        }
+    }
+
+    /**
+     * Import a list of TimeSeries in the current FileSystemTimeseriesStore
+     * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFilePolicy)}  instead
+     */
+    @Deprecated(since = "2.3.0")
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
         Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
         integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting, append));
+    }
+
+    /**
+     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
+     * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
+     */
+    public void importTimeSeries(BufferedReader reader, ExistingFilePolicy existingFilePolicy) {
+        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
+        integerListMap.forEach((key, value) -> importTimeSeries(value, key, existingFilePolicy));
     }
 
     private Map<String, TimeSeriesMetadata> initExistingTimeSeriesCache() throws IOException {
