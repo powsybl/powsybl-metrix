@@ -32,7 +32,7 @@ import java.util.*;
 import java.util.function.IntFunction;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFilePolicy.APPEND;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.toTable;
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
@@ -99,7 +99,7 @@ class TimeSeriesStoreUtilsTest {
 
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts3), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1, ts3), 2, APPEND);
 
@@ -157,7 +157,7 @@ class TimeSeriesStoreUtilsTest {
 
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts4), 2, APPEND);
 

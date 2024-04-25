@@ -30,11 +30,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFilePolicy.*;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileSystemTimeseriesStoreTest {
+class FileSystemTimeSeriesStoreTest {
     private FileSystem fileSystem;
     private Path resDir;
 
@@ -52,11 +52,11 @@ class FileSystemTimeseriesStoreTest {
     @Test
     @Deprecated(since = "2.3.0")
     void testTsStoreDeprecatedMethod() throws IOException {
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
 
-        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv"));
+        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeSeriesStoreTest.class.getResourceAsStream("/testStore.csv"));
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
             tsStore.importTimeSeries(bufferedReader, true, false);
@@ -74,11 +74,11 @@ class FileSystemTimeseriesStoreTest {
 
     @Test
     void testTsStore() throws IOException {
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
         assertThat(emptyTimeSeriesNames).isEmpty();
 
-        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeseriesStoreTest.class.getResourceAsStream("/testStore.csv"));
+        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeSeriesStoreTest.class.getResourceAsStream("/testStore.csv"));
              BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
         ) {
             tsStore.importTimeSeries(bufferedReader, OVERWRITE);
@@ -97,7 +97,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testStoreOnFile() throws IOException {
         Path file = Files.createFile(resDir.resolve("foo.bar"));
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new FileSystemTimeseriesStore(file));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new FileSystemTimeSeriesStore(file));
         assertEquals("Path /tmp/foo.bar is not a directory", exception.getMessage());
     }
 
@@ -114,7 +114,7 @@ class FileSystemTimeseriesStoreTest {
         TimeSeriesMetadata ts1Metadata = new TimeSeriesMetadata("ts1", TimeSeriesDataType.DOUBLE, index);
 
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1), 2, APPEND);
 
@@ -138,7 +138,7 @@ class FileSystemTimeseriesStoreTest {
         StoredDoubleTimeSeries ts3 = TimeSeries.createDouble("ts3", index, 1d, 3d, 5d);
 
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 2, APPEND);
 
@@ -167,7 +167,7 @@ class FileSystemTimeseriesStoreTest {
         StringTimeSeries ts3 = TimeSeries.createString("ts3", index, "a", "b", "c");
 
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts3), 2, APPEND);
 
@@ -193,7 +193,7 @@ class FileSystemTimeseriesStoreTest {
         StringTimeSeries ts4 = TimeSeries.createString("ts4", index, "a", "b", "c");
 
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts3, ts4), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1, ts2, ts3, ts4), 2, APPEND);
 
@@ -220,7 +220,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testMultipleTimeSeries() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // Add a file with multiple TimeSeries
         Files.createDirectory(fileSystem.getPath("/tmp/ts2"));
@@ -234,7 +234,7 @@ class FileSystemTimeseriesStoreTest {
 
     @Test
     void testTimeSeriesStoreListener() throws IOException {
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // Add or remove listener
         assertThrows(NotImplementedException.class, () -> tsStore.addListener(null), "Not impletemented");
@@ -254,7 +254,7 @@ class FileSystemTimeseriesStoreTest {
         List<TimeSeries> timeSeriesList = List.of(ts1);
 
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // Works the first time
         tsStore.importTimeSeries(timeSeriesList, 1, THROW_EXCEPTION);
@@ -268,7 +268,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testExistingFileWithMultipleTimeSeries() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // Add a file with multiple TimeSeries
         Files.createDirectory(fileSystem.getPath("/tmp/ts1"));
@@ -294,7 +294,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testExistingFileWithInfiniteIndex() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -326,7 +326,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testManageVersionFile() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -403,7 +403,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testManageVersionFileWithOverwrite() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -437,7 +437,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testAppendDifferentTypes() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -460,7 +460,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testAppendTimeSeriesIndex() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -493,7 +493,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testAppendTimeSeriesIndexIrregularIndexes() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -538,7 +538,7 @@ class FileSystemTimeseriesStoreTest {
     @Test
     void testAppendTimeSeriesIndexDifferentSpacing() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);
@@ -572,7 +572,7 @@ class FileSystemTimeseriesStoreTest {
     @Deprecated(since = "2.3.0")
     void testDeprecatedImportTimeSeries() throws IOException {
         // TimeSeriesStore
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
 
         // TimeSeries indexes
         Instant now = Instant.ofEpochMilli(978303600000L);

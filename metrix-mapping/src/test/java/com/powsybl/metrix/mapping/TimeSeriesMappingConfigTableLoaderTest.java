@@ -2,7 +2,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
+import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import com.powsybl.timeseries.StoredDoubleTimeSeries;
 import com.powsybl.timeseries.TimeSeries;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkValues;
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore.ExistingFilePolicy.APPEND;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -53,7 +53,7 @@ class TimeSeriesMappingConfigTableLoaderTest {
 
         // TimeSeriesStore
         Path resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
-        FileSystemTimeseriesStore tsStore = new FileSystemTimeseriesStore(resDir);
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         tsStore.importTimeSeries(List.of(ts1, ts2), 1, APPEND);
         tsStore.importTimeSeries(List.of(ts1), 2, APPEND);
         tsStore.importTimeSeries(List.of(ts3), -1, APPEND);

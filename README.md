@@ -137,7 +137,7 @@ Supplier<Reader> metrixDslReader = () -> Files.newBufferedReader(Paths.get("/pat
 Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get("/path/to/remedialActions.txt"), StandardCharsets.UTF_8);
 
 // Result timeseries store
-FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));
+FileSystemTimeSeriesStore resultStore = new FileSystemTimeSeriesStore(Paths.get("/path/to/outputdir"));
 
 // Result listener
 ResultListener listener = new ResultListener() {
