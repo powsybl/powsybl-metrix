@@ -178,7 +178,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeseriesStore
+     * Import a list of TimeSeries in the current FileSystemTimeSeriesStore
      * @deprecated use {@link #importTimeSeries(List, int, ExistingFilePolicy)} instead
      */
     @Deprecated(since = "2.3.0")
@@ -195,7 +195,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>Import a list of TimeSeries in the current FileSystemTimeSeriesStore.</p>
      * <p>If a file already exists for such TimeSeries, the new TimeSeries will be appended to it</p>
      */
     public void importTimeSeries(List<TimeSeries> timeSeriesList, int version) {
@@ -203,7 +203,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>Import a list of TimeSeries in the current FileSystemTimeSeriesStore.</p>
      * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
      * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
      */
@@ -396,7 +396,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeseriesStore
+     * Import a list of TimeSeries in the current FileSystemTimeSeriesStore
      * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFilePolicy)}  instead
      */
     @Deprecated(since = "2.3.0")
@@ -406,7 +406,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * <p>Import a list of TimeSeries in the current FileSystemTimeseriesStore.</p>
+     * <p>Import a list of TimeSeries in the current FileSystemTimeSeriesStore.</p>
      * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
      * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
      */

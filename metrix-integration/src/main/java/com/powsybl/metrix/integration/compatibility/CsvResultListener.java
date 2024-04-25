@@ -43,7 +43,7 @@ public class CsvResultListener implements ResultListener {
 
     @Override
     public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint) {
-        resultStore.importTimeSeries(timeSeriesList, version, FileSystemTimeseriesStore.ExistingFilePolicy.APPEND);
+        resultStore.importTimeSeries(timeSeriesList, version, FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND);
     }
 
     @Override
