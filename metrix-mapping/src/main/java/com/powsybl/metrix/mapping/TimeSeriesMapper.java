@@ -23,8 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
-
 public class TimeSeriesMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMapper.class);
@@ -34,7 +32,9 @@ public class TimeSeriesMapper {
     public static final int SWITCH_OPEN = 0; // 0 means switch is open
     public static final int DISCONNECTED_VALUE = 0; // 0 means equipment is disconnected
     public static final int CONNECTED_VALUE = 1;
+    private static final String GENERATOR_NOT_FOUND_MESSAGE = "Generator '%s' not found";
     private static final String LOAD_NOT_FOUND_MESSAGE = "Load '%s' not found";
+    private static final String LOAD_DETAIL_NOT_FOUND_MESSAGE = "LoadDetail '%s' not found";
 
     private final TimeSeriesMappingConfig config;
     private final TimeSeriesMapperParameters parameters;
@@ -539,58 +539,76 @@ public class TimeSeriesMapper {
         }
     }
 
+    private void verifyIdentifiable(Identifiable<?> identifiable, String message, String id) {
+        if (identifiable == null) {
+            throw new TimeSeriesMappingException(String.format(message, id));
+        }
+    }
+
+    private double getGeneratorInjection(String id) {
+        Generator generator = network.getGenerator(id);
+        verifyIdentifiable(generator, GENERATOR_NOT_FOUND_MESSAGE, id);
+        return generator.getTargetP();
+    }
+
+    private double getLoadInjection(String id) {
+        Load load = network.getLoad(id);
+        verifyIdentifiable(load, LOAD_NOT_FOUND_MESSAGE, id);
+        return -load.getP0();
+    }
+
+    private double getFixedLoadInjection(String id) {
+        Load load = network.getLoad(id);
+        verifyIdentifiable(load, LOAD_NOT_FOUND_MESSAGE, id);
+        LoadDetail loadDetail = load.getExtension(LoadDetail.class);
+        if (loadDetail == null) {
+            throw new TimeSeriesMappingException(String.format(LOAD_DETAIL_NOT_FOUND_MESSAGE, id));
+        }
+        return -loadDetail.getFixedActivePower();
+    }
+
+    private double getVariableLoadInjection(String id) {
+        Load load = network.getLoad(id);
+        verifyIdentifiable(load, LOAD_NOT_FOUND_MESSAGE, id);
+        LoadDetail loadDetail = load.getExtension(LoadDetail.class);
+        if (loadDetail == null) {
+            throw new TimeSeriesMappingException(String.format(LOAD_DETAIL_NOT_FOUND_MESSAGE, id));
+        }
+        return -loadDetail.getVariableActivePower();
+    }
+
+    private double getDanglingLineInjection(String id) {
+        DanglingLine danglingLine = network.getDanglingLine(id);
+        if (danglingLine == null) {
+            throw new TimeSeriesMappingException(String.format("Dangling line '%s' not found", id));
+        }
+        return -danglingLine.getP0();
+    }
+
     private double calculateConstantBalance() {
         double constantBalance = 0;
         Set<String> unmappedGenerators = new HashSet<>(config.getUnmappedGenerators());
         unmappedGenerators.retainAll(config.getUnmappedMinPGenerators());
         unmappedGenerators.retainAll(config.getUnmappedMaxPGenerators());
         for (String id : unmappedGenerators) {
-            Generator generator = network.getGenerator(id);
-            if (generator == null) {
-                throw new TimeSeriesMappingException(String.format("Generator '%s' not found", id));
-            }
-            constantBalance += generator.getTargetP();
+            constantBalance += getGeneratorInjection(id);
         }
         Set<String> unmappedLoads = config.getUnmappedLoads();
         for (String id : unmappedLoads) {
-            Load load = network.getLoad(id);
-            if (load == null) {
-                throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
-            }
-            constantBalance -= load.getP0();
+            constantBalance += getLoadInjection(id);
         }
         for (String id : config.getUnmappedFixedActivePowerLoads()) {
             if (!unmappedLoads.contains(id)) {
-                Load load = network.getLoad(id);
-                if (load == null) {
-                    throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
-                }
-                LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                if (loadDetail == null) {
-                    throw new TimeSeriesMappingException(String.format("LoadDetail '%s' not found", id));
-                }
-                constantBalance -= loadDetail.getFixedActivePower();
+                constantBalance += getFixedLoadInjection(id);
             }
         }
         for (String id : config.getUnmappedVariableActivePowerLoads()) {
             if (!unmappedLoads.contains(id)) {
-                Load load = network.getLoad(id);
-                if (load == null) {
-                    throw new TimeSeriesMappingException(String.format(LOAD_NOT_FOUND_MESSAGE, id));
-                }
-                LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                if (loadDetail == null) {
-                    throw new TimeSeriesMappingException(String.format("LoadDetail '%s' not found", id));
-                }
-                constantBalance -= loadDetail.getVariableActivePower();
+                constantBalance += getVariableLoadInjection(id);
             }
         }
         for (String id : config.getUnmappedDanglingLines()) {
-            DanglingLine danglingLine = network.getDanglingLine(id);
-            if (danglingLine == null) {
-                throw new TimeSeriesMappingException(String.format("Dangling line '%s' not found", id));
-            }
-            constantBalance -= danglingLine.getP0();
+            constantBalance += getDanglingLineInjection(id);
         }
         return constantBalance;
     }
