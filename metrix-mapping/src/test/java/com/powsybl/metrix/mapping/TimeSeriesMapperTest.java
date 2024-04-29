@@ -78,11 +78,11 @@ class TimeSeriesMapperTest {
 
         // When ignoring empty filters
         mapperIgnoring.mapToNetwork(store, observersList);
-        StringWriter timeSeriesToBoundaryLinesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToBoundaryLinesMapping)) {
+        StringWriter writer = new StringWriter();
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             logger.writeCsv(bufferedWriter, ZoneId.of("UTC"));
             bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToBoundaryLinesMapping.toString().getBytes(StandardCharsets.UTF_8), "/expected/", "nonIgnoredEmptyFilterLog.csv"));
+            assertNotNull(compareStreamTxt(writer.toString().getBytes(StandardCharsets.UTF_8), "/expected/", "nonIgnoredEmptyFilterLog.csv"));
         }
     }
 
