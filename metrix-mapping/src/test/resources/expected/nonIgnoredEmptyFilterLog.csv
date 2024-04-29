@@ -1,2 +1,2 @@
 Type;Label;Time;Variant;Version;Message
-WARNING;empty filter error;2015-01-01T01:00:00+01:00;1;1;Impossible to scale down 1 of ts equipment_ts to empty equipment list
+WARNING;empty filter error;2015-01-01T00:00:00Z;1;1;Impossible to scale down 1 of ts equipment_ts to empty equipment list

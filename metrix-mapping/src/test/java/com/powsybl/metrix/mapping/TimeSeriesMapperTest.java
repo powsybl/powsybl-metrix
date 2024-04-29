@@ -21,6 +21,7 @@ import java.io.BufferedWriter;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,7 +80,7 @@ class TimeSeriesMapperTest {
         mapperIgnoring.mapToNetwork(store, observersList);
         StringWriter timeSeriesToBoundaryLinesMapping = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToBoundaryLinesMapping)) {
-            logger.writeCsv(bufferedWriter);
+            logger.writeCsv(bufferedWriter, ZoneId.of("UTC"));
             bufferedWriter.flush();
             assertNotNull(compareStreamTxt(timeSeriesToBoundaryLinesMapping.toString().getBytes(StandardCharsets.UTF_8), "/expected/", "nonIgnoredEmptyFilterLog.csv"));
         }
