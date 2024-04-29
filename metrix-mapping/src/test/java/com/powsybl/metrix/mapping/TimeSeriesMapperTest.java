@@ -191,8 +191,9 @@ class TimeSeriesMapperTest {
         loader.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
         loader.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
 
+        TimeSeriesMappingConfigTableLoader timeSeriesMappingConfigTableLoader = new TimeSeriesMappingConfigTableLoader(mappingConfig, store);
         assertThrows(TimeSeriesMappingException.class,
-            () -> new TimeSeriesMappingConfigTableLoader(mappingConfig, store).checkIndexUnicity(),
+            timeSeriesMappingConfigTableLoader::checkIndexUnicity,
             "Time series involved in the mapping must have the same index");
     }
 }
