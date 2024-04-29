@@ -86,16 +86,16 @@ class BalanceSummaryTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
                 false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary));
+        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary));
 
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
@@ -148,15 +148,15 @@ class BalanceSummaryTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
                 false, true, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary));
+        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary));
 
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();

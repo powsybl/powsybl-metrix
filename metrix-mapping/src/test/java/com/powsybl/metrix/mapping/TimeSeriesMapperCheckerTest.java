@@ -353,14 +353,14 @@ class TimeSeriesMapperCheckerTest {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         BalanceSummary balanceSummary = new BalanceSummary();
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary, networkPointWriter));
+        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary, networkPointWriter));
 
         compareNetworkPointGenerator(generator, dataSource, expectedMinP, expectedP, expectedMaxP);
         compareBalance(balanceSummary, expectedBalanceValue);
@@ -406,13 +406,13 @@ class TimeSeriesMapperCheckerTest {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
 
         compareNetworkPointHvdcLine(hvdcLine, dataSource, expectedSetPoint, expectedMaxP, expectedCS2toCS1, expectedCS1toCS2);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
