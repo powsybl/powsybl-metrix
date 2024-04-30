@@ -4,9 +4,6 @@ on:
   workflow_dispatch: {}
   pull_request:
     types: [opened, ready_for_review, reopened]
-  push:
-    paths:
-      - 'metrix-simulator/**'
   release:
     types: [published]
 
@@ -33,7 +30,7 @@ jobs:
       - name: Install Dependencies
         run: |
           yum update -y
-          yum install cmake make gcc gcc-c++ git zip wget which
+          yum install wget cmake make gcc gcc-c++ git zip which
 
       - name: Cache Boost dependency
         id: cache-boost
@@ -49,11 +46,15 @@ jobs:
         continue-on-error: true
         run: |
           wget https://boostorg.jfrog.io/artifactory/main/release/1.85.0/source/boost_1_85_0.tar.gz
+          echo Unarchive
           tar -xzf ./boost_1_85_0.tar.gz
           cd boost_1_85_0
+          echo START bootstrap
           ./bootstrap.sh --prefix=installBoost
+          echo START b2
           ./b2 install --without-python -j 5
           cd ..
+          echo START zip
           ARCHIVE_PATH="~/.boost/${{ env.BOOST_ARCHIVE_NAME }}"
           zip -r $ARCHIVE_PATH /__w/Boost/Boost/boost_1_85_0/installBoost
 
