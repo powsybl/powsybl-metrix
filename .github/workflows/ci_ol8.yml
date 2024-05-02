@@ -26,7 +26,7 @@ jobs:
       - name: Install Dependencies
         run: |
           yum update -y
-          yum install wget cmake make gcc gcc-c++ which zip
+          yum install cmake make gcc gcc-c++ which git
           dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Checkout sources
