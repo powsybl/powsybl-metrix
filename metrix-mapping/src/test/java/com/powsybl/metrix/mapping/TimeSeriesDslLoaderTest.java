@@ -42,9 +42,23 @@ class TimeSeriesDslLoaderTest {
             "println metadata_value"
     );
 
+    private final String statScript = String.join(System.lineSeparator(),
+            "allVersions = %s",
+            "res_sum = sum(ts['test'], allVersions)",
+            "res_avg = avg(ts['test'], allVersions)",
+            "res_min = min(ts['test'], allVersions)",
+            "res_max = max(ts['test'], allVersions)",
+            "res_median = median(ts['test'], allVersions)",
+            "println res_sum",
+            "println res_avg",
+            "println res_min",
+            "println res_max",
+            "println res_median"
+    );
+
     @Test
     void mappingFileTest() throws URISyntaxException {
-        File mappingFile = new File(getClass().getResource("/emptyScript.groovy").toURI());
+        File mappingFile = new File(Objects.requireNonNull(getClass().getResource("/emptyScript.groovy")).toURI());
         TimeSeriesMappingConfig config = new TimeSeriesDslLoader(mappingFile).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null);
         assertTrue(config.getMappedTimeSeriesNames().isEmpty());
     }
@@ -57,7 +71,7 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void mappingReaderTest() throws IOException {
-        try (Reader reader = new InputStreamReader(TimeSeriesDslLoaderTest.class.getResourceAsStream("/emptyScript.groovy"), StandardCharsets.UTF_8)) {
+        try (Reader reader = new InputStreamReader(Objects.requireNonNull(TimeSeriesDslLoaderTest.class.getResourceAsStream("/emptyScript.groovy")), StandardCharsets.UTF_8)) {
             TimeSeriesMappingConfig config = new TimeSeriesDslLoader(reader).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null, null);
             assertTrue(config.getMappedTimeSeriesNames().isEmpty());
         }
@@ -279,41 +293,40 @@ class TimeSeriesDslLoaderTest {
 
     @Test
     void tsStatsFunctions() throws IOException {
-        String script = String.join(System.lineSeparator(),
-                "res_sum = sum(ts['test'])",
-                "res_avg = avg(ts['test'])",
-                "res_min = min(ts['test'])",
-                "res_max = max(ts['test'])",
-                "res_median = median(ts['test'])",
-                "println res_sum",
-                "println res_avg",
-                "println res_min",
-                "println res_max",
-                "println res_median"
-        );
+        final String expectedWithAllVersions = "1.0\n0.2\n-5.0\n3.0\n1.0\n";
+        final String expectedWithoutAllVersions = "6.0\n2.0\n1.0\n3.0\n2.0\n";
 
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("test", index, 1d, 2d, 3d, -5d, 0d)
         );
 
-        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        TimeSeriesDslLoader dslWithoutAllVersions = new TimeSeriesDslLoader(String.format(statScript, false));
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dsl.load(network, parameters, store, new DataTableStore(), out, null);
+            dslWithoutAllVersions.load(network, parameters, store, new DataTableStore(), out, null);
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
-        assertEquals("1.0\n0.2\n-5.0\n3.0\n1.0\n", output);
+        assertEquals(expectedWithAllVersions, output);
 
         outputStream.reset();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dsl.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
+            dslWithoutAllVersions.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
         }
 
         output = TestUtil.normalizeLineSeparator(outputStream.toString());
-        assertEquals("6.0\n2.0\n1.0\n3.0\n2.0\n", output);
+        assertEquals(expectedWithoutAllVersions, output);
+
+        TimeSeriesDslLoader dslWithAllVersions = new TimeSeriesDslLoader(String.format(statScript, true));
+        outputStream.reset();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            dslWithAllVersions.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
+        }
+
+        output = TestUtil.normalizeLineSeparator(outputStream.toString());
+        assertEquals(expectedWithAllVersions, output);
     }
 
     @Test

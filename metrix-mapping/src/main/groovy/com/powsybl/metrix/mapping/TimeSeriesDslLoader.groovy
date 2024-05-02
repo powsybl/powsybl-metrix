@@ -248,19 +248,19 @@ class TimeSeriesDslLoader {
         }
 
         // statistics
-        binding.sum = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.sum = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesSum(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.min = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.min = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMin(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.max = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.max = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMax(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.avg = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.avg = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesAvg(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.median = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.median = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMedian(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
     }
