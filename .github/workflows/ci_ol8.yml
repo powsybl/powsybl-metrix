@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     container: 'oraclelinux:8'
     steps:
-      - name: Install Dependencies
+      - name: Install Boost
         run: |
           yum update -y
           yum install cmake make gcc gcc-c++ which git
