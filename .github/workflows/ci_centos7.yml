@@ -35,7 +35,7 @@ jobs:
           yum install -y devtoolset-9
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
+        uses: jwlawson/actions-setup-cmake@v1.13
         with:
           cmake-version: '3.22.x'
 
