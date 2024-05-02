@@ -17,9 +17,6 @@ defaults:
   run:
     shell: bash
 
-#env:
-#  BOOST_ARCHIVE_NAME: ol8_cache_boost_1_85_0.zip
-
 jobs:
   linux:
     name: Tests C++ Oracle Linux 8
@@ -30,68 +27,27 @@ jobs:
         run: |
           yum update -y
           yum install wget cmake make gcc gcc-c++ which zip
+          dnf --enablerepo=ol8_codeready_builder install boost-static
 
-      - name: Install boost
-        run: |
-          wget https://boostorg.jfrog.io/artifactory/main/release/1.85.0/source/boost_1_85_0.tar.gz
-          tar -xzf ./boost_1_85_0.tar.gz
-          cd boost_1_85_0
-          echo START bootstrap
-          ./bootstrap.sh --prefix=installBoost
-          echo START b2
-          ./b2 install --without-python -j 5
+      - name: Checkout sources
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
-#      - name: Cache Boost dependency
-#        id: cache-boost
-#        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
-#        env:
-#          cache-name: ${{ env.BOOST_ARCHIVE_NAME }}
-#        with:
-#          path: ~/.boost/${{ env.BOOST_ARCHIVE_NAME }}
-#          key: ${{ env.cache-name }}
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external
 
-#      - if: ${{ steps.cache-boost.outputs.cache-hit != 'true' }}
-#        name: Install boost
-#        continue-on-error: true
-#        run: |
-#          wget https://boostorg.jfrog.io/artifactory/main/release/1.85.0/source/boost_1_85_0.tar.gz
-#          echo Unarchive
-#          tar -xzf ./boost_1_85_0.tar.gz
-#          cd boost_1_85_0
-#          echo START bootstrap
-#          ./bootstrap.sh --prefix=installBoost
-#          echo START b2
-#          ./b2 install --without-python -j 5
-#          cd ..
-#          echo START zip
-#          ARCHIVE_PATH="~/.boost/${{ env.BOOST_ARCHIVE_NAME }}"
-#          zip -r $ARCHIVE_PATH /__w/Boost/Boost/boost_1_85_0/installBoost
-#
-#      - name: Checkout sources
-#        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
-#
-#      - name: Unzip Boost
-#        run: unzip ~/.boost/${{ env.BOOST_ARCHIVE_NAME }}
-#
-#      - name: Configure 3rd parties
-#        run: >
-#          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external
-#
-#      - name: Build 3rd parties
-#        run: >
-#          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external --parallel 2
-#
-#      - name: Configure CMake
-#        run: >
-#          cmake -S $GITHUB_WORKSPACE/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release
-#          -DBoost_ROOT=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_85_0/installBoost
-#          -DBoost_INCLUDE_DIR=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_85_0/installBoost
-#          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-ol8/install
-#          -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8
-#
-#
-#      - name: Build
-#        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8 --target install --parallel 2
-#
-#      - name: Tests
-#        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-ol8 && ctest -j8 --output-on-failure
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-ol8/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8 --target install --parallel 2
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-ol8 && ctest -j8 --output-on-failure
