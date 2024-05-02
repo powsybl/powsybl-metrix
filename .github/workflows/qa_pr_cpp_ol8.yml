@@ -32,7 +32,6 @@ jobs:
       - name: Install clang-tidy
         run: |
           yum install -y llvm-toolset
-          scl enable llvm-toolset bash
 
       - name: Checkout sources
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
@@ -79,7 +78,7 @@ jobs:
       - name: Install Dependencies
         run: |
           yum update -y
-          yum install cmake make gcc gcc-c++ which git
+          yum install cmake make gcc gcc-c++ which git wget
           dnf --enablerepo=ol8_codeready_builder install boost-static
           yum install -y python3 python3-pip
 
