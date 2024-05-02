@@ -28,12 +28,12 @@ jobs:
           yum install -y devtoolset-9
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
+        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
         with:
           cmake-version: '3.22.x'
 
       - name: Checkout sources
-        uses: actions/checkout@v1
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
@@ -81,7 +81,7 @@ jobs:
 
       - name: Upload Clang Tidy report - PR
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: ${{ steps.clang-pr.outputs.report_name }}
           path: ${{ steps.clang-pr.outputs.report_path }}
@@ -107,7 +107,7 @@ jobs:
 #
 #      - name: Upload Clang Tidy report - Release
 #        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-#        uses: actions/upload-artifact@v3
+#        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
 #        with:
 #          name: ${{ steps.clang-release.outputs.report_name }}
 #          path: ${{ steps.clang-release.outputs.report_path }}
@@ -127,12 +127,12 @@ jobs:
 
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
+        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
         with:
           cmake-version: '3.22.x'
 
       - name: Install Java 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -161,7 +161,7 @@ jobs:
           SONAR_SCANNER_VERSION: 3.3.0.1492
 
       - name: Checkout sources
-        uses: actions/checkout@v1
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
@@ -221,12 +221,12 @@ jobs:
           yum install -y devtoolset-9
 
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
+        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
         with:
           cmake-version: '3.22.x'
 
       - name: Checkout sources
-        uses: actions/checkout@v1
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
@@ -267,13 +267,13 @@ jobs:
           echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload OR-Tools install artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: ${{ steps.metrix-install.outputs.archive_name }}.zip
           path: ${{ steps.metrix-install.outputs.archive_path }}.zip
 
       - name: Upload asset to release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564 # 2.0.4
         if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ steps.metrix-install.outputs.archive_name }}.zip
