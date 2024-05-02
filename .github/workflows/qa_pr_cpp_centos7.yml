@@ -84,7 +84,7 @@ jobs:
 
       - name: Upload Clang Tidy report - PR
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.clang-pr.outputs.report_name }}
           path: ${{ steps.clang-pr.outputs.report_path }}
@@ -270,13 +270,13 @@ jobs:
           echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload OR-Tools install artifact
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        uses: actions/upload-artifact@v3
         with:
           name: ${{ steps.metrix-install.outputs.archive_name }}.zip
           path: ${{ steps.metrix-install.outputs.archive_path }}.zip
 
       - name: Upload asset to release
-        uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564 # 2.0.4
+        uses: softprops/action-gh-release@v1
         if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ steps.metrix-install.outputs.archive_name }}.zip
