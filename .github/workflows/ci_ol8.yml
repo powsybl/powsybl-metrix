@@ -17,8 +17,8 @@ defaults:
   run:
     shell: bash
 
-env:
-  BOOST_ARCHIVE_NAME: ol8_cache_boost_1_85_0.zip
+#env:
+#  BOOST_ARCHIVE_NAME: ol8_cache_boost_1_85_0.zip
 
 jobs:
   linux:
@@ -29,29 +29,39 @@ jobs:
       - name: Install Dependencies
         run: |
           yum update -y
-          yum install wget cmake make gcc gcc-c++ git zip which
+          yum install wget cmake make gcc gcc-c++ which zip
 
-      - name: Cache Boost dependency
-        id: cache-boost
-        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
-        env:
-          cache-name: ${{ env.BOOST_ARCHIVE_NAME }}
-        with:
-          path: ~/.boost/${{ env.BOOST_ARCHIVE_NAME }}
-          key: ${{ env.cache-name }}
-
-      - if: ${{ steps.cache-boost.outputs.cache-hit != 'true' }}
-        name: Install boost
-        continue-on-error: true
+      - name: Install boost
         run: |
           wget https://boostorg.jfrog.io/artifactory/main/release/1.85.0/source/boost_1_85_0.tar.gz
-          echo Unarchive
           tar -xzf ./boost_1_85_0.tar.gz
           cd boost_1_85_0
           echo START bootstrap
           ./bootstrap.sh --prefix=installBoost
           echo START b2
           ./b2 install --without-python -j 5
+
+#      - name: Cache Boost dependency
+#        id: cache-boost
+#        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9 # v4.0.2
+#        env:
+#          cache-name: ${{ env.BOOST_ARCHIVE_NAME }}
+#        with:
+#          path: ~/.boost/${{ env.BOOST_ARCHIVE_NAME }}
+#          key: ${{ env.cache-name }}
+
+#      - if: ${{ steps.cache-boost.outputs.cache-hit != 'true' }}
+#        name: Install boost
+#        continue-on-error: true
+#        run: |
+#          wget https://boostorg.jfrog.io/artifactory/main/release/1.85.0/source/boost_1_85_0.tar.gz
+#          echo Unarchive
+#          tar -xzf ./boost_1_85_0.tar.gz
+#          cd boost_1_85_0
+#          echo START bootstrap
+#          ./bootstrap.sh --prefix=installBoost
+#          echo START b2
+#          ./b2 install --without-python -j 5
 #          cd ..
 #          echo START zip
 #          ARCHIVE_PATH="~/.boost/${{ env.BOOST_ARCHIVE_NAME }}"
