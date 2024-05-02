@@ -65,7 +65,7 @@ jobs:
 
       - name: Upload Clang Tidy report - PR
         if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: ${{ steps.clang-pr.outputs.report_name }}
           path: ${{ steps.clang-pr.outputs.report_path }}
