@@ -3,6 +3,10 @@ name: CI-cpp-ol8
 on:
   workflow_dispatch: {}
   pull_request:
+    types: [opened, ready_for_review, reopened]
+  push:
+    paths:
+      - 'metrix-simulator/**'
   release:
     types: [published]
 
