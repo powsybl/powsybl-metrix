@@ -41,7 +41,7 @@ jobs:
           cmake-version: '3.22.x'
 
       - name: Checkout sources
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@v1
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
