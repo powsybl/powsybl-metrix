@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - 'metrix-simulator/**'
+      - '.github/workflows/ci_ol8.yml'
   release:
     types: [published]
 

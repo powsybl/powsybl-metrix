@@ -6,6 +6,9 @@ on:
     types: [opened, ready_for_review, reopened]
   release:
     types: [published]
+  push:
+    paths:
+      - '.github/workflows/qa_pr_cpp_ol8.yml'
 
 # Cancel previous workflows if they are the same workflow on same ref (branch/tags)
 # with the same event (push/pull_request) even they are in progress.
