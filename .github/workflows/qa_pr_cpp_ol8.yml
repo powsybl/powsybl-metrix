@@ -1,4 +1,4 @@
-name: QA-PR-CPP-UBUNTU
+name: QA-PR-CPP-OL8
 
 on:
   workflow_dispatch:
@@ -8,7 +8,7 @@ on:
     types: [published]
   push:
     paths:
-      - '.github/workflows/qa_pr_cpp_ubuntu.yml'
+      - '.github/workflows/qa_pr_cpp_ol8.yml'
 
 # Cancel previous workflows if they are the same workflow on same ref (branch/tags)
 # with the same event (push/pull_request) even they are in progress.
@@ -23,33 +23,34 @@ defaults:
 
 jobs:
   clang-tidy:
-    name: Clang-tidy Ubuntu
+    name: Clang-tidy Oracle Linux 8
     runs-on: ubuntu-latest
+    container: 'oraclelinux:8'
     steps:
       - name: Install Boost
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev
+          yum update -y
+          yum install cmake make gcc gcc-c++ which git
+          dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Install clang-tidy
         run: |
-          sudo apt install -y clang-tidy-15
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
+          yum install -y llvm-toolset
 
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: Configure 3rd parties
         run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external --parallel 2
 
       - name: Configure CMake
         run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8
           -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
@@ -57,11 +58,11 @@ jobs:
         id: clang-pr
         if: github.event_name == 'pull_request'
         run: |
-          REPORT_NAME="clang_tidy_report_ubuntu.txt"
+          REPORT_NAME="clang_tidy_report_ol8.txt"
           REPORT_PATH="$PWD/${REPORT_NAME}"
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
+              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build-ol8 > $REPORT_NAME || true
           fi
           echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
           echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
@@ -73,30 +74,18 @@ jobs:
           name: ${{ steps.clang-pr.outputs.report_name }}
           path: ${{ steps.clang-pr.outputs.report_path }}
 
-      - name: Clang Tidy Release
-        id: clang-release
-        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        run: |
-          REPORT_NAME="clang_tidy_report_ubuntu.txt"
-          REPORT_PATH="$PWD/${REPORT_NAME}"
-          export MODIFIED_FILES=$(find metrix-simulator/log/ metrix-simulator/src/ -type f | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
-          if [ -n "$MODIFIED_FILES" ]; then
-              clang-tidy $MODIFIED_FILES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
-          fi
-          echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
-          echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
-
-      - name: Upload Clang Tidy report - Release
-        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
-        with:
-          name: ${{ steps.clang-release.outputs.report_name }}
-          path: ${{ steps.clang-release.outputs.report_path }}
-
   qa:
-    name: Full QA C++ Ubuntu
+    name: Full QA C++ Oracle Linux 8
     runs-on: ubuntu-latest
+    container: 'oraclelinux:8'
     steps:
+      - name: Install Dependencies
+        run: |
+          yum update -y
+          yum install cmake make gcc gcc-c++ which git wget zip
+          dnf --enablerepo=ol8_codeready_builder install boost-static
+          yum install -y python3 python3-pip
+
       - name: Install Java 17
         uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
         with:
@@ -105,39 +94,36 @@ jobs:
 
       - name: Install gcovr
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y gcovr
+          yum -y install libxml2-devel libxslt-devel 
+          yum -y clean all
+          pip3 install wheel
+          pip3 install gcovr cpplint lxml==4.9.4
 
       - name: Install Sonar wrapper
-        working-directory: ${{ runner.workspace }}
+        working-directory: /__w/powsybl-metrix
         run: |
           wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
 
       - name: Install Sonar scanner
-        working-directory: ${{ runner.workspace }}
+        working-directory: /__w/powsybl-metrix
         run: |
           wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
           unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
           ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
           rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
         env:
-          SONAR_SCANNER_VERSION: 3.3.0.1492
-
-      - name: Install Boost
-        run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev
+          SONAR_SCANNER_VERSION: 5.0.1.3006
 
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: Configure 3rd parties
-        run: >
+        run: |
           cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Build 3rd parties
-        run: >
+        run: |
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
 
       - name: Configure CMake
@@ -147,10 +133,10 @@ jobs:
           -DCODE_COVERAGE=TRUE
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
-      - name: Build
+      - name: Build-Sonar
         run: >
-          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
-          --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
+          /__w/powsybl-metrix/build-wrapper-linux-x86/build-wrapper-linux-x86-64 
+          --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output 
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
 
       - name: Tests
@@ -160,34 +146,35 @@ jobs:
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
 
       - name: Sonarcloud
-        working-directory: ${{ runner.workspace }}/powsybl-metrix/metrix-simulator
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: >
-          ${{ runner.workspace }}/sonar/bin/sonar-scanner
-          -Dsonar.host.url=https://sonarcloud.io
+        run: |
+          cd metrix-simulator
+          /__w/powsybl-metrix/sonar/bin/sonar-scanner -Dsonar.host.url=https://sonarcloud.io
 
   release:
-    name: Release Ubuntu
+    name: Release Oracle Linux 8
     runs-on: ubuntu-latest
+    container: 'oraclelinux:8'
     needs: qa
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     steps:
-      - name: Install Boost
+      - name: Install Dependencies
         run: |
-          sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev
+          yum update -y
+          yum install cmake make gcc gcc-c++ which git wget zip
+          dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
       - name: Configure 3rd parties
-        run: >
+        run: |
           cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Build 3rd parties
-        run: >
+        run: |
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
 
       - name: Configure CMake
@@ -202,7 +189,7 @@ jobs:
       - name: Prepare Metrix install
         id: metrix-install
         run: |
-          ARCHIVE_NAME="metrix-simulator-ubuntu"
+          ARCHIVE_NAME="metrix-simulator-ol8"
           ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
           cd metrix-simulator/build/install/
           zip -r $ARCHIVE_PATH bin etc

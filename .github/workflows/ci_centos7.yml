@@ -7,6 +7,7 @@ on:
   push:
     paths:
       - 'metrix-simulator/**'
+      - '.github/workflows/ci_centos7.yml'
   release:
     types: [published]
 
