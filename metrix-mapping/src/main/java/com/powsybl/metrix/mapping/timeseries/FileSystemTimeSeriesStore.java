@@ -8,7 +8,6 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.commons.PowsyblException;
-import com.powsybl.commons.report.ReportNode;
 import com.powsybl.timeseries.*;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
@@ -401,7 +400,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
      */
     @Deprecated(since = "2.3.0")
     public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
-        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
+        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
         integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting, append));
     }
 
@@ -411,7 +410,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
      * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
      */
     public void importTimeSeries(BufferedReader reader, ExistingFilePolicy existingFilePolicy) {
-        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig(), ReportNode.NO_OP);
+        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
         integerListMap.forEach((key, value) -> importTimeSeries(value, key, existingFilePolicy));
     }
 
