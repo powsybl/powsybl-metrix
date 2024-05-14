@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.log;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class ScalingDownChangeToVariable implements LogDescriptionBuilder {
 
     private String toVariable;

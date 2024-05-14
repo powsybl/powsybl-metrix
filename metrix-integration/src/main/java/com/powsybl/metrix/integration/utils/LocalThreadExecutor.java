@@ -15,6 +15,9 @@ import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class LocalThreadExecutor<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(LocalThreadExecutor.class);
 

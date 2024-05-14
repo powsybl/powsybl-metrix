@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public final class MetrixNetworkPoint {
 
     private static final String ID_TO_CLOSE = "+";

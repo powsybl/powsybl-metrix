@@ -23,6 +23,9 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigTableLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfigTableLoader.class);

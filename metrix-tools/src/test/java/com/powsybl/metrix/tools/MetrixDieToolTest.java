@@ -20,10 +20,13 @@ import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Objects;
 
-import static com.powsybl.tools.CommandLineTools.*;
+import static com.powsybl.tools.CommandLineTools.COMMAND_OK_STATUS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class MetrixDieToolTest extends AbstractToolTest {
 
     private MetrixDieTool tool;

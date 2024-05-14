@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.log;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class EmptyFilter implements LogDescriptionBuilder {
 
     private String timeSeriesName;

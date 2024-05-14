@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.timeseries;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public enum ScalingDownLimitViolation {
     BASE_CASE_MINP_BY_TARGETP,
     MAPPED_MINP_BY_TARGETP,

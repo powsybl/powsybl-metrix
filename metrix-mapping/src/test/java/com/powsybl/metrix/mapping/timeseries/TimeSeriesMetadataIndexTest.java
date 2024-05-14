@@ -12,6 +12,9 @@ import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 class TimeSeriesMetadataIndexTest {
     @Test
     void creationTest() {

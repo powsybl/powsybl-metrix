@@ -14,6 +14,9 @@ import com.powsybl.timeseries.TimeSeriesIndex;
 import java.nio.file.Path;
 import java.util.Map;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class EquipmentGroupTimeSeriesWriterObserver extends EquipmentGroupTimeSeriesMapperObserver {
 
     private static final String OUTPUT_FILE_NAME = "group_version_";

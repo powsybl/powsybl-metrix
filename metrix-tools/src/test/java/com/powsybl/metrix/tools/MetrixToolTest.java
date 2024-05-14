@@ -29,6 +29,9 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixToolTest extends AbstractToolTest {
 
     private MetrixTool tool;

@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping.log;
 
 import java.util.Objects;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class LimitSignBuilder implements LogDescriptionBuilder {
 
     private String timeSeriesName;

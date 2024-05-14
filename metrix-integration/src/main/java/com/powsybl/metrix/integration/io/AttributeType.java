@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.integration.io;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 enum AttributeType {
     INTEGER(1),
     FLOAT(2),

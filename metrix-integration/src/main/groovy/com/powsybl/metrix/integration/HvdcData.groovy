@@ -11,6 +11,9 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.LogDslLoader
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class HvdcData {
 
     List<String> onContingencies

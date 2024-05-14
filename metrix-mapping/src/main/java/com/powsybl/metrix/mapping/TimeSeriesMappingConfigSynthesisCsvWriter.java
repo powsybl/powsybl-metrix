@@ -17,12 +17,15 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Objects;
 
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigSynthesisCsvWriter {
 
     private static final boolean IS_WITH_BOUNDARY_LINES = false;

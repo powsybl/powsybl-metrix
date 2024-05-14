@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.log;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class ScalingDownLimitChangeSynthesis implements LogDescriptionBuilder {
 
     private String timeSeriesName;

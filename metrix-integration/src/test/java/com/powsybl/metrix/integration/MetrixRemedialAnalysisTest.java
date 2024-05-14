@@ -16,13 +16,19 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
 import static com.powsybl.metrix.mapping.LogDslLoader.LogType.ERROR;
 import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class MetrixRemedialAnalysisTest {
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("lang.MetrixAnalysis");

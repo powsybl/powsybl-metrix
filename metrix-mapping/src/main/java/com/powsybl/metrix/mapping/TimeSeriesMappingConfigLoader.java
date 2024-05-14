@@ -7,7 +7,10 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.Injection;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.VoltageLevel;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -19,6 +22,9 @@ import java.util.stream.Stream;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
 
     private final TimeSeriesMappingConfig config;

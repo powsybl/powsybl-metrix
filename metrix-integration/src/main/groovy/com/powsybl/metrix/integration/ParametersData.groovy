@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.integration
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class ParametersData {
 
     MetrixComputationType computationType

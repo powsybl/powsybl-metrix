@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.exception;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class TimeSeriesMetadataNotFoundException extends RuntimeException {
     public TimeSeriesMetadataNotFoundException(String message) {
         super(message);

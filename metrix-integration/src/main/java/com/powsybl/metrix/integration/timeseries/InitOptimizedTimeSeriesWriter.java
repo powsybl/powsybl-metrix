@@ -25,6 +25,9 @@ import java.util.*;
 
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
 
     public static final String INPUT_OPTIMIZED_FILE_NAME = "input_optimized_time_series.json";

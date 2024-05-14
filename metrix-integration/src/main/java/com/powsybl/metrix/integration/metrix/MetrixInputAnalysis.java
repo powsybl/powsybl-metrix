@@ -23,6 +23,9 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.remedials.RemedialReader.rTrim;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class MetrixInputAnalysis {
 
     enum LogType {

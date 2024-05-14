@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class EquipmentTimeSeriesMapperObserver extends DefaultEquipmentTimeSeriesMapperObserver {
     public static final String EQUIPMENT = "equipment";
     public static final String VARIABLE = "variable";

@@ -13,6 +13,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class MappedEquipments {
     private final double timeSeriesValue;
 

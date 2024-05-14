@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class EquipmentGroupTsData extends FilteredData {
 
     EquipmentGroupType group

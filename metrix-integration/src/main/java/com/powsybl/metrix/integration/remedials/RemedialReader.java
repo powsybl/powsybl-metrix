@@ -16,6 +16,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public final class RemedialReader {
 
     public static final String COLUMN_SEPARATOR = ";";

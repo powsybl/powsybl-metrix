@@ -34,6 +34,9 @@ import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.Ex
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
+ */
 class FileSystemTimeSeriesStoreTest {
     private FileSystem fileSystem;
     private Path resDir;

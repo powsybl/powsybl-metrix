@@ -16,6 +16,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class AttributeNameToValue {
     @JsonProperty("attributeNameToValue")
     private Map<String, String> attributeNameToValueVariable;

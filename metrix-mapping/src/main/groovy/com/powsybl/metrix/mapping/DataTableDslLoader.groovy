@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping
 
 import com.powsybl.metrix.mapping.exception.DataTableException
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class DataTableDslLoader {
 
     static class DataTableGroovyObject {

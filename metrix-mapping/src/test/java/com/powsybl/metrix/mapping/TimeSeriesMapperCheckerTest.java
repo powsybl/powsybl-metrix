@@ -9,8 +9,8 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.datasource.MemDataSource;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
@@ -32,6 +32,9 @@ import java.util.TreeSet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMapperCheckerTest {
 
     private static final String INFO = "INFO";

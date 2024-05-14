@@ -15,6 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class DataTable {
     @JsonProperty("tabColumns")
     private List<String> tabColumns;

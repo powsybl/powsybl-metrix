@@ -8,9 +8,15 @@
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.Generator;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.log.LogBuilder;
+import com.powsybl.metrix.mapping.log.LogContent;
+import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
+import com.powsybl.metrix.mapping.log.RangeWithMinPViolatedByTargetP;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class GeneratorBoundLimitBuilder {
     private double minP;
     private double maxP;

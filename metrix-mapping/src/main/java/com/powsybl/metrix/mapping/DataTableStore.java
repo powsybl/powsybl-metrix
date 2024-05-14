@@ -9,8 +9,13 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.metrix.mapping.exception.DataTableException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class DataTableStore {
 
     private final Map<String, DataTable> tables = new HashMap<>();

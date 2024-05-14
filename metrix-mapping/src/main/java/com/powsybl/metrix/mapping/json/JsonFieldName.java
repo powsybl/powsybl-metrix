@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping.json;
 import java.util.Arrays;
 import java.util.Objects;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public enum JsonFieldName {
     MAPPING_KEY("mappingKey"),
     MAPPING_KEYS("mappingKeys"),

@@ -29,6 +29,9 @@ import java.util.function.Function;
 
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigCsvWriter {
 
     private static final int N = 1;

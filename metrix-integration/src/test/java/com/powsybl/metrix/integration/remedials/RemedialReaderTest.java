@@ -20,6 +20,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class RemedialReaderTest {
 
     @Test

@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping
 import com.powsybl.iidm.network.Identifiable
 import groovy.transform.CompileStatic
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class EquipmentTsData extends FilteredData {
 
     Set<EquipmentVariable> variables

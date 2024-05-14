@@ -14,6 +14,9 @@ import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixDslData {
 
     private static final double OVERLOAD_RATIO = .3; // Assume 30% of monitored branches get overloaded at some point

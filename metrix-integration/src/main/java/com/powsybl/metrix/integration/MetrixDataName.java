@@ -11,6 +11,9 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public final class MetrixDataName {
 
     public static final String SEPARATOR = "<>";

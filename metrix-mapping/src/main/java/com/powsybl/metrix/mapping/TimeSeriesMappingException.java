@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMappingException extends RuntimeException {
 
     public TimeSeriesMappingException(String message) {

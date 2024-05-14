@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class MetrixChunkParam {
     public final Path caseFile;
     public final Path mappingFile;

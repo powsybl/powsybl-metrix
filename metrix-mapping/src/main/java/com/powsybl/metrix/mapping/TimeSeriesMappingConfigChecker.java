@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 import static com.powsybl.metrix.mapping.EquipmentVariable.isVariableCompatible;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigChecker {
 
     protected final TimeSeriesMappingConfig config;

@@ -29,6 +29,9 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 class MetrixInputDataGeneratorTest {
     private MetrixInputDataGenerator gen;
     private List<String> results;

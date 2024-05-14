@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPOutputStream;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class CsvResultListener implements ResultListener {
 
     private final Path csvResultFilePath;

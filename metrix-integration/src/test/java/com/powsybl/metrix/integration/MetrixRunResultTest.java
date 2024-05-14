@@ -18,7 +18,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -36,6 +39,9 @@ import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.PST_
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixRunResultTest {
 
     private Path workingDir;

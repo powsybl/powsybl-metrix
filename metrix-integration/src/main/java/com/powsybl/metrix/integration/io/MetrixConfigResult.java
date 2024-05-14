@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class MetrixConfigResult {
 
     private final Map<String, NodeCalc> mappingTimeSeriesNodes = new HashMap<>();

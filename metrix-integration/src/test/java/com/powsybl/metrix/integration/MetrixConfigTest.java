@@ -21,6 +21,9 @@ import java.nio.file.FileSystem;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixConfigTest {
 
     private FileSystem fileSystem;

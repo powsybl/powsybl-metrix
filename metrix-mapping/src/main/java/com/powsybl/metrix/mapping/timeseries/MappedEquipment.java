@@ -12,6 +12,9 @@ import com.powsybl.metrix.mapping.DistributionKey;
 
 import java.util.Objects;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class MappedEquipment {
 
     private final Identifiable<?> identifiable;

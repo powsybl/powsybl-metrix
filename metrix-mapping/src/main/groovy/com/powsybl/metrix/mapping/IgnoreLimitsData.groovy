@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping
 
 import groovy.transform.CompileStatic
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class IgnoreLimitsData {
     @CompileStatic
     protected static void ignoreLimits(TimeSeriesMappingConfigLoader configLoader, Closure closure) {

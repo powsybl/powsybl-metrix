@@ -9,13 +9,18 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.log.Log;
+import com.powsybl.metrix.mapping.log.LogBuilder;
+import com.powsybl.metrix.mapping.log.LogContent;
+import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
-import static com.powsybl.metrix.mapping.TimeSeriesConstants.MINUS_MAXP;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class HvdcBoundLimitBuilder {
     private boolean isActivePowerRange;
     private double minP;

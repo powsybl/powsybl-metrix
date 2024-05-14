@@ -13,6 +13,9 @@ import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.LogDslLoader
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class LoadsBindingData {
 
     Closure<Boolean> filter

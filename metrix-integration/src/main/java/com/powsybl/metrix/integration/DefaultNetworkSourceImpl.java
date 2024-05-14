@@ -20,6 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class DefaultNetworkSourceImpl implements NetworkSource {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultNetworkSourceImpl.class);
 

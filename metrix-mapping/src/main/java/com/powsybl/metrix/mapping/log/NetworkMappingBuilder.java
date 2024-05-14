@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.log;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class NetworkMappingBuilder implements LogDescriptionBuilder {
 
     private String notificationTypeName;

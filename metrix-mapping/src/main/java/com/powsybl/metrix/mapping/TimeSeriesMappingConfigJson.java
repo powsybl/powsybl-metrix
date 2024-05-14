@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.json.JsonFieldName;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.TimeSeriesException;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.json.TimeSeriesJsonModule;
 import org.slf4j.Logger;
@@ -30,6 +30,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigJson {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
@@ -773,4 +776,3 @@ public class TimeSeriesMappingConfigJson {
         return config;
     }
 }
-

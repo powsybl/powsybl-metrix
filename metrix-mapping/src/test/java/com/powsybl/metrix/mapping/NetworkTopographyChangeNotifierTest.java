@@ -26,6 +26,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class NetworkTopographyChangeNotifierTest {
 
     private Network network;
@@ -161,4 +164,3 @@ class NetworkTopographyChangeNotifierTest {
         assertTrue(hit.get());
     }
 }
-

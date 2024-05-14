@@ -12,6 +12,9 @@ import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import java.util.Collections;
 import java.util.Map;
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 interface DefaultGenericMetadata {
 
     default Map<String, String> stringMetadatas(ReadOnlyTimeSeriesStore store) {

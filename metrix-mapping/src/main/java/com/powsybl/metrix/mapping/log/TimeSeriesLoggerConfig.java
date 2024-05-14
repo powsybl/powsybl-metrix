@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping.log;
 
 import java.time.format.DateTimeFormatter;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class TimeSeriesLoggerConfig {
     public final char separator;
 

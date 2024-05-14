@@ -29,7 +29,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +40,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(Tool.class)
 public class MappingTool implements Tool {
 

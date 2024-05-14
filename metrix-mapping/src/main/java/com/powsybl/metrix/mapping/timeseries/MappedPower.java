@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.timeseries;
 
+/**
+ * @author berthault {@literal <valentinberthault at outlook.fr>}
+ */
 public class MappedPower {
     private String timeSeriesNameP = null;
 

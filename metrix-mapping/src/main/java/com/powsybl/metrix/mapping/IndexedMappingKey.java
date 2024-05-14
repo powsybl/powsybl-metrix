@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping;
 
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class IndexedMappingKey {
 
     private final MappingKey key;

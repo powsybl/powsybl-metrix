@@ -12,6 +12,9 @@ import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
 
+/**
+ * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ */
 class GeneratorData {
 
     List<String> onContingencies
