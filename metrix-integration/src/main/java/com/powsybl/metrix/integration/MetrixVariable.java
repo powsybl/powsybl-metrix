@@ -38,11 +38,7 @@ public enum MetrixVariable implements MappingVariable {
     thresholdITAMNkEndOr("thresholdITAMNkEndOr"),
     curativeCostDown("curativeCostDown");
 
-    private static final String NAME = "metrix";
-
-    static String getName() {
-        return NAME;
-    }
+    protected static final String NAME = "metrix";
 
     @Override
     public String getFieldName() {
