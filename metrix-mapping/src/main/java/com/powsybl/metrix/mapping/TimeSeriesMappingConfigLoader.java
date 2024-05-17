@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
 

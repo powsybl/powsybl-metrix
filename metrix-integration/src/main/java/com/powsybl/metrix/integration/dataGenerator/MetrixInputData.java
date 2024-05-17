@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public class MetrixInputData {
 

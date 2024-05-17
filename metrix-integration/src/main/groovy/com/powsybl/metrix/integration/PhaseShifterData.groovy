@@ -13,7 +13,7 @@ import com.powsybl.metrix.integration.exceptions.MetrixException
 import com.powsybl.metrix.mapping.LogDslLoader
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class PhaseShifterData {
 

@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class MetrixAnalysisTest {
     private FileSystem fileSystem;

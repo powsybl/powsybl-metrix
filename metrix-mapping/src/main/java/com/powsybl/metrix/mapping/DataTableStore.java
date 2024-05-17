@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class DataTableStore {
 

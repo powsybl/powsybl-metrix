@@ -14,7 +14,7 @@ import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class PlannedOutagesData {
 

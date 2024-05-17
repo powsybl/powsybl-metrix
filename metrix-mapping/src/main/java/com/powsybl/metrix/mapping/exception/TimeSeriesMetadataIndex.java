@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public class TimeSeriesMetadataIndex {
     @JsonProperty("startTime")

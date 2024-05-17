@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public enum JsonFieldName {
     MAPPING_KEY("mappingKey"),

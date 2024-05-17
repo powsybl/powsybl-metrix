@@ -27,7 +27,7 @@ import static com.powsybl.metrix.mapping.LogDslLoader.LogType.ERROR;
 import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class MetrixRemedialAnalysisTest {
 

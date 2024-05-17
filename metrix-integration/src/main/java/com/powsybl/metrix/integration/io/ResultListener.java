@@ -13,7 +13,7 @@ import com.powsybl.timeseries.TimeSeries;
 import java.util.List;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public interface ResultListener {
 

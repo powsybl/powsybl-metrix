@@ -11,7 +11,7 @@ import com.powsybl.iidm.network.Identifiable
 import groovy.transform.CompileStatic
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class EquipmentTsData extends FilteredData {
 

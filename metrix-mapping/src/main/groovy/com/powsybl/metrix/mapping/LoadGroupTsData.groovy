@@ -12,7 +12,7 @@ import com.powsybl.iidm.network.Load
 import groovy.transform.CompileStatic
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class LoadGroupTsData extends EquipmentGroupTsData {
 

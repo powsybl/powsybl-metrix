@@ -15,7 +15,7 @@ import com.powsybl.metrix.mapping.log.RangeWithMinPViolatedByTargetP;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public class GeneratorBoundLimitBuilder {
     private double minP;

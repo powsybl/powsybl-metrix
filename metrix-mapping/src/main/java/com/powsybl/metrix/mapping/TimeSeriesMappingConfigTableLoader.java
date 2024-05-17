@@ -24,7 +24,7 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class TimeSeriesMappingConfigTableLoader {
 

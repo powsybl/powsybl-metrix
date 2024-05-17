@@ -11,7 +11,7 @@ import static com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged.BC_RANG
 import static com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged.MAPPING_RANGE_PROBLEM;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public class RangeWithMinPViolatedByTargetP implements LogDescriptionBuilder {
 

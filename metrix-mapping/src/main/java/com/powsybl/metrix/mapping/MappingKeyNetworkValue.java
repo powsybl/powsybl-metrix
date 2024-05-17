@@ -15,7 +15,7 @@ import java.util.Objects;
 import static com.powsybl.metrix.mapping.NetworkPointWriter.OFF_VALUE;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class MappingKeyNetworkValue {
 

@@ -10,7 +10,7 @@ package com.powsybl.metrix.integration;
 import java.util.List;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class PostProcessingPrefixContainer {
     public final String postProcessingType;

@@ -21,7 +21,7 @@ import java.util.Set;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONSTANT_VARIANT_ID;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class NetworkTopographyChangeNotifier implements NetworkListener {
 

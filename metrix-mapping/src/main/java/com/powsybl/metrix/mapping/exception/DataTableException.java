@@ -10,7 +10,7 @@ package com.powsybl.metrix.mapping.exception;
 import com.powsybl.commons.PowsyblException;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class DataTableException extends PowsyblException {
 

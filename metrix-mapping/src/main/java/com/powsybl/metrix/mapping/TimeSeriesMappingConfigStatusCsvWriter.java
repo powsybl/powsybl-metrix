@@ -20,7 +20,7 @@ import java.util.Set;
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.CSV_SEPARATOR;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class TimeSeriesMappingConfigStatusCsvWriter {
 

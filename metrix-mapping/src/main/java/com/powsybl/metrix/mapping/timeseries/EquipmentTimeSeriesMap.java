@@ -20,7 +20,7 @@ import java.util.Map;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.indexMappingKey;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class EquipmentTimeSeriesMap {
     private final Map<IndexedMappingKey, List<MappedEquipment>> equimentTimeSeries = new LinkedHashMap<>();

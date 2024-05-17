@@ -8,7 +8,7 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public enum ScalingDownPowerChange {
     BASE_CASE_MINP,

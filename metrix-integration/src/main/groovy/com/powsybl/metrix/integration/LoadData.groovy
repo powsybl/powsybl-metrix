@@ -13,7 +13,7 @@ import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class LoadData {
 

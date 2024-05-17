@@ -26,7 +26,7 @@ import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class MetrixContingencyAnalysisTest {
 

@@ -13,7 +13,7 @@ import com.powsybl.metrix.integration.remedials.Remedial;
 import java.util.List;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class MetrixInputAnalysisResult {
 

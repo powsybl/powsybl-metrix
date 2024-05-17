@@ -8,7 +8,7 @@
 package com.powsybl.metrix.integration.exceptions;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class ContingenciesScriptLoadingException extends RuntimeException {
 

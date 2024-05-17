@@ -24,7 +24,7 @@ import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class TimeSeriesMappingConfigSynthesisCsvWriter {
 

@@ -22,7 +22,7 @@ import java.util.Objects;
 import static com.powsybl.metrix.integration.AbstractMetrix.MAX_THREAT_PREFIX;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public final class MetrixPostProcessingTimeSeries {
 

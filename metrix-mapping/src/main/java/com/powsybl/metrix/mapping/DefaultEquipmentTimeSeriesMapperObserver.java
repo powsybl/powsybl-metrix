@@ -13,7 +13,7 @@ import com.powsybl.timeseries.TimeSeriesIndex;
 import java.util.Map;
 
 /**
- * @author marifunf {@literal <marianne.funfrock at rte-france.com>}
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 public class DefaultEquipmentTimeSeriesMapperObserver extends DefaultTimeSeriesMapperObserver {
 

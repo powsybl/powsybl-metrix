@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public class ZeroDistributionKeyInfo implements LogDescriptionBuilder {
 

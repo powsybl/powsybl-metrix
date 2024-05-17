@@ -26,7 +26,7 @@ import java.util.*;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
 
 /**
- * @author berthault {@literal <valentinberthault at outlook.fr>}
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
 
