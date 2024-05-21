@@ -7,9 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.metrix.mapping.log.*;
 import com.powsybl.metrix.mapping.timeseries.*;
@@ -139,6 +137,22 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         super.versionEnd(version);
     }
 
+    private static boolean isTwoWindingsTransformerWithUncorrectPhaseTapPosition(Identifiable<?> identifiable, MappingVariable variable, int value) {
+        if (!(identifiable instanceof TwoWindingsTransformer twoWindingsTransformer) || variable != EquipmentVariable.phaseTapPosition) {
+            return false;
+        }
+        if (!twoWindingsTransformer.hasPhaseTapChanger()) {
+            return false;
+        }
+        return isPhaseTapPositionUncorrect(twoWindingsTransformer, value);
+    }
+
+    private static boolean isPhaseTapPositionUncorrect(TwoWindingsTransformer twoWindingsTransformer, int value) {
+        int lowTapPosition = twoWindingsTransformer.getPhaseTapChanger().getLowTapPosition();
+        int highTapPosition = twoWindingsTransformer.getPhaseTapChanger().getHighTapPosition();
+        return value < lowTapPosition || value > highTapPosition;
+    }
+
     public TimeSeriesMapperChecker(List<TimeSeriesMapperObserver> observers, TimeSeriesMappingLogger timeSeriesMappingLogger, TimeSeriesMapperParameters parameters) {
         super(observers);
         this.timeSeriesMappingLogger = Objects.requireNonNull(timeSeriesMappingLogger);
@@ -163,6 +177,10 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
             if (identifiable instanceof HvdcLine hvdcLine) {
                 hvdcLineToActivePowerRange.computeIfAbsent(identifiable.getId(), e -> hvdcLine.getExtension(HvdcOperatorActivePowerRange.class) != null);
+            }
+
+            if (isTwoWindingsTransformerWithUncorrectPhaseTapPosition(identifiable, variable, (int) equipmentValue)) {
+                equipmentValue = correctPhaseTapChangerTapPosition(point, (TwoWindingsTransformer) identifiable, equipmentValue);
             }
 
             if (!TimeSeriesMapper.isPowerVariable(variable)) {
@@ -192,6 +210,23 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         } else if (variable == EquipmentVariable.maxP) {
             mappedPower.setMaxP(equipmentValue);
         }
+    }
+
+    private double correctPhaseTapChangerTapPosition(int point, TwoWindingsTransformer twoWindingsTransformer, double value) {
+        int lowTapPosition = twoWindingsTransformer.getPhaseTapChanger().getLowTapPosition();
+        int highTapPosition = twoWindingsTransformer.getPhaseTapChanger().getHighTapPosition();
+
+        LogBuilder logbuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(version).index(index).point(point);
+        RangeLogPhaseTapPosition rangeLogPhaseTapPosition = new RangeLogPhaseTapPosition().value(value).minValue(lowTapPosition).maxValue(highTapPosition);
+        rangeLogPhaseTapPosition.id(twoWindingsTransformer.getId());
+        rangeLogPhaseTapPosition.toVariable(value < lowTapPosition ? "lowTapPosition" : "highTapPosition");
+
+        double newValue = value < lowTapPosition ? lowTapPosition : highTapPosition;
+        rangeLogPhaseTapPosition.newValue(newValue);
+        LogContent logContent = rangeLogPhaseTapPosition.build();
+        Log log = logbuilder.logDescription(logContent).build();
+        timeSeriesMappingLogger.addLog(log);
+        return newValue;
     }
 
     private void correctAndNotifyMappedPowers(int point, Identifiable<?> identifiable, MappedPower mappedPower) {

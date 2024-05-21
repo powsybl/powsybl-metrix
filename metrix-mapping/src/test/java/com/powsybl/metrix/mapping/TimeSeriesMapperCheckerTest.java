@@ -225,6 +225,18 @@ class TimeSeriesMapperCheckerTest {
             "    filter { hvdcLine.id == 'HVDC2' }",
             "}");
 
+    private final String phaseTapChangerLowTapPositionScript = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'chronique_m100'",
+            "    filter { twoWindingsTransformer.id == 'NE_NO_1' }",
+            "}");
+
+    private final String phaseTapChangerHighTapPositionScript = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'chronique_100'",
+            "    filter { twoWindingsTransformer.id == 'NE_NO_1' }",
+            "}");
+
     private Network createNetwork() {
         Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xiidm")));
         List<String> generators = ImmutableList.of("SO_G1", "SO_G2", "SE_G", "N_G");
@@ -282,6 +294,16 @@ class TimeSeriesMapperCheckerTest {
             assertEquals(expectedCS2toCS1, activePowerRange.getOprFromCS2toCS1(), 0);
             assertEquals(expectedCS1toCS2, activePowerRange.getOprFromCS1toCS2(), 0);
             assertEquals(expectedMaxP, hvdcLine.getMaxP(), 0);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void compareNetworkPointPhaseTapChanger(String id, MemDataSource dataSource, int expectedPhaseTapPosition) {
+        try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
+            Network networkPoint = NetworkSerDe.read(inputStream);
+            int tapPosition = networkPoint.getTwoWindingsTransformer(id).getPhaseTapChanger().getTapPosition();
+            assertEquals(expectedPhaseTapPosition, tapPosition, 0);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -415,6 +437,24 @@ class TimeSeriesMapperCheckerTest {
         mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
 
         compareNetworkPointHvdcLine(hvdcLine, dataSource, expectedSetPoint, expectedMaxP, expectedCS2toCS1, expectedCS1toCS2);
+        compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
+    }
+
+    private void testPhaseTapChanger(Network network, String script, String twoWindingsTransformer,
+                                     int expectedPhaseTapPosition,
+                                     String expectedType, String expectedVariant, String expectedLabel, String expectedSynthesisLabel, String expectedMessage, String expectedSynthesisMessage) {
+        TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        MemDataSource dataSource = new MemDataSource();
+        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
+        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
+
+        compareNetworkPointPhaseTapChanger(twoWindingsTransformer, dataSource, expectedPhaseTapPosition);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
     }
 
@@ -1356,5 +1396,27 @@ class TimeSeriesMapperCheckerTest {
                 expectedLabelIL,
                 expectedMessage,
                 expectedSynthesisMessage);
+    }
+
+    /*
+     * PHASE TAP CHANGER TEST
+     */
+
+    @Test
+    void mappingRangeProblemPhaseTapChangerTest() {
+        Network network = createNetwork();
+
+        String expectedLabelLowTapPosition = MAPPING_RANGE_PROBLEM + "phaseTapPosition changed to lowTapPosition";
+        String expectedLabelHighTapPosition = MAPPING_RANGE_PROBLEM + "phaseTapPosition changed to highTapPosition";
+
+        testPhaseTapChanger(NetworkSerDe.copy(network), phaseTapChangerLowTapPositionScript, "NE_NO_1", 0,
+                WARNING, VARIANT_ALL, expectedLabelLowTapPosition, null,
+                "phaseTapPosition -100 of NE_NO_1 not included in 0 to 32, phaseTapPosition changed to 0",
+                null);
+
+        testPhaseTapChanger(NetworkSerDe.copy(network), phaseTapChangerHighTapPositionScript, "NE_NO_1", 32,
+                WARNING, VARIANT_ALL, expectedLabelHighTapPosition, null,
+                "phaseTapPosition 100 of NE_NO_1 not included in 0 to 32, phaseTapPosition changed to 32",
+                null);
     }
 }
