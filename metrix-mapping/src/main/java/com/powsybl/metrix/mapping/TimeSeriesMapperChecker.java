@@ -137,17 +137,14 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         super.versionEnd(version);
     }
 
-    private static boolean isTwoWindingsTransformerWithUncorrectPhaseTapPosition(Identifiable<?> identifiable, MappingVariable variable, int value) {
-        if (!(identifiable instanceof TwoWindingsTransformer twoWindingsTransformer) || variable != EquipmentVariable.phaseTapPosition) {
-            return false;
-        }
-        if (!twoWindingsTransformer.hasPhaseTapChanger()) {
-            return false;
-        }
-        return isPhaseTapPositionUncorrect(twoWindingsTransformer, value);
+    public static boolean isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(Identifiable<?> identifiable, MappingVariable variable, int value) {
+        return identifiable instanceof TwoWindingsTransformer twoWindingsTransformer
+                && twoWindingsTransformer.hasPhaseTapChanger()
+                && variable == EquipmentVariable.phaseTapPosition
+                && isPhaseTapPositionOutOfBounds(twoWindingsTransformer, value);
     }
 
-    private static boolean isPhaseTapPositionUncorrect(TwoWindingsTransformer twoWindingsTransformer, int value) {
+    private static boolean isPhaseTapPositionOutOfBounds(TwoWindingsTransformer twoWindingsTransformer, int value) {
         int lowTapPosition = twoWindingsTransformer.getPhaseTapChanger().getLowTapPosition();
         int highTapPosition = twoWindingsTransformer.getPhaseTapChanger().getHighTapPosition();
         return value < lowTapPosition || value > highTapPosition;
@@ -179,8 +176,9 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
                 hvdcLineToActivePowerRange.computeIfAbsent(identifiable.getId(), e -> hvdcLine.getExtension(HvdcOperatorActivePowerRange.class) != null);
             }
 
-            if (isTwoWindingsTransformerWithUncorrectPhaseTapPosition(identifiable, variable, (int) equipmentValue)) {
-                equipmentValue = correctPhaseTapChangerTapPosition(point, (TwoWindingsTransformer) identifiable, equipmentValue);
+            if (isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(identifiable, variable, (int) equipmentValue)) {
+                // fix equipmentValue in case it is out of [lowTapPosition, highTapPosition] bounds
+                equipmentValue = fixPhaseTapChangerTapPosition(point, (TwoWindingsTransformer) identifiable, equipmentValue);
             }
 
             if (!TimeSeriesMapper.isPowerVariable(variable)) {
@@ -212,17 +210,19 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         }
     }
 
-    private double correctPhaseTapChangerTapPosition(int point, TwoWindingsTransformer twoWindingsTransformer, double value) {
+    private double fixPhaseTapChangerTapPosition(int point, TwoWindingsTransformer twoWindingsTransformer, double value) {
         int lowTapPosition = twoWindingsTransformer.getPhaseTapChanger().getLowTapPosition();
         int highTapPosition = twoWindingsTransformer.getPhaseTapChanger().getHighTapPosition();
+        double newValue = value < lowTapPosition ? lowTapPosition : highTapPosition;
 
         LogBuilder logbuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(version).index(index).point(point);
-        RangeLogPhaseTapPosition rangeLogPhaseTapPosition = new RangeLogPhaseTapPosition().value(value).minValue(lowTapPosition).maxValue(highTapPosition);
-        rangeLogPhaseTapPosition.id(twoWindingsTransformer.getId());
-        rangeLogPhaseTapPosition.toVariable(value < lowTapPosition ? "lowTapPosition" : "highTapPosition");
-
-        double newValue = value < lowTapPosition ? lowTapPosition : highTapPosition;
-        rangeLogPhaseTapPosition.newValue(newValue);
+        RangeLogPhaseTapPosition rangeLogPhaseTapPosition = new RangeLogPhaseTapPosition()
+                .value(value)
+                .minValue(lowTapPosition)
+                .maxValue(highTapPosition)
+                .id(twoWindingsTransformer.getId())
+                .toVariable(value < lowTapPosition ? "lowTapPosition" : "highTapPosition")
+                .newValue(newValue);
         LogContent logContent = rangeLogPhaseTapPosition.build();
         Log log = logbuilder.logDescription(logContent).build();
         timeSeriesMappingLogger.addLog(log);

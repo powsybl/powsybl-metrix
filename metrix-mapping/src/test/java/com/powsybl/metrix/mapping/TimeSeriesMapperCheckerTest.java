@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.datasource.MemDataSource;
@@ -29,8 +28,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TimeSeriesMapperCheckerTest {
 
@@ -239,9 +237,9 @@ class TimeSeriesMapperCheckerTest {
 
     private Network createNetwork() {
         Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xiidm")));
-        List<String> generators = ImmutableList.of("SO_G1", "SO_G2", "SE_G", "N_G");
+        List<String> generators = List.of("SO_G1", "SO_G2", "SE_G", "N_G");
         generators.forEach(id -> network.getGenerator(id).setTargetP(0));
-        List<String> loads = ImmutableList.of("SO_L", "SE_L1", "SE_L2");
+        List<String> loads = List.of("SO_L", "SE_L1", "SE_L2");
         loads.forEach(id -> network.getLoad(id).setP0(0));
         return network;
     }
@@ -382,7 +380,7 @@ class TimeSeriesMapperCheckerTest {
         BalanceSummary balanceSummary = new BalanceSummary();
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary, networkPointWriter));
+        mapper.mapToNetwork(store, List.of(balanceSummary, networkPointWriter));
 
         compareNetworkPointGenerator(generator, dataSource, expectedMinP, expectedP, expectedMaxP);
         compareBalance(balanceSummary, expectedBalanceValue);
@@ -434,7 +432,7 @@ class TimeSeriesMapperCheckerTest {
 
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
 
         compareNetworkPointHvdcLine(hvdcLine, dataSource, expectedSetPoint, expectedMaxP, expectedCS2toCS1, expectedCS1toCS2);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
@@ -452,7 +450,7 @@ class TimeSeriesMapperCheckerTest {
 
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
 
         compareNetworkPointPhaseTapChanger(twoWindingsTransformer, dataSource, expectedPhaseTapPosition);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
@@ -1401,6 +1399,13 @@ class TimeSeriesMapperCheckerTest {
     /*
      * PHASE TAP CHANGER TEST
      */
+
+    @Test
+    void isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition() {
+        Network network = createNetwork();
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("HVDC1"), EquipmentVariable.p0, 100));
+        assertTrue(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("NE_NO_1"), EquipmentVariable.phaseTapPosition, 100));
+    }
 
     @Test
     void mappingRangeProblemPhaseTapChangerTest() {
