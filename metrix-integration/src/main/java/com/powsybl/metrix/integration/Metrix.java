@@ -10,7 +10,6 @@ package com.powsybl.metrix.integration;
 import com.google.common.collect.Range;
 import com.google.common.io.CharStreams;
 import com.powsybl.commons.io.WorkingDirectory;
-import com.powsybl.computation.ComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.io.ResultListener;
@@ -18,6 +17,7 @@ import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.tools.ToolRunningContext;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -29,18 +29,21 @@ import java.util.zip.ZipOutputStream;
 
 public class Metrix extends AbstractMetrix {
 
+    private final PrintStream out;
+
     public Metrix(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
-                  ZipOutputStream logArchive, ComputationManager computationManager,
+                  ZipOutputStream logArchive, ToolRunningContext context,
                   MetrixAppLogger logger, MetrixAnalysisResult analysisResult) {
         super(
             remedialActionsReader,
             store,
             resultStore,
             logArchive,
-            computationManager,
+            context.getLongTimeExecutionComputationManager(),
             logger,
             analysisResult
         );
+        this.out = context.getErrorStream();
     }
 
     @Override
@@ -108,7 +111,7 @@ public class Metrix extends AbstractMetrix {
             MetrixChunk metrixChunk = new MetrixChunk(NetworkSerDe.copy(analysisResult.network), computationManager, metrixChunkParam, metrixConfig, null);
             Range<Integer> range = chunkCutter.getChunkRange(chunk);
             MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(analysisResult.network, store, analysisResult.mappingParameters,
-                    analysisResult.mappingConfig, analysisResult.metrixDslData, metrixChunkParam, range, System.err);
+                    analysisResult.mappingConfig, analysisResult.metrixDslData, metrixChunkParam, range, out);
             CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(analysisResult.metrixParameters, analysisResult.metrixDslData, variantProvider);
             CompletableFuture<Void> info = currentFuture.thenAccept(timeSeriesList ->
                     listener.onChunkResult(version, chunkNum, timeSeriesList, null)
