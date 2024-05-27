@@ -22,7 +22,7 @@ print(f'appended {source_path}')
 # -- Project information -----------------------------------------------------
 
 project = 'PowSyBl Metrix'
-copyright = '2018, RTE (http://www.rte-france.com)'
+copyright = '2024, RTE (http://www.rte-france.com)'
 
 
 # -- General configuration ---------------------------------------------------
