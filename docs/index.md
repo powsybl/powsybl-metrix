@@ -10,7 +10,7 @@ metrix.md
 metrix-simulator.md
 ```
 
-# powsybl-metrix
+# PowSyBl Metrix
 
 [MappingTool](mapping.md) provides a mapping configuration from csv timeseries to network.
 This configuration allows to generate iidm network at specified times. Furthermore,
