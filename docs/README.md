@@ -1,6 +1,6 @@
 # README
 
-These are the documentation sources for powsybl-metrix features.
+These are the documentation sources for PowSyBl-Metrix features.
 
 Please keep them up to date with your developments.  
 They are published on [powsybl-metrix.readthedocs.io](http://powsybl-metrix.readthedocs.io/) and pull requests are built and previewed automatically.
