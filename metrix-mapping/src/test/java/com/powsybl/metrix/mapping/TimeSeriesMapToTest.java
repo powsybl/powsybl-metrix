@@ -22,6 +22,7 @@ import org.threeten.extra.Interval;
 import java.time.Duration;
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -547,5 +548,93 @@ class TimeSeriesMapToTest {
             }
         };
         mapper.mapToNetwork(store, ImmutableList.of(observer));
+    }
+
+    @Test
+    void mapPlannedOutagesWithMapToTest() {
+        final String disconnectedIdsTimeSeriesName = "disconnected_ids_time_series";
+        final String mappingTimeSeriesName = "mapping_time_series";
+        final String disconnectedId = "FVALDI11_G";
+        final String connectedId = "FVALDI12_G";
+        final String mappedId = "FSSV.O11_G";
+
+        // mapping script
+        String script = String.join(System.lineSeparator(),
+                "mapToGenerators {",
+                "    timeSeriesName " + "'" + mappingTimeSeriesName + "'",
+                "    filter {",
+                "        generator.id == " + "'" + mappedId + "'",
+                "    }",
+                "}",
+                "mapPlannedOutages {",
+                "'" + disconnectedIdsTimeSeriesName + "'",
+                "}");
+
+        // create time series space mock
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
+
+        ReadOnlyTimeSeriesStoreCache store = new ReadOnlyTimeSeriesStoreCache(
+                TimeSeries.createDouble(mappingTimeSeriesName, index, 10d, 11d)
+        ) {
+            public Optional<StringTimeSeries> getStringTimeSeries(String timeSeriesName, int version) {
+                // FVALDI11_G disconnected on point 0, FVALDI12_G connected on point 0
+                return Optional.of(TimeSeries.createString(disconnectedIdsTimeSeriesName, index, disconnectedId, connectedId));
+            }
+
+            public Set<String> getTimeSeriesNames(TimeSeriesFilter filter) {
+                return Set.of(mappingTimeSeriesName, disconnectedIdsTimeSeriesName);
+            }
+
+            public boolean timeSeriesExists(String timeSeriesName) {
+                return true;
+            }
+
+            public Optional<TimeSeriesMetadata> getTimeSeriesMetadata(String timeSeriesName) {
+                return Optional.of(new TimeSeriesMetadata("", TimeSeriesDataType.DOUBLE, index));
+            }
+        };
+
+        // load mapping script
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
+
+        // create mapper
+        TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        // launch TimeSeriesMapper test
+        DefaultEquipmentTimeSeriesMapperObserver observer = new DefaultEquipmentTimeSeriesMapperObserver() {
+            final List<Identifiable<?>> identifiables = new ArrayList<>();
+            @Override
+            public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
+                assertEquals(0, point);
+                identifiables.add(identifiable);
+                switch (identifiable.getId()) {
+                    case disconnectedId -> {
+                        assertEquals(disconnectedIdsTimeSeriesName + "_" + disconnectedId, timeSeriesName);
+                        assertEquals(EquipmentVariable.disconnected, variable);
+                        assertEquals(0.0, equipmentValue, 0);
+                    }
+                    case connectedId -> {
+                        assertEquals(disconnectedIdsTimeSeriesName + "_" + connectedId, timeSeriesName);
+                        assertEquals(EquipmentVariable.disconnected, variable);
+                        assertEquals(1.0, equipmentValue, 0);
+                    }
+                    case mappedId -> {
+                        assertEquals(mappingTimeSeriesName, timeSeriesName);
+                        assertEquals(EquipmentVariable.targetP, variable);
+                        assertEquals(10.0, equipmentValue, 0);
+                    }
+                }
+            }
+
+            @Override
+            public void versionEnd(int version) {
+                assertThat(identifiables).containsExactlyInAnyOrder(network.getIdentifiable(disconnectedId), network.getIdentifiable(connectedId), network.getIdentifiable(mappedId));
+            }
+        };
+        mapper.mapToNetwork(store, List.of(observer));
     }
 }

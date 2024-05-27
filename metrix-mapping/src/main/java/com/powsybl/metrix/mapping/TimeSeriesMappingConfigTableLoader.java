@@ -42,7 +42,8 @@ public class TimeSeriesMappingConfigTableLoader {
     public TimeSeriesTable load(int version, Set<String> requiredTimeSeries, Range<Integer> pointRange) {
         Set<String> usedTimeSeriesNames = StreamSupport.stream(findUsedTimeSeriesNames().spliterator(), false).collect(Collectors.toSet());
         usedTimeSeriesNames.addAll(requiredTimeSeries);
-        ReadOnlyTimeSeriesStore storeWithPlannedOutages = buildPlannedOutagesStore(store, version, config.getTimeSeriesToPlannedOutagesMapping());
+        ReadOnlyTimeSeriesStore plannedOutagesStore = buildPlannedOutagesStore(store, version, config.getTimeSeriesToPlannedOutagesMapping());
+        ReadOnlyTimeSeriesStore storeWithPlannedOutages = new ReadOnlyTimeSeriesStoreAggregator(store, plannedOutagesStore);
         return loadToTable(version, storeWithPlannedOutages, pointRange, usedTimeSeriesNames);
     }
 
@@ -92,6 +93,28 @@ public class TimeSeriesMappingConfigTableLoader {
         return table;
     }
 
+    public static List<DoubleTimeSeries> computeDisconnectedEquipmentTimeSeries(ReadOnlyTimeSeriesStore store, int version, TimeSeriesIndex index, String timeSeriesName, Set<String> disconnectedIds) {
+        List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
+        int nbPoints = index.getPointCount();
+        StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name " + timeSeriesName));
+        String[] array = plannedOutagesTimeSeries.toArray();
+        for (String id : disconnectedIds) {
+            double[] values = new double[nbPoints];
+            Arrays.fill(values, CONNECTED_VALUE);
+            for (int i = 0; i < nbPoints; i++) {
+                String[] ids = array[i].split(",");
+                if (Arrays.asList(ids).contains(id)) {
+                    values[i] = DISCONNECTED_VALUE;
+                }
+            }
+            DoubleTimeSeries doubleTs = new StoredDoubleTimeSeries(
+                    new TimeSeriesMetadata(timeSeriesName + "_" + id, TimeSeriesDataType.DOUBLE, index),
+                    new UncompressedDoubleDataChunk(0, values).tryToCompress());
+            doubleTimeSeries.add(doubleTs);
+        }
+        return doubleTimeSeries;
+    }
+
     public static ReadOnlyTimeSeriesStore buildPlannedOutagesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
         List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
 
@@ -105,27 +128,11 @@ public class TimeSeriesMappingConfigTableLoader {
 
         // Build equipment planned outages time series
         TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesToPlannedOutagesMapping.keySet());
-        int nbPoints = index.getPointCount();
         for (Map.Entry<String, Set<String>> entry : timeSeriesToPlannedOutagesMapping.entrySet()) {
             String timeSeriesName = entry.getKey();
             Set<String> disconnectedIds = entry.getValue();
-
-            StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name " + timeSeriesName));
-            String[] array = plannedOutagesTimeSeries.toArray();
-            for (String id : disconnectedIds) {
-                double[] values = new double[nbPoints];
-                Arrays.fill(values, CONNECTED_VALUE);
-                for (int i = 0; i < nbPoints; i++) {
-                    String[] ids = array[i].split(",");
-                    if (Arrays.asList(ids).contains(id)) {
-                        values[i] = DISCONNECTED_VALUE;
-                    }
-                }
-                DoubleTimeSeries doubleTs = new StoredDoubleTimeSeries(
-                        new TimeSeriesMetadata(timeSeriesName + "_" + id, TimeSeriesDataType.DOUBLE, index),
-                        new UncompressedDoubleDataChunk(0, values).tryToCompress());
-                doubleTimeSeries.add(doubleTs);
-            }
+            List<DoubleTimeSeries> toto = computeDisconnectedEquipmentTimeSeries(store, version, index, timeSeriesName, disconnectedIds);
+            doubleTimeSeries.addAll(toto);
         }
         return new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries);
     }
