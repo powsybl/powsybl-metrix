@@ -7,7 +7,7 @@ A mapping configuration is made of 3 objects:
 - a time series store (in csv format)
 - a mapping groovy script using the [mapping DSL](#mapping-dsl) described below
 
-The mapping process is mainly used through Metrix simulator but it may be executed separately in order to check its intermediate results.
+The mapping process is mainly used through Metrix simulator, but it may be executed separately in order to check its intermediate results.
 
 With only required options, the mapping does not produce any output. In adding option `--mapping-synthesis-dir`, it will output a [synthesis](#synthesis) of the mapping, allowing you to check the consistency of the produced multi cases. If you want to go deeper in the mapping process, the option `--check-equipment-time-series` will produce the full time series mapping. Lastly, the option `--network-output-dir` will output the network case with mapped values for the steps requested.
 
@@ -58,7 +58,7 @@ Note that for the `mapToBreakers` function, the `variable` and `distributionKey`
 
 #### Time series
 
-With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series must exist in the input data set or be created within the groovy script. For more details about time series management, refer to the [time series description](../../data/timeseries.md).
+With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series must exist in the input data set or be created within the groovy script. For more details about time series management, refer to the [time series description](https://powsybl-core.readthedocs.io/en/latest/data/timeseries.md).
 
 Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions. For instance, if we map a constant time series of value 100, to a generator A and in another mapTo, to a generator B, then, with the default distributionKey, it will map the value 50 to each generator.
 
