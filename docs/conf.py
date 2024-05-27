@@ -21,8 +21,8 @@ print(f'appended {source_path}')
 
 # -- Project information -----------------------------------------------------
 
-project = 'powsybl-metrix'
-copyright = '2024, RTE (http://www.rte-france.com)'
+project = 'PowSyBl Metrix'
+copyright = '2018, RTE (http://www.rte-france.com)'
 
 
 # -- General configuration ---------------------------------------------------
@@ -63,20 +63,19 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = "furo"
 
-html_title = project
-html_short_title = project
+html_title = 'Metrix'
+html_short_title = 'Metrix'
 
 html_logo = '_static/logos/logo_lfe_powsybl.svg'
 html_favicon = "_static/favicon.ico"
 
 html_context = {
-    # TODO : replace next option with "https://powsybl.readthedocs.org" when website is published
-    "sidebar_logo_href": "https://www.powsybl.org/"
+    "sidebar_logo_href": "http://powsybl-metrix.readthedocs.io/"
 }
 
 html_theme_options = {
     # the following 3 lines enable edit button
-    "source_repository": "https://github.com/powsybl/TODO-addrepositoryname/",
+    "source_repository": "https://github.com/powsybl/powsybl-metrix/",
     "source_branch": "main",
     "source_directory": "docs/",
 }

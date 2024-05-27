@@ -16,23 +16,23 @@ To launch a Metrix simulation, you need:
 The module must be configured with following properties (only a few are required):
 ```yaml
 metrix:
-    home-dir: "<PATH_TO_METRIX_INSTALLATION_DIRECTORY>" # required
+  home-dir: "<PATH_TO_METRIX_INSTALLATION_DIRECTORY>" # required
 
-    iidm-export-version: "1.5" # default to latest available version
-    constant-loss-factor: false # enable constant loss factor
-    chunk-size: 10 # size of the batch processed by Metrix
-    result-limit: 10000 # max allowed output count
-    debug: false # enable debug mode
-    log-level: 2 # Metrix log level, available values: 0 (trace), 1 (debug), 2 (info), 3 (warn), 4 (error), 5 (critical)
-    debug-log-level: 0 # Metrix log level when debug mode is enabled, available values: 0 (trace), 1 (debug), 2 (info), 3 (warn), 4 (error), 5 (critical)
+  iidm-export-version: "1.5" # default to latest available version
+  constant-loss-factor: false # enable constant loss factor
+  chunk-size: 10 # size of the batch processed by Metrix
+  result-limit: 10000 # max allowed output count
+  debug: false # enable debug mode
+  log-level: 2 # Metrix log level, available values: 0 (trace), 1 (debug), 2 (info), 3 (warn), 4 (error), 5 (critical)
+  debug-log-level: 0 # Metrix log level when debug mode is enabled, available values: 0 (trace), 1 (debug), 2 (info), 3 (warn), 4 (error), 5 (critical)
 
 mapping-default-parameters:
-    tolerance-threshold: 0.0001f
+  tolerance-threshold: 0.0001f
 
 metrix-default-parameters:
-    computation-type: LF # default computation type    
-    loss-factor: 0f # default loss factor value
-    nominal-u: 100 # default nominal U
+  computation-type: LF # default computation type    
+  loss-factor: 0f # default loss factor value
+  nominal-u: 100 # default nominal U
 ```
 
 ## Configuration DSL
@@ -220,7 +220,13 @@ We can define generators whose target can be changed by Metrix:
 - In the adequacy phase to match the production and load
 - In remedial actions to comply with the defined monitored branch thresholds (only in OPF mode)
 
-For this to happen, we must define ramp up/down costs. Metrix will then choose the cheapest generator to resolve the constraints. There should be at least two generators for Metrix to be able to decrease or increase production in order to respect active power balance. If no generator is configured to be managed by Metrix, then all generators are implicitly managed with zero cost. Note that Metrix will take into account the Pmin and Pmax values of generators (which can be modified through the mapping script). In the same way than most parameters, the value can be a fixed integer/float or a time series name.
+For this to happen, we must define ramp up/down costs.
+Metrix will then adapt the setpoints of the cheapest generators to maintain the generation/demand balance (adequacy phase) or resolve the grid constraints (OPF).
+
+To solve grid constraints violations in the OPF, there should be at least two generators for Metrix to be able to decrease or increase production in order to respect active power balance.
+If no generator is configured to be managed by Metrix, then all generators are implicitly managed with zero cost.
+Note that Metrix will take into account the Pmin and Pmax values of generators (which can be modified through the mapping script).
+In the same way than most parameters, the value can be a fixed integer/float or a time series name.
 
 The syntax to define a managed generator is:
 
@@ -228,28 +234,47 @@ The syntax to define a managed generator is:
 generator(id) { // id of the generator which will be managed by Metrix 
   adequacyDownCosts 'ts_cost_down' // Cost of ramping down for the adequacy phase (here a time series name is used) 
   adequacyUpCosts 'ts_cost_up' // Cost of ramping up for the adequacy phase (here a time series name is used) 
-  redispatchingDownCosts (-10) // Cost of ramping down (preventive) for the OPF simulation (here a fixed value is used)
+  redispatchingDownCosts 10 // Cost of ramping down (preventive) for the OPF simulation (here a fixed value is used)
   redispatchingUpCosts 100 // Cost of ramping up (preventive) for the OPF simulation (here a fixed value is used)
   onContingencies 'a','b' // list of contingencies where Metrix can use this generator in (curative) remedial actions
 }
 ```
 
+Metrix optimization aims to limit the deviations with respect to the initial production plan, both for adequacy and redispatch.
+For this reason, Metrix sees all deviations of the initial production plan ($$|P - P0|$$) as a cost. Therefore, both up and down costs (adequacy and redispatch) should be defined as positive costs.
+The total generation costs for redispatch seen by Metrix is  as follows:
+
+$$
+\begin{align*}
+RedispatchCosts = \sum_{g\in Generators} RedispatchUp_g \cdot redispatchUpCosts_g +
+\sum_{g\in Generators} RedispatchDown_g \cdot redispatchDownCosts_g
+\end{align*}
+$$
+
+With
+
+$RedispatchUp_g = max(P_g - P0_g, 0)$,
+
+$RedispatchDown_g = max(P0_g - P_g, 0)$.
+
+It should be noted that this is different from redispatching cost in real systems' operation, where in case of downwards activations, the generator _pays_ the TSO for the generation reduction (not delivered energy).
+Moreover, to prioritize topological solutions over redispatch solutions, the redispatching up and down costs have a lower bound of >= 0.5. Metrix will correct any adequacy or redispatch cost below the lower bound, setting it to lower bound value.
+
 Note that if at least one generator is managed, then only defined generators will be managed to match adequacy. In some cases, it could result in a program failure (return code -1) where constraints cannot be resolved in OPF mode. Also:
 - Generators used for the adequacy phase are not necessarily the same used for the redispatching phase. If `onContingency` isn't defined but `redispatchingCost` is, then the generator will be used only in preventive actions. For the generator to be fully used for preventive and curative remedial action, both of these parameters must be defined.
 - Cost must always be defined for both directions. If we want to prevent a generator to ramp up or down, we can set a high prohibitive cost.
 - Rules that take into account Pmax and Pmin are:
-    - if the targetP is out of bounds (targetP > Pmax or targetP < Pmin) then targetP is adjusted to the closest bound. This can happen when `ignore-limits` is set in the mapping script or the tool parameter.
-    - during the adequacy phase, the Pmax constraints are enforced but Pmin are temporary set to 0. It results that a (only one at most) generator can have a targetP out of its lower bound (0 < targetP < Pmin).
-    - in the redispatching phase, generators with Pmin < targetP < Pmax are enforced between their bounds. If a group have an initial targetP below Pmin, the constraints will be initialTargetP < targetP < Pmax.
-- In theory, the down cost of generators is negative. We should be careful not to create opportunities that would interfere with the planned production. For instance if a generator delivering at Pmin with a up cost of 15 € whereas another generator has it down cost at -25 €, even in the absence of constraints, Metrix will choose to ramp up the first low cost generator and decrease the output of the second one. Beside entering fine grained realistic costs, to remedy to this issue, we could make sure that no down cost are higher (in absolute value) than up cost. We can do that using `adequacyCostOffset` and `redispatchingCostOffset` global parameters that will translate cost (we could take the maximum offset between all up and down costs for instance). This option will preserve the original values in the Metrix results.
+  - if the targetP is out of bounds (targetP > Pmax or targetP < Pmin) then targetP is adjusted to the closest bound. This can happen when `ignore-limits` is set in the mapping script or the tool parameter.
+  - during the adequacy phase, the Pmax constraints are enforced but Pmin are temporary set to 0. It results that a (only one at most) generator can have a targetP out of its lower bound (0 < targetP < Pmin).
+  - in the redispatching phase, generators with Pmin < targetP < Pmax are enforced between their bounds. If a group have an initial targetP below Pmin, the constraints will be initialTargetP < targetP < Pmax.
 
 #### Examples
 
 To allow the slack generator to ramp:
 ```groovy
 generator('slack_generator') {
-  adequacyDownCosts 0
-  adequacyUpCosts 0
+  adequacyDownCosts 0.5
+  adequacyUpCosts 0.5
   redispatchingDownCosts 'cost_slack_down'
   redispatchingUpCosts 'cost_slack_up'
 }
@@ -458,7 +483,7 @@ Any other value will hint toward one of the following issues :
 
 ```OVERLOAD_OUTAGES``` sum of threshold overage on monitored components for all defined contingencies (en MW)
 
-```GEN_COST``` total cost of generator redispatching in preventive actions
+```GEN_COST``` total cost of generator redispatching in preventive actions. It should be noted that as redispatching costs Up and Down are seen as positive costs for the system in Metrix, this computed cost does not represent the actual cost for the TSO.
 
 ```GEN_CUR_COST``` total cost of generator redispatching in curative actions
 
@@ -565,6 +590,3 @@ With option `contingencyDetailedMarginalVariations`:
 ```GEN_setId``` sum of variations on the binding constraint set (in MW)
 
 ```LOAD_setId``` sum of load shedding variations on the binding constraint set (in MW)
-
-
-

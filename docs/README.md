@@ -3,7 +3,7 @@
 These are the documentation sources for powsybl-metrix features.
 
 Please keep them up to date with your developments.  
-They are published on powsybl.readthedocs.io/ and pull requests are built and previewed automatically.
+They are published on [powsybl-metrix.readthedocs.io](http://powsybl-metrix.readthedocs.io/) and pull requests are built and previewed automatically.
 
 To build the docs locally, run the following commands:
 ~~~bash
