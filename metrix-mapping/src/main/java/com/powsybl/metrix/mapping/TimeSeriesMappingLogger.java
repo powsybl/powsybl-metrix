@@ -9,7 +9,8 @@ package com.powsybl.metrix.mapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.commons.json.JsonUtil;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.log.Log;
+import com.powsybl.metrix.mapping.log.TimeSeriesLoggerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,11 +24,17 @@ import java.nio.file.Path;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.CSV_SEPARATOR;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMappingLogger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingLogger.class);

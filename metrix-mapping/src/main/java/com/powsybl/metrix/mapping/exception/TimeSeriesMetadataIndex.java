@@ -11,6 +11,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class TimeSeriesMetadataIndex {
     @JsonProperty("startTime")
     public final long startTime;

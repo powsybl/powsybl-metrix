@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class ContentFilter {
     private String columnName;
     private List<String> values = new ArrayList<>();

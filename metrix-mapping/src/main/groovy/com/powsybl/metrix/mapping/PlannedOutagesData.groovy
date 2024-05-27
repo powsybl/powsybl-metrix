@@ -13,6 +13,9 @@ import com.powsybl.timeseries.StringTimeSeries
 import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class PlannedOutagesData {
 
     @CompileStatic

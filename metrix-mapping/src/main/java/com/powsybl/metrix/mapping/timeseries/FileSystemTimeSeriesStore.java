@@ -28,6 +28,10 @@ import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
+ */
 public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemTimeSeriesStore.class);

@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class LogDslLoader {
 
     enum LogType {

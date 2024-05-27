@@ -12,6 +12,9 @@ import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.util.Map;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class DefaultEquipmentTimeSeriesMapperObserver extends DefaultTimeSeriesMapperObserver {
 
     public void addTimeSeries(String timeSeriesName, int version, Range<Integer> pointRange, double[] values, Map<String, String> tags, TimeSeriesIndex index) {

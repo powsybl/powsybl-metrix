@@ -14,6 +14,9 @@ import com.google.common.io.LittleEndianDataOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 interface Attribute {
 
     String getName();

@@ -24,6 +24,9 @@ import java.nio.file.Paths;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixDieTest extends AbstractCompareTxt {
     private FileSystem fileSystem;
 

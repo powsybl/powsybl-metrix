@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.integration.exceptions;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class ContingenciesScriptLoadingException extends RuntimeException {
 
     public ContingenciesScriptLoadingException(RuntimeException exception) {

@@ -7,7 +7,8 @@
  */
 package com.powsybl.metrix.integration
 
-import com.powsybl.iidm.network.*
+
+import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
@@ -32,6 +33,9 @@ import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixDslDataLoader {
 
     private static final String METRIX_SCRIPT_SECTION = "Metrix script"

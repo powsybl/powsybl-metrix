@@ -21,6 +21,9 @@ import java.util.Objects;
 
 import static com.powsybl.metrix.integration.AbstractMetrix.MAX_THREAT_PREFIX;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public final class MetrixPostProcessingTimeSeries {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixPostProcessingTimeSeries.class);

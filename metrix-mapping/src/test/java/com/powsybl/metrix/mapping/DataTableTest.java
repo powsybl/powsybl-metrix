@@ -18,6 +18,9 @@ import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class DataTableTest {
 
     final List<String> columnNames = List.of("columnName1", "columnName2");

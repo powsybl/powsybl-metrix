@@ -23,6 +23,9 @@ import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * @author amichaut {@literal <arthur.michaut at artelys.com>}
+ */
 class TimeSeriesProviderTsTest {
 
     private Network network;

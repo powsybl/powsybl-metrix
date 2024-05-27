@@ -21,6 +21,9 @@ import java.nio.file.Path;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class EquipmentTimeSeriesWriter {
 
     private static final char SEPARATOR = ';';

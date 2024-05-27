@@ -11,6 +11,9 @@ import com.google.common.collect.Range;
 
 import java.util.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMapperParameters {
 
     private final TreeSet<Integer> versions;

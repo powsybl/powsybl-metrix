@@ -15,6 +15,9 @@ import java.util.Set;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkIndexUnicity;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class ComputationRange {
 
     private Set<Integer> versions;

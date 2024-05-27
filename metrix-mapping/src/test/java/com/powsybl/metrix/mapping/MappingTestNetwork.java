@@ -16,6 +16,10 @@ import com.powsybl.iidm.network.*;
  * Bus 2 connects 1 generator and 2 loads.
  *
  */
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
+
 public final class MappingTestNetwork {
 
     private MappingTestNetwork() {

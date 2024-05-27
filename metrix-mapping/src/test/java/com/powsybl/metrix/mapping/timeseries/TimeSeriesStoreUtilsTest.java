@@ -38,6 +38,9 @@ import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.toTable;
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesStoreUtilsTest {
     private FileSystem fileSystem;
 

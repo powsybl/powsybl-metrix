@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.exception;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class TimeSeriesStoreNotFoundException extends RuntimeException {
     public TimeSeriesStoreNotFoundException(String message) {
         super(message);

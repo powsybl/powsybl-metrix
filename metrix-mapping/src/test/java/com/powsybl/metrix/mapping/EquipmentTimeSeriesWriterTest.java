@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,6 +32,9 @@ import java.util.TreeSet;
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class EquipmentTimeSeriesWriterTest {
 
     private FileSystem fileSystem;
