@@ -10,9 +10,7 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.datasource.MemDataSource;
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.serde.NetworkSerDe;
@@ -1405,6 +1403,20 @@ class TimeSeriesMapperCheckerTest {
         Network network = createNetwork();
         assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("HVDC1"), EquipmentVariable.p0, 100));
         assertTrue(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("NE_NO_1"), EquipmentVariable.phaseTapPosition, 100));
+
+        // Add twoWindingsTransformer without phaseTapChanger
+        TwoWindingsTransformer twoWindingsTransformer = network.getTwoWindingsTransformer("NE_NO_1");
+        Substation substation = twoWindingsTransformer.getSubstation().get();
+        substation.newTwoWindingsTransformer()
+                .setId("twt")
+                .setVoltageLevel1(twoWindingsTransformer.getTerminal1().getVoltageLevel().getId())
+                .setVoltageLevel2(twoWindingsTransformer.getTerminal2().getVoltageLevel().getId())
+                .setNode1(13)
+                .setNode2(14)
+                .setR(twoWindingsTransformer.getR())
+                .setX(twoWindingsTransformer.getX())
+                .add();
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("twt"), EquipmentVariable.phaseTapPosition, 10));
     }
 
     @Test
