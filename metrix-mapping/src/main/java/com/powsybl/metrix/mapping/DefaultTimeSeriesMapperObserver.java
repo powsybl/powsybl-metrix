@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class DefaultTimeSeriesMapperObserver implements TimeSeriesMapperObserver {
 
     @Override

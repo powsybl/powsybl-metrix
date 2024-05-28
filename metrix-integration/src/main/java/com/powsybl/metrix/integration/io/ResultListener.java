@@ -12,6 +12,9 @@ import com.powsybl.timeseries.TimeSeries;
 
 import java.util.List;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public interface ResultListener {
 
     default void onVersionResultBegin(int version) {

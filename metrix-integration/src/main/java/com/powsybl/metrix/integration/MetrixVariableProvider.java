@@ -15,6 +15,9 @@ import com.powsybl.metrix.mapping.MappingVariableProvider;
 
 import java.io.IOException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(MappingVariableProvider.class)
 public class MetrixVariableProvider implements MappingVariableProvider<MetrixVariable> {
     @Override

@@ -20,6 +20,9 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public final class TimeSeriesStoreUtil {
 
     private TimeSeriesStoreUtil() {

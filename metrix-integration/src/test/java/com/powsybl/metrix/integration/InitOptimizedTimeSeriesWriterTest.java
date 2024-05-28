@@ -19,13 +19,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.TreeSet;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 class InitOptimizedTimeSeriesWriterTest {
 
     private Network network;

@@ -25,6 +25,9 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixInputDataGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixInputDataGenerator.class);

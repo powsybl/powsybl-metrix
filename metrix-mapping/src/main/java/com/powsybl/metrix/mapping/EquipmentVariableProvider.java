@@ -13,6 +13,9 @@ import com.google.auto.service.AutoService;
 
 import java.io.IOException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(MappingVariableProvider.class)
 public class EquipmentVariableProvider implements MappingVariableProvider<EquipmentVariable> {
     @Override

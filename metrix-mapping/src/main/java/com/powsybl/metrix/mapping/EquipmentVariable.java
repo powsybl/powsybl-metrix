@@ -19,6 +19,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public enum EquipmentVariable implements MappingVariable {
     targetP("targetP"),
     targetQ("targetQ"),

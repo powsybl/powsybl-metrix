@@ -38,6 +38,10 @@ import java.util.concurrent.locks.ReentrantLock;
  * Once Random access file is closed, file cannot be delete until buffer has been garbage collected.
  * The workaround used here is to start a "cleaner" thread that try to delete the file every minute.
  */
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
+
 public class MmapByteBufferService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MmapByteBufferService.class);

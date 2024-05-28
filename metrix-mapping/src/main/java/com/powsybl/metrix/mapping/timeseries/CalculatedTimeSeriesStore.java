@@ -8,11 +8,15 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.timeseries.*;
-import com.powsybl.timeseries.ast.*;
+import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNames;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private final Map<String, NodeCalc> nodes;

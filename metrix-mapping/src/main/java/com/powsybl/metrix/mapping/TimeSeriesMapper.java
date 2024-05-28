@@ -13,8 +13,8 @@ import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRangeAdder;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.metrix.mapping.log.*;
-import com.powsybl.metrix.mapping.timeseries.MappedEquipment;
 import com.powsybl.metrix.mapping.timeseries.EquipmentTimeSeriesMap;
+import com.powsybl.metrix.mapping.timeseries.MappedEquipment;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesTable;
 import org.slf4j.Logger;
@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMapper {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMapper.class);

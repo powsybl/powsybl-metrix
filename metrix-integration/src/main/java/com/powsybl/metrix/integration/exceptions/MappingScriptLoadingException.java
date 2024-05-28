@@ -9,6 +9,9 @@ package com.powsybl.metrix.integration.exceptions;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MappingScriptLoadingException extends RuntimeException {
 
     public MappingScriptLoadingException(ExecutionException exception) {

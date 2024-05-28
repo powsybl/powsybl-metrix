@@ -26,6 +26,9 @@ import org.apache.commons.cli.Options;
 
 import java.nio.file.Path;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 @AutoService(Tool.class)
 public class MetrixDieTool implements Tool {
 

@@ -9,6 +9,9 @@ package com.powsybl.metrix.integration.exceptions;
 
 import java.text.MessageFormat;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixException extends RuntimeException {
 
     public MetrixException(String message) {

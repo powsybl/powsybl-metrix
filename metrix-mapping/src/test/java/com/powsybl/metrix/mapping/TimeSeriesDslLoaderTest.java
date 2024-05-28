@@ -10,8 +10,8 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Sets;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.io.table.TableFormatterConfig;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.Test;
@@ -28,6 +28,9 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesDslLoaderTest {
 
     private final MappingParameters parameters = MappingParameters.load();

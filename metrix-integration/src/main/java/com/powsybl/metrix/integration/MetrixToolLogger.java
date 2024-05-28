@@ -13,6 +13,9 @@ import java.io.PrintStream;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixToolLogger implements MetrixChunkLogger {
 
     private final PrintStream out;

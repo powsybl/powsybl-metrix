@@ -12,6 +12,9 @@ import com.fasterxml.jackson.core.JsonParser;
 
 import java.io.IOException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public interface MappingVariableProvider<E> {
 
     void writeJson(E variable, JsonGenerator generator) throws IOException;

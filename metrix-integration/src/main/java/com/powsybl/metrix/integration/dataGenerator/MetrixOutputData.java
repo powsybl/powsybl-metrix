@@ -20,6 +20,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixOutputData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixOutputData.class);

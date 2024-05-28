@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping.log;
 import static com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged.BC_RANGE_PROBLEM;
 import static com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged.MAPPING_RANGE_PROBLEM;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class RangeWithMinPViolatedByTargetP implements LogDescriptionBuilder {
 
     private String notIncludedVariable;

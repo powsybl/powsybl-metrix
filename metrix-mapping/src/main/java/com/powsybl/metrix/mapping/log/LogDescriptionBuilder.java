@@ -13,6 +13,9 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public interface LogDescriptionBuilder {
     String LABEL_SEPARATOR = " / ";
     String IGNORE_LIMITS_DISABLED = LABEL_SEPARATOR + "IL disabled";

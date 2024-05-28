@@ -12,6 +12,9 @@ import com.powsybl.commons.config.PlatformConfig;
 
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MappingParameters {
 
     private static final float DEFAULT_TOLERANCE_THRESHOLD = 0.0001f;

@@ -14,6 +14,9 @@ import com.powsybl.metrix.mapping.MappingKey;
 
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MappingKeyJsonSerializer extends StdSerializer<MappingKey> {
 
     public MappingKeyJsonSerializer() {

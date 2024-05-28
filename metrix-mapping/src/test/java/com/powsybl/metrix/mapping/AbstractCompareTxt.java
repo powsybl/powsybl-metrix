@@ -18,6 +18,9 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public abstract class AbstractCompareTxt {
 
     public static Object compareStreamTxt(byte[] stream, String directoryName, String fileName) throws Exception {
