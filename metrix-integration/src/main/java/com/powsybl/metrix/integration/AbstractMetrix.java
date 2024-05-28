@@ -14,7 +14,7 @@ import com.powsybl.computation.ComputationManager;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
-import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.slf4j.Logger;

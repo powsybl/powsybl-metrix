@@ -13,7 +13,9 @@ import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
 import java.util.zip.ZipOutputStream;
 
 public class MetrixMock extends AbstractMetrix {
@@ -24,6 +26,7 @@ public class MetrixMock extends AbstractMetrix {
     }
 
     @Override
-    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) {
+    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) throws IOException {
+        Files.newOutputStream(commonWorkingDir.toPath().resolve("log_1_0.txt"));
     }
 }
