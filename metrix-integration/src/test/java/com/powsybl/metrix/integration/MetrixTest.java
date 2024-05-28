@@ -120,9 +120,16 @@ class MetrixTest {
             );
 
             MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
-
             MetrixRunResult run = metrix.run(runParameters, resultListener, null);
             assertThat(run).isNotNull();
+
+            MetrixRunParameters runParametersSmallChunkSize = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 1, true, true, true);
+            MetrixRunResult runSmallChunkSize = metrix.run(runParametersSmallChunkSize, resultListener, null);
+            assertThat(runSmallChunkSize).isNotNull();
+
+            MetrixRunParameters runParametersFirstVariantUndefined = new MetrixRunParameters(-1, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
+            MetrixRunResult runFirstVariantUndefined = metrix.run(runParametersFirstVariantUndefined, resultListener, null);
+            assertThat(runFirstVariantUndefined).isNotNull();
         }
     }
 
