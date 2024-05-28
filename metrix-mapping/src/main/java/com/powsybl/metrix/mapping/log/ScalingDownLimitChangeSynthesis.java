@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.log;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class ScalingDownLimitChangeSynthesis implements LogDescriptionBuilder {
 
     private String timeSeriesName;

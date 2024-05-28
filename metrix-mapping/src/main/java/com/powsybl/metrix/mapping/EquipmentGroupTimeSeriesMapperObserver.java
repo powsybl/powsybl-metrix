@@ -18,6 +18,9 @@ import java.util.*;
 
 import static com.powsybl.metrix.mapping.EquipmentTimeSeriesMapperObserver.EQUIPMENT;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTimeSeriesMapperObserver {
     public static final String GROUP = "group";
 

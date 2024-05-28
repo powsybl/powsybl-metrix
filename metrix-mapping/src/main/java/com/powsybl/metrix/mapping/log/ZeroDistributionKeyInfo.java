@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping.log;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class ZeroDistributionKeyInfo implements LogDescriptionBuilder {
 
     private final String timeSeriesName;

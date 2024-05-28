@@ -25,6 +25,9 @@ import java.util.stream.Stream;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private final Map<String, Map<Integer, TimeSeries>> stringTimeSeries = new HashMap<>();

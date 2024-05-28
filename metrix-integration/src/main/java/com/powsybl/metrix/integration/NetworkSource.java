@@ -11,6 +11,9 @@ import com.powsybl.iidm.network.Network;
 
 import java.io.OutputStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public interface NetworkSource {
 
     Network copy();

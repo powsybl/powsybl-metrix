@@ -9,11 +9,14 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Map;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class EquipmentTimeSeriesWriterObserver extends EquipmentTimeSeriesMapperObserver {
 
     private static final String OUTPUT_FILE_NAME = "version_";

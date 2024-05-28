@@ -9,6 +9,9 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.metrix.mapping.LogDslLoader
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class ContingenciesData {
 
     List<String> specificContingencies

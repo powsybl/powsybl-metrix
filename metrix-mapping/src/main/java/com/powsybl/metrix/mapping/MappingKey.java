@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MappingKey {
 
     private final MappingVariable mappingVariable;

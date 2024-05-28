@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping
 import com.powsybl.iidm.network.Identifiable
 import groovy.transform.CompileStatic
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class FilteredData {
 
     Closure<Boolean> filter

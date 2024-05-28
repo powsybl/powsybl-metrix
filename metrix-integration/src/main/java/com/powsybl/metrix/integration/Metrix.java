@@ -27,6 +27,9 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class Metrix extends AbstractMetrix {
 
     private final PrintStream out;

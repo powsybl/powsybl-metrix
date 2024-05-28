@@ -17,9 +17,9 @@ import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesTable;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -33,6 +33,9 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private static final Set<EquipmentVariable> METRIX_EQUIPMENT_VARIABLES = EnumSet.of(EquipmentVariable.targetP,

@@ -30,6 +30,9 @@ import java.util.zip.ZipOutputStream;
 
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);

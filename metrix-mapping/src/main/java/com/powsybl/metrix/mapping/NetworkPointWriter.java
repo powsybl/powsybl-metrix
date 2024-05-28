@@ -30,6 +30,9 @@ import java.util.Objects;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     public static final int OFF_VALUE = 0;

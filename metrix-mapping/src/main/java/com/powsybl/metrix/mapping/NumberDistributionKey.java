@@ -14,6 +14,9 @@ import com.powsybl.timeseries.TimeSeriesException;
 
 import java.io.IOException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public record NumberDistributionKey(double value) implements DistributionKey {
 
     static final String NAME = "number";

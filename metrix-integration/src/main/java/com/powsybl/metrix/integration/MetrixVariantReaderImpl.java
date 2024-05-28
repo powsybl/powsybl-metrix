@@ -36,6 +36,9 @@ import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixKey;
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixVariableKey;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixVariantReaderImpl.class);
 

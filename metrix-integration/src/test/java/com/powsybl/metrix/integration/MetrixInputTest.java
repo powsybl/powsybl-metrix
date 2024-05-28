@@ -31,14 +31,17 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.FileSystem;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixInputTest {
 
     protected FileSystem fileSystem;

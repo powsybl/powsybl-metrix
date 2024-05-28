@@ -24,6 +24,9 @@ import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.formatDouble;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     private static final String VOLTAGE_LEVEL = "voltageLevel";

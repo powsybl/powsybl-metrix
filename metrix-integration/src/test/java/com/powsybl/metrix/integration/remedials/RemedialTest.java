@@ -14,6 +14,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * @author Nicolas Rol {@literal <135979730+rolnico at users.noreply.github.com>}
+ */
 class RemedialTest {
 
     @Test

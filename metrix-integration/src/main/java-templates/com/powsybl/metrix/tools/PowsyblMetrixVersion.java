@@ -11,6 +11,9 @@ import com.google.auto.service.AutoService;
 import com.powsybl.tools.AbstractVersion;
 import com.powsybl.tools.Version;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 @AutoService(Version.class)
 public class PowsyblMetrixVersion extends AbstractVersion {
 

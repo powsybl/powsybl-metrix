@@ -18,6 +18,9 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixMock extends AbstractMetrix {
     public MetrixMock(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store,
                       ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,

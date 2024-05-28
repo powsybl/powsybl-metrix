@@ -12,6 +12,9 @@ import com.powsybl.iidm.network.Switch
 import com.powsybl.iidm.network.TopologyKind
 import groovy.transform.CompileStatic
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class SimpleMappingData extends FilteredData {
 
     String timeSeriesName

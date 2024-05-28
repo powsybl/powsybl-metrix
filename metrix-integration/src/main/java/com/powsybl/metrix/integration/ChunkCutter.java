@@ -9,6 +9,9 @@ package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class ChunkCutter {
 
     private final int firstVariant;

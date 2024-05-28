@@ -16,6 +16,9 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.OptionalInt;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixParameters {
 
     private static final MetrixComputationType DEFAULT_COMPUTATION_TYPE = MetrixComputationType.LF;

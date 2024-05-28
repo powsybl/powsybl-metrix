@@ -7,13 +7,12 @@
  */
 package com.powsybl.metrix.integration
 
-import com.powsybl.iidm.network.HvdcLine
-import com.powsybl.iidm.network.Identifiable
-import com.powsybl.iidm.network.Line
-import com.powsybl.iidm.network.Network
-import com.powsybl.iidm.network.TwoWindingsTransformer
+import com.powsybl.iidm.network.*
 import com.powsybl.metrix.mapping.LogDslLoader
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class SectionMonitoringData {
 
     Map<String, Float> branchList = new HashMap<>()

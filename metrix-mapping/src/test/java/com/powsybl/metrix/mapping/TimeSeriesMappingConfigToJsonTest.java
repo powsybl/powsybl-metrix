@@ -21,6 +21,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMappingConfigToJsonTest {
 
     private final TimeSeriesMappingConfig config = new TimeSeriesMappingConfig();

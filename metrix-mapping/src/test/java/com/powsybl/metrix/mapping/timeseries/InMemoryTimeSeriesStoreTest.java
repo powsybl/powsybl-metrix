@@ -8,7 +8,9 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.google.common.collect.Sets;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesMetadata;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
@@ -25,6 +27,9 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class InMemoryTimeSeriesStoreTest {
 
     @Test

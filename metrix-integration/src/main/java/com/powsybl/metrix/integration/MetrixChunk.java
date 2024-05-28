@@ -30,6 +30,9 @@ import java.util.stream.Stream;
 
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixChunk {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixChunk.class);

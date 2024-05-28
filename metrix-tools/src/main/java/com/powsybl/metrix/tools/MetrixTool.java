@@ -14,7 +14,10 @@ import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.Metrix;
+import com.powsybl.metrix.integration.MetrixAppLogger;
+import com.powsybl.metrix.integration.MetrixRunParameters;
+import com.powsybl.metrix.integration.NetworkSource;
 import com.powsybl.metrix.integration.compatibility.CsvResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
@@ -31,7 +34,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,6 +50,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(Tool.class)
 public class MetrixTool implements Tool {
 

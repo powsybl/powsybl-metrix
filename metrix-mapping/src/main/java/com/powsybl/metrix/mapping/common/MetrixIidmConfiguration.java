@@ -11,6 +11,9 @@ import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
 import com.powsybl.iidm.serde.IidmSerDeConstants;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public final class MetrixIidmConfiguration {
 
     private static final String IIDM_EXPORT_VERSION = IidmSerDeConstants.CURRENT_IIDM_VERSION.toString(".");

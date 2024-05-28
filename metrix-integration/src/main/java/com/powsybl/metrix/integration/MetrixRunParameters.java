@@ -11,6 +11,9 @@ import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixRunParameters {
 
     private final int firstVariant;
