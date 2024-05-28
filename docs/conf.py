@@ -10,7 +10,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+import datetime
 import os
+import re
 import sys
 
 # Path to python sources, for doc generation on readthedocs
@@ -22,7 +24,31 @@ print(f'appended {source_path}')
 # -- Project information -----------------------------------------------------
 
 project = 'PowSyBl Metrix'
-copyright = '2024, RTE (http://www.rte-france.com)'
+github_repository = "https://github.com/powsybl/powsybl-metrix/"
+copyright_year = f'2018-{ datetime.datetime.now().year }'
+
+# Find the version and release information.
+# We have a single source of truth for our version number: pip's __init__.py file.
+# This next bit of code reads from it.
+file_with_version = os.path.join(source_path, "pom.xml")
+with open(file_with_version) as f:
+    next_line_contains_version = False
+    for line in f:
+        if next_line_contains_version == False:
+            m = re.match(r'^ {4}\<artifactId\>powsybl\-metrix\<\/artifactId\>', line)
+            if m:
+                next_line_contains_version = True
+        else:
+            m = re.match(r'^ {4}\<version\>(.*)\<\/version\>', line)
+            if m:
+                __version__ = m.group(1)
+                # The short X.Y version.
+                version = ".".join(__version__.split(".")[:2])
+                # The full version, including alpha/beta/rc tags.
+                release = __version__
+                break
+    else:  # AKA no-break
+        version = release = "dev"
 
 
 # -- General configuration ---------------------------------------------------
@@ -38,7 +64,9 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.todo',
               'sphinx.ext.intersphinx',
               'sphinx_tabs.tabs',
-              'myst_parser']
+              'myst_parser',
+              # Extension used to add a "copy" button on code blocks
+              'sphinx_copybutton']
 myst_enable_extensions = [
     "amsmath",
     "colon_fence",
@@ -63,19 +91,21 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 #
 html_theme = "furo"
 
-html_title = 'Metrix'
-html_short_title = 'Metrix'
+html_title = f"{project} v{release}"
+html_short_title = f'Metrix v{release}'
 
 html_logo = '_static/logos/logo_lfe_powsybl.svg'
 html_favicon = "_static/favicon.ico"
 
 html_context = {
+    "copyright_year": copyright_year,
+    "github_repository": github_repository,
     "sidebar_logo_href": "http://powsybl-metrix.readthedocs.io/"
 }
 
 html_theme_options = {
     # the following 3 lines enable edit button
-    "source_repository": "https://github.com/powsybl/powsybl-metrix/",
+    "source_repository": github_repository,
     "source_branch": "main",
     "source_directory": "docs/",
 }

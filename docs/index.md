@@ -14,6 +14,7 @@ MetrixTool calls *[metrix simulator](metrix-simulator.md)* as an external progra
 ```{toctree}
 ---
 maxdepth: 2
+hidden: true
 ---
 
 mapping.md
