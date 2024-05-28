@@ -20,7 +20,6 @@ source_path = os.path.abspath('..')
 sys.path.insert(0, source_path)
 print(f'appended {source_path}')
 
-
 # -- Project information -----------------------------------------------------
 
 project = 'PowSyBl Metrix'
