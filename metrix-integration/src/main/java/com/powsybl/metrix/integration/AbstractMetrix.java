@@ -74,10 +74,7 @@ public abstract class AbstractMetrix {
         if (runParameters.getChunkSize() != -1 && runParameters.getChunkSize() < index.getPointCount()) {
             return runParameters.getChunkSize();
         }
-        if (chunkSizeFromConfig != -1 && chunkSizeFromConfig < index.getPointCount()) {
-            return chunkSizeFromConfig;
-        }
-        return index.getPointCount();
+        return chunkSizeFromConfig != -1 && chunkSizeFromConfig < index.getPointCount() ? chunkSizeFromConfig : index.getPointCount();
     }
 
     public MetrixRunResult run(MetrixRunParameters runParameters, ResultListener listener, String nullableSchemaName) {
@@ -156,7 +153,7 @@ public abstract class AbstractMetrix {
         return Math.min(firstVariant + runParameters.getVariantCount() - 1, index.getPointCount() - 1);
     }
 
-    void addLogsToArchive(
+    private void addLogsToArchive(
             MetrixRunParameters runParameters,
             WorkingDirectory commonWorkingDir,
             int chunkCount,
@@ -170,7 +167,7 @@ public abstract class AbstractMetrix {
         }
     }
 
-    void addVersionLogsToArchive(
+    private void addVersionLogsToArchive(
             WorkingDirectory commonWorkingDir,
             int chunkCount,
             int chunkOffset,

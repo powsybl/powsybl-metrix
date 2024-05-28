@@ -65,9 +65,6 @@ public class Metrix extends AbstractMetrix {
         }
 
         List<CompletableFuture<?>> futures = executeVersions(analysisResult, runParameters, listener, metrixConfig, commonWorkingDir, chunkCutter);
-        if (futures.isEmpty()) {
-            return;
-        }
 
         for (CompletableFuture<?> future : futures) {
             future.join();
