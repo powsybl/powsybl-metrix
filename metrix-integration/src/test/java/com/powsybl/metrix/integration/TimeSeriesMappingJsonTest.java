@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping.json;
+package com.powsybl.metrix.integration;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +13,7 @@ import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.json.TimeSeriesMappingConfigJsonModule;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -29,6 +30,7 @@ class TimeSeriesMappingJsonTest {
 
         mappingConfig.setUnmappedVariableActivePowerLoads(Collections.singleton("a"));
         mappingConfig.setBreakerTimeSeries(Collections.singleton(new MappingKey(EquipmentVariable.targetP, "a")));
+        mappingConfig.setGeneratorTimeSeries(Collections.singleton(new MappingKey(MetrixVariable.thresholdN, "a")));
 
         String serialized = objectMapper.writeValueAsString(mappingConfig);
         TimeSeriesMappingConfig mappingConfig2 = objectMapper.readValue(serialized, TimeSeriesMappingConfig.class);
