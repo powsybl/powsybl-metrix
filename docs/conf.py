@@ -27,7 +27,7 @@ github_repository = "https://github.com/powsybl/powsybl-metrix/"
 copyright_year = f'2018-{ datetime.datetime.now().year }'
 
 # Find the version and release information.
-# We have a single source of truth for our version number: pip's __init__.py file.
+# We have a single source of truth for our version number: our pom.xml file.
 # This next bit of code reads from it.
 file_with_version = os.path.join(source_path, "pom.xml")
 with open(file_with_version) as f:

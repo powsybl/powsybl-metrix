@@ -39,11 +39,11 @@ If you want to link a specific part of a page, use one of those examples:
 - Let's talk about the power of [calculated time series](inv:powsyblcore:std:label:#calculated-timeseries).
 - Let's talk about the power of [calculated time series](inv:powsyblcore:*:*:#calculated-timeseries).
 ~~~
-*Note: for these last examples to work, there need to be a corresponding reference in the external documentation. 
+*Note: for the last examples to work, there need to be a corresponding reference in the external documentation. 
 For those examples, `(timeseries)=` and `(calculated-timeseries)=` have been added right before the corresponding titles 
 in the [TimeSeries page](inv:powsyblcore:std:doc#data/timeseries).*
 
-*Note²: if the build fails, try with the `-E` option to erase the cache:*
+*Note²: if the build fails, try with the `-E` option to clear the cache:*
 ~~~bash
 sphinx-build -a -E docs ./build-docs
 ~~~
