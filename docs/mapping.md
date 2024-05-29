@@ -1,3 +1,4 @@
+(mapping)=
 # Mapping configuration
 
 ## Introduction

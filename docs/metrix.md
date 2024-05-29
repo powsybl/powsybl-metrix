@@ -1,3 +1,4 @@
+(metrix)=
 # Metrix simulation
 
 ## Introduction
