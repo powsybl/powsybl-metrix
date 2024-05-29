@@ -48,6 +48,10 @@ with open(file_with_version) as f:
                 break
     else:  # AKA no-break
         version = release = "dev"
+
+# Short project name
+short_project = project.split(" ", 1)[1] if project.split(" ", 1)[0] == "PowSyBl" else project
+
 # -- General configuration ---------------------------------------------------
 
 # Add any Sphinx extension module names here, as strings. They can be
@@ -89,7 +93,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 html_theme = "furo"
 
 html_title = f"{project} v{release}"
-html_short_title = f'Metrix v{release}'
+html_short_title = f'{short_project} v{release}'
 
 html_logo = '_static/logos/logo_lfe_powsybl.svg'
 html_favicon = "_static/favicon.ico"
