@@ -9,6 +9,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.MemDataSource;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
