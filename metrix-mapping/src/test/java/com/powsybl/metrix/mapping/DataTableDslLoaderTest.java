@@ -10,7 +10,8 @@ package com.powsybl.metrix.mapping;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.exception.DataTableException;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class DataTableDslLoaderTest {
 
     private final MappingParameters parameters = MappingParameters.load();

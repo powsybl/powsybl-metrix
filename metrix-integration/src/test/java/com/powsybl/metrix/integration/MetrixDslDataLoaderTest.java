@@ -36,6 +36,9 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixDslDataLoaderTest {
 
     private FileSystem fileSystem;
@@ -1016,7 +1019,3 @@ class MetrixDslDataLoaderTest {
         assertEquals(expectedMessage, output);
     }
 }
-
-
-
-

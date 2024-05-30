@@ -17,7 +17,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
@@ -25,6 +27,9 @@ import java.util.*;
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMappingTest {
 
     private Network network;

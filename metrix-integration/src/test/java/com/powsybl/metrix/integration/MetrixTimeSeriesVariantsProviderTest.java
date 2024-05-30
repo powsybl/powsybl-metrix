@@ -13,7 +13,7 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.contingency.BranchContingency;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
@@ -35,10 +35,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 class MetrixTimeSeriesVariantsProviderTest {
     private FileSystem fileSystem;
     private Path metrixFile;

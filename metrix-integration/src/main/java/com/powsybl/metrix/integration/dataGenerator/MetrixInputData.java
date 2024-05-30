@@ -28,6 +28,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixInputData {
 
     private static final float UNDEFINED_VALUE = 99999f;

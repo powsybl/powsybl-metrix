@@ -12,6 +12,9 @@ import com.powsybl.metrix.integration.remedials.Remedial;
 
 import java.util.List;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class MetrixInputAnalysisResult {
 
     private final List<Remedial> remedials;

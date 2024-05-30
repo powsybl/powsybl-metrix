@@ -10,6 +10,9 @@ package com.powsybl.metrix.integration.remedials;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class Remedial {
 
     private final int lineFile;

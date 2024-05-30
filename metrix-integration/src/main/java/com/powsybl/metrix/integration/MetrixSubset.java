@@ -9,6 +9,9 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.util.IntCounter;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public enum MetrixSubset implements IntCounter {
     REGION,
     GROUPE,

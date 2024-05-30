@@ -35,6 +35,9 @@ import static com.powsybl.metrix.mapping.PlannedOutagesData.mapPlannedOutages
 import static com.powsybl.metrix.mapping.SimpleMappingData.mapToBreakers
 import static com.powsybl.metrix.mapping.SimpleVariableMappingData.mapToSimpleVariableEquipments
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesDslLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoader.class)

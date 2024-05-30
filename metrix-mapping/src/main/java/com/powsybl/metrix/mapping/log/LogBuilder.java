@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping.log;
 
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class LogBuilder {
     private System.Logger.Level level;
 

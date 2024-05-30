@@ -28,6 +28,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixNetwork {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
@@ -716,4 +719,3 @@ public class MetrixNetwork {
         }
     }
 }
-

@@ -19,6 +19,9 @@ import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import javax.annotation.Nullable;
 import java.util.List;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixAnalysisResult {
     @Nullable
     public final MetrixDslData metrixDslData;

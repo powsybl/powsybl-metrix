@@ -10,6 +10,9 @@ package com.powsybl.metrix.mapping
 import com.powsybl.iidm.network.Identifiable
 import groovy.transform.CompileStatic
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class Filter {
 
     @CompileStatic

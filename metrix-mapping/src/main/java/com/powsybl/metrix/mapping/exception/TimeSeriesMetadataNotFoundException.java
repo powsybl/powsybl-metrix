@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.exception;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class TimeSeriesMetadataNotFoundException extends RuntimeException {
     public TimeSeriesMetadataNotFoundException(String message) {
         super(message);

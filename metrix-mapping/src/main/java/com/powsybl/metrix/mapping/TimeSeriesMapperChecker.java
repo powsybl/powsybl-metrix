@@ -17,6 +17,9 @@ import java.util.*;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
     private static final String UNHANDLED_SCALING_OPERATION_ERROR = "Unhandled scaling operation %s";

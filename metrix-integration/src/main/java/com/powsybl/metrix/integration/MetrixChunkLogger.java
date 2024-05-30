@@ -9,6 +9,9 @@ package com.powsybl.metrix.integration;
 
 import java.io.IOException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public interface MetrixChunkLogger {
 
     static MetrixChunkLogger neverNull(MetrixChunkLogger metrixChunkLogger) {

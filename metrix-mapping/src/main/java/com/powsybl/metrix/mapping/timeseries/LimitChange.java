@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping.timeseries;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class LimitChange {
     private final double baseCaseLimit;
 

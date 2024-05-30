@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.mapping
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 enum SimpleEquipmentGroupType implements EquipmentGroupType {
     SUBSTATION,
     VOLTAGE_LEVEL

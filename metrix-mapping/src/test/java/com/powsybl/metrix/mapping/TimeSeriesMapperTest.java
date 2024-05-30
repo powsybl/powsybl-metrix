@@ -30,6 +30,9 @@ import java.util.TreeSet;
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMapperTest {
 
     private Network network;

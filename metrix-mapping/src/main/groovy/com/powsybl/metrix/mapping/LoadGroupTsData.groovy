@@ -11,6 +11,9 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Load
 import groovy.transform.CompileStatic
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class LoadGroupTsData extends EquipmentGroupTsData {
 
     @CompileStatic

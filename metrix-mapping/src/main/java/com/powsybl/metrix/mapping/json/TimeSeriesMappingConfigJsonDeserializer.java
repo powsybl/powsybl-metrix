@@ -15,6 +15,9 @@ import com.powsybl.metrix.mapping.TimeSeriesMappingConfigJson;
 
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigJsonDeserializer extends StdDeserializer<TimeSeriesMappingConfig> {
 
     public TimeSeriesMappingConfigJsonDeserializer() {

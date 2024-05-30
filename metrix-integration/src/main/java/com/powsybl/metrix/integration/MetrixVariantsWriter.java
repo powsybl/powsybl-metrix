@@ -19,6 +19,9 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixVariantsWriter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixVariantsWriter.class);

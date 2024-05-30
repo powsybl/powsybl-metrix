@@ -13,6 +13,9 @@ import com.powsybl.timeseries.TimeSeriesIndex;
 import java.nio.file.Path;
 import java.util.Set;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public interface MetrixVariantProvider {
     class Variants {
         final int firstVariant;

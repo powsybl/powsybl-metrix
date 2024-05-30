@@ -17,7 +17,9 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
-import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.MappingParameters;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.slf4j.Logger;
@@ -36,6 +38,9 @@ import java.util.zip.ZipOutputStream;
 
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);

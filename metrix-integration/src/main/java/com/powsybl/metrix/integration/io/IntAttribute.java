@@ -23,6 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @JsonDeserialize(using = IntAttribute.JsonDeserializer.class)
 class IntAttribute implements Attribute {
 

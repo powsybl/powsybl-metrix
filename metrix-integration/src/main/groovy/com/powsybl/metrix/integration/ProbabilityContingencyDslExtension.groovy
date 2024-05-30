@@ -13,6 +13,9 @@ import com.powsybl.contingency.Contingency
 import com.powsybl.contingency.dsl.ContingencyDslExtension
 import com.powsybl.metrix.integration.contingency.Probability
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(ContingencyDslExtension.class)
 class ProbabilityContingencyDslExtension implements ContingencyDslExtension {
     @Override

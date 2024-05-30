@@ -21,11 +21,16 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.TreeSet;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @Disabled
 class BalanceSummaryTest {
 
