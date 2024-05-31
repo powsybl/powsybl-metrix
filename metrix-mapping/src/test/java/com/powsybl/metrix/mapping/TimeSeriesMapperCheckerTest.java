@@ -1409,7 +1409,7 @@ class TimeSeriesMapperCheckerTest {
 
         // Add twoWindingsTransformer without phaseTapChanger
         TwoWindingsTransformer twoWindingsTransformer = network.getTwoWindingsTransformer("NE_NO_1");
-        Substation substation = twoWindingsTransformer.getSubstation().get();
+        Substation substation = network.getSubstation("NO");
         substation.newTwoWindingsTransformer()
                 .setId("twt")
                 .setVoltageLevel1(twoWindingsTransformer.getTerminal1().getVoltageLevel().getId())
