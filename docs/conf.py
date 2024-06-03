@@ -131,7 +131,7 @@ autosummary_generate = True
 
 # -- Dependencies versions ---------------------------------------------------
 # This part will automatically look in the pom.xml to find versions corresponding to the dependencies whose
-# documentation is used in the present one, except if it's a SNAPSHOT version of if a specific version has been chosen
+# documentation is used in the present one, except if it's a SNAPSHOT version or if a specific version has been chosen
 # in intersphinx_mapping
 
 # Get the URL without the default version
