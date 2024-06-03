@@ -138,7 +138,7 @@ autosummary_generate = True
 def extract_base_url(url):
     default_version = "latest"
 
-    m = re.match(r'(https\:\/\/.*)' + default_version + r'\/', url)
+    m = re.match(r'(^https\:\/\/.*)' + default_version + r'\/$', url)
     if m:
         return m.group(1)
 
