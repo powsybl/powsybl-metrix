@@ -41,7 +41,8 @@ If you want to link a specific part of a page, use one of those examples:
 ~~~
 *Note: for the last examples to work, there need to be a corresponding reference in the external documentation. 
 For those examples, `(timeseries)=` and `(calculated-timeseries)=` have been added right before the corresponding titles 
-in the [TimeSeries page](inv:powsyblcore:std:doc#data/timeseries).*
+in the [TimeSeries page](inv:powsyblcore:std:doc#data/timeseries). Another way to make it work is to use the `autosectionlabel` module in Sphinx to 
+automatically generate anchors for each title.*
 
 *Note²: if the build fails, try with the `-E` option to clear the cache:*
 ~~~bash
