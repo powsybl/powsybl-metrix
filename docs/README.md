@@ -14,7 +14,7 @@ Then open `build-docs/index.html` in your browser.
 
 If you want to add links to another documentation, add the corresponding repository to the `conf.py` file.
 In order to automatically get the version specified in the `pom.xml`, please use the same naming as the version: if you define the
-PowSyBl-Core version with `<powsyblcore.version>`, then use `powsyblcore` as key. 
+PowSyBl-Core version with `<powsyblcore.version>`, then use `powsyblcore` as key. The specified URL should start with `https://` and end with `latest/` (the final `/` is mandatory).
 For example, to add a link to the documentation of PowSyBl-Core, you need to add the following lines:
 ~~~python
 # This parameter might already be present, just add the new value
