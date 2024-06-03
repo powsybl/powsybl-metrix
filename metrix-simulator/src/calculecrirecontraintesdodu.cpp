@@ -3623,6 +3623,9 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
         std::stringstream ss;
         ss << "contraintes_" << varianteCourante_->num_ << "_" << numMicroIteration_ << ".txt";
         fr = fopen(ss.str().c_str(), "w+");
+        if (fr == nullptr) {
+            std::cerr << "Erreur lors de l'ouverture du fichier: " << filename << std::endl;
+        }
     }
     int codeRet = 1;
 
