@@ -21,6 +21,7 @@ class ChunkCutterTest {
     void test() {
         ChunkCutter cutter = new ChunkCutter(0, 8735, 92);
         assertEquals(95, cutter.getChunkCount());
+        assertEquals(92, cutter.getChunkSize());
         assertEquals(Range.closed(-1, -1), cutter.getChunkRange(-1));
         assertEquals(Range.closed(0, 91), cutter.getChunkRange(0));
         assertEquals(Range.closed(92, 183), cutter.getChunkRange(1));
@@ -31,6 +32,7 @@ class ChunkCutterTest {
     void test2() {
         ChunkCutter cutter = new ChunkCutter(0, 8735, 10000);
         assertEquals(1, cutter.getChunkCount());
+        assertEquals(10000, cutter.getChunkSize());
         assertEquals(Range.closed(0, 8735), cutter.getChunkRange(0));
     }
 
@@ -38,6 +40,7 @@ class ChunkCutterTest {
     void test3() {
         ChunkCutter cutter = new ChunkCutter(0, 8735, 1);
         assertEquals(8736, cutter.getChunkCount());
+        assertEquals(1, cutter.getChunkSize());
         assertEquals(Range.closed(0, 0), cutter.getChunkRange(0));
         assertEquals(Range.closed(1, 1), cutter.getChunkRange(1));
         assertEquals(Range.closed(8735, 8735), cutter.getChunkRange(8735));
@@ -47,6 +50,7 @@ class ChunkCutterTest {
     void test4() {
         ChunkCutter cutter = new ChunkCutter(100, 200, 92);
         assertEquals(2, cutter.getChunkCount());
+        assertEquals(92, cutter.getChunkSize());
         assertEquals(Range.closed(100, 183), cutter.getChunkRange(0));
         assertEquals(Range.closed(184, 200), cutter.getChunkRange(1));
     }

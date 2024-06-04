@@ -30,6 +30,6 @@ public class EquipmentVariableProvider implements MappingVariableProvider<Equipm
 
     @Override
     public String getFieldName() {
-        return EquipmentVariable.getName();
+        return EquipmentVariable.NAME;
     }
 }
