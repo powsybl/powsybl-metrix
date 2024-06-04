@@ -36,6 +36,10 @@ public class ChunkCutter {
         this.chunkSize = chunkSize;
     }
 
+    public int getChunkSize() {
+        return chunkSize;
+    }
+
     public int getChunkOffset() {
         return (int) Math.floor((float) firstVariant / chunkSize);
     }

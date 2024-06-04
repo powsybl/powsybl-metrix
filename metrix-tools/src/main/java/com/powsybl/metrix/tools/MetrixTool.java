@@ -302,7 +302,7 @@ public class MetrixTool implements Tool {
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, dataTableStore, logger, computationRange);
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
-            new Metrix(remedialActionsReaderForRun, store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
+            new Metrix(remedialActionsReaderForRun, store, resultStore, logArchive, context, logger, analysisResult)
                     .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context), null);
 
         } catch (IOException e) {
