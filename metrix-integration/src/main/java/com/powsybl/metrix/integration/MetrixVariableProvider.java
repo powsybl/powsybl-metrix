@@ -32,6 +32,6 @@ public class MetrixVariableProvider implements MappingVariableProvider<MetrixVar
 
     @Override
     public String getFieldName() {
-        return MetrixVariable.getName();
+        return MetrixVariable.NAME;
     }
 }

@@ -52,15 +52,11 @@ public enum EquipmentVariable implements MappingVariable {
     disconnected("disconnected"),
     targetDeadband("targetDeadband");
 
-    private static final String NAME = "equipment";
-
-    static String getName() {
-        return NAME;
-    }
+    protected static final String NAME = "equipment";
 
     @Override
     public String getFieldName() {
-        return getName();
+        return NAME;
     }
 
     static void writeJson(EquipmentVariable variable, JsonGenerator generator) throws IOException {
