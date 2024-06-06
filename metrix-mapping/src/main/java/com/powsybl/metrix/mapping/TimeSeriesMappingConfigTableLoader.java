@@ -131,8 +131,8 @@ public class TimeSeriesMappingConfigTableLoader {
         for (Map.Entry<String, Set<String>> entry : timeSeriesToPlannedOutagesMapping.entrySet()) {
             String timeSeriesName = entry.getKey();
             Set<String> disconnectedIds = entry.getValue();
-            List<DoubleTimeSeries> toto = computeDisconnectedEquipmentTimeSeries(store, version, index, timeSeriesName, disconnectedIds);
-            doubleTimeSeries.addAll(toto);
+            List<DoubleTimeSeries> disconnectedEquipmentTimeSeries = computeDisconnectedEquipmentTimeSeries(store, version, index, timeSeriesName, disconnectedIds);
+            doubleTimeSeries.addAll(disconnectedEquipmentTimeSeries);
         }
         return new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries);
     }
