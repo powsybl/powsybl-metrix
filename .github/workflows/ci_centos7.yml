@@ -28,14 +28,26 @@ jobs:
     runs-on: ubuntu-latest
     container: 'centos:centos7'
     steps:
-      - name: Install Dependencies
+      - name: Update mirrors
         run: |
           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Update Dependencies
+        run: |
           yum update -y
+
+      - name: Install Dependencies 1
+        run: |
           yum install -y epel-release
+
+      - name: Install Dependencies 2
+        run: |
           yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
+
+      - name: Install Dependencies 3
+        run: |
           yum install -y devtoolset-9
 
       - name: Setup cmake
