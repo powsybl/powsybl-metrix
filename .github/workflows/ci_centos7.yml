@@ -45,6 +45,11 @@ jobs:
         run: |
           yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
 
+      - name: Update mirrors again because why not
+        run: |
+          sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+          sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
       - name: Install Dependencies 3
         run: |
           yum install -y devtoolset-9
