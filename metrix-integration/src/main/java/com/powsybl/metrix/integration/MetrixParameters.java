@@ -76,6 +76,7 @@ public class MetrixParameters {
     private Float curativeLossOfLoadCost = null;
     private Float curativeLossOfGenerationCost = null;
     private Float contingenciesProbability = null;
+    private Float generatorMinCost = null;
 
     public MetrixParameters() {
         this(DEFAULT_COMPUTATION_TYPE, DEFAULT_LOSS_FACTOR, DEFAULT_NOMINAL_U);
@@ -237,6 +238,11 @@ public class MetrixParameters {
     @JsonGetter
     private Float getContingenciesProbability() {
         return contingenciesProbability;
+    }
+
+    @JsonGetter
+    private Float getGeneratorMinCost() {
+        return generatorMinCost;
     }
 
     public MetrixComputationType getComputationType() {
@@ -529,6 +535,17 @@ public class MetrixParameters {
         return this;
     }
 
+    // Generator min cost
+    @JsonIgnore
+    public Optional<Float> getOptionalGeneratorMinCost() {
+        return Optional.ofNullable(generatorMinCost);
+    }
+
+    public MetrixParameters setGeneratorMinCost(Float generatorMinCost) {
+        this.generatorMinCost = generatorMinCost;
+        return this;
+    }
+
     // Outage probability
     @JsonIgnore
     public Optional<Float> getOptionalContingenciesProbability() {
@@ -617,6 +634,7 @@ public class MetrixParameters {
                     lossOfLoadCost,
                     curativeLossOfLoadCost,
                     curativeLossOfGenerationCost,
+                    generatorMinCost,
                     contingenciesProbability,
                     maxSolverTime,
                     nbMaxIteration,
@@ -654,6 +672,7 @@ public class MetrixParameters {
                     Objects.equals(lossOfLoadCost, other.lossOfLoadCost) &&
                     Objects.equals(curativeLossOfLoadCost, other.curativeLossOfLoadCost) &&
                     Objects.equals(curativeLossOfGenerationCost, other.curativeLossOfGenerationCost) &&
+                    Objects.equals(generatorMinCost, other.generatorMinCost) &&
                     Objects.equals(contingenciesProbability, other.contingenciesProbability) &&
                     Objects.equals(maxSolverTime, other.maxSolverTime) &&
                     Objects.equals(nbMaxIteration, other.nbMaxIteration) &&
@@ -696,6 +715,7 @@ public class MetrixParameters {
         getOptionalLossOfLoadCost().ifPresent(value -> builder.put("lossOfLoadCost", value));
         getOptionalCurativeLossOfLoadCost().ifPresent(value -> builder.put("curativeLossOfLoadCost", value));
         getOptionalCurativeLossOfGenerationCost().ifPresent(value -> builder.put("curativeLossOfGenerationCost", value));
+        getOptionalGeneratorMinCost().ifPresent(value -> builder.put("generatorMinCost", value));
         getOptionalContingenciesProbability().ifPresent(value -> builder.put("contingenciesProbability", value));
         getOptionalMaxSolverTime().ifPresent(value -> builder.put("maxSolverTime", value));
         getOptionalNbMaxIteration().ifPresent(value -> builder.put("nbMaxIteration", value));

@@ -36,6 +36,7 @@ class ParametersData {
     Float lossOfLoadCost
     Float curativeLossOfLoadCost
     Float curativeLossOfGenerationCost
+    Float generatorMinCost
     Float contingenciesProbability
     Integer nominalU
     Integer nbMaxIteration
@@ -141,6 +142,10 @@ class ParametersData {
 
     void curativeLossOfGenerationCost(Float lossOfGenerationCost) {
         this.curativeLossOfGenerationCost = lossOfGenerationCost
+    }
+
+    void generatorMinCost(Float generatorMinCost) {
+        this.generatorMinCost = generatorMinCost
     }
 
     void contingenciesProbability(Float contingenciesProbability) {
@@ -268,6 +273,9 @@ class ParametersData {
         }
         if (spec.curativeLossOfGenerationCost != null) {
             parameters.setCurativeLossOfGenerationCost(spec.curativeLossOfGenerationCost)
+        }
+        if (spec.generatorMinCost != null) {
+            parameters.setGeneratorMinCost(spec.generatorMinCost)
         }
         if (spec.contingenciesProbability != null) {
             parameters.setContingenciesProbability(spec.contingenciesProbability)
