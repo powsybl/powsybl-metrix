@@ -70,9 +70,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
             .map(TimeSeries::getMetadata)
             .collect(Collectors.toMap(TimeSeriesMetadata::getName, Function.identity()));
 
-        return timeSeriesNames.stream()
-            .map(metadataList::get)
-            .toList();
+        return metadataList.values().stream().toList();
     }
 
     @Override
