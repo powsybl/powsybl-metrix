@@ -42,8 +42,7 @@ public class TimeSeriesMappingConfigTableLoader {
     public TimeSeriesTable load(int version, Set<String> requiredTimeSeries, Range<Integer> pointRange) {
         Set<String> usedTimeSeriesNames = StreamSupport.stream(findUsedTimeSeriesNames().spliterator(), false).collect(Collectors.toSet());
         usedTimeSeriesNames.addAll(requiredTimeSeries);
-        ReadOnlyTimeSeriesStore plannedOutagesStore = buildPlannedOutagesStore(store, version, config.getTimeSeriesToPlannedOutagesMapping());
-        ReadOnlyTimeSeriesStore storeWithPlannedOutages = new ReadOnlyTimeSeriesStoreAggregator(store, plannedOutagesStore);
+        ReadOnlyTimeSeriesStore storeWithPlannedOutages = buildStoreWithPlannedOutages(store, version, config.getTimeSeriesToPlannedOutagesMapping());
         return loadToTable(version, storeWithPlannedOutages, pointRange, usedTimeSeriesNames);
     }
 
@@ -102,29 +101,47 @@ public class TimeSeriesMappingConfigTableLoader {
             double[] values = new double[nbPoints];
             Arrays.fill(values, CONNECTED_VALUE);
             for (int i = 0; i < nbPoints; i++) {
+                if (array[i] == null) {
+                    continue;
+                }
                 String[] ids = array[i].split(",");
                 if (Arrays.asList(ids).contains(id)) {
                     values[i] = DISCONNECTED_VALUE;
                 }
             }
             DoubleTimeSeries doubleTs = new StoredDoubleTimeSeries(
-                    new TimeSeriesMetadata(timeSeriesName + "_" + id, TimeSeriesDataType.DOUBLE, index),
+                    new TimeSeriesMetadata(plannedOutagesEquipmentTsName(timeSeriesName, id), TimeSeriesDataType.DOUBLE, index),
                     new UncompressedDoubleDataChunk(0, values).tryToCompress());
             doubleTimeSeries.add(doubleTs);
         }
         return doubleTimeSeries;
     }
 
-    public static ReadOnlyTimeSeriesStore buildPlannedOutagesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
-        List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
+    public static String plannedOutagesEquipmentTsName(String tsName, String id) {
+        return String.format("%s_%s", tsName, id);
+    }
 
-        // Check if store already contains equipment outages time series
-        List<String> timeSeries = timeSeriesToPlannedOutagesMapping.keySet().stream()
-                .filter(store::timeSeriesExists)
-                .collect(Collectors.toList());
-        if (timeSeries.isEmpty()) {
+    public static ReadOnlyTimeSeriesStore buildStoreWithPlannedOutages(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
+        if (timeSeriesToPlannedOutagesMapping.isEmpty()) {
             return store;
         }
+
+        // Check if store already contains equipment outages time series
+        Set<Boolean> timeSeriesExist = timeSeriesToPlannedOutagesMapping.keySet().stream()
+            .flatMap(key -> timeSeriesToPlannedOutagesMapping.get(key).stream()
+                .map(value -> new AbstractMap.SimpleEntry<>(key, value)))
+            .map(e -> store.timeSeriesExists(plannedOutagesEquipmentTsName(e.getKey(), e.getValue())))
+            .collect(Collectors.toSet());
+        if (timeSeriesExist.size() == 1 && timeSeriesExist.iterator().next()) {
+            return store;
+        }
+
+        ReadOnlyTimeSeriesStore plannedOutagesStore = buildPlannedOutagesStore(store, version, timeSeriesToPlannedOutagesMapping);
+        return new ReadOnlyTimeSeriesStoreAggregator(store, plannedOutagesStore);
+    }
+
+    public static ReadOnlyTimeSeriesStore buildPlannedOutagesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
+        List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
 
         // Build equipment planned outages time series
         TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesToPlannedOutagesMapping.keySet());
