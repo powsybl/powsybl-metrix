@@ -100,7 +100,6 @@ class InMemoryTimeSeriesStoreTest {
         TimeSeriesMetadata ts2Metadata = initialStore.getTimeSeriesMetadata("ts2").orElseThrow();
         TimeSeriesMetadata ts8Metadata = additionalStore.getTimeSeriesMetadata("ts8").orElseThrow();
         List<TimeSeriesMetadata> aggregatedStoreTimeSeriesMetadata = aggregatedStore.getTimeSeriesMetadata(aggregatedStore.getTimeSeriesNames(null));
-        assertThat(aggregatedStoreTimeSeriesMetadata).isNotEmpty();
-        assertThat(aggregatedStoreTimeSeriesMetadata).containsExactlyInAnyOrder(ts1Metadata, ts2Metadata, ts8Metadata);
+        assertThat(aggregatedStoreTimeSeriesMetadata).isNotEmpty().containsExactlyInAnyOrder(ts1Metadata, ts2Metadata, ts8Metadata);
     }
 }

@@ -132,7 +132,7 @@ public class TimeSeriesMappingConfigTableLoader {
                 .map(value -> new AbstractMap.SimpleEntry<>(key, value)))
             .map(e -> store.timeSeriesExists(plannedOutagesEquipmentTsName(e.getKey(), e.getValue())))
             .collect(Collectors.toSet());
-        if (timeSeriesExist.size() == 1 && timeSeriesExist.iterator().next()) {
+        if (timeSeriesExist.size() == 1 && timeSeriesExist.contains(true)) {
             return store;
         }
 

@@ -147,7 +147,7 @@ class TimeSeriesMappingConfigTableLoaderTest {
         assertEquals(actualTableIndex, index);
 
         TimeSeriesIndex actualEmptyIndex = checkIndexUnicity(new ReadOnlyTimeSeriesStoreCache(List.of(ts)), Collections.emptySet());
-        assertEquals(actualEmptyIndex, InfiniteTimeSeriesIndex.INSTANCE);
+        assertEquals(InfiniteTimeSeriesIndex.INSTANCE, actualEmptyIndex);
 
         // It should fail in case of store containing time series with different index
         TimeSeriesIndex otherIndex = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
