@@ -18,7 +18,10 @@ import java.nio.file.Path;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.*;
 import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
@@ -63,15 +66,20 @@ class TimeSeriesMappingConfigTableLoaderTest {
         tsStore.importTimeSeries(List.of(ts7), 1, APPEND);
 
         // Mapping config
+        TimeSeriesMappingConfig mappingConfig = getTimeSeriesMappingConfig();
+
+        // Table loader
+        tableLoader = new TimeSeriesMappingConfigTableLoader(mappingConfig, tsStore);
+    }
+
+    private static TimeSeriesMappingConfig getTimeSeriesMappingConfig() {
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();
         mappingConfig.setMappedTimeSeriesNames(Set.of("mappedTs"));
         mappingConfig.setTimeSeriesToEquipment(Map.of("equipmentTs", Set.of(new MappingKey(EquipmentVariable.p0, "id"))));
         mappingConfig.setTimeSeriesToPlannedOutagesMapping(Map.of("disconnected_ids", Set.of("id1", "id2")));
         mappingConfig.setDistributionKeys(Map.of(new MappingKey(EquipmentVariable.targetP, "id"), new TimeSeriesDistributionKey("distributionKeyTs")));
         mappingConfig.setTimeSeriesNodes(Map.of("calculatedTs", new TimeSeriesNameNodeCalc("ts1")));
-
-        // Table loader
-        tableLoader = new TimeSeriesMappingConfigTableLoader(mappingConfig, tsStore);
+        return mappingConfig;
     }
 
     @AfterEach
@@ -153,7 +161,8 @@ class TimeSeriesMappingConfigTableLoaderTest {
         TimeSeriesIndex otherIndex = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
         StoredDoubleTimeSeries otherTs = TimeSeries.createDouble("otherTs", otherIndex, 1d, 2d);
         ReadOnlyTimeSeriesStoreCache otherTsStore = new ReadOnlyTimeSeriesStoreCache(List.of(ts, otherTs));
-        TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> checkIndexUnicity(otherTsStore, Set.of("ts", "otherTs")));
+        Set<String> tsSet = Set.of("ts", "otherTs");
+        TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> checkIndexUnicity(otherTsStore, tsSet));
         assertTrue(exception.getMessage().contains("Time series involved in the mapping must have the same index"));
     }
 
