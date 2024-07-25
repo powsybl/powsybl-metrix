@@ -98,53 +98,17 @@ public class MetrixChunk {
                         optionalLogger.ifPresent(MetrixChunkLogger::afterMetrixExecution);
 
                         if (report.getErrors().isEmpty()) {
-                            optionalLogger.ifPresent(MetrixChunkLogger::beforeResultParsing);
-
-                            if (variantProvider != null) {
-                                int firstVariant = variantProvider.getVariantRange().lowerEndpoint();
-                                int lastVariant = variantProvider.getVariantRange().upperEndpoint();
-                                int variantCount = lastVariant - firstVariant + 1;
-
-                                MetrixOutputData result = new MetrixOutputData(firstVariant, variantCount);
-                                for (int variantNum = firstVariant; variantNum <= lastVariant; variantNum++) {
-                                    result.readFile(workingDir, variantNum);
-                                }
-
-                                List<TimeSeries> initOptimizedTimeSeriesList = new ArrayList<>();
-                                Path initOptimizedFilePath = workingDir.resolve(INPUT_OPTIMIZED_FILE_NAME);
-                                if (Files.exists(initOptimizedFilePath)) {
-                                    initOptimizedTimeSeriesList = TimeSeries.parseJson(initOptimizedFilePath);
-                                }
-
-                                result.createTimeSeries(variantProvider.getIndex(), initOptimizedTimeSeriesList, results);
-
-                                optionalLogger.ifPresent(logger -> logger.afterResultParsing(variantCount));
-                            } else {
-                                optionalLogger.ifPresent(logger -> logger.afterResultParsing(0));
-                            }
+                            optionalLogger.ifPresentOrElse(logger -> parseResults(workingDir, results, variantProvider, logger),
+                                () -> parseResults(workingDir, results, variantProvider));
                         } else {
                             report.log();
                         }
 
-                        if (logFile != null) {
-                            if (Files.exists(workingDir.resolve(LOGS_FILE_NAME))) {
-                                Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
-                            } else {
-                                LOGGER.warn("Failed to retrieve metrix main log file !");
-                            }
-                        }
+                        // Retrieve log file
+                        retrieveLogFile(workingDir);
 
-                        if (networkPointFile != null) {
-                            try (Stream<Path> paths = Files.list(workingDir)) {
-                                List<Path> files = paths.filter(path -> path.getFileName().toString().matches(Pattern.quote(network.getId()) + "(.*)\\.xiidm")).collect(Collectors.toList());
-                                if (files.size() != 1) {
-                                    LOGGER.error("More than one network point files '{}'", files.size());
-                                    throw new MetrixException("More than one network point files " + files.size());
-                                } else {
-                                    Files.copy(workingDir.resolve(files.get(0)), networkPointFile);
-                                }
-                            }
-                        }
+                        // Retrieve network point file
+                        copyNetworkPointFile(workingDir);
 
                         if (logFileDetail != null) {
                             int i = 0;
@@ -158,5 +122,62 @@ public class MetrixChunk {
                         return results;
                     }
                 });
+    }
+
+    private void copyNetworkPointFile(Path workingDir) throws IOException {
+        if (networkPointFile != null) {
+            try (Stream<Path> paths = Files.list(workingDir)) {
+                List<Path> files = paths.filter(path -> path.getFileName().toString().matches(Pattern.quote(network.getId()) + "(.*)\\.xiidm")).collect(Collectors.toList());
+                if (files.size() != 1) {
+                    LOGGER.error("More than one network point files '{}'", files.size());
+                    throw new MetrixException("More than one network point files " + files.size());
+                } else {
+                    Files.copy(workingDir.resolve(files.get(0)), networkPointFile);
+                }
+            }
+        }
+    }
+
+    private void retrieveLogFile(Path workingDir) throws IOException {
+        if (logFile != null) {
+            if (Files.exists(workingDir.resolve(LOGS_FILE_NAME))) {
+                Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
+            } else {
+                LOGGER.warn("Failed to retrieve metrix main log file !");
+            }
+        }
+    }
+
+    private int parseResults(Path workingDir, List<TimeSeries> results, MetrixVariantProvider variantProvider) {
+        int variantCount;
+        if (variantProvider != null) {
+            int firstVariant = variantProvider.getVariantRange().lowerEndpoint();
+            int lastVariant = variantProvider.getVariantRange().upperEndpoint();
+            variantCount = lastVariant - firstVariant + 1;
+
+            MetrixOutputData result = new MetrixOutputData(firstVariant, variantCount);
+            for (int variantNum = firstVariant; variantNum <= lastVariant; variantNum++) {
+                result.readFile(workingDir, variantNum);
+            }
+
+            List<TimeSeries> initOptimizedTimeSeriesList = new ArrayList<>();
+            Path initOptimizedFilePath = workingDir.resolve(INPUT_OPTIMIZED_FILE_NAME);
+            if (Files.exists(initOptimizedFilePath)) {
+                initOptimizedTimeSeriesList = TimeSeries.parseJson(initOptimizedFilePath);
+            }
+
+            result.createTimeSeries(variantProvider.getIndex(), initOptimizedTimeSeriesList, results);
+        } else {
+            variantCount = 0;
+        }
+        return variantCount;
+    }
+
+    private void parseResults(Path workingDir, List<TimeSeries> results, MetrixVariantProvider variantProvider,
+                              MetrixChunkLogger logger) {
+        logger.beforeResultParsing();
+
+        int variantCount = parseResults(workingDir, results, variantProvider);
+        logger.afterResultParsing(variantCount);
     }
 }
