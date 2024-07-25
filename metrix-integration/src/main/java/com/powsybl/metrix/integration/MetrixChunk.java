@@ -80,48 +80,48 @@ public class MetrixChunk {
         Map<String, String> variables = Map.of("PATH", config.getHomeDir().resolve("bin").toString());
 
         return computationManager.execute(new ExecutionEnvironment(variables, WORKING_DIR_PREFIX, config.isDebug()),
-                new AbstractExecutionHandler<List<TimeSeries>>() {
+            new AbstractExecutionHandler<>() {
 
-                    @Override
-                    public List<CommandExecution> before(Path workingDir) throws IOException {
-                        List<CommandExecution> commandes = new MetrixInputDataGenerator(config, workingDir, metrixChunkLogger).generateMetrixInputData(
-                                remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
-                        optionalLogger.ifPresent(MetrixChunkLogger::beforeMetrixExecution);
-                        return commandes;
+                @Override
+                public List<CommandExecution> before(Path workingDir) throws IOException {
+                    List<CommandExecution> commandes = new MetrixInputDataGenerator(config, workingDir, metrixChunkLogger).generateMetrixInputData(
+                        remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
+                    optionalLogger.ifPresent(MetrixChunkLogger::beforeMetrixExecution);
+                    return commandes;
 
+                }
+
+                @Override
+                public List<TimeSeries> after(Path workingDir, ExecutionReport report) throws IOException {
+                    List<TimeSeries> results = new ArrayList<>();
+
+                    optionalLogger.ifPresent(MetrixChunkLogger::afterMetrixExecution);
+
+                    if (report.getErrors().isEmpty()) {
+                        optionalLogger.ifPresentOrElse(logger -> parseResults(workingDir, results, variantProvider, logger),
+                            () -> parseResults(workingDir, results, variantProvider));
+                    } else {
+                        report.log();
                     }
 
-                    @Override
-                    public List<TimeSeries> after(Path workingDir, ExecutionReport report) throws IOException {
-                        List<TimeSeries> results = new ArrayList<>();
+                    // Retrieve log file
+                    retrieveLogFile(workingDir);
 
-                        optionalLogger.ifPresent(MetrixChunkLogger::afterMetrixExecution);
+                    // Retrieve network point file
+                    copyNetworkPointFile(workingDir);
 
-                        if (report.getErrors().isEmpty()) {
-                            optionalLogger.ifPresentOrElse(logger -> parseResults(workingDir, results, variantProvider, logger),
-                                () -> parseResults(workingDir, results, variantProvider));
-                        } else {
-                            report.log();
+                    if (logFileDetail != null) {
+                        int i = 0;
+                        Path sourcePath;
+                        while (Files.exists(sourcePath = workingDir.resolve(LOGS_FILE_DETAIL_PREFIX + String.format("%03d", i) + LOGS_FILE_DETAIL_SUFFIX))) {
+                            Files.copy(sourcePath, Paths.get(String.format(logFileDetail.toString(), i)));
+                            i++;
                         }
-
-                        // Retrieve log file
-                        retrieveLogFile(workingDir);
-
-                        // Retrieve network point file
-                        copyNetworkPointFile(workingDir);
-
-                        if (logFileDetail != null) {
-                            int i = 0;
-                            Path sourcePath;
-                            while (Files.exists(sourcePath = workingDir.resolve(LOGS_FILE_DETAIL_PREFIX + String.format("%03d", i) + LOGS_FILE_DETAIL_SUFFIX))) {
-                                Files.copy(sourcePath, Paths.get(String.format(logFileDetail.toString(), i)));
-                                i++;
-                            }
-                        }
-
-                        return results;
                     }
-                });
+
+                    return results;
+                }
+            });
     }
 
     private void copyNetworkPointFile(Path workingDir) throws IOException {
