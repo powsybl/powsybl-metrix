@@ -8,9 +8,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 /**
  * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
  */
@@ -20,18 +17,6 @@ class TimeSeriesDslLoaderInterruptionTest extends AbstractTaskInterruptionTest {
     private final MappingParameters parameters = MappingParameters.load();
     private final Network network = MappingTestNetwork.create();
     private final ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
-
-    @BeforeEach
-    void setup() {
-        // Counters
-        waitForStart = new CountDownLatch(1);
-        waitForFinish = new CountDownLatch(1);
-        waitForInterruption = new CountDownLatch(1);
-
-        // Booleans
-        config = new AtomicBoolean(false);
-        interrupted = new AtomicBoolean(false);
-    }
 
     @ParameterizedTest
     @Timeout(10)

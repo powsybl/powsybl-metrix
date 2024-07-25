@@ -24,8 +24,6 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
@@ -59,15 +57,6 @@ class MetrixDslDataLoaderInterruptionTest extends AbstractTaskInterruptionTest {
                 "timeSeries['ts5'] = 500"
             ));
         }
-
-        // Counters
-        waitForStart = new CountDownLatch(1);
-        waitForFinish = new CountDownLatch(1);
-        waitForInterruption = new CountDownLatch(1);
-
-        // Booleans
-        config = new AtomicBoolean(false);
-        interrupted = new AtomicBoolean(false);
     }
 
     @AfterEach
