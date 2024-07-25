@@ -25,7 +25,6 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
@@ -127,7 +126,7 @@ public class MetrixChunk {
     private void copyNetworkPointFile(Path workingDir) throws IOException {
         if (networkPointFile != null) {
             try (Stream<Path> paths = Files.list(workingDir)) {
-                List<Path> files = paths.filter(path -> path.getFileName().toString().matches(Pattern.quote(network.getId()) + "(.*)\\.xiidm")).collect(Collectors.toList());
+                List<Path> files = paths.filter(path -> path.getFileName().toString().matches(Pattern.quote(network.getId()) + "(.*)\\.xiidm")).toList();
                 if (files.size() != 1) {
                     LOGGER.error("More than one network point files '{}'", files.size());
                     throw new MetrixException("More than one network point files " + files.size());
