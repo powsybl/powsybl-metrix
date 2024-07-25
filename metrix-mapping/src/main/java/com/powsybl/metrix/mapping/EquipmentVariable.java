@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -20,6 +19,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public enum EquipmentVariable implements MappingVariable {
     targetP("targetP"),
     targetQ("targetQ"),
@@ -50,15 +52,11 @@ public enum EquipmentVariable implements MappingVariable {
     disconnected("disconnected"),
     targetDeadband("targetDeadband");
 
-    private static final String NAME = "equipment";
-
-    static String getName() {
-        return NAME;
-    }
+    protected static final String NAME = "equipment";
 
     @Override
     public String getFieldName() {
-        return getName();
+        return NAME;
     }
 
     static void writeJson(EquipmentVariable variable, JsonGenerator generator) throws IOException {

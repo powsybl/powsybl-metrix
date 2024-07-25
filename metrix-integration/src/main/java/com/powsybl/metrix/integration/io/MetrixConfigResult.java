@@ -3,8 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration.io;
 
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixConfigResult {
 
     private final Map<String, NodeCalc> mappingTimeSeriesNodes = new HashMap<>();

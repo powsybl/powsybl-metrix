@@ -3620,9 +3620,13 @@ int Calculer::ajoutContraintes(bool& existe_contrainte_active,
 
     FILE* fr = nullptr;
     if (config::inputConfiguration().writeConstraintsFile()) {
-        std::stringstream ss("contraintes_%d_%d.txt");
-        ss << varianteCourante_->num_ << "_" << numMicroIteration_ << ".txt";
-        fr = fopen(ss.str().c_str(), "w+");
+        std::stringstream ss;
+        ss << "contraintes_" << varianteCourante_->num_ << "_" << numMicroIteration_ << ".txt";
+        std::string filename = ss.str();
+        fr = fopen(filename.c_str(), "w+");
+        if (fr == nullptr) {
+            std::cerr << "Erreur lors de l'ouverture du fichier: " << filename << std::endl;
+        }
     }
     int codeRet = 1;
 

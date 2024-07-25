@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.*;
@@ -15,6 +14,9 @@ import java.util.Objects;
 
 import static com.powsybl.metrix.mapping.NetworkPointWriter.OFF_VALUE;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class MappingKeyNetworkValue {
 
     private static final int ON_VALUE = 1;

@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.tools;
 
 import com.google.auto.service.AutoService;
@@ -30,7 +29,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,6 +40,9 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(Tool.class)
 public class MappingTool implements Tool {
 
@@ -319,10 +324,10 @@ public class MappingTool implements Tool {
                 observers.add(new EquipmentGroupTimeSeriesWriterObserver(localParameters.network(), localParameters.config(), maxVariantCount, range, equipmentTimeSeriesDir));
             }
 
-            TimeSeriesMapper mapper = new TimeSeriesMapper(localParameters.config(), localParameters.network(), logger);
             TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(localParameters.versions(), range, ignoreLimits,
                 ignoreEmptyFilter, false, mappingParameters.getToleranceThreshold());
-            mapper.mapToNetwork(localParameters.store(), parameters, observers);
+            TimeSeriesMapper mapper = new TimeSeriesMapper(localParameters.config(), parameters, localParameters.network(), logger);
+            mapper.mapToNetwork(localParameters.store(), observers);
 
             if (mappingSynthesisDir != null) {
                 balanceSummary.writeCsv(mappingSynthesisDir, SEPARATOR);

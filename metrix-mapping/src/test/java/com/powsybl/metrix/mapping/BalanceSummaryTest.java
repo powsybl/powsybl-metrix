@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
@@ -22,11 +21,16 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.TreeSet;
 
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @Disabled
 class BalanceSummaryTest {
 
@@ -87,16 +91,16 @@ class BalanceSummaryTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
                 false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary));
+        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary));
 
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
@@ -149,15 +153,15 @@ class BalanceSummaryTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1),
                 false, true, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
         // Create BalanceSummary
         ByteArrayOutputStream balanceSummaryOutput = new ByteArrayOutputStream();
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary));
+        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary));
 
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();

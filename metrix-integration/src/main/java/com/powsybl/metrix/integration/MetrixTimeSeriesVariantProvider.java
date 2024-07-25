@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
@@ -18,9 +17,9 @@ import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesTable;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -34,6 +33,9 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private static final Set<EquipmentVariable> METRIX_EQUIPMENT_VARIABLES = EnumSet.of(EquipmentVariable.targetP,
@@ -80,8 +82,6 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final PrintStream err;
 
-    private final TimeSeriesMapper mapper;
-
     public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters,
                                            TimeSeriesMappingConfig config, MetrixDslData metrixDslData, MetrixChunkParam metrixChunkParam,
                                            Range<Integer> variantRange, PrintStream err) {
@@ -98,7 +98,6 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.isNetworkPointComputation = metrixChunkParam.networkPointFile != null;
         this.contingenciesProvider = metrixChunkParam.contingenciesProvider;
         this.err = Objects.requireNonNull(err);
-        mapper = new TimeSeriesMapper(config, network, new TimeSeriesMappingLogger());
     }
 
     @Override
@@ -136,7 +135,8 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
         }
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store, parameters, observers);
+        TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, observers);
     }
 
     private Set<String> getContingenciesProbabilitiesTs() {

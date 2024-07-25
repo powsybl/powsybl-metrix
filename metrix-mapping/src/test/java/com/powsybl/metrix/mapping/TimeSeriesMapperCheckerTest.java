@@ -3,18 +3,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
-import com.powsybl.commons.test.TestUtil;
 import com.powsybl.commons.datasource.MemDataSource;
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Network;
+import com.powsybl.commons.test.TestUtil;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.serde.NetworkSerDe;
@@ -30,9 +26,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMapperCheckerTest {
 
     private static final String INFO = "INFO";
@@ -226,11 +224,23 @@ class TimeSeriesMapperCheckerTest {
             "    filter { hvdcLine.id == 'HVDC2' }",
             "}");
 
+    private final String phaseTapChangerLowTapPositionScript = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'chronique_m100'",
+            "    filter { twoWindingsTransformer.id == 'NE_NO_1' }",
+            "}");
+
+    private final String phaseTapChangerHighTapPositionScript = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'chronique_100'",
+            "    filter { twoWindingsTransformer.id == 'NE_NO_1' }",
+            "}");
+
     private Network createNetwork() {
         Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xiidm")));
-        List<String> generators = ImmutableList.of("SO_G1", "SO_G2", "SE_G", "N_G");
+        List<String> generators = List.of("SO_G1", "SO_G2", "SE_G", "N_G");
         generators.forEach(id -> network.getGenerator(id).setTargetP(0));
-        List<String> loads = ImmutableList.of("SO_L", "SE_L1", "SE_L2");
+        List<String> loads = List.of("SO_L", "SE_L1", "SE_L2");
         loads.forEach(id -> network.getLoad(id).setP0(0));
         return network;
     }
@@ -283,6 +293,16 @@ class TimeSeriesMapperCheckerTest {
             assertEquals(expectedCS2toCS1, activePowerRange.getOprFromCS2toCS1(), 0);
             assertEquals(expectedCS1toCS2, activePowerRange.getOprFromCS1toCS2(), 0);
             assertEquals(expectedMaxP, hvdcLine.getMaxP(), 0);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void compareNetworkPointPhaseTapChanger(String id, MemDataSource dataSource, int expectedPhaseTapPosition) {
+        try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
+            Network networkPoint = NetworkSerDe.read(inputStream);
+            int tapPosition = networkPoint.getTwoWindingsTransformer(id).getPhaseTapChanger().getTapPosition();
+            assertEquals(expectedPhaseTapPosition, tapPosition, 0);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -354,14 +374,14 @@ class TimeSeriesMapperCheckerTest {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         BalanceSummary balanceSummary = new BalanceSummary();
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary, networkPointWriter));
+        mapper.mapToNetwork(store, List.of(balanceSummary, networkPointWriter));
 
         compareNetworkPointGenerator(generator, dataSource, expectedMinP, expectedP, expectedMaxP);
         compareBalance(balanceSummary, expectedBalanceValue);
@@ -407,15 +427,33 @@ class TimeSeriesMapperCheckerTest {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
 
         compareNetworkPointHvdcLine(hvdcLine, dataSource, expectedSetPoint, expectedMaxP, expectedCS2toCS1, expectedCS1toCS2);
+        compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
+    }
+
+    private void testPhaseTapChanger(Network network, String script, String twoWindingsTransformer,
+                                     int expectedPhaseTapPosition,
+                                     String expectedType, String expectedVariant, String expectedLabel, String expectedSynthesisLabel, String expectedMessage, String expectedSynthesisMessage) {
+        TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        MemDataSource dataSource = new MemDataSource();
+        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
+
+        compareNetworkPointPhaseTapChanger(twoWindingsTransformer, dataSource, expectedPhaseTapPosition);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
     }
 
@@ -1357,5 +1395,48 @@ class TimeSeriesMapperCheckerTest {
                 expectedLabelIL,
                 expectedMessage,
                 expectedSynthesisMessage);
+    }
+
+    /*
+     * PHASE TAP CHANGER TEST
+     */
+
+    @Test
+    void isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition() {
+        Network network = createNetwork();
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("HVDC1"), EquipmentVariable.p0, 100));
+        assertTrue(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("NE_NO_1"), EquipmentVariable.phaseTapPosition, 100));
+
+        // Add twoWindingsTransformer without phaseTapChanger
+        TwoWindingsTransformer twoWindingsTransformer = network.getTwoWindingsTransformer("NE_NO_1");
+        Substation substation = network.getSubstation("NO");
+        substation.newTwoWindingsTransformer()
+                .setId("twt")
+                .setVoltageLevel1(twoWindingsTransformer.getTerminal1().getVoltageLevel().getId())
+                .setVoltageLevel2(twoWindingsTransformer.getTerminal2().getVoltageLevel().getId())
+                .setNode1(13)
+                .setNode2(14)
+                .setR(twoWindingsTransformer.getR())
+                .setX(twoWindingsTransformer.getX())
+                .add();
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("twt"), EquipmentVariable.phaseTapPosition, 10));
+    }
+
+    @Test
+    void mappingRangeProblemPhaseTapChangerTest() {
+        Network network = createNetwork();
+
+        String expectedLabelLowTapPosition = MAPPING_RANGE_PROBLEM + "phaseTapPosition changed to lowTapPosition";
+        String expectedLabelHighTapPosition = MAPPING_RANGE_PROBLEM + "phaseTapPosition changed to highTapPosition";
+
+        testPhaseTapChanger(NetworkSerDe.copy(network), phaseTapChangerLowTapPositionScript, "NE_NO_1", 0,
+                WARNING, VARIANT_ALL, expectedLabelLowTapPosition, null,
+                "phaseTapPosition -100 of NE_NO_1 not included in 0 to 32, phaseTapPosition changed to 0",
+                null);
+
+        testPhaseTapChanger(NetworkSerDe.copy(network), phaseTapChangerHighTapPositionScript, "NE_NO_1", 32,
+                WARNING, VARIANT_ALL, expectedLabelHighTapPosition, null,
+                "phaseTapPosition 100 of NE_NO_1 not included in 0 to 32, phaseTapPosition changed to 32",
+                null);
     }
 }

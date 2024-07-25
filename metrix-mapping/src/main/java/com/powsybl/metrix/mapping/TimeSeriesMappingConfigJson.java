@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -15,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.json.JsonFieldName;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.TimeSeriesException;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.json.TimeSeriesJsonModule;
 import org.slf4j.Logger;
@@ -31,6 +30,9 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigJson {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
@@ -774,4 +776,3 @@ public class TimeSeriesMappingConfigJson {
         return config;
     }
 }
-

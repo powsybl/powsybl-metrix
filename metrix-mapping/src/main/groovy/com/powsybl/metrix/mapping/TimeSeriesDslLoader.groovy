@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Bus
@@ -38,6 +37,9 @@ import static com.powsybl.metrix.mapping.PlannedOutagesData.mapPlannedOutages
 import static com.powsybl.metrix.mapping.SimpleMappingData.mapToBreakers
 import static com.powsybl.metrix.mapping.SimpleVariableMappingData.mapToSimpleVariableEquipments
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesDslLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoader.class)
@@ -46,6 +48,7 @@ class TimeSeriesDslLoader {
     protected static final String DEFAULT_MAPPING_SCRIPT_NAME = "mapping.groovy"
 
     protected final GroovyCodeSource dslSrc
+    protected String equipmentGroupTypes = "com.powsybl.metrix.mapping.SimpleEquipmentGroupType"
 
     TimeSeriesDslLoader(GroovyCodeSource dslSrc) {
         this.dslSrc = Objects.requireNonNull(dslSrc)
@@ -78,13 +81,13 @@ class TimeSeriesDslLoader {
         logDslLoader.logWarn(message)
     }
 
-    protected static List<String> getStaticStars() {
+    protected List<String> getStaticStars() {
         List<String> staticStars = new ArrayList<>()
-        staticStars.add("com.powsybl.metrix.mapping.SimpleEquipmentGroupType")
+        staticStars.add(equipmentGroupTypes)
         return staticStars
     }
 
-    private static CompilerConfiguration createCompilerConfig() {
+    private CompilerConfiguration createCompilerConfig() {
         def imports = new ImportCustomizer()
         imports.addStaticStars("com.powsybl.iidm.network.EnergySource")
         imports.addStaticStars("com.powsybl.iidm.network.Country")
@@ -253,19 +256,19 @@ class TimeSeriesDslLoader {
         }
 
         // statistics
-        binding.sum = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.sum = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesSum(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.min = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.min = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMin(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.max = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.max = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMax(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.avg = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.avg = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesAvg(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.median = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.median = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMedian(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
     }

@@ -3,8 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration.timeseries;
 
 import com.google.common.collect.ImmutableMap;
@@ -25,6 +25,9 @@ import java.util.*;
 
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
 
     public static final String INPUT_OPTIMIZED_FILE_NAME = "input_optimized_time_series.json";

@@ -3,14 +3,20 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.Generator;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.log.LogBuilder;
+import com.powsybl.metrix.mapping.log.LogContent;
+import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
+import com.powsybl.metrix.mapping.log.RangeWithMinPViolatedByTargetP;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class GeneratorBoundLimitBuilder {
     private double minP;
     private double maxP;

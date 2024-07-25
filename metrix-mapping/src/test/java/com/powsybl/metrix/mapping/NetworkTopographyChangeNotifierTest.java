@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
@@ -27,6 +26,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class NetworkTopographyChangeNotifierTest {
 
     private Network network;
@@ -68,11 +70,11 @@ class NetworkTopographyChangeNotifierTest {
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // Create mapper
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 0), true, false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, Collections.emptyList());
+        mapper.mapToNetwork(store, Collections.emptyList());
     }
 
     @Test
@@ -162,4 +164,3 @@ class NetworkTopographyChangeNotifierTest {
         assertTrue(hit.get());
     }
 }
-

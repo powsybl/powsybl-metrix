@@ -3,13 +3,15 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class ChunkCutter {
 
     private final int firstVariant;
@@ -32,6 +34,10 @@ public class ChunkCutter {
         this.firstVariant = firstVariant;
         this.lastVariant = lastVariant;
         this.chunkSize = chunkSize;
+    }
+
+    public int getChunkSize() {
+        return chunkSize;
     }
 
     public int getChunkOffset() {

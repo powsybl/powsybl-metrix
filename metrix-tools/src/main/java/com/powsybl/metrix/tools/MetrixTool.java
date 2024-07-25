@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.tools;
 
 import com.google.auto.service.AutoService;
@@ -15,14 +14,17 @@ import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.Metrix;
+import com.powsybl.metrix.integration.MetrixAppLogger;
+import com.powsybl.metrix.integration.MetrixRunParameters;
+import com.powsybl.metrix.integration.NetworkSource;
 import com.powsybl.metrix.integration.compatibility.CsvResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysis;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.ComputationRange;
 import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
+import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.tools.Command;
 import com.powsybl.tools.Tool;
@@ -32,7 +34,10 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -45,6 +50,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(Tool.class)
 public class MetrixTool implements Tool {
 
@@ -284,7 +292,7 @@ public class MetrixTool implements Tool {
         Reader remedialActionsReaderForAnalysis = getReader(remedialActionsFile);
         Reader remedialActionsReaderForRun = getReader(remedialActionsFile);
 
-        FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
+        FileSystemTimeSeriesStore resultStore = new FileSystemTimeSeriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
@@ -294,7 +302,7 @@ public class MetrixTool implements Tool {
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, dataTableStore, logger, computationRange);
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");
-            new Metrix(remedialActionsReaderForRun, store, resultStore, logArchive, context.getLongTimeExecutionComputationManager(), logger, analysisResult)
+            new Metrix(remedialActionsReaderForRun, store, resultStore, logArchive, context, logger, analysisResult)
                     .run(runParameters, new CsvResultListener(csvResultFilePath, resultStore, stopwatch, context), null);
 
         } catch (IOException e) {

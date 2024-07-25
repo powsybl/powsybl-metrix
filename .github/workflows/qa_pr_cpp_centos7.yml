@@ -6,6 +6,9 @@ on:
     types: [opened, ready_for_review, reopened]
   release:
     types: [published]
+  push:
+    paths:
+      - '.github/workflows/qa_pr_cpp_centos7.yml'
 
 # Cancel previous workflows if they are the same workflow on same ref (branch/tags)
 # with the same event (push/pull_request) even they are in progress.
@@ -14,17 +17,41 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
+env:
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
+
 jobs:
   clang-tidy:
     name: Clang-tidy CentOS
     runs-on: ubuntu-latest
     container: 'centos:centos7'
     steps:
-      - name: Install Dependancies
+      - name: Update mirrors
+        run: |
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Update Dependencies
         run: |
           yum update -y
+
+      - name: Install Dependencies 1
+        run: |
           yum install -y epel-release
+
+      - name: Install Dependencies 2
+        run: |
           yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
+
+      - name: Update mirrors again because why not
+        run: |
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Install Dependencies 3
+        run: |
           yum install -y devtoolset-9
 
       - name: Setup cmake
@@ -36,7 +63,7 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Download Boost-release
-        uses: dsaltares/fetch-gh-release-asset@master
+        uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
         with:
           repo: 'ARnDOSrte/Boost'
           file: 'boost_1_73_0.zip'
@@ -107,7 +134,7 @@ jobs:
 #
 #      - name: Upload Clang Tidy report - Release
 #        if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-#        uses: actions/upload-artifact@v3
+#        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
 #        with:
 #          name: ${{ steps.clang-release.outputs.report_name }}
 #          path: ${{ steps.clang-release.outputs.report_path }}
@@ -117,14 +144,37 @@ jobs:
     runs-on: ubuntu-latest
     container: 'centos:centos7'
     steps:
-      - name: Install Dependencies
+      - name: Update mirrors
+        run: |
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Update Dependencies
         run: |
           yum update -y
-          yum install -y epel-release
-          yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
-          yum install -y devtoolset-9
-          yum install -y python3 python3-pip
 
+      - name: Install Dependencies 1
+        run: |
+          yum install -y epel-release
+
+      - name: Install Dependencies 2
+        run: |
+          yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
+
+      - name: Update mirrors again because why not
+        run: |
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Install Dependencies 3
+        run: |
+          yum install -y devtoolset-9
+
+      - name: Install Dependencies 4
+        run: |
+          yum install -y python3 python3-pip
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v1.13
@@ -164,7 +214,7 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Download Boost-release
-        uses: dsaltares/fetch-gh-release-asset@master
+        uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
         with:
           repo: 'ARnDOSrte/Boost'
           file: 'boost_1_73_0.zip'
@@ -213,11 +263,32 @@ jobs:
     needs: qa
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     steps:
-      - name: Install Dependencies
+      - name: Update mirrors
+        run: |
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Update Dependencies
         run: |
           yum update -y
+
+      - name: Install Dependencies 1
+        run: |
           yum install -y epel-release
+
+      - name: Install Dependencies 2
+        run: |
           yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
+
+      - name: Update mirrors again because why not
+        run: |
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
+      - name: Install Dependencies 3
+        run: |
           yum install -y devtoolset-9
 
       - name: Setup cmake
@@ -229,7 +300,7 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Download Boost-release
-        uses: dsaltares/fetch-gh-release-asset@master
+        uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
         with:
           repo: 'ARnDOSrte/Boost'
           file: 'boost_1_73_0.zip'

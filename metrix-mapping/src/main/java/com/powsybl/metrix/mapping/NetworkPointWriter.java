@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.powsybl.commons.datasource.DataSource;
@@ -31,6 +30,9 @@ import java.util.Objects;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     public static final int OFF_VALUE = 0;

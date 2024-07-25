@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -14,6 +13,9 @@ import com.google.auto.service.AutoService;
 
 import java.io.IOException;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 @AutoService(MappingVariableProvider.class)
 public class EquipmentVariableProvider implements MappingVariableProvider<EquipmentVariable> {
     @Override
@@ -28,6 +30,6 @@ public class EquipmentVariableProvider implements MappingVariableProvider<Equipm
 
     @Override
     public String getFieldName() {
-        return EquipmentVariable.getName();
+        return EquipmentVariable.NAME;
     }
 }

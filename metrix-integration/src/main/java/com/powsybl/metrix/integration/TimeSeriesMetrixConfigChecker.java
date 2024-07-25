@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.powsybl.metrix.mapping.LogDslLoader;
@@ -13,8 +12,12 @@ import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.MappingVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Set;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMetrixConfigChecker {
 
     static final String BRANCH_RATINGS_BASE_CASE = "branchRatingsBaseCase";
@@ -62,4 +65,3 @@ public class TimeSeriesMetrixConfigChecker {
         }
     }
 }
-

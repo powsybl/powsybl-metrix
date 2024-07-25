@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
@@ -31,6 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class EquipmentGroupTimeSeriesMapperObserverTest {
 
     private final int chunkSize = 2;
@@ -102,10 +104,10 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
     }
 
     private void runMapping(TimeSeriesMappingConfig mappingConfig, TimeSeriesMapperObserver observer) {
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, ImmutableList.of(observer));
     }
 
     private void generatorTest(TimeSeriesMappingConfig mappingConfig, String expectedTimeSeriesName) {

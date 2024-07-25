@@ -94,9 +94,9 @@ observers.add(new EquipmentTimeSeriesWriterObserver(network, config, maxVariantC
 observers.add(new EquipmentGroupTimeSeriesWriterObserver(network, config, maxVariantCount, range, Paths.get("/path/to/equipmentTimeSeriesDir")));
 
 // Apply mapping to network
-TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
 TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(store.getTimeSeriesDataVersions(), range, true, true, false, mappingParameters.getToleranceThreshold());
-mapper.mapToNetwork(store, parameters, observers);
+TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, logger);
+mapper.mapToNetwork(store, observers);
 ```
 
 Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/mapping.html) on our website.
@@ -137,7 +137,7 @@ Supplier<Reader> metrixDslReader = () -> Files.newBufferedReader(Paths.get("/pat
 Supplier<Reader> remedialActionsReader = () -> Files.newBufferedReader(Paths.get("/path/to/remedialActions.txt"), StandardCharsets.UTF_8);
 
 // Result timeseries store
-FileSystemTimeseriesStore resultStore = new FileSystemTimeseriesStore(Paths.get("/path/to/outputdir"));
+FileSystemTimeSeriesStore resultStore = new FileSystemTimeSeriesStore(Paths.get("/path/to/outputdir"));
 
 // Result listener
 ResultListener listener = new ResultListener() {

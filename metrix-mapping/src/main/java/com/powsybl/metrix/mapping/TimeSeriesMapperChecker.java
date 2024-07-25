@@ -3,14 +3,11 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.metrix.mapping.log.*;
 import com.powsybl.metrix.mapping.timeseries.*;
@@ -20,6 +17,9 @@ import java.util.*;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
     private static final String UNHANDLED_SCALING_OPERATION_ERROR = "Unhandled scaling operation %s";
@@ -140,6 +140,19 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         super.versionEnd(version);
     }
 
+    public static boolean isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(Identifiable<?> identifiable, MappingVariable variable, int value) {
+        return identifiable instanceof TwoWindingsTransformer twoWindingsTransformer
+                && twoWindingsTransformer.hasPhaseTapChanger()
+                && variable == EquipmentVariable.phaseTapPosition
+                && isPhaseTapPositionOutOfBounds(twoWindingsTransformer, value);
+    }
+
+    private static boolean isPhaseTapPositionOutOfBounds(TwoWindingsTransformer twoWindingsTransformer, int value) {
+        int lowTapPosition = twoWindingsTransformer.getPhaseTapChanger().getLowTapPosition();
+        int highTapPosition = twoWindingsTransformer.getPhaseTapChanger().getHighTapPosition();
+        return value < lowTapPosition || value > highTapPosition;
+    }
+
     public TimeSeriesMapperChecker(List<TimeSeriesMapperObserver> observers, TimeSeriesMappingLogger timeSeriesMappingLogger, TimeSeriesMapperParameters parameters) {
         super(observers);
         this.timeSeriesMappingLogger = Objects.requireNonNull(timeSeriesMappingLogger);
@@ -164,6 +177,11 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
             if (identifiable instanceof HvdcLine hvdcLine) {
                 hvdcLineToActivePowerRange.computeIfAbsent(identifiable.getId(), e -> hvdcLine.getExtension(HvdcOperatorActivePowerRange.class) != null);
+            }
+
+            if (isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(identifiable, variable, (int) equipmentValue)) {
+                // fix equipmentValue in case it is out of [lowTapPosition, highTapPosition] bounds
+                equipmentValue = fixPhaseTapChangerTapPosition(point, (TwoWindingsTransformer) identifiable, equipmentValue);
             }
 
             if (!TimeSeriesMapper.isPowerVariable(variable)) {
@@ -193,6 +211,25 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         } else if (variable == EquipmentVariable.maxP) {
             mappedPower.setMaxP(equipmentValue);
         }
+    }
+
+    private double fixPhaseTapChangerTapPosition(int point, TwoWindingsTransformer twoWindingsTransformer, double value) {
+        int lowTapPosition = twoWindingsTransformer.getPhaseTapChanger().getLowTapPosition();
+        int highTapPosition = twoWindingsTransformer.getPhaseTapChanger().getHighTapPosition();
+        double newValue = value < lowTapPosition ? lowTapPosition : highTapPosition;
+
+        LogBuilder logbuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(version).index(index).point(point);
+        RangeLogPhaseTapPosition rangeLogPhaseTapPosition = new RangeLogPhaseTapPosition()
+                .value(value)
+                .minValue(lowTapPosition)
+                .maxValue(highTapPosition)
+                .id(twoWindingsTransformer.getId())
+                .toVariable(value < lowTapPosition ? "lowTapPosition" : "highTapPosition")
+                .newValue(newValue);
+        LogContent logContent = rangeLogPhaseTapPosition.build();
+        Log log = logbuilder.logDescription(logContent).build();
+        timeSeriesMappingLogger.addLog(log);
+        return newValue;
     }
 
     private void correctAndNotifyMappedPowers(int point, Identifiable<?> identifiable, MappedPower mappedPower) {

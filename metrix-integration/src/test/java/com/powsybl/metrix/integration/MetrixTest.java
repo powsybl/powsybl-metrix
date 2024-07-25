@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
@@ -21,17 +20,21 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +46,9 @@ import java.util.zip.ZipOutputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class MetrixTest {
     private FileSystem fileSystem;
 
@@ -114,9 +120,16 @@ class MetrixTest {
             );
 
             MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
-
             MetrixRunResult run = metrix.run(runParameters, resultListener, null);
             assertThat(run).isNotNull();
+
+            MetrixRunParameters runParametersSmallChunkSize = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 1, true, true, true);
+            MetrixRunResult runSmallChunkSize = metrix.run(runParametersSmallChunkSize, resultListener, null);
+            assertThat(runSmallChunkSize).isNotNull();
+
+            MetrixRunParameters runParametersFirstVariantUndefined = new MetrixRunParameters(-1, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
+            MetrixRunResult runFirstVariantUndefined = metrix.run(runParametersFirstVariantUndefined, resultListener, null);
+            assertThat(runFirstVariantUndefined).isNotNull();
         }
     }
 

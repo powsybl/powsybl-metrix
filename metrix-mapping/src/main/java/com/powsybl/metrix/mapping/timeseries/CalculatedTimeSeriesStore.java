@@ -3,17 +3,20 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.timeseries.*;
-import com.powsybl.timeseries.ast.*;
+import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNames;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private final Map<String, NodeCalc> nodes;
@@ -136,7 +139,7 @@ public class CalculatedTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return timeSeriesNames.stream().map(timeSeriesName -> getDoubleTimeSeries(timeSeriesName, version))
             .filter(Optional::isPresent)
             .map(Optional::get)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.base.Strings;
@@ -37,6 +36,9 @@ import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixKey;
 import static com.powsybl.metrix.integration.MetrixVariantsWriter.getMetrixVariableKey;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixVariantReaderImpl.class);
 

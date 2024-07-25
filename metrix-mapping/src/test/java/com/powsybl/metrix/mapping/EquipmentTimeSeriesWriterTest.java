@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
@@ -19,7 +18,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -33,6 +32,9 @@ import java.util.TreeSet;
 import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class EquipmentTimeSeriesWriterTest {
 
     private FileSystem fileSystem;
@@ -82,8 +84,6 @@ class EquipmentTimeSeriesWriterTest {
         // Load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
-
-        mapper = new TimeSeriesMapper(mappingConfig, network, new TimeSeriesMappingLogger());
     }
 
     @AfterEach
@@ -108,7 +108,8 @@ class EquipmentTimeSeriesWriterTest {
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 4), ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, mappingParameters.getToleranceThreshold());
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, List.of(equipmentTimeSeriesObserver, equipmentGroupTimeSeriesObserver));
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, List.of(equipmentTimeSeriesObserver, equipmentGroupTimeSeriesObserver));
 
         Path expectedFile = Paths.get(Objects.requireNonNull(getClass().getResource(directoryName + "version_1.csv")).toURI());
         Path actualFile = fileSystem.getPath("version_1.csv");

@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableList;
@@ -18,15 +17,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
+import java.io.BufferedWriter;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMapperTest {
 
     private Network network;
@@ -37,6 +43,50 @@ class TimeSeriesMapperTest {
     public void setUp() {
         // create test network
         network = MappingTestNetwork.create();
+    }
+
+    @Test
+    void testLogEmptyFilter() throws Exception {
+
+        // create time series space mock
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            TimeSeries.createDouble("equipment_ts", index, 1d, 2d),
+            TimeSeries.createDouble("other_ts", index, 2d, 2d)
+        );
+
+        // create mapping config
+        TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
+        TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(mappingConfig, store.getTimeSeriesNames(new TimeSeriesFilter()));
+        loader.addEquipmentMapping(MappableEquipmentType.LOAD, "equipment_ts", null, NumberDistributionKey.ONE, EquipmentVariable.p0);
+        loader.addEquipmentTimeSeries("other_ts", OtherVariable.OTHER_VARIABLE, "L1");
+
+        // create mapper
+        TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+            Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        // Observer
+        List<TimeSeriesMapperObserver> observersList = ImmutableList.of(new DefaultTimeSeriesMapperObserver());
+
+        // When not ignoring empty filters
+        TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> mapper.mapToNetwork(store, observersList));
+        assertEquals("Impossible to scale down 1 of ts equipment_ts to empty equipment list", exception.getMessage());
+
+        // Create mapper
+        parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+            Range.closed(0, 0), false, true, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapperIgnoring = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        // When ignoring empty filters
+        mapperIgnoring.mapToNetwork(store, observersList);
+        StringWriter writer = new StringWriter();
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+            logger.writeCsv(bufferedWriter, ZoneId.of("UTC"));
+            bufferedWriter.flush();
+            assertNotNull(compareStreamTxt(writer.toString().getBytes(StandardCharsets.UTF_8), "/expected/", "nonIgnoredEmptyFilterLog.csv"));
+        }
     }
 
     @Test
@@ -67,9 +117,9 @@ class TimeSeriesMapperTest {
 
         // create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // launch TimeSeriesMapper test
         TimeSeriesMapperObserver observer = new DefaultTimeSeriesMapperObserver() {
@@ -88,7 +138,7 @@ class TimeSeriesMapperTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, ImmutableList.of(observer));
 
         assertEquals(1, equipmentTimeSeriesNames.size());
         assertEquals(ImmutableList.of("equipment_ts"), equipmentTimeSeriesNames);
@@ -145,8 +195,9 @@ class TimeSeriesMapperTest {
         loader.addEquipmentMapping(MappableEquipmentType.LOAD, "foo", "l2", NumberDistributionKey.ONE, EquipmentVariable.p0);
         loader.addEquipmentMapping(MappableEquipmentType.GENERATOR, "bar", "g1", NumberDistributionKey.ONE, EquipmentVariable.targetP);
 
+        TimeSeriesMappingConfigTableLoader timeSeriesMappingConfigTableLoader = new TimeSeriesMappingConfigTableLoader(mappingConfig, store);
         assertThrows(TimeSeriesMappingException.class,
-            () -> new TimeSeriesMappingConfigTableLoader(mappingConfig, store).checkIndexUnicity(),
+            timeSeriesMappingConfigTableLoader::checkIndexUnicity,
             "Time series involved in the mapping must have the same index");
     }
 }

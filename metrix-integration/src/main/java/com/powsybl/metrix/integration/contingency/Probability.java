@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration.contingency;
 
 import com.powsybl.commons.extensions.AbstractExtension;
@@ -13,6 +12,9 @@ import com.powsybl.contingency.Contingency;
 
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class Probability extends AbstractExtension<Contingency> {
     static final String EXTENSION_NAME = "ContingencyProbability";
     private final Double probabilityBase;
@@ -54,4 +56,3 @@ public class Probability extends AbstractExtension<Contingency> {
         return Objects.hash(probabilityBase, probabilityTimeSeriesRef);
     }
 }
-

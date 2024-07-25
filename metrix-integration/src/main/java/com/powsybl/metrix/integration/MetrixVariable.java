@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -17,6 +16,9 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Objects;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public enum MetrixVariable implements MappingVariable {
     offGridCostDown("offGridCostDown"),
     offGridCostUp("offGridCostUp"),
@@ -38,11 +40,7 @@ public enum MetrixVariable implements MappingVariable {
     thresholdITAMNkEndOr("thresholdITAMNkEndOr"),
     curativeCostDown("curativeCostDown");
 
-    private static final String NAME = "metrix";
-
-    static String getName() {
-        return NAME;
-    }
+    protected static final String NAME = "metrix";
 
     @Override
     public String getFieldName() {

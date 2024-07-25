@@ -3,8 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.ImmutableList;
@@ -19,13 +19,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.TreeSet;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 class InitOptimizedTimeSeriesWriterTest {
 
     private Network network;
@@ -71,11 +76,11 @@ class InitOptimizedTimeSeriesWriterTest {
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Launch mapper
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(initOptimizedTimeSeriesWriter));
+        mapper.mapToNetwork(store, ImmutableList.of(initOptimizedTimeSeriesWriter));
 
         // Check
         InputStream expected = getClass().getResourceAsStream("/inputs_optimized_time_series.json");

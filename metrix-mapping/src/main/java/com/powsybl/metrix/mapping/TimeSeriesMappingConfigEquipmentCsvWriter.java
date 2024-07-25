@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Lists;
@@ -25,6 +24,9 @@ import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.formatDouble;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     private static final String VOLTAGE_LEVEL = "voltageLevel";

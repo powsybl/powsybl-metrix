@@ -3,13 +3,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration.compatibility;
 
+import com.google.common.base.Stopwatch;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.mapping.timeseries.FileSystemTimeseriesStore;
+import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
 import com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.tools.ToolRunningContext;
@@ -26,16 +27,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPOutputStream;
 
-import com.google.common.base.Stopwatch;
-
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class CsvResultListener implements ResultListener {
 
     private final Path csvResultFilePath;
-    private final FileSystemTimeseriesStore resultStore;
+    private final FileSystemTimeSeriesStore resultStore;
     private final Stopwatch stopwatch;
     private final ToolRunningContext context;
 
-    public CsvResultListener(Path csvResultFilePath, FileSystemTimeseriesStore resultStore, Stopwatch stopwatch, ToolRunningContext context) {
+    public CsvResultListener(Path csvResultFilePath, FileSystemTimeSeriesStore resultStore, Stopwatch stopwatch, ToolRunningContext context) {
         this.csvResultFilePath = csvResultFilePath;
         this.resultStore = resultStore;
         this.stopwatch = stopwatch;
@@ -44,7 +46,7 @@ public class CsvResultListener implements ResultListener {
 
     @Override
     public void onChunkResult(int version, int chunk, List<TimeSeries> timeSeriesList, Network networkPoint) {
-        resultStore.importTimeSeries(timeSeriesList, version, false, true);
+        resultStore.importTimeSeries(timeSeriesList, version, FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND);
     }
 
     @Override

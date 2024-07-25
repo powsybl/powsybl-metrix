@@ -3,22 +3,24 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
-import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
-import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
+import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Files;
 import java.util.zip.ZipOutputStream;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixMock extends AbstractMetrix {
     public MetrixMock(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store,
                       ReadOnlyTimeSeriesStore resultStore, ZipOutputStream logArchive, ComputationManager computationManager,
@@ -27,6 +29,7 @@ public class MetrixMock extends AbstractMetrix {
     }
 
     @Override
-    protected void executeMetrixChunks(Network network, MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, MetrixParameters metrixParameters, MappingParameters mappingParameters, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName, int chunkCount, int chunkSize, int chunkOffset) {
+    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) throws IOException {
+        Files.newOutputStream(commonWorkingDir.toPath().resolve("log_1_0.txt"));
     }
 }
