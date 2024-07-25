@@ -97,12 +97,12 @@ class MetrixNetworkTest {
             .setNode(0)
             .add();
 
-        createSwitch(s1vl3, "S1VL3_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, false, 0, 1);
-        createSwitch(s1vl3, "S1VL3_3WT_BREAKER", SwitchKind.BREAKER, false, 1, 2);
-        createSwitch(network.getVoltageLevel("S1VL1"), "S1VL1_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, false, 0, 10);
-        createSwitch(network.getVoltageLevel("S1VL1"), "S1VL1_3WT_BREAKER", SwitchKind.BREAKER, false, 10, 11);
-        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, false, 0, 40);
-        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_3WT_BREAKER", SwitchKind.BREAKER, false, 40, 41);
+        createSwitch(s1vl3, "S1VL3_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 1);
+        createSwitch(s1vl3, "S1VL3_3WT_BREAKER", SwitchKind.BREAKER, 1, 2);
+        createSwitch(network.getVoltageLevel("S1VL1"), "S1VL1_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 10);
+        createSwitch(network.getVoltageLevel("S1VL1"), "S1VL1_3WT_BREAKER", SwitchKind.BREAKER, 10, 11);
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 40);
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_3WT_BREAKER", SwitchKind.BREAKER, 40, 41);
         network.getSubstation("S1").newThreeWindingsTransformer()
             .setId("3WT")
             .setRatedU0(132.0)
@@ -136,8 +136,8 @@ class MetrixNetworkTest {
             .add();
 
         // Dangling line
-        createSwitch(s1vl3, "S1VL3_BBS_DL_DISCONNECTOR", SwitchKind.DISCONNECTOR, false, 0, 3);
-        createSwitch(s1vl3, "S1VL3_DL_BREAKER", SwitchKind.BREAKER, false, 3, 4);
+        createSwitch(s1vl3, "S1VL3_BBS_DL_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 3);
+        createSwitch(s1vl3, "S1VL3_DL_BREAKER", SwitchKind.BREAKER, 3, 4);
         s1vl3.newDanglingLine()
             .setId("DL")
             .setR(10.0)
@@ -152,13 +152,13 @@ class MetrixNetworkTest {
         return network;
     }
 
-    private static void createSwitch(VoltageLevel vl, String id, SwitchKind kind, boolean open, int node1, int node2) {
+    private static void createSwitch(VoltageLevel vl, String id, SwitchKind kind, int node1, int node2) {
         vl.getNodeBreakerView().newSwitch()
             .setId(id)
             .setName(id)
             .setKind(kind)
             .setRetained(kind.equals(SwitchKind.BREAKER))
-            .setOpen(open)
+            .setOpen(false)
             .setFictitious(false)
             .setNode1(node1)
             .setNode2(node2)
