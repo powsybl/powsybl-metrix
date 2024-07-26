@@ -271,34 +271,34 @@ class MetrixVariantsWriterTest {
                         reader.onEquipmentVariant(sw3, EquipmentVariable.open, (i + 1) % 2);
 
                         // Metrix
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdN, 1001f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdN1, 1011f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdNk, 1021f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdITAM, 1031f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdITAMNk, 1041f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdNEndOr, 2001f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdN1EndOr, 2011f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdNkEndOr, 2021f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdITAMEndOr, 2031f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.thresholdITAMNkEndOr, 2041f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N, 1001f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_1, 1011f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_NK, 1021f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM, 1031f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_NK, 1041f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_END_OR, 2001f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_1_END_OR, 2011f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_NK_END_OR, 2021f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_END_OR, 2031f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_NK_END_OR, 2041f + i);
 
                         reader.onEquipmentVariant(line2, EquipmentVariable.disconnected, (i + 1) % 2);
                         reader.onEquipmentVariant(line3, EquipmentVariable.disconnected, (i + 1) % 2);
 
-                        reader.onEquipmentVariant(g1, MetrixVariable.offGridCostDown, 1111f + i);
-                        reader.onEquipmentVariant(g1, MetrixVariable.offGridCostUp, 1121f + i);
-                        reader.onEquipmentVariant(g1, MetrixVariable.onGridCostDown, 1131f + i);
-                        reader.onEquipmentVariant(g1, MetrixVariable.onGridCostUp, 1141f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.OFF_GRID_COST_DOWN, 1111f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.OFF_GRID_COST_UP, 1121f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.ON_GRID_COST_DOWN, 1131f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.ON_GRID_COST_UP, 1141f + i);
 
                         // Pst
                         reader.onEquipmentVariant(pst1, EquipmentVariable.phaseTapPosition, 17f + i);
 
                         reader.onEquipmentVariant(pst1, EquipmentVariable.disconnected, (i + 1) % 2);
 
-                        reader.onEquipmentVariant(l1, MetrixVariable.curativeCostDown, 10f + i);
+                        reader.onEquipmentVariant(l1, MetrixVariable.CURATIVE_COST_DOWN, 10f + i);
 
                         // load out of main cc
-                        reader.onEquipmentVariant(l13, MetrixVariable.curativeCostDown, i);
+                        reader.onEquipmentVariant(l13, MetrixVariable.CURATIVE_COST_DOWN, i);
 
                         reader.onVariantEnd(i);
                     }

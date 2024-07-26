@@ -46,21 +46,21 @@ public class MetrixVariantsWriter {
 
     public static String getMetrixVariableKey(MetrixVariable variable) {
         return switch (variable) {
-            case offGridCostDown -> "COUBHR";
-            case offGridCostUp -> "CTORDR";
-            case onGridCostDown -> "COUBAR";
-            case onGridCostUp -> "COUHAR";
-            case thresholdN -> "QATI00MN";
-            case thresholdN1 -> "QATI5MNS";
-            case thresholdNk -> "QATI20MN";
-            case thresholdITAM -> "QATITAMN";
-            case thresholdITAMNk -> "QATITAMK";
-            case thresholdNEndOr -> "QATI00MN2";
-            case thresholdN1EndOr -> "QATI5MNS2";
-            case thresholdNkEndOr -> "QATI20MN2";
-            case thresholdITAMEndOr -> "QATITAMN2";
-            case thresholdITAMNkEndOr -> "QATITAMK2";
-            case curativeCostDown -> "COUEFF";
+            case OFF_GRID_COST_DOWN -> "COUBHR";
+            case OFF_GRID_COST_UP -> "CTORDR";
+            case ON_GRID_COST_DOWN -> "COUBAR";
+            case ON_GRID_COST_UP -> "COUHAR";
+            case THRESHOLD_N -> "QATI00MN";
+            case THRESHOLD_N_1 -> "QATI5MNS";
+            case THRESHOLD_NK -> "QATI20MN";
+            case THRESHOLD_ITAM -> "QATITAMN";
+            case THRESHOLD_ITAM_NK -> "QATITAMK";
+            case THRESHOLD_N_END_OR -> "QATI00MN2";
+            case THRESHOLD_N_1_END_OR -> "QATI5MNS2";
+            case THRESHOLD_NK_END_OR -> "QATI20MN2";
+            case THRESHOLD_ITAM_END_OR -> "QATITAMN2";
+            case THRESHOLD_ITAM_NK_END_OR -> "QATITAMK2";
+            case CURATIVE_COST_DOWN -> "COUEFF";
             default -> {
                 LOGGER.debug("Unhandled variable {}", variable);
                 yield null;

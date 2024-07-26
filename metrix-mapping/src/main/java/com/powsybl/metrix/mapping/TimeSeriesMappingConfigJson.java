@@ -766,7 +766,7 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
                 if (token == JsonToken.FIELD_NAME) {
-                    String fieldName = parser.getCurrentName();
+                    String fieldName = parser.currentName();
                     parseJson(parser, fieldName, config);
                 }
             }

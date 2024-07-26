@@ -33,7 +33,7 @@ class TimeSeriesMappingJsonTest {
 
         mappingConfig.setUnmappedVariableActivePowerLoads(Collections.singleton("a"));
         mappingConfig.setBreakerTimeSeries(Collections.singleton(new MappingKey(EquipmentVariable.targetP, "a")));
-        mappingConfig.setGeneratorTimeSeries(Collections.singleton(new MappingKey(MetrixVariable.thresholdN, "a")));
+        mappingConfig.setGeneratorTimeSeries(Collections.singleton(new MappingKey(MetrixVariable.THRESHOLD_N, "a")));
 
         String serialized = objectMapper.writeValueAsString(mappingConfig);
         TimeSeriesMappingConfig mappingConfig2 = objectMapper.readValue(serialized, TimeSeriesMappingConfig.class);
