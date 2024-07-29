@@ -251,26 +251,102 @@ public class MetrixInputData {
         parameters.getOptionalNbMaxLostLoadDetailedResults().ifPresent(value -> die.setInt("LOSTCMAX", value));
     }
 
-    private void writeBranch(String[] cqnomqua, float[] cqadmita, float[] cqresist, int[] qasurvdi, int[] qasurnmk, int[] tnnorqua, int[] tnnexqua,
-                             int index, String branchId, double admittance, double r, int monitoringN, int monitoringNK, int node1, int node2) {
-        cqnomqua[index - 1] = branchId;
-        cqadmita[index - 1] = (float) (1 / admittance);
-        cqresist[index - 1] = (float) r;
-        qasurvdi[index - 1] = monitoringN;
-        qasurnmk[index - 1] = monitoringNK;
-        tnnorqua[index - 1] = node1;
-        tnnexqua[index - 1] = node2;
+    private record MetrixInputBranch(String[] cqnomqua, float[] cqadmita, float[] cqresist, int[] qasurvdi, int[] qasurnmk, int[] tnnorqua, int[] tnnexqua) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            MetrixInputBranch metrixInputBranch = (MetrixInputBranch) o;
+            return Arrays.equals(cqnomqua, metrixInputBranch.cqnomqua)
+                && Arrays.equals(cqadmita, metrixInputBranch.cqadmita)
+                && Arrays.equals(cqresist, metrixInputBranch.cqresist)
+                && Arrays.equals(qasurvdi, metrixInputBranch.qasurvdi)
+                && Arrays.equals(qasurnmk, metrixInputBranch.qasurnmk)
+                && Arrays.equals(tnnorqua, metrixInputBranch.tnnorqua)
+                && Arrays.equals(tnnexqua, metrixInputBranch.tnnexqua);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * Arrays.hashCode(cqnomqua) + Arrays.hashCode(cqadmita) + Arrays.hashCode(cqresist)
+                + Arrays.hashCode(qasurvdi) + Arrays.hashCode(qasurnmk) + Arrays.hashCode(tnnorqua)
+                + Arrays.hashCode(tnnexqua);
+        }
+
+        @Override
+        public String toString() {
+            return "MetrixInputBranch{" +
+                "cqnomqua=" + Arrays.toString(cqnomqua) +
+                "cqadmita=" + Arrays.toString(cqadmita) +
+                "cqresist=" + Arrays.toString(cqresist) +
+                "qasurvdi=" + Arrays.toString(qasurvdi) +
+                "qasurnmk=" + Arrays.toString(qasurnmk) +
+                "tnnorqua=" + Arrays.toString(tnnorqua) +
+                "tnnexqua=" + Arrays.toString(tnnexqua) +
+                '}';
+        }
     }
 
-    private void writePhaseTapChanger(int[] dttrdequ, int[] dtmodreg, float[] dtvalinf, float[] dtvalsup, float[] dtvaldep, int[] lowtappo, int[] nbtaptd,
-                                      int index, int branchId, int type, float alpha1, float alpha2, float alpha, int nbtap, int lowtap) {
-        dttrdequ[index - 1] = branchId;
-        dtmodreg[index - 1] = type;
-        dtvalinf[index - 1] = Math.min(alpha1, alpha2);
-        dtvalsup[index - 1] = Math.max(alpha1, alpha2);
-        dtvaldep[index - 1] = alpha;
-        lowtappo[index - 1] = lowtap;
-        nbtaptd[index - 1] = nbtap;
+    private record BranchValues(String branchId, double admittance, double r, int monitoringN, int monitoringNK, int node1, int node2) {}
+
+    private void writeBranch(MetrixInputBranch metrixInputBranch,
+                             int index, BranchValues branchValues) {
+        metrixInputBranch.cqnomqua[index - 1] = branchValues.branchId;
+        metrixInputBranch.cqadmita[index - 1] = (float) (1 / branchValues.admittance);
+        metrixInputBranch.cqresist[index - 1] = (float) branchValues.r;
+        metrixInputBranch.qasurvdi[index - 1] = branchValues.monitoringN;
+        metrixInputBranch.qasurnmk[index - 1] = branchValues.monitoringNK;
+        metrixInputBranch.tnnorqua[index - 1] = branchValues.node1;
+        metrixInputBranch.tnnexqua[index - 1] = branchValues.node2;
+    }
+
+    private record MetrixInputPhaseTapChanger(int[] dttrdequ, int[] dtmodreg, float[] dtvalinf, float[] dtvalsup, float[] dtvaldep, int[] lowtappo, int[] nbtaptd) {
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            MetrixInputPhaseTapChanger metrixInputBranch = (MetrixInputPhaseTapChanger) o;
+            return Arrays.equals(dttrdequ, metrixInputBranch.dttrdequ)
+                && Arrays.equals(dtmodreg, metrixInputBranch.dtmodreg)
+                && Arrays.equals(dtvalinf, metrixInputBranch.dtvalinf)
+                && Arrays.equals(dtvalsup, metrixInputBranch.dtvalsup)
+                && Arrays.equals(dtvaldep, metrixInputBranch.dtvaldep)
+                && Arrays.equals(lowtappo, metrixInputBranch.lowtappo)
+                && Arrays.equals(nbtaptd, metrixInputBranch.nbtaptd);
+        }
+
+        @Override
+        public int hashCode() {
+            return 31 * Arrays.hashCode(dttrdequ) + Arrays.hashCode(dtmodreg) + Arrays.hashCode(dtvalinf)
+                + Arrays.hashCode(dtvalsup) + Arrays.hashCode(dtvaldep) + Arrays.hashCode(lowtappo)
+                + Arrays.hashCode(nbtaptd);
+        }
+
+        @Override
+        public String toString() {
+            return "MetrixInputBranch{" +
+                "cqnomqua=" + Arrays.toString(dttrdequ) +
+                "cqadmita=" + Arrays.toString(dtmodreg) +
+                "cqresist=" + Arrays.toString(dtvalinf) +
+                "qasurvdi=" + Arrays.toString(dtvalsup) +
+                "qasurnmk=" + Arrays.toString(dtvaldep) +
+                "tnnorqua=" + Arrays.toString(lowtappo) +
+                "tnnexqua=" + Arrays.toString(nbtaptd) +
+                '}';
+        }
+    }
+
+    private record PhaseTapChangerValues(int branchId, int type, float alpha1, float alpha2, float alpha, int nbtap, int lowtap) {}
+
+    private void writePhaseTapChanger(MetrixInputPhaseTapChanger metrixInputPhaseTapChanger,
+                                      int index, PhaseTapChangerValues phaseTapChangerValues) {
+        metrixInputPhaseTapChanger.dttrdequ[index - 1] = phaseTapChangerValues.branchId;
+        metrixInputPhaseTapChanger.dtmodreg[index - 1] = phaseTapChangerValues.type;
+        metrixInputPhaseTapChanger.dtvalinf[index - 1] = Math.min(phaseTapChangerValues.alpha1, phaseTapChangerValues.alpha2);
+        metrixInputPhaseTapChanger.dtvalsup[index - 1] = Math.max(phaseTapChangerValues.alpha1, phaseTapChangerValues.alpha2);
+        metrixInputPhaseTapChanger.dtvaldep[index - 1] = phaseTapChangerValues.alpha;
+        metrixInputPhaseTapChanger.lowtappo[index - 1] = phaseTapChangerValues.lowtap;
+        metrixInputPhaseTapChanger.nbtaptd[index - 1] = phaseTapChangerValues.nbtap;
     }
 
     private void writeBranches(boolean constantLossFactor, MetrixDie die) {
@@ -283,6 +359,7 @@ public class MetrixInputData {
         int[] qasurnmk = new int[cqnbquad];
         int[] tnnorqua = new int[cqnbquad];
         int[] tnnexqua = new int[cqnbquad];
+        MetrixInputBranch metrixInputBranch = new MetrixInputBranch(cqnomqua, cqadmita, cqresist, qasurvdi, qasurnmk, tnnorqua, tnnexqua);
 
         // PhaseTapChanger
         int[] dttrdequ = new int[dtnbtrde];
@@ -292,78 +369,17 @@ public class MetrixInputData {
         float[] dtvaldep = new float[dtnbtrde]; // PST current phasing value
         int[] dtlowtap = new int[dtnbtrde]; // PST min tap value
         int[] dtnbtaps = new int[dtnbtrde]; // PST number of taps
+        MetrixInputPhaseTapChanger metrixInputPhaseTapChanger = new MetrixInputPhaseTapChanger(dttrdequ, dtmodreg, dtvalinf, dtvalsup, dtvaldep, dtlowtap, dtnbtaps);
         List<Integer> dtlowran = new ArrayList<>(); // PST lowerTapRange [pst, lowerTapRange, ...]
         List<Integer> dtuppran = new ArrayList<>(); // PST upperTapRange [pst, upperTapRange, ...]
         List<Float> dttapdep = new ArrayList<>(); // PST phasing taps
 
-        for (Line l : metrixNetwork.getLineList()) {
-            double nominalVoltage1 = l.getTerminal1().getVoltageLevel().getNominalV();
-            double nominalVoltage2 = l.getTerminal2().getVoltageLevel().getNominalV();
-            double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
-            double r = (l.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
-            double admittance = toAdmittance(l.getId(), l.getX(), nominalVoltage, parameters.getNominalU());
-            int index = metrixNetwork.getIndex(l);
-            int bus1Index = metrixNetwork.getIndex(l.getTerminal1().getBusBreakerView().getBus());
-            int bus2Index = metrixNetwork.getIndex(l.getTerminal2().getBusBreakerView().getBus());
-            writeBranch(cqnomqua, cqadmita, cqresist, qasurvdi, qasurnmk, tnnorqua, tnnexqua, index, l.getId(), admittance, r,
-                    getMonitoringTypeBasecase(l.getId()), getMonitoringTypeOnContingency(l.getId()), bus1Index, bus2Index);
-        }
+        // Lines
+        writeLines(metrixInputBranch, constantLossFactor);
 
-        for (TwoWindingsTransformer twt : metrixNetwork.getTwoWindingsTransformerList()) {
-            double nominalVoltage2 = twt.getTerminal2().getVoltageLevel().getNominalV();
-            double x = twt.getX();
-            double r = twt.getR();
-            int index = metrixNetwork.getIndex(twt);
-
-            if (twt.hasPhaseTapChanger()) {
-                PhaseTapChanger ptc = twt.getPhaseTapChanger();
-                int position = ptc.getTapPosition();
-                x = x * (1 + ptc.getStep(position).getX() / 100);
-                r = r * (1 + ptc.getStep(position).getR() / 100);
-                if (constantLossFactor) {
-                    float val = (float) (Math.pow(x, 2) + Math.pow(r, 2) - Math.pow(twt.getR(), 2));
-                    if (val >= 0) {
-                        x = (float) Math.sqrt(val);
-                    }
-                    LOGGER.debug("constantLossFactor -> twt <{}> x = <{}>", twt.getId(), x);
-                }
-
-                MetrixPtcControlType mode = MetrixPtcControlType.FIXED_ANGLE_CONTROL;
-                if (dslData != null) {
-                    mode = dslData.getPtcControl(twt.getId());
-
-                    if (dslData.getPtcLowerTapChange(twt.getId()) != null) {
-                        dtlowran.add(index);
-                        dtlowran.add(dslData.getPtcLowerTapChange(twt.getId()));
-                    }
-                    if (dslData.getPtcUpperTapChange(twt.getId()) != null) {
-                        dtuppran.add(index);
-                        dtuppran.add(dslData.getPtcUpperTapChange(twt.getId()));
-                    }
-                }
-
-                for (int pos = 0; pos < ptc.getStepCount(); pos++) {
-                    dttapdep.add((float) ptc.getStep(pos).getAlpha());
-                }
-
-                writePhaseTapChanger(dttrdequ, dtmodreg, dtvalinf, dtvalsup, dtvaldep, dtlowtap, dtnbtaps,
-                        metrixNetwork.getIndex(MetrixSubset.DEPHA, twt.getId()), index, mode.getType(),
-                        (float) ptc.getStep(ptc.getLowTapPosition()).getAlpha(),
-                        (float) ptc.getStep(ptc.getHighTapPosition()).getAlpha(),
-                        (float) ptc.getStep(ptc.getTapPosition()).getAlpha(),
-                        ptc.getStepCount(),
-                        ptc.getLowTapPosition());
-            }
-
-            //Per-unitage
-            double admittance = toAdmittance(twt.getId(), x, nominalVoltage2, parameters.getNominalU());
-            r = (r * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage2, 2);
-
-            int bus1Index = metrixNetwork.getIndex(twt.getTerminal1().getBusBreakerView().getBus());
-            int bus2Index = metrixNetwork.getIndex(twt.getTerminal2().getBusBreakerView().getBus());
-            writeBranch(cqnomqua, cqadmita, cqresist, qasurvdi, qasurnmk, tnnorqua, tnnexqua, index, twt.getId(), admittance, r,
-                    getMonitoringTypeBasecase(twt.getId()), getMonitoringTypeOnContingency(twt.getId()), bus1Index, bus2Index);
-        }
+        // Two Windings Transformers
+        metrixNetwork.getTwoWindingsTransformerList().forEach(twoWindingsTransformer ->
+            writeTwoWindingsTransformer(twoWindingsTransformer, metrixInputBranch, metrixInputPhaseTapChanger, constantLossFactor, dtlowran, dtuppran, dttapdep));
 
         metrixNetwork.getThreeWindingsTransformerList().forEach(twt -> {
             throw new UnsupportedOperationException("TODO");
@@ -373,8 +389,9 @@ public class MetrixInputData {
             int index = metrixNetwork.getIndex(sw);
             int bus1Index = metrixNetwork.getIndex(sw.getVoltageLevel().getBusBreakerView().getBus1(sw.getId()));
             int bus2Index = metrixNetwork.getIndex(sw.getVoltageLevel().getBusBreakerView().getBus2(sw.getId()));
-            writeBranch(cqnomqua, cqadmita, cqresist, qasurvdi, qasurnmk, tnnorqua, tnnexqua, index, sw.getId(),
-                    CQADMITA_SWITCH_VAL, CQRESIST_SWITCH_VAL, MonitoringType.NO.getType(), MonitoringType.NO.getType(), bus1Index, bus2Index);
+            writeBranch(metrixInputBranch,
+                index,
+                new BranchValues(sw.getId(), CQADMITA_SWITCH_VAL, CQRESIST_SWITCH_VAL, MonitoringType.NO.getType(), MonitoringType.NO.getType(), bus1Index, bus2Index));
         }
 
         // Branch
@@ -417,7 +434,95 @@ public class MetrixInputData {
             die.setInt("NBOPEBRA", openbran.size());
             die.setIntArray("OPENBRAN", openbran.stream().mapToInt(i -> i).toArray());
         }
+    }
 
+    private void writeTwoWindingsTransformer(TwoWindingsTransformer twt,
+                                             MetrixInputBranch metrixInputBranch,
+                                              MetrixInputPhaseTapChanger metrixInputPhaseTapChanger,
+                                              boolean constantLossFactor,
+                                              List<Integer> dtlowran,
+                                              List<Integer> dtuppran,
+                                              List<Float> dttapdep) {
+        double nominalVoltage2 = twt.getTerminal2().getVoltageLevel().getNominalV();
+        double x = twt.getX();
+        double r = twt.getR();
+        int index = metrixNetwork.getIndex(twt);
+
+        if (twt.hasPhaseTapChanger()) {
+            PhaseTapChanger ptc = twt.getPhaseTapChanger();
+            int position = ptc.getTapPosition();
+            x = x * (1 + ptc.getStep(position).getX() / 100);
+            r = r * (1 + ptc.getStep(position).getR() / 100);
+            if (constantLossFactor) {
+                float val = (float) (Math.pow(x, 2) + Math.pow(r, 2) - Math.pow(twt.getR(), 2));
+                if (val >= 0) {
+                    x = (float) Math.sqrt(val);
+                }
+                LOGGER.debug("constantLossFactor -> twt <{}> x = <{}>", twt.getId(), x);
+            }
+
+            MetrixPtcControlType mode = getMetrixPtcControlType(twt, index, dtlowran, dtuppran);
+
+            for (int pos = 0; pos < ptc.getStepCount(); pos++) {
+                dttapdep.add((float) ptc.getStep(pos).getAlpha());
+            }
+
+            writePhaseTapChanger(metrixInputPhaseTapChanger,
+                metrixNetwork.getIndex(MetrixSubset.DEPHA, twt.getId()),
+                new PhaseTapChangerValues(index, mode.getType(),
+                    (float) ptc.getStep(ptc.getLowTapPosition()).getAlpha(),
+                    (float) ptc.getStep(ptc.getHighTapPosition()).getAlpha(),
+                    (float) ptc.getStep(ptc.getTapPosition()).getAlpha(),
+                    ptc.getStepCount(),
+                    ptc.getLowTapPosition()));
+        }
+
+        //Per-unitage
+        double admittance = toAdmittance(twt.getId(), x, nominalVoltage2, parameters.getNominalU());
+        r = (r * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage2, 2);
+
+        int bus1Index = metrixNetwork.getIndex(twt.getTerminal1().getBusBreakerView().getBus());
+        int bus2Index = metrixNetwork.getIndex(twt.getTerminal2().getBusBreakerView().getBus());
+        writeBranch(metrixInputBranch,
+            index,
+            new BranchValues(twt.getId(), admittance, r, getMonitoringTypeBasecase(twt.getId()), getMonitoringTypeOnContingency(twt.getId()), bus1Index, bus2Index));
+    }
+
+    private MetrixPtcControlType getMetrixPtcControlType(TwoWindingsTransformer twt,
+                                                         int index,
+                                                         List<Integer> dtlowran,
+                                                         List<Integer> dtuppran) {
+        MetrixPtcControlType mode = MetrixPtcControlType.FIXED_ANGLE_CONTROL;
+        if (dslData != null) {
+            mode = dslData.getPtcControl(twt.getId());
+
+            if (dslData.getPtcLowerTapChange(twt.getId()) != null) {
+                dtlowran.add(index);
+                dtlowran.add(dslData.getPtcLowerTapChange(twt.getId()));
+            }
+            if (dslData.getPtcUpperTapChange(twt.getId()) != null) {
+                dtuppran.add(index);
+                dtuppran.add(dslData.getPtcUpperTapChange(twt.getId()));
+            }
+        }
+        return mode;
+    }
+
+    private void writeLines(MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
+        for (Line l : metrixNetwork.getLineList()) {
+            double nominalVoltage1 = l.getTerminal1().getVoltageLevel().getNominalV();
+            double nominalVoltage2 = l.getTerminal2().getVoltageLevel().getNominalV();
+            double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
+            double r = (l.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+            double admittance = toAdmittance(l.getId(), l.getX(), nominalVoltage, parameters.getNominalU());
+            int index = metrixNetwork.getIndex(l);
+            int bus1Index = metrixNetwork.getIndex(l.getTerminal1().getBusBreakerView().getBus());
+            int bus2Index = metrixNetwork.getIndex(l.getTerminal2().getBusBreakerView().getBus());
+
+            writeBranch(metrixInputBranch,
+                index,
+                new BranchValues(l.getId(), admittance, r, getMonitoringTypeBasecase(l.getId()), getMonitoringTypeOnContingency(l.getId()), bus1Index, bus2Index));
+        }
     }
 
     private void writeTopology(MetrixDie die) {
