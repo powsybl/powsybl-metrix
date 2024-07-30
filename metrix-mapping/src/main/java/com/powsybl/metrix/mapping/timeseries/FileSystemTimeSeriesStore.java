@@ -285,7 +285,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         // Compare the indexes
         if (compareIndexes(existingIndex, newIndex)) {
             // Same indexes -> compare the chunks offsets and add the chunks
-            return appendTimeSeriesWithSameIndex(existingTimeSeries, newTimeSeries, dataType);
+            return appendTimeSeriesWithSameIndex(existingTimeSeries, newTimeSeries);
         }
 
         // Sort the indexes
@@ -328,24 +328,20 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
     }
 
-    private Set<Integer> getChunkPoints(TimeSeries<?, ?> timeSeries, TimeSeriesDataType dataType) {
-        Set<Integer> existingChunkIndexes = new HashSet<>();
-        if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-            existingChunkIndexes.addAll(((StoredDoubleTimeSeries) timeSeries).getChunks().stream()
+    private Set<Integer> getChunkPoints(TimeSeries<?, ?> timeSeries) {
+        if (timeSeries instanceof AbstractTimeSeries<?, ?, ?> storedDoubleTimeSeries) {
+            return storedDoubleTimeSeries.getChunks().stream()
                 .flatMap(chunk -> IntStream.range(chunk.getOffset(), chunk.getOffset() + chunk.getLength()).boxed())
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet());
         } else {
-            existingChunkIndexes.addAll(((StringTimeSeries) timeSeries).getChunks().stream()
-                .flatMap(chunk -> IntStream.range(chunk.getOffset(), chunk.getOffset() + chunk.getLength()).boxed())
-                .collect(Collectors.toSet()));
+            throw new PowsyblException("Unsupported TimeSeries type for TimeSeries " + timeSeries);
         }
-        return existingChunkIndexes;
     }
 
-    private TimeSeries appendTimeSeriesWithSameIndex(TimeSeries<?, ?> existingTimeSeries, TimeSeries<?, ?> newTimeSeries, TimeSeriesDataType dataType) {
+    private TimeSeries appendTimeSeriesWithSameIndex(TimeSeries<?, ?> existingTimeSeries, TimeSeries<?, ?> newTimeSeries) {
         // Check that the timeseries don't have chunks with the same offset
-        Set<Integer> existingPoints = getChunkPoints(existingTimeSeries, dataType);
-        Set<Integer> newPoints = getChunkPoints(newTimeSeries, dataType);
+        Set<Integer> existingPoints = getChunkPoints(existingTimeSeries);
+        Set<Integer> newPoints = getChunkPoints(newTimeSeries);
         existingPoints.retainAll(newPoints);
         if (!existingPoints.isEmpty()) {
             // At least one offset is present in the two timeseries
@@ -353,14 +349,18 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
 
         // Add the chunks
-        if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-            List<DoubleDataChunk> chunks = ((StoredDoubleTimeSeries) existingTimeSeries).getChunks();
-            chunks.addAll(((StoredDoubleTimeSeries) newTimeSeries).getChunks());
+        if (existingTimeSeries instanceof StoredDoubleTimeSeries existingStoredDoubleTimeSeries
+            && newTimeSeries instanceof StoredDoubleTimeSeries newStoredDoubleTimeSeries) {
+            List<DoubleDataChunk> chunks = existingStoredDoubleTimeSeries.getChunks();
+            chunks.addAll(newStoredDoubleTimeSeries.getChunks());
             return new StoredDoubleTimeSeries(existingTimeSeries.getMetadata(), chunks);
-        } else {
-            List<StringDataChunk> chunks = ((StringTimeSeries) existingTimeSeries).getChunks();
-            chunks.addAll(((StringTimeSeries) newTimeSeries).getChunks());
+        } else if (existingTimeSeries instanceof StringTimeSeries existingStringTimeSeries
+            && newTimeSeries instanceof StringTimeSeries newStringTimeSeries) {
+            List<StringDataChunk> chunks = existingStringTimeSeries.getChunks();
+            chunks.addAll(newStringTimeSeries.getChunks());
             return new StringTimeSeries(existingTimeSeries.getMetadata(), chunks);
+        } else {
+            throw new PowsyblException("Expected both TimeSeries to be instances of the same class");
         }
     }
 
