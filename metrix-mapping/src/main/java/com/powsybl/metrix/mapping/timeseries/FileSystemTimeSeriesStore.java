@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -328,17 +329,24 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
     }
 
+    private Set<Integer> getChunkIndexes(TimeSeries<?, ?> timeSeries, TimeSeriesDataType dataType) {
+        Set<Integer> existingChunkIndexes = new HashSet<>();
+        if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
+            existingChunkIndexes.addAll(((StoredDoubleTimeSeries) timeSeries).getChunks().stream()
+                .flatMap(chunk -> IntStream.range(chunk.getOffset(), chunk.getOffset() + chunk.getLength()).boxed())
+                .collect(Collectors.toSet()));
+        } else {
+            existingChunkIndexes.addAll(((StringTimeSeries) timeSeries).getChunks().stream()
+                .flatMap(chunk -> IntStream.range(chunk.getOffset(), chunk.getOffset() + chunk.getLength()).boxed())
+                .collect(Collectors.toSet()));
+        }
+        return existingChunkIndexes;
+    }
+
     private TimeSeries appendTimeSeriesWithSameIndex(TimeSeries<?, ?> existingTimeSeries, TimeSeries<?, ?> newTimeSeries, TimeSeriesDataType dataType) {
         // Check that the timeseries don't have chunks with the same offset
-        Set<Integer> existingOffsets;
-        Set<Integer> newOffsets;
-        if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
-            existingOffsets = ((StoredDoubleTimeSeries) existingTimeSeries).getChunks().stream().map(DataChunk::getOffset).collect(Collectors.toSet());
-            newOffsets = ((StoredDoubleTimeSeries) newTimeSeries).getChunks().stream().map(DataChunk::getOffset).collect(Collectors.toSet());
-        } else {
-            existingOffsets = ((StringTimeSeries) existingTimeSeries).getChunks().stream().map(DataChunk::getOffset).collect(Collectors.toSet());
-            newOffsets = ((StringTimeSeries) newTimeSeries).getChunks().stream().map(DataChunk::getOffset).collect(Collectors.toSet());
-        }
+        Set<Integer> existingOffsets = getChunkIndexes(existingTimeSeries, dataType);
+        Set<Integer> newOffsets = getChunkIndexes(newTimeSeries, dataType);
         existingOffsets.retainAll(newOffsets);
         if (!existingOffsets.isEmpty()) {
             // At least one offset is present in the two timeseries

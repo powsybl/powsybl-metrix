@@ -702,12 +702,9 @@ class FileSystemTimeSeriesStoreTest {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
-                    // Supprimer le contenu du sous-dossier
                     clearAllFilesInPath(path);
-                    // Supprimer le sous-dossier
                     Files.delete(path);
                 } else {
-                    // Supprimer le fichier
                     Files.delete(path);
                 }
             }
