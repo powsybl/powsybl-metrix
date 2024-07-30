@@ -15,11 +15,13 @@ import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.threeten.extra.Interval;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -625,5 +627,90 @@ class FileSystemTimeSeriesStoreTest {
             () -> tsStore.importTimeSeries(list, 1, false, false));
         assertEquals("Timeserie ts1 already exist", exception.getMessage());
 
+    }
+
+    @Test
+    void testAppendTimeSeriesWithPartialChunks() throws IOException {
+        // TimeSeriesStore
+        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
+
+        // TimeSeries indexes
+        Instant now = Instant.ofEpochMilli(978303600000L);
+        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
+            now.plus(2, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        RegularTimeSeriesIndex indexAfter = RegularTimeSeriesIndex.create(now.plus(3, ChronoUnit.HOURS),
+            now.plus(8, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+
+        // First TimeSeries
+        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
+
+        // Second TimeSeries
+        TimeSeriesMetadata metadata = new TimeSeriesMetadata("ts1", TimeSeriesDataType.DOUBLE, indexAfter);
+        DoubleDataChunk chunk = new UncompressedDoubleDataChunk(3, new double[]{7d, 8d});
+        StoredDoubleTimeSeries ts1After = new StoredDoubleTimeSeries(metadata, chunk);
+
+        // Append the TimeSeries
+        tsStore.importTimeSeries(List.of(ts1), 1);
+        tsStore.importTimeSeries(List.of(ts1After), 1);
+
+        // Assertions for index before
+        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
+        StoredDoubleTimeSeries storedTs = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
+        assertArrayEquals(new double[] {1d, 2d, 3d, Double.NaN, Double.NaN, Double.NaN, 7d, 8d, Double.NaN}, storedTs.toArray());
+        assertEquals(2, storedTs.getChunks().size());
+        assertInstanceOf(RegularTimeSeriesIndex.class, storedTs.getMetadata().getIndex());
+        RegularTimeSeriesIndex expectedIndex = RegularTimeSeriesIndex.create(now,
+            now.plus(8, ChronoUnit.HOURS),
+            Duration.ofHours(1));
+        assertEquals(expectedIndex, storedTs.getMetadata().getIndex());
+    }
+
+    @Test
+    void testAppendWithChunksAndSameIndex() throws IOException {
+        double[] expectedResult = new double[]{0, 1, Double.NaN, Double.NaN, 4, 5, Double.NaN};
+
+        // TimeSeries indexes
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T07:00:00Z"), Duration.ofHours(1));
+        TimeSeriesMetadata metadata = new TimeSeriesMetadata("tsName", TimeSeriesDataType.DOUBLE, index);
+
+        DoubleDataChunk chunk1 = new UncompressedDoubleDataChunk(0, new double[]{0, 1});
+        DoubleDataChunk chunk2 = new UncompressedDoubleDataChunk(4, new double[]{4, 5});
+        DoubleTimeSeries tsChunk1 = new StoredDoubleTimeSeries(metadata, chunk1);
+        DoubleTimeSeries tsChunk2 = new StoredDoubleTimeSeries(metadata, chunk2);
+
+        // Test with chunk 1 then 2
+        FileSystemTimeSeriesStore tsStoreChunk1ThenChunk2 = new FileSystemTimeSeriesStore(resDir);
+        tsStoreChunk1ThenChunk2.importTimeSeries(List.of(tsChunk1), 1);
+        tsStoreChunk1ThenChunk2.importTimeSeries(List.of(tsChunk2), 1);
+        assertTrue(tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).isPresent());
+        assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).get().toArray());
+
+        // Clear the files
+        clearAllFilesInPath(resDir);
+
+        // Test with chunk 2 then 1
+        FileSystemTimeSeriesStore tsStoreChunk2ThenChunk1 = new FileSystemTimeSeriesStore(resDir);
+        tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk2), 1);
+        tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk1), 1);
+        assertTrue(tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).isPresent());
+        assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).get().toArray());
+    }
+
+    private void clearAllFilesInPath(Path directory) throws IOException {
+        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
+            for (Path path : directoryStream) {
+                if (Files.isDirectory(path)) {
+                    // Supprimer le contenu du sous-dossier
+                    clearAllFilesInPath(path);
+                    // Supprimer le sous-dossier
+                    Files.delete(path);
+                } else {
+                    // Supprimer le fichier
+                    Files.delete(path);
+                }
+            }
+        }
     }
 }
