@@ -28,7 +28,7 @@ jobs:
     steps:
       - name: Update mirrors
         run: |
-          sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+          sed -i 's/mirror.centos.org/archive.kernel.org/centos-vault/g' /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
@@ -46,7 +46,7 @@ jobs:
 
       - name: Update mirrors again because why not
         run: |
-          sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+          sed -i 's/mirror.centos.org/archive.kernel.org/centos-vault/g' /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
@@ -146,7 +146,7 @@ jobs:
     steps:
       - name: Update mirrors
         run: |
-          sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+          sed -i 's/mirror.centos.org/archive.kernel.org/centos-vault/g' /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
@@ -164,7 +164,7 @@ jobs:
 
       - name: Update mirrors again because why not
         run: |
-          sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+          sed -i 's/mirror.centos.org/archive.kernel.org/centos-vault/g' /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
@@ -265,7 +265,7 @@ jobs:
     steps:
       - name: Update mirrors
         run: |
-          sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+          sed -i 's/mirror.centos.org/archive.kernel.org/centos-vault/g' /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
@@ -283,7 +283,7 @@ jobs:
 
       - name: Update mirrors again because why not
         run: |
-          sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=https://mirror.nsc.liu.se/centos-store|g" /etc/yum.repos.d/CentOS-*
+          sed -i 's/mirror.centos.org/archive.kernel.org/centos-vault/g' /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
