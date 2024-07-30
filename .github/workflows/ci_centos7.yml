@@ -33,9 +33,9 @@ jobs:
     steps:
       - name: Update mirrors
         run: |
-          sed -i s/mirror.centos.org/archive.kernel.org\/centos-vault/g /etc/yum.repos.d/*.repo
-          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+          sed -i 's:mirror.centos.org:archive.kernel.org/centos-vault:g' /etc/yum.repos.d/*.repo
+          sed -i 's/^#.*baseurl=http/baseurl=http/g' /etc/yum.repos.d/*.repo
+          sed -i 's/^mirrorlist=http/#mirrorlist=http/g' /etc/yum.repos.d/*.repo
 
       - name: Update Dependencies
         run: |
