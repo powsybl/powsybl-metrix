@@ -328,7 +328,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
     }
 
-    private Set<Integer> getChunkIndexes(TimeSeries<?, ?> timeSeries, TimeSeriesDataType dataType) {
+    private Set<Integer> getChunkPoints(TimeSeries<?, ?> timeSeries, TimeSeriesDataType dataType) {
         Set<Integer> existingChunkIndexes = new HashSet<>();
         if (dataType.equals(TimeSeriesDataType.DOUBLE)) {
             existingChunkIndexes.addAll(((StoredDoubleTimeSeries) timeSeries).getChunks().stream()
@@ -344,12 +344,12 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private TimeSeries appendTimeSeriesWithSameIndex(TimeSeries<?, ?> existingTimeSeries, TimeSeries<?, ?> newTimeSeries, TimeSeriesDataType dataType) {
         // Check that the timeseries don't have chunks with the same offset
-        Set<Integer> existingOffsets = getChunkIndexes(existingTimeSeries, dataType);
-        Set<Integer> newOffsets = getChunkIndexes(newTimeSeries, dataType);
-        existingOffsets.retainAll(newOffsets);
-        if (!existingOffsets.isEmpty()) {
+        Set<Integer> existingPoints = getChunkPoints(existingTimeSeries, dataType);
+        Set<Integer> newPoints = getChunkPoints(newTimeSeries, dataType);
+        existingPoints.retainAll(newPoints);
+        if (!existingPoints.isEmpty()) {
             // At least one offset is present in the two timeseries
-            throw new PowsyblException(String.format("The two TimeSeries with the same index contain chunks with the same offset: %s", existingOffsets));
+            throw new PowsyblException(String.format("The two TimeSeries with the same index contain chunks with the same offset: %s", existingPoints));
         }
 
         // Add the chunks
