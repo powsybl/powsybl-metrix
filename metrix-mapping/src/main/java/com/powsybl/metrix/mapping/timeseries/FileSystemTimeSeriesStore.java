@@ -360,6 +360,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
             chunks.addAll(newStringTimeSeries.getChunks());
             return new StringTimeSeries(existingTimeSeries.getMetadata(), chunks);
         } else {
+            // This exception should not happen (already caught before)
             throw new PowsyblException("Expected both TimeSeries to be instances of the same class");
         }
     }
