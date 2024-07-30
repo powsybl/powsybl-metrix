@@ -273,8 +273,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     private boolean compareIndexes(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex) {
-        return !(existingIndex == null || newIndex == null)
-            && existingIndex.getClass().equals(newIndex.getClass())
+        return existingIndex.getClass().equals(newIndex.getClass())
             && existingIndex.equals(newIndex);
     }
 
