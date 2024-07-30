@@ -694,8 +694,8 @@ class FileSystemTimeSeriesStoreTest {
         FileSystemTimeSeriesStore tsStoreChunk2ThenChunk1 = new FileSystemTimeSeriesStore(resDir);
         tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk2), 1);
         tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk1), 1);
-        assertTrue(tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).isPresent());
-        assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).get().toArray());
+        assertTrue(tsStoreChunk2ThenChunk1.getDoubleTimeSeries("tsName", 1).isPresent());
+        assertArrayEquals(expectedResult, tsStoreChunk2ThenChunk1.getDoubleTimeSeries("tsName", 1).get().toArray());
     }
 
     @Test
@@ -745,8 +745,8 @@ class FileSystemTimeSeriesStoreTest {
         FileSystemTimeSeriesStore tsStoreChunk2ThenChunk1 = new FileSystemTimeSeriesStore(resDir);
         tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk2), 1);
         tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk1), 1);
-        assertTrue(tsStoreChunk1ThenChunk2.getStringTimeSeries("tsName", 1).isPresent());
-        assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getStringTimeSeries("tsName", 1).get().toArray());
+        assertTrue(tsStoreChunk2ThenChunk1.getStringTimeSeries("tsName", 1).isPresent());
+        assertArrayEquals(expectedResult, tsStoreChunk2ThenChunk1.getStringTimeSeries("tsName", 1).get().toArray());
     }
 
     private void clearAllFilesInPath(Path directory) throws IOException {
