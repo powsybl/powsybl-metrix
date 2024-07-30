@@ -698,6 +698,57 @@ class FileSystemTimeSeriesStoreTest {
         assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getDoubleTimeSeries("tsName", 1).get().toArray());
     }
 
+    @Test
+    void testAppendWithChunksAndSameIndexWithOverlap() throws IOException {
+
+        // TimeSeries indexes
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T07:00:00Z"), Duration.ofHours(1));
+        TimeSeriesMetadata metadata = new TimeSeriesMetadata("tsName", TimeSeriesDataType.DOUBLE, index);
+
+        DoubleDataChunk chunk1 = new UncompressedDoubleDataChunk(0, new double[]{0, 1});
+        DoubleDataChunk chunk2 = new UncompressedDoubleDataChunk(1, new double[]{4, 5});
+        DoubleTimeSeries tsChunk1 = new StoredDoubleTimeSeries(metadata, chunk1);
+        DoubleTimeSeries tsChunk2 = new StoredDoubleTimeSeries(metadata, chunk2);
+
+        // Test with chunk 1 then 2
+        FileSystemTimeSeriesStore tsStoreChunk1ThenChunk2 = new FileSystemTimeSeriesStore(resDir);
+        tsStoreChunk1ThenChunk2.importTimeSeries(List.of(tsChunk1), 1);
+        List<TimeSeries> timeSeriesList = List.of(tsChunk2);
+        PowsyblException exception = assertThrows(PowsyblException.class, () -> tsStoreChunk1ThenChunk2.importTimeSeries(timeSeriesList, 1));
+        assertEquals("The two TimeSeries with the same index contain chunks with the same offset: [1]", exception.getMessage());
+    }
+
+    @Test
+    void testAppendWithChunksAndSameIndexString() throws IOException {
+        String[] expectedResult = new String[]{"0", "1", null, null, "4", "5", null};
+
+        // TimeSeries indexes
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T07:00:00Z"), Duration.ofHours(1));
+        TimeSeriesMetadata metadata = new TimeSeriesMetadata("tsName", TimeSeriesDataType.STRING, index);
+
+        StringDataChunk chunk1 = new UncompressedStringDataChunk(0, new String[]{"0", "1"});
+        StringDataChunk chunk2 = new UncompressedStringDataChunk(4, new String[]{"4", "5"});
+        StringTimeSeries tsChunk1 = new StringTimeSeries(metadata, chunk1);
+        StringTimeSeries tsChunk2 = new StringTimeSeries(metadata, chunk2);
+
+        // Test with chunk 1 then 2
+        FileSystemTimeSeriesStore tsStoreChunk1ThenChunk2 = new FileSystemTimeSeriesStore(resDir);
+        tsStoreChunk1ThenChunk2.importTimeSeries(List.of(tsChunk1), 1);
+        tsStoreChunk1ThenChunk2.importTimeSeries(List.of(tsChunk2), 1);
+        assertTrue(tsStoreChunk1ThenChunk2.getStringTimeSeries("tsName", 1).isPresent());
+        assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getStringTimeSeries("tsName", 1).get().toArray());
+
+        // Clear the files
+        clearAllFilesInPath(resDir);
+
+        // Test with chunk 2 then 1
+        FileSystemTimeSeriesStore tsStoreChunk2ThenChunk1 = new FileSystemTimeSeriesStore(resDir);
+        tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk2), 1);
+        tsStoreChunk2ThenChunk1.importTimeSeries(List.of(tsChunk1), 1);
+        assertTrue(tsStoreChunk1ThenChunk2.getStringTimeSeries("tsName", 1).isPresent());
+        assertArrayEquals(expectedResult, tsStoreChunk1ThenChunk2.getStringTimeSeries("tsName", 1).get().toArray());
+    }
+
     private void clearAllFilesInPath(Path directory) throws IOException {
         try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(directory)) {
             for (Path path : directoryStream) {
