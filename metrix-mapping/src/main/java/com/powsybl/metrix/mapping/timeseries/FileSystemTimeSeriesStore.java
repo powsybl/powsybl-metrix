@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
@@ -271,10 +272,21 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         existingTimeSeriesMetadataCache.put(updatedTs.getMetadata().getName(), updatedTs.getMetadata());
     }
 
-    private TimeSeries appendTimeSeries(TimeSeries existingTimeSeries, TimeSeries newTimeSeries, TimeSeriesDataType dataType) {
+    private boolean compareIndexes(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex) {
+        return existingIndex.getClass().equals(newIndex.getClass())
+            && existingIndex.equals(newIndex);
+    }
+
+    private TimeSeries appendTimeSeries(TimeSeries<?, ?> existingTimeSeries, TimeSeries<?, ?> newTimeSeries, TimeSeriesDataType dataType) {
         // Indexes to concatenate
         TimeSeriesIndex existingIndex = existingTimeSeries.getMetadata().getIndex();
         TimeSeriesIndex newIndex = newTimeSeries.getMetadata().getIndex();
+
+        // Compare the indexes
+        if (compareIndexes(existingIndex, newIndex)) {
+            // Same indexes -> compare the chunks offsets and add the chunks
+            return appendTimeSeriesWithSameIndex(existingTimeSeries, newTimeSeries);
+        }
 
         // Sort the indexes
         boolean existingComesFirst;
@@ -316,6 +328,43 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
     }
 
+    private Set<Integer> getChunkPoints(TimeSeries<?, ?> timeSeries) {
+        if (timeSeries instanceof AbstractTimeSeries<?, ?, ?> storedDoubleTimeSeries) {
+            return storedDoubleTimeSeries.getChunks().stream()
+                .flatMap(chunk -> IntStream.range(chunk.getOffset(), chunk.getOffset() + chunk.getLength()).boxed())
+                .collect(Collectors.toSet());
+        } else {
+            throw new PowsyblException("Unsupported TimeSeries type for TimeSeries " + timeSeries);
+        }
+    }
+
+    private TimeSeries appendTimeSeriesWithSameIndex(TimeSeries<?, ?> existingTimeSeries, TimeSeries<?, ?> newTimeSeries) {
+        // Check that the timeseries don't have chunks with the same offset
+        Set<Integer> existingPoints = getChunkPoints(existingTimeSeries);
+        Set<Integer> newPoints = getChunkPoints(newTimeSeries);
+        existingPoints.retainAll(newPoints);
+        if (!existingPoints.isEmpty()) {
+            // At least one offset is present in the two timeseries
+            throw new PowsyblException(String.format("The two TimeSeries with the same index contain chunks with the same offset: %s", existingPoints));
+        }
+
+        // Add the chunks
+        if (existingTimeSeries instanceof StoredDoubleTimeSeries existingStoredDoubleTimeSeries
+            && newTimeSeries instanceof StoredDoubleTimeSeries newStoredDoubleTimeSeries) {
+            List<DoubleDataChunk> chunks = existingStoredDoubleTimeSeries.getChunks();
+            chunks.addAll(newStoredDoubleTimeSeries.getChunks());
+            return new StoredDoubleTimeSeries(existingTimeSeries.getMetadata(), chunks);
+        } else if (existingTimeSeries instanceof StringTimeSeries existingStringTimeSeries
+            && newTimeSeries instanceof StringTimeSeries newStringTimeSeries) {
+            List<StringDataChunk> chunks = existingStringTimeSeries.getChunks();
+            chunks.addAll(newStringTimeSeries.getChunks());
+            return new StringTimeSeries(existingTimeSeries.getMetadata(), chunks);
+        } else {
+            // This exception should not happen (already caught before)
+            throw new PowsyblException("Expected both TimeSeries to be instances of the same class");
+        }
+    }
+
     @SuppressWarnings("unchecked")
     private <T extends DataChunk> List<T> appendChunks(List<T> existingChunks, List<T> newChunks,
                                                        TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex,
@@ -341,9 +390,10 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         // Add the other chunks
         lastChunks.forEach(chunk -> {
             T chunkWithOffset;
+            int chunkOffset = chunk.getOffset();
             if (chunk instanceof DoubleDataChunk doubleChunk) {
                 chunkWithOffset = (T) new UncompressedDoubleDataChunk(
-                    offset.get(),
+                    offset.get() + chunkOffset,
                     doubleChunk
                         .stream(lastIndex)
                         .map(DoublePoint::getValue)
@@ -351,7 +401,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
                         .toArray()).tryToCompress();
             } else if (chunk instanceof StringDataChunk stringChunk) {
                 chunkWithOffset = (T) new UncompressedStringDataChunk(
-                    offset.get(),
+                    offset.get() + chunkOffset,
                     stringChunk
                         .stream(lastIndex)
                         .map(StringPoint::getValue)
@@ -360,7 +410,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
                 // This case should not happen
                 throw new PowsyblException("Unsupported chunk type: " + chunk.getClass().getName());
             }
-            offset.addAndGet(chunkWithOffset.getLength());
             chunks.add(chunkWithOffset);
         });
         return chunks;
