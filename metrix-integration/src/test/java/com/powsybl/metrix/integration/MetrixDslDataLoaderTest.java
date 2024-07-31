@@ -530,6 +530,7 @@ class MetrixDslDataLoaderTest {
                     "    lossOfLoadCost 12000",
                     "    curativeLossOfLoadCost 26000",
                     "    curativeLossOfGenerationCost 100",
+                    "    generatorMinCost 0.5",
                     "    contingenciesProbability 0.01",
                     "    maxSolverTime (-1)",
                     "    nominalU 103",
@@ -574,6 +575,7 @@ class MetrixDslDataLoaderTest {
             assertEquals(12000f, parameters.getOptionalLossOfLoadCost().get(), 0f);
             assertEquals(26000f, parameters.getOptionalCurativeLossOfLoadCost().get(), 0f);
             assertEquals(100f, parameters.getOptionalCurativeLossOfGenerationCost().get(), 0f);
+            assertEquals(0.5f, parameters.getOptionalGeneratorMinCost().get(), 0f);
             assertEquals(0.01f, parameters.getOptionalContingenciesProbability().get(), 0f);
             assertEquals(4, parameters.getOptionalNbMaxIteration().getAsInt());
             assertEquals(2, parameters.getOptionalNbMaxCurativeAction().getAsInt());
