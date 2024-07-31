@@ -60,7 +60,7 @@ Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
--------------------- :
+-------------------- : 
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
@@ -96,7 +96,7 @@ Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
--------------------- :
+-------------------- : 
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
@@ -132,13 +132,13 @@ Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
--------------------- :
+-------------------- : 
 
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 1 contraintes dans le probleme
 Micro itération 2 (nombre de contraintes 2)
--------------------- :
+-------------------- : 
 
 Appel du simplexe
 Solution optimale trouvée pour la variante 2 (code retour = 1)
@@ -186,13 +186,13 @@ Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
--------------------- :
+-------------------- : 
 
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 1 contraintes dans le probleme
 Micro itération 2 (nombre de contraintes 2)
--------------------- :
+-------------------- : 
 
 Appel du simplexe
 Solution optimale trouvée pour la variante 3 (code retour = 1)
@@ -240,13 +240,13 @@ Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
--------------------- : 
+-------------------- :  
 
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 1 contraintes dans le probleme
 Micro itération 2 (nombre de contraintes 2)
--------------------- : 
+-------------------- :  
 
 Appel du simplexe
 Solution optimale trouvée pour la variante 4 (code retour = 1)
