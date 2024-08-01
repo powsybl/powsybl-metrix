@@ -35,17 +35,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class MetrixExceptionTest {
+class MetrixExceptionTest {
 
     private FileSystem fileSystem;
-
-    private Path workspace;
 
     private ComputationManager computationManager;
 
@@ -66,11 +65,12 @@ public class MetrixExceptionTest {
     @BeforeEach
     public void setUp() throws IOException {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
-        workspace = Files.createDirectory(fileSystem.getPath("/tmp"));
+        Path workspace = Files.createDirectory(fileSystem.getPath("/tmp"));
         computationManager = new LocalComputationManager(workspace);
         appLogger = new MetrixAppLogger() {
             @Override
             public void log(String message, Object... args) {
+                // Nothing to do here
             }
 
             @Override
@@ -82,7 +82,7 @@ public class MetrixExceptionTest {
         emptyDslFile = fileSystem.getPath("/emptyTest.dsl");
         writeToDslFile(wrongDslFile, "wrongKeyword");
         writeToDslFile(emptyDslFile, "");
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @AfterEach
@@ -94,7 +94,7 @@ public class MetrixExceptionTest {
     void loadContingenciesScriptExceptionTest() {
         ContingenciesProvider provider = new GroovyDslContingenciesProvider(wrongDslFile);
         MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null);
-        assertThrows(ContingenciesScriptLoadingException.class, () -> metrixInputAnalysis.runAnalysis());
+        assertThrows(ContingenciesScriptLoadingException.class, metrixInputAnalysis::runAnalysis);
     }
 
     @Test
