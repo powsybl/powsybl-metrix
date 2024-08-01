@@ -98,32 +98,37 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
     }
 
     public double getInjection(Identifiable<?> identifiable, MappingVariable variable) {
-        if (identifiable instanceof Injection) {
-            if (identifiable instanceof Generator generator) {
+        if (identifiable instanceof Injection<?> injection) {
+            if (injection instanceof Generator generator) {
                 return generator.getTargetP();
-            } else if (identifiable instanceof Load load) {
-                // in case of scaling down error on fixedActivePower + variableActivePower, don't count p0 twice
-                if (variable == EquipmentVariable.p0) {
-                    return -load.getP0();
-                } else if (variable == EquipmentVariable.fixedActivePower) {
-                    LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                    if (loadDetail != null) {
-                        return -loadDetail.getFixedActivePower();
-                    } else if (!loadIds.contains(load.getId())) {
-                        loadIds.add(load.getId());
-                        return -load.getP0();
-                    }
-                } else if (variable == EquipmentVariable.variableActivePower) {
-                    LoadDetail loadDetail = load.getExtension(LoadDetail.class);
-                    if (loadDetail != null) {
-                        return -loadDetail.getVariableActivePower();
-                    } else if (!loadIds.contains(load.getId())) {
-                        loadIds.add(load.getId());
-                        return -load.getP0();
-                    }
-                }
-            } else if (identifiable instanceof DanglingLine danglingLine) {
+            } else if (injection instanceof Load load) {
+                return getLoad(variable, load);
+            } else if (injection instanceof DanglingLine danglingLine) {
                 return -danglingLine.getP0();
+            }
+        }
+        return 0;
+    }
+
+    private double getLoad(MappingVariable variable, Load load) {
+        // in case of scaling down error on fixedActivePower + variableActivePower, don't count p0 twice
+        if (variable == EquipmentVariable.p0) {
+            return -load.getP0();
+        } else if (variable == EquipmentVariable.fixedActivePower) {
+            LoadDetail loadDetail = load.getExtension(LoadDetail.class);
+            if (loadDetail != null) {
+                return -loadDetail.getFixedActivePower();
+            } else if (!loadIds.contains(load.getId())) {
+                loadIds.add(load.getId());
+                return -load.getP0();
+            }
+        } else if (variable == EquipmentVariable.variableActivePower) {
+            LoadDetail loadDetail = load.getExtension(LoadDetail.class);
+            if (loadDetail != null) {
+                return -loadDetail.getVariableActivePower();
+            } else if (!loadIds.contains(load.getId())) {
+                loadIds.add(load.getId());
+                return -load.getP0();
             }
         }
         return 0;
