@@ -33,11 +33,13 @@ public class MetrixDie {
 
     private static final int ATTRIBUTE_NAME_LENGTH = 8;
 
-    private String integerFileName = "IntegerFile";
-    private String floatFileName = "FloatFile";
-    private String doubleFileName = "DoubleFile";
-    private String stringFileName = "StringFile";
-    private String booleanFileName = "BooleanFile";
+    private static final String INTEGER_FILE_NAME = "IntegerFile";
+    private static final String FLOAT_FILE_NAME = "FloatFile";
+    private static final String DOUBLE_FILE_NAME = "DoubleFile";
+    private static final String STRING_FILE_NAME = "StringFile";
+    private static final String BOOLEAN_FILE_NAME = "BooleanFile";
+    private static final String NOT_FOUND = " not found";
+    private static final String IS_NOT_A_SCALAR = " is not a scalar";
 
     private final Map<String, IntAttribute> intAttributes = new LinkedHashMap<>();
     private final Map<String, FloatAttribute> floatAttributes = new LinkedHashMap<>();
@@ -76,11 +78,11 @@ public class MetrixDie {
             generator.writeStartObject();
             generator.writeFieldName("files");
             generator.writeStartArray();
-            saveFort4xToJson(generator, integerFileName, intAttributes);
-            saveFort4xToJson(generator, floatFileName, floatAttributes);
-            saveFort4xToJson(generator, doubleFileName, doubleAttributes);
-            saveFort4xToJson(generator, stringFileName, stringAttributes);
-            saveFort4xToJson(generator, booleanFileName, booleanAttributes);
+            saveFort4xToJson(generator, INTEGER_FILE_NAME, intAttributes);
+            saveFort4xToJson(generator, FLOAT_FILE_NAME, floatAttributes);
+            saveFort4xToJson(generator, DOUBLE_FILE_NAME, doubleAttributes);
+            saveFort4xToJson(generator, STRING_FILE_NAME, stringAttributes);
+            saveFort4xToJson(generator, BOOLEAN_FILE_NAME, booleanAttributes);
             generator.writeEndArray();
             generator.writeEndObject();
         }
@@ -108,15 +110,15 @@ public class MetrixDie {
                 JsonNode dieFile = files.next();
                 String name = dieFile.path("name").textValue();
                 JsonNode attributes = dieFile.path("attributes");
-                if (integerFileName.equals(name)) {
+                if (INTEGER_FILE_NAME.equals(name)) {
                     loadFromJson(attributes, intAttributes, IntAttribute.class);
-                } else if (floatFileName.equals(name)) {
+                } else if (FLOAT_FILE_NAME.equals(name)) {
                     loadFromJson(attributes, floatAttributes, FloatAttribute.class);
-                } else if (doubleFileName.equals(name)) {
+                } else if (DOUBLE_FILE_NAME.equals(name)) {
                     loadFromJson(attributes, doubleAttributes, DoubleAttribute.class);
-                } else if (stringFileName.equals(name)) {
+                } else if (STRING_FILE_NAME.equals(name)) {
                     loadFromJson(attributes, stringAttributes, StringAttribute.class);
-                } else if (booleanFileName.equals(name)) {
+                } else if (BOOLEAN_FILE_NAME.equals(name)) {
                     loadFromJson(attributes, booleanAttributes, BooleanAttribute.class);
                 }
             }
@@ -133,7 +135,7 @@ public class MetrixDie {
     public int[] getIntArray(String name) {
         IntAttribute attribute = intAttributes.get(name);
         if (attribute == null) {
-            throw new MetrixDieException("Int attribute " + name + " not found");
+            throw new MetrixDieException("Int attribute " + name + NOT_FOUND);
         }
         return attribute.getValues();
     }
@@ -141,7 +143,7 @@ public class MetrixDie {
     public int getInt(String name) {
         int[] array = getIntArray(name);
         if (array.length != 1) {
-            throw new MetrixDieException("Int attribute " + name + " is not a scalar");
+            throw new MetrixDieException("Int attribute " + name + IS_NOT_A_SCALAR);
         }
         return array[0];
     }
@@ -159,7 +161,7 @@ public class MetrixDie {
     public float[] getFloatArray(String name) {
         FloatAttribute attribute = floatAttributes.get(name);
         if (attribute == null) {
-            throw new MetrixDieException("Float attribute " + name + " not found");
+            throw new MetrixDieException("Float attribute " + name + NOT_FOUND);
         }
         return attribute.getValues();
     }
@@ -167,7 +169,7 @@ public class MetrixDie {
     public float getFloat(String name) {
         float[] array = getFloatArray(name);
         if (array.length != 1) {
-            throw new MetrixDieException("Float attribute " + name + " is not a scalar");
+            throw new MetrixDieException("Float attribute " + name + IS_NOT_A_SCALAR);
         }
         return array[0];
     }
@@ -185,7 +187,7 @@ public class MetrixDie {
     public double[] getDoubleArray(String name) {
         DoubleAttribute attribute = doubleAttributes.get(name);
         if (attribute == null) {
-            throw new MetrixDieException("Double attribute " + name + " not found");
+            throw new MetrixDieException("Double attribute " + name + NOT_FOUND);
         }
         return attribute.getValues();
     }
@@ -193,7 +195,7 @@ public class MetrixDie {
     public double getDouble(String name) {
         double[] array = getDoubleArray(name);
         if (array.length != 1) {
-            throw new MetrixDieException("Double attribute " + name + " is not a scalar");
+            throw new MetrixDieException("Double attribute " + name + IS_NOT_A_SCALAR);
         }
         return array[0];
     }
@@ -211,7 +213,7 @@ public class MetrixDie {
     public String[] getStringArray(String name) {
         StringAttribute attribute = stringAttributes.get(name);
         if (attribute == null) {
-            throw new MetrixDieException("String attribute " + name + " not found");
+            throw new MetrixDieException("String attribute " + name + NOT_FOUND);
         }
         return attribute.getValues();
     }
@@ -219,7 +221,7 @@ public class MetrixDie {
     public String getString(String name) {
         String[] array = getStringArray(name);
         if (array.length != 1) {
-            throw new MetrixDieException("String attribute " + name + " is not a scalar");
+            throw new MetrixDieException("String attribute " + name + IS_NOT_A_SCALAR);
         }
         return array[0];
     }
@@ -237,7 +239,7 @@ public class MetrixDie {
     public boolean[] getBooleanArray(String name) {
         BooleanAttribute attribute = booleanAttributes.get(name);
         if (attribute == null) {
-            throw new MetrixDieException("Boolean attribute " + name + " not found");
+            throw new MetrixDieException("Boolean attribute " + name + NOT_FOUND);
         }
         return attribute.getValues();
     }
@@ -245,7 +247,7 @@ public class MetrixDie {
     public boolean getBoolean(String name) {
         boolean[] array = getBooleanArray(name);
         if (array.length != 1) {
-            throw new MetrixDieException("Boolean attribute " + name + " is not a scalar");
+            throw new MetrixDieException("Boolean attribute " + name + IS_NOT_A_SCALAR);
         }
         return array[0];
     }
