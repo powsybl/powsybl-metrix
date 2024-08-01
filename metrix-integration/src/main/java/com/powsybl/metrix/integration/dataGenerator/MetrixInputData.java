@@ -1070,40 +1070,44 @@ public class MetrixInputData {
         }
     }
 
+    private int getDetailedMarginalVariation(Set<String> idList,
+                                             List<Integer> ptvarmar) {
+        int nbvarmar = 0;
+        Integer indexCty;
+        for (String branchId : idList) {
+
+            if (checkBranchNotMapped(branchId)) {
+                continue;
+            }
+
+            List<Integer> tmpList = new ArrayList<>();
+            for (String cty : dslData.getContingencyDetailedMarginalVariations(branchId)) {
+                if ((indexCty = ctyIndex.get(cty)) != null) {
+                    tmpList.add(indexCty);
+                } else {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Contingency '%s' not found for detailed marginal variations of branch '%s'", cty, branchId));
+                    }
+                }
+            }
+
+            if (!tmpList.isEmpty()) {
+                nbvarmar += tmpList.size() + 2;
+                ptvarmar.add(metrixNetwork.getIndex(MetrixSubset.QUAD, branchId));
+                ptvarmar.add(tmpList.size());
+                ptvarmar.addAll(tmpList);
+            }
+        }
+        return nbvarmar;
+    }
+
     private void writeDetailedMarginalVariations(MetrixDie die) {
         if (dslData != null) {
             Set<String> idList = dslData.getContingencyDetailedMarginalVariationsList();
 
             if (!idList.isEmpty()) {
-                int nbvarmar = 0;
                 List<Integer> ptvarmar = new ArrayList<>();
-                Integer indexCty;
-                for (String branchId : idList) {
-
-                    Identifiable<?> identifiable = metrixNetwork.getIdentifiable(branchId);
-                    if (identifiable == null ||
-                            !metrixNetwork.isMapped(identifiable)) {
-                        continue;
-                    }
-
-                    List<Integer> tmpList = new ArrayList<>();
-                    for (String cty : dslData.getContingencyDetailedMarginalVariations(branchId)) {
-                        if ((indexCty = ctyIndex.get(cty)) != null) {
-                            tmpList.add(indexCty);
-                        } else {
-                            if (LOGGER.isWarnEnabled()) {
-                                LOGGER.warn(String.format("Contingency '%s' not found for detailed marginal variations of branch '%s'", cty, branchId));
-                            }
-                        }
-                    }
-
-                    if (!tmpList.isEmpty()) {
-                        nbvarmar += tmpList.size() + 2;
-                        ptvarmar.add(metrixNetwork.getIndex(MetrixSubset.QUAD, branchId));
-                        ptvarmar.add(tmpList.size());
-                        ptvarmar.addAll(tmpList);
-                    }
-                }
+                int nbvarmar = getDetailedMarginalVariation(idList, ptvarmar);
 
                 if (nbvarmar > 0) {
                     die.setInt("NBVARMAR", nbvarmar);
@@ -1113,10 +1117,48 @@ public class MetrixInputData {
         }
     }
 
+    private void getBranchForSection(MetrixSection section,
+                                     Map.Entry<String, Float> branch,
+                                     int index,
+                                     int[] sectnbqd,
+                                     List<Integer> secttype, List<Integer> sectnumq, List<Float> sectcoef) {
+        Identifiable<?> identifiable = metrixNetwork.getNetwork().getIdentifiable(branch.getKey());
+        if (identifiable != null) {
+            if (identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer) {
+                secttype.add(ElementType.BRANCH.getType());
+            } else if (identifiable instanceof HvdcLine) {
+                secttype.add(ElementType.HVDC.getType());
+            } else {
+                if (LOGGER.isErrorEnabled()) {
+                    LOGGER.error(String.format("Section '%s' : unsupported element type '%s'", section.getId(), identifiable.getClass().getName()));
+                }
+            }
+            sectnumq.add(metrixNetwork.getIndex(identifiable));
+            sectcoef.add(branch.getValue());
+            sectnbqd[index]++;
+        } else {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(String.format("Section '%s' : element not found in network '%s'", section.getId(), branch.getKey()));
+            }
+        }
+    }
+
+    private void getSections(String[] sectnoms, float[] sectmaxn, int[] sectnbqd,
+                            List<Integer> secttype, List<Integer> sectnumq, List<Float> sectcoef) {
+        int index = 0;
+        for (MetrixSection section : dslData.getSectionList()) {
+            sectnoms[index] = replaceSpaces(section.getId());
+            sectmaxn[index] = section.getMaxFlowN();
+            for (Map.Entry<String, Float> branch : section.getCoefFlowList().entrySet()) {
+                getBranchForSection(section, branch, index, sectnbqd, secttype, sectnumq, sectcoef);
+            }
+            index++;
+        }
+    }
+
     private void writeSections(MetrixDie die) {
         if (dslData != null && !dslData.getSectionList().isEmpty()) {
 
-            int index = 0;
             String[] sectnoms = new String[sectnbse];
             float[] sectmaxn = new float[sectnbse];
             int[] sectnbqd = new int[sectnbse];
@@ -1125,32 +1167,7 @@ public class MetrixInputData {
             List<Integer> sectnumq = new ArrayList<>();
             List<Float> sectcoef = new ArrayList<>();
 
-            for (MetrixSection section : dslData.getSectionList()) {
-                sectnoms[index] = replaceSpaces(section.getId());
-                sectmaxn[index] = section.getMaxFlowN();
-                for (Map.Entry<String, Float> branch : section.getCoefFlowList().entrySet()) {
-                    Identifiable<?> identifiable = metrixNetwork.getNetwork().getIdentifiable(branch.getKey());
-                    if (identifiable != null) {
-                        if (identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer) {
-                            secttype.add(ElementType.BRANCH.getType());
-                        } else if (identifiable instanceof HvdcLine) {
-                            secttype.add(ElementType.HVDC.getType());
-                        } else {
-                            if (LOGGER.isErrorEnabled()) {
-                                LOGGER.error(String.format("Section '%s' : unsupported element type '%s'", section.getId(), identifiable.getClass().getName()));
-                            }
-                        }
-                        sectnumq.add(metrixNetwork.getIndex(identifiable));
-                        sectcoef.add(branch.getValue());
-                        sectnbqd[index]++;
-                    } else {
-                        if (LOGGER.isWarnEnabled()) {
-                            LOGGER.warn(String.format("Section '%s' : element not found in network '%s'", section.getId(), branch.getKey()));
-                        }
-                    }
-                }
-                index++;
-            }
+            getSections(sectnoms, sectmaxn, sectnbqd, secttype, sectnumq, sectcoef);
 
             die.setStringArray("SECTNOMS", sectnoms);
             die.setFloatArray("SECTMAXN", sectmaxn);
@@ -1158,6 +1175,34 @@ public class MetrixInputData {
             die.setIntArray("SECTTYPE", secttype.stream().mapToInt(i -> i).toArray());
             die.setIntArray("SECTNUMQ", sectnumq.stream().mapToInt(i -> i).toArray());
             die.setFloatArray("SECTCOEF", ArrayUtils.toPrimitive(sectcoef.toArray(new Float[0]), 0.0F));
+        }
+    }
+
+    private void getGeneratorBindings(Collection<MetrixGeneratorsBinding> bindings,
+                                      List<String> gbindnom,
+                                      List<Integer> gbindref,
+                                      List<Integer> gbinddef) {
+        for (MetrixGeneratorsBinding binding : bindings) {
+            List<Integer> idList = new ArrayList<>();
+            for (String generatorId : binding.getGeneratorsIds()) {
+                try {
+                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
+                } catch (IllegalStateException ise) {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("generator group '%s' : generator '%s' not found", binding.getName(), generatorId));
+                    }
+                }
+            }
+
+            if (idList.size() > 1) {
+                gbindnom.add(binding.getName());
+                gbindref.add(binding.getReference().getType());
+                gbinddef.add(idList.size());
+                gbinddef.addAll(idList);
+            } else if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(String.format("generator group '%s' ignored because it contains too few elements (%d)", binding.getName(), idList.size()));
+            }
+
         }
     }
 
@@ -1171,34 +1216,39 @@ public class MetrixInputData {
                 List<Integer> gbindref = new ArrayList<>();
                 List<Integer> gbinddef = new ArrayList<>();
 
-                for (MetrixGeneratorsBinding binding : bindings) {
-                    List<Integer> idList = new ArrayList<>();
-                    for (String generatorId : binding.getGeneratorsIds()) {
-                        try {
-                            idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
-                        } catch (IllegalStateException ise) {
-                            if (LOGGER.isWarnEnabled()) {
-                                LOGGER.warn(String.format("generator group '%s' : generator '%s' not found", binding.getName(), generatorId));
-                            }
-                        }
-                    }
-
-                    if (idList.size() > 1) {
-                        gbindnom.add(binding.getName());
-                        gbindref.add(binding.getReference().getType());
-                        gbinddef.add(idList.size());
-                        gbinddef.addAll(idList);
-                    } else if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("generator group '%s' ignored because it contains too few elements (%d)", binding.getName(), idList.size()));
-                    }
-
-                }
+                getGeneratorBindings(bindings, gbindnom, gbindref, gbinddef);
 
                 die.setInt("NBGBINDS", gbindnom.size());
                 die.setStringArray("GBINDNOM", gbindnom.toArray(new String[0]));
                 die.setIntArray("GBINDREF", gbindref.stream().mapToInt(i -> i).toArray());
                 die.setIntArray("GBINDDEF", gbinddef.stream().mapToInt(i -> i).toArray());
             }
+        }
+    }
+
+    private void getLoadsBindings(Collection<MetrixLoadsBinding> bindings,
+                                  List<String> lbindnom,
+                                  List<Integer> lbinddef) {
+        for (MetrixLoadsBinding binding : bindings) {
+            List<Integer> idList = new ArrayList<>();
+            for (String loadId : binding.getLoadsIds()) {
+                try {
+                    idList.add(metrixNetwork.getIndex(MetrixSubset.LOAD, loadId));
+                } catch (IllegalStateException ise) {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("load group '%s' : load '%s' not found", binding.getName(), loadId));
+                    }
+                }
+            }
+
+            if (idList.size() > 1) {
+                lbindnom.add(binding.getName());
+                lbinddef.add(idList.size());
+                lbinddef.addAll(idList);
+            } else if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(String.format("load group '%s' ignored because it contains to few elements (%d)", binding.getName(), idList.size()));
+            }
+
         }
     }
 
@@ -1211,27 +1261,7 @@ public class MetrixInputData {
                 List<String> lbindnom = new ArrayList<>();
                 List<Integer> lbinddef = new ArrayList<>();
 
-                for (MetrixLoadsBinding binding : bindings) {
-                    List<Integer> idList = new ArrayList<>();
-                    for (String loadId : binding.getLoadsIds()) {
-                        try {
-                            idList.add(metrixNetwork.getIndex(MetrixSubset.LOAD, loadId));
-                        } catch (IllegalStateException ise) {
-                            if (LOGGER.isWarnEnabled()) {
-                                LOGGER.warn(String.format("load group '%s' : load '%s' not found", binding.getName(), loadId));
-                            }
-                        }
-                    }
-
-                    if (idList.size() > 1) {
-                        lbindnom.add(binding.getName());
-                        lbinddef.add(idList.size());
-                        lbinddef.addAll(idList);
-                    } else if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("load group '%s' ignored because it contains to few elements (%d)", binding.getName(), idList.size()));
-                    }
-
-                }
+                getLoadsBindings(bindings, lbindnom, lbinddef);
 
                 if (!lbindnom.isEmpty()) {
                     die.setInt("NBLBINDS", lbindnom.size());
