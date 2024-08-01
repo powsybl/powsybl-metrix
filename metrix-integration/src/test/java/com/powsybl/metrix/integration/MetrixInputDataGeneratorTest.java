@@ -132,7 +132,7 @@ class MetrixInputDataGeneratorTest {
 
             @Override
             public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
-
+                // Nothing to do here
             }
         };
         Network network = null;
@@ -190,9 +190,9 @@ class MetrixInputDataGeneratorTest {
         List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
 
         //THEN
-        Assertions.assertThat(commands.size()).isEqualTo(1);
-        Assertions.assertThat(commands.get(0).getCommand().getInputFiles().size()).isEqualTo(2);
-        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles().size()).isEqualTo(2);
+        Assertions.assertThat(commands).hasSize(1);
+        Assertions.assertThat(commands.get(0).getCommand().getInputFiles()).hasSize(2);
+        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(2);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
     }
 
@@ -224,7 +224,7 @@ class MetrixInputDataGeneratorTest {
 
             @Override
             public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
-
+                // Nothing to do here
             }
         };
         Network network = null;
@@ -236,9 +236,9 @@ class MetrixInputDataGeneratorTest {
         List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
 
         //THEN
-        Assertions.assertThat(commands.size()).isEqualTo(1);
-        Assertions.assertThat(commands.get(0).getCommand().getInputFiles().size()).isEqualTo(2);
-        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles().size()).isEqualTo(6);
+        Assertions.assertThat(commands).hasSize(1);
+        Assertions.assertThat(commands.get(0).getCommand().getInputFiles()).hasSize(2);
+        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(6);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
     }
 
