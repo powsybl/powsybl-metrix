@@ -714,58 +714,13 @@ public class MetrixInputData {
         die.setFloatArray("DCPERST2", dcperst2);
     }
 
-    private void writeContingencies(MetrixDie die) {
-        int index = 0;
-        double maxGeneratorOutage = 0.d;
-        List<Integer> dmptdefk = new ArrayList<>();
-        List<String> dmnomdek = new ArrayList<>();
-        List<Integer> dmdescrk = new ArrayList<>();
-
-        for (Contingency contingency : metrixNetwork.getContingencyList()) {
-
-            List<Integer> elementsToTrip = new ArrayList<>();
-
-            double generatorPowerLost = 0.d;
-
-            for (ContingencyElement element : contingency.getElements()) {
-                try {
-                    int type;
-                    switch (element.getType()) {
-                        case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> type = ElementType.BRANCH.getType();
-                        case GENERATOR -> {
-                            type = ElementType.GENERATOR.getType();
-                            generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
-                        }
-                        case HVDC_LINE -> type = ElementType.HVDC.getType();
-                        default -> throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
-                    }
-                    int elementIndex = metrixNetwork.getIndex(element.getId()); // may throw an exception if element not found in MCC
-                    elementsToTrip.add(type);
-                    elementsToTrip.add(elementIndex);
-                } catch (IllegalStateException ise) {
-                    if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Error while processing contingency '%s', element '%s' not found.", contingency.getId(), element.getId()));
-                        LOGGER.warn(ise.getMessage());
-                    }
-                }
-            }
-
-            if (!elementsToTrip.isEmpty()) {
-                dmnomdek.add(contingency.getId());
-                dmdescrk.add(elementsToTrip.size());
-                dmptdefk.add(dmdescrk.size());
-                dmdescrk.addAll(elementsToTrip);
-
-                ctyIndex.put(contingency.getId(), index);
-
-                index++;
-
-                if (generatorPowerLost > maxGeneratorOutage) {
-                    maxGeneratorOutage = generatorPowerLost;
-                }
-            }
-        }
-
+    private void writeContingenciesInMetrixDie(MetrixDie die,
+                                               int indexOut,
+                                               double maxGeneratorOutage,
+                                               List<Integer> dmptdefk,
+                                               List<String> dmnomdek,
+                                               List<Integer> dmdescrk) {
+        int index = indexOut;
         die.setInt("DMNBDEFK", index);
         if (index > 0) {
             die.setIntArray("DMPTDEFK", dmptdefk.stream().mapToInt(i -> i).toArray());
@@ -783,15 +738,78 @@ public class MetrixInputData {
                     GeneratorAdjustmentMode adjustmentMode = getGeneratorAdjustmentMode(generator.getId());
                     float adjustmentValue = 0;
                     if (adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_AND_REDISPATCHING ||
-                            adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_ONLY) {
+                        adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_ONLY) {
                         adjustmentValue = Math.min((float) generator.getMaxP(),
-                                BigDecimal.valueOf(prorata * generator.getMaxP()).setScale(1, RoundingMode.HALF_UP).floatValue());
+                            BigDecimal.valueOf(prorata * generator.getMaxP()).setScale(1, RoundingMode.HALF_UP).floatValue());
                     }
                     trdemban[index - 1] = adjustmentValue;
                 }
                 die.setFloatArray("TRDEMBAN", trdemban);
             }
         }
+
+    }
+
+    private double listElementsToTrip(Contingency contingency,
+                                      List<Integer> elementsToTrip) {
+        double generatorPowerLost = 0.d;
+
+        for (ContingencyElement element : contingency.getElements()) {
+            try {
+                int type;
+                switch (element.getType()) {
+                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> type = ElementType.BRANCH.getType();
+                    case GENERATOR -> {
+                        type = ElementType.GENERATOR.getType();
+                        generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
+                    }
+                    case HVDC_LINE -> type = ElementType.HVDC.getType();
+                    default -> throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
+                }
+                int elementIndex = metrixNetwork.getIndex(element.getId()); // may throw an exception if element not found in MCC
+                elementsToTrip.add(type);
+                elementsToTrip.add(elementIndex);
+            } catch (IllegalStateException ise) {
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn(String.format("Error while processing contingency '%s', element '%s' not found.", contingency.getId(), element.getId()));
+                    LOGGER.warn(ise.getMessage());
+                }
+            }
+        }
+        return generatorPowerLost;
+    }
+
+    private void writeContingencies(MetrixDie die) {
+        int index = 0;
+        double maxGeneratorOutage = 0.d;
+        List<Integer> dmptdefk = new ArrayList<>();
+        List<String> dmnomdek = new ArrayList<>();
+        List<Integer> dmdescrk = new ArrayList<>();
+
+        for (Contingency contingency : metrixNetwork.getContingencyList()) {
+
+            List<Integer> elementsToTrip = new ArrayList<>();
+
+            // List the elements to trip and compute the generator power lost
+            double generatorPowerLost = listElementsToTrip(contingency, elementsToTrip);
+
+            if (!elementsToTrip.isEmpty()) {
+                dmnomdek.add(contingency.getId());
+                dmdescrk.add(elementsToTrip.size());
+                dmptdefk.add(dmdescrk.size());
+                dmdescrk.addAll(elementsToTrip);
+
+                ctyIndex.put(contingency.getId(), index);
+
+                index++;
+
+                if (generatorPowerLost > maxGeneratorOutage) {
+                    maxGeneratorOutage = generatorPowerLost;
+                }
+            }
+        }
+
+        writeContingenciesInMetrixDie(die, index, maxGeneratorOutage, dmptdefk, dmnomdek, dmdescrk);
     }
 
     private void writeSpecificContingencies(MetrixDie die) {
@@ -835,6 +853,27 @@ public class MetrixInputData {
         return indexes;
     }
 
+    private void writeIndividualCurativePtc(Integer index, String pstId,
+                                            List<Integer> dtptdefk,
+                                            int[] dtnbdefk) {
+        List<String> contingenciesList = dslData.getPtcContingencies(pstId);
+        if (!contingenciesList.isEmpty()) {
+            int nbCty = 0;
+            Integer indexCty;
+            for (String cty : contingenciesList) {
+                if ((indexCty = ctyIndex.get(cty)) != null) {
+                    dtptdefk.add(indexCty);
+                    nbCty++;
+                } else {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of transformer '%s'", cty, pstId));
+                    }
+                }
+            }
+            dtnbdefk[index - 1] = nbCty;
+        }
+    }
+
     private void writeCurativePtc(MetrixDie die) {
         Map<Integer, String> curativePtcIndexes = getCurativeElementsIndexes(dslData.getPtcContingenciesList(),
                 MetrixSubset.DEPHA);
@@ -845,29 +884,32 @@ public class MetrixInputData {
 
         int[] dtnbdefk = new int[dtnbtrde];
         List<Integer> dtptdefk = new ArrayList<>();
-        curativePtcIndexes.forEach((index, pstId) -> {
-
-            List<String> contingenciesList = dslData.getPtcContingencies(pstId);
-            if (!contingenciesList.isEmpty()) {
-                int nbCty = 0;
-                Integer indexCty;
-                for (String cty : contingenciesList) {
-                    if ((indexCty = ctyIndex.get(cty)) != null) {
-                        dtptdefk.add(indexCty);
-                        nbCty++;
-                    } else {
-                        if (LOGGER.isWarnEnabled()) {
-                            LOGGER.warn(String.format("Contingency '%s' not found for curative action of transformer '%s'", cty, pstId));
-                        }
-                    }
-                }
-                dtnbdefk[index - 1] = nbCty;
-            }
-        });
+        curativePtcIndexes.forEach((index, pstId) -> writeIndividualCurativePtc(index, pstId, dtptdefk, dtnbdefk));
 
         if (!dtptdefk.isEmpty()) {
             die.setIntArray("DTNBDEFK", dtnbdefk);
             die.setIntArray("DTPTDEFK", dtptdefk.stream().mapToInt(i -> i).toArray());
+        }
+    }
+
+    private void writeIndividualCurativeHvdc(Integer index, String hvdcId,
+                                             List<Integer> dcptdefk,
+                                             int[] dcnbdefk) {
+        List<String> contingenciesList = dslData.getHvdcContingencies(hvdcId);
+        if (!contingenciesList.isEmpty()) {
+            int nbCty = 0;
+            Integer indexCty;
+            for (String cty : contingenciesList) {
+                if ((indexCty = ctyIndex.get(cty)) != null) {
+                    dcptdefk.add(indexCty);
+                    nbCty++;
+                } else {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of hvdc line '%s'", cty, hvdcId));
+                    }
+                }
+            }
+            dcnbdefk[index - 1] = nbCty;
         }
     }
 
@@ -882,28 +924,35 @@ public class MetrixInputData {
         int[] dcnbdefk = new int[dcnblies];
         List<Integer> dcptdefk = new ArrayList<>();
 
-        curativeHvdcIndexes.forEach((index, hvdcId) -> {
-
-            List<String> contingenciesList = dslData.getHvdcContingencies(hvdcId);
-            if (!contingenciesList.isEmpty()) {
-                int nbCty = 0;
-                Integer indexCty;
-                for (String cty : contingenciesList) {
-                    if ((indexCty = ctyIndex.get(cty)) != null) {
-                        dcptdefk.add(indexCty);
-                        nbCty++;
-                    } else {
-                        if (LOGGER.isWarnEnabled()) {
-                            LOGGER.warn(String.format("Contingency '%s' not found for curative action of hvdc line '%s'", cty, hvdcId));
-                        }
-                    }
-                }
-                dcnbdefk[index - 1] = nbCty;
-            }
-        });
+        curativeHvdcIndexes.forEach((index, hvdcId) -> writeIndividualCurativeHvdc(index, hvdcId, dcptdefk, dcnbdefk));
         if (!dcptdefk.isEmpty()) {
             die.setIntArray("DCNBDEFK", dcnbdefk);
             die.setIntArray("DCPTDEFK", dcptdefk.stream().mapToInt(i -> i).toArray());
+        }
+    }
+
+    private void writeCurativeGenerator(Integer index, String generatorId,
+                                        List<Integer> grptdefk,
+                                        int[] grnbdefk,
+                                        AtomicInteger nbCurativeGenerators) {
+        List<String> contingenciesList = dslData.getGeneratorContingencies(generatorId);
+        if (!contingenciesList.isEmpty()) {
+            int nbCty = 0;
+            Integer indexCty;
+            for (String cty : contingenciesList) {
+                if ((indexCty = ctyIndex.get(cty)) != null) {
+                    grptdefk.add(indexCty);
+                    nbCty++;
+                } else {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of generator '%s'", cty, generatorId));
+                    }
+                }
+            }
+            if (nbCty > 0) {
+                grnbdefk[index - 1] = nbCty;
+                nbCurativeGenerators.getAndIncrement();
+            }
         }
     }
 
@@ -915,32 +964,36 @@ public class MetrixInputData {
             int[] grnbdefk = new int[trnbgrou];
             List<Integer> grptdefk = new ArrayList<>();
             AtomicInteger nbCurativeGenerators = new AtomicInteger(0);
-            curativeGeneratorIndexes.forEach((index, generatorId) -> {
-
-                List<String> contingenciesList = dslData.getGeneratorContingencies(generatorId);
-                if (!contingenciesList.isEmpty()) {
-                    int nbCty = 0;
-                    Integer indexCty;
-                    for (String cty : contingenciesList) {
-                        if ((indexCty = ctyIndex.get(cty)) != null) {
-                            grptdefk.add(indexCty);
-                            nbCty++;
-                        } else {
-                            if (LOGGER.isWarnEnabled()) {
-                                LOGGER.warn(String.format("Contingency '%s' not found for curative action of generator '%s'", cty, generatorId));
-                            }
-                        }
-                    }
-                    if (nbCty > 0) {
-                        grnbdefk[index - 1] = nbCty;
-                        nbCurativeGenerators.getAndIncrement();
-                    }
-                }
-            });
+            curativeGeneratorIndexes.forEach((index, generatorId) -> writeCurativeGenerator(index, generatorId, grptdefk, grnbdefk, nbCurativeGenerators));
             if (!grptdefk.isEmpty()) {
                 die.setInt("GRNBCURA", nbCurativeGenerators.intValue());
                 die.setIntArray("GRNBDEFK", grnbdefk);
                 die.setIntArray("GRPTDEFK", grptdefk.stream().mapToInt(i -> i).toArray());
+            }
+        }
+    }
+
+    private void writeCurativeLoad(Integer index, String loadId,
+                                   List<Integer> ldptdefk,
+                                   List<Integer> ldcurper,
+                                   int[] ldnbdefk) {
+        List<String> contingenciesList = dslData.getLoadContingencies(loadId);
+        if (!contingenciesList.isEmpty()) {
+            int nbCty = 0;
+            Integer indexCty;
+            for (String cty : contingenciesList) {
+                if ((indexCty = ctyIndex.get(cty)) != null) {
+                    ldptdefk.add(indexCty);
+                    nbCty++;
+                } else {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of load '%s'", cty, loadId));
+                    }
+                }
+            }
+            ldnbdefk[index - 1] = nbCty;
+            if (nbCty > 0) {
+                ldcurper.add(dslData.getCurativeLoadPercentage(loadId));
             }
         }
     }
@@ -954,28 +1007,7 @@ public class MetrixInputData {
             List<Integer> ldptdefk = new ArrayList<>();
             List<Integer> ldcurper = new ArrayList<>();
 
-            curativeLoadIds.forEach((index, loadId) -> {
-
-                List<String> contingenciesList = dslData.getLoadContingencies(loadId);
-                if (!contingenciesList.isEmpty()) {
-                    int nbCty = 0;
-                    Integer indexCty;
-                    for (String cty : contingenciesList) {
-                        if ((indexCty = ctyIndex.get(cty)) != null) {
-                            ldptdefk.add(indexCty);
-                            nbCty++;
-                        } else {
-                            if (LOGGER.isWarnEnabled()) {
-                                LOGGER.warn(String.format("Contingency '%s' not found for curative action of load '%s'", cty, loadId));
-                            }
-                        }
-                    }
-                    ldnbdefk[index - 1] = nbCty;
-                    if (nbCty > 0) {
-                        ldcurper.add(dslData.getCurativeLoadPercentage(loadId));
-                    }
-                }
-            });
+            curativeLoadIds.forEach((index, loadId) -> writeCurativeLoad(index, loadId, ldptdefk, ldcurper, ldnbdefk));
 
             if (!ldptdefk.isEmpty()) {
                 die.setInt("NBLDCURA", ldcurper.size());
@@ -986,40 +1018,49 @@ public class MetrixInputData {
         }
     }
 
+    private boolean checkBranchNotMapped(String branchId) {
+        Identifiable<?> identifiable = metrixNetwork.getIdentifiable(branchId);
+        return identifiable == null || !metrixNetwork.isMapped(identifiable);
+    }
+
+    private int getContingencyFloResults(Set<String> idList,
+                                         List<Integer> ptdefres) {
+        int nbdefres = 0;
+        Integer indexCty;
+        for (String branchId : idList) {
+
+            if (checkBranchNotMapped(branchId)) {
+                continue;
+            }
+
+            List<Integer> tmpList = new ArrayList<>();
+            for (String cty : dslData.getContingencyFlowResult(branchId)) {
+                if ((indexCty = ctyIndex.get(cty)) != null) {
+                    tmpList.add(indexCty);
+                } else {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Contingency '%s' not found for detailed flow results of branch '%s'", cty, branchId));
+                    }
+                }
+            }
+
+            if (!tmpList.isEmpty()) {
+                nbdefres += tmpList.size() + 2;
+                ptdefres.add(metrixNetwork.getIndex(MetrixSubset.QUAD, branchId));
+                ptdefres.add(tmpList.size());
+                ptdefres.addAll(tmpList);
+            }
+        }
+        return nbdefres;
+    }
+
     private void writeContingencyFlowResults(MetrixDie die) {
         if (dslData != null) {
             Set<String> idList = dslData.getContingencyFlowResultList();
 
             if (!idList.isEmpty()) {
-                int nbdefres = 0;
                 List<Integer> ptdefres = new ArrayList<>();
-                Integer indexCty;
-                for (String branchId : idList) {
-
-                    Identifiable<?> identifiable = metrixNetwork.getIdentifiable(branchId);
-                    if (identifiable == null ||
-                            !metrixNetwork.isMapped(identifiable)) {
-                        continue;
-                    }
-
-                    List<Integer> tmpList = new ArrayList<>();
-                    for (String cty : dslData.getContingencyFlowResult(branchId)) {
-                        if ((indexCty = ctyIndex.get(cty)) != null) {
-                            tmpList.add(indexCty);
-                        } else {
-                            if (LOGGER.isWarnEnabled()) {
-                                LOGGER.warn(String.format("Contingency '%s' not found for detailed flow results of branch '%s'", cty, branchId));
-                            }
-                        }
-                    }
-
-                    if (!tmpList.isEmpty()) {
-                        nbdefres += tmpList.size() + 2;
-                        ptdefres.add(metrixNetwork.getIndex(MetrixSubset.QUAD, branchId));
-                        ptdefres.add(tmpList.size());
-                        ptdefres.addAll(tmpList);
-                    }
-                }
+                int nbdefres = getContingencyFloResults(idList, ptdefres);
 
                 if (nbdefres > 0) {
                     die.setInt("NBDEFRES", nbdefres);
