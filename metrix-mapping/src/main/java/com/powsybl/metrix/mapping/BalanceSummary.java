@@ -87,11 +87,11 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
     public static boolean isInjection(Identifiable<?> identifiable, MappingVariable variable) {
         if (identifiable instanceof Injection) {
             if (identifiable instanceof Generator) {
-                return variable == EquipmentVariable.targetP;
+                return variable == EquipmentVariable.TARGET_P;
             } else if (identifiable instanceof Load) {
-                return variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower;
+                return variable == EquipmentVariable.P_0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
             } else if (identifiable instanceof DanglingLine) {
-                return variable == EquipmentVariable.p0;
+                return variable == EquipmentVariable.P_0;
             }
         }
         return false;
@@ -112,9 +112,9 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     private double getLoad(MappingVariable variable, Load load) {
         // in case of scaling down error on fixedActivePower + variableActivePower, don't count p0 twice
-        if (variable == EquipmentVariable.p0) {
+        if (variable == EquipmentVariable.P_0) {
             return -load.getP0();
-        } else if (variable == EquipmentVariable.fixedActivePower) {
+        } else if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             LoadDetail loadDetail = load.getExtension(LoadDetail.class);
             if (loadDetail != null) {
                 return -loadDetail.getFixedActivePower();
@@ -122,7 +122,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
                 loadIds.add(load.getId());
                 return -load.getP0();
             }
-        } else if (variable == EquipmentVariable.variableActivePower) {
+        } else if (variable == EquipmentVariable.VARIABLE_ACTIVE_POWER) {
             LoadDetail loadDetail = load.getExtension(LoadDetail.class);
             if (loadDetail != null) {
                 return -loadDetail.getVariableActivePower();

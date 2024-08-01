@@ -135,16 +135,16 @@ class TimeSeriesMapToTest {
         mapper.mapToNetwork(store, ImmutableList.of(observer));
 
         assertEquals(10, results.size());
-        assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"),
-                        new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
-                        new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
-                        new MappingKey(EquipmentVariable.disconnected, "FP.AND1  FTDPRA1  1"),
-                        new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
-                        new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1"),
-                        new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1"),
-                        new MappingKey(EquipmentVariable.disconnected, "FP.AND1  FVERGE1  1"),
-                        new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
-                        new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1")),
+        assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.P_0, "FSSV.O11_L"),
+                        new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
+                        new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
+                        new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FTDPRA1  1"),
+                        new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
+                        new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1"),
+                        new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1"),
+                        new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FVERGE1  1"),
+                        new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G"),
+                        new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")),
                 results);
     }
 
@@ -423,33 +423,33 @@ class TimeSeriesMapToTest {
 
         assertEquals(12, results.size());
         assertEquals(4, results.get("FSSV.O11_G").size());
-        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.targetP, EquipmentVariable.targetQ, EquipmentVariable.targetV, EquipmentVariable.disconnected)));
+        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.TARGET_P, EquipmentVariable.TARGET_Q, EquipmentVariable.TARGET_V, EquipmentVariable.DISCONNECTED)));
         assertEquals(2, results.get("FSSV.O12_G").size());
-        assertTrue(results.get("FSSV.O12_G").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
+        assertTrue(results.get("FSSV.O12_G").containsAll(ImmutableList.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)));
         assertEquals(1, results.get("FVALDI11_G").size());
-        assertTrue(results.get("FVALDI11_G").containsAll(ImmutableList.of(EquipmentVariable.voltageRegulatorOn)));
+        assertTrue(results.get("FVALDI11_G").containsAll(ImmutableList.of(EquipmentVariable.VOLTAGE_REGULATOR_ON)));
         assertEquals(2, results.get("FSSV.O11_L").size());
-        assertTrue(results.get("FSSV.O11_L").containsAll(ImmutableList.of(EquipmentVariable.p0, EquipmentVariable.q0)));
+        assertTrue(results.get("FSSV.O11_L").containsAll(ImmutableList.of(EquipmentVariable.P_0, EquipmentVariable.Q_0)));
         assertEquals(2, results.get("FVALDI11_L").size());
-        assertTrue(results.get("FVALDI11_L").containsAll(ImmutableList.of(EquipmentVariable.fixedActivePower, EquipmentVariable.fixedReactivePower)));
+        assertTrue(results.get("FVALDI11_L").containsAll(ImmutableList.of(EquipmentVariable.FIXED_ACTIVE_POWER, EquipmentVariable.FIXED_REACTIVE_POWER)));
         assertEquals(2, results.get("FVALDI11_L").size());
-        assertTrue(results.get("FVALDI11_L2").containsAll(ImmutableList.of(EquipmentVariable.variableActivePower, EquipmentVariable.variableReactivePower)));
+        assertTrue(results.get("FVALDI11_L2").containsAll(ImmutableList.of(EquipmentVariable.VARIABLE_ACTIVE_POWER, EquipmentVariable.VARIABLE_REACTIVE_POWER)));
         assertEquals(2, results.get("HVDC1").size());
-        assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.activePowerSetpoint, EquipmentVariable.nominalV)));
+        assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.ACTIVE_POWER_SETPOINT, EquipmentVariable.NOMINAL_V)));
         assertEquals(2, results.get("HVDC2").size());
-        assertTrue(results.get("HVDC2").containsAll(ImmutableList.of(EquipmentVariable.minP, EquipmentVariable.maxP)));
+        assertTrue(results.get("HVDC2").containsAll(ImmutableList.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)));
         assertEquals(11, results.get("FP.AND1  FTDPRA1  1").size());
         assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(
                 ImmutableList.of(
                         // transformer variables
-                        EquipmentVariable.ratedU1, EquipmentVariable.ratedU2, EquipmentVariable.disconnected,
+                        EquipmentVariable.RATED_U_1, EquipmentVariable.RATED_U_2, EquipmentVariable.DISCONNECTED,
                         // phaseTapChanger variables
-                        EquipmentVariable.phaseTapPosition, EquipmentVariable.regulationMode, EquipmentVariable.phaseRegulating, EquipmentVariable.targetDeadband,
+                        EquipmentVariable.PHASE_TAP_POSITION, EquipmentVariable.REGULATION_MODE, EquipmentVariable.PHASE_REGULATING, EquipmentVariable.TARGET_DEADBAND,
                         // ratioTapChanger variables
-                        EquipmentVariable.ratioTapPosition, EquipmentVariable.loadTapChangingCapabilities, EquipmentVariable.ratioRegulating, EquipmentVariable.targetV)));
-        assertTrue(results.get("FVALDI1_FVALDI1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.powerFactor)));
-        assertTrue(results.get("FSSV.O1_FSSV.O1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.voltageRegulatorOn, EquipmentVariable.voltageSetpoint, EquipmentVariable.reactivePowerSetpoint)));
-        assertTrue(results.get("FP.AND1  FVERGE1  1").containsAll(ImmutableList.of(EquipmentVariable.disconnected)));
+                        EquipmentVariable.RATIO_TAP_POSITION, EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, EquipmentVariable.RATIO_REGULATING, EquipmentVariable.TARGET_V)));
+        assertTrue(results.get("FVALDI1_FVALDI1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.POWER_FACTOR)));
+        assertTrue(results.get("FSSV.O1_FSSV.O1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.VOLTAGE_REGULATOR_ON, EquipmentVariable.VOLTAGE_SETPOINT, EquipmentVariable.REACTIVE_POWER_SETPOINT)));
+        assertTrue(results.get("FP.AND1  FVERGE1  1").containsAll(ImmutableList.of(EquipmentVariable.DISCONNECTED)));
     }
 
     @Test
@@ -498,7 +498,7 @@ class TimeSeriesMapToTest {
         mapper.mapToNetwork(store, ImmutableList.of(observer));
 
         assertEquals(2, results.size());
-        assertEquals(ImmutableMap.of("FVALDI11_G", EquipmentVariable.targetP, "FVALDI12_G", EquipmentVariable.targetP), results);
+        assertEquals(ImmutableMap.of("FVALDI11_G", EquipmentVariable.TARGET_P, "FVALDI12_G", EquipmentVariable.TARGET_P), results);
         assertEquals(2, values.size());
         assertEquals(ImmutableMap.of("FVALDI11_G", 500., "FVALDI12_G", 500.), values);
     }
@@ -541,7 +541,7 @@ class TimeSeriesMapToTest {
                     assertEquals(0, point);
                     assertEquals("ts1", timeSeriesName);
                     assertEquals("FVALDI11_G", identifiable.getId());
-                    assertEquals(EquipmentVariable.targetP, variable);
+                    assertEquals(EquipmentVariable.TARGET_P, variable);
                     assertEquals(10000, equipmentValue, 0);
                 }
             }

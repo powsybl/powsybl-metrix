@@ -69,7 +69,7 @@ public class MetrixVariantsWriter {
     }
 
     private static String getPhaseTapChangerKey(EquipmentVariable variable) {
-        if (variable == EquipmentVariable.phaseTapPosition) {
+        if (variable == EquipmentVariable.PHASE_TAP_POSITION) {
             return "DTVALDEP";
         }
         return null;
@@ -77,15 +77,15 @@ public class MetrixVariantsWriter {
 
     private static String getHvdcKey(EquipmentVariable variable) {
         return switch (variable) {
-            case activePowerSetpoint -> "DCIMPPUI";
-            case minP -> "DCMINPUI";
-            case maxP -> "DCMAXPUI";
+            case ACTIVE_POWER_SETPOINT -> "DCIMPPUI";
+            case MIN_P -> "DCMINPUI";
+            case MAX_P -> "DCMAXPUI";
             default -> null;
         };
     }
 
     private static String getLoadKey(EquipmentVariable variable) {
-        if (variable == EquipmentVariable.p0) {
+        if (variable == EquipmentVariable.P_0) {
             return "CONELE";
         }
         return null;
@@ -93,9 +93,9 @@ public class MetrixVariantsWriter {
 
     private static String getGeneratorKey(EquipmentVariable variable) {
         return switch (variable) {
-            case targetP -> "PRODIM";
-            case minP -> "TRPUIMIN";
-            case maxP -> "TRVALPMD";
+            case TARGET_P -> "PRODIM";
+            case MIN_P -> "TRPUIMIN";
+            case MAX_P -> "TRVALPMD";
             default -> null;
         };
     }

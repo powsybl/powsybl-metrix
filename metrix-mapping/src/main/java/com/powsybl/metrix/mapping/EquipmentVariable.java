@@ -14,43 +14,40 @@ import com.google.common.collect.ImmutableSet;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public enum EquipmentVariable implements MappingVariable {
-    targetP("targetP"),
-    targetQ("targetQ"),
-    minP("minP"),
-    maxP("maxP"),
-    p0("p0"),
-    q0("q0"),
-    fixedActivePower("fixedActivePower"),
-    variableActivePower("variableActivePower"),
-    fixedReactivePower("fixedReactivePower"),
-    variableReactivePower("variableReactivePower"),
-    activePowerSetpoint("activePowerSetpoint"),
-    open("open"),
-    phaseTapPosition("phaseTapPosition"),
-    ratioTapPosition("ratioTapPosition"),
-    voltageRegulatorOn("voltageRegulatorOn"),
-    targetV("targetV"),
-    nominalV("nominalV"),
-    regulationMode("regulationMode"),
-    ratedU1("ratedU1"),
-    ratedU2("ratedU2"),
-    loadTapChangingCapabilities("loadTapChangingCapabilities"),
-    phaseRegulating("phaseRegulating"),
-    ratioRegulating("ratioRegulating"),
-    voltageSetpoint("voltageSetpoint"),
-    reactivePowerSetpoint("reactivePowerSetpoint"),
-    powerFactor("powerFactor"),
-    disconnected("disconnected"),
-    targetDeadband("targetDeadband");
+    TARGET_P("targetP"),
+    TARGET_Q("targetQ"),
+    MIN_P("minP"),
+    MAX_P("maxP"),
+    P_0("p0"),
+    Q_0("q0"),
+    FIXED_ACTIVE_POWER("fixedActivePower"),
+    VARIABLE_ACTIVE_POWER("variableActivePower"),
+    FIXED_REACTIVE_POWER("fixedReactivePower"),
+    VARIABLE_REACTIVE_POWER("variableReactivePower"),
+    ACTIVE_POWER_SETPOINT("activePowerSetpoint"),
+    OPEN("open"),
+    PHASE_TAP_POSITION("phaseTapPosition"),
+    RATIO_TAP_POSITION("ratioTapPosition"),
+    VOLTAGE_REGULATOR_ON("voltageRegulatorOn"),
+    TARGET_V("targetV"),
+    NOMINAL_V("nominalV"),
+    REGULATION_MODE("regulationMode"),
+    RATED_U_1("ratedU1"),
+    RATED_U_2("ratedU2"),
+    LOAD_TAP_CHANGING_CAPABILITIES("loadTapChangingCapabilities"),
+    PHASE_REGULATING("phaseRegulating"),
+    RATIO_REGULATING("ratioRegulating"),
+    VOLTAGE_SETPOINT("voltageSetpoint"),
+    REACTIVE_POWER_SETPOINT("reactivePowerSetpoint"),
+    POWER_FACTOR("powerFactor"),
+    DISCONNECTED("disconnected"),
+    TARGET_DEADBAND("targetDeadband");
 
     protected static final String NAME = "equipment";
 
@@ -75,7 +72,7 @@ public enum EquipmentVariable implements MappingVariable {
         JsonToken token = parser.nextToken();
         if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
-                return EquipmentVariable.valueOf(parser.getValueAsString());
+                return EquipmentVariable.nameOf(parser.getValueAsString());
             } else {
                 throw new IllegalStateException("Unexpected JSON token: " + token);
             }
@@ -83,40 +80,40 @@ public enum EquipmentVariable implements MappingVariable {
         throw new IllegalStateException("Invalid EquipmentVariable JSON");
     }
 
-    private static final Set<EquipmentVariable> GENERATOR_VARIABLES = EnumSet.of(EquipmentVariable.targetP,
-                                                                                 EquipmentVariable.targetQ,
-                                                                                 EquipmentVariable.minP,
-                                                                                 EquipmentVariable.maxP,
-                                                                                 EquipmentVariable.voltageRegulatorOn,
-                                                                                 EquipmentVariable.targetV,
-                                                                                 EquipmentVariable.disconnected);
-    private static final Set<EquipmentVariable> HVDC_LINE_VARIABLES = EnumSet.of(EquipmentVariable.activePowerSetpoint,
-                                                                                 EquipmentVariable.minP,
-                                                                                 EquipmentVariable.maxP,
-                                                                                 EquipmentVariable.nominalV);
-    private static final Set<EquipmentVariable> LOAD_VARIABLES = EnumSet.of(EquipmentVariable.p0,
-                                                                            EquipmentVariable.q0,
-                                                                            EquipmentVariable.fixedActivePower,
-                                                                            EquipmentVariable.variableActivePower,
-                                                                            EquipmentVariable.fixedReactivePower,
-                                                                            EquipmentVariable.variableReactivePower);
-    private static final Set<EquipmentVariable> PHASE_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.phaseTapPosition,
-                                                                                         EquipmentVariable.phaseRegulating,
-                                                                                         EquipmentVariable.regulationMode,
-                                                                                         EquipmentVariable.targetDeadband);
-    private static final Set<EquipmentVariable> TWO_WINDINGS_TRANSFORMER_VARIABLES = EnumSet.of(EquipmentVariable.ratedU1,
-                                                                                                EquipmentVariable.ratedU2,
-                                                                                                EquipmentVariable.disconnected);
-    private static final Set<EquipmentVariable> RATIO_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.ratioTapPosition,
-                                                                                         EquipmentVariable.loadTapChangingCapabilities,
-                                                                                         EquipmentVariable.ratioRegulating,
-                                                                                         EquipmentVariable.targetV);
-    private static final Set<EquipmentVariable> LCC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.powerFactor);
-    private static final Set<EquipmentVariable> VSC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.voltageRegulatorOn,
-                                                                                     EquipmentVariable.voltageSetpoint,
-                                                                                     EquipmentVariable.reactivePowerSetpoint);
+    private static final Set<EquipmentVariable> GENERATOR_VARIABLES = EnumSet.of(EquipmentVariable.TARGET_P,
+                                                                                 EquipmentVariable.TARGET_Q,
+                                                                                 EquipmentVariable.MIN_P,
+                                                                                 EquipmentVariable.MAX_P,
+                                                                                 EquipmentVariable.VOLTAGE_REGULATOR_ON,
+                                                                                 EquipmentVariable.TARGET_V,
+                                                                                 EquipmentVariable.DISCONNECTED);
+    private static final Set<EquipmentVariable> HVDC_LINE_VARIABLES = EnumSet.of(EquipmentVariable.ACTIVE_POWER_SETPOINT,
+                                                                                 EquipmentVariable.MIN_P,
+                                                                                 EquipmentVariable.MAX_P,
+                                                                                 EquipmentVariable.NOMINAL_V);
+    private static final Set<EquipmentVariable> LOAD_VARIABLES = EnumSet.of(EquipmentVariable.P_0,
+                                                                            EquipmentVariable.Q_0,
+                                                                            EquipmentVariable.FIXED_ACTIVE_POWER,
+                                                                            EquipmentVariable.VARIABLE_ACTIVE_POWER,
+                                                                            EquipmentVariable.FIXED_REACTIVE_POWER,
+                                                                            EquipmentVariable.VARIABLE_REACTIVE_POWER);
+    private static final Set<EquipmentVariable> PHASE_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.PHASE_TAP_POSITION,
+                                                                                         EquipmentVariable.PHASE_REGULATING,
+                                                                                         EquipmentVariable.REGULATION_MODE,
+                                                                                         EquipmentVariable.TARGET_DEADBAND);
+    private static final Set<EquipmentVariable> TWO_WINDINGS_TRANSFORMER_VARIABLES = EnumSet.of(EquipmentVariable.RATED_U_1,
+                                                                                                EquipmentVariable.RATED_U_2,
+                                                                                                EquipmentVariable.DISCONNECTED);
+    private static final Set<EquipmentVariable> RATIO_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.RATIO_TAP_POSITION,
+                                                                                         EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES,
+                                                                                         EquipmentVariable.RATIO_REGULATING,
+                                                                                         EquipmentVariable.TARGET_V);
+    private static final Set<EquipmentVariable> LCC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.POWER_FACTOR);
+    private static final Set<EquipmentVariable> VSC_CONVERTER_VARIABLES = EnumSet.of(EquipmentVariable.VOLTAGE_REGULATOR_ON,
+                                                                                     EquipmentVariable.VOLTAGE_SETPOINT,
+                                                                                     EquipmentVariable.REACTIVE_POWER_SETPOINT);
 
-    private static final Set<EquipmentVariable> LINE_VARIABLES = EnumSet.of(EquipmentVariable.disconnected);
+    private static final Set<EquipmentVariable> LINE_VARIABLES = EnumSet.of(EquipmentVariable.DISCONNECTED);
 
     private final String variable;
 
@@ -129,17 +126,21 @@ public enum EquipmentVariable implements MappingVariable {
         return variable;
     }
 
+    public static EquipmentVariable nameOf(String value) {
+        return Arrays.stream(EquipmentVariable.values()).filter(name -> name.variable.equals(value)).findFirst().orElse(null);
+    }
+
     public static EquipmentVariable getByDefaultVariable(MappableEquipmentType equipmentType) {
         return switch (equipmentType) {
-            case GENERATOR -> EquipmentVariable.targetP;
-            case HVDC_LINE -> EquipmentVariable.activePowerSetpoint;
-            case LOAD, BOUNDARY_LINE -> EquipmentVariable.p0;
-            case SWITCH -> EquipmentVariable.open;
-            case PHASE_TAP_CHANGER -> EquipmentVariable.phaseTapPosition;
-            case RATIO_TAP_CHANGER -> EquipmentVariable.ratioTapPosition;
-            case LCC_CONVERTER_STATION -> EquipmentVariable.powerFactor;
-            case VSC_CONVERTER_STATION -> EquipmentVariable.voltageSetpoint;
-            case TRANSFORMER, LINE -> EquipmentVariable.disconnected;
+            case GENERATOR -> EquipmentVariable.TARGET_P;
+            case HVDC_LINE -> EquipmentVariable.ACTIVE_POWER_SETPOINT;
+            case LOAD, BOUNDARY_LINE -> EquipmentVariable.P_0;
+            case SWITCH -> EquipmentVariable.OPEN;
+            case PHASE_TAP_CHANGER -> EquipmentVariable.PHASE_TAP_POSITION;
+            case RATIO_TAP_CHANGER -> EquipmentVariable.RATIO_TAP_POSITION;
+            case LCC_CONVERTER_STATION -> EquipmentVariable.POWER_FACTOR;
+            case VSC_CONVERTER_STATION -> EquipmentVariable.VOLTAGE_SETPOINT;
+            case TRANSFORMER, LINE -> EquipmentVariable.DISCONNECTED;
         };
     }
 
@@ -147,8 +148,8 @@ public enum EquipmentVariable implements MappingVariable {
         Set<EquipmentVariable> equipmentVariables = new HashSet<>();
         equipmentVariables.add(getByDefaultVariable(equipmentType));
         if (equipmentType == MappableEquipmentType.LOAD) {
-            equipmentVariables.add(EquipmentVariable.fixedActivePower);
-            equipmentVariables.add(EquipmentVariable.variableActivePower);
+            equipmentVariables.add(EquipmentVariable.FIXED_ACTIVE_POWER);
+            equipmentVariables.add(EquipmentVariable.VARIABLE_ACTIVE_POWER);
         }
         return equipmentVariables;
     }
@@ -158,8 +159,8 @@ public enum EquipmentVariable implements MappingVariable {
             case GENERATOR -> GENERATOR_VARIABLES.contains(equipmentVariable);
             case HVDC_LINE -> HVDC_LINE_VARIABLES.contains(equipmentVariable);
             case LOAD -> LOAD_VARIABLES.contains(equipmentVariable);
-            case BOUNDARY_LINE -> equipmentVariable == EquipmentVariable.p0;
-            case SWITCH -> equipmentVariable == EquipmentVariable.open;
+            case BOUNDARY_LINE -> equipmentVariable == EquipmentVariable.P_0;
+            case SWITCH -> equipmentVariable == EquipmentVariable.OPEN;
             case PHASE_TAP_CHANGER -> PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
             case TRANSFORMER -> TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);
             case RATIO_TAP_CHANGER -> RATIO_TAP_CHANGER_VARIABLES.contains(equipmentVariable);

@@ -47,7 +47,7 @@ class SimpleMappingData extends FilteredData {
             }
 
             filteredEquipments.forEach({ Identifiable identifiable ->
-                configLoader.addEquipmentMapping(breakerType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.open)
+                configLoader.addEquipmentMapping(breakerType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.OPEN)
             })
         }
     }

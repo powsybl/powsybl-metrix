@@ -33,7 +33,7 @@ public class HvdcBoundLimitBuilder {
     private int version;
     private TimeSeriesIndex index;
 
-    final String setPointVariableName = EquipmentVariable.activePowerSetpoint.getVariableName();
+    final String setPointVariableName = EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName();
     public static final int CONSTANT_VARIANT_ID = -1;
     private String id;
     private double correctedMaxP;
@@ -98,8 +98,8 @@ public class HvdcBoundLimitBuilder {
     public void setAll(HvdcLine hvdcLine, TimeSeriesMappingLogger logger) {
         verifyEntries(hvdcLine);
 
-        maxPVariableName = isActivePowerRange ? CS12 : EquipmentVariable.maxP.getVariableName();
-        minPVariableName = isActivePowerRange ? MINUS_CS21 : "-" + EquipmentVariable.maxP.getVariableName();
+        maxPVariableName = isActivePowerRange ? CS12 : EquipmentVariable.MAX_P.getVariableName();
+        minPVariableName = isActivePowerRange ? MINUS_CS21 : "-" + EquipmentVariable.MAX_P.getVariableName();
 
         correctedMaxP = maxP;
         correctedMinP = minP;
@@ -136,7 +136,7 @@ public class HvdcBoundLimitBuilder {
         logBuilder.level(System.Logger.Level.INFO);
         if (maxP > hvdcLineMaxP && maxP > -minP) {
             LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP)
-                    .value(maxP).oldValue(EquipmentVariable.maxP.getVariableName()).toVariable(maxPVariableName)
+                    .value(maxP).oldValue(EquipmentVariable.MAX_P.getVariableName()).toVariable(maxPVariableName)
                     .newValue(maxP).build();
             Log log = logBuilder.logDescription(logContent).build();
             logger.addLog(log);
@@ -155,7 +155,7 @@ public class HvdcBoundLimitBuilder {
         LogBuilder logBuilder = new LogBuilder().version(version).index(index).point(CONSTANT_VARIANT_ID).level(System.Logger.Level.WARNING);
         if (maxP > hvdcLineMaxP) {
             LogContent logContent = rangeLogWithVariableChanged.notIncludedVariable(maxPVariableName).minValue(0).maxValue(hvdcLineMaxP).value(maxP)
-                    .oldValue(maxPVariableName).toVariable(EquipmentVariable.maxP.getVariableName()).newValue(hvdcLineMaxP).build();
+                    .oldValue(maxPVariableName).toVariable(EquipmentVariable.MAX_P.getVariableName()).newValue(hvdcLineMaxP).build();
             Log log = logBuilder.logDescription(logContent).build();
             logger.addLog(log);
             hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) hvdcLineMaxP);

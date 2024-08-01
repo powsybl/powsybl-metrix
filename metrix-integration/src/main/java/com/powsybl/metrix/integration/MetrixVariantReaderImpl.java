@@ -131,7 +131,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         loadDetails.forEach((load, loadDetail) -> {
             double activePower = loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower();
             if (isDifferent(activePower, load.getP0())) {
-                addValue(load.getId(), EquipmentVariable.p0, activePower, loadIds, loadValues, MappableEquipmentType.LOAD);
+                addValue(load.getId(), EquipmentVariable.P_0, activePower, loadIds, loadValues, MappableEquipmentType.LOAD);
             }
         });
     }
@@ -258,7 +258,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     void onGeneratorVariant(Generator generator, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.disconnected) {
+        if (variable == EquipmentVariable.DISCONNECTED) {
             Terminal t = generator.getTerminal();
             boolean isConnected = t.isConnected();
             isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
@@ -266,11 +266,11 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 openGeneratorList.add(generator.getId());
             }
         } else {
-            if (variable == EquipmentVariable.targetP) {
+            if (variable == EquipmentVariable.TARGET_P) {
                 isDifferent = isDifferent(value, generator.getTargetP());
-            } else if (variable == EquipmentVariable.minP) {
+            } else if (variable == EquipmentVariable.MIN_P) {
                 isDifferent = isDifferent(value, generator.getMinP());
-            } else if (variable == EquipmentVariable.maxP) {
+            } else if (variable == EquipmentVariable.MAX_P) {
                 isDifferent = isDifferent(value, generator.getMaxP());
             }
             if (isDifferent) {
@@ -299,17 +299,17 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     }
 
     private void updateLoadDetail(LoadDetail loadDetail, MappingVariable variable, double newValue) {
-        if (variable == EquipmentVariable.fixedActivePower) {
+        if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             loadDetail.setFixedActivePower(newValue);
-        } else if (variable == EquipmentVariable.variableActivePower) {
+        } else if (variable == EquipmentVariable.VARIABLE_ACTIVE_POWER) {
             loadDetail.setVariableActivePower(newValue);
         }
     }
 
     void onLoadVariant(Load load, EquipmentVariable variable, double newActivePower) {
-        if (variable != EquipmentVariable.fixedActivePower && variable != EquipmentVariable.variableActivePower) {
+        if (variable != EquipmentVariable.FIXED_ACTIVE_POWER && variable != EquipmentVariable.VARIABLE_ACTIVE_POWER) {
             if (isDifferent(newActivePower, load.getP0())) {
-                addValue(load.getId(), EquipmentVariable.p0, newActivePower, loadIds, loadValues, MappableEquipmentType.LOAD);
+                addValue(load.getId(), EquipmentVariable.P_0, newActivePower, loadIds, loadValues, MappableEquipmentType.LOAD);
             }
         } else {
             LoadDetail loadDetail = loadDetails.computeIfAbsent(load, this::getLoadDetail);
@@ -319,11 +319,11 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     void onHvdcVariant(HvdcLine hvdcLine, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.activePowerSetpoint) {
+        if (variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
             isDifferent = isDifferent(value, MetrixInputData.getHvdcLineSetPoint(hvdcLine));
-        } else if (variable == EquipmentVariable.maxP) {
+        } else if (variable == EquipmentVariable.MAX_P) {
             isDifferent = isDifferent(value, MetrixInputData.getHvdcLineMax(hvdcLine));
-        } else if (variable == EquipmentVariable.minP) {
+        } else if (variable == EquipmentVariable.MIN_P) {
             isDifferent = isDifferent(value, MetrixInputData.getHvdcLineMin(hvdcLine));
         }
         if (isDifferent) {
@@ -333,7 +333,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     void onTransformerVariant(TwoWindingsTransformer twc, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
-        if (variable == EquipmentVariable.disconnected) {
+        if (variable == EquipmentVariable.DISCONNECTED) {
             Terminal t1 = twc.getTerminal1();
             Terminal t2 = twc.getTerminal1();
             boolean isConnected = t1.isConnected() && t2.isConnected();
@@ -342,7 +342,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 openBranchList.add(twc.getId());
             }
         } else {
-            if (variable == EquipmentVariable.phaseTapPosition) {
+            if (variable == EquipmentVariable.PHASE_TAP_POSITION) {
                 isDifferent = isDifferent(value, twc.getPhaseTapChanger().getTapPosition());
             }
             if (isDifferent) {
@@ -358,7 +358,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     }
 
     void onLineVariant(Line line, MappingVariable variable, double value) {
-        if (variable == EquipmentVariable.disconnected) {
+        if (variable == EquipmentVariable.DISCONNECTED) {
             Terminal t = line.getTerminal1();
             boolean isConnected = t.isConnected();
             boolean isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
