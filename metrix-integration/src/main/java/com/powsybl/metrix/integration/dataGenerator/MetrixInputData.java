@@ -254,8 +254,12 @@ public class MetrixInputData {
     private record MetrixInputBranch(String[] cqnomqua, float[] cqadmita, float[] cqresist, int[] qasurvdi, int[] qasurnmk, int[] tnnorqua, int[] tnnexqua) {
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             MetrixInputBranch metrixInputBranch = (MetrixInputBranch) o;
             return Arrays.equals(cqnomqua, metrixInputBranch.cqnomqua)
                 && Arrays.equals(cqadmita, metrixInputBranch.cqadmita)
@@ -287,7 +291,7 @@ public class MetrixInputData {
         }
     }
 
-    private record BranchValues(String branchId, double admittance, double r, int monitoringN, int monitoringNK, int node1, int node2) {}
+    private record BranchValues(String branchId, double admittance, double r, int monitoringN, int monitoringNK, int node1, int node2) { }
 
     private void writeBranch(MetrixInputBranch metrixInputBranch,
                              int index, BranchValues branchValues) {
@@ -303,8 +307,12 @@ public class MetrixInputData {
     private record MetrixInputPhaseTapChanger(int[] dttrdequ, int[] dtmodreg, float[] dtvalinf, float[] dtvalsup, float[] dtvaldep, int[] lowtappo, int[] nbtaptd) {
         @Override
         public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
             MetrixInputPhaseTapChanger metrixInputBranch = (MetrixInputPhaseTapChanger) o;
             return Arrays.equals(dttrdequ, metrixInputBranch.dttrdequ)
                 && Arrays.equals(dtmodreg, metrixInputBranch.dtmodreg)
@@ -336,7 +344,7 @@ public class MetrixInputData {
         }
     }
 
-    private record PhaseTapChangerValues(int branchId, int type, float alpha1, float alpha2, float alpha, int nbtap, int lowtap) {}
+    private record PhaseTapChangerValues(int branchId, int type, float alpha1, float alpha2, float alpha, int nbtap, int lowtap) { }
 
     private void writePhaseTapChanger(MetrixInputPhaseTapChanger metrixInputPhaseTapChanger,
                                       int index, PhaseTapChangerValues phaseTapChangerValues) {

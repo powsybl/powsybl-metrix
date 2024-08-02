@@ -52,7 +52,7 @@ public enum EquipmentVariable implements MappingVariable {
 
     protected static final String NAME = "equipment";
 
-    private static final Map<String, EquipmentVariable> nameToVariable = Arrays.stream(EquipmentVariable.values()).collect(Collectors.toMap(EquipmentVariable::toString, Function.identity()));
+    private static final Map<String, EquipmentVariable> NAME_TO_VARIABLE = Arrays.stream(EquipmentVariable.values()).collect(Collectors.toMap(EquipmentVariable::toString, Function.identity()));
 
     @Override
     public String getFieldName() {
@@ -135,7 +135,7 @@ public enum EquipmentVariable implements MappingVariable {
     }
 
     public static EquipmentVariable fromString(String variable) {
-        return nameToVariable.get(variable);
+        return NAME_TO_VARIABLE.get(variable);
     }
 
     public static EquipmentVariable getByDefaultVariable(MappableEquipmentType equipmentType) {
