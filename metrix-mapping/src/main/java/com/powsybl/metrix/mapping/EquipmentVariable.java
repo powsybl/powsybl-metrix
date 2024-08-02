@@ -10,7 +10,6 @@ package com.powsybl.metrix.mapping;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.google.common.collect.ImmutableSet;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -66,6 +65,11 @@ public enum EquipmentVariable implements MappingVariable {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return getVariableName();
     }
 
     static MappingVariable parseJson(JsonParser parser) throws IOException {
@@ -183,7 +187,7 @@ public enum EquipmentVariable implements MappingVariable {
         if (equipmentVariable == null) {
             return getByDefaultVariable(equipmentType);
         } else {
-            Set<EquipmentVariable> equipmentVariables = check(equipmentType, ImmutableSet.of(equipmentVariable));
+            Set<EquipmentVariable> equipmentVariables = check(equipmentType, Set.of(equipmentVariable));
             return equipmentVariables.iterator().next();
         }
     }
