@@ -14,6 +14,8 @@ import com.fasterxml.jackson.core.JsonToken;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -50,6 +52,8 @@ public enum EquipmentVariable implements MappingVariable {
 
     protected static final String NAME = "equipment";
 
+    private static final Map<String, EquipmentVariable> nameToVariable = Arrays.stream(EquipmentVariable.values()).collect(Collectors.toMap(EquipmentVariable::toString, Function.identity()));
+
     @Override
     public String getFieldName() {
         return NAME;
@@ -60,7 +64,7 @@ public enum EquipmentVariable implements MappingVariable {
         try {
             generator.writeStartObject();
             generator.writeFieldName(variable.getFieldName());
-            generator.writeString(variable.name());
+            generator.writeString(variable.getVariableName());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -131,7 +135,7 @@ public enum EquipmentVariable implements MappingVariable {
     }
 
     public static EquipmentVariable fromString(String variable) {
-        return Arrays.stream(EquipmentVariable.values()).filter(name -> name.variable.equals(variable)).findFirst().orElse(null);
+        return nameToVariable.get(variable);
     }
 
     public static EquipmentVariable getByDefaultVariable(MappableEquipmentType equipmentType) {
