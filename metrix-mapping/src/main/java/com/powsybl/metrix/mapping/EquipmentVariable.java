@@ -76,7 +76,7 @@ public enum EquipmentVariable implements MappingVariable {
         JsonToken token = parser.nextToken();
         if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
-                return EquipmentVariable.nameOf(parser.getValueAsString());
+                return EquipmentVariable.fromString(parser.getValueAsString());
             } else {
                 throw new IllegalStateException("Unexpected JSON token: " + token);
             }
@@ -130,8 +130,8 @@ public enum EquipmentVariable implements MappingVariable {
         return variable;
     }
 
-    public static EquipmentVariable nameOf(String value) {
-        return Arrays.stream(EquipmentVariable.values()).filter(name -> name.variable.equals(value)).findFirst().orElse(null);
+    public static EquipmentVariable fromString(String variable) {
+        return Arrays.stream(EquipmentVariable.values()).filter(name -> name.variable.equals(variable)).findFirst().orElse(null);
     }
 
     public static EquipmentVariable getByDefaultVariable(MappableEquipmentType equipmentType) {
