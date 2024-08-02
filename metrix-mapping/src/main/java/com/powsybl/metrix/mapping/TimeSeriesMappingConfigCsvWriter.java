@@ -265,30 +265,34 @@ public class TimeSeriesMappingConfigCsvWriter {
             }
             writer.write(variable.getVariableName());
             writer.write(CSV_SEPARATOR);
-            Iterator<String> it = values.iterator();
-            if (isEqToTS) {
-                String value = it.next();
-                writer.write(value);
-                writer.write(CSV_SEPARATOR);
-            }
-            if (it.hasNext()) {
-                while (it.hasNext()) {
-                    String value = it.next();
-                    writer.write(value);
-                    writer.newLine();
-                    if (it.hasNext()) {
-                        for (int i = 0; i < nbCol; i++) {
-                            writer.write(StringUtils.EMPTY);
-                            writer.write(CSV_SEPARATOR);
-                        }
-                    }
-                }
-            } else {
-                writer.write(getNotSignificantValue());
-                writer.newLine();
-            }
+            writeValues(writer, values, isEqToTS, nbCol);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    private void writeValues(BufferedWriter writer, Collection<String> values, boolean isEqToTS, int nbCol) throws IOException {
+        Iterator<String> it = values.iterator();
+        if (isEqToTS) {
+            String value = it.next();
+            writer.write(value);
+            writer.write(CSV_SEPARATOR);
+        }
+        if (it.hasNext()) {
+            while (it.hasNext()) {
+                String value = it.next();
+                writer.write(value);
+                writer.newLine();
+                if (it.hasNext()) {
+                    for (int i = 0; i < nbCol; i++) {
+                        writer.write(StringUtils.EMPTY);
+                        writer.write(CSV_SEPARATOR);
+                    }
+                }
+            }
+        } else {
+            writer.write(getNotSignificantValue());
+            writer.newLine();
         }
     }
 
