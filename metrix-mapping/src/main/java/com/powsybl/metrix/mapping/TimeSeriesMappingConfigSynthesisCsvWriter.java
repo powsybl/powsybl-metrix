@@ -185,15 +185,15 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             writeIgnoredUnmapped(writer);
             writeDisconnected(writer);
             writeOutOfMainCc(writer);
-            writeVariableSynthesis(writer, EquipmentVariable.targetP);
-            writeVariableSynthesis(writer, EquipmentVariable.minP);
-            writeVariableSynthesis(writer, EquipmentVariable.maxP);
-            writeVariableSynthesis(writer, EquipmentVariable.p0);
-            writeVariableSynthesis(writer, EquipmentVariable.fixedActivePower);
-            writeVariableSynthesis(writer, EquipmentVariable.variableActivePower);
-            writeVariableSynthesis(writer, EquipmentVariable.activePowerSetpoint);
-            writeVariableSynthesis(writer, EquipmentVariable.phaseTapPosition);
-            writeVariableSynthesis(writer, EquipmentVariable.open);
+            writeVariableSynthesis(writer, EquipmentVariable.TARGET_P);
+            writeVariableSynthesis(writer, EquipmentVariable.MIN_P);
+            writeVariableSynthesis(writer, EquipmentVariable.MAX_P);
+            writeVariableSynthesis(writer, EquipmentVariable.P_0);
+            writeVariableSynthesis(writer, EquipmentVariable.FIXED_ACTIVE_POWER);
+            writeVariableSynthesis(writer, EquipmentVariable.VARIABLE_ACTIVE_POWER);
+            writeVariableSynthesis(writer, EquipmentVariable.ACTIVE_POWER_SETPOINT);
+            writeVariableSynthesis(writer, EquipmentVariable.PHASE_TAP_POSITION);
+            writeVariableSynthesis(writer, EquipmentVariable.OPEN);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -255,12 +255,12 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
                 new Column(PSTS),
                 new Column(BREAKERS))) {
             tableFormatter.writeCell(MAPPED)
-                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.targetP))
+                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.TARGET_P))
                     .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping()))
-                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.p0))
-                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.activePowerSetpoint))
-                    .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.phaseTapPosition))
-                    .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.open))
+                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P_0))
+                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.ACTIVE_POWER_SETPOINT))
+                    .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.PHASE_TAP_POSITION))
+                    .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.OPEN))
                     .writeCell(UNMAPPED)
                     .writeCell(getNbUnmapped(config.getUnmappedGenerators(), config.getIgnoredUnmappedGenerators()))
                     .writeCell(getNbUnmapped(config.getUnmappedLoads(), config.getIgnoredUnmappedLoads()))
@@ -310,69 +310,69 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
                 new Column(HVDC_LINES),
                 new Column(PSTS),
                 new Column(BREAKERS))) {
-            tableFormatter.writeCell(EquipmentVariable.targetP.getVariableName())
-                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.targetP))
+            tableFormatter.writeCell(EquipmentVariable.TARGET_P.getVariableName())
+                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.TARGET_P))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.minP.getVariableName())
-                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.minP))
+                    .writeCell(EquipmentVariable.MIN_P.getVariableName())
+                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.MIN_P))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.minP))
+                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.MIN_P))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.maxP.getVariableName())
-                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.maxP))
+                    .writeCell(EquipmentVariable.MAX_P.getVariableName())
+                    .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.MAX_P))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.maxP))
+                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.MAX_P))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.p0.getVariableName())
+                    .writeCell(EquipmentVariable.P_0.getVariableName())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.p0))
-                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.p0))
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.fixedActivePower.getVariableName())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.fixedActivePower))
+                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.P_0))
+                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P_0))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
+                    .writeCell(EquipmentVariable.FIXED_ACTIVE_POWER.getVariableName())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.variableActivePower.getVariableName())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.variableActivePower))
+                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.FIXED_ACTIVE_POWER))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.activePowerSetpoint.getVariableName())
+                    .writeCell(EquipmentVariable.VARIABLE_ACTIVE_POWER.getVariableName())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.activePowerSetpoint))
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.phaseTapPosition.getVariableName())
+                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.VARIABLE_ACTIVE_POWER))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.phaseTapPosition))
-                    .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.open.getVariableName())
+                    .writeCell(EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
+                    .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.ACTIVE_POWER_SETPOINT))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.open));
+                    .writeCell(EquipmentVariable.PHASE_TAP_POSITION.getVariableName())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.PHASE_TAP_POSITION))
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(EquipmentVariable.OPEN.getVariableName())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNotSignificantValue())
+                    .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.OPEN));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

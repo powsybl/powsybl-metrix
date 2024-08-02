@@ -133,9 +133,9 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
 
     @Override
     public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
-        if (identifiable instanceof HvdcLine && hvdcToInit.contains(identifiable.getId()) && variable == EquipmentVariable.activePowerSetpoint) {
+        if (identifiable instanceof HvdcLine && hvdcToInit.contains(identifiable.getId()) && variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
             addHvdcTimeSeries(point, identifiable, equipmentValue);
-        } else if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer && phaseTapChangerToInit.contains(identifiable.getId()) && variable == EquipmentVariable.phaseTapPosition) {
+        } else if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer && phaseTapChangerToInit.contains(identifiable.getId()) && variable == EquipmentVariable.PHASE_TAP_POSITION) {
             int tapPosition = (int) equipmentValue;
             double alpha = twoWindingsTransformer.getPhaseTapChanger().getStep(tapPosition).getAlpha();
             addPhaseTapChangerTimeSeries(point, identifiable, tapPosition, alpha);

@@ -28,9 +28,9 @@ public class GeneratorBoundLimitBuilder {
     private boolean isUnmappedMaxP;
     private int version;
     private TimeSeriesIndex index;
-    final String targetPVariableName = EquipmentVariable.targetP.getVariableName();
-    final String maxPVariableName = EquipmentVariable.maxP.getVariableName();
-    final String minPVariableName = EquipmentVariable.minP.getVariableName();
+    final String targetPVariableName = EquipmentVariable.TARGET_P.getVariableName();
+    final String maxPVariableName = EquipmentVariable.MAX_P.getVariableName();
+    final String minPVariableName = EquipmentVariable.MIN_P.getVariableName();
     public static final int CONSTANT_VARIANT_ID = -1;
     private String id;
 

@@ -184,38 +184,38 @@ class TimeSeriesDslLoaderTest {
         assertTrue(config.getBreakerTimeSeries().isEmpty());
 
         // 1 generator has been mapped to 'zero': G4
-        MappingKey keyZero = new MappingKey(EquipmentVariable.targetP, "zero");
-        MappingKey keyG4 = new MappingKey(EquipmentVariable.targetP, "G4");
+        MappingKey keyZero = new MappingKey(EquipmentVariable.TARGET_P, "zero");
+        MappingKey keyG4 = new MappingKey(EquipmentVariable.TARGET_P, "G4");
         assertEquals(1, config.getTimeSeriesToGeneratorsMapping().get(keyZero).size());
         assertEquals("G4", config.getTimeSeriesToGeneratorsMapping().get(keyZero).iterator().next());
         assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(keyG4));
 
         // 2 generators have been mapped to time serie 'nucl_ts': G1 and G2
         // repartition key is based on maxP
-        MappingKey keyNuclTs = new MappingKey(EquipmentVariable.targetP, "nucl_ts");
-        MappingKey keyG1 = new MappingKey(EquipmentVariable.targetP, "G1");
-        MappingKey keyG2 = new MappingKey(EquipmentVariable.targetP, "G2");
+        MappingKey keyNuclTs = new MappingKey(EquipmentVariable.TARGET_P, "nucl_ts");
+        MappingKey keyG1 = new MappingKey(EquipmentVariable.TARGET_P, "G1");
+        MappingKey keyG2 = new MappingKey(EquipmentVariable.TARGET_P, "G2");
         assertEquals(2, config.getTimeSeriesToGeneratorsMapping().get(keyNuclTs).size());
         assertEquals(Sets.newHashSet("G1", "G2"), Sets.newHashSet(config.getTimeSeriesToGeneratorsMapping().get(keyNuclTs)));
         assertEquals(Sets.newHashSet(new NumberDistributionKey(500d), new NumberDistributionKey(1000d)),
                 Sets.newHashSet(config.getDistributionKey(keyG1), config.getDistributionKey(keyG2)));
 
         // 1 generator has been mapped to time serie 'hydro_ts': G3
-        MappingKey keyHydroTs = new MappingKey(EquipmentVariable.targetP, "hydro_ts");
+        MappingKey keyHydroTs = new MappingKey(EquipmentVariable.TARGET_P, "hydro_ts");
         assertEquals(1, config.getTimeSeriesToGeneratorsMapping().get(keyHydroTs).size());
         assertEquals("G3", config.getTimeSeriesToGeneratorsMapping().get(keyHydroTs).iterator().next());
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.targetP, "G3")));
+        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.TARGET_P, "G3")));
 
         // 1 load has been mapped to time serie 'load1_ts': LD1
-        MappingKey keyLoad1Ts = new MappingKey(EquipmentVariable.p0, "load1_ts");
+        MappingKey keyLoad1Ts = new MappingKey(EquipmentVariable.P_0, "load1_ts");
         assertEquals(1, config.getTimeSeriesToLoadsMapping().get(keyLoad1Ts).size());
         assertEquals("LD1", config.getTimeSeriesToLoadsMapping().get(keyLoad1Ts).iterator().next());
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.p0, "LD1")));
+        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.P_0, "LD1")));
 
         // 2 loads have been mapped to time serie 'load2_ts': LD2 and LD3
-        MappingKey keyLoad2Ts = new MappingKey(EquipmentVariable.p0, "load2_ts");
-        MappingKey keyLd2 = new MappingKey(EquipmentVariable.p0, "LD2");
-        MappingKey keyLd3 = new MappingKey(EquipmentVariable.p0, "LD3");
+        MappingKey keyLoad2Ts = new MappingKey(EquipmentVariable.P_0, "load2_ts");
+        MappingKey keyLd2 = new MappingKey(EquipmentVariable.P_0, "LD2");
+        MappingKey keyLd3 = new MappingKey(EquipmentVariable.P_0, "LD3");
         assertEquals(2, config.getTimeSeriesToLoadsMapping().get(keyLoad2Ts).size());
         assertEquals(Sets.newHashSet("LD2", "LD3"), Sets.newHashSet(config.getTimeSeriesToLoadsMapping().get(keyLoad2Ts)));
         // by default distribution key is 1
@@ -226,9 +226,9 @@ class TimeSeriesDslLoaderTest {
         assertTrue(config.getTimeSeriesToDanglingLinesMapping().isEmpty());
 
         // 2 breakers mapped to time-series 'switch_ts'
-        MappingKey keySwitchTs = new MappingKey(EquipmentVariable.open, "switch_ts");
-        MappingKey keySw1 = new MappingKey(EquipmentVariable.open, "SW1");
-        MappingKey keySw2 = new MappingKey(EquipmentVariable.open, "SW2");
+        MappingKey keySwitchTs = new MappingKey(EquipmentVariable.OPEN, "switch_ts");
+        MappingKey keySw1 = new MappingKey(EquipmentVariable.OPEN, "SW1");
+        MappingKey keySw2 = new MappingKey(EquipmentVariable.OPEN, "SW2");
         assertEquals(2, config.getTimeSeriesToBreakersMapping().get(keySwitchTs).size());
         assertEquals(Sets.newHashSet("SW1", "SW2"), Sets.newHashSet(config.getTimeSeriesToBreakersMapping().get(keySwitchTs)));
         // by default distribution key is 1

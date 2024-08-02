@@ -72,7 +72,7 @@ class LoadData {
                 if (loadSpec.curativeSheddingPercentage > 100 || loadSpec.curativeSheddingPercentage < 0) {
                     logDslLoader.logWarn("curative shedding percentage for load %s is not valid", id)
                 } else {
-                    configLoader.addEquipmentTimeSeries(loadSpec.curativeSheddingCost, MetrixVariable.curativeCostDown, id)
+                    configLoader.addEquipmentTimeSeries(loadSpec.curativeSheddingCost, MetrixVariable.CURATIVE_COST_DOWN, id)
                     data.addCurativeLoad(id, loadSpec.curativeSheddingPercentage, loadSpec.onContingencies)
                 }
             } else {

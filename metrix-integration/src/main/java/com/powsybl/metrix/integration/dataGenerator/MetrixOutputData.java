@@ -192,7 +192,7 @@ public class MetrixOutputData {
             try (BufferedReader reader = Files.newBufferedReader(resultFilePath, StandardCharsets.UTF_8)) {
                 read(reader, varNum);
             } catch (Exception e) {
-                LOGGER.error("Error encountered while reading results for variant " + varNum, e);
+                LOGGER.error("Error encountered while reading results for variant {}", varNum, e);
                 getDoubleTimeSeries(ERROR_CODE_NAME).insertResult(varNum - offset, ERROR_CODE);
             }
         }
@@ -201,312 +201,466 @@ public class MetrixOutputData {
     public void read(BufferedReader reader, int varNum) throws IOException {
         String line;
         String[] chunks;
-        DoubleResultChunk ts;
-        StringResultChunk sts;
         Map<Integer, String> outageNames = new HashMap<>();
-        String outageName;
 
         boolean empty = true;
         while ((line = reader.readLine()) != null) {
             empty = false;
             chunks = line.split(";", -1);
-            int outageId;
             switch (chunks[0]) {
-                case "C1 " -> {
-                    if ("COMPTE RENDU".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(ERROR_CODE_NAME);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                }
-                case "C2 " -> {
-                    if ("NON CONNEXITE".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries("LOST_GEN_", GENERATOR, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[5])) {
-                        ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-                    }
-                }
-                case "C2B " -> {
-                    if ("NON CONNEXITE".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[3], chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    }
-                }
-                case "C4 " -> {
-                    // outage ids
-                    if ("INCIDENTS".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageNames.put(Integer.parseInt(chunks[2].trim()), chunks[4]);
-                }
-                case "C5 " -> {
-                    // initial balancing for synchronous areas
-                    if ("ZONE SYNC".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries("INIT_BAL_AREA_" + chunks[2]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                }
-                case "R1 " -> {
-                    // Preventive load shedding
-                    if ("PAR CONSO".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries("INIT_BAL_LOAD_", "load", chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[5])) {
-                        ts = getDoubleTimeSeries("LOAD_", "load", chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-                    }
-                }
-                case "R1B " -> {
-                    // Curative Loads
-                    if (INCIDENT.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                    ts = getDoubleTimeSeries("LOAD_CUR_", "load", chunks[2], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                }
-                case "R1C " -> {
-                    // Loads bindings
-                    if ("NOM REGROUPEMENT".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries("LOAD_", "load binding", chunks[1]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                }
-                case "R2 " -> {
-                    // Preventive redispatching
-                    if ("PAR GROUPE".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    if (!EMPTY_STRING.equals(chunks[5])) {
-                        ts = getDoubleTimeSeries("INIT_BAL_GEN_", GENERATOR, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[6])) {
-                        ts = getDoubleTimeSeries("GEN_", GENERATOR, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
-                    }
-                }
-                case "R2B " -> {
-                    // Generator Curative
-                    if (INCIDENT.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                    ts = getDoubleTimeSeries("GEN_CUR_", GENERATOR, chunks[2], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                }
-                case "R2C " -> {
-                    // Generators bindings
-                    if ("NOM REGROUPEMENT".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries("GEN_", "generator binding", chunks[1]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                }
-                case "R3 " -> {
-                    // Basecase flows
-                    if (PAR_LIGNE.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(FLOW_NAME, BRANCH, chunks[2]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                }
-                case "R3B " -> {
-                    // max outage flows
-                    if (PAR_LIGNE.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    if (!EMPTY_STRING.equals(chunks[3])) {
-                        sts = getStringTimeSeries("MAX_TMP_THREAT_NAME_", BRANCH, chunks[2]);
-                        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                        sts.insertResult(varNum - offset, outageName);
-
-                        ts = getDoubleTimeSeries(MAX_TMP_THREAT_FLOW, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    }
-                    int i = 0;
-                    int chunkNum;
-                    while ((chunkNum = 5 + 2 * i) < chunks.length &&
-                        !EMPTY_STRING.equals(chunks[chunkNum])) {
-                        i++;
-                        sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_NAME_", BRANCH, chunks[2]);
-                        sts.insertResult(varNum - offset, outageNames.get(Integer.parseInt(chunks[chunkNum])));
-
-                        ts = getDoubleTimeSeries(MAX_THREAT_NAME + i + "_" + FLOW_NAME, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[chunkNum + 1]));
-                    }
-                }
-                case "R3C " -> {
-                    // Detailed outage flows
-                    if (PAR_LIGNE.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                    ts = getDoubleTimeSeries(FLOW_NAME, BRANCH, chunks[2], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                }
-                case "R4 " -> {
-                    // Marginal costs
-                    if ("VAR. MARGINALES".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageId = Integer.parseInt(chunks[3]);
-                    if (outageId == 0) {
-                        ts = getDoubleTimeSeries("MV_", BRANCH, chunks[2]);
-                    } else {
-                        outageName = Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                        ts = getDoubleTimeSeries("MV_", BRANCH, chunks[2], outageName);
-                    }
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                }
-                case "R4B " -> {
-                    // Detailed marginal costs
-                    if ("VAR. MARGINALES".equals(chunks[1])) {
-                        continue; // header
-                    }
-
-                    outageId = Integer.parseInt(chunks[3]);
-                    outageName = outageId == 0 ? null : Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                    ts = getDetailedMVTimeSeries("MV_POW", chunks[2], chunks[5], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
-                    ts = getDetailedMVTimeSeries("MV_COST", chunks[2], chunks[5], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
-                }
-                case "R5 " -> {
-                    // PST Basecase
-                    if ("PAR TD".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(PST_NAME, PST_TYPE, chunks[2]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    ts = getDoubleTimeSeries(PST_TAP_NAME, PST_TYPE, chunks[2]);
-                    ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
-                }
-                case "R5B " -> {
-                    // PST Curative
-                    if (INCIDENT.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                    ts = getDoubleTimeSeries(PST_CUR_NAME, PST_TYPE, chunks[2], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    ts = getDoubleTimeSeries(PST_CUR_TAP_NAME, PST_TYPE, chunks[2], outageName);
-                    ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
-                }
-                case "R6 " -> {
-                    // HVDC Basecase
-                    if (" PAR LCC".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(HVDC_NAME, HVDC_TYPE, chunks[2]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-
-                    if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries("MV_", HVDC_TYPE, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    }
-                }
-                case "R6B " -> {
-                    // HVDC Curative
-                    if (INCIDENT.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-                    ts = getDoubleTimeSeries("HVDC_CUR_", HVDC_TYPE, chunks[2], outageName);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                }
-                case "R7 " -> {
-                    // Redispatching by generator types
-                    if ("PAR FILIERE".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    if (!EMPTY_STRING.equals(chunks[3])) {
-                        ts = getDoubleTimeSeries(GEN_VOL_DOWN, GEN_TYPE, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[4])) {
-                        ts = getDoubleTimeSeries(GEN_VOL_UP, GEN_TYPE, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[5])) {
-                        ts = getDoubleTimeSeries("GEN_CUR_VOL_DOWN_", GEN_TYPE, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[6])) {
-                        ts = getDoubleTimeSeries("GEN_CUR_VOL_UP_", GEN_TYPE, chunks[2]);
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
-                    }
-                }
-                case "R8 " -> {
-                    // Losses
-                    if ("PERTES".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(LOSSES);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-                }
-                case "R8B " -> {
-                    // Pertes
-                    if ("PERTES".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(LOSSES_BY_COUNTRY, "losses", chunks[2]);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-                }
-                case "R9 " -> {
-                    // Fonction objectif de l'optimisation
-                    if ("FCT OBJECTIF".equals(chunks[1])) {
-                        continue; // header
-                    }
-                    ts = getDoubleTimeSeries(GEN_COST);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
-
-                    ts = getDoubleTimeSeries(LOAD_COST);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-
-                    ts = getDoubleTimeSeries(OVERLOAD_OUTAGES);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-
-                    ts = getDoubleTimeSeries(OVERLOAD_BASECASE);
-                    ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-                    if (!EMPTY_STRING.equals(chunks[6])) {
-                        ts = getDoubleTimeSeries("GEN_CUR_COST");
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
-                    }
-                    if (!EMPTY_STRING.equals(chunks[7])) {
-                        ts = getDoubleTimeSeries("LOAD_CUR_COST");
-                        ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
-                    }
-                }
-                case "R10" -> {
-                    // Topological remedial actions
-                    if (INCIDENT.equals(chunks[1])) {
-                        continue; // header
-                    }
-                    sts = getStringTimeSeries("TOPOLOGY_", CONTINGENCY_TYPE, chunks[2]);
-                    sts.insertResult(varNum - offset, chunks[4]);
-                }
+                case "C1 " -> readC1(varNum, chunks);
+                case "C2 " -> readC2(varNum, chunks);
+                case "C2B " -> readC2B(varNum, chunks);
+                case "C4 " -> readC4(outageNames, chunks);
+                case "C5 " -> readC5(varNum, chunks);
+                case "R1 " -> readR1(varNum, chunks);
+                case "R1B " -> readR1B(varNum, outageNames, chunks);
+                case "R1C " -> readR1C(varNum, chunks);
+                case "R2 " -> readR2(varNum, chunks);
+                case "R2B " -> readR2B(varNum, chunks, outageNames);
+                case "R2C " -> readR2C(varNum, chunks);
+                case "R3 " -> readR3(varNum, chunks);
+                case "R3B " -> readR3B(varNum, chunks, outageNames);
+                case "R3C " -> readR3C(varNum, chunks, outageNames);
+                case "R4 " -> readR4(varNum, chunks, outageNames);
+                case "R4B " -> readR4B(varNum, chunks, outageNames);
+                case "R5 " -> readR5(varNum, chunks);
+                case "R5B " -> readR5B(varNum, chunks, outageNames);
+                case "R6 " -> readR6(varNum, chunks);
+                case "R6B " -> readR6B(varNum, chunks, outageNames);
+                case "R7 " -> readR7(varNum, chunks);
+                case "R8 " -> readR8(varNum, chunks);
+                case "R8B " -> readR8B(varNum, chunks);
+                case "R9 " -> readR9(varNum, chunks);
+                case "R10" -> readR10(varNum, chunks);
                 default -> LOGGER.error("Unexpected content for variant {} ({})", varNum, line);
             }
         }
         if (empty) {
             LOGGER.error("Empty Metrix result file");
         }
+    }
+
+    /**
+     * Topological remedial actions
+     */
+    private void readR10(int varNum, String[] chunks) {
+        StringResultChunk sts;
+        // Check that it's not the header
+        if (INCIDENT.equals(chunks[1])) {
+            return;
+        }
+        sts = getStringTimeSeries("TOPOLOGY_", CONTINGENCY_TYPE, chunks[2]);
+        sts.insertResult(varNum - offset, chunks[4]);
+    }
+
+    /**
+     * Objective method for the optimization
+     */
+    private void readR9(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("FCT OBJECTIF".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries(GEN_COST);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
+
+        ts = getDoubleTimeSeries(LOAD_COST);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+
+        ts = getDoubleTimeSeries(OVERLOAD_OUTAGES);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+
+        ts = getDoubleTimeSeries(OVERLOAD_BASECASE);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
+        if (!EMPTY_STRING.equals(chunks[6])) {
+            ts = getDoubleTimeSeries("GEN_CUR_COST");
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
+        }
+        if (!EMPTY_STRING.equals(chunks[7])) {
+            ts = getDoubleTimeSeries("LOAD_CUR_COST");
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
+        }
+    }
+
+    /**
+     * Losses by country
+     */
+    private void readR8B(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("PERTES".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries(LOSSES_BY_COUNTRY, "losses", chunks[2]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+    }
+
+    /**
+     * Losses
+     */
+    private void readR8(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("PERTES".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries(LOSSES);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
+    }
+
+    /**
+     * Redispatching by generator types
+     */
+    private void readR7(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("PAR FILIERE".equals(chunks[1])) {
+            return;
+        }
+        if (!EMPTY_STRING.equals(chunks[3])) {
+            ts = getDoubleTimeSeries(GEN_VOL_DOWN, GEN_TYPE, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+        }
+        if (!EMPTY_STRING.equals(chunks[4])) {
+            ts = getDoubleTimeSeries(GEN_VOL_UP, GEN_TYPE, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+        }
+        if (!EMPTY_STRING.equals(chunks[5])) {
+            ts = getDoubleTimeSeries("GEN_CUR_VOL_DOWN_", GEN_TYPE, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
+        }
+        if (!EMPTY_STRING.equals(chunks[6])) {
+            ts = getDoubleTimeSeries("GEN_CUR_VOL_UP_", GEN_TYPE, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
+        }
+    }
+
+    /**
+     * HVDC Curative
+     */
+    private void readR6B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        String outageName;
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if (INCIDENT.equals(chunks[1])) {
+            return;
+        }
+        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        ts = getDoubleTimeSeries("HVDC_CUR_", HVDC_TYPE, chunks[2], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+    }
+
+    /**
+     * HVDC Basecase
+     */
+    private void readR6(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if (" PAR LCC".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries(HVDC_NAME, HVDC_TYPE, chunks[2]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+
+        if (!EMPTY_STRING.equals(chunks[4])) {
+            ts = getDoubleTimeSeries("MV_", HVDC_TYPE, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+        }
+    }
+
+    /**
+     * PST Curative
+     */
+    private void readR5B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        DoubleResultChunk ts;
+        String outageName;
+        // Check that it's not the header
+        if (INCIDENT.equals(chunks[1])) {
+            return;
+        }
+        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        ts = getDoubleTimeSeries(PST_CUR_NAME, PST_TYPE, chunks[2], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+        ts = getDoubleTimeSeries(PST_CUR_TAP_NAME, PST_TYPE, chunks[2], outageName);
+        ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
+    }
+
+    /**
+     * PST Basecase
+     */
+    private void readR5(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("PAR TD".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries(PST_NAME, PST_TYPE, chunks[2]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+        ts = getDoubleTimeSeries(PST_TAP_NAME, PST_TYPE, chunks[2]);
+        ts.insertResult(varNum - offset, Integer.parseInt(chunks[4]));
+    }
+
+    /**
+     * Detailed marginal costs
+     */
+    private void readR4B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        String outageName;
+        DoubleResultChunk ts;
+        int outageId;
+        // Check that it's not the header
+        if ("VAR. MARGINALES".equals(chunks[1])) {
+            return;
+        }
+
+        outageId = Integer.parseInt(chunks[3]);
+        outageName = outageId == 0 ? null : Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        ts = getDetailedMVTimeSeries("MV_POW", chunks[2], chunks[5], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
+        ts = getDetailedMVTimeSeries("MV_COST", chunks[2], chunks[5], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
+    }
+
+    /**
+     * Marginal costs
+     */
+    private void readR4(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        int outageId;
+        String outageName;
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("VAR. MARGINALES".equals(chunks[1])) {
+            return;
+        }
+        outageId = Integer.parseInt(chunks[3]);
+        if (outageId == 0) {
+            ts = getDoubleTimeSeries("MV_", BRANCH, chunks[2]);
+        } else {
+            outageName = Optional.ofNullable(outageNames.get(outageId)).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+            ts = getDoubleTimeSeries("MV_", BRANCH, chunks[2], outageName);
+        }
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+    }
+
+    /**
+     * Detailed outage flows
+     */
+    private void readR3C(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        DoubleResultChunk ts;
+        String outageName;
+        // Check that it's not the header
+        if (PAR_LIGNE.equals(chunks[1])) {
+            return;
+        }
+        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        ts = getDoubleTimeSeries(FLOW_NAME, BRANCH, chunks[2], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+    }
+
+    /**
+     * max outage flows
+     */
+    private void readR3B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        StringResultChunk sts;
+        DoubleResultChunk ts;
+        String outageName;
+        // Check that it's not the header
+        if (PAR_LIGNE.equals(chunks[1])) {
+            return;
+        }
+        if (!EMPTY_STRING.equals(chunks[3])) {
+            sts = getStringTimeSeries("MAX_TMP_THREAT_NAME_", BRANCH, chunks[2]);
+            outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[3]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+            sts.insertResult(varNum - offset, outageName);
+
+            ts = getDoubleTimeSeries(MAX_TMP_THREAT_FLOW, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+        }
+        int i = 0;
+        int chunkNum;
+        while ((chunkNum = 5 + 2 * i) < chunks.length &&
+            !EMPTY_STRING.equals(chunks[chunkNum])) {
+            i++;
+            sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_NAME_", BRANCH, chunks[2]);
+            sts.insertResult(varNum - offset, outageNames.get(Integer.parseInt(chunks[chunkNum])));
+
+            ts = getDoubleTimeSeries(MAX_THREAT_NAME + i + "_" + FLOW_NAME, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[chunkNum + 1]));
+        }
+    }
+
+    /**
+     * Basecase flows
+     */
+    private void readR3(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if (PAR_LIGNE.equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries(FLOW_NAME, BRANCH, chunks[2]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+    }
+
+    /**
+     * Generators bindings
+     */
+    private void readR2C(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("NOM REGROUPEMENT".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries("GEN_", "generator binding", chunks[1]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
+    }
+
+    /**
+     * Generator Curative
+     */
+    private void readR2B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        String outageName;
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if (INCIDENT.equals(chunks[1])) {
+            return;
+        }
+        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        ts = getDoubleTimeSeries("GEN_CUR_", GENERATOR, chunks[2], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+    }
+
+    /**
+     * Preventive redispatching
+     */
+    private void readR2(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("PAR GROUPE".equals(chunks[1])) {
+            return;
+        }
+        if (!EMPTY_STRING.equals(chunks[5])) {
+            ts = getDoubleTimeSeries("INIT_BAL_GEN_", GENERATOR, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
+        }
+        if (!EMPTY_STRING.equals(chunks[6])) {
+            ts = getDoubleTimeSeries("GEN_", GENERATOR, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
+        }
+    }
+
+    /**
+     * Loads bindings
+     */
+    private void readR1C(int varNum, String[] chunks) {
+        DoubleResultChunk ts;
+        // Check that it's not the header
+        if ("NOM REGROUPEMENT".equals(chunks[1])) {
+            return;
+        }
+        ts = getDoubleTimeSeries("LOAD_", "load binding", chunks[1]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
+    }
+
+    /**
+     * Curative Loads
+     */
+    private void readR1B(int varNum, Map<Integer, String> outageNames, String[] chunks) {
+        // Check that it's not the header
+        if (INCIDENT.equals(chunks[1])) {
+            return;
+        }
+        String outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        DoubleResultChunk ts = getDoubleTimeSeries("LOAD_CUR_", "load", chunks[2], outageName);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+    }
+
+    /**
+     * Preventive load shedding
+     */
+    private void readR1(int varNum, String[] chunks) {
+        // Check that it's not the header
+        if ("PAR CONSO".equals(chunks[1])) {
+            return;
+        }
+        DoubleResultChunk ts;
+        if (!EMPTY_STRING.equals(chunks[4])) {
+            ts = getDoubleTimeSeries("INIT_BAL_LOAD_", "load", chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+        }
+        if (!EMPTY_STRING.equals(chunks[5])) {
+            ts = getDoubleTimeSeries("LOAD_", "load", chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
+        }
+    }
+
+    /**
+     * Initial balancing for synchronous areas
+     */
+    private void readC5(int varNum, String[] chunks) {
+        // Check that it's not the header
+        if ("ZONE SYNC".equals(chunks[1])) {
+            return;
+        }
+        DoubleResultChunk ts = getDoubleTimeSeries("INIT_BAL_AREA_" + chunks[2]);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+    }
+
+    /**
+     * Outage ids
+     */
+    private void readC4(Map<Integer, String> outageNames, String[] chunks) {
+        // Check that it's not the header
+        if ("INCIDENTS".equals(chunks[1])) {
+            return;
+        }
+        outageNames.put(Integer.parseInt(chunks[2].trim()), chunks[4]);
+    }
+
+    /**
+     * Non connectivity
+     */
+    private void readC2B(int varNum, String[] chunks) {
+        // Check that it's not the header
+        if ("NON CONNEXITE".equals(chunks[1])) {
+            return;
+        }
+        if (!EMPTY_STRING.equals(chunks[4])) {
+            DoubleResultChunk ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[3], chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+        }
+    }
+
+    /**
+     * Non connectivity
+     */
+    private void readC2(int varNum, String[] chunks) {
+        // Check that it's not the header
+        if ("NON CONNEXITE".equals(chunks[1])) {
+            return;
+        }
+        DoubleResultChunk ts;
+        if (!EMPTY_STRING.equals(chunks[4])) {
+            ts = getDoubleTimeSeries("LOST_GEN_", GENERATOR, chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
+        }
+        if (!EMPTY_STRING.equals(chunks[5])) {
+            ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[2]);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
+        }
+    }
+
+    /**
+     * Resume
+     */
+    private void readC1(int varNum, String[] chunks) {
+        // Check that it's not the header
+        if ("COMPTE RENDU".equals(chunks[1])) {
+            return;
+        }
+        DoubleResultChunk ts = getDoubleTimeSeries(ERROR_CODE_NAME);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
     }
 
     public static boolean isCurativeTimeSeries(String preventiveTimeSeriesName, Map<String, String> preventiveTags, String timeSeriesName, Map<String, String> tags) {
@@ -581,14 +735,8 @@ public class MetrixOutputData {
         return EMPTY_STRING;
     }
 
-    private void completeOptimizedTimeSeries(List<TimeSeries> initOptimizedTimeSeriesList) {
-
-        if (initOptimizedTimeSeriesList.isEmpty()) {
-            return;
-        }
-
-        // complete preventive time series of hvdc and pst optimized results with initial values (mapped or base case)
-        for (TimeSeries initTimeSeries : initOptimizedTimeSeriesList) {
+    private void completePreventiveTimeSeries(List<TimeSeries> initOptimizedTimeSeriesList) {
+        for (TimeSeries<?, ?> initTimeSeries : initOptimizedTimeSeriesList) {
             String timeSeriesName = initTimeSeries.getMetadata().getName();
             double[] initValues = ((StoredDoubleTimeSeries) initTimeSeries).toArray();
             if (doubleTimeSeries.containsKey(timeSeriesName)) {
@@ -608,27 +756,41 @@ public class MetrixOutputData {
                 }
             }
         }
+    }
 
-        // complete curative time series of hvdc and pst optimized results with preventive results
-        for (TimeSeries initTimeSeries : initOptimizedTimeSeriesList) {
-            String timeSeriesName = initTimeSeries.getMetadata().getName();
-            Map<String, String> tags = initTimeSeries.getMetadata().getTags();
-            if (doubleTimeSeries.containsKey(timeSeriesName)) {
-                double[] preventiveValues = doubleTimeSeries.get(timeSeriesName).getTimeSeries();
+    private void completeCurativeTimeSeries(List<TimeSeries> initOptimizedTimeSeriesList) {
+        for (TimeSeries<?, ?> initTimeSeries : initOptimizedTimeSeriesList) {
+            String preventiveTimeSeriesName = initTimeSeries.getMetadata().getName();
+            Map<String, String> preventiveTags = initTimeSeries.getMetadata().getTags();
+            if (doubleTimeSeries.containsKey(preventiveTimeSeriesName)) {
+                double[] preventiveValues = doubleTimeSeries.get(preventiveTimeSeriesName).getTimeSeries();
                 // find variants with no metrix curative optimized result, put preventive values instead of NaN
                 doubleTimeSeries.entrySet().stream()
-                        .filter(ts -> isCurativeTimeSeries(timeSeriesName, tags, ts.getKey(), ts.getValue().getTags()))
-                        .forEach(curativeTs -> {
-                            DoubleResultChunk res = curativeTs.getValue();
-                            double[] curativeValues = res.getTimeSeries();
-                            for (int i = 0; i < curativeValues.length; i++) {
-                                if (Double.isNaN(curativeValues[i])) {
-                                    res.insertResult(i, preventiveValues[i]);
-                                }
+                    .filter(ts -> isCurativeTimeSeries(preventiveTimeSeriesName, preventiveTags, ts.getKey(), ts.getValue().getTags()))
+                    .forEach(curativeTs -> {
+                        DoubleResultChunk res = curativeTs.getValue();
+                        double[] curativeValues = res.getTimeSeries();
+                        for (int i = 0; i < curativeValues.length; i++) {
+                            if (Double.isNaN(curativeValues[i])) {
+                                res.insertResult(i, preventiveValues[i]);
                             }
-                        });
+                        }
+                    });
             }
         }
+    }
+
+    private void completeOptimizedTimeSeries(List<TimeSeries> initOptimizedTimeSeriesList) {
+
+        if (initOptimizedTimeSeriesList.isEmpty()) {
+            return;
+        }
+
+        // complete preventive time series of hvdc and pst optimized results with initial values (mapped or base case)
+        completePreventiveTimeSeries(initOptimizedTimeSeriesList);
+
+        // complete curative time series of hvdc and pst optimized results with preventive results
+        completeCurativeTimeSeries(initOptimizedTimeSeriesList);
     }
 
     public void createTimeSeries(TimeSeriesIndex index, List<TimeSeries> initOptimizedTimeSeriesList, List<TimeSeries> timeSeriesList) {

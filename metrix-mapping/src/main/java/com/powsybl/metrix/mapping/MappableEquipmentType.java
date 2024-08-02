@@ -18,9 +18,9 @@ public enum MappableEquipmentType {
     LOAD("load"),
     BOUNDARY_LINE("boundaryLine"),
     SWITCH("breaker"),
-    TRANSFORMER("twoWindingsTransformer"),
-    PHASE_TAP_CHANGER("twoWindingsTransformer"),
-    RATIO_TAP_CHANGER("twoWindingsTransformer"),
+    TRANSFORMER(Constants.TWO_WINDINGS_TRANSFORMER),
+    PHASE_TAP_CHANGER(Constants.TWO_WINDINGS_TRANSFORMER),
+    RATIO_TAP_CHANGER(Constants.TWO_WINDINGS_TRANSFORMER),
     LCC_CONVERTER_STATION("lccConverterStation"),
     VSC_CONVERTER_STATION("vscConverterStation"),
     LINE("line");
@@ -33,5 +33,9 @@ public enum MappableEquipmentType {
 
     public String getScriptVariable() {
         return scriptVariable;
+    }
+
+    private static class Constants {
+        public static final String TWO_WINDINGS_TRANSFORMER = "twoWindingsTransformer";
     }
 }

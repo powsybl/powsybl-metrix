@@ -59,8 +59,8 @@ class GeneratorData {
         if (spec) {
             if (spec.adequacyUpCosts != null || spec.adequacyDownCosts != null) {
                 if (spec.adequacyUpCosts != null && spec.adequacyDownCosts != null) {
-                    configLoader.addEquipmentTimeSeries(spec.adequacyDownCosts, MetrixVariable.offGridCostDown, id)
-                    configLoader.addEquipmentTimeSeries(spec.adequacyUpCosts, MetrixVariable.offGridCostUp, id)
+                    configLoader.addEquipmentTimeSeries(spec.adequacyDownCosts, MetrixVariable.OFF_GRID_COST_DOWN, id)
+                    configLoader.addEquipmentTimeSeries(spec.adequacyUpCosts, MetrixVariable.OFF_GRID_COST_UP, id)
                     data.addGeneratorForAdequacy(id)
                 } else if (spec.adequacyUpCosts == null) {
                     logDslLoader.logDebug("generator %s is missing adequacy up-cost time-series to be properly configured", id)
@@ -70,8 +70,8 @@ class GeneratorData {
             }
             if (spec.redispatchingUpCosts != null || spec.redispatchingDownCosts != null) {
                 if (spec.redispatchingUpCosts != null && spec.redispatchingDownCosts != null) {
-                    configLoader.addEquipmentTimeSeries(spec.redispatchingDownCosts, MetrixVariable.onGridCostDown, id)
-                    configLoader.addEquipmentTimeSeries(spec.redispatchingUpCosts, MetrixVariable.onGridCostUp, id)
+                    configLoader.addEquipmentTimeSeries(spec.redispatchingDownCosts, MetrixVariable.ON_GRID_COST_DOWN, id)
+                    configLoader.addEquipmentTimeSeries(spec.redispatchingUpCosts, MetrixVariable.ON_GRID_COST_UP, id)
                     data.addGeneratorForRedispatching(id, spec.onContingencies)
                 } else if (spec.redispatchingUpCosts == null) {
                     logDslLoader.logDebug("generator %s is missing redispatching up-cost time-series to be properly configured", id)

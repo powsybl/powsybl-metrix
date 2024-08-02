@@ -143,9 +143,9 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToHvdcLinesMapping, config.hvdcLineToTimeSeriesMapping);
         switch (variable) {
-            case activePowerSetpoint -> config.unmappedHvdcLines.remove(equipmentId);
-            case minP -> config.unmappedMinPHvdcLines.remove(equipmentId);
-            case maxP -> config.unmappedMaxPHvdcLines.remove(equipmentId);
+            case ACTIVE_POWER_SETPOINT -> config.unmappedHvdcLines.remove(equipmentId);
+            case MIN_P -> config.unmappedMinPHvdcLines.remove(equipmentId);
+            case MAX_P -> config.unmappedMaxPHvdcLines.remove(equipmentId);
             default -> {
                 // Do nothing
             }
@@ -156,16 +156,16 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToLoadsMapping, config.loadToTimeSeriesMapping);
         switch (variable) {
-            case p0 -> {
+            case P_0 -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedFixedActivePowerLoads.remove(equipmentId);
                 config.unmappedVariableActivePowerLoads.remove(equipmentId);
             }
-            case fixedActivePower -> {
+            case FIXED_ACTIVE_POWER -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedFixedActivePowerLoads.remove(equipmentId);
             }
-            case variableActivePower -> {
+            case VARIABLE_ACTIVE_POWER -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedVariableActivePowerLoads.remove(equipmentId);
             }
@@ -179,9 +179,9 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToGeneratorsMapping, config.generatorToTimeSeriesMapping);
         switch (variable) {
-            case targetP -> config.unmappedGenerators.remove(equipmentId);
-            case minP -> config.unmappedMinPGenerators.remove(equipmentId);
-            case maxP -> config.unmappedMaxPGenerators.remove(equipmentId);
+            case TARGET_P -> config.unmappedGenerators.remove(equipmentId);
+            case MIN_P -> config.unmappedMinPGenerators.remove(equipmentId);
+            case MAX_P -> config.unmappedMaxPGenerators.remove(equipmentId);
             default -> {
                 // Do nothing
             }
@@ -211,7 +211,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             case BOUNDARY_LINE -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                     config.timeSeriesToDanglingLinesMapping, config.danglingLineToTimeSeriesMapping);
-                if (variable == EquipmentVariable.p0) {
+                if (variable == EquipmentVariable.P_0) {
                     config.unmappedDanglingLines.remove(equipmentId);
                 }
             }
@@ -221,7 +221,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             case PHASE_TAP_CHANGER -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                     config.timeSeriesToPhaseTapChangersMapping, config.phaseTapChangerToTimeSeriesMapping);
-                if (variable == EquipmentVariable.phaseTapPosition) {
+                if (variable == EquipmentVariable.PHASE_TAP_POSITION) {
                     config.unmappedPhaseTapChangers.remove(equipmentId);
                 }
             }

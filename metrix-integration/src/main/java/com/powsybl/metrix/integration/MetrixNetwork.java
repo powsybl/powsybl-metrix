@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -131,6 +132,11 @@ public class MetrixNetwork {
     }
 
     public int getIndex(Identifiable<?> identifiable) {
+        MetrixSubset subset = getMetrixSubset(identifiable);
+        return mapper.getInt(subset, identifiable.getId());
+    }
+
+    private MetrixSubset getMetrixSubset(Identifiable<?> identifiable) {
         MetrixSubset subset = MetrixSubset.QUAD;
         if (identifiable instanceof Generator) {
             subset = MetrixSubset.GROUPE;
@@ -141,7 +147,7 @@ public class MetrixNetwork {
         } else if (identifiable instanceof Load) {
             subset = MetrixSubset.LOAD;
         }
-        return mapper.getInt(subset, identifiable.getId());
+        return subset;
     }
 
     public Identifiable<?> getIdentifiable(String id) {
@@ -157,16 +163,7 @@ public class MetrixNetwork {
     }
 
     public boolean isMapped(Identifiable<?> identifiable) {
-        MetrixSubset subset = MetrixSubset.QUAD;
-        if (identifiable instanceof Generator) {
-            subset = MetrixSubset.GROUPE;
-        } else if (identifiable instanceof Bus) {
-            subset = MetrixSubset.NOEUD;
-        } else if (identifiable instanceof HvdcLine) {
-            subset = MetrixSubset.HVDC;
-        } else if (identifiable instanceof Load) {
-            subset = MetrixSubset.LOAD;
-        }
+        MetrixSubset subset = getMetrixSubset(identifiable);
         return mapper.isMapped(subset, identifiable.getId());
     }
 
@@ -317,37 +314,40 @@ public class MetrixNetwork {
         }
     }
 
-    private void createTransformerList() {
-        int nbNok = 0;
-        int nbPtcNok = 0;
-
-        for (TwoWindingsTransformer twt : network.getTwoWindingsTransformers()) {
-            Terminal t1 = twt.getTerminal1();
-            Terminal t2 = twt.getTerminal2();
-            Bus b1 = t1.getBusBreakerView().getBus();
-            Bus b2 = t2.getBusBreakerView().getBus();
-            if (b1 != null && b2 != null) {
-                if (busList.contains(b1) && busList.contains(b2)) {
-                    addTwoWindingsTransformer(twt);
-                    if (twt.hasPhaseTapChanger()) {
-                        addPhaseTapChanger(twt);
-                    }
-                } else {
-                    nbNok++;
-                    if (twt.hasPhaseTapChanger()) {
-                        nbPtcNok++;
-                    }
+    private void checkTwoWindingsTransformer(TwoWindingsTransformer twt, AtomicInteger nbNok, AtomicInteger nbPtcNok) {
+        Terminal t1 = twt.getTerminal1();
+        Terminal t2 = twt.getTerminal2();
+        Bus b1 = t1.getBusBreakerView().getBus();
+        Bus b2 = t2.getBusBreakerView().getBus();
+        if (b1 != null && b2 != null) {
+            if (busList.contains(b1) && busList.contains(b2)) {
+                addTwoWindingsTransformer(twt);
+                if (twt.hasPhaseTapChanger()) {
+                    addPhaseTapChanger(twt);
                 }
             } else {
-                nbNok++;
+                nbNok.incrementAndGet();
+                if (twt.hasPhaseTapChanger()) {
+                    nbPtcNok.incrementAndGet();
+                }
             }
+        } else {
+            nbNok.incrementAndGet();
         }
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok, twoWindingsTransformerList.size(), nbNok));
-            LOGGER.debug(String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok, phaseTapChangerList.size(), nbPtcNok));
-        }
+    }
 
-        nbNok = 0;
+    private void createTwoWindingsTransformersList() {
+        AtomicInteger nbNok = new AtomicInteger(0);
+        AtomicInteger nbPtcNok = new AtomicInteger(0);
+        network.getTwoWindingsTransformers().forEach(twt -> checkTwoWindingsTransformer(twt, nbNok, nbPtcNok));
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get()));
+            LOGGER.debug(String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get()));
+        }
+    }
+
+    private void createThreeWindingsTransformersList() {
+        int nbNok = 0;
         for (ThreeWindingsTransformer twt : network.getThreeWindingsTransformers()) {
             ThreeWindingsTransformer.Leg leg1 = twt.getLeg1();
             ThreeWindingsTransformer.Leg leg2 = twt.getLeg2();
@@ -371,6 +371,15 @@ public class MetrixNetwork {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format("Threetrfo  total = <%5d> ok = <%5d> not = <%5d>", threeWindingsTransformerList.size() + nbNok, threeWindingsTransformerList.size(), nbNok));
         }
+    }
+
+    private void createTransformerList() {
+
+        // List the TwoWindingsTransformers
+        createTwoWindingsTransformersList();
+
+        // List the ThreeWindingsTransformers
+        createThreeWindingsTransformersList();
     }
 
     private void createDanglingLineList() {
@@ -461,37 +470,38 @@ public class MetrixNetwork {
         }
 
         List<Contingency> ctyList = provider.getContingencies(network);
-
-        for (Contingency contingency : ctyList) {
-            boolean ctyOk = true;
-            for (ContingencyElement element : contingency.getElements()) {
-                boolean elemOk = true;
-                Identifiable<?> identifiable = network.getIdentifiable(element.getId());
-                if (identifiable == null || !MetrixInputAnalysis.isValidContingencyElement(identifiable.getType(), element.getType())) {
-                    elemOk = false;
-                }
-                if (!elemOk) {
-                    if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' : element '%s' not found in the network", contingency.getId(), element.getId()));
-                    }
-                    ctyOk = false;
-                }
-            }
-            if (ctyOk) {
-                if (propagate) {
-                    // replace elements with new elements from propagation
-                    // this will keep the original extensions
-                    List<ContingencyElement> extendedElements = new ArrayList<>(getElementsToTrip(contingency, true));
-                    Collection<ContingencyElement> originalElements = new ArrayList<>(contingency.getElements());
-                    originalElements.forEach(contingency::removeElement);
-                    extendedElements.forEach(contingency::addElement);
-                }
-                contingencyList.add(contingency);
-            }
-        }
+        ctyList.forEach(contingency -> addContingencyToList(contingency, propagate));
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size()));
+        }
+    }
+
+    private void addContingencyToList(Contingency contingency, boolean propagate) {
+        boolean ctyOk = true;
+        for (ContingencyElement element : contingency.getElements()) {
+            boolean elemOk = true;
+            Identifiable<?> identifiable = network.getIdentifiable(element.getId());
+            if (identifiable == null || !MetrixInputAnalysis.isValidContingencyElement(identifiable.getType(), element.getType())) {
+                elemOk = false;
+            }
+            if (!elemOk) {
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn(String.format("Contingency '%s' : element '%s' not found in the network", contingency.getId(), element.getId()));
+                }
+                ctyOk = false;
+            }
+        }
+        if (ctyOk) {
+            if (propagate) {
+                // replace elements with new elements from propagation
+                // this will keep the original extensions
+                List<ContingencyElement> extendedElements = new ArrayList<>(getElementsToTrip(contingency, true));
+                Collection<ContingencyElement> originalElements = new ArrayList<>(contingency.getElements());
+                originalElements.forEach(contingency::removeElement);
+                extendedElements.forEach(contingency::addElement);
+            }
+            contingencyList.add(contingency);
         }
     }
 
@@ -582,45 +592,53 @@ public class MetrixNetwork {
 
             Switch sw = network.getSwitch(breakerId);
 
+            // Stop the step if needed
+            boolean skipThisStep = false;
             if (sw == null) {
                 LOGGER.debug("Switch '{}' not found or not a switch", breakerId);
-                continue;
-            }
-            if (sw.isOpen()) {
+                skipThisStep = true;
+            } else if (sw.isOpen()) {
                 LOGGER.warn("Switch '{}' is opened in basecase", breakerId);
+                skipThisStep = true;
+            }
+            if (skipThisStep) {
                 continue;
             }
 
-            String switchId = sw.getId();
+            addElementToRetainedBreakersList(sw);
+        }
+    }
 
-            VoltageLevel.NodeBreakerView nodeBreakerView = sw.getVoltageLevel().getNodeBreakerView();
-            Terminal terminal1 = nodeBreakerView.getTerminal1(switchId);
-            Terminal terminal2 = nodeBreakerView.getTerminal2(switchId);
+    private void addElementToRetainedBreakersList(Switch sw) {
+        String switchId = sw.getId();
 
-            if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
-                terminal1 = terminal2;
-            }
+        VoltageLevel.NodeBreakerView nodeBreakerView = sw.getVoltageLevel().getNodeBreakerView();
+        Terminal terminal1 = nodeBreakerView.getTerminal1(switchId);
+        Terminal terminal2 = nodeBreakerView.getTerminal2(switchId);
 
-            if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
-                sw.setRetained(true);
-                mappedSwitchMap.put(switchId, switchId);
-            } else {
-                switch (terminal1.getConnectable().getType()) {
-                    case LINE, TWO_WINDINGS_TRANSFORMER -> {
-                        sw.setRetained(true);
-                        mappedSwitchMap.put(switchId, terminal1.getConnectable().getId());
-                    }
-                    case LOAD, GENERATOR -> {
-                        sw.setRetained(true);
-                        mappedSwitchMap.put(switchId, switchId);
-                    }
-                    case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR, THREE_WINDINGS_TRANSFORMER -> {
-                        if (LOGGER.isWarnEnabled()) {
-                            LOGGER.warn(String.format("Unsupported connectable type (%s) for switch '%s'", terminal1.getConnectable().getType(), breakerId));
-                        }
-                    }
-                    default -> throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
+        if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
+            terminal1 = terminal2;
+        }
+
+        if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
+            sw.setRetained(true);
+            mappedSwitchMap.put(switchId, switchId);
+        } else {
+            switch (terminal1.getConnectable().getType()) {
+                case LINE, TWO_WINDINGS_TRANSFORMER -> {
+                    sw.setRetained(true);
+                    mappedSwitchMap.put(switchId, terminal1.getConnectable().getId());
                 }
+                case LOAD, GENERATOR -> {
+                    sw.setRetained(true);
+                    mappedSwitchMap.put(switchId, switchId);
+                }
+                case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR, THREE_WINDINGS_TRANSFORMER -> {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn(String.format("Unsupported connectable type (%s) for switch '%s'", terminal1.getConnectable().getType(), switchId));
+                    }
+                }
+                default -> throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
             }
         }
     }
@@ -629,25 +647,29 @@ public class MetrixNetwork {
         for (String branchId : openedBranches) {
             Identifiable<?> identifiable = network.getIdentifiable(branchId);
             if (identifiable != null) {
-                if (identifiable instanceof Branch<?> branchToClose) {
-                    if (!branchToClose.getTerminal1().isConnected() || !branchToClose.getTerminal2().isConnected()) {
-                        closeBranch(branchToClose);
-                        disconnectedElements.add(branchToClose);
-                    }
-                } else if (identifiable instanceof Switch switchToClose) {
-                    if (switchToClose.isOpen()) {
-                        closeSwitch(switchToClose);
-                        disconnectedElements.add(switchToClose);
-                    }
-                } else {
-                    if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn("Unsupported open branch type : {}", identifiable.getClass());
-                    }
-                }
+                addElementToOpenedBranchesList(identifiable);
             } else {
                 if (LOGGER.isWarnEnabled()) {
                     LOGGER.warn("Opened branch '{}' is missing in the network", branchId);
                 }
+            }
+        }
+    }
+
+    private void addElementToOpenedBranchesList(Identifiable<?> identifiable) {
+        if (identifiable instanceof Branch<?> branchToClose) {
+            if (!branchToClose.getTerminal1().isConnected() || !branchToClose.getTerminal2().isConnected()) {
+                closeBranch(branchToClose);
+                disconnectedElements.add(branchToClose);
+            }
+        } else if (identifiable instanceof Switch switchToClose) {
+            if (switchToClose.isOpen()) {
+                closeSwitch(switchToClose);
+                disconnectedElements.add(switchToClose);
+            }
+        } else {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn("Unsupported open branch type : {}", identifiable.getClass());
             }
         }
     }

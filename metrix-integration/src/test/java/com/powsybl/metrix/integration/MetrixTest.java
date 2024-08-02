@@ -83,7 +83,7 @@ class MetrixTest {
         MetrixAppLogger appLogger = new MetrixAppLogger() {
             @Override
             public void log(String message, Object... args) {
-
+                // Nothing to do here
             }
 
             @Override
@@ -145,12 +145,12 @@ class MetrixTest {
 
             @Override
             public void stop(Path path) {
-
+                // Nothing to do here
             }
 
             @Override
             public void stopForcibly(Path path) {
-
+                // Nothing to do here
             }
         };
         ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor());
@@ -183,7 +183,7 @@ class MetrixTest {
 
             @Override
             public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
-
+                // Nothing to do here
             }
         };
 

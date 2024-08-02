@@ -56,7 +56,7 @@ public class MappingKey {
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
                 if (token.equals(JsonToken.FIELD_NAME)) {
-                    String fieldName = parser.getCurrentName();
+                    String fieldName = parser.currentName();
                     switch (fieldName) {
                         case "mappingVariable" -> mappingVariable = MappingVariable.parseJson(parser);
                         case "id" -> {
