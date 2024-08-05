@@ -121,6 +121,17 @@ public class TimeSeriesMappingConfigTableLoader {
         return String.format("%s_%s", tsName, id);
     }
 
+    /**
+     * Check if store contains already disconnected equipment time series deduced from planned outages string time series
+     * if so, returns store
+     * if not, build the store containing disconnected equipment time series
+     *
+     * @param  store                                store containing the planned outages time series
+     * @param  version                              version to compute
+     * @param  timeSeriesToPlannedOutagesMapping    map of planned outages time series giving the set of disconnected equipment ids
+     * @return depending on the check, store or aggregator of store and disconnected equipment time series store
+     */
+
     public static ReadOnlyTimeSeriesStore buildStoreWithPlannedOutages(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
         if (timeSeriesToPlannedOutagesMapping.isEmpty()) {
             return store;
@@ -139,6 +150,25 @@ public class TimeSeriesMappingConfigTableLoader {
         ReadOnlyTimeSeriesStore plannedOutagesStore = buildPlannedOutagesStore(store, version, timeSeriesToPlannedOutagesMapping);
         return new ReadOnlyTimeSeriesStoreAggregator(store, plannedOutagesStore);
     }
+
+    /**
+     * Deduce from planned outages string time series giving a list of comma separated disconnected equipments
+     * corresponding double time series of the given version for each disconnected equipment
+     * example for 1 planned outages time series 'planned_outages_ts' with 4 steps:
+     *     disconnected ids:
+     *         step1 : id1
+     *         step2 : id2
+     *         step3 : id1, id2
+     *         step4 : none
+     *     returned store contains 2 double time series:
+     *         'planned_outages'_id1 with values: 'DISCONNECTED_VALUE', 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'
+     *         'planned_outages'_id2 with values: 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'
+     *
+     * @param  store                                store containing the planned outages time series
+     * @param  version                              version to compute
+     * @param  timeSeriesToPlannedOutagesMapping    map of planned outages time series giving the set of disconnected equipment ids
+     * @return store containing double time series of each disconnected equipment
+     */
 
     public static ReadOnlyTimeSeriesStore buildPlannedOutagesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
         List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
