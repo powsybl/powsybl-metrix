@@ -123,9 +123,10 @@ public class TimeSeriesMappingConfigTableLoader {
 
     /**
      * Check if store contains already disconnected equipment time series deduced from planned outages string time series
-     * if so, returns store
-     * if not, build the store containing disconnected equipment time series
-     *
+     * <ul>
+     *     <li>if so, returns store</li>
+     *     <li>if not, build the store containing disconnected equipment time series</li>
+     *</ul>
      * @param  store                                store containing the planned outages time series
      * @param  version                              version to compute
      * @param  timeSeriesToPlannedOutagesMapping    map of planned outages time series giving the set of disconnected equipment ids
@@ -152,18 +153,20 @@ public class TimeSeriesMappingConfigTableLoader {
     }
 
     /**
-     * Deduce from planned outages string time series giving a list of comma separated disconnected equipments
-     * corresponding double time series of the given version for each disconnected equipment
-     * example for 1 planned outages time series 'planned_outages_ts' with 4 steps:
-     *     disconnected ids:
-     *         step1 : id1
-     *         step2 : id2
-     *         step3 : id1, id2
-     *         step4 : none
-     *     returned store contains 2 double time series:
-     *         'planned_outages'_id1 with values: 'DISCONNECTED_VALUE', 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'
-     *         'planned_outages'_id2 with values: 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'
-     *
+     * <p>Deduce from planned outages string time series giving a list of comma separated disconnected equipments
+     * corresponding double time series of the given version for each disconnected equipment</p>
+     * <p>Example for 1 planned outages time series 'planned_outages_ts' with 4 steps:
+     *     <ul>
+     *         <li>disconnected ids:
+     *         <ul><li>step1 : id1</li>
+     *         <li>step2 : id2</li>
+     *         <li>step3 : id1, id2</li>
+     *         <li>step4 : none</li></ul></li>
+     *     <li>returned store contains 2 double time series:
+     *         <ul><li>'planned_outages'_id1 with values: 'DISCONNECTED_VALUE', 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'</li>
+     *         <li>'planned_outages'_id2 with values: 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'</li></ul></li>
+ *         </ul>
+     *</p>
      * @param  store                                store containing the planned outages time series
      * @param  version                              version to compute
      * @param  timeSeriesToPlannedOutagesMapping    map of planned outages time series giving the set of disconnected equipment ids
