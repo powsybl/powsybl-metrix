@@ -42,7 +42,7 @@ public class TimeSeriesMappingConfigTableLoader {
     public TimeSeriesTable load(int version, Set<String> requiredTimeSeries, Range<Integer> pointRange) {
         Set<String> usedTimeSeriesNames = StreamSupport.stream(findUsedTimeSeriesNames().spliterator(), false).collect(Collectors.toSet());
         usedTimeSeriesNames.addAll(requiredTimeSeries);
-        ReadOnlyTimeSeriesStore storeWithPlannedOutages = buildPlannedOutagesStore(store, version, config.getTimeSeriesToPlannedOutagesMapping());
+        ReadOnlyTimeSeriesStore storeWithPlannedOutages = buildStoreWithPlannedOutages(store, version, config.getTimeSeriesToPlannedOutagesMapping());
         return loadToTable(version, storeWithPlannedOutages, pointRange, usedTimeSeriesNames);
     }
 
@@ -92,40 +92,104 @@ public class TimeSeriesMappingConfigTableLoader {
         return table;
     }
 
-    public static ReadOnlyTimeSeriesStore buildPlannedOutagesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
+    /**
+     * <p>Deduce from planned outages string time series giving a list of comma separated disconnected equipments
+     * corresponding double time series for each disconnected equipment</p>
+     * <p>Example for 1 planned outages time series 'planned_outages_ts' with 4 steps:
+     *     <ul>
+     *         <li>disconnected ids:
+     *         <ul><li>step1 : id1</li>
+     *         <li>step2 : id2</li>
+     *         <li>step3 : id1, id2</li>
+     *         <li>step4 : none</li></ul></li>
+     *     <li>returned store contains 2 double time series:
+     *         <ul><li>'planned_outages'_id1 with values: 'DISCONNECTED_VALUE', 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'</li>
+     *         <li>'planned_outages'_id2 with values: 'CONNECTED_VALUE', 'DISCONNECTED_VALUE', 'DISCONNECTED_VALUE', 'CONNECTED_VALUE'</li></ul></li>
+     *         </ul>
+     *</p>
+     * @param  timeSeriesName                       planned outages time series name
+     * @param  timeSeriesValues                     planned outages time series values
+     * @param  disconnectedIds                      planned outages disconnected ids set
+     * @param  index                                index of double time series to create
+     * @return double time series for each disconnected equipment
+     */
+    public static List<DoubleTimeSeries> computeDisconnectedEquipmentTimeSeries(String timeSeriesName, String[] timeSeriesValues, Set<String> disconnectedIds, TimeSeriesIndex index) {
         List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
+        int nbPoints = index.getPointCount();
+        for (String id : disconnectedIds) {
+            double[] values = new double[nbPoints];
+            Arrays.fill(values, CONNECTED_VALUE);
+            for (int i = 0; i < nbPoints; i++) {
+                if (timeSeriesValues[i] == null) {
+                    continue;
+                }
+                String[] ids = timeSeriesValues[i].split(",");
+                if (Arrays.asList(ids).contains(id)) {
+                    values[i] = DISCONNECTED_VALUE;
+                }
+            }
+            DoubleTimeSeries doubleTs = new StoredDoubleTimeSeries(
+                    new TimeSeriesMetadata(plannedOutagesEquipmentTsName(timeSeriesName, id), TimeSeriesDataType.DOUBLE, index),
+                    new UncompressedDoubleDataChunk(0, values).tryToCompress());
+            doubleTimeSeries.add(doubleTs);
+        }
+        return doubleTimeSeries;
+    }
 
-        // Check if store already contains equipment outages time series
-        List<String> timeSeries = timeSeriesToPlannedOutagesMapping.keySet().stream()
-                .filter(store::timeSeriesExists)
-                .collect(Collectors.toList());
-        if (timeSeries.isEmpty()) {
+    public static String plannedOutagesEquipmentTsName(String tsName, String id) {
+        return String.format("%s_%s", tsName, id);
+    }
+
+    /**
+     * Check if store contains already disconnected equipment time series deduced from planned outages string time series
+     * <ul>
+     *     <li>if so, returns store</li>
+     *     <li>if not, build the store containing disconnected equipment time series</li>
+     *</ul>
+     * @param  store                                store containing the planned outages time series
+     * @param  version                              version to compute
+     * @param  timeSeriesToPlannedOutagesMapping    map of planned outages time series giving the set of disconnected equipment ids
+     * @return depending on the check, store or aggregator of store and disconnected equipment time series store
+     */
+
+    public static ReadOnlyTimeSeriesStore buildStoreWithPlannedOutages(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
+        if (timeSeriesToPlannedOutagesMapping.isEmpty()) {
             return store;
         }
 
+        // Check if store already contains equipment outages time series
+        Set<Boolean> timeSeriesExist = timeSeriesToPlannedOutagesMapping.keySet().stream()
+            .flatMap(key -> timeSeriesToPlannedOutagesMapping.get(key).stream()
+                .map(value -> new AbstractMap.SimpleEntry<>(key, value)))
+            .map(e -> store.timeSeriesExists(plannedOutagesEquipmentTsName(e.getKey(), e.getValue())))
+            .collect(Collectors.toSet());
+        if (timeSeriesExist.size() == 1 && timeSeriesExist.contains(true)) {
+            return store;
+        }
+
+        ReadOnlyTimeSeriesStore plannedOutagesStore = buildPlannedOutagesStore(store, version, timeSeriesToPlannedOutagesMapping);
+        return new ReadOnlyTimeSeriesStoreAggregator(store, plannedOutagesStore);
+    }
+
+    /**
+     * <p>Deduce from all planned outages time series corresponding time series of the given version for each disconnected equipment</p>
+     * @param  store                                store containing the planned outages time series
+     * @param  version                              version to compute
+     * @param  timeSeriesToPlannedOutagesMapping    map of planned outages time series giving the set of disconnected equipment ids
+     * @return store containing double time series of each disconnected equipment
+     */
+
+    public static ReadOnlyTimeSeriesStore buildPlannedOutagesStore(ReadOnlyTimeSeriesStore store, int version, Map<String, Set<String>> timeSeriesToPlannedOutagesMapping) {
+        List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
+
         // Build equipment planned outages time series
         TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesToPlannedOutagesMapping.keySet());
-        int nbPoints = index.getPointCount();
         for (Map.Entry<String, Set<String>> entry : timeSeriesToPlannedOutagesMapping.entrySet()) {
             String timeSeriesName = entry.getKey();
             Set<String> disconnectedIds = entry.getValue();
-
             StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name " + timeSeriesName));
-            String[] array = plannedOutagesTimeSeries.toArray();
-            for (String id : disconnectedIds) {
-                double[] values = new double[nbPoints];
-                Arrays.fill(values, CONNECTED_VALUE);
-                for (int i = 0; i < nbPoints; i++) {
-                    String[] ids = array[i].split(",");
-                    if (Arrays.asList(ids).contains(id)) {
-                        values[i] = DISCONNECTED_VALUE;
-                    }
-                }
-                DoubleTimeSeries doubleTs = new StoredDoubleTimeSeries(
-                        new TimeSeriesMetadata(timeSeriesName + "_" + id, TimeSeriesDataType.DOUBLE, index),
-                        new UncompressedDoubleDataChunk(0, values).tryToCompress());
-                doubleTimeSeries.add(doubleTs);
-            }
+            List<DoubleTimeSeries> disconnectedEquipmentTimeSeries = computeDisconnectedEquipmentTimeSeries(timeSeriesName, plannedOutagesTimeSeries.toArray(), disconnectedIds, index);
+            doubleTimeSeries.addAll(disconnectedEquipmentTimeSeries);
         }
         return new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries);
     }
