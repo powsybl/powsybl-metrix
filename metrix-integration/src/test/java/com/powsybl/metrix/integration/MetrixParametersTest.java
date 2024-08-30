@@ -43,6 +43,7 @@ class MetrixParametersTest {
         assertFalse(p.getOptionalLossOfLoadCost().isPresent());
         assertFalse(p.getOptionalCurativeLossOfLoadCost().isPresent());
         assertFalse(p.getOptionalCurativeLossOfGenerationCost().isPresent());
+        assertFalse(p.getOptionalGeneratorMinCost().isPresent());
         assertFalse(p.getOptionalContingenciesProbability().isPresent());
         assertFalse(p.getOptionalMaxSolverTime().isPresent());
         assertFalse(p.getOptionalLossNbRelaunch().isPresent());
@@ -75,6 +76,7 @@ class MetrixParametersTest {
             .setLossOfLoadCost(9000f)
             .setCurativeLossOfLoadCost(1000f)
             .setCurativeLossOfGenerationCost(11000f)
+            .setGeneratorMinCost(1.5f)
             .setContingenciesProbability(0.001f)
             .setMaxSolverTime(-1)
             .setLossNbRelaunch(2)
@@ -106,6 +108,7 @@ class MetrixParametersTest {
         assertEquals(0.0001f, p.getOptionalPstCostPenality().get(), 0f);
         assertEquals(0.01f, p.getOptionalHvdcCostPenality().get(), 0f);
         assertEquals(9000f, p.getOptionalLossOfLoadCost().get(), 0f);
+        assertEquals(1.5f, p.getOptionalGeneratorMinCost().get(), 0f);
         assertEquals(0.001f, p.getOptionalContingenciesProbability().get(), 0f);
         assertEquals(-1, p.getOptionalMaxSolverTime().getAsInt());
         assertEquals(3, p.getOptionalNbMaxIteration().getAsInt());
@@ -173,6 +176,9 @@ class MetrixParametersTest {
 
         assertEquals(p, p.setLossOfLoadCost(8000f));
         assertEquals(8000f, p.getOptionalLossOfLoadCost().get(), 0f);
+
+        assertEquals(p, p.setGeneratorMinCost(-2.5f));
+        assertEquals(-2.5f, p.getOptionalGeneratorMinCost().get(), 0f);
 
         assertEquals(p, p.setContingenciesProbability(0.003f));
         assertEquals(0.003f, p.getOptionalContingenciesProbability().get(), 0f);
