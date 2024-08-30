@@ -123,7 +123,8 @@ class TimeSeriesMappingConfigTableLoaderTest {
                 disconnectedIdsTsName + "_id2", new double[]{1, 0, 0, 1});
 
         // Compute disconnected equipment time series
-        List<DoubleTimeSeries> actualDoubleTimeSeries = computeDisconnectedEquipmentTimeSeries(tsStore, 1, index, disconnectedIdsTsName, Set.of("id1", "id2"));
+        StringTimeSeries plannedOutagesTimeSeries = tsStore.getStringTimeSeries(disconnectedIdsTsName, 1).orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name"));
+        List<DoubleTimeSeries> actualDoubleTimeSeries = computeDisconnectedEquipmentTimeSeries(disconnectedIdsTsName, plannedOutagesTimeSeries.toArray(), Set.of("id1", "id2"), index);
         assertThat(actualDoubleTimeSeries).hasSize(2);
         actualDoubleTimeSeries.forEach(ts -> assertTrue(expectedResults.containsKey(ts.getMetadata().getName())));
         actualDoubleTimeSeries.forEach(ts -> assertArrayEquals(expectedResults.get(ts.getMetadata().getName()), ts.toArray()));
