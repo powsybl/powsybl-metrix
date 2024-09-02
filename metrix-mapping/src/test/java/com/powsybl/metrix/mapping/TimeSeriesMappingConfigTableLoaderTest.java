@@ -75,9 +75,9 @@ class TimeSeriesMappingConfigTableLoaderTest {
     private static TimeSeriesMappingConfig getTimeSeriesMappingConfig() {
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();
         mappingConfig.setMappedTimeSeriesNames(Set.of("mappedTs"));
-        mappingConfig.setTimeSeriesToEquipment(Map.of("equipmentTs", Set.of(new MappingKey(EquipmentVariable.p0, "id"))));
+        mappingConfig.setTimeSeriesToEquipment(Map.of("equipmentTs", Set.of(new MappingKey(EquipmentVariable.P_0, "id"))));
         mappingConfig.setTimeSeriesToPlannedOutagesMapping(Map.of("disconnected_ids", Set.of("id1", "id2")));
-        mappingConfig.setDistributionKeys(Map.of(new MappingKey(EquipmentVariable.targetP, "id"), new TimeSeriesDistributionKey("distributionKeyTs")));
+        mappingConfig.setDistributionKeys(Map.of(new MappingKey(EquipmentVariable.TARGET_P, "id"), new TimeSeriesDistributionKey("distributionKeyTs")));
         mappingConfig.setTimeSeriesNodes(Map.of("calculatedTs", new TimeSeriesNameNodeCalc("ts1")));
         return mappingConfig;
     }
