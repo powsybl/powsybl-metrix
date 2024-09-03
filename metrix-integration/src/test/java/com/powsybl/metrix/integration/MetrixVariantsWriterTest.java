@@ -240,8 +240,8 @@ class MetrixVariantsWriterTest {
                         reader.onEquipmentVariant(g1, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
 
                         // Load without LoadDetail
-                        reader.onEquipmentVariant(l1, EquipmentVariable.P_0, 10f + i);
-                        reader.onEquipmentVariant(l2, EquipmentVariable.P_0, 16f + i);                   // CONELE = 16 + i
+                        reader.onEquipmentVariant(l1, EquipmentVariable.P0, 10f + i);
+                        reader.onEquipmentVariant(l2, EquipmentVariable.P0, 16f + i);                   // CONELE = 16 + i
                         reader.onEquipmentVariant(l3, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);      // CONELE = 6 + i
                         reader.onEquipmentVariant(l4, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);   // CONELE = 8 + i
                         reader.onEquipmentVariant(l5, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);
@@ -250,15 +250,15 @@ class MetrixVariantsWriterTest {
                         reader.onEquipmentVariant(l6, EquipmentVariable.VARIABLE_ACTIVE_POWER, 10f - i);  // not present cause identical to base case
 
                         // Load with LoadDetail
-                        reader.onEquipmentVariant(l7, EquipmentVariable.P_0, 17f + i);                   // CONELE = 17 + i
+                        reader.onEquipmentVariant(l7, EquipmentVariable.P0, 17f + i);                   // CONELE = 17 + i
                         reader.onEquipmentVariant(l8, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);      // CONELE = 6 + i + 12
                         reader.onEquipmentVariant(l9, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);   // CONELE = 3 + 8 + i
                         reader.onEquipmentVariant(l10, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);
                         reader.onEquipmentVariant(l10, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);  // CONELE = 14 + 2*i
 
                         // Loads on a same Bus
-                        reader.onEquipmentVariant(l11, EquipmentVariable.P_0, 10f + i);
-                        reader.onEquipmentVariant(l12, EquipmentVariable.P_0, 20f - i);                  // not present cause identical to base case
+                        reader.onEquipmentVariant(l11, EquipmentVariable.P0, 10f + i);
+                        reader.onEquipmentVariant(l12, EquipmentVariable.P0, 20f - i);                  // not present cause identical to base case
 
                         // Hvdc
                         reader.onEquipmentVariant(hl1, EquipmentVariable.ACTIVE_POWER_SETPOINT, 200.0001f + i);
@@ -272,12 +272,12 @@ class MetrixVariantsWriterTest {
 
                         // Metrix
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N, 1001f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_1, 1011f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N1, 1011f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_NK, 1021f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM, 1031f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_NK, 1041f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_END_OR, 2001f + i);
-                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_1_END_OR, 2011f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N1_END_OR, 2011f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_NK_END_OR, 2021f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_END_OR, 2031f + i);
                         reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_NK_END_OR, 2041f + i);

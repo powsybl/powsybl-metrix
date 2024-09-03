@@ -89,9 +89,9 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
             if (identifiable instanceof Generator) {
                 return variable == EquipmentVariable.TARGET_P;
             } else if (identifiable instanceof Load) {
-                return variable == EquipmentVariable.P_0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
+                return variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
             } else if (identifiable instanceof DanglingLine) {
-                return variable == EquipmentVariable.P_0;
+                return variable == EquipmentVariable.P0;
             }
         }
         return false;
@@ -112,7 +112,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     private double getLoad(MappingVariable variable, Load load) {
         // in case of scaling down error on fixedActivePower + variableActivePower, don't count p0 twice
-        if (variable == EquipmentVariable.P_0) {
+        if (variable == EquipmentVariable.P0) {
             return -load.getP0();
         } else if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             LoadDetail loadDetail = load.getExtension(LoadDetail.class);

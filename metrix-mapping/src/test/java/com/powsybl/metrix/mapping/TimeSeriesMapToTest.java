@@ -135,7 +135,7 @@ class TimeSeriesMapToTest {
         mapper.mapToNetwork(store, ImmutableList.of(observer));
 
         assertEquals(10, results.size());
-        assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.P_0, "FSSV.O11_L"),
+        assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
                         new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
                         new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
                         new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FTDPRA1  1"),
@@ -429,7 +429,7 @@ class TimeSeriesMapToTest {
         assertEquals(1, results.get("FVALDI11_G").size());
         assertTrue(results.get("FVALDI11_G").containsAll(ImmutableList.of(EquipmentVariable.VOLTAGE_REGULATOR_ON)));
         assertEquals(2, results.get("FSSV.O11_L").size());
-        assertTrue(results.get("FSSV.O11_L").containsAll(ImmutableList.of(EquipmentVariable.P_0, EquipmentVariable.Q_0)));
+        assertTrue(results.get("FSSV.O11_L").containsAll(ImmutableList.of(EquipmentVariable.P0, EquipmentVariable.Q0)));
         assertEquals(2, results.get("FVALDI11_L").size());
         assertTrue(results.get("FVALDI11_L").containsAll(ImmutableList.of(EquipmentVariable.FIXED_ACTIVE_POWER, EquipmentVariable.FIXED_REACTIVE_POWER)));
         assertEquals(2, results.get("FVALDI11_L").size());
@@ -442,7 +442,7 @@ class TimeSeriesMapToTest {
         assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(
                 ImmutableList.of(
                         // transformer variables
-                        EquipmentVariable.RATED_U_1, EquipmentVariable.RATED_U_2, EquipmentVariable.DISCONNECTED,
+                        EquipmentVariable.RATED_U1, EquipmentVariable.RATED_U2, EquipmentVariable.DISCONNECTED,
                         // phaseTapChanger variables
                         EquipmentVariable.PHASE_TAP_POSITION, EquipmentVariable.REGULATION_MODE, EquipmentVariable.PHASE_REGULATING, EquipmentVariable.TARGET_DEADBAND,
                         // ratioTapChanger variables

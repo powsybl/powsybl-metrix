@@ -22,16 +22,16 @@ class EquipmentTimeSeriesTest {
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(MappingTestNetwork.create());
 
-        mappingConfig.addEquipmentTimeSeries("ts1", EquipmentVariable.P_0, "generator1");
-        mappingConfig.addEquipmentTimeSeries("ts2", EquipmentVariable.P_0, "generator1");
-        mappingConfig.addEquipmentTimeSeries("ts1", EquipmentVariable.P_0, "generator2");
+        mappingConfig.addEquipmentTimeSeries("ts1", EquipmentVariable.P0, "generator1");
+        mappingConfig.addEquipmentTimeSeries("ts2", EquipmentVariable.P0, "generator1");
+        mappingConfig.addEquipmentTimeSeries("ts1", EquipmentVariable.P0, "generator2");
         mappingConfig.addEquipmentTimeSeries("ts1", EquipmentVariable.TARGET_P, "generator1");
         mappingConfig.addEquipmentTimeSeries("ts1", EquipmentVariable.TARGET_P, "generator2");
         mappingConfig.addEquipmentTimeSeries("ts2", EquipmentVariable.TARGET_P, "generator2");
 
         // assertions
-        MappingKey p0Generator1 = new MappingKey(EquipmentVariable.P_0, "generator1");
-        MappingKey p0Generator2 = new MappingKey(EquipmentVariable.P_0, "generator2");
+        MappingKey p0Generator1 = new MappingKey(EquipmentVariable.P0, "generator1");
+        MappingKey p0Generator2 = new MappingKey(EquipmentVariable.P0, "generator2");
         MappingKey targetPGenerator1 = new MappingKey(EquipmentVariable.TARGET_P, "generator1");
         MappingKey targetPGenerator2 = new MappingKey(EquipmentVariable.TARGET_P, "generator2");
         assertEquals(2, mappingConfig.getTimeSeriesToEquipment().get("ts1").size());

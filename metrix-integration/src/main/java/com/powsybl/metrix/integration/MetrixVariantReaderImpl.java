@@ -131,7 +131,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         loadDetails.forEach((load, loadDetail) -> {
             double activePower = loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower();
             if (isDifferent(activePower, load.getP0())) {
-                addValue(load.getId(), EquipmentVariable.P_0, activePower, loadIds, loadValues, MappableEquipmentType.LOAD);
+                addValue(load.getId(), EquipmentVariable.P0, activePower, loadIds, loadValues, MappableEquipmentType.LOAD);
             }
         });
     }
@@ -309,7 +309,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     void onLoadVariant(Load load, EquipmentVariable variable, double newActivePower) {
         if (variable != EquipmentVariable.FIXED_ACTIVE_POWER && variable != EquipmentVariable.VARIABLE_ACTIVE_POWER) {
             if (isDifferent(newActivePower, load.getP0())) {
-                addValue(load.getId(), EquipmentVariable.P_0, newActivePower, loadIds, loadValues, MappableEquipmentType.LOAD);
+                addValue(load.getId(), EquipmentVariable.P0, newActivePower, loadIds, loadValues, MappableEquipmentType.LOAD);
             }
         } else {
             LoadDetail loadDetail = loadDetails.computeIfAbsent(load, this::getLoadDetail);

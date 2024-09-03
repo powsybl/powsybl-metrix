@@ -314,7 +314,7 @@ public class MetrixNetwork {
         }
     }
 
-    private void checkTwoWindingsTransformer(TwoWindingsTransformer twt, AtomicInteger nbNok, AtomicInteger nbPtcNok) {
+    private void addTwoWindingsTransformer(TwoWindingsTransformer twt, AtomicInteger nbNok, AtomicInteger nbPtcNok) {
         Terminal t1 = twt.getTerminal1();
         Terminal t2 = twt.getTerminal2();
         Bus b1 = t1.getBusBreakerView().getBus();
@@ -339,7 +339,7 @@ public class MetrixNetwork {
     private void createTwoWindingsTransformersList() {
         AtomicInteger nbNok = new AtomicInteger(0);
         AtomicInteger nbPtcNok = new AtomicInteger(0);
-        network.getTwoWindingsTransformers().forEach(twt -> checkTwoWindingsTransformer(twt, nbNok, nbPtcNok));
+        network.getTwoWindingsTransformers().forEach(twt -> addTwoWindingsTransformer(twt, nbNok, nbPtcNok));
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug(String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get()));
             LOGGER.debug(String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get()));

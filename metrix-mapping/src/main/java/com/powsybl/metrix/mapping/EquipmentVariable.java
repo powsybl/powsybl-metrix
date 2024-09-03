@@ -25,8 +25,8 @@ public enum EquipmentVariable implements MappingVariable {
     TARGET_Q("targetQ"),
     MIN_P("minP"),
     MAX_P("maxP"),
-    P_0("p0"),
-    Q_0("q0"),
+    P0("p0"),
+    Q0("q0"),
     FIXED_ACTIVE_POWER("fixedActivePower"),
     VARIABLE_ACTIVE_POWER("variableActivePower"),
     FIXED_REACTIVE_POWER("fixedReactivePower"),
@@ -39,8 +39,8 @@ public enum EquipmentVariable implements MappingVariable {
     TARGET_V("targetV"),
     NOMINAL_V("nominalV"),
     REGULATION_MODE("regulationMode"),
-    RATED_U_1("ratedU1"),
-    RATED_U_2("ratedU2"),
+    RATED_U1("ratedU1"),
+    RATED_U2("ratedU2"),
     LOAD_TAP_CHANGING_CAPABILITIES("loadTapChangingCapabilities"),
     PHASE_REGULATING("phaseRegulating"),
     RATIO_REGULATING("ratioRegulating"),
@@ -99,8 +99,8 @@ public enum EquipmentVariable implements MappingVariable {
                                                                                  EquipmentVariable.MIN_P,
                                                                                  EquipmentVariable.MAX_P,
                                                                                  EquipmentVariable.NOMINAL_V);
-    private static final Set<EquipmentVariable> LOAD_VARIABLES = EnumSet.of(EquipmentVariable.P_0,
-                                                                            EquipmentVariable.Q_0,
+    private static final Set<EquipmentVariable> LOAD_VARIABLES = EnumSet.of(EquipmentVariable.P0,
+                                                                            EquipmentVariable.Q0,
                                                                             EquipmentVariable.FIXED_ACTIVE_POWER,
                                                                             EquipmentVariable.VARIABLE_ACTIVE_POWER,
                                                                             EquipmentVariable.FIXED_REACTIVE_POWER,
@@ -109,8 +109,8 @@ public enum EquipmentVariable implements MappingVariable {
                                                                                          EquipmentVariable.PHASE_REGULATING,
                                                                                          EquipmentVariable.REGULATION_MODE,
                                                                                          EquipmentVariable.TARGET_DEADBAND);
-    private static final Set<EquipmentVariable> TWO_WINDINGS_TRANSFORMER_VARIABLES = EnumSet.of(EquipmentVariable.RATED_U_1,
-                                                                                                EquipmentVariable.RATED_U_2,
+    private static final Set<EquipmentVariable> TWO_WINDINGS_TRANSFORMER_VARIABLES = EnumSet.of(EquipmentVariable.RATED_U1,
+                                                                                                EquipmentVariable.RATED_U2,
                                                                                                 EquipmentVariable.DISCONNECTED);
     private static final Set<EquipmentVariable> RATIO_TAP_CHANGER_VARIABLES = EnumSet.of(EquipmentVariable.RATIO_TAP_POSITION,
                                                                                          EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES,
@@ -142,7 +142,7 @@ public enum EquipmentVariable implements MappingVariable {
         return switch (equipmentType) {
             case GENERATOR -> EquipmentVariable.TARGET_P;
             case HVDC_LINE -> EquipmentVariable.ACTIVE_POWER_SETPOINT;
-            case LOAD, BOUNDARY_LINE -> EquipmentVariable.P_0;
+            case LOAD, BOUNDARY_LINE -> EquipmentVariable.P0;
             case SWITCH -> EquipmentVariable.OPEN;
             case PHASE_TAP_CHANGER -> EquipmentVariable.PHASE_TAP_POSITION;
             case RATIO_TAP_CHANGER -> EquipmentVariable.RATIO_TAP_POSITION;
@@ -167,7 +167,7 @@ public enum EquipmentVariable implements MappingVariable {
             case GENERATOR -> GENERATOR_VARIABLES.contains(equipmentVariable);
             case HVDC_LINE -> HVDC_LINE_VARIABLES.contains(equipmentVariable);
             case LOAD -> LOAD_VARIABLES.contains(equipmentVariable);
-            case BOUNDARY_LINE -> equipmentVariable == EquipmentVariable.P_0;
+            case BOUNDARY_LINE -> equipmentVariable == EquipmentVariable.P0;
             case SWITCH -> equipmentVariable == EquipmentVariable.OPEN;
             case PHASE_TAP_CHANGER -> PHASE_TAP_CHANGER_VARIABLES.contains(equipmentVariable);
             case TRANSFORMER -> TWO_WINDINGS_TRANSFORMER_VARIABLES.contains(equipmentVariable);

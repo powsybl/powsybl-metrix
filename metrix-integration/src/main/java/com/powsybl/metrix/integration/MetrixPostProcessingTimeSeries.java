@@ -137,7 +137,7 @@ public final class MetrixPostProcessingTimeSeries {
 
         for (String branch : metrixDslData.getBranchMonitoringNkList()) {
             MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdNk(branch);
-            MetrixVariable thresholdEndOr = threshold == MetrixVariable.THRESHOLD_N_1 ? MetrixVariable.THRESHOLD_N_1_END_OR : MetrixVariable.ANALYSIS_THRESHOLD_NK_END_OR;
+            MetrixVariable thresholdEndOr = threshold == MetrixVariable.THRESHOLD_N1 ? MetrixVariable.THRESHOLD_N1_END_OR : MetrixVariable.ANALYSIS_THRESHOLD_NK_END_OR;
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
                 createPostprocessingTimeSeries(branch, threshold, thresholdEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName, OUTAGE_PREFIX_CONTAINER);
             }

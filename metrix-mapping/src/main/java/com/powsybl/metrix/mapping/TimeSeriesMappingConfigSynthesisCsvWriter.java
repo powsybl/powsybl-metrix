@@ -188,7 +188,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             writeVariableSynthesis(writer, EquipmentVariable.TARGET_P);
             writeVariableSynthesis(writer, EquipmentVariable.MIN_P);
             writeVariableSynthesis(writer, EquipmentVariable.MAX_P);
-            writeVariableSynthesis(writer, EquipmentVariable.P_0);
+            writeVariableSynthesis(writer, EquipmentVariable.P0);
             writeVariableSynthesis(writer, EquipmentVariable.FIXED_ACTIVE_POWER);
             writeVariableSynthesis(writer, EquipmentVariable.VARIABLE_ACTIVE_POWER);
             writeVariableSynthesis(writer, EquipmentVariable.ACTIVE_POWER_SETPOINT);
@@ -257,7 +257,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             tableFormatter.writeCell(MAPPED)
                     .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.TARGET_P))
                     .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping()))
-                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P_0))
+                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P0))
                     .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.ACTIVE_POWER_SETPOINT))
                     .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.PHASE_TAP_POSITION))
                     .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.OPEN))
@@ -331,10 +331,10 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
                     .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.MAX_P))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(EquipmentVariable.P_0.getVariableName())
+                    .writeCell(EquipmentVariable.P0.getVariableName())
                     .writeCell(getNotSignificantValue())
-                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.P_0))
-                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P_0))
+                    .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.P0))
+                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P0))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())

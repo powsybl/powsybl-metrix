@@ -43,11 +43,11 @@ public class TimeSeriesMappingConfigChecker {
         for (Map.Entry<String, Set<MappingVariable>> e : mappedVariablesPerLoad.entrySet()) {
             String id = e.getKey();
             Set<MappingVariable> variables = e.getValue();
-            if (variables.contains(EquipmentVariable.P_0)
+            if (variables.contains(EquipmentVariable.P0)
                     && (variables.contains(EquipmentVariable.FIXED_ACTIVE_POWER) || variables.contains(EquipmentVariable.VARIABLE_ACTIVE_POWER))) {
                 throw new TimeSeriesMappingException("Load '" + id + "' is mapped on p0 and on one of the detailed variables (fixedActivePower/variableActivePower)");
             }
-            if (variables.contains(EquipmentVariable.Q_0)
+            if (variables.contains(EquipmentVariable.Q0)
                     && (variables.contains(EquipmentVariable.FIXED_REACTIVE_POWER) || variables.contains(EquipmentVariable.VARIABLE_REACTIVE_POWER))) {
                 throw new TimeSeriesMappingException("Load '" + id + "' is mapped on q0 and on one of the detailed variables (fixedReactivePower/variableReactivePower)");
             }

@@ -42,7 +42,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             EquipmentVariable.MIN_P,
             EquipmentVariable.MAX_P,
             EquipmentVariable.ACTIVE_POWER_SETPOINT,
-            EquipmentVariable.P_0,
+            EquipmentVariable.P0,
             EquipmentVariable.FIXED_ACTIVE_POWER,
             EquipmentVariable.VARIABLE_ACTIVE_POWER,
             EquipmentVariable.PHASE_TAP_POSITION,

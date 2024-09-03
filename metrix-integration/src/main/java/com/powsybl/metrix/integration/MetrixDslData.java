@@ -404,7 +404,7 @@ public class MetrixDslData {
 
     public void addBranchMonitoringNk(String id) {
         Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.THRESHOLD_N_1);
+        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.THRESHOLD_N1);
         branchMonitoringListNk.put(id, MetrixInputData.MonitoringType.MONITORING);
     }
 

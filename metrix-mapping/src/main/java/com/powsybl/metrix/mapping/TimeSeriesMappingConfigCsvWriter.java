@@ -135,7 +135,7 @@ public class TimeSeriesMappingConfigCsvWriter {
             if (values.size() > 1) {
                 writer.write(MULTI_MAPPED);
             } else if (variable == EquipmentVariable.TARGET_P ||
-                       variable == EquipmentVariable.P_0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER ||
+                       variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER ||
                        variable == EquipmentVariable.ACTIVE_POWER_SETPOINT ||
                        variable == EquipmentVariable.PHASE_TAP_POSITION ||
                        variable == EquipmentVariable.OPEN) {
@@ -179,9 +179,9 @@ public class TimeSeriesMappingConfigCsvWriter {
             getPower = id -> (double) TimeSeriesMapper.getMin(network.getIdentifiable(id));
         } else if (variable == EquipmentVariable.MAX_P) {
             getPower = id -> (double) TimeSeriesMapper.getMax(network.getIdentifiable(id));
-        } else if (variable == EquipmentVariable.P_0) {
+        } else if (variable == EquipmentVariable.P0) {
             getPower = id -> network.getLoad(id).getP0();
-        } else if (variable == EquipmentVariable.Q_0) {
+        } else if (variable == EquipmentVariable.Q0) {
             getPower = id -> network.getLoad(id).getQ0();
         } else if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             getPower = id -> (double) getLoadDetail(network.getLoad(id)).getFixedActivePower();

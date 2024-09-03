@@ -87,8 +87,8 @@ public class MappingKeyNetworkValue {
     private double getLoadValue(Load load, EquipmentVariable variable) {
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         return switch (variable) {
-            case P_0 -> load.getP0();
-            case Q_0 -> load.getQ0();
+            case P0 -> load.getP0();
+            case Q0 -> load.getQ0();
             case FIXED_ACTIVE_POWER -> loadDetail != null ? loadDetail.getFixedActivePower() : 0;
             case VARIABLE_ACTIVE_POWER -> loadDetail != null ? loadDetail.getVariableActivePower() : load.getP0();
             case FIXED_REACTIVE_POWER -> loadDetail != null ? loadDetail.getFixedReactivePower() : 0;
@@ -126,8 +126,8 @@ public class MappingKeyNetworkValue {
 
     private double getTwoWindingsTransformerValue(TwoWindingsTransformer twoWindingsTransformer, EquipmentVariable variable) {
         return switch (variable) {
-            case RATED_U_1 -> twoWindingsTransformer.getRatedU1();
-            case RATED_U_2 -> twoWindingsTransformer.getRatedU2();
+            case RATED_U1 -> twoWindingsTransformer.getRatedU1();
+            case RATED_U2 -> twoWindingsTransformer.getRatedU2();
             case DISCONNECTED ->
                 !twoWindingsTransformer.getTerminal1().isConnected() || !twoWindingsTransformer.getTerminal2().isConnected() ? ON_VALUE : OFF_VALUE;
             // mapToPhaseTapChangers variables

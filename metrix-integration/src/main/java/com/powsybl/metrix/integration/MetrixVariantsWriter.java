@@ -51,12 +51,12 @@ public class MetrixVariantsWriter {
             case ON_GRID_COST_DOWN -> "COUBAR";
             case ON_GRID_COST_UP -> "COUHAR";
             case THRESHOLD_N -> "QATI00MN";
-            case THRESHOLD_N_1 -> "QATI5MNS";
+            case THRESHOLD_N1 -> "QATI5MNS";
             case THRESHOLD_NK -> "QATI20MN";
             case THRESHOLD_ITAM -> "QATITAMN";
             case THRESHOLD_ITAM_NK -> "QATITAMK";
             case THRESHOLD_N_END_OR -> "QATI00MN2";
-            case THRESHOLD_N_1_END_OR -> "QATI5MNS2";
+            case THRESHOLD_N1_END_OR -> "QATI5MNS2";
             case THRESHOLD_NK_END_OR -> "QATI20MN2";
             case THRESHOLD_ITAM_END_OR -> "QATITAMN2";
             case THRESHOLD_ITAM_NK_END_OR -> "QATITAMK2";
@@ -85,7 +85,7 @@ public class MetrixVariantsWriter {
     }
 
     private static String getLoadKey(EquipmentVariable variable) {
-        if (variable == EquipmentVariable.P_0) {
+        if (variable == EquipmentVariable.P0) {
             return "CONELE";
         }
         return null;

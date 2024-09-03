@@ -132,13 +132,13 @@ class MetrixDslDataLoaderTest {
         Iterator<MappingKey> mappingKeyIterator = tsConfig.getEquipmentIds("tsN").iterator();
         MappingKey mappingKey = mappingKeyIterator.next();
         assertEquals("FS.BIS1  FVALDI1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N_1, mappingKey.getMappingVariable());
+        assertEquals(MetrixVariable.THRESHOLD_N1, mappingKey.getMappingVariable());
         mappingKey = mappingKeyIterator.next();
         assertEquals("FP.AND1  FVERGE1  2", mappingKey.getId());
         assertEquals(MetrixVariable.THRESHOLD_N, mappingKey.getMappingVariable());
         mappingKey = mappingKeyIterator.next();
         assertEquals("FP.AND1  FVERGE1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N_1, mappingKey.getMappingVariable());
+        assertEquals(MetrixVariable.THRESHOLD_N1, mappingKey.getMappingVariable());
         mappingKey = mappingKeyIterator.next();
         assertEquals("FVALDI1  FTDPRA1  2", mappingKey.getId());
         assertEquals(MetrixVariable.THRESHOLD_N, mappingKey.getMappingVariable());
@@ -686,7 +686,7 @@ class MetrixDslDataLoaderTest {
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
         MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
 
-        assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.THRESHOLD_N_1, "FVALDI1  FTDPRA1  1"),
+        assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.THRESHOLD_N1, "FVALDI1  FTDPRA1  1"),
             new MappingKey(MetrixVariable.OFF_GRID_COST_DOWN, "FSSV.O11_G"),
             new MappingKey(MetrixVariable.OFF_GRID_COST_UP, "FSSV.O11_G")), mappingConfig.getTimeSeriesToEquipment().get("ts1"));
         assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.THRESHOLD_N, "FVALDI1  FTDPRA1  1")), mappingConfig.getTimeSeriesToEquipment().get("ts2"));
@@ -919,7 +919,7 @@ class MetrixDslDataLoaderTest {
 
         mappingKey = tsConfig.getEquipmentIds("tsN_1EndOr").iterator().next();
         assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N_1_END_OR, mappingKey.getMappingVariable());
+        assertEquals(MetrixVariable.THRESHOLD_N1_END_OR, mappingKey.getMappingVariable());
 
         mappingKey = tsConfig.getEquipmentIds("tsNkEndOr").iterator().next();
         assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());

@@ -207,15 +207,15 @@ class TimeSeriesDslLoaderTest {
         assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.TARGET_P, "G3")));
 
         // 1 load has been mapped to time serie 'load1_ts': LD1
-        MappingKey keyLoad1Ts = new MappingKey(EquipmentVariable.P_0, "load1_ts");
+        MappingKey keyLoad1Ts = new MappingKey(EquipmentVariable.P0, "load1_ts");
         assertEquals(1, config.getTimeSeriesToLoadsMapping().get(keyLoad1Ts).size());
         assertEquals("LD1", config.getTimeSeriesToLoadsMapping().get(keyLoad1Ts).iterator().next());
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.P_0, "LD1")));
+        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.P0, "LD1")));
 
         // 2 loads have been mapped to time serie 'load2_ts': LD2 and LD3
-        MappingKey keyLoad2Ts = new MappingKey(EquipmentVariable.P_0, "load2_ts");
-        MappingKey keyLd2 = new MappingKey(EquipmentVariable.P_0, "LD2");
-        MappingKey keyLd3 = new MappingKey(EquipmentVariable.P_0, "LD3");
+        MappingKey keyLoad2Ts = new MappingKey(EquipmentVariable.P0, "load2_ts");
+        MappingKey keyLd2 = new MappingKey(EquipmentVariable.P0, "LD2");
+        MappingKey keyLd3 = new MappingKey(EquipmentVariable.P0, "LD3");
         assertEquals(2, config.getTimeSeriesToLoadsMapping().get(keyLoad2Ts).size());
         assertEquals(Sets.newHashSet("LD2", "LD3"), Sets.newHashSet(config.getTimeSeriesToLoadsMapping().get(keyLoad2Ts)));
         // by default distribution key is 1

@@ -44,8 +44,8 @@ class MappingKeyNetworkValueTest {
     @Test
     void getLoadValueTest() {
         final String id = "FSSV.O11_L";
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.P_0, id)), 480);
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.Q_0, id)), 4.8000001907348633);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.P0, id)), 480);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.Q0, id)), 4.8000001907348633);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, id)), 0);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, id)), 480);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.FIXED_REACTIVE_POWER, id)), 0);
@@ -55,8 +55,8 @@ class MappingKeyNetworkValueTest {
     @Test
     void getLoadDetailValueTest() {
         final String id = "FVALDI11_L";
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.P_0, id)), 470);
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.Q_0, id)), 4.8000001907348633);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.P0, id)), 470);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.Q0, id)), 4.8000001907348633);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, id)), 400);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, id)), 70);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.FIXED_REACTIVE_POWER, id)), 0);
@@ -81,8 +81,8 @@ class MappingKeyNetworkValueTest {
     @Test
     void getTwoWindingsTransformerValueTest() {
         final String id = "FP.AND1  FTDPRA1  1";
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.RATED_U_1, id)), 380);
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.RATED_U_2, id)), 380);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.RATED_U1, id)), 380);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.RATED_U2, id)), 380);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.DISCONNECTED, id)), 0);
         // phaseTapChanger
         checkValue(key.getValue(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, id)), 16);
@@ -125,14 +125,14 @@ class MappingKeyNetworkValueTest {
 
     @Test
     void getWrongEquipmentTypeTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.P_0, "FSSV.O1_1")))
+        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.P0, "FSSV.O1_1")))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown equipment type com.powsybl.iidm.network.impl.BusbarSectionImpl");
     }
 
     @Test
     void getWrongVariableGeneratorTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.P_0, "FSSV.O11_G")))
+        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.P0, "FSSV.O11_G")))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown variable p0 for generator FSSV.O11_G");
     }

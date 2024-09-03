@@ -30,33 +30,33 @@ class TimeSeriesMappingConfigToJsonTest {
 
     private final Map<MappingKey, List<String>> timeSeriesToGenerators = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "tsG"), ImmutableList.of("g1"));
     private final Map<MappingKey, List<String>> timeSeriesToLoads = ImmutableMap.of(new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "tsL"), ImmutableList.of("l1", "l2"));
-    private final Map<MappingKey, List<String>> timeSeriesToDanglingLines = ImmutableMap.of(new MappingKey(EquipmentVariable.P_0, "tsDL"), ImmutableList.of("dl1"));
+    private final Map<MappingKey, List<String>> timeSeriesToDanglingLines = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "tsDL"), ImmutableList.of("dl1"));
     private final Map<MappingKey, List<String>> timeSeriesToHvdcLines = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "tsH"), ImmutableList.of("h1", "h2"));
     private final Map<MappingKey, List<String>> timeSeriesToPhaseTapChangers = ImmutableMap.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "tsP"), ImmutableList.of("p1", "p2", "p3"));
     private final Map<MappingKey, List<String>> timeSeriesToBreakers = ImmutableMap.of(new MappingKey(EquipmentVariable.OPEN, "tsB"), ImmutableList.of("b1"));
-    private final Map<MappingKey, List<String>> timeSeriesToTransformers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U_1, "tsT"), ImmutableList.of("t1", "t2"));
+    private final Map<MappingKey, List<String>> timeSeriesToTransformers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U1, "tsT"), ImmutableList.of("t1", "t2"));
     private final Map<MappingKey, List<String>> timeSeriesToRatioTapChangers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tsTC"), ImmutableList.of("tc1", "tc2"));
     private final Map<MappingKey, List<String>> timeSeriesToLccConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "tsLcc"), ImmutableList.of("lcc1", "lcc2"));
     private final Map<MappingKey, List<String>> timeSeriesToVscConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "tsVsc"), ImmutableList.of("vsc1", "vsc2"));
 
     private final Map<MappingKey, List<String>> generatorToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), ImmutableList.of("tsG"));
     private final Map<MappingKey, List<String>> loadToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), ImmutableList.of("tsL1", "tsL2"));
-    private final Map<MappingKey, List<String>> danglingLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.P_0, "dl1"), ImmutableList.of("tsDL"));
+    private final Map<MappingKey, List<String>> danglingLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "dl1"), ImmutableList.of("tsDL"));
     private final Map<MappingKey, List<String>> hvdcLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "h1"), ImmutableList.of("tsH"));
     private final Map<MappingKey, List<String>> phaseTapChangerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "p1"), ImmutableList.of("tsP"));
     private final Map<MappingKey, List<String>> breakerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.OPEN, "b1"), ImmutableList.of("tsB"));
-    private final Map<MappingKey, List<String>> transformerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U_1, "h1"), ImmutableList.of("tsT"));
+    private final Map<MappingKey, List<String>> transformerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U1, "h1"), ImmutableList.of("tsT"));
     private final Map<MappingKey, List<String>> ratioTapChangerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tc1"), ImmutableList.of("tsTC"));
     private final Map<MappingKey, List<String>> lccConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "lcc1"), ImmutableList.of("tsLcc"));
     private final Map<MappingKey, List<String>> vscConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "vsc1"), ImmutableList.of("tsVsc"));
 
     private final Set<MappingKey> generatorTs = ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), new MappingKey(EquipmentVariable.MIN_P, "g2"));
     private final Set<MappingKey> loadTs = ImmutableSet.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "l2"));
-    private final Set<MappingKey> danglingLineTs = ImmutableSet.of(new MappingKey(EquipmentVariable.P_0, "dl"));
+    private final Set<MappingKey> danglingLineTs = ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "dl"));
     private final Set<MappingKey> hvdcLineTs = ImmutableSet.of(new MappingKey(EquipmentVariable.MIN_P, "h1"), new MappingKey(EquipmentVariable.MAX_P, "h2"));
     private final Set<MappingKey> phaseTapChangerTs = ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "p"));
     private final Set<MappingKey> breakerTs = ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "b"));
-    private final Set<MappingKey> transformerTs = ImmutableSet.of(new MappingKey(EquipmentVariable.RATED_U_1, "t1"), new MappingKey(EquipmentVariable.RATED_U_2, "t2"));
+    private final Set<MappingKey> transformerTs = ImmutableSet.of(new MappingKey(EquipmentVariable.RATED_U1, "t1"), new MappingKey(EquipmentVariable.RATED_U2, "t2"));
     private final Set<MappingKey> ratioTapChangerTs = ImmutableSet.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tc1"), new MappingKey(EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, "tc2"));
     private final Set<MappingKey> lccConverterStationTs = ImmutableSet.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "lcc1"));
     private final Set<MappingKey> vscConverterStationTs = ImmutableSet.of(new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, "vsc1"), new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "vsc2"));

@@ -154,7 +154,7 @@ class BranchMonitoringData {
 
         // N-1 monitoring
         if (branchSpec.branchRatingsOnContingency) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingency, MetrixVariable.THRESHOLD_N_1, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingency, MetrixVariable.THRESHOLD_N1, id)
             data.addBranchMonitoringNk(id)
             // Before curative monitoring
             if (branchSpec.branchRatingsBeforeCurative) {
@@ -168,7 +168,7 @@ class BranchMonitoringData {
             data.addBranchResultNk(id)
         }
         if (branchSpec.branchRatingsOnContingencyEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingencyEndOr, MetrixVariable.THRESHOLD_N_1_END_OR, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingencyEndOr, MetrixVariable.THRESHOLD_N1_END_OR, id)
         }
         if (branchSpec.branchRatingsBeforeCurativeEndOr) {
             configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeEndOr, MetrixVariable.THRESHOLD_ITAM_END_OR, id)

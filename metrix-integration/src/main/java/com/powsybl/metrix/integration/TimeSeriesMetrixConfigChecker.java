@@ -48,7 +48,7 @@ public class TimeSeriesMetrixConfigChecker {
             checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, MetrixVariable.ANALYSIS_THRESHOLD_N, MetrixVariable.ANALYSIS_THRESHOLD_N_END_OR, id);
         });
         equipmentIds.forEach(id -> {
-            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, MetrixVariable.THRESHOLD_N_1, MetrixVariable.THRESHOLD_N_1_END_OR, id);
+            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, MetrixVariable.THRESHOLD_N1, MetrixVariable.THRESHOLD_N1_END_OR, id);
             checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, MetrixVariable.THRESHOLD_ITAM, MetrixVariable.THRESHOLD_ITAM_END_OR, id);
             checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, MetrixVariable.ANALYSIS_THRESHOLD_NK, MetrixVariable.ANALYSIS_THRESHOLD_NK_END_OR, id);
             checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, MetrixVariable.THRESHOLD_NK, MetrixVariable.THRESHOLD_NK_END_OR, id);

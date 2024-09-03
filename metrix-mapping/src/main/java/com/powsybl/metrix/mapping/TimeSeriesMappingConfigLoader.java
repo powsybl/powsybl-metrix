@@ -156,7 +156,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                 config.timeSeriesToLoadsMapping, config.loadToTimeSeriesMapping);
         switch (variable) {
-            case P_0 -> {
+            case P0 -> {
                 config.unmappedLoads.remove(equipmentId);
                 config.unmappedFixedActivePowerLoads.remove(equipmentId);
                 config.unmappedVariableActivePowerLoads.remove(equipmentId);
@@ -211,7 +211,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             case BOUNDARY_LINE -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
                     config.timeSeriesToDanglingLinesMapping, config.danglingLineToTimeSeriesMapping);
-                if (variable == EquipmentVariable.P_0) {
+                if (variable == EquipmentVariable.P0) {
                     config.unmappedDanglingLines.remove(equipmentId);
                 }
             }

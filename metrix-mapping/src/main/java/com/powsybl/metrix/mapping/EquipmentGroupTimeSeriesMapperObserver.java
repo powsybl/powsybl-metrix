@@ -119,7 +119,7 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
             loadGroupVariableActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, variable.getVariableName()), value));
         } else if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             loadGroupFixedActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, variable.getVariableName()), value));
-        } else if (variable == EquipmentVariable.P_0) {
+        } else if (variable == EquipmentVariable.P0) {
             // for p0 mapping, power is added in variableActivePower and fixedActivePower is 0
             loadGroupVariableActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, EquipmentVariable.VARIABLE_ACTIVE_POWER.getVariableName()), value));
         }
@@ -130,7 +130,7 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
         if (!loadIds.contains(id)) {
             return;
         }
-        if (variable != EquipmentVariable.VARIABLE_ACTIVE_POWER && variable != EquipmentVariable.FIXED_ACTIVE_POWER && variable != EquipmentVariable.P_0) {
+        if (variable != EquipmentVariable.VARIABLE_ACTIVE_POWER && variable != EquipmentVariable.FIXED_ACTIVE_POWER && variable != EquipmentVariable.P0) {
             return;
         }
         addLoad(id, variable, equipmentValue);

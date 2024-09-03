@@ -94,7 +94,7 @@ class TimeSeriesProviderTsTest {
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P_0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"), new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L")), mappingConfig.getLoadTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"), new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L")), mappingConfig.getLoadTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")), mappingConfig.getHvdcLineTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")), mappingConfig.getBreakerTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1")), mappingConfig.getPhaseTapChangerTimeSeries());
@@ -188,10 +188,10 @@ class TimeSeriesProviderTsTest {
                                      new MappingKey(EquipmentVariable.TARGET_V, "FSSV.O11_G"),
                                      new MappingKey(EquipmentVariable.DISCONNECTED, "FSSV.O11_G")),
                                      mappingConfig.getGeneratorTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P_0, "FSSV.O11_L"),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
                                      new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"),
                                      new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L"),
-                                     new MappingKey(EquipmentVariable.Q_0, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.Q0, "FSSV.O11_L"),
                                      new MappingKey(EquipmentVariable.VARIABLE_REACTIVE_POWER, "FSSV.O11_L"),
                                      new MappingKey(EquipmentVariable.FIXED_REACTIVE_POWER, "FSSV.O11_L")),
                                      mappingConfig.getLoadTimeSeries());
@@ -202,8 +202,8 @@ class TimeSeriesProviderTsTest {
                                      mappingConfig.getHvdcLineTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")),
                                      mappingConfig.getBreakerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATED_U_1, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.RATED_U_2, "FP.AND1  FTDPRA1  1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATED_U1, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.RATED_U2, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getTransformerTimeSeries());
         assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
                                      new MappingKey(EquipmentVariable.REGULATION_MODE, "FP.AND1  FTDPRA1  1"),

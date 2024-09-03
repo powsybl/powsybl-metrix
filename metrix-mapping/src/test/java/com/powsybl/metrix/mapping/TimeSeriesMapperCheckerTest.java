@@ -1404,7 +1404,7 @@ class TimeSeriesMapperCheckerTest {
     @Test
     void isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition() {
         Network network = createNetwork();
-        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("HVDC1"), EquipmentVariable.P_0, 100));
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("HVDC1"), EquipmentVariable.P0, 100));
         assertTrue(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("NE_NO_1"), EquipmentVariable.PHASE_TAP_POSITION, 100));
 
         // Add twoWindingsTransformer without phaseTapChanger

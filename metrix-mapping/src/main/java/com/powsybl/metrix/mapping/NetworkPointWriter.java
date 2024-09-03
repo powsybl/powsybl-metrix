@@ -150,8 +150,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         TwoWindingsTransformer transformer = network.getTwoWindingsTransformer(identifiable.getId());
         // mapToTransformers variables
         switch (variable) {
-            case RATED_U_1 -> transformer.setRatedU1(equipmentValue);
-            case RATED_U_2 -> transformer.setRatedU2(equipmentValue);
+            case RATED_U1 -> transformer.setRatedU1(equipmentValue);
+            case RATED_U2 -> transformer.setRatedU2(equipmentValue);
             // mapToPhaseTapChangers variables
             case PHASE_TAP_POSITION -> transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
             case PHASE_REGULATING -> transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
@@ -226,14 +226,14 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         Load load = network.getLoad(identifiable.getId());
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         switch (variable) {
-            case P_0 -> {
+            case P0 -> {
                 if (loadDetail != null) {
                     loadDetail.setFixedActivePower(0);
                     loadDetail.setVariableActivePower(equipmentValue);
                 }
                 load.setP0(equipmentValue);
             }
-            case Q_0 -> {
+            case Q0 -> {
                 if (loadDetail != null) {
                     loadDetail.setFixedReactivePower(0);
                     loadDetail.setVariableReactivePower(equipmentValue);
