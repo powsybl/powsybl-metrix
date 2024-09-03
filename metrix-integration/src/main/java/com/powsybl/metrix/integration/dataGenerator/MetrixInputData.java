@@ -521,7 +521,7 @@ public class MetrixInputData {
     }
 
     private void writeLines(MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
-        metrixNetwork.getLineList().forEach(l ->  {
+        metrixNetwork.getLineList().forEach(l -> {
             double nominalVoltage1 = l.getTerminal1().getVoltageLevel().getNominalV();
             double nominalVoltage2 = l.getTerminal2().getVoltageLevel().getNominalV();
             double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
