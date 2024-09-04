@@ -47,6 +47,7 @@ determines which kind of computation will be operated:
 - `LF` the LOAD FLOW mode is a basic network flow simulation, production and consumption are fixed and Metrix simulator returns the flow on the lines of the network.
 - `OPF_WITHOUT_REDISPATCHING` in this mode, Metrix simulator is allowed to use some actions (topological actions, use of phase tap changers, HVDC lines) to minimize constraints.
 - `OPF` in OPTIMAL POWER FLOW mode, Metrix simulator will leverage all available actions (that of the previous mode plus generator and load dispatching) to minimize constraints at best cost. If no solution is found, the program will exit with error code 1.
+- `OPF_WITH_OVERLOAD` in this OPTIMAL POWER FLOW mode, Metrix simulator works like in the previous mode. If no solution is found, the program returns overload results.
 
 All parameters are optional:
 ```groovy
