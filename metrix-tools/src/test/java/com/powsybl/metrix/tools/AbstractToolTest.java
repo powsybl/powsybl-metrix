@@ -90,10 +90,12 @@ public abstract class AbstractToolTest {
 
                 @Override
                 public void stop(Path path) {
+                    // Nothing to do here
                 }
 
                 @Override
                 public void stopForcibly(Path path) {
+                    // Nothing to do here
                 }
             };
             ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor()) {

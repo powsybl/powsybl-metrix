@@ -35,8 +35,9 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class TimeSeriesMappingConfigJson {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfigJson.class);
     private static final long DESERIALIZATION_EXTENDED_MAX_STACK_SIZE = 4096000L;
+    public static final String INVALID_TIME_SERIES_MAPPING_CONFIG_JSON = "Invalid time series mapping config JSON";
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -363,16 +364,16 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case FIELD_NAME -> {
-                        String fieldName = parser.getCurrentName();
+                        String fieldName = parser.currentName();
                         if (fieldName.equals(JsonFieldName.MAPPING_KEY.getFieldName())) {
                             mappingKey = MappingKey.parseJson(parser);
                         } else {
-                            throw new IllegalStateException("Unexpected field name " + fieldName);
+                            throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                         }
                     }
                     case END_OBJECT -> {
                         if (mappingKey == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         set.add(mappingKey);
                     }
@@ -388,7 +389,7 @@ public class TimeSeriesMappingConfigJson {
     }
 
     static MappingKey parseMappingKeyFieldName(JsonParser parser, List<String> mappingList) throws IOException {
-        String fieldName = parser.getCurrentName();
+        String fieldName = parser.currentName();
         ObjectMapper mapper = new ObjectMapper();
         MappingKey newMappingKey = null;
         switch (JsonFieldName.nameOf(fieldName)) {
@@ -399,7 +400,7 @@ public class TimeSeriesMappingConfigJson {
                     mappingList.addAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)));
                 }
             }
-            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
         }
         return newMappingKey;
     }
@@ -420,7 +421,7 @@ public class TimeSeriesMappingConfigJson {
                     }
                     case END_OBJECT -> {
                         if (mappingKey == null || mappingList == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         map.put(mappingKey, mappingList);
                     }
@@ -445,16 +446,16 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case FIELD_NAME -> {
-                        String fieldName = parser.getCurrentName();
+                        String fieldName = parser.currentName();
                         switch (JsonFieldName.nameOf(fieldName)) {
                             case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
                             case DISTRIBUTION -> distributionKey = DistributionKey.parseJson(parser);
-                            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+                            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                         }
                     }
                     case END_OBJECT -> {
                         if (mappingKey == null || distributionKey == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         map.put(mappingKey, distributionKey);
                     }
@@ -487,7 +488,7 @@ public class TimeSeriesMappingConfigJson {
     static String parseTimeSeriesToEquipmentFieldName(JsonParser parser, Set<MappingKey> mappingKeys) throws IOException {
         JsonToken token;
         String newTimeSeriesName = null;
-        String fieldName = parser.getCurrentName();
+        String fieldName = parser.currentName();
         switch (JsonFieldName.nameOf(fieldName)) {
             case TIME_SERIES_NAME -> {
                 if (parser.nextToken() == JsonToken.VALUE_STRING) {
@@ -502,7 +503,7 @@ public class TimeSeriesMappingConfigJson {
                     }
                 }
             }
-            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
         }
         return newTimeSeriesName;
     }
@@ -523,7 +524,7 @@ public class TimeSeriesMappingConfigJson {
                     }
                     case END_OBJECT -> {
                         if (timeSeriesName == null || mappingKeys == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         map.put(timeSeriesName, mappingKeys);
                     }
@@ -548,7 +549,7 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case FIELD_NAME -> {
-                        String fieldName = parser.getCurrentName();
+                        String fieldName = parser.currentName();
                         switch (JsonFieldName.nameOf(fieldName)) {
                             case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
                             case TIME_SERIES_NAME -> {
@@ -556,12 +557,12 @@ public class TimeSeriesMappingConfigJson {
                                     timeSeriesName = parser.getValueAsString();
                                 }
                             }
-                            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+                            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                         }
                     }
                     case END_OBJECT -> {
                         if (mappingKey == null || timeSeriesName == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         map.put(mappingKey, timeSeriesName);
                     }
@@ -595,11 +596,11 @@ public class TimeSeriesMappingConfigJson {
 
     static String parseGroupTimeSeriesFieldName(JsonParser parser, Set<String> names) throws IOException {
         String newId = null;
-        String fieldName = parser.getCurrentName();
+        String fieldName = parser.currentName();
         switch (JsonFieldName.nameOf(fieldName)) {
             case EQUIPMENTID -> newId = parseGroupTimeSeriesEquipmentId(parser);
             case TIMESERIESNAMES -> parseGroupTimeSeriesNames(parser, names);
-            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
         }
         return newId;
     }
@@ -620,7 +621,7 @@ public class TimeSeriesMappingConfigJson {
                     }
                     case END_OBJECT -> {
                         if (id == null || names == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         map.put(id, names);
                     }
@@ -651,7 +652,7 @@ public class TimeSeriesMappingConfigJson {
                     }
                     case END_OBJECT -> {
                         if (timeSeriesName == null || ids == null) {
-                            throw new TimeSeriesException("Invalid time series mapping config JSON");
+                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
                         }
                         map.put(timeSeriesName, ids);
                     }
@@ -668,7 +669,7 @@ public class TimeSeriesMappingConfigJson {
 
     private static String parseTimeSeriesToPlannedOutagesFieldName(JsonParser parser, Set<String> ids) throws IOException {
         JsonToken token;
-        String fieldName = parser.getCurrentName();
+        String fieldName = parser.currentName();
         String newTimeSeriesName = null;
         switch (JsonFieldName.nameOf(fieldName)) {
             case TIME_SERIES_NAME -> {
@@ -684,7 +685,7 @@ public class TimeSeriesMappingConfigJson {
                     }
                 }
             }
-            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
         }
         return newTimeSeriesName;
     }
@@ -755,7 +756,7 @@ public class TimeSeriesMappingConfigJson {
             case TS_TO_PLANNED_OUTAGES -> config.setTimeSeriesToPlannedOutagesMapping(parseTimeSeriesToPlannedOutages(parser));
             case GENERATORGROUPTS -> config.setGeneratorGroupTimeSeries(parseGroupTimeSeries(parser));
             case LOADGROUPTS -> config.setLoadGroupTimeSeries(parseGroupTimeSeries(parser));
-            default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
         }
     }
 
@@ -766,7 +767,7 @@ public class TimeSeriesMappingConfigJson {
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
                 if (token == JsonToken.FIELD_NAME) {
-                    String fieldName = parser.getCurrentName();
+                    String fieldName = parser.currentName();
                     parseJson(parser, fieldName, config);
                 }
             }
@@ -774,5 +775,9 @@ public class TimeSeriesMappingConfigJson {
             throw new UncheckedIOException(e);
         }
         return config;
+    }
+
+    private static String getUnexpectedFieldName(String fieldName) {
+        return "Unexpected field name " + fieldName;
     }
 }

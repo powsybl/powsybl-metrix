@@ -116,7 +116,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     private void mapToLineVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         Line line = network.getLine(identifiable.getId());
-        if (variable == EquipmentVariable.disconnected && Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
+        if (variable == EquipmentVariable.DISCONNECTED && Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
             line.getTerminal1().disconnect();
             line.getTerminal2().disconnect();
         }
@@ -129,7 +129,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     private void mapToLccConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, float equipmentValue) {
         LccConverterStation converter = network.getLccConverterStation(identifiable.getId());
-        if (variable == EquipmentVariable.powerFactor) {
+        if (variable == EquipmentVariable.POWER_FACTOR) {
             converter.setPowerFactor(equipmentValue);
         }
     }
@@ -137,9 +137,9 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private void mapToVscConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
         switch (variable) {
-            case voltageRegulatorOn -> converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case voltageSetpoint -> converter.setVoltageSetpoint(equipmentValue);
-            case reactivePowerSetpoint -> converter.setReactivePowerSetpoint(equipmentValue);
+            case VOLTAGE_REGULATOR_ON -> converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case VOLTAGE_SETPOINT -> converter.setVoltageSetpoint(equipmentValue);
+            case REACTIVE_POWER_SETPOINT -> converter.setReactivePowerSetpoint(equipmentValue);
             default -> {
                 // Do nothing
             }
@@ -150,19 +150,19 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         TwoWindingsTransformer transformer = network.getTwoWindingsTransformer(identifiable.getId());
         // mapToTransformers variables
         switch (variable) {
-            case ratedU1 -> transformer.setRatedU1(equipmentValue);
-            case ratedU2 -> transformer.setRatedU2(equipmentValue);
+            case RATED_U1 -> transformer.setRatedU1(equipmentValue);
+            case RATED_U2 -> transformer.setRatedU2(equipmentValue);
             // mapToPhaseTapChangers variables
-            case phaseTapPosition -> transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
-            case phaseRegulating -> transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case targetDeadband -> transformer.getPhaseTapChanger().setTargetDeadband(equipmentValue);
-            case regulationMode -> selectRegulationMode(equipmentValue, transformer);
+            case PHASE_TAP_POSITION -> transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
+            case PHASE_REGULATING -> transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case TARGET_DEADBAND -> transformer.getPhaseTapChanger().setTargetDeadband(equipmentValue);
+            case REGULATION_MODE -> selectRegulationMode(equipmentValue, transformer);
             // mapToRatioTapChanger variables
-            case ratioTapPosition -> transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
-            case targetV -> transformer.getRatioTapChanger().setTargetV(equipmentValue);
-            case loadTapChangingCapabilities -> transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case ratioRegulating -> transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case disconnected -> {
+            case RATIO_TAP_POSITION -> transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
+            case TARGET_V -> transformer.getRatioTapChanger().setTargetV(equipmentValue);
+            case LOAD_TAP_CHANGING_CAPABILITIES -> transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case RATIO_REGULATING -> transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case DISCONNECTED -> {
                 if (Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
                     transformer.getTerminal1().disconnect();
                     transformer.getTerminal2().disconnect();
@@ -188,7 +188,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         HvdcLine hvdcLine = network.getHvdcLine(identifiable.getId());
         HvdcOperatorActivePowerRange hvdcRange = addActivePowerRangeExtension(hvdcLine);
         switch (variable) {
-            case activePowerSetpoint -> {
+            case ACTIVE_POWER_SETPOINT -> {
                 HvdcAngleDroopActivePowerControl activePowerControl = TimeSeriesMapper.getActivePowerControl(hvdcLine);
                 if (activePowerControl != null) {
                     activePowerControl.setP0((float) equipmentValue);
@@ -200,15 +200,15 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
                     hvdcLine.setActivePowerSetpoint((float) -equipmentValue);
                 }
             }
-            case minP -> {
+            case MIN_P -> {
                 hvdcRange.setOprFromCS2toCS1((float) Math.abs(equipmentValue));
                 calculateMaxP(equipmentValue, hvdcLine, hvdcRange.getOprFromCS1toCS2());
             }
-            case maxP -> {
+            case MAX_P -> {
                 hvdcRange.setOprFromCS1toCS2((float) Math.abs(equipmentValue));
                 calculateMaxP(equipmentValue, hvdcLine, hvdcRange.getOprFromCS2toCS1());
             }
-            case nominalV -> hvdcLine.setNominalV(equipmentValue);
+            case NOMINAL_V -> hvdcLine.setNominalV(equipmentValue);
             default -> {
                 // Do nothing
             }
@@ -226,36 +226,36 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         Load load = network.getLoad(identifiable.getId());
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         switch (variable) {
-            case p0 -> {
+            case P0 -> {
                 if (loadDetail != null) {
                     loadDetail.setFixedActivePower(0);
                     loadDetail.setVariableActivePower(equipmentValue);
                 }
                 load.setP0(equipmentValue);
             }
-            case q0 -> {
+            case Q0 -> {
                 if (loadDetail != null) {
                     loadDetail.setFixedReactivePower(0);
                     loadDetail.setVariableReactivePower(equipmentValue);
                 }
                 load.setQ0(equipmentValue);
             }
-            case fixedActivePower -> {
+            case FIXED_ACTIVE_POWER -> {
                 loadDetail = newLoadDetailExtension(load, loadDetail);
                 loadDetail.setFixedActivePower(equipmentValue);
                 load.setP0(loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower());
             }
-            case variableActivePower -> {
+            case VARIABLE_ACTIVE_POWER -> {
                 loadDetail = newLoadDetailExtension(load, loadDetail);
                 loadDetail.setVariableActivePower(equipmentValue);
                 load.setP0(loadDetail.getFixedActivePower() + loadDetail.getVariableActivePower());
             }
-            case fixedReactivePower -> {
+            case FIXED_REACTIVE_POWER -> {
                 loadDetail = newLoadDetailExtension(load, loadDetail);
                 loadDetail.setFixedReactivePower(equipmentValue);
                 load.setQ0(loadDetail.getFixedReactivePower() + loadDetail.getVariableReactivePower());
             }
-            case variableReactivePower -> {
+            case VARIABLE_REACTIVE_POWER -> {
                 loadDetail = newLoadDetailExtension(load, loadDetail);
                 loadDetail.setVariableReactivePower(equipmentValue);
                 load.setQ0(loadDetail.getFixedReactivePower() + loadDetail.getVariableReactivePower());
@@ -282,13 +282,13 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private void mapToGeneratorVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         Generator generator = network.getGenerator(identifiable.getId());
         switch (variable) {
-            case targetP -> generator.setTargetP(equipmentValue);
-            case targetQ -> generator.setTargetQ(equipmentValue);
-            case minP -> generator.setMinP(equipmentValue);
-            case maxP -> generator.setMaxP(equipmentValue);
-            case voltageRegulatorOn -> generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case targetV -> generator.setTargetV(equipmentValue);
-            case disconnected -> {
+            case TARGET_P -> generator.setTargetP(equipmentValue);
+            case TARGET_Q -> generator.setTargetQ(equipmentValue);
+            case MIN_P -> generator.setMinP(equipmentValue);
+            case MAX_P -> generator.setMaxP(equipmentValue);
+            case VOLTAGE_REGULATOR_ON -> generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case TARGET_V -> generator.setTargetV(equipmentValue);
+            case DISCONNECTED -> {
                 if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
                     generator.getTerminal().disconnect();
                 }

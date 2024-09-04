@@ -86,7 +86,7 @@ public final class MetrixPostProcessingTimeSeries {
 
         for (String branch : metrixDslData.getBranchMonitoringNList()) {
             MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdN(branch);
-            MetrixVariable thresholdEndOr = threshold == MetrixVariable.thresholdN ? MetrixVariable.thresholdNEndOr : MetrixVariable.analysisThresholdNEndOr;
+            MetrixVariable thresholdEndOr = threshold == MetrixVariable.THRESHOLD_N ? MetrixVariable.THRESHOLD_N_END_OR : MetrixVariable.ANALYSIS_THRESHOLD_N_END_OR;
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
                 createBasecasePostprocessingTimeSeries(branch, threshold, thresholdEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName);
             }
@@ -137,7 +137,7 @@ public final class MetrixPostProcessingTimeSeries {
 
         for (String branch : metrixDslData.getBranchMonitoringNkList()) {
             MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdNk(branch);
-            MetrixVariable thresholdEndOr = threshold == MetrixVariable.thresholdN1 ? MetrixVariable.thresholdN1EndOr : MetrixVariable.analysisThresholdNkEndOr;
+            MetrixVariable thresholdEndOr = threshold == MetrixVariable.THRESHOLD_N1 ? MetrixVariable.THRESHOLD_N1_END_OR : MetrixVariable.ANALYSIS_THRESHOLD_NK_END_OR;
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
                 createPostprocessingTimeSeries(branch, threshold, thresholdEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName, OUTAGE_PREFIX_CONTAINER);
             }
@@ -151,8 +151,8 @@ public final class MetrixPostProcessingTimeSeries {
                                                            ReadOnlyTimeSeriesStore store,
                                                            String nullableSchemaName) {
         for (String branch : metrixDslData.getBranchMonitoringNkList()) {
-            MetrixVariable threshold = MetrixVariable.thresholdITAM;
-            MetrixVariable thresholdEndOr = MetrixVariable.thresholdITAMEndOr;
+            MetrixVariable threshold = MetrixVariable.THRESHOLD_ITAM;
+            MetrixVariable thresholdEndOr = MetrixVariable.THRESHOLD_ITAM_END_OR;
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
                 createPostprocessingTimeSeries(branch, threshold, thresholdEndOr, mappingConfig, postProcessingTimeSeries, calculatedTimeSeries, store, nullableSchemaName, ITAM_PREFIX_CONTAINER);
             }

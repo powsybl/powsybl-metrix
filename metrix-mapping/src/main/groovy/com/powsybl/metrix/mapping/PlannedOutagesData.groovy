@@ -59,13 +59,13 @@ class PlannedOutagesData {
 
         // for each filtered equipment, add it to the config
         for (Identifiable identifiable in filteredTransformers) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
         for (Identifiable identifiable in filteredLines) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.LINE, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.LINE, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
         for (Identifiable identifiable in filteredGenerators) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.GENERATOR, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.GENERATOR, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
     }
 }

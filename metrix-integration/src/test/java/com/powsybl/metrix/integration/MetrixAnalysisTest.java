@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.FileSystem;
+import java.util.Objects;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
@@ -61,7 +62,7 @@ class MetrixAnalysisTest {
     @BeforeEach
     public void setUp() throws IOException {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
-        this.network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        this.network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         this.networkSource = new NetworkSource() {
             @Override
             public Network copy() {
@@ -70,6 +71,7 @@ class MetrixAnalysisTest {
 
             @Override
             public void write(OutputStream os) {
+                // Nothing to do here
             }
         };
         appLoggerOutputStream = new ByteArrayOutputStream();

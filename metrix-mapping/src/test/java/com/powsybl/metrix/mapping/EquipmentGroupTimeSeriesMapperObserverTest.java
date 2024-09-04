@@ -189,7 +189,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
                 mapToGeneratorsScript,
                 String.format(provideGroupTsGenerators, "VOLTAGE_LEVEL"));
         TimeSeriesMappingConfig mappingConfig = loadMappingConfig(script);
-        final String expectedTimeSeriesName = "FSSV.O1_" + EquipmentVariable.targetP.getVariableName();
+        final String expectedTimeSeriesName = "FSSV.O1_" + EquipmentVariable.TARGET_P.getVariableName();
         generatorTest(mappingConfig, expectedTimeSeriesName);
     }
 
@@ -199,7 +199,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
                 mapToGeneratorsScript,
                 String.format(provideGroupTsGenerators, "SUBSTATION"));
         TimeSeriesMappingConfig mappingConfig = loadMappingConfig(script);
-        final String expectedTimeSeriesName = "FSSV._" + EquipmentVariable.targetP.getVariableName();
+        final String expectedTimeSeriesName = "FSSV._" + EquipmentVariable.TARGET_P.getVariableName();
         generatorTest(mappingConfig, expectedTimeSeriesName);
     }
 
@@ -209,7 +209,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
                 mapToGeneratorsScript,
                 provideGroupWithNameTsGenerators);
         TimeSeriesMappingConfig mappingConfig = loadMappingConfig(script);
-        final String expectedTimeSeriesName = "FSSV.O1_userGivenName_" + EquipmentVariable.targetP.getVariableName();
+        final String expectedTimeSeriesName = "FSSV.O1_userGivenName_" + EquipmentVariable.TARGET_P.getVariableName();
         generatorTest(mappingConfig, expectedTimeSeriesName);
     }
 

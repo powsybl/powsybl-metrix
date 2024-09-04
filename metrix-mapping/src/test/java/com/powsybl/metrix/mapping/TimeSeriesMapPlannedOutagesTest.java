@@ -66,7 +66,7 @@ class TimeSeriesMapPlannedOutagesTest {
 
     private void checkEquipment(String expectedTimeSeriesName, double expectedValue, String timeSeriesName, MappingVariable variable, double value) {
         assertEquals(expectedTimeSeriesName, timeSeriesName);
-        assertEquals(EquipmentVariable.disconnected, variable);
+        assertEquals(EquipmentVariable.DISCONNECTED, variable);
         assertEquals(expectedValue, value, 0);
     }
 

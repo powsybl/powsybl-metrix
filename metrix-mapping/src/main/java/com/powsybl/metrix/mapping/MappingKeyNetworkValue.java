@@ -72,13 +72,13 @@ public class MappingKeyNetworkValue {
 
     private double getGeneratorValue(Generator generator, EquipmentVariable variable) {
         return switch (variable) {
-            case targetP -> generator.getTargetP();
-            case targetQ -> generator.getTargetQ();
-            case minP -> generator.getMinP();
-            case maxP -> generator.getMaxP();
-            case voltageRegulatorOn -> generator.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
-            case targetV -> generator.getTargetV();
-            case disconnected -> generator.getTerminal().isConnected() ? OFF_VALUE : ON_VALUE;
+            case TARGET_P -> generator.getTargetP();
+            case TARGET_Q -> generator.getTargetQ();
+            case MIN_P -> generator.getMinP();
+            case MAX_P -> generator.getMaxP();
+            case VOLTAGE_REGULATOR_ON -> generator.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
+            case TARGET_V -> generator.getTargetV();
+            case DISCONNECTED -> generator.getTerminal().isConnected() ? OFF_VALUE : ON_VALUE;
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for generator %s", variable, generator.getId()));
         };
@@ -87,12 +87,12 @@ public class MappingKeyNetworkValue {
     private double getLoadValue(Load load, EquipmentVariable variable) {
         LoadDetail loadDetail = load.getExtension(LoadDetail.class);
         return switch (variable) {
-            case p0 -> load.getP0();
-            case q0 -> load.getQ0();
-            case fixedActivePower -> loadDetail != null ? loadDetail.getFixedActivePower() : 0;
-            case variableActivePower -> loadDetail != null ? loadDetail.getVariableActivePower() : load.getP0();
-            case fixedReactivePower -> loadDetail != null ? loadDetail.getFixedReactivePower() : 0;
-            case variableReactivePower -> loadDetail != null ? loadDetail.getVariableReactivePower() : load.getQ0();
+            case P0 -> load.getP0();
+            case Q0 -> load.getQ0();
+            case FIXED_ACTIVE_POWER -> loadDetail != null ? loadDetail.getFixedActivePower() : 0;
+            case VARIABLE_ACTIVE_POWER -> loadDetail != null ? loadDetail.getVariableActivePower() : load.getP0();
+            case FIXED_REACTIVE_POWER -> loadDetail != null ? loadDetail.getFixedReactivePower() : 0;
+            case VARIABLE_REACTIVE_POWER -> loadDetail != null ? loadDetail.getVariableReactivePower() : load.getQ0();
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for load %s", variable, load.getId()));
         };
@@ -100,17 +100,17 @@ public class MappingKeyNetworkValue {
 
     private double getHvdcLineValue(HvdcLine hvdcLine, EquipmentVariable variable) {
         return switch (variable) {
-            case activePowerSetpoint -> TimeSeriesMapper.getHvdcLineSetPoint(hvdcLine);
-            case maxP -> TimeSeriesMapper.getMax(hvdcLine);
-            case minP -> TimeSeriesMapper.getMin(hvdcLine);
-            case nominalV -> hvdcLine.getNominalV();
+            case ACTIVE_POWER_SETPOINT -> TimeSeriesMapper.getHvdcLineSetPoint(hvdcLine);
+            case MAX_P -> TimeSeriesMapper.getMax(hvdcLine);
+            case MIN_P -> TimeSeriesMapper.getMin(hvdcLine);
+            case NOMINAL_V -> hvdcLine.getNominalV();
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for hvdcLine %s", variable, hvdcLine.getId()));
         };
     }
 
     private double getSwitchValue(Switch sw, EquipmentVariable variable) {
-        if (variable == EquipmentVariable.open) {
+        if (variable == EquipmentVariable.OPEN) {
             return sw.isOpen() ? ON_VALUE : OFF_VALUE;
         }
         throw new TimeSeriesMappingException(String.format("Unknown variable %s for switch %s", variable, sw.getId()));
@@ -126,29 +126,29 @@ public class MappingKeyNetworkValue {
 
     private double getTwoWindingsTransformerValue(TwoWindingsTransformer twoWindingsTransformer, EquipmentVariable variable) {
         return switch (variable) {
-            case ratedU1 -> twoWindingsTransformer.getRatedU1();
-            case ratedU2 -> twoWindingsTransformer.getRatedU2();
-            case disconnected ->
+            case RATED_U1 -> twoWindingsTransformer.getRatedU1();
+            case RATED_U2 -> twoWindingsTransformer.getRatedU2();
+            case DISCONNECTED ->
                 !twoWindingsTransformer.getTerminal1().isConnected() || !twoWindingsTransformer.getTerminal2().isConnected() ? ON_VALUE : OFF_VALUE;
             // mapToPhaseTapChangers variables
-            case phaseTapPosition -> twoWindingsTransformer.getPhaseTapChanger().getTapPosition();
-            case phaseRegulating -> twoWindingsTransformer.getPhaseTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
-            case targetDeadband -> twoWindingsTransformer.getPhaseTapChanger().getTargetDeadband();
-            case regulationMode ->
+            case PHASE_TAP_POSITION -> twoWindingsTransformer.getPhaseTapChanger().getTapPosition();
+            case PHASE_REGULATING -> twoWindingsTransformer.getPhaseTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
+            case TARGET_DEADBAND -> twoWindingsTransformer.getPhaseTapChanger().getTargetDeadband();
+            case REGULATION_MODE ->
                 getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode());
             // mapToRatioTapChanger variables
-            case ratioTapPosition -> twoWindingsTransformer.getRatioTapChanger().getTapPosition();
-            case targetV -> twoWindingsTransformer.getRatioTapChanger().getTargetV();
-            case loadTapChangingCapabilities ->
+            case RATIO_TAP_POSITION -> twoWindingsTransformer.getRatioTapChanger().getTapPosition();
+            case TARGET_V -> twoWindingsTransformer.getRatioTapChanger().getTargetV();
+            case LOAD_TAP_CHANGING_CAPABILITIES ->
                 twoWindingsTransformer.getRatioTapChanger().hasLoadTapChangingCapabilities() ? ON_VALUE : OFF_VALUE;
-            case ratioRegulating -> twoWindingsTransformer.getRatioTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
+            case RATIO_REGULATING -> twoWindingsTransformer.getRatioTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for twoWindingsTransformer %s", variable, twoWindingsTransformer.getId()));
         };
     }
 
     private double getLccConverterStationValue(LccConverterStation lccConverterStation, EquipmentVariable variable) {
-        if (variable == EquipmentVariable.powerFactor) {
+        if (variable == EquipmentVariable.POWER_FACTOR) {
             return lccConverterStation.getPowerFactor();
         }
         throw new TimeSeriesMappingException(String.format("Unknown variable %s for lccConverterStation %s", variable, lccConverterStation.getId()));
@@ -156,16 +156,16 @@ public class MappingKeyNetworkValue {
 
     private double getVscConverterStationValue(VscConverterStation vscConverterStation, EquipmentVariable variable) {
         return switch (variable) {
-            case voltageRegulatorOn -> vscConverterStation.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
-            case voltageSetpoint -> vscConverterStation.getVoltageSetpoint();
-            case reactivePowerSetpoint -> vscConverterStation.getReactivePowerSetpoint();
+            case VOLTAGE_REGULATOR_ON -> vscConverterStation.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
+            case VOLTAGE_SETPOINT -> vscConverterStation.getVoltageSetpoint();
+            case REACTIVE_POWER_SETPOINT -> vscConverterStation.getReactivePowerSetpoint();
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for vscConverterStation %s", variable, vscConverterStation.getId()));
         };
     }
 
     private double getLineValue(Line line, EquipmentVariable variable) {
-        if (variable == EquipmentVariable.disconnected) {
+        if (variable == EquipmentVariable.DISCONNECTED) {
             return !line.getTerminal1().isConnected() || !line.getTerminal2().isConnected() ? ON_VALUE : OFF_VALUE;
         }
         throw new TimeSeriesMappingException(String.format("Unknown variable %s for line %s", variable, line.getId()));
