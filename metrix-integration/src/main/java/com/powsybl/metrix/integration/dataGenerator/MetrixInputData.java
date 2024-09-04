@@ -383,17 +383,19 @@ public class MetrixInputData {
         List<Float> dttapdep = new ArrayList<>(); // PST phasing taps
 
         // Lines
-        writeLines(metrixInputBranch, constantLossFactor);
+        metrixNetwork.getLineList().forEach(line -> writeLine(line, metrixInputBranch, constantLossFactor));
 
         // Two Windings Transformers
         metrixNetwork.getTwoWindingsTransformerList().forEach(twoWindingsTransformer ->
             writeTwoWindingsTransformer(twoWindingsTransformer, metrixInputBranch, metrixInputPhaseTapChanger, constantLossFactor, dtlowran, dtuppran, dttapdep));
 
+        // Three Windings Transformers
         metrixNetwork.getThreeWindingsTransformerList().forEach(twt -> {
             throw new UnsupportedOperationException("TODO");
         });
 
-        writeSwitches(metrixInputBranch);
+        // Switches
+        metrixNetwork.getSwitchList().forEach(sw -> writeSwitch(sw, metrixInputBranch));
 
         // Branch
         die.setStringArray("CQNOMQUA", cqnomqua);
@@ -437,15 +439,13 @@ public class MetrixInputData {
         }
     }
 
-    private void writeSwitches(MetrixInputBranch metrixInputBranch) {
-        metrixNetwork.getSwitchList().forEach(sw -> {
-            int index = metrixNetwork.getIndex(sw);
-            int bus1Index = metrixNetwork.getIndex(sw.getVoltageLevel().getBusBreakerView().getBus1(sw.getId()));
-            int bus2Index = metrixNetwork.getIndex(sw.getVoltageLevel().getBusBreakerView().getBus2(sw.getId()));
-            writeBranch(metrixInputBranch,
-                index,
-                new BranchValues(sw.getId(), CQADMITA_SWITCH_VAL, CQRESIST_SWITCH_VAL, MonitoringType.NO.getType(), MonitoringType.NO.getType(), bus1Index, bus2Index));
-        });
+    private void writeSwitch(Switch sw, MetrixInputBranch metrixInputBranch) {
+        int index = metrixNetwork.getIndex(sw);
+        int bus1Index = metrixNetwork.getIndex(sw.getVoltageLevel().getBusBreakerView().getBus1(sw.getId()));
+        int bus2Index = metrixNetwork.getIndex(sw.getVoltageLevel().getBusBreakerView().getBus2(sw.getId()));
+        writeBranch(metrixInputBranch,
+            index,
+            new BranchValues(sw.getId(), CQADMITA_SWITCH_VAL, CQRESIST_SWITCH_VAL, MonitoringType.NO.getType(), MonitoringType.NO.getType(), bus1Index, bus2Index));
     }
 
     private void writeTwoWindingsTransformer(TwoWindingsTransformer twt,
@@ -520,21 +520,19 @@ public class MetrixInputData {
         return mode;
     }
 
-    private void writeLines(MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
-        metrixNetwork.getLineList().forEach(l -> {
-            double nominalVoltage1 = l.getTerminal1().getVoltageLevel().getNominalV();
-            double nominalVoltage2 = l.getTerminal2().getVoltageLevel().getNominalV();
-            double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
-            double r = (l.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
-            double admittance = toAdmittance(l.getId(), l.getX(), nominalVoltage, parameters.getNominalU());
-            int index = metrixNetwork.getIndex(l);
-            int bus1Index = metrixNetwork.getIndex(l.getTerminal1().getBusBreakerView().getBus());
-            int bus2Index = metrixNetwork.getIndex(l.getTerminal2().getBusBreakerView().getBus());
+    private void writeLine(Line line, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
+        double nominalVoltage1 = line.getTerminal1().getVoltageLevel().getNominalV();
+        double nominalVoltage2 = line.getTerminal2().getVoltageLevel().getNominalV();
+        double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
+        double r = (line.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+        double admittance = toAdmittance(line.getId(), line.getX(), nominalVoltage, parameters.getNominalU());
+        int index = metrixNetwork.getIndex(line);
+        int bus1Index = metrixNetwork.getIndex(line.getTerminal1().getBusBreakerView().getBus());
+        int bus2Index = metrixNetwork.getIndex(line.getTerminal2().getBusBreakerView().getBus());
 
-            writeBranch(metrixInputBranch,
-                index,
-                new BranchValues(l.getId(), admittance, r, getMonitoringTypeBasecase(l.getId()), getMonitoringTypeOnContingency(l.getId()), bus1Index, bus2Index));
-        });
+        writeBranch(metrixInputBranch,
+            index,
+            new BranchValues(line.getId(), admittance, r, getMonitoringTypeBasecase(line.getId()), getMonitoringTypeOnContingency(line.getId()), bus1Index, bus2Index));
     }
 
     private void writeTopology(MetrixDie die) {
