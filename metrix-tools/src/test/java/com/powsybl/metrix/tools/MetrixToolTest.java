@@ -38,7 +38,7 @@ class MetrixToolTest extends AbstractToolTest {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         tool = new MetrixTool();
         super.setUp();
     }
