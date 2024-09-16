@@ -271,6 +271,10 @@ class TimeSeriesDslLoader {
         binding.median = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMedian(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
+
+        // Since the values of EquipmentVariable were previously written in camelCase, we need to add them again for
+        // backward compatibility
+        EquipmentVariable.values().toList().forEach {value -> binding[value.getVariableName()] = value}
     }
 
     protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {

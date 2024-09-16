@@ -14,7 +14,7 @@ public enum MetrixComputationType {
     OPF(0),
     LF(1),
     OPF_WITHOUT_REDISPATCHING(2),
-    UNKNOWN(3);
+    OPF_WITH_OVERLOAD(3);
 
     private final int type;
 

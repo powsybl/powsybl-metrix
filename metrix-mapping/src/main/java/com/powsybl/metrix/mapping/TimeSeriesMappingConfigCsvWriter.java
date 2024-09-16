@@ -134,11 +134,11 @@ public class TimeSeriesMappingConfigCsvWriter {
         try {
             if (values.size() > 1) {
                 writer.write(MULTI_MAPPED);
-            } else if (variable == EquipmentVariable.targetP ||
-                       variable == EquipmentVariable.p0 || variable == EquipmentVariable.fixedActivePower || variable == EquipmentVariable.variableActivePower ||
-                       variable == EquipmentVariable.activePowerSetpoint ||
-                       variable == EquipmentVariable.phaseTapPosition ||
-                       variable == EquipmentVariable.open) {
+            } else if (variable == EquipmentVariable.TARGET_P ||
+                       variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER ||
+                       variable == EquipmentVariable.ACTIVE_POWER_SETPOINT ||
+                       variable == EquipmentVariable.PHASE_TAP_POSITION ||
+                       variable == EquipmentVariable.OPEN) {
                 writer.write(MAPPED);
             } else {
                 writer.write(StringUtils.EMPTY);
@@ -171,27 +171,27 @@ public class TimeSeriesMappingConfigCsvWriter {
     private void computeNetworkPower(String timeSeriesName, MappingVariable variable, Collection<String> ids, Map<MappingKey, Double> timeSeriesEquipmentsSum) {
         double sum = Double.NaN;
         Function<String, Double> getPower = null;
-        if (variable == EquipmentVariable.targetP) {
+        if (variable == EquipmentVariable.TARGET_P) {
             getPower = id -> network.getGenerator(id).getTargetP();
-        } else if (variable == EquipmentVariable.targetQ) {
+        } else if (variable == EquipmentVariable.TARGET_Q) {
             getPower = id -> network.getGenerator(id).getTargetQ();
-        } else if (variable == EquipmentVariable.minP) {
+        } else if (variable == EquipmentVariable.MIN_P) {
             getPower = id -> (double) TimeSeriesMapper.getMin(network.getIdentifiable(id));
-        } else if (variable == EquipmentVariable.maxP) {
+        } else if (variable == EquipmentVariable.MAX_P) {
             getPower = id -> (double) TimeSeriesMapper.getMax(network.getIdentifiable(id));
-        } else if (variable == EquipmentVariable.p0) {
+        } else if (variable == EquipmentVariable.P0) {
             getPower = id -> network.getLoad(id).getP0();
-        } else if (variable == EquipmentVariable.q0) {
+        } else if (variable == EquipmentVariable.Q0) {
             getPower = id -> network.getLoad(id).getQ0();
-        } else if (variable == EquipmentVariable.fixedActivePower) {
+        } else if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             getPower = id -> (double) getLoadDetail(network.getLoad(id)).getFixedActivePower();
-        } else if (variable == EquipmentVariable.variableActivePower) {
+        } else if (variable == EquipmentVariable.VARIABLE_ACTIVE_POWER) {
             getPower = id -> (double) getLoadDetail(network.getLoad(id)).getVariableActivePower();
-        } else if (variable == EquipmentVariable.fixedReactivePower) {
+        } else if (variable == EquipmentVariable.FIXED_REACTIVE_POWER) {
             getPower = id -> (double) getLoadDetail(network.getLoad(id)).getFixedReactivePower();
-        } else if (variable == EquipmentVariable.variableReactivePower) {
+        } else if (variable == EquipmentVariable.VARIABLE_REACTIVE_POWER) {
             getPower = id -> (double) getLoadDetail(network.getLoad(id)).getVariableReactivePower();
-        } else if (variable == EquipmentVariable.activePowerSetpoint) {
+        } else if (variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
             getPower = id -> (double) network.getHvdcLine(id).getActivePowerSetpoint();
         }
         if (getPower != null) {
@@ -265,30 +265,34 @@ public class TimeSeriesMappingConfigCsvWriter {
             }
             writer.write(variable.getVariableName());
             writer.write(CSV_SEPARATOR);
-            Iterator<String> it = values.iterator();
-            if (isEqToTS) {
-                String value = it.next();
-                writer.write(value);
-                writer.write(CSV_SEPARATOR);
-            }
-            if (it.hasNext()) {
-                while (it.hasNext()) {
-                    String value = it.next();
-                    writer.write(value);
-                    writer.newLine();
-                    if (it.hasNext()) {
-                        for (int i = 0; i < nbCol; i++) {
-                            writer.write(StringUtils.EMPTY);
-                            writer.write(CSV_SEPARATOR);
-                        }
-                    }
-                }
-            } else {
-                writer.write(getNotSignificantValue());
-                writer.newLine();
-            }
+            writeValues(writer, values, isEqToTS, nbCol);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    private void writeValues(BufferedWriter writer, Collection<String> values, boolean isEqToTS, int nbCol) throws IOException {
+        Iterator<String> it = values.iterator();
+        if (isEqToTS) {
+            String value = it.next();
+            writer.write(value);
+            writer.write(CSV_SEPARATOR);
+        }
+        if (it.hasNext()) {
+            while (it.hasNext()) {
+                String value = it.next();
+                writer.write(value);
+                writer.newLine();
+                if (it.hasNext()) {
+                    for (int i = 0; i < nbCol; i++) {
+                        writer.write(StringUtils.EMPTY);
+                        writer.write(CSV_SEPARATOR);
+                    }
+                }
+            }
+        } else {
+            writer.write(getNotSignificantValue());
+            writer.newLine();
         }
     }
 

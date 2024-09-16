@@ -244,6 +244,12 @@
             <!-- Test dependencies -->
             <dependency>
                 <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-iidm-test</artifactId>
+                <version>${powsyblcore.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.powsybl</groupId>
                 <artifactId>powsybl-computation</artifactId>
                 <type>test-jar</type>
                 <scope>test</scope>

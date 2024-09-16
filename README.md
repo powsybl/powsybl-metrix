@@ -99,7 +99,7 @@ TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, logg
 mapper.mapToNetwork(store, observers);
 ```
 
-Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/mapping.html) on our website.
+Further documentation is available on the [dedicated page](https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/mapping.html) on our website.
 
 ### Metrix
 
@@ -157,7 +157,7 @@ MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCou
 metrix.run(runParams, listener);
 ```
 
-Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/metrix) on our website.
+Further documentation is available on the [dedicated page](https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/metrix.html) on our website.
 
 #### Metrix simulator
 

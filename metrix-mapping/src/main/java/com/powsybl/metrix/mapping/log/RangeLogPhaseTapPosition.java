@@ -10,7 +10,7 @@ public class RangeLogPhaseTapPosition implements LogDescriptionBuilder {
     private String newValue;
     private String toVariable;
 
-    private static final String PHASE_TAP_POSTION_VARIABLE_NAME = EquipmentVariable.phaseTapPosition.getVariableName();
+    private static final String PHASE_TAP_POSTION_VARIABLE_NAME = EquipmentVariable.PHASE_TAP_POSITION.getVariableName();
     private static final String MAPPING_RANGE_PROBLEM = "mapping range problem" + LABEL_SEPARATOR;
 
     public String getLabel() {

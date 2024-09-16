@@ -309,6 +309,7 @@ public class MappingTool implements Tool {
         if (checkEquipmentTimeSeries) {
             context.getOutputStream().println("Computing equipment time series...");
             TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(localParameters.config(), localParameters.store()).checkIndexUnicity();
+
             int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
             Range<Integer> range = Range.closed(firstVariant, lastPoint);
 
