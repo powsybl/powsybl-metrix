@@ -475,7 +475,7 @@ public class MetrixInputData {
 
             MetrixPtcControlType mode = getMetrixPtcControlType(twt, index, dtlowran, dtuppran);
 
-            for (int pos = 0; pos < ptc.getStepCount(); pos++) {
+            for (int pos = ptc.getLowTapPosition(); pos < ptc.getLowTapPosition() + ptc.getStepCount(); pos++) {
                 dttapdep.add((float) ptc.getStep(pos).getAlpha());
             }
 
