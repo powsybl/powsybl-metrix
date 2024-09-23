@@ -34,7 +34,7 @@ class MappingToolTest extends AbstractToolTest {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         tool = new MappingTool();
         super.setUp();
     }
@@ -64,7 +64,7 @@ class MappingToolTest extends AbstractToolTest {
         assertOption(options, "ignore-limits", false, false);
         assertOption(options, "ignore-empty-filter", false, false);
         assertEquals("Metrix", command.getTheme());
-        assertEquals("Time serie to network mapping tool", command.getDescription());
+        assertEquals("Time series to network mapping tool", command.getDescription());
         assertNull(command.getUsageFooter());
     }
 
@@ -101,7 +101,7 @@ class MappingToolTest extends AbstractToolTest {
             "--mapping-file", "/mapping.groovy",
             "--time-series", "/timeseries.csv"
         };
-        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete\n");
+        assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), "Mapping is incomplete");
     }
 
     @Test
@@ -128,10 +128,6 @@ class MappingToolTest extends AbstractToolTest {
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
-        StringBuilder expected = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/mapping_result.txt"))))) {
-            expected.append(reader.readLine());
-        }
 
         String[] commandLine = new String[] {
             "mapping", "--case-file", "/network.xiidm",

@@ -55,7 +55,7 @@ public abstract class AbstractToolTest {
     private CommandLineTools tools;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         platformConfig = new InMemoryPlatformConfig(fileSystem);
         tools = new CommandLineTools(getTools());
@@ -151,7 +151,7 @@ public abstract class AbstractToolTest {
         }
         assertEquals(expectedStatus, status);
         if (expectedOut != null) {
-            assertMatches(expectedOut, bout.toString(StandardCharsets.UTF_8.name()));
+            assertMatches(expectedOut, bout.toString(StandardCharsets.UTF_8));
         }
     }
 

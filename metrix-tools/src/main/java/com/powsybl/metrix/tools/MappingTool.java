@@ -68,7 +68,7 @@ public class MappingTool implements Tool {
 
             @Override
             public String getDescription() {
-                return "Time serie to network mapping tool";
+                return "Time series to network mapping tool";
             }
 
             @Override
@@ -252,7 +252,7 @@ public class MappingTool implements Tool {
             writeMappingStatusFile(mappingStatusFile, context, localParameters);
 
             // Computing equipment time series
-            writeEquipementTimeSeries(line, context, localParameters, mappingParameters, logger);
+            writeEquipmentTimeSeries(line, context, localParameters, mappingParameters, logger);
 
             if (mappingSynthesisDir != null) {
                 logger.writeCsv(mappingSynthesisDir.resolve("mapping-logs.csv"));
@@ -290,10 +290,10 @@ public class MappingTool implements Tool {
         }
     }
 
-    private void writeEquipementTimeSeries(CommandLine line, ToolRunningContext context,
-                                           LocalParameters localParameters,
-                                           MappingParameters mappingParameters,
-                                           TimeSeriesMappingLogger logger) throws IOException {
+    private void writeEquipmentTimeSeries(CommandLine line, ToolRunningContext context,
+                                          LocalParameters localParameters,
+                                          MappingParameters mappingParameters,
+                                          TimeSeriesMappingLogger logger) throws IOException {
 
         Path mappingSynthesisDir = getDir(line, context, MAPPING_SYNTHESIS_DIR);
         Path equipmentTimeSeriesDir = getDir(line, context, "equipment-time-series-dir");
