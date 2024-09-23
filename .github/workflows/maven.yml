@@ -1,4 +1,4 @@
-name: CI-java-ubuntu
+name: CI-java
 
 on:
   push:
