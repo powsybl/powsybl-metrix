@@ -391,7 +391,12 @@ public class MetrixInputData {
 
         // Three Windings Transformers
         metrixNetwork.getThreeWindingsTransformerList().forEach(twt -> {
-            throw new UnsupportedOperationException("TODO");
+            throw new PowsyblException("Three Windings Transformers are not yet supported in metrix");
+        });
+
+        // Dangling lines
+        metrixNetwork.getDanglingLineList().forEach(line -> {
+            throw new PowsyblException("Dangling lines are not yet supported in metrix");
         });
 
         // Switches
