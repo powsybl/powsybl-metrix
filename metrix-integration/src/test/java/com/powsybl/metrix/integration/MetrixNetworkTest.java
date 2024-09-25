@@ -103,8 +103,6 @@ class MetrixNetworkTest {
         // Network
         Network network = createBusBreakerNetwork(mappedSwitches);
 
-        // Set some switches as retained
-
         // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
         List<Switch> switchList = mappedSwitches.stream().map(network::getSwitch).toList();
 
