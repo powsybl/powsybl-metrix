@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
@@ -82,6 +84,14 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
         assertThat(metrixNetwork.getBusList()).containsExactlyInAnyOrderElementsOf(network.getBusBreakerView().getBuses());
         assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b));
+
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("S1VL2_GH2_BREAKER")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("DL")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("GH2")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("HVDC1")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("LINE_S2S3")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("LD5")));
+        assertFalse(metrixNetwork.isMapped(network.getIdentifiable("S2VL1_BBS")));
     }
 
     @Test
