@@ -45,7 +45,9 @@ class MetrixNetworkTest {
 
         // Set some switches as retained
         Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER");
-        List<Switch> switchList = mappedSwitches.stream()
+
+        // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
+        List<Switch> switchList = Set.of("S1VL2_GH2_BREAKER", "S1VL1_LD1_BREAKER").stream()
             .map(network::getSwitch).toList();
 
         // Contingencies
