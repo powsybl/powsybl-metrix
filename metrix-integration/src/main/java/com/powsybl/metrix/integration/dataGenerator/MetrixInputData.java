@@ -185,7 +185,11 @@ public class MetrixInputData {
         trnbgrou = metrixNetwork.getGeneratorList().size();
 
         // Quadripoles are lines, transformers and switches
-        cqnbquad = metrixNetwork.getLineList().size() + metrixNetwork.getTwoWindingsTransformerList().size() + 3 * metrixNetwork.getThreeWindingsTransformerList().size() + metrixNetwork.getSwitchList().size();
+        cqnbquad = metrixNetwork.getLineList().size()
+            + metrixNetwork.getTwoWindingsTransformerList().size()
+            + 3 * metrixNetwork.getThreeWindingsTransformerList().size()
+            + metrixNetwork.getSwitchList().size()
+            + metrixNetwork.getTieLineList().size();
         dtnbtrde = metrixNetwork.getPhaseTapChangerList().size();
 
         // Loads are loads and dangling lines
@@ -399,6 +403,9 @@ public class MetrixInputData {
         // Switches
         metrixNetwork.getSwitchList().forEach(sw -> writeSwitch(sw, metrixInputBranch));
 
+        // TieLines
+        metrixNetwork.getTieLineList().forEach(tieLine -> writeTieLine(tieLine, metrixInputBranch, constantLossFactor));
+
         // Branch
         die.setStringArray("CQNOMQUA", cqnomqua);
         die.setFloatArray("CQADMITA", cqadmita);
@@ -523,11 +530,19 @@ public class MetrixInputData {
     }
 
     private void writeLine(Line line, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
+        writeLineOrTieLine(line, line.getR(), line.getX(), metrixInputBranch, constantLossFactor);
+    }
+
+    private void writeTieLine(TieLine tieLine, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
+        writeLineOrTieLine(tieLine, tieLine.getR(), tieLine.getX(), metrixInputBranch, constantLossFactor);
+    }
+
+    private void writeLineOrTieLine(Branch<?> line, double lineR, double lineX, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
         double nominalVoltage1 = line.getTerminal1().getVoltageLevel().getNominalV();
         double nominalVoltage2 = line.getTerminal2().getVoltageLevel().getNominalV();
         double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
-        double r = (line.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
-        double admittance = toAdmittance(line.getId(), line.getX(), nominalVoltage, parameters.getNominalU());
+        double r = (lineR * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+        double admittance = toAdmittance(line.getId(), lineX, nominalVoltage, parameters.getNominalU());
         int index = metrixNetwork.getIndex(line);
         int bus1Index = metrixNetwork.getIndex(line.getTerminal1().getBusBreakerView().getBus());
         int bus2Index = metrixNetwork.getIndex(line.getTerminal2().getBusBreakerView().getBus());
