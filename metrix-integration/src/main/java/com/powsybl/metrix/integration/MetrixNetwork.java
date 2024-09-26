@@ -145,7 +145,7 @@ public class MetrixNetwork {
             subset = MetrixSubset.NOEUD;
         } else if (identifiable instanceof HvdcLine) {
             subset = MetrixSubset.HVDC;
-        } else if (identifiable instanceof Load || identifiable instanceof DanglingLine) {
+        } else if (identifiable instanceof Load) {
             subset = MetrixSubset.LOAD;
         }
         return subset;
@@ -219,7 +219,7 @@ public class MetrixNetwork {
 
     private void addDanglingLine(DanglingLine dl) {
         if (danglingLineList.add(dl)) {
-            mapper.newInt(MetrixSubset.LOAD, dl.getId());
+            mapper.newInt(MetrixSubset.QUAD, dl.getId());
         }
     }
 
@@ -656,8 +656,8 @@ public class MetrixNetwork {
         switch (terminal.getConnectable().getType()) {
             // Since switches connected to lines and TWT are "replaced" by those connectables, no need to set them retained
             case LINE, TWO_WINDINGS_TRANSFORMER -> addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
-            case LOAD, GENERATOR, DANGLING_LINE -> addElementToRetainedBreakersList(sw, switchId, setRetained);
-            case HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
+            case LOAD, GENERATOR -> addElementToRetainedBreakersList(sw, switchId, setRetained);
+            case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
                  THREE_WINDINGS_TRANSFORMER -> {
                 if (LOGGER.isWarnEnabled()) {
                     LOGGER.warn("Unsupported connectable type ({}) for switch '{}'", terminal.getConnectable().getType(), switchId);
