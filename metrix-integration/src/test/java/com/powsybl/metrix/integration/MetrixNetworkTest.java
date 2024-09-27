@@ -48,12 +48,18 @@ class MetrixNetworkTest {
         Network network = createNetwork();
 
         // Set some switches as retained
-        Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER", "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3");
+        Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER",
+            "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3", "S2VL2_DL_BREAKER");
 
         // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
         List<Switch> switchList = Set.of("S1VL2_GH2_BREAKER", "S1VL1_LD1_BREAKER", "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3")
             .stream()
             .map(network::getSwitch).toList();
+
+        // Expected Dangling line list - only the unpaired dangling lines are listed
+        List<DanglingLine> danglingLineList = Set.of("DL")
+            .stream()
+            .map(network::getDanglingLine).toList();
 
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
@@ -79,8 +85,9 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getLineList()).containsExactlyInAnyOrderElementsOf(network.getLines());
         assertThat(metrixNetwork.getTwoWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getTwoWindingsTransformers());
         assertThat(metrixNetwork.getThreeWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getThreeWindingsTransformers());
-        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(network.getDanglingLines());
+        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(danglingLineList);
         assertThat(metrixNetwork.getSwitchList()).containsExactlyInAnyOrderElementsOf(switchList);
+        assertThat(metrixNetwork.getTieLineList()).containsExactlyInAnyOrderElementsOf(network.getTieLines());
         assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
         assertThat(metrixNetwork.getBusList()).containsExactlyInAnyOrderElementsOf(network.getBusBreakerView().getBuses());
         assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b));
@@ -92,6 +99,7 @@ class MetrixNetworkTest {
         assertTrue(metrixNetwork.isMapped(network.getIdentifiable("LINE_S2S3")));
         assertTrue(metrixNetwork.isMapped(network.getIdentifiable("LD5")));
         assertFalse(metrixNetwork.isMapped(network.getIdentifiable("S2VL1_BBS")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("TL")));
     }
 
     @Test
@@ -106,6 +114,9 @@ class MetrixNetworkTest {
         // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
         List<Switch> switchList = mappedSwitches.stream().map(network::getSwitch).toList();
 
+        // Expected Dangling line list - only the unpaired dangling lines are listed
+        List<DanglingLine> danglingLineList = Set.of("DL").stream().map(network::getDanglingLine).toList();
+
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
         Contingency b = new Contingency("b", Arrays.asList(
@@ -130,8 +141,9 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getLineList()).containsExactlyInAnyOrderElementsOf(network.getLines());
         assertThat(metrixNetwork.getTwoWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getTwoWindingsTransformers());
         assertThat(metrixNetwork.getThreeWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getThreeWindingsTransformers());
-        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(network.getDanglingLines());
+        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(danglingLineList);
         assertThat(metrixNetwork.getSwitchList()).containsExactlyInAnyOrderElementsOf(switchList);
+        assertThat(metrixNetwork.getTieLineList()).containsExactlyInAnyOrderElementsOf(network.getTieLines());
         assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
         assertThat(metrixNetwork.getBusList()).containsExactlyInAnyOrderElementsOf(network.getBusBreakerView().getBuses());
         assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b));
@@ -231,6 +243,51 @@ class MetrixNetworkTest {
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS1_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 91);
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS3_DISCONNECTOR", SwitchKind.DISCONNECTOR, 92, 90);
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS1_BBS3", SwitchKind.BREAKER, 91, 92);
+
+        // We now add two dangling lines and a Tie line
+        VoltageLevel vlS2VL2 = network.getSubstation("S2").newVoltageLevel()
+            .setId("S2VL2")
+            .setNominalV(225.0)
+            .setLowVoltageLimit(220.0)
+            .setHighVoltageLimit(240.0)
+            .setTopologyKind(TopologyKind.NODE_BREAKER)
+            .add();
+        vlS2VL2.getNodeBreakerView().newBusbarSection()
+            .setId("S2VL2_BBS")
+            .setName("S2VL2_BBS")
+            .setNode(10)
+            .add();
+        createSwitch(vlS2VL2, "S2VL2_BBS_DL_DISCONNECTOR", SwitchKind.DISCONNECTOR, 10, 11);
+        createSwitch(vlS2VL2, "S2VL2_DL_BREAKER", SwitchKind.BREAKER, 12, 11);
+        DanglingLine dl1 = vlS2VL2.newDanglingLine()
+            .setId("DL_S2VL2")
+            .setP0(0.0)
+            .setQ0(0.0)
+            .setR(1.5)
+            .setX(20.0)
+            .setG(1E-6)
+            .setB(386E-6 / 2)
+            .setPairingKey("XNODE1")
+            .setNode(12)
+            .add();
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS_DL_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 93);
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_DL_BREAKER", SwitchKind.BREAKER, 93, 94);
+        DanglingLine dl2 = network.getVoltageLevel("S1VL2").newDanglingLine()
+            .setId("DL_S1VL2")
+            .setP0(0.0)
+            .setQ0(0.0)
+            .setR(1.5)
+            .setX(13.0)
+            .setG(2E-6)
+            .setB(386E-6 / 2)
+            .setNode(94)
+            .setPairingKey("XNODE1")
+            .add();
+        network.newTieLine()
+            .setId("TL")
+            .setDanglingLine1(dl1.getId())
+            .setDanglingLine2(dl2.getId())
+            .add();
 
         return network;
     }
