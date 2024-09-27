@@ -45,6 +45,7 @@ public class MetrixNetwork {
     private final Set<String> countryList = new HashSet<>();
 
     private final Set<Load> loadList = new LinkedHashSet<>();
+    private final Set<DanglingLine> danglingLineList = new LinkedHashSet<>();
 
     private final Set<Generator> generatorList = new LinkedHashSet<>();
     private final Set<String> generatorTypeList = new HashSet<>();
@@ -52,8 +53,8 @@ public class MetrixNetwork {
     private final Set<Line> lineList = new LinkedHashSet<>();
     private final Set<TwoWindingsTransformer> twoWindingsTransformerList = new LinkedHashSet<>();
     private final Set<ThreeWindingsTransformer> threeWindingsTransformerList = new LinkedHashSet<>();
-    private final Set<DanglingLine> danglingLineList = new LinkedHashSet<>();
     private final Set<Switch> switchList = new LinkedHashSet<>();
+    private final Set<TieLine> tieLineList = new LinkedHashSet<>();
 
     private final Set<PhaseTapChanger> phaseTapChangerList = new LinkedHashSet<>();
 
@@ -112,6 +113,10 @@ public class MetrixNetwork {
         return List.copyOf(switchList);
     }
 
+    public List<TieLine> getTieLineList() {
+        return List.copyOf(tieLineList);
+    }
+
     public List<PhaseTapChanger> getPhaseTapChangerList() {
         return List.copyOf(phaseTapChangerList);
     }
@@ -145,7 +150,7 @@ public class MetrixNetwork {
             subset = MetrixSubset.NOEUD;
         } else if (identifiable instanceof HvdcLine) {
             subset = MetrixSubset.HVDC;
-        } else if (identifiable instanceof Load) {
+        } else if (identifiable instanceof Load || identifiable instanceof DanglingLine danglingLine && !danglingLine.isPaired()) {
             subset = MetrixSubset.LOAD;
         }
         return subset;
@@ -205,6 +210,12 @@ public class MetrixNetwork {
         }
     }
 
+    private void addTieLine(TieLine tieLine) {
+        if (tieLineList.add(tieLine)) {
+            mapper.newInt(MetrixSubset.QUAD, tieLine.getId());
+        }
+    }
+
     private void addTwoWindingsTransformer(TwoWindingsTransformer twt) {
         if (twoWindingsTransformerList.add(twt)) {
             mapper.newInt(MetrixSubset.QUAD, twt.getId());
@@ -219,7 +230,7 @@ public class MetrixNetwork {
 
     private void addDanglingLine(DanglingLine dl) {
         if (danglingLineList.add(dl)) {
-            mapper.newInt(MetrixSubset.QUAD, dl.getId());
+            mapper.newInt(MetrixSubset.LOAD, dl.getId());
         }
     }
 
@@ -315,6 +326,28 @@ public class MetrixNetwork {
         }
     }
 
+    private void createTieLineList() {
+        int nbNok = 0;
+        for (TieLine tieLine : network.getTieLines()) {
+            Terminal t1 = tieLine.getTerminal1();
+            Bus b1 = t1.getBusBreakerView().getBus();
+            Terminal t2 = tieLine.getTerminal2();
+            Bus b2 = t2.getBusBreakerView().getBus();
+            if (b1 != null && b2 != null) {
+                if (busList.contains(b1) && busList.contains(b2)) {
+                    addTieLine(tieLine);
+                } else {
+                    nbNok++;
+                }
+            } else {
+                nbNok++;
+            }
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("TieLines   total = <%5d> ok = <%5d> not = <%5d>", tieLineList.size() + nbNok, tieLineList.size(), nbNok));
+        }
+    }
+
     private void addTwoWindingsTransformer(TwoWindingsTransformer twt, AtomicInteger nbNok, AtomicInteger nbPtcNok) {
         Terminal t1 = twt.getTerminal1();
         Terminal t2 = twt.getTerminal2();
@@ -386,16 +419,18 @@ public class MetrixNetwork {
     private void createDanglingLineList() {
         int nbNok = 0;
         for (DanglingLine dl : network.getDanglingLines()) {
-            Terminal t = dl.getTerminal();
-            Bus b = t.getBusBreakerView().getBus();
-            if (b != null) {
-                if (busList.contains(b)) {
-                    addDanglingLine(dl);
+            if (!dl.isPaired()) {
+                Terminal t = dl.getTerminal();
+                Bus b = t.getBusBreakerView().getBus();
+                if (b != null) {
+                    if (busList.contains(b)) {
+                        addDanglingLine(dl);
+                    } else {
+                        nbNok++;
+                    }
                 } else {
                     nbNok++;
                 }
-            } else {
-                nbNok++;
             }
         }
         if (LOGGER.isDebugEnabled()) {
@@ -525,6 +560,7 @@ public class MetrixNetwork {
         createSwitchList();
         createLoadList();
         createHvdcLineList();
+        createTieLineList();
     }
 
     public static MetrixNetwork create(Network network) {
@@ -657,7 +693,18 @@ public class MetrixNetwork {
             // Since switches connected to lines and TWT are "replaced" by those connectables, no need to set them retained
             case LINE, TWO_WINDINGS_TRANSFORMER -> addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
             case LOAD, GENERATOR -> addElementToRetainedBreakersList(sw, switchId, setRetained);
-            case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
+            case DANGLING_LINE -> {
+                // A paired dangling line is managed as a line via the tie line while a not-paired is managed as a load
+                DanglingLine danglingLine = (DanglingLine) terminal.getConnectable();
+                if (danglingLine.isPaired()) {
+                    addElementToRetainedBreakersList(sw,
+                        danglingLine.getTieLine().orElseThrow(() -> new PowsyblException("No tie line on a paired dangling line - should not happen")).getId(),
+                        false);
+                } else {
+                    addElementToRetainedBreakersList(sw, switchId, setRetained);
+                }
+            }
+            case HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
                  THREE_WINDINGS_TRANSFORMER -> {
                 if (LOGGER.isWarnEnabled()) {
                     LOGGER.warn("Unsupported connectable type ({}) for switch '{}'", terminal.getConnectable().getType(), switchId);
