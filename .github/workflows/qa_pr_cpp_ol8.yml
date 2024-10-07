@@ -207,6 +207,5 @@ jobs:
       - name: Upload asset to release
         uses: softprops/action-gh-release@9d7c94cfd0a1f3ed45544c887983e9fa900f0564 # 2.0.4
         if: github.event_name == 'release' && startsWith(github.ref, 'refs/tags/')
-
         with:
           files: ${{ steps.metrix-install.outputs.archive_name }}.zip
