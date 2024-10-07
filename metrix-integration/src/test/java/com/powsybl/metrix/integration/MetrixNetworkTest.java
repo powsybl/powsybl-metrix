@@ -7,6 +7,8 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.FourSubstationsNodeBreakerFactory;
+import com.powsybl.iidm.serde.ExportOptions;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.contingency.Probability;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +23,8 @@ import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
@@ -44,9 +48,63 @@ class MetrixNetworkTest {
         Network network = createNetwork();
 
         // Set some switches as retained
-        Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER");
-        List<Switch> switchList = mappedSwitches.stream()
+        Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER", "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3");
+
+        // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
+        List<Switch> switchList = Set.of("S1VL2_GH2_BREAKER", "S1VL1_LD1_BREAKER", "S1VL2_BBS1_BBS3")
+            .stream()
             .map(network::getSwitch).toList();
+
+        // Contingencies
+        Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
+        Contingency b = new Contingency("b", Arrays.asList(
+            new BranchContingency("LINE_S2S3"),
+            new BranchContingency("LINE_S3S4")));
+
+        // Create a contingency provider
+        ContingenciesProvider contingenciesProvider = networkLocal -> {
+            a.addExtension(Probability.class, new Probability(0.002d, null));
+            b.addExtension(Probability.class, new Probability(null, "variable_ts1"));
+            return Arrays.asList(a, b);
+        };
+
+        // Initialize the MetrixNetwork
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, mappedSwitches, new MetrixParameters(), (Path) null);
+
+        // Check the lists
+        assertThat(metrixNetwork.getCountryList()).containsExactlyInAnyOrderElementsOf(Collections.singletonList("Undefined"));
+        assertThat(metrixNetwork.getLoadList()).containsExactlyInAnyOrderElementsOf(network.getLoads());
+        assertThat(metrixNetwork.getGeneratorList()).containsExactlyInAnyOrderElementsOf(network.getGenerators());
+        assertThat(metrixNetwork.getGeneratorTypeList()).containsExactlyInAnyOrderElementsOf(List.of("HYDRO", "THERMAL"));
+        assertThat(metrixNetwork.getLineList()).containsExactlyInAnyOrderElementsOf(network.getLines());
+        assertThat(metrixNetwork.getTwoWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getTwoWindingsTransformers());
+        assertThat(metrixNetwork.getThreeWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getThreeWindingsTransformers());
+        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(network.getDanglingLines());
+        assertThat(metrixNetwork.getSwitchList()).containsExactlyInAnyOrderElementsOf(switchList);
+        assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
+        assertThat(metrixNetwork.getBusList()).containsExactlyInAnyOrderElementsOf(network.getBusBreakerView().getBuses());
+        assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b));
+
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("S1VL2_GH2_BREAKER")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("DL")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("GH2")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("HVDC1")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("LINE_S2S3")));
+        assertTrue(metrixNetwork.isMapped(network.getIdentifiable("LD5")));
+        assertFalse(metrixNetwork.isMapped(network.getIdentifiable("S2VL1_BBS")));
+    }
+
+    @Test
+    void testNetworkBusBreakerElementsLists() {
+        // Mapped switches
+        Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER",
+            "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3", "S1VL3_3WT_BREAKER");
+
+        // Network
+        Network network = createBusBreakerNetwork(mappedSwitches);
+
+        // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
+        List<Switch> switchList = mappedSwitches.stream().map(network::getSwitch).toList();
 
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
@@ -79,11 +137,26 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b));
     }
 
+    private Network createBusBreakerNetwork(Set<String> mappedSwitches) {
+        // Initial network
+        Network network = createNetwork();
+
+        // Set some switches as retained
+        List<Switch> retainedSwitches = mappedSwitches.stream().map(network::getSwitch).toList();
+        network.getSwitchStream()
+                .forEach(sw -> sw.setRetained(retainedSwitches.contains(sw)));
+
+        // Export the network as BusBreaker
+        Path exportedFile = fileSystem.getPath("./network.xiidm");
+        NetworkSerDe.write(network, new ExportOptions().setTopologyLevel(TopologyLevel.BUS_BREAKER), exportedFile);
+        return NetworkSerDe.read(exportedFile);
+    }
+
     private Network createNetwork() {
         // Initial network
         Network network = FourSubstationsNodeBreakerFactory.create();
 
-        // We add a substation, a ThreeWindingsTransformer and a DanglingLine
+        // We add a voltage level, a ThreeWindingsTransformer and a DanglingLine
         VoltageLevel s1vl3 = network.getSubstation("S1").newVoltageLevel()
             .setId("S1VL3")
             .setNominalV(225.0)
@@ -137,7 +210,7 @@ class MetrixNetworkTest {
 
         // Dangling line
         createSwitch(s1vl3, "S1VL3_BBS_DL_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 3);
-        createSwitch(s1vl3, "S1VL3_DL_BREAKER", SwitchKind.BREAKER, 3, 4);
+        createSwitch(s1vl3, "S1VL3_DL_BREAKER", SwitchKind.BREAKER, 4, 3);
         s1vl3.newDanglingLine()
             .setId("DL")
             .setR(10.0)
@@ -148,6 +221,16 @@ class MetrixNetworkTest {
             .setQ0(30.0)
             .setNode(4)
             .add();
+
+        // We add another bus bar section and link it to the others with a breaker
+        network.getVoltageLevel("S1VL2").getNodeBreakerView().newBusbarSection()
+            .setId("S1VL2_BBS3")
+            .setName("S1VL2_BBS3")
+            .setNode(90)
+            .add();
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS1_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 91);
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS3_DISCONNECTOR", SwitchKind.DISCONNECTOR, 92, 90);
+        createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS1_BBS3", SwitchKind.BREAKER, 91, 92);
 
         return network;
     }

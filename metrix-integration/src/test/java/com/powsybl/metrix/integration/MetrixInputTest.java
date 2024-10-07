@@ -14,8 +14,10 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
@@ -154,6 +156,17 @@ class MetrixInputTest {
         String actual = writer.toString();
         assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/simpleNetworkDefault.json"),
                 new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
+    }
+
+    @Test
+    void metrixInputDataWithT3TTest() throws IOException {
+        Network n = ThreeWindingsTransformerNetworkFactory.create();
+        MetrixInputData metrixInputData = new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters());
+        try (StringWriter writer = new StringWriter()) {
+            assertThrows(PowsyblException.class,
+                () -> metrixInputData.writeJson(writer),
+                "Three Windings Transformers are not yet supported in metrix");
+        }
     }
 
     @Test
