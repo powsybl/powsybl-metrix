@@ -159,6 +159,8 @@ jobs:
     container: 'oraclelinux:8'
     needs: qa
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
     steps:
       - name: Install Dependencies
         run: |
