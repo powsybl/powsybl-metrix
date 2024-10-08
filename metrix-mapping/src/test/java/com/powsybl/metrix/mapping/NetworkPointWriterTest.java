@@ -323,7 +323,7 @@ class NetworkPointWriterTest {
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
         // Create NetworkPointWriter
-        DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir, network.getId(), null);
+        DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(network.getId()), null);
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
 
         // Create mapper

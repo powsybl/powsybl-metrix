@@ -178,7 +178,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     protected TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
         Objects.requireNonNull(workingDir);
-        DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
+        DataSource dataSource = DataSourceUtil.createDataSource(workingDir.resolve(network.getId()), null);
         return new NetworkPointWriter(network, dataSource);
     }
 

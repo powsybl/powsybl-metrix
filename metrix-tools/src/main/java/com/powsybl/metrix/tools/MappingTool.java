@@ -322,7 +322,7 @@ public class MappingTool implements Tool {
                 for (char c : FileSystem.getCurrent().getIllegalFileNameChars()) {
                     cleanedNetworkId = cleanedNetworkId.replace(c, '_');
                 }
-                DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir, cleanedNetworkId, null);
+                DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(cleanedNetworkId), null);
                 observers.add(new NetworkPointWriter(localParameters.network(), dataSource));
             }
             if (equipmentTimeSeriesDir != null) {
