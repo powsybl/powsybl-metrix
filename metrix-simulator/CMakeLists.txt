@@ -35,6 +35,7 @@ if(MSVC)
   # In release, we prefer speed over size of the code
   set(CMAKE_CXX_FLAGS_RELEASE "/O2")
   set(CMAKE_C_FLAGS_RELEASE "/O2")
+  set(Boost_USE_STATIC_RUNTIME ON)
 else()
   if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -47,7 +48,6 @@ endif(MSVC)
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME ON)
 find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
 
 option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
