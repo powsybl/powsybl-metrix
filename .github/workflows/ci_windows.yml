@@ -20,7 +20,7 @@ concurrency:
 
 defaults:
   run:
-    shell: bash
+    shell: cmd
 
 jobs:
   windows:
@@ -32,7 +32,6 @@ jobs:
     steps:
 
       - name: Install Boost
-        shell: cmd
         run: |
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
           choco install wget --no-progress
