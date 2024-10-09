@@ -58,5 +58,5 @@ jobs:
       - name: Build
         run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build-windows --target install --parallel 2 --config Release
 
-#      - name: Tests
-#        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build-windows && ctest -j8 --output-on-failure -C Release
+      - name: Tests
+        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build-windows && ctest -j8 --output-on-failure -C Release
