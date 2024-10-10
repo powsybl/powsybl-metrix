@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.FileSystem;
+import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -60,7 +60,7 @@ class MetrixConfigTest {
     }
 
     @Test
-    void snakeCaseTest() {
+    void kebabCaseTest() {
         MapModuleConfig config = platformConfig.createModuleConfig("metrix");
         config.setStringProperty("home-dir", "/home");
         config.setStringProperty("command", "metrix-simulator");
@@ -72,5 +72,18 @@ class MetrixConfigTest {
         assertTrue(metrixConfig.isConstantLossFactor());
         assertEquals(333, metrixConfig.getChunkSize());
         assertEquals(20000, metrixConfig.getResultNumberLimit());
+    }
+
+    @Test
+    void testDefaultConfig() {
+        MetrixConfig metrixConfig = MetrixConfig.load(platformConfig);
+        assertEquals(Paths.get(System.getProperty("user.home")).resolve(".metrix").toString(), metrixConfig.getHomeDir().toString());
+        assertEquals("metrix-simulator", metrixConfig.getCommand());
+        assertFalse(metrixConfig.isDebug());
+        assertFalse(metrixConfig.isConstantLossFactor());
+        assertEquals(10, metrixConfig.getChunkSize());
+        assertEquals(10000, metrixConfig.getResultNumberLimit());
+        assertEquals(0, metrixConfig.getDebugLogLevel());
+        assertEquals(2, metrixConfig.getLogLevel());
     }
 }

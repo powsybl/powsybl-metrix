@@ -7,11 +7,10 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
 
 import java.nio.file.Path;
-import java.util.Objects;
+import java.nio.file.Paths;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -20,10 +19,12 @@ public class MetrixConfig {
 
     protected MetrixConfig() { }
 
+    private static final Path DEFAULT_HOME_DIR = Paths.get(System.getProperty("user.home")).resolve(".metrix");
+    private static final String DEFAULT_COMMAND = "metrix-simulator";
     private static final boolean DEFAULT_DEBUG = false;
     private static final boolean DEFAULT_CONSTANT_LOAD_FACTOR = false;
     private static final int DEFAULT_CHUNK_SIZE = 10;
-    private static final int RESULT_NUMBER_LIMIT = 10000;
+    private static final int DEFAULT_RESULT_NUMBER_LIMIT = 10000;
     private static final int DEFAULT_DEBUG_LOG_LEVEL = 0;
     private static final int DEFAULT_LOG_LEVEL = 2;
 
@@ -32,47 +33,36 @@ public class MetrixConfig {
     }
 
     public static MetrixConfig load(PlatformConfig platformConfig) {
-        ModuleConfig moduleConfig = platformConfig.getOptionalModuleConfig("metrix")
-                .orElseThrow(() -> new IllegalStateException("Metrix module configuration could not be found"));
-        Path homeDir = moduleConfig.getPathProperty("home-dir");
-        String command = moduleConfig.getStringProperty("command");
-        boolean debug = moduleConfig.getBooleanProperty("debug", DEFAULT_DEBUG);
-        boolean constantLossFactor = moduleConfig.getOptionalBooleanProperty("constant-loss-factor").orElse(DEFAULT_CONSTANT_LOAD_FACTOR);
-
-        int chunkSize = moduleConfig.getOptionalIntProperty("chunk-size")
-                .orElseGet(() -> moduleConfig.getOptionalIntProperty("chunkSize")
-                        .orElse(DEFAULT_CHUNK_SIZE));
-
-        int resultNumberLimit = moduleConfig.getOptionalIntProperty("result-limit")
-                .orElseGet(() -> moduleConfig.getOptionalIntProperty("resultLimit")
-                        .orElse(RESULT_NUMBER_LIMIT));
-
-        int debugLogLevel = moduleConfig.getOptionalIntProperty("debug-log-level")
-                .orElseGet(() -> moduleConfig.getOptionalIntProperty("debugLogLevel")
-                        .orElse(DEFAULT_DEBUG_LOG_LEVEL));
-
-        int logLevel = moduleConfig.getOptionalIntProperty("log-level")
-                .orElseGet(() -> moduleConfig.getOptionalIntProperty("logLevel")
-                        .orElse(DEFAULT_LOG_LEVEL));
-
-        return new MetrixConfig(homeDir, command, debug, constantLossFactor, chunkSize, resultNumberLimit, debugLogLevel, logLevel);
+        MetrixConfig metrixConfig = new MetrixConfig();
+        platformConfig.getOptionalModuleConfig("metrix")
+            .ifPresent(moduleConfig -> metrixConfig
+                .setHomeDir(moduleConfig.getPathProperty("home-dir", DEFAULT_HOME_DIR))
+                .setCommand(moduleConfig.getStringProperty("command", DEFAULT_COMMAND))
+                .setDebug(moduleConfig.getBooleanProperty("debug", DEFAULT_DEBUG))
+                .setConstantLossFactor(moduleConfig.getBooleanProperty("constant-loss-factor", DEFAULT_CONSTANT_LOAD_FACTOR))
+                .setChunkSize(moduleConfig.getIntProperty("chunk-size", moduleConfig.getIntProperty("chunkSize", DEFAULT_CHUNK_SIZE)))
+                .setResultNumberLimit(moduleConfig.getIntProperty("result-limit", moduleConfig.getIntProperty("resultLimit", DEFAULT_RESULT_NUMBER_LIMIT)))
+                .setDebugLogLevel(moduleConfig.getIntProperty("debug-log-level", moduleConfig.getIntProperty("debugLogLevel", DEFAULT_DEBUG_LOG_LEVEL)))
+                .setLogLevel(moduleConfig.getIntProperty("log-level", moduleConfig.getIntProperty("logLevel", DEFAULT_LOG_LEVEL)))
+            );
+        return metrixConfig;
     }
 
-    private Path homeDir;
+    private Path homeDir = DEFAULT_HOME_DIR;
 
-    private String command;
+    private String command = DEFAULT_COMMAND;
 
-    private boolean debug;
+    private boolean debug = DEFAULT_DEBUG;
 
-    private boolean constantLossFactor;
+    private boolean constantLossFactor = DEFAULT_CONSTANT_LOAD_FACTOR;
 
-    private int chunkSize;
+    private int chunkSize = DEFAULT_CHUNK_SIZE;
 
-    private int resultNumberLimit;
+    private int resultNumberLimit = DEFAULT_RESULT_NUMBER_LIMIT;
 
-    private int debugLogLevel;
+    private int debugLogLevel = DEFAULT_DEBUG_LOG_LEVEL;
 
-    private int logLevel;
+    private int logLevel = DEFAULT_LOG_LEVEL;
 
     private static int validateChunkSize(int chunkSize) {
         if (chunkSize < 1) {
@@ -86,17 +76,6 @@ public class MetrixConfig {
             throw new IllegalArgumentException("Invalid loglevel " + logLevel);
         }
         return logLevel;
-    }
-
-    public MetrixConfig(Path homeDir, String command, boolean debug, boolean constantLossFactor, int chunkSize, int resultNumberLimit, int debugLogLevel, int logLevel) {
-        this.homeDir = Objects.requireNonNull(homeDir);
-        this.command = Objects.requireNonNull(command);
-        this.debug = debug;
-        this.constantLossFactor = constantLossFactor;
-        this.chunkSize = validateChunkSize(chunkSize);
-        this.resultNumberLimit = resultNumberLimit;
-        this.debugLogLevel = validateLogLevel(debugLogLevel);
-        this.logLevel = validateLogLevel(logLevel);
     }
 
     public Path getHomeDir() {
