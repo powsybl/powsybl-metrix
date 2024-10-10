@@ -14,12 +14,15 @@ To launch a Metrix simulation, you need:
 
 ## Module configuration
 
-The module must be configured with following properties (only a few are required):
+The module can be configured with the following properties and default values described further below.  
+All properties are optional.  
+For further information about PowSyBl module configuration please refer to the dedicated [PowSyBl Core Configuration page](inv:powsyblcore:*:*#user/configuration/index)
+
 ```yaml
 metrix:
-  home-dir: "<PATH_TO_METRIX_INSTALLATION_DIRECTORY>" # required
-
-  iidm-export-version: "1.5" # default to latest available version
+  home-dir: "<user.home>/.metrix" # metrix simulator installation directory, on Linux defaults to ~/.metrix, on Windows default to (usually) C:\Users\<username>\.metrix
+  command: metrix-simulator # metrix simulator executable name, defaults to "metrix-simulator"
+  iidm-export-version: "1.13" # defaults to the latest iIDM available version
   constant-loss-factor: false # enable constant loss factor
   chunk-size: 10 # size of the batch processed by Metrix
   result-limit: 10000 # max allowed output count
@@ -78,7 +81,7 @@ parameters {
 }
 ```
 
-Since there is default value for each parameters, only useful parameters can be filled in. For instance:
+Since there is default value for each parameter, only useful parameters can be filled in. For instance:
 ```
 parameters {
   computationType OPF_WITHOUT_REDISPATCHING  
