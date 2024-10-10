@@ -61,14 +61,16 @@ jobs:
 #      - name: Tests
 #        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build-windows && ctest -j2 --output-on-failure -C Release
 
-      - name: Prepare Metrix install artifact
-        shell: powershell
-        run: |
-          cd $env:GITHUB_WORKSPACE/metrix-simulator/build-windows/install
-          Compress-Archive -Path bin,etc -Destination $env:GITHUB_WORKSPACE/metrix-simulator-windows.zip
+#      - name: Prepare Metrix install artifact
+#        shell: powershell
+#        run: |
+#          cd $env:GITHUB_WORKSPACE/metrix-simulator/build-windows/install
+#          Compress-Archive -Path bin,etc -Destination $env:GITHUB_WORKSPACE/metrix-simulator-windows.zip
 
       - name: Upload Metrix install artifact
         uses: actions/upload-artifact@v3
         with:
-          name: metrix-simulator-windows.zip
-          path: metrix-simulator-windows.zip
+          name: metrix-simulator-windows
+          path: |
+            metrix-simulator/build-windows/install/bin
+            metrix-simulator/build-windows/install/etc
