@@ -8,7 +8,7 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
-cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 include(CMakePackageConfigHelpers)
 
@@ -28,12 +28,14 @@ set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
 
 if(MSVC)
-  add_compile_definitions(WIN32)
+  add_definitions(-D_WIN32_WINNT=0x0A00)
+  add_compile_definitions("_CRT_SECURE_NO_WARNINGS")
   set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:5000000 ")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
   # In release, we prefer speed over size of the code
   set(CMAKE_CXX_FLAGS_RELEASE "/O2")
   set(CMAKE_C_FLAGS_RELEASE "/O2")
+  set(Boost_USE_STATIC_RUNTIME ON)
 else()
   if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -142,6 +144,7 @@ target_link_libraries(${target}
     SuiteSparse::SuiteSparse_BTF
     SuiteSparse::SuiteSparse_Config
     ${Boost_LIBRARIES}
+    $<$<BOOL:${MSVC}>:msvcrt.lib>
 )
 
 if (USE_SIRIUS_SHARED)
