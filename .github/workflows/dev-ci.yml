@@ -291,7 +291,7 @@ jobs:
 
       - name: Fetch git base ref
         run: |
-          git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
+          git fetch --no-tags --depth=1 origin ${{ github.base_ref }} ${{ github.head_ref }}
           git show-ref
 
       - name: Configure 3rd parties
