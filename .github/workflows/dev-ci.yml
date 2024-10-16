@@ -96,7 +96,7 @@ jobs:
           cmake-version: '3.22.x'
 
       - name: Checkout sources
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
@@ -270,3 +270,58 @@ jobs:
         run: >
           ${{ runner.workspace }}/sonar/bin/sonar-scanner
           -Dsonar.host.url=https://sonarcloud.io
+
+  cpp_clang_tidy:
+    name: Clang-tidy Report
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Install clang-tidy
+        run: |
+          sudo apt install -y clang-tidy-15
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
+
+      - name: Checkout sources
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Generate Clang Tidy Report (Modified C++ sources in PR)
+        id: clang-pr
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin/${{ github.base_ref }} --depth 1
+          REPORT_NAME="clang_tidy_report_pr.txt"
+          REPORT_PATH="$PWD/${REPORT_NAME}"
+          export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          if [ -n "$METRIX_CPP_SOURCES" ]; then
+            clang-tidy $METRIX_CPP_SOURCES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
+            echo "report_exists=true" >> "$GITHUB_OUTPUT"
+            echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+            echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+          else
+            echo "No C++ source file modification found in this PR, no Clang Tidy report will be generated"
+          fi
+
+      - name: Upload Clang Tidy Report (Modified C++ sources in PR)
+        if: github.event_name == 'pull_request' && steps.clang-pr.outputs.report_exists
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: ${{ steps.clang-pr.outputs.report_name }}
+          path: ${{ steps.clang-pr.outputs.report_path }}
