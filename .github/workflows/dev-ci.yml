@@ -1,6 +1,9 @@
 name: Dev CI
 
 on:
+  push:
+    branches:
+      - "gh-workflows" # FIXME - TEMP / REMOVE ME
   workflow_dispatch:
     inputs:
       generate_artifacts:
