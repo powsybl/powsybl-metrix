@@ -19,7 +19,7 @@ public class MetrixConfig {
 
     protected MetrixConfig() { }
 
-    private static final Path DEFAULT_HOME_DIR = Paths.get(System.getProperty("user.home")).resolve(".metrix");
+    private static final Path DEFAULT_HOME_DIR = Paths.get(System.getProperty("user.home")).resolve(".local/opt/powsybl-metrix");
     private static final String DEFAULT_COMMAND = "metrix-simulator";
     private static final boolean DEFAULT_DEBUG = false;
     private static final boolean DEFAULT_CONSTANT_LOAD_FACTOR = false;

@@ -77,7 +77,7 @@ class MetrixConfigTest {
     @Test
     void testDefaultConfig() {
         MetrixConfig metrixConfig = MetrixConfig.load(platformConfig);
-        assertEquals(Paths.get(System.getProperty("user.home")).resolve(".metrix").toString(), metrixConfig.getHomeDir().toString());
+        assertEquals(Paths.get(System.getProperty("user.home")).resolve(".local/opt/powsybl-metrix").toString(), metrixConfig.getHomeDir().toString());
         assertEquals("metrix-simulator", metrixConfig.getCommand());
         assertFalse(metrixConfig.isDebug());
         assertFalse(metrixConfig.isConstantLossFactor());

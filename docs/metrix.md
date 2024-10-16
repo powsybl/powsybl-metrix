@@ -20,7 +20,7 @@ For further information about PowSyBl module configuration please refer to the d
 
 ```yaml
 metrix:
-  home-dir: "<user.home>/.metrix" # metrix simulator installation directory, on Linux defaults to ~/.metrix, on Windows default to (usually) C:\Users\<username>\.metrix
+  home-dir: "<user.home>/.local/opt/powsybl-metrix" # metrix simulator installation directory, on Linux defaults to ~/.local/opt/powsybl-metrix, on Windows defaults to (usually) C:\Users\<username>\.local\opt\powsybl-metrix
   command: metrix-simulator # metrix simulator executable name, defaults to "metrix-simulator"
   iidm-export-version: "1.13" # defaults to the latest iIDM available version
   constant-loss-factor: false # enable constant loss factor
