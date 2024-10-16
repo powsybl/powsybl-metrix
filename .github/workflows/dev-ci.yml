@@ -2,6 +2,12 @@ name: Dev CI
 
 on:
   workflow_dispatch:
+    inputs:
+      generate_artifacts:
+        description: 'Generate and upload build artifacts'
+        required: true
+        default: false
+        type: boolean
   pull_request:
 
 permissions: { }
@@ -54,6 +60,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Upload Metrix iTools archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: itools-metrix
+          path: ${{ github.workspace }}/metrix-distribution/target/itools-metrix.zip
 
   cpp_centos7:
     name: Build C++ CentOS7
@@ -129,6 +142,24 @@ jobs:
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build-centos7 && ctest -j2 --output-on-failure
 
+      - name: Prepare Metrix Simulator archive
+        id: metrix-archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: |
+          ARCHIVE_NAME="metrix-simulator-centos7"
+          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
+          cd metrix-simulator/build/install/
+          zip -r $ARCHIVE_PATH bin etc
+          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.metrix-archive.outputs.archive_name }}.zip
+          path: ${{ steps.metrix-archive.outputs.archive_path }}.zip
+
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
     runs-on: ubuntu-latest
@@ -163,6 +194,24 @@ jobs:
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build-ol8 && ctest -j8 --output-on-failure
 
+      - name: Prepare Metrix Simulator archive
+        id: metrix-archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: |
+          ARCHIVE_NAME="metrix-simulator-ol8"
+          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
+          cd metrix-simulator/build/install/
+          zip -r $ARCHIVE_PATH bin etc
+          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: ${{ steps.metrix-archive.outputs.archive_name }}.zip
+          path: ${{ steps.metrix-archive.outputs.archive_path }}.zip
+
   cpp_ubuntu:
     name: Build C++ Ubuntu
     runs-on: ubuntu-latest
@@ -194,6 +243,24 @@ jobs:
 
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
+
+      - name: Prepare Metrix Simulator archive
+        id: metrix-archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: |
+          ARCHIVE_NAME="metrix-simulator-ubuntu"
+          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
+          cd metrix-simulator/build/install/
+          zip -r $ARCHIVE_PATH bin etc
+          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload OR-Tools install artifact
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: ${{ steps.metrix-archive.outputs.archive_name }}.zip
+          path: ${{ steps.metrix-archive.outputs.archive_path }}.zip
 
   cpp_ubuntu_qa:
     name: Short QA C++ Ubuntu
@@ -272,7 +339,7 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io
 
   cpp_clang_tidy:
-    name: Clang Tidy Report
+    name: Clang Tidy Report (PR only)
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' # github.base_ref exists only for PRs
     steps:
@@ -289,7 +356,7 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
-      - name: Fetch git base ref
+      - name: Git fetch base_ref and head_ref
         run: |
           git fetch --no-tags --depth=1 origin ${{ github.base_ref }} ${{ github.head_ref }}
           git show-ref
@@ -308,7 +375,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-      - name: Generate Clang Tidy Report (Modified C++ sources in PR)
+      - name: Generate Clang Tidy Report (Modified C++ sources only)
         id: clang-pr
         run: |
           REPORT_NAME="clang_tidy_report_pr.txt"
