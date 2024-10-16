@@ -274,6 +274,7 @@ jobs:
   cpp_clang_tidy:
     name: Clang Tidy Report
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' # github.base_ref exists only for PRs
     steps:
       - name: Install Boost
         run: |
@@ -285,13 +286,11 @@ jobs:
           sudo apt install -y clang-tidy-15
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
 
-      - name: 'PR Fetch Depth'
-        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
-
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
-        with:
-          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
+        run: |
+          git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
+          git show-ref
 
       - name: Configure 3rd parties
         run: >
@@ -309,7 +308,6 @@ jobs:
 
       - name: Generate Clang Tidy Report (Modified C++ sources in PR)
         id: clang-pr
-        if: github.event_name == 'pull_request'
         run: |
           REPORT_NAME="clang_tidy_report_pr.txt"
           REPORT_PATH="$PWD/${REPORT_NAME}"
@@ -324,7 +322,7 @@ jobs:
           fi
 
       - name: Upload Clang Tidy Report (Modified C++ sources in PR)
-        if: github.event_name == 'pull_request' && steps.clang-pr.outputs.report_exists
+        if: steps.clang-pr.outputs.report_exists
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: ${{ steps.clang-pr.outputs.report_name }}
