@@ -272,7 +272,7 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io
 
   cpp_clang_tidy:
-    name: Clang-tidy Report
+    name: Clang Tidy Report
     runs-on: ubuntu-latest
     steps:
       - name: Install Boost
@@ -285,8 +285,13 @@ jobs:
           sudo apt install -y clang-tidy-15
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
 
+      - name: 'PR Fetch Depth'
+        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> "${GITHUB_ENV}"
+
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        with:
+          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
 
       - name: Configure 3rd parties
         run: >
@@ -306,7 +311,6 @@ jobs:
         id: clang-pr
         if: github.event_name == 'pull_request'
         run: |
-          git fetch origin/${{ github.base_ref }} --depth 1
           REPORT_NAME="clang_tidy_report_pr.txt"
           REPORT_PATH="$PWD/${REPORT_NAME}"
           export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
