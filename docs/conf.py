@@ -83,7 +83,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md']
 
 # Reference sections generation
 autosectionlabel_prefix_document = True
@@ -126,7 +126,7 @@ todo_include_todos = True
 
 # Links to external documentations : python 3 and pandas
 intersphinx_mapping = {
-    "powsyblcore": ("https://powsybl-core.readthedocs.io/en/latest/", None),
+    "powsyblcore": ("https://powsybl.readthedocs.io/projects/powsybl-core/en/latest/", None)
 }
 intersphinx_disabled_reftypes = ["*"]
 
@@ -156,9 +156,9 @@ def replace_versions(intersphinx_mapping, file):
                 dependency = m.group(1)
                 version = m.group(2)
                 if "SNAPSHOT" not in version and dependency in intersphinx_mapping:
-                    urlStart = extract_base_url(intersphinx_mapping[dependency][0])
-                    if urlStart:
-                        intersphinx_mapping[dependency] = (urlStart + version + "/", None)
+                    url_start = extract_base_url(intersphinx_mapping[dependency][0])
+                    if url_start:
+                        intersphinx_mapping[dependency] = (url_start + version + "/", None)
             if "</properties>" in line:
                 break
     return intersphinx_mapping
