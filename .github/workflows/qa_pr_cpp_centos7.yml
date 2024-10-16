@@ -60,7 +60,7 @@ jobs:
           cmake-version: '3.22.x'
 
       - name: Checkout sources
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@v3 # last version working on CentOS7
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
@@ -212,7 +212,7 @@ jobs:
           SONAR_SCANNER_VERSION: 3.3.0.1492
 
       - name: Checkout sources
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@v3 # last version working on CentOS7
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
@@ -298,7 +298,7 @@ jobs:
           cmake-version: '3.22.x'
 
       - name: Checkout sources
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@v3 # last version working on CentOS7
 
       - name: Download Boost-release
         uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
