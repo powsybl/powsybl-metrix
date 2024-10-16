@@ -12,6 +12,11 @@ on:
         default: false
         type: boolean
   pull_request:
+    # FIXME - TEMP / REMOVE ME below
+    branches:
+      - "main"
+    paths:
+      - ".github/workflows/dev-ci.yml"
 
 permissions: { }
 
