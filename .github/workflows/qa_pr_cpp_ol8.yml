@@ -58,6 +58,7 @@ jobs:
         id: clang-pr
         if: github.event_name == 'pull_request'
         run: |
+          git fetch origin/${{ github.base_ref }} --depth 1
           REPORT_NAME="clang_tidy_report_ol8.txt"
           REPORT_PATH="$PWD/${REPORT_NAME}"
           export MODIFIED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
