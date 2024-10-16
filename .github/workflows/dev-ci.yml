@@ -1,9 +1,6 @@
 name: Dev CI
 
 on:
-  push:
-    branches:
-      - "gh-workflows" # FIXME - TEMP / REMOVE ME
   workflow_dispatch:
     inputs:
       generate_artifacts:
@@ -12,11 +9,6 @@ on:
         default: false
         type: boolean
   pull_request:
-    # FIXME - TEMP / REMOVE ME below
-    branches:
-      - "main"
-    paths:
-      - ".github/workflows/dev-ci.yml"
 
 permissions: { }
 
@@ -69,12 +61,16 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Get Maven version
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
       - name: Upload Metrix iTools archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
-          name: itools-metrix
-          path: ${{ github.workspace }}/metrix-distribution/target/itools-metrix.zip
+          name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
+          path: ${{ github.workspace }}/metrix-distribution/target/metrix
 
   cpp_centos7:
     name: Build C++ CentOS7
@@ -133,40 +129,31 @@ jobs:
       - name: Configure 3rd parties
         run: |
           source /opt/rh/devtoolset-9/enable
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-centos7/external
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Build 3rd parties
         run: |
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-centos7/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
 
       - name: Configure CMake
         run: |
           source /opt/rh/devtoolset-9/enable
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-centos7/install -B $GITHUB_WORKSPACE/metrix-simulator/build-centos7
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install -B $GITHUB_WORKSPACE/metrix-simulator/build
 
       - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-centos7 --target install --parallel 2
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
 
       - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-centos7 && ctest -j2 --output-on-failure
-
-      - name: Prepare Metrix Simulator archive
-        id: metrix-archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        run: |
-          ARCHIVE_NAME="metrix-simulator-centos7"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build/install/
-          zip -r $ARCHIVE_PATH bin etc
-          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         uses: actions/upload-artifact@v3
         with:
-          name: ${{ steps.metrix-archive.outputs.archive_name }}.zip
-          path: ${{ steps.metrix-archive.outputs.archive_path }}.zip
+          name: metrix-simulator-centos7
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
 
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
@@ -184,41 +171,32 @@ jobs:
 
       - name: Configure 3rd parties
         run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
 
       - name: Configure CMake
         run: >
-          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-ol8
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-ol8/install
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-ol8 --target install --parallel 2
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
 
       - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-ol8 && ctest -j8 --output-on-failure
-
-      - name: Prepare Metrix Simulator archive
-        id: metrix-archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        run: |
-          ARCHIVE_NAME="metrix-simulator-ol8"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build/install/
-          zip -r $ARCHIVE_PATH bin etc
-          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
-          name: ${{ steps.metrix-archive.outputs.archive_name }}.zip
-          path: ${{ steps.metrix-archive.outputs.archive_path }}.zip
+          name: metrix-simulator-ol8
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
 
   cpp_ubuntu:
     name: Build C++ Ubuntu
@@ -234,41 +212,32 @@ jobs:
 
       - name: Configure 3rd parties
         run: >
-          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build-linux/external
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
 
       - name: Configure CMake
         run: >
-          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build-linux
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build-linux/install
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
-        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build-linux --target install --parallel 2
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
 
       - name: Tests
-        run: cd $GITHUB_WORKSPACE/metrix-simulator/build-linux && ctest -j8 --output-on-failure
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j8 --output-on-failure
 
-      - name: Prepare Metrix Simulator archive
-        id: metrix-archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        run: |
-          ARCHIVE_NAME="metrix-simulator-ubuntu"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build/install/
-          zip -r $ARCHIVE_PATH bin etc
-          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
-
-      - name: Upload OR-Tools install artifact
+      - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
-          name: ${{ steps.metrix-archive.outputs.archive_name }}.zip
-          path: ${{ steps.metrix-archive.outputs.archive_path }}.zip
+          name: metrix-simulator-ubuntu
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
 
   cpp_ubuntu_qa:
     name: Short QA C++ Ubuntu
