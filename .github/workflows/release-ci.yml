@@ -134,7 +134,7 @@ jobs:
           asset_content_type: application/zip
 
   cpp_oraclelinux8:
-    name: Build C++ Oracle Linux 8
+    name: Package C++ Oracle Linux 8
     runs-on: ubuntu-latest
     container: 'oraclelinux:8'
     steps:
@@ -188,7 +188,7 @@ jobs:
           asset_content_type: application/zip
 
   cpp_ubuntu:
-    name: Build C++ Ubuntu
+    name: Package C++ Ubuntu
     runs-on: ubuntu-latest
     steps:
       - name: Install Boost
