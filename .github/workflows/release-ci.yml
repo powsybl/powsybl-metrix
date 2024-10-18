@@ -238,3 +238,72 @@ jobs:
           asset_path: ${{ steps.metrix-install.outputs.archive_path }}.zip
           asset_name: ${{ steps.metrix-install.outputs.archive_name }}.zip
           asset_content_type: application/zip
+
+  cpp_windows:
+    name: Package C++ Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    env:
+      BOOST_ROOT: C:\thirdparties\boost-1.72.0
+      BOOST_URL: https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe/download
+    steps:
+      - name: Install Boost
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          choco install wget --no-progress
+          wget -nv -O boost-installer.exe %BOOST_URL%
+          boost-installer.exe /dir=%BOOST_ROOT% /sp- /verysilent /suppressmsgboxes /norestart
+
+      - name: Checkout sources
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 #v4.1.6
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --parallel 2 --config Release
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\metrix-simulator\build\install
+
+      - name: Build
+        run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
+
+      - name: Tests
+        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build && ctest -j2 --output-on-failure -C Release
+
+      - name: Prepare Metrix package
+        id: metrix-install
+        shell: bash
+        run: |
+          ARCHIVE_NAME="metrix-simulator-windows"
+          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
+          cd metrix-simulator/build/install/
+          zip -r $ARCHIVE_PATH bin etc
+
+      - name: Prepare Metrix package
+        shell: powershell
+        run: |
+          $env:ARCHIVE_NAME = "metrix-simulator-windows"
+          $env:ARCHIVE_PATH = "$env:GITHUB_WORKSPACE\$env:ARCHIVE_NAME"
+          cd $env:GITHUB_WORKSPACE/metrix-simulator/build/install
+          Compress-Archive -Path bin,etc -Destination $env:ARCHIVE_PATH
+          echo "archive_name=$env:ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+          echo "archive_path=$env:ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
+
+      - name: Upload release package
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ${{ steps.metrix-install.outputs.archive_path }}.zip
+          asset_name: ${{ steps.metrix-install.outputs.archive_name }}.zip
+          asset_content_type: application/zip
