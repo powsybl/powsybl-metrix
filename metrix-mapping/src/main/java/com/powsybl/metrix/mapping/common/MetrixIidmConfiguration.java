@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.mapping.common;
 
-import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
 import com.powsybl.iidm.serde.IidmSerDeConstants;
 
@@ -16,26 +15,30 @@ import com.powsybl.iidm.serde.IidmSerDeConstants;
  */
 public final class MetrixIidmConfiguration {
 
-    private static final String IIDM_EXPORT_VERSION = IidmSerDeConstants.CURRENT_IIDM_VERSION.toString(".");
-    private final String networkExportVersion;
+    private static final String DEFAULT_IIDM_EXPORT_VERSION = IidmSerDeConstants.CURRENT_IIDM_VERSION.toString(".");
+    private String networkExportVersion = DEFAULT_IIDM_EXPORT_VERSION;
 
     public static MetrixIidmConfiguration load() {
         return load(PlatformConfig.defaultConfig());
     }
 
     public static MetrixIidmConfiguration load(PlatformConfig platformConfig) {
-        ModuleConfig moduleConfig = platformConfig.getOptionalModuleConfig("metrix")
-                .orElseThrow(() -> new IllegalStateException("Metrix module configuration could not be found"));
-        String iidmExportVersion = moduleConfig.getOptionalStringProperty("iidm-export-version")
-                .orElseGet(() -> moduleConfig.getStringProperty("iidmExportVersion", IIDM_EXPORT_VERSION));
-        return new MetrixIidmConfiguration(iidmExportVersion);
+        MetrixIidmConfiguration metrixIidmConfiguration = new MetrixIidmConfiguration();
+        platformConfig.getOptionalModuleConfig("metrix")
+                .ifPresent(moduleConfig -> metrixIidmConfiguration
+                        .setNetworkExportVersion(moduleConfig.getStringProperty("iidm-export-version", moduleConfig.getStringProperty("iidmExportVersion", DEFAULT_IIDM_EXPORT_VERSION))));
+        return metrixIidmConfiguration;
     }
 
-    private MetrixIidmConfiguration(String networkExportVersion) {
-        this.networkExportVersion = networkExportVersion;
+    private MetrixIidmConfiguration() {
     }
 
     public String getNetworkExportVersion() {
         return networkExportVersion;
+    }
+
+    public MetrixIidmConfiguration setNetworkExportVersion(String networkExportVersion) {
+        this.networkExportVersion = networkExportVersion;
+        return this;
     }
 }
