@@ -280,15 +280,6 @@ jobs:
         run: cd %GITHUB_WORKSPACE%\metrix-simulator\build && ctest -j2 --output-on-failure -C Release
 
       - name: Prepare Metrix package
-        id: metrix-install
-        shell: bash
-        run: |
-          ARCHIVE_NAME="metrix-simulator-windows"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build/install/
-          zip -r $ARCHIVE_PATH bin etc
-
-      - name: Prepare Metrix package
         shell: powershell
         run: |
           $env:ARCHIVE_NAME = "metrix-simulator-windows"
