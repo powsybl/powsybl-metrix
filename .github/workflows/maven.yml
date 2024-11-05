@@ -1,4 +1,4 @@
-name: CI-java-ubuntu
+name: CI-java
 
 on:
   push:
@@ -9,6 +9,8 @@ on:
   pull_request:
   release:
     types: [published]
+
+permissions: {}
 
 # Cancel previous workflows if they are the same workflow on same ref (branch/tags)
 # with the same event (push/pull_request) even they are in progress.
@@ -23,7 +25,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Set up JDK 17
@@ -35,26 +37,26 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
 
-      - name: Checkout powsybl-core latest sources
-        uses: actions/checkout@v1
-        with:
-          repository: powsybl/powsybl-core
-          ref: refs/heads/nro/groovy_interruption
+      - name: Build with Maven (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: ./mvnw --batch-mode -Pjacoco install
 
-      - name: Build and install powsybl-core with Maven
-        run: mvn --batch-mode -DskipTests=true --file ../powsybl-core/pom.xml install
+      - name: Build with Maven (Windows)
+        if: matrix.os == 'windows-latest'
+        run: mvnw.cmd --batch-mode install
+        shell: cmd
 
-      - name: Build with Maven
-        run: mvn --batch-mode -Pjacoco install
+      - name: Build with Maven (MacOS)
+        if: matrix.os == 'macos-latest'
+        run: ./mvnw --batch-mode install
 
       - name: Run SonarCloud analysis
         if: matrix.os == 'ubuntu-latest'
         run: >
-          mvn --batch-mode -DskipTests sonar:sonar
+          ./mvnw --batch-mode -DskipTests sonar:sonar
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=powsybl-ci-github
           -Dsonar.projectKey=com.powsybl:powsybl-metrix
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-

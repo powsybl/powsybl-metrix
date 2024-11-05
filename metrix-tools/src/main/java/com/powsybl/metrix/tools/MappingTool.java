@@ -27,6 +27,7 @@ import com.powsybl.tools.ToolRunningContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.FileSystem;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class MappingTool implements Tool {
 
             @Override
             public String getDescription() {
-                return "Time serie to network mapping tool";
+                return "Time series to network mapping tool";
             }
 
             @Override
@@ -252,7 +253,7 @@ public class MappingTool implements Tool {
             writeMappingStatusFile(mappingStatusFile, context, localParameters);
 
             // Computing equipment time series
-            writeEquipementTimeSeries(line, context, localParameters, mappingParameters, logger);
+            writeEquipmentTimeSeries(line, context, localParameters, mappingParameters, logger);
 
             if (mappingSynthesisDir != null) {
                 logger.writeCsv(mappingSynthesisDir.resolve("mapping-logs.csv"));
@@ -290,10 +291,10 @@ public class MappingTool implements Tool {
         }
     }
 
-    private void writeEquipementTimeSeries(CommandLine line, ToolRunningContext context,
-                                           LocalParameters localParameters,
-                                           MappingParameters mappingParameters,
-                                           TimeSeriesMappingLogger logger) throws IOException {
+    private void writeEquipmentTimeSeries(CommandLine line, ToolRunningContext context,
+                                          LocalParameters localParameters,
+                                          MappingParameters mappingParameters,
+                                          TimeSeriesMappingLogger logger) throws IOException {
 
         Path mappingSynthesisDir = getDir(line, context, MAPPING_SYNTHESIS_DIR);
         Path equipmentTimeSeriesDir = getDir(line, context, "equipment-time-series-dir");
@@ -317,7 +318,11 @@ public class MappingTool implements Tool {
             List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
             observers.add(balanceSummary);
             if (networkOutputDir != null) {
-                DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir, localParameters.network().getId(), null);
+                String cleanedNetworkId = localParameters.network().getId();
+                for (char c : FileSystem.getCurrent().getIllegalFileNameChars()) {
+                    cleanedNetworkId = cleanedNetworkId.replace(c, '_');
+                }
+                DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(cleanedNetworkId), null);
                 observers.add(new NetworkPointWriter(localParameters.network(), dataSource));
             }
             if (equipmentTimeSeriesDir != null) {
