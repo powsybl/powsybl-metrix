@@ -262,6 +262,8 @@ jobs:
     container: 'centos:centos7'
     needs: qa
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    permissions:
+      contents: write
     steps:
       - name: Update mirrors
         run: |
