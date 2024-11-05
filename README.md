@@ -39,7 +39,7 @@ metrix.
 Their respective usage is detailed in the following sections.\
 For more advanced and intensive usage it is recommended to embed this package as a library as the time series storage is
 not optimized.
-[Powsybl AFS](https://github.com/powsybl/powsybl-afs) can be use for that matter.
+[Powsybl AFS](https://github.com/powsybl/powsybl-afs) can be used for that matter.
 
 ### Mapping
 
@@ -99,7 +99,7 @@ TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, logg
 mapper.mapToNetwork(store, observers);
 ```
 
-Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/mapping.html) on our website.
+Further documentation is available on the [dedicated page](https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/mapping.html) on our website.
 
 ### Metrix
 
@@ -157,11 +157,11 @@ MetrixRunParameters runParams = new MetrixRunParameters(firstVariant, variantCou
 metrix.run(runParams, listener);
 ```
 
-Further documentation is available on the [dedicated page](https://www.powsybl.org/pages/documentation/simulation/metrix) on our website.
+Further documentation is available on the [dedicated page](https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/metrix.html) on our website.
 
 #### Metrix simulator
 
-Metrix simulator is an independant c++ executable. It must be installed before using powsybl-metrix.
+Metrix simulator is an independent C++ executable. It must be installed before using powsybl-metrix.
 
 It has its own toolchain and requirements.
 
@@ -174,8 +174,8 @@ It has its own toolchain and requirements.
 - number of variants: the number of variants to process. Is chosen at launch.
 
 *outputs:*
-- user log file: the user log file, displaying user friendly information about the finished run. These information are duplicated in the developper log file
-- developper log files: a set of more developpement-axed log files, with more information
+- user log file: the user log file, displaying user-friendly information about the finished run. This information is duplicated in the developer log file
+- developer log files: a set of more development-axed log files, with more information
 - result files: the result files (1 by variant processed)
 
 all input options are described in --help option
@@ -269,14 +269,14 @@ The following CMAKE options can be set for the executable configuration:
 ###### Checkstyle
 This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command.
 
-A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most of IDEs have a option to format files using clang-format automatically.
+A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most IDEs have an option to format files using clang-format automatically.
 
 ###### Code coverage
 This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to the configure command.
 
 ###### Run metrix simulator
 The following environments variables must be defined in order to run metrix properly:
-METRIX_ETC: location of the .dic files for language region (some of these dictionnaries are exported in 'etc' directory in install directory)
+`METRIX_ETC`: location of the `.dic` files for language region (some of these dictionaries are exported in `etc` directory in install directory)
 
 All options are detailed in the helper
 ```

@@ -61,7 +61,7 @@ Note that for the `mapToBreakers` function, the `variable` and `distributionKey`
 
 With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series 
 must exist in the input data set or be created within the groovy script. For more details about time series management, 
-refer to the [time series description](inv:core:std:doc#data/timeseries).
+refer to the [time series description](inv:powsyblcore:*:*#timeseries).
 
 Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping 
 behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions. 
@@ -71,7 +71,7 @@ then, with the default distributionKey, it will map the value 50 to each generat
 #### Variable
 
 The `variable` allows to specify which network element attribute will be overwritten by its mapped time series value.
-It is an optional variable (except for transformers) which values depends on the element type (default is in bold) :
+It is an optional variable (except for `mapToTransformers`) which values depends on the element type (default is in bold) :
 
 - `mapToGenerators` **targetP**, minP, maxP, targetQ
 - `mapToLoads` **p0**, fixedActivePower, variableActivePower, q0, fixedReactivePower, variableReactivePower
@@ -79,12 +79,12 @@ It is an optional variable (except for transformers) which values depends on the
 - `mapToBoundaryLines` **p0**
 - `mapToBreakers` **open** (with 1 corresponding to a closed switch and 0 to open)
 - `mapToTransformers` ratedU1, ratedU2
-- `mapToPhaseTapChangers` **phaseTapPosition**, regulationMode
+- `mapToPhaseTapChangers` **phaseTapPosition**, phaseRegulating (0: off, 1: on), regulationMode (0: CURRENT_LIMITER, 1: ACTIVE_POWER_CONTROL, 2: FIXED_TAP)
 - `mapToRatioTapChangers` **ratioTapPosition**, loadTapChangingCapabilities, regulating, targetV
 - `mapToLccConverterStations` **powerFactor**
 - `mapToVscConverterStations` **voltageSetpoint**, voltageRegulatorOn, reactivePowerSetpoint
 
-For the loads, it is forbidden to map `p0` and in the same time `fixedActivePower` or `variableActivePower`, as theses variables are linked (`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If only `fixedActivePower` or `variableActivePower` is mapped, then the value of the other unmapped one will be set to 0 by default. 
+For the loads, it is forbidden to map `p0` and in the same time `fixedActivePower` or `variableActivePower`, as these variables are linked (`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If only `fixedActivePower` or `variableActivePower` is mapped, then the value of the other unmapped one will be set to 0 by default. 
 
 #### Filter
 
@@ -92,11 +92,19 @@ The `filter` variable is evaluated for every network item (of the requested type
 
 The filter must be a groovy statement returning `true` or `false`. It has access to the same variables of the main script, with three more variables
 related to the current object filtered.
-- generator OR hvdcLine OR load OR boundaryLine OR pst OR breaker, depending on the `mapToXXX` type
-- voltageLevel
-- substation
+- depending on the `mapToXXX` type:
+  - `mapToGenerators`: `generator`
+  - `mapToLoads`: `load`
+  - `mapToHvdcLines`: `hvdcLine`
+  - `mapToBoundaryLines`: `boundaryLine`
+  - `mapToBreakers`: `breaker`,
+  - `mapToTransformers`, `mapToPhaseTapChangers` and `mapToRatioTapChangers`: `twoWindingsTransformer` (note that three windings transformers are not yet supported).
+  - `mapToLccConverterStations`: `lccConverterStation`
+  - `mapToVscConverterStations`: `vscConverterStation`
+- `voltageLevel`
+- `substation`
 
-Be careful of the syntax of the groovy statement as an assignation `load.id = 'conso'` instead of the comparison `load.id == 'conso'` would return something truth equal to true and then allowing all equipments to be mapped.
+Be careful of the syntax of the groovy statement as an assignation `load.id = 'conso'` instead of the comparison `load.id == 'conso'` would return something truth equal to true and then resulting in all equipments to be mapped.
 
 Please learn more with the following examples:
 
@@ -168,7 +176,7 @@ mapToLoads {
 We use that if we want to `unmap` items in order to keep their original static value. The main purpose (aside unmapping previously mapped items due to too broad filter maybe) is to prevent the selected items to appear in the `not mapped` section in the mapping synthesis that we will see later.
 ```groovy
 unmappedXXX { // unmappedGenerators, unmappedLoads, …
-   filter { … } // same usage as a normale mapToXXX
+   filter { /* ... */ } // same usage as a normal mapToXXX
 }
 ```
 
@@ -221,7 +229,7 @@ Mapping on Phase Tap Shifters:
 ```groovy
 mapToPhaseTapChangers {
     timeSeriesName 'N1_TD'
-    filter {'TD_1'} 
+    filter {twoWindingsTransformer.id == 'TD_1'} 
 }
 ```
 

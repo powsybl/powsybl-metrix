@@ -38,16 +38,16 @@ import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesW
  */
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
-    private static final Set<EquipmentVariable> METRIX_EQUIPMENT_VARIABLES = EnumSet.of(EquipmentVariable.targetP,
-            EquipmentVariable.minP,
-            EquipmentVariable.maxP,
-            EquipmentVariable.activePowerSetpoint,
-            EquipmentVariable.p0,
-            EquipmentVariable.fixedActivePower,
-            EquipmentVariable.variableActivePower,
-            EquipmentVariable.phaseTapPosition,
-            EquipmentVariable.open,
-            EquipmentVariable.disconnected);
+    private static final Set<EquipmentVariable> METRIX_EQUIPMENT_VARIABLES = EnumSet.of(EquipmentVariable.TARGET_P,
+            EquipmentVariable.MIN_P,
+            EquipmentVariable.MAX_P,
+            EquipmentVariable.ACTIVE_POWER_SETPOINT,
+            EquipmentVariable.P0,
+            EquipmentVariable.FIXED_ACTIVE_POWER,
+            EquipmentVariable.VARIABLE_ACTIVE_POWER,
+            EquipmentVariable.PHASE_TAP_POSITION,
+            EquipmentVariable.OPEN,
+            EquipmentVariable.DISCONNECTED);
 
     public static boolean isMetrixVariable(MappingVariable variable) {
         if (variable instanceof MetrixVariable) {
@@ -178,7 +178,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     protected TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
         Objects.requireNonNull(workingDir);
-        DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
+        DataSource dataSource = DataSourceUtil.createDataSource(workingDir.resolve(network.getId()), null);
         return new NetworkPointWriter(network, dataSource);
     }
 

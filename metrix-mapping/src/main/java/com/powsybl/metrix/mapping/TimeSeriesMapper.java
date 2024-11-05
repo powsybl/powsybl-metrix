@@ -177,22 +177,22 @@ public class TimeSeriesMapper {
     }
 
     public static boolean isPowerOrLimitVariable(MappingVariable variable) {
-        return variable == EquipmentVariable.targetP ||
-                variable == EquipmentVariable.activePowerSetpoint ||
-                variable == EquipmentVariable.minP ||
-                variable == EquipmentVariable.maxP;
+        return variable == EquipmentVariable.TARGET_P ||
+                variable == EquipmentVariable.ACTIVE_POWER_SETPOINT ||
+                variable == EquipmentVariable.MIN_P ||
+                variable == EquipmentVariable.MAX_P;
     }
 
     public static boolean isPowerVariable(MappingVariable variable) {
-        return variable == EquipmentVariable.targetP ||
-                variable == EquipmentVariable.activePowerSetpoint;
+        return variable == EquipmentVariable.TARGET_P ||
+                variable == EquipmentVariable.ACTIVE_POWER_SETPOINT;
     }
 
     public static MappingVariable getPowerVariable(Identifiable<?> identifiable) {
         if (identifiable instanceof Generator) {
-            return EquipmentVariable.targetP;
+            return EquipmentVariable.TARGET_P;
         } else if (identifiable instanceof HvdcLine) {
-            return EquipmentVariable.activePowerSetpoint;
+            return EquipmentVariable.ACTIVE_POWER_SETPOINT;
         } else {
             throw new AssertionError("Unsupported equipment type for id " + identifiable.getId());
         }
@@ -259,12 +259,12 @@ public class TimeSeriesMapper {
             LimitSignBuilder limitSignBuilder = new LimitSignBuilder()
                     .timeSeriesValue(timeSeriesValue)
                     .timeSeriesName(timeSeriesName)
-                    .variable(EquipmentVariable.maxP.getVariableName());
-            if (variable == EquipmentVariable.maxP && timeSeriesValue < 0) {
+                    .variable(EquipmentVariable.MAX_P.getVariableName());
+            if (variable == EquipmentVariable.MAX_P && timeSeriesValue < 0) {
                 limitSignBuilder.max();
                 timeSeriesMappingLogger.addLog(logBuilder.logDescription(limitSignBuilder.build()).build());
                 return true;
-            } else if (variable == EquipmentVariable.minP && timeSeriesValue > 0) {
+            } else if (variable == EquipmentVariable.MIN_P && timeSeriesValue > 0) {
                 limitSignBuilder.min();
                 timeSeriesMappingLogger.addLog(logBuilder.logDescription(limitSignBuilder.build()).build());
                 return true;
@@ -348,8 +348,8 @@ public class TimeSeriesMapper {
         sourceTimeSeries.getEquipmentTimeSeries().forEach((indexedMappingKey, mappedEquipments) -> {
             int timeSeriesNum = indexedMappingKey.getNum();
             MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
-            if (variable == EquipmentVariable.targetP ||
-                    variable == EquipmentVariable.activePowerSetpoint) {
+            if (variable == EquipmentVariable.TARGET_P ||
+                    variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
                 // Active power mapping is not tested in order to allow later correction of values not included in [minP, maxP]
                 variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
             } else {

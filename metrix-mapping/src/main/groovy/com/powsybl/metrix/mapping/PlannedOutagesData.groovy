@@ -13,6 +13,8 @@ import com.powsybl.timeseries.StringTimeSeries
 import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 
+import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.plannedOutagesEquipmentTsName
+
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
@@ -34,6 +36,9 @@ class PlannedOutagesData {
             StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow({ new TimeSeriesMappingException("Invalid planned outages time series name " + timeSeriesName) })
             String[] array = plannedOutagesTimeSeries.toArray()
             for (int i = 0; i < array.length; i++) {
+                if (array[i] == null) {
+                    continue
+                }
                 String[] ids = array[i].split(",")
                 disconnectedIds.addAll(ids)
             }
@@ -54,13 +59,13 @@ class PlannedOutagesData {
 
         // for each filtered equipment, add it to the config
         for (Identifiable identifiable in filteredTransformers) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
         for (Identifiable identifiable in filteredLines) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.LINE, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.LINE, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
         for (Identifiable identifiable in filteredGenerators) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.GENERATOR, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.GENERATOR, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
     }
 }

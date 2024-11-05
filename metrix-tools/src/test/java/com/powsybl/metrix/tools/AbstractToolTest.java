@@ -55,7 +55,7 @@ public abstract class AbstractToolTest {
     private CommandLineTools tools;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         platformConfig = new InMemoryPlatformConfig(fileSystem);
         tools = new CommandLineTools(getTools());
@@ -90,10 +90,12 @@ public abstract class AbstractToolTest {
 
                 @Override
                 public void stop(Path path) {
+                    // Nothing to do here
                 }
 
                 @Override
                 public void stopForcibly(Path path) {
+                    // Nothing to do here
                 }
             };
             ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor()) {
@@ -149,7 +151,7 @@ public abstract class AbstractToolTest {
         }
         assertEquals(expectedStatus, status);
         if (expectedOut != null) {
-            assertMatches(expectedOut, bout.toString(StandardCharsets.UTF_8.name()));
+            assertMatches(expectedOut, bout.toString(StandardCharsets.UTF_8));
         }
     }
 

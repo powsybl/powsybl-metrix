@@ -14,31 +14,32 @@ import com.powsybl.metrix.mapping.MappingVariable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public enum MetrixVariable implements MappingVariable {
-    offGridCostDown("offGridCostDown"),
-    offGridCostUp("offGridCostUp"),
-    onGridCostDown("onGridCostDown"),
-    onGridCostUp("onGridCostUp"),
-    analysisThresholdN("analysisThresholdN"),
-    analysisThresholdNk("analysisThresholdNk"),
-    analysisThresholdNEndOr("analysisThresholdNEndOr"),
-    analysisThresholdNkEndOr("analysisThresholdNkEndOr"),
-    thresholdN("thresholdN"),
-    thresholdN1("thresholdN1"),
-    thresholdNk("thresholdNk"),
-    thresholdITAM("thresholdITAM"),
-    thresholdITAMNk("thresholdITAMNk"),
-    thresholdNEndOr("thresholdNEndOr"),
-    thresholdN1EndOr("thresholdN1EndOr"),
-    thresholdNkEndOr("thresholdNkEndOr"),
-    thresholdITAMEndOr("thresholdITAMEndOr"),
-    thresholdITAMNkEndOr("thresholdITAMNkEndOr"),
-    curativeCostDown("curativeCostDown");
+    OFF_GRID_COST_DOWN("offGridCostDown"),
+    OFF_GRID_COST_UP("offGridCostUp"),
+    ON_GRID_COST_DOWN("onGridCostDown"),
+    ON_GRID_COST_UP("onGridCostUp"),
+    ANALYSIS_THRESHOLD_N("analysisThresholdN"),
+    ANALYSIS_THRESHOLD_NK("analysisThresholdNk"),
+    ANALYSIS_THRESHOLD_N_END_OR("analysisThresholdNEndOr"),
+    ANALYSIS_THRESHOLD_NK_END_OR("analysisThresholdNkEndOr"),
+    THRESHOLD_N("thresholdN"),
+    THRESHOLD_N1("thresholdN1"),
+    THRESHOLD_NK("thresholdNk"),
+    THRESHOLD_ITAM("thresholdITAM"),
+    THRESHOLD_ITAM_NK("thresholdITAMNk"),
+    THRESHOLD_N_END_OR("thresholdNEndOr"),
+    THRESHOLD_N1_END_OR("thresholdN1EndOr"),
+    THRESHOLD_NK_END_OR("thresholdNkEndOr"),
+    THRESHOLD_ITAM_END_OR("thresholdITAMEndOr"),
+    THRESHOLD_ITAM_NK_END_OR("thresholdITAMNkEndOr"),
+    CURATIVE_COST_DOWN("curativeCostDown");
 
     protected static final String NAME = "metrix";
 
@@ -63,7 +64,7 @@ public enum MetrixVariable implements MappingVariable {
         JsonToken token = parser.nextToken();
         if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
-                return MetrixVariable.valueOf(parser.getValueAsString());
+                return MetrixVariable.nameOf(parser.getValueAsString());
             } else {
                 throw new IllegalStateException("Unexpected JSON token: " + token);
             }
@@ -80,5 +81,9 @@ public enum MetrixVariable implements MappingVariable {
     @Override
     public String getVariableName() {
         return variable;
+    }
+
+    public static MetrixVariable nameOf(String value) {
+        return Arrays.stream(MetrixVariable.values()).filter(name -> name.variable.equals(value)).findFirst().orElse(null);
     }
 }

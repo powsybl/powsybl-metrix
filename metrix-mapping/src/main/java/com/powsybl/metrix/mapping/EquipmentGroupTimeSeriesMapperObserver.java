@@ -85,9 +85,9 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
     }
 
     private void initValues(int point) {
-        generatorGroupTimeSeries.forEach((key, names) -> initValues(point, names, EquipmentVariable.targetP.getVariableName()));
-        loadGroupVariableActivePowerTimeSeries.forEach((key, names) -> initValues(point, names, EquipmentVariable.variableActivePower.getVariableName()));
-        loadGroupFixedActivePowerTimeSeries.forEach((key, names) -> initValues(point, names, EquipmentVariable.fixedActivePower.getVariableName()));
+        generatorGroupTimeSeries.forEach((key, names) -> initValues(point, names, EquipmentVariable.TARGET_P.getVariableName()));
+        loadGroupVariableActivePowerTimeSeries.forEach((key, names) -> initValues(point, names, EquipmentVariable.VARIABLE_ACTIVE_POWER.getVariableName()));
+        loadGroupFixedActivePowerTimeSeries.forEach((key, names) -> initValues(point, names, EquipmentVariable.FIXED_ACTIVE_POWER.getVariableName()));
     }
 
     private void addTimeSeries(TimeSeriesIndex index) {
@@ -108,20 +108,20 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
         if (!generatorIds.contains(id)) {
             return;
         }
-        if (variable != EquipmentVariable.targetP) {
+        if (variable != EquipmentVariable.TARGET_P) {
             return;
         }
         addGenerator(id, variable, equipmentValue);
     }
 
     private void addLoad(String id, MappingVariable variable, double value) {
-        if (variable == EquipmentVariable.variableActivePower) {
+        if (variable == EquipmentVariable.VARIABLE_ACTIVE_POWER) {
             loadGroupVariableActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, variable.getVariableName()), value));
-        } else if (variable == EquipmentVariable.fixedActivePower) {
+        } else if (variable == EquipmentVariable.FIXED_ACTIVE_POWER) {
             loadGroupFixedActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, variable.getVariableName()), value));
-        } else if (variable == EquipmentVariable.p0) {
+        } else if (variable == EquipmentVariable.P0) {
             // for p0 mapping, power is added in variableActivePower and fixedActivePower is 0
-            loadGroupVariableActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, EquipmentVariable.variableActivePower.getVariableName()), value));
+            loadGroupVariableActivePowerTimeSeries.get(id).forEach(name -> addValue(computeName(name, EquipmentVariable.VARIABLE_ACTIVE_POWER.getVariableName()), value));
         }
     }
 
@@ -130,7 +130,7 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
         if (!loadIds.contains(id)) {
             return;
         }
-        if (variable != EquipmentVariable.variableActivePower && variable != EquipmentVariable.fixedActivePower && variable != EquipmentVariable.p0) {
+        if (variable != EquipmentVariable.VARIABLE_ACTIVE_POWER && variable != EquipmentVariable.FIXED_ACTIVE_POWER && variable != EquipmentVariable.P0) {
             return;
         }
         addLoad(id, variable, equipmentValue);
@@ -148,23 +148,23 @@ public class EquipmentGroupTimeSeriesMapperObserver extends DefaultEquipmentTime
         // Unmapped generators
         final Set<String> unmappedGenerators = new HashSet<>(mappingConfig.getUnmappedGenerators());
         unmappedGenerators.retainAll(generatorIds);
-        computeUnmappedValues(unmappedGenerators, generatorGroupTimeSeries, EquipmentVariable.targetP);
+        computeUnmappedValues(unmappedGenerators, generatorGroupTimeSeries, EquipmentVariable.TARGET_P);
 
         // Unmapped loads
         final Set<String> unmappedLoads = new HashSet<>(mappingConfig.getUnmappedLoads());
         unmappedLoads.retainAll(loadIds);
-        computeUnmappedValues(unmappedLoads, loadGroupVariableActivePowerTimeSeries, EquipmentVariable.variableActivePower);
-        computeUnmappedValues(unmappedLoads, loadGroupFixedActivePowerTimeSeries, EquipmentVariable.fixedActivePower);
+        computeUnmappedValues(unmappedLoads, loadGroupVariableActivePowerTimeSeries, EquipmentVariable.VARIABLE_ACTIVE_POWER);
+        computeUnmappedValues(unmappedLoads, loadGroupFixedActivePowerTimeSeries, EquipmentVariable.FIXED_ACTIVE_POWER);
 
         final Set<String> unmappedVariableActivePowerLoads = new HashSet<>(mappingConfig.getUnmappedVariableActivePowerLoads());
         unmappedVariableActivePowerLoads.retainAll(loadIds);
         unmappedVariableActivePowerLoads.removeAll(unmappedLoads);
-        computeUnmappedValues(unmappedVariableActivePowerLoads, loadGroupVariableActivePowerTimeSeries, EquipmentVariable.variableActivePower);
+        computeUnmappedValues(unmappedVariableActivePowerLoads, loadGroupVariableActivePowerTimeSeries, EquipmentVariable.VARIABLE_ACTIVE_POWER);
 
         final Set<String> unmappedFixedActivePowerLoads = new HashSet<>(mappingConfig.getUnmappedFixedActivePowerLoads());
         unmappedFixedActivePowerLoads.retainAll(loadIds);
         unmappedFixedActivePowerLoads.removeAll(unmappedLoads);
-        computeUnmappedValues(unmappedFixedActivePowerLoads, loadGroupFixedActivePowerTimeSeries, EquipmentVariable.fixedActivePower);
+        computeUnmappedValues(unmappedFixedActivePowerLoads, loadGroupFixedActivePowerTimeSeries, EquipmentVariable.FIXED_ACTIVE_POWER);
     }
 
     @Override

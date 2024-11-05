@@ -389,13 +389,13 @@ public class MetrixDslData {
 
     public void addBranchMonitoringN(String id) {
         Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.thresholdN);
+        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.THRESHOLD_N);
         branchMonitoringListN.put(id, MetrixInputData.MonitoringType.MONITORING);
     }
 
     public void addBranchResultN(String id) {
         Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.analysisThresholdN);
+        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.ANALYSIS_THRESHOLD_N);
         if (getBranchMonitoringN(id) == MetrixInputData.MonitoringType.MONITORING) {
             return;
         }
@@ -404,13 +404,13 @@ public class MetrixDslData {
 
     public void addBranchMonitoringNk(String id) {
         Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.thresholdN1);
+        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.THRESHOLD_N1);
         branchMonitoringListNk.put(id, MetrixInputData.MonitoringType.MONITORING);
     }
 
     public void addBranchResultNk(String id) {
         Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.analysisThresholdNk);
+        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.ANALYSIS_THRESHOLD_NK);
         if (getBranchMonitoringNk(id) == MetrixInputData.MonitoringType.MONITORING) {
             return;
         }

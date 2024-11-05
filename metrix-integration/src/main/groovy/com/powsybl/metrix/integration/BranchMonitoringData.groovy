@@ -136,62 +136,62 @@ class BranchMonitoringData {
 
         // Base case monitoring
         if (branchSpec.branchRatingsBaseCase) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBaseCase, MetrixVariable.thresholdN, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBaseCase, MetrixVariable.THRESHOLD_N, id)
             data.addBranchMonitoringN(id)
         } else if (branchSpec.branchAnalysisRatingsBaseCase) {
             // analysis threshold
-            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCase, MetrixVariable.analysisThresholdN, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCase, MetrixVariable.ANALYSIS_THRESHOLD_N, id)
             data.addBranchResultN(id)
         } else if (branchSpec.baseCaseFlowResults) {
             data.addBranchResultN(id)
         }
         if (branchSpec.branchRatingsBaseCaseEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBaseCaseEndOr, MetrixVariable.thresholdNEndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBaseCaseEndOr, MetrixVariable.THRESHOLD_N_END_OR, id)
         }
         if (branchSpec.branchAnalysisRatingsBaseCaseEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCaseEndOr, MetrixVariable.analysisThresholdNEndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsBaseCaseEndOr, MetrixVariable.ANALYSIS_THRESHOLD_N_END_OR, id)
         }
 
         // N-1 monitoring
         if (branchSpec.branchRatingsOnContingency) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingency, MetrixVariable.thresholdN1, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingency, MetrixVariable.THRESHOLD_N1, id)
             data.addBranchMonitoringNk(id)
             // Before curative monitoring
             if (branchSpec.branchRatingsBeforeCurative) {
-                configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurative, MetrixVariable.thresholdITAM, id)
+                configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurative, MetrixVariable.THRESHOLD_ITAM, id)
             }
         } else if (branchSpec.branchAnalysisRatingsOnContingency) {
             // analysis threshold (n-k)
-            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingency, MetrixVariable.analysisThresholdNk, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingency, MetrixVariable.ANALYSIS_THRESHOLD_NK, id)
             data.addBranchResultNk(id)
         } else if (branchSpec.maxThreatFlowResults) {
             data.addBranchResultNk(id)
         }
         if (branchSpec.branchRatingsOnContingencyEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingencyEndOr, MetrixVariable.thresholdN1EndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnContingencyEndOr, MetrixVariable.THRESHOLD_N1_END_OR, id)
         }
         if (branchSpec.branchRatingsBeforeCurativeEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeEndOr, MetrixVariable.thresholdITAMEndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeEndOr, MetrixVariable.THRESHOLD_ITAM_END_OR, id)
         }
         if (branchSpec.branchAnalysisRatingsOnContingencyEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingencyEndOr, MetrixVariable.analysisThresholdNkEndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchAnalysisRatingsOnContingencyEndOr, MetrixVariable.ANALYSIS_THRESHOLD_NK_END_OR, id)
         }
 
         // Specific N-k contingencies monitoring
         if (branchSpec.branchRatingsOnSpecificContingency) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingency, MetrixVariable.thresholdNk, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingency, MetrixVariable.THRESHOLD_NK, id)
             data.addBranchMonitoringNk(id)
 
             // Specific before curative monitoring
             if (branchSpec.branchRatingsBeforeCurativeOnSpecificContingency) {
-                configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingency, MetrixVariable.thresholdITAMNk, id)
+                configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingency, MetrixVariable.THRESHOLD_ITAM_NK, id)
             }
         }
         if (branchSpec.branchRatingsOnSpecificContingencyEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingencyEndOr, MetrixVariable.thresholdNkEndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsOnSpecificContingencyEndOr, MetrixVariable.THRESHOLD_NK_END_OR, id)
         }
         if (branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr) {
-            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr, MetrixVariable.thresholdITAMNkEndOr, id)
+            configLoader.addEquipmentTimeSeries(branchSpec.branchRatingsBeforeCurativeOnSpecificContingencyEndOr, MetrixVariable.THRESHOLD_ITAM_NK_END_OR, id)
         }
 
 

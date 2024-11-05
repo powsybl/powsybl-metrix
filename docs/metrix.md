@@ -14,12 +14,15 @@ To launch a Metrix simulation, you need:
 
 ## Module configuration
 
-The module must be configured with following properties (only a few are required):
+The module can be configured with the following properties and default values described further below.  
+All properties are optional.  
+For further information about PowSyBl module configuration please refer to the dedicated [PowSyBl Core Configuration page](inv:powsyblcore:*:*#user/configuration/index)
+
 ```yaml
 metrix:
-  home-dir: "<PATH_TO_METRIX_INSTALLATION_DIRECTORY>" # required
-
-  iidm-export-version: "1.5" # default to latest available version
+  home-dir: "<user.home>/.local/opt/powsybl-metrix" # metrix simulator installation directory, on Linux defaults to ~/.local/opt/powsybl-metrix, on Windows defaults to (usually) C:\Users\<username>\.local\opt\powsybl-metrix
+  command: metrix-simulator # metrix simulator executable name, defaults to "metrix-simulator"
+  iidm-export-version: "1.13" # defaults to the latest iIDM available version
   constant-loss-factor: false # enable constant loss factor
   chunk-size: 10 # size of the batch processed by Metrix
   result-limit: 10000 # max allowed output count
@@ -47,6 +50,7 @@ determines which kind of computation will be operated:
 - `LF` the LOAD FLOW mode is a basic network flow simulation, production and consumption are fixed and Metrix simulator returns the flow on the lines of the network.
 - `OPF_WITHOUT_REDISPATCHING` in this mode, Metrix simulator is allowed to use some actions (topological actions, use of phase tap changers, HVDC lines) to minimize constraints.
 - `OPF` in OPTIMAL POWER FLOW mode, Metrix simulator will leverage all available actions (that of the previous mode plus generator and load dispatching) to minimize constraints at best cost. If no solution is found, the program will exit with error code 1.
+- `OPF_WITH_OVERLOAD` in this OPTIMAL POWER FLOW mode, Metrix simulator works like in the previous mode. If no solution is found, the program returns overload results.
 
 All parameters are optional:
 ```groovy
@@ -77,7 +81,7 @@ parameters {
 }
 ```
 
-Since there is default value for each parameters, only useful parameters can be filled in. For instance:
+Since there is default value for each parameter, only useful parameters can be filled in. For instance:
 ```
 parameters {
   computationType OPF_WITHOUT_REDISPATCHING  
