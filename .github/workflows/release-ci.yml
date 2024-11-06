@@ -262,17 +262,13 @@ jobs:
         run: |
           $env:ARCHIVE_NAME = "metrix-simulator-windows"
           $env:ARCHIVE_PATH = "$env:GITHUB_WORKSPACE\$env:ARCHIVE_NAME"
+          $env:ARCHIVE_PATH = $env:ARCHIVE_PATH -replace '\\','/'
           cd $env:GITHUB_WORKSPACE/metrix-simulator/build/install
           Compress-Archive -Path bin,etc -Destination $env:ARCHIVE_PATH
           echo "archive_name=$env:ARCHIVE_NAME" >> "$env:GITHUB_OUTPUT"
           echo "archive_path=$env:ARCHIVE_PATH" >> "$env:GITHUB_OUTPUT"
 
       - name: Upload release package
-        uses: actions/upload-release-asset@v1.0.1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v2
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ${{ steps.metrix-install.outputs.archive_path }}.zip
-          asset_name: ${{ steps.metrix-install.outputs.archive_name }}.zip
-          asset_content_type: application/zip
+          files: ${{ steps.metrix-install.outputs.archive_path }}.zip
