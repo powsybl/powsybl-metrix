@@ -106,15 +106,13 @@ class MetrixDslDataLoader {
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixGeneratorsBinding.ReferenceVariable")
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
-    }
-
-    static void evaluate(GroovyCodeSource dslSrc, Binding binding) {
-        def config = createCompilerConfig()
 
         // Add a check on thread interruption in every loop (for, while) in the script
         config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class))
+    }
 
-        def shell = new GroovyShell(binding, config)
+    static void evaluate(GroovyCodeSource dslSrc, Binding binding) {
+        def shell = new GroovyShell(binding, createCompilerConfig())
 
         // Check for thread interruption right before beginning the evaluation
         if (Thread.currentThread().isInterrupted()) throw new InterruptedException("Execution Interrupted")
