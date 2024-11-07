@@ -35,10 +35,9 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * Memory mapped file buffer allocation service.
  * Main purpose of this utility class is to overcome a Java issue on Windows with memory mapped file.
- * Once Random access file is closed, file cannot be delete until buffer has been garbage collected.
+ * Once Random access file is closed, file cannot be deleted until buffer has been garbage collected.
  * The workaround used here is to start a "cleaner" thread that try to delete the file every minute.
- */
-/**
+ *
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 
@@ -119,12 +118,14 @@ public class MmapByteBufferService {
 
     private boolean tryToDelete(BufferContext context) {
         try {
-            Files.delete(context.file.toPath());
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info("Buffer {} deleted", context.file);
+            if (context.file != null) {
+                Files.delete(context.file.toPath());
+                if (LOGGER.isInfoEnabled()) {
+                    LOGGER.info("Buffer {} deleted", context.file);
+                }
+                context.file = null;
             }
-            context.file = null;
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.trace(e.toString(), e);
         }
         if (context.file != null) {
