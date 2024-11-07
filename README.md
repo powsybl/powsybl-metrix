@@ -1,6 +1,6 @@
 # powsybl-metrix
 
-[![Actions Status](https://github.com/powsybl/powsybl-metrix/workflows/CI/badge.svg)](https://github.com/powsybl/powsybl-metrix/actions)
+[![Actions Status](https://github.com/powsybl/powsybl-metrix/workflows/Full%20CI/badge.svg)](https://github.com/powsybl/powsybl-metrix/actions)
 [![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Apowsybl-metrix&metric=coverage)](https://sonarcloud.io/component_measures?id=com.powsybl%3Apowsybl-metrix&metric=coverage)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Apowsybl-metrix&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.powsybl%3Apowsybl-metrix)
 [![MPL-2.0 License](https://img.shields.io/badge/license-MPL_2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
@@ -24,7 +24,6 @@ MetrixTool calls *metrix simulator* as an external program. This program has its
 
 The following status are produced by the reduced CI coverage tests
 
-[![Actions Status](https://github.com/powsybl/powsybl-metrix/workflows/CI-cpp/badge.svg)](https://github.com/powsybl/powsybl-metrix/actions)
 [![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Ametrix-simulator&metric=coverage)](https://sonarcloud.io/component_measures?id=com.powsybl%3Ametrix-simulator&metric=coverage)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Ametrix-simulator&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.powsybl%3Ametrix-simulator)
 
