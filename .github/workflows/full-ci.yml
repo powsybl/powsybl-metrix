@@ -201,6 +201,46 @@ jobs:
       - name: Tests
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
 
+  cpp_windows:
+    name: Build C++ Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    env:
+      BOOST_ROOT: C:\thirdparties\boost-1.72.0
+      BOOST_URL: https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe/download
+    steps:
+      - name: Install Boost
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          choco install wget --no-progress
+          wget -nv -O boost-installer.exe %BOOST_URL%
+          boost-installer.exe /dir=%BOOST_ROOT% /sp- /verysilent /suppressmsgboxes /norestart
+
+      - name: Checkout sources
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 #v4.1.6
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --parallel 2 --config Release
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\metrix-simulator\build\install
+
+      - name: Build
+        run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
+
+      - name: Tests
+        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build && ctest -j2 --output-on-failure -C Release
+
   cpp_ubuntu_qa:
     name: Full QA C++ Ubuntu
     runs-on: ubuntu-latest

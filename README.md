@@ -183,7 +183,7 @@ all input options are described in --help option
 
 To build metrix-simulator, you need:
 - A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
-- [CMake](https://cmake.org) (3.12 or higher)
+- [CMake](https://cmake.org) (3.14 or higher)
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)
 
@@ -199,9 +199,9 @@ $> apt install -y g++ git libboost-all-dev libxml2-dev make wget
 
 **Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), so you have to install it manually:
 ```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 
 ###### CentOS 8
@@ -211,9 +211,9 @@ $> yum install -y boost-devel gcc-c++ git libxml2-devel make wget
 
 **Note:** Under CentOS 8, the default CMake package is too old (3.11.4), so you have to install it manually:
 ```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 
 ###### CentOS 7
@@ -230,9 +230,9 @@ $> export BOOST_LIBRARYDIR=/usr/lib64/boost166
 
 **Note:** Under CentOS 7, the default CMake package is too old (2.8.12), so you have to install it manually:
 ```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 ##### Build sources
 
