@@ -61,7 +61,7 @@ Note that for the `mapToBreakers` function, the `variable` and `distributionKey`
 
 With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series 
 must exist in the input data set or be created within the groovy script. For more details about time series management, 
-refer to the [time series description](inv:core:std:doc#data/timeseries).
+refer to the [time series description](inv:powsyblcore:*:*#timeseries).
 
 Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping 
 behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions. 
@@ -176,7 +176,7 @@ mapToLoads {
 We use that if we want to `unmap` items in order to keep their original static value. The main purpose (aside unmapping previously mapped items due to too broad filter maybe) is to prevent the selected items to appear in the `not mapped` section in the mapping synthesis that we will see later.
 ```groovy
 unmappedXXX { // unmappedGenerators, unmappedLoads, …
-   filter { … } // same usage as a normal mapToXXX
+   filter { /* ... */ } // same usage as a normal mapToXXX
 }
 ```
 

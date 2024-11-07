@@ -18,12 +18,14 @@ import org.junit.jupiter.api.Test;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -141,7 +143,23 @@ class MappingToolTest extends AbstractToolTest {
 
     @Test
     void runFullOptions() throws IOException {
+        runFullOptions(null);
+    }
+
+    @Test
+    void runFullOptionsNetworkIdWithIllegalChars() throws IOException {
+        runFullOptions("test/a/b/c/networkId");
+    }
+
+    void runFullOptions(String networkId) throws IOException {
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
+        if (networkId != null) {
+            String content = Files.readString(fileSystem.getPath("/network.xiidm"));
+            String simpleNetworkId = "id=\"SimpleNetworkWithReducedThresholds\"";
+            assertTrue(content.contains(simpleNetworkId));
+            content = content.replaceAll(simpleNetworkId, "id=\"" + networkId + "\"");
+            Files.writeString(fileSystem.getPath("/network.xiidm"), content, StandardCharsets.UTF_8);
+        }
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/mapping.groovy")), fileSystem.getPath("/mapping.groovy"));
         Files.copy(Objects.requireNonNull(getClass().getResourceAsStream("/time-series-sample.csv")), fileSystem.getPath("/timeseries.csv"));
         StringBuilder expected = new StringBuilder();
@@ -163,5 +181,9 @@ class MappingToolTest extends AbstractToolTest {
             "--network-output-dir", "./temp_mapping_dir/"
         };
         assertCommand(commandLine, CommandLineTools.COMMAND_OK_STATUS, expected.toString(), StringUtils.EMPTY);
+
+        try (Stream<Path> stream = Files.list(fileSystem.getPath("./temp_mapping_dir"))) {
+            assertEquals(5, stream.filter(p -> p.getFileName().toString().endsWith(".xiidm")).count());
+        }
     }
 }
