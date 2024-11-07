@@ -125,7 +125,7 @@ public class MmapByteBufferService {
                 }
                 context.file = null;
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             LOGGER.trace(e.toString(), e);
         }
         if (context.file != null) {
