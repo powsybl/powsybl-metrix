@@ -10,8 +10,7 @@
 # 
 
 function(check_file file expected_file)
-    configure_file(${file} ${file} NEWLINE_STYLE LF) # required for windows ctest
-    execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files ${file} ${expected_file}
+    execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files --ignore-eol ${file} ${expected_file}
         RESULT_VARIABLE compare_result)
     if(compare_result)
         MESSAGE(FATAL_ERROR "File " ${file} " is different from expected file " ${expected_file})

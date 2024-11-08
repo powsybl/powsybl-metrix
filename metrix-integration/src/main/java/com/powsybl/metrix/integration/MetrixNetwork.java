@@ -698,8 +698,8 @@ public class MetrixNetwork {
                 DanglingLine danglingLine = (DanglingLine) terminal.getConnectable();
                 if (danglingLine.isPaired()) {
                     addElementToRetainedBreakersList(sw,
-                        danglingLine.getTieLine().orElseThrow(() -> new PowsyblException("No tie line on a paired dangling line - should not happen")).getId(),
-                        false);
+                            danglingLine.getTieLine().orElseThrow(() -> new PowsyblException("No tie line on a paired dangling line - should not happen")).getId(),
+                            false);
                 } else {
                     addElementToRetainedBreakersList(sw, switchId, setRetained);
                 }
@@ -711,7 +711,7 @@ public class MetrixNetwork {
                 }
             }
             default ->
-                throw new PowsyblException("Unexpected connectable type : " + terminal.getConnectable().getType());
+                    throw new PowsyblException("Unexpected connectable type : " + terminal.getConnectable().getType());
         }
     }
 

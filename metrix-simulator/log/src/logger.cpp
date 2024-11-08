@@ -17,6 +17,10 @@
 #include <algorithm>
 #include <cstring>
 
+#if defined(_MSC_VER)
+#define localtime_r(T,Tm) (localtime_s(Tm,T) ? NULL : Tm)
+#endif
+
 using namespace boost::log;
 
 namespace metrix
