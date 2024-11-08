@@ -15,8 +15,10 @@ import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.ast.NodeCalc
 import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
+import groovy.transform.ThreadInterrupt
 import org.apache.commons.lang3.StringUtils
 import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -93,6 +95,9 @@ class TimeSeriesDslLoader {
         getStaticStars().forEach(staticStars -> imports.addStaticStars(staticStars))
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
+
+        // Add a check on thread interruption in every loop (for, while) in the script
+        config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class))
     }
 
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, LogDslLoader logDslLoader, ComputationRange computationRange) {
@@ -282,6 +287,10 @@ class TimeSeriesDslLoader {
         }
 
         def shell = new GroovyShell(binding, createCompilerConfig())
+
+        // Check for thread interruption right before beginning the evaluation
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedException("Execution Interrupted")
+
         shell.evaluate(dslSrc)
 
         TimeSeriesMappingConfigChecker configChecker = new TimeSeriesMappingConfigChecker(config)

@@ -68,6 +68,7 @@ public class MetrixNetwork {
     private final Map<String, String> mappedSwitchMap = new HashMap<>();
 
     protected MetrixNetwork(Network network) {
+        // TODO: switch T3T for 3xTWT in the network using a network modification
         this.network = Objects.requireNonNull(network);
     }
 
@@ -612,35 +613,66 @@ public class MetrixNetwork {
     private void addElementToRetainedBreakersList(Switch sw) {
         String switchId = sw.getId();
 
-        VoltageLevel.NodeBreakerView nodeBreakerView = sw.getVoltageLevel().getNodeBreakerView();
-        Terminal terminal1 = nodeBreakerView.getTerminal1(switchId);
-        Terminal terminal2 = nodeBreakerView.getTerminal2(switchId);
+        VoltageLevel voltageLevel = sw.getVoltageLevel();
 
-        if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
-            terminal1 = terminal2;
-        }
+        if (voltageLevel.getTopologyKind() == TopologyKind.NODE_BREAKER) {
+            // Get the terminals on both sides of the switch
+            VoltageLevel.NodeBreakerView nodeBreakerView = voltageLevel.getNodeBreakerView();
+            Terminal terminal1 = nodeBreakerView.getTerminal1(switchId);
+            Terminal terminal2 = nodeBreakerView.getTerminal2(switchId);
 
-        if (terminal1 == null || terminal1.getConnectable().getType() == IdentifiableType.BUSBAR_SECTION) {
-            sw.setRetained(true);
-            mappedSwitchMap.put(switchId, switchId);
-        } else {
-            switch (terminal1.getConnectable().getType()) {
-                case LINE, TWO_WINDINGS_TRANSFORMER -> {
-                    sw.setRetained(true);
-                    mappedSwitchMap.put(switchId, terminal1.getConnectable().getId());
-                }
-                case LOAD, GENERATOR -> {
-                    sw.setRetained(true);
-                    mappedSwitchMap.put(switchId, switchId);
-                }
-                case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR, THREE_WINDINGS_TRANSFORMER -> {
-                    if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Unsupported connectable type (%s) for switch '%s'", terminal1.getConnectable().getType(), switchId));
-                    }
-                }
-                default -> throw new PowsyblException("Unexpected connectable type : " + terminal1.getConnectable().getType());
+            // Check on both sides of the switch to find a connectable that is not another switch nor a bus bar section
+            if (isSwitchNotConnectedToOtherSwitchOrBbs(terminal1)) {
+                addElementToRetainedBreakersList(sw, terminal1, true);
+            } else if (isSwitchNotConnectedToOtherSwitchOrBbs(terminal2)) {
+                addElementToRetainedBreakersList(sw, terminal2, true);
+            } else {
+                // Both sides have either a switch or a bus bar section : the switch is registered by itself
+                addElementToRetainedBreakersList(sw, switchId, true);
+            }
+        } else if (voltageLevel.getTopologyKind() == TopologyKind.BUS_BREAKER) {
+            // Get the terminals on both sides of the switch
+            VoltageLevel.BusBreakerView busBreakerView = voltageLevel.getBusBreakerView();
+            List<? extends Terminal> terminalsBus1 = busBreakerView.getBus1(switchId).getConnectedTerminalStream().toList();
+            List<? extends Terminal> terminalsBus2 = busBreakerView.getBus2(switchId).getConnectedTerminalStream().toList();
+
+            // Check on both sides of the switch to check if there is one and only one connectable
+            if (terminalsBus1.size() == 1) {
+                addElementToRetainedBreakersList(sw, terminalsBus1.get(0), false);
+            } else if (terminalsBus2.size() == 1) {
+                addElementToRetainedBreakersList(sw, terminalsBus2.get(0), false);
+            } else {
+                addElementToRetainedBreakersList(sw, switchId, false);
             }
         }
+    }
+
+    private boolean isSwitchNotConnectedToOtherSwitchOrBbs(Terminal terminal) {
+        return terminal != null && terminal.getConnectable().getType() != IdentifiableType.BUSBAR_SECTION;
+    }
+
+    private void addElementToRetainedBreakersList(Switch sw, Terminal terminal, boolean setRetained) {
+        String switchId = sw.getId();
+        switch (terminal.getConnectable().getType()) {
+            // Since switches connected to lines and TWT are "replaced" by those connectables, no need to set them retained
+            case LINE, TWO_WINDINGS_TRANSFORMER -> addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
+            case LOAD, GENERATOR -> addElementToRetainedBreakersList(sw, switchId, setRetained);
+            case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
+                 THREE_WINDINGS_TRANSFORMER -> {
+                if (LOGGER.isWarnEnabled()) {
+                    LOGGER.warn("Unsupported connectable type ({}) for switch '{}'", terminal.getConnectable().getType(), switchId);
+                }
+            }
+            default ->
+                throw new PowsyblException("Unexpected connectable type : " + terminal.getConnectable().getType());
+        }
+    }
+
+    private void addElementToRetainedBreakersList(Switch sw, String id, boolean setRetained) {
+        if (setRetained) {
+            sw.setRetained(true);
+        }
+        mappedSwitchMap.put(sw.getId(), id);
     }
 
     private void createOpenedBranchesList(Set<String> openedBranches) {
