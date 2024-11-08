@@ -17,6 +17,8 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.test.DanglingLineNetworkFactory;
+import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
 import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
@@ -167,6 +169,34 @@ class MetrixInputTest {
                 () -> metrixInputData.writeJson(writer),
                 "Three Windings Transformers are not yet supported in metrix");
         }
+    }
+
+    @Test
+    void metrixInputDataWithTieLinesTests() throws IOException {
+        Network n = EurostagTutorialExample1Factory.createWithTieLine();
+        // Conversion iidm to die
+        StringWriter writer = new StringWriter();
+        new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
+        writer.close();
+
+        // Results comparison
+        String actual = writer.toString();
+        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/tieLinesNetwork.json"),
+                new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
+    }
+
+    @Test
+    void metrixInputDataWithUnpairedDanglingLineTests() throws IOException {
+        Network n = DanglingLineNetworkFactory.createWithGeneration();
+        // Conversion iidm to die
+        StringWriter writer = new StringWriter();
+        new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
+        writer.close();
+
+        // Results comparison
+        String actual = writer.toString();
+        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/unpairedDanglingLineNetwork.json"),
+                new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
     }
 
     @Test
