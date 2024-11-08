@@ -52,7 +52,7 @@ class MetrixNetworkTest {
                 "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3", "S2VL2_DL_BREAKER");
 
         // Expected switch list in MetrixNetwork: switches next to branches (lines, two windings transformers) are not present
-        List<Switch> switchList = Set.of("S1VL2_GH2_BREAKER", "S1VL1_LD1_BREAKER", "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3")
+        List<Switch> switchList = Set.of("S1VL2_GH2_BREAKER", "S1VL1_LD1_BREAKER", "S1VL2_BBS1_BBS3")
                 .stream()
                 .map(network::getSwitch).toList();
 
@@ -85,7 +85,7 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getLineList()).containsExactlyInAnyOrderElementsOf(network.getLines());
         assertThat(metrixNetwork.getTwoWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getTwoWindingsTransformers());
         assertThat(metrixNetwork.getThreeWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getThreeWindingsTransformers());
-        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(danglingLineList);
+        assertThat(metrixNetwork.getUnpairedDanglingLineList()).containsExactlyInAnyOrderElementsOf(danglingLineList);
         assertThat(metrixNetwork.getSwitchList()).containsExactlyInAnyOrderElementsOf(switchList);
         assertThat(metrixNetwork.getTieLineList()).containsExactlyInAnyOrderElementsOf(network.getTieLines());
         assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
@@ -141,7 +141,7 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getLineList()).containsExactlyInAnyOrderElementsOf(network.getLines());
         assertThat(metrixNetwork.getTwoWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getTwoWindingsTransformers());
         assertThat(metrixNetwork.getThreeWindingsTransformerList()).containsExactlyInAnyOrderElementsOf(network.getThreeWindingsTransformers());
-        assertThat(metrixNetwork.getDanglingLineList()).containsExactlyInAnyOrderElementsOf(danglingLineList);
+        assertThat(metrixNetwork.getUnpairedDanglingLineList()).containsExactlyInAnyOrderElementsOf(danglingLineList);
         assertThat(metrixNetwork.getSwitchList()).containsExactlyInAnyOrderElementsOf(switchList);
         assertThat(metrixNetwork.getTieLineList()).containsExactlyInAnyOrderElementsOf(network.getTieLines());
         assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
