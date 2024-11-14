@@ -42,10 +42,6 @@ class SimpleMappingData extends FilteredData {
         // for each filtered equipment, compute the distribution key and add it to the config
         if (!filteredEquipments.isEmpty()) {
 
-            if (((Switch) filteredEquipments[0]).voltageLevel.topologyKind == TopologyKind.BUS_BREAKER) {
-                throw new TimeSeriesMappingException("Bus breaker topology not supported for switch mapping")
-            }
-
             filteredEquipments.forEach({ Identifiable identifiable ->
                 configLoader.addEquipmentMapping(breakerType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.OPEN)
             })
