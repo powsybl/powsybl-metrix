@@ -1180,7 +1180,10 @@ public class MetrixInputData {
                                      List<Integer> secttype, List<Integer> sectnumq, List<Float> sectcoef) {
         Identifiable<?> identifiable = metrixNetwork.getNetwork().getIdentifiable(branch.getKey());
         if (identifiable != null) {
-            if (identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer) {
+            if (identifiable instanceof Line ||
+                    identifiable instanceof TwoWindingsTransformer ||
+                    identifiable instanceof DanglingLine ||
+                    identifiable instanceof TieLine) {
                 secttype.add(ElementType.BRANCH.getType());
             } else if (identifiable instanceof HvdcLine) {
                 secttype.add(ElementType.HVDC.getType());

@@ -137,6 +137,10 @@ class BranchMonitoringData {
             logDslLoader.logWarn("Branch %s is not a Branch or Dangling Line", id)
             return
         }
+        if (identifiable instanceof DanglingLine && identifiable.isPaired()) {
+            logDslLoader.logWarn("Branch %s is a paired Dangling Line, the TieLine should be used instead", id)
+            return
+        }
 
         def branchSpec = branchMonitoringData(closure)
 
