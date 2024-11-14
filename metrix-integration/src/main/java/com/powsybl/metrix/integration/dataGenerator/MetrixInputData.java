@@ -814,7 +814,7 @@ public class MetrixInputData {
             try {
                 int type;
                 switch (element.getType()) {
-                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> type = ElementType.BRANCH.getType();
+                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER, TIE_LINE, DANGLING_LINE -> type = ElementType.BRANCH.getType();
                     case GENERATOR -> {
                         type = ElementType.GENERATOR.getType();
                         generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
