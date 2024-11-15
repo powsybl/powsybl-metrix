@@ -14,7 +14,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.DanglingLineNetworkFactory;
@@ -165,9 +164,7 @@ class MetrixInputTest {
         Network n = ThreeWindingsTransformerNetworkFactory.create();
         MetrixInputData metrixInputData = new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters());
         try (StringWriter writer = new StringWriter()) {
-            assertThrows(PowsyblException.class,
-                () -> metrixInputData.writeJson(writer),
-                "Three Windings Transformers are not yet supported in metrix");
+            assertDoesNotThrow(() -> metrixInputData.writeJson(writer)); // TODO test this better ^^
         }
     }
 
