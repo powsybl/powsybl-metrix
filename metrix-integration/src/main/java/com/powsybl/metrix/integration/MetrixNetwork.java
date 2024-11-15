@@ -433,7 +433,7 @@ public class MetrixNetwork {
         createThreeWindingsTransformersList();
     }
 
-    private void createDanglingLineList() {
+    private void createUnpairedDanglingLineList() {
         int nbNok = 0;
         for (DanglingLine dl : network.getDanglingLines()) {
             if (!dl.isPaired()) {
@@ -573,7 +573,7 @@ public class MetrixNetwork {
         createGeneratorList();
         createLineList();
         createTransformerList();
-        createDanglingLineList();
+        createUnpairedDanglingLineList();
         createSwitchList();
         createLoadList();
         createHvdcLineList();
@@ -727,7 +727,7 @@ public class MetrixNetwork {
                 }
             }
             default ->
-                    throw new PowsyblException("Unexpected connectable type : " + terminal.getConnectable().getType());
+                throw new PowsyblException("Unexpected connectable type : " + terminal.getConnectable().getType());
         }
     }
 

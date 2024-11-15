@@ -106,7 +106,7 @@ class MetrixNetworkTest {
     void testNetworkBusBreakerElementsLists() {
         // Mapped switches
         Set<String> mappedSwitches = Set.of("S1VL2_GH2_BREAKER", "S3VL1_LINES3S4_BREAKER", "S1VL1_LD1_BREAKER",
-                "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3", "S1VL3_3WT_BREAKER");
+            "S1VL3_DL_BREAKER", "S1VL2_BBS1_BBS3", "S1VL3_3WT_BREAKER");
 
         // Network
         Network network = createBusBreakerNetwork(mappedSwitches);
@@ -120,8 +120,8 @@ class MetrixNetworkTest {
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
         Contingency b = new Contingency("b", Arrays.asList(
-                new BranchContingency("LINE_S2S3"),
-                new BranchContingency("LINE_S3S4")));
+            new BranchContingency("LINE_S2S3"),
+            new BranchContingency("LINE_S3S4")));
 
         // Create a contingency provider
         ContingenciesProvider contingenciesProvider = networkLocal -> {
@@ -170,17 +170,17 @@ class MetrixNetworkTest {
 
         // We add a voltage level, a ThreeWindingsTransformer and a DanglingLine
         VoltageLevel s1vl3 = network.getSubstation("S1").newVoltageLevel()
-                .setId("S1VL3")
-                .setNominalV(225.0)
-                .setLowVoltageLimit(220.0)
-                .setHighVoltageLimit(240.0)
-                .setTopologyKind(TopologyKind.NODE_BREAKER)
-                .add();
+            .setId("S1VL3")
+            .setNominalV(225.0)
+            .setLowVoltageLimit(220.0)
+            .setHighVoltageLimit(240.0)
+            .setTopologyKind(TopologyKind.NODE_BREAKER)
+            .add();
         s1vl3.getNodeBreakerView().newBusbarSection()
-                .setId("S1VL3_BBS")
-                .setName("S1VL3_BBS")
-                .setNode(0)
-                .add();
+            .setId("S1VL3_BBS")
+            .setName("S1VL3_BBS")
+            .setNode(0)
+            .add();
 
         createSwitch(s1vl3, "S1VL3_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 1);
         createSwitch(s1vl3, "S1VL3_3WT_BREAKER", SwitchKind.BREAKER, 1, 2);
@@ -189,57 +189,57 @@ class MetrixNetworkTest {
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS_3WT_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 40);
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_3WT_BREAKER", SwitchKind.BREAKER, 40, 41);
         network.getSubstation("S1").newThreeWindingsTransformer()
-                .setId("3WT")
-                .setRatedU0(132.0)
-                .newLeg1()
-                .setR(17.424)
-                .setX(1.7424)
-                .setG(0.00573921028466483)
-                .setB(0.000573921028466483)
-                .setRatedU(132.0)
-                .setVoltageLevel(s1vl3.getId())
-                .setNode(2)
-                .add()
-                .newLeg2()
-                .setR(1.089)
-                .setX(0.1089)
-                .setG(0.0)
-                .setB(0.0)
-                .setRatedU(33.0)
-                .setVoltageLevel("S1VL1")
-                .setNode(11)
-                .add()
-                .newLeg3()
-                .setR(0.121)
-                .setX(0.0121)
-                .setG(0.0)
-                .setB(0.0)
-                .setRatedU(11.0)
-                .setVoltageLevel("S1VL2")
-                .setNode(41)
-                .add()
-                .add();
+            .setId("3WT")
+            .setRatedU0(132.0)
+            .newLeg1()
+            .setR(17.424)
+            .setX(1.7424)
+            .setG(0.00573921028466483)
+            .setB(0.000573921028466483)
+            .setRatedU(132.0)
+            .setVoltageLevel(s1vl3.getId())
+            .setNode(2)
+            .add()
+            .newLeg2()
+            .setR(1.089)
+            .setX(0.1089)
+            .setG(0.0)
+            .setB(0.0)
+            .setRatedU(33.0)
+            .setVoltageLevel("S1VL1")
+            .setNode(11)
+            .add()
+            .newLeg3()
+            .setR(0.121)
+            .setX(0.0121)
+            .setG(0.0)
+            .setB(0.0)
+            .setRatedU(11.0)
+            .setVoltageLevel("S1VL2")
+            .setNode(41)
+            .add()
+            .add();
 
         // Dangling line
         createSwitch(s1vl3, "S1VL3_BBS_DL_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 3);
         createSwitch(s1vl3, "S1VL3_DL_BREAKER", SwitchKind.BREAKER, 4, 3);
         s1vl3.newDanglingLine()
-                .setId("DL")
-                .setR(10.0)
-                .setX(1.0)
-                .setB(10e-6)
-                .setG(10e-5)
-                .setP0(50.0)
-                .setQ0(30.0)
-                .setNode(4)
-                .add();
+            .setId("DL")
+            .setR(10.0)
+            .setX(1.0)
+            .setB(10e-6)
+            .setG(10e-5)
+            .setP0(50.0)
+            .setQ0(30.0)
+            .setNode(4)
+            .add();
 
         // We add another bus bar section and link it to the others with a breaker
         network.getVoltageLevel("S1VL2").getNodeBreakerView().newBusbarSection()
-                .setId("S1VL2_BBS3")
-                .setName("S1VL2_BBS3")
-                .setNode(90)
-                .add();
+            .setId("S1VL2_BBS3")
+            .setName("S1VL2_BBS3")
+            .setNode(90)
+            .add();
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS1_DISCONNECTOR", SwitchKind.DISCONNECTOR, 0, 91);
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS3_DISCONNECTOR", SwitchKind.DISCONNECTOR, 92, 90);
         createSwitch(network.getVoltageLevel("S1VL2"), "S1VL2_BBS1_BBS3", SwitchKind.BREAKER, 91, 92);
@@ -294,14 +294,14 @@ class MetrixNetworkTest {
 
     private static void createSwitch(VoltageLevel vl, String id, SwitchKind kind, int node1, int node2) {
         vl.getNodeBreakerView().newSwitch()
-                .setId(id)
-                .setName(id)
-                .setKind(kind)
-                .setRetained(kind.equals(SwitchKind.BREAKER))
-                .setOpen(false)
-                .setFictitious(false)
-                .setNode1(node1)
-                .setNode2(node2)
-                .add();
+            .setId(id)
+            .setName(id)
+            .setKind(kind)
+            .setRetained(kind.equals(SwitchKind.BREAKER))
+            .setOpen(false)
+            .setFictitious(false)
+            .setNode1(node1)
+            .setNode2(node2)
+            .add();
     }
 }
