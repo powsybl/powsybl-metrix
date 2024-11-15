@@ -160,6 +160,9 @@ public class MetrixInputAnalysis {
         if (elementType == ContingencyElementType.TWO_WINDINGS_TRANSFORMER && identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER) {
             return true;
         }
+        if (elementType == ContingencyElementType.TIE_LINE && identifiableType == IdentifiableType.TIE_LINE) {
+            return true;
+        }
         if (elementType == ContingencyElementType.BRANCH && (identifiableType == IdentifiableType.LINE || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER || identifiableType == IdentifiableType.TIE_LINE)) {
             return true;
         }

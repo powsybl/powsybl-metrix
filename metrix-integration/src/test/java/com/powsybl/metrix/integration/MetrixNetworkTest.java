@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) 2024, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 package com.powsybl.metrix.integration;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.contingency.BranchContingency;
-import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
+import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.FourSubstationsNodeBreakerFactory;
 import com.powsybl.iidm.serde.ExportOptions;
@@ -17,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -63,7 +67,7 @@ class MetrixNetworkTest {
 
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
-        Contingency b = new Contingency("b", Arrays.asList(
+        Contingency b = new Contingency("b", List.of(
             new BranchContingency("LINE_S2S3"),
             new BranchContingency("LINE_S3S4")));
 
@@ -71,7 +75,7 @@ class MetrixNetworkTest {
         ContingenciesProvider contingenciesProvider = networkLocal -> {
             a.addExtension(Probability.class, new Probability(0.002d, null));
             b.addExtension(Probability.class, new Probability(null, "variable_ts1"));
-            return Arrays.asList(a, b);
+            return List.of(a, b);
         };
 
         // Initialize the MetrixNetwork
@@ -119,15 +123,19 @@ class MetrixNetworkTest {
 
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
-        Contingency b = new Contingency("b", Arrays.asList(
+        Contingency b = new Contingency("b", List.of(
             new BranchContingency("LINE_S2S3"),
             new BranchContingency("LINE_S3S4")));
+        Contingency c = new Contingency("c", Collections.singletonList(new DanglingLineContingency("DL")));
+        Contingency d = new Contingency("d", Collections.singletonList(new TieLineContingency("TL")));
 
         // Create a contingency provider
         ContingenciesProvider contingenciesProvider = networkLocal -> {
             a.addExtension(Probability.class, new Probability(0.002d, null));
-            b.addExtension(Probability.class, new Probability(null, "variable_ts1"));
-            return Arrays.asList(a, b);
+            b.addExtension(Probability.class, new Probability(0.002d, null));
+            c.addExtension(Probability.class, new Probability(0.002d, null));
+            d.addExtension(Probability.class, new Probability(0.002d, null));
+            return List.of(a, b, c, d);
         };
 
         // Initialize the MetrixNetwork
@@ -146,7 +154,7 @@ class MetrixNetworkTest {
         assertThat(metrixNetwork.getTieLineList()).containsExactlyInAnyOrderElementsOf(network.getTieLines());
         assertThat(metrixNetwork.getHvdcLineList()).containsExactlyInAnyOrderElementsOf(network.getHvdcLines());
         assertThat(metrixNetwork.getBusList()).containsExactlyInAnyOrderElementsOf(network.getBusBreakerView().getBuses());
-        assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b));
+        assertThat(metrixNetwork.getContingencyList()).containsExactlyInAnyOrderElementsOf(List.of(a, b, c, d));
     }
 
     private Network createBusBreakerNetwork(Set<String> mappedSwitches) {
