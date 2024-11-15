@@ -64,8 +64,8 @@ class MetrixNetworkTest {
         // Contingencies
         Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("LINE_S2S3")));
         Contingency b = new Contingency("b", Arrays.asList(
-                new BranchContingency("LINE_S2S3"),
-                new BranchContingency("LINE_S3S4")));
+            new BranchContingency("LINE_S2S3"),
+            new BranchContingency("LINE_S3S4")));
 
         // Create a contingency provider
         ContingenciesProvider contingenciesProvider = networkLocal -> {
