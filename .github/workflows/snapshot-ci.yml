@@ -28,7 +28,7 @@ jobs:
       # DEFINE SCRIPTS PATH
       - name: Set up script path
         run: |
-          SCRIPTS_PATH="${GITHUB_WORKSPACE}/.github/workflows/scripts"
+          SCRIPTS_PATH="${GITHUB_WORKSPACE}/scripts/.github/workflows/scripts"
           if [[ "${{ matrix.config.name }}" == "windows" ]]; then
             SCRIPTS_PATH=$(echo "$SCRIPTS_PATH" | sed 's/\\/\//g')
           fi
@@ -46,9 +46,21 @@ jobs:
         run: mvn -batch-mode --no-transfer-progress clean install -DskipTests
         working-directory: ./powsybl-core
 
-      - name: get powsybl-core version
+      - name: Get powsybl-core version
         run: echo "CORE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
         working-directory: ./powsybl-core
+
+
+      # Checkout script
+      # The script check_snapshot_branch.sh is located in the workflow folder of the pypowsybl repository
+      # It is necessary for checking out the integration branch if it exists (pypowsybl include)
+      - name: Checkout script
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        with:
+         sparse-checkout: |
+           .github
+         sparse-checkout-cone-mode: false
+         path: scripts
 
       # Build powsybl-metrix
       - name: Checking for powsybl-metrix snapshot branch
