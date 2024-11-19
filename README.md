@@ -103,6 +103,8 @@ Further documentation is available on the [dedicated page](https://powsybl.readt
 
 ### Metrix
 
+Functionnal Metrix documentation can be found here: [Functionnal Powsybl Metrix documentation](DOC.md).
+
 To use metrix with java, add `com.powsybl:powsybl-metrix-integration` module to your dependencies.
 
 Then you need :
