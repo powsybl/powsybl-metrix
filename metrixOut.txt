@@ -1,2 +1,0 @@
-File 'METRIX.dic' not found !
-Check environement (file=IoDico.cpp ,line=88)
