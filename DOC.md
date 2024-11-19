@@ -93,7 +93,7 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | :-- | :--- | :----- | :---------- |
 | **ECNBCONS** | I | 1 | Nombre de consommations élémentaires<br>= $\sum$ load t.q. load.terminal.busBreakerView.bus $\in$ composante connexe principale |
 | **TNNOMNOE** | C | ECNBCONS | Noms des consommations<br>= load.id |
-| **TNNEUCEL** | I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
+| **TNNEUCEL** <a id="table_tnneucel"></a>| I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
 | **CPPOSREG** | I | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG |
 | **ESAFIACT** | I | ECNBCONS | Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0 |
 | TNVAPAL1 | I | ECNBCONS | Pourcentage du premier palier de délestage.<br>= 100 si aucun nœud configuré, 0 sinon |
@@ -103,7 +103,7 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **TRNBGROU** | I | 1 | Nombre de groupes raccordés<br>= $\sum$ generator t.q. generator.terminal.busBreakerView.bus $\in$  composante connexe principale |
-| **TRNOMGTH** | C | TRNBGROU | Nom du groupe<br>= generator.id |
+| **TRNOMGTH** <a id="table_trnomgth"></a>| C | TRNBGROU | Nom du groupe<br>= generator.id |
 | **TNNEURGT** | I | TRNBGROU | Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE |
 | **SPPACTGT** | R | TRNBGROU | Puissance de consigne $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP |
 | **TRVALPMD** | R | TRNBGROU | Puissance max disponible<br>= generator.maxP |
@@ -143,7 +143,7 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **DCNBLIES** | I | 1 | Nombre de lignes à courant continu<br>= $\sum$ hvdcLine t.q.  (hvdcLine.converterStation1.terminal.busBreakerView.bus && hvdcLine.converterStation2.terminal.busBreakerView.bus) $\in$ composante connexe principale |
-| **DCNOMQUA** | C | DCNBLIES | Nom de la ligne à courant continu<br>= hvdcLine.id |
+| **DCNOMQUA** <a id="table_dcnomqua"></a>| C | DCNBLIES | Nom de la ligne à courant continu<br>= hvdcLine.id |
 | **DCNORQUA** | I | DCNBLIES | Indice du nœud origine de la ligne (hvdcLine.converterStation1.terminal.busBreakerView.bus) dans la table TNNOMNOE |
 | **DCNEXQUA** | I | DCNBLIES | Indice du nœud extrémité de la ligne (hvdcLine.converterStation2.terminal.busBreakerView.bus) dans la table TNNOMNOE |
 | **DCMINPUI** | R | DCNBLIES | Puissance minimale<br>= - activePowerRange.oPRFromCS2toCS1 si l’extension HvdcOperatorActivePowerRange est utilisée, - hvdcLine.maxP sinon. |
@@ -155,7 +155,7 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | **DCPERST1** | R | DCNBLIES | Coefficient de pertes (en %) de la station de conversion origine<br>= hvdcLine.converterStation1.lossFactor |
 | **DCPERST2** | R | DCNBLIES | Coefficient de pertes (en %) de la station de conversion extrémité<br>= hvdcLine.converterStation2.lossFactor |
 | **DCNDROOP** | I | 1 | Nombre de HVDC opérée en mode émulation AC ($P = P_0 + k \Delta\Theta$) |
-| DCDROOPK | R | DCNDROOP | Pour chaque HVDC en émulation AC, dans l’ordre de la table DCNOMQUA, valeur du coefficient k (en MW/°) |
+| DCDROOPK | R | DCNDROOP | Pour chaque HVDC en émulation AC, dans l’ordre de la [table DCNOMQUA](#table_dcnomqua), valeur du coefficient k (en MW/°) |
 
 ## Incidents N-1 et N-k <a id="incidents"></a>
 | Nom | Type | Taille | Description |
@@ -177,10 +177,10 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | NBLDCURA | I | 1	Nombre de consommations pouvant s’effacer en curatif (valeur par défaut 0) |
 | LDNBDEFK | I | ECNBCONS	Pour chaque consommation, nombre d’incidents traités en curatif (valeur par défaut 0) |
 | LDCURPER | I | NBLDCURA	Pour chaque consommation curative, dans l’ordre des indices, pourcentage d’effacement en curatif |
-| LDPTDEFK | I | ≤ NBLDCURA * DMNBDEFK	Pour chaque consommation curative, dans l’ordre de la table TNNEUCEL, pointeur des incidents traités en curatif. |
+| LDPTDEFK | I | ≤ NBLDCURA * DMNBDEFK	Pour chaque consommation curative, dans l’ordre de la [table TNNEUCEL](#table_tnneucel), pointeur des incidents traités en curatif. |
 | GRNBCURA | I | 1	Nombre de groupes pouvant agir en curatif (valeur par défaut = 0) |
 | GRNBDEFK | I | GRNBCURA	Pour chaque groupe curatif, nombre d’incidents traités en curatif (valeur par défaut 0) |
-| GRPTDEFK | I | ≤ GRNBCURA * DMNBDEFK	Pour chaque groupe curatif, dans l’ordre de la table TRNOMGTH, pointeur des incidents traités en curatif. |
+| GRPTDEFK | I | ≤ GRNBCURA * DMNBDEFK	Pour chaque groupe curatif, dans l’ordre de la [table TRNOMGTH](#table_trnomgth), pointeur des incidents traités en curatif. |
 
 ## Sections surveillées <a id="monitored_section"></a>
 | Nom | Type | Taille | Description |
@@ -345,7 +345,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom de la consommation | C | | nom de la consommation |
-| numéro d’incident | I | | Référence à la numérotation de la table C4 |
+| numéro d’incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
 | puissance effacée | R | MW | |
 
 **Tableau R1C** : résultats par couplage de consommations.
@@ -366,8 +366,8 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 **Tableau R2B** <a id="table_r2b"></a>: résultats curatifs par groupe. Seuls les groupes dont la consigne curative diffère de la consigne préventive sont affichés.
 | | | | |
 | :-- | :-- | :-- | :-- |
-| numéro d’ incident | I | | Référence à la numérotation de la table C4 |
-| nom du groupe	C | | |
+| numéro d’ incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
+| nom du groupe	| C | | |
 | puissance ajustée | R | MW | Si supérieure à 0,001 en valeur absolue |
 
 **Tableau R2C** : résultats par couplage de groupes.
@@ -388,9 +388,9 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | | 		
-| incident cause du transit max avant manœuvres | | | Référence à la numérotation de la table C4 |
+| incident cause du transit max avant manœuvres | | | Référence à la numérotation de la [table C4](#table_c4) |
 | transit max avant manœuvres | R | MW | positif de départ vers arrivée |
-| incident cause du 1er transit max sur  incident | | | Référence à la numérotation de la table C4 |
+| incident cause du 1er transit max sur  incident | | | Référence à la numérotation de la [table C4](#table_c4) |
 | 1 $^{er}$ transit max sur incident | R | MW | positif de départ vers arrivée |
 | *incident cause du N $^{ème}$ transit max sur  incident* | | | *Autant de résultats que demandé dans les paramètres* |
 | *N $^{ème}$ transit max sur incident* | | | |
@@ -399,7 +399,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | |		
-| numéro d’ incident | I | | Référence à la numérotation de la table C4 |
+| numéro d’ incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
 | transit | R | MW | positif de départ vers arrivée |
 
 **Tableau R4** <a id="table_r4"></a>: variations marginales par liaison, en N et sur incident
@@ -429,7 +429,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 **Tableau R5B** <a id="table_r5b"></a>: résultats des actions curatives des transformateurs déphaseurs. Seules les liaisons dont la consigne curative diffère de la consigne préventive sont affichées.
 | | | | |
 | :-- | :-- | :-- | :-- |
-| Numéro de l’incident | R | | Référence à la numérotation de la table C4 |
+| Numéro de l’incident | R | | Référence à la numérotation de la [table C4](#table_c4) |
 | Nom du TD | C | | |
 | Consigne en curatif du TD | R | ° ou MW | Selon le mode de pilotage du TD |
 
@@ -443,7 +443,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 **Tableau R6B** <a id="table_r6b"></a>: résultats par actions curatives des HVDC. Seules les liaisons dont la consigne curative diffère de la consigne préventive sont affichées.
 | | | | |
 | :-- | :-- | :-- | :-- |
-| numéro de l’incident  | R | | Référence à la numérotation de la table C4 |
+| numéro de l’incident  | R | | Référence à la numérotation de la [table C4](#table_c4) |
 | nom de la HVDC | C | | |
 | consigne en curatif de la HVDC | R | MW | |
 | Variation marginale curative de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC pour cet incident (non utilisé) |
@@ -482,7 +482,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 **Tableau R10** : résultats du curatif topologique (parades sélectionnées). Les parades « ne rien faire » ne sont pas affichées.
 | | | | |
 | :-- | :-- | :-- | :-- |
-| numéro de l’incident | I | | Référence à la numérotation de la table C4 |
+| numéro de l’incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
 | nom incident | C | | Nom de l’incident initial |
 | nombre d’action(s) de la parade | I | | |
 | nom de la parade | C | | |
