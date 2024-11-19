@@ -1,0 +1,2 @@
+Cannot read json configuration "fort.json": fort.json: cannot open file
+Problème lors de la lecture des paramètres (file=configuration.cpp ,line=341)

@@ -1,0 +1,206 @@
+//
+// Copyright (c) 2021, RTE (http://www.rte-france.com)
+// See AUTHORS.txt
+// All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, you can obtain one at http://mozilla.org/MPL/2.0/.
+// SPDX-License-Identifier: MPL-2.0
+//
+
+// ------- Messages generaux  ----------------
+INFONbRegions								Number of area             = $1
+INFONbSommets								Number of nodes            = $1
+INFONbConsos								Number of loads            = $1 (including $2 set for remedial actions)
+INFONbQuads									Number of lines            = $1 (including $2 monitored on basecase and $3 monitored on contingencies)
+INFONbGroupes								Number of production units = $1 (including $2 set for remedial actions)
+INFONbTDs									Number of phase shifter    = $1 (including $2 set for remedial actions)
+INFONbHVDC									Number of HVDC             = $1 (including $2 set for remedial actions and $3 operated in AC emulation)
+INFOCommande								Output file : $1 law file : $2, first variant : $3, number of variants : $4
+INFOCoeffPerte								Loss ratio = $1%
+INFOMaxRelancePerte						    Max number of repeat(s) because of loss differences = $1
+INFOSeuilRelancePerte						Loss threshold to repeat variant = $1 MW
+INFODemiBandeReglGlobale					Global frequency regulation reserve  = $1
+INFODemiBandeReglGlobaleIgnoree             Frequency regulation reserve ignored because there is no production unit contingency
+INFOIncidentRompantConnexite				Contingency $1 number $2 ($3) breaks connexity, ignored
+INFONbIncidents								Number of valid contingencies = $1 (out of $2)
+INFOPmaxPerdueSurIncident					Maximal power lost on a contingency  = $1 MW
+INFOConsommationGlobale						Global load = $1 MW
+INFOPmaxGrpHorsPimp							Maximal power available (without imposed power) = $1 MW
+INFOIncidents								Information about contingencies in the problem
+INFOGeneralReseau							Global information on the network :
+INFONoeudHorsCCPrincipale					Bus '$1' is out the main component (component $2)
+INFONbComposantesSynchrones					Number of synchronous area : $1
+INFONbGroupesCouples                        Number of generator variables bindings : $1
+INFONbConsosCouplees                        Number of load variables bindings : $1
+INFOPenalisationTD							PST cost in objective function = $1
+INFOPenalisationHVDC						HVDC cost in objective function  = $1
+INFOPasDePenalisationTDHVDC					No PST nor HVDC cost in objective function
+INFOPriseEnCompteItam                       Use of pre-curative-action threshold
+INFONbMaxActionCurative                     Max number of curative action(s) per incident : $1
+INFOPasLimiteActionCurative                 No limitation for the number of curative actions per incident
+INFOResultatsSurchargesUniquement           Overload results only
+INFOBilanParZoneSync                        Synchronous area balancing :
+INFOBilanZoneSync                           Synchronous area $1 (slack node $2), balance = $3 MW
+INFOParamOpt								Optional parameter '$1' not set
+INFOIncident                                Contigency '$1' :
+INFOParade                                  Remedial action '$1' on contingency '$2' : 
+INFOPochePerdue                             Lost buses
+INFOLimiteRedispatchingCuratif              Curative redispatching limit per synchronous area (MW) : $1
+INFONouveauPaquetVariantes					Processing a set of $1 variant(s)
+			
+// ------- Messages infos sur le calcul  ----------------
+INFOPasDeContraintes						No constraints
+INFOContraintesDetectees					Some constraints are detected $1
+INFOContraintesAjoutee						$1 constraints are added in the problem
+INFOCoutsAvecReseau							Use of adjustment cost with network
+INFOEmpilementEconomique					Starting production units from a pure economic criterion :
+INFOProdImposee								Global started production = $1 MW
+INFOPuissanceAdemarrer						Required power adjustment = $1 MW
+INFOPuissanceMaximaleDemarrableHorsPimp		Power increase available  = $1 MW
+INFOPuissanceMaximaleArretableHorsPimp		Power reduction available = $1 MW
+INFOSPXPminSupZero							Use of simplex method because Pmin is non zero
+INFOSPXPObjSupZero							Use of simplex method because PObj is non zero
+INFOSPXPlusieursZonesSynch					Use of simplex method because there are more than 1 synchronous area
+INFOSPXDelestageNecessaire					Curtailment is necessary because Pimp + Pmax available < load
+INFOSPXPenalisationTDHVDC					Use of simplex method because cost of using PSTs and/or HVDC is not null 
+INFOResEmpilEco								Results of pure economic production unit start
+INFOVolProd									Production volume    = $1 MW
+INFOVolDelestage							Curtailment volume   = $1 MW
+INFOFctObj									Cost function value           : $1
+INFOCoutGrp									Production units cost         : $1
+INFOCoutDelestage							Curtailment cost              : $1
+INFOCoutPenalisation						TD & HVDC cost                : $1
+INFOCoutVariablesEcart						Gap variables cost            : $1
+INFOCoutVariablesValorisation               Remedial actions LOL/LOG cost : $1
+INFOVolumePertes                            Computed losses = $1 MW, estimated losses = $2 MW (gap = $3 MW)
+INFODeltaPertes                             Important gap detected on losses, variant computation relaunched ($2/$3) with new rate : $1%
+
+INFOAppelSolvLineairePNE					Call of the linear solver with integer value
+INFOAppelSolvLineaireSPX					Call of simplex
+INFOSolOptTrouve							Optimal solution found for variant $1 (return code = $2)
+INFOPasDeSol								No solution found for variant $1
+INFOCasDeBase								Base case
+INFOVariante								Variant number $1
+INFOMicroIt									Micro iteration $1 (number of constraints $2)
+INFOResCout									Results about cost function
+INFOResMW									Results about adjustment volume  (MW)
+
+// ------- Messages d'erreur  ----------------
+ERRLectureLois								Error while reading the law file
+ERRResolProbleme							Error during the problem resolution
+ERRIndispoLigneVarConnexite					Line unavailability on variant $1 breaks connexity
+ERRIncidentIgnoreVarConnexite				Contingency $1 is ignored for this variant set because it breaks connexity
+ERRIncidentLCCEtLigneNonTraite				Error contingency with HVDC ($1) and line ($2) are not allowed
+ERRIncNonTraite								Contingency non accepted : $1
+ERRHVDCPminPmaxImpose						HVDC link $1 has a power set point not included between Pmin and Pmax
+ERRPerteHVDC								ERROR while computing losses on the HVDC link $1. Check the data.
+ERRIncidentGroupeRompantConnexite           Contingency $1 ($2) includes a generator and breaks connexity. Not supported.
+ERRIncidentLccRompantConnexite              Contingency $1 ($2) includes an HVDC and breaks connexity. Not supported.
+
+//------Messages d'erreur lors de la lecture des variantes
+ERRFirstVariant                             First variant number is not valid
+ERRNbVariants                               Number of variants is not valid
+ERRPbOuvertureFic							Unable to open file $1
+ERRLectureFichier							Error while reading file $1
+ERRMotCleNbVar								Key word NT (number of variant) not found in file $1
+ERRLectFicPointVirgule						Error while reading file $1 : missing semicolon ($2, $3)
+ERRLectureVariante							Error while reading variant $1 in file $2
+ERRPremiereVarIntrouvable					First variant number cannot be found in file $1
+ERRFormatNombre                             Invalid number format : '$2' in law $1
+ERRRegionIntrouvable						Area '$1' of law $2 cannot be found 
+ERRGroupeIntrouvable						Production unit '$1' in law $2 cannot be found 
+ERRTDPriseIntrouvable						For PST '$1' required tap $2 cannot be found for variant $3 
+ERRNoeudConsoIntrouvable					Node '$1' in load variation law number $2 cannot be found 
+ERRIncidentIntrouvable                      Outage id '$1' in variation law $2 for variant $3 cannot be found
+ERRQuadIntrouvable							Line '$1' in law $2:$3 cannot be found 
+ERRConsoIntrouvable							Load id '$1' in variation law $2 for variant $3 cannot be found
+ERRTypeLoiInconnu							Law type $1 is unknown
+ERRPasDeconsoSurNoeud						There is no load on node $1
+ERRApplLoiBilanGrpNonImp					Error on the exchange law because the production unit $1 is adjustable
+ERRApplLoiBilanDelta						Error : impossible to set the balance law on region $1 (balance - target value = $2)
+ERRFinFichierIntrouvable					Error : the end of the file $1 is not detected.
+ERRGrpRandomDifferentGrp                    Error : Variant $1 : lists groupes_ and randomGroups do not contain the same name of groups.
+
+//------Messages d'erreur lors de la lecture du reseau
+ERRPbOuvertureBase							Error while opening the base DIE during the reading parameters routine
+ERRPbLectureParam							Error while reading parameter $1 in base DIE
+ERRPbFermetureBase							Error while closing base DIE during the reading parameters routine
+ERRPbLectureParametres						Error while reading parameters
+ERRPbInterfaceDIE							Error in the interfaceDIE: interface with data base
+ERRPalierNoeud12							Curtailment ratio 1: $2 is higher than curtailment ratio 2 :$3 on node $1
+ERRPalierNoeudSup100						Curtailment ratio of node $1 is higher than 100 : $2
+ERRPalierNoeudNegatif						Curtailment ratio of node $1 is negative : $2
+ERRNoeudsQuadripole							Wrong data (node  number) for line $1
+ERRDonneeAnormaleTD							Wrong data on phase shifter $1
+ERRPuissanceConsigneTD				        Value set for phase shifter $1 violates boundaries 
+ERRNoeudGroupe								Production unit $1 connecting node not found $2
+ERRNoeudConso								Load $1 connecting node not found $2
+ERRGroupePminPmax							Production unit $1: Pmin ($2) > Pmax ($3)
+ERRGroupesPminPmax							At least one production unit with Pmin > Pmax : abort
+ERRReseauNonConnexe							Network is not connex
+ERROuvrageInconnuIncident					Unknown line ou production unit in contingency $1
+ERRTypeOuvrageInconnuIncident				Unknown kind of contingency $1
+ERRBandeReglInsuffisante					Frequency reserve insufficient, to be changed. $1 > $2
+ERRLectureregion							Error while reading data on area
+ERRLectureNoeuds							Error while reading data on nodes
+ERRLectureConsos							Error while reading data on loads
+ERRLectureProd								Error while reading data on production units
+ERRLectureLigne								Error while reading data on lines
+ERRLectureTD								Error while reading data on phase sifter
+ERRPbLectureDonnees							Error while reading data $1 in base DIE
+ERRHVDCCuratifEntreZSynchNonTraite			Error : HVDC link $1 is connected between 2 synchronous area: no curative action is modeled
+
+//------Messages d'erreur lors du calcul
+ERRCalcVarnul								Variant number is nul
+ERRCalcInterne								Internal error
+ERRPminSupPc								Pmin > Pobj for production unit $1
+ERRPimpSupConso								Imposed power is higher than load
+ERRAppelSpx									Error while calling simplex
+ERRPasDeSolEmpilEco							No solution in the pure economic production unit start
+ERRPasDeGroupe								No production unit adjustable !
+ERRInciGrpDemiBandeRegl						Contingency $1 with production unit $2: frequency reserve is not sufficient :
+ERRIDemiBandeReglInsuf						Possible lost power during contingency $1 MW, frequency reserve $2 MW
+ERRAjoutCtr									Error while adding constraint on line $2 after contingency $1
+ERRAjoutCtrN								Error while adding constraint on line $1
+ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
+ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes 
+
+
+//------------- Warning --------------------
+WARNIncidentOuvrageDejaOuvert	 			Warning: contingency $1, line $2 is already disconnected
+WARNIncidentRompantConnexiteLU				Error while LU factoring: contingency '$1' seems to break connexity
+WARNIncidentGrpPasDePuissance				Warning: No power can be lost during the contingency $1
+WARNLimiteCourantNegative                   Error: Current limit $2 of line $1 is negative $3 MW
+WARNLimiteCourantPlusContraignante          Error: Current limit on $2 ($3) for line $1 is lower than the one for $4 ($5)
+WARNPobjInferieurPmax						Production unit $1: production was set to $2 higher than the maximum power deliverable ($3): Pobj is set to Pmax
+WARNPobjSuperieurPmin						Production unit $1: production was set to $2 lower than the minimum power deliverable ($3): Pobj is set to Pmin
+WARNCuratifNonActiveMaisDef					PST $1 is not in a curative mode , yet some contingencies for curative actions are defined
+WARNTdHs                                    PST $1 is not operational
+WARNAdmitFaible								Warning: admittance for connection $1  is very low( $2)
+WARNAdmitGrande								Warning: admittance for connection $1  is very high ( $2)
+WARNIncCurNonTraiteOuvInc					$2 cannot be used as a curative action on contingency $1 because it makes part of the contingency
+WARNTDCurNonTraite							No curative action for phase shifter $1 because it is not adjustable 
+WARNHVDCCurNonTraiteEntreCompSyn			No curative action possible for HVDC link $1 because it is between 2 different synchronous area
+WARNHVDCCurNonTraite						No curative action for HVDC link $1 because it is not adjustable 
+WARNHVDCConsigneImposee						Control mode of HVDC $1 set to -- Imposed --
+WARNQuadBoucle								Warning: Connection $1 creates a loop on the same node. A breaker on one side had to be opened.
+WARNPimpInfConso                            Available production is below consumption. Offgrid curtailment is required
+WARNTooMuchCut                              Number of lost consumptions is greater than the maximum number $1 configured: some lost consumption will not be displayed
+
+//------------- Curatif topologique --------------------
+ERRCurTopoIncidentInconnu					Outage $1 mentionned in the remedial action list cannot be found
+ERRCurTopoLancementStd						Launch of METRIX without topological remedial actions
+ERRCouplageInconnu							Missing branch for remedial action : '$1'
+ERRCouplageBoucle							Branch '$1' used in a remedial action creates a loop on the same node. This remedial action is not valid.
+ERRCurTopoContrainteInconnue                Constraint '$1' does not match any monitored branch.
+WarnElementDansIncident                     Branch '$1' used in a remedial action is part of the outage '$2'
+WarnElementDejaDansParade                   Duplicate branch '$1' used in a remedial action of outage '$2'
+
+//---------------- Variables li�es ---------------------
+ERRConsoNulle								Error: load value is null on bus '$1' used in variable binding '$2'
+ERRVarRefNulle								Error: reference variable is null for generator '$1' used in variable binding '$2' 
+ERRGrpNonAjustable							Error : non ajustable group '$1' used in variable coupling '$2'
+ERRGroupeLieNonModifiable                   Error : generator '$1' used in variable binding '$2' is not modifiable
+ERRConsoLieeNonModifiable                   Error : load '$1' used in variable binding '$2' is not modifiable
+WarnMargePetiteGrp							Warning: small margins for generator '$1' used in variable binding '$2'
