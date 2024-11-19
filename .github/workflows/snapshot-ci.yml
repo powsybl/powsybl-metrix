@@ -89,3 +89,14 @@ jobs:
       - name: Build with Maven (MacOS)
         if: matrix.os == 'macos-latest'
         run: ./mvnw --batch-mode install
+
+      - name: Get Maven version
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Upload Metrix iTools archive
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
+          path: ${{ github.workspace }}/metrix-distribution/target/metrix
