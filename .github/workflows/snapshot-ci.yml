@@ -28,7 +28,7 @@ jobs:
       # DEFINE SCRIPTS PATH
       - name: Set up script path
         run: |
-          SCRIPTS_PATH="${GITHUB_WORKSPACE}/scripts/.github/workflows/scripts"
+          SCRIPTS_PATH="${GITHUB_WORKSPACE}/.github/workflows/scripts"
           if [[ "${{ matrix.config.name }}" == "windows" ]]; then
             SCRIPTS_PATH=$(echo "$SCRIPTS_PATH" | sed 's/\\/\//g')
           fi
