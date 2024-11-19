@@ -7,7 +7,7 @@ core_version=$2
 core_snapshot_version=$(echo "$core_version" | grep -q SNAPSHOT && echo "$core_version" || echo "$core_version-SNAPSHOT")
 
 # Find if a SNAPSHOT branch exists
-SNAPSHOT_BRANCH=$(git ls-remote --heads "$repo" | grep -E "refs/heads/$core_snapshot_version" | sed 's/.*refs\/heads\///')
+SNAPSHOT_BRANCH=$(git ls-remote --heads "$repo" | grep -E "refs/heads/integration/powsyblcore-$core_snapshot_version" | sed 's/.*refs\/heads\///')
 if [ -n "$SNAPSHOT_BRANCH" ]; then
     echo "SNAPSHOT VERSION EXIST: $SNAPSHOT_BRANCH"
     echo "SNAPSHOT_BRANCH=$SNAPSHOT_BRANCH" >> "$GITHUB_ENV"
