@@ -51,8 +51,8 @@ jobs:
         working-directory: ./powsybl-core
 
       # Checkout script
-      # The script check_snapshot_branch.sh is located in the workflow folder of the pypowsybl repository
-      # It is necessary for checking out the integration branch if it exists (pypowsybl include)
+      # The script check_integration_branch.sh is located in the workflow folder of the repository
+      # It is necessary for checking out the integration branch if it exists
       - name: Checkout script
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
         with:
@@ -63,7 +63,7 @@ jobs:
 
       # Build powsybl-metrix
       - name: Checking for powsybl-metrix snapshot branch
-        run: ${{ env.SCRIPTS_PATH }}/check_snapshot_branch.sh "https://github.com/powsybl/powsybl-metrix.git" ${{ env.CORE_VERSION }}
+        run: ${{ env.SCRIPTS_PATH }}/check_integration_branch.sh "https://github.com/powsybl/powsybl-metrix.git" ${{ env.CORE_VERSION }}
 
       - name: Checkout powsybl-metrix
         uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
