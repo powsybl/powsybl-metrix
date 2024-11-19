@@ -79,19 +79,23 @@ jobs:
 
       - name: Build with Maven (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
+        working-directory: ./powsybl-metrix
         run: ./mvnw --batch-mode -Pjacoco install
 
       - name: Build with Maven (Windows)
         if: matrix.os == 'windows-latest'
+        working-directory: .\powsybl-metrix
         run: mvnw.cmd --batch-mode install
         shell: cmd
 
       - name: Build with Maven (MacOS)
         if: matrix.os == 'macos-latest'
+        working-directory: ./powsybl-metrix
         run: ./mvnw --batch-mode install
 
       - name: Get Maven version
         if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        working-directory: ./powsybl-metrix
         run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Upload Metrix iTools archive
@@ -99,4 +103,4 @@ jobs:
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
-          path: ${{ github.workspace }}/metrix-distribution/target/metrix
+          path: ${{ github.workspace }}/powsybl-metrix/metrix-distribution/target/metrix
