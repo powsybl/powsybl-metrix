@@ -110,3 +110,43 @@ jobs:
         with:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
           path: ${{ github.workspace }}/powsybl-metrix/metrix-distribution/target/metrix
+
+      - name: Install Boost on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Configure 3rd parties on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake -S $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/external -B $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build/external
+
+      - name: Build 3rd parties on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake --build $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator -B $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build/install
+
+      - name: Build metrix-simulator on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cmake --build $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build --target install --parallel 2
+
+      - name: Tests metrix-simulator on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cd $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build && ctest -j2 --output-on-failure
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: metrix-simulator-ubuntu-${{ env.MAVEN_PROJECT_VERSION }}
+          path: |
+            powsybl-metrix/metrix-simulator/build/install/bin
+            powsybl-metrix/metrix-simulator/build/install/etc
