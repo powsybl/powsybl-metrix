@@ -2,6 +2,12 @@ name: Snapshot CI
 
 on:
   workflow_dispatch:
+    inputs:
+      generate_artifacts:
+        description: 'Generate and upload build artifacts'
+        required: true
+        default: false
+        type: boolean
   schedule:
     - cron: '30 3 * * *'
   pull_request:
