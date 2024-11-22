@@ -10,7 +10,6 @@ on:
         type: boolean
   schedule:
     - cron: '30 3 * * *'
-  pull_request:
 
 jobs:
   build_powsybl_metrix:
@@ -100,14 +99,12 @@ jobs:
         run: ./mvnw --batch-mode install
 
       - name: Get Maven version
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-#        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         working-directory: ./powsybl-metrix
         run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
 
       - name: Upload Metrix iTools archive
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-#        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
@@ -145,8 +142,7 @@ jobs:
         run: cd $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build && ctest -j2 --output-on-failure
 
       - name: Upload Metrix Simulator archive
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-#        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
         with:
           name: metrix-simulator-ubuntu-${{ env.MAVEN_PROJECT_VERSION }}
