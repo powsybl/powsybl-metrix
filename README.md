@@ -103,8 +103,6 @@ Further documentation is available on the [dedicated page](https://powsybl.readt
 
 ### Metrix
 
-Functionnal Metrix documentation can be found here: [Functionnal Powsybl Metrix documentation](DOC.md).
-
 To use metrix with java, add `com.powsybl:powsybl-metrix-integration` module to your dependencies.
 
 Then you need :
@@ -164,6 +162,7 @@ Further documentation is available on the [dedicated page](https://powsybl.readt
 #### Metrix simulator
 
 Metrix simulator is an independant c++ executable. It must be installed before using powsybl-metrix.
+Functionnal Metrix simulator documentation can be found here: [Functionnal Powsybl Metrix simulator documentation](DOC.md).
 
 It has its own toolchain and requirements.
 

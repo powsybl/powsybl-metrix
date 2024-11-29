@@ -111,7 +111,7 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | **TRNBTYPE** | I | 1 | Nombre de types de groupe |
 | **TRNOMTYP** | C | TRNBTYPE | Noms des types de groupes |
 | **TRTYPGRP** | I | TRNBGROU | Indice du type de groupe dans TRNOMTYP |
-| SPIMPMOD | I | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3), l’adequacy (2), les deux (1) ou aucune des deux (0)<br>Valeur par défaut = 1 si aucun groupe n’est configuré et 0 sinon.|
+| SPIMPMOD | I | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>Valeur par défaut = 1 si aucun groupe n’est configuré et 0 sinon.|
 | TRDEMBAN | R | TRNBGROU | Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (valeur par défaut 0) |
 
 ## Quadripôles <a id="quadri"></a>
