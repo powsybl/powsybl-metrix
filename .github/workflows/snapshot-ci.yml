@@ -11,10 +11,15 @@ on:
   schedule:
     - cron: '30 3 * * *'
 
+env:
+  BUILD_STATUS: ${{ github.workspace }}/build_status.txt
+
 jobs:
   build_powsybl_metrix:
     name: Build Java ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    outputs:
+      build_status: ${{ steps.build_status.outputs.BUILD_STATUS_CONTENT }}
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
@@ -149,3 +154,39 @@ jobs:
           path: |
             powsybl-metrix/metrix-simulator/build/install/bin
             powsybl-metrix/metrix-simulator/build/install/etc
+
+      - name: Record Job Name
+        if: failure()
+        run: |
+          echo "Failed job : Build powsybl-metrix on ${{ matrix.os }}" >> $BUILD_STATUS
+
+      - name: Read Build Status
+        if: always()
+        id: build_status
+        run: |
+          echo "=== BUILD STATUS REPORT ==="
+          cat $BUILD_STATUS
+          echo "=========================="
+          echo "BUILD_STATUS_CONTENT<<EOF" >> $GITHUB_OUTPUT
+          cat $BUILD_STATUS >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  # Slack notification on failure
+  notify_slack:
+    needs: build_powsybl_metrix
+    runs-on: ubuntu-latest
+    if: failure()
+    steps:
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
+        with:
+          status: ${{ job.status }}
+          text: |
+            :x: *Failed workflow ${{ github.workflow }}*
+            *Failure details:*
+            ```
+            ${{ needs.build_powsybl_metrix.outputs.build_status }}
+            ```
+            See logs: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
