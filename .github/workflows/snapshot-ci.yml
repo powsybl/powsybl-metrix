@@ -1,0 +1,151 @@
+name: Snapshot CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      generate_artifacts:
+        description: 'Generate and upload build artifacts'
+        required: true
+        default: false
+        type: boolean
+  schedule:
+    - cron: '30 3 * * *'
+
+jobs:
+  build_powsybl_metrix:
+    name: Build Java ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+      fail-fast: false
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      # Define script path variable
+      - name: Set up script path
+        run: |
+          SCRIPTS_PATH="${GITHUB_WORKSPACE}/scripts/.github/workflows/scripts"
+          if [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            SCRIPTS_PATH=$(echo "$SCRIPTS_PATH" | sed 's/\\/\//g')
+          fi
+          echo "SCRIPTS_PATH=$SCRIPTS_PATH" >> $GITHUB_ENV  
+
+      # Build powsybl-core on main branch
+      - name: Checkout core sources
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        with:
+          repository: powsybl/powsybl-core
+          ref: main
+          path: powsybl-core
+
+      - name: Build powsybl-core
+        run: mvn -batch-mode --no-transfer-progress clean install -DskipTests
+        working-directory: ./powsybl-core
+
+      - name: Get powsybl-core version
+        run: echo "CORE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+        working-directory: ./powsybl-core
+
+      # Checkout script
+      # The script check_integration_branch.sh is located in the workflow folder of the repository
+      # It is necessary for checking out the integration branch if it exists
+      - name: Checkout script
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        with:
+         sparse-checkout: |
+           .github
+         sparse-checkout-cone-mode: false
+         path: scripts
+
+      # Build powsybl-metrix
+      - name: Checking for powsybl-metrix snapshot branch
+        run: ${{ env.SCRIPTS_PATH }}/check_integration_branch.sh "https://github.com/powsybl/powsybl-metrix.git" ${{ env.CORE_VERSION }}
+
+      - name: Checkout powsybl-metrix
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        with:
+          repository: powsybl/powsybl-metrix
+          ref: ${{ env.INTEGRATION_BRANCH }}
+          path: powsybl-metrix
+          submodules: true
+
+      - name: update pom.xml
+        run: mvn versions:set-property -Dproperty=powsyblcore.version -DnewVersion=$CORE_VERSION -DgenerateBackupPoms=false
+        working-directory: ./powsybl-metrix
+
+      - name: Build with Maven (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: ./powsybl-metrix
+        run: ./mvnw --batch-mode -Pjacoco install
+
+      - name: Build with Maven (Windows)
+        if: matrix.os == 'windows-latest'
+        working-directory: .\powsybl-metrix
+        run: mvnw.cmd --batch-mode install
+        shell: cmd
+
+      - name: Build with Maven (MacOS)
+        if: matrix.os == 'macos-latest'
+        working-directory: ./powsybl-metrix
+        run: ./mvnw --batch-mode install
+
+      - name: Get Maven version
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        working-directory: ./powsybl-metrix
+        run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Upload Metrix iTools archive
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
+          path: ${{ github.workspace }}/powsybl-metrix/metrix-distribution/target/metrix
+
+      - name: Install Boost on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Configure 3rd parties on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake -S $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/external -B $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build/external
+
+      - name: Build 3rd parties on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake --build $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator -B $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build/install
+
+      - name: Build metrix-simulator on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cmake --build $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build --target install --parallel 2
+
+      - name: Tests metrix-simulator on Ubuntu
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: cd $GITHUB_WORKSPACE/powsybl-metrix/metrix-simulator/build && ctest -j2 --output-on-failure
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: metrix-simulator-ubuntu-${{ env.MAVEN_PROJECT_VERSION }}
+          path: |
+            powsybl-metrix/metrix-simulator/build/install/bin
+            powsybl-metrix/metrix-simulator/build/install/etc
