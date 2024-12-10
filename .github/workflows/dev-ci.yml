@@ -109,15 +109,13 @@ jobs:
 
       - name: Install nvm and NodeJS 14
         run: |
-          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-          source .bashrc
-          nvm install 16
-          nvm use 16
+          yum install -y python3
+          pip3 install cmake==3.28.4
 
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@d06b37b47cfd043ec794ffa3e40e0b6b5858a7ec # v1.14.2
-        with:
-          cmake-version: '3.22.x'
+#      - name: Setup cmake
+#        uses: jwlawson/actions-setup-cmake@d06b37b47cfd043ec794ffa3e40e0b6b5858a7ec # v1.14.2
+#        with:
+#          cmake-version: '3.22.x'
 
       - name: Checkout sources
         uses: actions/checkout@v3
