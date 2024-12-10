@@ -107,10 +107,19 @@ jobs:
         run: |
           yum install -y devtoolset-9
 
-      - name: Install nvm and NodeJS 14
+      - name: Install python
         run: |
-          yum install -y python3
-          pip3 install cmake==3.28.4
+          yum install -y openssl-devel bzip2-devel libffi-devel
+          wget https://www.python.org/ftp/python/3.13.1/Python-3.13.1.tgz
+          tar xvf Python-3.13.1.tgz
+          cd Python-3.13.1
+          ./configure --enable-optimizations
+          make altinstall
+          python3.13 -V
+
+      - name: Install cmake
+        run: |
+          pip3.13 install cmake==3.28.4
 
 #      - name: Setup cmake
 #        uses: jwlawson/actions-setup-cmake@d06b37b47cfd043ec794ffa3e40e0b6b5858a7ec # v1.14.2
