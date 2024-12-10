@@ -107,8 +107,15 @@ jobs:
         run: |
           yum install -y devtoolset-9
 
+      - name: Install nvm and NodeJS 14
+        run: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+          source .bashrc
+          nvm install 16
+          nvm use 16
+
       - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
+        uses: jwlawson/actions-setup-cmake@d06b37b47cfd043ec794ffa3e40e0b6b5858a7ec # v1.14.2
         with:
           cmake-version: '3.22.x'
 
