@@ -24,13 +24,13 @@
     2. [Tableaux de résultats](#results_tables)
 
 # Introduction <a id="introduction"></a>
-Ce document décrit les entrées et les sorties du modèle METRIX v6 utilisé dans la plateforme imaGrid. Suite à l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant-à-elle, été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
+Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme imaGrid). Suite à l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant-à-elle, été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
 
 # Données d’entrée au format *json* <a id="input"></a>
 La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au format Groovy. Elle génère 1 fichier *json* : '*fort.json*'.
 
-Les données indiquées en gras dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, les autres sont optionnelles.
-La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. Certaines valeurs par défaut peuvent également être modifiées dans le script de configuration du module METRIX d’imaGrid.
+Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, les autres sont optionnelles.
+La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 
 ## Options de calcul <a id="computation_options"></a>
 | Nom | Type | Taille | Description |

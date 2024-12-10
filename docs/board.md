@@ -1,6 +1,6 @@
 # Introduction
 
-Global description of Metrix's logic.
+Metrix simulator is an independant c++ executable. This module is able to compute power load flow and optimal power load flow for multi variant networks.
 
 # Install and releases
 
@@ -20,7 +20,7 @@ cf. Excel
 
 ## I/O
 
-cf. io_doc.md
+[io_doc](io_doc.md)
 
 # Functionnal description
 

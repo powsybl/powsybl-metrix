@@ -22,9 +22,10 @@ Metrix options:
   --print-constraints           Trace in logs the constraints matrix (time 
                                 consuming even if trace logs are not active), 
                                 log level at trace is required
-  --write-sensitivity           Write the sensivity matrix in a dedicated file
-  --write-report                Write the rate matrix report in a dedicated 
-                                file
+  --write-PTDF                  Write the power transfer distribution factors 
+                                matrix in a dedicated file
+  --write-LODF                  Write the line outage distribution factors 
+                                matrix report in a dedicated file
   --check-constraints-level arg Check adding constraints:
                                 0: no check (default)
                                 1: When adding a constraint, perform a load 
