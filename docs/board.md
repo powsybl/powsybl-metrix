@@ -2,19 +2,25 @@
 
 Global description of Metrix's logic.
 
-# Installation
+# Install and releases
 
-cf. README.md
+## Install
+
+[install](install.md)
+
+## Releases
+
+cf. Excel
 
 # Execution
 
-## I/O
-
-cf. DOC.md
-
 ## Launching
 
-cf. README.md
+[launching](launching.md)
+
+## I/O
+
+cf. io_doc.md
 
 # Functionnal description
 

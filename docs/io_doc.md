@@ -1,6 +1,6 @@
 # Sommaire
 1. [Introduction](#introduction)
-2. [Données d’entrée au format DIE](#input)
+2. [Données d’entrée au format *json*](#input)
     1. [Options de calcul](#computation_options)
     2. [Options de résultats](#results_options)
     3. [Régions](#regions)
@@ -24,9 +24,9 @@
     2. [Tableaux de résultats](#results_tables)
 
 # Introduction <a id="introduction"></a>
-Ce document décrit les entrées et les sorties du modèle METRIX v6 utilisé dans la plateforme imaGrid. Lors de l’intégration dans imaGrid, les formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à savoir DIE pour les données d’entrée, CSV pour les variantes et tableaux pour les sorties. Certaines données ont cependant été ajoutées et d’autres rendues optionnelles. Le format de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
+Ce document décrit les entrées et les sorties du modèle METRIX v6 utilisé dans la plateforme imaGrid. Suite à l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant-à-elle, été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
 
-# Données d’entrée au format DIE <a id="input"></a>
+# Données d’entrée au format *json* <a id="input"></a>
 La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au format Groovy. Elle génère 1 fichier *json* : '*fort.json*'.
 
 Les données indiquées en gras dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, les autres sont optionnelles.
@@ -267,9 +267,7 @@ metrix log variantes sorties debut max
 - >**debut** : est le numéro de la première variante à traiter dans le fichier des variantes.
 - >**max** : est le nombre maximum de variantes à traiter sous réserve qu’il y en ait suffisamment dans le fichier des variantes. 
 
-Le réseau est lu sous forme de fichiers binaires (DIE). Ces fichiers doivent être dans le dossier pointé par la variable d’environnement HADES_DIR.
-
-La lecture des données DIE est réalisée via la même librairie C que celle utilisée dans ASSESS (ex : modeles/util/fututil).
+Le réseau est lu sous forme d'un fichier *json*. Ce fichier doit être dans le dossier pointé par la variable d’environnement HADES_DIR.
 
 # Données de sorties <a id="output"></a> 
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
@@ -353,7 +351,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | :-- | :-- | :-- | :-- |
 | nom du groupe | C | | |		
 | puissance disponible | R | MW | Pmax du groupe dans la variante |
-| ajustement de puissance imposé | R | MW | $\Delta P_{cons}$ entre la donnée DIE et celle de la variante |
+| ajustement de puissance imposé | R | MW | $\Delta P_{cons}$ entre la donnée *json* et celle de la variante |
 | ajustement de puissance lors de l’équilibrage initial | R | MW | $\Delta P_{cons}$ entre la donnée de la variante et la valeur après la phase d’équilibrage (si demandé et > 0,001 en valeur absolue) |
 | ajustement de puissance préventif | R | MW | $\Delta P_{cons}$ entre la phase d’équilibrage et la consigne préventive  (si > 0,001 en valeur absolue) |
 
