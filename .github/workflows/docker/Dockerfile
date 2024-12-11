@@ -23,7 +23,8 @@ RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
 # Second set of dependencies
 RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
     && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
-    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \yum install -y devtoolset-9 \
+    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
+    && yum install -y devtoolset-9 \
     && yum groupinstall -y "Development Tools" \
     && yum install -y openssl openssl-devel bzip2-devel libffi-devel
 
