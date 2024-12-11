@@ -154,7 +154,7 @@ jobs:
       - name: Checkout sources
         run: |
           git clone https://github.com/${{ github.repository }}.git .
-          git checkout ${{ github.ref }}
+          git checkout ${{ github.head_ref }}
 
       - name: Download Boost-release
         run: |
