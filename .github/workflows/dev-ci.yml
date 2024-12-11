@@ -114,17 +114,17 @@ jobs:
 
       - name: Install Python
         run: |
-          wget https://www.python.org/ftp/python/3.13.1/Python-3.13.1.tgz
-          tar xvf Python-3.13.1.tgz
-          cd Python-3.13.1
+          wget https://www.python.org/ftp/python/3.10.8/Python-3.10.8.tgz
+          tar xvf Python-3.10.8.tgz
+          cd Python-3.10.8
           ./configure --enable-optimizations --with-openssl=/usr/local/ssl
           make altinstall
-          python3.13 -V
+          python3.10 -V
           cd ..
 
       - name: Install cmake
         run: |
-          pip3.13 install cmake==3.28.4
+          pip3.10 install cmake==3.28.4
 
 #      - name: Setup cmake
 #        uses: jwlawson/actions-setup-cmake@d06b37b47cfd043ec794ffa3e40e0b6b5858a7ec # v1.14.2
