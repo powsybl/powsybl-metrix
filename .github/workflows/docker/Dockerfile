@@ -7,45 +7,54 @@ ENV PYTHON_VERSION=3.10.8
 ENV LDFLAGS="-L/usr/local/ssl/lib"
 ENV CPPFLAGS="-I/usr/local/ssl/include"
 
-#ADD https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip -O ./
+# Downloads
+ADD https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip -O /usr/local/src/
 
-# Update mirrors
+# First set of dependencies
 RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
     && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
     && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
     && yum update -y \
     && yum install -y epel-release \
-    && yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils \
-    && sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
+    && yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
+
+# Second set of dependencies
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
     && sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo \
-    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
-    && yum install -y devtoolset-9 \
+    && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \yum install -y devtoolset-9 \
     && yum groupinstall -y "Development Tools" \
-    && yum install -y openssl openssl-devel bzip2-devel libffi-devel \
-    && cd /usr/local/src \
-    && wget --max-redirect=0 https://github.com/openssl/openssl/releases/download/openssl-${OPENSSL_VERSION}/openssl-${OPENSSL_VERSION}.tar.gz \
-    && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz \
-    && cd openssl-${OPENSSL_VERSION} \
-    && ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib \
+    && yum install -y openssl openssl-devel bzip2-devel libffi-devel
+
+# Open-SSL
+WORKDIR /usr/local/src
+RUN wget --max-redirect=0 https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-${OPENSSL_VERSION}.tar.gz \
+    && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz
+WORKDIR /usr/local/src/openssl-${OPENSSL_VERSION}
+RUN ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib \
     && make \
     && make install \
-    && echo "/usr/local/ssl/lib" > /etc/ld.so.conf.d/openssl-${CMAKE_VERSION}.conf \
+    && echo "/usr/local/ssl/lib" > /etc/ld.so.conf.d/openssl-${OPENSSL_VERSION}.conf \
     && ldconfig \
-    && export PATH="/usr/local/ssl/bin:${PATH}" \
-    && cd /usr/local/src \
-    && wget --max-redirect=0 https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
-    && tar xzf Python-${PYTHON_VERSION}.tgz \
-    && cd Python-${PYTHON_VERSION} \
-    && ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
+    && export PATH="/usr/local/ssl/bin:${PATH}"
+
+# Python
+WORKDIR /usr/local/src
+RUN wget --max-redirect=0 https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
+    && tar xzf Python-${PYTHON_VERSION}.tgz
+WORKDIR /usr/local/src/Python-${PYTHON_VERSION}
+RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
     && make altinstall \
     && ln -sf /usr/local/bin/python3.10 /usr/bin/python3 \
     && ln -sf /usr/local/bin/pip3.10 /usr/bin/pip3 \
     && python3 -V \
     && python3 -c "import ssl; print(ssl.OPENSSL_VERSION)" \
     && pip3 install cmake==${CMAKE_VERSION} \
-    && cmake --version \
-    && wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
-    && unzip boost_1_73_0.zip \
+    && cmake --version
+
+# Boost
+WORKDIR /usr/local/src
+RUN #wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
+RUN unzip boost_1_73_0.zip \
     && rm openssl-${OPENSSL_VERSION}.tar.gz Python-${PYTHON_VERSION}.tgz boost_1_73_0.zip \
     && source /opt/rh/devtoolset-9/enable \
     && groupadd nonroot && useradd -m -g nonroot nonroot \
