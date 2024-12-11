@@ -103,16 +103,16 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **TRNBGROU** | I | 1 | Nombre de groupes raccordés<br>= $\sum$ generator t.q. generator.terminal.busBreakerView.bus $\in$  composante connexe principale |
-| **TRNOMGTH** <a id="table_trnomgth"></a>| C | TRNBGROU | Nom du groupe<br>= generator.id |
-| **TNNEURGT** | I | TRNBGROU | Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE |
-| **SPPACTGT** | R | TRNBGROU | Puissance de consigne $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP |
-| **TRVALPMD** | R | TRNBGROU | Puissance max disponible<br>= generator.maxP |
-| **TRPUIMIN** | R | TRNBGROU | Puissance min<br>= generator.minP |
+| TRNOMGTH <a id="table_trnomgth"></a>| C | TRNBGROU | Nom du groupe<br>= generator.id |
+| TNNEURGT | I | TRNBGROU | Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE |
+| SPPACTGT | R | TRNBGROU | Puissance de consigne $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP |
+| TRVALPMD | R | TRNBGROU | Puissance max disponible<br>= generator.maxP |
+| TRPUIMIN | R | TRNBGROU | Puissance min<br>= generator.minP |
 | **TRNBTYPE** | I | 1 | Nombre de types de groupe |
-| **TRNOMTYP** | C | TRNBTYPE | Noms des types de groupes |
-| **TRTYPGRP** | I | TRNBGROU | Indice du type de groupe dans TRNOMTYP |
-| SPIMPMOD | I | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>Valeur par défaut = 1 si aucun groupe n’est configuré et 0 sinon.|
-| TRDEMBAN | R | TRNBGROU | Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (valeur par défaut 0) |
+| TRNOMTYP | C | TRNBTYPE | Noms des types de groupes |
+| TRTYPGRP | I | TRNBGROU | Indice du type de groupe dans TRNOMTYP |
+| SPIMPMOD | I | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>(1 si aucun groupe n’est configuré et 0 sinon.) |
+| TRDEMBAN | R | TRNBGROU | Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (0) |
 
 ## Quadripôles <a id="quadri"></a>
 ### Quadripôles élémentaires <a id="quadri_elem"></a>
