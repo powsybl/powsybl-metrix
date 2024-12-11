@@ -32,6 +32,13 @@ La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format 
 Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, les autres sont optionnelles.
 La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 
+N.B. : 
+- B = *BOOLEAN*
+- C = *STRING*
+- I = *INTEGER*
+- R = *FLOAT*
+
+
 ## Options de calcul <a id="computation_options"></a>
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
@@ -73,7 +80,7 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **CGNBREGI** | I | 1 | Nombre total de régions<br>= $\sum$ country |
-| **CGNOMREG** | C | CGNBREGI | Pour région, nom de la région<br>= « paysCvg » si existe « country » sinon |
+| CGNOMREG | C | CGNBREGI | Pour région, nom de la région<br>= « paysCvg » si existe « country » sinon |
 
 ## Informations nodales <a id="nodal_info"></a>
 ### Sommets <a id="summits"></a>
