@@ -36,28 +36,27 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **CGCPERTE** | R | 1 | Coefficient de perte initial.<br>= lossFactor (0) |
-| **UNOMINAL** | I | 1 | Tension nominale utilisée dans le per-unitage côté imaGrid.<br>= nominalU (100) |
+| **UNOMINAL** | I | 1 | Tension nominale utilisée dans le per-unitage côté imaGrid.<br>= nominalU (0) |
 | MODECALC | I | 1 | 0 OPF, 1 Load Flow seulement, 2 OPF sans redispatching (avec variables d’écart) et 3 OPF_WITH_OVERLOAD.<br>= computationType (0) |
 | NBMAXMIT | I | 1 | Nombre maximum de micro-itérations par variante.<br>= nbMaxIteration (30) |
-| NBMAXCUR | I | 1 | Nombre maximum d’actions curatives par incident. Pas de limitation si la valeur est négative ou nulle.<br>= nbMaxCurativeAction (-1) |
+| NBMAXCUR | I | 1 | Nombre maximum d’actions curatives par incident. Pas de limitation si la valeur est négative ou nulle.<br>= nbMaxCurativeAction (0) |
 | COUTECAR | I | 1 | Coût des variables d’écart<br>= gapVariableCost (10) |
 | RELPERTE | I | 1 | Nombre maximum de relance(s) pour écart de pertes (valeur par défaut : 0 = pas de relance)<br>= lossNbRelaunch (0) |
 | SEUILPER | I | 1 | Seuil d’écart entre les pertes théoriques et les pertes calculées nécessitant une relance (MW)<br>= lossThreshold (500) |
-| COUTDEFA | I | 1 | Coût par défaut de la défaillance<br>= lossOfLoadCost (13000) |
+| COUTDEFA | R | 1 | Coût par défaut de la défaillance<br>= lossOfLoadCost (13000) |
 | MAXSOLVE | I | 1 | Temps maximum autorisé pour chaque résolution de solveur. 0 : pas de limite.<br>= maxSolverTime (0) |
-| TDPENALI | R | 1 | Coût de déphasage des TD dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (déphasage non pénalisé).<br>= pstCostPenality (1) |
-| HVDCPENA | R | 1 | Coût de transit des HVDC dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (transit non pénalisé).<br>= hvdcCostPenality (1) |
+| TDPENALI | R | 1 | Coût de déphasage des TD dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (déphasage non pénalisé).<br>= pstCostPenality (10-2) |
+| HVDCPENA | R | 1 | Coût de transit des HVDC dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (transit non pénalisé).<br>= hvdcCostPenality (10-1) |
 | PROBAINC | R | 1 | Probabilité des incidents<br>= contingenciesProbability(10-3) |
-| TRUTHBAR | B | 1 | Si 1 utiliser les coûts avec réseau sinon non<br>= withGridCost (1) |
 | TESTITAM | B | 1 | Prise en compte de l’instant post-incident<br>= preCurativeThresholds (false) |
 | INCNOCON | B | 1 | Prise en compte des incidents rompant la connexité<br>= outagesBreakingConnexity (false) |
-| PARNOCON | | | Prise en compte des parades rompant la connexité<br>= remedialActionsBreakingConnexity (false) |
-| PAREQUIV | | | Détection des parades équivalentes<br>= analogousRemedialActionDetection(false) |
-| COUENDCU | | | Coût de l’énergie non distribuée pour un incident rompant la connexité (consommation déconnectée du réseau)<br>= curativeLossOfLoadCost(26000) |
-| COUENECU | | | Coût de l’énergie non évacuée sur incident rompant la connexité (production déconnectée du réseau)<br>= curativeLossOfGenerationCost(100) |
-| LIMCURGR | | | Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1) |
-| ADEQUAOF | | | Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0) |
-| REDISPOF | | | Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0) |
+| PARNOCON | B | 1 | Prise en compte des parades rompant la connexité<br>= remedialActionsBreakingConnexity (false) |
+| PAREQUIV | B | 1 | Détection des parades équivalentes<br>= analogousRemedialActionDetection(false) |
+| COUENDCU | R | 1 | Coût de l’énergie non distribuée pour un incident rompant la connexité (consommation déconnectée du réseau)<br>= curativeLossOfLoadCost(26000) |
+| COUENECU | R | 1 | Coût de l’énergie non évacuée sur incident rompant la connexité (production déconnectée du réseau)<br>= curativeLossOfGenerationCost(100) |
+| LIMCURGR | I | 1 | Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1) |
+| ADEQUAOF | I | 1 | Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0) |
+| REDISPOF | I | 1 | Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0) |
 
 ## Options de résultats <a id="results_options"></a>
 | Nom | Type | Taille | Description |
