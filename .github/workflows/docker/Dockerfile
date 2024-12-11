@@ -8,7 +8,7 @@ ENV LDFLAGS="-L/usr/local/ssl/lib"
 ENV CPPFLAGS="-I/usr/local/ssl/include"
 
 # Downloads
-ADD https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip -O /usr/local/src/
+ADD https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip /usr/local/src/
 
 # First set of dependencies
 RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
@@ -54,8 +54,7 @@ RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
 # Boost
 WORKDIR /usr/local/src
 RUN #wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
-RUN unzip boost_1_73_0.zip \
-    && rm openssl-${OPENSSL_VERSION}.tar.gz Python-${PYTHON_VERSION}.tgz boost_1_73_0.zip \
+RUN rm openssl-${OPENSSL_VERSION}.tar.gz Python-${PYTHON_VERSION}.tgz boost_1_73_0.zip \
     && source /opt/rh/devtoolset-9/enable \
     && groupadd nonroot && useradd -m -g nonroot nonroot \
     && yum clean all
