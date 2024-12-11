@@ -92,12 +92,12 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **ECNBCONS** | I | 1 | Nombre de consommations élémentaires<br>= $\sum$ load t.q. load.terminal.busBreakerView.bus $\in$ composante connexe principale |
-| **TNNOMNOE** | C | ECNBCONS | Noms des consommations<br>= load.id |
-| **TNNEUCEL** <a id="table_tnneucel"></a>| I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
-| **CPPOSREG** | I | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG |
-| **ESAFIACT** | I | ECNBCONS | Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0 |
-| TNVAPAL1 | I | ECNBCONS | Pourcentage du premier palier de délestage.<br>= 100 si aucun nœud configuré, 0 sinon |
-| TNVACOU1 | R | ECNBCONS | Coût du délestage (13000 par défaut) |
+| TNNOMNOE | C | ECNBCONS | Noms des consommations<br>= load.id |
+| TNNEUCEL <a id="table_tnneucel"></a>| I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
+| CPPOSREG | I | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG |
+| ESAFIACT | R | ECNBCONS | Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0 |
+| TNVAPAL1 | I | ECNBCONS | Pourcentage du premier palier de délestage.<br>(100 si aucun nœud configuré) |
+| TNVACOU1 | R | ECNBCONS | Coût du délestage (valeur de COUTDEFA par défaut) |
 
 ## Groupes <a id="groups"></a>
 | Nom | Type | Taille | Description |
