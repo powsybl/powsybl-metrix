@@ -151,21 +151,14 @@ jobs:
         run: |
           cmake --version
 
-#      - name: Setup cmake
-#        uses: jwlawson/actions-setup-cmake@d06b37b47cfd043ec794ffa3e40e0b6b5858a7ec # v1.14.2
-#        with:
-#          cmake-version: '3.22.x'
-
       - name: Checkout sources
-        uses: actions/checkout@v3
+        run: |
+          git clone https://github.com/${{ github.repository }}.git .
+          git checkout ${{ github.ref }}
 
       - name: Download Boost-release
-        uses: dsaltares/fetch-gh-release-asset@a40c8b4a0471f9ab81bdf73a010f74cc51476ad4 # v1.1.1
-        with:
-          repo: 'ARnDOSrte/Boost'
-          file: 'boost_1_73_0.zip'
-          target: 'boost_1_73_0.zip'
-          token: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          wget -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip
 
       - name: Unzip Boost
         run: unzip boost_1_73_0.zip
@@ -192,12 +185,11 @@ jobs:
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: metrix-simulator-centos7
-          path: |
-            metrix-simulator/build/install/bin
-            metrix-simulator/build/install/etc
+        run: |
+          tar -czvf metrix-simulator-centos7.tar.gz metrix-simulator/build/install/bin metrix-simulator/build/install/etc
+          gh run upload ${{ github.run_id }} metrix-simulator-centos7.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
