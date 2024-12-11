@@ -1,4 +1,4 @@
-FROM centos:7
+FROM centos:7 AS builder1
 
 # Set versions
 ENV OPENSSL_VERSION="1.1.1w"
@@ -26,10 +26,20 @@ RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
     && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
     && yum install -y devtoolset-9 \
     && yum groupinstall -y "Development Tools" \
-    && yum install -y openssl openssl-devel bzip2-devel libffi-devel
+    && yum install -y openssl openssl-devel bzip2-devel libffi-devel \
+    && yum clean all
+
+# Start on a clean image
+FROM builder1 AS builder2
+
+# Unarchive all
+WORKDIR /usr/local/src
+RUN tar -xzf openssl-${OPENSSL_VERSION}.tar.gz \
+    && tar -xzf Python-${PYTHON_VERSION}.tgz \
+    && unzip boost_1_73_0.zip \
+    && rm openssl-${OPENSSL_VERSION}.tar.gz Python-${PYTHON_VERSION}.tgz boost_1_73_0.zip
 
 # Open-SSL
-#WORKDIR /usr/local/src
 #RUN wget --max-redirect=0 https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-${OPENSSL_VERSION}.tar.gz \
 #    && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz
 WORKDIR /usr/local/src/openssl-${OPENSSL_VERSION}
@@ -54,18 +64,15 @@ RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
     && pip3 install cmake==${CMAKE_VERSION} \
     && cmake --version
 
-# Boost
-WORKDIR /usr/local/src
-RUN #wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
-RUN rm openssl-${OPENSSL_VERSION}.tar.gz Python-${PYTHON_VERSION}.tgz boost_1_73_0.zip \
-    && source /opt/rh/devtoolset-9/enable \
-    && groupadd nonroot && useradd -m -g nonroot nonroot \
-    && yum clean all
-
-USER nonroot
-
 # Set working directory
 WORKDIR /app
+
+# Boost
+RUN #wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
+RUN source /opt/rh/devtoolset-9/enable \
+    && groupadd nonroot && useradd -m -g nonroot nonroot
+
+USER nonroot
 
 # Default command
 CMD ["/bin/bash"]
