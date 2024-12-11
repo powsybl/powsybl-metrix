@@ -1,3 +1,10 @@
+<style>
+r { color: Red }
+o { color: Orange }
+g { color: Green }
+y { color: yellow}
+</style>
+
 # Sommaire
 1. [Introduction](#introduction)
 2. [Données d’entrée au format *json*](#input)
@@ -30,7 +37,8 @@ Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé d
 La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au format Groovy. Elle génère 1 fichier *json* : '*fort.json*'.
 
 Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, les autres sont optionnelles.
-La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
+La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
+Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires mais qui provoquent des erreurs de segmentation si elles ne sont pas renseignées. Enfin celles indiquées en <y>jaune</y> provoquent des erreurs (cf. fichier de logs) si elles ne sont pas renseignées.
 
 N.B. : 
 - B = *BOOLEAN*
@@ -92,10 +100,10 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **ECNBCONS** | I | 1 | Nombre de consommations élémentaires<br>= $\sum$ load t.q. load.terminal.busBreakerView.bus $\in$ composante connexe principale |
-| TNNOMNOE | C | ECNBCONS | Noms des consommations<br>= load.id |
-| TNNEUCEL <a id="table_tnneucel"></a>| I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
-| CPPOSREG | I | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG |
-| ESAFIACT | R | ECNBCONS | Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0 |
+| <o>TNNOMNOE</o> | C | ECNBCONS | Noms des consommations<br>= load.id |
+| <o>TNNEUCEL</o> <a id="table_tnneucel"></a>| I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
+| <o>CPPOSREG</o> | I | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG |
+| <o>ESAFIACT</o> | R | ECNBCONS | Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0 |
 | TNVAPAL1 | I | ECNBCONS | Pourcentage du premier palier de délestage.<br>(100 si aucun nœud configuré) |
 | TNVACOU1 | R | ECNBCONS | Coût du délestage (valeur de COUTDEFA par défaut) |
 
@@ -103,15 +111,15 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **TRNBGROU** | I | 1 | Nombre de groupes raccordés<br>= $\sum$ generator t.q. generator.terminal.busBreakerView.bus $\in$  composante connexe principale |
-| TRNOMGTH <a id="table_trnomgth"></a>| C | TRNBGROU | Nom du groupe<br>= generator.id |
-| TNNEURGT | I | TRNBGROU | Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE |
-| SPPACTGT | R | TRNBGROU | Puissance de consigne $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP |
-| TRVALPMD | R | TRNBGROU | Puissance max disponible<br>= generator.maxP |
-| TRPUIMIN | R | TRNBGROU | Puissance min<br>= generator.minP |
+| <o>TRNOMGTH</o> <a id="table_trnomgth"></a>| C | TRNBGROU | Nom du groupe<br>= generator.id |
+| <o>TNNEURGT</o> | I | TRNBGROU | Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE |
+| <o>SPPACTGT</o> | R | TRNBGROU | Puissance de consigne $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP |
+| <y>TRVALPMD</y> | R | TRNBGROU | Puissance max disponible<br>= generator.maxP |
+| <o>TRPUIMIN</o> | R | TRNBGROU | Puissance min<br>= generator.minP |
 | **TRNBTYPE** | I | 1 | Nombre de types de groupe |
-| TRNOMTYP | C | TRNBTYPE | Noms des types de groupes |
-| TRTYPGRP | I | TRNBGROU | Indice du type de groupe dans TRNOMTYP |
-| SPIMPMOD | I | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>(1 si aucun groupe n’est configuré et 0 sinon.) |
+| <o>TRNOMTYP</o> | C | TRNBTYPE | Noms des types de groupes |
+| <o>TRTYPGRP</o> | I | TRNBGROU | Indice du type de groupe dans TRNOMTYP |
+| <o>SPIMPMOD</o> | I | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>(1 si aucun groupe n’est configuré et 0 sinon.) |
 | TRDEMBAN | R | TRNBGROU | Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (0) |
 
 ## Quadripôles <a id="quadri"></a>
