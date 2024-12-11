@@ -184,7 +184,6 @@ jobs:
         run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
 
       - name: Install GitHub CLI
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         run: |
           curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo gpg --dearmor -o /usr/share/keyrings/githubcli-archive-keyring.gpg
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
@@ -192,7 +191,6 @@ jobs:
           sudo yum install gh -y
 
       - name: Upload Metrix Simulator archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
         run: |
           tar -czvf metrix-simulator-centos7.tar.gz metrix-simulator/build/install/bin metrix-simulator/build/install/etc
           gh run upload ${{ github.run_id }} metrix-simulator-centos7.tar.gz
