@@ -154,6 +154,25 @@ jobs:
           path: |
             metrix-simulator/build/install/bin
             metrix-simulator/build/install/etc
+            
+  cpp_docker_centos:
+    name: Build C++ CentOS 7 using Docker
+    runs-on: ubuntu-latest
+    steps:
+
+      # Checkout Dockerfile
+      # The Dockerfile is located in the workflow folder of the repository
+      - name: Checkout script
+        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        with:
+          sparse-checkout: |
+            .github
+          sparse-checkout-cone-mode: false
+          path: docker
+
+      - name: Build the Docker image
+        run: |
+          docker build -t centos7withCmake:latest $GITHUB_WORKSPACE/docker --file $GITHUB_WORKSPACE/docker/.github/workflows/docker/Dockerfile
 
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
