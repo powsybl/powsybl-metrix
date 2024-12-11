@@ -38,7 +38,7 @@ La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format 
 
 Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, les autres sont optionnelles.
 La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
-Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires mais qui provoquent des erreurs de segmentation si elles ne sont pas renseignées. Enfin celles indiquées en <y>jaune</y> provoquent des erreurs (cf. fichier de logs) si elles ne sont pas renseignées.
+Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires mais qui provoquent des erreurs de segmentation si elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> provoquent des erreurs (cf. fichier de logs) si elles ne sont pas renseignées.
 
 N.B. : 
 - B = *BOOLEAN*
