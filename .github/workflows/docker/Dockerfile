@@ -9,6 +9,8 @@ ENV CPPFLAGS="-I/usr/local/ssl/include"
 
 # Downloads
 ADD https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip /usr/local/src/
+ADD https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-${OPENSSL_VERSION}.tar.gz /usr/local/src/
+ADD https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz /usr/local/src/
 
 # First set of dependencies
 RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
@@ -26,9 +28,9 @@ RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
     && yum install -y openssl openssl-devel bzip2-devel libffi-devel
 
 # Open-SSL
-WORKDIR /usr/local/src
-RUN wget --max-redirect=0 https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-${OPENSSL_VERSION}.tar.gz \
-    && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz
+#WORKDIR /usr/local/src
+#RUN wget --max-redirect=0 https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-${OPENSSL_VERSION}.tar.gz \
+#    && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz
 WORKDIR /usr/local/src/openssl-${OPENSSL_VERSION}
 RUN ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib \
     && make \
@@ -38,9 +40,9 @@ RUN ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib \
     && export PATH="/usr/local/ssl/bin:${PATH}"
 
 # Python
-WORKDIR /usr/local/src
-RUN wget --max-redirect=0 https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
-    && tar xzf Python-${PYTHON_VERSION}.tgz
+#WORKDIR /usr/local/src
+#RUN wget --max-redirect=0 https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
+#    && tar xzf Python-${PYTHON_VERSION}.tgz
 WORKDIR /usr/local/src/Python-${PYTHON_VERSION}
 RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
     && make altinstall \
