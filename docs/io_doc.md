@@ -63,11 +63,11 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
 | :-- | :--- | :----- | :---------- |
 | NBTHREAT | I | 1 | Nombre de menaces N-k dans les résultats<br>= nbThreatResults (1) |
 | EQUILRES | B | 1 | Sortie des résultats détaillés de l’équilibrage initial<br>= withAdequacyResults (false) |
-| REDISRES | | | Sortie des résultats détaillés du redispatching préventif<br>= withRedispatchingResults (false) |
+| REDISRES | B | 1 | Sortie des résultats détaillés du redispatching préventif<br>= withRedispatchingResults (false) |
 | VARMARES | B | 1 | Calcul de variations marginales sur les branches<br>= marginalVariationsOnBranches (false) |
 | LCCVMRES | B | 1 | Calcul des variations marginales sur les HVDC<br>= marginalVariationsOnHvdc (false) |
 | LOSSDETA | B | 1 | Calcul des pertes par régions/pays<br>= lossDetailPerCountry (false) |
-| OVRLDRES | | | Sortie uniquement des ouvrages en contrainte<br>= overloadResultsOnly (false) |
+| OVRLDRES | B | 1 | Sortie uniquement des ouvrages en contrainte<br>= overloadResultsOnly (false) |
 
 ## Régions <a id="regions"></a>
 | Nom | Type | Taille | Description |
