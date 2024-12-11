@@ -172,7 +172,7 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker build -t centos7withCmake:latest $GITHUB_WORKSPACE/docker --file $GITHUB_WORKSPACE/docker/.github/workflows/docker/Dockerfile
+          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE/docker --file $GITHUB_WORKSPACE/docker/.github/workflows/docker/Dockerfile
 
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
