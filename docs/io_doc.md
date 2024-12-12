@@ -215,7 +215,7 @@ N.B. :
 ## Variations marginales détaillées <a id="detailed_marginal_variations"></a>
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
-| NBVARMAR | I | 1 | Taille du tableau des variations marginales détaillées (PTVARMAR) |
+| NBVARMAR | I | 1 | Taille du tableau des variations marginales détaillées (PTVARMAR)<br>(0) |
 | PTVARMAR | I | NBVARMAR | Suite de triplets : indice du quadripôle, nombre de défauts avec variations marginales détaillées, liste des indices de ces défauts. |
 
 # Variantes <a id="variants"></a>
