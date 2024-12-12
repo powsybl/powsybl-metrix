@@ -132,7 +132,7 @@ N.B. :
 | <o>CQRESIST</o> | R | CQNBQUAD | Résistance utilisée pour le calcul des pertes (en pu, base nominalU)<br>Les formules sont les mêmes que pour CQADMITA en remplaçant X par R |
 | <o>QASURVDI</o> | I | CQNBQUAD | Indicateur de surveillance du quadripôle en N. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat |
 | <o>QASURNMK</o> | I | CQNBQUAD | Indicateur de surveillance du quadripôle en N-K. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat |
-| <y>TNNORQUA*</y> | I | CQNBQUAD | Indice du nœud origine du quadripôle (quad.terminal1.busBreakerView.bus) dans la table TNNOMNOE |
+| <y>TNNORQUA</y> | I | CQNBQUAD | Indice du nœud origine du quadripôle (quad.terminal1.busBreakerView.bus) dans la table TNNOMNOE |
 | <y>TNNEXQUA</y> | I | CQNBQUAD | Indice du nœud extrémité du quadripôle (quad.terminal2.busBreakerView.bus) dans la table TNNOMNOE |
 | NBOPEBRA | I | 1 | Nombre de branches ouvertes conservées car elles peuvent être refermées par une parade<br>(0) |
 | OPENBRAN | I | NBOPEBRA | Indices des branches ouvertes dans la table CQNOMQUA |
@@ -172,8 +172,8 @@ N.B. :
 | DMNOMDEK | C | DMNBDEFK | Nom de l’incident |
 | DMPTDEFK | I | DMNBDEFK | Par incident, pointeur sur DMDESCRK |
 | DMDESCRK | I | DMNBDEFK<br>$+ 2 * \sum nb_{<i>}$ | Description des incidents<br>Pour chaque incident :<br>Nb, $Type_{<1>}$, $Indice_{<1>}$, …, $Type_{<nb>}$, $Indice_{<nb>}$<br>Nb : nombre d’éléments dans l’incident<br>Type :<br>1 pour un quadripôle (ligne, transfo)<br>2 pour un groupe<br>3 pour une liaison à courant continu<br>Indice : dans la liste de quadripôles, dans la liste des groupes ou dans la liste des liaisons à courant continu selon le type |
- BDEFRES | I | 1 Taille du tableau des défauts avec résultats détaillés (valeur par défaut 0) |
- TDEFRES | I | NBDEFRES | Suite de triplets : indice du quadripôle, nombre de défauts avec résultats détaillés, liste des indices de ces défauts. |
+| BDEFRES | I | 1 | Taille du tableau des défauts avec résultats détaillés<br>(0) |
+| TDEFRES | I | NBDEFRES | Suite de triplets : indice du quadripôle, nombre de défauts avec résultats détaillés, liste des indices de ces défauts. |
 
 ## Curatif <a id="curative"></a>
 | Nom | Type | Taille | Description |
