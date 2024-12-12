@@ -26,7 +26,6 @@ y { color: yellow}
     12. [Variations marginales détaillées](#detailed_marginal_variations)
 3. [Variantes](#variants)
 4. [Parades](#parades)
-4. [Ligne de commande pour lancer METRIX](#command_line)
 5. [Données de sorties](#output)
     1. [Tableaux descriptifs de la situation](#detailed_tables)
     2. [Tableaux de résultats](#results_tables)
@@ -142,7 +141,7 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **DTNBTRDE** | I | 1 | Nombre total de transformateurs déphaseurs<br>$\sum$ twoWindingsTransformer.phaseTapChanger si twoWindingsTransformer est dans la table CQNOMQUA
-| <o>DTTRDEQU</o> | I | DTNBTRDE 	Correspondance déphaseur-numéro du quadripôle élémentaire<br>= indice de twt.id dans les tables de quadripôles
+| <o>DTTRDEQU</o> | I | DTNBTRDE | Correspondance déphaseur-numéro du quadripôle élémentaire<br>= indice de twt.id dans les tables de quadripôles
 | <o>DTMODREG</o> | I | DTNBTRDE | Type de contrôle<br>0 : Hors service<br>1 : angle optimisé<br>2 : angle fixe<br>3 : puissance optimisé (non utilisé)<br>4 : puissance fixe (non utilisé) |
 | <o>DTVALINF</o> | R | DTNBTRDE | Valeur min du déphasage du TD en N, en degrés<br>= phaseTapChanger.lowTapPosition.alpha |
 | <o>DTVALSUP</o> | R | DTNBTRDE | Valeur max du déphasage du TD en N, en degrés <br>= phaseTapChanger.highTapPosition.alpha |

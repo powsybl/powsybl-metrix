@@ -10,7 +10,7 @@ Metrix simulator is an independant c++ executable. This module is able to comput
 
 ## Releases
 
-cf. Excel
+cf. Excel (non car Git interne, p-e GitHub public)
 
 # Execution
 
@@ -28,7 +28,7 @@ cf. Excel
 
 OPF, Load Flow only, OPF w/o redispatching (with gap variables), and OPF_WITH_OVERLOAD.
 
-## Algorithm process / configuration
+## Algorithm process
 
 Steps, micro-iterations, variants, etc.
 
