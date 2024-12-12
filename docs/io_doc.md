@@ -151,18 +151,18 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **DCNBLIES** | I | 1 | Nombre de lignes à courant continu<br>= $\sum$ hvdcLine t.q.  (hvdcLine.converterStation1.terminal.busBreakerView.bus && hvdcLine.converterStation2.terminal.busBreakerView.bus) $\in$ composante connexe principale |
-| **DCNOMQUA** <a id="table_dcnomqua"></a>| C | DCNBLIES | Nom de la ligne à courant continu<br>= hvdcLine.id |
-| **DCNORQUA** | I | DCNBLIES | Indice du nœud origine de la ligne (hvdcLine.converterStation1.terminal.busBreakerView.bus) dans la table TNNOMNOE |
-| **DCNEXQUA** | I | DCNBLIES | Indice du nœud extrémité de la ligne (hvdcLine.converterStation2.terminal.busBreakerView.bus) dans la table TNNOMNOE |
-| **DCMINPUI** | R | DCNBLIES | Puissance minimale<br>= - activePowerRange.oPRFromCS2toCS1 si l’extension HvdcOperatorActivePowerRange est utilisée, - hvdcLine.maxP sinon. |
-| **DCMAXPUI** | R | DCNBLIES | Puissance maximale<br>= activePowerRange.oPRFromCS1toCS2 si l’extension HvdcOperatorActivePowerRange est utilisée, hvdcLine.maxP sinon. |
-| **DCIMPPUI** | R | DCNBLIES | Puissance imposée $P_0$<br>= activePowerControl.p0 si l’extension  HvdcAngleDroopActivePowerControl est utilisée, +/- hvdcLine.activePowerSetPoint sinon |
-| **DCREGPUI** | I | DCNBLIES | Type de réglage de transit sur la ligne<br>1 : puissance fixe (valeur par défaut)<br>2 : puissance optimisée  |
-| **DCTENSDC** | R | DCNBLIES | Tension nominale du câble DC<br>= hvdcLine.nominalV |
-| **DCRESIST** | R | DCNBLIES | Résistance du câble DC en pu (base nominalV), normalisée par rapport à la tension DC.<br>= hvdcLine.r * nominalU $^2$ / hvdcLine.nominalV $^2$ |
-| **DCPERST1** | R | DCNBLIES | Coefficient de pertes (en %) de la station de conversion origine<br>= hvdcLine.converterStation1.lossFactor |
-| **DCPERST2** | R | DCNBLIES | Coefficient de pertes (en %) de la station de conversion extrémité<br>= hvdcLine.converterStation2.lossFactor |
-| **DCNDROOP** | I | 1 | Nombre de HVDC opérée en mode émulation AC ($P = P_0 + k \Delta\Theta$) |
+| <o>DCNOMQUA</o> <a id="table_dcnomqua"></a>| C | DCNBLIES | Nom de la ligne à courant continu<br>= hvdcLine.id |
+| <o>DCNORQUA</o> | I | DCNBLIES | Indice du nœud origine de la ligne (hvdcLine.converterStation1.terminal.busBreakerView.bus) dans la table TNNOMNOE |
+| <o>DCNEXQUA</o> | I | DCNBLIES | Indice du nœud extrémité de la ligne (hvdcLine.converterStation2.terminal.busBreakerView.bus) dans la table TNNOMNOE |
+| <o>DCMINPUI</o> | R | DCNBLIES | Puissance minimale<br>= - activePowerRange.oPRFromCS2toCS1 si l’extension HvdcOperatorActivePowerRange est utilisée, - hvdcLine.maxP sinon. |
+| <o>DCMAXPUI</o> | R | DCNBLIES | Puissance maximale<br>= activePowerRange.oPRFromCS1toCS2 si l’extension HvdcOperatorActivePowerRange est utilisée, hvdcLine.maxP sinon. |
+| <o>DCIMPPUI</o> | R | DCNBLIES | Puissance imposée $P_0$<br>= activePowerControl.p0 si l’extension  HvdcAngleDroopActivePowerControl est utilisée, +/- hvdcLine.activePowerSetPoint sinon |
+| <o>DCREGPUI</o> | I | DCNBLIES | Type de réglage de transit sur la ligne<br>1 : puissance fixe<br>2 : puissance optimisée  |
+| <o>DCTENSDC</o> | R | DCNBLIES | Tension nominale du câble DC<br>= hvdcLine.nominalV |
+| <o>DCRESIST</o> | R | DCNBLIES | Résistance du câble DC en pu (base nominalV), normalisée par rapport à la tension DC.<br>= hvdcLine.r * nominalU $^2$ / hvdcLine.nominalV $^2$ |
+| <o>DCPERST1</o> | R | DCNBLIES | Coefficient de pertes (en %) de la station de conversion origine<br>= hvdcLine.converterStation1.lossFactor |
+| <o>DCPERST2</o> | R | DCNBLIES | Coefficient de pertes (en %) de la station de conversion extrémité<br>= hvdcLine.converterStation2.lossFactor |
+| DCNDROOP | I | 1 | Nombre de HVDC opérée en mode émulation AC ($P = P_0 + k \Delta\Theta$)<br>(0) |
 | DCDROOPK | R | DCNDROOP | Pour chaque HVDC en émulation AC, dans l’ordre de la [table DCNOMQUA](#table_dcnomqua), valeur du coefficient k (en MW/°) |
 
 ## Incidents N-1 et N-k <a id="incidents"></a>
