@@ -141,11 +141,11 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **DTNBTRDE** | I | 1 | Nombre total de transformateurs déphaseurs<br>$\sum$ twoWindingsTransformer.phaseTapChanger si twoWindingsTransformer est dans la table CQNOMQUA
-| **DTTRDEQU** | I | DTNBTRDE 	Correspondance déphaseur-numéro du quadripôle élémentaire<br>= indice de twt.id dans les tables de quadripôles
-| **DTMODREG** | I | DTNBTRDE | Type de contrôle<br>0 : Hors service<br>1 : angle optimisé<br>2 : angle fixe<br>3 : puissance optimisé (non utilisé)<br>4 : puissance fixe (non utilisé)<br>Valeur par défaut = 2 |
-| **DTVALINF** | R | DTNBTRDE | Valeur min du déphasage du TD en N, en degrés<br>= phaseTapChanger.lowTapPosition.alpha |
-| **DTVALSUP** | R | DTNBTRDE | Valeur max du déphasage du TD en N, en degrés <br>= phaseTapChanger.highTapPosition.alpha |
-| **DTVALDEP** | R | DTNBTRDE | Valeur initiale du déphasage par TD en degrés, c’est la valeur utilisée si DTMODREG $\in {1, 2}$<br>= phaseTapChanger.tapPosition.alpha |
+| <o>DTTRDEQU</o> | I | DTNBTRDE 	Correspondance déphaseur-numéro du quadripôle élémentaire<br>= indice de twt.id dans les tables de quadripôles
+| <o>DTMODREG</o> | I | DTNBTRDE | Type de contrôle<br>0 : Hors service<br>1 : angle optimisé<br>2 : angle fixe<br>3 : puissance optimisé (non utilisé)<br>4 : puissance fixe (non utilisé) |
+| <o>DTVALINF</o> | R | DTNBTRDE | Valeur min du déphasage du TD en N, en degrés<br>= phaseTapChanger.lowTapPosition.alpha |
+| <o>DTVALSUP</o> | R | DTNBTRDE | Valeur max du déphasage du TD en N, en degrés <br>= phaseTapChanger.highTapPosition.alpha |
+| <o>DTVALDEP</o> | R | DTNBTRDE | Valeur initiale du déphasage par TD en degrés, c’est la valeur utilisée si DTMODREG $\in {1, 2}$<br>= phaseTapChanger.tapPosition.alpha |
 
 ## Lignes à courant continu <a id="dc_lines"></a>
 | Nom | Type | Taille | Description |
