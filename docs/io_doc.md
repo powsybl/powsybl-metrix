@@ -220,7 +220,7 @@ N.B. :
 
 # Variantes <a id="variants"></a>
 Les données spécifiques à chaque variante sont décrites dans un fichier au format csv.
-La première ligne indique le nombre de tirages (i.e. de variantes), après le mot-clé NT. 
+La première ligne indique le nombre de tirages (i.e. de variantes), après le mot-clé *NT*. 
 Chaque ligne du fichier commence ensuite par le numéro du tirage suivi par le type de la loi décrite identifiée par un mot-clé.
 Les données propres à la loi et au tirage sont écrites à la suite du mot-clé, à savoir :
 - >**PRODIN** : le nombre de groupes, puis les noms des groupes indisponibles.
@@ -229,7 +229,7 @@ Les données propres à la loi et au tirage sont écrites à la suite du mot-cl�
 - >**TRVALPMD** : le nombre de groupes, puis autant de couples (indice de groupe, puissance maximale disponible) que le nombre de groupes indiqué.
 - >**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de groupe, puissance minimale disponible) que le nombre de groupes indiqué.
 - >**CONELE** : le nombre de consommations, puis autant de couples (nom de la consommation, nouvelle valeur de consommation) que le nombre de consommations indiqué. Il s’agit de consommations nodales. Convention Eurostag : 1 nœud = 1 conso
-- >**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan  de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\Delta1$. A noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\Delta2$ ; notons que si la grandeur $\Delta2$ est positive alors il y a plus de production que de consommations. La différence ($\Delta1 - \Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$ ; $c_i$ est la consommation au  nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée. 
+- >**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. Le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan  de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\Delta1$. A noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\Delta2$ ; notons que si la grandeur $\Delta2$ est positive alors il y a plus de production que de consommations. La différence ($\Delta1 - \Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$ ; $c_i$ est la consommation au  nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée. 
 Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.    
 - >**ECHANGP** : le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Cette loi est similaire à la loi ECHANG mais elle agit sur les groupes de production au lieu des consommations. Après application de toutes les autres lois du même tirage, METRIX ajuste les puissances des groupes modifiables de la région pour équilibrer le bilan (somme des productions moins somme des consommations) à la valeur indiquée dans la variante. La sélection des groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la hausse et à la baisse). Si, sur une région, il y a trop de production non modifiable ou trop peu de production disponible pour équilibrer le bilan, la variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir des coûts d’empilement hors réseau prohibitifs pour la région considérée par rapport aux régions d’étude. 
 Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
@@ -237,19 +237,27 @@ Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
 - >**COUBHR** : le nombre de coût à la baisse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
 - >**COUHAR** : le nombre de coût à la hausse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
 - >**COUBAR** : le nombre de coût à la baisse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
-- >**DCMINPUI** : le nombre de modification de Puissance min HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmin) qu’indiqué.
-- >**DCMAXPUI** : le nombre de modification de Puissance max HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmax) qu’indiqué.
+- >**DCMINPUI** : le nombre de modification de puissance min HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmin) qu’indiqué.
+- >**DCMAXPUI** : le nombre de modification de puissance max HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmax) qu’indiqué.
 - >**DCIMPPUI** : le nombre de modifications de la puissance de consigne des lignes HVDC, puis autant de couples (nom de la ligne à courant continu, puissance de consigne) qu’indiqué. Si la ligne à courant continu n’est pas en mode « consigne imposée » dans le cas de base, METRIX modifie automatiquement le mode de fonctionnement de la ligne HVDC (pour cette variante uniquement). 
 
 **Remarque** : Si une ligne HVDC est en mode « consigne imposée », avant d’analyser la variante, METRIX vérifie que la puissance de consigne de la ligne est bien comprise entre les bornes MAX et MIN. Si ce n’est pas le cas, la variante est rejetée. 
 - >**DTVALDEP** : le nombre de modifications de la valeur initiale du déphasage du TD, puis autant de couples (nom du TD, déphasage initial) qu’indiqué.
-- >**DTVALSUP** : le nombre de modifications de la valeur maximale du déphasage du TD, puis autant de couples (nom du TD, déphasage max) qu’indiqué.
-- >**DTVALINF** : le nombre de modifications de la valeur minimale du déphasage du TD, puis autant de couples (nom du TD, déphasage min) qu’indiqué.
 - >**COUEFF** : le nombre de modifications du coût d’effacement de la consommation, puis autant de couples (indice de la consommation, coût) qu’indiqué.
 - >**QATI00MN** : le nombre de modifications du seuil N, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATI5MNS** : le nombre de modifications du seuil N-1, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATI20MN** : le nombre de modifications du seuil N-k, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATITAMN** : le nombre de modifications du seuil avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+
+**TOADD**:
+ - GROURAND
+ - PROBABINC
+ - QATI00MN2
+ - QATI20MN
+ - QATI20MN2
+ - QATITAMK
+ - QATITAMK2
+ - QATITAMN2 
 
 **Attention** : pour chaque variante, le modèle ne tient compte que d’une seule ligne pour chaque type de loi. Si plusieurs lois sont définies pour une même variante seule la dernière sera conservée.
 
@@ -262,10 +270,10 @@ La variante « -1 » permet d’indiquer des modifications sur le cas de base qu
 --------------------------------------
 ```
 NT;2;
-<br>-1;PRODIM;1;groupe1;100; (modification commune à toutes les variantes)
-<br>0; (variante sans modification par rapport au cas de base)
-<br>1;QUADIN;1;ligne indispo;
-<br>1;PRODIM;2;groupe1;200;groupe2;300;
+-1;PRODIM;1;groupe1;100; (modification commune à toutes les variantes)
+0; (variante sans modification par rapport au cas de base)
+1;QUADIN;1;ligne indispo;
+1;PRODIM;2;groupe1;200;groupe2;300;
 ```
 --------------------------------------
 
