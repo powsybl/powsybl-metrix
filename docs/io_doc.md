@@ -127,14 +127,14 @@ N.B. :
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
 | **CQNBQUAD** | I | 1 | Nombre de quadripôles élémentaires<br>= $\sum$ (quad = *line* &#124;&#124; *twoWindingsTransformer*) t.q. quad.terminal1.busBreakerView.bus && quad.terminal2.busBreakerView.bus $\in$ composante connexe principale<br>+ $\in$ *switch* t.q. switch.retained && (switch.voltageLevel.busBreakerView.bus1 && switch.voltageLevel.busBreakerView.bus2 $\in$ composante connexe principale)
-| **CQNOMQUA** | C | CQNBQUAD | Nom du quadripôle<br>= quad.id |
-| **CQADMITA** | R | CQNBQUAD |	Admittance du quadripôle ramené à Ubase (inverse de la réactance, i.e. négliger la valeur de la résistance)<br>= $1 / (X * nominalU^2 / Unom^2)$<br>Pour les lignes :<br>$X = line.x$<br>Pour les transformateurs :<br>$X_{transfo} = twoWindingsTransformer.x$<br>Pour les transformateurs déphaseurs :<br>$X = X_{transfo} * (1 + X_{prise} / 100)$<br>$X_{prise} = phaseTapChanger.phaseTapPosition.x$<br>Pour les couplages :<br>$X = 10^-5$<br>Unom = line.terminal2.voltageLevel.nominalV
-| **CQRESIST** | R | CQNBQUAD | Résistance utilisée pour le calcul des pertes (en pu, base nominalU)<br>Les formules sont les mêmes que pour CQADMITA en remplaçant X par R |
-| **QASURVDI** | I | CQNBQUAD | Indicateur de surveillance du quadripôle en N. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat |
-| **QASURNMK** | I | CQNBQUAD | Indicateur de surveillance du quadripôle en N-K. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat |
-| **TNNORQUA** | I | CQNBQUAD | Indice du nœud origine du quadripôle (quad.terminal1.busBreakerView.bus) dans la table TNNOMNOE |
-| **TNNEXQUA** | I | CQNBQUAD | Indice du nœud extrémité du quadripôle (quad.terminal2.busBreakerView.bus) dans la table TNNOMNOE |
-| NBOPEBRA | I | 1 | Nombre de branches ouvertes conservées car elles peuvent être refermées par une parade (valeur par défaut 0) |
+| <o>CQNOMQUA</o> | C | CQNBQUAD | Nom du quadripôle<br>= quad.id |
+| <o>CQADMITA</o> | R | CQNBQUAD |	Admittance du quadripôle ramené à Ubase (inverse de la réactance, i.e. négliger la valeur de la résistance)<br>= $1 / (X * nominalU^2 / Unom^2)$<br>Pour les lignes :<br>$X = line.x$<br>Pour les transformateurs :<br>$X_{transfo} = twoWindingsTransformer.x$<br>Pour les transformateurs déphaseurs :<br>$X = X_{transfo} * (1 + X_{prise} / 100)$<br>$X_{prise} = phaseTapChanger.phaseTapPosition.x$<br>Pour les couplages :<br>$X = 10^-5$<br>Unom = line.terminal2.voltageLevel.nominalV
+| <o>CQRESIST</o> | R | CQNBQUAD | Résistance utilisée pour le calcul des pertes (en pu, base nominalU)<br>Les formules sont les mêmes que pour CQADMITA en remplaçant X par R |
+| <o>QASURVDI</o> | I | CQNBQUAD | Indicateur de surveillance du quadripôle en N. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat |
+| <o>QASURNMK</o> | I | CQNBQUAD | Indicateur de surveillance du quadripôle en N-K. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat |
+| <y>TNNORQUA*</y> | I | CQNBQUAD | Indice du nœud origine du quadripôle (quad.terminal1.busBreakerView.bus) dans la table TNNOMNOE |
+| <y>TNNEXQUA</y> | I | CQNBQUAD | Indice du nœud extrémité du quadripôle (quad.terminal2.busBreakerView.bus) dans la table TNNOMNOE |
+| NBOPEBRA | I | 1 | Nombre de branches ouvertes conservées car elles peuvent être refermées par une parade<br>(0) |
 | OPENBRAN | I | NBOPEBRA | Indices des branches ouvertes dans la table CQNOMQUA |
 
 ### Déphaseurs <a id="phase_shifters"></a>
