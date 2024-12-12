@@ -178,17 +178,17 @@ N.B. :
 ## Curatif <a id="curative"></a>
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
-| DTNBDEFK | I | DTNBTRDE 	Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>= 0 |
-| DTPTDEFK | I | ≤ DTNBTRDE  * DMNBDEFK	Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif |
-| DCNBDEFK | I | DCNBLIES	Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>= 0 |
-| DCPTDEFK | I | ≤ DCNBLIES * DMNBDEFK	Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif |
-| NBLDCURA | I | 1	Nombre de consommations pouvant s’effacer en curatif (valeur par défaut 0) |
-| LDNBDEFK | I | ECNBCONS	Pour chaque consommation, nombre d’incidents traités en curatif (valeur par défaut 0) |
-| LDCURPER | I | NBLDCURA	Pour chaque consommation curative, dans l’ordre des indices, pourcentage d’effacement en curatif |
-| LDPTDEFK | I | ≤ NBLDCURA * DMNBDEFK	Pour chaque consommation curative, dans l’ordre de la [table TNNEUCEL](#table_tnneucel), pointeur des incidents traités en curatif. |
-| GRNBCURA | I | 1	Nombre de groupes pouvant agir en curatif (valeur par défaut = 0) |
-| GRNBDEFK | I | GRNBCURA	Pour chaque groupe curatif, nombre d’incidents traités en curatif (valeur par défaut 0) |
-| GRPTDEFK | I | ≤ GRNBCURA * DMNBDEFK	Pour chaque groupe curatif, dans l’ordre de la [table TRNOMGTH](#table_trnomgth), pointeur des incidents traités en curatif. |
+| DTNBDEFK | I | DTNBTRDE | Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>(0) |
+| DTPTDEFK | I | ≤ DTNBTRDE  * DMNBDEFK	| Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif |
+| DCNBDEFK | I | DCNBLIES | Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>(0) |
+| DCPTDEFK | I | ≤ DCNBLIES * DMNBDEFK | Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif |
+| NBLDCURA | I | 1	| Nombre de consommations pouvant s’effacer en curatif<br>(0) |
+| LDNBDEFK | I | ECNBCONS | Pour chaque consommation, nombre d’incidents traités en curatif |
+| LDCURPER | I | NBLDCURA | Pour chaque consommation curative, dans l’ordre des indices, pourcentage d’effacement en curatif |
+| LDPTDEFK | I | ≤ NBLDCURA * DMNBDEFK | Pour chaque consommation curative, dans l’ordre de la [table TNNEUCEL](#table_tnneucel), pointeur des incidents traités en curatif. |
+| GRNBCURA | I | 1 | Nombre de groupes pouvant agir en curatif<br>(0) |
+| GRNBDEFK | I | GRNBCURA | Pour chaque groupe curatif, nombre d’incidents traités en curatif |
+| GRPTDEFK | I | ≤ GRNBCURA * DMNBDEFK | Pour chaque groupe curatif, dans l’ordre de la [table TRNOMGTH](#table_trnomgth), pointeur des incidents traités en curatif. |
 
 ## Sections surveillées <a id="monitored_section"></a>
 | Nom | Type | Taille | Description |
