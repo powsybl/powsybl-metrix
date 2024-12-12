@@ -25,6 +25,7 @@ y { color: yellow}
     11. [Variables couplées](#coupled_vars)
     12. [Variations marginales détaillées](#detailed_marginal_variations)
 3. [Variantes](#variants)
+4. [Parades](#parades)
 4. [Ligne de commande pour lancer METRIX](#command_line)
 5. [Données de sorties](#output)
     1. [Tableaux descriptifs de la situation](#detailed_tables)
@@ -269,19 +270,9 @@ NT;2;
 ```
 --------------------------------------
 
-# Ligne de commande pour lancer METRIX <a id="command_line"></a>
-La ligne de commande utilisée est la suivante : 
-```
-metrix log variantes sorties debut max
-```
-- >**metrix** : nom l’exécutable METRIX
-- >**log** : est le nom du fichier dans lequel sont écrites les traces d’exécution utiles à l’analyse en cas de problème.
-- >**variantes** : est le nom du fichier des variantes (ex. Variantes.csv).
-- >**sorties** : est le préfixe générique du fichier des résultats auquel on concatène pour chaque variante « _s » suivi du numéro de la variante.
-- >**debut** : est le numéro de la première variante à traiter dans le fichier des variantes.
-- >**max** : est le nombre maximum de variantes à traiter sous réserve qu’il y en ait suffisamment dans le fichier des variantes. 
+# Parades <a id="parades"></a>
 
-Le réseau est lu sous forme d'un fichier *json*. Ce fichier doit être dans le dossier pointé par la variable d’environnement HADES_DIR.
+TODO
 
 # Données de sorties <a id="output"></a> 
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
