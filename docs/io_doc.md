@@ -204,13 +204,13 @@ N.B. :
 ## Variables couplées <a id="coupled_vars"></a>
 | Nom | Type | Taille | Description |
 | :-- | :--- | :----- | :---------- |
-| NBGBINDS | I | 1	Nombre de couplages de groupes |
-| NBLBINDS | I | 1	Nombre de couplages de consommations |
-| GBINDDEF | I | ≤ NBGBINDS + TRNBGROU	Pour chaque couplage, nombre de groupes dans le couplage puis indices des groupes couplés |
-| GBINDNOM | C | NBGBINDS	Noms des couplages de groupes |
-| GBINDREF | I | NBGBINDS	Pour chaque couplage, type de la variable de référence (0 = PMAX, 1 = PMIN, 2 = POBJ, 3 = PMAX-POBJ) |
-| LBINDDEF | I | ≤ NBLBINDS + ECNBCONS	Pour chaque couplage, nombre de consommations dans le couplage puis indices des consommations couplées |
-| LBINDNOM | C | NBLBINDS	Noms des couplages de consommations |
+| NBGBINDS | I | 1 | Nombre de couplages de groupes<br>(0) |
+| NBLBINDS | I | 1 | Nombre de couplages de consommations<br>(0) |
+| GBINDDEF | I | ≤ NBGBINDS + TRNBGROU | Pour chaque couplage, nombre de groupes dans le couplage puis indices des groupes couplés |
+| GBINDNOM | C | NBGBINDS | Noms des couplages de groupes |
+| GBINDREF | I | NBGBINDS | Pour chaque couplage, type de la variable de référence (0 = PMAX, 1 = PMIN, 2 = POBJ, 3 = PMAX-POBJ) |
+| LBINDDEF | I | ≤ NBLBINDS + ECNBCONS | Pour chaque couplage, nombre de consommations dans le couplage puis indices des consommations couplées |
+| LBINDNOM | C | NBLBINDS | Noms des couplages de consommations |
 
 ## Variations marginales détaillées <a id="detailed_marginal_variations"></a>
 | Nom | Type | Taille | Description |
