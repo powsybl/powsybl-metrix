@@ -248,10 +248,10 @@ Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
 - >**QATI5MNS** : le nombre de modifications du seuil N-1, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATI20MN** : le nombre de modifications du seuil N-k, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATITAMN** : le nombre de modifications du seuil avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+- >**GROURAND** : le nombre de groupes, la liste ordonnée des groupes pour le 'mélange' pour ne pas avoir à bruiter les coûts.
+- >**PROBABINC** : le nombre de probabilités des incidents, puis autant de couples (nom de l'incident, probabilité).
 
 **TOADD**:
- - GROURAND
- - PROBABINC
  - QATI00MN2
  - QATI20MN
  - QATI20MN2
