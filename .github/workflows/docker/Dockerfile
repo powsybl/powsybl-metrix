@@ -72,7 +72,7 @@ WORKDIR /app
 RUN source /opt/rh/devtoolset-9/enable \
     && groupadd nonroot && useradd -m -g nonroot nonroot
 
-USER nonroot
+# USER nonroot
 
 # Default command
 CMD ["/bin/bash"]
