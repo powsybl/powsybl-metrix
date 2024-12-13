@@ -25,6 +25,8 @@ public enum MetrixVariable implements MappingVariable {
     OFF_GRID_COST_UP("offGridCostUp"),
     ON_GRID_COST_DOWN("onGridCostDown"),
     ON_GRID_COST_UP("onGridCostUp"),
+    ON_GRID_DOCTRINE_COST_DOWN("onGridDoctrineCostDown"),
+    ON_GRID_DOCTRINE_COST_UP("onGridDoctrineCostUp"),
     ANALYSIS_THRESHOLD_N("analysisThresholdN"),
     ANALYSIS_THRESHOLD_NK("analysisThresholdNk"),
     ANALYSIS_THRESHOLD_N_END_OR("analysisThresholdNEndOr"),
@@ -39,7 +41,10 @@ public enum MetrixVariable implements MappingVariable {
     THRESHOLD_NK_END_OR("thresholdNkEndOr"),
     THRESHOLD_ITAM_END_OR("thresholdITAMEndOr"),
     THRESHOLD_ITAM_NK_END_OR("thresholdITAMNkEndOr"),
-    CURATIVE_COST_DOWN("curativeCostDown");
+    CURATIVE_COST_DOWN("curativeCostDown"),
+    PREVENTIVE_DOCTRINE_COST_DOWN("preventiveDoctrineCostDown"),
+    CURATIVE_DOCTRINE_COST_DOWN("curativeDoctrineCostDown"),
+    LOSSES_DOCTRINE_COST("lossesDoctrineCost");
 
     protected static final String NAME = "metrix";
 
