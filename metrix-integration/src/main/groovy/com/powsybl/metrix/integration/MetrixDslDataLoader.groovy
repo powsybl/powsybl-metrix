@@ -34,6 +34,7 @@ import static LoadsBindingData.loadsBindingData
 import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
+import static LossesData.lossesData
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -175,6 +176,11 @@ class MetrixDslDataLoader {
         // specific contingency list
         binding.contingencies = { Closure<Void> closure ->
             contingenciesData(closure, data, logDslLoader)
+        }
+
+        // losses
+        binding.losses = { Closure<Void> closure ->
+            lossesData(closure, network, loader, logDslLoader)
         }
     }
 
