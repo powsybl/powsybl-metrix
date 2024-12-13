@@ -159,6 +159,11 @@ jobs:
     name: Build C++ CentOS 7 using Docker
     runs-on: ubuntu-latest
     steps:
+#      - name: Build docker image
+#        uses: docker/build-push-action@48aba3b46d1b1fec4febb7c5d0c644b249a11355 # v6.10.0
+#        with:
+#          file: {context}/.github/workflows/docker/Dockerfile
+#          tags: centos7withcmake:latest
 
       # Checkout Dockerfile
       # The Dockerfile is located in the workflow folder of the repository
@@ -173,6 +178,26 @@ jobs:
       - name: Build the Docker image
         run: |
           docker build -t centos7withcmake:latest $GITHUB_WORKSPACE/docker --file $GITHUB_WORKSPACE/docker/.github/workflows/docker/Dockerfile
+
+      - name: Run build steps in Docker container
+        run: |
+          docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
+            source /opt/rh/devtoolset-9/enable && 
+            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
+            cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
+            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/workspace/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/workspace/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
+            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 &&
+            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
+          "
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        with:
+          name: metrix-simulator-centos7
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
 
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8

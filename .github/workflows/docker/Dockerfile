@@ -68,7 +68,7 @@ RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
 WORKDIR /app
 
 # Boost
-RUN #wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
+# RUN wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
 RUN source /opt/rh/devtoolset-9/enable \
     && groupadd nonroot && useradd -m -g nonroot nonroot
 
