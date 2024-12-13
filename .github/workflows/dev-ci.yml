@@ -177,7 +177,7 @@ jobs:
 
       - name: Build the Docker image
         run: |
-          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE/docker --file $GITHUB_WORKSPACE/docker/.github/workflows/docker/Dockerfile
+          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE --file $GITHUB_WORKSPACE/.github/workflows/docker/Dockerfile
 
       - name: Run build steps in Docker container
         run: |
