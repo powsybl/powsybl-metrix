@@ -57,6 +57,9 @@ class GeneratorData {
         this.onContingencies = onContingencies
     }
 
+    /**
+     * Set the generator available for adequacy when up and down adequacy costs are defined
+     */
     private static generatorForAdequacy(String id, GeneratorData spec, TimeSeriesMappingConfigLoader configLoader, MetrixDslData data, LogDslLoader logDslLoader) {
         if (spec.adequacyUpCosts != null || spec.adequacyDownCosts != null) {
             if (spec.adequacyUpCosts != null && spec.adequacyDownCosts != null) {
@@ -71,6 +74,9 @@ class GeneratorData {
         }
     }
 
+    /**
+     * Set the generator available for redispatching when up and down redispatching costs are defined
+     */
     private static boolean generatorForRedispatching(String id, GeneratorData spec, TimeSeriesMappingConfigLoader configLoader, MetrixDslData data, LogDslLoader logDslLoader) {
         if (spec.redispatchingUpCosts != null || spec.redispatchingDownCosts != null) {
             if (spec.redispatchingUpCosts != null && spec.redispatchingDownCosts != null) {
@@ -87,6 +93,9 @@ class GeneratorData {
         return false
     }
 
+    /**
+     * Define up and down redispatching doctrine costs when generator is available for redispatching
+     */
     private static generatorRedispatchingDoctrineCosts(String id, GeneratorData spec, TimeSeriesMappingConfigLoader configLoader, LogDslLoader logDslLoader) {
         if (spec.redispatchingUpDoctrineCosts == null && spec.redispatchingDownDoctrineCosts == null) {
             logDslLoader.logWarn("generator %s is missing redispatching doctrine cost to be properly configured", id)
