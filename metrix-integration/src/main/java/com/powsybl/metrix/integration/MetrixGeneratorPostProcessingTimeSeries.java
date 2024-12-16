@@ -89,7 +89,7 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
     }
 
     private void createRedispatchingPostProcessingTimeSeries(GeneratorPostProcessingPrefixContainer prefixContainer) {
-        String prefix = prefixContainer.postProcessingType.equals(PREVENTIVE) ? GEN_PREFIX : GEN_CUR_PREFIX;
+        String prefix = prefixContainer.postProcessingType().equals(PREVENTIVE) ? GEN_PREFIX : GEN_CUR_PREFIX;
         List<String> generatorIds = findIdsToProcess(metrixDslData.getGeneratorsForRedispatching(), allTimeSeriesNames, prefix);
 
         // Retrieve doctrine costs time series
@@ -127,22 +127,22 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
         NodeCalc genDownNegativeConditionTimeSeries = BinaryOperation.lessThan(genTimeSeries, zero);
         NodeCalc genUpTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genTimeSeries, genUpPositiveConditionTimeSeries));
         NodeCalc genDownTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genTimeSeries, genDownNegativeConditionTimeSeries));
-        String genUpTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpPrefix + "_" + generatorId, nullableSchemaName);
-        String genDownTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownPrefix + "_" + generatorId, nullableSchemaName);
+        String genUpTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpPrefix() + "_" + generatorId, nullableSchemaName);
+        String genDownTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownPrefix() + "_" + generatorId, nullableSchemaName);
         postProcessingTimeSeries.put(genUpTimeSeriesName, genUpTimeSeries);
         postProcessingTimeSeries.put(genDownTimeSeriesName, genDownTimeSeries);
 
         // Generator up and down redispatching cost
         NodeCalc genUpCostTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genUpTimeSeries, upCostsTimeSeries));
         NodeCalc genDownCostTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genDownTimeSeries, downCostsTimeSeries));
-        String genUpCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpCostPrefix + "_" + generatorId, nullableSchemaName);
-        String genDownCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownCostPrefix + "_" + generatorId, nullableSchemaName);
+        String genUpCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpCostPrefix() + "_" + generatorId, nullableSchemaName);
+        String genDownCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownCostPrefix() + "_" + generatorId, nullableSchemaName);
         postProcessingTimeSeries.put(genUpCostTimeSeriesName, genUpCostTimeSeries);
         postProcessingTimeSeries.put(genDownCostTimeSeriesName, genDownCostTimeSeries);
 
         // Generator global redispatching cost = up cost + down cost
         NodeCalc genCostTimeSeries = BinaryOperation.plus(genUpCostTimeSeries, genDownCostTimeSeries);
-        String genCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingCostPrefix + "_" + generatorId, nullableSchemaName);
+        String genCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingCostPrefix() + "_" + generatorId, nullableSchemaName);
         postProcessingTimeSeries.put(genCostTimeSeriesName, genCostTimeSeries);
     }
 }

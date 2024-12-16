@@ -79,19 +79,19 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(metrixOutputPrefix + generatorName);
 
         NodeCalc expectedRedispatchingUp = UnaryOperation.abs(BinaryOperation.multiply(metrixOutputNode, BinaryOperation.greaterThan(metrixOutputNode, new IntegerNodeCalc(0))));
-        verifyRedispatching(generatorName, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix);
+        verifyRedispatching(generatorName, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix());
 
         NodeCalc expectedRedispatchingDown = UnaryOperation.abs(BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0))));
-        verifyRedispatching(generatorName, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix);
+        verifyRedispatching(generatorName, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
 
         NodeCalc expectedRedispatchingUpCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts));
-        verifyRedispatchingCost(generatorName, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix);
+        verifyRedispatchingCost(generatorName, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
 
         NodeCalc expectedRedispatchingDownCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingDown, tsRedispatchingDownCosts));
-        verifyRedispatchingCost(generatorName, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix);
+        verifyRedispatchingCost(generatorName, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
 
         NodeCalc expectedRedispatchingCost = BinaryOperation.plus(expectedRedispatchingUpCost, expectedRedispatchingDownCost);
-        assertEquals(expectedRedispatchingCost, postProcessingTimeSeries.get(postProcessingPrefixContainer.redispatchingCostPrefix + "_" + generatorName));
+        assertEquals(expectedRedispatchingCost, postProcessingTimeSeries.get(postProcessingPrefixContainer.redispatchingCostPrefix() + "_" + generatorName));
     }
 
     @Test

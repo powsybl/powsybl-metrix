@@ -10,25 +10,8 @@ package com.powsybl.metrix.integration;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class GeneratorPostProcessingPrefixContainer {
-    public final String postProcessingType;
-    public final String redispatchingUpPrefix;
-    public final String redispatchingUpCostPrefix;
-    public final String redispatchingDownPrefix;
-    public final String redispatchingDownCostPrefix;
-    public final String redispatchingPrefix;
-    public final String redispatchingCostPrefix;
-
-    public GeneratorPostProcessingPrefixContainer(String postProcessingType,
-                                                  String redispatchingUpPrefix, String redispatchingUpCostPrefix,
-                                                  String redispatchingDownPrefix, String redispatchingDownCostPrefix,
-                                                  String redispatchingPrefix, String redispatchingCostPrefix) {
-        this.postProcessingType = postProcessingType;
-        this.redispatchingUpPrefix = redispatchingUpPrefix;
-        this.redispatchingUpCostPrefix = redispatchingUpCostPrefix;
-        this.redispatchingDownPrefix = redispatchingDownPrefix;
-        this.redispatchingDownCostPrefix = redispatchingDownCostPrefix;
-        this.redispatchingPrefix = redispatchingPrefix;
-        this.redispatchingCostPrefix = redispatchingCostPrefix;
-    }
+public record GeneratorPostProcessingPrefixContainer(String postProcessingType, String redispatchingUpPrefix,
+                                                     String redispatchingUpCostPrefix, String redispatchingDownPrefix,
+                                                     String redispatchingDownCostPrefix, String redispatchingPrefix,
+                                                     String redispatchingCostPrefix) {
 }
