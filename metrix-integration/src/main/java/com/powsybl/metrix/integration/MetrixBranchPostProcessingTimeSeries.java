@@ -10,11 +10,20 @@ package com.powsybl.metrix.integration;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.ast.*;
+import com.powsybl.timeseries.ast.BinaryOperation;
+import com.powsybl.timeseries.ast.FloatNodeCalc;
+import com.powsybl.timeseries.ast.IntegerNodeCalc;
+import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
+import com.powsybl.timeseries.ast.UnaryOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.powsybl.metrix.integration.AbstractMetrix.MAX_THREAT_PREFIX;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.findIdsToProcess;

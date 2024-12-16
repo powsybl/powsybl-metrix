@@ -10,9 +10,13 @@ package com.powsybl.metrix.integration;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
-import com.powsybl.timeseries.ast.*;
+import com.powsybl.timeseries.ast.NodeCalc;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

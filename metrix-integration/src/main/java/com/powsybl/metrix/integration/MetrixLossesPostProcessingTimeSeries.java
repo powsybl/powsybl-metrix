@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
-import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOSSES;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -54,9 +54,11 @@ public final class MetrixLossesPostProcessingTimeSeries {
         } else {
             String timeSeriesName = lossesDoctrineCostsTimeSeriesName.get();
             NodeCalc lossesDoctrineCostsTimeSeries = mappingConfig.getTimeSeriesNodes().computeIfAbsent(timeSeriesName, TimeSeriesNameNodeCalc::new);
+
             // Reference to Metrix losses time series result
             String lossesTimeSeriesName = MetrixDataName.getNameWithSchema(LOSSES, nullableSchemaName);
             NodeCalc lossesTimeSeries = new TimeSeriesNameNodeCalc(lossesTimeSeriesName);
+
             // Compute losses cost time series
             NodeCalc lossesCostTimeSeries = BinaryOperation.multiply(lossesTimeSeries, lossesDoctrineCostsTimeSeries);
             postProcessingTimeSeries.put(LOSSES_COST_PREFIX, lossesCostTimeSeries);
