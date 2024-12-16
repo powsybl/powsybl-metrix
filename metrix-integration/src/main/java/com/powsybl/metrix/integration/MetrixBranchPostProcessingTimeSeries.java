@@ -118,7 +118,7 @@ public final class MetrixBranchPostProcessingTimeSeries {
     }
 
     private void createOutagePostProcessingTimeSeries() {
-        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNList(), allTimeSeriesNames, OUTAGE_PREFIX_CONTAINER.maxThreatPrefix);
+        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNList(), allTimeSeriesNames, OUTAGE_PREFIX_CONTAINER.maxThreatPrefix());
         for (String branch : branchIds) {
             MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdNk(branch);
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
@@ -129,7 +129,7 @@ public final class MetrixBranchPostProcessingTimeSeries {
     }
 
     private void createItamPostProcessingTimeSeries() {
-        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNList(), allTimeSeriesNames, ITAM_PREFIX_CONTAINER.maxThreatPrefix);
+        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNList(), allTimeSeriesNames, ITAM_PREFIX_CONTAINER.maxThreatPrefix());
         for (String branch : branchIds) {
             MetrixVariable threshold = MetrixVariable.THRESHOLD_ITAM;
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
@@ -144,9 +144,9 @@ public final class MetrixBranchPostProcessingTimeSeries {
                                                 MetrixVariable thresholdEndOr,
                                                 BranchPostProcessingPrefixContainer postProcessingPrefixContainer) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Creating {} postprocessing time-series for {}", postProcessingPrefixContainer.postProcessingType, branch);
+            LOGGER.debug("Creating {} postprocessing time-series for {}", postProcessingPrefixContainer.postProcessingType(), branch);
         }
-        NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.maxThreatPrefix + branch, nullableSchemaName));
+        NodeCalc flowTimeSeries = new TimeSeriesNameNodeCalc(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.maxThreatPrefix() + branch, nullableSchemaName));
         String ratingTimeSeriesName = mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch));
         NodeCalc ratingTimeSeriesOrEx = calculatedTimeSeries.computeIfAbsent(ratingTimeSeriesName, TimeSeriesNameNodeCalc::new);
 
@@ -159,13 +159,13 @@ public final class MetrixBranchPostProcessingTimeSeries {
         }
 
         // load
-        postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.loadPrefix + branch, nullableSchemaName), createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
+        postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.loadPrefix() + branch, nullableSchemaName), createLoadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr));
         // overload
         NodeCalc overloadTimeSeries = createOverloadTimeSeries(flowTimeSeries, ratingTimeSeriesOrEx, ratingTimeSeriesExOr);
-        postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.overloadPrefix + branch, nullableSchemaName), overloadTimeSeries);
+        postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.overloadPrefix() + branch, nullableSchemaName), overloadTimeSeries);
         NodeCalc basecaseOverLoadTimeSeries = postProcessingTimeSeries.get(BASECASE_OVERLOAD_PREFIX + branch);
         if (!Objects.isNull(basecaseOverLoadTimeSeries)) {
-            postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.overallOverloadPrefix + branch, nullableSchemaName), createOverallOverloadTimeSeries(basecaseOverLoadTimeSeries, overloadTimeSeries));
+            postProcessingTimeSeries.put(MetrixDataName.getNameWithSchema(postProcessingPrefixContainer.overallOverloadPrefix() + branch, nullableSchemaName), createOverallOverloadTimeSeries(basecaseOverLoadTimeSeries, overloadTimeSeries));
         }
     }
 }

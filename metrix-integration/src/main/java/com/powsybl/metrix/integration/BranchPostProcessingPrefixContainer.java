@@ -12,20 +12,8 @@ import java.util.List;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class BranchPostProcessingPrefixContainer {
-    public final String postProcessingType;
-    public final String loadPrefix;
-    public final String overloadPrefix;
-    public final String overallOverloadPrefix;
-    public final String maxThreatPrefix;
-
-    public BranchPostProcessingPrefixContainer(String postProcessingType, String loadPrefix, String overloadPrefix, String overallOverloadPrefix, String maxThreatPrefix) {
-        this.postProcessingType = postProcessingType;
-        this.loadPrefix = loadPrefix;
-        this.overloadPrefix = overloadPrefix;
-        this.overallOverloadPrefix = overallOverloadPrefix;
-        this.maxThreatPrefix = maxThreatPrefix;
-    }
+public record BranchPostProcessingPrefixContainer(String postProcessingType, String loadPrefix, String overloadPrefix,
+                                                  String overallOverloadPrefix, String maxThreatPrefix) {
 
     public List<String> postProcessingPrefixList() {
         return List.of(loadPrefix, overloadPrefix, overallOverloadPrefix);

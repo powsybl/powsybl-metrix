@@ -39,12 +39,13 @@ public final class MetrixPostProcessingTimeSeries {
             return Collections.emptyMap();
         }
 
-        Map<String, NodeCalc> postProcessingTimeSeries = new HashMap<>();
         Set<String> allTimeSeriesNames = store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(false));
 
         // Branch
         MetrixBranchPostProcessingTimeSeries branchProcessing = new MetrixBranchPostProcessingTimeSeries(dslData, mappingConfig, allTimeSeriesNames, nullableSchemaName);
-        postProcessingTimeSeries.putAll(branchProcessing.createPostProcessingTimeSeries());
+
+        // Initialize post-processing TimeSeries
+        Map<String, NodeCalc> postProcessingTimeSeries = new HashMap<>(branchProcessing.createPostProcessingTimeSeries());
 
         // Generator
         MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, allTimeSeriesNames, nullableSchemaName);
