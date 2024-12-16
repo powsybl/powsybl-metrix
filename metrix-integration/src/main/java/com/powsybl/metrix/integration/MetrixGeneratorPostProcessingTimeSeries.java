@@ -94,8 +94,10 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Preventive
         createRedispatchingPostProcessingTimeSeries(PREVENTIVE_PREFIX_CONTAINER);
+
         // Curative
         createRedispatchingPostProcessingTimeSeries(CURATIVE_PREFIX_CONTAINER);
+
         return postProcessingTimeSeries;
     }
 
@@ -118,8 +120,10 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
             String downCostsTimeSeriesName = downCostsTimeSeriesNames.get(i);
             NodeCalc upCostsTimeSeries = calculatedTimeSeries.computeIfAbsent(upCostsTimeSeriesName, TimeSeriesNameNodeCalc::new);
             NodeCalc downCostsTimeSeries = calculatedTimeSeries.computeIfAbsent(downCostsTimeSeriesName, TimeSeriesNameNodeCalc::new);
+
             // Reference to Metrix redispatching time series result
             NodeCalc genTimeSeries = new TimeSeriesNameNodeCalc(prefix + generatorId);
+
             // Compute redispatching up, down, cost time series
             createRedispatchingPostProcessingTimeSeries(generatorId, genTimeSeries, upCostsTimeSeries, downCostsTimeSeries, prefixContainer);
         }
