@@ -64,8 +64,5 @@ RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
 # Set working directory
 WORKDIR /app
 
-# Boost
-RUN source /opt/rh/devtoolset-9/enable
-
 # Default command
 CMD ["/bin/bash"]
