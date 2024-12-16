@@ -40,8 +40,6 @@ RUN tar -xzf openssl-${OPENSSL_VERSION}.tar.gz \
     && rm openssl-${OPENSSL_VERSION}.tar.gz Python-${PYTHON_VERSION}.tgz boost_1_73_0.zip
 
 # Open-SSL
-#RUN wget --max-redirect=0 https://github.com/openssl/openssl/releases/download/OpenSSL_1_1_1w/openssl-${OPENSSL_VERSION}.tar.gz \
-#    && tar -xzf openssl-${OPENSSL_VERSION}.tar.gz
 WORKDIR /usr/local/src/openssl-${OPENSSL_VERSION}
 RUN ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib \
     && make \
@@ -51,14 +49,13 @@ RUN ./config --prefix=/usr/local/ssl --openssldir=/usr/local/ssl shared zlib \
     && export PATH="/usr/local/ssl/bin:${PATH}"
 
 # Python
-#WORKDIR /usr/local/src
-#RUN wget --max-redirect=0 https://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tgz \
-#    && tar xzf Python-${PYTHON_VERSION}.tgz
 WORKDIR /usr/local/src/Python-${PYTHON_VERSION}
 RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
     && make altinstall \
     && ln -sf /usr/local/bin/python3.10 /usr/bin/python3 \
+    && ln -sf /usr/local/bin/python3.10 /usr/local/bin/python3 \
     && ln -sf /usr/local/bin/pip3.10 /usr/bin/pip3 \
+    && ln -sf /usr/local/bin/pip3.10 /usr/local/bin/pip3 \
     && python3 -V \
     && python3 -c "import ssl; print(ssl.OPENSSL_VERSION)" \
     && pip3 install cmake==${CMAKE_VERSION} \
@@ -68,11 +65,7 @@ RUN ./configure --enable-optimizations --with-openssl=/usr/local/ssl \
 WORKDIR /app
 
 # Boost
-# RUN wget --max-redirect=0 -O boost_1_73_0.zip https://github.com/ARnDOSrte/Boost/releases/download/Test_tag_6/boost_1_73_0.zip \
-RUN source /opt/rh/devtoolset-9/enable \
-    && groupadd nonroot && useradd -m -g nonroot nonroot
-
-# USER nonroot
+RUN source /opt/rh/devtoolset-9/enable
 
 # Default command
 CMD ["/bin/bash"]
