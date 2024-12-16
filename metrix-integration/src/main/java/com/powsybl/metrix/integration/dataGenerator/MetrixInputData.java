@@ -615,6 +615,21 @@ public class MetrixInputData {
             preventiveLoadsList = new HashSet<>();
         }
 
+        writeLoadsAndUnpairedDanglingLines(tnneucel, esafiact, tnnomnoe, tnvapal1, tnvacou1, preventiveLoadsList);
+
+        die.setStringArray("TNNOMNOE", tnnomnoe);
+        die.setIntArray("TNNEUCEL", tnneucel);
+        die.setFloatArray("ESAFIACT", esafiact);
+
+        if (!preventiveLoadsList.isEmpty()) {
+            die.setIntArray("TNVAPAL1", tnvapal1);
+            die.setFloatArray("TNVACOU1", tnvacou1);
+        }
+    }
+
+    private void writeLoadsAndUnpairedDanglingLines(int[] tnneucel, float[] esafiact, String[] tnnomnoe,
+                                                    int[] tnvapal1, float[] tnvacou1,
+                                                    Set<String> preventiveLoadsList) {
         int index = 0;
         for (Load load : metrixNetwork.getLoadList()) {
             int busIndex = metrixNetwork.getIndex(load.getTerminal().getBusBreakerView().getBus());
@@ -634,21 +649,12 @@ public class MetrixInputData {
             int busIndex = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
             float p0 = (float) udl.getP0();
             if (udl.getGeneration() != null) {
-                // We do not greate a generator, because we do not want the DL generation to be used when balancing Gen/Load.
+                // We do not create a generator, because we do not want the DL generation to be used when balancing Gen/Load.
                 // Therefore, we just remove the generation part from the load.
                 p0 -= (float) udl.getGeneration().getTargetP();
             }
             writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, p0, udl.getId() + MetrixNetwork.getUnpairedDanglingLineLoadId(udl));
             index++;
-        }
-
-        die.setStringArray("TNNOMNOE", tnnomnoe);
-        die.setIntArray("TNNEUCEL", tnneucel);
-        die.setFloatArray("ESAFIACT", esafiact);
-
-        if (!preventiveLoadsList.isEmpty()) {
-            die.setIntArray("TNVAPAL1", tnvapal1);
-            die.setFloatArray("TNVACOU1", tnvacou1);
         }
     }
 
