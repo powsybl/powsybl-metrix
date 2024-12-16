@@ -23,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,7 +50,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Create mapping file for use in all tests
         try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
