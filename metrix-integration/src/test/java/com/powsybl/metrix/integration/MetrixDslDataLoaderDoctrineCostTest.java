@@ -12,7 +12,8 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.mapping.*;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,8 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Set;
 
-import static com.powsybl.commons.test.TestUtil.normalizeLineSeparator;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -198,7 +198,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
             MetrixDslDataLoader.load(dslFile, network, parameters, store, new TimeSeriesMappingConfig(), out);
         }
 
-        String output = normalizeLineSeparator(outputStream.toString());
+        String output = outputStream.toString();
         String expectedMessage = String.join(System.lineSeparator(),
             "WARNING;Metrix script;load FSSV.O11_L is missing preventive shedding doctrine cost to be properly configured",
             "WARNING;Metrix script;load FVALDI11_L is missing curative shedding doctrine cost to be properly configured",
