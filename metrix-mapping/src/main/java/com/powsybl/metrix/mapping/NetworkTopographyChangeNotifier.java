@@ -75,6 +75,13 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
     }
 
     @Override
+    public void onUpdate(Identifiable identifiable, String attribute, String variantId, Object oldValue, Object newValue) {
+        if (ATTRIBUTE_BLACK_LIST.contains(attribute)) {
+            this.sendNotification(NotificationType.UPDATE, identifiable);
+        }
+    }
+
+    @Override
     public void onExtensionCreation(Extension<?> extension) {
         // Do nothing
     }
@@ -90,19 +97,37 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
     }
 
     @Override
-    public void onExtensionUpdate(Extension<?> extension, String s, Object o, Object o1) {
+    public void onExtensionUpdate(Extension<?> extendable, String attribute, String variantId, Object oldValue, Object newValue) {
         // Do nothing
     }
 
     @Override
-    public void onUpdate(Identifiable identifiable, String attribute, String variantId, Object oldValue, Object newValue) {
-        if (ATTRIBUTE_BLACK_LIST.contains(attribute)) {
-            this.sendNotification(NotificationType.UPDATE, identifiable);
-        }
+    public void onPropertyAdded(Identifiable<?> identifiable, String key, Object newValue) {
+        // Do nothing
     }
 
     @Override
-    public void onUpdate(Identifiable identifiable, String s, Object o, Object o1) {
+    public void onPropertyReplaced(Identifiable<?> identifiable, String key, Object oldValue, Object newValue) {
+        // Do nothing
+    }
+
+    @Override
+    public void onPropertyRemoved(Identifiable<?> identifiable, String key, Object oldValue) {
+        // Do nothing
+    }
+
+    @Override
+    public void onVariantCreated(String sourceVariantId, String targetVariantId) {
+        // Do nothing
+    }
+
+    @Override
+    public void onVariantOverwritten(String sourceVariantId, String targetVariantId) {
+        // Do nothing
+    }
+
+    @Override
+    public void onVariantRemoved(String variantId) {
         // Do nothing
     }
 }
