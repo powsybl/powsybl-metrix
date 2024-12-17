@@ -233,6 +233,8 @@ If no generator is configured to be managed by Metrix, then all generators are i
 Note that Metrix will take into account the Pmin and Pmax values of generators (which can be modified through the mapping script).
 In the same way than most parameters, the value can be a fixed integer/float or a time series name.
 
+Doctrine costs can be defined for postprocessing purpose (up and down redispatching and costs timeseries)
+
 The syntax to define a managed generator is:
 
 ```groovy
@@ -303,6 +305,8 @@ for (g in network.generators) {
 
 Similarly to generators, loads can be adjusted in the OPF simulation (in preventive and curative mode), but only as a decrease. The cost in preventive action is fixed (default 13000 €/MWh) and can be modified in the global parameters with the keyword `lossOfLoadCost`. We can also override this value for specific loads. The specified cost will automatically be weighted with the contingency probability (default : 10^-3). We can also limit the maximum percentage of load shedding (in preventive and curative mode).
 
+Doctrine costs can be defined for postprocessing purpose (load shedding costs timeseries)
+
 Here is the corresponding syntax:
 ```groovy
 load(load_id) {
@@ -352,7 +356,9 @@ Control types:
 - `OPTIMIZED`: can optimize the p0 target in adequacy phase and preventive (and curative if contingencies were defined)
 - `FIXED`: the target p0 is fixed
 
-### LOSSES
+### Losses
+
+Doctrine costs can be defined for postprocessing purpose (global losses cost time series)
 
 ```groovy
 losses() {
