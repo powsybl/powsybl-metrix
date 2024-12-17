@@ -239,8 +239,10 @@ The syntax to define a managed generator is:
 generator(id) { // id of the generator which will be managed by Metrix 
   adequacyDownCosts 'ts_cost_down' // Cost of ramping down for the adequacy phase (here a time series name is used) 
   adequacyUpCosts 'ts_cost_up' // Cost of ramping up for the adequacy phase (here a time series name is used) 
-  redispatchingDownCosts 10 // Cost of ramping down (preventive) for the OPF simulation (here a fixed value is used)
-  redispatchingUpCosts 100 // Cost of ramping up (preventive) for the OPF simulation (here a fixed value is used)
+  redispatchingDownCosts 10 // Cost of ramping down for the OPF simulation (here a fixed value is used)
+  redispatchingUpCosts 100 // Cost of ramping up for the OPF simulation (here a fixed value is used)
+  redispatchingDownDoctrineCosts 10 // Doctrine cost of ramping down for the OPF simulation (fixed value or time series name)
+  redispatchingUpDoctrineCosts 100 // Doctrine cost of ramping up for the OPF simulation (fixed value or time series name)
   onContingencies 'a','b' // list of contingencies where Metrix can use this generator in (curative) remedial actions
 }
 ```
@@ -309,6 +311,8 @@ load(load_id) {
     curativeSheddingPercentage 10 // optional shedding max percentage for curative actions
     curativeSheddingCost 40 // optional cost for curative shedding action
     onContingencies 'a', 'b' // optional contingency upon which curative action are operated 
+    preventiveSheddingDoctrineCost 10000 // doctrine cost for preventive shedding action (fixed value or time series name)
+    curativeSheddingDoctrineCost 'ts_doctrine_cost' // doctrine cost for curative shedding action (fixed value or time series name)
 }
 ```
 
@@ -347,6 +351,14 @@ hvdc(id) {
 Control types:
 - `OPTIMIZED`: can optimize the p0 target in adequacy phase and preventive (and curative if contingencies were defined)
 - `FIXED`: the target p0 is fixed
+
+### LOSSES
+
+```groovy
+losses() {
+  costs 'ts_losses_cost' // Losses cost (fixed value or time series name)
+}
+```
 
 ### Monitored sections
 
