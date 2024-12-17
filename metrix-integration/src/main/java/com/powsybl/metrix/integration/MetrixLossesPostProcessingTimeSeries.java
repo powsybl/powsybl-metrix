@@ -43,6 +43,11 @@ public final class MetrixLossesPostProcessingTimeSeries {
         this.calculatedTimeSeries = new HashMap<>(mappingConfig.getTimeSeriesNodes());
     }
 
+    /**
+     * Create postprocessing calculated time series for losses
+     * For metrix LOSSES result (MW), create cost time series :
+     *    lossesCost = LOSSES * losses cost time series
+     */
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Retrieve doctrine costs time series
         Optional<String> lossesDoctrineCostsTimeSeriesName = mappingConfig.getEquipmentToTimeSeries().entrySet().stream()

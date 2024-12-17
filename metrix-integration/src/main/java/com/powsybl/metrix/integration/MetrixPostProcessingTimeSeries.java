@@ -35,6 +35,13 @@ public final class MetrixPostProcessingTimeSeries {
         return allIds.stream().filter(id -> allTimeSeriesNames.stream().anyMatch(s -> s.startsWith(prefix + id))).toList();
     }
 
+    /**
+     * Create branch, generator, load, losses calculated time series for postprocessing
+     * @param dslData            metrix configuration
+     * @param mappingConfig      mapping configuration
+     * @param store              time series store containing metrix results
+     * @param nullableSchemaName schema name, otherwise null
+     */
     public static Map<String, NodeCalc> getPostProcessingTimeSeries(MetrixDslData dslData,
                                                                     TimeSeriesMappingConfig mappingConfig,
                                                                     ReadOnlyTimeSeriesStore store,

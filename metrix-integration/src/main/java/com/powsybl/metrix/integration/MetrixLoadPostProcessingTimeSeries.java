@@ -62,6 +62,9 @@ public final class MetrixLoadPostProcessingTimeSeries {
         this.calculatedTimeSeries = new HashMap<>(mappingConfig.getTimeSeriesNodes());
     }
 
+    /**
+     * Create postprocessing calculated time series for preventive and curative load shedding
+     */
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Preventive load shedding
         createLoadSheddingPostProcessingTimeSeries(true);
@@ -70,6 +73,12 @@ public final class MetrixLoadPostProcessingTimeSeries {
         return postProcessingTimeSeries;
     }
 
+    /**
+     * For each load having LOAD_loadId result (load shedding time series) (MW)
+     * - create load shedding time series (MW)
+     * - create load shedding cost time series
+     * @param isPreventive true for preventive computation, false otherwise
+     */
     private void createLoadSheddingPostProcessingTimeSeries(boolean isPreventive) {
         Set<String> allIds = isPreventive ? metrixDslData.getPreventiveLoadsList() : metrixDslData.getCurativeLoadsList();
         MetrixVariable variable = isPreventive ? MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN : MetrixVariable.CURATIVE_DOCTRINE_COST_DOWN;
@@ -97,6 +106,16 @@ public final class MetrixLoadPostProcessingTimeSeries {
         }
     }
 
+    /**
+     * Create load shedding calculated time series
+     *    prefix_shedding_loadId = LOAD_loadId
+     * Create cost load shedding calculated time series
+     *    prefix_sheddingCost_loadId = prefix_shedding_loadId * load shedding doctrine cost time series
+     * @param loadId                              load id
+     * @param loadTimeSeries                      LOAD_loadId time series
+     * @param loadSheddingDoctrineCostsTimeSeries load shedding doctrine cost time series
+     * @param isPreventive                        true for preventive computation, false otherwise
+     */
     private void createLoadSheddingPostProcessingTimeSeries(String loadId,
                                                             NodeCalc loadTimeSeries,
                                                             NodeCalc loadSheddingDoctrineCostsTimeSeries,

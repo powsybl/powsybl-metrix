@@ -91,6 +91,9 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
         this.calculatedTimeSeries = new HashMap<>(mappingConfig.getTimeSeriesNodes());
     }
 
+    /**
+     * Create postprocessing calculated time series for preventive and curative redispatching
+     */
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Preventive
         createRedispatchingPostProcessingTimeSeries(PREVENTIVE_PREFIX_CONTAINER);
@@ -101,6 +104,13 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
         return postProcessingTimeSeries;
     }
 
+    /**
+     * For each generator having GEN_generatorId result (generator redispatching time series) (MW)
+     * - create up and down redispatching time series (MW)
+     * - create up and down costs time series
+     * - create global cost time series
+     * @param prefixContainer prefix of time series to create (preventive or curative)
+     */
     private void createRedispatchingPostProcessingTimeSeries(GeneratorPostProcessingPrefixContainer prefixContainer) {
         String prefix = prefixContainer.postProcessingType().equals(PREVENTIVE) ? GEN_PREFIX : GEN_CUR_PREFIX;
         List<String> generatorIds = findIdsToProcess(metrixDslData.getGeneratorsForRedispatching(), allTimeSeriesNames, prefix);
@@ -129,6 +139,21 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
         }
     }
 
+    /**
+     * Create up and down redispatching calculated time series by decomposing GEN_generatorId
+     *    prefix_redispatchingUp_generatorId = GEN_generatorId keeping values >0 and putting 0 otherwise
+     *    prefix_redispatchingDown_generatorId = GEN_generatorId keeping values <0 and putting 0 otherwise
+     * Create up and down costs calculated time series
+     *    prefix_redispatchingUpCost_generatorId = pre_redispatchingUp_generatorId * redispatching up doctrine cost time series
+     *    prefix_redispatchingDownCost_generatorId = pre_redispatchingDown_generatorId * redispatching down doctrine cost time series
+     * Create global costs calculated time series
+     *    prefix_redispatchingCost_generatorId = pre_redispatchingUpCost_generatorId + pre_redispatchingDownCost_generatorId
+     * @param generatorId         generator id
+     * @param genTimeSeries       GEN_generatorId time series
+     * @param upCostsTimeSeries   redispatching up doctrine cost time series
+     * @param downCostsTimeSeries redispatching down doctrine cost time series
+     * @param prefixContainer     prefix of time series to create (preventive or curative)
+     */
     private void createRedispatchingPostProcessingTimeSeries(String generatorId,
                                                              NodeCalc genTimeSeries,
                                                              NodeCalc upCostsTimeSeries,
