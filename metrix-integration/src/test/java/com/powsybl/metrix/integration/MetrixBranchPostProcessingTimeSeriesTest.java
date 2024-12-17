@@ -15,17 +15,26 @@ import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.*;
-import com.powsybl.timeseries.ast.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.ast.BinaryOperation;
+import com.powsybl.timeseries.ast.FloatNodeCalc;
+import com.powsybl.timeseries.ast.IntegerNodeCalc;
+import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
+import com.powsybl.timeseries.ast.UnaryOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -92,8 +101,8 @@ class MetrixBranchPostProcessingTimeSeriesTest {
     Map<String, NodeCalc> postProcessingTimeSeries;
 
     @BeforeEach
-    public void setUp() throws IOException {
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+    public void setUp() {
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     private void verifyBasecaseLoad(String branchName, NodeCalc flow, NodeCalc ratingN) {
