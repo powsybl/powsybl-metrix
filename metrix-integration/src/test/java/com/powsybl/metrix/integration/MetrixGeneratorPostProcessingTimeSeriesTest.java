@@ -85,16 +85,16 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
                                                NodeCalc tsRedispatchingDownCosts) {
         NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(metrixOutputPrefix + generatorName);
 
-        NodeCalc expectedRedispatchingUp = UnaryOperation.abs(BinaryOperation.multiply(metrixOutputNode, BinaryOperation.greaterThan(metrixOutputNode, new IntegerNodeCalc(0))));
+        NodeCalc expectedRedispatchingUp = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.greaterThan(metrixOutputNode, new IntegerNodeCalc(0)));
         verifyRedispatching(generatorName, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix());
 
-        NodeCalc expectedRedispatchingDown = UnaryOperation.abs(BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0))));
+        NodeCalc expectedRedispatchingDown = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0)));
         verifyRedispatching(generatorName, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
 
-        NodeCalc expectedRedispatchingUpCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts));
+        NodeCalc expectedRedispatchingUpCost = BinaryOperation.multiply(expectedRedispatchingUp, UnaryOperation.abs(tsRedispatchingUpCosts));
         verifyRedispatchingCost(generatorName, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
 
-        NodeCalc expectedRedispatchingDownCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingDown, tsRedispatchingDownCosts));
+        NodeCalc expectedRedispatchingDownCost = BinaryOperation.multiply(expectedRedispatchingDown, UnaryOperation.abs(tsRedispatchingDownCosts));
         verifyRedispatchingCost(generatorName, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
 
         NodeCalc expectedRedispatchingCost = BinaryOperation.plus(expectedRedispatchingUpCost, expectedRedispatchingDownCost);
