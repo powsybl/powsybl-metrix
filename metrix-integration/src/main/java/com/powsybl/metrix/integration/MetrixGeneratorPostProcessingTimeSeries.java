@@ -140,16 +140,16 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
         // Generator up and down redispatching
         NodeCalc genUpPositiveConditionTimeSeries = BinaryOperation.greaterThan(genTimeSeries, zero);
         NodeCalc genDownNegativeConditionTimeSeries = BinaryOperation.lessThan(genTimeSeries, zero);
-        NodeCalc genUpTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genTimeSeries, genUpPositiveConditionTimeSeries));
-        NodeCalc genDownTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genTimeSeries, genDownNegativeConditionTimeSeries));
+        NodeCalc genUpTimeSeries = BinaryOperation.multiply(genTimeSeries, genUpPositiveConditionTimeSeries);
+        NodeCalc genDownTimeSeries = BinaryOperation.multiply(genTimeSeries, genDownNegativeConditionTimeSeries);
         String genUpTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpPrefix() + "_" + generatorId, nullableSchemaName);
         String genDownTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownPrefix() + "_" + generatorId, nullableSchemaName);
         postProcessingTimeSeries.put(genUpTimeSeriesName, genUpTimeSeries);
         postProcessingTimeSeries.put(genDownTimeSeriesName, genDownTimeSeries);
 
         // Generator up and down redispatching cost
-        NodeCalc genUpCostTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genUpTimeSeries, upCostsTimeSeries));
-        NodeCalc genDownCostTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genDownTimeSeries, downCostsTimeSeries));
+        NodeCalc genUpCostTimeSeries = BinaryOperation.multiply(genUpTimeSeries, UnaryOperation.abs(upCostsTimeSeries));
+        NodeCalc genDownCostTimeSeries = BinaryOperation.multiply(genDownTimeSeries, UnaryOperation.abs(downCostsTimeSeries));
         String genUpCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpCostPrefix() + "_" + generatorId, nullableSchemaName);
         String genDownCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownCostPrefix() + "_" + generatorId, nullableSchemaName);
         postProcessingTimeSeries.put(genUpCostTimeSeriesName, genUpCostTimeSeries);
