@@ -196,7 +196,9 @@ jobs:
 
       - name: Combine job results
         run: |
-          cat job_result_* > combined_job_results.txt
+          for dir in job-results_*; do
+            cat "$dir"/* >> combined_job_results.txt
+          done
 
       - name: Format job results
         id: format_results
