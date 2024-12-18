@@ -88,7 +88,7 @@ class MetrixInputDataGeneratorTest {
     }
 
     @Test
-    void generateInputFileZipDoNotCopyAdditionnalFiles() throws IOException {
+    void generateInputFileZipDoNotCopyAdditionalFiles() throws IOException {
         //GIVEN
         Path remedialActionFile = Paths.get("remedialActionFile");
         MetrixVariantProvider variantProvider = null;
