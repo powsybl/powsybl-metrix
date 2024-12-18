@@ -250,14 +250,11 @@ Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
 - >**QATITAMN** : le nombre de modifications du seuil avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**GROURAND** : le nombre de groupes, la liste ordonnée des groupes pour le 'mélange' pour ne pas avoir à bruiter les coûts.
 - >**PROBABINC** : le nombre de probabilités des incidents, puis autant de couples (nom de l'incident, probabilité).
-
-**TOADD**:
- - QATI00MN2
- - QATI20MN
- - QATI20MN2
- - QATITAMK
- - QATITAMK2
- - QATITAMN2 
+- >**QATI00MN2** : le nombre de modifications du seuil N de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+- >**QATI20MN2** : le nombre de modifications du seuil N-k de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+- >**QATITAMK** : le nombre de modifications du seuil N-k avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+- >**QATITAMK2** : le nombre de modifications du seuil N-k avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+- >**QATITAMN2** : le nombre de modifications du seuil avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué. 
 
 **Attention** : pour chaque variante, le modèle ne tient compte que d’une seule ligne pour chaque type de loi. Si plusieurs lois sont définies pour une même variante seule la dernière sera conservée.
 
