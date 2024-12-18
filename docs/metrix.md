@@ -233,14 +233,18 @@ If no generator is configured to be managed by Metrix, then all generators are i
 Note that Metrix will take into account the Pmin and Pmax values of generators (which can be modified through the mapping script).
 In the same way than most parameters, the value can be a fixed integer/float or a time series name.
 
+Doctrine costs can be defined for postprocessing purpose (up and down redispatching and costs timeseries)
+
 The syntax to define a managed generator is:
 
 ```groovy
 generator(id) { // id of the generator which will be managed by Metrix 
   adequacyDownCosts 'ts_cost_down' // Cost of ramping down for the adequacy phase (here a time series name is used) 
   adequacyUpCosts 'ts_cost_up' // Cost of ramping up for the adequacy phase (here a time series name is used) 
-  redispatchingDownCosts 10 // Cost of ramping down (preventive) for the OPF simulation (here a fixed value is used)
-  redispatchingUpCosts 100 // Cost of ramping up (preventive) for the OPF simulation (here a fixed value is used)
+  redispatchingDownCosts 10 // Cost of ramping down for the OPF simulation (here a fixed value is used)
+  redispatchingUpCosts 100 // Cost of ramping up for the OPF simulation (here a fixed value is used)
+  redispatchingDownDoctrineCosts 10 // Doctrine cost of ramping down for the OPF simulation (fixed value or time series name)
+  redispatchingUpDoctrineCosts 100 // Doctrine cost of ramping up for the OPF simulation (fixed value or time series name)
   onContingencies 'a','b' // list of contingencies where Metrix can use this generator in (curative) remedial actions
 }
 ```
@@ -301,6 +305,8 @@ for (g in network.generators) {
 
 Similarly to generators, loads can be adjusted in the OPF simulation (in preventive and curative mode), but only as a decrease. The cost in preventive action is fixed (default 13000 €/MWh) and can be modified in the global parameters with the keyword `lossOfLoadCost`. We can also override this value for specific loads. The specified cost will automatically be weighted with the contingency probability (default : 10^-3). We can also limit the maximum percentage of load shedding (in preventive and curative mode).
 
+Doctrine costs can be defined for postprocessing purpose (load shedding costs timeseries)
+
 Here is the corresponding syntax:
 ```groovy
 load(load_id) {
@@ -309,6 +315,8 @@ load(load_id) {
     curativeSheddingPercentage 10 // optional shedding max percentage for curative actions
     curativeSheddingCost 40 // optional cost for curative shedding action
     onContingencies 'a', 'b' // optional contingency upon which curative action are operated 
+    preventiveSheddingDoctrineCost 10000 // doctrine cost for preventive shedding action (fixed value or time series name)
+    curativeSheddingDoctrineCost 'ts_doctrine_cost' // doctrine cost for curative shedding action (fixed value or time series name)
 }
 ```
 
@@ -347,6 +355,16 @@ hvdc(id) {
 Control types:
 - `OPTIMIZED`: can optimize the p0 target in adequacy phase and preventive (and curative if contingencies were defined)
 - `FIXED`: the target p0 is fixed
+
+### Losses
+
+Doctrine costs can be defined for postprocessing purpose (global losses cost time series)
+
+```groovy
+losses() {
+  costs 'ts_losses_cost' // Losses cost (fixed value or time series name)
+}
+```
 
 ### Monitored sections
 
