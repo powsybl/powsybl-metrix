@@ -162,8 +162,14 @@ jobs:
       - name: Store job result
         if: always()
         run: |
-          echo "${{ matrix.os }}=${{ job.status }}" >> $GITHUB_OUTPUT
-        id: job_result
+          echo "${{ matrix.os }}=${{ job.status }}" >> job_result_${{ matrix.os }}.txt
+
+      - name: Upload job result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-results
+          path: job_result_${{ matrix.os }}.txt
 
     outputs:
       matrix-result: ${{ toJSON(steps.job_result.outputs) }}
@@ -185,48 +191,61 @@ jobs:
             echo "status=Failed" >> $GITHUB_OUTPUT
           fi
 
+      - name: Download job results
+        uses: actions/download-artifact@v4
+        with:
+          name: job-results
+
+      - name: Combine job results
+        run: |
+          cat job_result_*.txt > combined_job_results.txt
+
       - name: Format job results
         id: format_results
         run: |
-          results='${{ needs.build_powsybl_metrix.outputs.matrix-result }}'
           formatted=""
-          echo "$results" | sed 's/[{}"]//g; s/,/\n/g' | while IFS=':' read -r os status; do
-          icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
-          formatted+="${icon} Build powsybl-metrix on *${os}*\n"
-          done
+          while IFS='=' read -r os status; do
+            icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
+            formatted+="${icon} Build powsybl-metrix on *${os}*\n"
+          done < job_results.txt
           echo "formatted_results<<EOF" >> $GITHUB_OUTPUT
           echo -e "$formatted" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Send Slack Notification
-        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
-        with:
-          author_name: 'powsybl-metrix on GitHub'
-          status: custom
-          custom_payload: |
-            {
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? "#319f4b" : '${{ job.status }}' === 'failure' ? "#f64538" : "#ffc965",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*"
-                    }
-                  },
-                  {
-                    "type": "divider"
-                  },
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\nSee logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
-                    }
-                  }
-                ]
-              }]
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      - name: Debug - Show formatted results
+        run: |
+          echo "Formatted Results:"
+          echo "${{ steps.format_results.outputs.formatted_results }}"
+
+#      - name: Send Slack Notification
+#        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
+#        with:
+#          author_name: 'powsybl-metrix on GitHub'
+#          status: custom
+#          custom_payload: |
+#            {
+#              attachments: [{
+#                color: '${{ job.status }}' === 'success' ? "#319f4b" : '${{ job.status }}' === 'failure' ? "#f64538" : "#ffc965",
+#                "blocks": [
+#                  {
+#                    "type": "section",
+#                    "text": {
+#                      "type": "mrkdwn",
+#                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*"
+#                    }
+#                  },
+#                  {
+#                    "type": "divider"
+#                  },
+#                  {
+#                    "type": "section",
+#                    "text": {
+#                      "type": "mrkdwn",
+#                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\nSee logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
+#                    }
+#                  }
+#                ]
+#              }]
+#            }
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
