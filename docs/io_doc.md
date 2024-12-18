@@ -40,7 +40,7 @@ Les données indiquées en **gras** dans les tableaux suivants doivent toujours 
 La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
 Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires mais qui provoquent des erreurs de segmentation si elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> provoquent des erreurs (cf. fichier de logs) si elles ne sont pas renseignées.
 
-N.B. : 
+N.B. : Les types de données sont définis par une mettre comme suit <a id="types"></a>:
 - B = *BOOLEAN*
 - C = *STRING*
 - I = *INTEGER*
@@ -298,14 +298,14 @@ N.B. : Les parades renseignées ne sont pas considérées si le mode de lancemen
 
 # Données de sorties <a id="output"></a> 
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
-Il y a un seul fichier par variante. Au sein de ce fichier, les données sont regroupées dans des tableaux de sortie par thème. Chaque ligne du fichier commence par l’identifiant du tableau. 
+Il y a un seul fichier par variante. Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier commence par l’identifiant du tableau. 
 
 Pour chaque champ, on définit :
-- le nom de la grandeur stockée
-- le format de la donnée : C = Chaîne, I = Entier, R = Réel
-- pour une grandeur numérique (I ou R), le type de la grandeur : MW pour une puissance, u.m. (unité monétaire) pour un coût, rien autrement
+- le nom de la grandeur stockée ;
+- le format de la donnée (cf. [formats de données](#types)) ;
+- et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire) pour un coût, sans unité autrement.
 
-Certain tableau ne sont pas accessibles sauf si l'option '*--all-outputs*' est donné lors du lancement à Metrix simulator.
+Certains tableaux ne sont pas accessibles sauf si l'option '*--all-outputs*' est donnée lors du lancement de l'exécutable Metrix simulator.
 
 ## Tableaux descriptifs de la situation <a id="detailed_tables"></a>
 **Tableau S1** : ouvrages indisponibles (quadripôles et groupes).
