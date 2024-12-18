@@ -34,13 +34,20 @@ public class MetrixOutputData {
     public static final String ERROR_CODE_NAME = "ERROR_CODE";
     public static final String OVERLOAD_BASECASE = "OVERLOAD_BASECASE";
     public static final String OVERLOAD_OUTAGES = "OVERLOAD_OUTAGES";
-    public static final String GEN_COST = "GEN_COST";
-    public static final String LOAD_COST = "LOAD_COST";
+
+    public static final String GEN_PREFIX = "GEN_";
+    public static final String GEN_CUR_PREFIX = "GEN_CUR_";
+    public static final String GEN_COST = GEN_PREFIX + "COST";
+    public static final String GEN_VOL_UP = GEN_PREFIX + "VOL_UP_";
+    public static final String GEN_VOL_DOWN = GEN_PREFIX + "VOL_DOWN_";
+
+    public static final String LOAD_PREFIX = "LOAD_";
+    public static final String LOAD_CUR_PREFIX = "LOAD_CUR_";
+    public static final String LOAD_COST = LOAD_PREFIX + "COST";
+
     public static final String FLOW_NAME = "FLOW_";
     public static final String MAX_THREAT_NAME = "MAX_THREAT_";
     public static final String MAX_TMP_THREAT_FLOW = "MAX_TMP_THREAT_FLOW_";
-    public static final String GEN_VOL_UP = "GEN_VOL_UP_";
-    public static final String GEN_VOL_DOWN = "GEN_VOL_DOWN_";
     public static final String LOSSES = "LOSSES";
     public static final String LOSSES_BY_COUNTRY = "LOSSES_";
     public static final String HVDC_NAME = "HVDC_";
@@ -52,6 +59,7 @@ public class MetrixOutputData {
     public static final String PST_TYPE = "pst";
     public static final String GEN_TYPE = "generator-type";
     public static final String GENERATOR = "generator";
+    public static final String LOAD = "load";
     public static final String BRANCH = "branch";
     public static final String CONTINGENCY_TYPE = "contingency";
     public static final String BASECASE_TYPE = "basecase";
@@ -95,6 +103,14 @@ public class MetrixOutputData {
 
         public void insertResult(int pos, double value) {
             timeSeries[pos] = value;
+        }
+
+        public void addResult(int pos, double value) {
+            if (Double.isNaN(timeSeries[pos])) {
+                insertResult(pos, value);
+            } else {
+                timeSeries[pos] += value;
+            }
         }
     }
 
@@ -522,13 +538,18 @@ public class MetrixOutputData {
     private void readR2B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
         String outageName;
         DoubleResultChunk ts;
+        DoubleResultChunk tsSum;
         // Check that it's not the header
         if (INCIDENT.equals(chunks[1])) {
             return;
         }
         outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-        ts = getDoubleTimeSeries("GEN_CUR_", GENERATOR, chunks[2], outageName);
-        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+        ts = getDoubleTimeSeries(GEN_CUR_PREFIX, GENERATOR, chunks[2], outageName);
+        double redispatchingValue = Double.parseDouble(chunks[3]);
+        ts.insertResult(varNum - offset, redispatchingValue);
+        // Compute curative redispatching by generator = sum of generator curative redispatching for all outages
+        tsSum = getDoubleTimeSeries(GEN_CUR_PREFIX + chunks[2]);
+        tsSum.addResult(varNum - offset, redispatchingValue);
     }
 
     /**
@@ -545,7 +566,7 @@ public class MetrixOutputData {
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
         }
         if (!EMPTY_STRING.equals(chunks[6])) {
-            ts = getDoubleTimeSeries("GEN_", GENERATOR, chunks[2]);
+            ts = getDoubleTimeSeries(GEN_PREFIX, GENERATOR, chunks[2]);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
         }
     }
@@ -559,7 +580,7 @@ public class MetrixOutputData {
         if ("NOM REGROUPEMENT".equals(chunks[1])) {
             return;
         }
-        ts = getDoubleTimeSeries("LOAD_", "load binding", chunks[1]);
+        ts = getDoubleTimeSeries(LOAD_PREFIX, "load binding", chunks[1]);
         ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
     }
 
@@ -567,13 +588,18 @@ public class MetrixOutputData {
      * Curative Loads
      */
     private void readR1B(int varNum, Map<Integer, String> outageNames, String[] chunks) {
+        DoubleResultChunk tsSum;
         // Check that it's not the header
         if (INCIDENT.equals(chunks[1])) {
             return;
         }
         String outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-        DoubleResultChunk ts = getDoubleTimeSeries("LOAD_CUR_", "load", chunks[2], outageName);
-        ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
+        DoubleResultChunk ts = getDoubleTimeSeries(LOAD_CUR_PREFIX, LOAD, chunks[2], outageName);
+        double sheddingValue = Double.parseDouble(chunks[3]);
+        ts.insertResult(varNum - offset, sheddingValue);
+        // Compute curative load shedding by load = sum of curative load shedding for all outages
+        tsSum = getDoubleTimeSeries(LOAD_CUR_PREFIX + chunks[2]);
+        tsSum.addResult(varNum - offset, sheddingValue);
     }
 
     /**
@@ -586,11 +612,11 @@ public class MetrixOutputData {
         }
         DoubleResultChunk ts;
         if (!EMPTY_STRING.equals(chunks[4])) {
-            ts = getDoubleTimeSeries("INIT_BAL_LOAD_", "load", chunks[2]);
+            ts = getDoubleTimeSeries("INIT_BAL_LOAD_", LOAD, chunks[2]);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
         }
         if (!EMPTY_STRING.equals(chunks[5])) {
-            ts = getDoubleTimeSeries("LOAD_", "load", chunks[2]);
+            ts = getDoubleTimeSeries(LOAD_PREFIX, LOAD, chunks[2]);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
         }
     }
@@ -627,7 +653,7 @@ public class MetrixOutputData {
             return;
         }
         if (!EMPTY_STRING.equals(chunks[4])) {
-            DoubleResultChunk ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[3], chunks[2]);
+            DoubleResultChunk ts = getDoubleTimeSeries("LOST_LOAD_", LOAD, chunks[3], chunks[2]);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
         }
     }
@@ -646,7 +672,7 @@ public class MetrixOutputData {
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
         }
         if (!EMPTY_STRING.equals(chunks[5])) {
-            ts = getDoubleTimeSeries("LOST_LOAD_", "load", chunks[2]);
+            ts = getDoubleTimeSeries("LOST_LOAD_", LOAD, chunks[2]);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
         }
     }
