@@ -196,7 +196,7 @@ jobs:
 
       - name: Combine job results
         run: |
-          cat job_result_*.txt > combined_job_results.txt
+          cat job_result_* > combined_job_results.txt
 
       - name: Format job results
         id: format_results
@@ -205,7 +205,7 @@ jobs:
           while IFS='=' read -r os status; do
             icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
             formatted+="${icon} Build powsybl-metrix on *${os}*\n"
-          done < job_results.txt
+          done < combined_job_results.txt
           echo "formatted_results<<EOF" >> $GITHUB_OUTPUT
           echo -e "$formatted" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
