@@ -19,9 +19,6 @@ jobs:
   build_powsybl_metrix:
     name: Build Java ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-#    outputs:
-#      # Output job with build_status.txt content created in Read Build Status step
-#      build_status: ${{ steps.build_status.outputs.build_status_output }}
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
@@ -191,11 +188,11 @@ jobs:
       - name: Format job results
         id: format_results
         run: |
-          results='${{ needs.build.outputs.matrix-result }}'
+          results='${{ needs.build_powsybl_metrix.outputs.matrix-result }}'
           formatted=""
-          echo "$results" | jq -r 'to_entries[] | .key + "=" + .value' | while IFS='=' read -r os status; do
-            icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
-            formatted+="${icon} Build powsybl-metrix on *${os}*\n"
+          echo "$results" | sed 's/[{}"]//g; s/,/\n/g' | while IFS=':' read -r os status; do
+          icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
+          formatted+="${icon} Build powsybl-metrix on *${os}*\n"
           done
           echo "formatted_results<<EOF" >> $GITHUB_OUTPUT
           echo -e "$formatted" >> $GITHUB_OUTPUT
