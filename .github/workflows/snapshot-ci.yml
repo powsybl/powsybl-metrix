@@ -217,7 +217,7 @@ jobs:
                     "type": "section",
                     "text": {
                       "type": "mrkdwn",
-                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*\n\nBuilt on ${{ needs.build_powsybl_metrix.outputs.metrix-branch }} using powsybl-core v${{ needs.build_powsybl_metrix.outputs.core-version }}"
+                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*\n\nBranch built: ${{ needs.build_powsybl_metrix.outputs.metrix-branch }}\n\nPowSyBl-Core version used: ${{ needs.build_powsybl_metrix.outputs.core-version }}"
                     }
                   },
                   {
