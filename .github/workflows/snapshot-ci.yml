@@ -11,10 +11,6 @@ on:
   schedule:
     - cron: '30 3 * * *'
 
-env:
-#  BUILD_STATUS: ${{ github.workspace }}/build_status.txt
-  JOB_RESULTS: ""
-
 jobs:
   build_powsybl_metrix:
     name: Build Java ${{ matrix.os }}
@@ -154,11 +150,6 @@ jobs:
             powsybl-metrix/metrix-simulator/build/install/bin
             powsybl-metrix/metrix-simulator/build/install/etc
 
-      - name: Update job results
-        if: always()
-        run: |
-          echo "JOB_RESULTS=${{ env.JOB_RESULTS }}${{ matrix.os }}:${{ job.status }};" >> $GITHUB_ENV
-
       - name: Store job result
         if: always()
         run: |
@@ -219,6 +210,8 @@ jobs:
 
       - name: Send Slack Notification
         uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_METRIX }}
         with:
           author_name: 'powsybl-metrix on GitHub'
           status: custom
@@ -247,5 +240,3 @@ jobs:
                 ]
               }]
             }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
