@@ -197,46 +197,45 @@ jobs:
           formatted=""
           while IFS='=' read -r os status; do
             icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
-            formatted+="${icon} Build powsybl-metrix on *${os}*\n"
+            formatted+="${icon} Build powsybl-metrix on *${os}*\\n"
           done < combined_job_results.txt
-          echo "formatted_results<<EOF" >> $GITHUB_OUTPUT
-          echo -e "$formatted" >> $GITHUB_OUTPUT
-          echo "EOF" >> $GITHUB_OUTPUT
+          formatted="${formatted%\\n}"  # Remove the last newline
+          echo "formatted_results=${formatted}" >> $GITHUB_OUTPUT
 
       - name: Debug - Show formatted results
         run: |
           echo "Formatted Results:"
           echo "${{ steps.format_results.outputs.formatted_results }}"
 
-      - name: Send Slack Notification
-        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_METRIX }}
-        with:
-          author_name: 'powsybl-metrix on GitHub'
-          status: custom
-          custom_payload: |
-            {
-              attachments: [{
-                color: '${{ job.status }}' === 'success' ? "#319f4b" : '${{ job.status }}' === 'failure' ? "#f64538" : "#ffc965",
-                "blocks": [
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*\n\nUsing powsybl-core v${{ needs.build_powsybl_metrix.outputs.core-version }}"
-                    }
-                  },
-                  {
-                    "type": "divider"
-                  },
-                  {
-                    "type": "section",
-                    "text": {
-                      "type": "mrkdwn",
-                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\nSee logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
-                    }
-                  }
-                ]
-              }]
-            }
+#      - name: Send Slack Notification
+#        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
+#        with:
+#          author_name: 'powsybl-metrix on GitHub'
+#          status: custom
+#          custom_payload: |
+#            {
+#              attachments: [{
+#                color: '${{ job.status }}' === 'success' ? "#319f4b" : '${{ job.status }}' === 'failure' ? "#f64538" : "#ffc965",
+#                "blocks": [
+#                  {
+#                    "type": "section",
+#                    "text": {
+#                      "type": "mrkdwn",
+#                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*\n\nUsing powsybl-core v${{ needs.build_powsybl_metrix.outputs.core-version }}"
+#                    }
+#                  },
+#                  {
+#                    "type": "divider"
+#                  },
+#                  {
+#                    "type": "section",
+#                    "text": {
+#                      "type": "mrkdwn",
+#                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\nSee logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
+#                    }
+#                  }
+#                ]
+#              }]
+#            }
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL_METRIX }}
