@@ -45,12 +45,12 @@ jobs:
       - name: Run build steps in Docker container
         run: |
           docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
-            source /opt/rh/devtoolset-9/enable
-            cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
-            cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
-            cmake -S $GITHUB_WORKSPACE/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=$GITHUB_WORKSPACE/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install -B $GITHUB_WORKSPACE/metrix-simulator/build
-            cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
-            cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
+            source /opt/rh/devtoolset-9/enable && 
+            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external && 
+            cmake --build /workspace/metrix-simulator/build/external --parallel 2 && 
+            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build && 
+            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 && 
+            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
           "
 
       - name: Prepare Metrix package
