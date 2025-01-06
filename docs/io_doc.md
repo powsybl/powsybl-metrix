@@ -277,7 +277,7 @@ NT;2;
 # Parades <a id="parades"></a>
 
 Les données spécifiques à chaque parade sont décrites dans un fichier au format csv.
-La première ligne indique le nombre de parades, après le mot-clé *NT*.
+La première ligne indique le nombre de parades, après le mot-clé *NB*.
 Chacune des lignes correspond à une parade, telle que :
 
 *Nom de l'incident*|*Sections à surveiller séparées par un pipe*;*Nombre des premiers quadripôles listés concernés*;Liste de *Nom(s) du(es) quadripôle(s)* séparé(s) par un point virgule;
@@ -298,9 +298,9 @@ N.B. : Les parades renseignées ne sont pas considérées si le mode de lancemen
 
 # Données de sorties <a id="output"></a> 
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
-Il y a un seul fichier par variante. Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier commence par l’identifiant du tableau. 
+Il y a un seul fichier par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*. Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier commence par l’identifiant du tableau. 
 
-Pour chaque champ, on définit :
+Pour chaque champ de chaque tableau, on définit :
 - le nom de la grandeur stockée ;
 - le format de la donnée (cf. [formats de données](#types)) ;
 - et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire) pour un coût, sans unité autrement.
