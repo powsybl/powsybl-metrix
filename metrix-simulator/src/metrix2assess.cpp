@@ -188,7 +188,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (config::inputConfiguration().useAllOutputs()) {
             // ecriture : S1.
             //--------------
-            fprintf(fr, "S1 ;INDISPONIBILITE; OUVRAGE.\n");
+            fprintf(fr, "S1 ;INDISPONIBILITE; OUVRAGE;\n");
             if (var->num_ != -1) {
                 for (const auto& grp : var->grpIndispo_) {
                     fprintf(fr, "S1 ;;2; %s;\n", grp->nom_.c_str());
@@ -437,7 +437,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R1.
         //--------------
         if (!config::inputConfiguration().useAllOutputs()) {
-            fprintf(fr, "R1 ;PAR CONSO;CONSO;VALEUR;DF HR;DF AR;\n");
+            fprintf(fr, "R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;\n");
         } else {
             fprintf(fr, "R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;\n");
         }
@@ -571,8 +571,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         } else {
             fprintf(
                 fr,
-                "R2 ;PAR GROUPE;GROUPE;PDISPO;PIMP;PU HR;PU AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSE AR;CT BAISSE "
-                "AR;CT ORDRE;CT EMPIL HR;\n");
+                "R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR; "
+                "CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;\n");
         }
 
         double deltaHR;
@@ -655,18 +655,15 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 } else {
                     double c_ar = 0.0;
                     double c_grt = 0.0;
-                    double cout_hausse = 0.0;
-                    double cout_baisse = 0.0;
+                    double cout_hausse = grp->coutHausseAR_;
+                    double cout_baisse = grp->coutBaisseAR_;
                     double p_ar = grp->prod_ + deltaAR;
                     double p_hr = grp->prodPobj_ + deltaHR;
                     if (p_ar > p_hr) {
-                        c_grt = (p_ar - p_hr) * grp->coutHausseAR_;
+                        c_grt = (p_ar - p_hr) * cout_hausse;
                     } else {
-                        c_grt = (p_hr - p_ar) * grp->coutBaisseAR_;
+                        c_grt = (p_hr - p_ar) * cout_baisse;
                     }
-                    cout_baisse = grp->coutBaisseAR_;
-                    cout_hausse = grp->coutHausseAR_;
-                    c_ar = 0.;
 
                     fprintf(fr,
                             "R2 ;;%s;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;\n",
