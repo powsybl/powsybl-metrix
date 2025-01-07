@@ -725,11 +725,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
                         pos = elemC->positionVarCurative_;
                         if (pos != -1) {
-                            double val = config::constants::valdef;
                             const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
                             string s = grp->nom_;
 
-                            val = pbX_[pos] - pbX_[pos + 1];
+                            double val = pbX_[pos] - pbX_[pos + 1];
 
                             if (grp->type_ != -1) {
                                 redispCurParType[grp->type_] += pbX_[pos] + pbX_[pos + 1];
@@ -920,7 +919,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         // ecriture : R5.
         //--------------
-        fprintf(fr, "R5 ;PAR TD;TD;CONSIGNE;PRISE; \n");
+        fprintf(fr, "R5 ;PAR TD;TD;CONSIGNE;PRISE;\n");
         for (const auto& elem : res_.TransfoDephaseurs_) {
             const auto& td = elem.second;
 
@@ -951,7 +950,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         // ecriture : R5B: Td en mode curatif
         //--------------
-        fprintf(fr, "R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE; \n");
+        fprintf(fr, "R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;\n");
 
         for (const auto& elem : res_.incidents_) {
             const auto& icdt = elem.second;
