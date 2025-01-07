@@ -34,6 +34,6 @@ Steps, micro-iterations, variants, etc.
 
 # Mathematical model
 
-cf. Patron documentation metrix - 18.09.docx
+[math](math.md)
 
 
