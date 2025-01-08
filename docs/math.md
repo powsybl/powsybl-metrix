@@ -1,67 +1,126 @@
-# Rappel but Metrix
+<style>
+r { color: Red }
+o { color: Orange }
+g { color: Green }
+y { color: yellow}
+</style>
 
-Dans le cadre des activités de RTE, il faut un outil capable, pour un réseau donné, **de simuler son fonctionnement heure par heure** et de fournir une **estimation de son coût d’exploitation, en situation normale et face à différents incidents**. Cela est, par exemple, nécessaire pour l’étude du développement du réseau électrique. 
+# Formaulation mathématiques des deux problèmes
 
-# Couple {Entrées : Sorties}
+Notons $W$ le nombre entier de variantes à traiter et $w$ l’indice de la variante courante.
 
-Le but de Metrix est de de fournir une estimation du coût d’exploitation horaire d’un réseau fonctionnant de manière optimal, i.e. coûtant le plus faible possible.
-
-Considérons un réseau donné. Le comportement d’un réseau étant aléatoire, le coût d’exploitation l'est également. Posons $X$ la variable aléatoire du coût d’exploitation de ce réseau. Ce que nous voulons calculer avec Metrix, c’est une minimisation de l’espérance de cette variable aléatoire :
-
-$$
-\begin{aligned}
-min(\mathbb{E}(X))
-\end{aligned}
-$$
-
-Puisque nous ne disposons pas de loi pour déterminer cette espérance, nous allons utiliser une approche statistique et l’approximer comme la moyenne d’un grand nombre de réalisations équiprobables. Il va donc falloir déterminer le coût d’exploitation du réseau sur un grand nombre d’heures (que nous nommerons variantes). En notant $n$ le nombre de réalisations :
+## *Adequacy phase*
+Notons $P_w$ ma matrice colonne des puissances produites par les groupes et $C_w$ a matrice colonne des puissances consommées par les zones de consommation. Notons également $P_{w}^{0}$ et $C_{w}^{0}$ les matrices des valeurs initiales.
 
 $$
-\begin{aligned}
-min(\mathbb{E}(X)) \approx  min(\frac{1}{n}\sum_{i=0}^{n}x_i)
-\end{aligned}
+\forall w \leq W \text{ :}
+$$
+$$
+\text{Données : }\\
+P_{w}^{max}, P_{w}^{min}, C_{w}^{max}, C_{w}^{min}, P_{w}^{0}, C_{w}^{0}
+$$
+$$
+\text{Variables :}\\
+P_{w}, C_{w}, \Delta P_{w}, \Delta C_{w}
+$$
+$$
+\text{Objectif :}\\
+min(\Delta P_{w} + \Delta C_{w})
+$$
+$$
+\text{s.c. :}
+$$
+<a id="Pbounds_eq"></a>
+$$
+\begin{equation}
+P_{w}^{min} \leq P_{w} = P_{w}^{0} + \Delta P_{w} \leq P_{w}^{max}
+\end{equation} 
+$$
+<a id="Cbounds_eq"></a>
+$$
+\begin{equation}
+C_{w}^{min} \leq C_{w} = C_{w}^{0} + \Delta C_{w} \leq C_{w}^{max}
+\end{equation}
+$$
+<a id="adeq_eq"></a>
+$$
+\begin{equation}
+P_{w} = C_{w}
+\end{equation}
 $$
 
-D'autre part, pour simplifier le modèle et paralléliser les simulations des variantes, il a été décidé de les rendre indépendante les unes des autres : la réalisation de la variable sur une variante est totalement indépendante de sa réalisation sur une autre variante. Par conséquent, minimiser la somme des coûts revient à minimiser chaque coût horaire :
+Les contraintes [(1)](#Pbounds_eq) et [(2)](#Cbounds_eq), définissent les limites des matrices $P_w$ et $C_w$, ainsi que leur lien via la fonction objectif. La contrainte [(3)](#adeq_eq) consitue la contrainte de base du réseau : à tout instant, la production et la consommation doivent être égales.
 
+## *Redispatching phase*
+Nommons $U_w$ la matrice colonne des actions préventives et $V_w$ la matrice colonne des actions curatives pour la variante $w$. Ces deux matrices contiennent les variables représentant les changements de production des groupes, de consommation des zones de consommation, de déphasage des Transfo-Déphaseurs (TDs) du réseau et de flux des Lignes à Courant Continu (LCCs). $V_w$ contiendra également les variables booléennes d’activation des parades topologiques. 
+En notant $p_i$, $c_i$, $td_i$, $lcc_i$, $prd_i$ les valeurs de production, consommation, de déphasage des TDs, de flux sur les LCCs et d’activation des parades, et en notant $n_1$, $n_2$, $n_3$, $n_4$, $n_5$ leurs cardinalités, on peut formuler $U_w$ et $V_w$ de la manière suivante : 
+$$
+U_w=(p_1, …, p_{n_1}, c_1, …,c_{n_2}, td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, 0, …, 0)^t \\
+V_w=(p_1, …, p_{n_1}, c_1, …,c_{n_2}, td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, prd_1, …, prd_{n_5})^t
+$$
+
+$U_w$ et $V_w$ sont donc toutes deux de tailles $n_1 + n_2 + n_3 + n_4 + n_5$. De même, notons $U_{w}^{1}$ et $V_{w}^{1}$ les matrices de leurs valeurs initiales pour ce problème. Nous noterons que, dans le cas de $U_{w}^{1}$, les paramètres $p_1, ..., p_{n_1}, c_1, ..., c_{n_2}$ sont des $argmin$ du problème résolu en *Adequacy phase*.
+
+Notons également, $F_w$ la matrice des flux des lignes et $M_w$ la matrice de répartition, qui à partir des actions préventives et curatives, permet de calculer le flux sur les lignes en N et sur les différents incidents. En notant $m$ le nombre de lignes et $k$ le nombre d'incidents, $F_w$ est une matrice colonne de taille $m \cdot k$ et $M_w$ une matrice rectangulaire de taille $(m \cdot k) \cdot 2(n_1 + n_2 + n_3 + n_4 + n_5)$.
+
+Enfin notons, 
 
 $$
-\begin{aligned}
-min(\mathbb{E}(X)) \approx  min(\frac{1}{n}\sum_{i=0}^{n}x_i) = \frac{1}{n}\sum_{i=0}^{n}min(x_i)
-\end{aligned}
+\forall w \leq W \text{ :}
+$$
+$$
+\text{Données : }\\
+U_{w}^{1}, U_{w}^{min}, U_{w}^{max}, V_{w}^{min}, V_{w}^{max}, F_{w}^{min}, F_{w}^{max}, M_w
+$$
+$$
+\text{Variables :}\\
+U_{w}, V_{w}, \Delta U_{w}, \Delta V_{w}
+$$
+$$
+\text{Objectif :}\\
+min(\Delta U_{w} + \Delta V_{w})
+$$
+$$
+\text{s.c. :}
+$$
+<a id="Ubounds_eq"></a>
+$$
+\begin{equation}
+U_{w}^{min} \leq U_{w} = U_{w}^{1} + \Delta U_{w} \leq U_{w}^{max}
+\end{equation} 
+$$
+<a id="Vbounds_eq"></a>
+$$
+\begin{equation}
+V_{w}^{min} \leq V_{w} = V_{w}^{1} + \Delta V_{w} \leq V_{w}^{max}
+\end{equation}
+$$
+<a id="UeqV_eq"></a>
+$$
+\begin{equation}
+V_{w}^{1} = U_{w}
+\end{equation}
+$$
+<a id="PCfUV_eq"></a>
+$$
+\begin{equation}
+(P_{w}, C_{w}) = f(U_{w}, V_{w})
+\end{equation}
+$$
+<a id="PC_eq"></a>
+$$
+\begin{equation}
+P_{w} = C_{w}
+\end{equation}
+$$
+<a id="FM_eq"></a>
+$$
+\begin{equation}
+F_{w}^{min} \leq F_{w} = M_{w} \cdot  \begin{align*} U_{w}\\ V_{w}\end{align*} \leq F_{w}^{max}
+\end{equation}
 $$
 
-Pour estimer le minimum de l’espérance de $X$, nous allons donc devoir minimiser le coût de fonctionnement du réseau de chaque variante, et ce, sur un grand nombre de variantes. Cela équivaut à simuler, pour chaque variante, un fonctionnement optimal du réseau. Pour ce faire, nous allons utiliser les outils de **Recherche Opérationnelle**.
-Par ailleurs, pour avoir des variantes différentes, nous allons avoir besoin de situations différentes dans le réseau : en termes de coûts de production, de groupes indisponibles, de consommations des centres de consommation, etc. Ces paramètres du réseau seront représentés par des variables aléatoires, chaque variante ayant sa réalisation. Metrix résout donc un problème d’**optimisation stochastique**.
+Les équations [(4)](#Ubounds_eq) et [(5)](#Vbounds_eq) définissent les encadrements des atrices $U_{w}$ et $V_{w}$, ainsi que leur lien avec la fonction objectif. Autrement dit, elles définissent les limites des différentes productions, consommations, des TD, des HVDC, etc., en préventif et curatif. L’équation [(6))](#UeqV_eq) définit le fait que l’état initial des actions curatives correspond à l’état du réseau en N, i.e. ce qui a été déterminé avec les actions préventives. L'équation [(7)](#PCfUV_eq) indique que l'état de la production et de la consommation en N et en incident est stockée dans $U_w$ et $V_w$. L’équation [(8)](#PC_eq) rappelle le nécessaire équilibre production – consommation en N et en incidents. Enfin, l’équation [(9)](#FM_eq) définit et encadre le flux des lignes.
 
-## Énoncé du problème
-Pour simuler le fonctionnement réel et optimal du réseau sur une variante, nous allons décomposer le problème en deux problèmes d’optimisation, résolus l’un après l’autre.
+Voici donc les deux problèmes qui doivent être résolus afin de simuler le fonctionnement du réseau sur la durée souhaitée. Cependant, <r>pour plus de rapidité et pour rester dans une approche statistique</r>, le choix a été fait de **ne pas lier la solution de la variante $t$ à la situation initiale de la variante $t+1$**. Les résultats de chaque variante sont **indépendants** des autres variantes. Dès lors, chaque ensemble de problème {*Adequacy phase*, *Redispatching phase*} est indépendant d’une variante à une autre, et chaque variante peut se résoudre en parallèle.
 
-### Premier problème
-Tout d’abord, un premier problème d’équilibrage entre production et consommation (***Adequacy phase***), simulant le fait que, suite à un changement de la consommation, les producteurs d’électricité adaptent leur production pour répondre à la nouvelle demande, tout en assurant un coût d’opération minimal. Si la capacité de production est insuffisante, du délestage de consommation est également possible. Le réseau électrique n'est pas pris en compte dans cette phase, nous supposons que tous les éléments producteurs et consommateurs se trouvent sur une même plaque de cuivre sans résistance. Avec la résolution de ce problème, nous obtenons une **égalité production – consommation**. 
-
-Toutes les **variables du problème étant continues**, nous utilisons la **Programmation Linéaire**. Pour garder une approche statistique, le choix des groupes (pour des coûts égaux) se fait **aléatoirement**. Toutefois, pour éviter d’avoir une solution différente à chaque résolution, ce choix aléatoire est identique pour un même environnement informatique. 
-Cette étape est explicitée dans [le schéma ci-après](#adequacy_fig) : on part d’une situation initiale déséquilibrée entre la demande (150 MW) et la production (30 + 20 MW). Les groupes augmentent donc leur production, en appelant d’abord les productions les moins chères.
-
-![adequacy_fig](adequacy_phase.png "Équilibrage du réseau en *Adequacy phase*"<a id="adequacy_fig"></a>){width=200px}
-
-:::{figure-md}
-![adequacy_fig](adequacy_phase.png){width=200px}
-
-Équilibrage du réseau en *Adequacy phase*
-:::
-
-:::{figure-md} adequacy-fig
-
-<img src="adequacy_phase.png" alt="fishy" class="bg-primary mb-1" width="200px">
-
-Équilibrage du réseau en *Adequacy phase*
-:::
-
-### Deuxième problème
-Mais puisque les lignes électriques n’ont pas été prises en compte, ce **nouvel équilibre peut entraîner des surcharges sur celles-ci**. Dans une deuxième phase (***Redispatching phase***), il faut donc considérer le réseau dans son intégralité et choisir des **actions préventives** pour éviter les surcharges tout en assurant l’équilibrage Production – Consommation. Ces actions préventives regroupent les moyens d’actions de RTE sur le réseau, à savoir la **modification des déphasages des Transformateurs-Déphaseurs et des flux sur les Lignes à Courant Continu**. Nous avons également la possibilité de modifier la production ou la consommation. Néanmoins, ces actions concernent des acteurs extérieurs à RTE, leur utilisation sera donc défavorisée par un coût plus élevé dans la simulation. 
-En outre, des incidents peuvent se produire sur le réseau et perturber son fonctionnement (perte d’un groupe de production, d’une ligne, etc.) ; il faut donc choisir des **actions curatives** pour éviter d’autres surcharges. Ces actions sont les mêmes qu’en préventif, avec, en supplément, des **parades topologiques** : ces dernières ouvrent ou ferment des lignes ou des couplages du réseau, de façon à en modifier la topologie, et donc à modifier les flux sur les lignes. 
-La résolution de ce deuxième problème d’optimisation va donc permettre de simuler le choix des actions préventives et curatives garantissant le bon fonctionnement du réseau pour un coût minimal. Certaines actions curatives étant du type “interrupteur”, **des variables booléennes** apparaissent dans le problème : on résout ainsi un **Problème Linéaire Mixte en Nombres Entiers**. 
-Le [schéma ci-après](#redis_fig) montre la partie préventive de ce second problème : après l’équilibrage du réseau, les contraintes de seuil des lignes sont ajoutées, ce qui provoque la surcharge d'une ligne. Pour que son seuil ne soit pas dépassé, nous modifions les productions des groupes tout en maintenant l’équilibre offre – demande, ce qui entraîne un surcoût de 200€.
-
-![redis_fig](redis_phase.png) <a id="redis_fig"></a>{width=200px}
