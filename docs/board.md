@@ -31,6 +31,7 @@ OPF, Load Flow only, OPF w/o redispatching (with gap variables), and OPF_WITH_OV
 ## Algorithm process
 
 Steps, micro-iterations, variants, etc.
+[algo](algo.md)
 
 # Mathematical model
 
