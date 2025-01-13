@@ -9,7 +9,7 @@ y { color: yellow}
 
 Notons $W$ le nombre entier de variantes à traiter et $w$ l’indice de la variante courante.
 
-## *Adequacy phase*
+## *Adequacy phase* <a id="adeq_math"></a>
 Notons $P_w$ ma matrice colonne des puissances produites par les groupes et $C_w$ a matrice colonne des puissances consommées par les zones de consommation. Notons également $P_{w}^{0}$ et $C_{w}^{0}$ les matrices des valeurs initiales.
 
 $$
@@ -51,7 +51,7 @@ $$
 
 Les contraintes [(1)](#Pbounds_eq) et [(2)](#Cbounds_eq), définissent les limites des matrices $P_w$ et $C_w$, ainsi que leur lien via la fonction objectif. La contrainte [(3)](#adeq_eq) consitue la contrainte de base du réseau : à tout instant, la production et la consommation doivent être égales.
 
-## *Redispatching phase*
+## *Redispatching phase* <a id="redis_math"></a>
 Nommons $U_w$ la matrice colonne des actions préventives et $V_w$ la matrice colonne des actions curatives pour la variante $w$. Ces deux matrices contiennent les variables représentant les changements de production des groupes, de consommation des zones de consommation, de déphasage des Transfo-Déphaseurs (TDs) du réseau et de flux des Lignes à Courant Continu (LCCs). $V_w$ contiendra également les variables booléennes d’activation des parades topologiques. 
 En notant $p_i$, $c_i$, $td_i$, $lcc_i$, $prd_i$ les valeurs de production, consommation, de déphasage des TDs, de flux sur les LCCs et d’activation des parades, et en notant $n_1$, $n_2$, $n_3$, $n_4$, $n_5$ leurs cardinalités, on peut formuler $U_w$ et $V_w$ de la manière suivante : 
 $$
@@ -121,6 +121,4 @@ F_{w}^{min} \leq F_{w} = M_{w} \cdot  \begin{align*} U_{w}\\ V_{w}\end{align*} \
 $$
 
 Les équations [(4)](#Ubounds_eq) et [(5)](#Vbounds_eq) définissent les encadrements des atrices $U_{w}$ et $V_{w}$, ainsi que leur lien avec la fonction objectif. Autrement dit, elles définissent les limites des différentes productions, consommations, des TD, des HVDC, etc., en préventif et curatif. L’équation [(6))](#UeqV_eq) définit le fait que l’état initial des actions curatives correspond à l’état du réseau en N, i.e. ce qui a été déterminé avec les actions préventives. L'équation [(7)](#PCfUV_eq) indique que l'état de la production et de la consommation en N et en incident est stockée dans $U_w$ et $V_w$. L’équation [(8)](#PC_eq) rappelle le nécessaire équilibre production – consommation en N et en incidents. Enfin, l’équation [(9)](#FM_eq) définit et encadre le flux des lignes.
-
-Voici donc les deux problèmes qui doivent être résolus afin de simuler le fonctionnement du réseau sur la durée souhaitée. Cependant, <r>pour plus de rapidité et pour rester dans une approche statistique</r>, le choix a été fait de **ne pas lier la solution de la variante $t$ à la situation initiale de la variante $t+1$**. Les résultats de chaque variante sont **indépendants** des autres variantes. Dès lors, chaque ensemble de problème {*Adequacy phase*, *Redispatching phase*} est indépendant d’une variante à une autre, et chaque variante peut se résoudre en parallèle.
 
