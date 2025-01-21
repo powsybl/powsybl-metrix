@@ -55,27 +55,6 @@ Par ailleurs, pour avoir des variantes différentes, nous allons avoir besoin de
 ## Énoncé du problème
 Pour simuler le fonctionnement réel et optimal du réseau sur une variante, nous allons décomposer le problème en deux problèmes d’optimisation, résolus l’un après l’autre.
 
-METRIX n’est pas un modèle destiné à l’optimisation fine de la production. De ce fait, la modélisation des groupes est simplifiée. En tant que modèle statique, METRIX ignore la dynamique de démarrage des groupes et certaines contraintes de fonctionnement des différents moyens de production. METRIX ne connaît que leurs bornes de variations et leurs coûts. Tous les groupes sont décrits de la même manière indépendamment de leur type.
-Dans les phases d’équilibrage et de redispatching, METRIX tient toujours compte de la puissance maximale (*Pmax*) du groupe.
-En revanche, dans la phase d’équilibrage, METRIX ne tient pas compte de la puissance minimale (*Pmin*) si celle-ci est positive. En d’autres termes, METRIX peut donc démarrer un groupe entre 0 et Pmax. En pratique, cela se produit tout au plus pour le groupe marginal (dernier groupe ajusté).
-Dans la phase de redispatching les Pmin sont prises en compte et METRIX ne peut donc pas arrêter un groupe qui est démarré dans la phase d’équilibrage.
-Il est possible de contrôler pour chaque groupe sa participation dans chacune des phases via la définition de coûts. À chaque groupe, nous pouvons associer :
-- Le coût d’équilibrage à la hausse qui représente le coût de production par MW utilisé dans la phase d’équilibrage.
-- Le coût d’équilibrage à la baisse est utilisé dans la phase d’équilibrage.
-- Le coût de redispatching à la hausse correspond au coût d’augmentation en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
-- Le coût de redispatching à la baisse correspond au coût de baisse en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
-Pour une même phase il faut toujours définir un coût à la hausse et à la baisse.
-Le coût de démarrage des groupes n’est pas pris en compte par METRIX.
-
-## Convention de signe
-Soit un coût à la hausse $C^{+}$ et un coût à la baisse $C^{-}$. Si nous augmentons la production du groupe de $\Delta P^{+}$, cela coûtera $C^{+} \times \Delta P^{+}$. Si nous baissons la production de $\Delta P^{-}$ ($\Delta P^{-} \geq 0$), cela coûtera $C^{-} \times \Delta P^{-}$.
-Avec un coût positif, cela « coûte » de modifier une production.
-Avec un coût négatif, cela « rapporte » de modifier une production.
-En conséquence, si des valeurs négatives sont utilisées pour les coûts à la baisse et que le coût à la baisse d’un groupe est supérieur en valeur absolue au coût à la hausse d’un autre groupe, METRIX peut modifier le coût de production uniquement pour bénéficier de cette « opportunité » sans que cela soit motivé par une contrainte d’équilibrage ou de transit. Les paramètres *adequacyCostOffset* et *redispatchingCostOffset* permettent de contrer ce comportement dans chacune des phases et doivent être positionnés à la valeur absolue du plus grand coût négatif.
-Si rien n’est spécifié (i.e. aucun coût n’est défini), tous les groupes du réseau peuvent participer aux deux phases à coût nul.
-Dès qu’au moins un groupe est configuré, seuls les groupes pour lesquels un coût est défini pour une phase peuvent participer à cette phase. La consigne de production des autres groupes ne peut pas être modifiée.
-Si trop peu de groupes peuvent agir, le modèle peut ne pas pouvoir trouver de solution aux contraintes et retournera alors un code d’erreur 1 (ex. contrainte d’évacuation sur un groupe non modifiable).
-
 ### Premier problème
 Tout d’abord, un premier problème d’équilibrage entre production et consommation (***Adequacy phase***), simulant le fait que, suite à un changement de la consommation, les producteurs d’électricité adaptent leur production pour répondre à la nouvelle demande, tout en assurant un coût d’opération minimal. Si la capacité de production est insuffisante, du délestage de consommation est également possible. Le réseau électrique n'est pas pris en compte dans cette phase, nous supposons que tous les éléments producteurs et consommateurs se trouvent sur une même plaque de cuivre sans résistance. Avec la résolution de ce problème, nous obtenons une **égalité production – consommation**. 
 
@@ -245,6 +224,29 @@ Nous allons désormais présenter la modélisation des éléments du réseau et 
 Tous les éléments du réseau (groupes, consommations, TDs, LCCs) sont liés à un ou plusieurs nœuds. Chaque nœud fait partie d’une unique zone synchrone, et chaque zone synchrone en contient plusieurs milliers. Notons $ZC$ l’ensemble des zones synchrones du réseau.
 
 ### Groupes de production
+
+Le modèle de METRIX n’est pas destiné à l’optimisation fine de la production. De ce fait, la modélisation des groupes est simplifiée. En tant que modèle statique, METRIX ignore la dynamique de démarrage des groupes et certaines contraintes de fonctionnement des différents moyens de production. METRIX ne connaît que leurs bornes de variations et leurs coûts. Tous les groupes sont décrits de la même manière indépendamment de leur type.
+Dans les phases d’équilibrage et de redispatching, METRIX tient toujours compte de la puissance maximale (*Pmax*) du groupe.
+En revanche, dans la phase d’équilibrage, METRIX ne tient pas compte de la puissance minimale (*Pmin*) si celle-ci est positive. En d’autres termes, METRIX peut donc démarrer un groupe entre 0 et Pmax. En pratique, cela se produit tout au plus pour le groupe marginal (dernier groupe ajusté).
+Dans la phase de redispatching les Pmin sont prises en compte et METRIX ne peut donc pas arrêter un groupe qui est démarré dans la phase d’équilibrage.
+Il est possible de contrôler pour chaque groupe sa participation dans chacune des phases via la définition de coûts. À chaque groupe, nous pouvons associer :
+- Le coût d’équilibrage à la hausse qui représente le coût de production par MW utilisé dans la phase d’équilibrage.
+- Le coût d’équilibrage à la baisse est utilisé dans la phase d’équilibrage.
+- Le coût de redispatching à la hausse correspond au coût d’augmentation en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
+- Le coût de redispatching à la baisse correspond au coût de baisse en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
+Pour une même phase il faut toujours définir un coût à la hausse et à la baisse.
+Le coût de démarrage des groupes n’est pas pris en compte par METRIX.
+
+Cf. [Variables de production](#prod_var)
+
+#### Convention de signe
+Soit un coût à la hausse $C^{+}$ et un coût à la baisse $C^{-}$. Si nous augmentons la production du groupe de $P^{+}$, cela coûtera $C^{+} \times P^{+}$. Si nous baissons la production de $P^{-}$ ($P^{-} \geq 0$), cela coûtera $C^{-} \times P^{-}$.
+Avec un coût positif, cela « coûte » de modifier une production.
+Avec un coût négatif, cela « rapporte » de modifier une production.
+En conséquence, si des valeurs négatives sont utilisées pour les coûts à la baisse et que le coût à la baisse d’un groupe est supérieur en valeur absolue au coût à la hausse d’un autre groupe, METRIX peut modifier le coût de production uniquement pour bénéficier de cette « opportunité » sans que cela soit motivé par une contrainte d’équilibrage ou de transit. Les paramètres *adequacyCostOffset* et *redispatchingCostOffset* permettent de contrer ce comportement dans chacune des phases et doivent être positionnés à la valeur absolue du plus grand coût négatif.
+Si rien n’est spécifié (i.e. aucun coût n’est défini), tous les groupes du réseau peuvent participer aux deux phases à coût nul.
+Dès qu’au moins un groupe est configuré, seuls les groupes pour lesquels un coût est défini pour une phase peuvent participer à cette phase. La consigne de production des autres groupes ne peut pas être modifiée.
+Si trop peu de groupes peuvent agir, le modèle peut ne pas pouvoir trouver de solution aux contraintes et retournera alors un code d’erreur 1 (ex. contrainte d’évacuation sur un groupe non modifiable).
 
 ### Consommations
 

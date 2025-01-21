@@ -5,7 +5,23 @@ g { color: Green }
 y { color: yellow}
 </style>
 
-# Formaulation mathématiques des deux problèmes
+# Variables
+
+## Production <a id="prod_var"></a>
+Les groupes du réseau modélisé dans METRIX sont stockés dans une liste $GROUPE$.
+La production d’un groupe peut être modifiée en *Adequacy Phase*, en *Redispatching Phase*, les deux ou aucune. Nous ne considérerons dans les équations, que les groupes modifiables en toute circonstance.
+
+### Définition des variables
+Soit $i$ un groupe de $GROUPE$.
+
+Sa production se définit par une valeur initiale $P_i^0$ et des valeurs minimum et maximum $P_{i}^{min}$ et $P_{i}^{max}$. Il existe deux valeurs pour la puissance minimum : $P_{i_{ad}}^{min}$ et $P_{i_{red}}^{min}$, représentant les minimums pour l'*Adequacy* et le *Redispatching* tels que :
+$$
+P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})
+$$
+
+La variation de puissance du groupe $i$ est décrite dans les problèmes d'*Adequacy* et de *Redispatching* en N par deux variables : $P_i^+$ et $P_i^-$, **toutes deux positives**, et représentant respectivement la hausse et la baisse de la production du groupe $i$. 
+
+# Formulations mathématiques des deux problèmes
 
 Notons $W$ le nombre entier de variantes à traiter et $w$ l’indice de la variante courante.
 
