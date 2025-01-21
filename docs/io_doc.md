@@ -305,7 +305,7 @@ Pour chaque champ de chaque tableau, on définit :
 - le format de la donnée (cf. [formats de données](#types)) ;
 - et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire) pour un coût, sans unité autrement.
 
-Certains tableaux ne sont pas accessibles sauf si l'option '*--all-outputs*' est donnée lors du lancement de l'exécutable Metrix simulator.
+Certains tableaux ne sont pas accessibles sauf si l'option '*--all-outputs*' est donnée lors du lancement de l'exécutable METRIX simulator.
 Notons *EPSILON_SORTIES = 0.05*.
 
 ## Tableaux descriptifs de la situation <a id="detailed_tables"></a>
@@ -316,7 +316,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Type de l’ouvrage | I | | 1 : quadripôle; 2 : groupe |
 | Nom de l’ouvrage | C | | |
 
-**Note** : Tableau disponible si l'option '*--all-outputs*' est donnée lors du lancement à Metrix simulator.
+**Note** : Tableau disponible si l'option '*--all-outputs*' est donnée lors du lancement à METRIX simulator.
 
 **Tableau C1** (une seule ligne) : compte rendu d’exécution : ```C1 ;COMPTE RENDU;CODE;```
 | | | | |
@@ -345,19 +345,19 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Valeur du bilan initial | R | MW | Ex. -20.5 |
 
 ## Tableaux de résultats <a id="results_tables"></a>
-**Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator.
+**Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator.
 
-**Tableau R1** : résultats par sommet :  ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator, ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon.
+**Tableau R1** : résultats par sommet :  ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon.
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom du sommet	C | | |
 | Demande | R | MW | Somme des consommations à ce sommet |
 | Défaillance HR | R | MW | Défaillance lors de l’équilibrage due à un manque de production |
-| Coût défaillance HR | R | | Coût de la défaillance lors de l’équilibrage due à un manque de production (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
+| Coût défaillance HR | R | | Coût de la défaillance lors de l’équilibrage due à un manque de production (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
 | Défaillance AR | R | MW | Défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production |
-| Coût défaillance AR | R | | Coût de la défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
+| Coût défaillance AR | R | | Coût de la défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
 
-**Note** : si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator et qu'il n'existe pas de consommation modifiable alors tout les champs, hormis le nom, valent *0*.
+**Note** : si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator et qu'il n'existe pas de consommation modifiable alors tout les champs, hormis le nom, valent *0*.
 
 **Tableau R1B** <a id="table_r1b"></a>: résultats par consommation curative. Sont uniquement affichés les consommations activées en curatif sur un incident : ```R1B ;INCIDENT;CONSO;EFFACEMENT;```
 | | | | |
@@ -372,23 +372,23 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Nom du couplage | C | | Nom donné au couplage dans la configuration |
 | Variation | R | MW | Somme des variations sur l’ensemble des consommations du couplage |
 
-**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale (avant ou après ajustement selon l’option choisie) sont affichés :  ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator, ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` sinon.
+**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale (avant ou après ajustement selon l’option choisie) sont affichés :  ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` sinon.
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom du groupe | C | | |		
 | Puissance disponible | R | MW | Pmax du groupe dans la variante |
 | Ajustement de puissance imposé | R | MW | $\Delta P_{cons}$ entre la donnée *json* et celle de la variante |
-| Ajustement de puissance lors de l’équilibrage initial | R | MW | $\Delta P_{cons}$ entre la donnée de la variante et la valeur après la phase d’équilibrage (si l'opton '*--all-outputs*' n'est pas donnée lors du lancement à Metrix simulator, que l'option *EQUILRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option '*--all-outputs*') |
-| Ajustement de puissance préventif | R | MW | $\Delta P_{cons}$ entre la phase d’équilibrage et la consigne préventive  (si l'opton '*--all-outputs*' n'est pas donnée lors du lancement à Metrix simulator, que l'option *REDISRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option '*--all-outputs*') |
-| Coût hors réseau | R | | Somme des coûts à la hausse et à la baisse hors réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| *CT AR* | R | | = 0.0 (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| *CT ARP* | R | | = 0.0 (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| Coût du delta de puissance | R | | (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| *CT GRTP* | R | | = 0.0 (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| Coût hausse AR | R | | Coût à la hausse avec réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| Coût baisse AR | R | | Coût à la baisse avec réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| Coût hausse HR | R | | Coût à la hausse hors réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
-| Coût baisse HR | R | | Coût à la baisse hors réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
+| Ajustement de puissance lors de l’équilibrage initial | R | MW | $\Delta P_{cons}$ entre la donnée de la variante et la valeur après la phase d’équilibrage (si l'opton '*--all-outputs*' n'est pas donnée lors du lancement à METRIX simulator, que l'option *EQUILRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option '*--all-outputs*') |
+| Ajustement de puissance préventif | R | MW | $\Delta P_{cons}$ entre la phase d’équilibrage et la consigne préventive  (si l'opton '*--all-outputs*' n'est pas donnée lors du lancement à METRIX simulator, que l'option *REDISRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option '*--all-outputs*') |
+| Coût hors réseau | R | | Somme des coûts à la hausse et à la baisse hors réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| *CT AR* | R | | = 0.0 (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| *CT ARP* | R | | = 0.0 (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| Coût du delta de puissance | R | | (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| *CT GRTP* | R | | = 0.0 (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| Coût hausse AR | R | | Coût à la hausse avec réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| Coût baisse AR | R | | Coût à la baisse avec réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| Coût hausse HR | R | | Coût à la hausse hors réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| Coût baisse HR | R | | Coût à la baisse hors réseau (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
 
 **Tableau R2B** <a id="table_r2b"></a>: résultats curatifs par groupe. Seuls les groupes dont la consigne curative diffère de la consigne préventive sont affichés : ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```
 | | | | |
@@ -409,7 +409,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Nom du quadripôle | C | | |		
 | Transit N | R | MW | Positif de départ vers arrivée |
 
-**Note** : si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator, les 4 seuils sont également affichés.
+**Note** : si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, les 4 seuils sont également affichés.
 
 **Tableau R3B** <a id="table_r3b"></a>: transits maximum par quadripôle sur incident. Seuls les ouvrages surveillés ou avec résultats sont affichés : ```R3B ;PAR LIGNE;LIGNE;INCIDENT AM;MENACE MAX AM;```
 | | | | |
@@ -460,14 +460,14 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Nom du TD | C | | |
 | Consigne en curatif du TD | R | ° ou MW | Selon le mode de pilotage du TD |
 
-**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées : ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator, ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
+**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées : ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom de la ligne à courant continu | C | | |		
 | Puissance transitant | R | MW | |
-| Variation marginale préventive de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
+| Variation marginale préventive de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
 | Variation marginale de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives) |
-| Transit hor réseau | R | MW | (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à Metrix simulator) |
+| Transit hor réseau | R | MW | (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
  
 **Tableau R6B** <a id="table_r6b"></a>: résultats par actions curatives des HVDC. Seules les liaisons dont la consigne curative diffère de la consigne préventive sont affichées : ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```
 | | | | |
