@@ -6,7 +6,7 @@ Metrix simulator is an independant c++ executable. This module is able to comput
 
 ## Install
 
-[install](install.md)
+[Install](install.md)
 
 ## Releases
 
@@ -16,13 +16,13 @@ cf. Excel (non car Git interne, p-e GitHub public)
 
 ## Launching
 
-[launching](launching.md)
+[Launching](launching.md)
 
 ## I/O
 
-[io_doc](io_doc.md)
+[IO_doc](io_doc.md)
 
-# Functionnal description
+# Functionnal nad mathematical descriptions
 
 ## Configurations
 
@@ -30,11 +30,12 @@ OPF, Load Flow only, OPF w/o redispatching (with gap variables), and OPF_WITH_OV
 
 ## Algorithm process
 
-Steps, micro-iterations, variants, etc.
-[algo](algo.md)
+Steps, micro-iterations, variants, network modelling.
+[Algo](algo.md)
 
-# Mathematical model
+## Mathematical model
 
-[math](math.md)
+Optimization problem formulaiton
+[Math](math.md)
 
 
