@@ -27,6 +27,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.LODF_MATRIX_FILE_NAME;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.LOGS_FILE_NAME;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.PTDF_MATRIX_FILE_NAME;
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
 /**
@@ -37,7 +40,6 @@ public class MetrixChunk {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixChunk.class);
 
     private static final String WORKING_DIR_PREFIX = "metrix_chunk_";
-    private static final String LOGS_FILE_NAME = "logs.txt";
     private static final String LOGS_FILE_DETAIL_PREFIX = "metrix";
     private static final String LOGS_FILE_DETAIL_SUFFIX = ".log";
 
@@ -59,6 +61,10 @@ public class MetrixChunk {
 
     private final ContingenciesProvider contingenciesProvider;
 
+    private final boolean writePtdf;
+
+    private final boolean writeLodf;
+
     public MetrixChunk(Network network, ComputationManager computationManager, MetrixChunkParam metrixChunkParam, MetrixConfig config, MetrixChunkLogger metrixChunkLogger) {
         this.network = Objects.requireNonNull(network);
         this.computationManager = Objects.requireNonNull(computationManager);
@@ -69,6 +75,8 @@ public class MetrixChunk {
         this.remedialActionFile = metrixChunkParam.remedialActionsFile;
         this.contingenciesProvider = metrixChunkParam.contingenciesProvider;
         this.metrixChunkLogger = metrixChunkLogger;
+        this.writePtdf = metrixChunkParam.writePtdfMatrix;
+        this.writeLodf = metrixChunkParam.writeLodfMatrix;
     }
 
     public CompletableFuture<List<TimeSeries>> run(MetrixParameters parameters, MetrixDslData metrixDslData, MetrixVariantProvider variantProvider) {
@@ -84,7 +92,7 @@ public class MetrixChunk {
                 @Override
                 public List<CommandExecution> before(Path workingDir) throws IOException {
                     List<CommandExecution> commandes = new MetrixInputDataGenerator(config, workingDir, metrixChunkLogger).generateMetrixInputData(
-                        remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
+                        remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, writePtdf, writeLodf);
                     optionalLogger.ifPresent(MetrixChunkLogger::beforeMetrixExecution);
                     return commandes;
 
@@ -105,6 +113,10 @@ public class MetrixChunk {
 
                     // Retrieve log file
                     retrieveLogFile(workingDir);
+
+                    // Retrieve PTDF and LODF matrix files
+                    retrieveFile(workingDir, PTDF_MATRIX_FILE_NAME);
+                    retrieveFile(workingDir, LODF_MATRIX_FILE_NAME);
 
                     // Retrieve network point file
                     copyNetworkPointFile(workingDir);
@@ -144,6 +156,14 @@ public class MetrixChunk {
             } else {
                 LOGGER.warn("Failed to retrieve metrix main log file !");
             }
+        }
+    }
+
+    private void retrieveFile(Path workingDir, String fileName) throws IOException {
+        if (Files.exists(workingDir.resolve(fileName + ".gz"))) {
+            Files.copy(workingDir.resolve(fileName), Path.of(fileName));
+        } else {
+            LOGGER.warn("Failed to retrieve metrix '%s' file !", fileName);
         }
     }
 

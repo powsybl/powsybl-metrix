@@ -187,12 +187,12 @@ class MetrixInputDataGeneratorTest {
         MetrixDslData metrixDslData = null;
 
         //WHEN
-        List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
+        List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, true, true);
 
         //THEN
         Assertions.assertThat(commands).hasSize(1);
         Assertions.assertThat(commands.get(0).getCommand().getInputFiles()).hasSize(2);
-        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(2);
+        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(4);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
     }
 
@@ -233,7 +233,7 @@ class MetrixInputDataGeneratorTest {
         MetrixDslData metrixDslData = null;
 
         //WHEN
-        List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
+        List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, false, false);
 
         //THEN
         Assertions.assertThat(commands).hasSize(1);

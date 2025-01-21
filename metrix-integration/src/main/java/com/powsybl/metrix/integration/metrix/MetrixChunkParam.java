@@ -47,12 +47,14 @@ public class MetrixChunkParam {
     public final int version;
     public final boolean ignoreLimits;
     public final boolean ignoreEmptyFilter;
+    public final boolean writePtdfMatrix;
+    public final boolean writeLodfMatrix;
     public final ContingenciesProvider contingenciesProvider;
 
     MetrixChunkParam(Path caseFile, Path mappingFile, Path mappingConfigFile, Path mappingParametersFile, Path inputTimeSeriesJsonFile,
                      Path remedialActionsFile, Path metrixDslDataFile, Path metrixDslFile, Path metrixParametersFile, Path logFile,
                      Path logFileDetail, Path networkPointFile, Path outputTimeSeriesJsonFilePath, int firstVariant, int variantCount,
-                     int version, boolean ignoreLimits, boolean ignoreEmptyFilter, ContingenciesProvider contingenciesProvider) {
+                     int version, boolean ignoreLimits, boolean ignoreEmptyFilter, boolean writePtdfMatrix, boolean writeLodfMatrix, ContingenciesProvider contingenciesProvider) {
         this.caseFile = caseFile;
         this.mappingFile = mappingFile;
         this.mappingConfigFile = mappingConfigFile;
@@ -71,6 +73,8 @@ public class MetrixChunkParam {
         this.version = version;
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
+        this.writePtdfMatrix = writePtdfMatrix;
+        this.writeLodfMatrix = writeLodfMatrix;
         this.contingenciesProvider = contingenciesProvider;
     }
 
@@ -93,6 +97,8 @@ public class MetrixChunkParam {
         private int version;
         private boolean ignoreLimits;
         private boolean ignoreEmptyFilter;
+        private boolean writePtdfMatrix;
+        private boolean writeLodfMatrix;
         private ContingenciesProvider contingenciesProvider;
 
         public MetrixChunkParamBuilder simpleInit(int version, boolean ignoreLimits, boolean ignoreEmptyFilter,
@@ -128,6 +134,8 @@ public class MetrixChunkParam {
             this.inputTimeSeriesJsonFile = context.getFileSystem().getPath(line.getOptionValue("input-time-series-json-file"));
             this.ignoreLimits = line.hasOption("ignore-limits");
             this.ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
+            this.writePtdfMatrix = line.hasOption("write-ptdf");
+            this.writeLodfMatrix = line.hasOption("write-lodf");
             initializeContingenciesProvider(line, context);
             return this;
         }
@@ -152,7 +160,7 @@ public class MetrixChunkParam {
         public MetrixChunkParam build() {
             return new MetrixChunkParam(caseFile, mappingFile, mappingConfigFile, mappingParametersFile, inputTimeSeriesJsonFile, remedialActionsFile,
                     metrixDslDataFile, metrixDslFile, metrixParametersFile, logFile, logFileDetail, networkPointFile, outputTimeSeriesJsonFilePath,
-                    firstVariant, variantCount, version, ignoreLimits, ignoreEmptyFilter, contingenciesProvider);
+                    firstVariant, variantCount, version, ignoreLimits, ignoreEmptyFilter, writePtdfMatrix, writeLodfMatrix, contingenciesProvider);
         }
     }
 }
