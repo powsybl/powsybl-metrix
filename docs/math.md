@@ -19,7 +19,53 @@ $$
 P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})
 $$
 
-La variation de puissance du groupe $i$ est décrite dans les problèmes d'*Adequacy* et de *Redispatching* en N par deux variables : $P_i^+$ et $P_i^-$, **toutes deux positives**, et représentant respectivement la hausse et la baisse de la production du groupe $i$. 
+La variation de puissance du groupe $i$ est décrite dans les problèmes d'*Adequacy* et de *Redispatching* en N par deux variables : $P_i^+$ et $P_i^-$, **toutes deux positives**, et représentant respectivement la hausse et la baisse de la production du groupe $i$. De même, pour chaque incident $inc$, nous disposons de deux variables $P_{i_{inc}}^{-}$ et $P_{i_{inc}}^{+}$ représentant la variation de la puissance en curatif sur cet incident $inc$, et d'une variable booléenne d'activation du curatif sur l'incident $act_{i}^{inc}$. Ces trois variables cutratives sont ainsi reliées de la manière suivante :
+$$
+P_{i_{inc}}^{-} + P_{i_{inc}}^{+} \leq M \cdot act_{i}^{inc}
+$$
+Avec $M$ une très grande valeur.
+
+### Domaines de définition des variables
+Les domaines de définitions pour les variables liées à la production sont :
+ - *Adequacy phase* (EOD - Équilibre Offre Demande) :
+ 
+ $$
+ \text{Si }P_{i_{ad}}^{min}\geq 0\text{ et }P_{i_{ad}}^{min} > P_{i}^{0} \Rightarrow 
+ \begin{cases}
+    P_{i}^{-} = 0\\
+    P_{i}^{+} \in [P_{i_{ad}}^{min} - P_{i}^{0}; P_{i}^{max} - P_{i}^{0}]
+ \end{cases}\\
+ \text{Sinon }
+ \begin{cases}
+    P_{i}^{-} \in [0; P_{i}^{0} - P_{i_{ad}}^{min}]\\
+    P_{i}^{+} \in [0; P_{i}^{max} - P_{i}^{0}]
+ \end{cases}
+ $$
+
+ <o>YJ : pourquoi le $P_{i_{ad}}^{min}\geq 0$ ??</o>
+
+ - *Redispatching phase* en préventif :
+
+**Les variables et paramètres sont modifiés à partir du résultat de l’*Adequacy phase*** pour les intégrer dans la Redispatching phase : $P_i^0 = P_i^+ - P_i^- + P_i^0$. Autrement dit, la puissance de consigne en préventif prend pour valeur le résultat de l’*Adequacy phase* et les variables de production à la hausse ou à la baisse sont ensuite réinitialisées (N.B. : **c’est un comportement propre aux groupes**). Les bornes sont alors les suivantes :
+
+$$
+P_{i}^{+} \in [0; P_{i}^{max} - P_{i}^{0}]\\
+P_{i}^{-}
+ \begin{cases}
+    \in [0; P_{i}^{0} - P_{i_{red}}^{min}]\text{ si }P_{i}^{0}\geq P_{i}^{min}\\
+    = 0\text{ sinon}
+ \end{cases}
+$$
+
+ - *Redispatching phase* en curatif :
+
+$$ 
+\begin{cases}
+P_{i}^{+} - P_{i}^{-} + P_{i_{inc}}^{+} \leq P_{i}^{max} - P_{i}^{0}\\
+min(0; P_{i_{red}}^{min} - P_{i}^{0}) \leq P_{i}^{+} - P_{i}^{-} - P_{i_{inc}}^{-}
+\end{cases}
+$$
+
 
 # Formulations mathématiques des deux problèmes
 
