@@ -250,6 +250,8 @@ Si trop peu de groupes peuvent agir, le modèle peut ne pas pouvoir trouver de s
 
 ### Consommations
 
+Cf. [Variables de consommation](#conso_var)
+
 ### Lignes et transformateurs
 ####  Transformateur-Déphaseurs
 #### Lignes à courant continu
