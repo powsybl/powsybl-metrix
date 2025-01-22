@@ -91,10 +91,10 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         NodeCalc expectedRedispatchingDown = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0)));
         verifyRedispatching(generatorName, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
 
-        NodeCalc expectedRedispatchingUpCost = BinaryOperation.multiply(expectedRedispatchingUp, UnaryOperation.abs(tsRedispatchingUpCosts));
+        NodeCalc expectedRedispatchingUpCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts));
         verifyRedispatchingCost(generatorName, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
 
-        NodeCalc expectedRedispatchingDownCost = BinaryOperation.multiply(expectedRedispatchingDown, UnaryOperation.abs(tsRedispatchingDownCosts));
+        NodeCalc expectedRedispatchingDownCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingDown, tsRedispatchingDownCosts));
         verifyRedispatchingCost(generatorName, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
 
         NodeCalc expectedRedispatchingCost = BinaryOperation.plus(expectedRedispatchingUpCost, expectedRedispatchingDownCost);

@@ -173,8 +173,8 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
         postProcessingTimeSeries.put(genDownTimeSeriesName, genDownTimeSeries);
 
         // Generator up and down redispatching cost
-        NodeCalc genUpCostTimeSeries = BinaryOperation.multiply(genUpTimeSeries, UnaryOperation.abs(upCostsTimeSeries));
-        NodeCalc genDownCostTimeSeries = BinaryOperation.multiply(genDownTimeSeries, UnaryOperation.abs(downCostsTimeSeries));
+        NodeCalc genUpCostTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genUpTimeSeries, upCostsTimeSeries));
+        NodeCalc genDownCostTimeSeries = UnaryOperation.abs(BinaryOperation.multiply(genDownTimeSeries, downCostsTimeSeries));
         String genUpCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingUpCostPrefix() + "_" + generatorId, nullableSchemaName);
         String genDownCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingDownCostPrefix() + "_" + generatorId, nullableSchemaName);
         postProcessingTimeSeries.put(genUpCostTimeSeriesName, genUpCostTimeSeries);
