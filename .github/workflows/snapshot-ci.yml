@@ -243,7 +243,7 @@ jobs:
                     "type": "section",
                     "text": {
                       "type": "mrkdwn",
-                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\nSee logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
+                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\n@channel - See logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
                     }
                   }
                 ]
@@ -254,6 +254,7 @@ jobs:
 
       - name: Send Slack Notification
         uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
+        if: ${{ steps.workflow_status.outputs.status != 'Successful' || github.event_name == 'workflow_dispatch' }}
         with:
           author_name: 'powsybl-metrix on GitHub'
           status: custom
