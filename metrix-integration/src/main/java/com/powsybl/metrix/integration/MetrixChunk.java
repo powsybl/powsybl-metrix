@@ -163,7 +163,7 @@ public class MetrixChunk {
         if (Files.exists(workingDir.resolve(fileName + ".gz"))) {
             Files.copy(workingDir.resolve(fileName), Path.of(fileName));
         } else {
-            LOGGER.warn("Failed to retrieve metrix '%s' file !", fileName);
+            LOGGER.warn("Failed to retrieve metrix '{}' file !", fileName);
         }
     }
 
