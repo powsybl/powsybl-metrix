@@ -14,6 +14,7 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -179,20 +180,22 @@ class MetrixInputDataGeneratorTest {
     @Test
     void generateMetrixInputDataSimpleCommand() throws IOException {
         //GIVEN
-        Path remedialActionFile = null;
         MetrixVariantProvider variantProvider = null;
         Network network = null;
-        ContingenciesProvider contingenciesProvider = null;
         MetrixParameters parameters = null;
         MetrixDslData metrixDslData = null;
+        MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder().simpleInit(0,
+            false, false, null, null,
+            null, null,
+            null).build();
 
         //WHEN
-        List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, true, true);
+        List<CommandExecution> commands = gen.generateMetrixInputData(variantProvider, network, parameters, metrixDslData, metrixChunkParam);
 
         //THEN
         Assertions.assertThat(commands).hasSize(1);
         Assertions.assertThat(commands.get(0).getCommand().getInputFiles()).hasSize(2);
-        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(4);
+        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(2);
         Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
     }
 
@@ -205,7 +208,6 @@ class MetrixInputDataGeneratorTest {
                 .writeVariantsInLogger((variants, writer, variantRange) -> results.add(variants.firstVariant() + " " + variants.lastVariant()))
                 .create();
 
-        Path remedialActionFile = null;
         MetrixVariantProvider variantProvider = new MetrixVariantProvider() {
             @Override
             public Range<Integer> getVariantRange() {
@@ -228,12 +230,15 @@ class MetrixInputDataGeneratorTest {
             }
         };
         Network network = null;
-        ContingenciesProvider contingenciesProvider = null;
         MetrixParameters parameters = null;
         MetrixDslData metrixDslData = null;
+        MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder().simpleInit(0,
+            false, false, null, null,
+            null, null,
+            null).build();
 
         //WHEN
-        List<CommandExecution> commands = gen.generateMetrixInputData(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, false, false);
+        List<CommandExecution> commands = gen.generateMetrixInputData(variantProvider, network, parameters, metrixDslData, metrixChunkParam);
 
         //THEN
         Assertions.assertThat(commands).hasSize(1);

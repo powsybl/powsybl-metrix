@@ -12,6 +12,7 @@ import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,17 +76,15 @@ public class MetrixInputDataGenerator {
                 defineVariantValue(variantProvider));
     }
 
-    public List<CommandExecution> generateMetrixInputData(Path remedialActionFile,
-                                                          MetrixVariantProvider variantProvider, Network network,
-                                                          ContingenciesProvider contingenciesProvider,
+    public List<CommandExecution> generateMetrixInputData(MetrixVariantProvider variantProvider,
+                                                          Network network,
                                                           MetrixParameters parameters,
                                                           MetrixDslData metrixDslData,
-                                                          boolean writePtdf,
-                                                          boolean writeLodf) throws IOException {
+                                                          MetrixChunkParam metrixChunkParam) throws IOException {
         MetrixVariantProvider.Variants variants = defineVariantValue(variantProvider);
-        List<InputFile> inputFiles = inputFiles(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
-        List<OutputFile> outputFiles = outputFiles(variants, writePtdf, writeLodf);
-        return commandExecutionFrom(command(variants, writePtdf, writeLodf, inputFiles, outputFiles));
+        List<InputFile> inputFiles = inputFiles(metrixChunkParam.remedialActionsFile, variantProvider, network, metrixChunkParam.contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
+        List<OutputFile> outputFiles = outputFiles(variants, metrixChunkParam.writePtdfMatrix, metrixChunkParam.writeLodfMatrix);
+        return commandExecutionFrom(command(variants, metrixChunkParam.writePtdfMatrix, metrixChunkParam.writeLodfMatrix, inputFiles, outputFiles));
     }
 
     private List<CommandExecution> commandExecutionFrom(Command command) {
