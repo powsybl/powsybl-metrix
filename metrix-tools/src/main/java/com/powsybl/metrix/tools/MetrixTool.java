@@ -303,8 +303,8 @@ public class MetrixTool implements Tool {
         FileSystemTimeSeriesStore resultStore = new FileSystemTimeSeriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
-            MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false, false, false);
-            ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
+            ComputationRange computationRange = new ComputationRange(versions, firstVariant, variantCount);
+            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, chunkSize, ignoreLimits, ignoreEmptyFilter, false, false, false);
             TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
             DataTableStore dataTableStore = new DataTableStore();
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,

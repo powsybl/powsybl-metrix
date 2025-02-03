@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.powsybl.metrix.mapping.ComputationRange;
+
 import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -34,12 +36,12 @@ public class MetrixRunParameters {
 
     private final boolean writeLodfMatrix;
 
-    public MetrixRunParameters(int firstVariant, int variantCount, SortedSet<Integer> versions, int chunkSize,
+    public MetrixRunParameters(ComputationRange computationRange, int chunkSize,
                                boolean ignoreLimits, boolean ignoreEmptyFilter, boolean isNetworkComputation,
                                boolean writePtdfMatrix, boolean writeLodfMatrix) {
-        this.firstVariant = firstVariant;
-        this.variantCount = variantCount;
-        this.versions = new TreeSet<>(versions);
+        this.firstVariant = computationRange.getFirstVariant();
+        this.variantCount = computationRange.getVariantCount();
+        this.versions = new TreeSet<>(computationRange.getVersions());
         this.chunkSize = chunkSize;
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
