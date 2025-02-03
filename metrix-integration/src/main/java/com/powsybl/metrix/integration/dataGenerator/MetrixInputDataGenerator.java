@@ -85,7 +85,7 @@ public class MetrixInputDataGenerator {
         MetrixVariantProvider.Variants variants = defineVariantValue(variantProvider);
         List<InputFile> inputFiles = inputFiles(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
         List<OutputFile> outputFiles = outputFiles(variants, writePtdf, writeLodf);
-        return commandExecutionFrom(command(config, variants, writePtdf, writeLodf, inputFiles, outputFiles));
+        return commandExecutionFrom(command(variants, writePtdf, writeLodf, inputFiles, outputFiles));
     }
 
     private List<CommandExecution> commandExecutionFrom(Command command) {
@@ -109,7 +109,7 @@ public class MetrixInputDataGenerator {
         return args;
     }
 
-    private Command command(MetrixConfig config, MetrixVariantProvider.Variants variants, boolean writePtdf, boolean writeLodf, List<InputFile> inputFiles, List<OutputFile> outputFiles) {
+    private Command command(MetrixVariantProvider.Variants variants, boolean writePtdf, boolean writeLodf, List<InputFile> inputFiles, List<OutputFile> outputFiles) {
         return new SimpleCommandBuilder()
                 .id(METRIX_COMMAND_ID)
                 .program(config.getCommand())
