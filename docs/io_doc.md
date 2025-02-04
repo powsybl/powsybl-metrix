@@ -530,7 +530,7 @@ Il est également possible d'afficher les logs sur la sortie standard via l'opti
 
 Un fichier *LODF_matrix.csv* est généré si l'opion *--write-LODF* est renseignée. Ce fichier correspond à la matrice LODF (Line Outage Distribution Factor) de la dernière variante simulée.
 
-### Fichiers PTDF
+### Fichier PTDF
 
 Un fichier *PTDF_matrix.csv* est généré si l'opion *--write-PTDF* est renseignée. Ce fichier correspond à la matrice PTDF (Power Transfer Distribution Factor) de la dernière variante simulée.
 
