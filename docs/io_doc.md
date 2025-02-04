@@ -298,7 +298,10 @@ N.B. : Les parades renseignées ne sont pas considérées si le mode de lancemen
 
 # Données de sorties <a id="output"></a> 
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
-Il y a un seul fichier par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*. Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier commence par l’identifiant du tableau. 
+Plusieurs fichiers de sortie sont ou peuvent être générés à l'issue d'une simulation.
+
+## Fichier de résultats
+Il y a un seul fichier de résultats par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*. Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier commence par l’identifiant du tableau. 
 
 Pour chaque champ de chaque tableau, on définit :
 - le nom de la grandeur stockée ;
@@ -308,7 +311,7 @@ Pour chaque champ de chaque tableau, on définit :
 Certains tableaux ne sont pas accessibles sauf si l'option '*--all-outputs*' est donnée lors du lancement de l'exécutable METRIX simulator.
 Notons *EPSILON_SORTIES = 0.05*.
 
-## Tableaux descriptifs de la situation <a id="detailed_tables"></a>
+### Tableaux descriptifs de la situation <a id="detailed_tables"></a>
 **Tableau S1** : ouvrages indisponibles (quadripôles et groupes) : ```S1 ;INDISPONIBILITE; OUVRAGE;```
 
 | | | | |
@@ -344,7 +347,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Numéro de zone synchrone | I | | Ex. 0 |
 | Valeur du bilan initial | R | MW | Ex. -20.5 |
 
-## Tableaux de résultats <a id="results_tables"></a>
+### Tableaux de résultats <a id="results_tables"></a>
 **Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator.
 
 **Tableau R1** : résultats par sommet :  ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon.
@@ -515,3 +518,22 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Nom incident | C | | Nom de l’incident initial |
 | Nombre d’action(s) de la parade | I | | |
 | Nom de la parade | C | | |
+
+### Fichier de logs
+Il y a deux fichiers de logs générés par simulation :
+- *\<errorFilepath\>* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option *--log-level* sans formattage.
+- *metrix\<ID_de_rotation\>.log* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option *--log-level* avec formattage (l'*\<ID_de_rotation\>* correspond au numéro d'ID du fichier de logs généré avec une certaine taille).
+
+Il est également possible d'afficher les logs sur la sortie standard via l'option *-p [ --print-log ]*.
+
+### Fichier LODF
+
+Un fichier *LODF_matrix.csv* est généré si l'opion *--write-LODF* est renseignée. Ce fichier correspond à la matrice LODF (Line Outage Distribution Factor) de la dernière variante simulée.
+
+### Fichiers PTDF
+
+Un fichier *PTDF_matrix.csv* est généré si l'opion *--write-PTDF* est renseignée. Ce fichier correspond à la matrice PTDF (Power Transfer Distribution Factor) de la dernière variante simulée.
+
+### Fichier MPS
+
+Le fichier MPS (*Donnees_Probleme_Solveur.mps*) du dernier problème peut être généré via l'option *--mps-file*.

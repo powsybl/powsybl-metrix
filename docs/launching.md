@@ -6,7 +6,14 @@ All options are detailed in the helper
 $> ./metrix-simulator --help
 Usage:
  metrix-simulator <errorFilepath> <variantFilepath> <resultsFilepath> <firstVariantIndex> <numberVariants> <paradesFilepath> 
-<paradesFilepath> = "parades.csv" by default 
+Such as:
+ - <errorFilepath>: a string representing the log file path
+ - <variantFilepath>: a string representing the variants file path 
+ - <resultsFilepath>: a string representing the prefix path for the results files
+ - <firstVariantIndex>: an integer representing the index of the first variant (described in the <variantFilepath> file) to be considered
+ - <numberVariants>: an integer representing the number of variants (described in the <variantFilepath> file) to be considered from the <firstVariantIndex>
+ - <paradesFilepath> a string representing the parades file path (= "parades.csv" by default)
+
 [options] 
 Metrix options:
   -h [ --help ]                 Display help message
