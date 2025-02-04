@@ -21,6 +21,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -29,6 +31,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
@@ -44,6 +48,19 @@ class MetrixInputDataGeneratorTest {
         gen = new MetrixInputDataGeneratorBuilder().conf(metrixConfig())
                 .path(Paths.get("/testOut"))
                 .fsu(fileSystem()).create();
+    }
+
+    @Test
+    void getArgsTest() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        //GIVEN
+        //WHEN
+        MetrixVariantProvider.Variants variants = new MetrixVariantProvider.Variants(2, 5);
+        Method method = MetrixInputDataGenerator.class.getDeclaredMethod("getArgs", MetrixVariantProvider.Variants.class, boolean.class, boolean.class);
+        method.setAccessible(true); // Allow to access private method
+
+        //THEN
+        List<String> args = (List<String>) method.invoke(gen, variants, true, true);
+        assertEquals(List.of("logs.txt", "variantes.csv", "result", "2", "4", "--log-level=info", "--write-PTDF", "--write-LODF"), args);
     }
 
     @Test
