@@ -229,7 +229,7 @@ jobs:
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        uses: actions/upload-artifact@v3
         with:
           name: metrix-simulator-windows
           path: |
