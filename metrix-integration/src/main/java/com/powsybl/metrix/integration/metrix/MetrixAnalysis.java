@@ -159,7 +159,7 @@ public class MetrixAnalysis {
         boolean inError = false;
         try {
             CompletableFuture<MetrixDslData> metrixFuture = new LocalThreadExecutor<MetrixDslData>("Script_M_" + id)
-                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer));
+                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, dataTableStore, mappingConfig, writer));
             updateTask.accept(metrixFuture);
             MetrixDslData metrixDslData = metrixFuture.get();
             metrixDslData.setComputationType(metrixParameters.getComputationType());

@@ -96,7 +96,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals("12000", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN, "FSSV.O11_L")));
         assertEquals("ts1", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN, "FVALDI11_L2")));
@@ -132,7 +132,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals("50", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.ON_GRID_DOCTRINE_COST_UP, "FSSV.O11_G")));
         assertEquals("200", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.ON_GRID_DOCTRINE_COST_DOWN, "FSSV.O11_G")));
@@ -157,7 +157,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals("ts1", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.LOSSES_DOCTRINE_COST, "SimpleNetworkWithReducedThresholds")));
         assertEquals(Set.of(new MappingKey(MetrixVariable.LOSSES_DOCTRINE_COST, "SimpleNetworkWithReducedThresholds")), mappingConfig.getTimeSeriesToEquipment().get("ts1"));
@@ -196,7 +196,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            MetrixDslDataLoader.load(dslFile, network, parameters, store, new TimeSeriesMappingConfig(), out);
+            MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), out);
         }
 
         String output = outputStream.toString();

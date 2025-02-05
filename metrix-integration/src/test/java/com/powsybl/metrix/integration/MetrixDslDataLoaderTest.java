@@ -91,7 +91,7 @@ class MetrixDslDataLoaderTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(2, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
         assertEquals(MetrixInputData.MonitoringType.MONITORING, data.getBranchMonitoringN("FVALDI1  FTDPRA1  2"));
@@ -167,7 +167,7 @@ class MetrixDslDataLoaderTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         Set<String> lineSet = ImmutableSet.of("FP.AND1  FVERGE1  1",
             "FP.AND1  FVERGE1  2",
@@ -275,7 +275,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(13, data.getContingencyFlowResult("FP.AND1  FVERGE1  1").size());
         assertEquals(13, data.getGeneratorContingencies("FSSV.O11_G").size());
@@ -307,7 +307,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertNull(data.getPreventiveLoadCost("FVALDI11_L"));
         assertEquals(12000f, data.getPreventiveLoadCost("FVALDI11_L2"), 0f);
@@ -348,7 +348,7 @@ class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesMappingConfig(network);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
         new TimeSeriesMappingConfigTableLoader(tsConfig, store).checkIndexUnicity();
 
         assertEquals(12, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
@@ -431,7 +431,7 @@ class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile2).load(network, mappingParameters, store, new DataTableStore(), null);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(12, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
         assertEquals(12, data.getBranchMonitoringNkList().stream().filter(a -> data.getBranchMonitoringNk(a) == MetrixInputData.MonitoringType.MONITORING).count());
@@ -473,7 +473,7 @@ class MetrixDslDataLoaderTest {
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
         assertThrows(TimeSeriesMappingException.class,
-            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig),
+            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig),
             "Time Series 'ts' not found");
     }
 
@@ -491,7 +491,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(4, data.getContingencyFlowResultList().size());
             List<String> list = ImmutableList.of("cty1", "cty2");
@@ -547,7 +547,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(MetrixComputationType.OPF, parameters.getComputationType());
             assertEquals(5f, parameters.getLossFactor(), 0f);
@@ -604,7 +604,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(5, data.getContingencyDetailedMarginalVariationsList().size());
             List<String> list = ImmutableList.of("cty1", "cty2");
@@ -628,7 +628,7 @@ class MetrixDslDataLoaderTest {
         MetrixDslData data;
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(0, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
             assertEquals(0, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.RESULT).count());
@@ -684,7 +684,7 @@ class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.THRESHOLD_N1, "FVALDI1  FTDPRA1  1"),
             new MappingKey(MetrixVariable.OFF_GRID_COST_DOWN, "FSSV.O11_G"),
@@ -738,7 +738,7 @@ class MetrixDslDataLoaderTest {
         MetrixDslData data;
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(2, data.getGeneratorsBindings().size());
@@ -764,7 +764,7 @@ class MetrixDslDataLoaderTest {
         MetrixDslData data;
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(ImmutableSet.of("a", "b", "c"), data.getSpecificContingenciesList());
@@ -777,7 +777,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(ImmutableSet.of("a"), data.getSpecificContingenciesList());
@@ -791,7 +791,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(ImmutableSet.of("a", "b", "c"), data.getSpecificContingenciesList());
@@ -831,7 +831,7 @@ class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(3, tsConfig.getEquipmentIds("tsN").size());
         assertEquals(2, tsConfig.getEquipmentIds("tsN_1").size());
@@ -900,7 +900,7 @@ class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(2, tsConfig.getEquipmentIds("tsN").size());
         assertEquals(1, tsConfig.getEquipmentIds("tsNEndOr").size());
@@ -969,7 +969,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(Integer.valueOf(3), data.getPtcLowerTapChange("FP.AND1  FTDPRA1  1"));
         assertEquals(Integer.valueOf(5), data.getPtcUpperTapChange("FP.AND1  FTDPRA1  1"));
@@ -996,7 +996,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(2, data.getBranchMonitoringNList().size());
         assertEquals(MetrixInputData.MonitoringType.RESULT, data.getBranchMonitoringN("FVALDI1  FTDPRA1  1"));
@@ -1011,7 +1011,7 @@ class MetrixDslDataLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            MetrixDslDataLoader.load(new StringReader(script), network, parameters, store, new TimeSeriesMappingConfig(), out);
+            MetrixDslDataLoader.load(new StringReader(script), network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), out);
         }
 
         String output = outputStream.toString();

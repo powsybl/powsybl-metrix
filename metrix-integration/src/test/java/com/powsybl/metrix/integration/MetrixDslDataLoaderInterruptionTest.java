@@ -88,7 +88,7 @@ class MetrixDslDataLoaderInterruptionTest extends AbstractTaskInterruptionTest {
         }
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        testCancelShortTask(isDelayed, () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig));
+        testCancelShortTask(isDelayed, () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig));
     }
 
     @ParameterizedTest
@@ -120,6 +120,6 @@ class MetrixDslDataLoaderInterruptionTest extends AbstractTaskInterruptionTest {
         }
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        testCancelLongTask(isDelayed, () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig));
+        testCancelLongTask(isDelayed, () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig));
     }
 }
