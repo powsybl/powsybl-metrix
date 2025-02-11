@@ -253,7 +253,7 @@ Si trop peu de groupes peuvent agir, le modèle peut ne pas pouvoir trouver de s
 Cf. [Variables de consommation](#conso_var)
 
 ### Lignes et transformateurs
-####  Transformateur-Déphaseurs
+#### Transformateur-Déphaseurs
 #### Lignes à courant continu
 #### Lignes à courant continu pilotées en émulation AC
 

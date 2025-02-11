@@ -425,6 +425,8 @@ Notons *EPSILON_SORTIES = 0.05*.
 | *incident cause du N $^{ème}$ transit max sur  incident* | | | *Autant de résultats que demandé dans les paramètres* |
 | *N $^{ème}$ transit max sur incident* | | | |
 
+**Note** : ce tableau n'est pas écrit si il n'y a pas d'incident sur le réseau.
+
 **Tableau R3C** : transits spécifique sur incident : ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```
 | | | | |
 | :-- | :-- | :-- | :-- |

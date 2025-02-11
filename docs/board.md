@@ -1,20 +1,20 @@
 # Introduction
 
-Metrix simulator is an independant c++ executable. This module is able to compute power load flow and optimal power load flow for multi variant networks.
+Metrix simulator est un exécutable C++ indépendant. Ce module est capable d'effectuer des calculs de Power Load Flow ainsi que d'Optimal Power Load Flow pour des réeaux avec plusieurs varaiantes.
 
-# Install and releases
+# Installation et versons
 
-## Install
+## Installation
 
 [Install](install.md)
 
-## Releases
+## Versions
 
 cf. Excel (non car Git interne, p-e GitHub public)
 
-# Execution
+# Exécution
 
-## Launching
+## Lancement
 
 [Launching](launching.md)
 
@@ -22,18 +22,23 @@ cf. Excel (non car Git interne, p-e GitHub public)
 
 [IO_doc](io_doc.md)
 
-# Functionnal nad mathematical descriptions
+# Descriptions fonctionnelle et mathématique
 
-## Configurations
+## Configurations et scénarios
 
 OPF, Load Flow only, OPF w/o redispatching (with gap variables), and OPF_WITH_OVERLOAD.
+PTDFs, LODF
+Gestion des crashs
+Parade topologique en N
 
-## Algorithm process
+[Config](config.md)
+
+## Algorithme
 
 Steps, micro-iterations, variants, network modelling.
 [Algo](algo.md)
 
-## Mathematical model
+## Modèle mathématique
 
 Optimization problem formulaiton
 [Math](math.md)
