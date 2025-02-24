@@ -68,7 +68,7 @@ $$
 
 ### Coûts
 
-En outre, la modification des variables de produciton des groupes a un coût.Plus précisément, nous allons associer des coûts à la hausse et à la baisse en *Adequacy phase* : $C_{i_{ad}}^{-}$ et $C_{i_{ad}}^{+}$ ; et en *Redispatchning phase* : $C_{i_{red}}^{-}$ et $C_{i_{red}}^{+}$.
+En outre, la modification des variables de produciton des groupes a un coût. Plus précisément, nous allons associer des coûts à la hausse et à la baisse en *Adequacy phase* : $\Gamma_{i_{ad}}^{-}$ et $\Gamma_{i_{ad}}^{+}$ ; et en *Redispatchning phase* : $\Gamma_{i_{red}}^{-}$ et $\Gamma_{i_{red}}^{+}$.
 
 ### Appartenance à une zone synchrone
 
@@ -99,11 +99,11 @@ Ensembles : $GROUPE$, $COUPLAGE_{GRP}$, $GROUPE_{zc}$
 
 Valeurs :
  - LimiteCurGroupe
- - $\forall i \in GROUPE : P_{i}^{max}, P_{i_{ad}}^{min}, P_{i_{red}}^{min}, P_{i}^{ref}, C_{i_{ad}}^{-}, C_{i_{ad}}^{+}, C_{i_{red}}^{-}, C_{i_{red}}^{+}$
+ - $\forall i \in GROUPE : P_{i}^{max}, P_{i_{ad}}^{min}, P_{i_{red}}^{min}, P_{i}^{ref}, \Gamma_{i_{ad}}^{-}, \Gamma_{i_{ad}}^{+}, \Gamma_{i_{red}}^{-}, \Gamma_{i_{red}}^{+}$
 
 **Variables**
 
-$\forall i \in GROUPE, \forall inc \in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, , act_{i}^{inc}$
+$\forall i \in GROUPE, \forall inc \in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, act_{i}^{inc}$
 
 **Contraintes**
 - Contraintes des domaines de définition
@@ -111,6 +111,75 @@ $\forall i \in GROUPE, \forall inc \in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{in
 - Contrainte de limitation des changements curatifs
 
 ## Consommations <a id="conso_var"></a>
+
+Les centres de consommations (appelés consommations) sont dans la liste $CONSO$. 
+La puissance utilisée par une consommation peut être modifiée aussi bien en *Adequacy* qu'en *Redispacthing* phase.
+
+### Définition des variables
+
+Soit $i$ une consommation du groupe $CONSO$.
+
+$C_{i}^{0}$ définit la puissance consommée à l'état initial ; le délestage est représenté en *Adequacy phase* et en préventif par la variable $c_i^{-}$ et en curatif sur un incident $inc$ par la variable $c_{i_{inc}}^{-}$ et la variable bouléenne d'activation $act_i^{inc}$. Tel que :
+
+$$
+c_{i_{inc}}^{-} \leq M \cdot act_{i}^{inc}
+$$
+
+Avec $M$ une valeur très élevée.
+
+### Domaines de définition des variables
+
+Pour fixer la valeur maximale du délestage, un pourcentage est utilisé. Celui-ci est défini par les paramètres $\alpha_i$  en *Adequacy phase* et en préventif, et $\alpha_{i_{cur}}$ en curatif. Ainsi, nous obtenons les encadrements suivants :
+ - Pour l'*Adequacy phase* et le préventif :
+ 
+ $$ 
+ c_{i}^{-} \in
+ \begin{cases}
+ [0; \alpha_i \cdot C_i^0]\text{, si }C_i^{0} \geq 0\\
+ [\alpha_i \cdot C_i^0; 0]\text{, sinon. }
+ \end{cases}
+ $$
+
+ - Pour le curatif :
+
+ $$
+ \foall inc \in INCIDENT, c_{i_{inc}}^{-} \in [0; max(0; C_i^{0} \cdot \alpha_{i_{cur}})]
+ $$
+
+### Définition des coûts
+
+Pout chaque groupe, nous définissons un coût pour l'*Adequacy phase* et le préventif $\Gamma_i^{conso}$ et un autre pour le curatif $\Gamma_{i_{cur}}^{conso}$.
+
+### Appartenance à une zone synchrone
+
+Chaque consommation se rattache à un unique nœud du réseau, qui fait lui-même parti d’une unique zone synchrone. Pour chaque zone synchrone $zc \in ZC$ , nous notons $CONSO_{zc}$ les consos appartenant à cette zone synchrone.
+
+### Contrainte de couplage des consos
+Tout comme pour les groupes, des consommations peuvent être couplées afin que leur délestage en N soient proportionnels. Notons $COUPLAGE_{CONSO}$ la liste de ces consommations couplées.
+Soit i$_0$ le premier groupe de cette liste. $\forall i \in COUPLAGE_{CONSO}, i \neq i_0$ : 
+
+$$
+\frac{c_i^{-}}{C_i^{0}} = \frac{c_{i_0}^{-}}{c_{i_0}^{0}}
+$$
+
+<r>Résumé des notations :</r>
+
+**Données**
+
+Ensembles : $CONSO$, $COUPLAGE_{CONSO}$, $CONSO_{zc}$
+
+Valeurs : $\forall i \in CONSO : C_i^{0}, \alpha_i, \alpha_{i_{cur}}$
+
+**Variables**
+
+$$
+\forall i \in CONSO, \forall inc \in INCIDENT : c_i^{-}, c_{i_{inc}}^{-}, act_i^{inc}
+$$
+
+**Contraintes**
+Contrainte de couplage des consos
+
+
 
 # Formulations mathématiques des deux problèmes
 
