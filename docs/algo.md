@@ -250,9 +250,23 @@ Si trop peu de groupes peuvent agir, le modèle peut ne pas pouvoir trouver de s
 
 ### Consommations
 
+METRIX n’utilise que la consommation active puisqu’il repose sur l’approximation du courant continu. Une autre conséquence de cette approximation est qu’il n’y a pas de pertes modélisées sur les lignes. Les pertes sont estimées a posteriori (cf. [Pertes calculées a postétiori](#posteriori_losses)).
+Les consommations doivent donc être renseignées pertes incluses.
+Afin de résoudre des contraintes de transit, METRIX a la possibilité de délester de la consommation.
+Ce délestage peut prendre 3 formes :
+- Délestage dans la phase d’équilibrage pour respecter $P = C$
+- Délestage préventif pour respecter les contraintes de transit
+- Délestage curatif pour respecter les contraintes de transit
+Le niveau de délestage est défini par un seuil qui correspond au pourcentage de la consommation qui peut être délesté. Le coût de ce délestage peut également être défini (sinon la valeur par défaut, *COUTDEFA*, est utilisée). Le coût et le seuil de délestage sont utilisés, à la fois pour le délestage de la phase d’équilibrage et pour le délestage préventif de la phase de redispatching. Le délestage curatif utilise un autre coût et un autre seuil.
+
+Par défaut, si rien n’est spécifié, toutes les consommations sont délestables à 100% dans les deux phases. Dès qu’au moins une consommation est configurée, seules les consommations configurées sont délestables.
+Si trop peu de consommations sont délestables, le modèle peut ne pas pouvoir trouver de solution aux contraintes et retournera un code d’erreur 1.
+Si on souhaite modéliser plusieurs coûts de délestage/effacement associés à différents seuils il faut créer des charges fictives supplémentaires sur le même noeud et répartir la consommation active sur ces charges.
+
 Cf. [Variables de consommation](#conso_var)
 
 ### Lignes et transformateurs
+
 #### Transformateur-Déphaseurs
 #### Lignes à courant continu
 #### Lignes à courant continu pilotées en émulation AC
@@ -265,6 +279,7 @@ Cf. [Variables de consommation](#conso_var)
 
 ### Actions curatives
 ### Manoeuvres topologiques curatives
+### Pertes calculées a postétiori <a id="posteriori_losses"></a>
 
 
 
