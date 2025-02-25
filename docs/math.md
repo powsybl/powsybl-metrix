@@ -143,7 +143,7 @@ Pour fixer la valeur maximale du délestage, un pourcentage est utilisé. Celui-
  - Pour le curatif :
 
  $$
- \foall inc \in INCIDENT, c_{i_{inc}}^{-} \in [0; max(0; C_i^{0} \cdot \alpha_{i_{cur}})]
+ \forall inc \in INCIDENT, c_{i_{inc}}^{-} \in [0; max(0; C_i^{0} \cdot \alpha_{i_{cur}})]
  $$
 
 ### Définition des coûts
@@ -159,7 +159,7 @@ Tout comme pour les groupes, des consommations peuvent être couplées afin que 
 Soit i$_0$ le premier groupe de cette liste. $\forall i \in COUPLAGE_{CONSO}, i \neq i_0$ : 
 
 $$
-\frac{c_i^{-}}{C_i^{0}} = \frac{c_{i_0}^{-}}{c_{i_0}^{0}}
+\frac{c_i^{-}}{C_i^{0}} = \frac{c_{i_0}^{-}}{C_{i_0}^{0}}
 $$
 
 <r>Résumé des notations :</r>
