@@ -240,7 +240,7 @@ Le coût de démarrage des groupes n’est pas pris en compte par METRIX.
 Cf. [Variables de production](#prod_var)
 
 #### Convention de signe
-Soit un coût à la hausse $C^{+}$ et un coût à la baisse $C^{-}$. Si nous augmentons la production du groupe de $P^{+}$, cela coûtera $C^{+} \times P^{+}$. Si nous baissons la production de $P^{-}$ ($P^{-} \geq 0$), cela coûtera $C^{-} \times P^{-}$.
+Soit un coût à la hausse $\Gamma^{+}$ et un coût à la baisse $\Gamma^{-}$. Si nous augmentons la production du groupe de $P^{+}$, cela coûtera $\Gamma^{+} \times P^{+}$. Si nous baissons la production de $P^{-}$ ($P^{-} \geq 0$), cela coûtera $\Gamma^{-} \times P^{-}$.
 Avec un coût positif, cela « coûte » de modifier une production.
 Avec un coût négatif, cela « rapporte » de modifier une production.
 En conséquence, si des valeurs négatives sont utilisées pour les coûts à la baisse et que le coût à la baisse d’un groupe est supérieur en valeur absolue au coût à la hausse d’un autre groupe, METRIX peut modifier le coût de production uniquement pour bénéficier de cette « opportunité » sans que cela soit motivé par une contrainte d’équilibrage ou de transit. Les paramètres *adequacyCostOffset* et *redispatchingCostOffset* permettent de contrer ce comportement dans chacune des phases et doivent être positionnés à la valeur absolue du plus grand coût négatif.
@@ -268,6 +268,38 @@ Cf. [Variables de consommation](#conso_var)
 ### Lignes et transformateurs
 
 #### Transformateur-Déphaseurs
+
+##### Modélisation
+Dans *Metrix*, un TD est lié à un quadripôle et sert d’échangeur de puissance entre les deux nœuds dudit quadripôle : il prélève de la puissance sur un nœud pour l’envoyer à un autre.
+Pour bien comprendre le fonctionnement des TDs, il faut, tout d’abord, concevoir que *Metrix* utilise des puissances pour faire ces calculs, alors que les TDs fonctionnent avec des angles, en modifiant le déphasage du signal électrique. Cependant, changer le déphasage revient à changer la puissance active dudit signal électrique, grâce à une simple multiplication : 
+
+$$
+Puissance = angle \cdot \frac{\pi}{180} \cdot U^2 \cdot Y_{i,j}
+$$
+
+Avec $U^2$ et $Y_{i,j}$ les valeurs de tension et d’impédance du quadripôle support du TD, qui sont des paramètres dans Metrix. Puisque nous allons être amenés à parler d’angles ou de puissances pour décrire le fonctionnement des TDs, afin de ne pas être perturbés, il suffit de se souvenir que les deux sont proportionnels selon cette formule.
+Pour les calculs de Metrix, le quadripôle de support du TD va être dissocié en deux quadripôles en série. Nommons ***quad*** le quadripôle initial, avec $(y, r)$ son impédance et sa résistance. Celui-ci relie les nœuds *Or* et *Dest* (i.e. origine et destination). Nous allons ensuite créer un **nœud fictif** *Nf* ainsi qu'un **quadripôle fictif** ***quadFictif***, allant du nœud *Or* au noeud *Nf* et de caractéristiques $(y/0.1, 0)$. Parallèlement, nous modifions *quad* afin qu’il aille du nœud *Nf* vers le nœud *Dest*. Nous modifions également ses caractéristiques pour qu’elles valent $(y/0.9, r)*.
+
+<a id="quad_fig"></a>
+<div style="text-align:center">
+    <figure>
+        <img src="quad.png" alt="Transformation du TD des données à la modélisation dans Metrix" class="bg-primary mb-1" width="600px" title="Transformation du TD des données à la modélisation dans Metrix">
+        <figcaption>Transformation du TD des données à la modélisation dans Metrix</figcaption>
+    </figure>
+</div>
+
+Le TD est porté par *quadFictif*, et assure donc le déphasage. Le quad réel *quad* assure la partie réactance. Les pertes liées à r sont calculées à posteriori, lors de l’affichage de la solution.
+
+**N.B.** : Les TDs sont portés par les lignes. Ces dernières étant ignorées en *Adequacy phase*, les TDs n’ont aucun rôle à jouer en *Adequacy phase*.
+
+##### Définition des valeurs min et max des TDs
+
+Dans la réalité, le déphasage du signal électrique se fait en passant d’une prise à l’autre. De ce fait, au sein de Metrix, chaque TD va être associé à une liste de prises de déphasage croissant ainsi qu'à deux bornes maximum correspondantes aux nombres maximum de changements de prises à la hausse et à la baisse : *lowran* et *uppran*. Ces bornes sont utilisées de la manière suivante, avec $X$ le numéro de la prise du déphasage initial du TD : 
+ - à la hausse le déphasage ne pourra dépasser $X + uppran$
+ - à la baisse le déphasage ne pourra dépasser $X - lowran$
+
+Dans Metrix, le numéro de la prise de déphasage correspond à celui de la prise minimisant la distance entre les déphasages du TD et celui associé à la prise.
+
 #### Lignes à courant continu
 #### Lignes à courant continu pilotées en émulation AC
 
