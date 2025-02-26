@@ -19,9 +19,9 @@ $$
 P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})
 $$
 
-La variation de puissance du groupe $i$ est décrite dans les problèmes d'*Adequacy* et de *Redispatching* en N par deux variables : $p_i^+$ et $p_i^-$, **toutes deux positives**, et représentant respectivement la hausse et la baisse de la production du groupe $i$. De même, pour chaque incident $inc$, nous disposons de deux variables $p_{i_{inc}}^{-}$ et $p_{i_{inc}}^{+}$ représentant la variation de la puissance en curatif sur cet incident $inc$, et d'une variable booléenne d'activation du curatif sur l'incident $act_{i}^{inc}$. Ces trois variables cutratives sont ainsi reliées de la manière suivante :
+La variation de puissance du groupe $i$ est décrite dans les problèmes d'*Adequacy* et de *Redispatching* en N par deux variables : $p_i^+$ et $p_i^-$, **toutes deux positives**, et représentant respectivement la hausse et la baisse de la production du groupe $i$. De même, pour chaque incident $inc$, nous disposons de deux variables $p_{i_{inc}}^{-}$ et $p_{i_{inc}}^{+}$ représentant la variation de la puissance en curatif sur cet incident $inc$, et d'une variable booléenne d'activation du curatif sur l'incident $actP_{i}^{inc}$. Ces trois variables cutratives sont ainsi reliées de la manière suivante :
 $$
-p_{i_{inc}}^{-} + p_{i_{inc}}^{+} \leq M \cdot act_{i}^{inc}
+p_{i_{inc}}^{-} + p_{i_{inc}}^{+} \leq M \cdot actP_{i}^{inc}
 $$
 Avec $M$ une très grande valeur.
 
@@ -103,7 +103,7 @@ Valeurs :
 
 **Variables**
 
-$\forall i \in GROUPE, \forall inc \in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, act_{i}^{inc}$
+$\forall i \in GROUPE, \forall inc \in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, actP_{i}^{inc}$
 
 **Contraintes**
 - Contraintes des domaines de définition
@@ -119,10 +119,10 @@ La puissance utilisée par une consommation peut être modifiée aussi bien en *
 
 Soit $i$ une consommation du groupe $CONSO$.
 
-$C_{i}^{0}$ définit la puissance consommée à l'état initial ; le délestage est représenté en *Adequacy phase* et en préventif par la variable $c_i^{-}$ et en curatif sur un incident $inc$ par la variable $c_{i_{inc}}^{-}$ et la variable bouléenne d'activation $act_i^{inc}$. Tel que :
+$C_{i}^{0}$ définit la puissance consommée à l'état initial ; le délestage est représenté en *Adequacy phase* et en préventif par la variable $c_i^{-}$ et en curatif sur un incident $inc$ par la variable $c_{i_{inc}}^{-}$ et la variable bouléenne d'activation $actC_i^{inc}$. Tel que :
 
 $$
-c_{i_{inc}}^{-} \leq M \cdot act_{i}^{inc}
+c_{i_{inc}}^{-} \leq M \cdot actC_{i}^{inc}
 $$
 
 Avec $M$ une valeur très élevée.
@@ -173,11 +173,76 @@ Valeurs : $\forall i \in CONSO : C_i^{0}, \alpha_i, \alpha_{i_{cur}}$
 **Variables**
 
 $$
-\forall i \in CONSO, \forall inc \in INCIDENT : c_i^{-}, c_{i_{inc}}^{-}, act_i^{inc}
+\forall i \in CONSO, \forall inc \in INCIDENT : c_i^{-}, c_{i_{inc}}^{-}, actC_i^{inc}
 $$
 
 **Contraintes**
-Contrainte de couplage des consos
+Contrainte de couplage des consos.
+
+## Transformateur-Déphaseur (TD)
+
+Les TDs sont stockés dans une liste $TD$. Soit $i$ un élément de cette liste.
+
+### Valeurs min et max des TDs
+
+Dans Metrix, le déphasage se fera sans passer d’une prise à l’autre de manière discrète, mais avec des variables continues évoluant entre une puissance min et une puissance max. Les listes des prises de déphasage d'un TD sont toutefois utilisées afin de fixer ces puissances min et max, notées $TD_i^{min}$ et $TD_i^{max}$.
+Ces valeurs pourront être tirées des données d'entrée si les bornes de changement de prises à la hausse et à la baisse ne sont pas définies.
+
+### Définition des variables
+
+La puissance de consigne transmise par $i$ du nœud *Or* au nœud *Nf* va être représentée par le paramètre $TD^{0}_i$. La variation de cette puissance en préventif  va être représentée par les variables **positives** $\Delta td^{+}_i$ à la hausse et $\Delta td^{-}_i$ à la baisse. De même, si le TD est autorisé à agir en curatif sur l’incident $inc$, nous allons utiliser les variables curatives **positives** $\Delta td^{+}_{i_{inc}}$ et $\Delta td^{-}_{i_{inc}}$ et la vraiable booléenne $actTD_{i}^{inc}$. Ces trois variables sont reliées par la contrainte suivante :
+
+$$
+\Delta td^{+}_{i_{inc}} + \Delta td^{-}_{i_{inc}}\leq M \cdot actTD_{i}^{inc}
+$$
+Avec $M$ ue valeur très élevée.
+
+### Domaines de définition des variables
+
+Chaque TD est pilotable de quatre manières différentes : 
+ - En puissance imposée
+ - En puissance optimisée
+ - En angle imposé
+ - En angle optimisé
+
+Les pilotages imposés impliquent que le TD échangera toujours la même puissance entre les deux nœuds *Or* et *Nf* : $\Delta td^{+}_{i} = \Delta td^{-}_{i} = \Delta td^{+}_{i_{inc}} = \Delta td^{-}_{i_{inc}} = 0$.
+
+Pour les pilotages en puissance (imposée et optimisée), le *quadFictif* est ouvert : seule la puissance du TD sera transmise entre les nœuds *Or* et *Nf*.
+
+Pour le pilotage optimisé (en angle ou en puissance), les paramètres  $TD_i^{min}$ et $TD_i^{max}$ définis précédemment, sont utilisés tels que :
+
+$$
+0 \leq \Delta td^{+}_{i} \leq max(TD_i^{max} - TD_i^{0}; 0) \text{ et } 0 \leq \Delta td^{-}_{i} \leq max(TD_i^{0} - TD_i^{min}; 0)\\
+\forall inc \in INCIDENT:\\
+0 \leq \Delta td^{+}_{i_{inc}} \leq max(TD_i^{max} - TD_i^{min}; 0) \text{ et } 0 \leq \Delta td^{-}_{i_{inc}} \leq max(TD_i^{max} - TD_i^{min}; 0)
+$$
+
+Pour l'encadrement curatif, les contraintes suivantes sont ajoutées :
+
+$$
+\forall inc \in INCIDENT:\\
+\Delta td^{+}_{i} + \Delta td^{+}_{i_{inc}} \leq max(TD^{max}_{i} - TD^{0}_i; 0)\\
+\Delta td^{-}_{i} + \Delta td^{-}_{i_{inc}} \leq max(TD^{0}_{i} - TD^{min}_i; 0)
+$$
+
+### Domaines de définition des variables
+En ce qui concerne le coût, les TDs ont tous le même coût d’utilisation en préventif $\Gamma^{TD}$, défini dans les paramètres de Metrix. En curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, et va donc dépendre de chaque incident.
+
+**En résumé** : Les TDs permettent de modifier le transit des lignes pour éviter les surcharges, sans modifier l’équilibrage offre-demande. 
+
+<r>Résumé des notations :</r>
+
+**Données**
+
+Ensembles : $TD$
+
+Valeurs : $TD^{0}_i$, $TD^{max}_i$, $TD^{min}_i$, $\Gamma^{TD}$
+
+**Variables**
+
+$$
+\forall i \in TD, \forall inc \in INCIDENT : \Delta td^{+}_{i}, \Delta td^{-}_{i}, \Delta td^{+}_{i_{inc}}, \Delta td^{-}_{i_{inc}}, actTD_{i}^{inc}
+$$
 
 
 
