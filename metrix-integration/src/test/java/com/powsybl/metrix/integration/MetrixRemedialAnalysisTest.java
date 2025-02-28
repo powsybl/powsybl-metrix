@@ -82,6 +82,7 @@ public class MetrixRemedialAnalysisTest {
                 contingenciesProvider,
                 network,
                 metrixDslData,
+                null,
                 bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
