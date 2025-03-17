@@ -300,8 +300,66 @@ Dans la réalité, le déphasage du signal électrique se fait en passant d’un
 
 Dans Metrix, le numéro de la prise de déphasage correspond à celui de la prise minimisant la distance entre les déphasages du TD et celui associé à la prise.
 
+Cf. [Variables TDs](#td_var)
+
 #### Lignes à courant continu
-#### Lignes à courant continu pilotées en émulation AC
+
+Les lignes à courant continu (ou LCC) permettent de transporter du courant continu, plutôt que de l’alternatif comme les quadripôles traditionnels. Une LCC est décrite par :
+- 2 convertisseurs, chaque convertisseur se situe entre un noeud AC et un noeud DC ;
+- et une ligne entre les 2 noeuds DC.
+
+De ce fait, une ligne LCC fait donc le lien entre deux nœuds AC :
+
+<a id="lcc_AC_DC_fig"></a>
+<div style="text-align:center">
+    <figure>
+        <img src="lcc_AC_DC.png" alt="Schéma descriptif d'une LCC" class="bg-primary mb-1" width="600px" title="Schéma descriptif d'une LCC">
+        <figcaption>Schéma descriptif d'une LCC</figcaption>
+    </figure>
+</div>
+
+Une ligne HVDC est simulée, par METRIX, comme 2 injections sur les noeuds AC origine (noeud 1) et extrémité (noeud 2) :
+
+<a id="lcc_injection_fig"></a>
+<div style="text-align:center">
+    <figure>
+        <img src="lcc_injection.png" alt="Schéma descriptif de la simulation d'une LCC par METRIX" class="bg-primary mb-1" width="600px" title="Schéma descriptif de la simulation d'une LCC par METRIX">
+        <figcaption>Schéma descriptif de la simulation d'une LCC par METRIX</figcaption>
+    </figure>
+</div>
+
+La convention de signe pour la puissance transitant dans une station de conversion est la suivante : lorque la consigne de $n$ MW est données sur la station 1, cela
+revient à faire transiter $n$ MW de 1 vers 2, ce qui équivaut au soutirage de $n$ MW de la station 1 et à une injection de $n$ MW dans la station 2.
+
+Une LCC peut être pilotée de différentes manières : en puissance ou en émulation AC (cf. paramètres *DCNDROOP* et *DCDROOPK*). En outre, pour ces deux types pilotages, celui-ci peut être imposé, (la puissance de transit est alors fixe), ou optimisé (la puissance de transit peut varier, au moins en préventif lors de la *Redispatching phase*).
+$P_0$ étant la puissance de consigne sur la ligne, celle-ci peut être modifiée ou non suivant le caractère du pilotage retenu.
+
+Les pertes HVDC sont calculées a postériori (cf. [Pertes calculées a postétiori](#posteriori_losses)).
+
+Cf. [Variables LCCs](#lcc_var)
+
+##### Lien entre zones synchrones
+Les LCCs servant de lien entre deux nœuds et transportant du courant continu, elles peuvent aussi servir d’interconnexions entre des zones synchrones différentes (contrairement à des quadripôles classiques). 
+
+##### Lignes à courant continu pilotées en émulation AC
+
+Une ligne peut-être pilotée en émulation AC (cf. paramètres *DCNDROOP* et *DCDROOPK*). Le transit de la liaison HVDC vaut alors $𝑃_0 + 𝑘(\theta_2 − \theta_1)$. METRIX insère alors un TD d’impédance $1/𝑘$ entre les 2 injections afin respecter la contrainte précédente. Le TD assure que la valeur du transit global de la liaison HVDC soit toujours comprise entre $P_{min}$ et $P_{max}$. La valeur de $P_0$, quant-à-elle, peut être fixe ou optimisée par METRIX (cf. paramètre *DCREGPUI*).
+
+**Modélisation des LCCs en émulation AC**
+Pour une LCC en émulation AC, un quadripôle fictif (nommé *quad0*) lui est associé, de mêmes nœuds origine et destination. La résistance de ce quadripôle est nulle et son admittance est déterminée par un paramètre fourni individuellement à chaque LCC en émulation AC. Nous associons ensuite, à ce quadripôle, un TD fictif en pilotage d’angle optimisé, qui provoque donc la création d’un nouveau nœud fictif *Nf* et d’un quadripôle (doublement) fictif *quad1*. Le schéma ci-dessous résume cette situation.
+
+<a id="lcc_model_fig"></a>
+<div style="text-align:center">
+    <figure>
+        <img src="lcc_model.png" alt="Modélisation des LCCs en émulation AC dans METRIX" class="bg-primary mb-1" width="600px" title="Modélisation des LCCs en émulation AC dans METRIX">
+        <figcaption>Modélisation des LCCs en émulation AC dans METRIX</figcaption>
+    </figure>
+</div>
+
+Le quadripôle *quad0* et la LCC formeront un élément à surveiller en $N$ et en $N-k$. Quant au TD fictif, il sera mis à disposition en curatif de tous les incidents simulés.
+
+**En résumé** : Les LCCs permettent de transporter une puissance choisie d’un nœud à un autre (et possiblement d’une zone synchrone à une autre). Ce qui peut par exemple éviter les surcharges sur les lignes adjointes.
+
 
 ### Incidents
 #### Incidents lignes
