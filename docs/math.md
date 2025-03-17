@@ -179,7 +179,7 @@ $$
 **Contraintes**
 Contrainte de couplage des consos.
 
-## Transformateur-Déphaseur (TD)
+## Transformateur-Déphaseur (TD) <a id="td_var"></a>
 
 Les TDs sont stockés dans une liste $TD$. Soit $i$ un élément de cette liste.
 
@@ -244,7 +244,79 @@ $$
 \forall i \in TD, \forall inc \in INCIDENT : \Delta td^{+}_{i}, \Delta td^{-}_{i}, \Delta td^{+}_{i_{inc}}, \Delta td^{-}_{i_{inc}}, actTD_{i}^{inc}
 $$
 
+## Lignes à Courant Continu (LCC) <a id="lcc_var"></a>
 
+Les LCCs du réseau simulé par METRIX sont stockées dans l'ensemble $LCC$.
+
+### Variables et encadrement
+
+Soit $i \in LCC$, notons :
+- $Lcc_i^{0}$ sa puissance de consigne ;
+- $Lcc_i^{min}$ sa puissance minimale ;
+- et $Lcc_i^{max}$ sa puissance maximale.
+
+Les variations de $i$ sont représentées :
+- en préventif par les variables **positives** $lcc_i^{+}$ et $lcc_i^{-}$ ;
+- et en curatif par les variables **positives** $lcc_{i_{inc}}^{+}$ et $lcc_{i_{inc}}^{-}$ ainsi que par la variable booléenne $act_{i}^{inc}$.
+
+Ces trois variables sont reliées pâr la contrainte suivante :
+
+$$
+lcc_{i_{inc}}^{+} + lcc_{i_{inc}}^{-} \leq M \cdot act_{i}^{inc}
+$$
+
+Avec $M$ une valeur très grande. 
+
+Les variables représentant les variations de puissance de la LCC ont l’encadrement suivant : 
+- Si le pilotage est en puissance optimisée ou en émulation AC optimisée :
+$$
+lcc_i^+ \in [0; max(Lcc_i^{max}-Lcc_i^{0}; 0)]\text{ et }lcc_i^- \in [0; max(Lcc_i^{0}-Lcc_i^{min}; 0)]
+$$
+- Sinon, il est imposé :
+$$
+lcc_i^{+} = lcc_i^{-} = 0
+$$
+
+En curatif, on se retrouve avec les encadrements suivants pourt les pilotages optimisés :
+$$
+lcc_i^{+} + lcc_{i_{inc}}^{+} \leq Lcc_i^{max} - Lcc_i^{0}
+\\
+lcc_i^{-} + lcc_{i_{inc}}^{-} \leq Lcc_i^{0} - Lcc_i^{min}
+$$
+
+### Définition des coûts
+En ce qui concerne le coûts, les LCCs ont toutes le même coût d’utilisation en préventif $\Gamma^{LCC}$, défini dans les paramètres de METRIX. En curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, et dépendra donc de chaque incident.
+
+### Lien entre zones synchrones
+Notons $\forall zc \in ZC$ , $LCC_{zc}^+$ l’ensemble des LCCs transportant le courant de la zone synchrone $zc$ vers une autre zone synchrone. De même, $LCC_{zc}^-$ est l’ensemble des LCCs prélevant de la puissance à la zone synchrone $zc$ pour l’envoyer vers une autre zone synchrone.
+
+### LCC en émulation AC
+Le TD fictif ne pourra jamais agir en préventif : $\forall inc \in INCIDENT$, une contrainte d’activation relie les variables préventives du TD à la variable d’activation en curatif du même TD sur cet incident ($act_{inc}^i$) ; et cette variable d’activation va être bloquée à $0$, empêchant toute variation des variables préventives. Plus tard, si la variable d’activation est débloquée, les variables préventives ne seront utilisées par le problème que dans le calcul du transit sur quadripôle, et de toute façon le coefficient associé sera nul.  
+Quant aux variables curatives (linéaires et booléennes), elles sont reliées par une contrainte d’activation. Soit $i \in TD, inc \in INCIDENT$ :
+$$
+td_{i_{inc}}^+ + td_{i_{inc}}^- \leq M \cdot act_{inc}^i
+$$
+
+La variable d’activation est bloquée à $0$, à moins que le quadripôle *quad0* soit en contrainte. Dans ce cas, la variable est libre de changer de valeur. 
+Ce TD fictif aura un coût d’utilisation nul. Il aura le même encadrement en préventif que les TDs normaux, avec des puissances max et min issues de la LCC en émulation AC. Il aura également comme encadrement en curatif :
+$$
+0 \leq td_{i_{inc}}^+ \leq td_i^{max}\text{ et }0\leq td_{i_{in}}^- \leq -td_i^{min}
+$$
+Les TDs fictifs sont stockés dans l’ensemble $TDF$.
+
+<r>Résumé des notations :</r>
+
+**Données**
+
+Ensembles : $LCC$, $TDF$, $\forall zc \in ZC: LCC_{zc}^+, LCC_{zc}^-$
+
+Valeurs : $\forall i \in LCC : Lcc_i^{0}, Lcc_i^{max}, Lcc_i^{min}, \Gamma^{LCC}$
+
+**Variables**
+
+$$
+\forall i \in LCC, \forall inc \in INCIDENT: lcc_{i}^{+}, lcc_{i}^{-}, lcc_{i_{inc}}^{+}, lcc_{i_{inc}}^{-}
+$$
 
 # Formulations mathématiques des deux problèmes
 
