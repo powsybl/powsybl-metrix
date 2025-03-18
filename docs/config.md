@@ -98,7 +98,7 @@ Metrix résolve le problème via de l’optimisation globale. Autrement dit, ce 
 ## Options possibles :
  
  - Utiliser les fichiers « tmp » afin de lever une alerte
- - Modifier le modèle afin que seules les parades topologiques curatives n’ayant pas d’impact sur les éléments avec dépassements de leur seuil ITAM soient activables  cette solution semble complexe à implémenter a priori
+ - Modifier le modèle afin que seules les parades topologiques curatives n’ayant pas d’impact sur les éléments avec dépassements de leur seuil ITAM soient activables (cette solution semble complexe à implémenter a priori)
  - Pour tout élément avec un seuil N-k ainsi qu’un seuil ITAM mais pas de parade préventive pour cet élément : suppression de seuils N-k de cet élément ?
  
 Compte tenu du paradigme LF+ (minimisation des dépassements de différents seuils pour un même élément et optimisation globale), le process le plus réaliste semble être de lever une alerte/warning indiquant qu’un seuil n’est pas respecté.
