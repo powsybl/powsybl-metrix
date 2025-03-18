@@ -12,7 +12,7 @@ Such as:
  - <resultsFilepath>: a string representing the prefix path for the results files
  - <firstVariantIndex>: an integer representing the index of the first variant (described in the <variantFilepath> file) to be considered
  - <numberVariants>: an integer representing the number of variants (described in the <variantFilepath> file) to be considered from the <firstVariantIndex>
- - <paradesFilepath> a string representing the parades file path (= "parades.csv" by default)
+ - <paradesFilepath>: a string representing the parades file path (= "parades.csv" by default)
 
 [options] 
 Metrix options:
