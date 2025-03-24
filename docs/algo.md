@@ -360,12 +360,53 @@ Le quadripôle *quad0* et la LCC formeront un élément à surveiller en $N$ et 
 
 **En résumé** : Les LCCs permettent de transporter une puissance choisie d’un nœud à un autre (et possiblement d’une zone synchrone à une autre). Ce qui peut par exemple éviter les surcharges sur les lignes adjointes.
 
-
 ### Incidents
+
+La solution trouvée par METRIX (plan de production et délestage) doit être robuste à une liste d’incidents donnée en entrée. Nous distinguons les incidents de lignes et les incidents de groupes.
+
+Cf. [Variables Incidents](#inc_var)
+
 #### Incidents lignes
+
+METRIX est capable de simuler la perte d’une ou plusieurs ligne(s). Il utilise toujours l’approximation du courant continu et donc des coefficients de report pour simuler ces incidents. Ici, le transit sur la ligne $ik$ après l’incident qui simule la perte de la ligne $mn$ s’écrit : 
+$$
+T_{ik}^{N-k} = T_{ik}^{N} + \rho_{ik}^{mn} \cdot T_{mn}^{N}
+$$
+
+Afin de déterminer $\rho_{ik}^{mn}$ (coefficient de report), METRIX utilise la formule de Woodbury.
+
+À noter que, les lignes à courant continu ne permettent pas d’assurer la connexité entre leur noeud origine et extrémité. Par conséquent, les incidents simulant la perte de la ligne d’alimentation de la ligne à courant continu seront écartés (ils rompent la connexité). Par contre, si l’incident est bien défini sur la ligne DC (i.e. sur la ligne entre les 2 noeuds DC), alors l’incident simulant la perte de la ligne à courant continu sera bien simulé.
+
 #### Incidents groupes
+
+Dans le cas où des incidents de groupes sont définis, METRIX répartit la production perdue lors de l’incident sur l’ensemble des autres groupes disponibles (même s’ils ne sont pas réellement démarrés).
+La réserve de fréquence globale du réseau est calculée à partir de la puissance perdue par l’incident groupe le plus dimensionnant. Cela permet d'obtenir la « demi-bande de réglage » sur chaque groupe (qui vaut 0 s’il n’y a pas d’incident groupe). Avant de commencer la résolution, METRIX abaisse la Pmax de chaque groupe de sa « demi-bande de réglage ».
+
+Pour simuler les incidents de groupe, METRIX utilise un coefficient de sensibilité. Pour chaque incident $i$, METRIX calcule l’influence sur chaque ligne $ik$, noté $\rho_{ik}^{g}$, de la perte de 1 MW sur le groupe en incident $g$ et la reprise de ce MW perdu par l’ensemble des autres groupes disponibles au prorata de leur Pmax.
+
+MERIX déduit ensuite le transit sur la ligne $ik$ après la perte du groupe $g$ :
+$$
+T_{ik}^{N-k} = T_{ik}^{N} + \rho_{ik}^{g} \cdot P_{g}^{N}
+$$
+
+avec $P_{g}^{N}$ la puissance délivrée en N par le groupe qui a été déclenché.
+
+La même stratégie est utilisée pour simuler la perte d’une ligne DC ; la seule différence est que la variation de 1 MW se compense entre le noeud origine et le noeud extrémité de la ligne DC.
+
 #### Incidents composés
-#### Incidents reompant la conenxité
+
+METRIX traite également les incidents composés de perte de groupes et de lignes. Etant donné que nous nous trouvons dans le conetxte de l'approximation du courant continu, les équations sont linéaires et l’ordre d’apparition de la perte du groupe ou de la ligne n’a pas d’importance.
+Le transit sur la ligne $ik$ après perte de la ligne $mn$ et du groupe $g$ vaut :
+$$
+T_{ik}^{N-k} = T_{ik}^{N} + \rho_{ik}^{g} \cdot P_{g}^{N} + \rho_{ik}^{mn} \cdot (T_{mn}^{N} + \rho_{mn}^{g} + P_{g}^{N})
+$$
+
+Cela revient à considérer que l’incident groupe se produit dans un permier temps, puis que l’incident ligne et l’impact produit de l’incident groupe sur cette ligne est bein simulé ($T_{mn}^{N} + \rho_{mn}^{g} + P_{g}^{N}$).
+
+#### Incidents rompant la conenxité
+
+Par défaut, les incidents rompant la connexité sont exclus du calcul. Il est toutefois possible de les prendre en compte via le paramètre *INCNOCON*. Dans ce cas, pour chaque incident, METRIX renseigne dans les sorties le volume de production et/ou de consommation perdu lors de l’incident.
+Si une parade topologique permet de récupérer une partie de cette puissance, cette information est donnée pour l’incident initial et pour la parade.
 
 ### Actions curatives
 ### Manoeuvres topologiques curatives

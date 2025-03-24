@@ -7,6 +7,17 @@ y { color: yellow}
 
 # Variables
 
+## Incidents <a id="inc_var"></a>
+Les incidents sont listés dans le conteneur $INCIDENT$. Nous noterins $inc$ un élément de cette liste.
+Ce dernier peut provoquer :
+- l'ouverture d'un certain nombre de lignes $DEFAUTQUAD_{inc}$ ;
+- l'ouverture d'un certain nombre de LCCs $DEFAUTLCC_{inc}$ ;
+- et/ou l'arrêt de certains groupes $DEFAUTGRP_{inc}$.
+
+Parallèlement, afin de corriger cet incident, certains moyens curatifs pourront être utilisés. Ils sont stockés dans la liste $CURATIF_{inc}$ et contient des groupes, des consommations, des TDs, des HVDCs et/ou des parades. 
+
+Enfin, cet incident a une certaine probabilité de survenir, notée $proba_{inc}$. Cet incident sera forcément appliqué sur le réseau lors de la simulation de Metrix, mais cette probabilité permet de pondérer le coût d’utilisation des actions curatives.
+
 ## Groupes <a id="prod_var"></a>
 Les groupes du réseau modélisé dans METRIX sont stockés dans une liste $GROUPE$.
 La production d’un groupe peut être modifiée en *Adequacy Phase*, en *Redispatching Phase*, les deux ou aucune. Nous ne considérerons dans les équations, que les groupes modifiables en toute circonstance.
