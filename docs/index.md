@@ -37,7 +37,7 @@ Once the two zip are downloaded, unzip them in a repository of your choosing.
 
 #### itools command
 
-Now we need to make the *itools* command available. For this, you need to update your PATH.
+Now we need to make the *itools* command available. For this, you need to add itools to your PATH.
 
 On Linux, you can for example do this by adding a few lines in your `.bashrc` file (or equivalent):
 
@@ -47,6 +47,8 @@ export POWSYBL_METRIX_HOME=<repository_where_you_unzipped_itools-metrix>
 # Add the repository to the path
 export PATH=$POWSYBL_METRIX_HOME/bin:$PATH
 ```
+
+On Windows, follow for example [this guide](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
 
 To check if it works, open a new terminal and type the `itools` command. You should see
 the following answer:
