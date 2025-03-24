@@ -31,7 +31,7 @@ Note: Current versions of *metrix-simulator-ubuntu* were compiled on Ubuntu 24. 
 you encounter issues regarding the compiler, don't hesitate to use the *metrix-simulator-centos*
 version that has been compiled with an older version of the compiler.
 
-Once the two zip are downloaded, unzip them in a repository of your choosing.
+Once the two zip files are downloaded, unzip them in a repository of your choosing.
 
 ### Configuration
 
@@ -81,7 +81,7 @@ Script:
     run-script                               run script (only groovy is supported)
 ```
 
-*Note: If you already have another version of itools installed (for example if you use powsybl-dependency),
+*Note: If you already have another version of itools installed (for example if you use powsybl-distribution),
 you may want to have another configuration to use a specific command so that you can
 use both independently:*
 
