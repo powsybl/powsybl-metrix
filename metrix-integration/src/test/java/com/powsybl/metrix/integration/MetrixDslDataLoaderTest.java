@@ -32,6 +32,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,11 +55,11 @@ class MetrixDslDataLoaderTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Create mapping file for use in all tests
         try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
@@ -76,7 +77,7 @@ class MetrixDslDataLoaderTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 
@@ -472,8 +473,9 @@ class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
+        DataTableStore dataTableStore = new DataTableStore();
         assertThrows(TimeSeriesMappingException.class,
-            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig),
+            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, dataTableStore, tsConfig),
             "Time Series 'ts' not found");
     }
 
