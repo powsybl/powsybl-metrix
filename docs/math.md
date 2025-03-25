@@ -140,21 +140,21 @@ Avec $M$ une valeur très élevée.
 
 ### Domaines de définition des variables
 
-Pour fixer la valeur maximale du délestage, un pourcentage est utilisé. Celui-ci est défini par les paramètres $\alpha_i$  en *Adequacy phase* et en préventif, et $\alpha_{i_{cur}}$ en curatif. Ainsi, nous obtenons les encadrements suivants :
+Pour fixer la valeur maximale du délestage, un pourcentage est utilisé. Celui-ci est défini par les paramètres $\Phi_i$  en *Adequacy phase* et en préventif, et $\Phi_{i_{cur}}$ en curatif. Ainsi, nous obtenons les encadrements suivants :
  - Pour l'*Adequacy phase* et le préventif :
  
  $$ 
  c_{i}^{-} \in
  \begin{cases}
- [0; \alpha_i \cdot C_i^0]\text{, si }C_i^{0} \geq 0\\
- [\alpha_i \cdot C_i^0; 0]\text{, sinon. }
+ [0; \Phi_i \cdot C_i^0]\text{, si }C_i^{0} \geq 0\\
+ [\Phi_i \cdot C_i^0; 0]\text{, sinon. }
  \end{cases}
  $$
 
  - Pour le curatif :
 
  $$
- \forall inc \in INCIDENT, c_{i_{inc}}^{-} \in [0; max(0; C_i^{0} \cdot \alpha_{i_{cur}})]
+ \forall inc \in INCIDENT, c_{i_{inc}}^{-} \in [0; max(0; C_i^{0} \cdot \Phi_{i_{cur}})]
  $$
 
 ### Définition des coûts
@@ -179,7 +179,7 @@ $$
 
 Ensembles : $CONSO$, $COUPLAGE_{CONSO}$, $CONSO_{zc}$
 
-Valeurs : $\forall i \in CONSO : C_i^{0}, \alpha_i, \alpha_{i_{cur}}$
+Valeurs : $\forall i \in CONSO : C_i^{0}, \Phi_i, \Phi_{i_{cur}}$
 
 **Variables**
 
@@ -201,10 +201,10 @@ Ces valeurs pourront être tirées des données d'entrée si les bornes de chang
 
 ### Définition des variables
 
-La puissance de consigne transmise par $i$ du nœud *Or* au nœud *Nf* va être représentée par le paramètre $TD^{0}_i$. La variation de cette puissance en préventif  va être représentée par les variables **positives** $\Delta td^{+}_i$ à la hausse et $\Delta td^{-}_i$ à la baisse. De même, si le TD est autorisé à agir en curatif sur l’incident $inc$, nous allons utiliser les variables curatives **positives** $\Delta td^{+}_{i_{inc}}$ et $\Delta td^{-}_{i_{inc}}$ et la vraiable booléenne $actTD_{i}^{inc}$. Ces trois variables sont reliées par la contrainte suivante :
+La puissance de consigne transmise par $i$ du nœud *Or* au nœud *Nf* va être représentée par le paramètre $TD^{0}_i$. La variation de cette puissance en préventif  va être représentée par les variables **positives** $td^{+}_i$ à la hausse et $td^{-}_i$ à la baisse. De même, si le TD est autorisé à agir en curatif sur l’incident $inc$, nous allons utiliser les variables curatives **positives** $td^{+}_{i_{inc}}$ et $td^{-}_{i_{inc}}$ et la vraiable booléenne $actTD_{i}^{inc}$. Ces trois variables sont reliées par la contrainte suivante :
 
 $$
-\Delta td^{+}_{i_{inc}} + \Delta td^{-}_{i_{inc}}\leq M \cdot actTD_{i}^{inc}
+td^{+}_{i_{inc}} + td^{-}_{i_{inc}}\leq M \cdot actTD_{i}^{inc}
 $$
 Avec $M$ ue valeur très élevée.
 
@@ -216,24 +216,24 @@ Chaque TD est pilotable de quatre manières différentes :
  - En angle imposé
  - En angle optimisé
 
-Les pilotages imposés impliquent que le TD échangera toujours la même puissance entre les deux nœuds *Or* et *Nf* : $\Delta td^{+}_{i} = \Delta td^{-}_{i} = \Delta td^{+}_{i_{inc}} = \Delta td^{-}_{i_{inc}} = 0$.
+Les pilotages imposés impliquent que le TD échangera toujours la même puissance entre les deux nœuds *Or* et *Nf* : $td^{+}_{i} = td^{-}_{i} = td^{+}_{i_{inc}} = td^{-}_{i_{inc}} = 0$.
 
 Pour les pilotages en puissance (imposée et optimisée), le *quadFictif* est ouvert : seule la puissance du TD sera transmise entre les nœuds *Or* et *Nf*.
 
 Pour le pilotage optimisé (en angle ou en puissance), les paramètres  $TD_i^{min}$ et $TD_i^{max}$ définis précédemment, sont utilisés tels que :
 
 $$
-0 \leq \Delta td^{+}_{i} \leq max(TD_i^{max} - TD_i^{0}; 0) \text{ et } 0 \leq \Delta td^{-}_{i} \leq max(TD_i^{0} - TD_i^{min}; 0)\\
+0 \leq td^{+}_{i} \leq max(TD_i^{max} - TD_i^{0}; 0) \text{ et } 0 \leq td^{-}_{i} \leq max(TD_i^{0} - TD_i^{min}; 0)\\
 \forall inc \in INCIDENT:\\
-0 \leq \Delta td^{+}_{i_{inc}} \leq max(TD_i^{max} - TD_i^{min}; 0) \text{ et } 0 \leq \Delta td^{-}_{i_{inc}} \leq max(TD_i^{max} - TD_i^{min}; 0)
+0 \leq td^{+}_{i_{inc}} \leq max(TD_i^{max} - TD_i^{min}; 0) \text{ et } 0 \leq td^{-}_{i_{inc}} \leq max(TD_i^{max} - TD_i^{min}; 0)
 $$
 
 Pour l'encadrement curatif, les contraintes suivantes sont ajoutées :
 
 $$
 \forall inc \in INCIDENT:\\
-\Delta td^{+}_{i} + \Delta td^{+}_{i_{inc}} \leq max(TD^{max}_{i} - TD^{0}_i; 0)\\
-\Delta td^{-}_{i} + \Delta td^{-}_{i_{inc}} \leq max(TD^{0}_{i} - TD^{min}_i; 0)
+td^{+}_{i} + td^{+}_{i_{inc}} \leq max(TD^{max}_{i} - TD^{0}_i; 0)\\
+td^{-}_{i} + td^{-}_{i_{inc}} \leq max(TD^{0}_{i} - TD^{min}_i; 0)
 $$
 
 ### Domaines de définition des variables
@@ -252,7 +252,7 @@ Valeurs : $TD^{0}_i$, $TD^{max}_i$, $TD^{min}_i$, $\Gamma^{TD}$
 **Variables**
 
 $$
-\forall i \in TD, \forall inc \in INCIDENT : \Delta td^{+}_{i}, \Delta td^{-}_{i}, \Delta td^{+}_{i_{inc}}, \Delta td^{-}_{i_{inc}}, actTD_{i}^{inc}
+\forall i \in TD, \forall inc \in INCIDENT : td^{+}_{i}, td^{-}_{i}, td^{+}_{i_{inc}}, td^{-}_{i_{inc}}, actTD_{i}^{inc}
 $$
 
 ## Lignes à Courant Continu (LCC) <a id="lcc_var"></a>
@@ -268,12 +268,12 @@ Soit $i \in LCC$, notons :
 
 Les variations de $i$ sont représentées :
 - en préventif par les variables **positives** $lcc_i^{+}$ et $lcc_i^{-}$ ;
-- et en curatif par les variables **positives** $lcc_{i_{inc}}^{+}$ et $lcc_{i_{inc}}^{-}$ ainsi que par la variable booléenne $act_{i}^{inc}$.
+- et en curatif par les variables **positives** $lcc_{i_{inc}}^{+}$ et $lcc_{i_{inc}}^{-}$ ainsi que par la variable booléenne $actLCC_{i}^{inc}$.
 
 Ces trois variables sont reliées pâr la contrainte suivante :
 
 $$
-lcc_{i_{inc}}^{+} + lcc_{i_{inc}}^{-} \leq M \cdot act_{i}^{inc}
+lcc_{i_{inc}}^{+} + lcc_{i_{inc}}^{-} \leq M \cdot actLCC_{i}^{inc}
 $$
 
 Avec $M$ une valeur très grande. 
@@ -302,10 +302,10 @@ En ce qui concerne le coûts, les LCCs ont toutes le même coût d’utilisation
 Notons $\forall zc \in ZC$ , $LCC_{zc}^+$ l’ensemble des LCCs transportant le courant de la zone synchrone $zc$ vers une autre zone synchrone. De même, $LCC_{zc}^-$ est l’ensemble des LCCs prélevant de la puissance à la zone synchrone $zc$ pour l’envoyer vers une autre zone synchrone.
 
 ### LCC en émulation AC
-Le TD fictif ne pourra jamais agir en préventif : $\forall inc \in INCIDENT$, une contrainte d’activation relie les variables préventives du TD à la variable d’activation en curatif du même TD sur cet incident ($act_{inc}^i$) ; et cette variable d’activation va être bloquée à $0$, empêchant toute variation des variables préventives. Plus tard, si la variable d’activation est débloquée, les variables préventives ne seront utilisées par le problème que dans le calcul du transit sur quadripôle, et de toute façon le coefficient associé sera nul.  
+Le TD fictif ne pourra jamais agir en préventif : $\forall inc \in INCIDENT$, une contrainte d’activation relie les variables préventives du TD à la variable d’activation en curatif du même TD sur cet incident ($actLCC_{inc}^i$) ; et cette variable d’activation va être bloquée à $0$, empêchant toute variation des variables préventives. Plus tard, si la variable d’activation est débloquée, les variables préventives ne seront utilisées par le problème que dans le calcul du transit sur quadripôle, et de toute façon le coefficient associé sera nul.  
 Quant aux variables curatives (linéaires et booléennes), elles sont reliées par une contrainte d’activation. Soit $i \in TD, inc \in INCIDENT$ :
 $$
-td_{i_{inc}}^+ + td_{i_{inc}}^- \leq M \cdot act_{inc}^i
+td_{i_{inc}}^+ + td_{i_{inc}}^- \leq M \cdot actLCC_{inc}^i
 $$
 
 La variable d’activation est bloquée à $0$, à moins que le quadripôle *quad0* soit en contrainte. Dans ce cas, la variable est libre de changer de valeur. 
@@ -334,13 +334,13 @@ $$
 Les parades sont listées dans $PARADE$. Soit $prd \in PARADE$. Chaque parade est associée à un unique incident $inc \in INCIDENT$.
 
 $prd$ possède en paramètre la liste des couplages qu’elle ferme ($COUPLAGEFERMER_{prd}$) et ceux qu’elle ouvre ($COUPLAGEOUVRIR_{prd}$).
-On définit, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident $act_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma_{prd}$.
+On définit, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident $actPRD_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma_{prd}$.
 
 ### Contrainte d'unicité des parades
 
 Pour chaque incident, une parade unique est applicable, $\forall inc \in INDICENT$ :
 $$
-\sum_{prd \in PARADE \cap CURATIF_{inc}} act_{prd}^{inc} \leq 1
+\sum_{prd \in PARADE \cap CURATIF_{inc}} actPRD_{prd}^{inc} \leq 1
 $$
 
 Dans le code, l’inégalité de cette contrainte est transformée en une égalité, par l'intermédiaire de l'introduction d'une parade “Ne Rien Faire” pour chaque incident possédant des parades topologiques en actions curatives. Cette parade n’a aucune action sur le réseau.
@@ -351,7 +351,7 @@ L'activatigon d'une parade $prd$ peut être empêchée tant qu'il existe une lig
 
 Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à l'incident $inc$. Alors $\forall inc \in INCIDENT, \forall prd \in PARADE \cap CURATIF_{inc}$ :
 $$
-(\nexists quad \in QUADNECESSAIRES_{prd}\text{ tel que }quad \in QUADENCONTRAINTE_{inc}) \Rightarrow act_{prd}^{inc} = 0
+(\nexists quad \in QUADNECESSAIRES_{prd}\text{ tel que }quad \in QUADENCONTRAINTE_{inc}) \Rightarrow actPRD_{prd}^{inc} = 0
 $$
 
 ### Contrainte de valorisation des poches perdues
@@ -382,7 +382,7 @@ Valeurs : $\forall prd \in PARADE : \Gamma_{prd}$
 
 **Variables**
 
-$\forall inc \in INCIDENT, \forall prd \in PARADE : act_{prd}^{inc}, val_{prd}^{inc}$
+$\forall inc \in INCIDENT, \forall prd \in PARADE : actPRD_{prd}^{inc}, val_{prd}^{inc}$
 
 **Contraintes**
 
