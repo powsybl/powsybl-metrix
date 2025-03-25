@@ -409,7 +409,36 @@ Par défaut, les incidents rompant la connexité sont exclus du calcul. Il est t
 Si une parade topologique permet de récupérer une partie de cette puissance, cette information est donnée pour l’incident initial et pour la parade.
 
 ### Actions curatives
+
+Afin de corriger des incidents, l’utilisateur peut modéliser des actions curatives (i.e. activables une fois l'incident survenu) représentant les actions prises par un opérateur ou un automate pour rétablir le transit conformément au seuil admissible.
+Dans METRIX les actions curatives peuvent être :
+- des modifications de consigne des groupes, TD ou HVDC ;
+- ou du délestage curatif de consommation.
+
+L’optimiseur choisira s’il est utile de modifier la consigne des éléments curatifs suite à l’incident. Il combinera les actions si nécessaire et s’assurera que les modifications de consigne n’engendrent évidemment pas de nouvelle contrainte sur une autre ligne du réseau.
+
+Pour respecter une contrainte sur un seuil temporaire avant actiation d'actions curatives, METRIX utilisera obligatoirement une action préventive. Cette action préventive pourra être complétée, si nécessaire, par une action curative pour respecter le seuil permanent après incident.
+
+Si la fonctionnalité du curatif est utilisée pour modéliser le fonctionnement d’un automate, il faut bien prendre en compte que la modélisation est optimiste : en effet, un automate agira uniquement dans le but de lever la contrainte sur la ligne qu’il surveille ; de plus, il agira même si cela engendrait une contrainte ailleurs. METRIX peut utiliser un levier pour lever n’importe quelle contrainte présente sur le réseau et il fait en sorte de ne pas créer de nouvelles surcharges ailleurs.
+
 ### Manoeuvres topologiques curatives
+
+Les parades topologiques sont des actions curatives traitées de manière différente des autres actions curatives car ayant un impact sur la topologie, elles modifient les coefficients de report et de sensibilité. Elles ont également un fort impact sur le temps de résolution de l’optimisation.
+
+Pour METRIX, une parade topologique est toujours liée à un incident et consiste en l’ouverture (ou la fermeture) de lignes ou de couplages supplémentaires. Quand une parade est sélectionnée par le solveur, METRIX vérifie que cette parade ne génère pas de contraintes sur les autres ouvrages surveillés du réseau.
+
+Pour un incident donné, METRIX privilégiera toujours les parades situées en début de la liste. Ainsi si aucune des parades fournie n’est vraiment efficace, METRIX choisira la parade « ne rien faire » qui est automatiquement ajoutée en tout début de liste.
+
+METRIX peut combiner une parade topologique avec d'autres actions curatives mais ne peut pas combiner 2 parades topologiques. Il faut explicitement renseigner toutes les combinaisons souhaitées dans la liste fournie en entrée du calcul.
+
+Des parades peuvent avoir des effets très proches, difficilement différentiables, ce qui complique la résolution du problème. Pour contrer ces cas pathologiques, le paramètre *PAREQUIV* permet de masquer les parades dont l’effet semble similaire à celui d’une autre parade.
+
+Une parade topologique sélectionnée par METRIX permet de lever (ou soulager) les contraintes de transit liées à un incident. Cependant, si cette parade est composée de plusieurs actions, il n’y a pas de garantie qu’il sera possible de réaliser toutes ces actions en pratique. De même, une parade peut être utilisée pour reconnecter une proche perdue par un incident, mais compte tenu des simplifications du modèle METRIX, il n’est absolument pas assuré que cela serait effectivement possible en pratique.
+
+Par défaut, une parade ne peut pas aggraver la rupture de connexité d’un incident (i.e. augmenter le nombre de sommets déconnectés), sauf si le paramètre *PARNOCON* est utilisé.
+
+Il est possible de restreindre l’action d’une parade à la présence d’une contrainte sur un ouvrage spécifique. Dans ce cas, la parade ne peut pas être sélectionnée tant que l’ouvrage en question n’est pas en contrainte.
+
 ### Pertes calculées a postétiori <a id="posteriori_losses"></a>
 
 
