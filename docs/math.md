@@ -329,6 +329,67 @@ $$
 \forall i \in LCC, \forall inc \in INCIDENT: lcc_{i}^{+}, lcc_{i}^{-}, lcc_{i_{inc}}^{+}, lcc_{i_{inc}}^{-}
 $$
 
+## Parades <a id="parades_var"></a>
+
+Les parades sont listées dans $PARADE$. Soit $prd \in PARADE$. Chaque parade est associée à un unique incident $inc \in INCIDENT$.
+
+$prd$ possède en paramètre la liste des couplages qu’elle ferme ($COUPLAGEFERMER_{prd}$) et ceux qu’elle ouvre ($COUPLAGEOUVRIR_{prd}$).
+On définit, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident $act_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma_{prd}$.
+
+### Contrainte d'unicité des parades
+
+Pour chaque incident, une parade unique est applicable, $\forall inc \in INDICENT$ :
+$$
+\sum_{prd \in PARADE \cap CURATIF_{inc}} act_{prd}^{inc} \leq 1
+$$
+
+Dans le code, l’inégalité de cette contrainte est transformée en une égalité, par l'intermédiaire de l'introduction d'une parade “Ne Rien Faire” pour chaque incident possédant des parades topologiques en actions curatives. Cette parade n’a aucune action sur le réseau.
+
+### Contrainte d'utilisation des parades
+
+L'activatigon d'une parade $prd$ peut être empêchée tant qu'il existe une ligne, parmi un certain ensemble de lignes, non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble.
+
+Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à l'incident $inc$. Alors $\forall inc \in INCIDENT, \forall prd \in PARADE \cap CURATIF_{inc}$ :
+$$
+(\nexists quad \in QUADNECESSAIRES_{prd}\text{ tel que }quad \in QUADENCONTRAINTE_{inc}) \Rightarrow act_{prd}^{inc} = 0
+$$
+
+### Contrainte de valorisation des poches perdues
+
+Lors de son utilisation, il est possible qu’une parade rompe la connexité du réseau en déconnectant des noeuds de ce dernier. Les productions et consommations présentes sur ces nœuds vont alors être perdues. Si cela survient, une sanction économique dans la fonction objectif doit être appliquée.
+
+Soit $inc \in INCIDENT$ et $prd \in PARADE$ une parade rompant la connexité du réseau en déconnectant certains noeuds de celui-ci.
+
+Notons :
+- $\Gamma^{ENE}$ le coût de l'énergie non évacuée
+- $\Gamma^{END}$ le coût de l'énergie non distribuée
+- $GRPDECO$ l'ensemble des groupes liés aux noeuds de la poche perdue
+- $CONSODECO$ l'ensemble des consos liées aux noeuds de la poche perdue
+- $VALOMax = proba_{inc} \cdot (\Gamma_{ENE} \cdot \sum_{i \in GRPDECO} (|P_i^0| + P_i^{max}) + \Gamma^{END} \cdot \sum_{i \in CONSODECO} C_i^0)$
+
+Afin de quantifier la sanction économique, une nouvelle variable **positive** est introduite telle que : $val_{prd}^{inc} \in [0; max (0, VALOMax)]$.
+
+<r>Résumé des notations :</r>
+
+**Données**
+
+Ensembles : $PARADE$, $\forall prd \in PARADE$ :
+$$
+COUPLAGEFERMER_{prd}, COUPLAGEOUVRIR_{prd}, QUADNECESSAIRES_{prd}
+$$
+
+Valeurs : $\forall prd \in PARADE : \Gamma_{prd}$
+
+**Variables**
+
+$\forall inc \in INCIDENT, \forall prd \in PARADE : act_{prd}^{inc}, val_{prd}^{inc}$
+
+**Contraintes**
+
+- Contrainte d'unicité des parades
+- Contrainte d'utilisation des parades
+- Contrainte de valorisation des poches perdues
+
 # Formulations mathématiques des deux problèmes
 
 Notons $W$ le nombre entier de variantes à traiter et $w$ l’indice de la variante courante.
