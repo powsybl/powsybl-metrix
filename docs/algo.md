@@ -218,7 +218,7 @@ METRIX utilise cette expression du transit pour écrire une contrainte dans le p
 Il est important de noter que, puisque simuler l’*Adequacy phase* correspond à résoudre un problème d’optimisation, il peut y avoir des **solutions équivalentes**, i.e. des solutions avec le même coût optimal, mais des actions différentes sur le réseau pour atteindre l’équilibre. Cela entraîne des situations initiales différentes pour la *Redispatching phase*, et donc des solutions optimales différentes, avec des coûts optimaux complètement différents. Identiquement, pour une même situation initale issue de l’*Adequacy phase*, la *Redispatching phase* peut aussi renvoyer des solutions équivalentes.
 
 ## Modélisation du réseau
-Nous allons désormais présenter la modélisation des éléments du réseau et du problème d’optimisation dans *METRIX*. Pour cela, nous allons nous focaliser sur **une seule variante**.
+Nous allons désormais présenter la modélisation des éléments du réseau et du problème d’optimisation dans METRIX. Pour cela, nous allons nous focaliser sur **une seule variante**.
 
 ### Zones sychrones
 Tous les éléments du réseau (groupes, consommations, TDs, LCCs) sont liés à un ou plusieurs nœuds. Chaque nœud fait partie d’une unique zone synchrone, et chaque zone synchrone en contient plusieurs milliers. Notons $ZC$ l’ensemble des zones synchrones du réseau.
@@ -270,21 +270,21 @@ Cf. [Variables de consommation](#conso_var)
 #### Transformateur-Déphaseurs
 
 ##### Modélisation
-Dans *Metrix*, un TD est lié à un quadripôle et sert d’échangeur de puissance entre les deux nœuds dudit quadripôle : il prélève de la puissance sur un nœud pour l’envoyer à un autre.
-Pour bien comprendre le fonctionnement des TDs, il faut, tout d’abord, concevoir que *Metrix* utilise des puissances pour faire ces calculs, alors que les TDs fonctionnent avec des angles, en modifiant le déphasage du signal électrique. Cependant, changer le déphasage revient à changer la puissance active dudit signal électrique, grâce à une simple multiplication : 
+Dans METRIX, un TD est lié à un quadripôle et sert d’échangeur de puissance entre les deux nœuds dudit quadripôle : il prélève de la puissance sur un nœud pour l’envoyer à un autre.
+Pour bien comprendre le fonctionnement des TDs, il faut, tout d’abord, concevoir que METRIX utilise des puissances pour faire ces calculs, alors que les TDs fonctionnent avec des angles, en modifiant le déphasage du signal électrique. Cependant, changer le déphasage revient à changer la puissance active dudit signal électrique, grâce à une simple multiplication : 
 
 $$
 Puissance = angle \cdot \frac{\pi}{180} \cdot U^2 \cdot Y_{i,j}
 $$
 
-Avec $U^2$ et $Y_{i,j}$ les valeurs de tension et d’impédance du quadripôle support du TD, qui sont des paramètres dans Metrix. Puisque nous allons être amenés à parler d’angles ou de puissances pour décrire le fonctionnement des TDs, afin de ne pas être perturbés, il suffit de se souvenir que les deux sont proportionnels selon cette formule.
-Pour les calculs de Metrix, le quadripôle de support du TD va être dissocié en deux quadripôles en série. Nommons ***quad*** le quadripôle initial, avec $(y, r)$ son impédance et sa résistance. Celui-ci relie les nœuds *Or* et *Dest* (i.e. origine et destination). Nous allons ensuite créer un **nœud fictif** *Nf* ainsi qu'un **quadripôle fictif** ***quadFictif***, allant du nœud *Or* au noeud *Nf* et de caractéristiques $(y/0.1, 0)$. Parallèlement, nous modifions *quad* afin qu’il aille du nœud *Nf* vers le nœud *Dest*. Nous modifions également ses caractéristiques pour qu’elles valent $(y/0.9, r)*.
+Avec $U^2$ et $Y_{i,j}$ les valeurs de tension et d’impédance du quadripôle support du TD, qui sont des paramètres dans METRIX. Puisque nous allons être amenés à parler d’angles ou de puissances pour décrire le fonctionnement des TDs, afin de ne pas être perturbés, il suffit de se souvenir que les deux sont proportionnels selon cette formule.
+Pour les calculs de METRIX, le quadripôle de support du TD va être dissocié en deux quadripôles en série. Nommons ***quad*** le quadripôle initial, avec $(y, r)$ son impédance et sa résistance. Celui-ci relie les nœuds *Or* et *Dest* (i.e. origine et destination). Nous allons ensuite créer un **nœud fictif** *Nf* ainsi qu'un **quadripôle fictif** ***quadFictif***, allant du nœud *Or* au noeud *Nf* et de caractéristiques $(y/0.1, 0)$. Parallèlement, nous modifions *quad* afin qu’il aille du nœud *Nf* vers le nœud *Dest*. Nous modifions également ses caractéristiques pour qu’elles valent $(y/0.9, r)*.
 
 <a id="quad_fig"></a>
 <div style="text-align:center">
     <figure>
-        <img src="quad.png" alt="Transformation du TD des données à la modélisation dans Metrix" class="bg-primary mb-1" width="600px" title="Transformation du TD des données à la modélisation dans Metrix">
-        <figcaption>Transformation du TD des données à la modélisation dans Metrix</figcaption>
+        <img src="quad.png" alt="Transformation du TD des données à la modélisation dans METRIX" class="bg-primary mb-1" width="600px" title="Transformation du TD des données à la modélisation dans METRIX">
+        <figcaption>Transformation du TD des données à la modélisation dans METRIX</figcaption>
     </figure>
 </div>
 
@@ -294,11 +294,11 @@ Le TD est porté par *quadFictif*, et assure donc le déphasage. Le quad réel *
 
 ##### Définition des valeurs min et max des TDs
 
-Dans la réalité, le déphasage du signal électrique se fait en passant d’une prise à l’autre. De ce fait, au sein de Metrix, chaque TD va être associé à une liste de prises de déphasage croissant ainsi qu'à deux bornes maximum correspondantes aux nombres maximum de changements de prises à la hausse et à la baisse : *lowran* et *uppran*. Ces bornes sont utilisées de la manière suivante, avec $X$ le numéro de la prise du déphasage initial du TD : 
+Dans la réalité, le déphasage du signal électrique se fait en passant d’une prise à l’autre. De ce fait, au sein de METRIX, chaque TD va être associé à une liste de prises de déphasage croissant ainsi qu'à deux bornes maximum correspondantes aux nombres maximum de changements de prises à la hausse et à la baisse : *lowran* et *uppran*. Ces bornes sont utilisées de la manière suivante, avec $X$ le numéro de la prise du déphasage initial du TD : 
  - à la hausse le déphasage ne pourra dépasser $X + uppran$
  - à la baisse le déphasage ne pourra dépasser $X - lowran$
 
-Dans Metrix, le numéro de la prise de déphasage correspond à celui de la prise minimisant la distance entre les déphasages du TD et celui associé à la prise.
+Dans METRIX, le numéro de la prise de déphasage correspond à celui de la prise minimisant la distance entre les déphasages du TD et celui associé à la prise.
 
 Cf. [Variables TDs](#td_var)
 
@@ -556,7 +556,32 @@ $$
 
 Les équations [(4)](#Ubounds_eq) et [(5)](#Vbounds_eq) définissent les encadrements des atrices $U_{w}$ et $V_{w}$, ainsi que leur lien avec la fonction objectif. Autrement dit, elles définissent les limites des différentes productions, consommations, des TD, des HVDC, etc., en préventif et curatif. L’équation [(6))](#UeqV_eq) définit le fait que l’état initial des actions curatives correspond à l’état du réseau en N, i.e. ce qui a été déterminé avec les actions préventives. L'équation [(7)](#PCfUV_eq) indique que l'état de la production et de la consommation en N et en incident est stockée dans $U_w$ et $V_w$. L’équation [(8)](#PC_eq) rappelle le nécessaire équilibre production – consommation en N et en incidents. Enfin, l’équation [(9)](#FM_eq) définit et encadre le flux des lignes.
 
+## Formulation du problème
 
-## Pertes calculées a postétiori <a id="posteriori_losses"></a>
+## Variantes simulables
+
+Lorsque les modifications sont communes à l’ensemble des variantes, elles sont décrites dans une variante d'index « -1 ». Ces variantes sont alors directement appliquées sur le cas nominal.
+Une variante METRIX peut modifier :
+- La disponibilité de lignes (y compris couplage)
+- Les valeurs des consommations
+- Le coût de délestage des consommations
+- La disponibilité des groupes
+- La production des groupes
+- La puissance min et max des groupes
+- Les coûts d’empilement hausse/baisse des groupes (phase d’équilibrage)
+- Les coûts d’ajustement hausse/baisse des groupes
+- Les puissances min, max et de consigne des lignes HVDC
+- Les seuils N, N-1 sur incident spécifique et avant manoeuvre des ouvrages
+- Le déphasage initial et les déphasages min et max des TDs
+
+## Sorties de METRIX
+
+### Statur du calcul
+### Transits sur les ouvrages
+### Résultats sur les variables de contrôles
+### Le coût GRT ou de redispatching
+### Pertes calculées a postétiori <a id="posteriori_losses"></a>
+### Variations marginales
+
 
 
