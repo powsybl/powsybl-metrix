@@ -226,14 +226,14 @@ Tous les éléments du réseau (groupes, consommations, TDs, LCCs) sont liés à
 ### Groupes de production
 
 Le modèle de METRIX n’est pas destiné à l’optimisation fine de la production. De ce fait, la modélisation des groupes est simplifiée. En tant que modèle statique, METRIX ignore la dynamique de démarrage des groupes et certaines contraintes de fonctionnement des différents moyens de production. METRIX ne connaît que leurs bornes de variations et leurs coûts. Tous les groupes sont décrits de la même manière indépendamment de leur type.
-Dans les phases d’équilibrage et de redispatching, METRIX tient toujours compte de la puissance maximale (*Pmax*) du groupe.
+Dans les phases d’*Adequacy* (i.e. d'équilibrage) et de *Redispatching*, METRIX tient toujours compte de la puissance maximale (*Pmax*) du groupe.
 En revanche, dans la phase d’équilibrage, METRIX ne tient pas compte de la puissance minimale (*Pmin*) si celle-ci est positive. En d’autres termes, METRIX peut donc démarrer un groupe entre 0 et Pmax. En pratique, cela se produit tout au plus pour le groupe marginal (dernier groupe ajusté).
-Dans la phase de redispatching les Pmin sont prises en compte et METRIX ne peut donc pas arrêter un groupe qui est démarré dans la phase d’équilibrage.
+Dans la phase de *Redispatching* les Pmin sont prises en compte et METRIX ne peut donc pas arrêter un groupe qui est démarré dans la phase d’équilibrage.
 Il est possible de contrôler pour chaque groupe sa participation dans chacune des phases via la définition de coûts. À chaque groupe, nous pouvons associer :
 - Le coût d’équilibrage à la hausse qui représente le coût de production par MW utilisé dans la phase d’équilibrage.
 - Le coût d’équilibrage à la baisse est utilisé dans la phase d’équilibrage.
-- Le coût de redispatching à la hausse correspond au coût d’augmentation en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
-- Le coût de redispatching à la baisse correspond au coût de baisse en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
+- Le coût de 'redispatching' à la hausse correspond au coût d’augmentation en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
+- Le coût de 'redispatching' à la baisse correspond au coût de baisse en préventif de la puissance de consigne du groupe dans le mécanisme d’ajustement. Ce coût est également utilisé en curatif.
 Pour une même phase il faut toujours définir un coût à la hausse et à la baisse.
 Le coût de démarrage des groupes n’est pas pris en compte par METRIX.
 
@@ -257,7 +257,7 @@ Ce délestage peut prendre 3 formes :
 - Délestage dans la phase d’équilibrage pour respecter $P = C$
 - Délestage préventif pour respecter les contraintes de transit
 - Délestage curatif pour respecter les contraintes de transit
-Le niveau de délestage est défini par un seuil qui correspond au pourcentage de la consommation qui peut être délesté. Le coût de ce délestage peut également être défini (sinon la valeur par défaut, *COUTDEFA*, est utilisée). Le coût et le seuil de délestage sont utilisés, à la fois pour le délestage de la phase d’équilibrage et pour le délestage préventif de la phase de redispatching. Le délestage curatif utilise un autre coût et un autre seuil.
+Le niveau de délestage est défini par un seuil qui correspond au pourcentage de la consommation qui peut être délesté. Le coût de ce délestage peut également être défini (sinon la valeur par défaut, *COUTDEFA*, est utilisée). Le coût et le seuil de délestage sont utilisés, à la fois pour le délestage de la phase d’équilibrage et pour le délestage préventif de la phase de *Redispatching*. Le délestage curatif utilise un autre coût et un autre seuil.
 
 Par défaut, si rien n’est spécifié, toutes les consommations sont délestables à 100% dans les deux phases. Dès qu’au moins une consommation est configurée, seules les consommations configurées sont délestables.
 Si trop peu de consommations sont délestables, le modèle peut ne pas pouvoir trouver de solution aux contraintes et retournera un code d’erreur 1.
@@ -579,7 +579,7 @@ Une variante METRIX peut modifier :
 ### Statur du calcul
 ### Transits sur les ouvrages
 ### Résultats sur les variables de contrôles
-### Le coût GRT ou de redispatching
+### Le coût GRT ou de 'redispatching'
 ### Pertes calculées a postétiori <a id="posteriori_losses"></a>
 ### Variations marginales
 
