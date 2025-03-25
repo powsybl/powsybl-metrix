@@ -16,7 +16,7 @@ Ce dernier peut provoquer :
 
 Parallèlement, afin de corriger cet incident, certains moyens curatifs pourront être utilisés. Ils sont stockés dans la liste $CURATIF_{inc}$ et contient des groupes, des consommations, des TDs, des HVDCs et/ou des parades. 
 
-Enfin, cet incident a une certaine probabilité de survenir, notée $proba_{inc}$. Cet incident sera forcément appliqué sur le réseau lors de la simulation de Metrix, mais cette probabilité permet de pondérer le coût d’utilisation des actions curatives.
+Enfin, cet incident a une certaine probabilité de survenir, notée $proba_{inc}$. Cet incident sera forcément appliqué sur le réseau lors de la simulation de METRIX, mais cette probabilité permet de pondérer le coût d’utilisation des actions curatives.
 
 ## Groupes <a id="prod_var"></a>
 Les groupes du réseau modélisé dans METRIX sont stockés dans une liste $GROUPE$.
@@ -196,7 +196,7 @@ Les TDs sont stockés dans une liste $TD$. Soit $i$ un élément de cette liste.
 
 ### Valeurs min et max des TDs
 
-Dans Metrix, le déphasage se fera sans passer d’une prise à l’autre de manière discrète, mais avec des variables continues évoluant entre une puissance min et une puissance max. Les listes des prises de déphasage d'un TD sont toutefois utilisées afin de fixer ces puissances min et max, notées $TD_i^{min}$ et $TD_i^{max}$.
+Dans METRIX, le déphasage se fera sans passer d’une prise à l’autre de manière discrète, mais avec des variables continues évoluant entre une puissance min et une puissance max. Les listes des prises de déphasage d'un TD sont toutefois utilisées afin de fixer ces puissances min et max, notées $TD_i^{min}$ et $TD_i^{max}$.
 Ces valeurs pourront être tirées des données d'entrée si les bornes de changement de prises à la hausse et à la baisse ne sont pas définies.
 
 ### Définition des variables
@@ -237,7 +237,7 @@ td^{-}_{i} + td^{-}_{i_{inc}} \leq max(TD^{0}_{i} - TD^{min}_i; 0)
 $$
 
 ### Domaines de définition des variables
-En ce qui concerne le coût, les TDs ont tous le même coût d’utilisation en préventif $\Gamma^{TD}$, défini dans les paramètres de Metrix. En curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, et va donc dépendre de chaque incident.
+En ce qui concerne le coût, les TDs ont tous le même coût d’utilisation en préventif $\Gamma^{TD}$, défini dans les paramètres de METRIX. En curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, et va donc dépendre de chaque incident.
 
 **En résumé** : Les TDs permettent de modifier le transit des lignes pour éviter les surcharges, sans modifier l’équilibrage offre-demande. 
 
@@ -367,7 +367,7 @@ Notons :
 - $CONSODECO$ l'ensemble des consos liées aux noeuds de la poche perdue
 - $VALOMax = proba_{inc} \cdot (\Gamma_{ENE} \cdot \sum_{i \in GRPDECO} (|P_i^0| + P_i^{max}) + \Gamma^{END} \cdot \sum_{i \in CONSODECO} C_i^0)$
 
-Afin de quantifier la sanction économique, une nouvelle variable **positive** est introduite telle que : $val_{prd}^{inc} \in [0; max (0, VALOMax)]$.
+Afin de quantifier la sanction économique, une nouvelle variable **positive** est introduite telle que : $val_{prd}^{inc} \in [0; max(0; VALOMax)]$.
 
 <r>Résumé des notations :</r>
 
