@@ -87,9 +87,9 @@ Chaque groupe est rattaché à un unique nœud du réseau, appartenant, lui-mêm
 
 ### Contrainte de couplage des groupes <a id="coup_grp_ctr"></a>
 
-Lors de la *Redispatching phase*, nous pouvons définir dans le réseau un ensemble de groupes dont la production en N doit varier de façon proportionnelle. Notons $COUPLAGE_{GRP}$ l'ensemble des couplages groupés. Afin de définir cette variation, nous allons définir une valeur de référence pour chacun des groupes de cet ensemble. Cette valeur de référence peut être $P^{max}$, $P^{min}$, $P^{0}$ ou encore $P^{max} - P^{0}$. Celle-ci sera notée $P^{ref}$.
+Lors de la *Redispatching phase*, nous pouvons définir dans le réseau un ensemble de groupes dont la production en N doit varier de façon proportionnelle. Notons $COUPLAGE^{GRP}$ l'ensemble des couplages groupés. Afin de définir cette variation, nous allons définir une valeur de référence pour chacun des groupes de cet ensemble. Cette valeur de référence peut être $P^{max}$, $P^{min}$, $P^{0}$ ou encore $P^{max} - P^{0}$. Celle-ci sera notée $P^{ref}$.
 
-Soit $i_0$ le premier groupe de cet ensemble. $\forall i \in COUPLAGE_{GRP}$, $i \not = i_0$ :
+Soit $i_0$ le premier groupe de cet ensemble. $\forall i \in COUPLAGE^{GRP}$, $i \not = i_0$ :
 $$
 \frac{p_i^+ - p_i^-}{P_i^{ref}} = \frac{p_{i_0}^+ - p_{i_0}^-}{P_{i_0}^{ref}}
 $$
@@ -106,7 +106,7 @@ $$
 
 **Données**
 
-Ensembles : $GROUPE$, $COUPLAGE_{GRP}$, $GROUPE_{zc}$
+Ensembles : $GROUPE$, $COUPLAGE^{GRP}$, $GROUPE_{zc}$
 
 Valeurs :
  - LimiteCurGroupe
@@ -452,5 +452,5 @@ Au sein de cette phase, l'équilibre entre production et consommation doit aussi
 
 $\forall inc \in INCIDENT, \forall zc \in ZC$ :
 $$
-\sum_{i \in ELEMCUR} ==> YJ : PB de cohérence
+\sum_{i \in ELEMCUR \cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) ==> encours, mv cur par inc, mais quid de ELEMCUR ???
 $$
