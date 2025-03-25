@@ -398,6 +398,31 @@ Ci-après, les modèles mathématiques des deux phases d'optimisation :
 
 ## Modèle mathématique de l'*Adequacy phase*
 
+Lors de cette phase, nous ne nous occuppons que de l'équilibrage production - consommation, sans tenir compte du réseau électrique en lui-même. 
 
+### Contraintes
+
+**Équilibrage Offre-Demande global**
+
+L'équilibrage du réseau revient à avoir une égalité entre la production et la consommation afin que la demande soit satisfaite sans aucun excès de prodution :
+$$
+\sum_{i \in GROUPE}(P_i^0 + p_i^+ + p_i^-) - \sum_{i \in CONSO}(C_i^0 - c_i^-) = 0
+$$
+
+**Équilibrage Offre-Demande par zone synchrone**
+
+Le réseau est composé de nœuds, se répartissant dans des zones synchrones. Les Lignes à Courant Continu peuvent servir d’interconnexion entre ces zones synchrones, et il est possible de faire varier la puissance transmise par ces interconnexions.
+
+Dès lors, $\forall zc \in ZC$ :
+
+$$
+\sum_{i \in GROUPE_{zc}}(P_i^0 + p_i^+ + p_i^-) - \sum_{i \in CONSO_{zc}}(C_i^0 - c_i^-) + \sum_{i \in LCC_{zc}^+}(Lcc_i^{0} + lcc_i^ + lcc_i^-) - \sum_{i \in LCC_{zc}^-}(Lcc_i^{0} + lcc_i^ + lcc_i^-) = 0
+$$
+
+**Fonction objectif**
+
+$$
+min \sum_{i \in GROUPE}(p_i^+ \cdot \Gamma_{i_{ad}}^+ + p_i^- \cdot \Gamma_{i_{ad}}^-) + \sum_{i \in CONSO}(|c_i^-|\cdot \Gamma_i^{conso}) + \sum_{i \in LCC}(lcc_i^+ + lcc_i^-) \cdot \Gamma^{LCC}
+$$
 
 ## Modèle mathématique de la *Redispatching phase*
