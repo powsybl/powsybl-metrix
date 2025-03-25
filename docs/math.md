@@ -20,7 +20,7 @@ Enfin, cet incident a une certaine probabilité de survenir, notée $proba_{inc}
 
 ## Groupes <a id="prod_var"></a>
 Les groupes du réseau modélisé dans METRIX sont stockés dans une liste $GROUPE$.
-La production d’un groupe peut être modifiée en *Adequacy Phase*, en *Redispatching Phase*, les deux ou aucune. Nous ne considérerons dans les équations, que les groupes modifiables en toute circonstance.
+La production d’un groupe peut être modifiée en *Adequacy phase*, en *Redispatching phase*, les deux ou aucune. Nous ne considérerons dans les équations, que les groupes modifiables en toute circonstance.
 
 ### Définition des variables
 Soit $i$ un groupe de $GROUPE$.
@@ -57,7 +57,7 @@ Les domaines de définitions pour les variables liées à la production sont :
 
  - *Redispatching phase* en préventif :
 
-**Les variables et paramètres sont modifiés à partir du résultat de l’*Adequacy phase*** pour les intégrer dans la Redispatching phase : $P_i^0 = p_i^+ - p_i^- + P_i^0$. Autrement dit, la puissance de consigne en préventif prend pour valeur le résultat de l’*Adequacy phase* et les variables de production à la hausse ou à la baisse sont ensuite réinitialisées (N.B. : **c’est un comportement propre aux groupes**). Les bornes sont alors les suivantes :
+**Les variables et paramètres sont modifiés à partir du résultat de l’*Adequacy phase*** pour les intégrer dans la *Redispatching phase* : $P_i^0 = p_i^+ - p_i^- + P_i^0$. Autrement dit, la puissance de consigne en préventif prend pour valeur le résultat de l’*Adequacy phase* et les variables de production à la hausse ou à la baisse sont ensuite réinitialisées (N.B. : **c’est un comportement propre aux groupes**). Les bornes sont alors les suivantes :
 
 $$
 p_{i}^{+} \in [0; P_{i}^{max} - P_{i}^{0}]\\
@@ -124,7 +124,7 @@ $\forall i \in GROUPE, \forall inc \in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{in
 ## Consommations <a id="conso_var"></a>
 
 Les centres de consommations (appelés consommations) sont dans la liste $CONSO$. 
-La puissance utilisée par une consommation peut être modifiée aussi bien en *Adequacy* qu'en *Redispacthing* phase.
+La puissance utilisée par une consommation peut être modifiée aussi bien en *Adequacy* qu'en *Redispacthing phase*.
 
 ### Définition des variables
 
@@ -426,3 +426,5 @@ min \sum_{i \in GROUPE}(p_i^+ \cdot \Gamma_{i_{ad}}^+ + p_i^- \cdot \Gamma_{i_{a
 $$
 
 ## Modèle mathématique de la *Redispatching phase*
+
+Lors de cette phase, nous ajoutons la prise en compte du réseau via la gestion des flux sur les lignes. L'ensemble des données, variables et contraintes du problème d'*Adequacy* sont gardées et nous y ajoutons certains éléments : **aucune des contraintes précédentes n'est affectée**.
