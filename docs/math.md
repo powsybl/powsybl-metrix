@@ -85,7 +85,7 @@ En outre, la modification des variables de produciton des groupes a un coût. Pl
 
 Chaque groupe est rattaché à un unique nœud du réseau, appartenant, lui-même, à une unique zone synchrone. Pour chaque zone synchrone $zc \in ZC$, nous notons $GROUPE_{zc}$ l'ensemble des groupes appartenant à cette zone synchrone.
 
-### Contrainte de couplage des groupes
+### Contrainte de couplage des groupes <a id="coup_grp_ctr"></a>
 
 Lors de la *Redispatching phase*, nous pouvons définir dans le réseau un ensemble de groupes dont la production en N doit varier de façon proportionnelle. Notons $COUPLAGE_{GRP}$ l'ensemble des couplages groupés. Afin de définir cette variation, nous allons définir une valeur de référence pour chacun des groupes de cet ensemble. Cette valeur de référence peut être $P^{max}$, $P^{min}$, $P^{0}$ ou encore $P^{max} - P^{0}$. Celle-ci sera notée $P^{ref}$.
 
@@ -94,7 +94,7 @@ $$
 \frac{p_i^+ - p_i^-}{P_i^{ref}} = \frac{p_{i_0}^+ - p_{i_0}^-}{P_{i_0}^{ref}}
 $$
 
-### Contrainte de limitation des changements curatifs
+### Contrainte de limitation des changements curatifs <a id="lim_cur_ctr"></a>
 Cette contrainte est **facultative**, il faut indiquer dans les données METRIX que nous souhaitons l'appliquer (avec le paramètre *LimiteCurGroupe*). Cette contrainte permet de limiter la baisse cumulée de la production en curatif sur un incident $inc$ :
 $$
 \sum_{i\in GROUPE} p_{inc}^{-} \leq LimiteCurGroupe
@@ -165,7 +165,7 @@ Pout chaque groupe, nous définissons un coût pour l'*Adequacy phase* et le pr�
 
 Chaque consommation se rattache à un unique nœud du réseau, qui fait lui-même parti d’une unique zone synchrone. Pour chaque zone synchrone $zc \in ZC$ , nous notons $CONSO_{zc}$ les consos appartenant à cette zone synchrone.
 
-### Contrainte de couplage des consos
+### Contrainte de couplage des consos <a id="coup_conso_ctr"></a>
 Tout comme pour les groupes, des consommations peuvent être couplées afin que leur délestage en N soient proportionnels. Notons $COUPLAGE_{CONSO}$ la liste de ces consommations couplées.
 Soit i$_0$ le premier groupe de cette liste. $\forall i \in COUPLAGE_{CONSO}, i \neq i_0$ : 
 
@@ -336,7 +336,7 @@ Les parades sont listées dans $PARADE$. Soit $prd \in PARADE$. Chaque parade es
 $prd$ possède en paramètre la liste des couplages qu’elle ferme ($COUPLAGEFERMER_{prd}$) et ceux qu’elle ouvre ($COUPLAGEOUVRIR_{prd}$).
 On définit, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident $actPRD_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma_{prd}$.
 
-### Contrainte d'unicité des parades
+### Contrainte d'unicité des parades <a id="unicity_prd_ctr"></a>
 
 Pour chaque incident, une parade unique est applicable, $\forall inc \in INDICENT$ :
 $$
@@ -345,7 +345,7 @@ $$
 
 Dans le code, l’inégalité de cette contrainte est transformée en une égalité, par l'intermédiaire de l'introduction d'une parade “Ne Rien Faire” pour chaque incident possédant des parades topologiques en actions curatives. Cette parade n’a aucune action sur le réseau.
 
-### Contrainte d'utilisation des parades
+### Contrainte d'utilisation des parades <a id="usage_prd_ctr"></a>
 
 L'activatigon d'une parade $prd$ peut être empêchée tant qu'il existe une ligne, parmi un certain ensemble de lignes, non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble.
 
@@ -354,7 +354,7 @@ $$
 (\nexists quad \in QUADNECESSAIRES_{prd}\text{ tel que }quad \in QUADENCONTRAINTE_{inc}) \Rightarrow actPRD_{prd}^{inc} = 0
 $$
 
-### Contrainte de valorisation des poches perdues
+### Contrainte de valorisation des poches perdues <a id="val_prd_ctr"></a>
 
 Lors de son utilisation, il est possible qu’une parade rompe la connexité du réseau en déconnectant des noeuds de ce dernier. Les productions et consommations présentes sur ces nœuds vont alors être perdues. Si cela survient, une sanction économique dans la fonction objectif doit être appliquée.
 
@@ -427,4 +427,30 @@ $$
 
 ## Modèle mathématique de la *Redispatching phase*
 
-Lors de cette phase, nous ajoutons la prise en compte du réseau via la gestion des flux sur les lignes. L'ensemble des données, variables et contraintes du problème d'*Adequacy* sont gardées et nous y ajoutons certains éléments : **aucune des contraintes précédentes n'est affectée**.
+Lors de cette phase, nous ajoutons la prise en compte du réseau via la gestion des flux sur les lignes. L'ensemble des données, variables et contraintes du problème d'*Adequacy* sont gardées et nous y ajoutons certains éléments : **aucune des contraintes précédentes n'est affectée**. <o>Seule la valeur de certains paramètres peut être modifiée.</o> 
+De ce fait, les contraintes de transit apparaissent, mais aussi sur les TDs, LCCs, parades et incidents.
+
+### Contraintes
+
+#### Définies dans la section [Groupes](#prod_var)
+- [Contrainte de couplage des groupes](#coup_grp_ctr)
+- [Contrainte de limitation des changements curatifs](#lim_cur_ctr)
+
+#### Définies dans la section [Consommations](#conso_var)
+- [Contrainte de couplage des consos](#coup_conso_ctr)
+
+#### Définies dans la section [Parades](#parades_var)
+- [Contrainte d'unicité des parades](#unicity_prd_ctr)
+- [Contrainte d'utilisation des parades](#usage_prd_ctr)
+- [Contrainte de valorisation des poches perdues](#val_prd_ctr)
+
+#### Nouvelles contraintes
+
+**Équilibrage Offre-Demande en curatif**
+
+Au sein de cette phase, l'équilibre entre production et consommation doit aussi être respecté en curatif, quel que soit l'incident.
+
+$\forall inc \in INCIDENT, \forall zc \in ZC$ :
+$$
+\sum_{i \in ELEMCUR} ==> YJ : PB de cohérence
+$$
