@@ -33,14 +33,12 @@ import static org.mockito.Mockito.when;
 
 class MetrixChunkParamTest {
 
-    private CommandLine commandLine = mock(CommandLine.class);
-
-    private ToolRunningContext toolRunningContext = mock(ToolRunningContext.class);
-
-    private FileSystem fileSystem = mock(FileSystem.class);
+    private final CommandLine commandLine = mock(CommandLine.class);
+    private final ToolRunningContext toolRunningContext = mock(ToolRunningContext.class);
+    private final FileSystem fileSystem = mock(FileSystem.class);
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         when(toolRunningContext.getFileSystem()).thenReturn(fileSystem);
     }
 
