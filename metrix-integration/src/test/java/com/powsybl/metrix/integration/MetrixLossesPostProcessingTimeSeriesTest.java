@@ -9,6 +9,7 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.BinaryOperation;
@@ -62,10 +63,11 @@ class MetrixLossesPostProcessingTimeSeriesTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsCost", index, 1000d, 1000d)
         );
+        DataTableStore dataTableStore = new DataTableStore();
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
-        metrixDslDataLoader.load(network, parameters, store, mappingConfig, null);
+        metrixDslDataLoader.load(network, parameters, store, dataTableStore, mappingConfig, null);
 
         MetrixLossesPostProcessingTimeSeries lossesProcessing = new MetrixLossesPostProcessingTimeSeries(mappingConfig, null);
         postProcessingTimeSeries = lossesProcessing.createPostProcessingTimeSeries();

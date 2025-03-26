@@ -301,12 +301,12 @@ public class MetrixTool implements Tool {
         Reader remedialActionsReaderForRun = getReader(remedialActionsFile);
 
         FileSystemTimeSeriesStore resultStore = new FileSystemTimeSeriesStore(context.getFileSystem().getPath("metrix_results_" + UUID.randomUUID()));
+        DataTableStore dataTableStore = new DataTableStore();
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             ComputationRange computationRange = new ComputationRange(versions, firstVariant, variantCount);
             MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, chunkSize, ignoreLimits, ignoreEmptyFilter, false, false, false);
             TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
-            DataTableStore dataTableStore = new DataTableStore();
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, dataTableStore, logger, computationRange);
             MetrixAnalysisResult analysisResult = metrixAnalysis.runAnalysis("extern tool");

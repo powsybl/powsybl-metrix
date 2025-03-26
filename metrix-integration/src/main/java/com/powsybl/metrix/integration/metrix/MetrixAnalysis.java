@@ -119,7 +119,7 @@ public class MetrixAnalysis {
                 metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, scriptLogBufferedWriter, id);
                 timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             }
-            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, inputLogBufferedWriter).runAnalysis();
+            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, scriptLogBufferedWriter).runAnalysis();
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
             return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.getContingencies(), inputs.getRemedials());
         } catch (IOException e) {
@@ -159,7 +159,7 @@ public class MetrixAnalysis {
         boolean inError = false;
         try {
             CompletableFuture<MetrixDslData> metrixFuture = new LocalThreadExecutor<MetrixDslData>("Script_M_" + id)
-                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, writer));
+                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, dataTableStore, mappingConfig, writer));
             updateTask.accept(metrixFuture);
             MetrixDslData metrixDslData = metrixFuture.get();
             metrixDslData.setComputationType(metrixParameters.getComputationType());

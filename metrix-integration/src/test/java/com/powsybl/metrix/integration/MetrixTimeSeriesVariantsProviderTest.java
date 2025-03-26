@@ -114,7 +114,7 @@ class MetrixTimeSeriesVariantsProviderTest {
         }
 
         try (Reader metrixDslReader = Files.newBufferedReader(metrixFile, StandardCharsets.UTF_8)) {
-            MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, mappingConfig, null);
+            MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, new DataTableStore(), mappingConfig, null);
         }
 
         Range<Integer> variantRange = Range.closed(0, 1);
