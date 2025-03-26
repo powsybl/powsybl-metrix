@@ -170,6 +170,14 @@ public class MetrixTool implements Tool {
                         .argName("FILE")
                         .desc("name of gzip file containing execution logs")
                         .build());
+                options.addOption(Option.builder()
+                        .longOpt("write-ptdf")
+                        .desc("write ptdf matrix")
+                        .build());
+                options.addOption(Option.builder()
+                        .longOpt("write-lodf")
+                        .desc("write lodf matrix")
+                        .build());
                 return options;
             }
 
@@ -296,8 +304,8 @@ public class MetrixTool implements Tool {
         DataTableStore dataTableStore = new DataTableStore();
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
-            MetrixRunParameters runParameters = new MetrixRunParameters(firstVariant, variantCount, versions, chunkSize, ignoreLimits, ignoreEmptyFilter, false);
-            ComputationRange computationRange = new ComputationRange(runParameters.getVersions(), runParameters.getFirstVariant(), runParameters.getVariantCount());
+            ComputationRange computationRange = new ComputationRange(versions, firstVariant, variantCount);
+            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, chunkSize, ignoreLimits, ignoreEmptyFilter, false, false, false);
             TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, dataTableStore, logger, computationRange);

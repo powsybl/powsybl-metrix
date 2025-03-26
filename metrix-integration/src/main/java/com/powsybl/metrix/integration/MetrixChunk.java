@@ -8,7 +8,6 @@
 package com.powsybl.metrix.integration;
 
 import com.powsybl.computation.*;
-import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
@@ -27,6 +26,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.LODF_MATRIX_FILE_NAME;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.LOGS_FILE_NAME;
+import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.PTDF_MATRIX_FILE_NAME;
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
 /**
@@ -37,7 +39,6 @@ public class MetrixChunk {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixChunk.class);
 
     private static final String WORKING_DIR_PREFIX = "metrix_chunk_";
-    private static final String LOGS_FILE_NAME = "logs.txt";
     private static final String LOGS_FILE_DETAIL_PREFIX = "metrix";
     private static final String LOGS_FILE_DETAIL_SUFFIX = ".log";
 
@@ -47,33 +48,21 @@ public class MetrixChunk {
 
     private final MetrixConfig config;
 
-    private final Path remedialActionFile;
-
-    private final Path logFile;
-
-    private final Path logFileDetail;
-
-    private final Path networkPointFile;
-
     private final MetrixChunkLogger metrixChunkLogger;
 
-    private final ContingenciesProvider contingenciesProvider;
+    private final MetrixChunkParam metrixChunkParam;
 
     public MetrixChunk(Network network, ComputationManager computationManager, MetrixChunkParam metrixChunkParam, MetrixConfig config, MetrixChunkLogger metrixChunkLogger) {
         this.network = Objects.requireNonNull(network);
         this.computationManager = Objects.requireNonNull(computationManager);
         this.config = Objects.requireNonNull(config);
-        this.logFile = metrixChunkParam.logFile;
-        this.logFileDetail = metrixChunkParam.logFileDetail;
-        this.networkPointFile = metrixChunkParam.networkPointFile;
-        this.remedialActionFile = metrixChunkParam.remedialActionsFile;
-        this.contingenciesProvider = metrixChunkParam.contingenciesProvider;
         this.metrixChunkLogger = metrixChunkLogger;
+        this.metrixChunkParam = metrixChunkParam;
     }
 
     public CompletableFuture<List<TimeSeries>> run(MetrixParameters parameters, MetrixDslData metrixDslData, MetrixVariantProvider variantProvider) {
         Objects.requireNonNull(parameters);
-        Objects.requireNonNull(contingenciesProvider);
+        Objects.requireNonNull(metrixChunkParam.contingenciesProvider);
 
         Optional<MetrixChunkLogger> optionalLogger = metrixChunkLogger != null ? Optional.of(metrixChunkLogger) : Optional.empty();
         Map<String, String> variables = Map.of("PATH", config.getHomeDir().resolve("bin").toString());
@@ -83,10 +72,10 @@ public class MetrixChunk {
 
                 @Override
                 public List<CommandExecution> before(Path workingDir) throws IOException {
-                    List<CommandExecution> commandes = new MetrixInputDataGenerator(config, workingDir, metrixChunkLogger).generateMetrixInputData(
-                        remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData);
+                    List<CommandExecution> commands = new MetrixInputDataGenerator(config, workingDir, metrixChunkLogger).generateMetrixInputData(
+                        variantProvider, network, parameters, metrixDslData, metrixChunkParam);
                     optionalLogger.ifPresent(MetrixChunkLogger::beforeMetrixExecution);
-                    return commandes;
+                    return commands;
 
                 }
 
@@ -106,14 +95,18 @@ public class MetrixChunk {
                     // Retrieve log file
                     retrieveLogFile(workingDir);
 
+                    // Retrieve PTDF and LODF matrix files
+                    retrieveFile(workingDir, PTDF_MATRIX_FILE_NAME);
+                    retrieveFile(workingDir, LODF_MATRIX_FILE_NAME);
+
                     // Retrieve network point file
                     copyNetworkPointFile(workingDir);
 
-                    if (logFileDetail != null) {
+                    if (metrixChunkParam.logFileDetail != null) {
                         int i = 0;
                         Path sourcePath;
                         while (Files.exists(sourcePath = workingDir.resolve(LOGS_FILE_DETAIL_PREFIX + String.format("%03d", i) + LOGS_FILE_DETAIL_SUFFIX))) {
-                            Files.copy(sourcePath, Paths.get(String.format(logFileDetail.toString(), i)));
+                            Files.copy(sourcePath, Paths.get(String.format(metrixChunkParam.logFileDetail.toString(), i)));
                             i++;
                         }
                     }
@@ -124,26 +117,34 @@ public class MetrixChunk {
     }
 
     private void copyNetworkPointFile(Path workingDir) throws IOException {
-        if (networkPointFile != null) {
+        if (metrixChunkParam.networkPointFile != null) {
             try (Stream<Path> paths = Files.list(workingDir)) {
                 List<Path> files = paths.filter(path -> path.getFileName().toString().matches(Pattern.quote(network.getId()) + "(.*)\\.xiidm")).toList();
                 if (files.size() != 1) {
                     LOGGER.error("More than one network point files '{}'", files.size());
                     throw new MetrixException("More than one network point files " + files.size());
                 } else {
-                    Files.copy(workingDir.resolve(files.get(0)), networkPointFile);
+                    Files.copy(workingDir.resolve(files.get(0)), metrixChunkParam.networkPointFile);
                 }
             }
         }
     }
 
     private void retrieveLogFile(Path workingDir) throws IOException {
-        if (logFile != null) {
+        if (metrixChunkParam.logFile != null) {
             if (Files.exists(workingDir.resolve(LOGS_FILE_NAME))) {
-                Files.copy(workingDir.resolve(LOGS_FILE_NAME), logFile);
+                Files.copy(workingDir.resolve(LOGS_FILE_NAME), metrixChunkParam.logFile);
             } else {
                 LOGGER.warn("Failed to retrieve metrix main log file !");
             }
+        }
+    }
+
+    private void retrieveFile(Path workingDir, String fileName) throws IOException {
+        if (Files.exists(workingDir.resolve(fileName + ".gz"))) {
+            Files.copy(workingDir.resolve(fileName), Path.of(fileName));
+        } else {
+            LOGGER.warn("Failed to retrieve metrix '{}' file !", fileName);
         }
     }
 
