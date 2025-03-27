@@ -3,6 +3,7 @@ r { color: Red }
 o { color: Orange }
 g { color: Green }
 y { color: yellow}
+b { color: blue}
 </style>
 
 # Variables
@@ -288,7 +289,7 @@ $$
 lcc_i^{+} = lcc_i^{-} = 0
 $$
 
-En curatif, on se retrouve avec les encadrements suivants pourt les pilotages optimisés :
+En curatif, les encadrements pourt les pilotages optimisés sont les suivants :
 $$
 lcc_i^{+} + lcc_{i_{inc}}^{+} \leq Lcc_i^{max} - Lcc_i^{0}
 \\
@@ -334,7 +335,7 @@ $$
 Les parades sont listées dans $PARADE$. Soit $prd \in PARADE$. Chaque parade est associée à un unique incident $inc \in INCIDENT$.
 
 $prd$ possède en paramètre la liste des couplages qu’elle ferme ($COUPLAGEFERMER_{prd}$) et ceux qu’elle ouvre ($COUPLAGEOUVRIR_{prd}$).
-On définit, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident $actPRD_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma_{prd}$.
+Nous définissons, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident $actPRD_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma^{PRD}$.
 
 ### Contrainte d'unicité des parades <a id="unicity_prd_ctr"></a>
 
@@ -347,7 +348,7 @@ Dans le code, l’inégalité de cette contrainte est transformée en une égali
 
 ### Contrainte d'utilisation des parades <a id="usage_prd_ctr"></a>
 
-L'activatigon d'une parade $prd$ peut être empêchée tant qu'il existe une ligne, parmi un certain ensemble de lignes, non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble.
+L'activation d'une parade $prd$ peut être empêchée si il n'existe aucune ligne, parmi un certain ensemble de lignes, non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble.
 
 Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à l'incident $inc$. Alors $\forall inc \in INCIDENT, \forall prd \in PARADE \cap CURATIF_{inc}$ :
 $$
@@ -378,7 +379,7 @@ $$
 COUPLAGEFERMER_{prd}, COUPLAGEOUVRIR_{prd}, QUADNECESSAIRES_{prd}
 $$
 
-Valeurs : $\forall prd \in PARADE : \Gamma_{prd}$
+Valeur : $\Gamma^{PRD}$
 
 **Variables**
 
@@ -452,5 +453,95 @@ Au sein de cette phase, l'équilibre entre production et consommation doit aussi
 
 $\forall inc \in INCIDENT, \forall zc \in ZC$ :
 $$
-\sum_{i \in ELEMCUR \cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) ==> encours, mv cur par inc, mais quid de ELEMCUR ???
+\sum_{i \in CURATIF_{inc} \cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) + \sum_{i \in CURATIF_{inc} \cap CONSO_{zc}}c_{i_{inc}}^{-} + \sum_{i \in CURATIF_{inc} \cap LCC_{zc}^{+}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) - \sum_{i \in CURATIF_{inc} \cap LCC_{zc}^{-}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) = 0
+$$
+ 
+**N.B.** : Exprimée ainsi, cette contrainte devrait être fausse en cas de perte d'un groupe, car elle maintient l’EOD alors qu’une perte de groupe briserait l’équilibre. Dans les faits, METRIX prévoit en pré-traitement une “demi-bande de réglage” sur chaque groupe, en fonction de l’incident groupe le plus dimensionnant. Avant chaque résolution, METRIX abaisse la Pmax de chaque groupe de sa “demi-bande de réglage”. Lors de la perte d’un groupe, on ventile alors la production perdue sur l’ensemble des autres groupes disponibles.
+
+**Contraintes des seuils de transit**
+
+Le transit sur les lignes notifiées dans les données comme étant “À surveiller” va être calculé à chaque micro-itération de la résolution. En effet, ces lignes doivent respecter trois seuils :
+- En N
+- En N-k après actions curatives
+- En N-k après incident mais avant les actions curatives ou maneouvres (i.e. seuil ITAM)
+
+Si un de ces seuils n’est pas respecté à la fin de la micro-itération, la contrainte associée est rajoutée.
+Pour chacune de ces situations (notée $situ$), et $\forall i \in QUADRIPOLE$ (i.e. pour toute ligne) :
+$$
+transit_i^{situ} \leq Max_i^{situ}
+$$
+
+Ce transit est déterminé via l'influence d'un ensemble de variables $VARINFLU^{situ}$ sur le transit de $i$. Cet ensemble dépendra de la situation $situ$ considérée et, dans le cas d'une situtation de type N-k, de l'incident concerné. Chaque variable de cete ensemble va ainsi être associée à un coefficient d'influence. Ces coefficients dépendent de la tologie du réseau en situation $situ$ et sont stockés dans l'ensemble $COEFINFLU_i^{situ}$. Ces deux ensembles sont de même cardinalité, notée $N$, puisque toute variable a, par définition, une influence et donc un coefficient d'influence. De ce fait :
+$$
+transit_i^{situ} = \sum_{j = 1}^N COEFINFLU_i^{situ}[j] \cdot VARINFLU^{situ}[j]
+$$
+
+Pour une même ligne, la valeur du maximum $Max_i^{situ}$, les coefficients d'influence $COEFINFLU_i^{situ}$ (car la topologie du réseau peut changer avec les incidents), et surtout l'ensemble $VARINFLU^{situ}$, vont changer d'une situation à l'autre. Plus précisément, selon la situation l'ensemble $VARINFLU^{situ}$ contient :
+- En N : toutes les variables préventives des groupes, consommations, HVDCs et TDs.
+- En N-k après actions curatives : toutes les variables préventives continues des groupes, consommations, HVDCs et TDs pouvant agir en préventif, ainsi que les variables curatives continues de ces mêmes éléments pouvant agir en curatif sur l’incident concerné.
+- En N-k après un incident mais avant les actions curatives : toutes les variables préventives des groupes, consommations, HVDCs et TDs, ainsi que les variables curatives continues de tous les TDs fictifs des HVDCs en émulation AC.
+
+<b>Cas des incidents avec parades provoquant des surcharges</b>
+
+La formulation de la contrainte de transit va être différente lorsque des parades peuvent être utilisées. 
+
+Tout comme les autres contraintes de transit, ces contraintes seront ajoutées au fur et à mesure des micro-itérations, dès qu’une contrainte sur une ligne à surveiller est détectée. Si un incident possédant des parades en actions curatives engendre une contrainte sur un quadripôle, alors des contraintes pour chaque parade de cet incident seront également ajoutées. Soit $inc \in INCIDENT$ un tel incident, $quad \in QUADRIPOLE$ le quadripôle en contrainte et $prd \in PARADE \cap CURATIF_{inc}$ une parade qui est curative de cet incident.
+Posons également $M$ une très grand valeur, et $situ$ la situation "N-k après actions curatives". Deux scénarios sont possibles : 
+- soit la parade $prd$ ouvre le quadripôle $quad$, dans ce cas il n'y a pas de raison d'introduire une contrainte de transit liant $quad$ et $prd$.
+- sinon, la contrainte suivante est introduite :
+$$
+transit_{quad}^{situ} + M \cdot act_{prd}^{inc} \leq Max_{quad}^{situ} + M
+$$
+Avec $transit_{quad}^{situ}$ le transit sur $quad$ lorsque $prd$ est activée. Le transit sur $quad$ est donc seulement contraint (par rapport à $Max_{quad}^{situ}$) si $prd$ est activée (qui peut être la parade "Ne rien faire").
+
+En outre, si la parade possède une liste $QUADNECESSAIRES_{prd}$ non vide (i.e. un ensemble de lignes dont au moins une doit être en contrainte pour que $prd$ soit activable) :
+- Si $quad \notin QUADNECESSAIRES_{prd}$, alors $prd$ n'est, dans un premier temps, pas activable sur $inc$ : $act_{prd}^{inc} = 0$. $prd$ redeviendra activable, dès lors que $inc$ provoquera une surcharge sur un autre quadripôle $quad' \in QUADNECESSAIRES_{prd}$.
+- Sinon, la contrainte d'activation de la parade suivante est ajoutée :
+$$
+transit_{quad}^{situ} - M \cdot act_{prd}^{inc} \geq Max_{quad}^{situ} - M
+$$
+Cette contrainte n'a de sens que si $quad$ est en surcharge.
+
+Si les conditions nécessaires pour avoir les deux contraintes de transit précédentes sont réunies, alors utiliser la parade revient à avoir la contrainte $transit_{quad}^{situ} = Max_{quad}^{situ}$. Ce qui se traduit informatiquement par $transit_{quad}^{situ} \in [Max_{quad}^{situ} - \epsilon; Max_{quad}^{situ} + \epsilon]$ avec $\epsilon > 0 $ et très petit. Cela se traduit fonctionnellement par le fait qu'il faille être très proche de la surcharge afin de pouvoir utiliser la parade sans vraiment l'être.
+
+<b>Cas des parades provoquant des surcharges</b>
+
+En étant utilisée pour corriger une surcharge générée par un incident $inc$, une parade peut également provoquer des surcharges sur un autre quadripôle $quad$. Ainsi, $\forall prd \in PARADE \cap CURATIF_{inc}$ tq $prd$ ne coupe pas $quad$, la contrainte suivante est ajoutée :
+$$
+transit_{quad}^{situ} + M \cdot act_{prd}^{inc} \leq Max_{quad}^{situ} + M
+$$
+
+Nous ne nous préoccupons pas des variables d’activation ou des contraintes d’activation puisque ce n’est pas un incident qui provoque la surcharge, mais une parade. Seules les contraintes permettant de respecter le seuil de transit du quadripôle sont ajoutées si les parades sont utilisées.
+
+<b>Contrainte sur le nombre d’actions curatives</b>
+
+METRIX impose un nombre maximal d’actions curatives par incident. Les TD fictifs ne sont pas comptabilisés, et les lignes coupées ou fermées par les parades sont comptabilisées plutôt que les parades activées.
+
+Soit $inc \in INCIDENT, prd \in PARADE \cap CURATIF_{inc}$. Notons respectivement $NbLignesACouper$, $NbLignesAFermer$ et $NbLignesCoupees$ les cardinalités des ensembles $COUPLAGEOUVRIR_{prd}$, $COUPLAGEFERMER_{prd}$ et $DEFAUTQUAD_{inc}$. 
+
+Nous obtenons ainsi le nombre d'actions : $NbActions = NbLignesACouper + NbLignesAFermer - NbLignesCoupees$.
+
+De même, notons :
+- $ECSTF = CURATIF_{inc}/TDF$ l’ensemble des éléments curatifs de l’incident sans les TDs fictifs. 
+- $CoutAction$ un ensemble de coefficients, de même cardinalité que $ECSTF$, tq $\forall j \in ECSTF$ :
+   - $CoutAction[j] = 0.5$ si $j$ est un groupe ou une conso ;
+   - $CoutAction[j] = 1$ sinon.
+
+Enfin, notons $NbMaxActCur$ le nombre maximum d’actions curatives autorisées sur un incident.
+
+La contrainte de formule ainsi :
+$$
+NbActions \cdot act_{prd}^{inc} + \sum_{j \in ECSTF} act_{j}^{inc} \cdot CoutAction[j] < NbMaxActCur
+$$
+
+### Fonction objectif 
+
+Notons, $\forall inc \in INCIDENT, NbCtre_{inc}$ le nombre de contraintes dues à $inc$. Posons également :
+$$
+\gamma_{inc}^{tot} = \sum_{i \in GROUPE \cap CURATIF_{inc}} (p_{i_{inc}}^+ \cdot \Gamma_{i_{red}}^{+} + p_{i_{inc}}^- \cdot \Gamma_{i_{red}}^{-}) \cdot proba_{inc} + \sum_{i \in CONSO \cap CURATIF_{inc}} (|c_{i_{inc}}^-| \cdot \Gamma_{i_{cur}}^{CONSO}) \cdot proba_{inc} + \sum_{i \in LCC \cap CURATIF_{inc}} (td_{i_{inc}}^+ + td_{i_{inc}}^-) \cdot \Gamma^{TD} \cdot proba_{inc} + \sum_{prd \in PARADE \cap CURATIF_{inc}} (act_{prd}^{inc} \cdot \Gamma^{PRD} \cdot proba_{inc} \cdot  NbCtre_{inc} + val_{prd}^{inc})
+$$
+
+Nous obetnons la fonction objectif suivante : 
+$$
+min \sum_{i \in GROUPE} (p_{i}^+ \cdot \Gamma_{i_{red}}^{+} + p_{i}^- \cdot \Gamma_{i_{red}}^{-}) + \sum_{i \in CONSO} (|c_{i}^-| \cdot \Gamma_{i}^{CONSO}) + \sum_{i \in LCC} (lcc_{i}^+ + lcc_{i}^-) \cdot \Gamma^{LCC} + \sum_{i \in TD} (td_{i}^+ + td_{i}^-) \cdot \Gamma^{TD} + + \sum_{inc \in INCIDENT} \gamma_{inc}^{tot}
 $$

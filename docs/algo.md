@@ -261,7 +261,7 @@ Le niveau de délestage est défini par un seuil qui correspond au pourcentage d
 
 Par défaut, si rien n’est spécifié, toutes les consommations sont délestables à 100% dans les deux phases. Dès qu’au moins une consommation est configurée, seules les consommations configurées sont délestables.
 Si trop peu de consommations sont délestables, le modèle peut ne pas pouvoir trouver de solution aux contraintes et retournera un code d’erreur 1.
-Si on souhaite modéliser plusieurs coûts de délestage/effacement associés à différents seuils il faut créer des charges fictives supplémentaires sur le même noeud et répartir la consommation active sur ces charges.
+Si nous souhaitons modéliser plusieurs coûts de délestage/effacement associés à différents seuils il faut créer des charges fictives supplémentaires sur le même noeud et répartir la consommation active sur ces charges.
 
 Cf. [Variables de consommation](#conso_var)
 
