@@ -543,5 +543,5 @@ $$
 
 Nous obetnons la fonction objectif suivante : 
 $$
-min \sum_{i \in GROUPE} (p_{i}^+ \cdot \Gamma_{i_{red}}^{+} + p_{i}^- \cdot \Gamma_{i_{red}}^{-}) + \sum_{i \in CONSO} (|c_{i}^-| \cdot \Gamma_{i}^{CONSO}) + \sum_{i \in LCC} (lcc_{i}^+ + lcc_{i}^-) \cdot \Gamma^{LCC} + \sum_{i \in TD} (td_{i}^+ + td_{i}^-) \cdot \Gamma^{TD} + + \sum_{inc \in INCIDENT} \gamma_{inc}^{tot}
+min \sum_{i \in GROUPE} (p_{i}^+ \cdot \Gamma_{i_{red}}^{+} + p_{i}^- \cdot \Gamma_{i_{red}}^{-}) + \sum_{i \in CONSO} (|c_{i}^-| \cdot \Gamma_{i}^{CONSO}) + \sum_{i \in LCC} (lcc_{i}^+ + lcc_{i}^-) \cdot \Gamma^{LCC} + \sum_{i \in TD} (td_{i}^+ + td_{i}^-) \cdot \Gamma^{TD} + \sum_{inc \in INCIDENT} \gamma_{inc}^{tot}
 $$
