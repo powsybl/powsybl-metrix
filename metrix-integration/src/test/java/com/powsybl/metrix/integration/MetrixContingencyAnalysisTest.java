@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableList;
 import com.powsybl.contingency.BranchContingency;
 import com.powsybl.contingency.BusbarSectionContingency;
 import com.powsybl.contingency.ContingenciesProvider;
@@ -26,6 +25,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
@@ -42,7 +42,7 @@ class MetrixContingencyAnalysisTest {
 
     @BeforeEach
     void setUp() {
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     private String getWarningInvalidContingency(String contingency, String equipment) {
