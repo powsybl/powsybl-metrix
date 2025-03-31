@@ -7,10 +7,13 @@
  */
 package com.powsybl.metrix.mapping
 
+
 import com.powsybl.iidm.network.Bus
 import com.powsybl.iidm.network.Injection
 import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.TwoWindingsTransformer
+import com.powsybl.scripting.groovy.GroovyScriptExtension
+import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.ast.NodeCalc
@@ -103,8 +106,18 @@ class TimeSeriesDslLoader {
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, LogDslLoader logDslLoader, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = ComputationRange.check(computationRange, store)
         ComputationRange fullComputationRange = ComputationRange.check(store)
+
+        // Context objects
+        Map<Class<?>, Object> contextObjects = new HashMap<>()
+        contextObjects.put(DataTableStore.class, dataTableStore)
+
+        // External Bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
-        DataTableDslLoader.bind(binding, dataTableStore)
+
+        // Bindings through extensions
+        Iterable<GroovyScriptExtension> extensions = ServiceLoader.load(GroovyScriptExtension.class, GroovyScripts.class.getClassLoader())
+        extensions.forEach { it.load(binding, contextObjects) }
+
         TimeSeriesMappingConfigStats stats = new TimeSeriesMappingConfigStats(store, checkedComputationRange)
 
         // map the base case to network variable

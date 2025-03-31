@@ -79,15 +79,15 @@ public class DataTable {
     public List<String> values(String columnName, boolean isWithName) {
         checkColumnNames(columnName);
         return tabValues.stream().map(attributeNameToValue -> getValue(columnName, isWithName) + attributeNameToValue.getValue(columnName))
-            .toList();
+            .collect(Collectors.toList());
     }
 
     private List<List<String>> values(boolean isWithName) {
         return tabValues.stream().map(values ->
                 values.getAttributeNames().stream()
                     .map(attributeName -> getValue(attributeName, isWithName) + values.getValue(attributeName))
-                    .toList())
-            .toList();
+                    .collect(Collectors.toList()))
+            .collect(Collectors.toList());
     }
 
     public static DataTable toDataTable(List<String> header, List<List<String>> content) {
@@ -95,7 +95,8 @@ public class DataTable {
         DataTable dataTable = new DataTable();
         content.forEach(line -> {
             AttributeNameToValue attributeNameToValue = new AttributeNameToValue();
-            for (int column = 0; column < header.size(); column++) {
+            int headerSize = header.size();
+            for (int column = 0; column < headerSize; column++) {
                 attributeNameToValue.put(header.get(column), line.get(column));
             }
             dataTable.addAttributeNameToValue(attributeNameToValue);

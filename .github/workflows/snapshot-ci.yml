@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Set up JDK 17
-        uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9 # v4.2.1
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -41,7 +41,7 @@ jobs:
 
       # Build powsybl-core on main branch
       - name: Checkout core sources
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: powsybl/powsybl-core
           ref: main
@@ -59,7 +59,7 @@ jobs:
       # The script check_integration_branch.sh is located in the workflow folder of the repository
       # It is necessary for checking out the integration branch if it exists
       - name: Checkout script
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
          sparse-checkout: |
            .github
@@ -71,7 +71,7 @@ jobs:
         run: ${{ env.SCRIPTS_PATH }}/check_integration_branch.sh "https://github.com/powsybl/powsybl-metrix.git" ${{ env.CORE_VERSION }}
 
       - name: Checkout powsybl-metrix
-        uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: powsybl/powsybl-metrix
           ref: ${{ env.INTEGRATION_BRANCH }}
@@ -105,7 +105,7 @@ jobs:
 
       - name: Upload Metrix iTools archive
         if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
         with:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
           path: ${{ github.workspace }}/powsybl-metrix/metrix-distribution/target/metrix
@@ -143,9 +143,121 @@ jobs:
 
       - name: Upload Metrix Simulator archive
         if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808 # 4.3.3
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
         with:
           name: metrix-simulator-ubuntu-${{ env.MAVEN_PROJECT_VERSION }}
           path: |
             powsybl-metrix/metrix-simulator/build/install/bin
             powsybl-metrix/metrix-simulator/build/install/etc
+
+      - name: Store job result
+        if: always()
+        run: |
+          echo "${{ matrix.os }}=${{ job.status }}" >> job_result_${{ matrix.os }}.txt
+
+      - name: Upload job result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: job-results_${{ matrix.os }}
+          path: job_result_${{ matrix.os }}.txt
+
+    outputs:
+      core-version: ${{ env.CORE_VERSION }}
+      metrix-branch: ${{ env.INTEGRATION_BRANCH }}
+
+  # Slack notification on failure
+  notify_slack:
+    needs: build_powsybl_metrix
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Download job results
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+
+      - name: Combine job results
+        run: |
+          for dir in job-results_*; do
+            cat "$dir"/* >> combined_job_results.txt
+          done
+
+      - name: Determine workflow status
+        id: workflow_status
+        run: |
+          if grep -q "failure" combined_job_results.txt; then
+            echo "icon=❌" >> $GITHUB_OUTPUT
+            echo "status=Failed" >> $GITHUB_OUTPUT
+          else
+            echo "icon=✅" >> $GITHUB_OUTPUT
+            echo "status=Successful" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Format job results
+        id: format_results
+        run: |
+          formatted=""
+          while IFS='=' read -r os status; do
+            icon=$([ "$status" == "success" ] && echo ":white_check_mark:" || echo ":x:")
+            formatted+="${icon} Build powsybl-metrix on *${os}*\\n"
+          done < combined_job_results.txt
+          formatted="${formatted%\\n}"  # Remove the last newline
+          echo "formatted_results=${formatted}" >> $GITHUB_OUTPUT
+
+      - name: Prepare Slack payload
+        id: prepare_payload
+        run: |
+          if [ "${{ steps.workflow_status.outputs.status }}" == "Successful" ]; then
+            echo 'payload<<EOF' >> $GITHUB_OUTPUT
+            echo '{
+              "attachments": [{
+                "color": "#319f4b",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*\n\nBranch built: ${{ needs.build_powsybl_metrix.outputs.metrix-branch }}\nPowSyBl-Core version used: ${{ needs.build_powsybl_metrix.outputs.core-version }}\n\nSee logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
+                    }
+                  }
+                ]
+              }]
+            }' >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+          else
+            echo 'payload<<EOF' >> $GITHUB_OUTPUT
+            echo '{
+              "attachments": [{
+                "color": "#f64538",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "${{ steps.workflow_status.outputs.icon }} *${{ steps.workflow_status.outputs.status }} workflow: Snapshot-CI on <https://github.com/powsybl/powsybl-metrix|powsybl-metrix>*\n\nBranch built: ${{ needs.build_powsybl_metrix.outputs.metrix-branch }}\nPowSyBl-Core version used: ${{ needs.build_powsybl_metrix.outputs.core-version }}"
+                    }
+                  },
+                  {
+                    "type": "divider"
+                  },
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "*Workflow details:*\n\n${{ steps.format_results.outputs.formatted_results }}\n\n@channel - See logs on <https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}|GitHub>"
+                    }
+                  }
+                ]
+              }]
+            }' >> $GITHUB_OUTPUT
+            echo 'EOF' >> $GITHUB_OUTPUT
+          fi
+
+      - name: Send Slack Notification
+        uses: 8398a7/action-slack@28ba43ae48961b90635b50953d216767a6bea486 # v3.16.2
+        if: ${{ steps.workflow_status.outputs.status != 'Successful' || github.event_name == 'workflow_dispatch' }}
+        with:
+          author_name: 'powsybl-metrix on GitHub'
+          status: custom
+          custom_payload: ${{ steps.prepare_payload.outputs.payload }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_POWSYBL_WEBHOOK_URL }}

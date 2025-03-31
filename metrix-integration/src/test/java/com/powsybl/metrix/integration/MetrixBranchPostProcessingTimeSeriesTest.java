@@ -248,7 +248,7 @@ class MetrixBranchPostProcessingTimeSeriesTest {
         TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingScript);
         TimeSeriesMappingConfig mappingConfig = timeSeriesDslLoader.load(network, mappingParameters, store, new DataTableStore(), null);
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
-        MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, mappingConfig, null);
+        MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, new DataTableStore(), mappingConfig, null);
 
         MetrixBranchPostProcessingTimeSeries branchProcessing = new MetrixBranchPostProcessingTimeSeries(dslData, mappingConfig, metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = branchProcessing.createPostProcessingTimeSeries();

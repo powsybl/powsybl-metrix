@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.powsybl.metrix.mapping.ComputationRange;
+
 import java.util.Collections;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -30,15 +32,22 @@ public class MetrixRunParameters {
 
     private final boolean isNetworkComputation;
 
-    public MetrixRunParameters(int firstVariant, int variantCount, SortedSet<Integer> versions, int chunkSize,
-                               boolean ignoreLimits, boolean ignoreEmptyFilter, boolean isNetworkComputation) {
-        this.firstVariant = firstVariant;
-        this.variantCount = variantCount;
-        this.versions = new TreeSet<>(versions);
+    private final boolean writePtdfMatrix;
+
+    private final boolean writeLodfMatrix;
+
+    public MetrixRunParameters(ComputationRange computationRange, int chunkSize,
+                               boolean ignoreLimits, boolean ignoreEmptyFilter, boolean isNetworkComputation,
+                               boolean writePtdfMatrix, boolean writeLodfMatrix) {
+        this.firstVariant = computationRange.getFirstVariant();
+        this.variantCount = computationRange.getVariantCount();
+        this.versions = new TreeSet<>(computationRange.getVersions());
         this.chunkSize = chunkSize;
         this.ignoreLimits = ignoreLimits;
         this.ignoreEmptyFilter = ignoreEmptyFilter;
         this.isNetworkComputation = isNetworkComputation;
+        this.writePtdfMatrix = writePtdfMatrix;
+        this.writeLodfMatrix = writeLodfMatrix;
     }
 
     public int getFirstVariant() {
@@ -67,5 +76,13 @@ public class MetrixRunParameters {
 
     public boolean isNetworkComputation() {
         return isNetworkComputation;
+    }
+
+    public boolean writePtdfMatrix() {
+        return writePtdfMatrix;
+    }
+
+    public boolean writeLodfMatrix() {
+        return writeLodfMatrix;
     }
 }

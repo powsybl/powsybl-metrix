@@ -11,6 +11,7 @@ import com.google.common.collect.Sets;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
+import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
@@ -91,10 +92,10 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         NodeCalc expectedRedispatchingDown = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0)));
         verifyRedispatching(generatorName, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
 
-        NodeCalc expectedRedispatchingUpCost = BinaryOperation.multiply(expectedRedispatchingUp, UnaryOperation.abs(tsRedispatchingUpCosts));
+        NodeCalc expectedRedispatchingUpCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts));
         verifyRedispatchingCost(generatorName, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
 
-        NodeCalc expectedRedispatchingDownCost = BinaryOperation.multiply(expectedRedispatchingDown, UnaryOperation.abs(tsRedispatchingDownCosts));
+        NodeCalc expectedRedispatchingDownCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingDown, tsRedispatchingDownCosts));
         verifyRedispatchingCost(generatorName, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
 
         NodeCalc expectedRedispatchingCost = BinaryOperation.plus(expectedRedispatchingUpCost, expectedRedispatchingDownCost);
@@ -122,7 +123,7 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
-        MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, mappingConfig, null);
+        MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, new DataTableStore(), mappingConfig, null);
 
         MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = generatorProcessing.createPostProcessingTimeSeries();

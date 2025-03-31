@@ -7,7 +7,13 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.powsybl.contingency.*;
+import com.google.common.collect.ImmutableList;
+import com.powsybl.contingency.BranchContingency;
+import com.powsybl.contingency.BusbarSectionContingency;
+import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.Contingency;
+import com.powsybl.contingency.ContingencyElement;
+import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
@@ -35,7 +41,7 @@ class MetrixContingencyAnalysisTest {
     private Network network;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
     }
 
@@ -63,7 +69,7 @@ class MetrixContingencyAnalysisTest {
     private void metrixDslDataContingencyAnalysisTest(MetrixDslData metrixDslData, String expected) throws IOException {
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), new EmptyContingencyListProvider(), network, metrixDslData, bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), new EmptyContingencyListProvider(), network, metrixDslData, null, bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -78,7 +84,7 @@ class MetrixContingencyAnalysisTest {
 
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -166,7 +172,7 @@ class MetrixContingencyAnalysisTest {
                     String.join(System.lineSeparator(),
                             "NB;1;",
                             "ctyId;1;FP.AND1  FVERGE1  1;")
-            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), bufferedWriter);
+            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), null, bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
