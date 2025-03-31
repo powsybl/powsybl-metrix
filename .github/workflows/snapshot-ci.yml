@@ -56,7 +56,7 @@ jobs:
         working-directory: ./powsybl-core
 
       # Checkout script
-      # The script check_integration_branch.sh is located in the workflow folder of the repository
+      # The script check_snapshot_branch.sh is located in the workflow folder of the repository
       # It is necessary for checking out the integration branch if it exists
       - name: Checkout script
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -68,13 +68,13 @@ jobs:
 
       # Build powsybl-metrix
       - name: Checking for powsybl-metrix snapshot branch
-        run: ${{ env.SCRIPTS_PATH }}/check_integration_branch.sh "https://github.com/powsybl/powsybl-metrix.git" ${{ env.CORE_VERSION }}
+        run: ${{ env.SCRIPTS_PATH }}/check_snapshot_branch.sh "https://github.com/powsybl/powsybl-metrix.git" ${{ env.CORE_VERSION }}
 
       - name: Checkout powsybl-metrix
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           repository: powsybl/powsybl-metrix
-          ref: ${{ env.INTEGRATION_BRANCH }}
+          ref: ${{ env.SNAPSHOT_BRANCH }}
           path: powsybl-metrix
           submodules: true
 
@@ -164,7 +164,7 @@ jobs:
 
     outputs:
       core-version: ${{ env.CORE_VERSION }}
-      metrix-branch: ${{ env.INTEGRATION_BRANCH }}
+      metrix-branch: ${{ env.SNAPSHOT_BRANCH }}
 
   # Slack notification on failure
   notify_slack:
