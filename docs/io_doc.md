@@ -300,7 +300,7 @@ N.B. : Les parades renseignées ne sont pas considérées si le mode de lancemen
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
 Plusieurs fichiers de sortie sont ou peuvent être générés à l'issue d'une simulation.
 
-## Fichier de résultats
+## Fichier de résultats <a id="output_file"></a>
 Il y a un seul fichier de résultats par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*. Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier commence par l’identifiant du tableau. 
 
 Pour chaque champ de chaque tableau, on définit :
@@ -321,7 +321,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 
 **Note** : Tableau disponible si l'option '*--all-outputs*' est donnée lors du lancement à METRIX simulator.
 
-**Tableau C1** (une seule ligne) : compte rendu d’exécution : ```C1 ;COMPTE RENDU;CODE;```
+**Tableau C1** (une seule ligne) : compte rendu d’exécution : ```C1 ;COMPTE RENDU;CODE;``` <a id="status_output"></a> 
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Code d’erreur | I | | **0** si « OK », sinon<br>**-1** = erreur lors de la résolution<br>**1**  = si pas de solution au problème (problème infaisable, souvent cause EOD)<br>**2**  = trop de contraintes (max atteint)<br>**3** = trop de micro-itération (max atteint)<br>**4** = données de variante non cohérentes (variante ignorée) |
@@ -406,7 +406,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Nom du couplage | C | | Nom donné au couplage dans la configuration |
 | Variation | R | MW | Somme des variations sur l’ensemble des groupes du couplage |
 
-**Tableau R3** : transits en N par quadripôle : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```
+**Tableau R3** <a id="table_r3"></a>: transits en N par quadripôle : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom du quadripôle | C | | |		
@@ -427,7 +427,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 
 **Note** : ce tableau n'est pas écrit si il n'y a pas d'incident sur le réseau.
 
-**Tableau R3C** : transits spécifique sur incident : ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```
+**Tableau R3C** <a id="table_r3c"></a>: transits spécifique sur incident : ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom du quadripôle | C | | |		
@@ -441,7 +441,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Numéro d’incident | I | | 0 pour N, sinon cf. [tableau C4](#table_c4) |
 | Variation marginale | R | u.m. | Impact sur la fonction objectif d’une augmentation de 1MW sur le seuil (N, N-k ou AM) de cet ouvrage |
 
-**Tableau R4B** : variations marginales détaillées par liaison, en N et sur incident (seuls les couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont stockées dans le tableau) : ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;```
+**Tableau R4B** <a id="table_r4b"></a>: variations marginales détaillées par liaison, en N et sur incident (seuls les couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont stockées dans le tableau) : ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom du quadripôle | C | | |		
@@ -451,7 +451,7 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Volume de variation | R | MW | Coefficient de sensibilité de l’ouvrage |
 | Coût de la variation | R | u.m. | Contribution de cette variable au coût marginal |
 
-**Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées : ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```
+**Tableau R5** <a id="table_r5"></a>: résultats par transformateur déphaseur. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées : ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom du TD	C | | |
@@ -465,13 +465,13 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Nom du TD | C | | |
 | Consigne en curatif du TD | R | ° ou MW | Selon le mode de pilotage du TD |
 
-**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées : ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
+**Tableau R6** <a id="table_r6"></a>: résultats par ligne à courant continu. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées : ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator, ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Nom de la ligne à courant continu | C | | |		
 | Puissance transitant | R | MW | |
-| Variation marginale préventive de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
-| Variation marginale de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives) |
+| Variation marginale préventive de la HVDC | R | u.m | Gain sur la fonction de coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
+| Variation marginale de la HVDC | R | u.m | Gain sur la fonction de coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives) |
 | Transit hor réseau | R | MW | (résultat uniquement présent si l'opton '*--all-outputs*' est donnée lors du lancement à METRIX simulator) |
  
 **Tableau R6B** <a id="table_r6b"></a>: résultats par actions curatives des HVDC. Seules les liaisons dont la consigne curative diffère de la consigne préventive sont affichées : ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```
@@ -480,9 +480,9 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Numéro de l’incident  | R | | Référence à la numérotation de la [table C4](#table_c4) |
 | Nom de la HVDC | C | | |
 | Consigne en curatif de la HVDC | R | MW | |
-| Variation marginale curative de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC pour cet incident (non utilisé) |
+| Variation marginale curative de la HVDC | R | u.m | Gain sur la fonction de coût d’1 MW de plus sur la HVDC pour cet incident (non utilisé) |
 
-**Tableau R7** : redispatching par filière : ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;```
+**Tableau R7** <a id="table_r7"></a>:: redispatching par filière : ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Filière | C | | |
@@ -491,29 +491,29 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Redispatching curatif à la baisse | R | MW | ∑ groupes de la filière |
 | Redispatching curatif à la hausse | R | MW | ∑ groupes de la filière |
 
-**Tableau R8** : résultats sur les pertes calculées en actif-seul : ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```
+**Tableau R8** <a id="table_r8"></a>: résultats sur les pertes calculées en actif-seul : ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Volume de pertes calculé | R | MW | |	
 | Taux de pertes | R | % | |
 
-**Tableau R8B** : résultats sur les pertes par région : ```R8B ;PERTES;REGION;VOLUME CALCULE;```
+**Tableau R8B** <a id="table_r8b"></a>: résultats sur les pertes par région : ```R8B ;PERTES;REGION;VOLUME CALCULE;```
 | | | | |
 | :-- | :-- | :-- | :-- |
-| Région ou HVDC | R | MW | |
-| Volume de pertes calculé | R | % | |
+| Région ou HVDC | C | MW | |
+| Volume de pertes calculé | R | MW | |
 
-**Tableau R9** : résultats de la fonction objectif : ```R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT CONSO CUR;```
+**Tableau R9** <a id="table_r9"></a>: résultats de la fonction objectif : ```R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT CONSO CUR;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Coût de redispatching | R | u.m. | Coût des ajustements préventifs de production |
-| Coût de la défaillance | R | u.m. | Coût du délestage préventif |
-| Volume de dépassement sur incident | | MW | Somme des dépassements de seuils sur incidents pour les ouvrages surveillés |
-| Volume de dépassement en N | | MW | Somme des dépassement en N pour les ouvrages surveillés |
-| Coût de redispatching curatif | | u.m. | Coût des ajustements curatifs de production |
-| Coût d’effacement curatif | | u.m. | Coût des ajustements curatifs de consommation |
+| Coût de la défaillance | R | u.m. | Coût des ajustements préventifs de consommation (i.e. du délestage préventif) |
+| Volume de dépassement sur incident | R | MW | Somme des dépassements de seuils sur incidents pour les ouvrages surveillés |
+| Volume de dépassement en N | R | MW | Somme des dépassement en N pour les ouvrages surveillés |
+| Coût de redispatching curatif | R | u.m. | Coût des ajustements curatifs de production |
+| Coût d’effacement curatif | R | u.m. | Coût des ajustements curatifs de consommation (i.e. du délestage curatif) |
 
-**Tableau R10** : résultats du curatif topologique (parades sélectionnées). Les parades « ne rien faire » ne sont pas affichées : ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```
+**Tableau R10** <a id="table_r10"></a>: résultats du curatif topologique (parades sélectionnées). Les parades « ne rien faire » ne sont pas affichées : ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Numéro de l’incident | I | | Référence à la numérotation de la [table C4](#table_c4) |

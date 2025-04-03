@@ -576,12 +576,109 @@ Une variante METRIX peut modifier :
 
 ## Sorties de METRIX
 
-### Statur du calcul
+Les résultats de METRIX se présentent sous forme de chronique avec une valeur par variante. Pour réduire le volume des sorties, seules les valeurs qui diffèrent des données d’entrée sont fournies.
+
+Cf. [Fichier de résultats](#output_file)
+
+### Statut du calcul
+
+Cf. [Tableau C1](#status_output)
+
 ### Transits sur les ouvrages
+
+Cf. [Tableau R3](#table_r3), [Tableau R3B](#table_r3b) et [Tableau R3C](#table_r3c).
+
 ### Résultats sur les variables de contrôles
+
+Cf. [Tableau R5](#table_r5), [Tableau R5B](#table_r5b), [Tableau R6](#table_r6) et [Tableau R6B](#table_r6b).
+
+### Résultats sur les parades
+
+Cf. [Tableau R10](#table_r10)
+
 ### Le coût GRT ou de 'redispatching'
+
+Cf. [Tableau R7](#table_r7)
+
+### La défaillance du réseau
+
+En résultat de METRIX, l’utilisateur dispose du volume de dépassement et des coût en préventif et en curatif (i.e. post-incident).
+
+Cf. [Tableau R9](#table_r9)
+
 ### Pertes calculées a postétiori <a id="posteriori_losses"></a>
+
+À l'issue du calcul, METRIX calcule les pertes a posteriori.
+
+Cf. [Tableau R8](#table_r8) et [Tableau R8B](#table_r8b).
+
+#### Sur les lignes AC
+
+Compte tenu des flux actifs qu’il a calculés, il estime les pertes sur les dipôles par la formule : $pertes = R \times (\frac{T}{V})^2$ où $R$ est la résistance de la ligne et $T$ la puissance active transitant sur le quadripôle.
+
+**N.B.** : il s’agit d’une estimation des pertes sur la partie active seulement, on suppose que le transit réactif est nul.
+
+#### Sur les lignes DC
+
+En ce qui concerne les liaisons à courant continu, METRIX trouve une puissance de consigne $P$ appliquée au redresseur. Les pertes sur les liaisons à courant continu sont décomposées en 3 parties : les pertes dans chacun des 2 convertisseurs et les pertes dans le câble. Le détail du calcul ci-dessous ($red$=redresseur et $ond$=onduleur):
+ - **Pertes dans la station de conversion côté redresseur**
+ Les pertes sont proportionnelles à la puissance transitée dans la station : $P$. METRIX utilise le coefficient de pertes par station. $PerteStationOr=coeffPerteOr \times P$. À l’origine du câble, il y a donc la puissance $P_{orCable}=(1−coeffPerteOr)\times P$.
+ - **Pertes dans le câble**
+ $pertesCable=R\times I_{DC}^{2}$ avec $I_{DC}=\frac{(V_{DC}^{red}−V_{DC}^{ond})}{R}$, $P_{orCable}=V_{DC}^{red} \times I_{DC}$ et $V_{DC}^{ond}=V_{DC}^{nom}$ (i.e. la tension à l’onduleur est égale à la tension nominale DC). La valeur de $V_{DC}^{red}$ est trouvée en résolvant un polynôme de degré 2 en $V_{DC}^{red}$, ce qui permet de déterminer les pertes sur le câble.
+ - **Pertes dans la station de conversion côté onduleur**
+ Les pertes sont proportionnelles à la puissance transitée dans la  station $P_{exCable}$. METRIX utilise le coefficient de perte par station : $PerteStationOnduleur = coeffPerteOnduleur \times P_{exCable}$, avec $P_{exCable} = P- pertesCable$. Ce calcul de perte dans les liaisons DC est le même que celui utilisé dans Convergence.
+
 ### Variations marginales
 
+Les variations marginales permettent d’avoir des informations sur les contraintes qui limitent la solution.
+Cf. [Tableau R4](#table_r4) et [Tableau R4B](#table_r4b).
 
+#### Variations marginales sur les lignes AC
 
+La variation marginale (VM) d’une ligne à courant alternatif (AC) indique le gain sur la fonction de coût si la limite de transit sur la ligne AC était d’1MW supplémentaire. Si ce qui limitait le problème était :
+- Un transit en N, la VM donne le gain sur la fonction de coût si le seuil en N de la ligne était d’1 MW supplémentaire.
+- Un transit en N-1, la VM donne le gain sur la fonction de coût si le seuil en N-1 de la ligne était d’1 MW supplémentaire. Pour une VM en N-1, il est possible de savoir quel est l’incident qui a conduit à cette contrainte limitante.
+
+#### Variations marginales sur les lignes HVDC
+
+Une VM sur une HVDC indique le gain sur la fonction de coût si la capacité de la liaison HVDC était d’1 MW supplémentaire.
+Dans le cas où la liaison HVDC peut agir en curatif plusieurs variations marginales seront données :
+- La VM globale HVDC indique le gain sur la fonction de coût si la capacité de la liaison HVDC était d’1 MW supplémentaire. Le gain est ensuite détaillé dans les VM suivantes.
+- La VM préventive correspond au gain sur la fonction de coût si la plage admissible pour la consigne préventive était augmentée de 1 MW.
+- La VM curative par incident i correspond au gain sur la fonction de coût si la plage admissible pour la consigne curative sur l’incident i était augmentée de 1 MW.
+
+**N.B.** : aujourd’hui, dans Assess, il n’y a, en pratique, qu’une plage admissible pour la consigne des HVDC. Cette plage est utilisée par les HVDC en préventif comme en curatif. Les 2 dernières VM permettent cependant d’apporter des informations supplémentaires : la VM globale annonce un gain lorsque la plage admissible est augmentée d'1 MW. Grâce aux VM préventives et curatives, nous pouvons savoir si ce MW supplémentaire disponible serait utilisé en préventif ou en curatif et sur quel incident.
+
+**Remarque** : les VM d’une HVDC sont directement liées à la borne de la HVDC (i.e. plage admissible). Il est donc nécessaire de prêter attention à l’interprétation si les bornes des HVDC sont tirées des variantes : d’une variante à l’autre, le gain annoncé par la VM ne correspond pas au même MW supplémentaire (à la même plage de fonctionnement).
+
+#### Variations marginales sur les consommations
+
+Si le mécanisme d’ajustement n’est pas simulé, la VM est donnée pour toutes les consommations. La VM de consommation indique l’impact sur la fonction de coût si la consommation était d’1MW de moins.
+
+Inversement, si le mécanisme d’ajustement est simulé, la VM de consommation n’est retournée que sur les noeuds pour lesquels la défaillance est non nulle. Pour les autres noeuds, METRIX n’est pas capable d’évaluer le gain.
+
+#### Variations marginales sur les sections surveillées
+
+La VM d’une section surveillée indique le gain sur la fonction coût si la borne supérieure de la somme des transit sur la section était augmenté d’1 MW.
+
+### Limitations
+
+#### Domaine de validité limité
+
+Les VM non nulles pointent un ensemble de lignes ou de contraintes de sécurité qui ont un impact direct sur la fonction à minimiser : ce sont les premières contraintes à résoudre pour faire baisser le coût de redispatching. 
+La valeur de la VM donne un gain sur la fonction coût pour une modification du seuil d’1MW ; toutefois, il n'est pas garanti que cette VM fonctionne dans le cas où la variation n'est plus marginale (i.e. variation de nombreux MW). Autrement dit, augmenter le seuil N d’une ligne de $x$ MW, n'apportera peut-être pas un gain sur la fonction de coût de $x$ fois celui de la VM. 
+Prenons l’exemple d’une antenne composée de 2 lignes, la première ayant une IST plus faible que la 2ème. La VM sera associée à la première ligne. Toutefois, si nous augmentons l’IMAP de cette première ligne, la 2ème peut devenir limitante et ainsi le gain sera moindre par rapport à ce qu’annonçait la VM. Ce même phénomène peut se produire avec des groupes qui rentrent en butée Pmin ou Pmax.
+
+#### Toutes choses égales par ailleurs
+
+Le gain exprimé par la VM doit être compris « toute chose égale par ailleurs », c'est-à-dire que ce gain correspond au gain si seulement la capacité de la ligne est augmentée. Or, généralement, un tel changement sur le terrain implique également une modification de la réactance de la ligne. Cela modifierait donc le résultat.
+
+#### Contraintes masquées
+
+Comme décrit précédemment, la variation marginale indique le gain sur la fonction de coût si la plage admissible de la ligne concernée était élargie. Par contre, ce résultat ne tient pas compte des limites des autres lignes. Par conséquent, en relâchant la limite sur une ligne, une autre ligne devenir limitante pour le problème.
+METRIX n’a pas la possibilité d’expliciter à l’avance ces contraintes jugées masquées.
+
+### Conclusions sur les VM
+
+Les VM apportent des informations intéressantes pour l’étape d’analyse des contraintes que ce soit avant renforcement, ou après renforcement (contraintes résiduelles).
+L’intérêt des VM est de pointer parmi toutes les lignes surveillées et les incidents, des éléments coûteux pour la fonction objectif. Un interclassement de ces VM permet de classer l’importance de ces contraintes.
