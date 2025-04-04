@@ -64,7 +64,7 @@ else()
   set(SUITESPARSE_HOME ${install_dir})
 endif()
 
-set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
+set(sirius_solver_url https://github.com/rolnico/sirius-solver.git)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
   get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
@@ -83,7 +83,7 @@ else()
     SOURCE_DIR          ${DOWNLOAD_DIR}/sirius_solver
     BINARY_DIR          ${DOWNLOAD_DIR}/sirius_solver-build
     GIT_REPOSITORY      ${sirius_solver_url}
-    GIT_TAG             origin/metrix
+    GIT_TAG             origin/fix_metrix_cmake4
 
     CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
