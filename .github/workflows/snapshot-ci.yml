@@ -114,7 +114,7 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev
+          sudo apt-get install -y libboost-all-dev libopenblas-dev
 
       - name: Configure 3rd parties on Ubuntu
         if: ${{ matrix.os == 'ubuntu-latest' }}
