@@ -33,7 +33,7 @@ include(GetPatchCommand)
 include(CloneUrl)
 
 set(suitesparse_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
-set(suitesparse_tag_version v5.4.0)
+set(suitesparse_tag_version v5.13.0)
 
 if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
   get_url(NAME suitesparse URL ${suitesparse_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
