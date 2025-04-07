@@ -54,9 +54,10 @@ else()
     GIT_TAG             refs/tags/${suitesparse_tag_version}
 
     CMAKE_CACHE_ARGS    -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
-
+    LIST_SEPARATOR      ^^
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+                        -DSUITESPARSE_ENABLE_PROJECTS=suitesparse_config^^amd^^colamd^^btf^^klu
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
