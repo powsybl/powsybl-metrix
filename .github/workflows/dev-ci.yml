@@ -88,7 +88,7 @@ jobs:
           docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
             source /opt/rh/devtoolset-9/enable && 
             cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
-            cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
+            cmake --build /workspace/metrix-simulator/build/external &&
             cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
             cmake --build /workspace/metrix-simulator/build --target install --parallel 2 &&
             cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
@@ -123,7 +123,7 @@ jobs:
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Configure CMake
         run: >
@@ -164,7 +164,7 @@ jobs:
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Configure CMake
         run: >
@@ -213,7 +213,7 @@ jobs:
 
       - name: Build 3rd parties
         run: >
-          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --parallel 2 --config Release
+          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --config Release
 
       - name: Configure CMake
         run: >
@@ -281,7 +281,7 @@ jobs:
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Configure CMake
         run: >
@@ -341,7 +341,7 @@ jobs:
 
       - name: Build 3rd parties
         run: >
-          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external
 
       - name: Configure CMake
         run: >
