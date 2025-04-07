@@ -113,6 +113,8 @@ jobs:
           yum update -y
           yum install cmake make gcc gcc-c++ which git
           dnf --enablerepo=ol8_codeready_builder install boost-static
+          dnf install -y epel-release
+          dnf install -y openblas-devel mpfr-devel
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -206,6 +208,16 @@ jobs:
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Install vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          .\vcpkg\bootstrap-vcpkg.bat
+
+      - name: Install dependencies with vcpkg
+        run: |
+          .\vcpkg\vcpkg.exe install openblas mpfr
+          .\vcpkg\vcpkg.exe integrate install
 
       - name: Configure 3rd parties
         run: >
