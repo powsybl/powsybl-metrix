@@ -207,19 +207,35 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Install vcpkg
+      - name: Install MPFR and GMP via Chocolatey
         run: |
-          git clone https://github.com/microsoft/vcpkg.git
-          .\vcpkg\bootstrap-vcpkg.bat
+          choco install mpfr --no-progress
+          choco install gmp --no-progress
 
-      - name: Install dependencies with vcpkg
+      - name: Configure MPFR paths
         run: |
-          .\vcpkg\vcpkg.exe install openblas mpfr
-          .\vcpkg\vcpkg.exe integrate install
+          set MPFR_INCLUDE_DIR=C:\ProgramData\chocolatey\lib\mpfr\tools\include
+          set MPFR_LIBRARY_DIR=C:\ProgramData\chocolatey\lib\mpfr\tools\lib
+
+      - name: Download OpenBLAS binaries
+        run: |
+          curl -L -o OpenBLAS.zip https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.29/OpenBLAS-0.3.29-x64.zip
+          mkdir C:\thirdparties\OpenBLAS
+          tar -xf OpenBLAS.zip -C C:\thirdparties\OpenBLAS
+
+      - name: Configure OpenBLAS paths
+        run: |
+          set OPENBLAS_INCLUDE_DIR=C:\thirdparties\OpenBLAS\include
+          set OPENBLAS_LIBRARY_DIR=C:\thirdparties\OpenBLAS\lib
 
       - name: Configure 3rd parties
         run: >
-          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
+          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external 
+          -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
+          -DOPENBLAS_INCLUDE_DIR=%OPENBLAS_INCLUDE_DIR% 
+          -DOPENBLAS_LIBRARY_DIR=%OPENBLAS_LIBRARY_DIR%
+          -DMPFR_INCLUDE_DIR=%MPFR_INCLUDE_DIR%
+          -DMPFR_LIBRARY_DIR=%MPFR_LIBRARY_DIR%
 
       - name: Build 3rd parties
         run: >
@@ -230,6 +246,10 @@ jobs:
           cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\metrix-simulator\build\install
+          -DOPENBLAS_INCLUDE_DIR=%OPENBLAS_INCLUDE_DIR% 
+          -DOPENBLAS_LIBRARY_DIR=%OPENBLAS_LIBRARY_DIR%
+          -DMPFR_INCLUDE_DIR=%MPFR_INCLUDE_DIR%
+          -DMPFR_LIBRARY_DIR=%MPFR_LIBRARY_DIR%
 
       - name: Build
         run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
