@@ -207,15 +207,13 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Install MPFR and GMP via Chocolatey
+      - name: Install MSYS2 and dependencies
         run: |
-          choco install mpfr --no-progress
-          choco install gmp --no-progress
-
-      - name: Configure MPFR paths
-        run: |
-          set MPFR_INCLUDE_DIR=C:\ProgramData\chocolatey\lib\mpfr\tools\include
-          set MPFR_LIBRARY_DIR=C:\ProgramData\chocolatey\lib\mpfr\tools\lib
+          choco install msys2 --no-progress
+          refreshenv
+          ridk install 3
+          pacman --noconfirm -Syu
+          pacman --noconfirm -S mingw-w64-x86_64-gmp mingw-w64-x86_64-mpfr
 
       - name: Download OpenBLAS binaries
         run: |
@@ -223,39 +221,45 @@ jobs:
           mkdir C:\thirdparties\OpenBLAS
           tar -xf OpenBLAS.zip -C C:\thirdparties\OpenBLAS
 
-      - name: Configure OpenBLAS paths
+      - name: Configure environment variables for dependencies
         run: |
-          set OPENBLAS_INCLUDE_DIR=C:\thirdparties\OpenBLAS\include
-          set OPENBLAS_LIBRARY_DIR=C:\thirdparties\OpenBLAS\lib
+          echo "export OPENBLAS_INCLUDE_DIR=C:/thirdparties/OpenBLAS/include" >> $GITHUB_ENV
+          echo "export OPENBLAS_LIBRARY_DIR=C:/thirdparties/OpenBLAS/lib" >> $GITHUB_ENV
+          echo "export GMP_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
+          echo "export GMP_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
+          echo "export MPFR_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
+          echo "export MPFR_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
 
       - name: Configure 3rd parties
         run: >
-          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external 
-          -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
-          -DOPENBLAS_INCLUDE_DIR=%OPENBLAS_INCLUDE_DIR% 
-          -DOPENBLAS_LIBRARY_DIR=%OPENBLAS_LIBRARY_DIR%
-          -DMPFR_INCLUDE_DIR=%MPFR_INCLUDE_DIR%
-          -DMPFR_LIBRARY_DIR=%MPFR_LIBRARY_DIR%
+          cmake -S ${{ github.workspace }}/metrix-simulator/external
+             -B ${{ github.workspace }}/metrix-simulator/build/external
+             -DOPENBLAS_INCLUDE_DIR=$OPENBLAS_INCLUDE_DIR
+             -DOPENBLAS_LIBRARY_DIR=$OPENBLAS_LIBRARY_DIR
+             -DGMP_INCLUDE_DIR=$GMP_INCLUDE_DIR
+             -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR
+             -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR
+             -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
 
       - name: Build 3rd parties
         run: >
-          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --config Release
+          cmake --build ${{ github.workspace }}/metrix-simulator/build/external --config Release
 
       - name: Configure CMake
         run: >
-          cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
+          cmake -Wno-dev -S ${{ github.workspace }}/metrix-simulator -B ${{ github.workspace }}/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\metrix-simulator\build\install
+          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/metrix-simulator/build/install
           -DOPENBLAS_INCLUDE_DIR=%OPENBLAS_INCLUDE_DIR% 
           -DOPENBLAS_LIBRARY_DIR=%OPENBLAS_LIBRARY_DIR%
           -DMPFR_INCLUDE_DIR=%MPFR_INCLUDE_DIR%
           -DMPFR_LIBRARY_DIR=%MPFR_LIBRARY_DIR%
 
       - name: Build
-        run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
+        run: cmake --build ${{ github.workspace }}/metrix-simulator/build --target install --parallel 2 --config Release
 
       - name: Tests
-        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build && ctest -j2 --output-on-failure -C Release
+        run: cd ${{ github.workspace }}/metrix-simulator/build && ctest -j2 --output-on-failure -C Release
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
