@@ -111,10 +111,8 @@ jobs:
       - name: Install Boost
         run: |
           yum update -y
-          yum install cmake make gcc gcc-c++ which git
-          dnf --enablerepo=ol8_codeready_builder install boost-static
-          dnf install -y epel-release
-          dnf install -y openblas-devel mpfr-devel
+          yum install -y cmake make gcc gcc-c++ which git mpfr-devel
+          dnf --enablerepo=ol8_codeready_builder install boost-static openblas-devel
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
