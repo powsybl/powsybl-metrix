@@ -111,8 +111,8 @@ jobs:
       - name: Install Boost
         run: |
           yum update -y
-          yum install -y cmake make gcc gcc-c++ which git mpfr-devel
-          dnf --enablerepo=ol8_codeready_builder install boost-static openblas-devel
+          yum install -y cmake make gcc gcc-c++ which git
+          dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -150,10 +150,10 @@ jobs:
     name: Build C++ Ubuntu
     runs-on: ubuntu-latest
     steps:
-      - name: Install Boost OpenBLAS and MPFR dependencies
+      - name: Install Boost
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev libopenblas-dev libmpfr-dev
+          sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -207,82 +207,23 @@ jobs:
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Install MSYS2 and dependencies
-        run: |
-          choco install msys2 --no-progress
-          refreshenv
-          ridk install 3
-          pacman --noconfirm -Syu
-          pacman --noconfirm -S mingw-w64-x86_64-gmp mingw-w64-x86_64-mpfr
-
-      - name: Download OpenBLAS binaries
-        run: |
-          curl -L -o OpenBLAS.zip https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.29/OpenBLAS-0.3.29-x64.zip
-          mkdir C:\thirdparties\OpenBLAS
-          powershell -Command "Expand-Archive -Path OpenBLAS.zip -DestinationPath C:\thirdparties\OpenBLAS"
-
-      - name: Configure environment variables for dependencies
-        run: |
-          echo "OPENBLAS_INCLUDE_DIR=C:\thirdparties\OpenBLAS\include" >> $GITHUB_ENV
-          echo "OPENBLAS_LIBRARY_DIR=C:\thirdparties\OpenBLAS\lib" >> $GITHUB_ENV
-          echo "GMP_INCLUDE_DIR=C:\msys64\mingw64\include" >> $GITHUB_ENV
-          echo "GMP_LIBRARY_DIR=C:\msys64\mingw64\lib" >> $GITHUB_ENV
-          echo "MPFR_INCLUDE_DIR=C:\msys64\mingw64\include" >> $GITHUB_ENV
-          echo "MPFR_LIBRARY_DIR=C:\msys64\mingw64\lib" >> $GITHUB_ENV
-
-      - name: Show directory content
-        run: |
-          echo Showing contents of OpenBLAS include directory:
-          dir /s /b /o:gn "%OPENBLAS_INCLUDE_DIR%"
-          echo Showing contents of OpenBLAS library directory:
-          dir /s /b /o:gn "%OPENBLAS_LIBRARY_DIR%"
-          echo Showing contents of GMP include directory:
-          dir /s /b /o:gn "%GMP_INCLUDE_DIR%"
-          echo Showing contents of GMP library directory:
-          dir /s /b /o:gn "%GMP_LIBRARY_DIR%"
-          echo Showing contents of MPFR include directory:
-          dir /s /b /o:gn "%MPFR_INCLUDE_DIR%"
-          echo Showing contents of MPFR library directory:
-          dir /s /b /o:gn "%MPFR_LIBRARY_DIR%"
-
       - name: Configure 3rd parties
         run: >
-          cmake -S ${{ github.workspace }}/metrix-simulator/external
-          -B ${{ github.workspace }}/metrix-simulator/build/external
-          -DOPENBLAS_INCLUDE_DIR=$OPENBLAS_INCLUDE_DIR 
-          -DOPENBLAS_LIBRARY_DIR=$OPENBLAS_LIBRARY_DIR 
-          -DGMP_INCLUDE_DIR=$GMP_INCLUDE_DIR 
-          -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR 
-          -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR 
-          -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
-          -DBLA_VENDOR=OpenBLAS 
-          -DSUITESPARSE_USE_64BIT_BLAS=ON
+          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
 
       - name: Build 3rd parties
         run: >
-          cmake --build ${{ github.workspace }}/metrix-simulator/build/external --config Release
+          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --parallel 2 --config Release
 
       - name: Configure CMake
         run: >
-          cmake -Wno-dev 
-          -S ${{ github.workspace }}/metrix-simulator 
-          -B ${{ github.workspace }}/metrix-simulator/build
-          -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/metrix-simulator/build/install
-          -DOPENBLAS_INCLUDE_DIR=$OPENBLAS_INCLUDE_DIR 
-          -DOPENBLAS_LIBRARY_DIR=$OPENBLAS_LIBRARY_DIR 
-          -DGMP_INCLUDE_DIR=$GMP_INCLUDE_DIR 
-          -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR 
-          -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR 
-          -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
-          -DBLA_VENDOR=OpenBLAS 
-          -DSUITESPARSE_USE_64BIT_BLAS=ON
+          cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
 
       - name: Build
-        run: cmake --build ${{ github.workspace }}/metrix-simulator/build --target install --parallel 2 --config Release
+        run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
 
       - name: Tests
-        run: cd ${{ github.workspace }}/metrix-simulator/build && ctest -j2 --output-on-failure -C Release
+        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build && ctest -j2 --output-on-failure -C Release
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
@@ -324,10 +265,10 @@ jobs:
         env:
           SONAR_SCANNER_VERSION: 3.3.0.1492
 
-      - name: Install Boost OpenBLAS and MPFR dependencies
+      - name: Install Boost
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev libopenblas-dev libmpfr-dev
+          sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -374,10 +315,10 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' # github.base_ref exists only for PRs
     steps:
-      - name: Install Boost OpenBLAS and MPFR dependencies
+      - name: Install Boost
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y libboost-all-dev libopenblas-dev libmpfr-dev
+          sudo apt-get install -y libboost-all-dev
 
       - name: Install clang-tidy
         run: |

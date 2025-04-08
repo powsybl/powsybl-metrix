@@ -18,7 +18,7 @@ RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \
     && sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo \
     && yum update -y \
     && yum install -y epel-release \
-    && yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils openblas-devel mpfr-devel
+    && yum install -y git redhat-lsb-core make wget centos-release-scl scl-utils
 
 # Second set of dependencies
 RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo \

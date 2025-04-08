@@ -40,6 +40,7 @@ if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
   set(suitesparse_url ${SUITEPARSE_URL})
 endif()
 
+GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
   message(STATUS "SuiteSparse Already found")
   add_custom_target(suitesparse)
@@ -52,12 +53,14 @@ else()
     BINARY_DIR          ${DOWNLOAD_DIR}/suitesparse-build
     GIT_REPOSITORY      ${suitesparse_url}
     GIT_TAG             refs/tags/${suitesparse_tag_version}
+    PATCH_COMMAND       ${suitesparse_patch}
 
     CMAKE_CACHE_ARGS    -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
     LIST_SEPARATOR      ^^
     CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
                         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
                         -DSUITESPARSE_ENABLE_PROJECTS=suitesparse_config^^amd^^colamd^^btf^^klu
+                        -DKLU_USE_CHOLMOD:BOOL=OFF
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
