@@ -69,6 +69,6 @@ diff --git a/SuiteSparse_config/SuiteSparse_config.c b/SuiteSparse_config/SuiteS
  size_t SuiteSparse_BLAS_integer_size ( void )
  {
 -    return (sizeof (SUITESPARSE_BLAS_INT)) ;
-+    return 8;
++    return (sizeof (int64_t)) ;
  }
  
