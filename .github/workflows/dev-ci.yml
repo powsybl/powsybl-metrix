@@ -219,27 +219,27 @@ jobs:
         run: |
           curl -L -o OpenBLAS.zip https://github.com/OpenMathLib/OpenBLAS/releases/download/v0.3.29/OpenBLAS-0.3.29-x64.zip
           mkdir C:\thirdparties\OpenBLAS
-          tar -xf OpenBLAS.zip -C C:\thirdparties\OpenBLAS
+          powershell -Command "Expand-Archive -Path OpenBLAS.zip -DestinationPath C:\thirdparties\OpenBLAS"
 
       - name: Configure environment variables for dependencies
         run: |
-          echo "export OPENBLAS_INCLUDE_DIR=C:/thirdparties/OpenBLAS/include" >> $GITHUB_ENV
-          echo "export OPENBLAS_LIBRARY_DIR=C:/thirdparties/OpenBLAS/lib" >> $GITHUB_ENV
-          echo "export GMP_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
-          echo "export GMP_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
-          echo "export MPFR_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
-          echo "export MPFR_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
+          echo "OPENBLAS_INCLUDE_DIR=C:/thirdparties/OpenBLAS/include" >> $GITHUB_ENV
+          echo "OPENBLAS_LIBRARY_DIR=C:/thirdparties/OpenBLAS/lib" >> $GITHUB_ENV
+          echo "GMP_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
+          echo "GMP_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
+          echo "MPFR_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
+          echo "MPFR_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
 
       - name: Configure 3rd parties
         run: >
           cmake -S ${{ github.workspace }}/metrix-simulator/external
-             -B ${{ github.workspace }}/metrix-simulator/build/external
-             -DOPENBLAS_INCLUDE_DIR=$OPENBLAS_INCLUDE_DIR
-             -DOPENBLAS_LIBRARY_DIR=$OPENBLAS_LIBRARY_DIR
-             -DGMP_INCLUDE_DIR=$GMP_INCLUDE_DIR
-             -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR
-             -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR
-             -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
+                -B ${{ github.workspace }}/metrix-simulator/build/external
+                -DOPENBLAS_INCLUDE_DIR=$OPENBLAS_INCLUDE_DIR 
+                -DOPENBLAS_LIBRARY_DIR=$OPENBLAS_LIBRARY_DIR 
+                -DGMP_INCLUDE_DIR=$GMP_INCLUDE_DIR 
+                -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR 
+                -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR 
+                -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
 
       - name: Build 3rd parties
         run: >
@@ -247,13 +247,17 @@ jobs:
 
       - name: Configure CMake
         run: >
-          cmake -Wno-dev -S ${{ github.workspace }}/metrix-simulator -B ${{ github.workspace }}/metrix-simulator/build
-          -DCMAKE_BUILD_TYPE=Release
-          -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/metrix-simulator/build/install
-          -DOPENBLAS_INCLUDE_DIR=%OPENBLAS_INCLUDE_DIR% 
-          -DOPENBLAS_LIBRARY_DIR=%OPENBLAS_LIBRARY_DIR%
-          -DMPFR_INCLUDE_DIR=%MPFR_INCLUDE_DIR%
-          -DMPFR_LIBRARY_DIR=%MPFR_LIBRARY_DIR%
+          cmake -Wno-dev 
+                -S ${{ github.workspace }}/metrix-simulator 
+                -B ${{ github.workspace }}/metrix-simulator/build
+                -DCMAKE_BUILD_TYPE=Release
+                -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/metrix-simulator/build/install
+                -DOPENBLAS_INCLUDE_DIR=$OPENBLAS_INCLUDE_DIR 
+                -DOPENBLAS_LIBRARY_DIR=$OPENBLAS_LIBRARY_DIR 
+                -DGMP_INCLUDE_DIR=$GMP_INCLUDE_DIR 
+                -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR 
+                -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR 
+                -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/metrix-simulator/build --target install --parallel 2 --config Release
