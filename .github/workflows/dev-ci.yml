@@ -111,7 +111,7 @@ jobs:
       - name: Install Boost
         run: |
           yum update -y
-          yum install -y cmake make gcc gcc-c++ which git
+          yum install cmake make gcc gcc-c++ which git
           dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Checkout sources
@@ -218,6 +218,8 @@ jobs:
       - name: Configure CMake
         run: >
           cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\metrix-simulator\build\install
 
       - name: Build
         run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
