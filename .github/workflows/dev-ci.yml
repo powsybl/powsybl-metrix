@@ -230,6 +230,16 @@ jobs:
           echo "MPFR_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
           echo "MPFR_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
 
+      - name: Show directory content
+        run: |
+          dir /s /b /o:gn $OPENBLAS_INCLUDE_DIR
+          dir /s /b /o:gn $OPENBLAS_LIBRARY_DIR
+          dir /s /b /o:gn $GMP_INCLUDE_DIR
+          dir /s /b /o:gn $GMP_LIBRARY_DIR
+          dir /s /b /o:gn $MPFR_INCLUDE_DIR
+          dir /s /b /o:gn $MPFR_LIBRARY_DIR
+          dir /s /b /o:gn $OPENBLAS_INCLUDE_DIR/openblas
+
       - name: Configure 3rd parties
         run: >
           cmake -S ${{ github.workspace }}/metrix-simulator/external
@@ -240,6 +250,8 @@ jobs:
           -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR 
           -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR 
           -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
+          -DBLA_VENDOR=OpenBLAS 
+          -DSUITESPARSE_USE_64BIT_BLAS=ON
 
       - name: Build 3rd parties
         run: >
@@ -258,6 +270,8 @@ jobs:
           -DGMP_LIBRARY_DIR=$GMP_LIBRARY_DIR 
           -DMPFR_INCLUDE_DIR=$MPFR_INCLUDE_DIR 
           -DMPFR_LIBRARY_DIR=$MPFR_LIBRARY_DIR
+          -DBLA_VENDOR=OpenBLAS 
+          -DSUITESPARSE_USE_64BIT_BLAS=ON
 
       - name: Build
         run: cmake --build ${{ github.workspace }}/metrix-simulator/build --target install --parallel 2 --config Release
