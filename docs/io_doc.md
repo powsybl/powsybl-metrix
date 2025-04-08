@@ -488,8 +488,8 @@ Notons *EPSILON_SORTIES = 0.05*.
 | Filière | C | | |
 | Redispatching préventif à la baisse | R | MW | ∑ groupes de la filière |
 | Redispatching préventif à la hausse | R | MW | ∑ groupes de la filière |
-| Redispatching curatif à la baisse | R | MW | ∑ groupes de la filière |
-| Redispatching curatif à la hausse | R | MW | ∑ groupes de la filière |
+| Redispatching curatif à la baisse | R | MW | max(groupes de la filière) |
+| Redispatching curatif à la hausse | R | MW | max(groupes de la filière) |
 
 **Tableau R8** <a id="table_r8"></a>: résultats sur les pertes calculées en actif-seul : ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```
 | | | | |
