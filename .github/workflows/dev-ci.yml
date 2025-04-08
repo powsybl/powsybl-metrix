@@ -223,22 +223,27 @@ jobs:
 
       - name: Configure environment variables for dependencies
         run: |
-          echo "OPENBLAS_INCLUDE_DIR=C:/thirdparties/OpenBLAS/include" >> $GITHUB_ENV
-          echo "OPENBLAS_LIBRARY_DIR=C:/thirdparties/OpenBLAS/lib" >> $GITHUB_ENV
-          echo "GMP_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
-          echo "GMP_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
-          echo "MPFR_INCLUDE_DIR=/mingw64/include" >> $GITHUB_ENV
-          echo "MPFR_LIBRARY_DIR=/mingw64/lib" >> $GITHUB_ENV
+          echo "OPENBLAS_INCLUDE_DIR=C:\thirdparties\OpenBLAS\include" >> $GITHUB_ENV
+          echo "OPENBLAS_LIBRARY_DIR=C:\thirdparties\OpenBLAS\lib" >> $GITHUB_ENV
+          echo "GMP_INCLUDE_DIR=C:\msys64\mingw64\include" >> $GITHUB_ENV
+          echo "GMP_LIBRARY_DIR=C:\msys64\mingw64\lib" >> $GITHUB_ENV
+          echo "MPFR_INCLUDE_DIR=C:\msys64\mingw64\include" >> $GITHUB_ENV
+          echo "MPFR_LIBRARY_DIR=C:\msys64\mingw64\lib" >> $GITHUB_ENV
 
       - name: Show directory content
         run: |
-          dir /s /b /o:gn $OPENBLAS_INCLUDE_DIR
-          dir /s /b /o:gn $OPENBLAS_LIBRARY_DIR
-          dir /s /b /o:gn $GMP_INCLUDE_DIR
-          dir /s /b /o:gn $GMP_LIBRARY_DIR
-          dir /s /b /o:gn $MPFR_INCLUDE_DIR
-          dir /s /b /o:gn $MPFR_LIBRARY_DIR
-          dir /s /b /o:gn $OPENBLAS_INCLUDE_DIR/openblas
+          echo Showing contents of OpenBLAS include directory:
+          dir /s /b /o:gn "%OPENBLAS_INCLUDE_DIR%"
+          echo Showing contents of OpenBLAS library directory:
+          dir /s /b /o:gn "%OPENBLAS_LIBRARY_DIR%"
+          echo Showing contents of GMP include directory:
+          dir /s /b /o:gn "%GMP_INCLUDE_DIR%"
+          echo Showing contents of GMP library directory:
+          dir /s /b /o:gn "%GMP_LIBRARY_DIR%"
+          echo Showing contents of MPFR include directory:
+          dir /s /b /o:gn "%MPFR_INCLUDE_DIR%"
+          echo Showing contents of MPFR library directory:
+          dir /s /b /o:gn "%MPFR_LIBRARY_DIR%"
 
       - name: Configure 3rd parties
         run: >
