@@ -218,6 +218,10 @@ jobs:
       - name: List SuiteSparse directory content
         run: dir /s %GITHUB_WORKSPACE%\metrix-simulator\build\external\suitesparse
 
+      - name: Add SuiteSparse DLLs to PATH
+        shell: pwsh
+        run: echo "${{ github.workspace }}\metrix-simulator\build\external\suitesparse\bin" >> $GITHUB_PATH
+
       - name: Configure CMake
         run: >
           cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
