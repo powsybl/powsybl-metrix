@@ -9,7 +9,7 @@ diff --git a/SuiteSparse_config/CMakeLists.txt b/SuiteSparse_config/CMakeLists.t
 @@ -127,7 +127,19 @@
  # find the BLAS
  #-------------------------------------------------------------------------------
-
+ 
 -include ( SuiteSparseBLAS )
 +option ( SUITESPARSE_REQUIRE_BLAS "Must not be set to OFF if any SuiteSparse project requires BLAS functions" ON )
 +
@@ -24,7 +24,7 @@ diff --git a/SuiteSparse_config/CMakeLists.txt b/SuiteSparse_config/CMakeLists.t
 +        include ( SuiteSparseBLAS32 )
 +    endif ( )
 +endif ( )
-
+ 
  #-------------------------------------------------------------------------------
  # configure files
 Index: CMakeLists.txt
@@ -36,17 +36,17 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 --- a/CMakeLists.txt	(revision 31572b33461e17eb3836c8cda9b1e5920ab1dfa0)
 +++ b/CMakeLists.txt	(date 1744182926833)
 @@ -64,6 +64,7 @@
-
+ 
  # CHOLMOD options affecting dependencies
  option ( CHOLMOD_CAMD "ON (default): use CAMD/CCOLAMD.  OFF: do not use CAMD/CCOLAMD" ON )
 +option ( CHOLMOD_SUPERNODAL "ON (default): use Supernodal Module. OFF: do not use Supernodal Module" ON )
-
+ 
  # KLU options affecting dependencies
  option ( KLU_USE_CHOLMOD "ON (default): use CHOLMOD in KLU.  OFF: do not use CHOLMOD in KLU" ON )
 @@ -266,6 +267,19 @@
  endif ( )
-
-
+ 
+ 
 +# BLAS is only required for some sub-projects
 +option ( SUITESPARSE_REQUIRE_BLAS "Must not be set to OFF if any SuiteSparse project requires BLAS functions" ON )
 +
