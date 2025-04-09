@@ -1,74 +1,65 @@
-Subject: [PATCH] Remove search of BLAS in SuiteSparse_config
----
 Index: SuiteSparse_config/CMakeLists.txt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
 diff --git a/SuiteSparse_config/CMakeLists.txt b/SuiteSparse_config/CMakeLists.txt
---- a/SuiteSparse_config/CMakeLists.txt	(revision d9d7d244adc12d0a9bbe6795db6be844912e26a0)
-+++ b/SuiteSparse_config/CMakeLists.txt	(date 1744114075501)
-@@ -127,7 +127,7 @@
+--- a/SuiteSparse_config/CMakeLists.txt	(revision 31572b33461e17eb3836c8cda9b1e5920ab1dfa0)
++++ b/SuiteSparse_config/CMakeLists.txt	(date 1744182969364)
+@@ -127,7 +127,19 @@
  # find the BLAS
  #-------------------------------------------------------------------------------
- 
+
 -include ( SuiteSparseBLAS )
-+#include ( SuiteSparseBLAS )
- 
++option ( SUITESPARSE_REQUIRE_BLAS "Must not be set to OFF if any SuiteSparse project requires BLAS functions" ON )
++
++if ( SUITESPARSE_REQUIRE_BLAS )
++    include ( SuiteSparseBLAS )
++else ( )
++    # It doesn't actually matter which Fortran integer size is selected here.
++    # But we might as well respect any user flags.
++    if ( SUITESPARSE_USE_64BIT_BLAS )
++        include ( SuiteSparseBLAS64 )
++    else ( )
++        include ( SuiteSparseBLAS32 )
++    endif ( )
++endif ( )
+
  #-------------------------------------------------------------------------------
  # configure files
-Index: SuiteSparse_config/SuiteSparse_config.c
+Index: CMakeLists.txt
 IDEA additional info:
 Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
 <+>UTF-8
 ===================================================================
-diff --git a/SuiteSparse_config/SuiteSparse_config.c b/SuiteSparse_config/SuiteSparse_config.c
---- a/SuiteSparse_config/SuiteSparse_config.c	(revision d9d7d244adc12d0a9bbe6795db6be844912e26a0)
-+++ b/SuiteSparse_config/SuiteSparse_config.c	(date 1744114226929)
-@@ -745,37 +745,7 @@
- 
- const char *SuiteSparse_BLAS_library ( void )
- {
--    #if defined ( BLAS_Intel10_64ilp )
--        return ("Intel MKL 64ilp BLAS (64-bit integers)") ;
--    #elif defined ( BLAS_Intel10_64lp )
--        return ("Intel MKL 64lp BLAS (32-bit integers)") ;
--    #elif defined ( BLAS_Apple )
--        return ("Apple Accelerate Framework BLAS (32-bit integers)") ;
--    #elif defined ( BLAS_Arm_ilp64_mp )
--        return ("ARM MP BLAS (64-bit integers)") ;
--    #elif defined ( BLAS_Arm_mp )
--        return ("ARM MP BLAS (32-bit integers)") ;
--    #elif defined ( BLAS_IBMESSL_SMP )
--        return ((sizeof (SUITESPARSE_BLAS_INT) == 8) ?
--            "IBMESSL_SMP BLAS (64-bit integers)" :
--            "IBMESSL_SMP BLAS (32-bit integers)") ;
--    #elif defined ( BLAS_OpenBLAS )
--        return ((sizeof (SUITESPARSE_BLAS_INT) == 8) ?
--            "OpenBLAS (64-bit integers)" :
--            "OpenBLAS (32-bit integers)") ;
--    #elif defined ( BLAS_FLAME )
--        return ((sizeof (SUITESPARSE_BLAS_INT) == 8) ?
--            "FLAME (64-bit integers)" :
--            "FLAME (32-bit integers)") ;
--    #elif defined ( BLAS_Generic )
--        return ((sizeof (SUITESPARSE_BLAS_INT) == 8) ?
--            "Reference BLAS (64-bit integers)" :
--            "Reference BLAS (32-bit integers)") ;
--    #else
--        return ((sizeof (SUITESPARSE_BLAS_INT) == 8) ?
--            "Other BLAS (64-bit integers)" :
--            "Other BLAS (32-bit integers)") ;
--    #endif
-+    return ("Not applicable") ;
- }
- 
- //------------------------------------------------------------------------------
-@@ -784,6 +754,6 @@
- 
- size_t SuiteSparse_BLAS_integer_size ( void )
- {
--    return (sizeof (SUITESPARSE_BLAS_INT)) ;
-+    return (sizeof (int64_t)) ;
- }
- 
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	(revision 31572b33461e17eb3836c8cda9b1e5920ab1dfa0)
++++ b/CMakeLists.txt	(date 1744182926833)
+@@ -64,6 +64,7 @@
+
+ # CHOLMOD options affecting dependencies
+ option ( CHOLMOD_CAMD "ON (default): use CAMD/CCOLAMD.  OFF: do not use CAMD/CCOLAMD" ON )
++option ( CHOLMOD_SUPERNODAL "ON (default): use Supernodal Module. OFF: do not use Supernodal Module" ON )
+
+ # KLU options affecting dependencies
+ option ( KLU_USE_CHOLMOD "ON (default): use CHOLMOD in KLU.  OFF: do not use CHOLMOD in KLU" ON )
+@@ -266,6 +267,19 @@
+ endif ( )
+
+
++# BLAS is only required for some sub-projects
++option ( SUITESPARSE_REQUIRE_BLAS "Must not be set to OFF if any SuiteSparse project requires BLAS functions" ON )
++
++if ( ("cholmod" IN_LIST SUITESPARSE_ENABLE_PROJECTS AND CHOLMOD_SUPERNODAL)
++        OR "paru" IN_LIST SUITESPARSE_ENABLE_PROJECTS
++        OR "spqr" IN_LIST SUITESPARSE_ENABLE_PROJECTS
++        OR "umfpack" IN_LIST SUITESPARSE_ENABLE_PROJECTS )
++    if ( NOT SUITESPARSE_REQUIRE_BLAS )
++        message ( FATAL_ERROR "SUITESPARSE_REQUIRE_BLAS must not be set to OFF when building CHOLMOD with SUPERNODAL, ParU, SPQR, or UMFPACK." )
++    endif ( )
++
++endif ( )
++
+ #-------------------------------------------------------------------------------
+ # include selected projects
+ #-------------------------------------------------------------------------------

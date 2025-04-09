@@ -61,6 +61,7 @@ else()
                         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
                         -DSUITESPARSE_ENABLE_PROJECTS=suitesparse_config^^amd^^colamd^^btf^^klu
                         -DKLU_USE_CHOLMOD:BOOL=OFF
+                        -DSUITESPARSE_REQUIRE_BLAS:BOOL=OFF
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
