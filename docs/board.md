@@ -40,7 +40,7 @@ Steps, micro-iterations, variants, network modelling.
 
 ## Modèle mathématique
 
-Optimization problem formulaiton
+Optimization problem formulation
 [Math](math.md)
 
 
