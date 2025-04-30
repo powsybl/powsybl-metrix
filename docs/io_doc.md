@@ -276,7 +276,25 @@ NT;2;
 
 # Parades <a id="parades"></a>
 
-TODO
+Les données spécifiques à chaque parade sont décrites dans un fichier au format csv.
+La première ligne indique le nombre de parades, après le mot-clé *NT*.
+Chacune des lignes correspond à une parade, telle que :
+
+*Nom de l'incident*|*Sections à surveiller séparées par un pipe*;*Nombre des premiers quadripôles listés concernés*;Liste de *Nom(s) du(es) quadripôle(s)* séparé(s) par un point virgule;
+
+**Exemple** :
+
+--------------------------------------
+```
+NB;4;
+S_SO_1;1;SS1_SS1_DJ_OMN;
+S_SO_1;1;SOO1_SOO1_DJ_OMN;
+S_SO_1;2;SS1_SS1_DJ_OMN;SOO1_SOO1_DJ_OMN;
+S_SO_1;1;S_SO_2;
+```
+--------------------------------------
+
+N.B. : Les parades renseignées ne sont pas considérées si le mode de lancement est *LOAD FLOW* (i.e. mode 1).
 
 # Données de sorties <a id="output"></a> 
 Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et de METRIS).
