@@ -184,9 +184,11 @@ public class MetrixInputData {
 
         trnbgrou = metrixNetwork.getGeneratorList().size();
 
-        cqnbquad = metrixNetwork.getLineList().size() + metrixNetwork.getTwoWindingsTransformerList().size() + 3 * metrixNetwork.getThreeWindingsTransformerList().size() + metrixNetwork.getDanglingLineList().size() + metrixNetwork.getSwitchList().size();
+        // Quadripoles are lines, transformers and switches
+        cqnbquad = metrixNetwork.getLineList().size() + metrixNetwork.getTwoWindingsTransformerList().size() + 3 * metrixNetwork.getThreeWindingsTransformerList().size() + metrixNetwork.getSwitchList().size();
         dtnbtrde = metrixNetwork.getPhaseTapChangerList().size();
 
+        // Loads are loads and dangling lines
         ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getDanglingLineList().size();
 
         dcnblies = metrixNetwork.getHvdcLineList().size();
@@ -391,7 +393,7 @@ public class MetrixInputData {
 
         // Three Windings Transformers
         metrixNetwork.getThreeWindingsTransformerList().forEach(twt -> {
-            throw new UnsupportedOperationException("TODO");
+            throw new PowsyblException("Three Windings Transformers are not yet supported in metrix");
         });
 
         // Switches
@@ -475,7 +477,7 @@ public class MetrixInputData {
 
             MetrixPtcControlType mode = getMetrixPtcControlType(twt, index, dtlowran, dtuppran);
 
-            for (int pos = 0; pos < ptc.getStepCount(); pos++) {
+            for (int pos = ptc.getLowTapPosition(); pos < ptc.getLowTapPosition() + ptc.getStepCount(); pos++) {
                 dttapdep.add((float) ptc.getStep(pos).getAlpha());
             }
 

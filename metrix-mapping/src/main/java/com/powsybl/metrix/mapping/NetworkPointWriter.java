@@ -19,6 +19,7 @@ import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.mapping.common.MetrixIidmConfiguration;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -379,7 +380,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             // for the moment, it is not possible with PowSyBl to import with a suffix different from null ...
             suffix = null;
         }
-        try (OutputStream os = dataSource.newOutputStream(suffix, "xiidm", false)) {
+        try (OutputStream os = new BufferedOutputStream(dataSource.newOutputStream(suffix, "xiidm", false))) {
             ExportOptions exportOptions = new ExportOptions();
             exportOptions.setVersion(MetrixIidmConfiguration.load().getNetworkExportVersion());
             NetworkSerDe.write(network, exportOptions, os);

@@ -9,13 +9,18 @@ package com.powsybl.metrix.integration
 
 
 import com.powsybl.iidm.network.Network
+import com.powsybl.metrix.mapping.DataTableStore
 import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
+import com.powsybl.scripting.groovy.GroovyScriptExtension
+import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
+import groovy.transform.ThreadInterrupt
 import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 
 import java.nio.charset.StandardCharsets
@@ -29,6 +34,7 @@ import static GeneratorsBindingData.generatorsBindingData
 import static HvdcData.hvdcData
 import static LoadData.loadData
 import static LoadsBindingData.loadsBindingData
+import static LossesData.lossesData
 import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
@@ -104,16 +110,32 @@ class MetrixDslDataLoader {
         imports.addStaticStars("com.powsybl.metrix.integration.MetrixGeneratorsBinding.ReferenceVariable")
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
+
+        // Add a check on thread interruption in every loop (for, while) in the script
+        config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class))
     }
 
     static void evaluate(GroovyCodeSource dslSrc, Binding binding) {
-        def config = createCompilerConfig()
-        def shell = new GroovyShell(binding, config)
+        def shell = new GroovyShell(binding, createCompilerConfig())
+
+        // Check for thread interruption right before beginning the evaluation
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedException("Execution Interrupted")
+
         shell.evaluate(dslSrc)
     }
 
-    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, MetrixDslData data, LogDslLoader logDslLoader) {
+    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, MetrixDslData data, LogDslLoader logDslLoader) {
+        // External bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
+
+        // Context objects
+        Map<Class<?>, Object> contextObjects = new HashMap<>()
+        contextObjects.put(DataTableStore.class, dataTableStore)
+
+        // Bindings through extensions
+        Iterable<GroovyScriptExtension> extensions = ServiceLoader.load(GroovyScriptExtension.class, GroovyScripts.class.getClassLoader())
+        extensions.forEach { it.load(binding, contextObjects) }
+
         TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(mappingConfig, store.getTimeSeriesNames(new TimeSeriesFilter()))
 
         // map the base case to network variable
@@ -168,17 +190,32 @@ class MetrixDslDataLoader {
         binding.contingencies = { Closure<Void> closure ->
             contingenciesData(closure, data, logDslLoader)
         }
+
+        // losses
+        binding.losses = { Closure<Void> closure ->
+            lossesData(closure, network, loader, logDslLoader)
+        }
     }
 
     static MetrixDslData load(Reader reader, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
                               TimeSeriesMappingConfig mappingConfig, Writer out) {
+        load(reader, network, parameters, store, new DataTableStore(), mappingConfig, out)
+    }
+
+    static MetrixDslData load(Reader reader, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, Writer out) {
         MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, "metrixDsl.groovy")
-        dslLoader.load(network, parameters, store, mappingConfig, out)
+        dslLoader.load(network, parameters, store, dataTableStore, mappingConfig, out)
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
                               TimeSeriesMappingConfig mappingConfig) {
         load(metrixDslFile, network, parameters, store, mappingConfig, null)
+    }
+
+    static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig) {
+        load(metrixDslFile, network, parameters, store, dataTableStore, mappingConfig, null)
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
@@ -189,13 +226,21 @@ class MetrixDslDataLoader {
         }
     }
 
+    static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, Writer out) {
+
+        Files.newBufferedReader(metrixDslFile, StandardCharsets.UTF_8).withReader { Reader reader ->
+            load(reader, network, parameters, store, dataTableStore, mappingConfig, out)
+        }
+    }
+
     MetrixDslData load(Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
-                              TimeSeriesMappingConfig mappingConfig, Writer out) {
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, Writer out) {
 
         MetrixDslData data = new MetrixDslData()
         Binding binding = new Binding()
         LogDslLoader logDslLoader = LogDslLoader.create(binding, out, METRIX_SCRIPT_SECTION)
-        bind(binding, network, store, parameters, mappingConfig, data, logDslLoader)
+        bind(binding, network, store, dataTableStore, parameters, mappingConfig, data, logDslLoader)
 
         evaluate(dslSrc, binding)
 
