@@ -38,7 +38,7 @@ class MetrixToolTest extends AbstractToolTest {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         tool = new MetrixTool();
         super.setUp();
     }
@@ -53,7 +53,7 @@ class MetrixToolTest extends AbstractToolTest {
     public void assertCommand() {
         Command command = tool.getCommand();
         Options options = command.getOptions();
-        assertCommand(command, "metrix", 14, 4);
+        assertCommand(command, "metrix", 16, 4);
         assertOption(options, "case-file", true, true);
         assertOption(options, "mapping-file", true, true);
         assertOption(options, "contingencies-file", false, true);

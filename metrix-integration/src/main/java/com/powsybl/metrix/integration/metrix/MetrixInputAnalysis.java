@@ -11,14 +11,32 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.contingency.ContingencyElementType;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Branch;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.IdentifiableType;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.Switch;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
+import com.powsybl.metrix.mapping.DataTableStore;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.UncheckedIOException;
+import java.io.Writer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.remedials.RemedialReader.rTrim;
@@ -52,16 +70,26 @@ public class MetrixInputAnalysis {
     private final ContingenciesProvider contingenciesProvider;
     private final Network network;
     private final MetrixDslData metrixDslData;
+    private final DataTableStore dataTableStore;
     private final BufferedWriter writer;
+    private final BufferedWriter scriptLogBufferedWriter;
 
-    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network, MetrixDslData metrixDslData, BufferedWriter writer) {
+    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer) {
+        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, writer, null);
+    }
+
+    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer, BufferedWriter scriptLogBufferedWriter) {
         Objects.requireNonNull(contingenciesProvider);
         Objects.requireNonNull(network);
         this.remedialActionsReader = remedialActionsReader;
         this.contingenciesProvider = contingenciesProvider;
         this.network = network;
         this.metrixDslData = metrixDslData;
+        this.dataTableStore = dataTableStore;
         this.writer = writer;
+        this.scriptLogBufferedWriter = scriptLogBufferedWriter;
     }
 
     public MetrixInputAnalysisResult runAnalysis() throws IOException {
@@ -130,7 +158,7 @@ public class MetrixInputAnalysis {
     private List<Contingency> loadContingencies() {
         List<Contingency> allContingencies;
         try {
-            allContingencies = contingenciesProvider.getContingencies(network);
+            allContingencies = contingenciesProvider.getContingencies(network, getContextObjects());
         } catch (RuntimeException e) {
             throw new ContingenciesScriptLoadingException(e);
         }
@@ -141,6 +169,17 @@ public class MetrixInputAnalysis {
             }
         }
         return contingencies;
+    }
+
+    private Map<Class<?>, Object> getContextObjects() {
+        Map<Class<?>, Object> contextObjects = new HashMap<>();
+        if (dataTableStore != null) {
+            contextObjects.put(DataTableStore.class, dataTableStore);
+        }
+        if (scriptLogBufferedWriter != null) {
+            contextObjects.put(Writer.class, scriptLogBufferedWriter);
+        }
+        return contextObjects;
     }
 
     private static boolean isValidContingencyType(ContingencyElementType elementType) {

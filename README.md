@@ -1,10 +1,9 @@
 # powsybl-metrix
 
-[![Actions Status](https://github.com/powsybl/powsybl-metrix/workflows/CI/badge.svg)](https://github.com/powsybl/powsybl-metrix/actions)
+[![Actions Status](https://github.com/powsybl/powsybl-metrix/workflows/Full%20CI/badge.svg)](https://github.com/powsybl/powsybl-metrix/actions)
 [![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Apowsybl-metrix&metric=coverage)](https://sonarcloud.io/component_measures?id=com.powsybl%3Apowsybl-metrix&metric=coverage)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Apowsybl-metrix&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.powsybl%3Apowsybl-metrix)
 [![MPL-2.0 License](https://img.shields.io/badge/license-MPL_2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/powsybl)
 [![Slack](https://img.shields.io/badge/slack-powsybl-blueviolet.svg?logo=slack)](https://join.slack.com/t/powsybl/shared_invite/zt-rzvbuzjk-nxi0boim1RKPS5PjieI0rA)
 
 
@@ -24,7 +23,6 @@ MetrixTool calls *metrix simulator* as an external program. This program has its
 
 The following status are produced by the reduced CI coverage tests
 
-[![Actions Status](https://github.com/powsybl/powsybl-metrix/workflows/CI-cpp/badge.svg)](https://github.com/powsybl/powsybl-metrix/actions)
 [![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Ametrix-simulator&metric=coverage)](https://sonarcloud.io/component_measures?id=com.powsybl%3Ametrix-simulator&metric=coverage)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Ametrix-simulator&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.powsybl%3Ametrix-simulator)
 
@@ -39,7 +37,7 @@ metrix.
 Their respective usage is detailed in the following sections.\
 For more advanced and intensive usage it is recommended to embed this package as a library as the time series storage is
 not optimized.
-[Powsybl AFS](https://github.com/powsybl/powsybl-afs) can be use for that matter.
+[Powsybl AFS](https://github.com/powsybl/powsybl-afs) can be used for that matter.
 
 ### Mapping
 
@@ -161,7 +159,7 @@ Further documentation is available on the [dedicated page](https://powsybl.readt
 
 #### Metrix simulator
 
-Metrix simulator is an independant c++ executable. It must be installed before using powsybl-metrix.
+Metrix simulator is an independent C++ executable. It must be installed before using powsybl-metrix.
 
 It has its own toolchain and requirements.
 
@@ -174,8 +172,8 @@ It has its own toolchain and requirements.
 - number of variants: the number of variants to process. Is chosen at launch.
 
 *outputs:*
-- user log file: the user log file, displaying user friendly information about the finished run. These information are duplicated in the developper log file
-- developper log files: a set of more developpement-axed log files, with more information
+- user log file: the user log file, displaying user-friendly information about the finished run. This information is duplicated in the developer log file
+- developer log files: a set of more development-axed log files, with more information
 - result files: the result files (1 by variant processed)
 
 all input options are described in --help option
@@ -184,7 +182,7 @@ all input options are described in --help option
 
 To build metrix-simulator, you need:
 - A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
-- [CMake](https://cmake.org) (3.12 or higher)
+- [CMake](https://cmake.org) (3.14 or higher)
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)
 
@@ -200,9 +198,9 @@ $> apt install -y g++ git libboost-all-dev libxml2-dev make wget
 
 **Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), so you have to install it manually:
 ```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 
 ###### CentOS 8
@@ -212,9 +210,9 @@ $> yum install -y boost-devel gcc-c++ git libxml2-devel make wget
 
 **Note:** Under CentOS 8, the default CMake package is too old (3.11.4), so you have to install it manually:
 ```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 
 ###### CentOS 7
@@ -231,9 +229,9 @@ $> export BOOST_LIBRARYDIR=/usr/lib64/boost166
 
 **Note:** Under CentOS 7, the default CMake package is too old (2.8.12), so you have to install it manually:
 ```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
+$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
+$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
+$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 ##### Build sources
 
@@ -269,14 +267,14 @@ The following CMAKE options can be set for the executable configuration:
 ###### Checkstyle
 This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command.
 
-A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most of IDEs have a option to format files using clang-format automatically.
+A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most IDEs have an option to format files using clang-format automatically.
 
 ###### Code coverage
 This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to the configure command.
 
 ###### Run metrix simulator
 The following environments variables must be defined in order to run metrix properly:
-METRIX_ETC: location of the .dic files for language region (some of these dictionnaries are exported in 'etc' directory in install directory)
+`METRIX_ETC`: location of the `.dic` files for language region (some of these dictionaries are exported in `etc` directory in install directory)
 
 All options are detailed in the helper
 ```

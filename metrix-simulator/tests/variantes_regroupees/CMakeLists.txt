@@ -15,6 +15,6 @@ set(TEST_DIR ${MAIN_TEST_DIR}/${TEST_DIR_NAME})
 set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
 if(METRIX_RUN_ALL_TESTS)
-metrix_test("variantes_regroupees_complexe" 11) # no check here because of random and equivalent solutions
+metrix_test_no_check("variantes_regroupees_complexe" 11) # no check here because of random and equivalent solutions
 endif()
 metrix_test("variantes_regroupees_simple" 8)

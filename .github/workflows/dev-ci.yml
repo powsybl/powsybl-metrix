@@ -1,0 +1,372 @@
+name: Dev CI
+
+on:
+  workflow_dispatch:
+    inputs:
+      generate_artifacts:
+        description: 'Generate and upload build artifacts'
+        required: true
+        default: false
+        type: boolean
+  pull_request:
+
+permissions: { }
+
+# Cancel previous workflows if they are the same workflow on same ref (branch/tags)
+# with the same event (push/pull_request) even they are in progress.
+# This setting will help reduce the number of duplicated workflows.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: true
+
+jobs:
+  java:
+    name: Build Java ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build with Maven (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: ./mvnw --batch-mode -Pjacoco install
+
+      - name: Build with Maven (Windows)
+        if: matrix.os == 'windows-latest'
+        run: mvnw.cmd --batch-mode install
+        shell: cmd
+
+      - name: Build with Maven (MacOS)
+        if: matrix.os == 'macos-latest'
+        run: ./mvnw --batch-mode install
+
+      - name: Run SonarCloud analysis
+        if: matrix.os == 'ubuntu-latest'
+        run: >
+          ./mvnw --batch-mode -DskipTests sonar:sonar
+          -Dsonar.host.url=https://sonarcloud.io
+          -Dsonar.organization=powsybl-ci-github
+          -Dsonar.projectKey=com.powsybl:powsybl-metrix
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Get Maven version
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Upload Metrix iTools archive
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
+          path: ${{ github.workspace }}/metrix-distribution/target/metrix
+
+  cpp_centos7:
+    name: Build C++ CentOS7
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build the Docker image
+        run: |
+          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE --file $GITHUB_WORKSPACE/.github/workflows/docker/Dockerfile
+
+      - name: Run build steps in Docker container
+        run: |
+          docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
+            source /opt/rh/devtoolset-9/enable && 
+            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
+            cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
+            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
+            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 &&
+            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
+          "
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: metrix-simulator-centos7
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
+
+  cpp_oraclelinux8:
+    name: Build C++ Oracle Linux 8
+    runs-on: ubuntu-latest
+    container: 'oraclelinux:8'
+    steps:
+      - name: Install Boost
+        run: |
+          yum update -y
+          yum install cmake make gcc gcc-c++ which git
+          dnf --enablerepo=ol8_codeready_builder install boost-static
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: metrix-simulator-ol8
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
+
+  cpp_ubuntu:
+    name: Build C++ Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+
+      - name: Build
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target install --parallel 2
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: metrix-simulator-ubuntu
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
+
+  cpp_windows:
+    name: Build C++ Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+    env:
+      BOOST_ROOT: C:\thirdparties\boost-1.72.0
+      BOOST_URL: https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe/download
+    steps:
+      - name: Install Boost
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+          choco install wget --no-progress
+          wget -nv -O boost-installer.exe %BOOST_URL%
+          boost-installer.exe /dir=%BOOST_ROOT% /sp- /verysilent /suppressmsgboxes /norestart
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S %GITHUB_WORKSPACE%\metrix-simulator\external -B %GITHUB_WORKSPACE%\metrix-simulator\build\external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --parallel 2 --config Release
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_INSTALL_PREFIX=%GITHUB_WORKSPACE%\metrix-simulator\build\install
+
+      - name: Build
+        run: cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build --target install --parallel 2 --config Release
+
+      - name: Tests
+        run: cd %GITHUB_WORKSPACE%\metrix-simulator\build && ctest -j2 --output-on-failure -C Release
+
+      - name: Upload Metrix Simulator archive
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: metrix-simulator-windows
+          path: |
+            metrix-simulator/build/install/bin
+            metrix-simulator/build/install/etc
+
+  cpp_ubuntu_qa:
+    name: Short QA C++ Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Java 17
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install gcovr
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcovr
+
+      - name: Install Sonar wrapper
+        working-directory: ${{ runner.workspace }}
+        run: |
+          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+
+      - name: Install Sonar scanner
+        working-directory: ${{ runner.workspace }}
+        run: |
+          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+          unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+          ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
+          rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+        env:
+          SONAR_SCANNER_VERSION: 3.3.0.1492
+
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCODE_COVERAGE=TRUE
+          -DMETRIX_RUN_ALL_TESTS=OFF
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+
+      - name: Build
+        run: >
+          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
+          --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
+
+      - name: Code coverage
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
+
+      - name: Sonarcloud
+        working-directory: ${{ runner.workspace }}/powsybl-metrix/metrix-simulator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          ${{ runner.workspace }}/sonar/bin/sonar-scanner
+          -Dsonar.host.url=https://sonarcloud.io
+
+  cpp_clang_tidy:
+    name: Clang Tidy Report (PR only)
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' # github.base_ref exists only for PRs
+    steps:
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Install clang-tidy
+        run: |
+          sudo apt install -y clang-tidy-15
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Git fetch base_ref and head_ref
+        run: |
+          git fetch --no-tags --depth=1 origin ${{ github.base_ref }} ${{ github.head_ref }}
+          git show-ref
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+      - name: Generate Clang Tidy Report (Modified C++ sources only)
+        id: clang-pr
+        run: |
+          REPORT_NAME="clang_tidy_report_pr.txt"
+          REPORT_PATH="$PWD/${REPORT_NAME}"
+          export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          if [ -n "$METRIX_CPP_SOURCES" ]; then
+            clang-tidy $METRIX_CPP_SOURCES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
+            echo "report_exists=true" >> "$GITHUB_OUTPUT"
+            echo "report_name=$REPORT_NAME" >> "$GITHUB_OUTPUT"
+            echo "report_path=$REPORT_PATH" >> "$GITHUB_OUTPUT"
+          else
+            echo "No C++ source file modification found in this PR, no Clang Tidy report will be generated"
+          fi
+
+      - name: Upload Clang Tidy Report (Modified C++ sources in PR)
+        if: steps.clang-pr.outputs.report_exists
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: ${{ steps.clang-pr.outputs.report_name }}
+          path: ${{ steps.clang-pr.outputs.report_path }}

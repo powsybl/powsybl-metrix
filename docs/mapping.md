@@ -31,16 +31,16 @@ parameters {
 There is one mapping function for each type of network elements:
 
 ```groovy
-mapToGenerators {...}
-mapToLoads {...}
-mapToHvdcLines {...}
-mapToBoundaryLines {...}
-mapToBreakers {...}
-mapToTransformers {...}
-mapToPhaseTapChangers {...}
-mapToRatioTapChangers {...}
-mapToLccConverterStations {...}
-mapToVscConverterStations {...}
+mapToGenerators { /* ... */ }
+mapToLoads { /* ... */ }
+mapToHvdcLines { /* ... */ }
+mapToBoundaryLines { /* ... */ }
+mapToBreakers { /* ... */ }
+mapToTransformers { /* ... */ }
+mapToPhaseTapChangers { /* ... */ }
+mapToRatioTapChangers { /* ... */ }
+mapToLccConverterStations { /* ... */ }
+mapToVscConverterStations { /* ... */ }
 ```
 
 the general syntax is: 
@@ -49,8 +49,8 @@ the general syntax is:
 mapToXXX {
  variable variableName //optional, the name of the element variable to map the time series with. Each element have a default mapped variable (defined below)
  timeSeriesName 'timeseriesName' // name of the time series to map
- filter {...} // a filter predicate allowing to select which item of the element type we wish to map
- distributionKey {...} // optional, a repartition key that will define how the time serie values will be distributed for each selected items (default is equipartition : val / N)
+ filter { /* ... */ } // a filter predicate allowing to select which item of the element type we wish to map
+ distributionKey { /* ... */ } // optional, a repartition key that will define how the time serie values will be distributed for each selected items (default is equipartition : val / N)
 }   
 ```
 The element of the general syntax are described below. 
@@ -61,7 +61,7 @@ Note that for the `mapToBreakers` function, the `variable` and `distributionKey`
 
 With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series 
 must exist in the input data set or be created within the groovy script. For more details about time series management, 
-refer to the [time series description](inv:core:std:doc#data/timeseries).
+refer to the [time series description](inv:powsyblcore:*:*#timeseries).
 
 Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping 
 behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions. 
@@ -71,7 +71,7 @@ then, with the default distributionKey, it will map the value 50 to each generat
 #### Variable
 
 The `variable` allows to specify which network element attribute will be overwritten by its mapped time series value.
-It is an optional variable (except for transformers) which values depends on the element type (default is in bold) :
+It is an optional variable (except for `mapToTransformers`) which values depends on the element type (default is in bold) :
 
 - `mapToGenerators` **targetP**, minP, maxP, targetQ
 - `mapToLoads` **p0**, fixedActivePower, variableActivePower, q0, fixedReactivePower, variableReactivePower
@@ -79,12 +79,12 @@ It is an optional variable (except for transformers) which values depends on the
 - `mapToBoundaryLines` **p0**
 - `mapToBreakers` **open** (with 1 corresponding to a closed switch and 0 to open)
 - `mapToTransformers` ratedU1, ratedU2
-- `mapToPhaseTapChangers` **phaseTapPosition**, regulationMode
+- `mapToPhaseTapChangers` **phaseTapPosition**, phaseRegulating (0: off, 1: on), regulationMode (0: CURRENT_LIMITER, 1: ACTIVE_POWER_CONTROL, 2: FIXED_TAP)
 - `mapToRatioTapChangers` **ratioTapPosition**, loadTapChangingCapabilities, regulating, targetV
 - `mapToLccConverterStations` **powerFactor**
 - `mapToVscConverterStations` **voltageSetpoint**, voltageRegulatorOn, reactivePowerSetpoint
 
-For the loads, it is forbidden to map `p0` and in the same time `fixedActivePower` or `variableActivePower`, as theses variables are linked (`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If only `fixedActivePower` or `variableActivePower` is mapped, then the value of the other unmapped one will be set to 0 by default. 
+For the loads, it is forbidden to map `p0` and in the same time `fixedActivePower` or `variableActivePower`, as these variables are linked (`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If only `fixedActivePower` or `variableActivePower` is mapped, then the value of the other unmapped one will be set to 0 by default. 
 
 #### Filter
 
@@ -92,36 +92,56 @@ The `filter` variable is evaluated for every network item (of the requested type
 
 The filter must be a groovy statement returning `true` or `false`. It has access to the same variables of the main script, with three more variables
 related to the current object filtered.
-- generator OR hvdcLine OR load OR boundaryLine OR pst OR breaker, depending on the `mapToXXX` type
-- voltageLevel
-- substation
+- depending on the `mapToXXX` type:
+  - `mapToGenerators`: `generator`
+  - `mapToLoads`: `load`
+  - `mapToHvdcLines`: `hvdcLine`
+  - `mapToBoundaryLines`: `boundaryLine`
+  - `mapToBreakers`: `breaker`,
+  - `mapToTransformers`, `mapToPhaseTapChangers` and `mapToRatioTapChangers`: `twoWindingsTransformer` (note that three windings transformers are not yet supported).
+  - `mapToLccConverterStations`: `lccConverterStation`
+  - `mapToVscConverterStations`: `vscConverterStation`
+- `voltageLevel`
+- `substation`
 
-Be careful of the syntax of the groovy statement as an assignation `load.id = 'conso'` instead of the comparison `load.id == 'conso'` would return something truth equal to true and then allowing all equipments to be mapped.
+Be careful of the syntax of the groovy statement as an assignation `load.id = 'conso'` instead of the comparison `load.id == 'conso'` would return something truth equal to true and then resulting in all equipments to be mapped.
 
 Please learn more with the following examples:
 
 To filter the generators of the country 'FR' of energy source type 'THERMAL', we can define the following filter:
 ```groovy
-filter {generator.terminal.voltageLevel.substation.country == FR && generator.energySource == EnergySource.THERMAL}
+import com.powsybl.iidm.network.Country
+import com.powsybl.iidm.network.EnergySource
+
+mapToGenerators {
+    /* ... */
+    filter { generator.terminal.voltageLevel.substation.country == Country.FR && generator.energySource == EnergySource.THERMAL }
+}
 ```
 or 
 ```groovy
-filter {substation.country == FR && generator.energySource == EnergySource.THERMAL}
+import com.powsybl.iidm.network.Country
+import com.powsybl.iidm.network.EnergySource
+
+mapToGenerators {
+    /* ... */
+    filter { substation.country == Country.FR && generator.energySource == EnergySource.THERMAL }
+}
 ```
 
-To filter the generators connected to a list of substations:
+To filter the generators connected to a list of voltage levels:
 ```groovy
-filter {['D.BURP7', 'D.BUXP7'].contains(generator.terminal.voltageLevel.id)}
+filter { ['D.BURP7', 'D.BUXP7'].contains(generator.terminal.voltageLevel.id) }
 ```
 
 To filter the loads of a particular region (assuming the IIDM model has been extended with a custom property `region`):  
 ```groovy
-filter {    ['05', '08', '09', '13', '14', '17', '24', '25', '28'].contains(load.voltageLevel.substation.region)}
+filter { ['05', '08', '09', '13', '14', '17', '24', '25', '28'].contains(load.voltageLevel.substation.region) }
 ```
 
 To filter generators that belong to the main connected component: 
 ```groovy
-filter {generator.terminal.busView.bus?.inMainConnectedComponent}
+filter { generator.terminal.busView.bus?.inMainConnectedComponent }
 ```
 
 #### Distribution key
@@ -135,14 +155,14 @@ Please look at the following examples:
 To create a distribution key relative to the Pmax of each group:
 ```groovy
 mapToGenerators {
-    ...
-    distributionKey {generator.maxP}
+    /* ... */
+    distributionKey { generator.maxP }
 }
 ```
 
 To create a distribution key relative to the power target:
 ```groovy
-distributionKey {generator.targetP}
+distributionKey { generator.targetP }
 ```
 
 To create a distribution key defined by time series (assuming we have or created the time series SO_G1_key and SO_G2_key):
@@ -158,8 +178,8 @@ mapToGenerators {
 To create a distribution key relative to the base load:
 ```groovy
 mapToLoads {
-    ...
-    distributionKey {load.p0}    
+    /* ... */
+    distributionKey { load.p0 }    
 }
 ``` 
 
@@ -168,7 +188,7 @@ mapToLoads {
 We use that if we want to `unmap` items in order to keep their original static value. The main purpose (aside unmapping previously mapped items due to too broad filter maybe) is to prevent the selected items to appear in the `not mapped` section in the mapping synthesis that we will see later.
 ```groovy
 unmappedXXX { // unmappedGenerators, unmappedLoads, …
-   filter { … } // same usage as a normale mapToXXX
+   filter { /* ... */ } // same usage as a normal mapToXXX
 }
 ```
 
@@ -187,7 +207,7 @@ Time series mapping on a generator :
 ```groovy
 mapToGenerators {
     timeSeriesName 'myTimeSeries'
-    filter {generator.id=='GROUP_1'}
+    filter { generator.id=='GROUP_1' }
 }
 ```
 
@@ -196,7 +216,7 @@ Time series mapping on the variable active power of a load :
 mapToLoads {
     variable variableActivePower
     timeSeriesName 'myTimeSeries'
-    filter {load.id=='CONSO_1'}
+    filter { load.id=='CONSO_1' }
 }
 ```
 
@@ -204,8 +224,8 @@ Mapping on the load of a whole region (with custom IIDM properties `region`):
 ```groovy
 mapToLoads {
     timeSeriesName '15_fr_LOAD'
-    filter {substation.region=='15_fr'}
-    distributionKey { load.p0}
+    filter { substation.region=='15_fr' }
+    distributionKey { load.p0 }
 }
 ```
 
@@ -213,7 +233,7 @@ Mapping on breakers:
 ```groovy
 mapToBreakers {
   timeSeriesName 'ARD_CT2018_PRATCP6'
-  filter {breaker.id == 'PRATCP6_PRATC   6COUPL    DJ'}
+  filter { breaker.id == 'PRATCP6_PRATC   6COUPL    DJ' }
 }
 ```
 
@@ -221,7 +241,7 @@ Mapping on Phase Tap Shifters:
 ```groovy
 mapToPhaseTapChangers {
     timeSeriesName 'N1_TD'
-    filter {'TD_1'} 
+    filter { twoWindingsTransformer.id == 'TD_1' } 
 }
 ```
 
@@ -249,8 +269,8 @@ Mapping on multiple items (HVDC)
 ```groovy
 mapToHvdcLines {
     timeSeriesName 'HVDC.DE32DE34'
-    filter {hvdcLine.id == 'BRUN_GROS' || hvdcLine.id == 'WILS_GRAFEN'}
-    distributionKey {1}
+    filter { hvdcLine.id == 'BRUN_GROS' || hvdcLine.id == 'WILS_GRAFEN' }
+    distributionKey { 1 }
 }
 ```
 
@@ -289,4 +309,4 @@ The use of the option `--equipment-time-series-dir` (with required associated op
 ### Network variant generation
 
 The use of the option `--network-output-dir`  (with required associated options `--check-equipment-time-series` and `--check-versions`) produces as many IIDM network files as time steps we have in the input time series (with filtering by `--check-versions`, `--first-variant` and `--max-variant-count` options).
-Each le m will have the template name `<network_id>_<version>_<YYYYMMDD>_<HHmm>.iidm` and is the network generated with values mapped at indicated time step.
+Each produced file has the template name `<network_id>_<version>_<YYYYMMDD>_<HHmm>.xiidm` and is the network generated with values mapped at indicated time step.
