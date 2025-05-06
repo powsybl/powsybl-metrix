@@ -160,7 +160,7 @@ Further documentation is available on the [dedicated page](https://powsybl.readt
 #### Metrix simulator
 
 Metrix simulator is an independent C++ executable. It must be installed before using powsybl-metrix.
-Functionnal Metrix simulator documentation can be found here: [Functionnal Powsybl Metrix simulator documentation](./docs/board.md).
+Further documentation, including functional documentation (only in French at the moment) is available on the [dedicated page](https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/metrix-simulator.html) on our website.
 
 It has its own toolchain and requirements.
 

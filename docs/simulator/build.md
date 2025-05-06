@@ -1,4 +1,9 @@
-##### Requirements
+(build)=
+# Building Metrix simulator
+
+This page will get you through the building of the executable *metrix-simulator* for your preferred operating system.
+
+## Requirements
 
 To build metrix-simulator, you need:
 - A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
@@ -6,12 +11,14 @@ To build metrix-simulator, you need:
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)
 
-###### Ubuntu 20.04
+Use the following commands to install them on your OS:
+
+### Ubuntu 20.04 and later
 ```
 $> apt install -y cmake g++ git libboost-all-dev libxml2-dev make
 ``` 
 
-###### Ubuntu 18.04
+### Ubuntu 18.04
 ```
 $> apt install -y g++ git libboost-all-dev libxml2-dev make wget
 ```
@@ -23,7 +30,7 @@ $> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
 $> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
 ```
 
-###### CentOS 8
+### CentOS 8
 ```
 $> yum install -y boost-devel gcc-c++ git libxml2-devel make wget
 ```
@@ -35,7 +42,7 @@ $> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
 $> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
 ```
 
-###### CentOS 7
+### CentOS 7
 ```
 $> yum install -y gcc-c++ git libxml2-devel make wget
 ```
@@ -53,16 +60,17 @@ $> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
 $> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
 $> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
 ```
-##### Build sources
+## Build sources
 
-1 - Clone the project
+Next, you can build the executable from the sources
+
+### 1. Clone the project
 ```
 $> git clone https://github.com/powsybl/powsybl-metrix.git
 $> cd powsybl-metrix/metrix-simulator
 ```
 
-2 - Build the project, with 3rd parties
-First build the 3rd parties
+### 2. Build the third parties
 ```
 $> mkdir build
 $> mkdir build/external
@@ -71,7 +79,7 @@ $> cmake ../../external -DCMAKE_BUILD_TYPE=<BUILD_TYPE_3PARTIES>
 $> cmake --build .
 ```
 
-Then build the executable
+### 3. Build the project executable
 ```
 $> cd ..
 $> cmake .. -DCMAKE_INSTALL_PREFIX=<PREFIX> -DCMAKE_BUILD_TYPE=<BUILD_TYPE>
@@ -79,13 +87,17 @@ $> cmake --build . --target install
 ```
 
 The following CMAKE options can be set for the executable configuration:
-- USE_SIRIUS_SHARED (default = OFF): If active, project will link using the shared library of sirius solver instead of static library
-- METRIX_RUN_ALL_TESTS (default = ON): If inactive, projects will execute a reduced scope of tests
+- `USE_SIRIUS_SHARED` (default = OFF): If active, the project will link using the shared library of sirius solver instead of the static library
+- `METRIX_RUN_ALL_TESTS` (default = ON): If inactive, the project will execute a reduced scope of tests
 
-###### Checkstyle
-This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command.
+## Extras
+### Checkstyle
+This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To 
+enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command.
 
-A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most of IDEs have a option to format files using clang-format automatically.
+A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most IDEs have an option to format files using clang-format automatically.
 
-###### Code coverage
-This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to the configure command.
+### Code coverage
+This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or 
+higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to 
+the configure command.
