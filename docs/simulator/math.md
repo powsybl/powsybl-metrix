@@ -37,6 +37,7 @@ Soit $i$ un groupe de $GROUPE$.
 Sa production se définit par une valeur initiale $P_i^0$ et des valeurs minimum et maximum $P_{i}^{min}$ et 
 $P_{i}^{max}$. Il existe deux valeurs pour la puissance minimum : $P_{i_{ad}}^{min}$ et $P_{i_{red}}^{min}$, 
 représentant les minimums pour l'*Adequacy* et le *Redispatching* tels que :
+
 $$
 P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})
 $$
@@ -47,9 +48,11 @@ de la production du groupe $i$. De même, pour chaque incident $inc$, nous dispo
 et $p_{i_{inc}}^{+}$ représentant la variation de la puissance en curatif sur cet incident $inc$, et d'une variable 
 booléenne d'activation du curatif sur l'incident $actP_{i}^{inc}$. Ces trois variables curatives sont ainsi reliées 
 de la manière suivante :
+
 $$
 p_{i_{inc}}^{-} + p_{i_{inc}}^{+} \leq M \cdot actP_{i}^{inc}
 $$
+
 Avec $M$ une très grande valeur.
 
 #### Domaines de définition des variables
@@ -57,16 +60,18 @@ Les domaines de définitions pour les variables liées à la production sont :
  - *Adequacy phase* (EOD - Équilibre Offre Demande) :
  
  $$
- \text{Si }P_{i_{ad}}^{min}\geq 0\text{ et }P_{i_{ad}}^{min} > P_{i}^{0} \Rightarrow 
+\begin{aligned}
+ \text{Si }P_{i_{ad}}^{min}\geq 0\text{ et }P_{i_{ad}}^{min} > P_{i}^{0} \Rightarrow &
  \begin{cases}
     p_{i}^{-} = 0\\
     p_{i}^{+} \in [P_{i_{ad}}^{min} - P_{i}^{0}; P_{i}^{max} - P_{i}^{0}]
  \end{cases}\\
- \text{Sinon }
+ \text{Sinon }&
  \begin{cases}
     p_{i}^{-} \in [0; P_{i}^{0} - P_{i_{ad}}^{min}]\\
     p_{i}^{+} \in [0; P_{i}^{max} - P_{i}^{0}]
  \end{cases}
+\end{aligned}
  $$
 
  <o>YJ : pourquoi le $P_{i_{ad}}^{min}\geq 0$ ??</o>
@@ -80,12 +85,14 @@ baisse sont ensuite réinitialisées (N.B. : **c’est un comportement propre au
 les suivantes :
 
 $$
-p_{i}^{+} \in [0; P_{i}^{max} - P_{i}^{0}]\\
-p_{i}^{-}
+\begin{aligned}
+p_{i}^{+} &\in [0; P_{i}^{max} - P_{i}^{0}]\\
+p_{i}^{-} &
  \begin{cases}
     \in [0; P_{i}^{0} - P_{i_{red}}^{min}]\text{ si }P_{i}^{0}\geq P_{i}^{min}\\
     = 0\text{ sinon}
  \end{cases}
+ \end{aligned}
 $$
 
  - *Redispatching phase* en curatif :
@@ -117,6 +124,7 @@ variation, nous allons définir une valeur de référence pour chacun des groupe
 référence peut être $P^{max}$, $P^{min}$, $P^{0}$ ou encore $P^{max} - P^{0}$. Celle-ci sera notée $P^{ref}$.
 
 Soit $i_0$ le premier groupe de cet ensemble. $\forall i \in COUPLAGE^{GRP}$, $i \not = i_0$ :
+
 $$
 \frac{p_i^+ - p_i^-}{P_i^{ref}} = \frac{p_{i_0}^+ - p_{i_0}^-}{P_{i_0}^{ref}}
 $$
@@ -126,6 +134,7 @@ $$
 Cette contrainte est **facultative**, il faut indiquer dans les données METRIX que nous souhaitons l'appliquer (avec 
 le paramètre *LimiteCurGroupe*). Cette contrainte permet de limiter la baisse cumulée de la production en curatif 
 sur un incident $inc$ :
+
 $$
 \sum_{i\in GROUPE} p_{inc}^{-} \leq LimiteCurGroupe
 $$
@@ -255,6 +264,7 @@ $actTD_{i}^{inc}$. Ces trois variables sont reliées par la contrainte suivante 
 $$
 td^{+}_{i_{inc}} + td^{-}_{i_{inc}}\leq M \cdot actTD_{i}^{inc}
 $$
+
 Avec $M$ ue valeur très élevée.
 
 #### Domaines de définition des variables
@@ -337,18 +347,21 @@ Avec $M$ une valeur très grande.
 
 Les variables représentant les variations de puissance de la LCC ont l’encadrement suivant : 
 - Si le pilotage est en puissance optimisée ou en émulation AC optimisée :
+
 $$
 lcc_i^+ \in [0; max(Lcc_i^{max}-Lcc_i^{0}; 0)]\text{ et }lcc_i^- \in [0; max(Lcc_i^{0}-Lcc_i^{min}; 0)]
 $$
+
 - Sinon, il est imposé :
+
 $$
 lcc_i^{+} = lcc_i^{-} = 0
 $$
 
 En curatif, les encadrements pourt les pilotages optimisés sont les suivants :
+
 $$
-lcc_i^{+} + lcc_{i_{inc}}^{+} \leq Lcc_i^{max} - Lcc_i^{0}
-\\
+lcc_i^{+} + lcc_{i_{inc}}^{+} \leq Lcc_i^{max} - Lcc_i^{0}\\
 lcc_i^{-} + lcc_{i_{inc}}^{-} \leq Lcc_i^{0} - Lcc_i^{min}
 $$
 
@@ -370,6 +383,7 @@ la variable d’activation est débloquée, les variables préventives ne seront
 calcul du transit sur quadripôle, et de toute façon le coefficient associé sera nul.  
 Quant aux variables curatives (linéaires et booléennes), elles sont reliées par une contrainte d’activation. Soit 
 $i \in TD, inc \in INCIDENT$ :
+
 $$
 td_{i_{inc}}^+ + td_{i_{inc}}^- \leq M \cdot actLCC_{inc}^i
 $$
@@ -379,9 +393,11 @@ variable est libre de changer de valeur.
 
 Ce TD fictif aura un coût d’utilisation nul. Il aura le même encadrement en préventif que les TDs normaux, avec des 
 puissances max et min issues de la LCC en émulation AC. Il aura également comme encadrement en curatif :
+
 $$
 0 \leq td_{i_{inc}}^+ \leq td_i^{max}\text{ et }0\leq td_{i_{in}}^- \leq -td_i^{min}
 $$
+
 Les TDs fictifs sont stockés dans l’ensemble $TDF$.
 
 <r>Résumé des notations :</r>
@@ -414,6 +430,7 @@ $actPRD_{prd}^{inc}$, de coût dans la fonction objectif $\Gamma^{PRD}$.
 #### Contrainte d'unicité des parades 
 
 Pour chaque incident, une parade unique est applicable, $\forall inc \in INDICENT$ :
+
 $$
 \sum_{prd \in PARADE \cap CURATIF_{inc}} actPRD_{prd}^{inc} \leq 1
 $$
@@ -430,6 +447,7 @@ non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble.
 
 Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à l'incident $inc$. Alors 
 $\forall inc \in INCIDENT, \forall prd \in PARADE \cap CURATIF_{inc}$ :
+
 $$
 (\nexists quad \in QUADNECESSAIRES_{prd}\text{ tel que }quad \in QUADENCONTRAINTE_{inc}) \Rightarrow actPRD_{prd}^{inc} = 0
 $$
@@ -459,6 +477,7 @@ $val_{prd}^{inc} \in [0; max(0; VALOMax)]$.
 **Données**
 
 Ensembles : $PARADE$, $\forall prd \in PARADE$ :
+
 $$
 COUPLAGEFERMER_{prd}, COUPLAGEOUVRIR_{prd}, QUADNECESSAIRES_{prd}
 $$
@@ -492,6 +511,7 @@ Lors de cette phase, nous ne nous occuppons que de l'équilibrage production - c
 
 L'équilibrage du réseau revient à avoir une égalité entre la production et la consommation afin que la demande soit 
 satisfaite sans aucun excès de prodution :
+
 $$
 \sum_{i \in GROUPE}(P_i^0 + p_i^+ + p_i^-) - \sum_{i \in CONSO}(C_i^0 - c_i^-) = 0
 $$
@@ -543,6 +563,7 @@ Au sein de cette phase, l'équilibre entre production et consommation doit aussi
 l'incident.
 
 $\forall inc \in INCIDENT, \forall zc \in ZC$ :
+
 $$
 \sum_{i \in CURATIF_{inc} \cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) + \sum_{i \in CURATIF_{inc} \cap CONSO_{zc}}c_{i_{inc}}^{-} + \sum_{i \in CURATIF_{inc} \cap LCC_{zc}^{+}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) - \sum_{i \in CURATIF_{inc} \cap LCC_{zc}^{-}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) = 0
 $$
@@ -563,16 +584,13 @@ de la résolution. En effet, ces lignes doivent respecter trois seuils :
 
 Si un de ces seuils n’est pas respecté à la fin de la micro-itération, la contrainte associée est rajoutée.
 Pour chacune de ces situations (notée $situ$), et $\forall i \in QUADRIPOLE$ (i.e. pour toute ligne) :
+
 $$
 transit_i^{situ} \leq Max_i^{situ}
 $$
 
-Ce transit est déterminé via l'influence d'un ensemble de variables $VARINFLU^{situ}$ sur le transit de $i$. Cet 
-ensemble dépendra de la situation $situ$ considérée et, dans le cas d'une situtation de type N-k, de l'incident 
-concerné. Chaque variable de cete ensemble va ainsi être associée à un coefficient d'influence. Ces coefficients 
-dépendent de la tologie du réseau en situation $situ$ et sont stockés dans l'ensemble $COEFINFLU_i^{situ}$. Ces 
-deux ensembles sont de même cardinalité, notée $N$, puisque toute variable a, par définition, une influence et donc 
-un coefficient d'influence. De ce fait :
+Ce transit est déterminé via l'influence d'un ensemble de variables $VARINFLU^{situ}$ sur le transit de $i$. Cet ensemble dépendra de la situation $situ$ considérée et, dans le cas d'une situtation de type N-k, de l'incident concerné. Chaque variable de cete ensemble va ainsi être associée à un coefficient d'influence. Ces coefficients dépendent de la tologie du réseau en situation $situ$ et sont stockés dans l'ensemble $COEFINFLU_i^{situ}$. Ces deux ensembles sont de même cardinalité, notée $N$, puisque toute variable a, par définition, une influence et donc un coefficient d'influence. De ce fait :
+
 $$
 transit_i^{situ} = \sum_{j = 1}^N COEFINFLU_i^{situ}[j] \cdot VARINFLU^{situ}[j]
 $$
@@ -602,6 +620,7 @@ possibles :
 - soit la parade $prd$ ouvre le quadripôle $quad$, dans ce cas il n'y a pas de raison d'introduire une contrainte 
 de transit liant $quad$ et $prd$.
 - sinon, la contrainte suivante est introduite :
+
 $$
 transit_{quad}^{situ} + M \cdot act_{prd}^{inc} \leq Max_{quad}^{situ} + M
 $$
@@ -615,9 +634,11 @@ une doit être en contrainte pour que $prd$ soit activable) :
 $act_{prd}^{inc} = 0$. $prd$ redeviendra activable, dès lors que $inc$ provoquera une surcharge sur un autre 
 quadripôle $quad' \in QUADNECESSAIRES_{prd}$.
 - Sinon, la contrainte d'activation de la parade suivante est ajoutée :
+
 $$
 transit_{quad}^{situ} - M \cdot act_{prd}^{inc} \geq Max_{quad}^{situ} - M
 $$
+
 Cette contrainte n'a de sens que si $quad$ est en surcharge.
 
 Si les conditions nécessaires pour avoir les deux contraintes de transit précédentes sont réunies, alors utiliser la 
@@ -631,6 +652,7 @@ utiliser la parade sans vraiment l'être.
 En étant utilisée pour corriger une surcharge générée par un incident $inc$, une parade peut également provoquer des 
 surcharges sur un autre quadripôle $quad$. Ainsi, $\forall prd \in PARADE \cap CURATIF_{inc}$ tq $prd$ ne coupe pas 
 $quad$, la contrainte suivante est ajoutée :
+
 $$
 transit_{quad}^{situ} + M \cdot act_{prd}^{inc} \leq Max_{quad}^{situ} + M
 $$
@@ -658,6 +680,7 @@ De même, notons :
 Enfin, notons $NbMaxActCur$ le nombre maximum d’actions curatives autorisées sur un incident.
 
 La contrainte de formule ainsi :
+
 $$
 NbActions \cdot act_{prd}^{inc} + \sum_{j \in ECSTF} act_{j}^{inc} \cdot CoutAction[j] < NbMaxActCur
 $$
@@ -665,11 +688,13 @@ $$
 #### Fonction objectif 
 
 Notons, $\forall inc \in INCIDENT, NbCtre_{inc}$ le nombre de contraintes dues à $inc$. Posons également :
+
 $$
 \gamma_{inc}^{tot} = \sum_{i \in GROUPE \cap CURATIF_{inc}} (p_{i_{inc}}^+ \cdot \Gamma_{i_{red}}^{+} + p_{i_{inc}}^- \cdot \Gamma_{i_{red}}^{-}) \cdot proba_{inc} + \sum_{i \in CONSO \cap CURATIF_{inc}} (|c_{i_{inc}}^-| \cdot \Gamma_{i_{cur}}^{CONSO}) \cdot proba_{inc} + \sum_{i \in LCC \cap CURATIF_{inc}} (td_{i_{inc}}^+ + td_{i_{inc}}^-) \cdot \Gamma^{TD} \cdot proba_{inc} + \sum_{prd \in PARADE \cap CURATIF_{inc}} (act_{prd}^{inc} \cdot \Gamma^{PRD} \cdot proba_{inc} \cdot  NbCtre_{inc} + val_{prd}^{inc})
 $$
 
 Nous obetnons la fonction objectif suivante : 
+
 $$
 min \sum_{i \in GROUPE} (p_{i}^+ \cdot \Gamma_{i_{red}}^{+} + p_{i}^- \cdot \Gamma_{i_{red}}^{-}) + \sum_{i \in CONSO} (|c_{i}^-| \cdot \Gamma_{i}^{CONSO}) + \sum_{i \in LCC} (lcc_{i}^+ + lcc_{i}^-) \cdot \Gamma^{LCC} + \sum_{i \in TD} (td_{i}^+ + td_{i}^-) \cdot \Gamma^{TD} + \sum_{inc \in INCIDENT} \gamma_{inc}^{tot}
 $$
