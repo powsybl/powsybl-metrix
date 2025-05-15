@@ -362,6 +362,8 @@ public:
 
     int checkCoherencePminMaxObj();
     bool estAjustable(bool adequacy) const;
+
+    bool isBattery() const;
 };
 
 class GroupesCouples
