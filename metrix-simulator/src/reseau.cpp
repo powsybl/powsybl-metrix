@@ -507,6 +507,8 @@ void Reseau::lireDonnees()
     // Types des groupes
     for (unsigned int i = 0; i < static_cast<unsigned int>(nbTypesGroupes_); ++i) {
         string typeGroupe = config.trnomtypDIE()[i];
+        std::transform(typeGroupe.begin(), typeGroupe.end(), typeGroupe.begin(),
+                   [](unsigned char c) { return std::toupper(c); });
         rtrim(typeGroupe);
         typesGroupes_.push_back(typeGroupe);
     }
