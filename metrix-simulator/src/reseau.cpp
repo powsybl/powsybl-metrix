@@ -572,7 +572,7 @@ void Reseau::lireDonnees()
                                              config.trvalpmdDIE()[i],
                                              trdembanDIE,
                                              ajustMode,
-                                             grpTypeStr == "BATTERY"
+                                             grpTypeStr == config::constants::battery_type
                                              );
 
 
