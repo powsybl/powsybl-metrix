@@ -33,6 +33,7 @@ using cte::c_fmt;
 using std::string;
 using std::vector;
 using std::list;
+using std::tuple;
 
 static constexpr double EPSILON_SORTIES = 0.05; // seuil de precision pour les sorties
 static const string PREC_FLOAT = "%.1f";        // Doit etre coherent avec EPSILON_SORTIE
@@ -693,8 +694,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         vector<double> maxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
         vector<double> redispCurParType(res_.nbTypesGroupes_, 0.);
 
-        list<const string> nonBatteriesLogs;
-        list<const string> batteriesLogs;
+        list<tuple<const int, const string, const double>> nonBatteriesLogs;
+        list<tuple<const int, const string, const double>> batteriesLogs;
             
         if (res_.nbGroupesCuratifs_ > 0) {
 
@@ -746,14 +747,12 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                             if (config::inputConfiguration().useAllOutputs()
                                 || (config::configuration().displayResultatsRedispatch()
                                     && fabs(val) >= EPSILON_SORTIES)) {
-                                const string grpType = grp->isBattery() ? "D" : "B";
-                                const string grpLog = "R2" + grpType + ";" + std::to_string(incidentsContraignants.find(icdt)->second)
-                                                        + ";" + s + ";" + std::to_string(std::round(val * 10.0) / 10.0) + ";\n";
+                                tuple<const int, const string, const double> tupleToAdd(incidentsContraignants.find(icdt)->second, s, val);
                                 if (grp->isBattery()) {
-                                    batteriesLogs.push_back(grpLog);
+                                    batteriesLogs.push_back(tupleToAdd);
                                 }
                                 else {
-                                    nonBatteriesLogs.push_back(grpLog);
+                                    nonBatteriesLogs.push_back(tupleToAdd);
                                 }
                                 
                             }
@@ -776,14 +775,16 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "R2B ;INCIDENT;NOM GROUPE;DELTA_P;\n");
         }
         for (auto& itLog : nonBatteriesLogs) {
-            fprintf(fr, itLog);
+            fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
+-                                        std::get<0>(itLog), std::get<1>(itLog), std::get<2>(itLog));
         }
         nonBatteriesLogs.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2D ;INCIDENT;NOM BATTERY;DELTA_P;\n");
         }
         for (auto& itLog : batteriesLogs) {
-            fprintf(fr, itLog);
+            fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
+-                                        std::get<0>(itLog), std::get<1>(itLog), std::get<2>(itLog));
         }
         batteriesLogs.clear();
         // ecriture : R2C: Couplages de groupes
