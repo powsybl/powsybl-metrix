@@ -1236,14 +1236,24 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         fprintf(fr, "R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;\n");
         double volGrp = 0.;
         double volGrpCur = 0.;
+        double volGrpBattery = 0.;
+        double volGrpBatteryCur = 0.;
         for (int i = 0; i < res_.nbTypesGroupes_; ++i) {
             if (redispatchParTypeB[i] < EPSILON_SORTIES && redispatchParTypeH[i] < EPSILON_SORTIES
                 && maxRedispCurParTypeB[i] < EPSILON_SORTIES && maxRedispCurParTypeH[i] < EPSILON_SORTIES) {
                 continue;
             }
 
-            volGrp += redispatchParTypeB[i] + redispatchParTypeH[i];
-            volGrpCur += redispCurParType[i];
+            if(res_.typesGroupes_[i] == "BATTERY")
+            {
+                volGrpBattery += redispatchParTypeB[i] + redispatchParTypeH[i];
+                volGrpBatteryCur += redispCurParType[i];
+            }
+            else
+            {
+                volGrp += redispatchParTypeB[i] + redispatchParTypeH[i];
+                volGrpCur += redispCurParType[i];
+            }
 
             fprintf(fr,
                     "R7 ;;%s;%s;%s;%s;%s;\n",
@@ -1280,19 +1290,25 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R9.
         //--------------
         fprintf(fr,
-                "R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT "
+                "R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS BATTERIES CUR;COUT BATTERIES CUR;COUT "
                 "CONSO CUR;\n");
         string coutGrpCur;
+        string coutGrpBatteryCur;
         string coutConsoCur;
 
         // on ote les offsets dans les couts restitues pour les groupes
         double coutGrp = fonction_objectif_G_ - (volGrp * config::configuration().redispatchCostOffset());
         double coutGrpC = fonction_objectif_G_cur_sans_offset_;
+        double coutGrpBattery = fonction_objectif_G_ - (volGrpBattery * config::configuration().redispatchCostOffset());
+        double coutGrpBatteryC = fonction_objectif_G_cur_sans_offset_;
         double coutConso = fonction_objectif_D_ - (volDel * config::configuration().redispatchCostOffset());
         double coutConsoC = fonction_objectif_D_cur_sans_offset_;
 
         if (coutGrpC >= EPSILON_SORTIES) {
             coutGrpCur = c_fmt(PREC_FLOAT.c_str(), coutGrpC);
+        }
+        if (coutGrpBatteryC >= EPSILON_SORTIES) {
+            coutGrpBatteryCur = c_fmt(PREC_FLOAT.c_str(), coutGrpBatteryC);
         }
 
         if (fonction_objectif_D_cur_ >= EPSILON_SORTIES) {
@@ -1300,12 +1316,14 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
 
         fprintf(fr,
-                ("R9 ;;" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";%s;%s;\n").c_str(),
+                ("R9 ;;" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";%s;%s;%s;\n").c_str(),
                 coutGrp,
+                coutGrpBattery,
                 coutConso,
                 sommeEcartsNk_,
                 sommeEcartsN,
                 coutGrpCur.c_str(),
+                coutGrpBatteryCur.c_str(),
                 coutConsoCur.c_str());
 
         // ecriture : R10
