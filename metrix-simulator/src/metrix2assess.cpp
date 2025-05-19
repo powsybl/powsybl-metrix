@@ -1244,7 +1244,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            if(res_.typesGroupes_[i] == "BATTERY")
+            if(res_.typesGroupes_[i] == config::constants::battery_type)
             {
                 volGrpBattery += redispatchParTypeB[i] + redispatchParTypeH[i];
                 volGrpBatteryCur += redispCurParType[i];
