@@ -7,7 +7,8 @@
 // file, you can obtain one at http://mozilla.org/MPL/2.0/.
 // SPDX-License-Identifier: MPL-2.0
 //
-
+#include <algorithm>
+#include <cctype> 
 #include <cmath>
 #include <cstdio>
 #include <iomanip>
@@ -117,6 +118,11 @@ bool Groupe::estAjustable(bool adequacy) const
         return false;
     }
     return true;
+}
+
+bool Groupe::isBattery() const
+{
+    return isBattery_;
 }
 
 void Reseau::update_with_configuration()
@@ -552,7 +558,9 @@ void Reseau::lireDonnees()
         if (i < config.trdembanDIE().size()) {
             trdembanDIE = config.trdembanDIE()[i];
         }
-
+        string grpTypeStr = config.trnomtypDIE()[config.trtypgrpDIE()[i]];
+        std::transform(grpTypeStr.begin(), grpTypeStr.end(), grpTypeStr.begin(),
+                   [](unsigned char c) { return std::toupper(c); });
         auto prod = std::make_shared<Groupe>(i,
                                              nomGroupe,
                                              noeuds_[indNoeudRaccord],
@@ -561,7 +569,9 @@ void Reseau::lireDonnees()
                                              config.trpuiminDIE()[i],
                                              config.trvalpmdDIE()[i],
                                              trdembanDIE,
-                                             ajustMode);
+                                             ajustMode,
+                                             grpTypeStr == "BATTERY"
+                                             );
 
 
         groupes_.insert(std::pair<string, std::shared_ptr<Groupe>>(prod->nom_, prod));
@@ -1432,7 +1442,8 @@ Groupe::Groupe(int num,
                float puisMin,
                float puisMaxDispo,
                float demiBande,
-               Groupe::ProdAjustable pimpmod) :
+               Groupe::ProdAjustable pimpmod,
+               bool isBattery) :
     nom_(nom),
     num_(num),
     numNoeud_{noeud->num_},
@@ -1441,7 +1452,8 @@ Groupe::Groupe(int num,
     prodAjust_(pimpmod),
     puisMinBase_(puisMin),
     puisMinAR_(puisMin),
-    demiBande_(demiBande)
+    demiBande_(demiBande),
+    isBattery_(isBattery)
 {
     noeud->listeGroupes_.push_back(this);
     noeud->nbGroupes_++;
