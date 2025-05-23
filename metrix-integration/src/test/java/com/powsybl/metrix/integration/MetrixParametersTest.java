@@ -48,6 +48,7 @@ class MetrixParametersTest {
         assertFalse(p.getOptionalLossOfLoadCost().isPresent());
         assertFalse(p.getOptionalCurativeLossOfLoadCost().isPresent());
         assertFalse(p.getOptionalCurativeLossOfGenerationCost().isPresent());
+        assertFalse(p.getOptionalGeneratorMinCost().isPresent());
         assertFalse(p.getOptionalContingenciesProbability().isPresent());
         assertFalse(p.isWithLostLoadDetailedResultsOnContingency().isPresent());
     }
@@ -145,6 +146,7 @@ class MetrixParametersTest {
             .setLossOfLoadCost(9000f)
             .setCurativeLossOfLoadCost(1000f)
             .setCurativeLossOfGenerationCost(11000f)
+            .setGeneratorMinCost(1.5f)
             .setContingenciesProbability(0.001f);
 
         assertFalse(p.isWithGridCost().get());
@@ -164,6 +166,7 @@ class MetrixParametersTest {
         assertEquals(0.0001f, p.getOptionalPstCostPenality().get(), 0f);
         assertEquals(0.01f, p.getOptionalHvdcCostPenality().get(), 0f);
         assertEquals(9000f, p.getOptionalLossOfLoadCost().get(), 0f);
+        assertEquals(1.5f, p.getOptionalGeneratorMinCost().get(), 0f);
         assertEquals(1000f, p.getOptionalCurativeLossOfLoadCost().get(), 0f);
         assertEquals(11000f, p.getOptionalCurativeLossOfGenerationCost().get(), 0f);
         assertEquals(0.001f, p.getOptionalContingenciesProbability().get(), 0f);
