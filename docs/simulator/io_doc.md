@@ -369,10 +369,10 @@ Notons `EPSILON_SORTIES = 0.05`.
 
 *Format* : ```S1 ;INDISPONIBILITE; OUVRAGE;```
 
-| Nom de la grandeur | Type | Unité | Description                |
-|:-------------------|:-----|:------|:---------------------------|
+| Nom de la grandeur | Type | Unité | Description                                             |
+|:-------------------|:-----|:------|:--------------------------------------------------------|
 | Type de l’ouvrage  | I    |       | 1 : quadripôle; 2 : groupe (hors battere); 3 : batterie |
-| Nom de l’ouvrage   | C    |       |                            |
+| Nom de l’ouvrage   | C    |       |                                                         |
 
 **Note** : Tableau disponible si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator.
 
@@ -408,7 +408,7 @@ curatif ou des incidents ayant généré un transit maximal sur incident (cf. [t
 
 | Nom de la grandeur           | Type | Unité | Description                                                                                                                                                                                                          |
 |:-----------------------------|:-----|:------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Numéro d’ordre de l’incident | I    |       | Numérotation à partir de 1. Numéros utilisés ensuite dans tableaux [R4](#io-table_r4), [R1B](#io-table_r1b), [R2B](#io-table_r2b), [R3B](#io-table_r3b), [R5B](#io-table_r5b) et [R6B](#io-table_r6b) (cf. ci-après) |
+| Numéro d’ordre de l’incident | I    |       | Numérotation à partir de 1. Numéros utilisés ensuite dans tableaux [R4](#io-table_r4), [R1B](#io-table_r1b), [R2B](#io-table_r2b), [R2D](#io-table_r2d), [R3B](#io-table_r3b), [R5B](#io-table_r5b) et [R6B](#io-table_r6b) (cf. ci-après) |
 | Type                         | C    |       | «N-1L», «N-KL», «N-KG», «N-HVDC», «COMBO»                                                                                                                                                                            |
 | Nom de l’incident            | C    |       | Nom de l’incident                                                                                                                                                                                                    |
 
@@ -499,11 +499,11 @@ diffère de la consigne préventive sont affichés
 
 *Format* : ```R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;```
 
-| Nom de la grandeur | Type | Unité | Description                                                |
-|:-------------------|:-----|:------|:-----------------------------------------------------------|
-| Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
+| Nom de la grandeur            | Type | Unité | Description                                                |
+|:------------------------------|:-----|:------|:-----------------------------------------------------------|
+| Numéro d’ incident            | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
 | Nom du groupe (hors batterie) | C    |       |                                                            |
-| Puissance ajustée  | R    | MW    |                                                            |
+| Puissance ajustée             | R    | MW    |                                                            |
 
 -----------------------------
 **Tableau R2C** : résultats par couplage de groupes
@@ -525,7 +525,7 @@ diffère de la consigne préventive sont affichées
 | Nom de la grandeur | Type | Unité | Description                                                |
 |:-------------------|:-----|:------|:-----------------------------------------------------------|
 | Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Nom de la batterie      | C    |       |                                                            |
+| Nom de la batterie | C    |       |                                                            |
 | Puissance ajustée  | R    | MW    |                                                            |
 
 -----------------------------
@@ -636,13 +636,13 @@ préventive diffère de la consigne initiale sont affichées
 lancement à METRIX simulator
 * ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
 
-| Nom de la grandeur                        | Type | Unité | Description                                                                                                                                                                   |
-|:------------------------------------------|:-----|:------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom de la ligne à courant continu         | C    |       |                                                                                                                                                                               |		
-| Puissance transitant                      | R    | MW    |                                                                                                                                                                               |
-| Variation marginale préventive de la HVDC | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator) |
-| Variation marginale de la HVDC            | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives)                     |
-| Transit hor réseau                        | R    | MW    | (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                      |
+| Nom de la grandeur                        | Type | Unité | Description |
+|:-------------------------------------------|:-----|:------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Nom de la ligne à courant continu          | C    |       |         |		
+| Puissance transitant                       | R    | MW    |         |
+| Variation marginale préventive de la HVDC  | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator) |
+| Variation marginale de la HVDC             | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives)                        |
+| Transit hor réseau                         | R     | MW    | (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                   |
 
 -----------------------------
 (io-table_r6b)=
@@ -664,17 +664,17 @@ curative diffère de la consigne préventive sont affichées
 
 *Format* : ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;```
 
-| Nom de la grandeur                  | Type | Unité | Description                |
-|:------------------------------------|:-----|:------|:---------------------------|
-| Filière                             | C    |       |                            |
-| Redispatching préventif des groupes (hors batteries) à la baisse | R    | MW    | ∑ groupes (hors batteries) de la filière  |
-| Redispatching préventif des groupes (hors batteries) à la hausse | R    | MW    | ∑ groupes (hors batteries) de la filière  |
-| Redispatching préventif des batteries à la baisse | R    | MW    | ∑ groupes de la filière batterie   |
-| Redispatching préventif des batteries à la hausse | R    | MW    | ∑ groupes de la filière batterie   |
+| Nom de la grandeur                                               | Type | Unité | Description                                |
+|:-----------------------------------------------------------------|:-----|:------|:-------------------------------------------|
+| Filière                                                          | C    |       |                                            |
+| Redispatching préventif des groupes (hors batteries) à la baisse | R    | MW    | ∑ groupes (hors batteries) de la filière   |
+| Redispatching préventif des groupes (hors batteries) à la hausse | R    | MW    | ∑ groupes (hors batteries) de la filière   |
+| Redispatching préventif des batteries à la baisse                | R    | MW    | ∑ groupes de la filière batterie           |
+| Redispatching préventif des batteries à la hausse                | R    | MW    | ∑ groupes de la filière batterie           |
 | Redispatching curatif des groupes (hors batteries) à la baisse   | R    | MW    | max(groupes hors batteries de la filière ) |
-| Redispatching curatif des groupes (hors batteries) à la hausse   | R    | MW    | max(groupes hors batteries de la filière) |
-| Redispatching curatif des batteries à la baisse   | R    | MW    | max(batteries de la filière ) |
-| Redispatching curatif des batteries à la hausse   | R    | MW    | max(batteries de la filière) |
+| Redispatching curatif des groupes (hors batteries) à la hausse   | R    | MW    | max(groupes hors batteries de la filière)  |
+| Redispatching curatif des batteries à la baisse                  | R    | MW    | max(batteries de la filière )              |
+| Redispatching curatif des batteries à la hausse                  | R    | MW    | max(batteries de la filière)               |
 
 -----------------------------
 (io-table_r8)=
@@ -704,16 +704,16 @@ curative diffère de la consigne préventive sont affichées
 
 *Format* : ```R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT CONSO CUR;```
 
-| Nom de la grandeur                 | Type | Unité | Description                                                                   |
-|:-----------------------------------|:-----|:------|:------------------------------------------------------------------------------|
-| Coût de redispatching des groupes hors batteries             | R    | u.m.  | Coût des ajustements préventifs de production hors batteries                                |
-| Coût de redispatching des batteries             | R    | u.m.  | Coût des ajustements préventifs de production des batteries                                |
-| Coût de la défaillance             | R    | u.m.  | Coût des ajustements préventifs de consommation (i.e. du délestage préventif) |
-| Volume de dépassement sur incident | R    | MW    | Somme des dépassements de seuils sur incidents pour les ouvrages surveillés   |
-| Volume de dépassement en N         | R    | MW    | Somme des dépassement en N pour les ouvrages surveillés                       |
-| Coût de redispatching curatif hors batteries      | R    | u.m.  | Coût des ajustements curatifs de production hors batteries                                   |
-| Coût de redispatching curatif des batteries     | R    | u.m.  | Coût des ajustements curatifs de production des batteries                                   |
-| Coût d’effacement curatif          | R    | u.m.  | Coût des ajustements curatifs de consommation (i.e. du délestage curatif)     |
+| Nom de la grandeur                               | Type | Unité | Description                                                                   |
+|:-------------------------------------------------|:-----|:------|:------------------------------------------------------------------------------|
+| Coût de redispatching des groupes hors batteries | R    | u.m.  | Coût des ajustements préventifs de production hors batteries                  |
+| Coût de redispatching des batteries              | R    | u.m.  | Coût des ajustements préventifs de production des batteries                   |
+| Coût de la défaillance                           | R    | u.m.  | Coût des ajustements préventifs de consommation (i.e. du délestage préventif) |
+| Volume de dépassement sur incident               | R    | MW    | Somme des dépassements de seuils sur incidents pour les ouvrages surveillés   |
+| Volume de dépassement en N                       | R    | MW    | Somme des dépassement en N pour les ouvrages surveillés                       |
+| Coût de redispatching curatif hors batteries     | R    | u.m.  | Coût des ajustements curatifs de production hors batteries                    |
+| Coût de redispatching curatif des batteries      | R    | u.m.  | Coût des ajustements curatifs de production des batteries                     |
+| Coût d’effacement curatif                        | R    | u.m.  | Coût des ajustements curatifs de consommation (i.e. du délestage curatif)     |
 
 -----------------------------
 (io-table_r10)=
