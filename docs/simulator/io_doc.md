@@ -149,7 +149,7 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | <y>TRVALPMD</y> | R    | TRNBGROU | Puissance max disponible<br>= generator.maxP                                                                                                                                                                            |
 | <o>TRPUIMIN</o> | R    | TRNBGROU | Puissance min<br>= generator.minP                                                                                                                                                                                       |
 | **TRNBTYPE**    | I    | 1        | Nombre de types de groupe                                                                                                                                                                                               |
-| <o>TRNOMTYP</o> | C    | TRNBTYPE | Noms des types de groupes                                                                                                                                                                                               |
+| <o>TRNOMTYP</o> | C    | TRNBTYPE | Noms des types de groupes. **Le type "BATTERY" est réservé pour les batteries.**                                                                                                                                                                                               |
 | <o>TRTYPGRP</o> | I    | TRNBGROU | Indice du type de groupe dans TRNOMTYP                                                                                                                                                                                  |
 | <o>SPIMPMOD</o> | I    | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>(1 si aucun groupe n’est configuré et 0 sinon.) |
 | TRDEMBAN        | R    | TRNBGROU | Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (0)                                                                                                                             |
@@ -371,7 +371,7 @@ Notons `EPSILON_SORTIES = 0.05`.
 
 | Nom de la grandeur | Type | Unité | Description                |
 |:-------------------|:-----|:------|:---------------------------|
-| Type de l’ouvrage  | I    |       | 1 : quadripôle; 2 : groupe |
+| Type de l’ouvrage  | I    |       | 1 : quadripôle; 2 : groupe (hors battere); 3 : batterie |
 | Nom de l’ouvrage   | C    |       |                            |
 
 **Note** : Tableau disponible si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator.
@@ -494,15 +494,15 @@ si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator
 
 -----------------------------
 (io-table_r2b)=
-**Tableau R2B** : résultats curatifs par groupe. Seuls les groupes dont la consigne curative 
+**Tableau R2B** : résultats curatifs par groupe (hors batterie). Seuls les groupes (hors batteries) dont la consigne curative 
 diffère de la consigne préventive sont affichés
 
-*Format* : ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```
+*Format* : ```R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;```
 
 | Nom de la grandeur | Type | Unité | Description                                                |
 |:-------------------|:-----|:------|:-----------------------------------------------------------|
 | Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Nom du groupe      | C    |       |                                                            |
+| Nom du groupe (hors batterie) | C    |       |                                                            |
 | Puissance ajustée  | R    | MW    |                                                            |
 
 -----------------------------
@@ -514,6 +514,19 @@ diffère de la consigne préventive sont affichés
 |:-------------------|:-----|:------|:------------------------------------------------------------|
 | Nom du couplage    | C    |       | Nom donné au couplage dans la configuration                 |
 | Variation          | R    | MW    | Somme des variations sur l’ensemble des groupes du couplage |
+
+-----------------------------
+(io-table_r2d)=
+**Tableau R2D** : résultats curatifs par batterie. Seuls les batteries dont la consigne curative 
+diffère de la consigne préventive sont affichées
+
+*Format* : ```R2D ;INCIDENT;NOM BATTERIE;DELTA_P;```
+
+| Nom de la grandeur | Type | Unité | Description                                                |
+|:-------------------|:-----|:------|:-----------------------------------------------------------|
+| Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
+| Nom de la batterie      | C    |       |                                                            |
+| Puissance ajustée  | R    | MW    |                                                            |
 
 -----------------------------
 (io-table_r3)=
@@ -654,10 +667,14 @@ curative diffère de la consigne préventive sont affichées
 | Nom de la grandeur                  | Type | Unité | Description                |
 |:------------------------------------|:-----|:------|:---------------------------|
 | Filière                             | C    |       |                            |
-| Redispatching préventif à la baisse | R    | MW    | ∑ groupes de la filière    |
-| Redispatching préventif à la hausse | R    | MW    | ∑ groupes de la filière    |
-| Redispatching curatif à la baisse   | R    | MW    | max(groupes de la filière) |
-| Redispatching curatif à la hausse   | R    | MW    | max(groupes de la filière) |
+| Redispatching préventif des groupes (hors batteries) à la baisse | R    | MW    | ∑ groupes (hors batteries) de la filière  |
+| Redispatching préventif des groupes (hors batteries) à la hausse | R    | MW    | ∑ groupes (hors batteries) de la filière  |
+| Redispatching préventif des batteries à la baisse | R    | MW    | ∑ groupes de la filière batterie   |
+| Redispatching préventif des batteries à la hausse | R    | MW    | ∑ groupes de la filière batterie   |
+| Redispatching curatif des groupes (hors batteries) à la baisse   | R    | MW    | max(groupes hors batteries de la filière ) |
+| Redispatching curatif des groupes (hors batteries) à la hausse   | R    | MW    | max(groupes hors batteries de la filière) |
+| Redispatching curatif des batteries à la baisse   | R    | MW    | max(batteries de la filière ) |
+| Redispatching curatif des batteries à la hausse   | R    | MW    | max(batteries de la filière) |
 
 -----------------------------
 (io-table_r8)=
@@ -689,11 +706,13 @@ curative diffère de la consigne préventive sont affichées
 
 | Nom de la grandeur                 | Type | Unité | Description                                                                   |
 |:-----------------------------------|:-----|:------|:------------------------------------------------------------------------------|
-| Coût de redispatching              | R    | u.m.  | Coût des ajustements préventifs de production                                 |
+| Coût de redispatching des groupes hors batteries             | R    | u.m.  | Coût des ajustements préventifs de production hors batteries                                |
+| Coût de redispatching des batteries             | R    | u.m.  | Coût des ajustements préventifs de production des batteries                                |
 | Coût de la défaillance             | R    | u.m.  | Coût des ajustements préventifs de consommation (i.e. du délestage préventif) |
 | Volume de dépassement sur incident | R    | MW    | Somme des dépassements de seuils sur incidents pour les ouvrages surveillés   |
 | Volume de dépassement en N         | R    | MW    | Somme des dépassement en N pour les ouvrages surveillés                       |
-| Coût de redispatching curatif      | R    | u.m.  | Coût des ajustements curatifs de production                                   |
+| Coût de redispatching curatif hors batteries      | R    | u.m.  | Coût des ajustements curatifs de production hors batteries                                   |
+| Coût de redispatching curatif des batteries     | R    | u.m.  | Coût des ajustements curatifs de production des batteries                                   |
 | Coût d’effacement curatif          | R    | u.m.  | Coût des ajustements curatifs de consommation (i.e. du délestage curatif)     |
 
 -----------------------------
