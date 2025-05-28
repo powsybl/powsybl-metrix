@@ -81,6 +81,7 @@ public class MetrixRemedialAnalysisTest {
                 new StringReader(remedialScript),
                 contingenciesProvider,
                 network,
+                new MetrixParameters(),
                 metrixDslData,
                 null,
                 bufferedWriter);

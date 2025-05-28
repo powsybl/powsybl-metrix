@@ -21,6 +21,7 @@ import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
+import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
 import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
@@ -69,7 +70,7 @@ class MetrixInputTest {
             ));
         }
 
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, new MetrixParameters(), remedialActionFile);
         Set<Switch> retainedSwitchList = new HashSet<>();
@@ -146,7 +147,7 @@ class MetrixInputTest {
 
     @Test
     void metrixDefaultInputTest() throws IOException {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
         new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
@@ -171,7 +172,7 @@ class MetrixInputTest {
 
     @Test
     void metrixInputTest() throws IOException {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  1");
@@ -370,7 +371,7 @@ class MetrixInputTest {
     @Test
     void mappedBreakerTest() throws IOException {
 
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         String[] mappedBreakers = {
             "FP.AND1_FP.AND1  FTDPRA1  1_DJ13", // PST breaker
@@ -426,34 +427,32 @@ class MetrixInputTest {
 
     @Test
     void propagateTrippingTest() {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
         Contingency cty = new Contingency("cty", l);
-
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(n);
 
         ContingencyElement l2 = new BranchContingency("FTDPRA1  FVERGE1  2");
         ContingencyElement l3 = new BranchContingency("FVALDI1  FTDPRA1  1");
         ContingencyElement l4 = new BranchContingency("FVALDI1  FTDPRA1  2");
         ContingencyElement l5 = new BranchContingency("FP.AND1  FTDPRA1  1");
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l, l2, l3, l4, l5));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, true), ImmutableSet.of(l, l2, l3, l4, l5));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, false), ImmutableSet.of(l));
 
         ContingencyElement h = new HvdcLineContingency("HVDC1");
         cty = new Contingency("cty", l4, h);
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l4, h));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l4, h));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, true), ImmutableSet.of(l4, h));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, false), ImmutableSet.of(l4, h));
 
         ContingencyElement g = new GeneratorContingency("FSSV.O11_G");
         cty = new Contingency("cty", g, l3);
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(g, l3));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(g, l3));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, true), ImmutableSet.of(g, l3));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, false), ImmutableSet.of(g, l3));
     }
 
     @Test
     void loadBreakTest() throws IOException {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  2");

@@ -10,7 +10,6 @@ package com.powsybl.metrix.integration;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
-import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.remedials.Remedial;
@@ -28,6 +27,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.powsybl.metrix.integration.metrix.MetrixInputAnalysis.propagateElementsToTrip;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -494,15 +495,7 @@ public class MetrixNetwork {
             }
         }
         if (ctyOk) {
-            if (propagate) {
-                // replace elements with new elements from propagation
-                // this will keep the original extensions
-                List<ContingencyElement> extendedElements = new ArrayList<>(getElementsToTrip(contingency, true));
-                Collection<ContingencyElement> originalElements = new ArrayList<>(contingency.getElements());
-                originalElements.forEach(contingency::removeElement);
-                extendedElements.forEach(contingency::addElement);
-            }
-            contingencyList.add(contingency);
+            contingencyList.add(propagate ? propagateElementsToTrip(contingency, network) : contingency);
         }
     }
 
@@ -727,49 +720,5 @@ public class MetrixNetwork {
             return Optional.ofNullable(mappedSwitchMap.get(sw.getId()));
         }
         return Optional.empty();
-    }
-
-    public Set<ContingencyElement> getElementsToTrip(Contingency contingency, boolean propagate) {
-
-        if (!propagate) {
-            return new HashSet<>(contingency.getElements());
-        } else {
-
-            Set<ContingencyElement> elementsToTrip = new HashSet<>();
-
-            Set<Switch> switchesToOpen = new HashSet<>();
-            Set<Terminal> terminalsToDisconnect = new HashSet<>();
-
-            for (ContingencyElement element : contingency.getElements()) {
-                if (element.getType() == ContingencyElementType.GENERATOR ||
-                        element.getType() == ContingencyElementType.HVDC_LINE) {
-                    elementsToTrip.add(element);
-                } else {
-                    Tripping modification = element.toModification();
-                    modification.traverse(network, switchesToOpen, terminalsToDisconnect);
-                }
-            }
-
-            Set<IdentifiableType> types = EnumSet.of(IdentifiableType.LINE,
-                    IdentifiableType.TWO_WINDINGS_TRANSFORMER,
-                    IdentifiableType.THREE_WINDINGS_TRANSFORMER,
-                    IdentifiableType.HVDC_CONVERTER_STATION);
-
-            // disconnect equipments and open switches
-            for (Switch s : switchesToOpen) {
-                VoltageLevel.NodeBreakerView nodeBreakerView = s.getVoltageLevel().getNodeBreakerView();
-                terminalsToDisconnect.add(nodeBreakerView.getTerminal1(s.getId()));
-                terminalsToDisconnect.add(nodeBreakerView.getTerminal2(s.getId()));
-            }
-            terminalsToDisconnect.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(t -> {
-                        Connectable<?> connectable = t.getConnectable();
-                        if (connectable != null && types.contains(connectable.getType())) {
-                            elementsToTrip.add(new BranchContingency(connectable.getId()));
-                        }
-                    });
-            return elementsToTrip;
-        }
     }
 }

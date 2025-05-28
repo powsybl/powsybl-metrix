@@ -7,16 +7,25 @@
  */
 package com.powsybl.metrix.integration.metrix;
 
+import com.powsybl.commons.PowsyblException;
+import com.powsybl.contingency.BranchContingency;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.contingency.ContingencyElementType;
+import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.Branch;
+import com.powsybl.iidm.network.Bus;
+import com.powsybl.iidm.network.Connectable;
+import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.IdentifiableType;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.Terminal;
+import com.powsybl.iidm.network.VoltageLevel;
 import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.integration.MetrixParameters;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
@@ -30,8 +39,11 @@ import java.io.StringReader;
 import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -69,23 +81,25 @@ public class MetrixInputAnalysis {
     private final Reader remedialActionsReader;
     private final ContingenciesProvider contingenciesProvider;
     private final Network network;
+    private final MetrixParameters metrixParameters;
     private final MetrixDslData metrixDslData;
     private final DataTableStore dataTableStore;
     private final BufferedWriter writer;
     private final BufferedWriter scriptLogBufferedWriter;
 
-    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
+    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network, MetrixParameters metrixParameters,
                                MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer) {
-        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, writer, null);
+        this(remedialActionsReader, contingenciesProvider, network, metrixParameters, metrixDslData, dataTableStore, writer, null);
     }
 
-    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
+    public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network, MetrixParameters metrixParameters,
                                MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer, BufferedWriter scriptLogBufferedWriter) {
         Objects.requireNonNull(contingenciesProvider);
         Objects.requireNonNull(network);
         this.remedialActionsReader = remedialActionsReader;
         this.contingenciesProvider = contingenciesProvider;
         this.network = network;
+        this.metrixParameters = metrixParameters;
         this.metrixDslData = metrixDslData;
         this.dataTableStore = dataTableStore;
         this.writer = writer;
@@ -162,10 +176,22 @@ public class MetrixInputAnalysis {
         } catch (RuntimeException e) {
             throw new ContingenciesScriptLoadingException(e);
         }
+        boolean isPropagateBranchTripping = metrixParameters.isPropagateBranchTripping();
         List<Contingency> contingencies = new ArrayList<>();
         for (Contingency cty : allContingencies) {
-            if (isValidContingency(cty)) {
-                contingencies.add(cty);
+            // Check validity for each element : identifiable exists, type is recognized, identifiable and type are compatible
+            if (!isValidContingency(cty)) {
+                continue;
+            }
+
+            // If asked, propagate contingency (in absence of switch)
+            Contingency contingency = isPropagateBranchTripping ? propagateElementsToTrip(cty, network) : cty;
+
+            // Remove out of main connected component elements
+            removeOutOfMainConnectedComponentElements(contingency);
+
+            if (!contingency.getElements().isEmpty()) {
+                contingencies.add(contingency);
             }
         }
         return contingencies;
@@ -213,6 +239,58 @@ public class MetrixInputAnalysis {
         return isValidContingencyTypeForIdentifiable(identifiableType, elementType);
     }
 
+    public static Contingency propagateElementsToTrip(Contingency contingency, Network network) {
+        // replace elements with new elements from propagation, this will keep the original elements
+        List<ContingencyElement> extendedElements = new ArrayList<>(getElementsToTrip(network, contingency, true));
+        if (!extendedElements.isEmpty()) {
+            Collection<ContingencyElement> originalElements = new ArrayList<>(contingency.getElements());
+            originalElements.forEach(contingency::removeElement);
+            extendedElements.forEach(contingency::addElement);
+        }
+        return contingency;
+    }
+
+    public static Set<ContingencyElement> getElementsToTrip(Network network, Contingency contingency, boolean propagate) {
+        if (!propagate) {
+            return new HashSet<>(contingency.getElements());
+        }
+        Set<ContingencyElement> elementsToTrip = new HashSet<>();
+
+        Set<Switch> switchesToOpen = new HashSet<>();
+        Set<Terminal> terminalsToDisconnect = new HashSet<>();
+
+        for (ContingencyElement element : contingency.getElements()) {
+            if (element.getType() == ContingencyElementType.GENERATOR ||
+                    element.getType() == ContingencyElementType.HVDC_LINE) {
+                elementsToTrip.add(element);
+            } else {
+                Tripping modification = element.toModification();
+                modification.traverse(network, switchesToOpen, terminalsToDisconnect);
+            }
+        }
+
+        Set<IdentifiableType> types = EnumSet.of(IdentifiableType.LINE,
+                IdentifiableType.TWO_WINDINGS_TRANSFORMER,
+                IdentifiableType.THREE_WINDINGS_TRANSFORMER,
+                IdentifiableType.HVDC_CONVERTER_STATION);
+
+        // disconnect equipments and open switches
+        for (Switch s : switchesToOpen) {
+            VoltageLevel.NodeBreakerView nodeBreakerView = s.getVoltageLevel().getNodeBreakerView();
+            terminalsToDisconnect.add(nodeBreakerView.getTerminal1(s.getId()));
+            terminalsToDisconnect.add(nodeBreakerView.getTerminal2(s.getId()));
+        }
+        terminalsToDisconnect.stream()
+                .filter(Objects::nonNull)
+                .forEach(t -> {
+                    Connectable<?> connectable = t.getConnectable();
+                    if (connectable != null && types.contains(connectable.getType())) {
+                        elementsToTrip.add(new BranchContingency(connectable.getId()));
+                    }
+                });
+        return elementsToTrip;
+    }
+
     private boolean isValidContingencyElement(Identifiable<?> identifiable, String contingencyId, ContingencyElement element) {
         boolean isValid = true;
         boolean isExistingIdentifiable = identifiable != null;
@@ -242,6 +320,39 @@ public class MetrixInputAnalysis {
             isValid = isValid && isValidContingencyElement(identifiable, contingency.getId(), element);
         }
         return isValid;
+    }
+
+    private boolean checkBusesInMainConnectedComponent(List<Bus> buses) {
+        return buses.stream().allMatch(Bus::isInMainConnectedComponent);
+    }
+
+    private boolean checkElementInMainConnectedComponent(ContingencyElement element) {
+        boolean elementInMainConnectedComponent;
+        switch (element.getType()) {
+            case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> {
+                Branch<?> branch = network.getBranch(element.getId());
+                elementInMainConnectedComponent = checkBusesInMainConnectedComponent(List.of(branch.getTerminal1().getBusBreakerView().getBus(), branch.getTerminal2().getBusBreakerView().getBus()));
+            }
+            case GENERATOR -> elementInMainConnectedComponent = checkBusesInMainConnectedComponent(List.of(network.getGenerator(element.getId()).getTerminal().getBusBreakerView().getBus()));
+
+            case HVDC_LINE -> {
+                HvdcLine hvdcLine = network.getHvdcLine(element.getId());
+                elementInMainConnectedComponent = checkBusesInMainConnectedComponent(List.of(hvdcLine.getConverterStation1().getTerminal().getBusBreakerView().getBus(), hvdcLine.getConverterStation2().getTerminal().getBusBreakerView().getBus()));
+            }
+            default -> throw new PowsyblException("Unsupported contingency element '" + element.getId() + "' (type = " + element.getType() + ")");
+        }
+        return elementInMainConnectedComponent;
+    }
+
+    private void removeOutOfMainConnectedComponentElements(Contingency contingency) {
+        List<ContingencyElement> contingencyElements = new ArrayList<>(contingency.getElements());
+        for (ContingencyElement element : contingencyElements) {
+            if (!checkElementInMainConnectedComponent(element)) {
+                String message = RESOURCE_BUNDLE.getString("invalidContingencyNetwork") + " out of main component element";
+                writeContingencyLog(contingency.getId(), element.getId(), message);
+                contingency.removeElement(element);
+            }
+        }
     }
 
     /**
