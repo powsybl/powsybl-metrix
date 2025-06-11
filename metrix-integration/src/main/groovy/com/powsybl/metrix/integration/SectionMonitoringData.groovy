@@ -48,8 +48,16 @@ class SectionMonitoringData {
                 logDslLoader.logWarn("sectionMonitoring '" + id + "' branch id '"+branch.getKey()+"' not found in the network")
                 return
             }
-            if (!(identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer || identifiable instanceof HvdcLine)) {
+            if (!(identifiable instanceof Line ||
+                    identifiable instanceof TwoWindingsTransformer ||
+                    identifiable instanceof TieLine ||
+                    identifiable instanceof DanglingLine ||
+                    identifiable instanceof HvdcLine)) {
                 logDslLoader.logWarn("sectionMonitoring '" + id + "' type " + identifiable.getClass().name + " not supported")
+                return
+            }
+            if (identifiable instanceof DanglingLine && identifiable.isPaired()) {
+                logDslLoader.logWarn("Branch %s is a paired Dangling Line, the TieLine should be used instead", id)
                 return
             }
         }
