@@ -22,6 +22,7 @@ concurrency:
 jobs:
   java:
     name: Build Java ${{ matrix.os }}
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -86,7 +87,7 @@ jobs:
       - name: Run build steps in Docker container
         run: |
           docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
-            source /opt/rh/devtoolset-9/enable && 
+            source /opt/rh/devtoolset-9/enable &&
             cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
             cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
             cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
@@ -238,6 +239,7 @@ jobs:
 
   cpp_ubuntu_qa:
     name: Short QA C++ Ubuntu
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
     steps:
       - name: Install Java 17
