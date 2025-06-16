@@ -5,7 +5,6 @@ on:
     workflows: [CI on forks - build and tests]
     types:
       - completed
-  pull_request: # Required for SonarCloud integration
 
 permissions:
   actions: write
@@ -196,17 +195,6 @@ jobs:
             -Dsonar.qualitygate.wait=true
             -Dsonar.scm.revision=${{ env.HEAD_SHA }}
 
-      - name: Run Sonar Analysis (C++)
-        uses: SonarSource/sonarqube-scan-action@2500896589ef8f7247069a56136f8dc177c27ccf # v5.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=com.powsybl:metrix-simulator
-            -Dsonar.organization=powsybl-ci-github
-            -Dsonar.host.url=https://sonarcloud.io
-
       - name: Delete artifacts used in analysis
         if: always()
         uses: actions/github-script@v7
@@ -355,6 +343,7 @@ jobs:
         env:
           SONAR_SCANNER_VERSION: 3.3.0.1492
 
+      # This step uses the sonar-project.properties file to get some parameters for the Sonar analysis
       - name: Run Sonar Analysis (C++)
         working-directory: ${{ runner.workspace }}/powsybl-metrix/metrix-simulator
         env:
