@@ -145,7 +145,6 @@ jobs:
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
 
       - name: Save C++ data
-        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: cpp-data-for-sonar-analysis-${{ github.event.pull_request.number }}
@@ -154,7 +153,6 @@ jobs:
             metrix-simulator/build
 
       - name: Save PR Information
-        if: matrix.os == 'ubuntu-latest'
         run: |
           mkdir -p cpp-pr-info
           echo "${{ github.event.pull_request.head.repo.full_name }}" > cpp-pr-info/repo-name
@@ -164,7 +162,6 @@ jobs:
           echo "${{ github.event.pull_request.base.ref }}" > cpp-pr-info/base-ref
 
       - name: Upload PR Information
-        if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: cpp-pr-info-${{ github.event.pull_request.number }}
