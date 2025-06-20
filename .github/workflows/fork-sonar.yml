@@ -324,8 +324,8 @@ jobs:
         run: |
           mkdir -p ${{ runner.temp }}/extracted
           unzip -q ${{ runner.temp }}/artifacts/cpp-sonar-data.zip -d ${{ runner.temp }}/extracted
-          cp -r ${{ runner.temp }}/extracted/* .
-          ls -la metrix-simulation/build/ || echo "build directory not found"
+          cp -r ${{ runner.temp }}/extracted/metrix-simulator/build ./metrix-simulator/
+          ls -la metrix-simulator/build/ || echo "build directory not found"
 
       - name: Install Sonar wrapper
         working-directory: ${{ runner.workspace }}
