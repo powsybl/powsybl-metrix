@@ -357,7 +357,7 @@ jobs:
         run: |
           REPORT_NAME="clang_tidy_report_pr.txt"
           REPORT_PATH="$PWD/${REPORT_NAME}"
-          export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} origin/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} ${{ github.event.pull_request.head.repo.clone_url }}/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$METRIX_CPP_SOURCES" ]; then
             clang-tidy $METRIX_CPP_SOURCES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
             echo "report_exists=true" >> "$GITHUB_OUTPUT"
