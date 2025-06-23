@@ -95,7 +95,7 @@ Now you need to add some configuration to your PowSyBl `config.yml` file. By def
 this file should be in the `<USER_HOME>/.itools` directory. Create the file if it does not already exist.
 Then add the following lines:
 
-```yml
+```yaml
 metrix:
   home-dir: <directory_where_you_unzipped_metrix-simulator> # required
   command: metrix-simulator
