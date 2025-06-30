@@ -176,12 +176,16 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     }
 
     private void selectRegulationMode(double equipmentValue, TwoWindingsTransformer transformer) {
-        PhaseTapChanger.RegulationMode mode = switch ((int) equipmentValue) {
-            case 0 -> PhaseTapChanger.RegulationMode.CURRENT_LIMITER;
-            case 1 -> PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL;
-            case 2 -> PhaseTapChanger.RegulationMode.FIXED_TAP;
+        PhaseTapChanger.RegulationMode mode;
+        switch ((int) equipmentValue) {
+            case 0 -> mode = PhaseTapChanger.RegulationMode.CURRENT_LIMITER;
+            case 1 -> mode = PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL;
+            case 2 -> {
+                mode = PhaseTapChanger.RegulationMode.CURRENT_LIMITER;
+                transformer.getPhaseTapChanger().setRegulating(false);
+            }
             default -> throw new AssertionError("Unsupported regulation mode " + equipmentValue);
-        };
+        }
         transformer.getPhaseTapChanger().setRegulationMode(mode);
     }
 

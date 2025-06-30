@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -15,28 +14,28 @@ import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.timeseries.*;
-import org.apache.commons.io.input.ReaderInputStream;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.powsybl.commons.test.ComparisonUtils.assertXmlEquals;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -49,13 +48,13 @@ class NetworkPointWriterTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
@@ -332,11 +331,11 @@ class NetworkPointWriterTest {
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
         // Launch mapper
-        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
 
         for (int point = 0; point < index.getPointCount(); point++) {
-            String fileName = NetworkPointWriter.getFileName(network, 1, point, index);
-            Path actualFilePath = fileSystem.getPath(fileName + ".xiidm");
+            String fileName = NetworkPointWriter.getFileName(network, 1, point, index) + ".xiidm";
+            Path actualFilePath = fileSystem.getPath(fileName);
             compareTxt(actualFilePath, expectedDirectoryName, fileName);
         }
     }
@@ -344,24 +343,7 @@ class NetworkPointWriterTest {
     private void compareTxt(Path actualPath, String directoryName, String fileName) throws Exception {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
             try (InputStream actual = Files.newInputStream(actualPath)) {
-                // skip the two first lines : xml version line and network line (containing extensions)
-                // because extensions are not ordered in the same way for each test launching
-                assertNotNull(expected);
-                BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expected));
-                expectedReader.readLine();
-                expectedReader.readLine();
-                BufferedReader actualReader = new BufferedReader(new InputStreamReader(actual));
-                actualReader.readLine();
-                actualReader.readLine();
-                InputStream expectedStream = ReaderInputStream.builder()
-                    .setReader(expectedReader)
-                    .setCharset(StandardCharsets.UTF_8)
-                    .get();
-                InputStream actualStream = ReaderInputStream.builder()
-                    .setReader(actualReader)
-                    .setCharset(StandardCharsets.UTF_8)
-                    .get();
-                assertNotNull(compareStreamTxt(expectedStream, actualStream));
+                assertXmlEquals(expected, actual);
             }
         }
     }
