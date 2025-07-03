@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.PhaseTapChanger;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class MappingKeyNetworkValueTest {
 
     private final Offset<Double> offset = Offset.offset(EPSILON_COMPARISON);
-    private final MappingKeyNetworkValue key = new MappingKeyNetworkValue(NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml"))));
+    private final Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+    private final MappingKeyNetworkValue key = new MappingKeyNetworkValue(network);
 
     private void checkValue(double actual, double expected) {
         assertThat(actual).isCloseTo(expected, offset);
@@ -94,6 +97,20 @@ class MappingKeyNetworkValueTest {
         checkValue(key.getValue(new MappingKey(EquipmentVariable.TARGET_V, id)), Double.NaN);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, id)), 0);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.RATIO_REGULATING, id)), 0);
+    }
+
+    @Test
+    void getRegulationModeValueTest() {
+        final String id = "FP.AND1  FTDPRA1  1";
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.REGULATION_MODE, id)), 0);
+
+        // Regulation mode changed
+        network.getTwoWindingsTransformer(id).getPhaseTapChanger().setRegulationMode(PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.REGULATION_MODE, id)), 1);
+
+        // Regulation disabled
+        network.getTwoWindingsTransformer(id).getPhaseTapChanger().setRegulating(false);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.REGULATION_MODE, id)), 2);
     }
 
     @Test
