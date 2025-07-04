@@ -38,7 +38,7 @@ class MetrixDslDataLoaderInterruptionTest extends AbstractTaskInterruptionTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
@@ -60,7 +60,7 @@ class MetrixDslDataLoaderInterruptionTest extends AbstractTaskInterruptionTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 

@@ -19,7 +19,7 @@ import java.io.IOException;
 @AutoService(MappingVariableProvider.class)
 public class OtherVariableProvider implements MappingVariableProvider<OtherVariable> {
     @Override
-    public void writeJson(OtherVariable variable, JsonGenerator generator) throws IOException {
+    public void writeJson(OtherVariable variable, JsonGenerator generator) {
         OtherVariable.writeJson(variable, generator);
     }
 

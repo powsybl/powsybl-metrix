@@ -7,26 +7,54 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.timeseries.*;
+import com.powsybl.metrix.mapping.util.MappingTestNetwork;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.StringTimeSeries;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesMetadata;
+import com.powsybl.timeseries.UncompressedDoubleDataChunk;
+import com.powsybl.timeseries.ast.IntegerNodeCalc;
+import groovy.lang.MissingMethodException;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -148,6 +176,7 @@ class TimeSeriesDslLoaderTest {
                 TimeSeries.createDouble("switch_ts", index, 0d, 1d),
                 TimeSeries.createDouble("multiple_ouverture_id", index, 1d, 1d)
         ) {
+            @Override
             public Optional<StringTimeSeries> getStringTimeSeries(String timeSeriesName, int version) {
                 return Optional.of(TimeSeries.createString("multiple_ouverture_id", index, "1", "G1,twt,L1"));
             }
@@ -159,81 +188,79 @@ class TimeSeriesDslLoaderTest {
         TimeSeriesMappingConfigSynthesisCsvWriter csvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(config);
         csvWriter.printMappingSynthesis(System.out, new TableFormatterConfig());
 
-        Map<String, Set<String>> timeSeriesToPlannedOutagesMappingExpected = new HashMap<>();
-        Set<String> outages = new HashSet<>();
-        outages.add("1");
-        outages.add("G1");
-        outages.add("twt");
-        outages.add("L1");
-        timeSeriesToPlannedOutagesMappingExpected.put("multiple_ouverture_id", outages);
-        Map<String, Set<String>> timeSeriesToPlannedOutagesMapping = config.getTimeSeriesToPlannedOutagesMapping();
-        assertEquals(timeSeriesToPlannedOutagesMappingExpected, timeSeriesToPlannedOutagesMapping);
-
-        // assertions
-        assertTrue(new TimeSeriesMappingConfigChecker(config).isMappingComplete());
-        assertTrue(config.getUnmappedLoads().isEmpty());
-        assertTrue(config.getUnmappedGenerators().isEmpty());
-        assertTrue(config.getUnmappedDanglingLines().isEmpty());
-        assertTrue(config.getUnmappedHvdcLines().isEmpty());
-        assertTrue(config.getUnmappedPhaseTapChangers().isEmpty());
-        assertTrue(config.getGeneratorTimeSeries().isEmpty());
-        assertTrue(config.getLoadTimeSeries().isEmpty());
-        assertTrue(config.getDanglingLineTimeSeries().isEmpty());
-        assertTrue(config.getHvdcLineTimeSeries().isEmpty());
-        assertTrue(config.getPhaseTapChangerTimeSeries().isEmpty());
-        assertTrue(config.getBreakerTimeSeries().isEmpty());
-
-        // 1 generator has been mapped to 'zero': G4
-        MappingKey keyZero = new MappingKey(EquipmentVariable.TARGET_P, "zero");
-        MappingKey keyG4 = new MappingKey(EquipmentVariable.TARGET_P, "G4");
-        assertEquals(1, config.getTimeSeriesToGeneratorsMapping().get(keyZero).size());
-        assertEquals("G4", config.getTimeSeriesToGeneratorsMapping().get(keyZero).iterator().next());
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(keyG4));
-
-        // 2 generators have been mapped to time serie 'nucl_ts': G1 and G2
-        // repartition key is based on maxP
-        MappingKey keyNuclTs = new MappingKey(EquipmentVariable.TARGET_P, "nucl_ts");
-        MappingKey keyG1 = new MappingKey(EquipmentVariable.TARGET_P, "G1");
-        MappingKey keyG2 = new MappingKey(EquipmentVariable.TARGET_P, "G2");
-        assertEquals(2, config.getTimeSeriesToGeneratorsMapping().get(keyNuclTs).size());
-        assertEquals(Sets.newHashSet("G1", "G2"), Sets.newHashSet(config.getTimeSeriesToGeneratorsMapping().get(keyNuclTs)));
-        assertEquals(Sets.newHashSet(new NumberDistributionKey(500d), new NumberDistributionKey(1000d)),
-                Sets.newHashSet(config.getDistributionKey(keyG1), config.getDistributionKey(keyG2)));
-
-        // 1 generator has been mapped to time serie 'hydro_ts': G3
-        MappingKey keyHydroTs = new MappingKey(EquipmentVariable.TARGET_P, "hydro_ts");
-        assertEquals(1, config.getTimeSeriesToGeneratorsMapping().get(keyHydroTs).size());
-        assertEquals("G3", config.getTimeSeriesToGeneratorsMapping().get(keyHydroTs).iterator().next());
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.TARGET_P, "G3")));
-
-        // 1 load has been mapped to time serie 'load1_ts': LD1
-        MappingKey keyLoad1Ts = new MappingKey(EquipmentVariable.P0, "load1_ts");
-        assertEquals(1, config.getTimeSeriesToLoadsMapping().get(keyLoad1Ts).size());
-        assertEquals("LD1", config.getTimeSeriesToLoadsMapping().get(keyLoad1Ts).iterator().next());
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(new MappingKey(EquipmentVariable.P0, "LD1")));
-
-        // 2 loads have been mapped to time serie 'load2_ts': LD2 and LD3
-        MappingKey keyLoad2Ts = new MappingKey(EquipmentVariable.P0, "load2_ts");
-        MappingKey keyLd2 = new MappingKey(EquipmentVariable.P0, "LD2");
-        MappingKey keyLd3 = new MappingKey(EquipmentVariable.P0, "LD3");
-        assertEquals(2, config.getTimeSeriesToLoadsMapping().get(keyLoad2Ts).size());
-        assertEquals(Sets.newHashSet("LD2", "LD3"), Sets.newHashSet(config.getTimeSeriesToLoadsMapping().get(keyLoad2Ts)));
-        // by default distribution key is 1
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(keyLd2));
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(keyLd3));
-
-        // no dangling line mapping
-        assertTrue(config.getTimeSeriesToDanglingLinesMapping().isEmpty());
-
-        // 2 breakers mapped to time-series 'switch_ts'
-        MappingKey keySwitchTs = new MappingKey(EquipmentVariable.OPEN, "switch_ts");
-        MappingKey keySw1 = new MappingKey(EquipmentVariable.OPEN, "SW1");
-        MappingKey keySw2 = new MappingKey(EquipmentVariable.OPEN, "SW2");
-        assertEquals(2, config.getTimeSeriesToBreakersMapping().get(keySwitchTs).size());
-        assertEquals(Sets.newHashSet("SW1", "SW2"), Sets.newHashSet(config.getTimeSeriesToBreakersMapping().get(keySwitchTs)));
-        // by default distribution key is 1
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(keySw1));
-        assertEquals(NumberDistributionKey.ONE, config.getDistributionKey(keySw2));
+        // Compare to the expected TimeSeriesMappingConfig
+        TimeSeriesMappingConfig expectedConfig = new TimeSeriesMappingConfig();
+        Map<MappingKey, List<String>> timeSeriesToGeneratorsMapping = new HashMap<>();
+        timeSeriesToGeneratorsMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "multiple_ouverture_id_G1"), List.of("G1"));
+        timeSeriesToGeneratorsMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "zero"), List.of("G4"));
+        timeSeriesToGeneratorsMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "nucl_ts"), List.of("G1", "G2"));
+        timeSeriesToGeneratorsMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "hydro_ts"), List.of("G3"));
+        expectedConfig.setTimeSeriesToGeneratorsMapping(timeSeriesToGeneratorsMapping);
+        Map<MappingKey, List<String>> timeSeriesToLoadsMapping = new HashMap<>();
+        timeSeriesToLoadsMapping.put(new MappingKey(EquipmentVariable.P0, "load1_ts"), List.of("LD1"));
+        timeSeriesToLoadsMapping.put(new MappingKey(EquipmentVariable.P0, "load2_ts"), List.of("LD2", "LD3"));
+        expectedConfig.setTimeSeriesToLoadsMapping(timeSeriesToLoadsMapping);
+        Map<MappingKey, List<String>> timeSeriesToPhaseTapChangersMapping = new HashMap<>();
+        timeSeriesToPhaseTapChangersMapping.put(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "switch_ts"), List.of("twt"));
+        expectedConfig.setTimeSeriesToPhaseTapChangersMapping(timeSeriesToPhaseTapChangersMapping);
+        Map<MappingKey, List<String>> timeSeriesToBreakersMapping = new HashMap<>();
+        timeSeriesToBreakersMapping.put(new MappingKey(EquipmentVariable.OPEN, "switch_ts"), List.of("SW1", "SW2"));
+        expectedConfig.setTimeSeriesToBreakersMapping(timeSeriesToBreakersMapping);
+        Map<MappingKey, List<String>> timeSeriesToTransformersMapping = new HashMap<>();
+        timeSeriesToTransformersMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "multiple_ouverture_id_twt"), List.of("twt"));
+        expectedConfig.setTimeSeriesToTransformersMapping(timeSeriesToTransformersMapping);
+        Map<MappingKey, List<String>> timeSeriesToLinesMapping = new HashMap<>();
+        timeSeriesToLinesMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "multiple_ouverture_id_L1"), List.of("L1"));
+        expectedConfig.setTimeSeriesToLinesMapping(timeSeriesToLinesMapping);
+        Map<MappingKey, List<String>> generatorToTimeSeriesMapping = new HashMap<>();
+        generatorToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "G1"), List.of("multiple_ouverture_id_G1"));
+        generatorToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G1"), List.of("nucl_ts", "zero"));
+        generatorToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G2"), List.of("nucl_ts", "zero"));
+        generatorToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G3"), List.of("hydro_ts", "zero"));
+        generatorToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G4"), List.of("zero"));
+        expectedConfig.setGeneratorToTimeSeriesMapping(generatorToTimeSeriesMapping);
+        Map<MappingKey, List<String>> loadToTimeSeriesMapping = new HashMap<>();
+        loadToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.P0, "LD1"), List.of("load1_ts"));
+        loadToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.P0, "LD2"), List.of("load2_ts"));
+        loadToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.P0, "LD3"), List.of("load2_ts"));
+        expectedConfig.setLoadToTimeSeriesMapping(loadToTimeSeriesMapping);
+        Map<MappingKey, List<String>> phaseTapChangerToTimeSeriesMapping = new HashMap<>();
+        phaseTapChangerToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "twt"), List.of("switch_ts"));
+        expectedConfig.setPhaseTapChangerToTimeSeriesMapping(phaseTapChangerToTimeSeriesMapping);
+        Map<MappingKey, List<String>> breakerToTimeSeriesMapping = new HashMap<>();
+        breakerToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.OPEN, "SW1"), List.of("switch_ts"));
+        breakerToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.OPEN, "SW2"), List.of("switch_ts"));
+        expectedConfig.setBreakerToTimeSeriesMapping(breakerToTimeSeriesMapping);
+        Map<MappingKey, List<String>> transformerToTimeSeriesMapping = new HashMap<>();
+        transformerToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "twt"), List.of("multiple_ouverture_id_twt"));
+        expectedConfig.setTransformerToTimeSeriesMapping(transformerToTimeSeriesMapping);
+        Map<MappingKey, List<String>> lineToTimeSeriesMapping = new HashMap<>();
+        lineToTimeSeriesMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "L1"), List.of("multiple_ouverture_id_L1"));
+        expectedConfig.setLineToTimeSeriesMapping(lineToTimeSeriesMapping);
+        Set<String> generatorSet = ImmutableSet.of("G1", "G2", "G3", "G4");
+        expectedConfig.setUnmappedMinPGenerators(generatorSet);
+        expectedConfig.setUnmappedMaxPGenerators(generatorSet);
+        Map<String, Set<String>> timeSeriesToPlannedOutagesMappingExpected = Map.of("multiple_ouverture_id", Set.of("1", "G1", "twt", "L1"));
+        expectedConfig.setTimeSeriesToPlannedOutagesMapping(timeSeriesToPlannedOutagesMappingExpected);
+        expectedConfig.setTimeSeriesNodes(Map.of("zero", new IntegerNodeCalc(0)));
+        expectedConfig.setMappedTimeSeriesNames(Set.of("zero", "nucl_ts", "hydro_ts", "load1_ts", "load2_ts", "switch_ts", "multiple_ouverture_id_G1", "multiple_ouverture_id_L1", "multiple_ouverture_id_twt"));
+        DistributionKey distributionKey = new NumberDistributionKey(1.0);
+        Map<MappingKey, DistributionKey> distributionKeyMapping = new HashMap<>();
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "twt"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "G1"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "L1"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.OPEN, "SW1"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.OPEN, "SW2"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G1"), new NumberDistributionKey(1000.0));
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G2"), new NumberDistributionKey(500.0));
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G3"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.TARGET_P, "G4"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.P0, "LD1"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.P0, "LD2"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.P0, "LD3"), distributionKey);
+        distributionKeyMapping.put(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "twt"), distributionKey);
+        expectedConfig.setDistributionKeys(distributionKeyMapping);
+        assertEquals(expectedConfig, config);
     }
 
     @Test
@@ -261,12 +288,9 @@ class TimeSeriesDslLoaderTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        try {
-            dsl.load(network, parameters, store, new DataTableStore(), null);
-            fail();
-        } catch (TimeSeriesMappingException e) {
-            assertEquals("Load 'LD1' is mapped on p0 and on one of the detailed variables (fixedActivePower/variableActivePower)", e.getMessage());
-        }
+        DataTableStore dataTableStore = new DataTableStore();
+        TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> dsl.load(network, parameters, store, dataTableStore, null));
+        assertEquals("Load 'LD1' is mapped on p0 and on one of the detailed variables (fixedActivePower/variableActivePower)", exception.getMessage());
     }
 
     @Test
@@ -287,11 +311,8 @@ class TimeSeriesDslLoaderTest {
 
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        try {
-            dsl.load(network, parameters, store, new DataTableStore(), null);
-            fail();
-        } catch (groovy.lang.MissingMethodException ignored) {
-        }
+        DataTableStore dataTableStore = new DataTableStore();
+        assertThrows(MissingMethodException.class, () -> dsl.load(network, parameters, store, dataTableStore, null));
     }
 
     @Test
@@ -408,8 +429,6 @@ class TimeSeriesDslLoaderTest {
     }
 
     void tagTest(String script, String expectedTag) throws IOException {
-        Network network = MappingTestNetwork.create();
-
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 new StoredDoubleTimeSeries(
@@ -497,8 +516,6 @@ class TimeSeriesDslLoaderTest {
         newInsideTags.put("testTag", "testParam");
         Map<String, Map<String, String>> newTags = new HashMap<>();
         newTags.put("test", newInsideTags);
-
-        Network network = MappingTestNetwork.create();
 
         // mapping script
         String script = String.format(tagScriptError, expression);

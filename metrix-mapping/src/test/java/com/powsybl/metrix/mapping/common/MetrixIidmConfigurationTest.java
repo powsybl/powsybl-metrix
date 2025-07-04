@@ -31,13 +31,13 @@ class MetrixIidmConfigurationTest {
     private InMemoryPlatformConfig platformConfig;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         platformConfig = new InMemoryPlatformConfig(fileSystem);
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         fileSystem.close();
     }
 

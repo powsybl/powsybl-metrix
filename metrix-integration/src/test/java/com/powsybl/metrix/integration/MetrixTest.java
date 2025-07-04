@@ -39,7 +39,13 @@ import java.io.StringReader;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -54,12 +60,12 @@ class MetrixTest {
     private FileSystem fileSystem;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 

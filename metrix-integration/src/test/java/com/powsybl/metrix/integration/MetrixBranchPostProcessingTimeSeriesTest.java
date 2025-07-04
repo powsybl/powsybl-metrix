@@ -101,7 +101,7 @@ class MetrixBranchPostProcessingTimeSeriesTest {
     Map<String, NodeCalc> postProcessingTimeSeries;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 

@@ -9,7 +9,17 @@ package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
 import com.google.common.collect.Sets;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Bus;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Line;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.PhaseTapChanger;
+import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.SwitchKind;
+import com.powsybl.iidm.network.Terminal;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.iidm.network.impl.VariantManagerHolder;
@@ -29,7 +39,15 @@ import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -97,7 +115,7 @@ class MetrixVariantsWriterTest {
                     return g;
                 }
 
-                Map<String, LoadDetail> loadDetailMap = new HashMap<>();
+                final Map<String, LoadDetail> loadDetailMap = new HashMap<>();
 
                 private Load createLoad(String id, double p0, String busId, LoadDetail detail) {
                     loadDetailMap.put(id, detail);
@@ -309,7 +327,7 @@ class MetrixVariantsWriterTest {
         }
 
         assertEquals(
-            String.join(System.lineSeparator(), IOUtils.readLines(MetrixVariantsWriterTest.class.getResourceAsStream("/expected/variantsOutput.txt"), StandardCharsets.UTF_8)),
+            String.join(System.lineSeparator(), IOUtils.readLines(Objects.requireNonNull(MetrixVariantsWriterTest.class.getResourceAsStream("/expected/variantsOutput.txt")), StandardCharsets.UTF_8)),
             writer.toString().trim()
         );
     }

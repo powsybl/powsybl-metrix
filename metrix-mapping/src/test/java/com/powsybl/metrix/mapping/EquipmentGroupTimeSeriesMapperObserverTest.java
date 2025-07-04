@@ -7,14 +7,17 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +26,13 @@ import org.threeten.extra.Interval;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static com.powsybl.metrix.mapping.EquipmentGroupTimeSeriesMapperObserver.GROUP;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,7 +53,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
     private TimeSeriesIndex regularIndex;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         regularIndex = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
@@ -55,7 +64,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
@@ -107,7 +116,7 @@ class EquipmentGroupTimeSeriesMapperObserverTest {
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, new TimeSeriesMappingLogger());
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
     }
 
     private void generatorTest(TimeSeriesMappingConfig mappingConfig, String expectedTimeSeriesName) {

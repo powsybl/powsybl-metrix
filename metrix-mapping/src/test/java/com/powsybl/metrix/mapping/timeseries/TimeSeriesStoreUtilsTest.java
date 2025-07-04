@@ -10,7 +10,17 @@ package com.powsybl.metrix.mapping.timeseries;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.StringTimeSeries;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesException;
+import com.powsybl.timeseries.TimeSeriesMetadata;
+import com.powsybl.timeseries.TimeSeriesTable;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,15 +38,26 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NavigableSet;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.UUID;
 import java.util.function.IntFunction;
 
-import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static com.powsybl.metrix.mapping.util.AbstractCompareTxt.compareStreamTxt;
 import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.toTable;
 import static com.powsybl.timeseries.TimeSeries.DEFAULT_VERSION_NUMBER_FOR_UNVERSIONED_TIMESERIES;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -45,12 +66,12 @@ class TimeSeriesStoreUtilsTest {
     private FileSystem fileSystem;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 

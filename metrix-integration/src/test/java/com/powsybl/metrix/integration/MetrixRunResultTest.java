@@ -13,7 +13,16 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.network.MetrixNetworkPoint;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.DoubleTimeSeries;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesCsvConfig;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesMetadata;
+import com.powsybl.timeseries.TimeSeriesTable;
+import com.powsybl.timeseries.UncompressedDoubleDataChunk;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
@@ -37,7 +46,10 @@ import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.HVDC_TYPE;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.PST_TYPE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -48,14 +60,13 @@ class MetrixRunResultTest {
     private TimeSeriesIndex index;
 
     @BeforeEach
-    public void setUpRunResultTest() throws URISyntaxException {
-        workingDir = Paths.get(getClass().getResource("/").toURI());
+    void setUpRunResultTest() throws URISyntaxException {
+        workingDir = Paths.get(Objects.requireNonNull(getClass().getResource("/")).toURI());
         index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-01-17T00:00:00Z"), Duration.ofDays(1));
     }
 
-    private List<TimeSeries> createResults(List<TimeSeries> initTimeSeries) throws URISyntaxException {
+    private List<TimeSeries> createResults(List<TimeSeries> initTimeSeries) {
         MetrixOutputData results = new MetrixOutputData(10, 5);
-        Path workingDir = Paths.get(getClass().getResource("/").toURI());
         results.readFile(workingDir, 10); // 0 n-k result
         results.readFile(workingDir, 11); // 1 n-k result, no remedial action, with marginal costs
         results.readFile(workingDir, 12); // 5 n-k results
@@ -70,7 +81,7 @@ class MetrixRunResultTest {
     }
 
     @Test
-    void metrixResultTest() throws IOException, URISyntaxException {
+    void metrixResultTest() throws IOException {
         // Create results
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
@@ -90,7 +101,7 @@ class MetrixRunResultTest {
     }
 
     @Test
-    void metrixNetworkPointResultTest() throws URISyntaxException {
+    void metrixNetworkPointResultTest() {
         // Create results
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
@@ -132,7 +143,7 @@ class MetrixRunResultTest {
     }
 
     @Test
-    void metrixInitOptimizedResultTest() throws IOException, URISyntaxException {
+    void metrixInitOptimizedResultTest() throws IOException {
         // Init time series
         List<TimeSeries> initTimeSeriesList = new ArrayList<>();
 

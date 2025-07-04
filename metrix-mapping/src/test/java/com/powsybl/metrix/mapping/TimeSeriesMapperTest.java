@@ -7,11 +7,16 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.timeseries.*;
+import com.powsybl.metrix.mapping.util.MappingTestNetwork;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesFilter;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +32,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.powsybl.metrix.mapping.util.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -40,7 +47,7 @@ class TimeSeriesMapperTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // create test network
         network = MappingTestNetwork.create();
     }
@@ -68,7 +75,7 @@ class TimeSeriesMapperTest {
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Observer
-        List<TimeSeriesMapperObserver> observersList = ImmutableList.of(new DefaultTimeSeriesMapperObserver());
+        List<TimeSeriesMapperObserver> observersList = List.of(new DefaultTimeSeriesMapperObserver());
 
         // When not ignoring empty filters
         TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> mapper.mapToNetwork(store, observersList));
@@ -138,19 +145,19 @@ class TimeSeriesMapperTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
 
         assertEquals(1, equipmentTimeSeriesNames.size());
-        assertEquals(ImmutableList.of("equipment_ts"), equipmentTimeSeriesNames);
-        assertEquals(ImmutableList.of(network.getIdentifiable("LD2")), equipmentIds);
-        assertEquals(ImmutableList.of(1.0), equipmentValues);
-        assertEquals(ImmutableList.of("p0"), equipmentVariables);
+        assertEquals(List.of("equipment_ts"), equipmentTimeSeriesNames);
+        assertEquals(List.of(network.getIdentifiable("LD2")), equipmentIds);
+        assertEquals(List.of(1.0), equipmentValues);
+        assertEquals(List.of("p0"), equipmentVariables);
 
         assertEquals(1, otherTimeSeriesNames.size());
-        assertEquals(ImmutableList.of("other_ts"), otherTimeSeriesNames);
-        assertEquals(ImmutableList.of(network.getIdentifiable("L1")), otherIds);
-        assertEquals(ImmutableList.of(2.0), otherValues);
-        assertEquals(ImmutableList.of("otherVariable"), otherVariables);
+        assertEquals(List.of("other_ts"), otherTimeSeriesNames);
+        assertEquals(List.of(network.getIdentifiable("L1")), otherIds);
+        assertEquals(List.of(2.0), otherValues);
+        assertEquals(List.of("otherVariable"), otherVariables);
     }
 
     @Test

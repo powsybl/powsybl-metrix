@@ -10,7 +10,20 @@ package com.powsybl.metrix.mapping.timeseries;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.PowsyblException;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.DoubleDataChunk;
+import com.powsybl.timeseries.DoubleTimeSeries;
+import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
+import com.powsybl.timeseries.IrregularTimeSeriesIndex;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.StringDataChunk;
+import com.powsybl.timeseries.StringTimeSeries;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesMetadata;
+import com.powsybl.timeseries.UncompressedDoubleDataChunk;
+import com.powsybl.timeseries.UncompressedStringDataChunk;
 import org.apache.commons.lang3.NotImplementedException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,9 +45,16 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.*;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.OVERWRITE;
+import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.THROW_EXCEPTION;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
@@ -44,13 +64,13 @@ class FileSystemTimeSeriesStoreTest {
     private Path resDir;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         resDir = Files.createDirectory(fileSystem.getPath("/tmp"));
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
@@ -372,9 +392,9 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(2, storedTs1.getChunks().size());
         assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
         RegularTimeSeriesIndex storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978303600000L, storedIndex.getStartTime());
-        assertEquals(978321600000L, storedIndex.getEndTime());
-        assertEquals(3600000L, storedIndex.getSpacing());
+        assertEquals(978303600000L, storedIndex.getStartInstant().toEpochMilli());
+        assertEquals(978321600000L, storedIndex.getEndInstant().toEpochMilli());
+        assertEquals(3600000L, storedIndex.getTimeStep().toMillis());
 
         // Assertions for String
         assertTrue(tsStore.getStringTimeSeries("ts2", 1).isPresent());
@@ -383,8 +403,8 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(2, storedTs2.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs2.getMetadata().getIndex());
         IrregularTimeSeriesIndex storedIndex2 = (IrregularTimeSeriesIndex) storedTs2.getMetadata().getIndex();
-        assertEquals(978303600000L, storedIndex2.getTimeAt(0));
-        assertEquals(978325200000L, storedIndex2.getTimeAt(storedIndex2.getPointCount() - 1));
+        assertEquals(978303600000L, storedIndex2.getInstantAt(0).toEpochMilli());
+        assertEquals(978325200000L, storedIndex2.getInstantAt(storedIndex2.getPointCount() - 1).toEpochMilli());
 
         // Add another TimeSeries
         tsStore.importTimeSeries(List.of(ts1ter), 1);
@@ -394,9 +414,9 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(3, storedTs1.getChunks().size());
         assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
         storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978292800000L, storedIndex.getStartTime());
-        assertEquals(978321600000L, storedIndex.getEndTime());
-        assertEquals(3600000L, storedIndex.getSpacing());
+        assertEquals(978292800000L, storedIndex.getStartInstant().toEpochMilli());
+        assertEquals(978321600000L, storedIndex.getEndInstant().toEpochMilli());
+        assertEquals(3600000L, storedIndex.getTimeStep().toMillis());
 
         // Test with overlapping indexes
         List<TimeSeries> list1 = List.of(ts1Overlap);
@@ -434,9 +454,9 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(1, storedTs1.getChunks().size());
         assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
         RegularTimeSeriesIndex storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978314400000L, storedIndex.getStartTime());
-        assertEquals(978321600000L, storedIndex.getEndTime());
-        assertEquals(3600000L, storedIndex.getSpacing());
+        assertEquals(978314400000L, storedIndex.getStartInstant().toEpochMilli());
+        assertEquals(978321600000L, storedIndex.getEndInstant().toEpochMilli());
+        assertEquals(3600000L, storedIndex.getTimeStep().toMillis());
     }
 
     @Test
@@ -491,8 +511,8 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(2, storedTs1.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
         IrregularTimeSeriesIndex storedIndexBefore = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978285600000L, storedIndexBefore.getTimeAt(0));
-        assertEquals(978310800000L, storedIndexBefore.getTimeAt(storedIndexBefore.getPointCount() - 1));
+        assertEquals(978285600000L, storedIndexBefore.getInstantAt(0).toEpochMilli());
+        assertEquals(978310800000L, storedIndexBefore.getInstantAt(storedIndexBefore.getPointCount() - 1).toEpochMilli());
     }
 
     @Test
@@ -527,8 +547,8 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(2, storedTs1.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
         IrregularTimeSeriesIndex storedIndex1 = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978303600000L, storedIndex1.getTimeAt(0));
-        assertEquals(978343200000L, storedIndex1.getTimeAt(storedIndex1.getPointCount() - 1));
+        assertEquals(978303600000L, storedIndex1.getInstantAt(0).toEpochMilli());
+        assertEquals(978343200000L, storedIndex1.getInstantAt(storedIndex1.getPointCount() - 1).toEpochMilli());
 
         assertTrue(tsStore.getDoubleTimeSeries("ts2", 1).isPresent());
         StoredDoubleTimeSeries storedTs2 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts2", 1).get();
@@ -536,8 +556,8 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(2, storedTs2.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs2.getMetadata().getIndex());
         IrregularTimeSeriesIndex storedIndex2 = (IrregularTimeSeriesIndex) storedTs2.getMetadata().getIndex();
-        assertEquals(978303600000L, storedIndex2.getTimeAt(0));
-        assertEquals(978343200000L, storedIndex2.getTimeAt(storedIndex2.getPointCount() - 1));
+        assertEquals(978303600000L, storedIndex2.getInstantAt(0).toEpochMilli());
+        assertEquals(978343200000L, storedIndex2.getInstantAt(storedIndex2.getPointCount() - 1).toEpochMilli());
     }
 
     @Test
@@ -569,8 +589,8 @@ class FileSystemTimeSeriesStoreTest {
         assertEquals(2, storedTs1.getChunks().size());
         assertInstanceOf(IrregularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
         IrregularTimeSeriesIndex storedIndex1 = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978303600000L, storedIndex1.getTimeAt(0));
-        assertEquals(978332400000L, storedIndex1.getTimeAt(storedIndex1.getPointCount() - 1));
+        assertEquals(978303600000L, storedIndex1.getInstantAt(0).toEpochMilli());
+        assertEquals(978332400000L, storedIndex1.getInstantAt(storedIndex1.getPointCount() - 1).toEpochMilli());
     }
 
     @Test

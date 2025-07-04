@@ -19,7 +19,9 @@ import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Paths;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -31,13 +33,13 @@ class MetrixConfigTest {
     private InMemoryPlatformConfig platformConfig;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         platformConfig = new InMemoryPlatformConfig(fileSystem);
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         fileSystem.close();
     }
 

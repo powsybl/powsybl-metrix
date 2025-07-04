@@ -7,23 +7,34 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeSet;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -35,7 +46,7 @@ class TimeSeriesMapToTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() {
         // create test network
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
@@ -132,10 +143,10 @@ class TimeSeriesMapToTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
 
         assertEquals(10, results.size());
-        assertEquals(ImmutableList.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
+        assertEquals(List.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
                         new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
                         new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
                         new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FTDPRA1  1"),
@@ -419,37 +430,29 @@ class TimeSeriesMapToTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
 
         assertEquals(12, results.size());
-        assertEquals(4, results.get("FSSV.O11_G").size());
-        assertTrue(results.get("FSSV.O11_G").containsAll(ImmutableList.of(EquipmentVariable.TARGET_P, EquipmentVariable.TARGET_Q, EquipmentVariable.TARGET_V, EquipmentVariable.DISCONNECTED)));
-        assertEquals(2, results.get("FSSV.O12_G").size());
-        assertTrue(results.get("FSSV.O12_G").containsAll(ImmutableList.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)));
-        assertEquals(1, results.get("FVALDI11_G").size());
-        assertTrue(results.get("FVALDI11_G").containsAll(ImmutableList.of(EquipmentVariable.VOLTAGE_REGULATOR_ON)));
-        assertEquals(2, results.get("FSSV.O11_L").size());
-        assertTrue(results.get("FSSV.O11_L").containsAll(ImmutableList.of(EquipmentVariable.P0, EquipmentVariable.Q0)));
-        assertEquals(2, results.get("FVALDI11_L").size());
-        assertTrue(results.get("FVALDI11_L").containsAll(ImmutableList.of(EquipmentVariable.FIXED_ACTIVE_POWER, EquipmentVariable.FIXED_REACTIVE_POWER)));
-        assertEquals(2, results.get("FVALDI11_L").size());
-        assertTrue(results.get("FVALDI11_L2").containsAll(ImmutableList.of(EquipmentVariable.VARIABLE_ACTIVE_POWER, EquipmentVariable.VARIABLE_REACTIVE_POWER)));
-        assertEquals(2, results.get("HVDC1").size());
-        assertTrue(results.get("HVDC1").containsAll(ImmutableList.of(EquipmentVariable.ACTIVE_POWER_SETPOINT, EquipmentVariable.NOMINAL_V)));
-        assertEquals(2, results.get("HVDC2").size());
-        assertTrue(results.get("HVDC2").containsAll(ImmutableList.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)));
-        assertEquals(11, results.get("FP.AND1  FTDPRA1  1").size());
-        assertTrue(results.get("FP.AND1  FTDPRA1  1").containsAll(
-                ImmutableList.of(
-                        // transformer variables
-                        EquipmentVariable.RATED_U1, EquipmentVariable.RATED_U2, EquipmentVariable.DISCONNECTED,
-                        // phaseTapChanger variables
-                        EquipmentVariable.PHASE_TAP_POSITION, EquipmentVariable.REGULATION_MODE, EquipmentVariable.PHASE_REGULATING, EquipmentVariable.TARGET_DEADBAND,
-                        // ratioTapChanger variables
-                        EquipmentVariable.RATIO_TAP_POSITION, EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, EquipmentVariable.RATIO_REGULATING, EquipmentVariable.TARGET_V)));
-        assertTrue(results.get("FVALDI1_FVALDI1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.POWER_FACTOR)));
-        assertTrue(results.get("FSSV.O1_FSSV.O1_HVDC1").containsAll(ImmutableList.of(EquipmentVariable.VOLTAGE_REGULATOR_ON, EquipmentVariable.VOLTAGE_SETPOINT, EquipmentVariable.REACTIVE_POWER_SETPOINT)));
-        assertTrue(results.get("FP.AND1  FVERGE1  1").containsAll(ImmutableList.of(EquipmentVariable.DISCONNECTED)));
+        assertAll(
+            () -> assertThat(results).containsEntry("FSSV.O11_G", List.of(EquipmentVariable.TARGET_Q, EquipmentVariable.TARGET_V, EquipmentVariable.DISCONNECTED, EquipmentVariable.TARGET_P)),
+            () -> assertThat(results).containsEntry("FSSV.O12_G", List.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)),
+            () -> assertThat(results).containsEntry("FVALDI11_G", List.of(EquipmentVariable.VOLTAGE_REGULATOR_ON)),
+            () -> assertThat(results).containsEntry("FSSV.O11_L", List.of(EquipmentVariable.P0, EquipmentVariable.Q0)),
+            () -> assertThat(results).containsEntry("FVALDI11_L", List.of(EquipmentVariable.FIXED_ACTIVE_POWER, EquipmentVariable.FIXED_REACTIVE_POWER)),
+            () -> assertThat(results).containsEntry("FVALDI11_L2", List.of(EquipmentVariable.VARIABLE_ACTIVE_POWER, EquipmentVariable.VARIABLE_REACTIVE_POWER)),
+            () -> assertThat(results).containsEntry("HVDC1", List.of(EquipmentVariable.NOMINAL_V, EquipmentVariable.ACTIVE_POWER_SETPOINT)),
+            () -> assertThat(results).containsEntry("HVDC2", List.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)),
+            () -> assertThat(results).containsEntry("FP.AND1  FTDPRA1  1", List.of(
+                // phaseTapChanger variables
+                EquipmentVariable.PHASE_TAP_POSITION, EquipmentVariable.REGULATION_MODE, EquipmentVariable.PHASE_REGULATING, EquipmentVariable.TARGET_DEADBAND,
+                // transformer variables
+                EquipmentVariable.RATED_U1, EquipmentVariable.RATED_U2, EquipmentVariable.DISCONNECTED,
+                // ratioTapChanger variables
+                EquipmentVariable.RATIO_TAP_POSITION, EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, EquipmentVariable.RATIO_REGULATING, EquipmentVariable.TARGET_V)),
+            () -> assertThat(results).containsEntry("FVALDI1_FVALDI1_HVDC1", List.of(EquipmentVariable.POWER_FACTOR)),
+            () -> assertThat(results).containsEntry("FSSV.O1_FSSV.O1_HVDC1", List.of(EquipmentVariable.VOLTAGE_REGULATOR_ON, EquipmentVariable.VOLTAGE_SETPOINT, EquipmentVariable.REACTIVE_POWER_SETPOINT)),
+            () -> assertThat(results).containsEntry("FP.AND1  FVERGE1  1", List.of(EquipmentVariable.DISCONNECTED))
+        );
     }
 
     @Test
@@ -495,7 +498,7 @@ class TimeSeriesMapToTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
 
         assertEquals(2, results.size());
         assertEquals(ImmutableMap.of("FVALDI11_G", EquipmentVariable.TARGET_P, "FVALDI12_G", EquipmentVariable.TARGET_P), results);
@@ -546,6 +549,6 @@ class TimeSeriesMapToTest {
                 }
             }
         };
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
     }
 }

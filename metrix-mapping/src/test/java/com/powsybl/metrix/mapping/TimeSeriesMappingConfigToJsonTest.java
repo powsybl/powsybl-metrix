@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.powsybl.timeseries.ast.IntegerNodeCalc;
@@ -28,27 +27,27 @@ class TimeSeriesMappingConfigToJsonTest {
 
     private final TimeSeriesMappingConfig config = new TimeSeriesMappingConfig();
 
-    private final Map<MappingKey, List<String>> timeSeriesToGenerators = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "tsG"), ImmutableList.of("g1"));
-    private final Map<MappingKey, List<String>> timeSeriesToLoads = ImmutableMap.of(new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "tsL"), ImmutableList.of("l1", "l2"));
-    private final Map<MappingKey, List<String>> timeSeriesToDanglingLines = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "tsDL"), ImmutableList.of("dl1"));
-    private final Map<MappingKey, List<String>> timeSeriesToHvdcLines = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "tsH"), ImmutableList.of("h1", "h2"));
-    private final Map<MappingKey, List<String>> timeSeriesToPhaseTapChangers = ImmutableMap.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "tsP"), ImmutableList.of("p1", "p2", "p3"));
-    private final Map<MappingKey, List<String>> timeSeriesToBreakers = ImmutableMap.of(new MappingKey(EquipmentVariable.OPEN, "tsB"), ImmutableList.of("b1"));
-    private final Map<MappingKey, List<String>> timeSeriesToTransformers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U1, "tsT"), ImmutableList.of("t1", "t2"));
-    private final Map<MappingKey, List<String>> timeSeriesToRatioTapChangers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tsTC"), ImmutableList.of("tc1", "tc2"));
-    private final Map<MappingKey, List<String>> timeSeriesToLccConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "tsLcc"), ImmutableList.of("lcc1", "lcc2"));
-    private final Map<MappingKey, List<String>> timeSeriesToVscConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "tsVsc"), ImmutableList.of("vsc1", "vsc2"));
+    private final Map<MappingKey, List<String>> timeSeriesToGenerators = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "tsG"), List.of("g1"));
+    private final Map<MappingKey, List<String>> timeSeriesToLoads = ImmutableMap.of(new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "tsL"), List.of("l1", "l2"));
+    private final Map<MappingKey, List<String>> timeSeriesToDanglingLines = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "tsDL"), List.of("dl1"));
+    private final Map<MappingKey, List<String>> timeSeriesToHvdcLines = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "tsH"), List.of("h1", "h2"));
+    private final Map<MappingKey, List<String>> timeSeriesToPhaseTapChangers = ImmutableMap.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "tsP"), List.of("p1", "p2", "p3"));
+    private final Map<MappingKey, List<String>> timeSeriesToBreakers = ImmutableMap.of(new MappingKey(EquipmentVariable.OPEN, "tsB"), List.of("b1"));
+    private final Map<MappingKey, List<String>> timeSeriesToTransformers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U1, "tsT"), List.of("t1", "t2"));
+    private final Map<MappingKey, List<String>> timeSeriesToRatioTapChangers = ImmutableMap.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tsTC"), List.of("tc1", "tc2"));
+    private final Map<MappingKey, List<String>> timeSeriesToLccConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "tsLcc"), List.of("lcc1", "lcc2"));
+    private final Map<MappingKey, List<String>> timeSeriesToVscConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "tsVsc"), List.of("vsc1", "vsc2"));
 
-    private final Map<MappingKey, List<String>> generatorToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), ImmutableList.of("tsG"));
-    private final Map<MappingKey, List<String>> loadToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), ImmutableList.of("tsL1", "tsL2"));
-    private final Map<MappingKey, List<String>> danglingLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "dl1"), ImmutableList.of("tsDL"));
-    private final Map<MappingKey, List<String>> hvdcLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "h1"), ImmutableList.of("tsH"));
-    private final Map<MappingKey, List<String>> phaseTapChangerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "p1"), ImmutableList.of("tsP"));
-    private final Map<MappingKey, List<String>> breakerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.OPEN, "b1"), ImmutableList.of("tsB"));
-    private final Map<MappingKey, List<String>> transformerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U1, "h1"), ImmutableList.of("tsT"));
-    private final Map<MappingKey, List<String>> ratioTapChangerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tc1"), ImmutableList.of("tsTC"));
-    private final Map<MappingKey, List<String>> lccConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "lcc1"), ImmutableList.of("tsLcc"));
-    private final Map<MappingKey, List<String>> vscConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "vsc1"), ImmutableList.of("tsVsc"));
+    private final Map<MappingKey, List<String>> generatorToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), List.of("tsG"));
+    private final Map<MappingKey, List<String>> loadToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), List.of("tsL1", "tsL2"));
+    private final Map<MappingKey, List<String>> danglingLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "dl1"), List.of("tsDL"));
+    private final Map<MappingKey, List<String>> hvdcLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "h1"), List.of("tsH"));
+    private final Map<MappingKey, List<String>> phaseTapChangerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "p1"), List.of("tsP"));
+    private final Map<MappingKey, List<String>> breakerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.OPEN, "b1"), List.of("tsB"));
+    private final Map<MappingKey, List<String>> transformerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATED_U1, "h1"), List.of("tsT"));
+    private final Map<MappingKey, List<String>> ratioTapChangerToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "tc1"), List.of("tsTC"));
+    private final Map<MappingKey, List<String>> lccConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "lcc1"), List.of("tsLcc"));
+    private final Map<MappingKey, List<String>> vscConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "vsc1"), List.of("tsVsc"));
 
     private final Set<MappingKey> generatorTs = ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), new MappingKey(EquipmentVariable.MIN_P, "g2"));
     private final Set<MappingKey> loadTs = ImmutableSet.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "l2"));
@@ -97,11 +96,11 @@ class TimeSeriesMappingConfigToJsonTest {
 
     private final Map<String, Set<String>> timeSeriesToPlannedOutages = ImmutableMap.of("tsOutages", ImmutableSet.of("id1", "id2"));
 
-    private Map<String, Set<String>> generatorGroupToTimeSeries = ImmutableMap.of("g1", ImmutableSet.of("name1", "name2"));
-    private Map<String, Set<String>> loadGroupToTimeSeries = ImmutableMap.of("l1", ImmutableSet.of("name1", "name2"));
+    private final Map<String, Set<String>> generatorGroupToTimeSeries = ImmutableMap.of("g1", ImmutableSet.of("name1", "name2"));
+    private final Map<String, Set<String>> loadGroupToTimeSeries = ImmutableMap.of("l1", ImmutableSet.of("name1", "name2"));
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         config.setTimeSeriesToGeneratorsMapping(timeSeriesToGenerators);
         config.setTimeSeriesToLoadsMapping(timeSeriesToLoads);
         config.setTimeSeriesToDanglingLinesMapping(timeSeriesToDanglingLines);
@@ -176,7 +175,7 @@ class TimeSeriesMappingConfigToJsonTest {
     }
 
     @Test
-    void testGet() {
+    void testGetTimeSeriesToXMapping() {
         assertEquals(timeSeriesToGenerators, config.getTimeSeriesToGeneratorsMapping());
         assertEquals(timeSeriesToLoads, config.getTimeSeriesToLoadsMapping());
         assertEquals(timeSeriesToDanglingLines, config.getTimeSeriesToDanglingLinesMapping());
@@ -187,7 +186,10 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(timeSeriesToRatioTapChangers, config.getTimeSeriesToRatioTapChangersMapping());
         assertEquals(timeSeriesToLccConverterStations, config.getTimeSeriesToLccConverterStationsMapping());
         assertEquals(timeSeriesToVscConverterStations, config.getTimeSeriesToVscConverterStationsMapping());
+    }
 
+    @Test
+    void testGetXToTimeSeriesMapping() {
         assertEquals(generatorToTimeSeries, config.getGeneratorToTimeSeriesMapping());
         assertEquals(loadToTimeSeries, config.getLoadToTimeSeriesMapping());
         assertEquals(danglingLineToTimeSeries, config.getDanglingLineToTimeSeriesMapping());
@@ -198,7 +200,10 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(ratioTapChangerToTimeSeries, config.getRatioTapChangerToTimeSeriesMapping());
         assertEquals(lccConverterStationToTimeSeries, config.getLccConverterStationToTimeSeriesMapping());
         assertEquals(vscConverterStationToTimeSeries, config.getVscConverterStationToTimeSeriesMapping());
+    }
 
+    @Test
+    void testGetXTimeSeries() {
         assertEquals(generatorTs, config.getGeneratorTimeSeries());
         assertEquals(loadTs, config.getLoadTimeSeries());
         assertEquals(danglingLineTs, config.getDanglingLineTimeSeries());
@@ -209,7 +214,10 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(ratioTapChangerTs, config.getRatioTapChangerTimeSeries());
         assertEquals(lccConverterStationTs, config.getLccConverterStationTimeSeries());
         assertEquals(vscConverterStationTs, config.getVscConverterStationTimeSeries());
+    }
 
+    @Test
+    void testGetUnmappedX() {
         assertEquals(unmappedGenerators, config.getUnmappedGenerators());
         assertEquals(unmappedLoads, config.getUnmappedLoads());
         assertEquals(unmappedFixedActivePowerLoads, config.getUnmappedFixedActivePowerLoads());
@@ -228,7 +236,10 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(ignoredUnmappedDanglingLines, config.getIgnoredUnmappedDanglingLines());
         assertEquals(ignoredUnmappedHvdcLines, config.getIgnoredUnmappedHvdcLines());
         assertEquals(ignoredUnmappedPhaseTapChangers, config.getIgnoredUnmappedPhaseTapChangers());
+    }
 
+    @Test
+    void testOtherMethods() {
         assertEquals(disconnectedGenerators, config.getDisconnectedGenerators());
         assertEquals(disconnectedLoads, config.getDisconnectedLoads());
         assertEquals(disconnectedDanglingLines, config.getDisconnectedDanglingLines());
