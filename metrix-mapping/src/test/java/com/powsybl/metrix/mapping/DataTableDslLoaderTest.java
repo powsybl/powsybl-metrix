@@ -10,15 +10,22 @@ package com.powsybl.metrix.mapping;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.exception.DataTableException;
+import com.powsybl.metrix.mapping.util.MappingTestNetwork;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -32,15 +39,12 @@ class DataTableDslLoaderTest {
     private final DataTableStore dataTableStore = new DataTableStore();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         dataTableStore.addTable("tableName", dataTable);
     }
 
     @Test
     void dataTableDslLoaderTest() throws IOException {
-        DataTableStore dataTableStore = new DataTableStore();
-        dataTableStore.addTable("tableName", dataTable);
-
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "exists = dataTable.exists('tableName')",

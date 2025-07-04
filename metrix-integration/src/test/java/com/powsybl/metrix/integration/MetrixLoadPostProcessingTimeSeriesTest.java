@@ -71,7 +71,7 @@ class MetrixLoadPostProcessingTimeSeriesTest {
     Map<String, NodeCalc> postProcessingTimeSeries;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
@@ -82,8 +82,7 @@ class MetrixLoadPostProcessingTimeSeriesTest {
                                           NodeCalc tsSheddingCost) {
         NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(metrixOutputPrefix + loadName);
 
-        NodeCalc expectedLoadShedding = metrixOutputNode;
-        assertEquals(expectedLoadShedding, postProcessingTimeSeries.get(postProcessingLoadSheddingPrefix + "_" + loadName));
+        assertEquals(metrixOutputNode, postProcessingTimeSeries.get(postProcessingLoadSheddingPrefix + "_" + loadName));
 
         NodeCalc expectedLoadSheddingCost = BinaryOperation.multiply(metrixOutputNode, tsSheddingCost);
         assertEquals(expectedLoadSheddingCost, postProcessingTimeSeries.get(postProcessingLoadSheddingCostPrefix + "_" + loadName));

@@ -9,7 +9,10 @@ package com.powsybl.metrix.integration;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -109,16 +112,27 @@ class MetrixParametersTest {
             .setAdequacyCostOffset(4)
             .setCurativeRedispatchingLimit(1500);
 
+        assertTrue(p.getOptionalMaxSolverTime().isPresent());
         assertEquals(-1, p.getOptionalMaxSolverTime().getAsInt());
+        assertTrue(p.getOptionalLossNbRelaunch().isPresent());
         assertEquals(2, p.getOptionalLossNbRelaunch().getAsInt());
+        assertTrue(p.getOptionalLossThreshold().isPresent());
         assertEquals(504, p.getOptionalLossThreshold().getAsInt());
+        assertTrue(p.getOptionalNbMaxIteration().isPresent());
         assertEquals(3, p.getOptionalNbMaxIteration().getAsInt());
+        assertTrue(p.getOptionalNbMaxCurativeAction().isPresent());
         assertEquals(4, p.getOptionalNbMaxCurativeAction().getAsInt());
+        assertTrue(p.getOptionalNbMaxLostLoadDetailedResults().isPresent());
         assertEquals(5, p.getOptionalNbMaxLostLoadDetailedResults().getAsInt());
+        assertTrue(p.getOptionalGapVariableCost().isPresent());
         assertEquals(10000, p.getOptionalGapVariableCost().getAsInt());
+        assertTrue(p.getOptionalNbThreatResults().isPresent());
         assertEquals(2, p.getOptionalNbThreatResults().getAsInt());
+        assertTrue(p.getOptionalRedispatchingCostOffset().isPresent());
         assertEquals(50, p.getOptionalRedispatchingCostOffset().getAsInt());
+        assertTrue(p.getOptionalAdequacyCostOffset().isPresent());
         assertEquals(4, p.getOptionalAdequacyCostOffset().getAsInt());
+        assertTrue(p.getOptionalCurativeRedispatchingLimit().isPresent());
         assertEquals(1500, p.getOptionalCurativeRedispatchingLimit().getAsInt());
     }
 
@@ -147,26 +161,26 @@ class MetrixParametersTest {
             .setCurativeLossOfGenerationCost(11000f)
             .setContingenciesProbability(0.001f);
 
-        assertFalse(p.isWithGridCost().get());
-        assertTrue(p.isPreCurativeResults().get());
-        assertFalse(p.isOutagesBreakingConnexity().get());
-        assertFalse(p.isRemedialActionsBreakingConnexity().get());
-        assertTrue(p.isAnalogousRemedialActionDetection().get());
-        assertTrue(p.isPropagateBranchTripping());
-        assertFalse(p.isWithAdequacyResults().get());
-        assertTrue(p.isWithRedispatchingResults().get());
-        assertTrue(p.isMarginalVariationsOnBranches().get());
-        assertTrue(p.isMarginalVariationsOnHvdc().get());
-        assertTrue(p.isLossDetailPerCountry().get());
-        assertTrue(p.isOverloadResultsOnly().get());
-        assertTrue(p.isShowAllTDandHVDCresults().get());
-        assertTrue(p.isWithLostLoadDetailedResultsOnContingency().get());
-        assertEquals(0.0001f, p.getOptionalPstCostPenality().get(), 0f);
-        assertEquals(0.01f, p.getOptionalHvdcCostPenality().get(), 0f);
-        assertEquals(9000f, p.getOptionalLossOfLoadCost().get(), 0f);
-        assertEquals(1000f, p.getOptionalCurativeLossOfLoadCost().get(), 0f);
-        assertEquals(11000f, p.getOptionalCurativeLossOfGenerationCost().get(), 0f);
-        assertEquals(0.001f, p.getOptionalContingenciesProbability().get(), 0f);
+        assertThat(p.isWithGridCost()).isPresent().contains(false);
+        assertThat(p.isPreCurativeResults()).isPresent().contains(true);
+        assertThat(p.isOutagesBreakingConnexity()).isPresent().contains(false);
+        assertThat(p.isRemedialActionsBreakingConnexity()).isPresent().contains(false);
+        assertThat(p.isAnalogousRemedialActionDetection()).isPresent().contains(true);
+        assertThat(p.isPropagateBranchTripping()).isTrue();
+        assertThat(p.isWithAdequacyResults()).isPresent().contains(false);
+        assertThat(p.isWithRedispatchingResults()).isPresent().contains(true);
+        assertThat(p.isMarginalVariationsOnBranches()).isPresent().contains(true);
+        assertThat(p.isMarginalVariationsOnHvdc()).isPresent().contains(true);
+        assertThat(p.isLossDetailPerCountry()).isPresent().contains(true);
+        assertThat(p.isOverloadResultsOnly()).isPresent().contains(true);
+        assertThat(p.isShowAllTDandHVDCresults()).isPresent().contains(true);
+        assertThat(p.isWithLostLoadDetailedResultsOnContingency()).isPresent().contains(true);
+        assertThat(p.getOptionalPstCostPenality()).isPresent().contains(0.0001f);
+        assertThat(p.getOptionalHvdcCostPenality()).isPresent().contains(0.01f);
+        assertThat(p.getOptionalLossOfLoadCost()).isPresent().contains(9000f);
+        assertThat(p.getOptionalCurativeLossOfLoadCost()).isPresent().contains(1000f);
+        assertThat(p.getOptionalCurativeLossOfGenerationCost()).isPresent().contains(11000f);
+        assertThat(p.getOptionalContingenciesProbability()).isPresent().contains(0.001f);
     }
 
     @Test

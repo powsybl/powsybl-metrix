@@ -12,13 +12,16 @@ import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.Duration;
+import java.time.Instant;
+
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
 class TimeSeriesMetadataIndexTest {
     @Test
     void creationTest() {
-        RegularTimeSeriesIndex regularTimeSeriesIndex = new RegularTimeSeriesIndex(797558400, 800150400, 60000);
+        RegularTimeSeriesIndex regularTimeSeriesIndex = new RegularTimeSeriesIndex(Instant.ofEpochMilli(797558400), Instant.ofEpochMilli(800150400), Duration.ofMillis(60000));
         TimeSeriesMetadataIndex timeSeriesMetadataIndex = new TimeSeriesMetadataIndex(regularTimeSeriesIndex);
         Assertions.assertThat(timeSeriesMetadataIndex.endTime).isEqualTo(800150400);
         Assertions.assertThat(timeSeriesMetadataIndex.startTime).isEqualTo(797558400);
