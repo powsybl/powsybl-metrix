@@ -28,7 +28,7 @@ public class MetrixMock extends AbstractMetrix {
     }
 
     @Override
-    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) throws IOException {
+    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) {
         // Do nothing
     }
 }
