@@ -5,18 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.util;
 
 import com.powsybl.iidm.network.*;
 
 /**
- *
  * 2 buses connected by a line.
  * Bus 1 connects 2 generators and 1 load.
  * Bus 2 connects 1 generator and 2 loads.
  *
- */
-/**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 

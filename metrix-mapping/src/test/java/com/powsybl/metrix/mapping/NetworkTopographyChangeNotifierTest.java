@@ -11,7 +11,11 @@ import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.mapping.log.Log;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -44,7 +48,7 @@ class NetworkTopographyChangeNotifierTest {
             "}");
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // create test network
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
@@ -83,8 +87,7 @@ class NetworkTopographyChangeNotifierTest {
         AtomicBoolean hit = new AtomicBoolean(false);
         Mockito.doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
-            if (args.length > 0 && args[0] instanceof Log) {
-                Log log = (Log) args[0];
+            if (args.length > 0 && args[0] instanceof Log log) {
                 String actualLabel = log.getLabel();
                 String expectedLabel = "network update";
                 String actualMessage = log.getMessage();
@@ -118,8 +121,7 @@ class NetworkTopographyChangeNotifierTest {
         AtomicBoolean hit = new AtomicBoolean(false);
         Mockito.doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
-            if (args.length > 0 && args[0] instanceof Log) {
-                Log log = (Log) args[0];
+            if (args.length > 0 && args[0] instanceof Log log) {
                 String actualLabel = log.getLabel();
                 String expectedLabel = "network update";
                 String actualMessage = log.getMessage();
@@ -144,8 +146,7 @@ class NetworkTopographyChangeNotifierTest {
         AtomicBoolean hit = new AtomicBoolean(false);
         Mockito.doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
-            if (args.length > 0 && args[0] instanceof Log) {
-                Log log = (Log) args[0];
+            if (args.length > 0 && args[0] instanceof Log log) {
                 String actualLabel = log.getLabel();
                 String expectedLabel = "network update";
                 String actualMessage = log.getMessage();

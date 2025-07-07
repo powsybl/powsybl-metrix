@@ -63,7 +63,7 @@ class MetrixExceptionTest {
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         Path workspace = Files.createDirectory(fileSystem.getPath("/tmp"));
         computationManager = new LocalComputationManager(workspace);
@@ -86,7 +86,7 @@ class MetrixExceptionTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 
