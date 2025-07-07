@@ -123,7 +123,7 @@ public abstract class AbstractMetrix {
 
             MetrixRunResult runResult = new MetrixRunResult();
             appLogger.log("[%s] Computing postprocessing timeseries", schemaName);
-            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData, analysisResult.mappingConfig, resultStore, nullableSchemaName));
+            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData, analysisResult.mappingConfig, analysisResult.contingencies, resultStore, nullableSchemaName));
             return runResult;
 
         } catch (IOException e) {
