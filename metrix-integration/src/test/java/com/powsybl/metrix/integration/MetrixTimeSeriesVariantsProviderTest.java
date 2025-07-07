@@ -21,13 +21,21 @@ import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
@@ -55,7 +63,7 @@ class MetrixTimeSeriesVariantsProviderTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         metrixFile = fileSystem.getPath("/metrix.groovy");
         variantFile = fileSystem.getPath("/variantes.csv");
@@ -64,13 +72,13 @@ class MetrixTimeSeriesVariantsProviderTest {
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         fileSystem.close();
     }
 
     @Test
     void variantsTest() throws IOException, URISyntaxException {
-        Path workingDir = Paths.get(getClass().getResource("/").toURI());
+        Path workingDir = Paths.get(Objects.requireNonNull(getClass().getResource("/")).toURI());
         // Creates metrix file
         try (Writer writer = Files.newBufferedWriter(metrixFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -97,7 +105,7 @@ class MetrixTimeSeriesVariantsProviderTest {
                 TimeSeries.createDouble("variable_ts3", index, 600d, 601d)
         );
 
-        ContingenciesProvider contingenciesProvider = network -> {
+        ContingenciesProvider contingenciesProvider = n -> {
             Contingency a = new Contingency("a", Collections.singletonList(new BranchContingency("FVALDI1  FTDPRA1  1")));
             a.addExtension(Probability.class, new Probability(0.002d, null));
             Contingency b = new Contingency("b", Arrays.asList(new BranchContingency("FS.BIS1  FVALDI1  1"), new BranchContingency("FP.AND1  FVERGE1  2")));
@@ -109,7 +117,7 @@ class MetrixTimeSeriesVariantsProviderTest {
         MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, new MetrixParameters(), (Path) null);
 
         TimeSeriesMappingConfig mappingConfig;
-        try (Reader mappingReader = new InputStreamReader(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy"), StandardCharsets.UTF_8)) {
+        try (Reader mappingReader = new InputStreamReader(Objects.requireNonNull(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy")), StandardCharsets.UTF_8)) {
             mappingConfig = new TimeSeriesDslLoader(mappingReader).load(network, mappingParameters, store, new DataTableStore(), null, null);
         }
 
