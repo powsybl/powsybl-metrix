@@ -8,6 +8,7 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
+import com.powsybl.metrix.mapping.util.MappingTestNetwork;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -60,7 +60,7 @@ class MetrixAnalysisTest {
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         this.network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         this.networkSource = new NetworkSource() {
@@ -93,7 +93,7 @@ class MetrixAnalysisTest {
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
