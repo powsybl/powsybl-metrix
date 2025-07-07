@@ -7,8 +7,12 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableList;
-import com.powsybl.contingency.*;
+import com.powsybl.contingency.BranchContingency;
+import com.powsybl.contingency.BusbarSectionContingency;
+import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.Contingency;
+import com.powsybl.contingency.ContingencyElement;
+import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
@@ -20,6 +24,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
@@ -28,15 +34,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class MetrixContingencyAnalysisTest {
+class MetrixContingencyAnalysisTest {
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("lang.MetrixAnalysis");
 
     private Network network;
 
     @BeforeEach
-    public void setUp() {
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+    void setUp() {
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     private String getWarningInvalidContingency(String contingency, String equipment) {
@@ -63,7 +69,7 @@ public class MetrixContingencyAnalysisTest {
     private void metrixDslDataContingencyAnalysisTest(MetrixDslData metrixDslData, String expected) throws IOException {
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), new EmptyContingencyListProvider(), network, metrixDslData, bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), new EmptyContingencyListProvider(), network, metrixDslData, null, bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -74,11 +80,11 @@ public class MetrixContingencyAnalysisTest {
     }
 
     private void loadContingencyTest(Contingency contingency, String expected) throws IOException {
-        ContingenciesProvider provider = network -> ImmutableList.of(contingency);
+        ContingenciesProvider provider = n -> List.of(contingency);
 
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -129,7 +135,7 @@ public class MetrixContingencyAnalysisTest {
     @Test
     void metrixDslDataLoadContingencyAnalysisTest() throws IOException {
         MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addCurativeLoad("loadId", 10, ImmutableList.of("ctyForLoadId"));
+        metrixDslData.addCurativeLoad("loadId", 10, List.of("ctyForLoadId"));
         String expected = getWarningInvalidMetrixDslDataContingency(" - loadId", "load", "ctyForLoadId");
         metrixDslDataContingencyAnalysisTest(metrixDslData, expected);
     }
@@ -137,7 +143,7 @@ public class MetrixContingencyAnalysisTest {
     @Test
     void metrixDslDataPhaseTapChangerContingencyAnalysisTest() throws IOException {
         MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addPtc("phaseTapChangerId", MetrixPtcControlType.OPTIMIZED_ANGLE_CONTROL, ImmutableList.of("ctyForPhaseTapChangerId"));
+        metrixDslData.addPtc("phaseTapChangerId", MetrixPtcControlType.OPTIMIZED_ANGLE_CONTROL, List.of("ctyForPhaseTapChangerId"));
         String expected = getWarningInvalidMetrixDslDataContingency(" - phaseTapChangerId", "phaseTapChanger", "ctyForPhaseTapChangerId");
         metrixDslDataContingencyAnalysisTest(metrixDslData, expected);
     }
@@ -145,7 +151,7 @@ public class MetrixContingencyAnalysisTest {
     @Test
     void metrixDslDataGeneratorContingencyAnalysisTest() throws IOException {
         MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addGeneratorForRedispatching("generatorId", ImmutableList.of("ctyForGeneratorId"));
+        metrixDslData.addGeneratorForRedispatching("generatorId", List.of("ctyForGeneratorId"));
         String expected = getWarningInvalidMetrixDslDataContingency(" - generatorId", "generator", "ctyForGeneratorId");
         metrixDslDataContingencyAnalysisTest(metrixDslData, expected);
     }
@@ -153,7 +159,7 @@ public class MetrixContingencyAnalysisTest {
     @Test
     void metrixDslDataHvdcLineContingencyAnalysisTest() throws IOException {
         MetrixDslData metrixDslData = new MetrixDslData();
-        metrixDslData.addHvdc("hvdcLineId", MetrixHvdcControlType.OPTIMIZED, ImmutableList.of("ctyForHvdcLineId"));
+        metrixDslData.addHvdc("hvdcLineId", MetrixHvdcControlType.OPTIMIZED, List.of("ctyForHvdcLineId"));
         String expected = getWarningInvalidMetrixDslDataContingency(" - hvdcLineId", "hvdcLine", "ctyForHvdcLineId");
         metrixDslDataContingencyAnalysisTest(metrixDslData, expected);
     }
@@ -166,7 +172,7 @@ public class MetrixContingencyAnalysisTest {
                     String.join(System.lineSeparator(),
                             "NB;1;",
                             "ctyId;1;FP.AND1  FVERGE1  1;")
-            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), bufferedWriter);
+            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), null, bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();

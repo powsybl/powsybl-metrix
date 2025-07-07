@@ -11,14 +11,22 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.DataTableStore;
+import com.powsybl.metrix.mapping.MappingKey;
+import com.powsybl.metrix.mapping.MappingParameters;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -46,7 +54,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
@@ -62,7 +70,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 
@@ -96,7 +104,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals("12000", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN, "FSSV.O11_L")));
         assertEquals("ts1", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN, "FVALDI11_L2")));
@@ -132,7 +140,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals("50", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.ON_GRID_DOCTRINE_COST_UP, "FSSV.O11_G")));
         assertEquals("200", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.ON_GRID_DOCTRINE_COST_DOWN, "FSSV.O11_G")));
@@ -157,7 +165,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals("ts1", mappingConfig.getEquipmentToTimeSeries().get(new MappingKey(MetrixVariable.LOSSES_DOCTRINE_COST, "SimpleNetworkWithReducedThresholds")));
         assertEquals(Set.of(new MappingKey(MetrixVariable.LOSSES_DOCTRINE_COST, "SimpleNetworkWithReducedThresholds")), mappingConfig.getTimeSeriesToEquipment().get("ts1"));
@@ -196,7 +204,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            MetrixDslDataLoader.load(dslFile, network, parameters, store, new TimeSeriesMappingConfig(), out);
+            MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), out);
         }
 
         String output = outputStream.toString();

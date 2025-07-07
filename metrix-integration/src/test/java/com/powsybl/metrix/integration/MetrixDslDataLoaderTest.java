@@ -7,34 +7,57 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
-import com.powsybl.metrix.mapping.*;
-import com.powsybl.timeseries.*;
+import com.powsybl.metrix.mapping.DataTableStore;
+import com.powsybl.metrix.mapping.MappingKey;
+import com.powsybl.metrix.mapping.MappingParameters;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
+import com.powsybl.metrix.mapping.TimeSeriesMappingException;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.ast.IntegerNodeCalc;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -54,11 +77,11 @@ class MetrixDslDataLoaderTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Create mapping file for use in all tests
         try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
@@ -76,90 +99,97 @@ class MetrixDslDataLoaderTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 
     @Test
     void testWrongConfigurations() throws IOException {
         try (OutputStream writer = Files.newOutputStream(dslFile);
-             InputStream inputStream = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/badConfiguration.groovy")
-        ) {
+             InputStream inputStream = Objects.requireNonNull(
+                 MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/badConfiguration.groovy"))) {
             IOUtils.copy(inputStream, writer);
         }
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
-        assertEquals(2, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
-        assertEquals(MetrixInputData.MonitoringType.MONITORING, data.getBranchMonitoringN("FVALDI1  FTDPRA1  2"));
-        assertEquals(3, data.getBranchMonitoringNkList().stream().filter(a -> data.getBranchMonitoringNk(a) == MetrixInputData.MonitoringType.MONITORING).count());
-        assertEquals(MetrixInputData.MonitoringType.MONITORING, data.getBranchMonitoringNk("FP.AND1  FVERGE1  2"));
+        // Compare MetrixDslData
+        MetrixDslData expectedData = new MetrixDslData();
+        expectedData.addBranchMonitoringN("FVALDI1  FTDPRA1  2");
+        expectedData.addBranchMonitoringN("FP.AND1  FVERGE1  2");
+        expectedData.addBranchMonitoringNk("FP.AND1  FVERGE1  2");
+        expectedData.addBranchMonitoringNk("FVALDI1  FTDPRA1  1");
+        expectedData.addBranchMonitoringNk("FS.BIS1  FVALDI1  1");
+        expectedData.addSection(new MetrixSection("sectionOk", 2000, Map.of("HVDC1", 0.9f, "FP.AND1  FTDPRA1  1", 1.1f, "FVALDI1  FTDPRA1  1", 2f)));
+        expectedData.addGeneratorForRedispatching("FVALDI11_G", null);
+        assertEquals(expectedData, data);
 
-        assertEquals(0, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.RESULT).count());
-
-        assertEquals(0, data.getBranchMonitoringNkList().stream().filter(a -> data.getBranchMonitoringNk(a) == MetrixInputData.MonitoringType.RESULT).count());
-
-        assertEquals(0, data.getPtcContingenciesList().size());
-
-        assertEquals(MetrixPtcControlType.FIXED_ANGLE_CONTROL, data.getPtcControl("FP.AND1  FTDPRA1  1"));
-
-        assertEquals(MetrixHvdcControlType.FIXED, data.getHvdcControl("HVDC1"));
-
-        assertEquals(0, data.getHvdcContingenciesList().size());
-
-        assertEquals(1, data.getSectionList().size());
-        assertEquals(ImmutableSet.of(new MetrixSection("sectionOk", 2000f,
-                ImmutableMap.of("FP.AND1  FTDPRA1  1", 1.1f, "HVDC1", 0.9f, "FVALDI1  FTDPRA1  1", 2f))),
-            data.getSectionList());
-
-        assertEquals(0, data.getGeneratorsForAdequacy().size());
-
-        assertEquals(1, data.getGeneratorsForRedispatching().size());
-
-        assertEquals(0, data.getGeneratorContingenciesList().size());
-        assertEquals(Collections.emptyList(), data.getGeneratorContingencies("FVALDI11_G"));
-
-        assertEquals(0, data.getPreventiveLoadsList().size());
-
-        assertEquals(0, data.getCurativeLoadsList().size());
-
-        assertEquals(5, tsConfig.getTimeSeriesToEquipment().size()); // tsN, tsN_1, tsITAM, ts3 and ts4
-
-        assertEquals(4, tsConfig.getEquipmentIds("tsN").size());
-        Iterator<MappingKey> mappingKeyIterator = tsConfig.getEquipmentIds("tsN").iterator();
-        MappingKey mappingKey = mappingKeyIterator.next();
-        assertEquals("FS.BIS1  FVALDI1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N1, mappingKey.getMappingVariable());
-        mappingKey = mappingKeyIterator.next();
-        assertEquals("FP.AND1  FVERGE1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N, mappingKey.getMappingVariable());
-        mappingKey = mappingKeyIterator.next();
-        assertEquals("FP.AND1  FVERGE1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N1, mappingKey.getMappingVariable());
-        mappingKey = mappingKeyIterator.next();
-        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N, mappingKey.getMappingVariable());
-
-        assertEquals(1, tsConfig.getEquipmentIds("ts3").size());
-        mappingKey = tsConfig.getEquipmentIds("ts3").iterator().next();
-        assertEquals("FVALDI11_G", mappingKey.getId());
-        assertEquals(MetrixVariable.ON_GRID_COST_DOWN, mappingKey.getMappingVariable());
-
-        assertEquals(1, tsConfig.getEquipmentIds("ts4").size());
-        mappingKey = tsConfig.getEquipmentIds("ts4").iterator().next();
-        assertEquals("FVALDI11_G", mappingKey.getId());
-        assertEquals(MetrixVariable.ON_GRID_COST_UP, mappingKey.getMappingVariable());
-
+        // Compare TimeSeriesMappingConfig
+        TimeSeriesMappingConfig expectedTsConfig = new TimeSeriesMappingConfig();
+        MappingKey mk1 = new MappingKey(MetrixVariable.THRESHOLD_N1, "FVALDI1  FTDPRA1  1");
+        MappingKey mk2 = new MappingKey(MetrixVariable.THRESHOLD_N1, "FS.BIS1  FVALDI1  1");
+        MappingKey mk3 = new MappingKey(MetrixVariable.THRESHOLD_N, "FP.AND1  FVERGE1  2");
+        MappingKey mk4 = new MappingKey(MetrixVariable.THRESHOLD_N1, "FP.AND1  FVERGE1  2");
+        MappingKey mk5 = new MappingKey(MetrixVariable.THRESHOLD_N, "FVALDI1  FTDPRA1  2");
+        MappingKey mk6 = new MappingKey(MetrixVariable.THRESHOLD_ITAM, "FS.BIS1  FVALDI1  1");
+        MappingKey mk7 = new MappingKey(MetrixVariable.ON_GRID_COST_DOWN, "FVALDI11_G");
+        MappingKey mk8 = new MappingKey(MetrixVariable.ON_GRID_COST_UP, "FVALDI11_G");
+        expectedTsConfig.setTimeSeriesToEquipment(Map.of(
+            "tsN_1", Set.of(mk1),
+            "tsN", Set.of(mk2, mk3, mk4, mk5),
+            "tsITAM", Set.of(mk6),
+            "ts3", Set.of(mk7),
+            "ts4", Set.of(mk8)
+        ));
+        expectedTsConfig.setUnmappedGenerators(Set.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G"));
+        expectedTsConfig.setUnmappedLoads(Set.of("FSSV.O11_L", "FVALDI11_L", "FVALDI11_L2"));
+        expectedTsConfig.setUnmappedHvdcLines(Set.of("HVDC1", "HVDC2"));
+        expectedTsConfig.setUnmappedPhaseTapChangers(Set.of("FP.AND1  FTDPRA1  1"));
+        expectedTsConfig.setUnmappedMinPGenerators(Set.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G"));
+        expectedTsConfig.setUnmappedMaxPGenerators(Set.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G"));
+        expectedTsConfig.setUnmappedMinPHvdcLines(Set.of("HVDC1", "HVDC2"));
+        expectedTsConfig.setUnmappedMaxPHvdcLines(Set.of("HVDC1", "HVDC2"));
+        expectedTsConfig.setDisconnectedLoads(Set.of("FVERGE11_L"));
+        expectedTsConfig.setTimeSeriesNodes(Map.of(
+            "ts1",
+            new IntegerNodeCalc(100),
+            "ts2",
+            new IntegerNodeCalc(200),
+            "ts3",
+            new IntegerNodeCalc(300),
+            "ts4",
+            new IntegerNodeCalc(400),
+            "ts5",
+            new IntegerNodeCalc(500),
+            "tsN_1",
+            new IntegerNodeCalc(2000),
+            "tsN",
+            new IntegerNodeCalc(1000),
+            "tsITAM",
+            new IntegerNodeCalc(3000)
+        ));
+        expectedTsConfig.setEquipmentToTimeSeries(Map.of(
+            mk1, "tsN_1",
+            mk2, "tsN",
+            mk3, "tsN",
+            mk4, "tsN",
+            mk5, "tsN",
+            mk6, "tsITAM",
+            mk7, "ts3",
+            mk8, "ts4"
+        ));
+        assertEquals(expectedTsConfig, tsConfig);
     }
 
     @Test
     void testAutomaticList() throws IOException {
 
         try (OutputStream os = Files.newOutputStream(dslFile);
-             InputStream is = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/automaticList.groovy")
+             InputStream is = Objects.requireNonNull(
+                 MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/automaticList.groovy"))
         ) {
             IOUtils.copy(is, os);
         }
@@ -167,9 +197,11 @@ class MetrixDslDataLoaderTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
-        Set<String> lineSet = ImmutableSet.of("FP.AND1  FVERGE1  1",
+        // Network elements
+        Set<String> lineSet = ImmutableSet.of(
+            "FP.AND1  FVERGE1  1",
             "FP.AND1  FVERGE1  2",
             "FS.BIS1  FVALDI1  1",
             "FS.BIS1  FVALDI1  2",
@@ -181,67 +213,101 @@ class MetrixDslDataLoaderTest {
             "FTDPRA1  FVERGE1  2",
             "FVALDI1  FTDPRA1  1",
             "FVALDI1  FTDPRA1  2");
+        Set<String> generatorSet = ImmutableSet.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G");
+        Set<String> loadSet = ImmutableSet.of("FSSV.O11_L", "FVALDI11_L", "FVALDI11_L2", "FVERGE11_L");
+        Set<String> hvdcSet = ImmutableSet.of("HVDC1", "HVDC2");
 
-        assertEquals(12, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
-        assertEquals(1, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.RESULT).count());
-        assertEquals(1, data.getBranchMonitoringNkList().stream().filter(a -> data.getBranchMonitoringNk(a) == MetrixInputData.MonitoringType.MONITORING).count());
-        assertEquals(12, data.getBranchMonitoringNkList().stream().filter(a -> data.getBranchMonitoringNk(a) == MetrixInputData.MonitoringType.RESULT).count());
-
+        // Compare MetrixDslData
+        MetrixDslData expectedData = new MetrixDslData();
         for (String line : lineSet) {
-            assertEquals(MetrixInputData.MonitoringType.MONITORING, data.getBranchMonitoringN(line));
-            assertEquals(MetrixInputData.MonitoringType.RESULT, data.getBranchMonitoringNk(line));
+            expectedData.addBranchMonitoringN(line);
+            expectedData.addBranchResultNk(line);
         }
-        assertEquals(MetrixInputData.MonitoringType.RESULT, data.getBranchMonitoringN("FP.AND1  FTDPRA1  1"));
-        assertEquals(MetrixInputData.MonitoringType.MONITORING, data.getBranchMonitoringNk("FP.AND1  FTDPRA1  1"));
+        expectedData.addBranchResultN("FP.AND1  FTDPRA1  1");
+        expectedData.addBranchMonitoringNk("FP.AND1  FTDPRA1  1");
+        expectedData.addPtc("FP.AND1  FTDPRA1  1", MetrixPtcControlType.FIXED_POWER_CONTROL, List.of("cty"));
+        for (String hvdc : hvdcSet) {
+            expectedData.addHvdc(hvdc, MetrixHvdcControlType.OPTIMIZED, List.of("cty1"));
+            expectedData.addHvdcFlowResults(hvdc);
+        }
+        for (String generator : generatorSet) {
+            expectedData.addGeneratorForAdequacy(generator);
+            expectedData.addGeneratorForRedispatching(generator, List.of("cty2", "cty3"));
+        }
+        int i = 0;
+        for (String load : loadSet) {
+            expectedData.addPreventiveLoad(load, 20 + i);
+            expectedData.addPreventiveLoadCost(load, 12000f + i);
+            expectedData.addCurativeLoad(load, 5 + i, List.of("cty4"));
+            i++;
+        }
+        assertEquals(expectedData, data);
 
-        assertEquals(network.getTwoWindingsTransformerCount(), data.getPtcContingenciesList().size());
-        assertEquals(ImmutableList.of("cty"), data.getPtcContingencies("FP.AND1  FTDPRA1  1"));
-        assertEquals(MetrixPtcControlType.FIXED_POWER_CONTROL, data.getPtcControl("FP.AND1  FTDPRA1  1"));
-
-        assertEquals(network.getHvdcLineCount(), data.getHvdcContingenciesList().size());
-        assertEquals(ImmutableList.of("cty1"), data.getHvdcContingencies("HVDC1"));
-        assertEquals(ImmutableList.of("cty1"), data.getHvdcContingencies("HVDC2"));
-        assertEquals(MetrixHvdcControlType.OPTIMIZED, data.getHvdcControl("HVDC1"));
-        assertEquals(MetrixHvdcControlType.OPTIMIZED, data.getHvdcControl("HVDC2"));
-
-        assertEquals(network.getGeneratorCount(), data.getGeneratorsForAdequacy().size());
-        assertEquals(ImmutableSet.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G"), data.getGeneratorsForAdequacy());
-        assertEquals(network.getGeneratorCount(), data.getGeneratorsForRedispatching().size());
-        assertEquals(ImmutableSet.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G"), data.getGeneratorsForRedispatching());
-        assertEquals(network.getGeneratorCount(), data.getGeneratorContingenciesList().size());
-        assertEquals(ImmutableList.of("cty2", "cty3"), data.getGeneratorContingencies("FSSV.O11_G"));
-        assertEquals(ImmutableList.of("cty2", "cty3"), data.getGeneratorContingencies("FSSV.O12_G"));
-        assertEquals(ImmutableList.of("cty2", "cty3"), data.getGeneratorContingencies("FVALDI11_G"));
-        assertEquals(ImmutableList.of("cty2", "cty3"), data.getGeneratorContingencies("FVERGE11_G"));
-
-        assertEquals(network.getLoadCount(), data.getPreventiveLoadsList().size());
-        assertEquals(20, data.getPreventiveLoadPercentage("FSSV.O11_L").intValue());
-        assertEquals(21, data.getPreventiveLoadPercentage("FVALDI11_L").intValue());
-        assertEquals(22, data.getPreventiveLoadPercentage("FVALDI11_L2").intValue());
-
-        assertEquals(12000f, data.getPreventiveLoadCost("FSSV.O11_L"), 0);
-        assertEquals(12001f, data.getPreventiveLoadCost("FVALDI11_L"), 0);
-        assertEquals(12002f, data.getPreventiveLoadCost("FVALDI11_L2"), 0);
-        assertEquals(network.getLoadCount(), data.getCurativeLoadsList().size());
-        assertEquals(ImmutableList.of("cty4"), data.getLoadContingencies("FSSV.O11_L"));
-        assertEquals(ImmutableList.of("cty4"), data.getLoadContingencies("FVALDI11_L"));
-        assertEquals(ImmutableList.of("cty4"), data.getLoadContingencies("FVALDI11_L2"));
-
-        assertEquals(5f, data.getCurativeLoadPercentage("FSSV.O11_L").floatValue(), 0);
-        assertEquals(6f, data.getCurativeLoadPercentage("FVALDI11_L").floatValue(), 0);
-        assertEquals(7f, data.getCurativeLoadPercentage("FVALDI11_L2").floatValue(), 0);
-        assertEquals(8f, data.getCurativeLoadPercentage("FVERGE11_L").floatValue(), 0);
-
-        assertEquals(ImmutableSet.of("ts1", "ts2", "ts3", "ts4", "ts5", "tsN_1", "tsN", "tsITAM"), tsConfig.getTimeSeriesToEquipment().keySet());
-        assertEquals(network.getGeneratorCount(), tsConfig.getTimeSeriesToEquipment().get("ts1").size());
-        assertEquals(network.getGeneratorCount(), tsConfig.getTimeSeriesToEquipment().get("ts2").size());
-        assertEquals(network.getGeneratorCount(), tsConfig.getTimeSeriesToEquipment().get("ts3").size());
-        assertEquals(network.getGeneratorCount(), tsConfig.getTimeSeriesToEquipment().get("ts4").size());
-        assertEquals(network.getLoadCount(), tsConfig.getTimeSeriesToEquipment().get("ts5").size());
-        assertEquals(network.getLineCount(), tsConfig.getTimeSeriesToEquipment().get("tsN").size());
-        assertEquals(network.getTwoWindingsTransformerCount(), tsConfig.getTimeSeriesToEquipment().get("tsN_1").size());
-        assertEquals(network.getTwoWindingsTransformerCount(), tsConfig.getTimeSeriesToEquipment().get("tsITAM").size());
-
+        // Compare TimeSeriesMappingConfig
+        TimeSeriesMappingConfig expectedTsConfig = new TimeSeriesMappingConfig();
+        expectedTsConfig.setUnmappedGenerators(generatorSet);
+        expectedTsConfig.setUnmappedLoads(Set.of("FSSV.O11_L", "FVALDI11_L", "FVALDI11_L2"));
+        expectedTsConfig.setUnmappedHvdcLines(hvdcSet);
+        expectedTsConfig.setUnmappedPhaseTapChangers(Set.of("FP.AND1  FTDPRA1  1"));
+        expectedTsConfig.setUnmappedMinPGenerators(generatorSet);
+        expectedTsConfig.setUnmappedMaxPGenerators(generatorSet);
+        expectedTsConfig.setUnmappedMinPHvdcLines(hvdcSet);
+        expectedTsConfig.setUnmappedMaxPHvdcLines(hvdcSet);
+        expectedTsConfig.setDisconnectedLoads(Set.of("FVERGE11_L"));
+        expectedTsConfig.setTimeSeriesNodes(Map.of(
+            "ts1",
+            new IntegerNodeCalc(100),
+            "ts2",
+            new IntegerNodeCalc(200),
+            "ts3",
+            new IntegerNodeCalc(300),
+            "ts4",
+            new IntegerNodeCalc(400),
+            "ts5",
+            new IntegerNodeCalc(500),
+            "tsN_1",
+            new IntegerNodeCalc(2000),
+            "tsN",
+            new IntegerNodeCalc(1000),
+            "tsITAM",
+            new IntegerNodeCalc(3000)
+        ));
+        Map<MappingKey, String> equipmentToTimeSeries = new HashMap<>();
+        Map<String, Set<MappingKey>> timeSeriesToEquipment = new HashMap<>();
+        MappingKey mk;
+        for (String id : lineSet) {
+            mk = new MappingKey(MetrixVariable.THRESHOLD_N, id);
+            equipmentToTimeSeries.put(mk, "tsN");
+            timeSeriesToEquipment.computeIfAbsent("tsN", k -> new HashSet<>()).add(mk);
+        }
+        mk = new MappingKey(MetrixVariable.THRESHOLD_N1, "FP.AND1  FTDPRA1  1");
+        equipmentToTimeSeries.put(mk, "tsN_1");
+        timeSeriesToEquipment.put("tsN_1", Set.of(mk));
+        mk = new MappingKey(MetrixVariable.THRESHOLD_ITAM, "FP.AND1  FTDPRA1  1");
+        equipmentToTimeSeries.put(mk, "tsITAM");
+        timeSeriesToEquipment.put("tsITAM", Set.of(mk));
+        for (String id : generatorSet) {
+            mk = new MappingKey(MetrixVariable.OFF_GRID_COST_DOWN, id);
+            equipmentToTimeSeries.put(mk, "ts1");
+            timeSeriesToEquipment.computeIfAbsent("ts1", k -> new HashSet<>()).add(mk);
+            mk = new MappingKey(MetrixVariable.OFF_GRID_COST_UP, id);
+            equipmentToTimeSeries.put(mk, "ts2");
+            timeSeriesToEquipment.computeIfAbsent("ts2", k -> new HashSet<>()).add(mk);
+            mk = new MappingKey(MetrixVariable.ON_GRID_COST_DOWN, id);
+            equipmentToTimeSeries.put(mk, "ts3");
+            timeSeriesToEquipment.computeIfAbsent("ts3", k -> new HashSet<>()).add(mk);
+            mk = new MappingKey(MetrixVariable.ON_GRID_COST_UP, id);
+            equipmentToTimeSeries.put(mk, "ts4");
+            timeSeriesToEquipment.computeIfAbsent("ts4", k -> new HashSet<>()).add(mk);
+        }
+        for (String id : loadSet) {
+            mk = new MappingKey(MetrixVariable.CURATIVE_COST_DOWN, id);
+            equipmentToTimeSeries.put(mk, "ts5");
+            timeSeriesToEquipment.computeIfAbsent("ts5", k -> new HashSet<>()).add(mk);
+        }
+        expectedTsConfig.setTimeSeriesToEquipment(timeSeriesToEquipment);
+        expectedTsConfig.setEquipmentToTimeSeries(equipmentToTimeSeries);
+        assertEquals(expectedTsConfig, tsConfig);
     }
 
     @Test
@@ -275,7 +341,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(13, data.getContingencyFlowResult("FP.AND1  FVERGE1  1").size());
         assertEquals(13, data.getGeneratorContingencies("FSSV.O11_G").size());
@@ -307,7 +373,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertNull(data.getPreventiveLoadCost("FVALDI11_L"));
         assertEquals(12000f, data.getPreventiveLoadCost("FVALDI11_L2"), 0f);
@@ -348,7 +414,7 @@ class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesMappingConfig(network);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
         new TimeSeriesMappingConfigTableLoader(tsConfig, store).checkIndexUnicity();
 
         assertEquals(12, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
@@ -431,7 +497,7 @@ class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile2).load(network, mappingParameters, store, new DataTableStore(), null);
 
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(12, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
         assertEquals(12, data.getBranchMonitoringNkList().stream().filter(a -> data.getBranchMonitoringNk(a) == MetrixInputData.MonitoringType.MONITORING).count());
@@ -472,8 +538,9 @@ class MetrixDslDataLoaderTest {
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
 
+        DataTableStore dataTableStore = new DataTableStore();
         assertThrows(TimeSeriesMappingException.class,
-            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig),
+            () -> MetrixDslDataLoader.load(dslFile, network, parameters, store, dataTableStore, tsConfig),
             "Time Series 'ts' not found");
     }
 
@@ -491,10 +558,10 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(4, data.getContingencyFlowResultList().size());
-            List<String> list = ImmutableList.of("cty1", "cty2");
+            List<String> list = List.of("cty1", "cty2");
             assertEquals(list, data.getContingencyFlowResult("FP.AND1  FVERGE1  1"));
             assertEquals(list, data.getContingencyFlowResult("FP.AND1  FVERGE1  2"));
             assertEquals(list, data.getContingencyFlowResult("FS.BIS1  FVALDI1  1"));
@@ -504,6 +571,44 @@ class MetrixDslDataLoaderTest {
 
     @Test
     void testParameters() throws IOException {
+
+        MetrixParameters expectedParameters = new MetrixParameters();
+        expectedParameters.setComputationType(MetrixComputationType.OPF)
+            .setLossFactor(5f)
+            .setNominalU(103)
+            .setWithGridCost(false)
+            .setPreCurativeResults(true)
+            .setOutagesBreakingConnexity(true)
+            .setRemedialActionsBreakingConnexity(true)
+            .setAnalogousRemedialActionDetection(true)
+            .setPropagateBranchTripping(true)
+            .setWithAdequacyResults(false)
+            .setWithRedispatchingResults(true)
+            .setMarginalVariationsOnBranches(true)
+            .setMarginalVariationsOnHvdc(true)
+            .setLossDetailPerCountry(true)
+            .setOverloadResultsOnly(true)
+            .setShowAllTDandHVDCresults(true)
+            .setWithLostLoadDetailedResultsOnContingency(true)
+            .setMaxSolverTime(-1)
+            .setLossNbRelaunch(1)
+            .setLossThreshold(504)
+            .setPstCostPenality(0.02f)
+            .setHvdcCostPenality(0.03f)
+            .setLossOfLoadCost(12000f)
+            .setCurativeLossOfLoadCost(26000f)
+            .setCurativeLossOfGenerationCost(100f)
+            .setGeneratorMinCost(0.5f)
+            .setContingenciesProbability(0.01f)
+            .setNbMaxIteration(4)
+            .setNbMaxCurativeAction(2)
+            .setNbMaxLostLoadDetailedResults(2)
+            .setGapVariableCost(9998)
+            .setNbThreatResults(3)
+            .setRedispatchingCostOffset(333)
+            .setAdequacyCostOffset(44)
+            .setCurativeRedispatchingLimit(1111);
+
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
                     "parameters {",
@@ -548,43 +653,8 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
-
-            assertEquals(MetrixComputationType.OPF, parameters.getComputationType());
-            assertEquals(5f, parameters.getLossFactor(), 0f);
-            assertEquals(103, parameters.getNominalU());
-            assertFalse(parameters.isWithGridCost().orElse(true));
-            assertTrue(parameters.isPreCurativeResults().orElse(false));
-            assertTrue(parameters.isOutagesBreakingConnexity().orElse(false));
-            assertTrue(parameters.isRemedialActionsBreakingConnexity().orElse(false));
-            assertTrue(parameters.isAnalogousRemedialActionDetection().orElse(false));
-            assertTrue(parameters.isPropagateBranchTripping());
-            assertFalse(parameters.isWithAdequacyResults().orElse(true));
-            assertTrue(parameters.isWithRedispatchingResults().orElse(false));
-            assertTrue(parameters.isMarginalVariationsOnBranches().orElse(false));
-            assertTrue(parameters.isMarginalVariationsOnHvdc().orElse(false));
-            assertTrue(parameters.isLossDetailPerCountry().orElse(false));
-            assertTrue(parameters.isOverloadResultsOnly().orElse(false));
-            assertTrue(parameters.isShowAllTDandHVDCresults().orElse(false));
-            assertTrue(parameters.isWithLostLoadDetailedResultsOnContingency().orElse(true));
-            assertEquals(-1, parameters.getOptionalMaxSolverTime().getAsInt());
-            assertEquals(1, parameters.getOptionalLossNbRelaunch().getAsInt());
-            assertEquals(504, parameters.getOptionalLossThreshold().getAsInt());
-            assertEquals(0.02f, parameters.getOptionalPstCostPenality().get(), 0f);
-            assertEquals(0.03f, parameters.getOptionalHvdcCostPenality().get(), 0f);
-            assertEquals(12000f, parameters.getOptionalLossOfLoadCost().get(), 0f);
-            assertEquals(26000f, parameters.getOptionalCurativeLossOfLoadCost().get(), 0f);
-            assertEquals(100f, parameters.getOptionalCurativeLossOfGenerationCost().get(), 0f);
-            assertEquals(0.5f, parameters.getOptionalGeneratorMinCost().get(), 0f);
-            assertEquals(0.01f, parameters.getOptionalContingenciesProbability().get(), 0f);
-            assertEquals(4, parameters.getOptionalNbMaxIteration().getAsInt());
-            assertEquals(2, parameters.getOptionalNbMaxCurativeAction().getAsInt());
-            assertEquals(2, parameters.getOptionalNbMaxLostLoadDetailedResults().getAsInt());
-            assertEquals(9998, parameters.getOptionalGapVariableCost().getAsInt());
-            assertEquals(3, parameters.getOptionalNbThreatResults().getAsInt());
-            assertEquals(333, parameters.getOptionalRedispatchingCostOffset().getAsInt());
-            assertEquals(44, parameters.getOptionalAdequacyCostOffset().getAsInt());
-            assertEquals(1111, parameters.getOptionalCurativeRedispatchingLimit().getAsInt());
+            dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
+            assertEquals(expectedParameters, parameters);
         }
     }
 
@@ -606,15 +676,15 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            MetrixDslData data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(5, data.getContingencyDetailedMarginalVariationsList().size());
-            List<String> list = ImmutableList.of("cty1", "cty2");
+            List<String> list = List.of("cty1", "cty2");
             assertEquals(list, data.getContingencyDetailedMarginalVariations("FP.AND1  FVERGE1  1"));
             assertEquals(list, data.getContingencyDetailedMarginalVariations("FP.AND1  FVERGE1  2"));
             assertEquals(list, data.getContingencyDetailedMarginalVariations("FS.BIS1  FVALDI1  1"));
             assertEquals(list, data.getContingencyDetailedMarginalVariations("FS.BIS1  FVALDI1  2"));
-            assertEquals(ImmutableList.of("FP.AND1  FVERGE1  1", "FP.AND1  FVERGE1  2", "FS.BIS1  FVALDI1  1", "FS.BIS1  FVALDI1  2"),
+            assertEquals(List.of("FP.AND1  FVERGE1  1", "FP.AND1  FVERGE1  2", "FS.BIS1  FVALDI1  1", "FS.BIS1  FVALDI1  2"),
                 data.getContingencyDetailedMarginalVariations("FVALDI1  FTDPRA1  1"));
         }
     }
@@ -622,7 +692,8 @@ class MetrixDslDataLoaderTest {
     @Test
     void testWrongId() throws IOException {
         try (OutputStream os = Files.newOutputStream(dslFile);
-             InputStream is = MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/wrongId.groovy")
+             InputStream is = Objects.requireNonNull(
+                 MetrixDslDataLoaderTest.class.getResourceAsStream("/inputs/wrongId.groovy"))
         ) {
             IOUtils.copy(is, os);
         }
@@ -630,7 +701,7 @@ class MetrixDslDataLoaderTest {
         MetrixDslData data;
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
 
             assertEquals(0, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.MONITORING).count());
             assertEquals(0, data.getBranchMonitoringNList().stream().filter(a -> data.getBranchMonitoringN(a) == MetrixInputData.MonitoringType.RESULT).count());
@@ -686,7 +757,7 @@ class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig(network);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, mappingConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), mappingConfig);
 
         assertEquals(ImmutableSet.of(new MappingKey(MetrixVariable.THRESHOLD_N1, "FVALDI1  FTDPRA1  1"),
             new MappingKey(MetrixVariable.OFF_GRID_COST_DOWN, "FSSV.O11_G"),
@@ -740,7 +811,7 @@ class MetrixDslDataLoaderTest {
         MetrixDslData data;
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(2, data.getGeneratorsBindings().size());
@@ -766,7 +837,7 @@ class MetrixDslDataLoaderTest {
         MetrixDslData data;
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(ImmutableSet.of("a", "b", "c"), data.getSpecificContingenciesList());
@@ -779,7 +850,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(ImmutableSet.of("a"), data.getSpecificContingenciesList());
@@ -793,7 +864,7 @@ class MetrixDslDataLoaderTest {
 
         try (Reader reader = Files.newBufferedReader(dslFile, StandardCharsets.UTF_8)) {
             MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, dslFile.getFileName().toString());
-            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new TimeSeriesMappingConfig(network), null);
+            data = dslLoader.load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new TimeSeriesMappingConfig(network), null);
         }
 
         assertEquals(ImmutableSet.of("a", "b", "c"), data.getSpecificContingenciesList());
@@ -833,7 +904,7 @@ class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(3, tsConfig.getEquipmentIds("tsN").size());
         assertEquals(2, tsConfig.getEquipmentIds("tsN_1").size());
@@ -902,7 +973,7 @@ class MetrixDslDataLoaderTest {
         }
 
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(2, tsConfig.getEquipmentIds("tsN").size());
         assertEquals(1, tsConfig.getEquipmentIds("tsNEndOr").size());
@@ -971,7 +1042,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(Integer.valueOf(3), data.getPtcLowerTapChange("FP.AND1  FTDPRA1  1"));
         assertEquals(Integer.valueOf(5), data.getPtcUpperTapChange("FP.AND1  FTDPRA1  1"));
@@ -998,7 +1069,7 @@ class MetrixDslDataLoaderTest {
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
-        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, tsConfig);
+        MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
         assertEquals(2, data.getBranchMonitoringNList().size());
         assertEquals(MetrixInputData.MonitoringType.RESULT, data.getBranchMonitoringN("FVALDI1  FTDPRA1  1"));
@@ -1013,7 +1084,7 @@ class MetrixDslDataLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            MetrixDslDataLoader.load(new StringReader(script), network, parameters, store, new TimeSeriesMappingConfig(), out);
+            MetrixDslDataLoader.load(new StringReader(script), network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), out);
         }
 
         String output = outputStream.toString();

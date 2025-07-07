@@ -22,6 +22,7 @@ import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
 import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
+import com.powsybl.metrix.mapping.ComputationRange;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
@@ -38,7 +39,13 @@ import java.io.StringReader;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -53,12 +60,12 @@ class MetrixTest {
     private FileSystem fileSystem;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
@@ -119,15 +126,18 @@ class MetrixTest {
                 analysisResult
             );
 
-            MetrixRunParameters runParameters = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
+            ComputationRange computationRange = new ComputationRange(new TreeSet<>(Collections.singleton(1)), 0, 1);
+            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, 2, true, true, false, false, false);
             MetrixRunResult run = metrix.run(runParameters, resultListener, null);
             assertThat(run).isNotNull();
 
-            MetrixRunParameters runParametersSmallChunkSize = new MetrixRunParameters(0, 3, new TreeSet<>(Collections.singleton(1)), 1, true, true, true);
+            ComputationRange computationRangeSmallChunkSize = new ComputationRange(new TreeSet<>(Collections.singleton(1)), 0, 3);
+            MetrixRunParameters runParametersSmallChunkSize = new MetrixRunParameters(computationRangeSmallChunkSize, 1, true, true, false, false, false);
             MetrixRunResult runSmallChunkSize = metrix.run(runParametersSmallChunkSize, resultListener, null);
             assertThat(runSmallChunkSize).isNotNull();
 
-            MetrixRunParameters runParametersFirstVariantUndefined = new MetrixRunParameters(-1, 3, new TreeSet<>(Collections.singleton(1)), 2, true, true, true);
+            ComputationRange computationRangeFirstVariantUndefined = new ComputationRange(new TreeSet<>(Collections.singleton(1)), -1, 3);
+            MetrixRunParameters runParametersFirstVariantUndefined = new MetrixRunParameters(computationRangeFirstVariantUndefined, 2, true, true, false, false, false);
             MetrixRunResult runFirstVariantUndefined = metrix.run(runParametersFirstVariantUndefined, resultListener, null);
             assertThat(runFirstVariantUndefined).isNotNull();
         }

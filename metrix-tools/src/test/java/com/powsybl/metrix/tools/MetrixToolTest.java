@@ -27,7 +27,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -53,7 +55,7 @@ class MetrixToolTest extends AbstractToolTest {
     public void assertCommand() {
         Command command = tool.getCommand();
         Options options = command.getOptions();
-        assertCommand(command, "metrix", 14, 4);
+        assertCommand(command, "metrix", 16, 4);
         assertOption(options, "case-file", true, true);
         assertOption(options, "mapping-file", true, true);
         assertOption(options, "contingencies-file", false, true);

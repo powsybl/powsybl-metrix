@@ -7,8 +7,11 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableList;
-import com.powsybl.contingency.*;
+import com.powsybl.contingency.BranchContingency;
+import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.Contingency;
+import com.powsybl.contingency.ContingencyElement;
+import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.metrix.MetrixInputAnalysis;
@@ -21,6 +24,8 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static com.powsybl.metrix.mapping.LogDslLoader.LogType.ERROR;
@@ -29,21 +34,21 @@ import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class MetrixRemedialAnalysisTest {
+class MetrixRemedialAnalysisTest {
 
     private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("lang.MetrixAnalysis");
 
     private Network network;
 
     @BeforeEach
-    public void setUp() {
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+    void setUp() {
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     private ContingenciesProvider getBranchContingenciesProvider() {
         ContingencyElement ctyElt = new BranchContingency("FP.AND1  FVERGE1  1");
         Contingency cty = new Contingency("ctyId", Collections.singletonList(ctyElt));
-        return network -> ImmutableList.of(cty);
+        return n -> List.of(cty);
     }
 
     private MetrixDslData getBranchMonitoringMetrixDslData() {
@@ -82,6 +87,7 @@ public class MetrixRemedialAnalysisTest {
                 contingenciesProvider,
                 network,
                 metrixDslData,
+                null,
                 bufferedWriter);
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();

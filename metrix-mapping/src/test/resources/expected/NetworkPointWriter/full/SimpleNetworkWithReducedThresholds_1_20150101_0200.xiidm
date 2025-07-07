@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<iidm:network xmlns:iidm="http://www.powsybl.org/schema/iidm/1_7" xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF" minimumValidationLevel="STEADY_STATE_HYPOTHESIS">
+<iidm:network xmlns:iidm="http://www.powsybl.org/schema/iidm/1_14" xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF" minimumValidationLevel="STEADY_STATE_HYPOTHESIS">
     <iidm:substation id="FP.AN" country="FR" tso="RTE">
         <iidm:property name="paysCvg" value="FRANCE"/>
         <iidm:property name="regionCvg" value="LILLE"/>
@@ -26,8 +26,8 @@
                 <iidm:switch id="FP.AND1__SC14_1" name="_SC14_1" kind="DISCONNECTOR" retained="false" open="true" node1="1" node2="12"/>
                 <iidm:switch id="FP.AND1__SC15_0" name="_SC15_0" kind="DISCONNECTOR" retained="false" open="true" node1="0" node2="13"/>
                 <iidm:switch id="FP.AND1__SC15_1" name="_SC15_1" kind="DISCONNECTOR" retained="false" open="false" node1="1" node2="13"/>
-                <iidm:switch id="FP.AND1_FP.AND1_DJ_OMN" name="FP.AND1_DJ_OMN" kind="BREAKER" retained="false" open="true" node1="12" node2="13"/>
-                <iidm:bus v="380.0" angle="0.0" nodes="0,2,4,5,6,7,8,9,10,12"/>
+                <iidm:switch id="FP.AND1_FP.AND1_DJ_OMN" name="FP.AND1_DJ_OMN" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
+                <iidm:bus v="380.0" angle="0.0" nodes="0,1,2,4,5,6,7,8,9,10,12,13"/>
             </iidm:nodeBreakerTopology>
         </iidm:voltageLevel>
         <iidm:voltageLevel id="FTDPRA1" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
@@ -58,8 +58,8 @@
                 <iidm:bus v="380.0" angle="-0.0380914769006283" nodes="0,1,2,3,4,5,6,7,8,9,10,12,13"/>
             </iidm:nodeBreakerTopology>
         </iidm:voltageLevel>
-        <iidm:twoWindingsTransformer id="FP.AND1  FTDPRA1  1" r="13.0" x="1.0" g="0.0" b="0.0" ratedU1="10.0" ratedU2="10.0" voltageLevelId1="FTDPRA1" node1="11" voltageLevelId2="FP.AND1" node2="11" p1="-95.99961429575856" p2="95.99961429575856" selectedOperationalLimitsGroupId1="DEFAULT" selectedOperationalLimitsGroupId2="DEFAULT">
-            <iidm:ratioTapChanger regulating="false" lowTapPosition="0" tapPosition="10" loadTapChangingCapabilities="true" regulationMode="VOLTAGE" regulationValue="10.0">
+        <iidm:twoWindingsTransformer id="FP.AND1  FTDPRA1  1" r="13.0" x="1.0" g="0.0" b="0.0" ratedU1="11.0" ratedU2="11.0" voltageLevelId1="FTDPRA1" node1="11" voltageLevelId2="FP.AND1" node2="11" p1="-95.99961429575856" p2="95.99961429575856" selectedOperationalLimitsGroupId1="DEFAULT" selectedOperationalLimitsGroupId2="DEFAULT">
+            <iidm:ratioTapChanger regulating="false" lowTapPosition="0" tapPosition="11" loadTapChangingCapabilities="true" regulationMode="VOLTAGE" regulationValue="11.0">
                 <iidm:step r="0.0" x="0.0" g="0.0" b="0.0" rho="1.0880000591278076"/>
                 <iidm:step r="0.0" x="0.0" g="0.0" b="0.0" rho="1.0829999446868896"/>
                 <iidm:step r="0.0" x="0.0" g="0.0" b="0.0" rho="1.0779999494552612"/>
@@ -90,7 +90,7 @@
                 <iidm:step r="0.0" x="0.0" g="0.0" b="0.0" rho="0.9580000042915344"/>
                 <iidm:step r="0.0" x="0.0" g="0.0" b="0.0" rho="0.953000009059906"/>
             </iidm:ratioTapChanger>
-            <iidm:phaseTapChanger regulating="true" lowTapPosition="0" tapPosition="10" targetDeadband="10.0" regulationMode="CURRENT_LIMITER" regulationValue="600.0">
+            <iidm:phaseTapChanger regulating="true" lowTapPosition="0" tapPosition="11" targetDeadband="11.0" regulationMode="ACTIVE_POWER_CONTROL" regulationValue="600.0" loadTapChangingCapabilities="true">
                 <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="ONE"/>
                 <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-9.167247772216797"/>
                 <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" g="0.0" b="0.0" rho="1.0" alpha="-0.15"/>
@@ -207,22 +207,22 @@
                 <iidm:switch id="FSSV.O1_Sect mnv FSSV.O12_G" name="Sect mnv FSSV.O12_G" kind="DISCONNECTOR" retained="false" open="false" node1="21" node2="1"/>
                 <iidm:bus v="380.0" angle="0.038091349365863954" nodes="0,1,2,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FSSV.O11_G" energySource="THERMAL" minP="10.0" maxP="100.0" voltageRegulatorOn="true" targetP="100.0" targetV="10.0" targetQ="10.0" node="3" p="-480.0">
+            <iidm:generator id="FSSV.O11_G" energySource="THERMAL" minP="11.0" maxP="100.0" voltageRegulatorOn="true" targetP="100.0" targetV="11.0" targetQ="11.0" node="3" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
             </iidm:generator>
-            <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="3001.0" voltageRegulatorOn="true" targetP="3000.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="20" p="-480.0">
+            <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="3000.0" voltageRegulatorOn="true" targetP="3000.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="20" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
             </iidm:generator>
-            <iidm:load id="FSSV.O11_L" loadType="UNDEFINED" p0="10.0" q0="10.0" node="18" p="480.0"/>
-            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" voltageRegulatorOn="true" lossFactor="2.0" voltageSetpoint="10.0" reactivePowerSetpoint="10.0" node="10" p="0.0">
+            <iidm:load id="FSSV.O11_L" loadType="UNDEFINED" p0="11.0" q0="11.0" node="18" p="480.0"/>
+            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" voltageRegulatorOn="true" lossFactor="2.0" voltageSetpoint="11.0" reactivePowerSetpoint="11.0" node="10" p="0.0">
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
@@ -334,9 +334,9 @@
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
             </iidm:generator>
-            <iidm:load id="FVALDI11_L" loadType="UNDEFINED" p0="80.0" q0="10.0" node="18" p="480.0"/>
-            <iidm:load id="FVALDI11_L2" loadType="UNDEFINED" p0="10.0" q0="10.0" node="20" p="0.0"/>
-            <iidm:lccConverterStation id="FVALDI1_FVALDI1_HVDC1" name="FVALDI1_HVDC1" lossFactor="2.0" powerFactor="0.0" node="14" p="0.0"/>
+            <iidm:load id="FVALDI11_L" loadType="UNDEFINED" p0="81.0" q0="11.0" node="18" p="480.0"/>
+            <iidm:load id="FVALDI11_L2" loadType="UNDEFINED" p0="11.0" q0="11.0" node="20" p="0.0"/>
+            <iidm:lccConverterStation id="FVALDI1_FVALDI1_HVDC1" name="FVALDI1_HVDC1" lossFactor="2.0" powerFactor="1.0" node="14" p="0.0"/>
             <iidm:lccConverterStation id="FVALDI1_FVALDI1_HVDC2" name="FVALDI1_HVDC2" lossFactor="2.0" powerFactor="0.5" node="16" p="0.0"/>
         </iidm:voltageLevel>
     </iidm:substation>
@@ -526,19 +526,19 @@
             <iidm:currentLimits permanentLimit="600.0"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
-    <iidm:hvdcLine id="HVDC1" r="0.25" nominalV="10.0" convertersMode="SIDE_1_RECTIFIER_SIDE_2_INVERTER" activePowerSetpoint="10.0" maxP="1011.0" converterStation1="FSSV.O1_FSSV.O1_HVDC1" converterStation2="FVALDI1_FVALDI1_HVDC1"/>
+    <iidm:hvdcLine id="HVDC1" r="0.25" nominalV="11.0" convertersMode="SIDE_1_RECTIFIER_SIDE_2_INVERTER" activePowerSetpoint="11.0" maxP="1011.0" converterStation1="FSSV.O1_FSSV.O1_HVDC1" converterStation2="FVALDI1_FVALDI1_HVDC1"/>
     <iidm:hvdcLine id="HVDC2" r="0.25" nominalV="320.0" convertersMode="SIDE_1_RECTIFIER_SIDE_2_INVERTER" activePowerSetpoint="0.0" maxP="1011.0" converterStation1="FSSV.O1_FSSV.O1_HVDC2" converterStation2="FVALDI1_FVALDI1_HVDC2"/>
     <iidm:extension id="FVALDI11_L2">
-        <ld:detail fixedActivePower="0.0" fixedReactivePower="0.0" variableActivePower="10.0" variableReactivePower="10.0"/>
+        <ld:detail fixedActivePower="0.0" fixedReactivePower="0.0" variableActivePower="11.0" variableReactivePower="11.0"/>
     </iidm:extension>
     <iidm:extension id="FVALDI11_L">
-        <ld:detail fixedActivePower="10.0" fixedReactivePower="10.0" variableActivePower="70.0" variableReactivePower="0.0"/>
+        <ld:detail fixedActivePower="11.0" fixedReactivePower="11.0" variableActivePower="70.0" variableReactivePower="0.0"/>
     </iidm:extension>
     <iidm:extension id="HVDC1">
         <hopr:hvdcOperatorActivePowerRange fromCS1toCS2="1011.0" fromCS2toCS1="1011.0"/>
     </iidm:extension>
     <iidm:extension id="HVDC2">
-        <hopr:hvdcOperatorActivePowerRange fromCS1toCS2="10.0" fromCS2toCS1="10.0"/>
+        <hopr:hvdcOperatorActivePowerRange fromCS1toCS2="11.0" fromCS2toCS1="11.0"/>
         <hapc:hvdcAngleDroopActivePowerControl p0="100.0" droop="180.0" enabled="false"/>
     </iidm:extension>
 </iidm:network>

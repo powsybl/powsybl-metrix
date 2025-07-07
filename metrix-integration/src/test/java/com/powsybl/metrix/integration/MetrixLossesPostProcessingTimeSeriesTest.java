@@ -9,8 +9,13 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.mapping.DataTableStore;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.ast.BinaryOperation;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
@@ -48,7 +53,7 @@ class MetrixLossesPostProcessingTimeSeriesTest {
     Map<String, NodeCalc> postProcessingTimeSeries;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
@@ -62,10 +67,11 @@ class MetrixLossesPostProcessingTimeSeriesTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsCost", index, 1000d, 1000d)
         );
+        DataTableStore dataTableStore = new DataTableStore();
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
-        metrixDslDataLoader.load(network, parameters, store, mappingConfig, null);
+        metrixDslDataLoader.load(network, parameters, store, dataTableStore, mappingConfig, null);
 
         MetrixLossesPostProcessingTimeSeries lossesProcessing = new MetrixLossesPostProcessingTimeSeries(mappingConfig, null);
         postProcessingTimeSeries = lossesProcessing.createPostProcessingTimeSeries();

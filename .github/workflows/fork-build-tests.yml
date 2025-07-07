@@ -1,0 +1,169 @@
+name: CI on forks - build and tests
+
+on:
+  pull_request:
+
+permissions: {}
+
+jobs:
+  java:
+    name: Build Java ${{ matrix.os }}
+    if: github.event.pull_request.head.repo.fork == true
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Build with Maven (Ubuntu)
+        if: matrix.os == 'ubuntu-latest'
+        run: ./mvnw --batch-mode -Pjacoco install
+
+      - name: Build with Maven (Windows)
+        if: matrix.os == 'windows-latest'
+        run: mvnw.cmd --batch-mode install
+        shell: cmd
+
+      - name: Build with Maven (MacOS)
+        if: matrix.os == 'macos-latest'
+        run: ./mvnw --batch-mode install
+
+      - name: Get Maven version
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        run: echo "MAVEN_PROJECT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Upload Metrix iTools archive
+        if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        with:
+          name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
+          path: ${{ github.workspace }}/metrix-distribution/target/metrix
+
+      - name: Regroup dependencies in target folders
+        if: matrix.os == 'ubuntu-latest'
+        run: ./mvnw dependency:copy-dependencies
+
+      - name: Save classes and Jacoco report
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: data-for-sonar-analysis-${{ github.event.pull_request.number }}
+          retention-days: 1
+          path: |
+            */target/classes
+            */*/target/classes
+            */*/*/target/classes
+            */target/generated-sources
+            */*/target/generated-sources
+            */*/*/target/generated-sources
+            metrix-distribution/target/dependency
+            metrix-distribution/target/site/jacoco-aggregate/jacoco.xml
+
+      - name: Save PR Information
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          mkdir -p pr-info
+          echo "${{ github.event.pull_request.head.repo.full_name }}" > pr-info/repo-name
+          echo "${{ github.event.pull_request.head.ref }}" > pr-info/head-ref
+          echo "${{ github.event.pull_request.head.sha }}" > pr-info/head-sha
+          echo "${{ github.event.pull_request.number }}" > pr-info/pr-number
+          echo "${{ github.event.pull_request.base.ref }}" > pr-info/base-ref
+
+      - name: Upload PR Information
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: pr-info-${{ github.event.pull_request.number }}
+          path: pr-info/
+          retention-days: 1
+
+  cpp_ubuntu_qa:
+    name: Short QA C++ Ubuntu
+    if: github.event.pull_request.head.repo.fork == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Java 17
+        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install gcovr
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y gcovr
+
+      - name: Install Sonar wrapper
+        working-directory: ${{ runner.workspace }}
+        run: |
+          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          unzip build-wrapper-linux-x86.zip
+
+      - name: Install Boost
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y libboost-all-dev
+
+      - name: Checkout sources
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Configure 3rd parties
+        run: >
+          cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+
+      - name: Build 3rd parties
+        run: >
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build/external --parallel 2
+
+      - name: Configure CMake
+        run: >
+          cmake -Wno-dev -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
+          -DCMAKE_BUILD_TYPE=Debug
+          -DCODE_COVERAGE=TRUE
+          -DMETRIX_RUN_ALL_TESTS=OFF
+          -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
+
+      - name: Build
+        run: >
+          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
+          --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
+          cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
+
+      - name: Tests
+        run: cd $GITHUB_WORKSPACE/metrix-simulator/build && ctest -j2 --output-on-failure
+
+      - name: Code coverage
+        run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
+
+      - name: Save C++ data
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: cpp-data-for-sonar-analysis-${{ github.event.pull_request.number }}
+          retention-days: 1
+          path: |
+            metrix-simulator/build
+
+      - name: Save PR Information
+        run: |
+          mkdir -p cpp-pr-info
+          echo "${{ github.event.pull_request.head.repo.full_name }}" > cpp-pr-info/repo-name
+          echo "${{ github.event.pull_request.head.ref }}" > cpp-pr-info/head-ref
+          echo "${{ github.event.pull_request.head.sha }}" > cpp-pr-info/head-sha
+          echo "${{ github.event.pull_request.number }}" > cpp-pr-info/pr-number
+          echo "${{ github.event.pull_request.base.ref }}" > cpp-pr-info/base-ref
+
+      - name: Upload PR Information
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: cpp-pr-info-${{ github.event.pull_request.number }}
+          path: cpp-pr-info/
+          retention-days: 1

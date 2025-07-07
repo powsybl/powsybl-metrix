@@ -7,25 +7,34 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
+import static com.powsybl.metrix.mapping.util.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
@@ -41,7 +50,7 @@ class BalanceSummaryTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() {
         // create test network
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
@@ -100,7 +109,7 @@ class BalanceSummaryTest {
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
 
         // Launch mapper
-        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary));
+        mapper.mapToNetwork(store, List.of(balanceSummary));
 
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();
@@ -161,7 +170,7 @@ class BalanceSummaryTest {
         BalanceSummary balanceSummary = new BalanceSummary(new PrintStream(balanceSummaryOutput));
 
         // Launch mapper
-        mapper.mapToNetwork(store, ImmutableList.of(balanceSummary));
+        mapper.mapToNetwork(store, List.of(balanceSummary));
 
         // Check balance summary file
         StringWriter balanceSummaryCsvOutput = new StringWriter();

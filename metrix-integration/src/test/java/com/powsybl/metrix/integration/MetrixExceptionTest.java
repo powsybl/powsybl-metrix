@@ -63,7 +63,7 @@ class MetrixExceptionTest {
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         Path workspace = Files.createDirectory(fileSystem.getPath("/tmp"));
         computationManager = new LocalComputationManager(workspace);
@@ -86,14 +86,14 @@ class MetrixExceptionTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 
     @Test
     void loadContingenciesScriptExceptionTest() {
         ContingenciesProvider provider = new GroovyDslContingenciesProvider(wrongDslFile);
-        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null);
+        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, null);
         assertThrows(ContingenciesScriptLoadingException.class, metrixInputAnalysis::runAnalysis);
     }
 
