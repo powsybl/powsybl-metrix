@@ -7,23 +7,33 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
-import com.powsybl.metrix.mapping.*;
-import com.powsybl.timeseries.*;
+import com.powsybl.metrix.mapping.DataTableStore;
+import com.powsybl.metrix.mapping.MappingParameters;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
+import com.powsybl.metrix.mapping.TimeSeriesMapper;
+import com.powsybl.metrix.mapping.TimeSeriesMapperParameters;
+import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.TimeSeriesMappingLogger;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
@@ -38,8 +48,8 @@ class InitOptimizedTimeSeriesWriterTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws IOException {
-        network = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+    void setUp() {
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @Test
@@ -80,7 +90,7 @@ class InitOptimizedTimeSeriesWriterTest {
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Launch mapper
-        mapper.mapToNetwork(store, ImmutableList.of(initOptimizedTimeSeriesWriter));
+        mapper.mapToNetwork(store, List.of(initOptimizedTimeSeriesWriter));
 
         // Check
         InputStream expected = getClass().getResourceAsStream("/inputs_optimized_time_series.json");

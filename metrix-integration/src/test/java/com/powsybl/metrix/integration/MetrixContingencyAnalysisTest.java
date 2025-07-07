@@ -80,7 +80,7 @@ class MetrixContingencyAnalysisTest {
     }
 
     private void loadContingencyTest(Contingency contingency, String expected) throws IOException {
-        ContingenciesProvider provider = net -> List.of(contingency);
+        ContingenciesProvider provider = n -> List.of(contingency);
 
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {

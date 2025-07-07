@@ -7,14 +7,17 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +26,12 @@ import org.threeten.extra.Interval;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.time.Duration;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class EquipmentTimeSeriesMapperObserverTest {
+class EquipmentTimeSeriesMapperObserverTest {
 
     private FileSystem fileSystem;
     private Network network;
@@ -41,32 +49,28 @@ public class EquipmentTimeSeriesMapperObserverTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
     void checkMappedEquipment(Range<Integer> pointRange, double[] values, Map<String, String> tags) {
         assertThat(pointRange).isEqualTo(Range.closed(0, chunkSize - 1));
         assertThat(values).isEqualTo(new double[]{10, 11});
-        assertTrue(tags.containsKey("equipment"));
-        assertThat(tags.get("equipment")).isEqualTo("FSSV.O11_G");
-        assertTrue(tags.containsKey("variable"));
-        assertThat(tags.get("variable")).isEqualTo("targetP");
+        assertThat(tags).containsEntry("equipment", "FSSV.O11_G");
+        assertThat(tags).containsEntry("variable", "targetP");
     }
 
     void checkNotMappedEquipment(Range<Integer> pointRange, double[] values, Map<String, String> tags) {
         assertThat(pointRange).isEqualTo(Range.closed(0, 2)); // constant time series on full index
         assertThat(values).isEqualTo(new double[]{480});
-        assertTrue(tags.containsKey("equipment"));
-        assertThat(tags.get("equipment")).isEqualTo("FSSV.O12_G");
-        assertTrue(tags.containsKey("variable"));
-        assertThat(tags.get("variable")).isEqualTo("targetP");
+        assertThat(tags).containsEntry("equipment", "FSSV.O12_G");
+        assertThat(tags).containsEntry("variable", "targetP");
     }
 
     @Test
@@ -124,6 +128,6 @@ public class EquipmentTimeSeriesMapperObserverTest {
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, new TimeSeriesMappingLogger());
-        mapper.mapToNetwork(store, ImmutableList.of(observer));
+        mapper.mapToNetwork(store, List.of(observer));
     }
 }

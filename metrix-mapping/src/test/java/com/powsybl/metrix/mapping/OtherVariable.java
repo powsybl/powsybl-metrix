@@ -32,7 +32,7 @@ public enum OtherVariable implements MappingVariable {
         return getName();
     }
 
-    static void writeJson(OtherVariable variable, JsonGenerator generator) throws IOException {
+    static void writeJson(OtherVariable variable, JsonGenerator generator) {
         Objects.requireNonNull(generator);
         try {
             generator.writeStartObject();
@@ -45,8 +45,8 @@ public enum OtherVariable implements MappingVariable {
     }
 
     static MappingVariable parseJson(JsonParser parser) throws IOException {
-        JsonToken token;
-        while ((token = parser.nextToken()) != null) {
+        JsonToken token = parser.nextToken();
+        if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
                 return OtherVariable.valueOf(parser.getValueAsString());
             } else {
