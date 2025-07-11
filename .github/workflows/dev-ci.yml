@@ -267,7 +267,7 @@ jobs:
           ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
           rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
         env:
-          SONAR_SCANNER_VERSION: 3.3.0.1492
+          SONAR_SCANNER_VERSION: 7.1.0.4889
 
       - name: Install Boost
         run: |
