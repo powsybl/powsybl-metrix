@@ -7,16 +7,22 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.powsybl.contingency.Contingency;
+import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
+import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import static com.powsybl.timeseries.ast.DoubleNodeCalc.ONE;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -35,6 +41,26 @@ public final class MetrixPostProcessingTimeSeries {
         return allIds.stream().filter(id -> allTimeSeriesNames.stream().anyMatch(s -> s.startsWith(prefix + id))).toList();
     }
 
+    public static String getContingencyIdFromTsName(boolean isPreventive, String tsName, String prefix) {
+        return isPreventive ? "" : tsName.substring(prefix.length() + 1);
+    }
+
+    public static NodeCalc getProbabilityNodeCalc(boolean isPreventive, String contingencyId, List<Contingency> contingencies, Map<String, NodeCalc> calculatedTimeSeries) {
+        if (isPreventive) {
+            return ONE;
+        }
+        Contingency contingency = contingencies.stream().filter(cty -> contingencyId.equals(cty.getId())).toList().get(0);
+        Probability probability = contingency.getExtension(Probability.class);
+        if (probability != null && probability.getProbabilityTimeSeriesRef() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityTimeSeriesRef(), TimeSeriesNameNodeCalc::new);
+        }
+        if (probability != null && probability.getProbabilityBase() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityBase().toString(), k -> new DoubleNodeCalc(probability.getProbabilityBase()));
+        }
+        // No probability defined > default value
+        return calculatedTimeSeries.computeIfAbsent("defaultProbability", k -> new DoubleNodeCalc(0.001F));
+    }
+
     /**
      * Create branch, generator, load, losses calculated time series for postprocessing
      * @param dslData            metrix configuration
@@ -44,6 +70,7 @@ public final class MetrixPostProcessingTimeSeries {
      */
     public static Map<String, NodeCalc> getPostProcessingTimeSeries(MetrixDslData dslData,
                                                                     TimeSeriesMappingConfig mappingConfig,
+                                                                    List<Contingency> contingencies,
                                                                     ReadOnlyTimeSeriesStore store,
                                                                     String nullableSchemaName) {
         if (dslData == null || mappingConfig == null) {
@@ -59,11 +86,11 @@ public final class MetrixPostProcessingTimeSeries {
         Map<String, NodeCalc> postProcessingTimeSeries = new HashMap<>(branchProcessing.createPostProcessingTimeSeries());
 
         // Generator
-        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, allTimeSeriesNames, nullableSchemaName);
+        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, contingencies, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(generatorProcessing.createPostProcessingTimeSeries());
 
         // Load
-        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, allTimeSeriesNames, nullableSchemaName);
+        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, contingencies, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(loadProcessing.createPostProcessingTimeSeries());
 
         // Losses
