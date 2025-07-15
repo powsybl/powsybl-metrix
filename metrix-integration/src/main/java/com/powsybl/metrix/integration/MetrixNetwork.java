@@ -350,12 +350,8 @@ public class MetrixNetwork {
             Bus b1 = t1.getBusBreakerView().getBus();
             Terminal t2 = tieLine.getTerminal2();
             Bus b2 = t2.getBusBreakerView().getBus();
-            if (b1 != null && b2 != null) {
-                if (busList.contains(b1) && busList.contains(b2)) {
-                    addTieLine(tieLine);
-                } else {
-                    nbNok++;
-                }
+            if (b1 != null && b2 != null && busList.contains(b1) && busList.contains(b2)) {
+                addTieLine(tieLine);
             } else {
                 nbNok++;
             }
@@ -439,12 +435,8 @@ public class MetrixNetwork {
             if (!dl.isPaired()) {
                 Terminal t = dl.getTerminal();
                 Bus b = t.getBusBreakerView().getBus();
-                if (b != null) {
-                    if (busList.contains(b)) {
-                        addUnpairedDanglingLine(dl);
-                    } else {
-                        nbNok++;
-                    }
+                if (b != null && busList.contains(b)) {
+                    addUnpairedDanglingLine(dl);
                 } else {
                     nbNok++;
                 }
