@@ -88,8 +88,6 @@ ParadesConfiguration::ParadesConfiguration(const std::string& pathname)
             for (int num_couplage = 0; num_couplage < nbCouplages; num_couplage++) {
                 getline(iss, sub_line, ';');
                 rtrim(sub_line);
-
-
                 new_parade.couplings.push_back(sub_line);
             }
 
