@@ -776,7 +776,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         for (auto& itLog : nonBatteriesLogs) {
             fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
--                                        std::get<0>(itLog), std::get<1>(itLog), std::get<2>(itLog));
+-                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
         }
         nonBatteriesLogs.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
@@ -784,7 +784,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         for (auto& itLog : batteriesLogs) {
             fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
--                                        std::get<0>(itLog), std::get<1>(itLog), std::get<2>(itLog));
+-                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
         }
         batteriesLogs.clear();
         // ecriture : R2C: Couplages de groupes
