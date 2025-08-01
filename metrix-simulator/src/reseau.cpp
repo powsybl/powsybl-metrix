@@ -560,9 +560,14 @@ void Reseau::lireDonnees()
         if (i < config.trdembanDIE().size()) {
             trdembanDIE = config.trdembanDIE()[i];
         }
-        string grpTypeStr = config.trnomtypDIE()[config.trtypgrpDIE()[i]];
-        std::transform(grpTypeStr.begin(), grpTypeStr.end(), grpTypeStr.begin(),
-                   [](unsigned char c) { return std::toupper(c); });
+
+        string grpTypeStr = "";
+        if(static_cast<unsigned int>(config.trtypgrpDIE().size()) > i && static_cast<int>(config.trnomtypDIE().size()) > config.trtypgrpDIE()[i]) {
+            grpTypeStr = config.trnomtypDIE()[config.trtypgrpDIE()[i]];
+            std::transform(grpTypeStr.begin(), grpTypeStr.end(), grpTypeStr.begin(),
+                [](unsigned char c) { return std::toupper(c); });
+            rtrim(grpTypeStr);
+        };
         auto prod = std::make_shared<Groupe>(i,
                                              nomGroupe,
                                              noeuds_[indNoeudRaccord],
