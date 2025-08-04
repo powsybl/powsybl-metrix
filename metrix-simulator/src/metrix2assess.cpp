@@ -1306,8 +1306,6 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         if (coutGrpC >= EPSILON_SORTIES) {
             coutGrpCur = c_fmt(PREC_FLOAT.c_str(), coutGrpC);
-        }
-        if (coutGrpBatteryC >= EPSILON_SORTIES) {
             coutGrpBatteryCur = c_fmt(PREC_FLOAT.c_str(), coutGrpBatteryC);
         }
 
