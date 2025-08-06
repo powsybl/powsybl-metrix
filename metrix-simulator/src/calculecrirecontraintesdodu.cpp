@@ -2422,7 +2422,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
                 continue;
             }
 
-            // gain de temps : permet de ne pas trop rentrer des contraintes redondantes
+            // gain de temps en mode OPF : permet de ne pas rentrer trop de contraintes redondantes
             // on n'ajoute pas les contraintes N-k qui seront resolues en N
             if (
                 config::configuration().computationType() == config::Configuration::ComputationType::OPF &&
