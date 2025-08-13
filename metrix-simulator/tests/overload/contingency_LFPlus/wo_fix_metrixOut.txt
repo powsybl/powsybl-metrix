@@ -18,7 +18,7 @@ Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
 Lancement de METRIX sans curatif topologique
-Mode de calcul : OPF
+Mode de calcul : OPF avec overload
 Noeud bilan : 0
 0(2) <-> 1 [Conso_Est](2)
 
@@ -54,15 +54,15 @@ Micro itération 2 (nombre de contraintes 3)
 Appel du simplexe
 Solution optimale trouvée pour la variante 0 (code retour = 1)
 Résultats en volume (MW)
-Volume de production =      79.9800 MW
-Volume de délestage  =      20.0200 MW
+Volume de production =     100.0000 MW
+Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      20.0200
-Cout associé au délestage      :  260260.0000
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :  260280.0200
+Cout des écarts de transit     :     200.2000
+Valeur de la fonction objectif :     200.2000
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 5 (taille de la matrice : 5)
+Nb termes dans la matrice : 7 (taille de la matrice : 7)
 Pas de contraintes

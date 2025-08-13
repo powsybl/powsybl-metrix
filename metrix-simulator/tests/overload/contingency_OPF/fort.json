@@ -108,7 +108,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 2,
-      "values" : [ 2, 2 ]
+      "values" : [ 1, 1 ]
     }, {
       "name" : "QASURNMK",
       "type" : "INTEGER",
@@ -117,7 +117,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 2,
-      "values" : [ 2, 2 ]
+      "values" : [ 1, 1 ]
     }, {
       "name" : "TNNORQUA",
       "type" : "INTEGER",
@@ -180,7 +180,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 3 ]
+      "values" : [ 1 ]
     }, {
       "name" : "DCNDROOP",
       "type" : "INTEGER",
