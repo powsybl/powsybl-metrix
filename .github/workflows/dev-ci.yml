@@ -216,6 +216,9 @@ jobs:
         run: >
           cmake --build %GITHUB_WORKSPACE%\metrix-simulator\build\external --parallel 2 --config Release
 
+      - name: List SuiteSparse directory content
+        run: dir /s %GITHUB_WORKSPACE%\metrix-simulator\build\external\suitesparse
+
       - name: Configure CMake
         run: >
           cmake -Wno-dev -S %GITHUB_WORKSPACE%\metrix-simulator -B %GITHUB_WORKSPACE%\metrix-simulator\build
