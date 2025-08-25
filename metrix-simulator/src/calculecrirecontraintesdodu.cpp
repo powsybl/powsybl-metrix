@@ -2424,7 +2424,8 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
 
             // gain de temps : permet de ne pas trop rentrer des contraintes redondantes
             // on n'ajoute pas les contraintes N-k qui seront resolues en N
-            if (!quadFictif && elemAS->survMaxN_ == ElementASurveiller::SURVEILLE && ecart <= elemAS->depassementEnN_) {
+            if (config::configuration().computationType() == config::Configuration::ComputationType::OPF &&
+                !quadFictif && elemAS->survMaxN_ == ElementASurveiller::SURVEILLE && ecart <= elemAS->depassementEnN_) {
                 LOG(debug) << metrix::log::verbose_constraints << "Contrainte N-k pour " << elemAS->nom_ << " sur icdt "
                            << icdt->nom_ << " masquee par contrainte N";
                 continue;
