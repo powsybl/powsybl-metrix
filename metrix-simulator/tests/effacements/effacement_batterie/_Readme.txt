@@ -10,8 +10,8 @@
 
 Test d'effacements de batteries
 -------------------------------
-2 prods disponibles, 4 consos (conso totale de 40MW)
-1 prod 'classique' : FSSV.O11_G (P consigne = Pmax = Pmin = 10000MW)
-1 prod 'batterie' : FVALDI11_G (P consigne = Pmax = 100MW; Pmin = -20000MW)
+1 conso de -10MW
+1 prod 'classique' : Pconsigne = Pmax = Pmin = 55MW
+1 prod 'batterie' : Pconsigne = Pmax = 50MW; Pmin = -100MW
 
-Volume puissance final = 40MW
+Volume puissance final = -10MW
