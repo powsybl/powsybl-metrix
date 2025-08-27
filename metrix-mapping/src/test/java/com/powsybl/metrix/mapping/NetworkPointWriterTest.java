@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
@@ -15,28 +14,30 @@ import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.timeseries.*;
-import org.apache.commons.io.input.ReaderInputStream;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.powsybl.commons.test.ComparisonUtils.assertXmlEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -47,24 +48,79 @@ class NetworkPointWriterTest {
     private Network network;
 
     private final MappingParameters mappingParameters = MappingParameters.load();
+    private final TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
+    private final String expectedDirectoryNameBase = "/expected/NetworkPointWriter/";
+    private List<TimeSeriesMapperObserver> networkPointWriterList;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Path networkOutputDir = fileSystem.getPath(".");
+
+        // Create NetworkPointWriter
+        DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(network.getId()), null);
+        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
+        networkPointWriterList = List.of(networkPointWriter);
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
     @Test
+    void regulationModeTest() throws Exception {
+        // Resource directory
+        String expectedDirectoryName = expectedDirectoryNameBase + "regulationMode/";
+
+        // Mapping script
+        String script = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'regulation_mode_ts'",
+            "    filter {",
+            "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
+            "    }",
+            "    variable regulationMode",
+            "}");
+
+        // Timeseries
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            TimeSeries.createDouble("regulation_mode_ts", index, 0d, 2d)
+        );
+
+        assertMapping(script, store, expectedDirectoryName);
+    }
+
+    @Test
+    void regulationModeExceptionTest() {
+        // Mapping script
+        String script = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'regulation_mode_ts'",
+            "    filter {",
+            "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
+            "    }",
+            "    variable regulationMode",
+            "}");
+
+        // Timeseries
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            TimeSeries.createDouble("regulation_mode_ts", index, 3d, 3d)
+        );
+
+        // Create Mapper
+        TimeSeriesMapper mapper = prepareMapper(script, store);
+
+        // Launch mapper should throw an exception
+        AssertionError exception = assertThrows(AssertionError.class, () -> mapper.mapToNetwork(store, networkPointWriterList));
+        assertEquals("Unsupported regulation mode 3.0", exception.getMessage());
+    }
+
+    @Test
     void networkPointConstantVariantTest() throws Exception {
-
-        Path networkOutputDir = fileSystem.getPath(".");
-
-        String expectedDirectoryName = "/expected/NetworkPointWriter/";
+        // Resource directory
+        String expectedDirectoryName = expectedDirectoryNameBase + "full/";
 
         // Mapping script
         String script = String.join(System.lineSeparator(),
@@ -304,9 +360,6 @@ class NetworkPointWriterTest {
                 "    variable disconnected",
                 "}");
 
-        // Create time series space mock
-        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
-
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
                 TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
@@ -318,25 +371,31 @@ class NetworkPointWriterTest {
                 TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
         );
 
+        assertMapping(script, store, expectedDirectoryName);
+    }
+
+    private TimeSeriesMapper prepareMapper(String script, ReadOnlyTimeSeriesStore store) {
         // Load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
-        // Create NetworkPointWriter
-        DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(network.getId()), null);
-        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
-                Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+            Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
+        return new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+    }
+
+    private void assertMapping(String script, ReadOnlyTimeSeriesStore store, String expectedDirectoryName) throws Exception {
+        // Create Mapper
+        TimeSeriesMapper mapper = prepareMapper(script, store);
+
         // Launch mapper
-        mapper.mapToNetwork(store, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, networkPointWriterList);
 
         for (int point = 0; point < index.getPointCount(); point++) {
-            String fileName = NetworkPointWriter.getFileName(network, 1, point, index);
-            Path actualFilePath = fileSystem.getPath(fileName + ".xiidm");
+            String fileName = NetworkPointWriter.getFileName(network, 1, point, index) + ".xiidm";
+            Path actualFilePath = fileSystem.getPath(fileName);
             compareTxt(actualFilePath, expectedDirectoryName, fileName);
         }
     }
@@ -344,24 +403,7 @@ class NetworkPointWriterTest {
     private void compareTxt(Path actualPath, String directoryName, String fileName) throws Exception {
         try (InputStream expected = getClass().getResourceAsStream(directoryName + fileName)) {
             try (InputStream actual = Files.newInputStream(actualPath)) {
-                // skip the two first lines : xml version line and network line (containing extensions)
-                // because extensions are not ordered in the same way for each test launching
-                assertNotNull(expected);
-                BufferedReader expectedReader = new BufferedReader(new InputStreamReader(expected));
-                expectedReader.readLine();
-                expectedReader.readLine();
-                BufferedReader actualReader = new BufferedReader(new InputStreamReader(actual));
-                actualReader.readLine();
-                actualReader.readLine();
-                InputStream expectedStream = ReaderInputStream.builder()
-                    .setReader(expectedReader)
-                    .setCharset(StandardCharsets.UTF_8)
-                    .get();
-                InputStream actualStream = ReaderInputStream.builder()
-                    .setReader(actualReader)
-                    .setCharset(StandardCharsets.UTF_8)
-                    .get();
-                assertNotNull(compareStreamTxt(expectedStream, actualStream));
+                assertXmlEquals(expected, actual);
             }
         }
     }

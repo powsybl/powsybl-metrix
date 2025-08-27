@@ -116,12 +116,11 @@ public class MappingKeyNetworkValue {
         throw new TimeSeriesMappingException(String.format("Unknown variable %s for switch %s", variable, sw.getId()));
     }
 
-    private int getRegulationModeValue(PhaseTapChanger.RegulationMode mode) {
-        return switch (mode) {
+    private int getRegulationModeValue(PhaseTapChanger.RegulationMode mode, boolean isRegulating) {
+        return isRegulating ? switch (mode) {
             case CURRENT_LIMITER -> 0;
             case ACTIVE_POWER_CONTROL -> 1;
-            case FIXED_TAP -> 2;
-        };
+        } : 2;
     }
 
     private double getTwoWindingsTransformerValue(TwoWindingsTransformer twoWindingsTransformer, EquipmentVariable variable) {
@@ -135,7 +134,8 @@ public class MappingKeyNetworkValue {
             case PHASE_REGULATING -> twoWindingsTransformer.getPhaseTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
             case TARGET_DEADBAND -> twoWindingsTransformer.getPhaseTapChanger().getTargetDeadband();
             case REGULATION_MODE ->
-                getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode());
+                getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode(),
+                    twoWindingsTransformer.getPhaseTapChanger().isRegulating());
             // mapToRatioTapChanger variables
             case RATIO_TAP_POSITION -> twoWindingsTransformer.getRatioTapChanger().getTapPosition();
             case TARGET_V -> twoWindingsTransformer.getRatioTapChanger().getTargetV();

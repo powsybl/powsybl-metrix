@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.PhaseTapChanger;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class MappingKeyNetworkValueTest {
 
     private final Offset<Double> offset = Offset.offset(EPSILON_COMPARISON);
-    private final MappingKeyNetworkValue key = new MappingKeyNetworkValue(NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml"))));
+    private final Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+    private final MappingKeyNetworkValue key = new MappingKeyNetworkValue(network);
 
     private void checkValue(double actual, double expected) {
         assertThat(actual).isCloseTo(expected, offset);
@@ -97,6 +100,20 @@ class MappingKeyNetworkValueTest {
     }
 
     @Test
+    void getRegulationModeValueTest() {
+        final String id = "FP.AND1  FTDPRA1  1";
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.REGULATION_MODE, id)), 0);
+
+        // Regulation mode changed
+        network.getTwoWindingsTransformer(id).getPhaseTapChanger().setRegulationMode(PhaseTapChanger.RegulationMode.ACTIVE_POWER_CONTROL);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.REGULATION_MODE, id)), 1);
+
+        // Regulation disabled
+        network.getTwoWindingsTransformer(id).getPhaseTapChanger().setRegulating(false);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.REGULATION_MODE, id)), 2);
+    }
+
+    @Test
     void getLccConverterStationValueTest() {
         final String id = "FVALDI1_FVALDI1_HVDC1";
         checkValue(key.getValue(new MappingKey(EquipmentVariable.POWER_FACTOR, id)), 0.5);
@@ -118,71 +135,81 @@ class MappingKeyNetworkValueTest {
 
     @Test
     void getWrongIdentifiableTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "wrongId")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "wrongId");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown identifiable wrongId");
     }
 
     @Test
     void getWrongEquipmentTypeTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.P0, "FSSV.O1_1")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.P0, "FSSV.O1_1");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown equipment type com.powsybl.iidm.network.impl.BusbarSectionImpl");
     }
 
     @Test
     void getWrongVariableGeneratorTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.P0, "FSSV.O11_G")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.P0, "FSSV.O11_G");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown variable p0 for generator FSSV.O11_G");
     }
 
     @Test
     void getWrongVariableLoadTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown variable targetP for load FSSV.O11_L");
     }
 
     @Test
     void getWrongVariableHvdcLineTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "HVDC1");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
-                .hasMessage("Unknown variable targetP for load FSSV.O11_L");
+                .hasMessage("Unknown variable targetP for hvdcLine HVDC1");
     }
 
     @Test
     void getWrongVariableSwitchTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "FVALDI1__SC13_0");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
-                .hasMessage("Unknown variable targetP for load FSSV.O11_L");
+                .hasMessage("Unknown variable targetP for switch FVALDI1__SC13_0");
     }
 
     @Test
     void getWrongVariableTwoWindingTransformerTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "FP.AND1  FTDPRA1  1");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
-                .hasMessage("Unknown variable targetP for load FSSV.O11_L");
+                .hasMessage("Unknown variable targetP for twoWindingsTransformer FP.AND1  FTDPRA1  1");
     }
 
     @Test
     void getWrongVariableLccConverterStationTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "FVALDI1_FVALDI1_HVDC1");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
-                .hasMessage("Unknown variable targetP for load FSSV.O11_L");
+                .hasMessage("Unknown variable targetP for lccConverterStation FVALDI1_FVALDI1_HVDC1");
     }
 
     @Test
     void getWrongVariableVscConverterStationTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O1_FSSV.O1_HVDC1");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
-                .hasMessage("Unknown variable targetP for load FSSV.O11_L");
+                .hasMessage("Unknown variable targetP for vscConverterStation FSSV.O1_FSSV.O1_HVDC1");
     }
 
     @Test
     void getWrongVariableLineTest() {
-        assertThatThrownBy(() -> key.getValue(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_L")))
+        MappingKey mappingKey = new MappingKey(EquipmentVariable.TARGET_P, "FP.AND1  FVERGE1  1");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
-                .hasMessage("Unknown variable targetP for load FSSV.O11_L");
+                .hasMessage("Unknown variable targetP for line FP.AND1  FVERGE1  1");
     }
 }

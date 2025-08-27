@@ -8,15 +8,31 @@
 package com.powsybl.metrix.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.PowsyblException;
-import com.powsybl.contingency.*;
-import com.powsybl.iidm.network.*;
+import com.powsybl.contingency.BranchContingency;
+import com.powsybl.contingency.ContingenciesProvider;
+import com.powsybl.contingency.Contingency;
+import com.powsybl.contingency.ContingencyElement;
+import com.powsybl.contingency.GeneratorContingency;
+import com.powsybl.contingency.HvdcLineContingency;
+import com.powsybl.iidm.network.Bus;
+import com.powsybl.iidm.network.Country;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Line;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.PhaseTapChanger;
+import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
+import com.powsybl.iidm.network.VoltageLevel;
+import com.powsybl.iidm.network.test.DanglingLineNetworkFactory;
+import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
 import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
@@ -31,15 +47,31 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -49,12 +81,12 @@ class MetrixInputTest {
     protected FileSystem fileSystem;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
@@ -69,7 +101,7 @@ class MetrixInputTest {
             ));
         }
 
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, new MetrixParameters(), remedialActionFile);
         Set<Switch> retainedSwitchList = new HashSet<>();
@@ -146,7 +178,7 @@ class MetrixInputTest {
 
     @Test
     void metrixDefaultInputTest() throws IOException {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
         new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
@@ -170,8 +202,36 @@ class MetrixInputTest {
     }
 
     @Test
+    void metrixInputDataWithTieLinesTests() throws IOException {
+        Network n = EurostagTutorialExample1Factory.createWithTieLine();
+        // Conversion iidm to die
+        StringWriter writer = new StringWriter();
+        new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
+        writer.close();
+
+        // Results comparison
+        String actual = writer.toString();
+        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/tieLinesNetwork.json"),
+                new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
+    }
+
+    @Test
+    void metrixInputDataWithUnpairedDanglingLineTests() throws IOException {
+        Network n = DanglingLineNetworkFactory.createWithGeneration();
+        // Conversion iidm to die
+        StringWriter writer = new StringWriter();
+        new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
+        writer.close();
+
+        // Results comparison
+        String actual = writer.toString();
+        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/unpairedDanglingLineNetwork.json"),
+                new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
+    }
+
+    @Test
     void metrixInputTest() throws IOException {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  1");
@@ -209,7 +269,7 @@ class MetrixInputTest {
         Contingency cty9 = new Contingency("cty9", Collections.singletonList(l13));
         Contingency cty10 = new Contingency("cty10", Arrays.asList(l1, l13));
 
-        ContingenciesProvider provider = network -> ImmutableList.of(cty1, cty2, cty3, cty4, cty5, cty6, cty7, cty8, cty9, cty10);
+        ContingenciesProvider provider = network -> List.of(cty1, cty2, cty3, cty4, cty5, cty6, cty7, cty8, cty9, cty10);
 
         // Metrix dsl data
         MetrixDslData metrixDslData = new MetrixDslData();
@@ -242,21 +302,21 @@ class MetrixInputTest {
         metrixDslData.addBranchMonitoringNk("FVALDI1  FTDPRA1  2");
         metrixDslData.addBranchMonitoringNk("FP.AND1  FTDPRA1  1");
 
-        metrixDslData.addContingencyFlowResults("FP.AND1  FVERGE1  2", ImmutableList.of("cty1", "cty2", "cty10"));
-        metrixDslData.addContingencyFlowResults("FS.BIS1 FSSV.O1 1", ImmutableList.of("cty3"));
-        metrixDslData.addContingencyFlowResults("FSSV.O1  FP.AND1  1", ImmutableList.of("cty10"));
+        metrixDslData.addContingencyFlowResults("FP.AND1  FVERGE1  2", List.of("cty1", "cty2", "cty10"));
+        metrixDslData.addContingencyFlowResults("FS.BIS1 FSSV.O1 1", List.of("cty3"));
+        metrixDslData.addContingencyFlowResults("FSSV.O1  FP.AND1  1", List.of("cty10"));
 
-        metrixDslData.setSpecificContingenciesList(ImmutableList.of("cty1", "cty2", "cty3", "cty4", "cty5", "cty9"));
+        metrixDslData.setSpecificContingenciesList(List.of("cty1", "cty2", "cty3", "cty4", "cty5", "cty9"));
 
-        metrixDslData.addContingencyDetailedMarginalVariations("FTDPRA1  FVERGE1  1", ImmutableList.of("cty3", "cty4", "cty9"));
-        metrixDslData.addContingencyDetailedMarginalVariations("FTDPRA1  FVERGE1  2", ImmutableList.of("cty7"));
-        metrixDslData.addContingencyDetailedMarginalVariations("FVALDI1  FTDPRA1  1", ImmutableList.of("cty9"));
+        metrixDslData.addContingencyDetailedMarginalVariations("FTDPRA1  FVERGE1  1", List.of("cty3", "cty4", "cty9"));
+        metrixDslData.addContingencyDetailedMarginalVariations("FTDPRA1  FVERGE1  2", List.of("cty7"));
+        metrixDslData.addContingencyDetailedMarginalVariations("FVALDI1  FTDPRA1  1", List.of("cty9"));
 
-        metrixDslData.addPtc("FP.AND1  FTDPRA1  1", MetrixPtcControlType.CONTROL_OFF, ImmutableList.of(cty1.getId(), cty5.getId()));
+        metrixDslData.addPtc("FP.AND1  FTDPRA1  1", MetrixPtcControlType.CONTROL_OFF, List.of(cty1.getId(), cty5.getId()));
         metrixDslData.addLowerTapChange("FP.AND1  FTDPRA1  1", 3);
         metrixDslData.addUpperTapChange("FP.AND1  FTDPRA1  1", 7);
 
-        metrixDslData.addHvdc("HVDC1", MetrixHvdcControlType.OPTIMIZED, ImmutableList.of(cty5.getId(), cty7.getId(), cty8.getId(), cty9.getId(), cty10.getId()));
+        metrixDslData.addHvdc("HVDC1", MetrixHvdcControlType.OPTIMIZED, List.of(cty5.getId(), cty7.getId(), cty8.getId(), cty9.getId(), cty10.getId()));
 
         MetrixSection section = new MetrixSection("SECTION", 3000, ImmutableMap.of("HVDC1", 1f, "FVALDI1  FTDPRA1  1", -1f));
         metrixDslData.addSection(section);
@@ -264,8 +324,8 @@ class MetrixInputTest {
         metrixDslData.addGeneratorForAdequacy("FSSV.O11_G");
         metrixDslData.addGeneratorForAdequacy("FVERGE11_G");
 
-        metrixDslData.addGeneratorForRedispatching("FSSV.O11_G", ImmutableList.of(cty2.getId(), cty4.getId(), "cty9"));
-        metrixDslData.addGeneratorForRedispatching("FVALDI11_G", ImmutableList.of("cty9"));
+        metrixDslData.addGeneratorForRedispatching("FSSV.O11_G", List.of(cty2.getId(), cty4.getId(), "cty9"));
+        metrixDslData.addGeneratorForRedispatching("FVALDI11_G", List.of("cty9"));
 
         metrixDslData.addPreventiveLoad("FVALDI11_L", 20);
         metrixDslData.addPreventiveLoadCost("FVALDI11_L", 20);
@@ -276,7 +336,7 @@ class MetrixInputTest {
 
         metrixDslData.addPreventiveLoad("FSSV.O11_L", 0);
 
-        metrixDslData.addCurativeLoad("FSSV.O11_L", 10, ImmutableList.of(cty1.getId(), cty2.getId(), cty4.getId(), "cty9"));
+        metrixDslData.addCurativeLoad("FSSV.O11_L", 10, List.of(cty1.getId(), cty2.getId(), cty4.getId(), "cty9"));
         metrixDslData.addCurativeLoad("FVALDI11_L", 10, new ArrayList<>());
 
         metrixDslData.addGeneratorsBinding("1 generator group", ImmutableSet.of("FSSV.O11_G", "TOTO"));
@@ -370,7 +430,7 @@ class MetrixInputTest {
     @Test
     void mappedBreakerTest() throws IOException {
 
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         String[] mappedBreakers = {
             "FP.AND1_FP.AND1  FTDPRA1  1_DJ13", // PST breaker
@@ -404,7 +464,7 @@ class MetrixInputTest {
             MappingParameters mappingParameters = MappingParameters.load();
             TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingReader).load(n, mappingParameters, store, new DataTableStore(), null, null);
             MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder()
-                    .simpleInit(1, false, false, __ -> Collections.emptyList(),
+                    .simpleInit(1, false, false, ignored -> Collections.emptyList(),
                             null, null, null, null).build();
             variantProvider = new MetrixTimeSeriesVariantProvider(n, store, mappingParameters, mappingConfig, new MetrixDslData(), metrixChunkParam,
                     Range.closed(0, 1), System.err);
@@ -426,7 +486,7 @@ class MetrixInputTest {
 
     @Test
     void propagateTrippingTest() {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
         Contingency cty = new Contingency("cty", l);
@@ -453,12 +513,12 @@ class MetrixInputTest {
 
     @Test
     void loadBreakTest() throws IOException {
-        Network n = NetworkSerDe.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  2");
         Contingency cty1 = new Contingency("cty1", Collections.singletonList(l1));
-        ContingenciesProvider provider = network -> ImmutableList.of(cty1);
+        ContingenciesProvider provider = network -> List.of(cty1);
 
         // Metrix parameters
         MetrixParameters parameters = new MetrixParameters()
@@ -474,7 +534,7 @@ class MetrixInputTest {
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, provider, null, parameters, remedialActionFile);
         new MetrixInputData(metrixNetwork, new MetrixDslData(), parameters);
 
-        assertEquals(ImmutableList.of(n.getSwitch("FSSV.O1_Disj FSSV.O11_L")), metrixNetwork.getSwitchList());
+        assertEquals(List.of(n.getSwitch("FSSV.O1_Disj FSSV.O11_L")), metrixNetwork.getSwitchList());
         assertEquals(Collections.EMPTY_SET, metrixNetwork.getDisconnectedElements());
     }
 }

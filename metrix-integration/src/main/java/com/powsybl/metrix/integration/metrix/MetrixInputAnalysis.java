@@ -187,6 +187,8 @@ public class MetrixInputAnalysis {
             elementType == ContingencyElementType.TWO_WINDINGS_TRANSFORMER ||
             elementType == ContingencyElementType.BRANCH ||
             elementType == ContingencyElementType.GENERATOR ||
+            elementType == ContingencyElementType.DANGLING_LINE ||
+            elementType == ContingencyElementType.TIE_LINE ||
             elementType == ContingencyElementType.HVDC_LINE;
     }
 
@@ -197,13 +199,19 @@ public class MetrixInputAnalysis {
         if (elementType == ContingencyElementType.TWO_WINDINGS_TRANSFORMER && identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER) {
             return true;
         }
-        if (elementType == ContingencyElementType.BRANCH && (identifiableType == IdentifiableType.LINE || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER)) {
+        if (elementType == ContingencyElementType.TIE_LINE && identifiableType == IdentifiableType.TIE_LINE) {
+            return true;
+        }
+        if (elementType == ContingencyElementType.BRANCH && (identifiableType == IdentifiableType.LINE || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER || identifiableType == IdentifiableType.TIE_LINE)) {
             return true;
         }
         if (elementType == ContingencyElementType.GENERATOR && identifiableType == IdentifiableType.GENERATOR) {
             return true;
         }
-        return elementType == ContingencyElementType.HVDC_LINE && identifiableType == IdentifiableType.HVDC_LINE;
+        if (elementType == ContingencyElementType.HVDC_LINE && identifiableType == IdentifiableType.HVDC_LINE) {
+            return true;
+        }
+        return elementType == ContingencyElementType.DANGLING_LINE && identifiableType == IdentifiableType.DANGLING_LINE;
     }
 
     public static boolean isValidContingencyElement(IdentifiableType identifiableType, ContingencyElementType elementType) {
