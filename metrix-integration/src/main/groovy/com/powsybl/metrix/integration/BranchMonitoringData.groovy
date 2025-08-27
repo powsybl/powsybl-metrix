@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.integration
 
+import com.powsybl.iidm.network.Branch
+import com.powsybl.iidm.network.DanglingLine
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.LogDslLoader
@@ -126,9 +128,17 @@ class BranchMonitoringData {
     }
 
     protected static branchData(Closure closure, String id, Network network, TimeSeriesMappingConfigLoader configLoader, MetrixDslData data, LogDslLoader logDslLoader) {
-        Identifiable identifiable = network.getBranch(id)
+        Identifiable identifiable = network.getIdentifiable(id)
         if (identifiable == null) {
             logDslLoader.logWarn("Branch %s not found in the network", id)
+            return
+        }
+        if (!(identifiable instanceof Branch || identifiable instanceof DanglingLine)) {
+            logDslLoader.logWarn("Branch %s is not a Branch or Dangling Line", id)
+            return
+        }
+        if (identifiable instanceof DanglingLine && identifiable.isPaired()) {
+            logDslLoader.logWarn("Branch %s is a paired Dangling Line, the TieLine should be used instead", id)
             return
         }
 

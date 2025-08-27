@@ -1,0 +1,495 @@
+{
+  "files" : [ {
+    "name" : "IntegerFile",
+    "attributes" : [ {
+      "name" : "CGNBREGI",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TNNBNTOT",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "CQNBQUAD",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "ECNBCONS",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TRNBGROU",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "DTNBTRDE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "DCNBLIES",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "SECTNBSE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "MODECALC",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "UNOMINAL",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 100 ]
+    }, {
+      "name" : "CPPOSREG",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 1, 1 ]
+    }, {
+      "name" : "QASURVDI",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "QASURNMK",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "TNNORQUA",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TNNEXQUA",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "DTTRDEQU",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DTMODREG",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DTLOWTAP",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DTNBTAPS",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "TNNEUCEL",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "TRNBTYPE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TNNEURGT",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TRTYPGRP",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "SPIMPMOD",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "DCNDROOP",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "DCNORQUA",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCNEXQUA",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCREGPUI",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DMNBDEFK",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    } ]
+  }, {
+    "name" : "FloatFile",
+    "attributes" : [ {
+      "name" : "CGCPERTE",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0.0 ]
+    }, {
+      "name" : "CQADMITA",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1.0 ]
+    }, {
+      "name" : "CQRESIST",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 10.0 ]
+    }, {
+      "name" : "DTVALSUP",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DTVALINF",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DTVALDEP",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DTTAPDEP",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "ESAFIACT",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ -390.0 ]
+    }, {
+      "name" : "SPPACTGT",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 50.0 ]
+    }, {
+      "name" : "TRVALPMD",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 100.0 ]
+    }, {
+      "name" : "TRPUIMIN",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0.0 ]
+    }, {
+      "name" : "DCMINPUI",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCMAXPUI",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCIMPPUI",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCTENSDC",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCRESIST",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCPERST1",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCPERST2",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    } ]
+  }, {
+    "name" : "DoubleFile",
+    "attributes" : [ ]
+  }, {
+    "name" : "StringFile",
+    "attributes" : [ {
+      "name" : "CGNOMREG",
+      "type" : "STRING",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ "FR" ]
+    }, {
+      "name" : "CQNOMQUA",
+      "type" : "STRING",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ "DL" ]
+    }, {
+      "name" : "TNNOMNOE",
+      "type" : "STRING",
+      "valueCount" : 27,
+      "firstIndexMaxValue" : 27,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 27,
+      "values" : [ "DLDL_metrixDanglingLineLoad" ]
+    }, {
+      "name" : "TRNOMGTH",
+      "type" : "STRING",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ "G" ]
+    }, {
+      "name" : "TRNOMTYP",
+      "type" : "STRING",
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 5,
+      "values" : [ "OTHER" ]
+    }, {
+      "name" : "DCNOMQUA",
+      "type" : "STRING",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 0,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    } ]
+  }, {
+    "name" : "BooleanFile",
+    "attributes" : [ ]
+  } ]
+}
