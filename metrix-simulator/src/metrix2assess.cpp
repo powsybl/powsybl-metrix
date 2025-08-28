@@ -192,7 +192,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "S1 ;INDISPONIBILITE; OUVRAGE;\n");
             if (var->num_ != -1) {
                 for (const auto& grp : var->grpIndispo_) {
-                    const int grpType = grp->isBattery() ? 3 : 2;
+                    constexpr unsigned int ouvrageTypeBattery = 3;
+                    constexpr unsigned int ouvrageTypeGroupWithoutBattery = 2;
+                    const int grpType = grp->isBattery() ? ouvrageTypeBattery : ouvrageTypeGroupWithoutBattery;
                     fprintf(fr, "S1 ;;%d; %s;\n", grpType, grp->nom_.c_str());
                 }
                 for (const auto& quad : var->indispoLignes_) {
@@ -731,7 +733,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                         pos = elemC->positionVarCurative_;
                         if (pos != -1) {
                             const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
-                            string s = grp->nom_;
+                            string grpName = grp->nom_;
 
                             double val = pbX_[pos] - pbX_[pos + 1];
 
@@ -747,7 +749,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                             if (config::inputConfiguration().useAllOutputs()
                                 || (config::configuration().displayResultatsRedispatch()
                                     && fabs(val) >= EPSILON_SORTIES)) {
-                                tuple<const int, const string, const double> tupleToAdd(incidentsContraignants.find(icdt)->second, s, val);
+                                tuple<const int, const string, const double> tupleToAdd(incidentsContraignants.find(icdt)->second, grpName, val);
                                 if (grp->isBattery()) {
                                     batteriesLogs.push_back(tupleToAdd);
                                 }
