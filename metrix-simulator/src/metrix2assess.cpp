@@ -772,7 +772,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R2D: Curatif des groupes batteries
         //---------------
         if (res_.nbGroupesCuratifs_ > 0) {
-            fprintf(fr, "R2B ;INCIDENT;NOM GROUPE;DELTA_P;\n");
+            fprintf(fr, "R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;\n");
         }
         for (auto& itLog : nonBatteriesLogs) {
             fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
