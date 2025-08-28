@@ -17,6 +17,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-tools</artifactId>
+    <name>Metrix tools</name>
+    <description>Tools to use metrix in command line</description>
 
     <dependencies>
         <!-- Compile dependencies -->

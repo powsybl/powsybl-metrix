@@ -18,6 +18,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-mapping</artifactId>
+    <name>Metrix mapping</name>
+    <description>Mapping tools for metrix I/O</description>
 
     <build>
         <plugins>

@@ -18,6 +18,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-distribution</artifactId>
+    <name>Metrix distribution</name>
+    <description>Metrix distribution</description>
 
     <profiles>
         <profile>
