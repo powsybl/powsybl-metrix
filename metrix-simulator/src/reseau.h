@@ -347,6 +347,8 @@ public:
     // Curatif
     std::set<int> incidentsAtraiterCuratif_; // incidents a traiter en curatif
 
+    bool isBattery_; /* Vrai si de type 'Battery', Faux sinon */
+
     Groupe(int num,
            const std::string& nom,
            const std::shared_ptr<Noeud>& noeud,
@@ -355,13 +357,16 @@ public:
            float puisMin,
            float puisMaxDispo,
            float demiBande,
-           Groupe::ProdAjustable pimpmod);
+           Groupe::ProdAjustable pimpmod,
+           bool isBattery);
     ~Groupe() = default;
     Groupe(const Groupe&) = delete;            // Constructeur de copie
     Groupe& operator=(const Groupe&) = delete; // Operateur d'affectation
 
     int checkCoherencePminMaxObj();
     bool estAjustable(bool adequacy) const;
+
+    bool isBattery() const;
 };
 
 class GroupesCouples
