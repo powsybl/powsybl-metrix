@@ -19,6 +19,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-integration</artifactId>
+    <name>Metrix integration</name>
+    <description>Integration of metrix-simulator into Java</description>
 
     <build>
         <plugins>
