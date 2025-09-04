@@ -40,7 +40,6 @@ public abstract class AbstractMetrix {
     protected static final String DEFAULT_SCHEMA_NAME = "default";
 
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
-    protected static final String REMEDIAL_ACTIONS_CSV_GZ = REMEDIAL_ACTIONS_CSV + ".gz";
 
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
