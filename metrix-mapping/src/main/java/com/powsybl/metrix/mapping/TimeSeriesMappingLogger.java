@@ -48,7 +48,7 @@ public class TimeSeriesMappingLogger {
     public void printLogSynthesis() {
         Map<String, AtomicInteger> labelCount = new HashMap<>();
         for (Log log : logs) {
-            AtomicInteger count = labelCount.computeIfAbsent(log.getLabel(), k -> new AtomicInteger(0));
+            AtomicInteger count = labelCount.computeIfAbsent(log.label(), k -> new AtomicInteger(0));
             count.incrementAndGet();
         }
         labelCount.forEach((label, count) -> LOGGER.error("{} {}", count, label));
@@ -107,39 +107,39 @@ public class TimeSeriesMappingLogger {
         try {
             TimeSeriesLoggerConfig config = new TimeSeriesLoggerConfig(separator, DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId));
             writer.write("Type");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Label");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Time");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Variant");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Version");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Message");
             writer.newLine();
             for (Log log : logs) {
-                int point = log.getPoint();
+                int point = log.point();
                 String pointLabel = "";
                 String dateLabel = "";
                 if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
                     pointLabel = "all";
                 } else if (point != Integer.MAX_VALUE) {
                     pointLabel = Integer.toString(point + 1);
-                    ZonedDateTime dateTime = ZonedDateTime.ofInstant(log.getIndex().getInstantAt(point), zoneId);
-                    dateLabel = dateTime.format(config.dateTimeFormatter);
+                    ZonedDateTime dateTime = ZonedDateTime.ofInstant(log.index().getInstantAt(point), zoneId);
+                    dateLabel = dateTime.format(config.dateTimeFormatter());
                 }
-                writer.write(log.getLevel().name());
-                writer.write(config.separator);
-                writer.write(log.getLabel());
-                writer.write(config.separator);
+                writer.write(log.level().name());
+                writer.write(config.separator());
+                writer.write(log.label());
+                writer.write(config.separator());
                 writer.write(dateLabel);
-                writer.write(config.separator);
+                writer.write(config.separator());
                 writer.write(pointLabel);
-                writer.write(config.separator);
-                writer.write(Integer.toString(log.getVersion()));
-                writer.write(config.separator);
-                writer.write(log.getMessage());
+                writer.write(config.separator());
+                writer.write(Integer.toString(log.version()));
+                writer.write(config.separator());
+                writer.write(log.message());
                 writer.newLine();
             }
         } catch (IOException e) {
