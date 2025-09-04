@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.exception;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
