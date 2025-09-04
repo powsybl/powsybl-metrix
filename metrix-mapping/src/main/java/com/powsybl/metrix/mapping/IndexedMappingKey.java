@@ -7,28 +7,18 @@
  */
 package com.powsybl.metrix.mapping;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.Objects;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-public class IndexedMappingKey {
-
-    private final MappingKey key;
-
-    private final int num;
+public record IndexedMappingKey(MappingKey key, int num) {
 
     public IndexedMappingKey(MappingKey key, int num) {
         this.key = Objects.requireNonNull(key);
         this.num = num;
-    }
-
-    public MappingKey getKey() {
-        return key;
-    }
-
-    public int getNum() {
-        return num;
     }
 
     @Override
@@ -38,13 +28,14 @@ public class IndexedMappingKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof IndexedMappingKey other) {
-            return key.equals(other.key) && num == other.num;
+        if (obj instanceof IndexedMappingKey(MappingKey key1, int num1)) {
+            return key.equals(key1) && num == num1;
         }
         return false;
     }
 
     @Override
+    @NonNull
     public String toString() {
         return "IndexedMappingKey(key=" + key + ", num=" + num + ")";
     }
