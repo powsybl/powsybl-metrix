@@ -1383,7 +1383,7 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getBranchMonitoringNList().size() + dslData.getSectionList().size();
             int nbBranchNk = dslData.getBranchMonitoringNkList().size();
             nbTimeSeries += 2 * nbBranchNk * parameters.getOptionalNbThreatResults().orElse(1);
-            nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(b -> b ? 1 : 0).orElse(0);
+            nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(isPreCurative -> isPreCurative ? 1 : 0).orElse(0);
             nbTimeSeries += dslData.getContingencyFlowResultList().stream().mapToInt(s -> dslData.getContingencyFlowResult(s).size()).sum();
         }
         return nbTimeSeries;
