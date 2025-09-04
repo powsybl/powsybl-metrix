@@ -28,7 +28,6 @@ import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import com.powsybl.timeseries.ast.UnaryOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
@@ -38,6 +37,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -235,7 +235,7 @@ class MetrixBranchPostProcessingTimeSeriesTest {
         branchNames.forEach(branchName -> resultTimeSeriesNames.add(AbstractMetrix.MAX_THREAT_PREFIX + branchName));
         branchNames.forEach(branchName -> resultTimeSeriesNames.add(MetrixOutputData.MAX_TMP_THREAT_FLOW + branchName));
         ReadOnlyTimeSeriesStore metrixResultTimeSeries = mock(ReadOnlyTimeSeriesStore.class);
-        when(metrixResultTimeSeries.getTimeSeriesNames(Mockito.any())).thenReturn(resultTimeSeriesNames);
+        when(metrixResultTimeSeries.getTimeSeriesNames(any())).thenReturn(resultTimeSeriesNames);
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsNEndOr", index, 1500d, 1500d),
