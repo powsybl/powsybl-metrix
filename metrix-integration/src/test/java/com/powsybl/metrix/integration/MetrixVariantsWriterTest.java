@@ -159,7 +159,7 @@ class MetrixVariantsWriterTest {
                         Load l = createLoad(idList.get(i), p0List.get(i), busId, detailList == null ? null : detailList.get(i));
                         loadList.add(l);
                     }
-                    Bus b = loadList.get(0).getTerminal().getBusBreakerView().getBus();
+                    Bus b = loadList.getFirst().getTerminal().getBusBreakerView().getBus();
                     Mockito.when(b.getLoads()).thenReturn(loadList);
                     return loadList;
                 }
@@ -226,7 +226,7 @@ class MetrixVariantsWriterTest {
                     LoadDetail l10d = createLoadDetail(3d, 12d);
                     Load l10 = createLoad("l10", 15f, "", l10d);
                     List<Load> loadList = createLoads(Arrays.asList("l11", "l12"), Arrays.asList(12f, 18f), "l1", null);
-                    Load l11 = loadList.get(0);
+                    Load l11 = loadList.getFirst();
                     Load l12 = loadList.get(1);
                     Load l13 = createLoad("l13", 0f, "", null);
 

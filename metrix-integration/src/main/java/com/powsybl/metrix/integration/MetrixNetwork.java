@@ -682,9 +682,9 @@ public class MetrixNetwork {
 
             // Check on both sides of the switch to check if there is one and only one connectable
             if (terminalsBus1.size() == 1) {
-                addElementToRetainedBreakersList(sw, terminalsBus1.get(0), false);
+                addElementToRetainedBreakersList(sw, terminalsBus1.getFirst(), false);
             } else if (terminalsBus2.size() == 1) {
-                addElementToRetainedBreakersList(sw, terminalsBus2.get(0), false);
+                addElementToRetainedBreakersList(sw, terminalsBus2.getFirst(), false);
             } else {
                 addElementToRetainedBreakersList(sw, switchId, false);
             }

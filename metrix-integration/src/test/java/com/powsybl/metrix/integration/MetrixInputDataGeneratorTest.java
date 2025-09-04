@@ -85,10 +85,10 @@ class MetrixInputDataGeneratorTest {
 
         // THEN
         Assertions.assertThat(actual).hasSize(1);
-        Assertions.assertThat(actual.get(0).getName(0)).isEqualTo("METRIXb.dic");
+        Assertions.assertThat(actual.getFirst().getName(0)).isEqualTo("METRIXb.dic");
         Assertions.assertThat(results).hasSize(1);
         String fSep = FileSystems.getDefault().getSeparator();
-        Assertions.assertThat(results.get(0)).isEqualTo("METRIXb.dic->" + fSep + "testOut" + fSep + "METRIXb.dic");
+        Assertions.assertThat(results.getFirst()).isEqualTo("METRIXb.dic->" + fSep + "testOut" + fSep + "METRIXb.dic");
     }
 
     @Test
@@ -185,9 +185,9 @@ class MetrixInputDataGeneratorTest {
 
         //THEN
         Assertions.assertThat(commands).hasSize(1);
-        Assertions.assertThat(commands.get(0).getCommand().getInputFiles()).hasSize(2);
-        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(2);
-        Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
+        Assertions.assertThat(commands.getFirst().getCommand().getInputFiles()).hasSize(2);
+        Assertions.assertThat(commands.getFirst().getCommand().getOutputFiles()).hasSize(2);
+        Assertions.assertThat(commands.getFirst().getCommand().getId()).isEqualTo("metrix");
     }
 
     @Test
@@ -230,9 +230,9 @@ class MetrixInputDataGeneratorTest {
 
         //THEN
         Assertions.assertThat(commands).hasSize(1);
-        Assertions.assertThat(commands.get(0).getCommand().getInputFiles()).hasSize(2);
-        Assertions.assertThat(commands.get(0).getCommand().getOutputFiles()).hasSize(6);
-        Assertions.assertThat(commands.get(0).getCommand().getId()).isEqualTo("metrix");
+        Assertions.assertThat(commands.getFirst().getCommand().getInputFiles()).hasSize(2);
+        Assertions.assertThat(commands.getFirst().getCommand().getOutputFiles()).hasSize(6);
+        Assertions.assertThat(commands.getFirst().getCommand().getId()).isEqualTo("metrix");
     }
 
     private MetrixInputDataGenerator.FileSystemUtils fileSystem() {
