@@ -9,7 +9,12 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.mapping.EquipmentVariable.isVariableCompatible;
