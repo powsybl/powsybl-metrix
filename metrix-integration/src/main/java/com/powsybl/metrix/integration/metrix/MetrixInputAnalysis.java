@@ -328,7 +328,7 @@ public class MetrixInputAnalysis {
             return false;
         }
 
-        if (!checkBeginAndEnd(line, lineId)) {
+        if (checkIfErrorAtBeginningOrEnd(line, lineId)) {
             return false;
         }
 
@@ -350,7 +350,7 @@ public class MetrixInputAnalysis {
      * @param lineId line number in remedial file
      */
     private void checkLine(String line, int lineId) throws IOException {
-        if (!checkBeginAndEnd(line, lineId)) {
+        if (checkIfErrorAtBeginningOrEnd(line, lineId)) {
             return;
         }
 
@@ -388,25 +388,25 @@ public class MetrixInputAnalysis {
     }
 
     /**
-     * check begin and end of a remedial file line
+     * Check the beginning and end of a remedial file line
      *
-     * @param line a line of remedial file
-     * @param lineId line number in remedial file
-     * @return true if line is not a comment and ends with the correct separator
+     * @param line a line of a remedial file
+     * @param lineId line number in a remedial file
+     * @return true if a line is a comment or ends with a wrong separator
      */
-    private boolean checkBeginAndEnd(String line, int lineId) {
+    private boolean checkIfErrorAtBeginningOrEnd(String line, int lineId) {
         rTrim(line);
         if (line.startsWith(COMMENT_SYMBOL) || line.startsWith(COMMENT_LINE_SYMBOL)) {
             String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileComment"), lineId);
             writeRemedialFileLog(lineId, message);
-            return false;
+            return true;
         }
         if (!line.endsWith(RemedialReader.COLUMN_SEPARATOR)) {
             String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialFileEndLine"), lineId);
             writeRemedialFileLog(lineId, message);
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     private void checkRemedial(Remedial remedial, Set<String> contingencyIds) {
@@ -414,6 +414,28 @@ public class MetrixInputAnalysis {
             String message = String.format(RESOURCE_BUNDLE.getString("invalidMetrixRemedialContingency"), remedial.getContingency());
             writeRemedialLog(remedial.getLineFile(), message);
         }
+    }
+
+    private boolean validateIdentifiable(int line, Network network, String identifier,
+                                         List<Class<?>> expectedTypes,
+                                         String invalidTypeMessageKey) {
+        if (identifier.isEmpty()) {
+            return false;
+        }
+
+        Identifiable<?> identifiable = network.getIdentifiable(identifier);
+        if (identifiable == null) {
+            String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), identifier);
+            writeRemedialLog(line, message);
+            return false;
+        }
+
+        boolean isTypeMatched = expectedTypes.stream().anyMatch(type -> type.isInstance(identifiable));
+        if (!isTypeMatched) {
+            String message = String.format(RESOURCE_BUNDLE.getString(invalidTypeMessageKey), identifiable.getId());
+            writeRemedialLog(line, message);
+        }
+        return true;
     }
 
     /**
@@ -424,19 +446,9 @@ public class MetrixInputAnalysis {
      * @param action to check
      */
     private void isValidAction(int line, Network network, String action) {
-        if (action.isEmpty()) {
-            return;
-        }
-        Identifiable<?> identifiable = network.getIdentifiable(action);
-        if (identifiable == null) {
-            String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), action);
-            writeRemedialLog(line, message);
-            return;
-        }
-        if (!(identifiable instanceof Branch) && !(identifiable instanceof Switch)) {
-            String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialActionType"), identifiable.getId());
-            writeRemedialLog(line, message);
-        }
+        validateIdentifiable(line, network, action,
+            List.of(Branch.class, Switch.class),
+            "invalidRemedialActionType");
     }
 
     /**
@@ -448,18 +460,9 @@ public class MetrixInputAnalysis {
      * @param constraint to check
      */
     private void isValidConstraint(int line, Network network, String constraint) {
-        if (constraint.isEmpty()) {
-            return;
-        }
-        Identifiable<?> identifiable = network.getIdentifiable(constraint);
-        if (identifiable == null) {
-            String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialNetwork"), constraint);
-            writeRemedialLog(line, message);
-            return;
-        }
-        if (!(identifiable instanceof Branch)) {
-            String message = String.format(RESOURCE_BUNDLE.getString("invalidRemedialConstraintType"), identifiable.getId());
-            writeRemedialLog(line, message);
+        if (!validateIdentifiable(line, network, constraint,
+            List.of(Branch.class),
+            "invalidRemedialConstraintType")) {
             return;
         }
         if (metrixDslData == null) {
