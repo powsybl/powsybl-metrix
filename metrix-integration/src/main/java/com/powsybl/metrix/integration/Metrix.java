@@ -102,17 +102,17 @@ public class Metrix extends AbstractMetrix {
         List<CompletableFuture<?>> futures = new ArrayList<>();
         for (int chunk = chunkCutter.getChunkOffset(); chunk < chunkCutter.getChunkCount(); chunk++) {
             final int chunkNum = chunk;
-            ContingenciesProvider contingenciesProvider = network -> analysisResult.contingencies;
+            ContingenciesProvider contingenciesProvider = network -> analysisResult.contingencies();
             MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder().simpleInit(version, runParameters.isIgnoreLimits(),
                     runParameters.isIgnoreEmptyFilter(), contingenciesProvider, null,
                     commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)),
                     commonWorkingDir.toPath().resolve(getLogDetailFileNameFormat(version, chunk)),
                     remedialActionsReader != null ? commonWorkingDir.toPath().resolve(REMEDIAL_ACTIONS_CSV) : null).build();
-            MetrixChunk metrixChunk = new MetrixChunk(NetworkSerDe.copy(analysisResult.network), computationManager, metrixChunkParam, metrixConfig, null);
+            MetrixChunk metrixChunk = new MetrixChunk(NetworkSerDe.copy(analysisResult.network()), computationManager, metrixChunkParam, metrixConfig, null);
             Range<Integer> range = chunkCutter.getChunkRange(chunk);
-            MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(analysisResult.network, store, analysisResult.mappingParameters,
-                    analysisResult.mappingConfig, analysisResult.metrixDslData, metrixChunkParam, range, out);
-            CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(analysisResult.metrixParameters, analysisResult.metrixDslData, variantProvider);
+            MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(analysisResult.network(), store, analysisResult.mappingParameters(),
+                analysisResult.mappingConfig(), analysisResult.metrixDslData(), metrixChunkParam, range, out);
+            CompletableFuture<List<TimeSeries>> currentFuture = metrixChunk.run(analysisResult.metrixParameters(), analysisResult.metrixDslData(), variantProvider);
             CompletableFuture<Void> info = currentFuture.thenAccept(timeSeriesList ->
                     listener.onChunkResult(version, chunkNum, timeSeriesList, null)
             );
