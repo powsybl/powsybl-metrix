@@ -314,8 +314,8 @@ public class TimeSeriesMappingConfigCsvWriter {
         writer.write(equipmentsLabel);
         writer.newLine();
         Map<MappingKey, Double> networkPowerMap = new LinkedHashMap<>();
-        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) -> computeNetworkPower(timeSerie.getId(), timeSerie.getMappingVariable(), ids, networkPowerMap));
-        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) -> writeMultimap(writer, equipmentsLabel, timeSerie.getMappingVariable(), timeSerie.getId(), ids, withTimeSeriesStats, networkPowerMap, 0, false));
+        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) -> computeNetworkPower(timeSerie.id(), timeSerie.mappingVariable(), ids, networkPowerMap));
+        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) -> writeMultimap(writer, equipmentsLabel, timeSerie.mappingVariable(), timeSerie.id(), ids, withTimeSeriesStats, networkPowerMap, 0, false));
     }
 
     private void writeTimeSerieToEquipmentsMapping(Path dir, String fileName, String equipmentsLabel, Map<MappingKey, List<String>> timeSerieToEquipmentsMapping) throws IOException {
@@ -339,8 +339,8 @@ public class TimeSeriesMappingConfigCsvWriter {
         writer.write(UNUSED_TIME_SERIES);
         writer.newLine();
         Map<MappingKey, Double> networkPowerMap = new LinkedHashMap<>();
-        timeSeriesToEquipmentsMapping.forEach((timeSerie, ids) -> computeNetworkPower(timeSerie.getId(), timeSerie.getMappingVariable(), ids, networkPowerMap));
-        equipmentToTimeSeriesMapping.forEach((equipmentId, timeSeries) -> writeMultimap(writer, equipmentLabel, equipmentId.getMappingVariable(), equipmentId.getId(), timeSeries, withTimeSeriesStats, networkPowerMap, nbEquipmentValues, true));
+        timeSeriesToEquipmentsMapping.forEach((timeSerie, ids) -> computeNetworkPower(timeSerie.id(), timeSerie.mappingVariable(), ids, networkPowerMap));
+        equipmentToTimeSeriesMapping.forEach((equipmentId, timeSeries) -> writeMultimap(writer, equipmentLabel, equipmentId.mappingVariable(), equipmentId.id(), timeSeries, withTimeSeriesStats, networkPowerMap, nbEquipmentValues, true));
     }
 
     private void writeEquipmentToTimeSeriesMapping(Path dir, String fileName, String equipmentLabel, Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, Map<MappingKey, List<String>> timeSeriesToEquipmentsMapping) throws IOException {
@@ -406,7 +406,7 @@ public class TimeSeriesMappingConfigCsvWriter {
     public Map<MappingKey, Set<String>> findMappedTimeSeries(Map<MappingKey, List<String>> timeSeriesToEquipments) {
         Map<MappingKey, Set<String>> mappedTimeSeries = new LinkedHashMap<>();
         timeSeriesToEquipments.keySet().forEach(mappingKey -> {
-            NodeCalc nodeCalc = config.getTimeSeriesNodes().get(mappingKey.getId());
+            NodeCalc nodeCalc = config.getTimeSeriesNodes().get(mappingKey.id());
             mappedTimeSeries.put(mappingKey, nodeCalc == null ? Collections.emptySet() : TimeSeriesNames.list(nodeCalc));
         });
         return mappedTimeSeries;
@@ -418,7 +418,7 @@ public class TimeSeriesMappingConfigCsvWriter {
                 .filter(e -> e.getValue() instanceof TimeSeriesDistributionKey)
                 .forEach(e -> {
                     String timeSeriesName = ((TimeSeriesDistributionKey) e.getValue()).getTimeSeriesName();
-                    MappingVariable mappingVariable = e.getKey().getMappingVariable();
+                    MappingVariable mappingVariable = e.getKey().mappingVariable();
                     NodeCalc nodeCalc = config.getTimeSeriesNodes().get(timeSeriesName);
                     mappedTimeSeries.put(new MappingKey(mappingVariable, timeSeriesName), nodeCalc == null ? Collections.emptySet() : TimeSeriesNames.list(nodeCalc));
                 });
@@ -427,7 +427,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     private void writeMappedTimeSeries(BufferedWriter writer, Map<MappingKey, List<String>> timeSeriesToEquipments, String equipmentsLabel) {
         Map<MappingKey, Set<String>> mappedTimeSeries = findMappedTimeSeries(timeSeriesToEquipments);
-        mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, equipmentsLabel, timeSerie.getMappingVariable(), timeSerie.getId(), ids));
+        mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, equipmentsLabel, timeSerie.mappingVariable(), timeSerie.id(), ids));
     }
 
     public void writeMappedTimeSeries(BufferedWriter writer) {
@@ -454,7 +454,7 @@ public class TimeSeriesMappingConfigCsvWriter {
             writeMappedTimeSeries(writer, config.getTimeSeriesToVscConverterStationsMapping(), VSC_CONVERTER_STATION_TYPE);
 
             Map<MappingKey, Set<String>> mappedTimeSeries = findDistributionKeyTimeSeries(config.getDistributionKeys());
-            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, EMPTY_TYPE, timeSerie.getMappingVariable(), timeSerie.getId(), ids, false, null, 1, false));
+            mappedTimeSeries.forEach((timeSerie, ids) -> writeMultimap(writer, EMPTY_TYPE, timeSerie.mappingVariable(), timeSerie.id(), ids, false, null, 1, false));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

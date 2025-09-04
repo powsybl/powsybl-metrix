@@ -518,7 +518,7 @@ public class TimeSeriesMappingConfig {
     }
 
     public Set<String> getEquipmentIds() {
-        return equipmentToTimeSeriesMap.keySet().stream().map(MappingKey::getId).collect(Collectors.toSet());
+        return equipmentToTimeSeriesMap.keySet().stream().map(MappingKey::id).collect(Collectors.toSet());
     }
 
     public void addEquipmentTimeSeries(String timeSeriesName, MappingVariable variable, String id) {
