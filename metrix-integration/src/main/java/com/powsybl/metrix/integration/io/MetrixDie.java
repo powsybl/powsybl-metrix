@@ -12,8 +12,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -28,8 +26,6 @@ import java.util.*;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class MetrixDie {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MetrixDie.class);
 
     private static final int ATTRIBUTE_NAME_LENGTH = 8;
 
