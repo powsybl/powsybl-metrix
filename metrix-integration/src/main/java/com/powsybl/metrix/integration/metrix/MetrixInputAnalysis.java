@@ -435,7 +435,7 @@ public class MetrixInputAnalysis {
             String message = String.format(RESOURCE_BUNDLE.getString(invalidTypeMessageKey), identifiable.getId());
             writeRemedialLog(line, message);
         }
-        return true;
+        return isTypeMatched;
     }
 
     /**
