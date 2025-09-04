@@ -30,7 +30,6 @@ import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
 import java.io.BufferedWriter;
@@ -50,6 +49,10 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -76,18 +79,18 @@ class MetrixVariantsWriterTest {
                 Duration.ofMinutes(15));
         StringWriter writer = new StringWriter();
 
-        MetrixNetwork network = Mockito.mock(MetrixNetwork.class);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l1")).thenReturn(2);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l2")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l3")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l4")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l5")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l6")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l7")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l8")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l9")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l10")).thenReturn(1);
-        Mockito.when(network.getIndex(MetrixSubset.LOAD, "l13")).thenThrow(new IllegalStateException());
+        MetrixNetwork network = mock(MetrixNetwork.class);
+        when(network.getIndex(MetrixSubset.LOAD, "l1")).thenReturn(2);
+        when(network.getIndex(MetrixSubset.LOAD, "l2")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l3")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l4")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l5")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l6")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l7")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l8")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l9")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l10")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l13")).thenThrow(new IllegalStateException());
 
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             new MetrixVariantsWriter(new MetrixVariantProvider() {
@@ -106,12 +109,12 @@ class MetrixVariantsWriterTest {
                 }
 
                 private Generator createGenerator(String id, double targetP) {
-                    Generator g = Mockito.mock(Generator.class);
-                    Mockito.when(g.getId()).thenReturn(id);
-                    Terminal t = Mockito.mock(Terminal.class);
-                    Mockito.when(g.getTerminal()).thenReturn(t);
-                    Mockito.when(t.isConnected()).thenReturn(true);
-                    Mockito.when(g.getTargetP()).thenReturn(targetP);
+                    Generator g = mock(Generator.class);
+                    when(g.getId()).thenReturn(id);
+                    Terminal t = mock(Terminal.class);
+                    when(g.getTerminal()).thenReturn(t);
+                    when(t.isConnected()).thenReturn(true);
+                    when(g.getTargetP()).thenReturn(targetP);
                     return g;
                 }
 
@@ -119,37 +122,37 @@ class MetrixVariantsWriterTest {
 
                 private Load createLoad(String id, double p0, String busId, LoadDetail detail) {
                     loadDetailMap.put(id, detail);
-                    AbstractNetworkImplTest underlyingNetwork = Mockito.mock(AbstractNetworkImplTest.class);
-                    Mockito.when(underlyingNetwork.getVariantIndex()).thenReturn(0);
-                    Mockito.when(underlyingNetwork.getVariantManager()).thenReturn(Mockito.mock(VariantManagerImpl.class));
-                    Mockito.when(underlyingNetwork.getVariantManager().getVariantArraySize()).thenReturn(1);
-                    Load l = Mockito.mock(Load.class);
-                    Mockito.when(l.getNetwork()).thenReturn(underlyingNetwork);
-                    Mockito.when(l.getId()).thenReturn(id);
-                    Mockito.when(l.getP0()).thenReturn(p0);
-                    Terminal t = Mockito.mock(Terminal.class);
-                    Mockito.when(l.getTerminal()).thenReturn(t);
-                    Terminal.BusBreakerView view = Mockito.mock(Terminal.BusBreakerView.class);
-                    Mockito.when(t.getBusBreakerView()).thenReturn(view);
-                    Bus b = Mockito.mock(Bus.class);
-                    Mockito.when(view.getBus()).thenReturn(b);
+                    AbstractNetworkImplTest underlyingNetwork = mock(AbstractNetworkImplTest.class);
+                    when(underlyingNetwork.getVariantIndex()).thenReturn(0);
+                    when(underlyingNetwork.getVariantManager()).thenReturn(mock(VariantManagerImpl.class));
+                    when(underlyingNetwork.getVariantManager().getVariantArraySize()).thenReturn(1);
+                    Load l = mock(Load.class);
+                    when(l.getNetwork()).thenReturn(underlyingNetwork);
+                    when(l.getId()).thenReturn(id);
+                    when(l.getP0()).thenReturn(p0);
+                    Terminal t = mock(Terminal.class);
+                    when(l.getTerminal()).thenReturn(t);
+                    Terminal.BusBreakerView view = mock(Terminal.BusBreakerView.class);
+                    when(t.getBusBreakerView()).thenReturn(view);
+                    Bus b = mock(Bus.class);
+                    when(view.getBus()).thenReturn(b);
                     if (busId.isEmpty()) {
-                        Mockito.when(b.getId()).thenReturn(id + "_bus");
+                        when(b.getId()).thenReturn(id + "_bus");
                     } else {
-                        Mockito.when(b.getId()).thenReturn(busId);
+                        when(b.getId()).thenReturn(busId);
                     }
-                    Mockito.when(b.getLoads()).thenReturn(Collections.singletonList(l));
-                    Mockito.when(l.getExtension(LoadDetail.class)).thenAnswer(invocationOnMock -> loadDetailMap.get(id));
-                    Mockito.when(l.newExtension(LoadDetailAdder.class)).thenReturn(new LoadDetailAdderImpl(l));
-                    Mockito.doAnswer(invocationOnMock -> loadDetailMap.put(id, (LoadDetail) invocationOnMock.getArguments()[1]))
-                            .when(l).addExtension(Mockito.any(), Mockito.any());
+                    when(b.getLoads()).thenReturn(Collections.singletonList(l));
+                    when(l.getExtension(LoadDetail.class)).thenAnswer(invocationOnMock -> loadDetailMap.get(id));
+                    when(l.newExtension(LoadDetailAdder.class)).thenReturn(new LoadDetailAdderImpl(l));
+                    doAnswer(invocationOnMock -> loadDetailMap.put(id, (LoadDetail) invocationOnMock.getArguments()[1]))
+                            .when(l).addExtension(any(), any());
                     return l;
                 }
 
                 private LoadDetail createLoadDetail(double fixedActivePower, double variableActivePower) {
-                    LoadDetail l = Mockito.mock(LoadDetail.class);
-                    Mockito.when(l.getFixedActivePower()).thenReturn(fixedActivePower);
-                    Mockito.when(l.getVariableActivePower()).thenReturn(variableActivePower);
+                    LoadDetail l = mock(LoadDetail.class);
+                    when(l.getFixedActivePower()).thenReturn(fixedActivePower);
+                    when(l.getVariableActivePower()).thenReturn(variableActivePower);
                     return l;
                 }
 
@@ -160,50 +163,50 @@ class MetrixVariantsWriterTest {
                         loadList.add(l);
                     }
                     Bus b = loadList.getFirst().getTerminal().getBusBreakerView().getBus();
-                    Mockito.when(b.getLoads()).thenReturn(loadList);
+                    when(b.getLoads()).thenReturn(loadList);
                     return loadList;
                 }
 
                 private HvdcLine createHvdcLine(String id, double activePowerSetpoint) {
-                    HvdcLine l = Mockito.mock(HvdcLine.class);
-                    Mockito.when(l.getId()).thenReturn(id);
-                    Mockito.when(l.getActivePowerSetpoint()).thenReturn(activePowerSetpoint);
+                    HvdcLine l = mock(HvdcLine.class);
+                    when(l.getId()).thenReturn(id);
+                    when(l.getActivePowerSetpoint()).thenReturn(activePowerSetpoint);
                     return l;
                 }
 
                 private TwoWindingsTransformer createPst(String id, double currentTap) {
-                    TwoWindingsTransformer twc = Mockito.mock(TwoWindingsTransformer.class);
-                    Mockito.when(twc.getId()).thenReturn(id);
-                    Terminal t1 = Mockito.mock(Terminal.class);
-                    Mockito.when(twc.getTerminal1()).thenReturn(t1);
-                    Terminal t2 = Mockito.mock(Terminal.class);
-                    Mockito.when(twc.getTerminal1()).thenReturn(t2);
-                    Mockito.when(t1.isConnected()).thenReturn(true);
-                    Mockito.when(t2.isConnected()).thenReturn(true);
-                    PhaseTapChanger pst = Mockito.mock(PhaseTapChanger.class);
-                    Mockito.when(twc.getPhaseTapChanger()).thenReturn(pst);
-                    Mockito.when(pst.getTapPosition()).thenReturn((int) currentTap);
+                    TwoWindingsTransformer twc = mock(TwoWindingsTransformer.class);
+                    when(twc.getId()).thenReturn(id);
+                    Terminal t1 = mock(Terminal.class);
+                    when(twc.getTerminal1()).thenReturn(t1);
+                    Terminal t2 = mock(Terminal.class);
+                    when(twc.getTerminal1()).thenReturn(t2);
+                    when(t1.isConnected()).thenReturn(true);
+                    when(t2.isConnected()).thenReturn(true);
+                    PhaseTapChanger pst = mock(PhaseTapChanger.class);
+                    when(twc.getPhaseTapChanger()).thenReturn(pst);
+                    when(pst.getTapPosition()).thenReturn((int) currentTap);
                     return twc;
                 }
 
                 private Line createLine(String id) {
-                    Line l = Mockito.mock(Line.class);
-                    Mockito.when(l.getId()).thenReturn(id);
+                    Line l = mock(Line.class);
+                    when(l.getId()).thenReturn(id);
                     return l;
                 }
 
                 private Terminal createTerminal(boolean isConnected) {
-                    Terminal t = Mockito.mock(Terminal.class);
-                    Mockito.when(t.isConnected()).thenReturn(isConnected);
+                    Terminal t = mock(Terminal.class);
+                    when(t.isConnected()).thenReturn(isConnected);
                     return t;
                 }
 
                 private Switch createSwitch(String id) {
-                    Switch s = Mockito.mock(Switch.class);
-                    Mockito.when(s.getId()).thenReturn(id);
-                    Mockito.when(s.getKind()).thenReturn(SwitchKind.BREAKER);
-                    Mockito.when(s.isRetained()).thenReturn(true);
-                    Mockito.when(s.isOpen()).thenReturn(false);
+                    Switch s = mock(Switch.class);
+                    when(s.getId()).thenReturn(id);
+                    when(s.getKind()).thenReturn(SwitchKind.BREAKER);
+                    when(s.isRetained()).thenReturn(true);
+                    when(s.isOpen()).thenReturn(false);
                     return s;
                 }
 
@@ -242,11 +245,11 @@ class MetrixVariantsWriterTest {
                     Switch sw2 = createSwitch("sw2");
                     Switch sw3 = createSwitch("sw3");
 
-                    Mockito.when(network.getMappedBranch(sw1)).thenReturn(Optional.of("sw1"));
-                    Mockito.when(network.getMappedBranch(sw2)).thenReturn(Optional.of("line1"));
-                    Mockito.when(network.getMappedBranch(sw3)).thenReturn(Optional.of("hl1"));
-                    Mockito.when(line2.getTerminal1()).thenReturn(terminal1);
-                    Mockito.when(line3.getTerminal1()).thenReturn(terminal2);
+                    when(network.getMappedBranch(sw1)).thenReturn(Optional.of("sw1"));
+                    when(network.getMappedBranch(sw2)).thenReturn(Optional.of("line1"));
+                    when(network.getMappedBranch(sw3)).thenReturn(Optional.of("hl1"));
+                    when(line2.getTerminal1()).thenReturn(terminal1);
+                    when(line3.getTerminal1()).thenReturn(terminal2);
 
                     for (int i = variantReadRange.lowerEndpoint(); i < variantReadRange.upperEndpoint(); i++) {
                         reader.onVariantStart(i);
