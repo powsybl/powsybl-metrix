@@ -7,12 +7,22 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.DanglingLine;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRangeAdder;
 import com.powsybl.iidm.network.extensions.LoadDetail;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.log.EmptyFilter;
+import com.powsybl.metrix.mapping.log.LimitSignBuilder;
+import com.powsybl.metrix.mapping.log.Log;
+import com.powsybl.metrix.mapping.log.LogBuilder;
+import com.powsybl.metrix.mapping.log.LogContent;
+import com.powsybl.metrix.mapping.log.ZeroDistributionKeyInfo;
 import com.powsybl.metrix.mapping.timeseries.EquipmentTimeSeriesMap;
 import com.powsybl.metrix.mapping.timeseries.MappedEquipment;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -20,7 +30,13 @@ import com.powsybl.timeseries.TimeSeriesTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +63,7 @@ public class TimeSeriesMapper {
     private TimeSeriesTable table;
     private TimeSeriesMapperChecker checker;
 
-    private static class MapperContext {
+    private static final class MapperContext {
         private final EquipmentTimeSeriesMap timeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToGeneratorsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToDanglingLinesMapping = new EquipmentTimeSeriesMap();
@@ -294,8 +310,8 @@ public class TimeSeriesMapper {
         for (int i = 0; i < mappedEquipments.size(); i++) {
             MappedEquipment mappedEquipment = mappedEquipments.get(i);
             DistributionKey distributionKey = mappedEquipment.distributionKey();
-            if (distributionKey instanceof NumberDistributionKey numberDistributionKey) {
-                distributionKeys[i] = numberDistributionKey.value();
+            if (distributionKey instanceof NumberDistributionKey(double value)) {
+                distributionKeys[i] = value;
             } else if (distributionKey instanceof TimeSeriesDistributionKey timeSeriesDistributionKey) {
                 int timeSeriesNum = timeSeriesDistributionKey.getTimeSeriesNum();
                 if (timeSeriesNum == -1) {
