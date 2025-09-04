@@ -238,7 +238,7 @@ public class TimeSeriesMapper {
         }
 
         if (checker != null) {
-            List<Identifiable<?>> ids = mappedEquipments.stream().map(MappedEquipment::getIdentifiable).collect(Collectors.toList());
+            List<Identifiable<?>> ids = mappedEquipments.stream().map(MappedEquipment::identifiable).collect(Collectors.toList());
             boolean ignoreLimitsForTimeSeries = parameters.isIgnoreLimits() || TimeSeriesMapper.isPowerVariable(variable) && config.getIgnoreLimitsTimeSeriesNames().contains(timeSeriesName);
             checker.timeSeriesMappedToEquipments(variantId, timeSeriesName, timeSeriesValue, ids, variable, equipmentValues, ignoreLimitsForTimeSeries);
         }
@@ -255,7 +255,7 @@ public class TimeSeriesMapper {
     }
 
     private boolean logHvdcLimitSign(List<MappedEquipment> mappedEquipments, String timeSeriesName, MappingVariable variable, double timeSeriesValue, LogBuilder logBuilder) {
-        if (mappedEquipments.getFirst().getIdentifiable() instanceof HvdcLine) {
+        if (mappedEquipments.getFirst().identifiable() instanceof HvdcLine) {
             LimitSignBuilder limitSignBuilder = new LimitSignBuilder()
                     .timeSeriesValue(timeSeriesValue)
                     .timeSeriesName(timeSeriesName)
@@ -293,7 +293,7 @@ public class TimeSeriesMapper {
         double distributionKeySum = 0;
         for (int i = 0; i < mappedEquipments.size(); i++) {
             MappedEquipment mappedEquipment = mappedEquipments.get(i);
-            DistributionKey distributionKey = mappedEquipment.getDistributionKey();
+            DistributionKey distributionKey = mappedEquipment.distributionKey();
             if (distributionKey instanceof NumberDistributionKey numberDistributionKey) {
                 distributionKeys[i] = numberDistributionKey.value();
             } else if (distributionKey instanceof TimeSeriesDistributionKey timeSeriesDistributionKey) {
