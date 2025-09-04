@@ -13,14 +13,34 @@ import com.powsybl.commons.io.table.TableFormatter;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.*;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.BOUNDARY_LINES;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.BREAKERS;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.CSV_SEPARATOR;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.DISCONNECTED;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.GENERATORS;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.HVDC_LINES;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.IGNORED_UNMAPPED;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.LOADS;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.MAPPED;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.MULTI_MAPPED;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.OUT_OF_MAIN_CC;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.PSTS;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.UNMAPPED;
+import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.getNbMapped;
+import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.getNbMultiMapped;
+import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.getNbUnmapped;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
 /**
