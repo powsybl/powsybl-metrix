@@ -39,7 +39,7 @@ public class EquipmentTimeSeriesMap {
     public List<MappedEquipment> mapEquipments(MappingKey key, List<String> equipmentIds, Network network, TimeSeriesMappingConfig config) {
         return equipmentIds.stream().map(equipmentId -> {
             Identifiable<?> identifiable = getIdentifiable(network, equipmentId);
-            DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.getMappingVariable(), equipmentId));
+            DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.mappingVariable(), equipmentId));
             return new MappedEquipment(identifiable, distributionKey);
         }).toList();
     }

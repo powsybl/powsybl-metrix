@@ -31,12 +31,12 @@ public class MappingKeyNetworkValue {
 
     public double getValue(MappingKey key) {
         Objects.requireNonNull(key);
-        Identifiable<?> identifiable = network.getIdentifiable(key.getId());
+        Identifiable<?> identifiable = network.getIdentifiable(key.id());
         boolean isExistingIdentifiable = identifiable != null;
         if (!isExistingIdentifiable) {
-            throw new TimeSeriesMappingException("Unknown identifiable " + key.getId());
+            throw new TimeSeriesMappingException("Unknown identifiable " + key.id());
         }
-        MappingVariable variable = key.getMappingVariable();
+        MappingVariable variable = key.mappingVariable();
         if (variable instanceof EquipmentVariable equipmentVariable) {
             return getValue(identifiable, equipmentVariable);
         }

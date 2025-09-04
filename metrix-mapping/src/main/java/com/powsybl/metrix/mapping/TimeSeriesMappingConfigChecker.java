@@ -28,8 +28,8 @@ public class TimeSeriesMappingConfigChecker {
 
     private void checkMappedAndUnmapped(Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, Set<String> unmappedEquipments, Set<String> ignoredUnmappedEquipments) {
         for (Map.Entry<MappingKey, List<String>> e : equipmentToTimeSeriesMapping.entrySet()) {
-            if (!unmappedEquipments.contains(e.getKey().getId()) && ignoredUnmappedEquipments.contains(e.getKey().getId())) {
-                throw new TimeSeriesMappingException("Equipment '" + e.getKey().getId() + "' is declared unmapped but mapped on time series '" + e.getValue().getFirst() + "'");
+            if (!unmappedEquipments.contains(e.getKey().id()) && ignoredUnmappedEquipments.contains(e.getKey().id())) {
+                throw new TimeSeriesMappingException("Equipment '" + e.getKey().id() + "' is declared unmapped but mapped on time series '" + e.getValue().getFirst() + "'");
             }
         }
     }
@@ -39,7 +39,7 @@ public class TimeSeriesMappingConfigChecker {
         Map<String, Set<MappingVariable>> mappedVariablesPerLoad = new HashMap<>();
         config.timeSeriesToLoadsMapping.forEach((mappingKey, ids) -> {
             for (String id : ids) {
-                mappedVariablesPerLoad.computeIfAbsent(id, s -> new HashSet<>()).add(mappingKey.getMappingVariable());
+                mappedVariablesPerLoad.computeIfAbsent(id, s -> new HashSet<>()).add(mappingKey.mappingVariable());
             }
         });
         for (Map.Entry<String, Set<MappingVariable>> e : mappedVariablesPerLoad.entrySet()) {
@@ -86,7 +86,7 @@ public class TimeSeriesMappingConfigChecker {
 
     public static int getNbMapped(Map<MappingKey, List<String>> equipmentToTimeSeriesMapping) {
         return equipmentToTimeSeriesMapping.keySet().stream()
-                .map(MappingKey::getId)
+                .map(MappingKey::id)
                 .collect(Collectors.toSet())
                 .size();
     }
@@ -99,7 +99,7 @@ public class TimeSeriesMappingConfigChecker {
 
     public static int getNbMapped(Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, EquipmentVariable variable) {
         return (int) equipmentToTimeSeriesMapping.keySet().stream()
-                .filter(key -> key.getMappingVariable() == variable)
+                .filter(key -> key.mappingVariable() == variable)
                 .count();
     }
 
