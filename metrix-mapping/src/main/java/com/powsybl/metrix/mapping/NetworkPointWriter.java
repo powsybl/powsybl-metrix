@@ -9,8 +9,18 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.MemDataSource;
-import com.powsybl.iidm.network.*;
-import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.LccConverterStation;
+import com.powsybl.iidm.network.Line;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.PhaseTapChanger;
+import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
+import com.powsybl.iidm.network.VariantManagerConstants;
+import com.powsybl.iidm.network.VscConverterStation;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
@@ -29,7 +39,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMapper.*;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -38,16 +50,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     public static final int OFF_VALUE = 0;
 
-    private static final class GeneratorInitialValues {
-
-        private final double minP;
-
-        private final double maxP;
-
-        private GeneratorInitialValues(double minP, double maxP) {
-            this.minP = minP;
-            this.maxP = maxP;
-        }
+    private record GeneratorInitialValues(double minP, double maxP) {
     }
 
     static final class HvdcLineInitialValues {
@@ -94,24 +97,17 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             return;
         }
 
-        if (identifiable instanceof Generator) {
-            mapToGeneratorVariable(identifiable, variable, equipmentValue);
-        } else if (identifiable instanceof Load) {
-            mapToLoadVariable(identifiable, variable, equipmentValue);
-        } else if (identifiable instanceof HvdcLine) {
-            mapToHvdcLineVariable(identifiable, variable, equipmentValue);
-        } else if (identifiable instanceof Switch) {
-            mapToSwitchVariable(identifiable, equipmentValue);
-        } else if (identifiable instanceof TwoWindingsTransformer) {
-            mapToTwoWindingsTransformerVariable(identifiable, variable, equipmentValue);
-        } else if (identifiable instanceof LccConverterStation) {
-            mapToLccConverterStationVariable(identifiable, variable, (float) equipmentValue);
-        } else if (identifiable instanceof VscConverterStation) {
-            mapToVscConverterStationVariable(identifiable, variable, equipmentValue);
-        } else if (identifiable instanceof Line) {
-            mapToLineVariable(identifiable, variable, equipmentValue);
-        } else {
-            throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
+        switch (identifiable) {
+            case Generator generator -> mapToGeneratorVariable(generator, variable, equipmentValue);
+            case Load load -> mapToLoadVariable(load, variable, equipmentValue);
+            case HvdcLine hvdcLine -> mapToHvdcLineVariable(hvdcLine, variable, equipmentValue);
+            case Switch aSwitch -> mapToSwitchVariable(aSwitch, equipmentValue);
+            case TwoWindingsTransformer twoWindingsTransformer -> mapToTwoWindingsTransformerVariable(twoWindingsTransformer, variable, equipmentValue);
+            case LccConverterStation lccConverterStation -> mapToLccConverterStationVariable(lccConverterStation, variable, (float) equipmentValue);
+            case VscConverterStation vscConverterStation -> mapToVscConverterStationVariable(vscConverterStation, variable, equipmentValue);
+            case Line line -> mapToLineVariable(line, variable, equipmentValue);
+            default ->
+                throw new AssertionError(String.format("Unknown equipment type %s", identifiable.getClass().getName()));
         }
     }
 
@@ -193,18 +189,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         HvdcLine hvdcLine = network.getHvdcLine(identifiable.getId());
         HvdcOperatorActivePowerRange hvdcRange = addActivePowerRangeExtension(hvdcLine);
         switch (variable) {
-            case ACTIVE_POWER_SETPOINT -> {
-                HvdcAngleDroopActivePowerControl activePowerControl = TimeSeriesMapper.getActivePowerControl(hvdcLine);
-                if (activePowerControl != null) {
-                    activePowerControl.setP0((float) equipmentValue);
-                } else if (equipmentValue >= 0) {
-                    hvdcLine.setConvertersMode(HvdcLine.ConvertersMode.SIDE_1_RECTIFIER_SIDE_2_INVERTER);
-                    hvdcLine.setActivePowerSetpoint((float) equipmentValue);
-                } else {
-                    hvdcLine.setConvertersMode(HvdcLine.ConvertersMode.SIDE_1_INVERTER_SIDE_2_RECTIFIER);
-                    hvdcLine.setActivePowerSetpoint((float) -equipmentValue);
-                }
-            }
+            case ACTIVE_POWER_SETPOINT -> TimeSeriesMapper.setHvdcLineSetPoint(hvdcLine, equipmentValue);
             case MIN_P -> {
                 hvdcRange.setOprFromCS2toCS1((float) Math.abs(equipmentValue));
                 calculateMaxP(equipmentValue, hvdcLine, hvdcRange.getOprFromCS1toCS2());
