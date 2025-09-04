@@ -88,9 +88,9 @@ class NetworkTopographyChangeNotifierTest {
         Mockito.doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
             if (args.length > 0 && args[0] instanceof Log log) {
-                String actualLabel = log.getLabel();
+                String actualLabel = log.label();
                 String expectedLabel = "network update";
-                String actualMessage = log.getMessage();
+                String actualMessage = log.message();
                 String expectedMessage = "Network update not applied : Creation of item FP.AND1_1_NEW";
                 hit.set(hit.get()
                         || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
@@ -122,9 +122,9 @@ class NetworkTopographyChangeNotifierTest {
         Mockito.doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
             if (args.length > 0 && args[0] instanceof Log log) {
-                String actualLabel = log.getLabel();
+                String actualLabel = log.label();
                 String expectedLabel = "network update";
-                String actualMessage = log.getMessage();
+                String actualMessage = log.message();
                 String expectedMessage = "Network update not applied : Update of item Disj FSSV.O11_L";
                 hit.set(hit.get()
                         || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
@@ -147,9 +147,9 @@ class NetworkTopographyChangeNotifierTest {
         Mockito.doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
             if (args.length > 0 && args[0] instanceof Log log) {
-                String actualLabel = log.getLabel();
+                String actualLabel = log.label();
                 String expectedLabel = "network update";
-                String actualMessage = log.getMessage();
+                String actualMessage = log.message();
                 String expectedMessage = "Network update not applied : Remove of item FP.AND1  FVERGE1  1";
                 hit.set(hit.get()
                         || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);

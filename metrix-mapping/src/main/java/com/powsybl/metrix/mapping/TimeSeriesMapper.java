@@ -250,7 +250,7 @@ public class TimeSeriesMapper {
         if (parameters.isIgnoreEmptyFilter()) {
             timeSeriesMappingLogger.addLog(log);
         } else {
-            throw new TimeSeriesMappingException(log.getMessage());
+            throw new TimeSeriesMappingException(log.message());
         }
     }
 
