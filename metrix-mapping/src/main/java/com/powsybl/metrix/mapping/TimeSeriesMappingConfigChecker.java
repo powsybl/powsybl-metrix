@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
