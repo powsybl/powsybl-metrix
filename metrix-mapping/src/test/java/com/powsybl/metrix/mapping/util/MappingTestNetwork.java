@@ -7,7 +7,12 @@
  */
 package com.powsybl.metrix.mapping.util;
 
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Country;
+import com.powsybl.iidm.network.EnergySource;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.Substation;
+import com.powsybl.iidm.network.TopologyKind;
+import com.powsybl.iidm.network.VoltageLevel;
 
 /**
  * 2 buses connected by a line.

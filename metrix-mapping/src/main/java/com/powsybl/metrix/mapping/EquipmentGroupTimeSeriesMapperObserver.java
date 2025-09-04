@@ -14,7 +14,11 @@ import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.powsybl.metrix.mapping.EquipmentTimeSeriesMapperObserver.EQUIPMENT;
 

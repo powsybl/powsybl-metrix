@@ -14,7 +14,15 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.timeseries.ast.NodeCalc;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -518,7 +526,7 @@ public class TimeSeriesMappingConfig {
     }
 
     public Set<String> getEquipmentIds() {
-        return equipmentToTimeSeriesMap.keySet().stream().map(MappingKey::getId).collect(Collectors.toSet());
+        return equipmentToTimeSeriesMap.keySet().stream().map(MappingKey::id).collect(Collectors.toSet());
     }
 
     public void addEquipmentTimeSeries(String timeSeriesName, MappingVariable variable, String id) {

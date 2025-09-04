@@ -5,7 +5,10 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.util.MappingTestNetwork;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 

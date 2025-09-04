@@ -8,7 +8,14 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Lists;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
+import com.powsybl.iidm.network.VoltageLevel;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +25,11 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.formatDouble;

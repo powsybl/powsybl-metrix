@@ -51,7 +51,7 @@ public final class MetrixLossesPostProcessingTimeSeries {
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Retrieve doctrine costs time series
         Optional<String> lossesDoctrineCostsTimeSeriesName = mappingConfig.getEquipmentToTimeSeries().entrySet().stream()
-                .filter(entry -> entry.getKey().getMappingVariable() == MetrixVariable.LOSSES_DOCTRINE_COST)
+                .filter(entry -> entry.getKey().mappingVariable() == MetrixVariable.LOSSES_DOCTRINE_COST)
                 .findFirst()
                 .map(Map.Entry::getValue);
         if (lossesDoctrineCostsTimeSeriesName.isEmpty()) {

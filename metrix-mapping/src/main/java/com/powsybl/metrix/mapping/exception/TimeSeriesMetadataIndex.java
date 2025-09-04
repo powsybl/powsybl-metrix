@@ -26,9 +26,9 @@ public class TimeSeriesMetadataIndex {
 
     @JsonCreator
     public TimeSeriesMetadataIndex(RegularTimeSeriesIndex regularTimeSeriesIndex) {
-        this.startTime = regularTimeSeriesIndex.getStartTime();
-        this.endTime = regularTimeSeriesIndex.getEndTime();
-        this.spacing = regularTimeSeriesIndex.getSpacing();
+        this.startTime = regularTimeSeriesIndex.getStartInstant().toEpochMilli();
+        this.endTime = regularTimeSeriesIndex.getEndInstant().toEpochMilli();
+        this.spacing = regularTimeSeriesIndex.getTimeStep().toMillis();
         this.pointCount = regularTimeSeriesIndex.getPointCount();
     }
 }

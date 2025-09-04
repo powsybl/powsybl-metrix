@@ -7,28 +7,18 @@
  */
 package com.powsybl.metrix.mapping;
 
+import org.jspecify.annotations.NonNull;
+
 import java.util.Objects;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-public class IndexedName {
-
-    private final String name;
-
-    private final int num;
+public record IndexedName(String name, int num) {
 
     public IndexedName(String name, int num) {
         this.name = Objects.requireNonNull(name);
         this.num = num;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getNum() {
-        return num;
     }
 
     @Override
@@ -38,13 +28,14 @@ public class IndexedName {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof IndexedName other) {
-            return name.equals(other.name) && num == other.num;
+        if (obj instanceof IndexedName(String name1, int num1)) {
+            return name.equals(name1) && num == num1;
         }
         return false;
     }
 
     @Override
+    @NonNull
     public String toString() {
         return "IndexedName(name=" + name + ", num=" + num + ")";
     }
