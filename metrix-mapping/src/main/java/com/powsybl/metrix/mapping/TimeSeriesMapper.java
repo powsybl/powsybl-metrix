@@ -328,9 +328,9 @@ public class TimeSeriesMapper {
                                             Map<IndexedName, Set<MappingKey>> constantTimeSeries,
                                             Map<IndexedName, Set<MappingKey>> variableTimeSeries) {
         sourceTimeSeries.forEach((indexedName, mappingKeys) -> {
-            int timeSeriesNum = indexedName.getNum();
+            int timeSeriesNum = indexedName.num();
             if (table.getStdDev(version, timeSeriesNum) < EPSILON_COMPARISON) { // std dev == 0 means time-series is constant
-                LOGGER.debug("Equipment time-series '{}' is constant", indexedName.getName());
+                LOGGER.debug("Equipment time-series '{}' is constant", indexedName.name());
                 constantTimeSeries.put(indexedName, mappingKeys);
             } else {
                 variableTimeSeries.put(indexedName, mappingKeys);
@@ -626,8 +626,8 @@ public class TimeSeriesMapper {
     private void mapEquipmentToNetwork(int version, int point,
                                        Map<IndexedName, Set<MappingKey>> equipmentTimeSeries) {
         for (Map.Entry<IndexedName, Set<MappingKey>> e : equipmentTimeSeries.entrySet()) {
-            String timeSeriesName = e.getKey().getName();
-            int timeSeriesNum = e.getKey().getNum();
+            String timeSeriesName = e.getKey().name();
+            int timeSeriesNum = e.getKey().num();
             double timeSeriesValue = table.getDoubleValue(version, timeSeriesNum, point);
             for (MappingKey equipment : e.getValue()) {
                 checker.timeSeriesMappedToEquipment(point, timeSeriesName, network.getIdentifiable(equipment.getId()), equipment.getMappingVariable(), timeSeriesValue);
