@@ -401,7 +401,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     private boolean compareSpacingWithDurationBetweenIndexes(RegularTimeSeriesIndex firstIndex, RegularTimeSeriesIndex lastIndex) {
         return Duration.between(
                 firstIndex.getInstantAt(firstIndex.getPointCount() - 1),
-                lastIndex.getInstantAt(0)) == firstIndex.getTimeStep();
+                lastIndex.getInstantAt(0)).equals(firstIndex.getTimeStep());
     }
 
     /**
@@ -413,7 +413,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private TimeSeriesIndex appendTimeSeriesIndex(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex, boolean existingComesFirst) {
         if (existingIndex instanceof RegularTimeSeriesIndex regularExistingTimeSeriesIndex && newIndex instanceof RegularTimeSeriesIndex regularNewTimeSeriesIndex
-            && regularExistingTimeSeriesIndex.getTimeStep() == regularNewTimeSeriesIndex.getTimeStep()
+            && regularExistingTimeSeriesIndex.getTimeStep().equals(regularNewTimeSeriesIndex.getTimeStep())
             && (existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularExistingTimeSeriesIndex, regularNewTimeSeriesIndex)
             || !existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularNewTimeSeriesIndex, regularExistingTimeSeriesIndex))) {
             // If both indexes are regular, both spacing are equals and the space between the first and the second index is equal to the spacing, the updated index is also regular
