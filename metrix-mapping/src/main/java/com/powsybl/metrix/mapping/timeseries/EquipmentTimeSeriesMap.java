@@ -32,8 +32,8 @@ public class EquipmentTimeSeriesMap {
 
     public void convertToEquipmentTimeSeriesMap(Map<MappingKey, List<String>> timeSerieMap, TimeSeriesTable table, Network network, TimeSeriesMappingConfig config) {
         equimentTimeSeries.clear();
-        timeSerieMap.entrySet().forEach(timeSeries -> equimentTimeSeries
-                .put(indexMappingKey(table, timeSeries.getKey()), mapEquipments(timeSeries.getKey(), timeSeries.getValue(), network, config)));
+        timeSerieMap.forEach((key, value) -> equimentTimeSeries
+            .put(indexMappingKey(table, key), mapEquipments(key, value, network, config)));
     }
 
     public List<MappedEquipment> mapEquipments(MappingKey key, List<String> equipmentIds, Network network, TimeSeriesMappingConfig config) {
