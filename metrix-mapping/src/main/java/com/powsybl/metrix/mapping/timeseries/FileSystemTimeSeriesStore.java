@@ -401,8 +401,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     private boolean compareSpacingWithDurationBetweenIndexes(RegularTimeSeriesIndex firstIndex, RegularTimeSeriesIndex lastIndex) {
         return Duration.between(
                 firstIndex.getInstantAt(firstIndex.getPointCount() - 1),
-                lastIndex.getInstantAt(0))
-            .toMillis() == firstIndex.getSpacing();
+                lastIndex.getInstantAt(0)) == firstIndex.getTimeStep();
     }
 
     /**
@@ -414,18 +413,19 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
 
     private TimeSeriesIndex appendTimeSeriesIndex(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex, boolean existingComesFirst) {
         if (existingIndex instanceof RegularTimeSeriesIndex regularExistingTimeSeriesIndex && newIndex instanceof RegularTimeSeriesIndex regularNewTimeSeriesIndex
-            && regularExistingTimeSeriesIndex.getSpacing() == regularNewTimeSeriesIndex.getSpacing()
+            && regularExistingTimeSeriesIndex.getTimeStep() == regularNewTimeSeriesIndex.getTimeStep()
             && (existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularExistingTimeSeriesIndex, regularNewTimeSeriesIndex)
             || !existingComesFirst && compareSpacingWithDurationBetweenIndexes(regularNewTimeSeriesIndex, regularExistingTimeSeriesIndex))) {
             // If both indexes are regular, both spacing are equals and the space between the first and the second index is equal to the spacing, the updated index is also regular
             return existingComesFirst ?
-                new RegularTimeSeriesIndex(regularExistingTimeSeriesIndex.getStartTime(), regularNewTimeSeriesIndex.getEndTime(), regularExistingTimeSeriesIndex.getSpacing()) :
-                new RegularTimeSeriesIndex(regularNewTimeSeriesIndex.getStartTime(), regularExistingTimeSeriesIndex.getEndTime(), regularExistingTimeSeriesIndex.getSpacing());
+                new RegularTimeSeriesIndex(regularExistingTimeSeriesIndex.getStartInstant(), regularNewTimeSeriesIndex.getEndInstant(), regularExistingTimeSeriesIndex.getTimeStep()) :
+                new RegularTimeSeriesIndex(regularNewTimeSeriesIndex.getStartInstant(), regularExistingTimeSeriesIndex.getEndInstant(), regularExistingTimeSeriesIndex.getTimeStep());
         } else {
             // Else the index is irregular
+
             return new IrregularTimeSeriesIndex(existingComesFirst ?
-                LongStream.concat(extractTimesFromIndex(existingIndex), extractTimesFromIndex(newIndex)).toArray() :
-                LongStream.concat(extractTimesFromIndex(newIndex), extractTimesFromIndex(existingIndex)).toArray()
+                Stream.concat(existingIndex.stream(), newIndex.stream()).toArray(Instant[]::new) :
+                Stream.concat(newIndex.stream(), existingIndex.stream()).toArray(Instant[]::new)
             );
         }
     }
