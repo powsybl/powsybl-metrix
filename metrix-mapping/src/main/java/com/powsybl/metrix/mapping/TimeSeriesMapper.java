@@ -201,8 +201,8 @@ public class TimeSeriesMapper {
 
     private void mapToNetwork(int version, int variantId, int point,
                               IndexedMappingKey mappingKey, List<MappedEquipment> mappedEquipments) {
-        String timeSeriesName = mappingKey.getKey().getId();
-        MappingVariable variable = mappingKey.getKey().getMappingVariable();
+        String timeSeriesName = mappingKey.key().getId();
+        MappingVariable variable = mappingKey.key().getMappingVariable();
 
         // compute distribution key associated to equipment list
         double[] distributionKeys = new double[mappedEquipments.size()];
@@ -211,7 +211,7 @@ public class TimeSeriesMapper {
         double[] equipmentValues = new double[mappedEquipments.size()];
         Arrays.fill(equipmentValues, 0);
 
-        double timeSeriesValue = table.getDoubleValue(version, mappingKey.getNum(), point);
+        double timeSeriesValue = table.getDoubleValue(version, mappingKey.num(), point);
         if (Double.isNaN(timeSeriesValue) || Double.isInfinite(timeSeriesValue)) {
             throw new TimeSeriesMappingException("Impossible to scale down " + timeSeriesValue + " of ts " + timeSeriesName + " at time index '" + table.getTableIndex().getInstantAt(point) + "' and version " + version);
         }
@@ -347,15 +347,15 @@ public class TimeSeriesMapper {
             return;
         }
         sourceTimeSeries.getEquipmentTimeSeries().forEach((indexedMappingKey, mappedEquipments) -> {
-            int timeSeriesNum = indexedMappingKey.getNum();
-            MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
+            int timeSeriesNum = indexedMappingKey.num();
+            MappingVariable variable = indexedMappingKey.key().getMappingVariable();
             if (variable == EquipmentVariable.TARGET_P ||
                     variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
                 // Active power mapping is not tested in order to allow later correction of values not included in [minP, maxP]
                 variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
             } else {
                 if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                    LOGGER.debug("Mapping time-series '{}' is constant", indexedMappingKey.getKey().getId());
+                    LOGGER.debug("Mapping time-series '{}' is constant", indexedMappingKey.key().getId());
                     constantTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
                 } else {
                     variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
