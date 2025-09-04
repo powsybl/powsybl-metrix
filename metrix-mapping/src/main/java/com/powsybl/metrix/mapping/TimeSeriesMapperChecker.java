@@ -7,13 +7,34 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
-import com.powsybl.metrix.mapping.log.*;
-import com.powsybl.metrix.mapping.timeseries.*;
+import com.powsybl.metrix.mapping.log.LimitLogBuilder;
+import com.powsybl.metrix.mapping.log.Log;
+import com.powsybl.metrix.mapping.log.LogBuilder;
+import com.powsybl.metrix.mapping.log.LogContent;
+import com.powsybl.metrix.mapping.log.RangeLogPhaseTapPosition;
+import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
+import com.powsybl.metrix.mapping.log.RangeWithMinPViolatedByTargetP;
+import com.powsybl.metrix.mapping.log.ScalingDownChangeToVariable;
+import com.powsybl.metrix.mapping.log.ScalingDownLimitChangeSynthesis;
+import com.powsybl.metrix.mapping.timeseries.LimitChange;
+import com.powsybl.metrix.mapping.timeseries.MappedEquipments;
+import com.powsybl.metrix.mapping.timeseries.MappedPower;
+import com.powsybl.metrix.mapping.timeseries.ScalingDownLimitViolation;
+import com.powsybl.metrix.mapping.timeseries.ScalingDownPowerChange;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
