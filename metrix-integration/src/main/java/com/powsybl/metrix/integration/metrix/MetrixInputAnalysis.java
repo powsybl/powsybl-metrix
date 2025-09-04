@@ -410,9 +410,9 @@ public class MetrixInputAnalysis {
     }
 
     private void checkRemedial(Remedial remedial, Set<String> contingencyIds) {
-        if (!remedial.getContingency().isEmpty() && !contingencyIds.contains(remedial.getContingency())) {
-            String message = String.format(RESOURCE_BUNDLE.getString("invalidMetrixRemedialContingency"), remedial.getContingency());
-            writeRemedialLog(remedial.getLineFile(), message);
+        if (!remedial.contingency().isEmpty() && !contingencyIds.contains(remedial.contingency())) {
+            String message = String.format(RESOURCE_BUNDLE.getString("invalidMetrixRemedialContingency"), remedial.contingency());
+            writeRemedialLog(remedial.lineFile(), message);
         }
     }
 
@@ -475,14 +475,14 @@ public class MetrixInputAnalysis {
     }
 
     private void isValidRemedial(Remedial remedial) {
-        for (String action : remedial.getBranchToOpen()) {
-            isValidAction(remedial.getLineFile(), network, action);
+        for (String action : remedial.branchToOpen()) {
+            isValidAction(remedial.lineFile(), network, action);
         }
-        for (String action : remedial.getBranchToClose()) {
-            isValidAction(remedial.getLineFile(), network, action);
+        for (String action : remedial.branchToClose()) {
+            isValidAction(remedial.lineFile(), network, action);
         }
-        for (String constraint : remedial.getConstraint()) {
-            isValidConstraint(remedial.getLineFile(), network, constraint);
+        for (String constraint : remedial.constraint()) {
+            isValidConstraint(remedial.lineFile(), network, constraint);
         }
     }
 

@@ -609,10 +609,10 @@ public class MetrixNetwork {
         // Create opened and switch-retained lists (network will be modified)
         List<Remedial> remedials = RemedialReader.parseFile(remedialActionReader);
         Set<String> retainedElements = Stream.concat(
-                remedials.stream().flatMap(remedial -> remedial.getBranchToOpen().stream()),
-                remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream())
+                remedials.stream().flatMap(remedial -> remedial.branchToOpen().stream()),
+                remedials.stream().flatMap(remedial -> remedial.branchToClose().stream())
         ).collect(Collectors.toSet());
-        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream()).collect(Collectors.toSet());
+        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.branchToClose().stream()).collect(Collectors.toSet());
         if (!Objects.isNull(mappedSwitches)) {
             // close mapped switches as their openness is set via mapping
             for (String switchId : mappedSwitches) {

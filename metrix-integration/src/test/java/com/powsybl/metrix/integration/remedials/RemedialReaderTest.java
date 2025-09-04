@@ -40,12 +40,12 @@ class RemedialReaderTest {
         for (int i = 0; i < expectedList.size(); i++) {
             Remedial actual = remedials.get(i);
             Remedial expected = expectedList.get(i);
-            assertThat(actual.getLineFile()).isEqualTo(expected.getLineFile());
-            assertThat(actual.getContingency()).isEqualTo(expected.getContingency());
-            assertThat(actual.getConstraint()).isEqualTo(expected.getConstraint());
-            assertThat(actual.getBranchToOpen()).isEqualTo(expected.getBranchToOpen());
-            assertThat(actual.getBranchToClose()).isEqualTo(expected.getBranchToClose());
-            assertThat(actual.getActions()).isEqualTo(expected.getActions());
+            assertThat(actual.lineFile()).isEqualTo(expected.lineFile());
+            assertThat(actual.contingency()).isEqualTo(expected.contingency());
+            assertThat(actual.constraint()).isEqualTo(expected.constraint());
+            assertThat(actual.branchToOpen()).isEqualTo(expected.branchToOpen());
+            assertThat(actual.branchToClose()).isEqualTo(expected.branchToClose());
+            assertThat(actual.actions()).isEqualTo(expected.actions());
         }
     }
 
