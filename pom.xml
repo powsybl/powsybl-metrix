@@ -67,6 +67,7 @@
         <assertj.version>3.27.3</assertj.version>
         <autoservice.version>1.1.1</autoservice.version>
         <commonscli.version>1.9.0</commonscli.version>
+        <checkstyle.version>11.0.1</checkstyle.version>
         <!-- groovy.version : Same as powsybl-core -->
         <groovy.version>4.0.26</groovy.version>
         <guava.version>33.4.8-jre</guava.version>
@@ -116,6 +117,23 @@
             </build>
         </profile>
     </profiles>
+
+    <!-- Remove this when the checkstyle version is up to date in powsybl-parent -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.puppycrawl.tools</groupId>
+                        <artifactId>checkstyle</artifactId>
+                        <version>${checkstyle.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencyManagement>
         <dependencies>
