@@ -9,7 +9,11 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.TreeBasedTable;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.DanglingLine;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Injection;
+import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
@@ -24,7 +28,13 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
