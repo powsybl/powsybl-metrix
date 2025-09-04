@@ -9,6 +9,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNames;

@@ -9,6 +9,7 @@ package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Generator
 import com.powsybl.iidm.network.Identifiable
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
 import groovy.transform.CompileStatic
 
 /**

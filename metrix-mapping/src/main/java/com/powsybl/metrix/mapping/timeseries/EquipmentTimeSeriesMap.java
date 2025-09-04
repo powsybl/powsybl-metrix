@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping.timeseries;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.TimeSeriesTable;
 
 import java.util.ArrayList;

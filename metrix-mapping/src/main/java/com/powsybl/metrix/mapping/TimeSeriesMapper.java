@@ -12,6 +12,7 @@ import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRangeAdder;
 import com.powsybl.iidm.network.extensions.LoadDetail;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.metrix.mapping.log.*;
 import com.powsybl.metrix.mapping.timeseries.EquipmentTimeSeriesMap;
 import com.powsybl.metrix.mapping.timeseries.MappedEquipment;

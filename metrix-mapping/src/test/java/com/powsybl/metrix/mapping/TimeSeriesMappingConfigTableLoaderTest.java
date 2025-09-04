@@ -3,6 +3,7 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
 import com.powsybl.timeseries.DoubleTimeSeries;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;

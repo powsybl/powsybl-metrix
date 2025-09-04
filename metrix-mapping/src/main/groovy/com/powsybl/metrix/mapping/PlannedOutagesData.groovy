@@ -8,6 +8,7 @@
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.StringTimeSeries
 import groovy.transform.CompileStatic
