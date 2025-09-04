@@ -7,7 +7,11 @@
  */
 package com.powsybl.metrix.mapping
 
-import com.powsybl.iidm.network.*
+import com.powsybl.iidm.network.Identifiable
+import com.powsybl.iidm.network.Injection
+import com.powsybl.iidm.network.Substation
+import com.powsybl.iidm.network.Switch
+import com.powsybl.iidm.network.VoltageLevel
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -22,10 +26,10 @@ class FilteringContext {
         this.identifiable = identifiable
         if (identifiable instanceof Injection) {
             voltageLevel = ((Injection) identifiable).terminal.voltageLevel
-            substation = voltageLevel.substation
+            substation = voltageLevel.substation.get()
         } else if (identifiable instanceof Switch) {
             voltageLevel = ((Switch) identifiable).voltageLevel
-            substation = voltageLevel.substation
+            substation = voltageLevel.substation.get()
         }
     }
 }
