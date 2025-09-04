@@ -22,27 +22,8 @@ import java.util.List;
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
-public class MetrixAnalysisResult {
-    @Nullable
-    public final MetrixDslData metrixDslData;
-    public final TimeSeriesMappingConfig mappingConfig;
-    public final Network network;
-    public final MetrixParameters metrixParameters;
-    public final MappingParameters mappingParameters;
-    public final MetrixConfigResult metrixConfigResult;
-    public final List<Contingency> contingencies;
-    public final List<Remedial> remedials;
-
-    public MetrixAnalysisResult(@Nullable MetrixDslData metrixDslData, TimeSeriesMappingConfig mappingConfig, Network network,
-                                MetrixParameters metrixParameters, MappingParameters mappingParameters, MetrixConfigResult metrixConfigResult,
-                                List<Contingency> contingencies, List<Remedial> remedials) {
-        this.metrixDslData = metrixDslData;
-        this.mappingConfig = mappingConfig;
-        this.network = network;
-        this.metrixParameters = metrixParameters;
-        this.mappingParameters = mappingParameters;
-        this.metrixConfigResult = metrixConfigResult;
-        this.contingencies = contingencies;
-        this.remedials = remedials;
-    }
+public record MetrixAnalysisResult(@Nullable MetrixDslData metrixDslData, TimeSeriesMappingConfig mappingConfig,
+                                   Network network, MetrixParameters metrixParameters,
+                                   MappingParameters mappingParameters, MetrixConfigResult metrixConfigResult,
+                                   List<Contingency> contingencies, List<Remedial> remedials) {
 }

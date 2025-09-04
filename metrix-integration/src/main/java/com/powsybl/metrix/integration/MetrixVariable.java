@@ -46,7 +46,7 @@ public enum MetrixVariable implements MappingVariable {
     CURATIVE_DOCTRINE_COST_DOWN("curativeDoctrineCostDown"),
     LOSSES_DOCTRINE_COST("lossesDoctrineCost");
 
-    protected static final String NAME = "metrix";
+    static final String NAME = "metrix";
 
     @Override
     public String getFieldName() {

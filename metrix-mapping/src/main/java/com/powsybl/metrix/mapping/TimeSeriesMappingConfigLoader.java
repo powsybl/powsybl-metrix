@@ -120,7 +120,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             List<String> timeSeriesAlreadyMappedToThisEquipment = getMultimapValue(equipmentToTimeSeriesMapping, equipmentToTimeSeriesKey);
             if (!timeSeriesAlreadyMappedToThisEquipment.isEmpty()) {
                 // remove old mapping
-                String oldTimeSeriesName = timeSeriesAlreadyMappedToThisEquipment.get(0);
+                String oldTimeSeriesName = timeSeriesAlreadyMappedToThisEquipment.getFirst();
                 MappingKey oldTimeSeriesKey = new MappingKey(variable, oldTimeSeriesName);
                 List<String> equipmentsMappedToOldTimeSeries = getMultimapValue(timeSerieToEquipmentsMapping, oldTimeSeriesKey);
                 equipmentsMappedToOldTimeSeries.remove(equipmentId);

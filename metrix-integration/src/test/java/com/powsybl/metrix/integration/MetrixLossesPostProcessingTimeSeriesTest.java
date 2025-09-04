@@ -21,7 +21,6 @@ import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
@@ -32,6 +31,7 @@ import java.util.Set;
 import static com.powsybl.metrix.integration.MetrixLossesPostProcessingTimeSeries.LOSSES_COST_PREFIX;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOSSES;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +62,7 @@ class MetrixLossesPostProcessingTimeSeriesTest {
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-02T00:00:00Z"), Duration.ofDays(1));
 
         ReadOnlyTimeSeriesStore metrixResultTimeSeries = mock(ReadOnlyTimeSeriesStore.class);
-        when(metrixResultTimeSeries.getTimeSeriesNames(Mockito.any())).thenReturn(Set.of(LOSSES));
+        when(metrixResultTimeSeries.getTimeSeriesNames(any())).thenReturn(Set.of(LOSSES));
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsCost", index, 1000d, 1000d)

@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 @JsonDeserialize(using = IntAttribute.JsonDeserializer.class)
-class IntAttribute implements Attribute {
+public class IntAttribute implements Attribute {
 
     static final AttributeType TYPE = AttributeType.INTEGER;
 

@@ -54,7 +54,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     public Optional<TimeSeriesMetadata> getTimeSeriesMetadata(String timeSeriesName) {
         List<TimeSeriesMetadata> timeSeriesMetadata = getTimeSeriesMetadata(Collections.singleton(timeSeriesName));
         if (!timeSeriesMetadata.isEmpty()) {
-            return Optional.of(timeSeriesMetadata.get(0));
+            return Optional.of(timeSeriesMetadata.getFirst());
         }
         return Optional.empty();
     }
@@ -94,7 +94,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     public Optional<DoubleTimeSeries> getDoubleTimeSeries(String timeSeriesName, int version) {
         List<DoubleTimeSeries> localDoubleTimeSeries = getDoubleTimeSeries(Collections.singleton(timeSeriesName), version);
         if (!localDoubleTimeSeries.isEmpty()) {
-            return Optional.of(localDoubleTimeSeries.get(0));
+            return Optional.of(localDoubleTimeSeries.getFirst());
         }
         return Optional.empty();
     }
@@ -113,7 +113,7 @@ public class InMemoryTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     public Optional<StringTimeSeries> getStringTimeSeries(String timeSeriesName, int version) {
         List<StringTimeSeries> localStringTimeSeries = getStringTimeSeries(Collections.singleton(timeSeriesName), version);
         if (!localStringTimeSeries.isEmpty()) {
-            return Optional.of(localStringTimeSeries.get(0));
+            return Optional.of(localStringTimeSeries.getFirst());
         }
         return Optional.empty();
     }

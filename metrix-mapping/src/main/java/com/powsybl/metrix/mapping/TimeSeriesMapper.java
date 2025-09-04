@@ -256,7 +256,7 @@ public class TimeSeriesMapper {
     }
 
     private boolean logHvdcLimitSign(List<MappedEquipment> mappedEquipments, String timeSeriesName, MappingVariable variable, double timeSeriesValue, LogBuilder logBuilder) {
-        if (mappedEquipments.get(0).getIdentifiable() instanceof HvdcLine) {
+        if (mappedEquipments.getFirst().getIdentifiable() instanceof HvdcLine) {
             LimitSignBuilder limitSignBuilder = new LimitSignBuilder()
                     .timeSeriesValue(timeSeriesValue)
                     .timeSeriesName(timeSeriesName)

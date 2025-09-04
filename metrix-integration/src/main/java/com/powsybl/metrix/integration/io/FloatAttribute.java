@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 @JsonDeserialize(using = FloatAttribute.JsonDeserializer.class)
-class FloatAttribute implements Attribute {
+public class FloatAttribute implements Attribute {
 
     static final AttributeType TYPE = AttributeType.FLOAT;
 

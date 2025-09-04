@@ -40,7 +40,6 @@ public abstract class AbstractMetrix {
     protected static final String DEFAULT_SCHEMA_NAME = "default";
 
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
-    protected static final String REMEDIAL_ACTIONS_CSV_GZ = REMEDIAL_ACTIONS_CSV + ".gz";
 
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
@@ -87,8 +86,8 @@ public abstract class AbstractMetrix {
 
         MetrixConfig metrixConfig = MetrixConfig.load();
 
-        if (analysisResult.metrixDslData != null) {
-            int estimatedResultNumber = analysisResult.metrixDslData.minResultNumberEstimate(analysisResult.metrixParameters);
+        if (analysisResult.metrixDslData() != null) {
+            int estimatedResultNumber = analysisResult.metrixDslData().minResultNumberEstimate(analysisResult.metrixParameters());
             if (estimatedResultNumber > metrixConfig.getResultNumberLimit()) {
                 throw new PowsyblException(String.format("Metrix configuration will produce more result time-series (%d) than the maximum allowed (%d).\n" +
                         "Reduce the number of monitored branches and/or number of contingencies.", estimatedResultNumber, metrixConfig.getResultNumberLimit()));
@@ -96,16 +95,16 @@ public abstract class AbstractMetrix {
         }
 
         if (runParameters.isNetworkComputation()) {
-            analysisResult.metrixParameters.setWithAdequacyResults(true);
-            analysisResult.metrixParameters.setWithRedispatchingResults(true);
+            analysisResult.metrixParameters().setWithAdequacyResults(true);
+            analysisResult.metrixParameters().setWithRedispatchingResults(true);
         }
 
-        TimeSeriesMappingConfigTableLoader loader = new TimeSeriesMappingConfigTableLoader(analysisResult.mappingConfig, store);
+        TimeSeriesMappingConfigTableLoader loader = new TimeSeriesMappingConfigTableLoader(analysisResult.mappingConfig(), store);
         TimeSeriesIndex index = loader.checkIndexUnicity();
         loader.checkValues(runParameters.getVersions());
         ChunkCutter chunkCutter = initChunkCutter(runParameters, metrixConfig.getChunkSize(), index);
 
-        LOGGER.info("Running metrix {} on network {}", analysisResult.metrixParameters.getComputationType(), analysisResult.network.getNameOrId());
+        LOGGER.info("Running metrix {} on network {}", analysisResult.metrixParameters().getComputationType(), analysisResult.network().getNameOrId());
         appLogger.log("[%s] Running metrix", schemaName);
 
         try (WorkingDirectory commonWorkingDir = new WorkingDirectory(computationManager.getLocalDir(), "metrix-commons-", metrixConfig.isDebug())) {
@@ -123,7 +122,7 @@ public abstract class AbstractMetrix {
 
             MetrixRunResult runResult = new MetrixRunResult();
             appLogger.log("[%s] Computing postprocessing timeseries", schemaName);
-            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData, analysisResult.mappingConfig, resultStore, nullableSchemaName));
+            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData(), analysisResult.mappingConfig(), resultStore, nullableSchemaName));
             return runResult;
 
         } catch (IOException e) {

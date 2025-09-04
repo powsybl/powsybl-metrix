@@ -184,7 +184,7 @@ public class DataTable {
         checkColumnNames(selectedColumn);
         DataTable filteredDataTable = filter(List.of(selectedColumn), filter);
         List<String> values = filteredDataTable.data(selectedColumn);
-        return values.isEmpty() ? null : values.get(0);
+        return values.isEmpty() ? null : values.getFirst();
     }
 
     public List<String> searchValueList(String selectedColumn, Map<String, List<String>> filter) {

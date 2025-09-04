@@ -297,7 +297,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Loads      total = <%5d> ok = <%5d> not = <%5d>", loadList.size() + nbNok, loadList.size(), nbNok));
+            String message = String.format("Loads      total = <%5d> ok = <%5d> not = <%5d>", loadList.size() + nbNok, loadList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -317,7 +318,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Generators total = <%5d> ok = <%5d> not = <%5d>", generatorList.size() + nbNok, generatorList.size(), nbNok));
+            String message = String.format("Generators total = <%5d> ok = <%5d> not = <%5d>", generatorList.size() + nbNok, generatorList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -339,7 +341,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Lines      total = <%5d> ok = <%5d> not = <%5d>", lineList.size() + nbNok, lineList.size(), nbNok));
+            String message = String.format("Lines      total = <%5d> ok = <%5d> not = <%5d>", lineList.size() + nbNok, lineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -357,7 +360,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("TieLines   total = <%5d> ok = <%5d> not = <%5d>", tieLineList.size() + nbNok, tieLineList.size(), nbNok));
+            String message = String.format("TieLines   total = <%5d> ok = <%5d> not = <%5d>", tieLineList.size() + nbNok, tieLineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -388,8 +392,10 @@ public class MetrixNetwork {
         AtomicInteger nbPtcNok = new AtomicInteger(0);
         network.getTwoWindingsTransformers().forEach(twt -> addTwoWindingsTransformer(twt, nbNok, nbPtcNok));
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get()));
-            LOGGER.debug(String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get()));
+            String message = String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get());
+            LOGGER.debug(message);
+            message = String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get());
+            LOGGER.debug(message);
         }
     }
 
@@ -416,7 +422,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Threetrfo  total = <%5d> ok = <%5d> not = <%5d>", threeWindingsTransformerList.size() + nbNok, threeWindingsTransformerList.size(), nbNok));
+            String message = String.format("Threetrfo  total = <%5d> ok = <%5d> not = <%5d>", threeWindingsTransformerList.size() + nbNok, threeWindingsTransformerList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -443,7 +450,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Dangling   total = <%5d> ok = <%5d> not = <%5d>", unpairedDanglingLineList.size() + nbNok, unpairedDanglingLineList.size(), nbNok));
+            String message = String.format("Dangling   total = <%5d> ok = <%5d> not = <%5d>", unpairedDanglingLineList.size() + nbNok, unpairedDanglingLineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -465,7 +473,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Switches   total = <%5d> ok = <%5d> not = <%5d>", switchList.size() + nbNok, switchList.size(), nbNok));
+            String message = String.format("Switches   total = <%5d> ok = <%5d> not = <%5d>", switchList.size() + nbNok, switchList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -487,7 +496,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Hvdc       total = <%5d> ok = <%5d> not = <%5d>", hvdcLineList.size() + nbNok, hvdcLineList.size(), nbNok));
+            String message = String.format("Hvdc       total = <%5d> ok = <%5d> not = <%5d>", hvdcLineList.size() + nbNok, hvdcLineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -504,7 +514,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Bus        total = <%5d> ok = <%5d> not = <%5d>", busList.size() + nbNok, busList.size(), nbNok));
+            String message = String.format("Buses      total = <%5d> ok = <%5d> not = <%5d>", busList.size() + nbNok, busList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -518,7 +529,8 @@ public class MetrixNetwork {
         ctyList.forEach(contingency -> addContingencyToList(contingency, propagate));
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size()));
+            String message = String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size());
+            LOGGER.debug(message);
         }
     }
 
@@ -532,7 +544,7 @@ public class MetrixNetwork {
             }
             if (!elemOk) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Contingency '%s' : element '%s' not found in the network", contingency.getId(), element.getId()));
+                    LOGGER.warn("Contingency '{}' : element '{}' not found in the network", contingency.getId(), element.getId());
                 }
                 ctyOk = false;
             }
@@ -609,10 +621,10 @@ public class MetrixNetwork {
         // Create opened and switch-retained lists (network will be modified)
         List<Remedial> remedials = RemedialReader.parseFile(remedialActionReader);
         Set<String> retainedElements = Stream.concat(
-                remedials.stream().flatMap(remedial -> remedial.getBranchToOpen().stream()),
-                remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream())
+                remedials.stream().flatMap(remedial -> remedial.branchToOpen().stream()),
+                remedials.stream().flatMap(remedial -> remedial.branchToClose().stream())
         ).collect(Collectors.toSet());
-        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream()).collect(Collectors.toSet());
+        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.branchToClose().stream()).collect(Collectors.toSet());
         if (!Objects.isNull(mappedSwitches)) {
             // close mapped switches as their openness is set via mapping
             for (String switchId : mappedSwitches) {
@@ -682,9 +694,9 @@ public class MetrixNetwork {
 
             // Check on both sides of the switch to check if there is one and only one connectable
             if (terminalsBus1.size() == 1) {
-                addElementToRetainedBreakersList(sw, terminalsBus1.get(0), false);
+                addElementToRetainedBreakersList(sw, terminalsBus1.getFirst(), false);
             } else if (terminalsBus2.size() == 1) {
-                addElementToRetainedBreakersList(sw, terminalsBus2.get(0), false);
+                addElementToRetainedBreakersList(sw, terminalsBus2.getFirst(), false);
             } else {
                 addElementToRetainedBreakersList(sw, switchId, false);
             }

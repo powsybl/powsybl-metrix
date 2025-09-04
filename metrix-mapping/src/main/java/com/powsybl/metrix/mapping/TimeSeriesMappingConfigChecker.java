@@ -29,7 +29,7 @@ public class TimeSeriesMappingConfigChecker {
     private void checkMappedAndUnmapped(Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, Set<String> unmappedEquipments, Set<String> ignoredUnmappedEquipments) {
         for (Map.Entry<MappingKey, List<String>> e : equipmentToTimeSeriesMapping.entrySet()) {
             if (!unmappedEquipments.contains(e.getKey().getId()) && ignoredUnmappedEquipments.contains(e.getKey().getId())) {
-                throw new TimeSeriesMappingException("Equipment '" + e.getKey().getId() + "' is declared unmapped but mapped on time series '" + e.getValue().get(0) + "'");
+                throw new TimeSeriesMappingException("Equipment '" + e.getKey().getId() + "' is declared unmapped but mapped on time series '" + e.getValue().getFirst() + "'");
             }
         }
     }
