@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.powsybl.contingency.Contingency;
 import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ast.BinaryOperation;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.CURATIVE_PREFIX;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
@@ -74,6 +76,7 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
 
     private final MetrixDslData metrixDslData;
     private final TimeSeriesMappingConfig mappingConfig;
+    private final List<Contingency> contingencies;
     private final Set<String> allTimeSeriesNames;
     private final String nullableSchemaName;
     Map<String, NodeCalc> calculatedTimeSeries;
@@ -82,10 +85,12 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
 
     public MetrixGeneratorPostProcessingTimeSeries(MetrixDslData metrixDslData,
                                                    TimeSeriesMappingConfig mappingConfig,
+                                                   List<Contingency> contingencies,
                                                    Set<String> allTimeSeriesNames,
                                                    String nullableSchemaName) {
         this.metrixDslData = metrixDslData;
         this.mappingConfig = mappingConfig;
+        this.contingencies = contingencies;
         this.allTimeSeriesNames = allTimeSeriesNames;
         this.nullableSchemaName = nullableSchemaName;
         this.calculatedTimeSeries = new HashMap<>(mappingConfig.getTimeSeriesNodes());
@@ -96,25 +101,27 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
      */
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Preventive
-        createRedispatchingPostProcessingTimeSeries(PREVENTIVE_PREFIX_CONTAINER);
+        List<String> preventiveGeneratorIds = findIdsToProcess(metrixDslData.getGeneratorsForRedispatching(), allTimeSeriesNames, GEN_PREFIX);
+        createRedispatchingPostProcessingTimeSeries(PREVENTIVE_PREFIX_CONTAINER, GEN_PREFIX, preventiveGeneratorIds);
 
         // Curative
-        createRedispatchingPostProcessingTimeSeries(CURATIVE_PREFIX_CONTAINER);
+        Set<String> contingencyIds = contingencies.stream().map(Contingency::getId).collect(Collectors.toSet());
+        List<String> curativeGeneratorIds = findIdsToProcess(metrixDslData.getGeneratorsForRedispatching(), allTimeSeriesNames, GEN_CUR_PREFIX, contingencyIds);
+        createRedispatchingPostProcessingTimeSeries(CURATIVE_PREFIX_CONTAINER, GEN_CUR_PREFIX, curativeGeneratorIds);
 
         return postProcessingTimeSeries;
     }
 
     /**
-     * For each generator having GEN_generatorId result (generator redispatching time series) (MW)
+     * For each generator having redispatching result (generator redispatching time series) (MW)
      * - create up and down redispatching time series (MW)
      * - create up and down costs time series
      * - create global cost time series
-     * @param prefixContainer prefix of time series to create (preventive or curative)
+     * @param prefixContainer     prefix of time series to create (preventive or curative)
+     * @param prefix              prefix of metrix results time series to process
+     * @param generatorIds        list of generator ids having redispatching results
      */
-    private void createRedispatchingPostProcessingTimeSeries(GeneratorPostProcessingPrefixContainer prefixContainer) {
-        String prefix = prefixContainer.postProcessingType().equals(PREVENTIVE) ? GEN_PREFIX : GEN_CUR_PREFIX;
-        List<String> generatorIds = findIdsToProcess(metrixDslData.getGeneratorsForRedispatching(), allTimeSeriesNames, prefix);
-
+    private void createRedispatchingPostProcessingTimeSeries(GeneratorPostProcessingPrefixContainer prefixContainer, String prefix, List<String> generatorIds) {
         // Retrieve doctrine costs time series
         List<String> upCostsTimeSeriesNames = generatorIds.stream().map(id -> mappingConfig.getTimeSeriesName(new MappingKey(MetrixVariable.ON_GRID_DOCTRINE_COST_UP, id))).toList();
         List<String> downCostsTimeSeriesNames = generatorIds.stream().map(id -> mappingConfig.getTimeSeriesName(new MappingKey(MetrixVariable.ON_GRID_DOCTRINE_COST_DOWN, id))).toList();
@@ -149,7 +156,7 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
      * Create global costs calculated time series
      *    prefix_redispatchingCost_generatorId = pre_redispatchingUpCost_generatorId + pre_redispatchingDownCost_generatorId
      * @param generatorId         generator id
-     * @param genTimeSeries       GEN_generatorId time series
+     * @param genTimeSeries       metrix redispatching result time series
      * @param upCostsTimeSeries   redispatching up doctrine cost time series
      * @param downCostsTimeSeries redispatching down doctrine cost time series
      * @param prefixContainer     prefix of time series to create (preventive or curative)
