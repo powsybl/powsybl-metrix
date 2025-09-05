@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.powsybl.contingency.Contingency;
 import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ast.BinaryOperation;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.CURATIVE_PREFIX;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
@@ -45,6 +47,7 @@ public final class MetrixLoadPostProcessingTimeSeries {
 
     private final MetrixDslData metrixDslData;
     private final TimeSeriesMappingConfig mappingConfig;
+    private final List<Contingency> contingencies;
     private final Set<String> allTimeSeriesNames;
     private final String nullableSchemaName;
     Map<String, NodeCalc> calculatedTimeSeries;
@@ -53,10 +56,12 @@ public final class MetrixLoadPostProcessingTimeSeries {
 
     public MetrixLoadPostProcessingTimeSeries(MetrixDslData metrixDslData,
                                               TimeSeriesMappingConfig mappingConfig,
+                                              List<Contingency> contingencies,
                                               Set<String> allTimeSeriesNames,
                                               String nullableSchemaName) {
         this.metrixDslData = metrixDslData;
         this.mappingConfig = mappingConfig;
+        this.contingencies = contingencies;
         this.allTimeSeriesNames = allTimeSeriesNames;
         this.nullableSchemaName = nullableSchemaName;
         this.calculatedTimeSeries = new HashMap<>(mappingConfig.getTimeSeriesNodes());
@@ -67,31 +72,34 @@ public final class MetrixLoadPostProcessingTimeSeries {
      */
     public Map<String, NodeCalc> createPostProcessingTimeSeries() {
         // Preventive load shedding
-        createLoadSheddingPostProcessingTimeSeries(true);
+        List<String> preventiveLoadIds = findIdsToProcess(metrixDslData.getPreventiveLoadsList(), allTimeSeriesNames, LOAD_PREFIX);
+        createLoadSheddingPostProcessingTimeSeries(LOAD_PREFIX, preventiveLoadIds, MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN, PRE_SHEDDING_PREFIX, PRE_SHEDDING_COST_PREFIX);
+
         // Curative load shedding
-        createLoadSheddingPostProcessingTimeSeries(false);
+        Set<String> contingencyIds = contingencies.stream().map(Contingency::getId).collect(Collectors.toSet());
+        List<String> curativeLoadIds = findIdsToProcess(metrixDslData.getCurativeLoadsList(), allTimeSeriesNames, LOAD_CUR_PREFIX, contingencyIds);
+        createLoadSheddingPostProcessingTimeSeries(LOAD_CUR_PREFIX, curativeLoadIds, MetrixVariable.CURATIVE_DOCTRINE_COST_DOWN, CUR_SHEDDING_PREFIX, CUR_SHEDDING_COST_PREFIX);
         return postProcessingTimeSeries;
     }
 
     /**
-     * For each load having LOAD_loadId result (load shedding time series) (MW)
+     * For each load having load shedding result (load shedding time series) (MW)
      * - create load shedding time series (MW)
      * - create load shedding cost time series
-     * @param isPreventive true for preventive computation, false otherwise
+     * @param prefix             prefix of metrix results time series to process
+     * @param loadIds            list of load ids having load shedding results
+     * @param variable           doctrine cost configuration variable
+     * @param sheddingPrefix     prefix of shedding time series to create (preventive or curative)
+     * @param sheddingCostPrefix prefix of shedding cost time series to create (preventive or curative)
      */
-    private void createLoadSheddingPostProcessingTimeSeries(boolean isPreventive) {
-        Set<String> allIds = isPreventive ? metrixDslData.getPreventiveLoadsList() : metrixDslData.getCurativeLoadsList();
-        MetrixVariable variable = isPreventive ? MetrixVariable.PREVENTIVE_DOCTRINE_COST_DOWN : MetrixVariable.CURATIVE_DOCTRINE_COST_DOWN;
-
+    private void createLoadSheddingPostProcessingTimeSeries(String prefix, List<String> loadIds, MetrixVariable variable, String sheddingPrefix, String sheddingCostPrefix) {
         // Retrieve doctrine costs time series
-        List<String> doctrineCostsTimeSeriesNames = allIds.stream().map(id -> mappingConfig.getTimeSeriesName(new MappingKey(variable, id))).toList();
+        List<String> doctrineCostsTimeSeriesNames = loadIds.stream().map(id -> mappingConfig.getTimeSeriesName(new MappingKey(variable, id))).toList();
         if (doctrineCostsTimeSeriesNames.stream().anyMatch(Objects::isNull)) {
             LOGGER.warn(DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED, "Load shedding");
             return;
         }
 
-        String prefix = isPreventive ? LOAD_PREFIX : LOAD_CUR_PREFIX;
-        List<String> loadIds = findIdsToProcess(allIds, allTimeSeriesNames, prefix);
         int size = loadIds.size();
         for (int i = 0; i < size; i++) {
             String loadId = loadIds.get(i);
@@ -102,7 +110,7 @@ public final class MetrixLoadPostProcessingTimeSeries {
             NodeCalc loadTimeSeries = new TimeSeriesNameNodeCalc(prefix + loadId);
 
             // Compute load shedding cost time series
-            createLoadSheddingPostProcessingTimeSeries(loadId, loadTimeSeries, loadSheddingDoctrineCostsTimeSeries, isPreventive);
+            createLoadSheddingPostProcessingTimeSeries(loadId, loadTimeSeries, loadSheddingDoctrineCostsTimeSeries, sheddingPrefix, sheddingCostPrefix);
         }
     }
 
@@ -112,23 +120,25 @@ public final class MetrixLoadPostProcessingTimeSeries {
      * Create cost load shedding calculated time series
      *    prefix_sheddingCost_loadId = prefix_shedding_loadId * load shedding doctrine cost time series
      * @param loadId                              load id
-     * @param loadTimeSeries                      LOAD_loadId time series
+     * @param loadTimeSeries                      metrix load shedding result time series
      * @param loadSheddingDoctrineCostsTimeSeries load shedding doctrine cost time series
-     * @param isPreventive                        true for preventive computation, false otherwise
+     * @param sheddingPrefix                      prefix of shedding time series to create (preventive or curative)
+     * @param sheddingCostPrefix                  prefix of shedding cost time series to create (preventive or curative)
      */
     private void createLoadSheddingPostProcessingTimeSeries(String loadId,
                                                             NodeCalc loadTimeSeries,
                                                             NodeCalc loadSheddingDoctrineCostsTimeSeries,
-                                                            boolean isPreventive) {
+                                                            String sheddingPrefix,
+                                                            String sheddingCostPrefix) {
         LOGGER.debug("Creating load shedding postprocessing time-series for {}", loadId);
 
         // Load shedding
-        String loadSheddingTimeSeriesName = MetrixDataName.getNameWithSchema((isPreventive ? PRE_SHEDDING_PREFIX : CUR_SHEDDING_PREFIX) + "_" + loadId, nullableSchemaName);
+        String loadSheddingTimeSeriesName = MetrixDataName.getNameWithSchema(sheddingPrefix + "_" + loadId, nullableSchemaName);
         postProcessingTimeSeries.put(loadSheddingTimeSeriesName, loadTimeSeries);
 
         // Load shedding cost
         NodeCalc loadCostTimeSeries = BinaryOperation.multiply(loadTimeSeries, loadSheddingDoctrineCostsTimeSeries);
-        String loadSheddingCostTimeSeriesName = MetrixDataName.getNameWithSchema((isPreventive ? PRE_SHEDDING_COST_PREFIX : CUR_SHEDDING_COST_PREFIX) + "_" + loadId, nullableSchemaName);
+        String loadSheddingCostTimeSeriesName = MetrixDataName.getNameWithSchema(sheddingCostPrefix + "_" + loadId, nullableSchemaName);
         postProcessingTimeSeries.put(loadSheddingCostTimeSeriesName, loadCostTimeSeries);
     }
 }
