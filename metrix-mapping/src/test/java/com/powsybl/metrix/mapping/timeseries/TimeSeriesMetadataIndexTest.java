@@ -7,7 +7,6 @@
  */
 package com.powsybl.metrix.mapping.timeseries;
 
-import com.powsybl.metrix.mapping.exception.TimeSeriesMetadataIndex;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

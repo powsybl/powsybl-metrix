@@ -75,29 +75,6 @@ class FileSystemTimeSeriesStoreTest {
     }
 
     @Test
-    @Deprecated(since = "2.3.0")
-    void testTsStoreDeprecatedMethod() throws IOException {
-        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
-        Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
-        assertThat(emptyTimeSeriesNames).isEmpty();
-
-        try (InputStream resourceAsStream = Objects.requireNonNull(FileSystemTimeSeriesStoreTest.class.getResourceAsStream("/testStore.csv"));
-             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(resourceAsStream))
-        ) {
-            tsStore.importTimeSeries(bufferedReader, true, false);
-        }
-
-        assertThat(tsStore.getTimeSeriesNames(null)).isNotEmpty();
-        assertThat(tsStore.getTimeSeriesNames(null)).containsExactlyInAnyOrder("BALANCE", "tsX");
-
-        assertTrue(tsStore.timeSeriesExists("BALANCE"));
-        assertFalse(tsStore.timeSeriesExists("tsY"));
-
-        assertEquals(Set.of(1), tsStore.getTimeSeriesDataVersions());
-        assertEquals(Set.of(1), tsStore.getTimeSeriesDataVersions("BALANCE"));
-    }
-
-    @Test
     void testTsStore() throws IOException {
         FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
         Set<String> emptyTimeSeriesNames = tsStore.getTimeSeriesNames(null);
@@ -591,62 +568,6 @@ class FileSystemTimeSeriesStoreTest {
         IrregularTimeSeriesIndex storedIndex1 = (IrregularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
         assertEquals(978303600000L, storedIndex1.getInstantAt(0).toEpochMilli());
         assertEquals(978332400000L, storedIndex1.getInstantAt(storedIndex1.getPointCount() - 1).toEpochMilli());
-    }
-
-    @Test
-    @Deprecated(since = "2.3.0")
-    void testDeprecatedImportTimeSeries() throws IOException {
-        // TimeSeriesStore
-        FileSystemTimeSeriesStore tsStore = new FileSystemTimeSeriesStore(resDir);
-
-        // TimeSeries indexes
-        Instant now = Instant.ofEpochMilli(978303600000L);
-        RegularTimeSeriesIndex index = RegularTimeSeriesIndex.create(now,
-            now.plus(2, ChronoUnit.HOURS),
-            Duration.ofHours(1));
-        RegularTimeSeriesIndex indexBis = RegularTimeSeriesIndex.create(now.plus(3, ChronoUnit.HOURS),
-            now.plus(5, ChronoUnit.HOURS),
-            Duration.ofHours(1));
-
-        // TimeSeries
-        StoredDoubleTimeSeries ts1 = TimeSeries.createDouble("ts1", index, 1d, 2d, 3d);
-        StoredDoubleTimeSeries ts2 = TimeSeries.createDouble("ts1", indexBis, 4d, 5d, 6d);
-
-        // Append the TimeSeries
-        tsStore.importTimeSeries(List.of(ts1), 1);
-        tsStore.importTimeSeries(List.of(ts2), 1, false, true);
-
-        // Assertions for Double
-        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
-        StoredDoubleTimeSeries storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
-        assertArrayEquals(new double[] {1d, 2d, 3d, 4d, 5d, 6d}, storedTs1.toArray());
-        assertEquals(2, storedTs1.getChunks().size());
-        assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
-        RegularTimeSeriesIndex storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978303600000L, storedIndex.getStartTime());
-        assertEquals(978321600000L, storedIndex.getEndTime());
-        assertEquals(3600000L, storedIndex.getSpacing());
-
-        // Append the TimeSeries
-        tsStore.importTimeSeries(List.of(ts2), 1, true, false);
-
-        // Assertions for Double
-        assertTrue(tsStore.getDoubleTimeSeries("ts1", 1).isPresent());
-        storedTs1 = (StoredDoubleTimeSeries) tsStore.getDoubleTimeSeries("ts1", 1).get();
-        assertArrayEquals(new double[] {4d, 5d, 6d}, storedTs1.toArray());
-        assertEquals(1, storedTs1.getChunks().size());
-        assertInstanceOf(RegularTimeSeriesIndex.class, storedTs1.getMetadata().getIndex());
-        storedIndex = (RegularTimeSeriesIndex) storedTs1.getMetadata().getIndex();
-        assertEquals(978314400000L, storedIndex.getStartTime());
-        assertEquals(978321600000L, storedIndex.getEndTime());
-        assertEquals(3600000L, storedIndex.getSpacing());
-
-        // Fails since it already exists
-        List<TimeSeries> list = List.of(ts2);
-        PowsyblException exception = assertThrows(PowsyblException.class,
-            () -> tsStore.importTimeSeries(list, 1, false, false));
-        assertEquals("Timeserie ts1 already exist", exception.getMessage());
-
     }
 
     @Test
