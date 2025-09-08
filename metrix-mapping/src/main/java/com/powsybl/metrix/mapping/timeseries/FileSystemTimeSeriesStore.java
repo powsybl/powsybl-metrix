@@ -182,23 +182,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeSeriesStore
-     * @deprecated use {@link #importTimeSeries(List, int, ExistingFilePolicy)} instead
-     */
-    @Deprecated(since = "2.3.0")
-    public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, boolean overwriteExisting, boolean append) {
-        ExistingFilePolicy existingFilePolicy;
-        if (append) {
-            existingFilePolicy = ExistingFilePolicy.APPEND;
-        } else if (overwriteExisting) {
-            existingFilePolicy = ExistingFilePolicy.OVERWRITE;
-        } else {
-            existingFilePolicy = ExistingFilePolicy.THROW_EXCEPTION;
-        }
-        importTimeSeries(timeSeriesList, version, existingFilePolicy);
-    }
-
-    /**
      * <p>Import a list of TimeSeries in the current FileSystemTimeSeriesStore.</p>
      * <p>If a file already exists for such TimeSeries, the new TimeSeries will be appended to it</p>
      */
@@ -445,16 +428,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
                 LongStream.concat(extractTimesFromIndex(newIndex), extractTimesFromIndex(existingIndex)).toArray()
             );
         }
-    }
-
-    /**
-     * Import a list of TimeSeries in the current FileSystemTimeSeriesStore
-     * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFilePolicy)}  instead
-     */
-    @Deprecated(since = "2.3.0")
-    public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
-        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
-        integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting, append));
     }
 
     /**
