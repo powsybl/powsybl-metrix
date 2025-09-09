@@ -121,7 +121,7 @@ public class MetrixAnalysis {
             }
             MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, scriptLogBufferedWriter).runAnalysis();
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
-            return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.getContingencies(), inputs.getRemedials());
+            return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.contingencies(), inputs.remedials());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

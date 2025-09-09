@@ -124,7 +124,7 @@ public class MetrixChunk {
                     LOGGER.error("More than one network point files '{}'", files.size());
                     throw new MetrixException("More than one network point files " + files.size());
                 } else {
-                    Files.copy(workingDir.resolve(files.get(0)), metrixChunkParam.networkPointFile);
+                    Files.copy(workingDir.resolve(files.getFirst()), metrixChunkParam.networkPointFile);
                 }
             }
         }

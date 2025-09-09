@@ -59,19 +59,19 @@ class CalculatedTimeseriesStoreTest {
         assertThat(timeSeriesStore.getTimeSeriesDataVersions()).containsExactly(1);
         List<TimeSeriesMetadata> metadatas = timeSeriesStore.getTimeSeriesMetadata(Collections.singleton("ts3"));
         assertThat(metadatas).hasSize(1);
-        TimeSeriesMetadata timeSeriesMetadata = metadatas.get(0);
+        TimeSeriesMetadata timeSeriesMetadata = metadatas.getFirst();
         assertThat(timeSeriesMetadata.getIndex().getType()).isEqualTo("regularIndex");
         List<DoubleTimeSeries> ts31 = timeSeriesStore.getDoubleTimeSeries(Collections.singleton("ts3"), 1);
         assertThat(ts31).hasSize(1);
-        assertThat(ts31.get(0).toArray()).isEqualTo(new double[]{2d, 5d, 8d});
+        assertThat(ts31.getFirst().toArray()).isEqualTo(new double[]{2d, 5d, 8d});
         ts31 = timeSeriesStore.getDoubleTimeSeries(Collections.singleton("ts4"), 1);
         assertThat(ts31).hasSize(1);
-        assertThat(ts31.get(0).toArray()).isEqualTo(new double[]{0d, 1d, 1d});
+        assertThat(ts31.getFirst().toArray()).isEqualTo(new double[]{0d, 1d, 1d});
 
         // Second call to getTimeSeriesMetadata in order to check that index computing is not done twice but results are still correct
         List<TimeSeriesMetadata> metadatasSecondCall = timeSeriesStore.getTimeSeriesMetadata(Collections.singleton("ts3"));
         assertThat(metadatasSecondCall).hasSize(1);
-        TimeSeriesMetadata timeSeriesMetadataSecondCall = metadatasSecondCall.get(0);
+        TimeSeriesMetadata timeSeriesMetadataSecondCall = metadatasSecondCall.getFirst();
         assertThat(timeSeriesMetadataSecondCall.getIndex().getType()).isEqualTo("regularIndex");
     }
 
@@ -89,7 +89,7 @@ class CalculatedTimeseriesStoreTest {
         // Calculated TimeSeries based on two other calculated TimeSeries
         List<TimeSeriesMetadata> metadatasCalculatedOfCalculated = timeSeriesStore.getTimeSeriesMetadata(Collections.singleton("ts7"));
         assertThat(metadatasCalculatedOfCalculated).hasSize(1);
-        TimeSeriesMetadata timeSeriesMetadataCalculatedOfCalculated = metadatasCalculatedOfCalculated.get(0);
+        TimeSeriesMetadata timeSeriesMetadataCalculatedOfCalculated = metadatasCalculatedOfCalculated.getFirst();
         assertThat(timeSeriesMetadataCalculatedOfCalculated.getIndex().getType()).isEqualTo("regularIndex");
 
         // Unsynchronized index
