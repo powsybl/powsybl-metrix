@@ -64,27 +64,28 @@ public class MmapByteBufferService {
     private final Lock lock = new ReentrantLock();
 
     public MmapByteBufferService() {
-        ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
+        try (ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor(new ThreadFactoryBuilder()
                 .setDaemon(true)
                 .setNameFormat("MMAP_CLEANER-%d")
-                .build());
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            lock.lock();
-            try {
-                for (Iterator<Map.Entry<String, BufferContext>> it = contexts.entrySet().iterator(); it.hasNext();) {
-                    Map.Entry<String, BufferContext> e = it.next();
-                    BufferContext context = e.getValue();
-                    // only try to delete file already closed
-                    if (context.raf == null && tryToDelete(context)) {
-                        it.remove();
+                .build())) {
+            scheduledExecutorService.scheduleAtFixedRate(() -> {
+                lock.lock();
+                try {
+                    for (Iterator<Map.Entry<String, BufferContext>> it = contexts.entrySet().iterator(); it.hasNext(); ) {
+                        Map.Entry<String, BufferContext> e = it.next();
+                        BufferContext context = e.getValue();
+                        // only try to delete file already closed
+                        if (context.raf == null && tryToDelete(context)) {
+                            it.remove();
+                        }
                     }
+                } catch (Exception t) {
+                    LOGGER.error(t.toString(), t);
+                } finally {
+                    lock.unlock();
                 }
-            } catch (Exception t) {
-                LOGGER.error(t.toString(), t);
-            } finally {
-                lock.unlock();
-            }
-        }, 0L, 1L, TimeUnit.MINUTES);
+            }, 0L, 1L, TimeUnit.MINUTES);
+        }
     }
 
     public ByteBuffer create(String fileName, int size) {
