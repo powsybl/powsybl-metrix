@@ -19,7 +19,7 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
-import com.powsybl.metrix.mapping.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;

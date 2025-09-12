@@ -186,8 +186,10 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         for (int i = 0; i < ids.size(); i++) {
             writer.write(separator);
             writer.write(ids.get(i));
-            writer.write(separator);
-            writer.write(formatDouble(values.get(i)));
+            if (values != null) {
+                writer.write(separator);
+                writer.write(formatDouble(values.get(i)));
+            }
         }
         writer.write(separator);
         writer.newLine();
@@ -195,21 +197,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     }
 
     private boolean writeVariant(int num, String key, List<String> ids) throws IOException {
-        if (ids.isEmpty()) {
-            return false;
-        }
-        writer.write(Integer.toString(num));
-        writer.write(separator);
-        writer.write(key);
-        writer.write(separator);
-        writer.write(Integer.toString(ids.size()));
-        for (String id : ids) {
-            writer.write(separator);
-            writer.write(id);
-        }
-        writer.write(separator);
-        writer.newLine();
-        return true;
+        return writeVariant(num, key, ids, null);
     }
 
     @Override
@@ -235,20 +223,10 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             throw new UncheckedIOException(e);
         }
 
-        loadDetails.clear();
-        loadIds.clear();
-        loadValues.clear();
-        generatorIds.clear();
-        generatorValues.clear();
-        hvdcLineIds.clear();
-        hvdcLineValues.clear();
-        pstIds.clear();
-        pstValues.clear();
-        openBranchList.clear();
-        openGeneratorList.clear();
-        metrixVariableIds.clear();
-        metrixVariableValues.clear();
-        contingencyIds.clear();
+        List.of(loadDetails, loadIds, loadValues, generatorIds, generatorValues, hvdcLineIds, hvdcLineValues, pstIds,
+                pstValues, metrixVariableIds, metrixVariableValues)
+            .forEach(Map::clear);
+        List.of(openBranchList, openGeneratorList, contingencyIds).forEach(List::clear);
         contingencyProbabilityValues.clear();
     }
 

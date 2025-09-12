@@ -165,7 +165,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
                 .toList();
             return switch (timeSeries.size()) {
                 case 0 -> Optional.empty();
-                case 1 -> Optional.of(timeSeries.get(0));
+                case 1 -> Optional.of(timeSeries.getFirst());
                 default -> throw new PowsyblException("Found more than one timeseries");
             };
         }
@@ -179,23 +179,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     @Override
     public void removeListener(TimeSeriesStoreListener timeSeriesStoreListener) {
         throw new NotImplementedException("Not impletemented");
-    }
-
-    /**
-     * Import a list of TimeSeries in the current FileSystemTimeSeriesStore
-     * @deprecated use {@link #importTimeSeries(List, int, ExistingFilePolicy)} instead
-     */
-    @Deprecated(since = "2.3.0")
-    public void importTimeSeries(List<TimeSeries> timeSeriesList, int version, boolean overwriteExisting, boolean append) {
-        ExistingFilePolicy existingFilePolicy;
-        if (append) {
-            existingFilePolicy = ExistingFilePolicy.APPEND;
-        } else if (overwriteExisting) {
-            existingFilePolicy = ExistingFilePolicy.OVERWRITE;
-        } else {
-            existingFilePolicy = ExistingFilePolicy.THROW_EXCEPTION;
-        }
-        importTimeSeries(timeSeriesList, version, existingFilePolicy);
     }
 
     /**
@@ -241,7 +224,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
                 if (existingTsList.size() != 1) {
                     throw new PowsyblException("Existing ts file should contain one and only one ts");
                 }
-                TimeSeries existingTs = existingTsList.get(0);
+                TimeSeries existingTs = existingTsList.getFirst();
 
                 // You cannot append to an infinite TimeSeries
                 if (InfiniteTimeSeriesIndex.INSTANCE.getType().equals(existingTs.getMetadata().getIndex().getType())
@@ -448,16 +431,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
     }
 
     /**
-     * Import a list of TimeSeries in the current FileSystemTimeSeriesStore
-     * @deprecated use {@link #importTimeSeries(BufferedReader, ExistingFilePolicy)}  instead
-     */
-    @Deprecated(since = "2.3.0")
-    public void importTimeSeries(BufferedReader reader, boolean overwriteExisting, boolean append) {
-        Map<Integer, List<TimeSeries>> integerListMap = TimeSeries.parseCsv(reader, new TimeSeriesCsvConfig());
-        integerListMap.forEach((key, value) -> importTimeSeries(value, key, overwriteExisting, append));
-    }
-
-    /**
      * <p>Import a list of TimeSeries in the current FileSystemTimeSeriesStore.</p>
      * <p>If a file already exists for such TimeSeries, depending on {@code existingFiles}, the existing file will either
      * be kept as it is, overwritten or the new TimeSeries will be appended to it</p>
@@ -489,7 +462,7 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
                 .map(TimeSeries::parseJson)
                 .map(tsList -> {
                     if (tsList.size() == 1) {
-                        return tsList.get(0).getMetadata();
+                        return tsList.getFirst().getMetadata();
                     }
                     throw new PowsyblException("Invalid timeseries resource count");
                 })

@@ -16,6 +16,7 @@ import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -286,6 +287,7 @@ public class MetrixInputData {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "MetrixInputBranch{" +
                 "cqnomqua=" + Arrays.toString(cqnomqua) +
@@ -339,6 +341,7 @@ public class MetrixInputData {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "MetrixInputBranch{" +
                 "cqnomqua=" + Arrays.toString(dttrdequ) +
@@ -444,7 +447,7 @@ public class MetrixInputData {
                     openbran.add(metrixNetwork.getIndex(disconnectedElement));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Open branch '%s' is not in Main Connected Component", disconnectedElement.getId()));
+                        LOGGER.warn("Open branch '{}' is not in Main Connected Component", disconnectedElement.getId());
                     }
                 }
             }
@@ -834,7 +837,7 @@ public class MetrixInputData {
                 elementsToTrip.add(elementIndex);
             } catch (IllegalStateException ise) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Error while processing contingency '%s', element '%s' not found.", contingency.getId(), element.getId()));
+                    LOGGER.warn("Error while processing contingency '{}', element '{}' not found.", contingency.getId(), element.getId());
                     LOGGER.warn(ise.getMessage());
                 }
             }
@@ -909,7 +912,7 @@ public class MetrixInputData {
                 indexes.put(metrixNetwork.getIndex(subset, elementId), elementId);
             } catch (IllegalStateException ise) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Curative element '%s' not found in Main Connected Component", elementId));
+                    LOGGER.warn("Curative element '{}' not found in Main Connected Component", elementId);
                 }
             }
         }
@@ -929,7 +932,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of transformer '%s'", cty, pstId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of transformer '{}'", cty, pstId);
                     }
                 }
             }
@@ -968,7 +971,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of hvdc line '%s'", cty, hvdcId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of hvdc line '{}'", cty, hvdcId);
                     }
                 }
             }
@@ -1008,7 +1011,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of generator '%s'", cty, generatorId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of generator '{}'", cty, generatorId);
                     }
                 }
             }
@@ -1050,7 +1053,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of load '%s'", cty, loadId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of load '{}'", cty, loadId);
                     }
                 }
             }
@@ -1102,7 +1105,7 @@ public class MetrixInputData {
                     tmpList.add(indexCty);
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for detailed flow results of branch '%s'", cty, branchId));
+                        LOGGER.warn("Contingency '{}' not found for detailed flow results of branch '{}'", cty, branchId);
                     }
                 }
             }
@@ -1149,7 +1152,7 @@ public class MetrixInputData {
                     tmpList.add(indexCty);
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for detailed marginal variations of branch '%s'", cty, branchId));
+                        LOGGER.warn("Contingency '{}' not found for detailed marginal variations of branch '{}'", cty, branchId);
                     }
                 }
             }
@@ -1196,7 +1199,7 @@ public class MetrixInputData {
                 secttype.add(ElementType.HVDC.getType());
             } else {
                 if (LOGGER.isErrorEnabled()) {
-                    LOGGER.error(String.format("Section '%s' : unsupported element type '%s'", section.getId(), identifiable.getClass().getName()));
+                    LOGGER.error("Section '{}' : unsupported element type '{}'", section.getId(), identifiable.getClass().getName());
                 }
             }
             sectnumq.add(metrixNetwork.getIndex(identifiable));
@@ -1204,7 +1207,7 @@ public class MetrixInputData {
             sectnbqd[index]++;
         } else {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("Section '%s' : element not found in network '%s'", section.getId(), branch.getKey()));
+                LOGGER.warn("Section '{}' : element not found in network '{}'", section.getId(), branch.getKey());
             }
         }
     }
@@ -1255,7 +1258,7 @@ public class MetrixInputData {
                     idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("generator group '%s' : generator '%s' not found", binding.getName(), generatorId));
+                        LOGGER.warn("generator group '{}' : generator '{}' not found", binding.getName(), generatorId);
                     }
                 }
             }
@@ -1266,7 +1269,7 @@ public class MetrixInputData {
                 gbinddef.add(idList.size());
                 gbinddef.addAll(idList);
             } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("generator group '%s' ignored because it contains too few elements (%d)", binding.getName(), idList.size()));
+                LOGGER.warn("generator group '{}' ignored because it contains too few elements ({})", binding.getName(), idList.size());
             }
 
         }
@@ -1302,7 +1305,7 @@ public class MetrixInputData {
                     idList.add(metrixNetwork.getIndex(MetrixSubset.LOAD, loadId));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("load group '%s' : load '%s' not found", binding.getName(), loadId));
+                        LOGGER.warn("load group '{}' : load '{}' not found", binding.getName(), loadId);
                     }
                 }
             }
@@ -1312,7 +1315,7 @@ public class MetrixInputData {
                 lbinddef.add(idList.size());
                 lbinddef.addAll(idList);
             } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("load group '%s' ignored because it contains to few elements (%d)", binding.getName(), idList.size()));
+                LOGGER.warn("load group '{}' ignored because it contains to few elements ({})", binding.getName(), idList.size());
             }
 
         }
@@ -1381,7 +1384,7 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getBranchMonitoringNList().size() + dslData.getSectionList().size();
             int nbBranchNk = dslData.getBranchMonitoringNkList().size();
             nbTimeSeries += 2 * nbBranchNk * parameters.getOptionalNbThreatResults().orElse(1);
-            nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(b -> Boolean.TRUE.equals(b) ? 1 : 0).orElse(0);
+            nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(isPreCurative -> isPreCurative ? 1 : 0).orElse(0);
             nbTimeSeries += dslData.getContingencyFlowResultList().stream().mapToInt(s -> dslData.getContingencyFlowResult(s).size()).sum();
         }
         return nbTimeSeries;

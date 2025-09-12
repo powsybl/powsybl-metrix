@@ -11,6 +11,7 @@ import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.Injection;
 import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.VoltageLevel;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -119,7 +120,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             List<String> timeSeriesAlreadyMappedToThisEquipment = getMultimapValue(equipmentToTimeSeriesMapping, equipmentToTimeSeriesKey);
             if (!timeSeriesAlreadyMappedToThisEquipment.isEmpty()) {
                 // remove old mapping
-                String oldTimeSeriesName = timeSeriesAlreadyMappedToThisEquipment.get(0);
+                String oldTimeSeriesName = timeSeriesAlreadyMappedToThisEquipment.getFirst();
                 MappingKey oldTimeSeriesKey = new MappingKey(variable, oldTimeSeriesName);
                 List<String> equipmentsMappedToOldTimeSeries = getMultimapValue(timeSerieToEquipmentsMapping, oldTimeSeriesKey);
                 equipmentsMappedToOldTimeSeries.remove(equipmentId);

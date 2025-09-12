@@ -17,7 +17,7 @@ import java.io.PrintStream;
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-interface Attribute {
+public interface Attribute {
 
     String getName();
 
