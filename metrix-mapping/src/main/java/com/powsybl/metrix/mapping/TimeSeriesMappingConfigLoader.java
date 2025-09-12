@@ -18,7 +18,12 @@ import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
@@ -58,7 +63,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         };
     }
 
-    protected String computePowerTypeName(Generator generator) {
+    protected String computePowerTypeName(Generator ignored) {
         return StringUtils.EMPTY;
     }
 
@@ -128,7 +133,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
                     timeSerieToEquipmentsMapping.remove(oldTimeSeriesKey);
                 }
             }
-            timeSeriesAlreadyMappedToThisEquipment.add(0, timeSeriesName);
+            timeSeriesAlreadyMappedToThisEquipment.addFirst(timeSeriesName);
 
             // add new mapping
             getMultimapValue(timeSerieToEquipmentsMapping, timeSerieToEquipmentsKey).add(equipmentId);

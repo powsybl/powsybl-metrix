@@ -50,7 +50,7 @@ public enum EquipmentVariable implements MappingVariable {
     DISCONNECTED("disconnected"),
     TARGET_DEADBAND("targetDeadband");
 
-    protected static final String NAME = "equipment";
+    static final String NAME = "equipment";
 
     private static final Map<String, EquipmentVariable> NAME_TO_VARIABLE = Arrays.stream(EquipmentVariable.values()).collect(Collectors.toMap(EquipmentVariable::toString, Function.identity()));
 

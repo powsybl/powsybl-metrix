@@ -110,11 +110,11 @@ public class EquipmentTimeSeriesMapperObserver extends DefaultEquipmentTimeSerie
 
     protected static String idAndVariableToTsName(MappingKey key) {
         // MappingKey(variable, id), entry of mappingConfig equipmentToTimeSeriesMapping -> equipment timeSeriesName <id>_<variable>
-        return key.getId() + "_" + key.getMappingVariable().getVariableName();
+        return key.id() + "_" + key.mappingVariable().getVariableName();
     }
 
     protected static Map<String, String> computeTags(MappingKey key) {
-        return ImmutableMap.of(EQUIPMENT, key.getId(), VARIABLE, key.getMappingVariable().getVariableName());
+        return ImmutableMap.of(EQUIPMENT, key.id(), VARIABLE, key.mappingVariable().getVariableName());
     }
 
     protected double[] computeValue(MappingKey key) {

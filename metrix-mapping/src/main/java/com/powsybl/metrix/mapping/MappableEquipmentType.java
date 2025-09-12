@@ -35,7 +35,7 @@ public enum MappableEquipmentType {
         return scriptVariable;
     }
 
-    private static class Constants {
+    private static final class Constants {
         public static final String TWO_WINDINGS_TRANSFORMER = "twoWindingsTransformer";
     }
 }

@@ -245,6 +245,12 @@ class TimeSeriesDslLoaderTest {
         expectedConfig.setTimeSeriesToPlannedOutagesMapping(timeSeriesToPlannedOutagesMappingExpected);
         expectedConfig.setTimeSeriesNodes(Map.of("zero", new IntegerNodeCalc(0)));
         expectedConfig.setMappedTimeSeriesNames(Set.of("zero", "nucl_ts", "hydro_ts", "load1_ts", "load2_ts", "switch_ts", "multiple_ouverture_id_G1", "multiple_ouverture_id_L1", "multiple_ouverture_id_twt"));
+        Map<MappingKey, DistributionKey> distributionKeyMapping = getMappingKeyDistributionKeyMap();
+        expectedConfig.setDistributionKeys(distributionKeyMapping);
+        assertEquals(expectedConfig, config);
+    }
+
+    private static Map<MappingKey, DistributionKey> getMappingKeyDistributionKeyMap() {
         DistributionKey distributionKey = new NumberDistributionKey(1.0);
         Map<MappingKey, DistributionKey> distributionKeyMapping = new HashMap<>();
         distributionKeyMapping.put(new MappingKey(EquipmentVariable.DISCONNECTED, "twt"), distributionKey);
@@ -260,8 +266,7 @@ class TimeSeriesDslLoaderTest {
         distributionKeyMapping.put(new MappingKey(EquipmentVariable.P0, "LD2"), distributionKey);
         distributionKeyMapping.put(new MappingKey(EquipmentVariable.P0, "LD3"), distributionKey);
         distributionKeyMapping.put(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "twt"), distributionKey);
-        expectedConfig.setDistributionKeys(distributionKeyMapping);
-        assertEquals(expectedConfig, config);
+        return distributionKeyMapping;
     }
 
     @Test
