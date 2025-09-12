@@ -15,7 +15,9 @@ import com.powsybl.metrix.mapping.log.LogContent;
 import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
-import static com.powsybl.metrix.mapping.TimeSeriesConstants.*;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.CS12;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.MINUS_CS21;
+import static com.powsybl.metrix.mapping.TimeSeriesConstants.MINUS_MAXP;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
 /**

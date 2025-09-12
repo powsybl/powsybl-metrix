@@ -15,21 +15,5 @@ import java.util.List;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public class MetrixInputAnalysisResult {
-
-    private final List<Remedial> remedials;
-    private final List<Contingency> contingencies;
-
-    public MetrixInputAnalysisResult(List<Remedial> remedials, List<Contingency> contingencies) {
-        this.remedials = remedials;
-        this.contingencies = contingencies;
-    }
-
-    public List<Remedial> getRemedials() {
-        return remedials;
-    }
-
-    public List<Contingency> getContingencies() {
-        return contingencies;
-    }
+public record MetrixInputAnalysisResult(List<Remedial> remedials, List<Contingency> contingencies) {
 }

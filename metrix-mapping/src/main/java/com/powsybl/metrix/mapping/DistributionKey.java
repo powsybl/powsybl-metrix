@@ -73,7 +73,7 @@ public interface DistributionKey {
         Objects.requireNonNull(parser);
         Objects.requireNonNull(token);
         if (token == JsonToken.FIELD_NAME) {
-            String fieldName = parser.getCurrentName();
+            String fieldName = parser.currentName();
             switch (fieldName) {
                 case NumberDistributionKey.NAME -> {
                     return NumberDistributionKey.parseJson(parser);

@@ -27,7 +27,6 @@ import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import com.powsybl.timeseries.ast.UnaryOperation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
@@ -40,6 +39,7 @@ import java.util.Set;
 import static com.powsybl.metrix.integration.MetrixGeneratorPostProcessingTimeSeries.CURATIVE_PREFIX_CONTAINER;
 import static com.powsybl.metrix.integration.MetrixGeneratorPostProcessingTimeSeries.PREVENTIVE_PREFIX_CONTAINER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -115,7 +115,7 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         generatorNames.forEach(generatorName -> resultTimeSeriesNames.add(MetrixOutputData.GEN_PREFIX + generatorName));
         generatorNames.forEach(generatorName -> resultTimeSeriesNames.add(MetrixOutputData.GEN_CUR_PREFIX + generatorName + "_cty"));
         ReadOnlyTimeSeriesStore metrixResultTimeSeries = mock(ReadOnlyTimeSeriesStore.class);
-        when(metrixResultTimeSeries.getTimeSeriesNames(Mockito.any())).thenReturn(resultTimeSeriesNames);
+        when(metrixResultTimeSeries.getTimeSeriesNames(any())).thenReturn(resultTimeSeriesNames);
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsRedispatchingUpCosts", index, 1500d, 1500d),

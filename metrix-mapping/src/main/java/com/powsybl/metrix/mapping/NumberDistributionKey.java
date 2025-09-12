@@ -49,8 +49,8 @@ public record NumberDistributionKey(double value) implements DistributionKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof NumberDistributionKey other) {
-            return value == other.value;
+        if (obj instanceof NumberDistributionKey(double value1)) {
+            return value == value1;
         }
         return false;
     }

@@ -16,7 +16,16 @@ import com.powsybl.timeseries.ast.TimeSeriesNames;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -65,7 +74,7 @@ public class TimeSeriesMappingConfigTableLoader {
                 int nbPointsToLoad = Math.max(pointRange.upperEndpoint() + 1, Math.min(index.getPointCount(), MIN_NUMBER_OF_POINTS));
                 try {
                     List<List<DoubleTimeSeries>> split = TimeSeries.split(timeSeriesList, nbPointsToLoad);
-                    loadedTimeSeries = split.get(0);
+                    loadedTimeSeries = split.getFirst();
                 } catch (RuntimeException e) {
                     LOGGER.warn("Failed to split timeSeries with {} pointsToLoad and {} pointsToCompute (reason : {}). Will take the whole time series", nbPointsToLoad, nbPointsToCompute, e.getMessage());
                     loadedTimeSeries = store.getDoubleTimeSeries(timeSeriesNamesToLoad, version);

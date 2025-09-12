@@ -27,7 +27,7 @@ import java.util.Objects;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 @JsonDeserialize(using = DoubleAttribute.JsonDeserializer.class)
-class DoubleAttribute implements Attribute {
+public class DoubleAttribute implements Attribute {
 
     static final AttributeType TYPE = AttributeType.DOUBLE;
 
