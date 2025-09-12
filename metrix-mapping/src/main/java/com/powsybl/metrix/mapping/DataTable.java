@@ -12,7 +12,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.powsybl.metrix.mapping.exception.DataTableException;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

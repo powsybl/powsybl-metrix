@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.timeseries.TimeSeriesException;
+import org.jspecify.annotations.NonNull;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -20,11 +21,7 @@ import java.util.Objects;
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-public class MappingKey {
-
-    private final MappingVariable mappingVariable;
-
-    private final String id;
+public record MappingKey(MappingVariable mappingVariable, String id) {
 
     public static String toJson(MappingKey key) {
         Objects.requireNonNull(key);
@@ -40,8 +37,8 @@ public class MappingKey {
         try {
             generator.writeStartObject();
             generator.writeFieldName("mappingVariable");
-            MappingVariable.writeJson(key.getMappingVariable(), generator);
-            generator.writeStringField("id", key.getId());
+            MappingVariable.writeJson(key.mappingVariable(), generator);
+            generator.writeStringField("id", key.id());
             generator.writeEndObject();
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -86,14 +83,6 @@ public class MappingKey {
         this.id = Objects.requireNonNull(id);
     }
 
-    public MappingVariable getMappingVariable() {
-        return mappingVariable;
-    }
-
-    public String getId() {
-        return id;
-    }
-
     @Override
     public int hashCode() {
         return id.hashCode() + mappingVariable.hashCode();
@@ -101,13 +90,14 @@ public class MappingKey {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MappingKey other) {
-            return id.equals(other.id) && mappingVariable.equals(other.mappingVariable);
+        if (obj instanceof MappingKey(MappingVariable variable, String id1)) {
+            return id.equals(id1) && mappingVariable.equals(variable);
         }
         return false;
     }
 
     @Override
+    @NonNull
     public String toString() {
         return "MappingKey(mappingVariable=" + mappingVariable + ", id=" + id + ")";
     }

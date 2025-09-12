@@ -10,7 +10,15 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Range;
 import com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.CompressedDoubleDataChunk;
+import com.powsybl.timeseries.DoubleDataChunk;
+import com.powsybl.timeseries.DoubleTimeSeries;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesMetadata;
+import com.powsybl.timeseries.UncompressedDoubleDataChunk;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,7 +27,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

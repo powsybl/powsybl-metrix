@@ -9,7 +9,11 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.TreeBasedTable;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.DanglingLine;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Injection;
+import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
@@ -24,7 +28,13 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -63,16 +73,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     Set<String> loadIds = new HashSet<>();
 
-    private static class BalanceConfig {
-
-        final char separator;
-
-        final DateTimeFormatter dateTimeFormatter;
-
-        public BalanceConfig(char separator, DateTimeFormatter dateTimeFormatter) {
-            this.separator = separator;
-            this.dateTimeFormatter = dateTimeFormatter;
-        }
+    private record BalanceConfig(char separator, DateTimeFormatter dateTimeFormatter) {
     }
 
     private BalanceContext context;
@@ -86,26 +87,24 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
 
     public static boolean isInjection(Identifiable<?> identifiable, MappingVariable variable) {
         if (identifiable instanceof Injection) {
-            if (identifiable instanceof Generator) {
-                return variable == EquipmentVariable.TARGET_P;
-            } else if (identifiable instanceof Load) {
-                return variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
-            } else if (identifiable instanceof DanglingLine) {
-                return variable == EquipmentVariable.P0;
-            }
+            return switch (identifiable) {
+                case Generator ignored -> variable == EquipmentVariable.TARGET_P;
+                case Load ignored -> variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
+                case DanglingLine ignored -> variable == EquipmentVariable.P0;
+                default -> false;
+            };
         }
         return false;
     }
 
     public double getInjection(Identifiable<?> identifiable, MappingVariable variable) {
         if (identifiable instanceof Injection<?> injection) {
-            if (injection instanceof Generator generator) {
-                return generator.getTargetP();
-            } else if (injection instanceof Load load) {
-                return getLoad(variable, load);
-            } else if (injection instanceof DanglingLine danglingLine) {
-                return -danglingLine.getP0();
-            }
+            return switch (injection) {
+                case Generator generator -> generator.getTargetP();
+                case Load load -> getLoad(variable, load);
+                case DanglingLine danglingLine -> -danglingLine.getP0();
+                default -> 0;
+            };
         }
         return 0;
     }

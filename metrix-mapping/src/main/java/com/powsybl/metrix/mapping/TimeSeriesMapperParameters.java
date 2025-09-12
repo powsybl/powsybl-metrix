@@ -9,7 +9,11 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.NavigableSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
