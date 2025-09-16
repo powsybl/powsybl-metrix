@@ -9,8 +9,9 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
+import com.powsybl.metrix.integration.chunk.ChunkCutter;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.Reader;

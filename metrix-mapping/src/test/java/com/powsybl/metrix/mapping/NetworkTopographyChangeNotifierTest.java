@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.log.Log;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;

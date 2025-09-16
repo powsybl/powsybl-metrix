@@ -12,6 +12,13 @@ import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.VariantManagerConstants;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.ComputationRange;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
+import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigEquipmentCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigStatusCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigSynthesisCsvWriter;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
@@ -31,7 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.util.AbstractCompareTxt.compareStreamTxt;
+import static com.powsybl.metrix.mapping.utils.AbstractCompareTxt.compareStreamTxt;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**

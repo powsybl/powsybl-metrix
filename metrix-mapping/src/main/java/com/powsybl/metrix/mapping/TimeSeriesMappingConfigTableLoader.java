@@ -9,7 +9,9 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
+import com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.keys.TimeSeriesDistributionKey;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNames;
@@ -31,7 +33,7 @@ import java.util.stream.StreamSupport;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
-import static com.powsybl.metrix.mapping.timeseries.TimeSeriesStoreUtil.isNotVersioned;
+import static com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -59,7 +61,7 @@ public class TimeSeriesMappingConfigTableLoader {
     public TimeSeriesTable loadToTable(int version, ReadOnlyTimeSeriesStore store, Range<Integer> pointRange, Iterable<String> usedTimeSeriesNames) {
         Set<String> timeSeriesNamesToLoad = findTimeSeriesNamesToLoad(usedTimeSeriesNames);
 
-        TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesNamesToLoad);
+        TimeSeriesIndex index = TimeSeriesStoreUtil.checkIndexUnicity(store, timeSeriesNamesToLoad);
         checkValues(store, new TreeSet<>(Set.of(version)), timeSeriesNamesToLoad);
 
         TimeSeriesTable table = new TimeSeriesTable(version, version, index);
@@ -193,7 +195,7 @@ public class TimeSeriesMappingConfigTableLoader {
         List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
 
         // Build equipment planned outages time series
-        TimeSeriesIndex index = checkIndexUnicity(store, timeSeriesToPlannedOutagesMapping.keySet());
+        TimeSeriesIndex index = TimeSeriesStoreUtil.checkIndexUnicity(store, timeSeriesToPlannedOutagesMapping.keySet());
         for (Map.Entry<String, Set<String>> entry : timeSeriesToPlannedOutagesMapping.entrySet()) {
             String timeSeriesName = entry.getKey();
             Set<String> disconnectedIds = entry.getValue();
@@ -238,24 +240,7 @@ public class TimeSeriesMappingConfigTableLoader {
     }
 
     public TimeSeriesIndex checkIndexUnicity() {
-        return checkIndexUnicity(store, findTimeSeriesNamesToLoad());
-    }
-
-    public static TimeSeriesIndex checkIndexUnicity(ReadOnlyTimeSeriesStore store, Set<String> timeSeriesNamesToLoad) {
-        Set<TimeSeriesIndex> indexes = timeSeriesNamesToLoad.isEmpty() ? Collections.emptySet()
-                : store.getTimeSeriesMetadata(timeSeriesNamesToLoad)
-                .stream()
-                .map(TimeSeriesMetadata::getIndex)
-                .filter(index -> !(index instanceof InfiniteTimeSeriesIndex))
-                .collect(Collectors.toSet());
-
-        if (indexes.isEmpty()) {
-            return InfiniteTimeSeriesIndex.INSTANCE;
-        } else if (indexes.size() > 1) {
-            throw new TimeSeriesMappingException("Time series involved in the mapping must have the same index: "
-                    + indexes);
-        }
-        return indexes.iterator().next();
+        return TimeSeriesStoreUtil.checkIndexUnicity(store, findTimeSeriesNamesToLoad());
     }
 
     public void checkValues(Set<Integer> versions) {

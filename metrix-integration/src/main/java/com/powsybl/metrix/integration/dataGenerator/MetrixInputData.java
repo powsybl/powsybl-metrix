@@ -14,6 +14,7 @@ import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.io.MetrixDie;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jspecify.annotations.NonNull;

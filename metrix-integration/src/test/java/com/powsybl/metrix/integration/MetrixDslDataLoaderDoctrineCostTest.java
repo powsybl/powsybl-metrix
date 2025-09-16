@@ -11,7 +11,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.mapping.DataTableStore;
+import com.powsybl.metrix.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.MappingKey;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;

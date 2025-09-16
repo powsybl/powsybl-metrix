@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.commons.json.JsonUtil;
+import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.timeseries.TimeSeriesException;
 import org.jspecify.annotations.NonNull;
 

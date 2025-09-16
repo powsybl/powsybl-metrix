@@ -18,6 +18,8 @@ import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.balance.BalanceSummary;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;

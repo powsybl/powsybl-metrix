@@ -7,7 +7,7 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.powsybl.metrix.mapping.ComputationRange;
+import com.powsybl.metrix.commons.ComputationRange;
 
 import java.util.Collections;
 import java.util.SortedSet;

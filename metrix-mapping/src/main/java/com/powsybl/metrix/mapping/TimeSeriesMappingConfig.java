@@ -12,6 +12,8 @@ import com.powsybl.iidm.network.Injection;
 import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.extensions.LoadDetail;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.mapping.keys.DistributionKey;
 import com.powsybl.timeseries.ast.NodeCalc;
 
 import java.util.Collections;

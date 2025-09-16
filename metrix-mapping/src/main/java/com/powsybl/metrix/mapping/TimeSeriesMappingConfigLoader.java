@@ -11,7 +11,10 @@ import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.Injection;
 import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.VoltageLevel;
+import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.keys.DistributionKey;
+import com.powsybl.metrix.mapping.utils.TimeSeriesUtils;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -26,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
+import static com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -67,16 +70,16 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         return StringUtils.EMPTY;
     }
 
-    protected Map<String, String> tsMetadata(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
-        Map<String, String> tsMetadata = new HashMap<>();
+    protected Map<String, String> getMetadataTags(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
+        Map<String, String> metadataTags = new HashMap<>();
         if (config.getTimeSeriesNodes().containsValue(nodeCalc)) {
             String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
-            tsMetadata.putAll(TsMetadata.tsMetadata(tsName, config.getTimeSeriesNodeTags()));
+            metadataTags.putAll(TimeSeriesUtils.getMetadataTags(tsName, config.getTimeSeriesNodeTags()));
         }
         if (nodeCalc instanceof TimeSeriesNameNodeCalc) {
-            tsMetadata.putAll(TsMetadata.tsMetadata(nodeCalc, store));
+            metadataTags.putAll(TimeSeriesUtils.getMetadataTags(nodeCalc, store));
         }
-        return tsMetadata;
+        return metadataTags;
     }
 
     protected void tag(NodeCalc nodeCalc, String tag, String parameter) {

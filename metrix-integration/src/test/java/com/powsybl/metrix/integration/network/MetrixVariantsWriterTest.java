@@ -1,0 +1,343 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+package com.powsybl.metrix.integration.network;
+
+import com.google.common.collect.Range;
+import com.google.common.collect.Sets;
+import com.powsybl.iidm.network.Bus;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Line;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.PhaseTapChanger;
+import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.SwitchKind;
+import com.powsybl.iidm.network.Terminal;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
+import com.powsybl.iidm.network.extensions.LoadDetail;
+import com.powsybl.iidm.network.extensions.LoadDetailAdder;
+import com.powsybl.iidm.network.impl.VariantManagerHolder;
+import com.powsybl.iidm.network.impl.VariantManagerImpl;
+import com.powsybl.iidm.network.impl.extensions.LoadDetailAdderImpl;
+import com.powsybl.metrix.integration.MetrixSubset;
+import com.powsybl.metrix.integration.MetrixVariable;
+import com.powsybl.metrix.mapping.EquipmentVariable;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.api.Test;
+import org.threeten.extra.Interval;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
+class MetrixVariantsWriterTest {
+
+    @Test
+    void baseCaseTest() throws IOException {
+        StringWriter writer = new StringWriter();
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+            new MetrixVariantsWriter(null, null)
+                    .write(null, bufferedWriter, null);
+        }
+        assertEquals(String.join(System.lineSeparator(),
+                "NT;1;",
+                "0;") + System.lineSeparator(),
+                writer.toString());
+    }
+
+    @Test
+    void variantsTest() throws IOException {
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(
+                Interval.parse("2015-01-01T00:00:00Z/2015-01-01T01:00:00Z"),
+                Duration.ofMinutes(15));
+        StringWriter writer = new StringWriter();
+
+        MetrixNetwork network = mock(MetrixNetwork.class);
+        when(network.getIndex(MetrixSubset.LOAD, "l1")).thenReturn(2);
+        when(network.getIndex(MetrixSubset.LOAD, "l2")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l3")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l4")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l5")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l6")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l7")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l8")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l9")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l10")).thenReturn(1);
+        when(network.getIndex(MetrixSubset.LOAD, "l13")).thenThrow(new IllegalStateException());
+
+        try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
+            new MetrixVariantsWriter(new MetrixVariantProvider() {
+                @Override
+                public Range<Integer> getVariantRange() {
+                    return Range.closed(0, 3);
+                }
+
+                @Override
+                public TimeSeriesIndex getIndex() {
+                    return index;
+                }
+
+                public Set<String> getMappedBreakers() {
+                    return Sets.newHashSet("sw1", "sw2", "sw3");
+                }
+
+                private Generator createGenerator(String id, double targetP) {
+                    Generator g = mock(Generator.class);
+                    when(g.getId()).thenReturn(id);
+                    Terminal t = mock(Terminal.class);
+                    when(g.getTerminal()).thenReturn(t);
+                    when(t.isConnected()).thenReturn(true);
+                    when(g.getTargetP()).thenReturn(targetP);
+                    return g;
+                }
+
+                final Map<String, LoadDetail> loadDetailMap = new HashMap<>();
+
+                private Load createLoad(String id, double p0, String busId, LoadDetail detail) {
+                    loadDetailMap.put(id, detail);
+                    AbstractNetworkImplTest underlyingNetwork = mock(AbstractNetworkImplTest.class);
+                    when(underlyingNetwork.getVariantIndex()).thenReturn(0);
+                    when(underlyingNetwork.getVariantManager()).thenReturn(mock(VariantManagerImpl.class));
+                    when(underlyingNetwork.getVariantManager().getVariantArraySize()).thenReturn(1);
+                    Load l = mock(Load.class);
+                    when(l.getNetwork()).thenReturn(underlyingNetwork);
+                    when(l.getId()).thenReturn(id);
+                    when(l.getP0()).thenReturn(p0);
+                    Terminal t = mock(Terminal.class);
+                    when(l.getTerminal()).thenReturn(t);
+                    Terminal.BusBreakerView view = mock(Terminal.BusBreakerView.class);
+                    when(t.getBusBreakerView()).thenReturn(view);
+                    Bus b = mock(Bus.class);
+                    when(view.getBus()).thenReturn(b);
+                    if (busId.isEmpty()) {
+                        when(b.getId()).thenReturn(id + "_bus");
+                    } else {
+                        when(b.getId()).thenReturn(busId);
+                    }
+                    when(b.getLoads()).thenReturn(Collections.singletonList(l));
+                    when(l.getExtension(LoadDetail.class)).thenAnswer(invocationOnMock -> loadDetailMap.get(id));
+                    when(l.newExtension(LoadDetailAdder.class)).thenReturn(new LoadDetailAdderImpl(l));
+                    doAnswer(invocationOnMock -> loadDetailMap.put(id, (LoadDetail) invocationOnMock.getArguments()[1]))
+                            .when(l).addExtension(any(), any());
+                    return l;
+                }
+
+                private LoadDetail createLoadDetail(double fixedActivePower, double variableActivePower) {
+                    LoadDetail l = mock(LoadDetail.class);
+                    when(l.getFixedActivePower()).thenReturn(fixedActivePower);
+                    when(l.getVariableActivePower()).thenReturn(variableActivePower);
+                    return l;
+                }
+
+                private List<Load> createLoads(List<String> idList, List<Float> p0List, String busId, List<LoadDetail> detailList) {
+                    List<Load> loadList = new ArrayList<Load>();
+                    for (int i = 0; i < idList.size(); i++) {
+                        Load l = createLoad(idList.get(i), p0List.get(i), busId, detailList == null ? null : detailList.get(i));
+                        loadList.add(l);
+                    }
+                    Bus b = loadList.getFirst().getTerminal().getBusBreakerView().getBus();
+                    when(b.getLoads()).thenReturn(loadList);
+                    return loadList;
+                }
+
+                private HvdcLine createHvdcLine(String id, double activePowerSetpoint) {
+                    HvdcLine l = mock(HvdcLine.class);
+                    when(l.getId()).thenReturn(id);
+                    when(l.getActivePowerSetpoint()).thenReturn(activePowerSetpoint);
+                    return l;
+                }
+
+                private TwoWindingsTransformer createPst(String id, double currentTap) {
+                    TwoWindingsTransformer twc = mock(TwoWindingsTransformer.class);
+                    when(twc.getId()).thenReturn(id);
+                    Terminal t1 = mock(Terminal.class);
+                    when(twc.getTerminal1()).thenReturn(t1);
+                    Terminal t2 = mock(Terminal.class);
+                    when(twc.getTerminal1()).thenReturn(t2);
+                    when(t1.isConnected()).thenReturn(true);
+                    when(t2.isConnected()).thenReturn(true);
+                    PhaseTapChanger pst = mock(PhaseTapChanger.class);
+                    when(twc.getPhaseTapChanger()).thenReturn(pst);
+                    when(pst.getTapPosition()).thenReturn((int) currentTap);
+                    return twc;
+                }
+
+                private Line createLine(String id) {
+                    Line l = mock(Line.class);
+                    when(l.getId()).thenReturn(id);
+                    return l;
+                }
+
+                private Terminal createTerminal(boolean isConnected) {
+                    Terminal t = mock(Terminal.class);
+                    when(t.isConnected()).thenReturn(isConnected);
+                    return t;
+                }
+
+                private Switch createSwitch(String id) {
+                    Switch s = mock(Switch.class);
+                    when(s.getId()).thenReturn(id);
+                    when(s.getKind()).thenReturn(SwitchKind.BREAKER);
+                    when(s.isRetained()).thenReturn(true);
+                    when(s.isOpen()).thenReturn(false);
+                    return s;
+                }
+
+                @Override
+                public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
+                    Generator g1 = createGenerator("g1", 100f);
+                    Load l1 = createLoad("l1", 10f, "", null);
+                    Load l2 = createLoad("l2", 15f, "", null);
+                    Load l3 = createLoad("l3", 7f, "", null);
+                    Load l4 = createLoad("l4", 10f, "", null);
+                    Load l5 = createLoad("l5", 16f, "", null);
+                    LoadDetail l6d = createLoadDetail(3d, 12d);
+                    Load l6 = createLoad("l6", 15f, "", l6d);
+                    LoadDetail l7d = createLoadDetail(3d, 12d);
+                    Load l7 = createLoad("l7", 18f, "", l7d);
+                    LoadDetail l8d = createLoadDetail(3d, 12d);
+                    Load l8 = createLoad("l8", 19f, "", l8d);
+                    LoadDetail l9d = createLoadDetail(3d, 10d);
+                    Load l9 = createLoad("l9", 15f, "", l9d);
+                    LoadDetail l10d = createLoadDetail(3d, 12d);
+                    Load l10 = createLoad("l10", 15f, "", l10d);
+                    List<Load> loadList = createLoads(Arrays.asList("l11", "l12"), Arrays.asList(12f, 18f), "l1", null);
+                    Load l11 = loadList.getFirst();
+                    Load l12 = loadList.get(1);
+                    Load l13 = createLoad("l13", 0f, "", null);
+
+                    HvdcLine hl1 = createHvdcLine("hl1", 200f);
+                    TwoWindingsTransformer pst1 = createPst("pst1", 17f);
+                    Line line1 = createLine("line1");
+                    Line line2 = createLine("line2");
+                    Terminal terminal1 = createTerminal(true);
+                    Line line3 = createLine("line2");
+                    Terminal terminal2 = createTerminal(false);
+
+                    Switch sw1 = createSwitch("sw1");
+                    Switch sw2 = createSwitch("sw2");
+                    Switch sw3 = createSwitch("sw3");
+
+                    when(network.getMappedBranch(sw1)).thenReturn(Optional.of("sw1"));
+                    when(network.getMappedBranch(sw2)).thenReturn(Optional.of("line1"));
+                    when(network.getMappedBranch(sw3)).thenReturn(Optional.of("hl1"));
+                    when(line2.getTerminal1()).thenReturn(terminal1);
+                    when(line3.getTerminal1()).thenReturn(terminal2);
+
+                    for (int i = variantReadRange.lowerEndpoint(); i < variantReadRange.upperEndpoint(); i++) {
+                        reader.onVariantStart(i);
+
+                        // Generator
+                        reader.onEquipmentVariant(g1, EquipmentVariable.TARGET_P, 100.01f + i);
+                        reader.onEquipmentVariant(g1, EquipmentVariable.MIN_P, 111f + i);
+                        reader.onEquipmentVariant(g1, EquipmentVariable.MAX_P, 121f + i);
+                        reader.onEquipmentVariant(g1, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
+
+                        // Load without LoadDetail
+                        reader.onEquipmentVariant(l1, EquipmentVariable.P0, 10f + i);
+                        reader.onEquipmentVariant(l2, EquipmentVariable.P0, 16f + i);                   // CONELE = 16 + i
+                        reader.onEquipmentVariant(l3, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);      // CONELE = 6 + i
+                        reader.onEquipmentVariant(l4, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);   // CONELE = 8 + i
+                        reader.onEquipmentVariant(l5, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);
+                        reader.onEquipmentVariant(l5, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);   // CONELE = 14 + 2*i
+                        reader.onEquipmentVariant(l6, EquipmentVariable.FIXED_ACTIVE_POWER, 5f + i);
+                        reader.onEquipmentVariant(l6, EquipmentVariable.VARIABLE_ACTIVE_POWER, 10f - i);  // not present cause identical to base case
+
+                        // Load with LoadDetail
+                        reader.onEquipmentVariant(l7, EquipmentVariable.P0, 17f + i);                   // CONELE = 17 + i
+                        reader.onEquipmentVariant(l8, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);      // CONELE = 6 + i + 12
+                        reader.onEquipmentVariant(l9, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);   // CONELE = 3 + 8 + i
+                        reader.onEquipmentVariant(l10, EquipmentVariable.FIXED_ACTIVE_POWER, 6f + i);
+                        reader.onEquipmentVariant(l10, EquipmentVariable.VARIABLE_ACTIVE_POWER, 8f + i);  // CONELE = 14 + 2*i
+
+                        // Loads on a same Bus
+                        reader.onEquipmentVariant(l11, EquipmentVariable.P0, 10f + i);
+                        reader.onEquipmentVariant(l12, EquipmentVariable.P0, 20f - i);                  // not present cause identical to base case
+
+                        // Hvdc
+                        reader.onEquipmentVariant(hl1, EquipmentVariable.ACTIVE_POWER_SETPOINT, 200.0001f + i);
+                        reader.onEquipmentVariant(hl1, EquipmentVariable.MIN_P, 210f + i);
+                        reader.onEquipmentVariant(hl1, EquipmentVariable.MAX_P, 220f + i);
+
+                        // Breakers
+                        reader.onEquipmentVariant(sw1, EquipmentVariable.OPEN, (i + 1) % 2);
+                        reader.onEquipmentVariant(sw2, EquipmentVariable.OPEN, i % 2);
+                        reader.onEquipmentVariant(sw3, EquipmentVariable.OPEN, (i + 1) % 2);
+
+                        // Metrix
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N, 1001f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N1, 1011f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_NK, 1021f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM, 1031f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_NK, 1041f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N_END_OR, 2001f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_N1_END_OR, 2011f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_NK_END_OR, 2021f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_END_OR, 2031f + i);
+                        reader.onEquipmentVariant(line1, MetrixVariable.THRESHOLD_ITAM_NK_END_OR, 2041f + i);
+
+                        reader.onEquipmentVariant(line2, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
+                        reader.onEquipmentVariant(line3, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
+
+                        reader.onEquipmentVariant(g1, MetrixVariable.OFF_GRID_COST_DOWN, 1111f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.OFF_GRID_COST_UP, 1121f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.ON_GRID_COST_DOWN, 1131f + i);
+                        reader.onEquipmentVariant(g1, MetrixVariable.ON_GRID_COST_UP, 1141f + i);
+
+                        // Pst
+                        reader.onEquipmentVariant(pst1, EquipmentVariable.PHASE_TAP_POSITION, 17f + i);
+
+                        reader.onEquipmentVariant(pst1, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
+
+                        reader.onEquipmentVariant(l1, MetrixVariable.CURATIVE_COST_DOWN, 10f + i);
+
+                        // load out of main cc
+                        reader.onEquipmentVariant(l13, MetrixVariable.CURATIVE_COST_DOWN, i);
+
+                        reader.onVariantEnd(i);
+                    }
+                    reader.onVariantStart(variantReadRange.upperEndpoint());
+                    reader.onVariantEnd(variantReadRange.upperEndpoint());
+                }
+            }, network).write(Range.closed(0, 3), bufferedWriter, null);
+        }
+
+        assertEquals(
+            String.join(System.lineSeparator(), IOUtils.readLines(Objects.requireNonNull(MetrixVariantsWriterTest.class.getResourceAsStream("/expected/variantsOutput.txt")), StandardCharsets.UTF_8)),
+            writer.toString().trim()
+        );
+    }
+
+    abstract static class AbstractNetworkImplTest implements Network, VariantManagerHolder {
+
+    }
+}

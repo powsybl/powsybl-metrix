@@ -14,6 +14,7 @@ import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;

@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 
 import java.util.HashMap;
@@ -18,7 +19,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.mapping.EquipmentVariable.isVariableCompatible;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
+import static com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

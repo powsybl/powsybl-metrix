@@ -7,7 +7,7 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.powsybl.metrix.mapping.ComputationRange;
+import com.powsybl.metrix.commons.ComputationRange;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;

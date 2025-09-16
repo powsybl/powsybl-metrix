@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.timeseries.CalculatedTimeSeries;
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -19,7 +20,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.DoubleStream;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkIndexUnicity;
+import static com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
