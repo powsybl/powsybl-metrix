@@ -136,7 +136,7 @@
             </dependency>
             <dependency>
                 <groupId>com.powsybl</groupId>
-                <artifactId>powsybl-metrix-mapping</artifactId>
+                <artifactId>powsybl-metrix-distribution</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
@@ -146,7 +146,12 @@
             </dependency>
             <dependency>
                 <groupId>com.powsybl</groupId>
-                <artifactId>powsybl-metrix-distribution</artifactId>
+                <artifactId>powsybl-metrix-mapping</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.powsybl</groupId>
+                <artifactId>powsybl-metrix-tools</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
