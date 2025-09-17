@@ -16,6 +16,7 @@ METRIX comprend à la fois un calcul de réseau (load-flow) en actif seul ainsi 
 (Optimal Power Flow ou OPF).
 
 Un **load-flow** calcule la répartition des flux sur les ouvrages du réseau en fonction des caractéristiques de ces 
+<<<<<<< HEAD
 ouvrages et des injections du réseau (production et consommation). Le résultat d'un load-flow permet de constater les contraintes.
 Un **OPF** peut modifier les injections/consommations et la topologie de sorte, qu'après load-flow, il n'y ait pas de 
 contrainte sur les ouvrages (ou qu'elles soient, du moins, minimisées).
@@ -24,6 +25,16 @@ De ce fait, l'objectif de METRIX est de trouver l'ajustement de moindre coût du
 aucune contrainte de transit ni en N ni sur incidents. Cet outil permet de mesurer le surcoût engendré par le réseau 
 sur le plan de production initial et permet de valoriser un renforcement de réseau.
 Dans sa version 6, METRIX est intégré dans la plate-forme imaGrid où il peut être lancé sur des milliers de variantes. 
+=======
+ouvrages et des injections du réseau (production et consommation). Le résultat d'un load-flow permet de constater et d'évaluer les contraintes présentes.
+Un **OPF**, quant-à-lui, peut modifier les injections/consommations et la topologie, de sorte, qu'après le lancement d'un load-flow, il n'y ait pas de 
+contrainte sur les ouvrages (ou qu'elles soient, du moins, minimisées).
+
+De ce fait, l'objectif de METRIX est de trouver l'ajustement de moindre coût du plan de production afin de n'avoir 
+aucune contrainte de transit ni en N ni sur incidents. METRIX permet de mesurer le surcoût engendré par le réseau 
+sur le plan de production initial et permet de valoriser un renforcement de réseau.
+Dans sa version 6, METRIX est intégré dans la plate-forme ImaGrid, depuis laquelle il peut être lancé sur des milliers de variantes. 
+>>>>>>> feature/only_doc_md
 Ces variantes permettent de modéliser des incertitudes sur la consommation, la production renouvelable, la disponibilité 
 des groupes, etc.
 
@@ -31,9 +42,15 @@ Afin d'obtenir un problème plus facile et rapide à résoudre, METRIX utilise l
 modéliser le réseau. Cependant, cette simplification ne permet pas de détecter les contraintes de tension et encore 
 moins les problèmes liés à la dynamique des événements.
 
+<<<<<<< HEAD
 Que ce soit via imaGrid ou en exécution directe, un cas de base ainsi qu'un fichier annexe décrivant toutes les variantes
 à calculer sont envoyés en entrée de METRIX. Ce dernier applique ensuite chacune des variantes au cas de base et 
 retourne un résultat pour chaque variante. Les résultats sont présentés sous forme de chroniques dans imaGrid.
+=======
+Que ce soit via ImaGrid ou en exécution directe, un cas de base ainsi qu'un fichier annexe décrivant toutes les variantes
+à calculer sont envoyés en entrée de METRIX. Ce dernier applique ensuite chacune des variantes au cas de base et 
+retourne un résultat pour chaque variante. Les résultats sont présentés sous forme de chroniques dans ImaGrid.
+>>>>>>> feature/only_doc_md
 Ce document présente la modélisation du système électrique utilisée par METRIX, la logique de l'algorithme global, 
 le problème d'optimisation qu'il résout et les fonctionnalités disponibles au sein de METRIX.
 
@@ -41,7 +58,11 @@ le problème d'optimisation qu'il résout et les fonctionnalités disponibles au
 ## Objectif
 
 **Le but de METRIX est de fournir une estimation du coût d'exploitation horaire d'un réseau fonctionnant de manière 
+<<<<<<< HEAD
 optimale**, i.e. coûtant le moins possible.
+=======
+optimale**, i.e. de coût le plus faible possible.
+>>>>>>> feature/only_doc_md
 
 Considérons un réseau donné. Le comportement d'un réseau étant aléatoire, le coût d'exploitation l'est également. 
 Posons $X$ la variable aléatoire du coût d'exploitation de ce réseau. Ce que nous voulons calculer avec METRIX, c'est 
