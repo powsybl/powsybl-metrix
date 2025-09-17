@@ -131,10 +131,10 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
 -------------------- : 
 
-Des contraintes ont été détectées : 1
+Des contraintes ont été détectées : 2
 Nb termes dans la matrice : 11 (taille de la matrice : 11)
-Ajout de 1 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 2)
+Ajout de 2 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 12)
 -------------------- : 
 
 Appel du simplexe
@@ -150,5 +150,5 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   67690.3941
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 18 (taille de la matrice : 18)
+Nb termes dans la matrice : 65 (taille de la matrice : 65)
 Pas de contraintes
