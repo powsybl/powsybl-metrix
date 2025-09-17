@@ -39,11 +39,7 @@ Metrix options:
                                 flow to check transit (more time consuming)
                                 2: When adding a constraint, run every incident
                                 to check that we didn't forget a constraint 
-<<<<<<< HEAD
-                                (even more time consuming
-=======
                                 (even more time consuming)
->>>>>>> feature/only_doc_md
   --compare-reports             Compare load flow reports after application of 
                                 report factors to check trigger of coupling
   --no-incident-group           Ignore incident if a group of N-K is not 

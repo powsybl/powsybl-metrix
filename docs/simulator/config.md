@@ -92,11 +92,7 @@ le cas d'un OPF sans redispatching ou d'un OPF avec surcharge)
 
 ## Parade topologique en N
 
-<<<<<<< HEAD
-Il est possible de ???????
-=======
 L'utilisation de parades topologiques en N n'est théoriquement pas possible. Toutefois, il est possible d'approcher le comportement de l'utilisation d'une parade topologique en N via une parade topologique sur un élément très éloigné de la zone d'étude. 
->>>>>>> feature/only_doc_md
 
 ## Seuils ITAM
 
