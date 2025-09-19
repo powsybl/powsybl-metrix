@@ -1,7 +1,6 @@
 package com.powsybl.metrix.integration.dsl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.powsybl.metrix.integration.MetrixDslData;
 
 import java.util.Collections;
 import java.util.HashMap;
