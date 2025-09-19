@@ -207,8 +207,8 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
                                                              NodeCalc upCostsTimeSeries,
                                                              NodeCalc downCostsTimeSeries,
                                                              GeneratorPostProcessingPrefixContainer prefixContainer) {
+        LOGGER.debug("Creating redispatching postprocessing time-series for {} {}", generatorId, contingencyId);
         String postfix = contingencyId.isEmpty() ? "" : ("_" + contingencyId);
-        LOGGER.debug("Creating redispatching postprocessing time-series for {}", generatorId + postfix);
 
         // Generator up and down redispatching
         NodeCalc genUpPositiveConditionTimeSeries = BinaryOperation.greaterThan(genTimeSeries, ZERO);

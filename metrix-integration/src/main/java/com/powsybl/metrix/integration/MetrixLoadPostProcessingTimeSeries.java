@@ -169,8 +169,8 @@ public final class MetrixLoadPostProcessingTimeSeries {
                                                             NodeCalc loadSheddingCostsTimeSeries,
                                                             String sheddingPrefix,
                                                             String sheddingCostPrefix) {
+        LOGGER.debug("Creating load shedding postprocessing time-series for {} {}", loadId, contingencyId);
         String postfix = contingencyId.isEmpty() ? "" : ("_" + contingencyId);
-        LOGGER.debug("Creating load shedding postprocessing time-series for {}", loadId + postfix);
 
         // Load shedding
         String loadSheddingTimeSeriesName = MetrixDataName.getNameWithSchema(sheddingPrefix + "_" + loadId, nullableSchemaName);
