@@ -10,7 +10,7 @@ package com.powsybl.metrix.mapping.observer;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.writers.EquipmentTimeSeriesWriter;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.nio.file.Path;

@@ -23,7 +23,7 @@ import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantReaderImpl;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;

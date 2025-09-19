@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.config;
 
 import com.powsybl.iidm.network.Bus;
 import com.powsybl.iidm.network.Injection;
@@ -13,7 +13,8 @@ import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.metrix.commons.MappingVariable;
-import com.powsybl.metrix.mapping.keys.DistributionKey;
+import com.powsybl.metrix.mapping.references.DistributionKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.ast.NodeCalc;
 
 import java.util.Collections;

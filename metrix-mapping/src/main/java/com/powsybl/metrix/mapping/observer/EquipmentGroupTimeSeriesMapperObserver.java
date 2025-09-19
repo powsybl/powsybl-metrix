@@ -14,10 +14,10 @@ import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.EquipmentVariable;
-import com.powsybl.metrix.mapping.MappingKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.MappingKeyNetworkValue;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.util.HashSet;

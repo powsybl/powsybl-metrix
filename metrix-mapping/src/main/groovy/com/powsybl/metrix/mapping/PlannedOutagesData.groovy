@@ -8,14 +8,15 @@
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
-import com.powsybl.metrix.mapping.keys.NumberDistributionKey
+import com.powsybl.metrix.mapping.references.NumberDistributionKey
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.StringTimeSeries
 import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.plannedOutagesEquipmentTsName
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.plannedOutagesEquipmentTsName
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

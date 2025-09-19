@@ -8,10 +8,11 @@
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
-import com.powsybl.metrix.mapping.keys.DistributionKey
-import com.powsybl.metrix.mapping.keys.NumberDistributionKey
-import com.powsybl.metrix.mapping.keys.TimeSeriesDistributionKey
+import com.powsybl.metrix.mapping.references.DistributionKey
+import com.powsybl.metrix.mapping.references.NumberDistributionKey
+import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey
 import groovy.transform.CompileStatic
 
 /**

@@ -5,10 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.config;
 
 import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.mapping.EquipmentVariable;
+import com.powsybl.metrix.mapping.MappableEquipmentType;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
 import java.util.HashMap;
 import java.util.HashSet;

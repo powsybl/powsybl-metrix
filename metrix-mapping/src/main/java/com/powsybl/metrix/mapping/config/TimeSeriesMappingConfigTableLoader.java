@@ -5,13 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.config;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
 import com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
-import com.powsybl.metrix.mapping.keys.TimeSeriesDistributionKey;
+import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNames;

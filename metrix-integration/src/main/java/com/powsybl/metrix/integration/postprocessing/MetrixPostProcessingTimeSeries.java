@@ -9,7 +9,7 @@ package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.contingency.Contingency;
 import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
 import com.powsybl.timeseries.ast.NodeCalc;

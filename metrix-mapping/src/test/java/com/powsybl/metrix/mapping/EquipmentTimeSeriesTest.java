@@ -8,6 +8,8 @@
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.utils.MappingTestNetwork;
 import org.junit.jupiter.api.Test;
 

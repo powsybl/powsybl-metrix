@@ -5,15 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.config;
 
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.Injection;
 import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.VoltageLevel;
 import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.mapping.EquipmentGroupType;
+import com.powsybl.metrix.mapping.EquipmentVariable;
+import com.powsybl.metrix.mapping.MappableEquipmentType;
+import com.powsybl.metrix.mapping.SimpleEquipmentGroupType;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
-import com.powsybl.metrix.mapping.keys.DistributionKey;
+import com.powsybl.metrix.mapping.references.DistributionKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.utils.TimeSeriesUtils;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
@@ -213,7 +218,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     }
 
     protected void addEquipmentMapping(MappableEquipmentType equipmentType, String timeSeriesName, String equipmentId, DistributionKey distributionKey,
-                                    EquipmentVariable variable) {
+                                       EquipmentVariable variable) {
         switch (equipmentType) {
             case GENERATOR -> addGeneratorMapping(timeSeriesName, equipmentId, distributionKey, variable);
             case LOAD -> addLoadMapping(timeSeriesName, equipmentId, distributionKey, variable);

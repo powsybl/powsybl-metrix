@@ -9,7 +9,7 @@ package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.metrix.integration.MetrixDataName;
 import com.powsybl.metrix.integration.MetrixVariable;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ast.BinaryOperation;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;

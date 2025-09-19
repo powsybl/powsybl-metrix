@@ -13,7 +13,7 @@ import com.powsybl.commons.io.table.TableFormatter;
 import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.MappableEquipmentType;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedWriter;
@@ -41,9 +41,9 @@ import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.MULTI_MAPPED;
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.OUT_OF_MAIN_CC;
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.PSTS;
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.UNMAPPED;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.getNbMapped;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.getNbMultiMapped;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker.getNbUnmapped;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker.getNbMapped;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker.getNbMultiMapped;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker.getNbUnmapped;
 import static com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
 /**

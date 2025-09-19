@@ -16,6 +16,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;

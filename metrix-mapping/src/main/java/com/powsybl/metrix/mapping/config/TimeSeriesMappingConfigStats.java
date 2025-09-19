@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.config;
 
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.timeseries.CalculatedTimeSeries;

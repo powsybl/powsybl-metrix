@@ -12,11 +12,11 @@ import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.MappingVariable;
-import com.powsybl.metrix.mapping.MappingKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.MappingKeyNetworkValue;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfigChecker;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.util.LinkedHashMap;

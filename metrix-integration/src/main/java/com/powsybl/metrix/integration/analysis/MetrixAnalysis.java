@@ -19,6 +19,7 @@ import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.network.NetworkSource;
 import com.powsybl.metrix.integration.utils.LocalThreadExecutor;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.NodeCalc;
 import org.slf4j.Logger;

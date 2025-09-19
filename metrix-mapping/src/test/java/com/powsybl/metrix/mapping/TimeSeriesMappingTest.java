@@ -15,6 +15,7 @@ import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
 import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigEquipmentCsvWriter;
 import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigStatusCsvWriter;

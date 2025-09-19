@@ -27,7 +27,7 @@ import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantReader;
 import com.powsybl.metrix.mapping.MappingParameters;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeries;

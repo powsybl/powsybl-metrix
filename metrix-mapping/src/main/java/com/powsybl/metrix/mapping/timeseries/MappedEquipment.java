@@ -8,7 +8,7 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.metrix.mapping.keys.DistributionKey;
+import com.powsybl.metrix.mapping.references.DistributionKey;
 
 import java.util.Objects;
 

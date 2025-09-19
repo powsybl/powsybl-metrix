@@ -15,7 +15,7 @@ import com.powsybl.metrix.integration.chunk.ChunkCutter;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.slf4j.Logger;

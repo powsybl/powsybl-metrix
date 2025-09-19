@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.json;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -13,8 +13,9 @@ import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.powsybl.commons.json.JsonUtil;
-import com.powsybl.metrix.mapping.json.JsonFieldName;
-import com.powsybl.metrix.mapping.keys.DistributionKey;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.DistributionKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.TimeSeriesException;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.json.TimeSeriesJsonModule;

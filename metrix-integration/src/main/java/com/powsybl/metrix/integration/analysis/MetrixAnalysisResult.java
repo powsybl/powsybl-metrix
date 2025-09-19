@@ -14,7 +14,7 @@ import com.powsybl.metrix.integration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.mapping.MappingParameters;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 
 import javax.annotation.Nullable;
 import java.util.List;

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping;
+package com.powsybl.metrix.mapping.references;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -33,7 +33,7 @@ public record MappingKey(MappingVariable mappingVariable, String id) {
         writeJson(generator, this);
     }
 
-    static void writeJson(JsonGenerator generator, MappingKey key) {
+    public static void writeJson(JsonGenerator generator, MappingKey key) {
         Objects.requireNonNull(generator);
         try {
             generator.writeStartObject();
