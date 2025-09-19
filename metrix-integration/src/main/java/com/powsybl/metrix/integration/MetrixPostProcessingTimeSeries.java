@@ -8,10 +8,13 @@
 package com.powsybl.metrix.integration;
 
 import com.powsybl.contingency.Contingency;
+import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
+import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,6 +63,22 @@ public final class MetrixPostProcessingTimeSeries {
                 return contingencyIds.contains(contingencyId);
             });
         }).toList();
+    }
+
+    public static String getContingencyIdFromTsName(String tsName, String prefix) {
+        return tsName.substring(prefix.length() + 1);
+    }
+
+    public static NodeCalc getProbabilityNodeCalc(Contingency contingency, Map<String, NodeCalc> calculatedTimeSeries) {
+        Probability probability = contingency.getExtension(Probability.class);
+        if (probability != null && probability.getProbabilityTimeSeriesRef() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityTimeSeriesRef(), TimeSeriesNameNodeCalc::new);
+        }
+        if (probability != null && probability.getProbabilityBase() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityBase().toString(), k -> new DoubleNodeCalc(probability.getProbabilityBase()));
+        }
+        // No probability defined > default value
+        return calculatedTimeSeries.computeIfAbsent("defaultProbability", k -> new DoubleNodeCalc(0.001F));
     }
 
     /**
