@@ -17,7 +17,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantReaderImpl;

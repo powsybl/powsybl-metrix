@@ -11,7 +11,7 @@ import com.google.common.base.Stopwatch;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.ComputationRange;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;

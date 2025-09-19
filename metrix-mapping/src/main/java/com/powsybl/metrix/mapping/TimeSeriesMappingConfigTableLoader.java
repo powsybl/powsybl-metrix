@@ -9,7 +9,7 @@ package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Range;
-import com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil;
+import com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.metrix.mapping.keys.TimeSeriesDistributionKey;
 import com.powsybl.timeseries.*;
@@ -33,7 +33,7 @@ import java.util.stream.StreamSupport;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
-import static com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil.isNotVersioned;
+import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

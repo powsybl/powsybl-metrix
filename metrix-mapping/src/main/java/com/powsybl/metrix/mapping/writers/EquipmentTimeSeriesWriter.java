@@ -9,7 +9,7 @@ package com.powsybl.metrix.mapping.writers;
 
 import com.google.common.collect.ImmutableSortedSet;
 import com.google.common.collect.Range;
-import com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil;
+import com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil;
 import com.powsybl.timeseries.CompressedDoubleDataChunk;
 import com.powsybl.timeseries.DoubleDataChunk;
 import com.powsybl.timeseries.DoubleTimeSeries;

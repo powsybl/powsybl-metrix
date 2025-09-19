@@ -10,8 +10,8 @@ package com.powsybl.metrix.integration.compatibility;
 import com.google.common.base.Stopwatch;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.data.timeseries.FileSystemTimeSeriesStore;
-import com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil;
+import com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesStore;
+import com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.tools.ToolRunningContext;
 

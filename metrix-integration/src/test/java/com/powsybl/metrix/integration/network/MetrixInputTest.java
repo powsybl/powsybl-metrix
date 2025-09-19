@@ -44,7 +44,7 @@ import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixTimeSeriesVariantProvider;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;

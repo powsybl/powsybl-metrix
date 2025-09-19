@@ -13,7 +13,7 @@ import com.powsybl.iidm.network.Injection
 import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.TwoWindingsTransformer
 import com.powsybl.metrix.commons.ComputationRange
-import com.powsybl.metrix.data.datatable.DataTableStore
+import com.powsybl.metrix.commons.data.datatable.DataTableStore
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore

@@ -94,10 +94,6 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>powsybl-metrix-data</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-metrix-commons</artifactId>
         </dependency>
         <dependency>

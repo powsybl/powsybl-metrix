@@ -20,7 +20,7 @@ import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.analysis.MetrixAnalysis;
 import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.network.DefaultNetworkSourceImpl;
 import com.powsybl.metrix.integration.network.NetworkSource;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;

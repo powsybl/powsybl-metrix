@@ -13,7 +13,7 @@ import com.powsybl.timeseries.TimeSeriesFilter;
 import java.util.Collections;
 import java.util.Set;
 
-import static com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
+import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

@@ -13,7 +13,7 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.observer.EquipmentGroupTimeSeriesWriterObserver;
 import com.powsybl.metrix.mapping.observer.EquipmentTimeSeriesWriterObserver;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;

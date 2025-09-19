@@ -1,9 +1,9 @@
 package com.powsybl.metrix.mapping
 
 import com.google.auto.service.AutoService
-import com.powsybl.metrix.data.datatable.DataTable
-import com.powsybl.metrix.data.datatable.DataTableStore
-import com.powsybl.metrix.data.exception.DataTableException
+import com.powsybl.metrix.commons.data.datatable.DataTable
+import com.powsybl.metrix.commons.data.datatable.DataTableStore
+import com.powsybl.metrix.commons.exception.DataTableException
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 
 /**

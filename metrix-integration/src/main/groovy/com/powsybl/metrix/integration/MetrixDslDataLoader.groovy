@@ -9,7 +9,7 @@ package com.powsybl.metrix.integration
 
 
 import com.powsybl.iidm.network.Network
-import com.powsybl.metrix.data.datatable.DataTableStore
+import com.powsybl.metrix.commons.data.datatable.DataTableStore
 import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader

@@ -15,7 +15,7 @@ import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixDslDataLoader;
 import com.powsybl.metrix.integration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;

@@ -20,7 +20,7 @@ import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

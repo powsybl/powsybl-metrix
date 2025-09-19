@@ -14,7 +14,7 @@ import com.powsybl.commons.io.table.TableFormatterConfig;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.ComputationRange;
-import com.powsybl.metrix.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.metrix.mapping.keys.DistributionKey;
 import com.powsybl.metrix.mapping.keys.NumberDistributionKey;

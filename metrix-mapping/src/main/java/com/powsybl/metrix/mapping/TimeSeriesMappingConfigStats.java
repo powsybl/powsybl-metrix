@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.DoubleStream;
 
-import static com.powsybl.metrix.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
+import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

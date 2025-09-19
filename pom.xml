@@ -38,7 +38,6 @@
         <module>metrix-integration</module>
         <module>metrix-mapping</module>
         <module>metrix-tools</module>
-        <module>metrix-data</module>
         <module>metrix-commons</module>
     </modules>
 
@@ -127,11 +126,6 @@
             <dependency>
                 <groupId>com.powsybl</groupId>
                 <artifactId>powsybl-metrix-commons</artifactId>
-                <version>${project.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.powsybl</groupId>
-                <artifactId>powsybl-metrix-data</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
