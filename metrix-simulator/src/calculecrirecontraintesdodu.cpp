@@ -4151,8 +4151,13 @@ int Calculer::ajoutVariableEcart(const std::shared_ptr<Contrainte>& ctr)
     pbXmax_.push_back(config::constants::max_diff);
     pbX_.push_back(0.);
 
-    // cout de la nouvelle variable
-    pbCoutLineaire_.push_back(config::configuration().costEcart());
+    // cout de la nouvelle variable avec probabilite de l'incident pour les contraintes N-k et Parade
+    int costEcart = config::configuration().costEcart();
+    if (ctr->type_ == Contrainte::CONTRAINTE_N_MOINS_K || ctr->type_ == Contrainte::CONTRAINTE_PARADE) {
+        double proba = ctr->icdt_->getProb();
+        costEcart = costEcart * proba;
+    }
+    pbCoutLineaire_.push_back(costEcart);
     pbCoutLineaireSansOffset_.push_back(0.);
 
     // ne doit jamais arriver
