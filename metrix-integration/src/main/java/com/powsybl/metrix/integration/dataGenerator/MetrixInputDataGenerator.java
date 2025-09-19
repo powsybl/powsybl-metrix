@@ -14,6 +14,8 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.chunk.MetrixChunkLogger;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantsWriter;

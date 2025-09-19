@@ -38,7 +38,7 @@ import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
-import com.powsybl.metrix.integration.MetrixParameters;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixTimeSeriesVariantProvider;

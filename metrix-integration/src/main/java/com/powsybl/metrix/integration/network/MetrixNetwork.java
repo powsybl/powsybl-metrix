@@ -12,7 +12,7 @@ import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.*;
-import com.powsybl.metrix.integration.MetrixParameters;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.MetrixSubset;
 import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.remedials.Remedial;

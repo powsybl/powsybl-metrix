@@ -10,6 +10,7 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.commons.data.datatable.DataTableStore
+import com.powsybl.metrix.integration.configuration.MetrixParameters
 import com.powsybl.metrix.mapping.LogDslLoader
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader

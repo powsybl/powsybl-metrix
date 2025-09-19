@@ -12,6 +12,8 @@ import com.powsybl.computation.CommandExecution;
 import com.powsybl.computation.InputFile;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;

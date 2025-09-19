@@ -15,6 +15,7 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;

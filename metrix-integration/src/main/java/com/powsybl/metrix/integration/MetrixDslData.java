@@ -13,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.dsl.BoundVariablesDslData;
 import com.powsybl.metrix.integration.dsl.BranchDslData;

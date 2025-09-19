@@ -14,6 +14,8 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.chunk.ChunkCutter;
 import com.powsybl.metrix.integration.chunk.MetrixChunk;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import com.powsybl.metrix.integration.io.ResultListener;
 import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;

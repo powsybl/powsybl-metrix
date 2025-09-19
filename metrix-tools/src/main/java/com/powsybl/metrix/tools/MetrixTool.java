@@ -16,7 +16,7 @@ import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.Metrix;
 import com.powsybl.metrix.integration.MetrixAppLogger;
-import com.powsybl.metrix.integration.MetrixRunParameters;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import com.powsybl.metrix.integration.network.NetworkSource;
 import com.powsybl.metrix.integration.compatibility.CsvResultListener;
 import com.powsybl.metrix.integration.analysis.MetrixAnalysis;

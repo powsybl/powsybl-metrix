@@ -24,7 +24,7 @@ import com.powsybl.iidm.network.VoltageLevel;
 import com.powsybl.iidm.network.test.FourSubstationsNodeBreakerFactory;
 import com.powsybl.iidm.serde.ExportOptions;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.integration.MetrixParameters;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.contingency.Probability;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

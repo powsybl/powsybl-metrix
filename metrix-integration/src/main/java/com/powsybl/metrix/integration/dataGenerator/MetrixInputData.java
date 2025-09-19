@@ -15,6 +15,7 @@ import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.integration.type.MetrixHvdcControlType;

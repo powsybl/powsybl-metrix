@@ -10,7 +10,7 @@ package com.powsybl.metrix.integration.analysis;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.integration.MetrixParameters;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.mapping.MappingParameters;

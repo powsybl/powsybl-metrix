@@ -13,6 +13,8 @@ import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
