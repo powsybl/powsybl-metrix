@@ -75,7 +75,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         return StringUtils.EMPTY;
     }
 
-    protected Map<String, String> getMetadataTags(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
+    public Map<String, String> getMetadataTags(NodeCalc nodeCalc, ReadOnlyTimeSeriesStore store) {
         Map<String, String> metadataTags = new HashMap<>();
         if (config.getTimeSeriesNodes().containsValue(nodeCalc)) {
             String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
@@ -87,7 +87,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         return metadataTags;
     }
 
-    protected void tag(NodeCalc nodeCalc, String tag, String parameter) {
+    public void tag(NodeCalc nodeCalc, String tag, String parameter) {
         String tsName = keys(config.getTimeSeriesNodes(), nodeCalc).findFirst().orElseThrow();
         config.addTag(tsName, tag, parameter);
     }
@@ -208,7 +208,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         }
     }
 
-    protected void timeSeriesExists(String timeSeriesName) {
+    public void timeSeriesExists(String timeSeriesName) {
         if (timeSeriesName == null) {
             throw new TimeSeriesMappingException("'timeSeriesName' is not set");
         }
@@ -217,7 +217,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         }
     }
 
-    protected void addEquipmentMapping(MappableEquipmentType equipmentType, String timeSeriesName, String equipmentId, DistributionKey distributionKey,
+    public void addEquipmentMapping(MappableEquipmentType equipmentType, String timeSeriesName, String equipmentId, DistributionKey distributionKey,
                                        EquipmentVariable variable) {
         switch (equipmentType) {
             case GENERATOR -> addGeneratorMapping(timeSeriesName, equipmentId, distributionKey, variable);
@@ -253,7 +253,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         }
     }
 
-    protected void addUnmappedEquipment(MappableEquipmentType equipmentType, String equipmentId) {
+    public void addUnmappedEquipment(MappableEquipmentType equipmentType, String equipmentId) {
         switch (equipmentType) {
             case GENERATOR -> config.ignoredUnmappedGenerators.add(equipmentId);
             case LOAD -> config.ignoredUnmappedLoads.add(equipmentId);
@@ -264,7 +264,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         }
     }
 
-    protected void addEquipmentTimeSeries(MappableEquipmentType equipmentType, String equipmentId, Set<EquipmentVariable> equipmentVariables) {
+    public void addEquipmentTimeSeries(MappableEquipmentType equipmentType, String equipmentId, Set<EquipmentVariable> equipmentVariables) {
         for (EquipmentVariable equipmentVariable : equipmentVariables) {
             MappingKey mappingKey = new MappingKey(equipmentVariable, equipmentId);
             switch (equipmentType) {
@@ -284,21 +284,21 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         }
     }
 
-    protected void addGroupGeneratorTimeSeries(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType, String name) {
+    public void addGroupGeneratorTimeSeries(Generator generator, EquipmentGroupType equipmentGroupType, Boolean withPowerType, String name) {
         String timeSeriesName = computeGeneratorTsName(generator, equipmentGroupType, withPowerType, name);
         config.generatorGroupToTimeSeriesMapping.computeIfAbsent(generator.getId(), k -> new HashSet<>()).add(timeSeriesName);
     }
 
-    protected void addGroupLoadTimeSeries(Load load, EquipmentGroupType equipmentGroupType, String name) {
+    public void addGroupLoadTimeSeries(Load load, EquipmentGroupType equipmentGroupType, String name) {
         String timeSeriesName = computeLoadTsName(load, equipmentGroupType, name);
         config.loadGroupToTimeSeriesMapping.computeIfAbsent(load.getId(), k -> new HashSet<>()).add(timeSeriesName);
     }
 
-    protected void addIgnoreLimits(String timeSeriesName) {
+    public void addIgnoreLimits(String timeSeriesName) {
         config.ignoreLimitsTimeSeriesNames.add(timeSeriesName);
     }
 
-    protected void addPlannedOutages(String timeSeriesName, Set<String> disconnectedIds) {
+    public void addPlannedOutages(String timeSeriesName, Set<String> disconnectedIds) {
         config.timeSeriesToPlannedOutagesMapping.put(timeSeriesName, disconnectedIds);
     }
 
