@@ -14,6 +14,7 @@ on:
 jobs:
   build_powsybl_metrix:
     name: Build Java ${{ matrix.os }}
+    if: github.event.pull_request.head.repo.fork == false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -170,7 +171,7 @@ jobs:
   notify_slack:
     needs: build_powsybl_metrix
     runs-on: ubuntu-latest
-    if: always()
+    if: github.event.pull_request.head.repo.fork == false && always()
     steps:
       - name: Download job results
         uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
