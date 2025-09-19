@@ -114,7 +114,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
     public Set<String> getMappedBreakers() {
         return config.getBreakerToTimeSeriesMapping().keySet()
                 .stream()
-                .map(MappingKey::getId)
+                .map(MappingKey::id)
                 .collect(Collectors.toSet());
     }
 

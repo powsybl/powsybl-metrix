@@ -25,12 +25,12 @@ timeSeries['nul'] = 0
 
 mapToGenerators {
    timeSeriesName 'nul'
-   filter { generator.id in ['N_G','SE_G'] }
+   filter { generator.id in ['N_G', 'SE_G'] }
 }
 
 mapToLoads {
    timeSeriesName 'nul'
-   filter { load.id in ['SE_L2','SO_L'] }
+   filter { load.id in ['SE_L2', 'SO_L'] }
 }
 
 mapToPhaseTapChangers {

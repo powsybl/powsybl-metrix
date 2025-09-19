@@ -19,7 +19,7 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
-import com.powsybl.metrix.mapping.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
@@ -912,16 +912,16 @@ class MetrixDslDataLoaderTest {
 
         Iterator<MappingKey> mappingKeyIterator = tsConfig.getEquipmentIds("tsNk").iterator();
         MappingKey mappingKey = mappingKeyIterator.next();
-        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_NK, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_NK, mappingKey.mappingVariable());
         mappingKey = mappingKeyIterator.next();
-        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_NK, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_NK, mappingKey.mappingVariable());
 
         mappingKeyIterator = tsConfig.getEquipmentIds("tsITAMNk").iterator();
         mappingKey = mappingKeyIterator.next();
-        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_ITAM_NK, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_ITAM_NK, mappingKey.mappingVariable());
     }
 
     @Test
@@ -985,24 +985,24 @@ class MetrixDslDataLoaderTest {
         assertEquals(1, tsConfig.getEquipmentIds("tsITAMNkEndOr").size());
 
         MappingKey mappingKey = tsConfig.getEquipmentIds("tsNEndOr").iterator().next();
-        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N_END_OR, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  2", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_N_END_OR, mappingKey.mappingVariable());
 
         mappingKey = tsConfig.getEquipmentIds("tsN_1EndOr").iterator().next();
-        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_N1_END_OR, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_N1_END_OR, mappingKey.mappingVariable());
 
         mappingKey = tsConfig.getEquipmentIds("tsNkEndOr").iterator().next();
-        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_NK_END_OR, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_NK_END_OR, mappingKey.mappingVariable());
 
         mappingKey = tsConfig.getEquipmentIds("tsITAMEndOr").iterator().next();
-        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_ITAM_END_OR, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_ITAM_END_OR, mappingKey.mappingVariable());
 
         mappingKey = tsConfig.getEquipmentIds("tsITAMNkEndOr").iterator().next();
-        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.getId());
-        assertEquals(MetrixVariable.THRESHOLD_ITAM_NK_END_OR, mappingKey.getMappingVariable());
+        assertEquals("FVALDI1  FTDPRA1  1", mappingKey.id());
+        assertEquals(MetrixVariable.THRESHOLD_ITAM_NK_END_OR, mappingKey.mappingVariable());
     }
 
     @Test

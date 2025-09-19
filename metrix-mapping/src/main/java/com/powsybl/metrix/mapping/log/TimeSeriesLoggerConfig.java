@@ -12,13 +12,5 @@ import java.time.format.DateTimeFormatter;
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
-public class TimeSeriesLoggerConfig {
-    public final char separator;
-
-    public final DateTimeFormatter dateTimeFormatter;
-
-    public TimeSeriesLoggerConfig(char separator, DateTimeFormatter dateTimeFormatter) {
-        this.separator = separator;
-        this.dateTimeFormatter = dateTimeFormatter;
-    }
+public record TimeSeriesLoggerConfig(char separator, DateTimeFormatter dateTimeFormatter) {
 }

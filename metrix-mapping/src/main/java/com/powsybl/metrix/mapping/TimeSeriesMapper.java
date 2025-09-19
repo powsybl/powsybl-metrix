@@ -7,12 +7,23 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.DanglingLine;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRangeAdder;
 import com.powsybl.iidm.network.extensions.LoadDetail;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.log.EmptyFilter;
+import com.powsybl.metrix.mapping.log.LimitSignBuilder;
+import com.powsybl.metrix.mapping.log.Log;
+import com.powsybl.metrix.mapping.log.LogBuilder;
+import com.powsybl.metrix.mapping.log.LogContent;
+import com.powsybl.metrix.mapping.log.ZeroDistributionKeyInfo;
 import com.powsybl.metrix.mapping.timeseries.EquipmentTimeSeriesMap;
 import com.powsybl.metrix.mapping.timeseries.MappedEquipment;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -20,7 +31,13 @@ import com.powsybl.timeseries.TimeSeriesTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -47,7 +64,7 @@ public class TimeSeriesMapper {
     private TimeSeriesTable table;
     private TimeSeriesMapperChecker checker;
 
-    private static class MapperContext {
+    private static final class MapperContext {
         private final EquipmentTimeSeriesMap timeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToGeneratorsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToDanglingLinesMapping = new EquipmentTimeSeriesMap();
@@ -200,8 +217,8 @@ public class TimeSeriesMapper {
 
     private void mapToNetwork(int version, int variantId, int point,
                               IndexedMappingKey mappingKey, List<MappedEquipment> mappedEquipments) {
-        String timeSeriesName = mappingKey.getKey().getId();
-        MappingVariable variable = mappingKey.getKey().getMappingVariable();
+        String timeSeriesName = mappingKey.key().id();
+        MappingVariable variable = mappingKey.key().mappingVariable();
 
         // compute distribution key associated to equipment list
         double[] distributionKeys = new double[mappedEquipments.size()];
@@ -210,7 +227,7 @@ public class TimeSeriesMapper {
         double[] equipmentValues = new double[mappedEquipments.size()];
         Arrays.fill(equipmentValues, 0);
 
-        double timeSeriesValue = table.getDoubleValue(version, mappingKey.getNum(), point);
+        double timeSeriesValue = table.getDoubleValue(version, mappingKey.num(), point);
         if (Double.isNaN(timeSeriesValue) || Double.isInfinite(timeSeriesValue)) {
             throw new TimeSeriesMappingException("Impossible to scale down " + timeSeriesValue + " of ts " + timeSeriesName + " at time index '" + table.getTableIndex().getInstantAt(point) + "' and version " + version);
         }
@@ -238,7 +255,7 @@ public class TimeSeriesMapper {
         }
 
         if (checker != null) {
-            List<Identifiable<?>> ids = mappedEquipments.stream().map(MappedEquipment::getIdentifiable).collect(Collectors.toList());
+            List<Identifiable<?>> ids = mappedEquipments.stream().map(MappedEquipment::identifiable).collect(Collectors.toList());
             boolean ignoreLimitsForTimeSeries = parameters.isIgnoreLimits() || TimeSeriesMapper.isPowerVariable(variable) && config.getIgnoreLimitsTimeSeriesNames().contains(timeSeriesName);
             checker.timeSeriesMappedToEquipments(variantId, timeSeriesName, timeSeriesValue, ids, variable, equipmentValues, ignoreLimitsForTimeSeries);
         }
@@ -250,12 +267,12 @@ public class TimeSeriesMapper {
         if (parameters.isIgnoreEmptyFilter()) {
             timeSeriesMappingLogger.addLog(log);
         } else {
-            throw new TimeSeriesMappingException(log.getMessage());
+            throw new TimeSeriesMappingException(log.message());
         }
     }
 
     private boolean logHvdcLimitSign(List<MappedEquipment> mappedEquipments, String timeSeriesName, MappingVariable variable, double timeSeriesValue, LogBuilder logBuilder) {
-        if (mappedEquipments.get(0).getIdentifiable() instanceof HvdcLine) {
+        if (mappedEquipments.getFirst().identifiable() instanceof HvdcLine) {
             LimitSignBuilder limitSignBuilder = new LimitSignBuilder()
                     .timeSeriesValue(timeSeriesValue)
                     .timeSeriesName(timeSeriesName)
@@ -293,9 +310,9 @@ public class TimeSeriesMapper {
         double distributionKeySum = 0;
         for (int i = 0; i < mappedEquipments.size(); i++) {
             MappedEquipment mappedEquipment = mappedEquipments.get(i);
-            DistributionKey distributionKey = mappedEquipment.getDistributionKey();
-            if (distributionKey instanceof NumberDistributionKey numberDistributionKey) {
-                distributionKeys[i] = numberDistributionKey.value();
+            DistributionKey distributionKey = mappedEquipment.distributionKey();
+            if (distributionKey instanceof NumberDistributionKey(double value)) {
+                distributionKeys[i] = value;
             } else if (distributionKey instanceof TimeSeriesDistributionKey timeSeriesDistributionKey) {
                 int timeSeriesNum = timeSeriesDistributionKey.getTimeSeriesNum();
                 if (timeSeriesNum == -1) {
@@ -319,7 +336,7 @@ public class TimeSeriesMapper {
     }
 
     public static IndexedMappingKey indexMappingKey(TimeSeriesTable timeSeriesTable, MappingKey key) {
-        return new IndexedMappingKey(key, timeSeriesTable.getDoubleTimeSeriesIndex(key.getId()));
+        return new IndexedMappingKey(key, timeSeriesTable.getDoubleTimeSeriesIndex(key.id()));
     }
 
     private void identifyConstantEquipmentTimeSeries(int version,
@@ -327,9 +344,9 @@ public class TimeSeriesMapper {
                                             Map<IndexedName, Set<MappingKey>> constantTimeSeries,
                                             Map<IndexedName, Set<MappingKey>> variableTimeSeries) {
         sourceTimeSeries.forEach((indexedName, mappingKeys) -> {
-            int timeSeriesNum = indexedName.getNum();
+            int timeSeriesNum = indexedName.num();
             if (table.getStdDev(version, timeSeriesNum) < EPSILON_COMPARISON) { // std dev == 0 means time-series is constant
-                LOGGER.debug("Equipment time-series '{}' is constant", indexedName.getName());
+                LOGGER.debug("Equipment time-series '{}' is constant", indexedName.name());
                 constantTimeSeries.put(indexedName, mappingKeys);
             } else {
                 variableTimeSeries.put(indexedName, mappingKeys);
@@ -346,15 +363,15 @@ public class TimeSeriesMapper {
             return;
         }
         sourceTimeSeries.getEquipmentTimeSeries().forEach((indexedMappingKey, mappedEquipments) -> {
-            int timeSeriesNum = indexedMappingKey.getNum();
-            MappingVariable variable = indexedMappingKey.getKey().getMappingVariable();
+            int timeSeriesNum = indexedMappingKey.num();
+            MappingVariable variable = indexedMappingKey.key().mappingVariable();
             if (variable == EquipmentVariable.TARGET_P ||
                     variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
                 // Active power mapping is not tested in order to allow later correction of values not included in [minP, maxP]
                 variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
             } else {
                 if (table.getStdDev(version, timeSeriesNum) < EPSILON_ZERO_STD_DEV) { // std dev == 0 means time-series is constant
-                    LOGGER.debug("Mapping time-series '{}' is constant", indexedMappingKey.getKey().getId());
+                    LOGGER.debug("Mapping time-series '{}' is constant", indexedMappingKey.key().id());
                     constantTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
                 } else {
                     variableTimeSeries.addMappedEquipmentTimeSeries(indexedMappingKey, mappedEquipments);
@@ -625,11 +642,11 @@ public class TimeSeriesMapper {
     private void mapEquipmentToNetwork(int version, int point,
                                        Map<IndexedName, Set<MappingKey>> equipmentTimeSeries) {
         for (Map.Entry<IndexedName, Set<MappingKey>> e : equipmentTimeSeries.entrySet()) {
-            String timeSeriesName = e.getKey().getName();
-            int timeSeriesNum = e.getKey().getNum();
+            String timeSeriesName = e.getKey().name();
+            int timeSeriesNum = e.getKey().num();
             double timeSeriesValue = table.getDoubleValue(version, timeSeriesNum, point);
             for (MappingKey equipment : e.getValue()) {
-                checker.timeSeriesMappedToEquipment(point, timeSeriesName, network.getIdentifiable(equipment.getId()), equipment.getMappingVariable(), timeSeriesValue);
+                checker.timeSeriesMappedToEquipment(point, timeSeriesName, network.getIdentifiable(equipment.id()), equipment.mappingVariable(), timeSeriesValue);
             }
         }
     }

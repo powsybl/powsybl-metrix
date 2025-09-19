@@ -29,11 +29,11 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -267,7 +267,7 @@ jobs:
           ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
           rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
         env:
-          SONAR_SCANNER_VERSION: 3.3.0.1492
+          SONAR_SCANNER_VERSION: 7.1.0.4889
 
       - name: Install Boost
         run: |
@@ -276,6 +276,8 @@ jobs:
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
 
       - name: Configure 3rd parties
         run: >
@@ -331,6 +333,8 @@ jobs:
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
 
       - name: Git fetch base_ref and head_ref
         run: |
@@ -357,7 +361,7 @@ jobs:
         run: |
           REPORT_NAME="clang_tidy_report_pr.txt"
           REPORT_PATH="$PWD/${REPORT_NAME}"
-          export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} ${{ github.event.pull_request.head.repo.clone_url }}/${{ github.head_ref }}  | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
+          export METRIX_CPP_SOURCES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }} FETCH_HEAD | grep -E ".*(metrix-simulator/src|metrix-simulator/log).*\.(cpp|hpp)$")
           if [ -n "$METRIX_CPP_SOURCES" ]; then
             clang-tidy $METRIX_CPP_SOURCES -p $GITHUB_WORKSPACE/metrix-simulator/build > $REPORT_NAME || true
             echo "report_exists=true" >> "$GITHUB_OUTPUT"

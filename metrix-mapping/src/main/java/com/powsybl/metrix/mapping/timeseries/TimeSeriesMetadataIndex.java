@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.mapping.exception;
+package com.powsybl.metrix.mapping.timeseries;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -26,9 +26,9 @@ public class TimeSeriesMetadataIndex {
 
     @JsonCreator
     public TimeSeriesMetadataIndex(RegularTimeSeriesIndex regularTimeSeriesIndex) {
-        this.startTime = regularTimeSeriesIndex.getStartTime();
-        this.endTime = regularTimeSeriesIndex.getEndTime();
-        this.spacing = regularTimeSeriesIndex.getSpacing();
+        this.startTime = regularTimeSeriesIndex.getStartInstant().toEpochMilli();
+        this.endTime = regularTimeSeriesIndex.getEndInstant().toEpochMilli();
+        this.spacing = regularTimeSeriesIndex.getTimeStep().toMillis();
         this.pointCount = regularTimeSeriesIndex.getPointCount();
     }
 }

@@ -16,6 +16,7 @@ import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -185,15 +186,20 @@ public class MetrixInputData {
         trnbgrou = metrixNetwork.getGeneratorList().size();
 
         // Quadripoles are lines, transformers and switches
-        cqnbquad = metrixNetwork.getLineList().size() + metrixNetwork.getTwoWindingsTransformerList().size() + 3 * metrixNetwork.getThreeWindingsTransformerList().size() + metrixNetwork.getSwitchList().size();
+        cqnbquad = metrixNetwork.getLineList().size()
+            + metrixNetwork.getTwoWindingsTransformerList().size()
+            + 3 * metrixNetwork.getThreeWindingsTransformerList().size()
+            + metrixNetwork.getSwitchList().size()
+            + metrixNetwork.getUnpairedDanglingLineList().size()
+            + metrixNetwork.getTieLineList().size();
         dtnbtrde = metrixNetwork.getPhaseTapChangerList().size();
 
-        // Loads are loads and dangling lines
-        ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getDanglingLineList().size();
+        // Loads are loads and unpaired dangling lines
+        ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
 
         dcnblies = metrixNetwork.getHvdcLineList().size();
 
-        tnnbntot = metrixNetwork.getBusList().size();
+        tnnbntot = metrixNetwork.getBusList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
 
         if (dslData != null) {
             sectnbse = dslData.getSectionList().size();
@@ -280,6 +286,7 @@ public class MetrixInputData {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "MetrixInputBranch{" +
                 "cqnomqua=" + Arrays.toString(cqnomqua) +
@@ -333,6 +340,7 @@ public class MetrixInputData {
         }
 
         @Override
+        @NonNull
         public String toString() {
             return "MetrixInputBranch{" +
                 "cqnomqua=" + Arrays.toString(dttrdequ) +
@@ -399,6 +407,12 @@ public class MetrixInputData {
         // Switches
         metrixNetwork.getSwitchList().forEach(sw -> writeSwitch(sw, metrixInputBranch));
 
+        // TieLines
+        metrixNetwork.getTieLineList().forEach(tieLine -> writeTieLine(tieLine, metrixInputBranch, constantLossFactor));
+
+        // Unpaired Dangling Lines
+        metrixNetwork.getUnpairedDanglingLineList().forEach(udl -> writeUnpairedDanglingLine(udl, metrixInputBranch));
+
         // Branch
         die.setStringArray("CQNOMQUA", cqnomqua);
         die.setFloatArray("CQADMITA", cqadmita);
@@ -432,7 +446,7 @@ public class MetrixInputData {
                     openbran.add(metrixNetwork.getIndex(disconnectedElement));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Open branch '%s' is not in Main Connected Component", disconnectedElement.getId()));
+                        LOGGER.warn("Open branch '{}' is not in Main Connected Component", disconnectedElement.getId());
                     }
                 }
             }
@@ -523,11 +537,34 @@ public class MetrixInputData {
     }
 
     private void writeLine(Line line, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
+        writeLineOrTieLine(line, line.getR(), line.getX(), metrixInputBranch, constantLossFactor);
+    }
+
+    private void writeTieLine(TieLine tieLine, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
+        writeLineOrTieLine(tieLine, tieLine.getR(), tieLine.getX(), metrixInputBranch, constantLossFactor);
+    }
+
+    private void writeUnpairedDanglingLine(DanglingLine danglingLine, MetrixInputBranch metrixInputBranch) {
+        double nominalVoltage = danglingLine.getTerminal().getVoltageLevel().getNominalV();
+        double r = (danglingLine.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+        double admittance = toAdmittance(danglingLine.getId(), danglingLine.getX(), nominalVoltage, parameters.getNominalU());
+        int index = metrixNetwork.getIndex(danglingLine);
+        // side 1 is network side
+        int bus1Index = metrixNetwork.getIndex(danglingLine.getTerminal().getBusBreakerView().getBus());
+        // side 2 is boundary side
+        int bus2Index = metrixNetwork.getUnpairedDanglingLineBusIndex(danglingLine);
+
+        writeBranch(metrixInputBranch,
+                index,
+                new BranchValues(danglingLine.getId(), admittance, r, getMonitoringTypeBasecase(danglingLine.getId()), getMonitoringTypeOnContingency(danglingLine.getId()), bus1Index, bus2Index));
+    }
+
+    private void writeLineOrTieLine(Branch<?> line, double lineR, double lineX, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
         double nominalVoltage1 = line.getTerminal1().getVoltageLevel().getNominalV();
         double nominalVoltage2 = line.getTerminal2().getVoltageLevel().getNominalV();
         double nominalVoltage = constantLossFactor ? Math.max(nominalVoltage1, nominalVoltage2) : nominalVoltage2;
-        double r = (line.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
-        double admittance = toAdmittance(line.getId(), line.getX(), nominalVoltage, parameters.getNominalU());
+        double r = (lineR * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+        double admittance = toAdmittance(line.getId(), lineX, nominalVoltage, parameters.getNominalU());
         int index = metrixNetwork.getIndex(line);
         int bus1Index = metrixNetwork.getIndex(line.getTerminal1().getBusBreakerView().getBus());
         int bus2Index = metrixNetwork.getIndex(line.getTerminal2().getBusBreakerView().getBus());
@@ -550,6 +587,10 @@ public class MetrixInputData {
         for (Bus bus : metrixNetwork.getBusList()) {
             int index = metrixNetwork.getIndex(bus);
             cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(bus.getVoltageLevel()));
+        }
+        for (DanglingLine udl : metrixNetwork.getUnpairedDanglingLineList()) {
+            int index = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
+            cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(udl.getTerminal().getBusBreakerView().getBus().getVoltageLevel()));
         }
         die.setIntArray("CPPOSREG", cpposreg);
     }
@@ -577,6 +618,21 @@ public class MetrixInputData {
             preventiveLoadsList = new HashSet<>();
         }
 
+        writeLoadsAndUnpairedDanglingLines(tnneucel, esafiact, tnnomnoe, tnvapal1, tnvacou1, preventiveLoadsList);
+
+        die.setStringArray("TNNOMNOE", tnnomnoe);
+        die.setIntArray("TNNEUCEL", tnneucel);
+        die.setFloatArray("ESAFIACT", esafiact);
+
+        if (!preventiveLoadsList.isEmpty()) {
+            die.setIntArray("TNVAPAL1", tnvapal1);
+            die.setFloatArray("TNVACOU1", tnvacou1);
+        }
+    }
+
+    private void writeLoadsAndUnpairedDanglingLines(int[] tnneucel, float[] esafiact, String[] tnnomnoe,
+                                                    int[] tnvapal1, float[] tnvacou1,
+                                                    Set<String> preventiveLoadsList) {
         int index = 0;
         for (Load load : metrixNetwork.getLoadList()) {
             int busIndex = metrixNetwork.getIndex(load.getTerminal().getBusBreakerView().getBus());
@@ -592,19 +648,16 @@ public class MetrixInputData {
             index++;
         }
 
-        for (DanglingLine dl : metrixNetwork.getDanglingLineList()) {
-            int busIndex = metrixNetwork.getIndex(dl.getTerminal().getBusBreakerView().getBus());
-            writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, (float) dl.getP0(), dl.getId());
+        for (DanglingLine udl : metrixNetwork.getUnpairedDanglingLineList()) {
+            int busIndex = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
+            float p0 = (float) udl.getP0();
+            if (udl.getGeneration() != null) {
+                // We do not create a generator, because we do not want the DL generation to be used when balancing Gen/Load.
+                // Therefore, we just remove the generation part from the load.
+                p0 -= (float) udl.getGeneration().getTargetP();
+            }
+            writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, p0, udl.getId() + MetrixNetwork.getUnpairedDanglingLineLoadId(udl));
             index++;
-        }
-
-        die.setStringArray("TNNOMNOE", tnnomnoe);
-        die.setIntArray("TNNEUCEL", tnneucel);
-        die.setFloatArray("ESAFIACT", esafiact);
-
-        if (!preventiveLoadsList.isEmpty()) {
-            die.setIntArray("TNVAPAL1", tnvapal1);
-            die.setFloatArray("TNVACOU1", tnvacou1);
         }
     }
 
@@ -770,7 +823,7 @@ public class MetrixInputData {
             try {
                 int type;
                 switch (element.getType()) {
-                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER -> type = ElementType.BRANCH.getType();
+                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER, TIE_LINE, DANGLING_LINE -> type = ElementType.BRANCH.getType();
                     case GENERATOR -> {
                         type = ElementType.GENERATOR.getType();
                         generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
@@ -783,7 +836,7 @@ public class MetrixInputData {
                 elementsToTrip.add(elementIndex);
             } catch (IllegalStateException ise) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Error while processing contingency '%s', element '%s' not found.", contingency.getId(), element.getId()));
+                    LOGGER.warn("Error while processing contingency '{}', element '{}' not found.", contingency.getId(), element.getId());
                     LOGGER.warn(ise.getMessage());
                 }
             }
@@ -858,7 +911,7 @@ public class MetrixInputData {
                 indexes.put(metrixNetwork.getIndex(subset, elementId), elementId);
             } catch (IllegalStateException ise) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Curative element '%s' not found in Main Connected Component", elementId));
+                    LOGGER.warn("Curative element '{}' not found in Main Connected Component", elementId);
                 }
             }
         }
@@ -878,7 +931,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of transformer '%s'", cty, pstId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of transformer '{}'", cty, pstId);
                     }
                 }
             }
@@ -917,7 +970,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of hvdc line '%s'", cty, hvdcId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of hvdc line '{}'", cty, hvdcId);
                     }
                 }
             }
@@ -957,7 +1010,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of generator '%s'", cty, generatorId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of generator '{}'", cty, generatorId);
                     }
                 }
             }
@@ -999,7 +1052,7 @@ public class MetrixInputData {
                     nbCty++;
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for curative action of load '%s'", cty, loadId));
+                        LOGGER.warn("Contingency '{}' not found for curative action of load '{}'", cty, loadId);
                     }
                 }
             }
@@ -1051,7 +1104,7 @@ public class MetrixInputData {
                     tmpList.add(indexCty);
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for detailed flow results of branch '%s'", cty, branchId));
+                        LOGGER.warn("Contingency '{}' not found for detailed flow results of branch '{}'", cty, branchId);
                     }
                 }
             }
@@ -1098,7 +1151,7 @@ public class MetrixInputData {
                     tmpList.add(indexCty);
                 } else {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("Contingency '%s' not found for detailed marginal variations of branch '%s'", cty, branchId));
+                        LOGGER.warn("Contingency '{}' not found for detailed marginal variations of branch '{}'", cty, branchId);
                     }
                 }
             }
@@ -1136,13 +1189,16 @@ public class MetrixInputData {
                                      List<Integer> secttype, List<Integer> sectnumq, List<Float> sectcoef) {
         Identifiable<?> identifiable = metrixNetwork.getNetwork().getIdentifiable(branch.getKey());
         if (identifiable != null) {
-            if (identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer) {
+            if (identifiable instanceof Line ||
+                    identifiable instanceof TwoWindingsTransformer ||
+                    identifiable instanceof DanglingLine ||
+                    identifiable instanceof TieLine) {
                 secttype.add(ElementType.BRANCH.getType());
             } else if (identifiable instanceof HvdcLine) {
                 secttype.add(ElementType.HVDC.getType());
             } else {
                 if (LOGGER.isErrorEnabled()) {
-                    LOGGER.error(String.format("Section '%s' : unsupported element type '%s'", section.getId(), identifiable.getClass().getName()));
+                    LOGGER.error("Section '{}' : unsupported element type '{}'", section.getId(), identifiable.getClass().getName());
                 }
             }
             sectnumq.add(metrixNetwork.getIndex(identifiable));
@@ -1150,7 +1206,7 @@ public class MetrixInputData {
             sectnbqd[index]++;
         } else {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("Section '%s' : element not found in network '%s'", section.getId(), branch.getKey()));
+                LOGGER.warn("Section '{}' : element not found in network '{}'", section.getId(), branch.getKey());
             }
         }
     }
@@ -1201,7 +1257,7 @@ public class MetrixInputData {
                     idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("generator group '%s' : generator '%s' not found", binding.getName(), generatorId));
+                        LOGGER.warn("generator group '{}' : generator '{}' not found", binding.getName(), generatorId);
                     }
                 }
             }
@@ -1212,7 +1268,7 @@ public class MetrixInputData {
                 gbinddef.add(idList.size());
                 gbinddef.addAll(idList);
             } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("generator group '%s' ignored because it contains too few elements (%d)", binding.getName(), idList.size()));
+                LOGGER.warn("generator group '{}' ignored because it contains too few elements ({})", binding.getName(), idList.size());
             }
 
         }
@@ -1248,7 +1304,7 @@ public class MetrixInputData {
                     idList.add(metrixNetwork.getIndex(MetrixSubset.LOAD, loadId));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn(String.format("load group '%s' : load '%s' not found", binding.getName(), loadId));
+                        LOGGER.warn("load group '{}' : load '{}' not found", binding.getName(), loadId);
                     }
                 }
             }
@@ -1258,7 +1314,7 @@ public class MetrixInputData {
                 lbinddef.add(idList.size());
                 lbinddef.addAll(idList);
             } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("load group '%s' ignored because it contains to few elements (%d)", binding.getName(), idList.size()));
+                LOGGER.warn("load group '{}' ignored because it contains to few elements ({})", binding.getName(), idList.size());
             }
 
         }
@@ -1327,7 +1383,7 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getBranchMonitoringNList().size() + dslData.getSectionList().size();
             int nbBranchNk = dslData.getBranchMonitoringNkList().size();
             nbTimeSeries += 2 * nbBranchNk * parameters.getOptionalNbThreatResults().orElse(1);
-            nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(b -> Boolean.TRUE.equals(b) ? 1 : 0).orElse(0);
+            nbTimeSeries += 2 * nbBranchNk * parameters.isPreCurativeResults().map(isPreCurative -> isPreCurative ? 1 : 0).orElse(0);
             nbTimeSeries += dslData.getContingencyFlowResultList().stream().mapToInt(s -> dslData.getContingencyFlowResult(s).size()).sum();
         }
         return nbTimeSeries;

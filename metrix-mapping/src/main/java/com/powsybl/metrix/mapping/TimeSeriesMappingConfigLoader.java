@@ -11,13 +11,19 @@ import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.Injection;
 import com.powsybl.iidm.network.Load;
 import com.powsybl.iidm.network.VoltageLevel;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.FloatNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigEquipmentCsvWriter.getSubstation;
@@ -57,7 +63,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         };
     }
 
-    protected String computePowerTypeName(Generator generator) {
+    protected String computePowerTypeName(Generator ignored) {
         return StringUtils.EMPTY;
     }
 
@@ -119,7 +125,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             List<String> timeSeriesAlreadyMappedToThisEquipment = getMultimapValue(equipmentToTimeSeriesMapping, equipmentToTimeSeriesKey);
             if (!timeSeriesAlreadyMappedToThisEquipment.isEmpty()) {
                 // remove old mapping
-                String oldTimeSeriesName = timeSeriesAlreadyMappedToThisEquipment.get(0);
+                String oldTimeSeriesName = timeSeriesAlreadyMappedToThisEquipment.getFirst();
                 MappingKey oldTimeSeriesKey = new MappingKey(variable, oldTimeSeriesName);
                 List<String> equipmentsMappedToOldTimeSeries = getMultimapValue(timeSerieToEquipmentsMapping, oldTimeSeriesKey);
                 equipmentsMappedToOldTimeSeries.remove(equipmentId);
@@ -127,7 +133,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
                     timeSerieToEquipmentsMapping.remove(oldTimeSeriesKey);
                 }
             }
-            timeSeriesAlreadyMappedToThisEquipment.add(0, timeSeriesName);
+            timeSeriesAlreadyMappedToThisEquipment.addFirst(timeSeriesName);
 
             // add new mapping
             getMultimapValue(timeSerieToEquipmentsMapping, timeSerieToEquipmentsKey).add(equipmentId);

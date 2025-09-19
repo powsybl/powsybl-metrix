@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping.timeseries;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.timeseries.TimeSeriesTable;
 
 import java.util.ArrayList;
@@ -31,14 +32,14 @@ public class EquipmentTimeSeriesMap {
 
     public void convertToEquipmentTimeSeriesMap(Map<MappingKey, List<String>> timeSerieMap, TimeSeriesTable table, Network network, TimeSeriesMappingConfig config) {
         equimentTimeSeries.clear();
-        timeSerieMap.entrySet().forEach(timeSeries -> equimentTimeSeries
-                .put(indexMappingKey(table, timeSeries.getKey()), mapEquipments(timeSeries.getKey(), timeSeries.getValue(), network, config)));
+        timeSerieMap.forEach((key, value) -> equimentTimeSeries
+            .put(indexMappingKey(table, key), mapEquipments(key, value, network, config)));
     }
 
     public List<MappedEquipment> mapEquipments(MappingKey key, List<String> equipmentIds, Network network, TimeSeriesMappingConfig config) {
         return equipmentIds.stream().map(equipmentId -> {
             Identifiable<?> identifiable = getIdentifiable(network, equipmentId);
-            DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.getMappingVariable(), equipmentId));
+            DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.mappingVariable(), equipmentId));
             return new MappedEquipment(identifiable, distributionKey);
         }).toList();
     }

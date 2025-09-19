@@ -20,7 +20,7 @@ public class LimitLogBuilder implements LogDescriptionBuilder {
     private int nbViolation;
     private double oldValue;
     private double newValue;
-    private String comparision;
+    private String comparison;
     private String evolution;
 
     private static final String LIMIT_CHANGE = "limit change" + LABEL_SEPARATOR;
@@ -58,19 +58,19 @@ public class LimitLogBuilder implements LogDescriptionBuilder {
     public LogContent build() {
         LogContent log = new LogContent();
         log.label = LIMIT_CHANGE + variableToChange;
-        log.message = String.format("%s of %s%s%s for %s variants, %s%s%s to %s", variableToChange, id, comparision,
+        log.message = String.format("%s of %s%s%s for %s variants, %s%s%s to %s", variableToChange, id, comparison,
                 variable, nbViolation, variableToChange, evolution, formatDouble(oldValue), formatDouble(newValue));
         return log;
     }
 
     public LimitLogBuilder isMin() {
-        this.comparision = " higher than ";
+        this.comparison = " higher than ";
         this.evolution = " decreased from ";
         return this;
     }
 
     public LimitLogBuilder isMax() {
-        this.comparision = " lower than ";
+        this.comparison = " lower than ";
         this.evolution = " increased from ";
         return this;
     }

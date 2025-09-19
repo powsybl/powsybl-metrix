@@ -37,6 +37,8 @@ public class MetrixNetwork {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
     private static final String PAYS_CVG_PROPERTY = "paysCvg";
     private static final String PAYS_CVG_UNDEFINED = "Undefined";
+    private static final String METRIX_DANGLING_LINE_BUS_SUFFIX = "_metrixDanglingLineBus";
+    private static final String METRIX_DANGLING_LINE_LOAD_SUFFIX = "_metrixDanglingLineLoad";
 
     private final Network network;
 
@@ -52,8 +54,9 @@ public class MetrixNetwork {
     private final Set<Line> lineList = new LinkedHashSet<>();
     private final Set<TwoWindingsTransformer> twoWindingsTransformerList = new LinkedHashSet<>();
     private final Set<ThreeWindingsTransformer> threeWindingsTransformerList = new LinkedHashSet<>();
-    private final Set<DanglingLine> danglingLineList = new LinkedHashSet<>();
     private final Set<Switch> switchList = new LinkedHashSet<>();
+    private final Set<DanglingLine> unpairedDanglingLineList = new LinkedHashSet<>();
+    private final Set<TieLine> tieLineList = new LinkedHashSet<>();
 
     private final Set<PhaseTapChanger> phaseTapChangerList = new LinkedHashSet<>();
 
@@ -104,12 +107,16 @@ public class MetrixNetwork {
         return List.copyOf(threeWindingsTransformerList);
     }
 
-    public List<DanglingLine> getDanglingLineList() {
-        return List.copyOf(danglingLineList);
+    public List<DanglingLine> getUnpairedDanglingLineList() {
+        return List.copyOf(unpairedDanglingLineList);
     }
 
     public List<Switch> getSwitchList() {
         return List.copyOf(switchList);
+    }
+
+    public List<TieLine> getTieLineList() {
+        return List.copyOf(tieLineList);
     }
 
     public List<PhaseTapChanger> getPhaseTapChangerList() {
@@ -135,6 +142,19 @@ public class MetrixNetwork {
     public int getIndex(Identifiable<?> identifiable) {
         MetrixSubset subset = getMetrixSubset(identifiable);
         return mapper.getInt(subset, identifiable.getId());
+    }
+
+    public int getUnpairedDanglingLineBusIndex(DanglingLine danglingLine) {
+        Objects.requireNonNull(danglingLine);
+        if (danglingLine.isPaired()) {
+            throw new IllegalStateException("DanglingLine is paired " + danglingLine.getId());
+        }
+        return mapper.getInt(MetrixSubset.NOEUD, danglingLine.getId() + METRIX_DANGLING_LINE_BUS_SUFFIX);
+    }
+
+    public static String getUnpairedDanglingLineLoadId(DanglingLine danglingLine) {
+        Objects.requireNonNull(danglingLine);
+        return danglingLine.getId() + METRIX_DANGLING_LINE_LOAD_SUFFIX;
     }
 
     private MetrixSubset getMetrixSubset(Identifiable<?> identifiable) {
@@ -205,6 +225,12 @@ public class MetrixNetwork {
         }
     }
 
+    private void addTieLine(TieLine tieLine) {
+        if (tieLineList.add(tieLine)) {
+            mapper.newInt(MetrixSubset.QUAD, tieLine.getId());
+        }
+    }
+
     private void addTwoWindingsTransformer(TwoWindingsTransformer twt) {
         if (twoWindingsTransformerList.add(twt)) {
             mapper.newInt(MetrixSubset.QUAD, twt.getId());
@@ -217,9 +243,11 @@ public class MetrixNetwork {
         }
     }
 
-    private void addDanglingLine(DanglingLine dl) {
-        if (danglingLineList.add(dl)) {
+    private void addUnpairedDanglingLine(DanglingLine dl) {
+        if (unpairedDanglingLineList.add(dl)) {
             mapper.newInt(MetrixSubset.QUAD, dl.getId());
+            mapper.newInt(MetrixSubset.NOEUD, dl.getId() + METRIX_DANGLING_LINE_BUS_SUFFIX);
+            mapper.newInt(MetrixSubset.LOAD, dl.getId() + METRIX_DANGLING_LINE_LOAD_SUFFIX);
         }
     }
 
@@ -269,7 +297,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Loads      total = <%5d> ok = <%5d> not = <%5d>", loadList.size() + nbNok, loadList.size(), nbNok));
+            String message = String.format("Loads      total = <%5d> ok = <%5d> not = <%5d>", loadList.size() + nbNok, loadList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -289,7 +318,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Generators total = <%5d> ok = <%5d> not = <%5d>", generatorList.size() + nbNok, generatorList.size(), nbNok));
+            String message = String.format("Generators total = <%5d> ok = <%5d> not = <%5d>", generatorList.size() + nbNok, generatorList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -311,7 +341,27 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Lines      total = <%5d> ok = <%5d> not = <%5d>", lineList.size() + nbNok, lineList.size(), nbNok));
+            String message = String.format("Lines      total = <%5d> ok = <%5d> not = <%5d>", lineList.size() + nbNok, lineList.size(), nbNok);
+            LOGGER.debug(message);
+        }
+    }
+
+    private void createTieLineList() {
+        int nbNok = 0;
+        for (TieLine tieLine : network.getTieLines()) {
+            Terminal t1 = tieLine.getTerminal1();
+            Bus b1 = t1.getBusBreakerView().getBus();
+            Terminal t2 = tieLine.getTerminal2();
+            Bus b2 = t2.getBusBreakerView().getBus();
+            if (b1 != null && b2 != null && busList.contains(b1) && busList.contains(b2)) {
+                addTieLine(tieLine);
+            } else {
+                nbNok++;
+            }
+        }
+        if (LOGGER.isDebugEnabled()) {
+            String message = String.format("TieLines   total = <%5d> ok = <%5d> not = <%5d>", tieLineList.size() + nbNok, tieLineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -342,8 +392,10 @@ public class MetrixNetwork {
         AtomicInteger nbPtcNok = new AtomicInteger(0);
         network.getTwoWindingsTransformers().forEach(twt -> addTwoWindingsTransformer(twt, nbNok, nbPtcNok));
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get()));
-            LOGGER.debug(String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get()));
+            String message = String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get());
+            LOGGER.debug(message);
+            message = String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get());
+            LOGGER.debug(message);
         }
     }
 
@@ -370,7 +422,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Threetrfo  total = <%5d> ok = <%5d> not = <%5d>", threeWindingsTransformerList.size() + nbNok, threeWindingsTransformerList.size(), nbNok));
+            String message = String.format("Threetrfo  total = <%5d> ok = <%5d> not = <%5d>", threeWindingsTransformerList.size() + nbNok, threeWindingsTransformerList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -383,23 +436,22 @@ public class MetrixNetwork {
         createThreeWindingsTransformersList();
     }
 
-    private void createDanglingLineList() {
+    private void createUnpairedDanglingLineList() {
         int nbNok = 0;
         for (DanglingLine dl : network.getDanglingLines()) {
-            Terminal t = dl.getTerminal();
-            Bus b = t.getBusBreakerView().getBus();
-            if (b != null) {
-                if (busList.contains(b)) {
-                    addDanglingLine(dl);
+            if (!dl.isPaired()) {
+                Terminal t = dl.getTerminal();
+                Bus b = t.getBusBreakerView().getBus();
+                if (b != null && busList.contains(b)) {
+                    addUnpairedDanglingLine(dl);
                 } else {
                     nbNok++;
                 }
-            } else {
-                nbNok++;
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Dangling   total = <%5d> ok = <%5d> not = <%5d>", danglingLineList.size() + nbNok, danglingLineList.size(), nbNok));
+            String message = String.format("Dangling   total = <%5d> ok = <%5d> not = <%5d>", unpairedDanglingLineList.size() + nbNok, unpairedDanglingLineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -421,7 +473,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Switches    total = <%5d> ok = <%5d> not = <%5d>", switchList.size() + nbNok, switchList.size(), nbNok));
+            String message = String.format("Switches   total = <%5d> ok = <%5d> not = <%5d>", switchList.size() + nbNok, switchList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -443,7 +496,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Hvdc       total = <%5d> ok = <%5d> not = <%5d>", hvdcLineList.size() + nbNok, hvdcLineList.size(), nbNok));
+            String message = String.format("Hvdc       total = <%5d> ok = <%5d> not = <%5d>", hvdcLineList.size() + nbNok, hvdcLineList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -460,7 +514,8 @@ public class MetrixNetwork {
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Bus        total = <%5d> ok = <%5d> not = <%5d>", busList.size() + nbNok, busList.size(), nbNok));
+            String message = String.format("Buses      total = <%5d> ok = <%5d> not = <%5d>", busList.size() + nbNok, busList.size(), nbNok);
+            LOGGER.debug(message);
         }
     }
 
@@ -474,7 +529,8 @@ public class MetrixNetwork {
         ctyList.forEach(contingency -> addContingencyToList(contingency, propagate));
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size()));
+            String message = String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size());
+            LOGGER.debug(message);
         }
     }
 
@@ -488,7 +544,7 @@ public class MetrixNetwork {
             }
             if (!elemOk) {
                 if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn(String.format("Contingency '%s' : element '%s' not found in the network", contingency.getId(), element.getId()));
+                    LOGGER.warn("Contingency '{}' : element '{}' not found in the network", contingency.getId(), element.getId());
                 }
                 ctyOk = false;
             }
@@ -521,10 +577,11 @@ public class MetrixNetwork {
         createGeneratorList();
         createLineList();
         createTransformerList();
-        createDanglingLineList();
+        createUnpairedDanglingLineList();
         createSwitchList();
         createLoadList();
         createHvdcLineList();
+        createTieLineList();
     }
 
     public static MetrixNetwork create(Network network) {
@@ -538,8 +595,7 @@ public class MetrixNetwork {
             try {
                 reader = Files.newBufferedReader(remedialActionFile, StandardCharsets.UTF_8);
             } catch (IOException e) {
-                LOGGER.error("Failed to read remedialActionFile {}", remedialActionFile, e);
-                throw new UncheckedIOException(e);
+                throw new UncheckedIOException("Failed to read remedialActionFile " + remedialActionFile, e);
             }
         }
         return create(
@@ -565,10 +621,10 @@ public class MetrixNetwork {
         // Create opened and switch-retained lists (network will be modified)
         List<Remedial> remedials = RemedialReader.parseFile(remedialActionReader);
         Set<String> retainedElements = Stream.concat(
-                remedials.stream().flatMap(remedial -> remedial.getBranchToOpen().stream()),
-                remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream())
+                remedials.stream().flatMap(remedial -> remedial.branchToOpen().stream()),
+                remedials.stream().flatMap(remedial -> remedial.branchToClose().stream())
         ).collect(Collectors.toSet());
-        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.getBranchToClose().stream()).collect(Collectors.toSet());
+        Set<String> openedElements = remedials.stream().flatMap(remedial -> remedial.branchToClose().stream()).collect(Collectors.toSet());
         if (!Objects.isNull(mappedSwitches)) {
             // close mapped switches as their openness is set via mapping
             for (String switchId : mappedSwitches) {
@@ -638,9 +694,9 @@ public class MetrixNetwork {
 
             // Check on both sides of the switch to check if there is one and only one connectable
             if (terminalsBus1.size() == 1) {
-                addElementToRetainedBreakersList(sw, terminalsBus1.get(0), false);
+                addElementToRetainedBreakersList(sw, terminalsBus1.getFirst(), false);
             } else if (terminalsBus2.size() == 1) {
-                addElementToRetainedBreakersList(sw, terminalsBus2.get(0), false);
+                addElementToRetainedBreakersList(sw, terminalsBus2.getFirst(), false);
             } else {
                 addElementToRetainedBreakersList(sw, switchId, false);
             }
@@ -657,7 +713,18 @@ public class MetrixNetwork {
             // Since switches connected to lines and TWT are "replaced" by those connectables, no need to set them retained
             case LINE, TWO_WINDINGS_TRANSFORMER -> addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
             case LOAD, GENERATOR -> addElementToRetainedBreakersList(sw, switchId, setRetained);
-            case DANGLING_LINE, HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
+            case DANGLING_LINE -> {
+                DanglingLine danglingLine = (DanglingLine) terminal.getConnectable();
+                if (danglingLine.isPaired()) {
+                    // Paired dangling line is managed as a line via the tie line
+                    TieLine tieLine = danglingLine.getTieLine().orElseThrow(() -> new PowsyblException("No tie line on a paired dangling line - should not happen"));
+                    addElementToRetainedBreakersList(sw, tieLine.getId(), false);
+                } else {
+                    // Unpaired dangling line is managed as a line (ending to a load)
+                    addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
+                }
+            }
+            case HVDC_CONVERTER_STATION, SHUNT_COMPENSATOR, STATIC_VAR_COMPENSATOR,
                  THREE_WINDINGS_TRANSFORMER -> {
                 if (LOGGER.isWarnEnabled()) {
                     LOGGER.warn("Unsupported connectable type ({}) for switch '{}'", terminal.getConnectable().getType(), switchId);

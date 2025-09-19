@@ -15,11 +15,11 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Checkout sources
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -143,6 +143,11 @@ jobs:
 
       - name: Code coverage
         run: cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --target code-coverage
+
+      - name: Copy Boost headers for Sonar
+        run: |
+          mkdir -p $GITHUB_WORKSPACE/metrix-simulator/build/boost
+          cp -r /usr/include/boost $GITHUB_WORKSPACE/metrix-simulator/build/boost/
 
       - name: Save C++ data
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2

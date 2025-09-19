@@ -14,11 +14,13 @@
     <parent>
         <artifactId>powsybl-metrix</artifactId>
         <groupId>com.powsybl</groupId>
-        <version>2.8.0-SNAPSHOT</version>
+        <version>3.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-integration</artifactId>
+    <name>Metrix integration</name>
+    <description>Integration of metrix-simulator into Java</description>
 
     <build>
         <plugins>
@@ -115,12 +117,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>13.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

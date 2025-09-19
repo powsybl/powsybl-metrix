@@ -33,7 +33,7 @@ public interface MappingVariable {
             if (providers.size() != 1) {
                 throw new IllegalStateException("No MappingVariable provider found for fieldName " + variable.getFieldName());
             }
-            MappingVariableProvider provider = providers.get(0);
+            MappingVariableProvider provider = providers.getFirst();
             provider.writeJson(variable, generator);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
@@ -53,7 +53,7 @@ public interface MappingVariable {
                     if (providers.size() != 1) {
                         throw new IllegalStateException("No MappingVariable provider found for fieldName " + fieldName);
                     }
-                    MappingVariableProvider provider = providers.get(0);
+                    MappingVariableProvider provider = providers.getFirst();
                     variable = provider.parseJson(parser);
                 } else if (token.equals(JsonToken.END_OBJECT)) {
                     if (variable != null) {

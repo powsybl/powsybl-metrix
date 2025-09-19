@@ -7,13 +7,13 @@
  */
 package com.powsybl.metrix.mapping.timeseries;
 
-import com.powsybl.metrix.mapping.exception.TimeSeriesMetadataIndex;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
@@ -23,9 +23,9 @@ class TimeSeriesMetadataIndexTest {
     void creationTest() {
         RegularTimeSeriesIndex regularTimeSeriesIndex = new RegularTimeSeriesIndex(Instant.ofEpochMilli(797558400), Instant.ofEpochMilli(800150400), Duration.ofMillis(60000));
         TimeSeriesMetadataIndex timeSeriesMetadataIndex = new TimeSeriesMetadataIndex(regularTimeSeriesIndex);
-        Assertions.assertThat(timeSeriesMetadataIndex.endTime).isEqualTo(800150400);
-        Assertions.assertThat(timeSeriesMetadataIndex.startTime).isEqualTo(797558400);
-        Assertions.assertThat(timeSeriesMetadataIndex.pointCount).isEqualTo(44);
-        Assertions.assertThat(timeSeriesMetadataIndex.spacing).isEqualTo(60000);
+        assertThat(timeSeriesMetadataIndex.endTime).isEqualTo(800150400);
+        assertThat(timeSeriesMetadataIndex.startTime).isEqualTo(797558400);
+        assertThat(timeSeriesMetadataIndex.pointCount).isEqualTo(44);
+        assertThat(timeSeriesMetadataIndex.spacing).isEqualTo(60000);
     }
 }

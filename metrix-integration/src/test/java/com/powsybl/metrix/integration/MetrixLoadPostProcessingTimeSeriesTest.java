@@ -26,7 +26,6 @@ import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
@@ -42,6 +41,7 @@ import static com.powsybl.metrix.integration.MetrixLoadPostProcessingTimeSeries.
 import static com.powsybl.metrix.integration.MetrixLoadPostProcessingTimeSeries.PRE_SHEDDING_PREFIX;
 import static com.powsybl.timeseries.ast.DoubleNodeCalc.ONE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -105,7 +105,7 @@ class MetrixLoadPostProcessingTimeSeriesTest {
         loadNames.forEach(loadName -> resultTimeSeriesNames.add(MetrixOutputData.LOAD_PREFIX + loadName));
         loadNames.forEach(loadName -> resultTimeSeriesNames.add(MetrixOutputData.LOAD_CUR_PREFIX + loadName + "_cty"));
         ReadOnlyTimeSeriesStore metrixResultTimeSeries = mock(ReadOnlyTimeSeriesStore.class);
-        when(metrixResultTimeSeries.getTimeSeriesNames(Mockito.any())).thenReturn(resultTimeSeriesNames);
+        when(metrixResultTimeSeries.getTimeSeriesNames(any())).thenReturn(resultTimeSeriesNames);
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("tsCurativeSheddingCost", index, 1500d, 1500d),

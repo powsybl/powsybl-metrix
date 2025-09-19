@@ -310,7 +310,7 @@ class TimeSeriesDslLoader {
         configChecker.checkMappedVariables()
         Set<MappingKey> keys = configChecker.getNotMappedEquipmentTimeSeriesKeys()
         keys.forEach({ key ->
-            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.getId() + " because id is not mapped on " + key.getMappingVariable().getVariableName())
+            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.id() + " because id is not mapped on " + key.mappingVariable().getVariableName())
         })
     }
 

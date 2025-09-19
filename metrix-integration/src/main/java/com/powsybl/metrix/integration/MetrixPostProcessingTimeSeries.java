@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.powsybl.timeseries.ast.DoubleNodeCalc.ONE;
-
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
@@ -37,19 +35,41 @@ public final class MetrixPostProcessingTimeSeries {
     private MetrixPostProcessingTimeSeries() {
     }
 
+    /**
+     * Applies a filter on allIds : id is kept if allTimeSeriesNames contains a String equals to 'prefix' + 'id'
+     * Search for each id of allIds list if there is a time series of (prefix + id) name
+     * @param allIds             list of equipment ids to filter
+     * @param allTimeSeriesNames all metrix results time series names
+     * @param prefix             prefix of metrix results time series names to keep
+     */
     public static List<String> findIdsToProcess(Set<String> allIds, Set<String> allTimeSeriesNames, String prefix) {
-        return allIds.stream().filter(id -> allTimeSeriesNames.stream().anyMatch(s -> s.startsWith(prefix + id))).toList();
+        return allIds.stream().filter(id -> allTimeSeriesNames.stream().anyMatch(s -> s.equals(prefix + id))).toList();
     }
 
-    public static String getContingencyIdFromTsName(boolean isPreventive, String tsName, String prefix) {
-        return isPreventive ? "" : tsName.substring(prefix.length() + 1);
+    /**
+     * Applies a filter on allIds : id is kept if allTimeSeriesNames contains a String starting with 'prefix' + 'id' + '_'
+     * and followed by one element of contingencyIds
+     * For curative results only (redispatching and load shedding)
+     * @param allIds             list of equipment ids to filter
+     * @param allTimeSeriesNames all metrix results time series names
+     * @param prefix             prefix of metrix results time series names to keep
+     * @param contingencyIds     list of contingency ids
+     */
+    public static List<String> findIdsToProcess(Set<String> allIds, Set<String> allTimeSeriesNames, String prefix, Set<String> contingencyIds) {
+        return allIds.stream().filter(id -> {
+            String prefixAndId = prefix + id + "_";
+            return allTimeSeriesNames.stream().filter(tsName -> tsName.startsWith(prefixAndId)).anyMatch(s -> {
+                String contingencyId = s.substring(prefixAndId.length());
+                return contingencyIds.contains(contingencyId);
+            });
+        }).toList();
     }
 
-    public static NodeCalc getProbabilityNodeCalc(boolean isPreventive, String contingencyId, List<Contingency> contingencies, Map<String, NodeCalc> calculatedTimeSeries) {
-        if (isPreventive) {
-            return ONE;
-        }
-        Contingency contingency = contingencies.stream().filter(cty -> contingencyId.equals(cty.getId())).toList().get(0);
+    public static String getContingencyIdFromTsName(String tsName, String prefix) {
+        return tsName.substring(prefix.length() + 1);
+    }
+
+    public static NodeCalc getProbabilityNodeCalc(Contingency contingency, Map<String, NodeCalc> calculatedTimeSeries) {
         Probability probability = contingency.getExtension(Probability.class);
         if (probability != null && probability.getProbabilityTimeSeriesRef() != null) {
             return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityTimeSeriesRef(), TimeSeriesNameNodeCalc::new);
