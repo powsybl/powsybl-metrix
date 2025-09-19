@@ -83,8 +83,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :     400.0724
-Valeur de la fonction objectif :     400.0724
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 3 (taille de la matrice : 3)
@@ -138,8 +138,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :     400.0724
-Valeur de la fonction objectif :     400.0724
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 3 (taille de la matrice : 3)
@@ -197,27 +197,9 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :      57.2442
-Valeur de la fonction objectif :      57.2442
-
-Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 6 (taille de la matrice : 6)
-Ajout de 2 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 5)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 1 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =    1380.0000 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :     114.4883
-Valeur de la fonction objectif :     114.4883
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 10 (taille de la matrice : 10)
+Nb termes dans la matrice : 6 (taille de la matrice : 6)
 Pas de contraintes

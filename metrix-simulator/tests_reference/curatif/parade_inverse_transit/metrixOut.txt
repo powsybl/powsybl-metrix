@@ -125,26 +125,7 @@ Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
-Des contraintes ont été détectées : 2
-Nb termes dans la matrice : 28 (taille de la matrice : 28)
-Ajout de 8 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 14)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 3247 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =   40411.8837 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :       0.0000
-Cout valorisation ENE/END      :       7.6014
-Valeur de la fonction objectif :       7.6014
-
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 44 (taille de la matrice : 44)
+Nb termes dans la matrice : 28 (taille de la matrice : 28)
 Pas de contraintes
 Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
