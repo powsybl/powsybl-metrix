@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.integration;
+package com.powsybl.metrix.integration.binding;
 
 import java.util.*;
 
@@ -42,11 +42,11 @@ public class MetrixGeneratorsBinding {
         this.reference = null;
     }
 
-    MetrixGeneratorsBinding(String name, Collection<String> ids) {
+    public MetrixGeneratorsBinding(String name, Collection<String> ids) {
         this(name, ids, ReferenceVariable.PMAX);
     }
 
-    MetrixGeneratorsBinding(String name, Collection<String> ids, ReferenceVariable reference) {
+    public MetrixGeneratorsBinding(String name, Collection<String> ids, ReferenceVariable reference) {
         this.name = name;
         this.generatorsIds.addAll(ids);
         this.reference = reference;

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ImmutableMap;
 import com.powsybl.commons.config.PlatformConfig;
+import com.powsybl.metrix.integration.type.MetrixComputationType;
 
 import java.util.Objects;
 import java.util.Optional;

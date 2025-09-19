@@ -9,6 +9,7 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
+import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.LogDslLoader

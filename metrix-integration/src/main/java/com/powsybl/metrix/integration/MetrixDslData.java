@@ -7,12 +7,31 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
+import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
+import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.dsl.BoundVariablesDslData;
+import com.powsybl.metrix.integration.dsl.BranchDslData;
+import com.powsybl.metrix.integration.dsl.GeneratorDslData;
+import com.powsybl.metrix.integration.dsl.HvdcDslData;
+import com.powsybl.metrix.integration.dsl.LoadDslData;
+import com.powsybl.metrix.integration.dsl.PhaseTapChangerDslData;
+import com.powsybl.metrix.integration.dsl.SectionDslData;
+import com.powsybl.metrix.integration.type.MetrixComputationType;
+import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
+import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -21,315 +40,209 @@ public class MetrixDslData {
 
     private static final double OVERLOAD_RATIO = .3; // Assume 30% of monitored branches get overloaded at some point
 
-    // Branch monitoring
-    private final Map<String, MetrixInputData.MonitoringType> branchMonitoringListN;
-    private final Map<String, MetrixInputData.MonitoringType> branchMonitoringListNk;
-    private final Map<String, MetrixVariable> branchMonitoringStatisticsThresholdN;
-    private final Map<String, MetrixVariable> branchMonitoringStatisticsThresholdNk;
-    private final Map<String, List<String>> contingencyFlowResults;
-    private final Map<String, List<String>> contingencyDetailedMarginalVariations;
-
-    // PhaseTapChanger
-    private final Map<String, List<String>> ptcContingenciesMap;
-    private final Map<String, MetrixPtcControlType> ptcControlMap;
-    private final Map<String, Integer> ptcLowerTapchangeMap;
-    private final Map<String, Integer> ptcUpperTapchangeMap;
-    private final Set<String> pstAngleTapResults;
-
-    // Hvdc
-    private final Map<String, List<String>> hvdcContingenciesMap;
-    private final Map<String, MetrixHvdcControlType> hvdcControlMap;
-    private final Set<String> hvdcFlowResults;
-
-    // Section monitoring
-    private final Set<MetrixSection> sectionList;
-
-    // Generator
-    private final Set<String> generatorsForAdequacy;
-    private final Set<String> generatorsForRedispatching;
-    private final Map<String, List<String>> generatorContingenciesMap;
-
-    // Load shedding
-    private final Map<String, Integer> loadPreventivePercentageMap;
-    private final Map<String, Float> loadPreventiveCostsMap;
-    private final Map<String, Integer> loadCurativePercentageMap;
-    private final Map<String, List<String>> loadContingenciesMap;
-
-    // Bound variables
-    private final Map<String, MetrixGeneratorsBinding> generatorsBindings;
-    private final Map<String, MetrixLoadsBinding> loadsBindings;
-
+    private final BranchDslData branchDslData;
+    private final PhaseTapChangerDslData phaseTapChangerDslData;
+    private final HvdcDslData hvdcDslData;
+    private final SectionDslData sectionDslData;
+    private final GeneratorDslData generatorDslData;
+    private final LoadDslData loadDslData;
+    private final BoundVariablesDslData boundVariablesDslData;
     private final Set<String> specificContingenciesList;
 
     private MetrixComputationType computationType;
 
     public MetrixDslData() {
-        branchMonitoringListN = new HashMap<>();
-        branchMonitoringListNk = new HashMap<>();
-        branchMonitoringStatisticsThresholdN = new HashMap<>();
-        branchMonitoringStatisticsThresholdNk = new HashMap<>();
-        contingencyFlowResults = new LinkedHashMap<>();
-        contingencyDetailedMarginalVariations = new LinkedHashMap<>();
-        ptcContingenciesMap = new HashMap<>();
-        ptcControlMap = new HashMap<>();
-        ptcLowerTapchangeMap = new HashMap<>();
-        ptcUpperTapchangeMap = new HashMap<>();
-        pstAngleTapResults = new HashSet<>();
-        hvdcContingenciesMap = new HashMap<>();
-        hvdcControlMap = new HashMap<>();
-        hvdcFlowResults = new HashSet<>();
-        sectionList = new HashSet<>();
-        generatorsForAdequacy = new HashSet<>();
-        generatorsForRedispatching = new HashSet<>();
-        generatorContingenciesMap = new HashMap<>();
-        loadPreventivePercentageMap = new HashMap<>();
-        loadPreventiveCostsMap = new HashMap<>();
-        loadCurativePercentageMap = new LinkedHashMap<>();
-        loadContingenciesMap = new HashMap<>();
-        generatorsBindings = new HashMap<>();
-        loadsBindings = new HashMap<>();
+        branchDslData = new BranchDslData();
+        phaseTapChangerDslData = new PhaseTapChangerDslData();
+        hvdcDslData = new HvdcDslData();
+        sectionDslData = new SectionDslData();
+        generatorDslData = new GeneratorDslData();
+        loadDslData = new LoadDslData();
+        boundVariablesDslData = new BoundVariablesDslData();
         specificContingenciesList = new HashSet<>();
     }
 
-    public MetrixDslData(Map<String, MetrixInputData.MonitoringType> branchMonitoringListN,
-                         Map<String, MetrixInputData.MonitoringType> branchMonitoringListNk,
-                         Map<String, MetrixVariable> branchMonitoringStatisticsThresholdN,
-                         Map<String, MetrixVariable> branchMonitoringStatisticsThresholdNk,
-                         Map<String, List<String>> contingencyFlowResults,
-                         Map<String, List<String>> contingencyDetailedMarginalVariations,
-                         Map<String, List<String>> ptcContingenciesMap,
-                         Map<String, MetrixPtcControlType> ptcControlMap,
-                         Set<String> pstAngleTapResults,
-                         Map<String, Integer> ptcLowerTapchangeMap,
-                         Map<String, Integer> ptcUpperTapchangeMap,
-                         Map<String, List<String>> hvdcContingenciesMap,
-                         Map<String, MetrixHvdcControlType> hvdcControlMap,
-                         Set<String> hvdcFlowResults,
-                         Set<MetrixSection> sectionList,
-                         Set<String> generatorsForAdequacy,
-                         Set<String> generatorsForRedispatching,
-                         Map<String, List<String>> generatorContingenciesMap,
-                         Map<String, Integer> loadPreventivePercentageMap,
-                         Map<String, Float> loadPreventiveCostsMap,
-                         Map<String, Integer> loadCurativePercentageMap,
-                         Map<String, List<String>> loadContingenciesMap,
-                         Map<String, MetrixGeneratorsBinding> generatorsBindings,
-                         Map<String, MetrixLoadsBinding> loadsBindings,
-                         Set<String> specificContingenciesList) {
-        this.branchMonitoringListN = branchMonitoringListN;
-        this.branchMonitoringListNk = branchMonitoringListNk;
-        this.branchMonitoringStatisticsThresholdN = branchMonitoringStatisticsThresholdN;
-        this.branchMonitoringStatisticsThresholdNk = branchMonitoringStatisticsThresholdNk;
-        this.contingencyFlowResults = contingencyFlowResults;
-        this.contingencyDetailedMarginalVariations = contingencyDetailedMarginalVariations;
-        this.ptcContingenciesMap = ptcContingenciesMap;
-        this.ptcControlMap = ptcControlMap;
-        this.ptcLowerTapchangeMap = ptcLowerTapchangeMap;
-        this.ptcUpperTapchangeMap = ptcUpperTapchangeMap;
-        this.pstAngleTapResults = pstAngleTapResults;
-        this.hvdcContingenciesMap = hvdcContingenciesMap;
-        this.hvdcControlMap = hvdcControlMap;
-        this.hvdcFlowResults = hvdcFlowResults;
-        this.sectionList = sectionList;
-        this.generatorsForAdequacy = generatorsForAdequacy;
-        this.generatorsForRedispatching = generatorsForRedispatching;
-        this.generatorContingenciesMap = generatorContingenciesMap;
-        this.loadPreventivePercentageMap = loadPreventivePercentageMap;
-        this.loadPreventiveCostsMap = loadPreventiveCostsMap;
-        this.loadCurativePercentageMap = loadCurativePercentageMap;
-        this.loadContingenciesMap = loadContingenciesMap;
-        this.generatorsBindings = generatorsBindings;
-        this.loadsBindings = loadsBindings;
+    @JsonCreator
+    public MetrixDslData(@JsonProperty("branchMonitoringListN") Map<String, MetrixInputData.MonitoringType> branchMonitoringListN,
+                         @JsonProperty("branchMonitoringListNk") Map<String, MetrixInputData.MonitoringType> branchMonitoringListNk,
+                         @JsonProperty("branchMonitoringStatisticsThresholdN") Map<String, MetrixVariable> branchMonitoringStatisticsThresholdN,
+                         @JsonProperty("branchMonitoringStatisticsThresholdNk") Map<String, MetrixVariable> branchMonitoringStatisticsThresholdNk,
+                         @JsonProperty("contingencyFlowResults") Map<String, List<String>> contingencyFlowResults,
+                         @JsonProperty("contingencyDetailedMarginalVariations") Map<String, List<String>> contingencyDetailedMarginalVariations,
+                         @JsonProperty("ptcContingenciesMap") Map<String, List<String>> ptcContingenciesMap,
+                         @JsonProperty("ptcControlMap") Map<String, MetrixPtcControlType> ptcControlMap,
+                         @JsonProperty("pstAngleTapResults") Set<String> pstAngleTapResults,
+                         @JsonProperty("ptcLowerTapchangeMap") Map<String, Integer> ptcLowerTapchangeMap,
+                         @JsonProperty("ptcUpperTapchangeMap") Map<String, Integer> ptcUpperTapchangeMap,
+                         @JsonProperty("hvdcContingenciesMap") Map<String, List<String>> hvdcContingenciesMap,
+                         @JsonProperty("hvdcControlMap") Map<String, MetrixHvdcControlType> hvdcControlMap,
+                         @JsonProperty("hvdcFlowResults") Set<String> hvdcFlowResults,
+                         @JsonProperty("sectionList") Set<MetrixSection> sectionList,
+                         @JsonProperty("generatorsForAdequacy") Set<String> generatorsForAdequacy,
+                         @JsonProperty("generatorsForRedispatching") Set<String> generatorsForRedispatching,
+                         @JsonProperty("generatorContingenciesMap") Map<String, List<String>> generatorContingenciesMap,
+                         @JsonProperty("loadPreventivePercentageMap") Map<String, Integer> loadPreventivePercentageMap,
+                         @JsonProperty("loadPreventiveCostsMap") Map<String, Float> loadPreventiveCostsMap,
+                         @JsonProperty("loadCurativePercentageMap") Map<String, Integer> loadCurativePercentageMap,
+                         @JsonProperty("loadContingenciesMap") Map<String, List<String>> loadContingenciesMap,
+                         @JsonProperty("generatorsBindings") Map<String, MetrixGeneratorsBinding> generatorsBindings,
+                         @JsonProperty("loadsBindings") Map<String, MetrixLoadsBinding> loadsBindings,
+                         @JsonProperty("specificContingenciesList") Set<String> specificContingenciesList) {
+        this.branchDslData = new BranchDslData(branchMonitoringListN,
+            branchMonitoringListNk,
+            branchMonitoringStatisticsThresholdN,
+            branchMonitoringStatisticsThresholdNk,
+            contingencyFlowResults,
+            contingencyDetailedMarginalVariations);
+        this.phaseTapChangerDslData = new PhaseTapChangerDslData(ptcContingenciesMap,
+            ptcControlMap,
+            pstAngleTapResults,
+            ptcLowerTapchangeMap,
+            ptcUpperTapchangeMap);
+        this.hvdcDslData = new HvdcDslData(hvdcContingenciesMap, hvdcControlMap, hvdcFlowResults);
+        this.sectionDslData = new SectionDslData(sectionList);
+        this.generatorDslData = new GeneratorDslData(generatorsForAdequacy, generatorsForRedispatching, generatorContingenciesMap);
+        this.loadDslData = new LoadDslData(loadPreventivePercentageMap, loadPreventiveCostsMap, loadCurativePercentageMap, loadContingenciesMap);
+        this.boundVariablesDslData = new BoundVariablesDslData(generatorsBindings, loadsBindings);
         this.specificContingenciesList = specificContingenciesList;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(branchMonitoringListN,
-                branchMonitoringListNk,
-                branchMonitoringStatisticsThresholdN,
-                branchMonitoringStatisticsThresholdNk,
-                contingencyFlowResults,
-                contingencyDetailedMarginalVariations,
-                ptcContingenciesMap,
-                ptcControlMap,
-                ptcLowerTapchangeMap,
-                ptcUpperTapchangeMap,
-                pstAngleTapResults,
-                hvdcContingenciesMap,
-                hvdcControlMap,
-                hvdcFlowResults,
-                sectionList,
-                generatorsForAdequacy,
-                generatorsForRedispatching,
-                generatorContingenciesMap,
-                loadPreventivePercentageMap,
-                loadPreventiveCostsMap,
-                loadCurativePercentageMap,
-                loadContingenciesMap,
-                generatorsBindings,
-                loadsBindings,
-                specificContingenciesList);
+        return Objects.hash(branchDslData,
+            phaseTapChangerDslData,
+            hvdcDslData,
+            sectionDslData,
+            generatorDslData,
+            loadDslData,
+            boundVariablesDslData,
+            specificContingenciesList);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof MetrixDslData other) {
-            return branchMonitoringListN.equals(other.branchMonitoringListN) &&
-                    branchMonitoringListNk.equals(other.branchMonitoringListNk) &&
-                    branchMonitoringStatisticsThresholdN.equals(other.branchMonitoringStatisticsThresholdN) &&
-                    branchMonitoringStatisticsThresholdNk.equals(other.branchMonitoringStatisticsThresholdNk) &&
-                    contingencyFlowResults.equals(other.contingencyFlowResults) &&
-                    contingencyDetailedMarginalVariations.equals(other.contingencyDetailedMarginalVariations) &&
-                    ptcContingenciesMap.equals(other.ptcContingenciesMap) &&
-                    ptcControlMap.equals(other.ptcControlMap) &&
-                    ptcLowerTapchangeMap.equals(other.ptcLowerTapchangeMap) &&
-                    ptcUpperTapchangeMap.equals(other.ptcUpperTapchangeMap) &&
-                    pstAngleTapResults.equals(other.pstAngleTapResults) &&
-                    hvdcContingenciesMap.equals(other.hvdcContingenciesMap) &&
-                    hvdcControlMap.equals(other.hvdcControlMap) &&
-                    hvdcFlowResults.equals(other.hvdcFlowResults) &&
-                    sectionList.equals(other.sectionList) &&
-                    generatorsForAdequacy.equals(other.generatorsForAdequacy) &&
-                    generatorsForRedispatching.equals(other.generatorsForRedispatching) &&
-                    generatorContingenciesMap.equals(other.generatorContingenciesMap) &&
-                    loadPreventivePercentageMap.equals(other.loadPreventivePercentageMap) &&
-                    loadPreventiveCostsMap.equals(other.loadPreventiveCostsMap) &&
-                    loadCurativePercentageMap.equals(other.loadCurativePercentageMap) &&
-                    loadContingenciesMap.equals(other.loadContingenciesMap) &&
-                    generatorsBindings.equals(other.generatorsBindings) &&
-                    loadsBindings.equals(other.loadsBindings) &&
-                    specificContingenciesList.equals(other.specificContingenciesList);
+            return branchDslData.equals(other.branchDslData) &&
+                phaseTapChangerDslData.equals(other.phaseTapChangerDslData) &&
+                hvdcDslData.equals(other.hvdcDslData) &&
+                sectionDslData.equals(other.sectionDslData) &&
+                generatorDslData.equals(other.generatorDslData) &&
+                loadDslData.equals(other.loadDslData) &&
+                boundVariablesDslData.equals(other.boundVariablesDslData) &&
+                specificContingenciesList.equals(other.specificContingenciesList);
         }
         return false;
     }
 
     @Override
     public String toString() {
-        ImmutableMap.Builder<String, Object> builder = ImmutableMap.<String, Object>builder()
-                .put("branchMonitoringListN", branchMonitoringListN)
-                .put("branchMonitoringListNk", branchMonitoringListNk)
-                .put("branchMonitoringStatisticsThresholdN", branchMonitoringStatisticsThresholdN)
-                .put("branchMonitoringStatisticsThresholdNk", branchMonitoringStatisticsThresholdNk)
-                .put("contingencyFlowResults", contingencyFlowResults)
-                .put("contingencyDetailedMarginalVariations", contingencyDetailedMarginalVariations)
-                .put("ptcContingenciesMap", ptcContingenciesMap)
-                .put("ptcControlMap", ptcControlMap)
-                .put("ptcLowerTapchangeMap", ptcLowerTapchangeMap)
-                .put("ptcUpperTapchangeMap", ptcUpperTapchangeMap)
-                .put("pstAngleTapResults", pstAngleTapResults)
-                .put("hvdcContingenciesMap", hvdcContingenciesMap)
-                .put("hvdcControlMap", hvdcControlMap)
-                .put("hvdcFlowResults", hvdcFlowResults)
-                .put("sectionList", sectionList)
-                .put("generatorsForAdequacy", generatorsForAdequacy)
-                .put("generatorsForRedispatching", generatorsForRedispatching)
-                .put("generatorContingenciesMap", generatorContingenciesMap)
-                .put("loadPreventivePercentageMap", loadPreventivePercentageMap)
-                .put("loadPreventiveCostsMap", loadPreventiveCostsMap)
-                .put("loadCurativePercentageMap", loadCurativePercentageMap)
-                .put("loadContingenciesMap", loadContingenciesMap)
-                .put("generatorsBindings", generatorsBindings)
-                .put("loadsBindings", loadsBindings)
-                .put("specificContingenciesList", specificContingenciesList);
+        ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
+        branchDslData.addToBuilder(builder);
+        phaseTapChangerDslData.addToBuilder(builder);
+        hvdcDslData.addToBuilder(builder);
+        sectionDslData.addToBuilder(builder);
+        generatorDslData.addToBuilder(builder);
+        loadDslData.addToBuilder(builder);
+        boundVariablesDslData.addToBuilder(builder);
+        builder.put("specificContingenciesList", specificContingenciesList);
         return builder.build().toString();
     }
 
     // Getters
     public Map<String, MetrixInputData.MonitoringType> getBranchMonitoringListN() {
-        return Collections.unmodifiableMap(branchMonitoringListN);
+        return Collections.unmodifiableMap(branchDslData.getBranchMonitoringListN());
     }
 
     public Map<String, MetrixInputData.MonitoringType> getBranchMonitoringListNk() {
-        return Collections.unmodifiableMap(branchMonitoringListNk);
+        return Collections.unmodifiableMap(branchDslData.getBranchMonitoringListNk());
     }
 
     public Map<String, MetrixVariable> getBranchMonitoringStatisticsThresholdN() {
-        return Collections.unmodifiableMap(branchMonitoringStatisticsThresholdN);
+        return Collections.unmodifiableMap(branchDslData.getBranchMonitoringStatisticsThresholdN());
     }
 
     public Map<String, MetrixVariable> getBranchMonitoringStatisticsThresholdNk() {
-        return Collections.unmodifiableMap(branchMonitoringStatisticsThresholdNk);
+        return Collections.unmodifiableMap(branchDslData.getBranchMonitoringStatisticsThresholdNk());
     }
 
     public Map<String, List<String>> getContingencyFlowResults() {
-        return Collections.unmodifiableMap(contingencyFlowResults);
+        return Collections.unmodifiableMap(branchDslData.getContingencyFlowResults());
     }
 
     public Map<String, List<String>> getContingencyDetailedMarginalVariations() {
-        return Collections.unmodifiableMap(contingencyDetailedMarginalVariations);
+        return Collections.unmodifiableMap(branchDslData.getContingencyDetailedMarginalVariations());
     }
 
     public Map<String, List<String>> getPtcContingenciesMap() {
-        return Collections.unmodifiableMap(ptcContingenciesMap);
+        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcContingenciesMap());
     }
 
     public Map<String, MetrixPtcControlType> getPtcControlMap() {
-        return Collections.unmodifiableMap(ptcControlMap);
+        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcControlMap());
     }
 
     public Map<String, Integer> getPtcLowerTapchangeMap() {
-        return Collections.unmodifiableMap(ptcLowerTapchangeMap);
+        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcLowerTapchangeMap());
     }
 
     public Map<String, Integer> getPtcUpperTapchangeMap() {
-        return Collections.unmodifiableMap(ptcUpperTapchangeMap);
+        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcUpperTapchangeMap());
     }
 
     public Set<String> getPstAngleTapResults() {
-        return Collections.unmodifiableSet(pstAngleTapResults);
+        return Collections.unmodifiableSet(phaseTapChangerDslData.getPstAngleTapResults());
     }
 
     public Map<String, List<String>> getHvdcContingenciesMap() {
-        return Collections.unmodifiableMap(hvdcContingenciesMap);
+        return Collections.unmodifiableMap(hvdcDslData.getHvdcContingenciesMap());
     }
 
     public Map<String, MetrixHvdcControlType> getHvdcControlMap() {
-        return Collections.unmodifiableMap(hvdcControlMap);
+        return Collections.unmodifiableMap(hvdcDslData.getHvdcControlMap());
     }
 
     public Set<String> getHvdcFlowResults() {
-        return Collections.unmodifiableSet(hvdcFlowResults);
+        return Collections.unmodifiableSet(hvdcDslData.getHvdcFlowResults());
     }
 
     public Set<MetrixSection> getSectionList() {
-        return Collections.unmodifiableSet(sectionList);
+        return Collections.unmodifiableSet(sectionDslData.getSectionList());
     }
 
     public Set<String> getGeneratorsForAdequacy() {
-        return Collections.unmodifiableSet(generatorsForAdequacy);
+        return Collections.unmodifiableSet(generatorDslData.getGeneratorsForAdequacy());
     }
 
     public Set<String> getGeneratorsForRedispatching() {
-        return Collections.unmodifiableSet(generatorsForRedispatching);
+        return Collections.unmodifiableSet(generatorDslData.getGeneratorsForRedispatching());
     }
 
     public Map<String, List<String>> getGeneratorContingenciesMap() {
-        return Collections.unmodifiableMap(generatorContingenciesMap);
+        return Collections.unmodifiableMap(generatorDslData.getGeneratorContingenciesMap());
     }
 
     public Map<String, Integer> getLoadPreventivePercentageMap() {
-        return Collections.unmodifiableMap(loadPreventivePercentageMap);
+        return Collections.unmodifiableMap(loadDslData.getLoadPreventivePercentageMap());
     }
 
     public Map<String, Float> getLoadPreventiveCostsMap() {
-        return Collections.unmodifiableMap(loadPreventiveCostsMap);
+        return Collections.unmodifiableMap(loadDslData.getLoadPreventiveCostsMap());
     }
 
     public Map<String, Integer> getLoadCurativePercentageMap() {
-        return Collections.unmodifiableMap(loadCurativePercentageMap);
+        return Collections.unmodifiableMap(loadDslData.getLoadCurativePercentageMap());
     }
 
     public Map<String, List<String>> getLoadContingenciesMap() {
-        return Collections.unmodifiableMap(loadContingenciesMap);
+        return Collections.unmodifiableMap(loadDslData.getLoadContingenciesMap());
     }
 
     public Map<String, MetrixGeneratorsBinding> getGeneratorsBindings() {
-        return Collections.unmodifiableMap(generatorsBindings);
+        return Collections.unmodifiableMap(boundVariablesDslData.getGeneratorsBindings());
     }
 
     public Map<String, MetrixLoadsBinding> getLoadsBindings() {
-        return Collections.unmodifiableMap(loadsBindings);
+        return Collections.unmodifiableMap(boundVariablesDslData.getLoadsBindings());
     }
 
     public Set<String> getSpecificContingenciesList() {
@@ -338,318 +251,238 @@ public class MetrixDslData {
 
     // Branch monitoring
     public final MetrixInputData.MonitoringType getBranchMonitoringN(String id) {
-        return branchMonitoringListN.getOrDefault(id, MetrixInputData.MonitoringType.NO);
+        return branchDslData.getBranchMonitoringN(id);
     }
 
     @JsonIgnore
     public final Set<String> getBranchMonitoringNList() {
-        return branchMonitoringListN.keySet();
+        return branchDslData.getBranchMonitoringNList();
     }
 
     public final MetrixInputData.MonitoringType getBranchMonitoringNk(String id) {
-        return branchMonitoringListNk.getOrDefault(id, MetrixInputData.MonitoringType.NO);
+        return branchDslData.getBranchMonitoringNk(id);
     }
 
     public final MetrixVariable getBranchMonitoringStatisticsThresholdN(String id) {
-        return branchMonitoringStatisticsThresholdN.get(id);
+        return branchDslData.getBranchMonitoringStatisticsThresholdN(id);
     }
 
     @JsonIgnore
     public final Set<String> getBranchMonitoringNkList() {
-        return branchMonitoringListNk.keySet();
+        return branchDslData.getBranchMonitoringNkList();
     }
 
     public final MetrixVariable getBranchMonitoringStatisticsThresholdNk(String id) {
-        return branchMonitoringStatisticsThresholdNk.get(id);
+        return branchDslData.getBranchMonitoringStatisticsThresholdNk(id);
     }
 
     @JsonIgnore
     public final Set<String> getContingencyFlowResultList() {
-        return contingencyFlowResults.keySet();
+        return branchDslData.getContingencyFlowResultList();
     }
 
     public final List<String> getContingencyFlowResult(String id) {
-        if (contingencyFlowResults.containsKey(id)) {
-            return Collections.unmodifiableList(contingencyFlowResults.get(id));
-        }
-        return Collections.emptyList();
+        return branchDslData.getContingencyFlowResult(id);
     }
 
     @JsonIgnore
     public final Set<String> getContingencyDetailedMarginalVariationsList() {
-        return contingencyDetailedMarginalVariations.keySet();
+        return branchDslData.getContingencyDetailedMarginalVariationsList();
     }
 
     public final List<String> getContingencyDetailedMarginalVariations(String id) {
-        if (contingencyDetailedMarginalVariations.containsKey(id)) {
-            return Collections.unmodifiableList(contingencyDetailedMarginalVariations.get(id));
-        }
-        return Collections.emptyList();
+        return branchDslData.getContingencyDetailedMarginalVariations(id);
     }
 
     public void addBranchMonitoringN(String id) {
-        Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.THRESHOLD_N);
-        branchMonitoringListN.put(id, MetrixInputData.MonitoringType.MONITORING);
+        branchDslData.addBranchMonitoringN(id);
     }
 
     public void addBranchResultN(String id) {
-        Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdN.put(id, MetrixVariable.ANALYSIS_THRESHOLD_N);
-        if (getBranchMonitoringN(id) == MetrixInputData.MonitoringType.MONITORING) {
-            return;
-        }
-        branchMonitoringListN.put(id, MetrixInputData.MonitoringType.RESULT);
+        branchDslData.addBranchResultN(id);
     }
 
     public void addBranchMonitoringNk(String id) {
-        Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.THRESHOLD_N1);
-        branchMonitoringListNk.put(id, MetrixInputData.MonitoringType.MONITORING);
+        branchDslData.addBranchMonitoringNk(id);
     }
 
     public void addBranchResultNk(String id) {
-        Objects.requireNonNull(id);
-        branchMonitoringStatisticsThresholdNk.put(id, MetrixVariable.ANALYSIS_THRESHOLD_NK);
-        if (getBranchMonitoringNk(id) == MetrixInputData.MonitoringType.MONITORING) {
-            return;
-        }
-        branchMonitoringListNk.put(id, MetrixInputData.MonitoringType.RESULT);
+        branchDslData.addBranchResultNk(id);
     }
 
     public void addContingencyFlowResults(String id, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        if (!Objects.isNull(contingencies) && !contingencies.isEmpty()) {
-            contingencyFlowResults.put(id, contingencies);
-        }
+        branchDslData.addContingencyFlowResults(id, contingencies);
     }
 
     public void addContingencyDetailedMarginalVariations(String id, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        if (!Objects.isNull(contingencies) && !contingencies.isEmpty()) {
-            contingencyDetailedMarginalVariations.put(id, contingencies);
-        }
+        branchDslData.addContingencyDetailedMarginalVariations(id, contingencies);
     }
 
     // PhaseTapChanger
     @JsonIgnore
     public final Set<String> getPtcContingenciesList() {
-        return ptcContingenciesMap.keySet();
+        return phaseTapChangerDslData.getPtcContingenciesList();
     }
 
     public final List<String> getPtcContingencies(String id) {
-        if (ptcContingenciesMap.containsKey(id)) {
-            return Collections.unmodifiableList(ptcContingenciesMap.get(id));
-        }
-        return Collections.emptyList();
+        return phaseTapChangerDslData.getPtcContingencies(id);
     }
 
     @JsonIgnore
     public final Set<String> getPtcControlList() {
-        return ptcControlMap.keySet()
-                            .stream()
-                            .filter(x -> ptcControlMap.get(x) == MetrixPtcControlType.OPTIMIZED_ANGLE_CONTROL)
-                            .collect(Collectors.toSet());
+        return phaseTapChangerDslData.getPtcControlList();
     }
 
     public final MetrixPtcControlType getPtcControl(String id) {
-        if (ptcControlMap.containsKey(id)) {
-            return ptcControlMap.get(id);
-        }
-        return MetrixPtcControlType.FIXED_ANGLE_CONTROL;
+        return phaseTapChangerDslData.getPtcControl(id);
     }
 
     @JsonIgnore
     public final Set<String> getPtcLowerTapChangeList() {
-        return ptcLowerTapchangeMap.keySet();
+        return phaseTapChangerDslData.getPtcLowerTapChangeList();
     }
 
     public final Integer getPtcLowerTapChange(String id) {
-        return ptcLowerTapchangeMap.getOrDefault(id, null);
+        return phaseTapChangerDslData.getPtcLowerTapChange(id);
     }
 
     @JsonIgnore
     public final Set<String> getPtcUpperTapChangeList() {
-        return ptcUpperTapchangeMap.keySet();
+        return phaseTapChangerDslData.getPtcUpperTapChangeList();
     }
 
     public final Integer getPtcUpperTapChange(String id) {
-        return ptcUpperTapchangeMap.getOrDefault(id, null);
+        return phaseTapChangerDslData.getPtcUpperTapChange(id);
     }
 
     public void addPtc(String id, MetrixPtcControlType type, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(type);
-        ptcControlMap.put(id, type);
-        if (!Objects.isNull(contingencies)) {
-            ptcContingenciesMap.put(id, contingencies);
-        }
+        phaseTapChangerDslData.addPtc(id, type, contingencies);
     }
 
     public void addLowerTapChange(String id, Integer preventiveLowerTapChange) {
-        Objects.requireNonNull(id);
-        if (!Objects.isNull(preventiveLowerTapChange)) {
-            ptcLowerTapchangeMap.put(id, preventiveLowerTapChange);
-        }
+        phaseTapChangerDslData.addLowerTapChange(id, preventiveLowerTapChange);
     }
 
     public void addUpperTapChange(String id, Integer preventiveUpperTapChange) {
-        Objects.requireNonNull(id);
-        if (!Objects.isNull(preventiveUpperTapChange)) {
-            ptcUpperTapchangeMap.put(id, preventiveUpperTapChange);
-        }
+        phaseTapChangerDslData.addUpperTapChange(id, preventiveUpperTapChange);
     }
 
     public void addPstAngleTapResults(String id) {
-        Objects.requireNonNull(id);
-        pstAngleTapResults.add(id);
+        phaseTapChangerDslData.addPstAngleTapResults(id);
     }
 
     // Hvdc
     @JsonIgnore
     public final Set<String> getHvdcContingenciesList() {
-        return hvdcContingenciesMap.keySet();
+        return hvdcDslData.getHvdcContingenciesList();
     }
 
     public final List<String> getHvdcContingencies(String id) {
-        if (hvdcContingenciesMap.containsKey(id)) {
-            return Collections.unmodifiableList(hvdcContingenciesMap.get(id));
-        }
-        return Collections.emptyList();
+        return hvdcDslData.getHvdcContingencies(id);
     }
 
     @JsonIgnore
     public final Set<String> getHvdcControlList() {
-        return hvdcControlMap.keySet()
-                             .stream()
-                             .filter(x -> hvdcControlMap.get(x) == MetrixHvdcControlType.OPTIMIZED)
-                             .collect(Collectors.toSet());
+        return hvdcDslData.getHvdcControlList();
     }
 
     public final MetrixHvdcControlType getHvdcControl(String id) {
-        if (hvdcControlMap.containsKey(id)) {
-            return hvdcControlMap.get(id);
-        }
-        return MetrixHvdcControlType.FIXED;
+        return hvdcDslData.getHvdcControl(id);
     }
 
     public void addHvdc(String id, MetrixHvdcControlType type, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        Objects.requireNonNull(type);
-        hvdcControlMap.put(id, type);
-        if (!Objects.isNull(contingencies)) {
-            hvdcContingenciesMap.put(id, contingencies);
-        }
+        hvdcDslData.addHvdc(id, type, contingencies);
     }
 
     public void addHvdcFlowResults(String id) {
-        Objects.requireNonNull(id);
-        hvdcFlowResults.add(id);
+        hvdcDslData.addHvdcFlowResults(id);
     }
 
     // Section monitoring
     public void addSection(MetrixSection section) {
-        Objects.requireNonNull(section);
-        sectionList.add(section);
+        sectionDslData.addSection(section);
     }
 
     // Generator costs
     public void addGeneratorForAdequacy(String id) {
-        Objects.requireNonNull(id);
-        generatorsForAdequacy.add(id);
+        generatorDslData.addGeneratorForAdequacy(id);
     }
 
     public void addGeneratorForRedispatching(String id, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        generatorsForRedispatching.add(id);
-        if (!Objects.isNull(contingencies)) {
-            generatorContingenciesMap.put(id, contingencies);
-        }
+        generatorDslData.addGeneratorForRedispatching(id, contingencies);
     }
 
     // Generator contingencies
     @JsonIgnore
     public final Set<String> getGeneratorContingenciesList() {
-        return generatorContingenciesMap.keySet();
+        return generatorDslData.getGeneratorContingenciesList();
     }
 
     public final List<String> getGeneratorContingencies(String id) {
-        if (generatorContingenciesMap.containsKey(id)) {
-            return Collections.unmodifiableList(generatorContingenciesMap.get(id));
-        }
-        return Collections.emptyList();
+        return generatorDslData.getGeneratorContingencies(id);
     }
 
     // Load shedding (preventive and curative)
     public void addPreventiveLoad(String id, int percentage) {
-        Objects.requireNonNull(id);
-        loadPreventivePercentageMap.put(id, percentage);
+        loadDslData.addPreventiveLoad(id, percentage);
     }
 
     public void addPreventiveLoadCost(String id, float cost) {
-        Objects.requireNonNull(id);
-        loadPreventiveCostsMap.put(id, cost);
+        loadDslData.addPreventiveLoadCost(id, cost);
     }
 
     @JsonIgnore
     public final Set<String> getPreventiveLoadsList() {
-        return loadPreventivePercentageMap.keySet();
+        return loadDslData.getPreventiveLoadsList();
     }
 
     @JsonIgnore
     public final Set<String> getCurativeLoadsList() {
-        return loadCurativePercentageMap.keySet();
+        return loadDslData.getCurativeLoadsList();
     }
 
     public final Integer getPreventiveLoadPercentage(String id) {
-        return loadPreventivePercentageMap.get(id);
+        return loadDslData.getPreventiveLoadPercentage(id);
     }
 
     public final Float getPreventiveLoadCost(String id) {
-        return loadPreventiveCostsMap.get(id);
+        return loadDslData.getPreventiveLoadCost(id);
     }
 
     public final Integer getCurativeLoadPercentage(String id) {
-        return loadCurativePercentageMap.get(id);
+        return loadDslData.getCurativeLoadPercentage(id);
     }
 
     public void addCurativeLoad(String id, Integer percentage, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        loadCurativePercentageMap.put(id, percentage);
-        if (!Objects.isNull(contingencies)) {
-            loadContingenciesMap.put(id, contingencies);
-        }
+        loadDslData.addCurativeLoad(id, percentage, contingencies);
     }
 
     // Contingencies with load shedding capabilities
     public final List<String> getLoadContingencies(String id) {
-        if (loadContingenciesMap.containsKey(id)) {
-            return Collections.unmodifiableList(loadContingenciesMap.get(id));
-        }
-        return Collections.emptyList();
+        return loadDslData.getLoadContingencies(id);
     }
 
     // Bound variables
     public void addGeneratorsBinding(String id, Collection<String> generatorsIds, MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
-        generatorsBindings.put(id, new MetrixGeneratorsBinding(id, generatorsIds, referenceVariable));
+        boundVariablesDslData.addGeneratorsBinding(id, generatorsIds, referenceVariable);
     }
 
     public void addGeneratorsBinding(String id, Collection<String> generatorsIds) {
-        generatorsBindings.put(id, new MetrixGeneratorsBinding(id, generatorsIds));
+        boundVariablesDslData.addGeneratorsBinding(id, generatorsIds);
     }
 
     @JsonIgnore
     public Collection<MetrixGeneratorsBinding> getGeneratorsBindingsValues() {
-        return Collections.unmodifiableCollection(generatorsBindings.values());
+        return boundVariablesDslData.getGeneratorsBindingsValues();
     }
 
     public void addLoadsBinding(String id, Collection<String> loadsIds) {
-        loadsBindings.put(id, new MetrixLoadsBinding(id, loadsIds));
+        boundVariablesDslData.addLoadsBinding(id, loadsIds);
     }
 
     @JsonIgnore
     public Collection<MetrixLoadsBinding> getLoadsBindingsValues() {
-        return Collections.unmodifiableCollection(loadsBindings.values());
+        return boundVariablesDslData.getLoadsBindingsValues();
     }
 
     // Specific contingencies list

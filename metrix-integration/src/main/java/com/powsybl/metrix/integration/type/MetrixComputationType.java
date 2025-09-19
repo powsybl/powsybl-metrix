@@ -5,21 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.integration;
+package com.powsybl.metrix.integration.type;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-public enum MetrixPtcControlType {
-    CONTROL_OFF(0),
-    OPTIMIZED_ANGLE_CONTROL(1),
-    FIXED_ANGLE_CONTROL(2), // default value
-    OPTIMIZED_POWER_CONTROL(3),
-    FIXED_POWER_CONTROL(4);
+public enum MetrixComputationType {
+    OPF(0),
+    LF(1),
+    OPF_WITHOUT_REDISPATCHING(2),
+    OPF_WITH_OVERLOAD(3);
 
     private final int type;
 
-    MetrixPtcControlType(int type) {
+    MetrixComputationType(int type) {
         this.type = type;
     }
 

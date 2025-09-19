@@ -16,8 +16,8 @@ import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.integration.MetrixHvdcControlType;
-import com.powsybl.metrix.integration.MetrixPtcControlType;
+import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
+import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
