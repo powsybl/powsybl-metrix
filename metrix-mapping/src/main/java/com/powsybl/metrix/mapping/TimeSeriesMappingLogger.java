@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.powsybl.metrix.mapping.TimeSeriesConstants.CSV_SEPARATOR;
+import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.CSV_SEPARATOR;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

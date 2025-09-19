@@ -9,10 +9,11 @@ package com.powsybl.metrix.integration
 
 
 import com.powsybl.iidm.network.Network
-import com.powsybl.metrix.mapping.DataTableStore
+import com.powsybl.metrix.commons.data.datatable.DataTableStore
+import com.powsybl.metrix.integration.configuration.MetrixParameters
 import com.powsybl.metrix.mapping.LogDslLoader
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -104,10 +105,10 @@ class MetrixDslDataLoader {
 
     private static CompilerConfiguration createCompilerConfig() {
         def imports = new ImportCustomizer()
-        imports.addStaticStars("com.powsybl.metrix.integration.MetrixPtcControlType")
-        imports.addStaticStars("com.powsybl.metrix.integration.MetrixHvdcControlType")
-        imports.addStaticStars("com.powsybl.metrix.integration.MetrixComputationType")
-        imports.addStaticStars("com.powsybl.metrix.integration.MetrixGeneratorsBinding.ReferenceVariable")
+        imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixPtcControlType")
+        imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixHvdcControlType")
+        imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixComputationType")
+        imports.addStaticStars("com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding.ReferenceVariable")
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
 

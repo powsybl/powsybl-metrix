@@ -11,10 +11,13 @@ import com.google.common.io.ByteStreams;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
+import com.powsybl.metrix.integration.chunk.ChunkCutter;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.slf4j.Logger;
@@ -28,7 +31,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
+import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

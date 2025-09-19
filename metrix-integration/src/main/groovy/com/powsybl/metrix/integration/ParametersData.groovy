@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.integration
 
+import com.powsybl.metrix.integration.configuration.MetrixParameters
+import com.powsybl.metrix.integration.type.MetrixComputationType
+
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */

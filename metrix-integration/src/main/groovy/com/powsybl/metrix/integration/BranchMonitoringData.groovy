@@ -12,7 +12,7 @@ import com.powsybl.iidm.network.DanglingLine
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.LogDslLoader
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
