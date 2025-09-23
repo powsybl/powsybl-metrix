@@ -39,6 +39,8 @@ public class MetrixNetwork {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
     private static final String PAYS_CVG_PROPERTY = "paysCvg";
     private static final String PAYS_CVG_UNDEFINED = "Undefined";
+    private static final String METRIX_T3WT_STAR_BUS_SUFFIX = "_metrixT3wtStarBus";
+    private static final String METRIX_T3WT_LEG_SUFFIX = "_metrixT3wtLeg";
     private static final String METRIX_BOUNDARY_LINE_BUS_SUFFIX = "_metrixBoundaryLineBus";
     private static final String METRIX_BOUNDARY_LINE_LOAD_SUFFIX = "_metrixBoundaryLineLoad";
 
@@ -56,6 +58,7 @@ public class MetrixNetwork {
     private final Set<Line> lineList = new LinkedHashSet<>();
     private final Set<TwoWindingsTransformer> twoWindingsTransformerList = new LinkedHashSet<>();
     private final Set<ThreeWindingsTransformer> threeWindingsTransformerList = new LinkedHashSet<>();
+    private final Set<ThreeWindingsTransformer.Leg> threeWindingsTransformerLegsList = new LinkedHashSet<>();
     private final Set<Switch> switchList = new LinkedHashSet<>();
     private final Set<BoundaryLine> unpairedBoundaryLineList = new LinkedHashSet<>();
     private final Set<TieLine> tieLineList = new LinkedHashSet<>();
@@ -73,7 +76,6 @@ public class MetrixNetwork {
     private final Map<String, String> mappedSwitchMap = new HashMap<>();
 
     protected MetrixNetwork(Network network) {
-        // TODO: switch T3T for 3xTWT in the network using a network modification
         this.network = Objects.requireNonNull(network);
     }
 
@@ -107,6 +109,10 @@ public class MetrixNetwork {
 
     public List<ThreeWindingsTransformer> getThreeWindingsTransformerList() {
         return List.copyOf(threeWindingsTransformerList);
+    }
+
+    public List<ThreeWindingsTransformer.Leg> getThreeWindingsTransformerLegsList() {
+        return List.copyOf(threeWindingsTransformerLegsList);
     }
 
     public List<BoundaryLine> getUnpairedBoundaryLineList() {
@@ -157,6 +163,20 @@ public class MetrixNetwork {
     public static String getUnpairedBoundaryLineLoadId(BoundaryLine boundaryLine) {
         Objects.requireNonNull(boundaryLine);
         return boundaryLine.getId() + METRIX_BOUNDARY_LINE_LOAD_SUFFIX;
+    }
+
+    public int getThreeWindingsTransformerLegIndex(ThreeWindingsTransformer.Leg leg) {
+        Objects.requireNonNull(leg);
+        return mapper.getInt(MetrixSubset.QUAD, getThreeWindingsTransformerLegId(leg));
+    }
+
+    public static String getThreeWindingsTransformerLegId(ThreeWindingsTransformer.Leg leg) {
+        return leg.getTransformer().getId() + METRIX_T3WT_LEG_SUFFIX + leg.getSide().getNum();
+    }
+
+    public int getThreeWindingsTransformerStarBusIndex(ThreeWindingsTransformer t3wt) {
+        Objects.requireNonNull(t3wt);
+        return mapper.getInt(MetrixSubset.NOEUD, t3wt.getId() + METRIX_T3WT_STAR_BUS_SUFFIX);
     }
 
     private MetrixSubset getMetrixSubset(Identifiable<?> identifiable) {
@@ -241,7 +261,13 @@ public class MetrixNetwork {
 
     private void addThreeWindingsTransformer(ThreeWindingsTransformer twt) {
         if (threeWindingsTransformerList.add(twt)) {
-            mapper.newInt(MetrixSubset.QUAD, twt.getId());
+            mapper.newInt(MetrixSubset.NOEUD, twt.getId() + METRIX_T3WT_STAR_BUS_SUFFIX);
+        }
+    }
+
+    private void addThreeWindingsTransformerLeg(ThreeWindingsTransformer.Leg leg) {
+        if (threeWindingsTransformerLegsList.add(leg)) {
+            mapper.newInt(MetrixSubset.QUAD, getThreeWindingsTransformerLegId(leg));
         }
     }
 
@@ -274,6 +300,12 @@ public class MetrixNetwork {
     private void addPhaseTapChanger(TwoWindingsTransformer twt) {
         if (phaseTapChangerList.add(twt.getPhaseTapChanger())) {
             mapper.newInt(MetrixSubset.DEPHA, twt.getId());
+        }
+    }
+
+    private void addPhaseTapChanger(ThreeWindingsTransformer.Leg leg) {
+        if (phaseTapChangerList.add(leg.getPhaseTapChanger())) {
+            mapper.newInt(MetrixSubset.DEPHA, getThreeWindingsTransformerLegId(leg));
         }
     }
 
@@ -413,12 +445,25 @@ public class MetrixNetwork {
             Bus b1 = t1.getBusBreakerView().getBus();
             Bus b2 = t2.getBusBreakerView().getBus();
             Bus b3 = t3.getBusBreakerView().getBus();
-            if (b1 != null && b2 != null && b3 != null) {
-                if (busList.contains(b1) && busList.contains(b2) && busList.contains(b3)) {
-                    addThreeWindingsTransformer(twt);
-                } else {
-                    nbNok++;
-                }
+            List<ThreeWindingsTransformer.Leg> connectedLegs = new ArrayList<>();
+            if (b1 != null && busList.contains(b1)) {
+                connectedLegs.add(leg1);
+            }
+            if (b2 != null && busList.contains(b2)) {
+                connectedLegs.add(leg2);
+            }
+            if (b3 != null && busList.contains(b3)) {
+                connectedLegs.add(leg3);
+            }
+            if (connectedLegs.size() >= 2) {
+                // need at least two legs for a flow to happen
+                addThreeWindingsTransformer(twt);
+                connectedLegs.forEach(leg -> {
+                    addThreeWindingsTransformerLeg(leg);
+                    if (leg.hasPhaseTapChanger()) {
+                        addPhaseTapChanger(leg);
+                    }
+                });
             } else {
                 nbNok++;
             }
