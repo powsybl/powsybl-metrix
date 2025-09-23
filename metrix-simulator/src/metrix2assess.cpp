@@ -696,8 +696,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         vector<double> maxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
         vector<double> redispCurParType(res_.nbTypesGroupes_, 0.);
 
-        list<tuple<const int, const string, const double>> nonBatteriesLogs;
-        list<tuple<const int, const string, const double>> batteriesLogs;
+        list<tuple<const int, const string, const double>> nonBatteriesResults;
+        list<tuple<const int, const string, const double>> batteriesResults;
             
         if (res_.nbGroupesCuratifs_ > 0) {
 
@@ -751,10 +751,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                                     && fabs(val) >= EPSILON_SORTIES)) {
                                 tuple<const int, const string, const double> tupleToAdd(incidentsContraignants.find(icdt)->second, grpName, val);
                                 if (grp->isBattery()) {
-                                    batteriesLogs.push_back(tupleToAdd);
+                                    batteriesResults.push_back(tupleToAdd);
                                 }
                                 else {
-                                    nonBatteriesLogs.push_back(tupleToAdd);
+                                    nonBatteriesResults.push_back(tupleToAdd);
                                 }
                                 
                             }
@@ -776,19 +776,19 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;\n");
         }
-        for (auto& itLog : nonBatteriesLogs) {
+        for (auto& itLog : nonBatteriesResults) {
             fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
 -                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
         }
-        nonBatteriesLogs.clear();
+        nonBatteriesResults.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2D ;INCIDENT;NOM BATTERY;DELTA_P;\n");
         }
-        for (auto& itLog : batteriesLogs) {
+        for (auto& itLog : batteriesResults) {
             fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
 -                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
         }
-        batteriesLogs.clear();
+        batteriesResults.clear();
         // ecriture : R2C: Couplages de groupes
         //---------------
         if (res_.nbGroupesCouples_ > 0) {
