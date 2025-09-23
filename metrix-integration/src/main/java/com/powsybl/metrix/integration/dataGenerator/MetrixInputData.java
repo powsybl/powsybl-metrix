@@ -188,7 +188,7 @@ public class MetrixInputData {
         // Quadripoles are lines, transformers and switches
         cqnbquad = metrixNetwork.getLineList().size()
             + metrixNetwork.getTwoWindingsTransformerList().size()
-            + 3 * metrixNetwork.getThreeWindingsTransformerList().size()
+            + metrixNetwork.getThreeWindingsTransformerLegsList().size()
             + metrixNetwork.getSwitchList().size()
             + metrixNetwork.getUnpairedDanglingLineList().size()
             + metrixNetwork.getTieLineList().size();
@@ -199,7 +199,9 @@ public class MetrixInputData {
 
         dcnblies = metrixNetwork.getHvdcLineList().size();
 
-        tnnbntot = metrixNetwork.getBusList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
+        tnnbntot = metrixNetwork.getBusList().size()
+                + metrixNetwork.getUnpairedDanglingLineList().size() // boundary bus
+                + metrixNetwork.getThreeWindingsTransformerList().size(); // star bus
 
         if (dslData != null) {
             sectnbse = dslData.getSectionList().size();
@@ -399,10 +401,9 @@ public class MetrixInputData {
         metrixNetwork.getTwoWindingsTransformerList().forEach(twoWindingsTransformer ->
             writeTwoWindingsTransformer(twoWindingsTransformer, metrixInputBranch, metrixInputPhaseTapChanger, constantLossFactor, dtlowran, dtuppran, dttapdep));
 
-        // Three Windings Transformers
-        metrixNetwork.getThreeWindingsTransformerList().forEach(twt -> {
-            throw new PowsyblException("Three Windings Transformers are not yet supported in metrix");
-        });
+        // Three Windings Transformers Legs
+        metrixNetwork.getThreeWindingsTransformerLegsList().forEach(t3wtLeg ->
+            writeThreeWindingsTransformerLeg(t3wtLeg, metrixInputBranch, metrixInputPhaseTapChanger, constantLossFactor, dtlowran, dtuppran, dttapdep));
 
         // Switches
         metrixNetwork.getSwitchList().forEach(sw -> writeSwitch(sw, metrixInputBranch));
@@ -505,7 +506,7 @@ public class MetrixInputData {
                     ptc.getLowTapPosition()));
         }
 
-        //Per-unitage
+        // Per-uniting
         double admittance = toAdmittance(twt.getId(), x, nominalVoltage2, parameters.getNominalU());
         r = (r * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage2, 2);
 
@@ -514,6 +515,59 @@ public class MetrixInputData {
         writeBranch(metrixInputBranch,
             index,
             new BranchValues(twt.getId(), admittance, r, getMonitoringTypeBasecase(twt.getId()), getMonitoringTypeOnContingency(twt.getId()), bus1Index, bus2Index));
+    }
+
+    private void writeThreeWindingsTransformerLeg(ThreeWindingsTransformer.Leg leg,
+                                             MetrixInputBranch metrixInputBranch,
+                                              MetrixInputPhaseTapChanger metrixInputPhaseTapChanger,
+                                              boolean constantLossFactor,
+                                              List<Integer> dtlowran,
+                                              List<Integer> dtuppran,
+                                              List<Float> dttapdep) {
+        double nominalVoltage2 = leg.getTerminal().getVoltageLevel().getNominalV();
+        double x = leg.getX();
+        double r = leg.getR();
+        String t3wtLegId = MetrixNetwork.getThreeWindingsTransformerLegId(leg);
+        int index = metrixNetwork.getThreeWindingsTransformerLegIndex(leg);
+
+        if (leg.hasPhaseTapChanger()) {
+            PhaseTapChanger ptc = leg.getPhaseTapChanger();
+            int position = ptc.getTapPosition();
+            x = x * (1 + ptc.getStep(position).getX() / 100);
+            r = r * (1 + ptc.getStep(position).getR() / 100);
+            if (constantLossFactor) {
+                float val = (float) (Math.pow(x, 2) + Math.pow(r, 2) - Math.pow(leg.getR(), 2));
+                if (val >= 0) {
+                    x = (float) Math.sqrt(val);
+                }
+                LOGGER.debug("constantLossFactor -> t3wt <{} leg {}> x = <{}>", leg.getTransformer().getId(), leg.getSide(), x);
+            }
+
+            MetrixPtcControlType mode = MetrixPtcControlType.FIXED_ANGLE_CONTROL; // FIXME-TODO  = getMetrixPtcControlType(leg, index, dtlowran, dtuppran);
+
+            for (int pos = ptc.getLowTapPosition(); pos < ptc.getLowTapPosition() + ptc.getStepCount(); pos++) {
+                dttapdep.add((float) ptc.getStep(pos).getAlpha());
+            }
+
+            writePhaseTapChanger(metrixInputPhaseTapChanger,
+                metrixNetwork.getIndex(MetrixSubset.DEPHA, t3wtLegId),
+                new PhaseTapChangerValues(index, mode.getType(),
+                    (float) ptc.getStep(ptc.getLowTapPosition()).getAlpha(),
+                    (float) ptc.getStep(ptc.getHighTapPosition()).getAlpha(),
+                    (float) ptc.getStep(ptc.getTapPosition()).getAlpha(),
+                    ptc.getStepCount(),
+                    ptc.getLowTapPosition()));
+        }
+
+        // Per-uniting
+        double admittance = toAdmittance(t3wtLegId, x, nominalVoltage2, parameters.getNominalU());
+        r = (r * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage2, 2);
+
+        int bus1Index = metrixNetwork.getThreeWindingsTransformerStarBusIndex(leg.getTransformer());
+        int bus2Index = metrixNetwork.getIndex(leg.getTerminal().getBusBreakerView().getBus());
+        writeBranch(metrixInputBranch,
+            index,
+            new BranchValues(t3wtLegId, admittance, r, getMonitoringTypeBasecase(t3wtLegId), getMonitoringTypeOnContingency(t3wtLegId), bus1Index, bus2Index));
     }
 
     private MetrixPtcControlType getMetrixPtcControlType(TwoWindingsTransformer twt,
