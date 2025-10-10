@@ -41,6 +41,7 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         this.ptcUpperTapchangeMap = ptcUpperTapchangeMap;
     }
 
+    @Override
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("ptcContingenciesMap", ptcContingenciesMap);

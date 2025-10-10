@@ -34,6 +34,7 @@ public class HvdcDslData extends AbstractDslData {
         this.hvdcFlowResults = hvdcFlowResults;
     }
 
+    @Override
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("hvdcContingenciesMap", hvdcContingenciesMap);

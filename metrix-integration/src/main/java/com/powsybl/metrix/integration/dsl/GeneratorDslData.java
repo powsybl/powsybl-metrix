@@ -33,6 +33,7 @@ public class GeneratorDslData extends AbstractDslData {
         this.generatorContingenciesMap = generatorContingenciesMap;
     }
 
+    @Override
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("generatorsForAdequacy", generatorsForAdequacy);

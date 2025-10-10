@@ -35,6 +35,7 @@ public class LoadDslData extends AbstractDslData {
         this.loadContingenciesMap = loadContingenciesMap;
     }
 
+    @Override
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("loadPreventivePercentageMap", loadPreventivePercentageMap);

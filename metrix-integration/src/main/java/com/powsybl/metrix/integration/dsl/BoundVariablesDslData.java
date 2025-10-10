@@ -30,6 +30,7 @@ public class BoundVariablesDslData extends AbstractDslData {
         this.loadsBindings = loadsBindings;
     }
 
+    @Override
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("generatorsBindings", generatorsBindings);

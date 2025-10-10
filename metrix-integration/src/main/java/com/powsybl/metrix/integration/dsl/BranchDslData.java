@@ -43,6 +43,7 @@ public class BranchDslData extends AbstractDslData {
         this.contingencyDetailedMarginalVariations = contingencyDetailedMarginalVariations;
     }
 
+    @Override
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("branchMonitoringListN", branchMonitoringListN);
