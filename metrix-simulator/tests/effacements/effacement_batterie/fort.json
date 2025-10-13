@@ -335,7 +335,7 @@
       "secondIndexMaxValue" : 2,
       "firstValueIndex" : 1,
       "lastValueIndex" : 28,
-      "values" : [ "Prod_Ouest", "Prod_Ouest_Battery" ]
+      "values" : [ "Prod_Ouest", "Prod_Ouest_Batterie" ]
     }, {
       "name" : "TRNOMTYP",
       "type" : "STRING",
@@ -344,7 +344,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 14,
-      "values" : [ "CHARBON", "BATTERY" ]
+      "values" : [ "CHARBON", "BATTERIE" ]
     }
      ]
   }, {

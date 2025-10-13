@@ -81,7 +81,7 @@ constexpr double singularisation_parade = 0.; // légère pénalisation du Tmax 
 
 constexpr double display_margin_variation_threshold = 0.000005;
 
-const std::string battery_type = "BATTERY";
+const std::string battery_type = "BATTERIE";
 
 } // namespace constants
 } // namespace config

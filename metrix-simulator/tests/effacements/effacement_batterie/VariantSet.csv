@@ -1,5 +1,5 @@
 NT;1;
--1;COUHAR;2;Prod_Ouest;1;Prod_Ouest_Battery;100;
--1;COUBAR;2;Prod_Ouest;10000;Prod_Ouest_Battery;1;
+-1;COUHAR;2;Prod_Ouest;1;Prod_Ouest_Batterie;100;
+-1;COUBAR;2;Prod_Ouest;10000;Prod_Ouest_Batterie;1;
 0;PRODIM;1;Prod_Ouest;55;
 0;CONELE;1;Conso_Est;-10;
