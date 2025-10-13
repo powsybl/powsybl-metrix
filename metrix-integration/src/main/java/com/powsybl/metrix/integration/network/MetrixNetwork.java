@@ -51,6 +51,7 @@ public class MetrixNetwork {
     private final Set<Load> loadList = new LinkedHashSet<>();
 
     private final Set<Generator> generatorList = new LinkedHashSet<>();
+    private final Set<Battery> batteryList = new LinkedHashSet<>();
     private final Set<String> generatorTypeList = new HashSet<>();
 
     private final Set<Line> lineList = new LinkedHashSet<>();
@@ -87,6 +88,10 @@ public class MetrixNetwork {
 
     public List<Load> getLoadList() {
         return List.copyOf(loadList);
+    }
+
+    public List<Battery> getBatteryList() {
+        return List.copyOf(batteryList);
     }
 
     public List<Generator> getGeneratorList() {
@@ -221,6 +226,13 @@ public class MetrixNetwork {
         }
     }
 
+    private void addBattery(Battery battery) {
+        if (batteryList.add(battery)) {
+            mapper.newInt(MetrixSubset.GROUPE, battery.getId());
+            generatorTypeList.add("BATTERY");
+        }
+    }
+
     private void addLine(Line line) {
         if (lineList.add(line)) {
             mapper.newInt(MetrixSubset.QUAD, line.getId());
@@ -322,6 +334,26 @@ public class MetrixNetwork {
         if (LOGGER.isDebugEnabled()) {
             String message = String.format("Generators total = <%5d> ok = <%5d> not = <%5d>", generatorList.size() + nbNok, generatorList.size(), nbNok);
             LOGGER.debug(message);
+        }
+    }
+
+    private void createBatteryList() {
+        int nbNok = 0;
+        for (Battery battery : network.getBatteries()) {
+            Terminal t = battery.getTerminal();
+            Bus b = t.getBusBreakerView().getBus();
+            if (b != null) {
+                if (busList.contains(b)) {
+                    addBattery(battery);
+                } else {
+                    nbNok++;
+                }
+            } else {
+                nbNok++;
+            }
+        }
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug(String.format("Batteries  total = <%5d> ok = <%5d> not = <%5d>", batteryList.size() + nbNok, batteryList.size(), nbNok));
         }
     }
 
@@ -577,6 +609,7 @@ public class MetrixNetwork {
     private void init() {
         createBusList();
         createGeneratorList();
+        createBatteryList();
         createLineList();
         createTransformerList();
         createUnpairedDanglingLineList();

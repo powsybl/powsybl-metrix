@@ -40,6 +40,11 @@ public class MetrixOutputData {
     public static final String GEN_COST = GEN_PREFIX + "COST";
     public static final String GEN_VOL_UP = GEN_PREFIX + "VOL_UP_";
     public static final String GEN_VOL_DOWN = GEN_PREFIX + "VOL_DOWN_";
+    public static final String GEN_BAT_PREFIX = GEN_PREFIX + "BAT_";
+    public static final String GEN_BAT_CUR_PREFIX = GEN_BAT_PREFIX + "CUR_";
+    public static final String GEN_BAT_COST = GEN_BAT_PREFIX + "COST";
+    public static final String GEN_BAT_VOL_UP = GEN_BAT_PREFIX + "VOL_UP_";
+    public static final String GEN_BAT_VOL_DOWN = GEN_BAT_PREFIX + "VOL_DOWN_";
 
     public static final String LOAD_PREFIX = "LOAD_";
     public static final String LOAD_CUR_PREFIX = "LOAD_CUR_";
@@ -234,6 +239,7 @@ public class MetrixOutputData {
                 case "R1C " -> readR1C(varNum, chunks);
                 case "R2 " -> readR2(varNum, chunks);
                 case "R2B " -> readR2B(varNum, chunks, outageNames);
+                case "R2D " -> readR2D(varNum, chunks, outageNames);
                 case "R2C " -> readR2C(varNum, chunks);
                 case "R3 " -> readR3(varNum, chunks);
                 case "R3B " -> readR3B(varNum, chunks, outageNames);
@@ -549,6 +555,26 @@ public class MetrixOutputData {
         ts.insertResult(varNum - offset, redispatchingValue);
         // Compute curative redispatching by generator = sum of generator curative redispatching for all outages
         tsSum = getDoubleTimeSeries(GEN_CUR_PREFIX + chunks[2]);
+        tsSum.addResult(varNum - offset, redispatchingValue);
+    }
+
+    /**
+     * Battery Curative
+     */
+    private void readR2D(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        String outageName;
+        DoubleResultChunk ts;
+        DoubleResultChunk tsSum;
+        // Check that it's not the header
+        if (INCIDENT.equals(chunks[1])) {
+            return;
+        }
+        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
+        ts = getDoubleTimeSeries(GEN_BAT_CUR_PREFIX, GENERATOR, chunks[2], outageName);
+        double redispatchingValue = Double.parseDouble(chunks[3]);
+        ts.insertResult(varNum - offset, redispatchingValue);
+        // Compute curative redispatching by generator = sum of generator curative redispatching for all outages
+        tsSum = getDoubleTimeSeries(GEN_BAT_CUR_PREFIX + chunks[2]);
         tsSum.addResult(varNum - offset, redispatchingValue);
     }
 
