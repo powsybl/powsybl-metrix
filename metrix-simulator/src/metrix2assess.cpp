@@ -782,7 +782,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         nonBatteriesResults.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
-            fprintf(fr, "R2D ;INCIDENT;NOM BATTERY;DELTA_P;\n");
+            fprintf(fr, "R2D ;INCIDENT;NOM BATTERIE;DELTA_P;\n");
         }
         for (auto& itLog : batteriesResults) {
             fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),

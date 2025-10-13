@@ -567,7 +567,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 7,
-      "values" : [ "BATTERY" ]
+      "values" : [ "BATTERIE" ]
     }, {
       "name" : "TNNOMNOE",
       "type" : "STRING",
