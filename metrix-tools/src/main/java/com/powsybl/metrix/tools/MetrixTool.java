@@ -14,18 +14,18 @@ import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.Metrix;
-import com.powsybl.metrix.integration.MetrixAppLogger;
-import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
-import com.powsybl.metrix.integration.network.NetworkSource;
-import com.powsybl.metrix.integration.compatibility.CsvResultListener;
-import com.powsybl.metrix.integration.analysis.MetrixAnalysis;
-import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
-import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesStore;
 import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.integration.Metrix;
+import com.powsybl.metrix.integration.MetrixAppLogger;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysis;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
+import com.powsybl.metrix.integration.compatibility.CsvResultListener;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
+import com.powsybl.metrix.integration.network.NetworkSource;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.tools.Command;
 import com.powsybl.tools.Tool;
 import com.powsybl.tools.ToolRunningContext;
@@ -42,6 +42,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
@@ -175,9 +176,21 @@ public class MetrixTool implements Tool {
                         .desc("write ptdf matrix")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("write-lodf")
-                        .desc("write lodf matrix")
-                        .build());
+                    .longOpt("write-lodf")
+                    .desc("write lodf matrix")
+                    .build());
+                options.addOption(Option.builder()
+                    .longOpt("msa")
+                    .hasArg()
+                    .argName("MSA_ArgName")
+                    .desc("msa metrix itools")
+                    .build());
+                options.addOption(Option.builder()
+                    .longOpt("ranges")
+                    .hasArg()
+                    .argName("List")
+                    .desc("ranges metrix itools")
+                    .build());
                 return options;
             }
 
@@ -253,6 +266,9 @@ public class MetrixTool implements Tool {
             throw new IllegalArgumentException("Empty version list");
         }
 
+        context.getOutputStream().println("MSA ranges " + line.getOptionValue("ranges"));
+        List<Integer[]> ranges = new ArrayList<>();
+
         final Path csvResultFilePath = getCsvResultsFilePath(line, context);
 
         InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
@@ -305,7 +321,7 @@ public class MetrixTool implements Tool {
 
         try (ZipOutputStream logArchive = createLogArchive(line, context, versions)) {
             ComputationRange computationRange = new ComputationRange(versions, firstVariant, variantCount);
-            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, chunkSize, ignoreLimits, ignoreEmptyFilter, false, false, false);
+            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, chunkSize, ignoreLimits, ignoreEmptyFilter, false, false, false, ranges);
             TimeSeriesDslLoader timeSeriesDslLoader = new TimeSeriesDslLoader(mappingReader);
             MetrixAnalysis metrixAnalysis = new MetrixAnalysis(networkSource, timeSeriesDslLoader, metrixDslReader, remedialActionsReaderForAnalysis, contingenciesProvider,
                     store, dataTableStore, logger, computationRange);

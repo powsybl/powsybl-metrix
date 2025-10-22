@@ -7,16 +7,17 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.google.common.collect.Range;
 import com.google.common.io.ByteStreams;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.integration.chunk.ChunkCutter;
 import com.powsybl.metrix.integration.configuration.MetrixConfig;
 import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
@@ -134,10 +136,9 @@ public abstract class AbstractMetrix {
     }
 
     private ChunkCutter initChunkCutter(MetrixRunParameters runParameters, int chunkSizeFromConfig, TimeSeriesIndex index) {
-        int firstVariant = computeFirstVariant(runParameters, index);
-        int lastVariant = computeLastVariant(runParameters, index, firstVariant);
         int chunkSize = computeChunkSize(runParameters, chunkSizeFromConfig, index);
-        return new ChunkCutter(firstVariant, lastVariant, chunkSize);
+        List<Range<Integer>> ranges = runParameters.getRanges().stream().map(range -> Range.closed(range[0], range[1])).toList();
+        return new ChunkCutter(ranges, chunkSize);
     }
 
     private int computeFirstVariant(MetrixRunParameters runParameters, TimeSeriesIndex index) {

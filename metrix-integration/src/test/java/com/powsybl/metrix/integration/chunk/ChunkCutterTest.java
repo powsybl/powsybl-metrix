@@ -51,7 +51,7 @@ class ChunkCutterTest {
         ChunkCutter cutter = new ChunkCutter(100, 200, 92);
         assertEquals(2, cutter.getChunkCount());
         assertEquals(92, cutter.getChunkSize());
-        assertEquals(Range.closed(100, 183), cutter.getChunkRange(0));
-        assertEquals(Range.closed(184, 200), cutter.getChunkRange(1));
+        assertEquals(Range.closed(100, 191), cutter.getChunkRange(0));
+        assertEquals(Range.closed(192, 200), cutter.getChunkRange(1));
     }
 }
