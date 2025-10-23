@@ -1298,19 +1298,73 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         string coutGrpBatteryCur;
         string coutConsoCur;
 
-        // on ote les offsets dans les couts restitues pour les groupes
-        double coutGrp = fonction_objectif_G_ - (volGrp * config::configuration().redispatchCostOffset());
-        double coutGrpC = fonction_objectif_G_cur_sans_offset_;
-        double coutGrpBattery = fonction_objectif_G_ - (volGrpBattery * config::configuration().redispatchCostOffset());
-        double coutGrpBatteryC = fonction_objectif_G_cur_sans_offset_;
+        double fonction_objectif_G_battery_prev = 0.0;
+        for (const auto& elem : res_.groupes_) {
+            const auto& grp = elem.second;
+            if (grp->isBattery() && grp->prodAjust_ != Groupe::NON_HR_AR && grp->etat_) {
+                int numVar = grp->numVarGrp_;
+                fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar] * pbX_[numVar];
+                fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar + 1] * pbX_[numVar + 1];
+            }
+        }
+
+        double coutGrpBatteryC = 0.0;
+
+        for (const auto& elem : res_.incidents_) {
+            const auto& icdt = elem.second;
+            
+            if (!icdt->validite_) {
+                continue;
+            }
+            
+            auto tmpListeElemCur = icdt->listeElemCur_;
+            
+            // Prendre en compte les parades activées
+            if (icdt->paradesActivees_) {
+                for (const auto& parade : icdt->parades_) {
+                    if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
+                        tmpListeElemCur = parade->listeElemCur_;
+                        break;
+                    }
+                }
+            }
+            
+            // Parcourir les éléments curatifs de cet incident
+            for (const auto& elemC : tmpListeElemCur) {
+                if (elemC->typeElem_ != ElementCuratif::GROUPE) {
+                    continue;
+                }
+                
+                int pos = elemC->positionVarEntiereCur_;
+                if ((pos == -1) || (pbX_[pos] > 0.5)) { // Curatif activé sur cette parade
+                    pos = elemC->positionVarCurative_;
+                    if (pos != -1) {
+                        const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
+                        
+                        // Si c'est une batterie, accumuler son coût curatif
+                        if (grp->isBattery()) {
+                            coutGrpBatteryC += pbCoutLineaireSansOffset_[pos] * pbX_[pos];
+                            coutGrpBatteryC += pbCoutLineaireSansOffset_[pos + 1] * pbX_[pos + 1];
+                        }
+                    }
+                }
+            }
+        }
+
+        double coutGrp = (fonction_objectif_G_ - fonction_objectif_G_battery_prev) 
+                 - (volGrp * config::configuration().redispatchCostOffset());
+        double coutGrpBattery = fonction_objectif_G_battery_prev 
+                                - (volGrpBattery * config::configuration().redispatchCostOffset());
+        double coutGrpC = fonction_objectif_G_cur_sans_offset_ - coutGrpBatteryC;
         double coutConso = fonction_objectif_D_ - (volDel * config::configuration().redispatchCostOffset());
         double coutConsoC = fonction_objectif_D_cur_sans_offset_;
 
         if (coutGrpC >= EPSILON_SORTIES) {
             coutGrpCur = c_fmt(PREC_FLOAT.c_str(), coutGrpC);
+        }
+        if (coutGrpBatteryC >= EPSILON_SORTIES) {
             coutGrpBatteryCur = c_fmt(PREC_FLOAT.c_str(), coutGrpBatteryC);
         }
-
         if (fonction_objectif_D_cur_ >= EPSILON_SORTIES) {
             coutConsoCur = c_fmt(PREC_FLOAT.c_str(), coutConsoC);
         }
