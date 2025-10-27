@@ -9,6 +9,7 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.MemDataSource;
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
@@ -21,6 +22,7 @@ import com.powsybl.iidm.network.Switch;
 import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.VariantManagerConstants;
 import com.powsybl.iidm.network.VscConverterStation;
+import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
@@ -101,6 +103,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
         switch (identifiable) {
             case Generator generator -> mapToGeneratorVariable(generator, variable, equipmentValue);
+            case Battery battery -> mapToBatteryVariable(battery, variable, equipmentValue);
             case Load load -> mapToLoadVariable(load, variable, equipmentValue);
             case HvdcLine hvdcLine -> mapToHvdcLineVariable(hvdcLine, variable, equipmentValue);
             case Switch aSwitch -> mapToSwitchVariable(aSwitch, equipmentValue);
@@ -136,7 +139,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private void mapToVscConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
         switch (variable) {
-            case VOLTAGE_REGULATOR_ON -> converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case VOLTAGE_REGULATOR_ON ->
+                converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case VOLTAGE_SETPOINT -> converter.setVoltageSetpoint(equipmentValue);
             case REACTIVE_POWER_SETPOINT -> converter.setReactivePowerSetpoint(equipmentValue);
             default -> {
@@ -153,14 +157,17 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case RATED_U2 -> transformer.setRatedU2(equipmentValue);
             // mapToPhaseTapChangers variables
             case PHASE_TAP_POSITION -> transformer.getPhaseTapChanger().setTapPosition((int) equipmentValue);
-            case PHASE_REGULATING -> transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case PHASE_REGULATING ->
+                transformer.getPhaseTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case TARGET_DEADBAND -> transformer.getPhaseTapChanger().setTargetDeadband(equipmentValue);
             case REGULATION_MODE -> selectRegulationMode(equipmentValue, transformer);
             // mapToRatioTapChanger variables
             case RATIO_TAP_POSITION -> transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
             case TARGET_V -> transformer.getRatioTapChanger().setTargetV(equipmentValue);
-            case LOAD_TAP_CHANGING_CAPABILITIES -> transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case RATIO_REGULATING -> transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case LOAD_TAP_CHANGING_CAPABILITIES ->
+                transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case RATIO_REGULATING ->
+                transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case DISCONNECTED -> {
                 if (Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
                     transformer.getTerminal1().disconnect();
@@ -261,11 +268,11 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private LoadDetail newLoadDetailExtension(Load load, LoadDetail loadDetail) {
         if (loadDetail == null) {
             load.newExtension(LoadDetailAdder.class)
-                    .withFixedActivePower(0d)
-                    .withFixedReactivePower(0d)
-                    .withVariableActivePower(0d)
-                    .withVariableReactivePower(0d)
-                    .add();
+                .withFixedActivePower(0d)
+                .withFixedReactivePower(0d)
+                .withVariableActivePower(0d)
+                .withVariableReactivePower(0d)
+                .add();
             return load.getExtension(LoadDetail.class);
         }
         return loadDetail;
@@ -278,11 +285,30 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case TARGET_Q -> generator.setTargetQ(equipmentValue);
             case MIN_P -> generator.setMinP(equipmentValue);
             case MAX_P -> generator.setMaxP(equipmentValue);
-            case VOLTAGE_REGULATOR_ON -> generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case VOLTAGE_REGULATOR_ON ->
+                generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case TARGET_V -> generator.setTargetV(equipmentValue);
             case DISCONNECTED -> {
                 if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
                     generator.getTerminal().disconnect();
+                }
+            }
+            default -> {
+                // Do nothing
+            }
+        }
+    }
+
+    private void mapToBatteryVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
+        Battery battery = network.getBattery(identifiable.getId());
+        switch (variable) {
+            case TARGET_P -> battery.setTargetP(equipmentValue);
+            case TARGET_Q -> battery.setTargetQ(equipmentValue);
+            case MIN_P -> battery.setMinP(equipmentValue);
+            case MAX_P -> battery.setMaxP(equipmentValue);
+            case DISCONNECTED -> {
+                if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
+                    battery.getTerminal().disconnect();
                 }
             }
             default -> {
@@ -305,16 +331,16 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
 
     private void storeInitialStateValues() {
         network.getGenerators().forEach(g -> generatorToInitialValues.put(g.getId(),
-                new GeneratorInitialValues(
-                        g.getMinP(),
-                        g.getMaxP())));
+            new GeneratorInitialValues(
+                g.getMinP(),
+                g.getMaxP())));
         network.getHvdcLines().forEach(l -> hvdcLineToInitialValues.put(l.getId(),
-                new HvdcLineInitialValues(
-                        l.getMaxP(),
-                        l.getExtension(HvdcOperatorActivePowerRange.class) != null,
-                        l.getExtension(HvdcOperatorActivePowerRange.class) != null ? l.getExtension(HvdcOperatorActivePowerRange.class).getOprFromCS1toCS2() : (float) l.getMaxP(),
-                        l.getExtension(HvdcOperatorActivePowerRange.class) != null ? l.getExtension(HvdcOperatorActivePowerRange.class).getOprFromCS2toCS1() : (float) l.getMaxP()
-                        )));
+            new HvdcLineInitialValues(
+                l.getMaxP(),
+                l.getExtension(HvdcOperatorActivePowerRange.class) != null,
+                l.getExtension(HvdcOperatorActivePowerRange.class) != null ? l.getExtension(HvdcOperatorActivePowerRange.class).getOprFromCS1toCS2() : (float) l.getMaxP(),
+                l.getExtension(HvdcOperatorActivePowerRange.class) != null ? l.getExtension(HvdcOperatorActivePowerRange.class).getOprFromCS2toCS1() : (float) l.getMaxP()
+            )));
     }
 
     private void restoreInitialStateValues() {
