@@ -14,6 +14,7 @@ import java.util.Objects;
  */
 public enum MappableEquipmentType {
     GENERATOR("generator"),
+    BATTERY("battery"),
     HVDC_LINE("hvdcLine"),
     LOAD("load"),
     BOUNDARY_LINE("boundaryLine"),

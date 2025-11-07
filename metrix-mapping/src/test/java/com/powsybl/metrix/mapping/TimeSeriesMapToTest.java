@@ -54,6 +54,7 @@ class TimeSeriesMapToTest {
     void setUp() {
         // create test network
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        addBattery1();
     }
 
     @Test
@@ -62,67 +63,74 @@ class TimeSeriesMapToTest {
         List<MappingKey> results = new LinkedList<>();
 
         // mapping script
-        String script = String.join(System.lineSeparator(),
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O11_G\"",
-                "    }",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FSSV.O11_L\"",
-                "    }",
-                "}",
-                "mapToHvdcLines {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        hvdcLine.id==\"HVDC1\"",
-                "    }",
-                "}",
-                "mapToBreakers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        breaker.id==\"FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0\"",
-                "    }",
-                "}",
-                "mapToPhaseTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "}",
-                "mapToRatioTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "}",
-                "mapToLccConverterStations {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        lccConverterStation.id==\"FVALDI1_FVALDI1_HVDC1\"",
-                "    }",
-                "}",
-                "mapToVscConverterStations {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
-                "    }",
-                "}",
-                "mapToTransformers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "}",
-                "mapToLines {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        line.id==\"FP.AND1  FVERGE1  1\"",
-                "    }",
-                "}");
+        String script = """
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O11_G"
+                }
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FSSV.O11_L"
+                }
+            }
+            mapToHvdcLines {
+                timeSeriesName 'ts1'
+                filter {
+                    hvdcLine.id=="HVDC1"
+                }
+            }
+            mapToBreakers {
+                timeSeriesName 'ts1'
+                filter {
+                    breaker.id=="FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"
+                }
+            }
+            mapToPhaseTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+            }
+            mapToRatioTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+            }
+            mapToLccConverterStations {
+                timeSeriesName 'ts1'
+                filter {
+                    lccConverterStation.id=="FVALDI1_FVALDI1_HVDC1"
+                }
+            }
+            mapToVscConverterStations {
+                timeSeriesName 'ts1'
+                filter {
+                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
+                }
+            }
+            mapToTransformers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+            }
+            mapToLines {
+                timeSeriesName 'ts1'
+                filter {
+                    line.id=="FP.AND1  FVERGE1  1"
+                }
+            }
+            mapToBatteries {
+                timeSeriesName 'ts1'
+                filter {
+                    battery.id=="BATTERY_1"
+                }
+            }
+            """;
 
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
@@ -150,7 +158,7 @@ class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, List.of(observer));
 
-        assertEquals(10, results.size());
+        assertEquals(11, results.size());
         assertEquals(List.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
                         new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
                         new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
@@ -160,6 +168,7 @@ class TimeSeriesMapToTest {
                         new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1"),
                         new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FVERGE1  1"),
                         new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G"),
+                        new MappingKey(EquipmentVariable.TARGET_P, "BATTERY_1"),
                         new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")),
                 results);
     }
@@ -170,238 +179,274 @@ class TimeSeriesMapToTest {
         Map<String, List<MappingVariable>> results = new HashMap<>();
 
         // mapping script
-        String script = String.join(System.lineSeparator(),
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O11_G\"",
-                "    }",
-                "    variable targetP",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O11_G\"",
-                "    }",
-                "    variable targetQ",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O12_G\"",
-                "    }",
-                "    variable minP",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O12_G\"",
-                "    }",
-                "    variable maxP",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FVALDI11_G\"",
-                "    }",
-                "    variable voltageRegulatorOn",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O11_G\"",
-                "    }",
-                "    variable targetV",
-                "}",
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FSSV.O11_G\"",
-                "    }",
-                "    variable disconnected",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FSSV.O11_L\"",
-                "    }",
-                "    variable p0",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FSSV.O11_L\"",
-                "    }",
-                "    variable q0",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FVALDI11_L\"",
-                "    }",
-                "    variable fixedActivePower",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FVALDI11_L2\"",
-                "    }",
-                "    variable variableActivePower",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FVALDI11_L\"",
-                "    }",
-                "    variable fixedReactivePower",
-                "}",
-                "mapToLoads {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        load.id==\"FVALDI11_L2\"",
-                "    }",
-                "    variable variableReactivePower",
-                "}",
-                "mapToHvdcLines {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        hvdcLine.id==\"HVDC1\"",
-                "    }",
-                "    variable activePowerSetpoint",
-                "}",
-                "mapToHvdcLines {",
-                "    timeSeriesName 'ts2'",
-                "    filter {",
-                "        hvdcLine.id==\"HVDC2\"",
-                "    }",
-                "    variable minP",
-                "}",
-                "mapToHvdcLines {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        hvdcLine.id==\"HVDC2\"",
-                "    }",
-                "    variable maxP",
-                "}",
-                "mapToHvdcLines {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        hvdcLine.id==\"HVDC1\"",
-                "    }",
-                "    variable nominalV",
-                "}",
-                "mapToPhaseTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable phaseTapPosition",
-                "}",
-                "mapToPhaseTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable regulationMode",
-                "}",
-                "mapToPhaseTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable phaseRegulating",
-                "}",
-                "mapToPhaseTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable targetDeadband",
-                "}",
-                "mapToTransformers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable ratedU1",
-                "}",
-                "mapToTransformers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable ratedU2",
-                "}",
-                "mapToTransformers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable disconnected",
-                "}",
-                "mapToRatioTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable ratioTapPosition",
-                "}",
-                "mapToRatioTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable loadTapChangingCapabilities",
-                "}",
-                "mapToRatioTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable ratioRegulating",
-                "}",
-                "mapToRatioTapChangers {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        twoWindingsTransformer.id==\"FP.AND1  FTDPRA1  1\"",
-                "    }",
-                "    variable targetV",
-                "}",
-                "mapToLccConverterStations {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        lccConverterStation.id==\"FVALDI1_FVALDI1_HVDC1\"",
-                "    }",
-                "    variable powerFactor",
-                "}",
-                "mapToVscConverterStations {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
-                "    }",
-                "    variable voltageRegulatorOn",
-                "}",
-                "mapToVscConverterStations {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
-                "    }",
-                "    variable voltageSetpoint",
-                "}",
-                "mapToVscConverterStations {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        vscConverterStation.id==\"FSSV.O1_FSSV.O1_HVDC1\"",
-                "    }",
-                "    variable reactivePowerSetpoint",
-                "}",
-                "mapToLines {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        line.id==\"FP.AND1  FVERGE1  1\"",
-                "    }",
-                "    variable disconnected",
-                "}");
+        String script = """
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O11_G"
+                }
+                variable targetP
+            }
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O11_G"
+                }
+                variable targetQ
+            }
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O12_G"
+                }
+                variable minP
+            }
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O12_G"
+                }
+                variable maxP
+            }
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FVALDI11_G"
+                }
+                variable voltageRegulatorOn
+            }
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O11_G"
+                }
+                variable targetV
+            }
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FSSV.O11_G"
+                }
+                variable disconnected
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FSSV.O11_L"
+                }
+                variable p0
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FSSV.O11_L"
+                }
+                variable q0
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FVALDI11_L"
+                }
+                variable fixedActivePower
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FVALDI11_L2"
+                }
+                variable variableActivePower
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FVALDI11_L"
+                }
+                variable fixedReactivePower
+            }
+            mapToLoads {
+                timeSeriesName 'ts1'
+                filter {
+                    load.id=="FVALDI11_L2"
+                }
+                variable variableReactivePower
+            }
+            mapToHvdcLines {
+                timeSeriesName 'ts1'
+                filter {
+                    hvdcLine.id=="HVDC1"
+                }
+                variable activePowerSetpoint
+            }
+            mapToHvdcLines {
+                timeSeriesName 'ts2'
+                filter {
+                    hvdcLine.id=="HVDC2"
+                }
+                variable minP
+            }
+            mapToHvdcLines {
+                timeSeriesName 'ts1'
+                filter {
+                    hvdcLine.id=="HVDC2"
+                }
+                variable maxP
+            }
+            mapToHvdcLines {
+                timeSeriesName 'ts1'
+                filter {
+                    hvdcLine.id=="HVDC1"
+                }
+                variable nominalV
+            }
+            mapToPhaseTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable phaseTapPosition
+            }
+            mapToPhaseTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable regulationMode
+            }
+            mapToPhaseTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable phaseRegulating
+            }
+            mapToPhaseTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable targetDeadband
+            }
+            mapToTransformers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable ratedU1
+            }
+            mapToTransformers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable ratedU2
+            }
+            mapToTransformers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable disconnected
+            }
+            mapToRatioTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable ratioTapPosition
+            }
+            mapToRatioTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable loadTapChangingCapabilities
+            }
+            mapToRatioTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable ratioRegulating
+            }
+            mapToRatioTapChangers {
+                timeSeriesName 'ts1'
+                filter {
+                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+                }
+                variable targetV
+            }
+            mapToLccConverterStations {
+                timeSeriesName 'ts1'
+                filter {
+                    lccConverterStation.id=="FVALDI1_FVALDI1_HVDC1"
+                }
+                variable powerFactor
+            }
+            mapToVscConverterStations {
+                timeSeriesName 'ts1'
+                filter {
+                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
+                }
+                variable voltageRegulatorOn
+            }
+            mapToVscConverterStations {
+                timeSeriesName 'ts1'
+                filter {
+                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
+                }
+                variable voltageSetpoint
+            }
+            mapToVscConverterStations {
+                timeSeriesName 'ts1'
+                filter {
+                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
+                }
+                variable reactivePowerSetpoint
+            }
+            mapToLines {
+                timeSeriesName 'ts1'
+                filter {
+                    line.id=="FP.AND1  FVERGE1  1"
+                }
+                variable disconnected
+            }
+            mapToBatteries {
+                timeSeriesName 'ts1'
+                filter {
+                    battery.id=="BATTERY_1"
+                }
+                variable targetP
+            }
+            mapToBatteries {
+                timeSeriesName 'ts1'
+                filter {
+                    battery.id=="BATTERY_1"
+                }
+                variable targetQ
+            }
+            mapToBatteries {
+                timeSeriesName 'ts1'
+                filter {
+                    battery.id=="BATTERY_1"
+                }
+                variable minP
+            }
+            mapToBatteries {
+                timeSeriesName 'ts1'
+                filter {
+                    battery.id=="BATTERY_1"
+                }
+                variable maxP
+            }
+            mapToBatteries {
+                timeSeriesName 'ts1'
+                filter {
+                    battery.id=="BATTERY_1"
+                }
+                variable disconnected
+            }
+            """;
 
                 // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
@@ -437,7 +482,7 @@ class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, List.of(observer));
 
-        assertEquals(12, results.size());
+        assertEquals(13, results.size());
         assertAll(
             () -> assertThat(results).containsEntry("FSSV.O11_G", List.of(EquipmentVariable.TARGET_Q, EquipmentVariable.TARGET_V, EquipmentVariable.DISCONNECTED, EquipmentVariable.TARGET_P)),
             () -> assertThat(results).containsEntry("FSSV.O12_G", List.of(EquipmentVariable.MIN_P, EquipmentVariable.MAX_P)),
@@ -456,7 +501,8 @@ class TimeSeriesMapToTest {
                 EquipmentVariable.RATIO_TAP_POSITION, EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, EquipmentVariable.RATIO_REGULATING, EquipmentVariable.TARGET_V)),
             () -> assertThat(results).containsEntry("FVALDI1_FVALDI1_HVDC1", List.of(EquipmentVariable.POWER_FACTOR)),
             () -> assertThat(results).containsEntry("FSSV.O1_FSSV.O1_HVDC1", List.of(EquipmentVariable.VOLTAGE_REGULATOR_ON, EquipmentVariable.VOLTAGE_SETPOINT, EquipmentVariable.REACTIVE_POWER_SETPOINT)),
-            () -> assertThat(results).containsEntry("FP.AND1  FVERGE1  1", List.of(EquipmentVariable.DISCONNECTED))
+            () -> assertThat(results).containsEntry("FP.AND1  FVERGE1  1", List.of(EquipmentVariable.DISCONNECTED)),
+            () -> assertThat(results).containsEntry("BATTERY_1", List.of(EquipmentVariable.TARGET_Q, EquipmentVariable.MIN_P, EquipmentVariable.MAX_P, EquipmentVariable.DISCONNECTED, EquipmentVariable.TARGET_P))
         );
     }
 
@@ -467,16 +513,17 @@ class TimeSeriesMapToTest {
         Map<String, Double> values = new HashMap<>();
 
         // mapping script
-        String script = String.join(System.lineSeparator(),
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id==\"FVALDI11_G\" || generator.id==\"FVALDI12_G\"",
-                "    }",
-                "    distributionKey {",
-                "        generator.targetP",
-                "    }",
-                "}");
+        String script = """
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id=="FVALDI11_G" || generator.id=="FVALDI12_G"
+                }
+                distributionKey {
+                    generator.targetP
+                }
+            }
+            """;
 
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
@@ -514,14 +561,15 @@ class TimeSeriesMapToTest {
     @Test
     void mapToGeneratorsWithSpecificIgnoreLimitsTest() {
         // mapping script
-        String script = String.join(System.lineSeparator(),
-                "mapToGenerators {",
-                "    timeSeriesName 'ts1'",
-                "    filter {",
-                "        generator.id == \"FVALDI11_G\"",
-                "    }",
-                "}",
-                "ignoreLimits { 'ts' + '1'}");
+        String script = """
+            mapToGenerators {
+                timeSeriesName 'ts1'
+                filter {
+                    generator.id == "FVALDI11_G"
+                }
+            }
+            ignoreLimits { 'ts' + '1'}
+            """;
 
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(200));
@@ -555,5 +603,17 @@ class TimeSeriesMapToTest {
             }
         };
         mapper.mapToNetwork(store, List.of(observer));
+    }
+
+    private void addBattery1() {
+        network.getVoltageLevel("FP.AND1").newBattery()
+            .setId("BATTERY_1")
+            .setEnsureIdUnicity(true)
+            .setNode(6)
+            .setTargetP(100.0)
+            .setTargetQ(20.0)
+            .setMinP(10.0)
+            .setMaxP(200.0)
+            .add();
     }
 }
