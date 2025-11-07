@@ -69,6 +69,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     private final Map<String, Set<ScalingDownLimitViolation>> setpointTimeSeriesToScalingDownLimitViolationSynthesis = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> generatorToMaxValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> generatorToMinValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> batteryToMaxValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> batteryToMinValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> hvdcLineToMaxValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> hvdcLineToMinValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> hvdcLineToCS1toCS2Values = new HashMap<>();
@@ -101,6 +103,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         // With ignore limits option, restore previous extended limits (potentially overwritten by NetworkPointWriter)
         generatorToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Generator) (e.getKey())).setMaxP(e.getValue().getLimit()));
         generatorToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Generator) (e.getKey())).setMinP(e.getValue().getLimit()));
+        batteryToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Battery) (e.getKey())).setMaxP(e.getValue().getLimit()));
+        batteryToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Battery) (e.getKey())).setMinP(e.getValue().getLimit()));
         hvdcLineToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(e.getValue().getLimit()));
         hvdcLineToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(Math.abs(e.getValue().getLimit())));
         hvdcLineToCS1toCS2Values.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) e.getValue().getLimit()));
@@ -140,6 +144,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         // Add limit change warnings to logger
         addLimitChangeLog(generatorToMinValues, MappingLimitType.MIN, version, MIN_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
         addLimitChangeLog(generatorToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
+        addLimitChangeLog(batteryToMinValues, MappingLimitType.MIN, version, MIN_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
+        addLimitChangeLog(batteryToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
         addLimitChangeLog(hvdcLineToMinValues, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_MAXP, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
         addLimitChangeLog(hvdcLineToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
         addLimitChangeLog(hvdcLineToCS2toCS1Values, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_CS21, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
@@ -154,6 +160,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         identifiableToConstantMappedPowers.clear();
         generatorToMinValues.clear();
         generatorToMaxValues.clear();
+        batteryToMinValues.clear();
+        batteryToMaxValues.clear();
         hvdcLineToMinValues.clear();
         hvdcLineToMaxValues.clear();
         hvdcLineToCS1toCS2Values.clear();
@@ -529,10 +537,10 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     private void addBatteryLimitValue(Battery battery, boolean isMappedTargetP, double targetP) {
         if (ignoreLimits && isMappedTargetP) {
             if (!isMappedMaxP) {
-                addLimitValueChange(MappingLimitType.MAX, generatorToMaxValues, battery, battery.getMaxP(), targetP);
+                addLimitValueChange(MappingLimitType.MAX, batteryToMaxValues, battery, battery.getMaxP(), targetP);
             }
             if (!isMappedMinP && minP <= 0) {
-                addLimitValueChange(MappingLimitType.MIN, generatorToMinValues, battery, battery.getMinP(), targetP);
+                addLimitValueChange(MappingLimitType.MIN, batteryToMinValues, battery, battery.getMinP(), targetP);
             }
         }
     }
