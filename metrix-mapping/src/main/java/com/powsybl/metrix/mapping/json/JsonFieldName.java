@@ -91,9 +91,9 @@ public enum JsonFieldName {
     IGNORE_LIMITS_TIME_SERIES_NAMES("ignoreLimitsTimeSeriesNames"),
     TS_TO_PLANNED_OUTAGES("timeSeriesToPlannedOutagesMapping"),
     OUTAGES("outages"),
-    GENERATORGROUPTS("generatorGroupTimeSeries"),
+    GENERATOR_GROUP_TS("generatorGroupTimeSeries"),
     BATTERY_GROUP_TS("batteryGroupTimeSeries"),
-    LOADGROUPTS("loadGroupTimeSeries"),
+    LOAD_GROUP_TS("loadGroupTimeSeries"),
     TIMESERIESNAMES("timeSeriesNames"),
     EQUIPMENTID("id");
 

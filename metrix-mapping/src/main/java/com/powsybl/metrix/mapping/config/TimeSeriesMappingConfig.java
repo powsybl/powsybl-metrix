@@ -757,6 +757,14 @@ public class TimeSeriesMappingConfig {
         unmappedMaxPGenerators.addAll(set);
     }
 
+    public void setUnmappedMinPBatteries(Set<String> set) {
+        unmappedMinPBatteries.addAll(set);
+    }
+
+    public void setUnmappedMaxPBatteries(Set<String> set) {
+        unmappedMaxPBatteries.addAll(set);
+    }
+
     public void setUnmappedMinPHvdcLines(Set<String> set) {
         unmappedMinPHvdcLines.addAll(set);
     }
@@ -803,6 +811,14 @@ public class TimeSeriesMappingConfig {
 
     public Set<String> getUnmappedMaxPGenerators() {
         return Collections.unmodifiableSet(unmappedMaxPGenerators);
+    }
+
+    public Set<String> getUnmappedMinPBatteries() {
+        return Collections.unmodifiableSet(unmappedMinPBatteries);
+    }
+
+    public Set<String> getUnmappedMaxPBatteries() {
+        return Collections.unmodifiableSet(unmappedMaxPBatteries);
     }
 
     public Set<String> getUnmappedMinPHvdcLines() {

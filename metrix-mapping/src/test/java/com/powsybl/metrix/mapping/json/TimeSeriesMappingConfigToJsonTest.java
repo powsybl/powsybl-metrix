@@ -34,6 +34,7 @@ class TimeSeriesMappingConfigToJsonTest {
     private final TimeSeriesMappingConfig config = new TimeSeriesMappingConfig();
 
     private final Map<MappingKey, List<String>> timeSeriesToGenerators = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "tsG"), List.of("g1"));
+    private final Map<MappingKey, List<String>> timeSeriesToBatteries = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "tsB"), List.of("b1"));
     private final Map<MappingKey, List<String>> timeSeriesToLoads = ImmutableMap.of(new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "tsL"), List.of("l1", "l2"));
     private final Map<MappingKey, List<String>> timeSeriesToDanglingLines = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "tsDL"), List.of("dl1"));
     private final Map<MappingKey, List<String>> timeSeriesToHvdcLines = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "tsH"), List.of("h1", "h2"));
@@ -45,6 +46,7 @@ class TimeSeriesMappingConfigToJsonTest {
     private final Map<MappingKey, List<String>> timeSeriesToVscConverterStations = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "tsVsc"), List.of("vsc1", "vsc2"));
 
     private final Map<MappingKey, List<String>> generatorToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), List.of("tsG"));
+    private final Map<MappingKey, List<String>> batteryToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.TARGET_P, "b1"), List.of("tsB"));
     private final Map<MappingKey, List<String>> loadToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), List.of("tsL1", "tsL2"));
     private final Map<MappingKey, List<String>> danglingLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.P0, "dl1"), List.of("tsDL"));
     private final Map<MappingKey, List<String>> hvdcLineToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "h1"), List.of("tsH"));
@@ -56,6 +58,7 @@ class TimeSeriesMappingConfigToJsonTest {
     private final Map<MappingKey, List<String>> vscConverterStationToTimeSeries = ImmutableMap.of(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "vsc1"), List.of("tsVsc"));
 
     private final Set<MappingKey> generatorTs = ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "g1"), new MappingKey(EquipmentVariable.MIN_P, "g2"));
+    private final Set<MappingKey> batteryTs = ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "b1"), new MappingKey(EquipmentVariable.MIN_P, "b2"));
     private final Set<MappingKey> loadTs = ImmutableSet.of(new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "l1"), new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "l2"));
     private final Set<MappingKey> danglingLineTs = ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "dl"));
     private final Set<MappingKey> hvdcLineTs = ImmutableSet.of(new MappingKey(EquipmentVariable.MIN_P, "h1"), new MappingKey(EquipmentVariable.MAX_P, "h2"));
@@ -67,6 +70,7 @@ class TimeSeriesMappingConfigToJsonTest {
     private final Set<MappingKey> vscConverterStationTs = ImmutableSet.of(new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, "vsc1"), new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "vsc2"));
 
     private final Set<String> unmappedGenerators = ImmutableSet.of("ug1");
+    private final Set<String> unmappedBatteries = ImmutableSet.of("ub1");
     private final Set<String> unmappedLoads = ImmutableSet.of("ul1", "ul2");
     private final Set<String> unmappedFixedActivePowerLoads = ImmutableSet.of("uf1");
     private final Set<String> unmappedVariableActivePowerLoads = ImmutableSet.of("uv1", "uv2");
@@ -76,20 +80,25 @@ class TimeSeriesMappingConfigToJsonTest {
 
     private final Set<String> unmappedMinPGenerators = ImmutableSet.of("ugmin");
     private final Set<String> unmappedMaxPGenerators = ImmutableSet.of("ugmax");
+    private final Set<String> unmappedMinPBatteries = ImmutableSet.of("ubmin");
+    private final Set<String> unmappedMaxPBatteries = ImmutableSet.of("ubmax");
     private final Set<String> unmappedMinPHvdcLines = ImmutableSet.of("uhmin");
     private final Set<String> unmappedMaxPHvdcLines = ImmutableSet.of("uhmax");
 
     private final Set<String> ignoredUnmappedGenerators = ImmutableSet.of("iug1");
+    private final Set<String> ignoredUnmappedBatteries = ImmutableSet.of("iub1");
     private final Set<String> ignoredUnmappedLoads = ImmutableSet.of("iul1", "iul2");
     private final Set<String> ignoredUnmappedDanglingLines = ImmutableSet.of("iudl1");
     private final Set<String> ignoredUnmappedHvdcLines = ImmutableSet.of("iuh1");
     private final Set<String> ignoredUnmappedPhaseTapChangers = ImmutableSet.of("iup1");
 
     private final Set<String> disconnectedGenerators = ImmutableSet.of("dg1");
+    private final Set<String> disconnectedBatteries = ImmutableSet.of("db1");
     private final Set<String> disconnectedLoads = ImmutableSet.of("dl1", "dl2");
     private final Set<String> disconnectedDanglingLines = ImmutableSet.of("ddl1", "ddl2");
 
     private final Set<String> outOfMainCcGenerators = ImmutableSet.of("og1");
+    private final Set<String> outOfMainCcBatteries = ImmutableSet.of("ob1");
     private final Set<String> outOfMainCcLoads = ImmutableSet.of("ol1", "ol2");
     private final Set<String> outOfMainCcDanglingLines = ImmutableSet.of("odl1");
 
@@ -103,11 +112,13 @@ class TimeSeriesMappingConfigToJsonTest {
     private final Map<String, Set<String>> timeSeriesToPlannedOutages = ImmutableMap.of("tsOutages", ImmutableSet.of("id1", "id2"));
 
     private final Map<String, Set<String>> generatorGroupToTimeSeries = ImmutableMap.of("g1", ImmutableSet.of("name1", "name2"));
+    private final Map<String, Set<String>> batteryGroupToTimeSeries = ImmutableMap.of("b1", ImmutableSet.of("name1", "name2"));
     private final Map<String, Set<String>> loadGroupToTimeSeries = ImmutableMap.of("l1", ImmutableSet.of("name1", "name2"));
 
     @BeforeEach
     void setUp() {
         config.setTimeSeriesToGeneratorsMapping(timeSeriesToGenerators);
+        config.setTimeSeriesToBatteriesMapping(timeSeriesToBatteries);
         config.setTimeSeriesToLoadsMapping(timeSeriesToLoads);
         config.setTimeSeriesToDanglingLinesMapping(timeSeriesToDanglingLines);
         config.setTimeSeriesToHvdcLinesMapping(timeSeriesToHvdcLines);
@@ -119,6 +130,7 @@ class TimeSeriesMappingConfigToJsonTest {
         config.setTimeSeriesToVscConverterStationsMapping(timeSeriesToVscConverterStations);
 
         config.setGeneratorToTimeSeriesMapping(generatorToTimeSeries);
+        config.setBatteryToTimeSeriesMapping(batteryToTimeSeries);
         config.setLoadToTimeSeriesMapping(loadToTimeSeries);
         config.setDanglingLineToTimeSeriesMapping(danglingLineToTimeSeries);
         config.setHvdcLineToTimeSeriesMapping(hvdcLineToTimeSeries);
@@ -130,6 +142,7 @@ class TimeSeriesMappingConfigToJsonTest {
         config.setVscConverterStationToTimeSeriesMapping(vscConverterStationToTimeSeries);
 
         config.setGeneratorTimeSeries(generatorTs);
+        config.setBatteryTimeSeries(batteryTs);
         config.setLoadTimeSeries(loadTs);
         config.setDanglingLineTimeSeries(danglingLineTs);
         config.setHvdcLineTimeSeries(hvdcLineTs);
@@ -141,6 +154,7 @@ class TimeSeriesMappingConfigToJsonTest {
         config.setVscConverterStationTimeSeries(vscConverterStationTs);
 
         config.setUnmappedGenerators(unmappedGenerators);
+        config.setUnmappedBatteries(unmappedBatteries);
         config.setUnmappedLoads(unmappedLoads);
         config.setUnmappedFixedActivePowerLoads(unmappedFixedActivePowerLoads);
         config.setUnmappedVariableActivePowerLoads(unmappedVariableActivePowerLoads);
@@ -150,20 +164,25 @@ class TimeSeriesMappingConfigToJsonTest {
 
         config.setUnmappedMinPGenerators(unmappedMinPGenerators);
         config.setUnmappedMaxPGenerators(unmappedMaxPGenerators);
+        config.setUnmappedMinPBatteries(unmappedMinPBatteries);
+        config.setUnmappedMaxPBatteries(unmappedMaxPBatteries);
         config.setUnmappedMinPHvdcLines(unmappedMinPHvdcLines);
         config.setUnmappedMaxPHvdcLines(unmappedMaxPHvdcLines);
 
         config.setIgnoredUnmappedGenerators(ignoredUnmappedGenerators);
+        config.setIgnoredUnmappedBatteries(ignoredUnmappedBatteries);
         config.setIgnoredUnmappedLoads(ignoredUnmappedLoads);
         config.setIgnoredUnmappedDanglingLines(ignoredUnmappedDanglingLines);
         config.setIgnoredUnmappedHvdcLines(ignoredUnmappedHvdcLines);
         config.setIgnoredUnmappedPhaseTapChangers(ignoredUnmappedPhaseTapChangers);
 
         config.setDisconnectedGenerators(disconnectedGenerators);
+        config.setDisconnectedBatteries(disconnectedBatteries);
         config.setDisconnectedLoads(disconnectedLoads);
         config.setDisconnectedDanglingLines(disconnectedDanglingLines);
 
         config.setOutOfMainCcGenerators(outOfMainCcGenerators);
+        config.setOutOfMainCcBatteries(outOfMainCcBatteries);
         config.setOutOfMainCcLoads(outOfMainCcLoads);
         config.setOutOfMainCcDanglingLines(outOfMainCcDanglingLines);
 
@@ -177,12 +196,14 @@ class TimeSeriesMappingConfigToJsonTest {
         config.setTimeSeriesToPlannedOutagesMapping(timeSeriesToPlannedOutages);
 
         config.setGeneratorGroupTimeSeries(generatorGroupToTimeSeries);
+        config.setBatteryGroupTimeSeries(batteryGroupToTimeSeries);
         config.setLoadGroupTimeSeries(loadGroupToTimeSeries);
     }
 
     @Test
     void testGetTimeSeriesToXMapping() {
         assertEquals(timeSeriesToGenerators, config.getTimeSeriesToGeneratorsMapping());
+        assertEquals(timeSeriesToBatteries, config.getTimeSeriesToBatteriesMapping());
         assertEquals(timeSeriesToLoads, config.getTimeSeriesToLoadsMapping());
         assertEquals(timeSeriesToDanglingLines, config.getTimeSeriesToDanglingLinesMapping());
         assertEquals(timeSeriesToHvdcLines, config.getTimeSeriesToHvdcLinesMapping());
@@ -197,6 +218,7 @@ class TimeSeriesMappingConfigToJsonTest {
     @Test
     void testGetXToTimeSeriesMapping() {
         assertEquals(generatorToTimeSeries, config.getGeneratorToTimeSeriesMapping());
+        assertEquals(batteryToTimeSeries, config.getBatteryToTimeSeriesMapping());
         assertEquals(loadToTimeSeries, config.getLoadToTimeSeriesMapping());
         assertEquals(danglingLineToTimeSeries, config.getDanglingLineToTimeSeriesMapping());
         assertEquals(hvdcLineToTimeSeries, config.getHvdcLineToTimeSeriesMapping());
@@ -211,6 +233,7 @@ class TimeSeriesMappingConfigToJsonTest {
     @Test
     void testGetXTimeSeries() {
         assertEquals(generatorTs, config.getGeneratorTimeSeries());
+        assertEquals(batteryTs, config.getBatteryTimeSeries());
         assertEquals(loadTs, config.getLoadTimeSeries());
         assertEquals(danglingLineTs, config.getDanglingLineTimeSeries());
         assertEquals(hvdcLineTs, config.getHvdcLineTimeSeries());
@@ -225,6 +248,7 @@ class TimeSeriesMappingConfigToJsonTest {
     @Test
     void testGetUnmappedX() {
         assertEquals(unmappedGenerators, config.getUnmappedGenerators());
+        assertEquals(unmappedBatteries, config.getUnmappedBatteries());
         assertEquals(unmappedLoads, config.getUnmappedLoads());
         assertEquals(unmappedFixedActivePowerLoads, config.getUnmappedFixedActivePowerLoads());
         assertEquals(unmappedVariableActivePowerLoads, config.getUnmappedVariableActivePowerLoads());
@@ -234,10 +258,13 @@ class TimeSeriesMappingConfigToJsonTest {
 
         assertEquals(unmappedMinPGenerators, config.getUnmappedMinPGenerators());
         assertEquals(unmappedMaxPGenerators, config.getUnmappedMaxPGenerators());
+        assertEquals(unmappedMinPBatteries, config.getUnmappedMinPBatteries());
+        assertEquals(unmappedMaxPBatteries, config.getUnmappedMaxPBatteries());
         assertEquals(unmappedMinPHvdcLines, config.getUnmappedMinPHvdcLines());
         assertEquals(unmappedMaxPHvdcLines, config.getUnmappedMaxPHvdcLines());
 
         assertEquals(ignoredUnmappedGenerators, config.getIgnoredUnmappedGenerators());
+        assertEquals(ignoredUnmappedBatteries, config.getIgnoredUnmappedBatteries());
         assertEquals(ignoredUnmappedLoads, config.getIgnoredUnmappedLoads());
         assertEquals(ignoredUnmappedDanglingLines, config.getIgnoredUnmappedDanglingLines());
         assertEquals(ignoredUnmappedHvdcLines, config.getIgnoredUnmappedHvdcLines());
@@ -251,6 +278,7 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(disconnectedDanglingLines, config.getDisconnectedDanglingLines());
 
         assertEquals(outOfMainCcGenerators, config.getOutOfMainCcGenerators());
+        assertEquals(outOfMainCcBatteries, config.getOutOfMainCcBatteries());
         assertEquals(outOfMainCcLoads, config.getOutOfMainCcLoads());
         assertEquals(outOfMainCcDanglingLines, config.getOutOfMainCcDanglingLines());
 
@@ -263,6 +291,7 @@ class TimeSeriesMappingConfigToJsonTest {
         assertEquals(timeSeriesToPlannedOutages, config.getTimeSeriesToPlannedOutagesMapping());
 
         assertEquals(generatorGroupToTimeSeries, config.getGeneratorGroupTimeSeries());
+        assertEquals(batteryGroupToTimeSeries, config.getBatteryGroupTimeSeries());
         assertEquals(loadGroupToTimeSeries, config.getLoadGroupTimeSeries());
     }
 
