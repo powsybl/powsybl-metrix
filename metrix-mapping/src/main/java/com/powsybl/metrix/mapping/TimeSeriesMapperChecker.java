@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
@@ -258,14 +259,12 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     }
 
     private void correctAndNotifyMappedPowers(int point, Identifiable<?> identifiable, MappedPower mappedPower) {
-        double value;
-        if (identifiable instanceof Generator generator) {
-            value = correctMappedPowerGenerator(point, generator, mappedPower);
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            value = correctMappedPowerHvdcLine(point, hvdcLine, mappedPower);
-        } else {
-            throw new AssertionError("Unsupported equipment type for id " + identifiable.getId());
-        }
+        double value = switch (identifiable) {
+            case Generator generator -> correctMappedPowerGenerator(point, generator, mappedPower);
+            case HvdcLine hvdcLine -> correctMappedPowerHvdcLine(point, hvdcLine, mappedPower);
+            case Battery battery -> correctMappedPowerBattery(point, battery, mappedPower);
+            default -> throw new AssertionError("Unsupported equipment type for id " + identifiable.getId());
+        };
         mappedPower.setP(value);
         super.timeSeriesMappedToEquipment(point, timeSeriesName != null ? timeSeriesName : "", identifiable, TimeSeriesMapper.getPowerVariable(identifiable), value);
     }
@@ -296,6 +295,40 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
         if (ignoreLimits) {
             double result = correctMappedPowerGeneratorWithIgnoreLimits(targetP, generator);
+            if (!Double.isNaN(result)) {
+                return result;
+            }
+        }
+
+        return correctMappedPowerGeneratorIsTargetP(targetP, isMappedTargetP);
+    }
+
+    private double correctMappedPowerBattery(int point, Battery battery, MappedPower mappedPower) {
+
+        initCorrector(mappedPower);
+        id = battery.getId();
+        minP = isMappedMinP ? mappedPower.getMinP() : battery.getMinP();
+        maxP = isMappedMaxP ? mappedPower.getMaxP() : battery.getMaxP();
+        if (minP > maxP) {
+            throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
+        }
+        final boolean isMappedTargetP = mappedPower.getP() != null;
+        double targetP = isMappedTargetP ? mappedPower.getP() : TimeSeriesMapper.getP(battery);
+        isOkMinP = targetP >= minP - toleranceThreshold;
+        isOkMaxP = targetP <= maxP + toleranceThreshold;
+        targetP = applyToleranceThresholdOnTargetP(isMappedTargetP, targetP);
+
+        addBatteryLimitValue(battery, isMappedTargetP, targetP);
+
+        if (!isMappedTargetP) {
+            double result = correctMappedPowerGeneratorWhenTargetPIsNotMapped(targetP, point, TARGET_P_VARIABLE_NAME, false);
+            if (!Double.isNaN(result)) {
+                return result;
+            }
+        }
+
+        if (ignoreLimits) {
+            double result = correctMappedPowerBatteryWithIgnoreLimits(targetP, battery);
             if (!Double.isNaN(result)) {
                 return result;
             }
@@ -344,6 +377,30 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         } else if (!isOkMinP && minP <= 0 && !isMappedMinP) {
             // targetP is mapped, minP is not mapped -> reduce base case minP to targetP
             generator.setMinP(Math.floor(targetP - 0.5f));
+            mappedEquipments.getScalingDownLimitViolation().add(ScalingDownLimitViolation.MINP_BY_TARGETP);
+            return targetP;
+        } else if (!isOkMinP && minP <= 0) {
+            mappedEquipments.getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MINP_DISABLED);
+            return minP;
+        } else if (!isOkMinP && targetP < 0) {
+            mappedEquipments.getScalingDownPowerChange().add(ScalingDownPowerChange.ZERO_DISABLED);
+            return 0;
+        }
+        return Double.NaN;
+    }
+
+    private double correctMappedPowerBatteryWithIgnoreLimits(double targetP, Battery battery) {
+        MappedEquipments mappedEquipments = targetPTimeSeriesToEquipments.get(timeSeriesName);
+        if (!isOkMaxP && !isMappedMaxP) {
+            battery.setMaxP(Math.round(targetP + 0.5f));
+            mappedEquipments.getScalingDownLimitViolation().add(ScalingDownLimitViolation.MAXP_BY_TARGETP);
+            return targetP;
+        } else if (!isOkMaxP) {
+            mappedEquipments.getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MAXP_DISABLED);
+            return maxP;
+        } else if (!isOkMinP && minP <= 0 && !isMappedMinP) {
+            // targetP is mapped, minP is not mapped -> reduce base case minP to targetP
+            battery.setMinP(Math.floor(targetP - 0.5f));
             mappedEquipments.getScalingDownLimitViolation().add(ScalingDownLimitViolation.MINP_BY_TARGETP);
             return targetP;
         } else if (!isOkMinP && minP <= 0) {
@@ -465,6 +522,17 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
             }
             if (!isMappedMinP && minP <= 0) {
                 addLimitValueChange(MappingLimitType.MIN, generatorToMinValues, generator, generator.getMinP(), targetP);
+            }
+        }
+    }
+
+    private void addBatteryLimitValue(Battery battery, boolean isMappedTargetP, double targetP) {
+        if (ignoreLimits && isMappedTargetP) {
+            if (!isMappedMaxP) {
+                addLimitValueChange(MappingLimitType.MAX, generatorToMaxValues, battery, battery.getMaxP(), targetP);
+            }
+            if (!isMappedMinP && minP <= 0) {
+                addLimitValueChange(MappingLimitType.MIN, generatorToMinValues, battery, battery.getMinP(), targetP);
             }
         }
     }

@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.DanglingLine;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
@@ -79,6 +80,7 @@ public class TimeSeriesMapper {
     private static final class MapperContext {
         private final EquipmentTimeSeriesMap timeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToGeneratorsMapping = new EquipmentTimeSeriesMap();
+        private final EquipmentTimeSeriesMap timeSeriesToBatteriesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToDanglingLinesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToHvdcLinesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToPhaseTapChangersMapping = new EquipmentTimeSeriesMap();
@@ -218,7 +220,7 @@ public class TimeSeriesMapper {
     }
 
     public static MappingVariable getPowerVariable(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
+        if (identifiable instanceof Generator || identifiable instanceof Battery) {
             return EquipmentVariable.TARGET_P;
         } else if (identifiable instanceof HvdcLine) {
             return EquipmentVariable.ACTIVE_POWER_SETPOINT;
@@ -438,6 +440,7 @@ public class TimeSeriesMapper {
         MapperContext context = new MapperContext();
         context.timeSeriesToLoadsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToLoadsMapping(), table, network, config);
         context.timeSeriesToGeneratorsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToGeneratorsMapping(), table, network, config);
+        context.timeSeriesToBatteriesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToBatteriesMapping(), table, network, config);
         context.timeSeriesToDanglingLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToDanglingLinesMapping(), table, network, config);
         context.timeSeriesToHvdcLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToHvdcLinesMapping(), table, network, config);
         context.timeSeriesToPhaseTapChangersMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToPhaseTapChangersMapping(), table, network, config);
@@ -458,6 +461,7 @@ public class TimeSeriesMapper {
 
         // Check if some other mappings are constant
         identifyConstantTimeSeries(version, context.timeSeriesToGeneratorsMapping, constantTimeSeriesContext.timeSeriesToGeneratorsMapping, variableTimeSeriesContext.timeSeriesToGeneratorsMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToBatteriesMapping, constantTimeSeriesContext.timeSeriesToBatteriesMapping, variableTimeSeriesContext.timeSeriesToBatteriesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToDanglingLinesMapping, constantTimeSeriesContext.timeSeriesToDanglingLinesMapping, variableTimeSeriesContext.timeSeriesToDanglingLinesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToHvdcLinesMapping, constantTimeSeriesContext.timeSeriesToHvdcLinesMapping, variableTimeSeriesContext.timeSeriesToHvdcLinesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToPhaseTapChangersMapping, constantTimeSeriesContext.timeSeriesToPhaseTapChangersMapping, variableTimeSeriesContext.timeSeriesToPhaseTapChangersMapping);
@@ -609,6 +613,7 @@ public class TimeSeriesMapper {
     boolean mapSinglePointIsEmpty(MapperContext context) {
         return context.timeSeriesToLoadsMapping.isEmpty() &&
                context.timeSeriesToGeneratorsMapping.isEmpty() &&
+               context.timeSeriesToBatteriesMapping.isEmpty() &&
                context.timeSeriesToDanglingLinesMapping.isEmpty() &&
                context.timeSeriesToHvdcLinesMapping.isEmpty() &&
                context.timeSeriesToPhaseTapChangersMapping.isEmpty() &&
@@ -630,6 +635,7 @@ public class TimeSeriesMapper {
         // process time series for mapping
         mapToNetwork(version, variantId, point, context.timeSeriesToLoadsMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToGeneratorsMapping);
+        mapToNetwork(version, variantId, point, context.timeSeriesToBatteriesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToDanglingLinesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToHvdcLinesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToPhaseTapChangersMapping);
