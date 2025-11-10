@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.MemDataSource;
 import com.powsybl.commons.test.TestUtil;
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
@@ -50,6 +51,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 class TimeSeriesMapperCheckerTest {
+
+    private static final String BATTERY_ID = "NO_BATTERY";
 
     private static final String INFO = "INFO";
 
@@ -255,11 +258,13 @@ class TimeSeriesMapperCheckerTest {
             "}");
 
     private Network createNetwork() {
-        Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xiidm")));
+        Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xiidm")));
         List<String> generators = List.of("SO_G1", "SO_G2", "SE_G", "N_G");
         generators.forEach(id -> network.getGenerator(id).setTargetP(0));
         List<String> loads = List.of("SO_L", "SE_L1", "SE_L2");
         loads.forEach(id -> network.getLoad(id).setP0(0));
+        List<String> batteries = List.of("NO_BATTERY");
+        batteries.forEach(id -> network.getBattery(id).setTargetP(0));
         return network;
     }
 
@@ -296,6 +301,18 @@ class TimeSeriesMapperCheckerTest {
             assertEquals(expectedMinP, generator.getMinP(), 0);
             assertEquals(expectedP, generator.getTargetP(), 0);
             assertEquals(expectedMaxP, generator.getMaxP(), 0);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void compareNetworkPointBattery(String id, MemDataSource dataSource, double expectedMinP, double expectedP, double expectedMaxP) {
+        try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
+            Network networkPoint = NetworkSerDe.read(inputStream);
+            Battery battery = networkPoint.getBattery(id);
+            assertEquals(expectedMinP, battery.getMinP(), 0);
+            assertEquals(expectedP, battery.getTargetP(), 0);
+            assertEquals(expectedMaxP, battery.getMaxP(), 0);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -387,13 +404,13 @@ class TimeSeriesMapperCheckerTest {
     }
 
     private void testGenerator(Network network, String script, boolean ignoreLimits, String generator,
-                      double expectedBalanceValue, double expectedMinP, double expectedP, double expectedMaxP,
-                      String expectedType, String expectedLabel, String expectedSynthesisLabel, String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
+                               double expectedBalanceValue, double expectedMinP, double expectedP, double expectedMaxP,
+                               String expectedType, String expectedLabel, String expectedSynthesisLabel, String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
-                Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+            Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         BalanceSummary balanceSummary = new BalanceSummary();
@@ -402,6 +419,26 @@ class TimeSeriesMapperCheckerTest {
         mapper.mapToNetwork(store, List.of(balanceSummary, networkPointWriter));
 
         compareNetworkPointGenerator(generator, dataSource, expectedMinP, expectedP, expectedMaxP);
+        compareBalance(balanceSummary, expectedBalanceValue);
+        compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
+    }
+
+    private void testBattery(Network network, String script, boolean ignoreLimits, String batteryId,
+                               double expectedBalanceValue, double expectedMinP, double expectedP, double expectedMaxP,
+                               String expectedType, String expectedLabel, String expectedSynthesisLabel, String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
+        TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+            Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        BalanceSummary balanceSummary = new BalanceSummary();
+        MemDataSource dataSource = new MemDataSource();
+        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
+        mapper.mapToNetwork(store, List.of(balanceSummary, networkPointWriter));
+
+        compareNetworkPointBattery(batteryId, dataSource, expectedMinP, expectedP, expectedMaxP);
         compareBalance(balanceSummary, expectedBalanceValue);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
     }
@@ -852,6 +889,69 @@ class TimeSeriesMapperCheckerTest {
         // with ignore limits
         testGenerator(NetworkSerDe.copy(network), pmin4cScript, true, "N_G", 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
+    }
+
+    /*
+     * BATTERY TEST
+     */
+
+    @Test
+    void pmax1BatteryTest() {
+        Network network = createNetwork();
+        network.getBattery(BATTERY_ID).setTargetP(2000);
+        network.getBattery(BATTERY_ID).setMaxP(1000);
+
+        // targetP not mapped
+        // maxP not mapped
+        // targetP > maxP
+
+        String expectedLabelTargetP = BASE_CASE_RANGE_PROBLEM + "targetP changed to base case maxP";
+        String expectedLabelMaxP = BASE_CASE_RANGE_PROBLEM + "maxP changed to base case targetP";
+
+        // without ignore limits
+        // -> targetP reduced to maxP = 1000
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, 0, 1000, 1000,
+            WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
+            "targetP 2000 of NO_BATTERY not included in 0 to 1000, targetP changed to 1000",
+            null);
+
+        // with ignore limits
+        // -> maxP changed to targetP = 2000
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, 0, 2000, 2000,
+            INFO, expectedLabelMaxP, expectedLabelMaxP, VARIANT_ALL,
+            "targetP 2000 of NO_BATTERY not included in 0 to 1000, maxP changed to 2000",
+            null);
+    }
+
+    @Test
+    void pmax2BatteryTest() {
+        Network network = createNetwork();
+        network.getBattery(BATTERY_ID).setMaxP(1000);
+        String pmax2Script = String.join(System.lineSeparator(),
+            "mapToBatteries {",
+            "    timeSeriesName 'chronique_2000'",
+            "    filter { battery.id == 'NO_BATTERY' }",
+            "}");
+
+        // targetP mapped
+        // maxP not mapped
+        // mapped targetP > maxP
+
+        String expectedLabel = SCALING_DOWN_PROBLEM + "at least one targetP changed to base case maxP";
+
+        // without ignore limits
+        // -> targetP reduced to maxP = 1000
+        testBattery(NetworkSerDe.copy(network), pmax2Script, false, BATTERY_ID, 0, 0, 1000, 1000,
+            WARNING, expectedLabel, expectedLabel, VARIANT_1,
+            "Impossible to scale down 2000 of ts chronique_2000, targetP 1000 has been applied",
+            "Impossible to scale down at least one value of ts chronique_2000, modified targetP has been applied");
+
+        // with ignore limits
+        // -> maxP changed to targetP = 2000
+        testBattery(NetworkSerDe.copy(network), pmax2Script, true, BATTERY_ID, 0, 0, 2000, 2001,
+            INFO, LIMIT_CHANGE + "maxP", SCALING_DOWN_PROBLEM + "at least one maxP increased", VARIANT_EMPTY,
+            "maxP of NO_BATTERY lower than targetP for 1 variants, maxP increased from 1000 to 2000",
+            "maxP violated by targetP in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
     }
 
     /*
