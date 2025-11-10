@@ -927,11 +927,11 @@ class TimeSeriesMapperCheckerTest {
     void pmax2BatteryTest() {
         Network network = createNetwork();
         network.getBattery(BATTERY_ID).setMaxP(1000);
-        String pmax2Script = String.join(System.lineSeparator(),
-            "mapToBatteries {",
-            "    timeSeriesName 'chronique_2000'",
-            "    filter { battery.id == 'NO_BATTERY' }",
-            "}");
+        String script = """
+            mapToBatteries {
+                timeSeriesName 'chronique_2000'
+                filter { battery.id == 'NO_BATTERY' }
+            }""";
 
         // targetP mapped
         // maxP not mapped
@@ -941,17 +941,48 @@ class TimeSeriesMapperCheckerTest {
 
         // without ignore limits
         // -> targetP reduced to maxP = 1000
-        testBattery(NetworkSerDe.copy(network), pmax2Script, false, BATTERY_ID, 0, 0, 1000, 1000,
+        testBattery(NetworkSerDe.copy(network), script, false, BATTERY_ID, 0, 0, 1000, 1000,
             WARNING, expectedLabel, expectedLabel, VARIANT_1,
             "Impossible to scale down 2000 of ts chronique_2000, targetP 1000 has been applied",
             "Impossible to scale down at least one value of ts chronique_2000, modified targetP has been applied");
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testBattery(NetworkSerDe.copy(network), pmax2Script, true, BATTERY_ID, 0, 0, 2000, 2001,
+        testBattery(NetworkSerDe.copy(network), script, true, BATTERY_ID, 0, 0, 2000, 2001,
             INFO, LIMIT_CHANGE + "maxP", SCALING_DOWN_PROBLEM + "at least one maxP increased", VARIANT_EMPTY,
             "maxP of NO_BATTERY lower than targetP for 1 variants, maxP increased from 1000 to 2000",
             "maxP violated by targetP in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
+    }
+
+    @Test
+    void pmax3BatteryTest() {
+        Network network = createNetwork();
+        network.getBattery(BATTERY_ID).setTargetP(200);
+        network.getBattery(BATTERY_ID).setMaxP(300);
+        String script = """
+            mapToBatteries {
+                timeSeriesName 'chronique_100'
+                filter { battery.id == 'NO_BATTERY' }
+                variable maxP
+            }""";
+
+        // targetP not mapped
+        // maxP mapped
+        // targetP > mapped maxP
+
+        String expectedLabel = MAPPING_RANGE_PROBLEM + "targetP changed to mapped maxP";
+        String expectedLabelIL = expectedLabel + IL_DISABLED;
+        String expectedMessage = "targetP 200 of NO_BATTERY not included in 0 to 100, targetP changed to 100";
+
+        // without ignore limits
+        // -> targetP reduced to maxP = 100
+        testBattery(NetworkSerDe.copy(network), script, false, BATTERY_ID, 0, 0, 100, 100,
+            WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
+
+        // with ignore limits
+        // -> same as without ignore limits (ignore limits disabled)
+        testBattery(NetworkSerDe.copy(network), script, true, BATTERY_ID, 0, 0, 100, 100,
+            WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, null);
     }
 
     /*

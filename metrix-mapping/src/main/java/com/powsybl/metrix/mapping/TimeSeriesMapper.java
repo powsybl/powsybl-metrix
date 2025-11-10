@@ -117,32 +117,38 @@ public class TimeSeriesMapper {
     }
 
     public static float getMax(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator generator) {
-            return (float) generator.getMaxP();
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
-            if (activePowerRange != null) {
-                return activePowerRange.getOprFromCS1toCS2();
-            } else {
-                return (float) hvdcLine.getMaxP();
-            }
+        return switch (identifiable) {
+            case Generator generator -> (float) generator.getMaxP();
+            case HvdcLine hvdcLine -> getHvdcMax(hvdcLine);
+            case Battery battery -> (float) battery.getMaxP();
+            case null, default -> Float.MIN_VALUE;
+        };
+    }
+
+    private static float getHvdcMax(HvdcLine hvdcLine) {
+        HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
+        if (activePowerRange != null) {
+            return activePowerRange.getOprFromCS1toCS2();
         } else {
-            return Float.MAX_VALUE;
+            return (float) hvdcLine.getMaxP();
         }
     }
 
     public static float getMin(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator generator) {
-            return (float) generator.getMinP();
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
-            if (activePowerRange != null) {
-                return -activePowerRange.getOprFromCS2toCS1();
-            } else {
-                return (float) -hvdcLine.getMaxP();
-            }
+        return switch (identifiable) {
+            case Generator generator -> (float) generator.getMinP();
+            case Battery battery -> (float) battery.getMinP();
+            case HvdcLine hvdcLine -> getHvdcMin(hvdcLine);
+            default -> Float.MIN_VALUE;
+        };
+    }
+
+    private static float getHvdcMin(HvdcLine hvdcLine) {
+        HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
+        if (activePowerRange != null) {
+            return -activePowerRange.getOprFromCS2toCS1();
         } else {
-            return Float.MIN_VALUE;
+            return (float) -hvdcLine.getMaxP();
         }
     }
 
@@ -185,13 +191,12 @@ public class TimeSeriesMapper {
     }
 
     public static float getP(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator generator) {
-            return (float) generator.getTargetP();
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            return getHvdcLineSetPoint(hvdcLine);
-        } else {
-            return Float.MIN_VALUE;
-        }
+        return switch (identifiable) {
+            case Generator generator -> (float) generator.getTargetP();
+            case HvdcLine hvdcLine -> getHvdcLineSetPoint(hvdcLine);
+            case Battery battery -> (float) battery.getTargetP();
+            case null, default -> Float.MIN_VALUE;
+        };
     }
 
     public static HvdcOperatorActivePowerRange addActivePowerRangeExtension(HvdcLine hvdcLine) {
