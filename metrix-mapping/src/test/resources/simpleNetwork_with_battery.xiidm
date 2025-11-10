@@ -29,7 +29,7 @@
                 <iidm:switch id="NOD1_NOD1_DJ_OMN" name="NOD1_DJ_OMN" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
                 <iidm:bus v="380.0" angle="0.0" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13"/>
             </iidm:nodeBreakerTopology>
-            <iidm:battery id="NO_BATTERY" targetP="100.0" targetQ="20.0" minP="0.0" maxP="200.0" node="6">
+            <iidm:battery id="NO_BATTERY" targetP="100.0" targetQ="20.0" minP="0.0" maxP="600.0" node="6">
                 <iidm:minMaxReactiveLimits minQ="-1.7976931348623157E308" maxQ="1.7976931348623157E308"/>
             </iidm:battery>
         </iidm:voltageLevel>
