@@ -414,6 +414,26 @@ public class TimeSeriesMapper {
 
     }
 
+    private void correctUnmappedBattery(boolean isUnmappedMinP, boolean isUnmappedMaxP, Battery battery,
+                                          int version) {
+
+        final double minP = battery.getMinP();
+        final double maxP = battery.getMaxP();
+        final double targetP = battery.getTargetP();
+
+        new BatteryBoundLimitBuilder()
+            .minP(minP)
+            .maxP(maxP)
+            .targetP(targetP)
+            .isUnmappedMinP(isUnmappedMinP)
+            .isUnmappedMaxP(isUnmappedMaxP)
+            .version(version)
+            .index(table.getTableIndex())
+            .ignoreLimits(parameters.isIgnoreLimits())
+            .setAll(battery, timeSeriesMappingLogger);
+
+    }
+
     private void correctUnmappedHvdcLine(boolean isUnmappedMinP, boolean isUnmappedMaxP, HvdcLine hvdcLine, int version) {
 
         final boolean isActivePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class) != null;
@@ -485,6 +505,13 @@ public class TimeSeriesMapper {
                     final boolean isMinPUnmapped = config.getUnmappedMinPGenerators().contains(g.getId());
                     final boolean isMaxPUnmapped = config.getUnmappedMaxPGenerators().contains(g.getId());
                     correctUnmappedGenerator(isMinPUnmapped, isMaxPUnmapped, g, version);
+                });
+        network.getBatteryStream()
+                .filter(battery -> config.getUnmappedBatteries().contains(battery.getId()))
+                .forEach(battery -> {
+                    final boolean isMinPUnmapped = config.getUnmappedMinPBatteries().contains(battery.getId());
+                    final boolean isMaxPUnmapped = config.getUnmappedMaxPBatteries().contains(battery.getId());
+                    correctUnmappedBattery(isMinPUnmapped, isMaxPUnmapped, battery, version);
                 });
         network.getHvdcLineStream()
                 .filter(l -> config.getUnmappedHvdcLines().contains(l.getId()))
