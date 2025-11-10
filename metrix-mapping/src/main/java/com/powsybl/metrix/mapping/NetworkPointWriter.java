@@ -13,6 +13,7 @@ import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Injection;
 import com.powsybl.iidm.network.LccConverterStation;
 import com.powsybl.iidm.network.Line;
 import com.powsybl.iidm.network.Load;
@@ -287,14 +288,14 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case VOLTAGE_REGULATOR_ON ->
                 generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case TARGET_V -> generator.setTargetV(equipmentValue);
-            case DISCONNECTED -> {
-                if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
-                    generator.getTerminal().disconnect();
-                }
-            }
-            default -> {
-                // Do nothing
-            }
+            case DISCONNECTED -> disconnectInjection(equipmentValue, generator);
+            default -> { /* Do nothing */ }
+        }
+    }
+
+    private static void disconnectInjection(double equipmentValue, Injection<?> injection) {
+        if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
+            injection.getTerminal().disconnect();
         }
     }
 
@@ -305,14 +306,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case TARGET_Q -> battery.setTargetQ(equipmentValue);
             case MIN_P -> battery.setMinP(equipmentValue);
             case MAX_P -> battery.setMaxP(equipmentValue);
-            case DISCONNECTED -> {
-                if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
-                    battery.getTerminal().disconnect();
-                }
-            }
-            default -> {
-                // Do nothing
-            }
+            case DISCONNECTED -> disconnectInjection(equipmentValue, battery);
+            default -> { /* Do nothing */ }
         }
     }
 
