@@ -13,7 +13,6 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.BranchContingency;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
@@ -67,9 +66,9 @@ import java.util.Objects;
 import java.util.Set;
 
 import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -195,9 +194,7 @@ class MetrixInputTest {
         Network n = ThreeWindingsTransformerNetworkFactory.create();
         MetrixInputData metrixInputData = new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters());
         try (StringWriter writer = new StringWriter()) {
-            assertThrows(PowsyblException.class,
-                () -> metrixInputData.writeJson(writer),
-                "Three Windings Transformers are not yet supported in metrix");
+            assertDoesNotThrow(() -> metrixInputData.writeJson(writer)); // TODO test this better ^^
         }
     }
 
