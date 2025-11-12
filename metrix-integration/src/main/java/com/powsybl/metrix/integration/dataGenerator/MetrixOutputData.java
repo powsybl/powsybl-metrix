@@ -20,6 +20,8 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.powsybl.iidm.network.IdentifiableType.BATTERY;
+
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
@@ -35,20 +37,25 @@ public class MetrixOutputData {
     public static final String OVERLOAD_BASECASE = "OVERLOAD_BASECASE";
     public static final String OVERLOAD_OUTAGES = "OVERLOAD_OUTAGES";
 
+    public static final String VOL_UP = "VOL_UP_";
+    public static final String VOL_DOWN = "VOL_DOWN_";
+    public static final String COST = "COST";
+    public static final String CUR = "CUR_";
+
     public static final String GEN_PREFIX = "GEN_";
-    public static final String GEN_CUR_PREFIX = "GEN_CUR_";
-    public static final String GEN_COST = GEN_PREFIX + "COST";
-    public static final String GEN_VOL_UP = GEN_PREFIX + "VOL_UP_";
-    public static final String GEN_VOL_DOWN = GEN_PREFIX + "VOL_DOWN_";
-    public static final String GEN_BAT_PREFIX = GEN_PREFIX + "BAT_";
-    public static final String GEN_BAT_CUR_PREFIX = GEN_BAT_PREFIX + "CUR_";
-    public static final String GEN_BAT_COST = GEN_BAT_PREFIX + "COST";
-    public static final String GEN_BAT_VOL_UP = GEN_BAT_PREFIX + "VOL_UP_";
-    public static final String GEN_BAT_VOL_DOWN = GEN_BAT_PREFIX + "VOL_DOWN_";
+    public static final String GEN_CUR_PREFIX = GEN_PREFIX + CUR;
+    public static final String GEN_COST = GEN_PREFIX + COST;
+    public static final String GEN_CUR_COST = GEN_CUR_PREFIX + COST;
+
+    public static final String BAT_PREFIX = "BAT_";
+    public static final String BAT_CUR_PREFIX = BAT_PREFIX + CUR;
+    public static final String BAT_COST = BAT_PREFIX + COST;
+    public static final String BAT_CUR_COST = BAT_CUR_PREFIX + COST;
 
     public static final String LOAD_PREFIX = "LOAD_";
-    public static final String LOAD_CUR_PREFIX = "LOAD_CUR_";
-    public static final String LOAD_COST = LOAD_PREFIX + "COST";
+    public static final String LOAD_CUR_PREFIX = LOAD_PREFIX + CUR;
+    public static final String LOAD_COST = LOAD_PREFIX + COST;
+    public static final String LOAD_CUR_COST = LOAD_CUR_PREFIX + COST;
 
     public static final String FLOW_NAME = "FLOW_";
     public static final String MAX_THREAT_NAME = "MAX_THREAT_";
@@ -288,21 +295,31 @@ public class MetrixOutputData {
         ts = getDoubleTimeSeries(GEN_COST);
         ts.insertResult(varNum - offset, Double.parseDouble(chunks[2]));
 
-        ts = getDoubleTimeSeries(LOAD_COST);
+        ts = getDoubleTimeSeries(BAT_COST);
         ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
 
-        ts = getDoubleTimeSeries(OVERLOAD_OUTAGES);
+        ts = getDoubleTimeSeries(LOAD_COST);
         ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
 
-        ts = getDoubleTimeSeries(OVERLOAD_BASECASE);
+        ts = getDoubleTimeSeries(OVERLOAD_OUTAGES);
         ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-        if (!EMPTY_STRING.equals(chunks[6])) {
-            ts = getDoubleTimeSeries("GEN_CUR_COST");
-            ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
-        }
+
+        ts = getDoubleTimeSeries(OVERLOAD_BASECASE);
+        ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
+
         if (!EMPTY_STRING.equals(chunks[7])) {
-            ts = getDoubleTimeSeries("LOAD_CUR_COST");
+            ts = getDoubleTimeSeries(GEN_CUR_COST);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[7]));
+        }
+
+        if (!EMPTY_STRING.equals(chunks[8])) {
+            ts = getDoubleTimeSeries(BAT_CUR_COST);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[8]));
+        }
+
+        if (!EMPTY_STRING.equals(chunks[9])) {
+            ts = getDoubleTimeSeries(LOAD_CUR_COST);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunks[9]));
         }
     }
 
@@ -341,20 +358,22 @@ public class MetrixOutputData {
         if ("PAR FILIERE".equals(chunks[1])) {
             return;
         }
+        String currentGenType = chunks[2];
+        String prefixGenType = Objects.equals(currentGenType, BATTERY.name()) ? BAT_PREFIX : GEN_PREFIX;
         if (!EMPTY_STRING.equals(chunks[3])) {
-            ts = getDoubleTimeSeries(GEN_VOL_DOWN, GEN_TYPE, chunks[2]);
+            ts = getDoubleTimeSeries(prefixGenType + VOL_DOWN, GEN_TYPE, currentGenType);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
         }
         if (!EMPTY_STRING.equals(chunks[4])) {
-            ts = getDoubleTimeSeries(GEN_VOL_UP, GEN_TYPE, chunks[2]);
+            ts = getDoubleTimeSeries(prefixGenType + VOL_UP, GEN_TYPE, currentGenType);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
         }
         if (!EMPTY_STRING.equals(chunks[5])) {
-            ts = getDoubleTimeSeries("GEN_CUR_VOL_DOWN_", GEN_TYPE, chunks[2]);
+            ts = getDoubleTimeSeries(prefixGenType + CUR + VOL_DOWN, GEN_TYPE, currentGenType);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
         }
         if (!EMPTY_STRING.equals(chunks[6])) {
-            ts = getDoubleTimeSeries("GEN_CUR_VOL_UP_", GEN_TYPE, chunks[2]);
+            ts = getDoubleTimeSeries(prefixGenType + CUR + VOL_UP, GEN_TYPE, currentGenType);
             ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
         }
     }
@@ -542,26 +561,17 @@ public class MetrixOutputData {
      * Generator Curative
      */
     private void readR2B(int varNum, String[] chunks, Map<Integer, String> outageNames) {
-        String outageName;
-        DoubleResultChunk ts;
-        DoubleResultChunk tsSum;
-        // Check that it's not the header
-        if (INCIDENT.equals(chunks[1])) {
-            return;
-        }
-        outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-        ts = getDoubleTimeSeries(GEN_CUR_PREFIX, GENERATOR, chunks[2], outageName);
-        double redispatchingValue = Double.parseDouble(chunks[3]);
-        ts.insertResult(varNum - offset, redispatchingValue);
-        // Compute curative redispatching by generator = sum of generator curative redispatching for all outages
-        tsSum = getDoubleTimeSeries(GEN_CUR_PREFIX + chunks[2]);
-        tsSum.addResult(varNum - offset, redispatchingValue);
+        readR2BOrR2D(GEN_PREFIX, varNum, chunks, outageNames);
     }
 
     /**
      * Battery Curative
      */
     private void readR2D(int varNum, String[] chunks, Map<Integer, String> outageNames) {
+        readR2BOrR2D(BAT_PREFIX, varNum, chunks, outageNames);
+    }
+
+    private void readR2BOrR2D(String prefix, int varNum, String[] chunks, Map<Integer, String> outageNames) {
         String outageName;
         DoubleResultChunk ts;
         DoubleResultChunk tsSum;
@@ -570,11 +580,11 @@ public class MetrixOutputData {
             return;
         }
         outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-        ts = getDoubleTimeSeries(GEN_BAT_CUR_PREFIX, GENERATOR, chunks[2], outageName);
+        ts = getDoubleTimeSeries(prefix + CUR, GENERATOR, chunks[2], outageName);
         double redispatchingValue = Double.parseDouble(chunks[3]);
         ts.insertResult(varNum - offset, redispatchingValue);
         // Compute curative redispatching by generator = sum of generator curative redispatching for all outages
-        tsSum = getDoubleTimeSeries(GEN_BAT_CUR_PREFIX + chunks[2]);
+        tsSum = getDoubleTimeSeries(prefix + CUR + chunks[2]);
         tsSum.addResult(varNum - offset, redispatchingValue);
     }
 
