@@ -45,7 +45,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 4 ]
+      "values" : [ 5 ]
     }, {
       "name" : "DTNBTRDE",
       "type" : "INTEGER",
@@ -324,34 +324,34 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 2 ]
+      "values" : [ 3 ]
     }, {
       "name" : "TNNEURGT",
       "type" : "INTEGER",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 6, 7, 8, 10 ]
+      "lastValueIndex" : 5,
+      "values" : [ 6, 7, 8, 10, 1 ]
     }, {
       "name" : "TRTYPGRP",
       "type" : "INTEGER",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 1, 0, 0, 0 ]
+      "lastValueIndex" : 5,
+      "values" : [ 2, 1, 1, 1, 0 ]
     }, {
       "name" : "SPIMPMOD",
       "type" : "INTEGER",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 1, 0, 3, 2 ]
+      "lastValueIndex" : 5,
+      "values" : [ 1, 0, 3, 2, 0 ]
     }, {
       "name" : "DCNDROOP",
       "type" : "INTEGER",
@@ -481,12 +481,12 @@
     }, {
       "name" : "GRNBDEFK",
       "type" : "INTEGER",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 2, 0, 0, 0 ]
+      "lastValueIndex" : 5,
+      "values" : [ 2, 0, 0, 0, 0 ]
     }, {
       "name" : "GRPTDEFK",
       "type" : "INTEGER",
@@ -781,30 +781,30 @@
     }, {
       "name" : "SPPACTGT",
       "type" : "FLOAT",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 480.0, 480.0, 0.0, 0.0 ]
+      "lastValueIndex" : 5,
+      "values" : [ 480.0, 480.0, 0.0, 0.0, 100.0 ]
     }, {
       "name" : "TRVALPMD",
       "type" : "FLOAT",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 2000.0, 2000.0, 2500.0, 600.0 ]
+      "lastValueIndex" : 5,
+      "values" : [ 2000.0, 2000.0, 2500.0, 600.0, 600.0 ]
     }, {
       "name" : "TRPUIMIN",
       "type" : "FLOAT",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 0.0, 0.0, 0.0, 0.0 ]
+      "lastValueIndex" : 5,
+      "values" : [ 0.0, 0.0, 0.0, 0.0, 0.0 ]
     }, {
       "name" : "DCDROOPK",
       "type" : "FLOAT",
@@ -880,12 +880,12 @@
     }, {
       "name" : "TRDEMBAN",
       "type" : "FLOAT",
-      "valueCount" : 4,
-      "firstIndexMaxValue" : 4,
+      "valueCount" : 5,
+      "firstIndexMaxValue" : 5,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 4,
-      "values" : [ 2000.0, 0.0, 0.0, 600.0 ]
+      "lastValueIndex" : 5,
+      "values" : [ 2000.0, 0.0, 0.0, 600.0, 0.0 ]
     }, {
       "name" : "SECTMAXN",
       "type" : "FLOAT",
@@ -940,21 +940,21 @@
     }, {
       "name" : "TRNOMGTH",
       "type" : "STRING",
-      "valueCount" : 40,
-      "firstIndexMaxValue" : 10,
-      "secondIndexMaxValue" : 4,
+      "valueCount" : 75,
+      "firstIndexMaxValue" : 15,
+      "secondIndexMaxValue" : 5,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 40,
-      "values" : [ "FSSV.O11_G", "FSSV.O12_G", "FVALDI11_G", "FVERGE11_G" ]
+      "lastValueIndex" : 75,
+      "values" : [ "FSSV.O11_G", "FSSV.O12_G", "FVALDI11_G", "FVERGE11_G", "FP.AND1_BATTERY" ]
     }, {
       "name" : "TRNOMTYP",
       "type" : "STRING",
-      "valueCount" : 14,
+      "valueCount" : 21,
       "firstIndexMaxValue" : 7,
-      "secondIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 3,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 14,
-      "values" : [ "CHARBON", "THERMAL" ]
+      "lastValueIndex" : 21,
+      "values" : [ "BATTERY", "CHARBON", "THERMAL" ]
     }, {
       "name" : "DCNOMQUA",
       "type" : "STRING",
