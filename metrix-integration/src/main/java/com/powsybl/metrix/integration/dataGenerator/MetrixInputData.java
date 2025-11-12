@@ -217,7 +217,7 @@ public class MetrixInputData {
 
         cgnbregi = metrixNetwork.getCountryList().size();
 
-        trnbgrou = metrixNetwork.getGeneratorList().size();
+        trnbgrou = metrixNetwork.getGeneratorList().size() + metrixNetwork.getBatteryList().size();
 
         // Quadripoles are lines, transformers and switches
         cqnbquad = metrixNetwork.getLineList().size()
@@ -708,10 +708,10 @@ public class MetrixInputData {
         int[] trtypgrp = new int[trnbgrou];
 
         for (Generator generator : metrixNetwork.getGeneratorList()) {
-            addGeneratorAndBatteryData(generator, trnomgth, tnneurgt, trtypgrp, spimpmod, sppactgt, trvalpmd, trpuimin);
+            addGeneratorOrBatteryData(generator, trnomgth, tnneurgt, trtypgrp, spimpmod, sppactgt, trvalpmd, trpuimin);
         }
         for (Battery battery : metrixNetwork.getBatteryList()) {
-            addGeneratorAndBatteryData(battery, trnomgth, tnneurgt, trtypgrp, spimpmod, sppactgt, trvalpmd, trpuimin);
+            addGeneratorOrBatteryData(battery, trnomgth, tnneurgt, trtypgrp, spimpmod, sppactgt, trvalpmd, trpuimin);
         }
 
         die.setInt("TRNBTYPE", trnomtyp.size());
@@ -725,7 +725,7 @@ public class MetrixInputData {
         die.setFloatArray("TRPUIMIN", trpuimin);
     }
 
-    private void addGeneratorAndBatteryData(Injection<?> injection, String[] trnomgth, int[] tnneurgt, int[] trtypgrp, int[] spimpmod, float[] sppactgt, float[] trvalpmd, float[] trpuimin) {
+    private void addGeneratorOrBatteryData(Injection<?> injection, String[] trnomgth, int[] tnneurgt, int[] trtypgrp, int[] spimpmod, float[] sppactgt, float[] trvalpmd, float[] trpuimin) {
         List<String> trnomtyp = metrixNetwork.getGeneratorTypeList();
         int index = metrixNetwork.getIndex(injection);
         int busIndex = metrixNetwork.getIndex(injection.getTerminal().getBusBreakerView().getBus());

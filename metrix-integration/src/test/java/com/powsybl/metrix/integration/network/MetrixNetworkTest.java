@@ -15,7 +15,6 @@ import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.DanglingLineContingency;
 import com.powsybl.contingency.TieLineContingency;
 import com.powsybl.iidm.network.Battery;
-import com.powsybl.iidm.network.BusbarSection;
 import com.powsybl.iidm.network.DanglingLine;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.Switch;
@@ -91,23 +90,22 @@ class MetrixNetworkTest {
             return List.of(a, b);
         };
 
-        // TODO MSA put in createNetwork()
         VoltageLevel vlabt = network.getVoltageLevel("S1VL1");
-        BusbarSection bbs = vlabt.getNodeBreakerView().getBusbarSection("S1VL1_BBS");
-        Switch sBat = vlabt.getNodeBreakerView().newSwitch()
-            .setId("switch_bat")
+        vlabt.getNodeBreakerView().getBusbarSection("S1VL1_BBS");
+        vlabt.getNodeBreakerView().newSwitch()
+            .setId("S1VL1_battery_S1")
             .setKind(SwitchKind.BREAKER)
             .setNode1(29)
             .setNode2(28)
             .add();
-        Switch sBat2 = vlabt.getNodeBreakerView().newSwitch()
-            .setId("switch_bat2")
+        vlabt.getNodeBreakerView().newSwitch()
+            .setId("S1VL1_battery_S2")
             .setKind(SwitchKind.DISCONNECTOR)
             .setNode1(0)
             .setNode2(29)
             .add();
         Battery bat = vlabt.newBattery()
-            .setId("MSA_Battery")
+            .setId("S1VL1_battery")
             .setNode(28)
             .setTargetP(9999.99)
             .setTargetQ(9999.99)

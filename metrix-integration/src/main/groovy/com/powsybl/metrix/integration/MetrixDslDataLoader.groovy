@@ -32,6 +32,7 @@ import static BranchMonitoringData.branchData
 import static ContingenciesData.contingenciesData
 import static GeneratorData.generatorData
 import static GeneratorsBindingData.generatorsBindingData
+import static BatteriesBindingData.batteriesBindingData
 import static HvdcData.hvdcData
 import static LoadData.loadData
 import static LoadsBindingData.loadsBindingData
@@ -180,6 +181,11 @@ class MetrixDslDataLoader {
         // bound generators
         binding.generatorsGroup = { String id, Closure<Void> closure ->
             generatorsBindingData(binding, closure, id, network, data, logDslLoader)
+        }
+
+        // bound batteries
+        binding.batteriesGroup = { String id, Closure<Void> closure ->
+            batteriesBindingData(binding, closure, id, network, data, logDslLoader)
         }
 
         // bound loads

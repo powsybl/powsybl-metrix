@@ -20,6 +20,7 @@ import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.contingency.GeneratorContingency;
 import com.powsybl.contingency.HvdcLineContingency;
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.Bus;
 import com.powsybl.iidm.network.Country;
 import com.powsybl.iidm.network.Generator;
@@ -108,7 +109,7 @@ class MetrixInputTest {
             ));
         }
 
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, new MetrixParameters(), remedialActionFile);
         Set<Switch> retainedSwitchList = new HashSet<>();
@@ -130,6 +131,12 @@ class MetrixInputTest {
         assertEquals(generatorList.size(), n.getGeneratorCount());
         for (Generator g : n.getGenerators()) {
             assertTrue(generatorList.contains(g));
+        }
+
+        List<Battery> batteryList = metrixNetwork.getBatteryList();
+        assertEquals(batteryList.size(), n.getBatteryCount());
+        for (Battery battery : n.getBatteries()) {
+            assertTrue(batteryList.contains(battery));
         }
 
         List<Line> lineList = metrixNetwork.getLineList();
@@ -185,7 +192,7 @@ class MetrixInputTest {
 
     @Test
     void metrixDefaultInputTest() throws IOException {
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
         new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
@@ -238,7 +245,7 @@ class MetrixInputTest {
 
     @Test
     void metrixInputTest() throws IOException {
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  1");
@@ -349,6 +356,7 @@ class MetrixInputTest {
         metrixDslData.addGeneratorsBinding("1 generator group", ImmutableSet.of("FSSV.O11_G", "TOTO"));
         metrixDslData.addGeneratorsBinding("2 generator group", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G"));
         metrixDslData.addGeneratorsBinding("3 generator group", ImmutableSet.of("FSSV.O12_G", "FVALDI11_G", "FVERGE11_G"), MetrixGeneratorsBinding.ReferenceVariable.POBJ);
+        metrixDslData.addBatteriesBinding("MSA", ImmutableSet.of("FP.AND1_BATTERY", "MSA"));
         metrixDslData.addLoadsBinding("1 load group", ImmutableSet.of("FVALDI11_L", "TOTO"));
         metrixDslData.addLoadsBinding("2 load group", ImmutableSet.of("FVALDI11_L", "FVALDI11_L2"));
         metrixDslData.addLoadsBinding("3 load group", ImmutableSet.of("FSSV.O11_L", "FVERGE11_L", "FVALDI11_L2"));
@@ -437,7 +445,7 @@ class MetrixInputTest {
     @Test
     void mappedBreakerTest() throws IOException {
 
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
         String[] mappedBreakers = {
             "FP.AND1_FP.AND1  FTDPRA1  1_DJ13", // PST breaker
@@ -493,7 +501,7 @@ class MetrixInputTest {
 
     @Test
     void propagateTrippingTest() {
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
         Contingency cty = new Contingency("cty", l);
@@ -520,7 +528,7 @@ class MetrixInputTest {
 
     @Test
     void loadBreakTest() throws IOException {
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
         // Contingencies
         ContingencyElement l1 = new BranchContingency("FP.AND1  FVERGE1  2");

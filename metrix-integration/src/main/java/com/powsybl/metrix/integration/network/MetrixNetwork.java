@@ -31,6 +31,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.powsybl.iidm.network.IdentifiableType.BATTERY;
+
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
@@ -166,7 +168,7 @@ public class MetrixNetwork {
 
     private MetrixSubset getMetrixSubset(Identifiable<?> identifiable) {
         MetrixSubset subset = MetrixSubset.QUAD;
-        if (identifiable instanceof Generator) {
+        if (identifiable instanceof Generator || identifiable instanceof Battery) {
             subset = MetrixSubset.GROUPE;
         } else if (identifiable instanceof Bus) {
             subset = MetrixSubset.NOEUD;
@@ -229,7 +231,7 @@ public class MetrixNetwork {
     private void addBattery(Battery battery) {
         if (batteryList.add(battery)) {
             mapper.newInt(MetrixSubset.GROUPE, battery.getId());
-            generatorTypeList.add("BATTERY");
+            generatorTypeList.add(BATTERY.name());
         }
     }
 
