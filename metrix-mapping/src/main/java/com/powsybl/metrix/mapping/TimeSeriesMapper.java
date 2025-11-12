@@ -23,6 +23,7 @@ import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.limits.BatteryBoundLimitBuilder;
 import com.powsybl.metrix.mapping.references.DistributionKey;
 import com.powsybl.metrix.mapping.references.IndexedMappingKey;
 import com.powsybl.metrix.mapping.references.IndexedName;
