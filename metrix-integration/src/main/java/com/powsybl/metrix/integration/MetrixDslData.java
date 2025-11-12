@@ -245,6 +245,18 @@ public class MetrixDslData {
         return Collections.unmodifiableMap(generatorDslData.getGeneratorContingenciesMap());
     }
 
+    public Map<String, List<String>> getBatteryContingenciesMap() {
+        return Collections.unmodifiableMap(batteryContingenciesMap);
+    }
+
+    public Set<String> getBatteriesForAdequacy() {
+        return Collections.unmodifiableSet(batteriesForAdequacy);
+    }
+
+    public Set<String> getBatteriesForRedispatching() {
+        return Collections.unmodifiableSet(batteriesForRedispatching);
+    }
+
     public Map<String, Integer> getLoadPreventivePercentageMap() {
         return Collections.unmodifiableMap(loadDslData.getLoadPreventivePercentageMap());
     }
@@ -263,6 +275,10 @@ public class MetrixDslData {
 
     public Map<String, MetrixGeneratorsBinding> getGeneratorsBindings() {
         return Collections.unmodifiableMap(boundVariablesDslData.getGeneratorsBindings());
+    }
+
+    public Map<String, MetrixBatteriesBinding> getBatteriesBindings() {
+        return Collections.unmodifiableMap(batteriesBindings);
     }
 
     public Map<String, MetrixLoadsBinding> getLoadsBindings() {
