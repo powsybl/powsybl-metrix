@@ -49,6 +49,7 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExt
 public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
     private static final String UNHANDLED_SCALING_OPERATION_ERROR = "Unhandled scaling operation %s";
+    public static final String EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S = "Equipment '%s' : invalid active limits [%s, %s] at point %s";
 
     private int version;
 
@@ -284,7 +285,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         minP = isMappedMinP ? mappedPower.getMinP() : generator.getMinP();
         maxP = isMappedMaxP ? mappedPower.getMaxP() : generator.getMaxP();
         if (minP > maxP) {
-            throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
+            throw new AssertionError(String.format(EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S, id, minP, maxP, point));
         }
         final boolean isMappedTargetP = mappedPower.getP() != null;
         double targetP = isMappedTargetP ? mappedPower.getP() : TimeSeriesMapper.getP(generator);
@@ -318,7 +319,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         minP = isMappedMinP ? mappedPower.getMinP() : battery.getMinP();
         maxP = isMappedMaxP ? mappedPower.getMaxP() : battery.getMaxP();
         if (minP > maxP) {
-            throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
+            throw new AssertionError(String.format(EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S, id, minP, maxP, point));
         }
         final boolean isMappedTargetP = mappedPower.getP() != null;
         double targetP = isMappedTargetP ? mappedPower.getP() : TimeSeriesMapper.getP(battery);
@@ -573,7 +574,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         if (hvdcLine.getMaxP() < 0) {
             throw new AssertionError(String.format("Equipment '%s' : invalid active limit maxP %s at point %s", id, hvdcLine.getMaxP(), point));
         } else if (isActivePowerRange && (minP > 0 || maxP < 0)) {
-            throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
+            throw new AssertionError(String.format(EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S, id, minP, maxP, point));
         }
 
         addHvdcLineLimitValue(hvdcLine, isMappedSetpoint, isActivePowerRange, setpoint);
