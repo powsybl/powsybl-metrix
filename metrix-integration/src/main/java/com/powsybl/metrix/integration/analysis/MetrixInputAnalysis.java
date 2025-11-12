@@ -63,6 +63,7 @@ public class MetrixInputAnalysis {
 
     private static final String HVDC_LINE_TYPE = "hvdcLine";
     private static final String GENERATOR_TYPE = "generator";
+    private static final String BATTERY_TYPE = "battery";
     private static final String LOAD_TYPE = "load";
     private static final String PHASE_TAP_CHANGER_TYPE = "phaseTapChanger";
 
@@ -107,6 +108,7 @@ public class MetrixInputAnalysis {
         }
         checkMetrixDslContingencies(contingencyIds, HVDC_LINE_TYPE, metrixDslData.getHvdcContingenciesMap());
         checkMetrixDslContingencies(contingencyIds, GENERATOR_TYPE, metrixDslData.getGeneratorContingenciesMap());
+        checkMetrixDslContingencies(contingencyIds, BATTERY_TYPE, metrixDslData.getBatteryContingenciesMap());
         checkMetrixDslContingencies(contingencyIds, LOAD_TYPE, metrixDslData.getLoadContingenciesMap());
         checkMetrixDslContingencies(contingencyIds, PHASE_TAP_CHANGER_TYPE, metrixDslData.getPtcContingenciesMap());
     }

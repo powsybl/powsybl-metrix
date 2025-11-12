@@ -40,6 +40,7 @@ import static LossesData.lossesData
 import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
+import static com.powsybl.metrix.integration.BatteryData.batteryData
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -156,6 +157,11 @@ class MetrixDslDataLoader {
         // generator costs
         binding.generator = { String id, Closure<Void> closure ->
             generatorData(closure, id, network, loader, data, logDslLoader)
+        }
+
+        // battery costs
+        binding.battery = { String id, Closure<Void> closure ->
+            batteryData(closure, id, network, loader, data, logDslLoader)
         }
 
         // load shedding costs

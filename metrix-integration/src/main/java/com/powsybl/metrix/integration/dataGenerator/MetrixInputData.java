@@ -25,6 +25,7 @@ import com.powsybl.iidm.network.Switch;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
+import com.powsybl.metrix.integration.MetrixBatteriesBinding;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixSubset;
@@ -1352,17 +1353,51 @@ public class MetrixInputData {
         }
     }
 
-    private void writeGeneratorsBindings(MetrixDie die) {
+    private void getBatteryBindings(Collection<MetrixBatteriesBinding> bindings,
+                                      List<String> gbindnom,
+                                      List<Integer> gbindref,
+                                      List<Integer> gbinddef) {
+        for (MetrixBatteriesBinding binding : bindings) {
+            List<Integer> idList = new ArrayList<>();
+            for (String generatorId : binding.getBatteriesIds()) {
+                try {
+                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
+                } catch (IllegalStateException ise) {
+                    if (LOGGER.isWarnEnabled()) {
+                        LOGGER.warn("battery group '{}' : battery '{}' not found", binding.getName(), generatorId);
+                    }
+                }
+            }
+
+            if (idList.size() > 1) {
+                gbindnom.add(binding.getName());
+                gbindref.add(binding.getReference().getType());
+                gbinddef.add(idList.size());
+                gbinddef.addAll(idList);
+            } else if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn("battery group '{}' ignored because it contains too few elements ({})", binding.getName(), idList.size());
+            }
+
+        }
+    }
+
+    private void writeGeneratorsAndBatteriesBindings(MetrixDie die) {
         if (dslData != null) {
-            Collection<MetrixGeneratorsBinding> bindings = dslData.getGeneratorsBindingsValues();
+            Collection<MetrixGeneratorsBinding> generatorBindings = dslData.getGeneratorsBindingsValues();
+            Collection<MetrixBatteriesBinding> batterybindings = dslData.getBatteriesBindingsValues();
 
-            if (!bindings.isEmpty()) {
-
+            if (!generatorBindings.isEmpty() || !batterybindings.isEmpty()) {
                 List<String> gbindnom = new ArrayList<>();
                 List<Integer> gbindref = new ArrayList<>();
                 List<Integer> gbinddef = new ArrayList<>();
 
-                getGeneratorBindings(bindings, gbindnom, gbindref, gbinddef);
+                if (!generatorBindings.isEmpty()) {
+                    getGeneratorBindings(generatorBindings, gbindnom, gbindref, gbinddef);
+                }
+
+                if (!batterybindings.isEmpty()) {
+                    getBatteryBindings(batterybindings, gbindnom, gbindref, gbinddef);
+                }
 
                 die.setInt("NBGBINDS", gbindnom.size());
                 die.setStringArray("GBINDNOM", gbindnom.toArray(new String[0]));
@@ -1433,7 +1468,7 @@ public class MetrixInputData {
         writeContingencyFlowResults(die);
         writeDetailedMarginalVariations(die);
         writeSections(die);
-        writeGeneratorsBindings(die);
+        writeGeneratorsAndBatteriesBindings(die);
         writeLoadsBindings(die);
 
         if (writeJson && dir != null) {
@@ -1485,10 +1520,16 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getHvdcContingenciesList().stream().mapToInt(s -> dslData.getHvdcContingencies(s).size()).sum();
             // Generator adequacy, preventive and curative results
             if (parameters.isWithAdequacyResults().orElse(false)) {
-                nbTimeSeries += dslData.getGeneratorsForAdequacy().isEmpty() ? trnbgrou : dslData.getGeneratorsForAdequacy().size();
+                nbTimeSeries += dslData.getGeneratorsForAdequacy().isEmpty() ? metrixNetwork.getGeneratorList().size() : dslData.getGeneratorsForAdequacy().size();
             }
             nbTimeSeries += dslData.getGeneratorsForRedispatching().size();
             nbTimeSeries += dslData.getGeneratorContingenciesList().stream().mapToInt(s -> dslData.getGeneratorContingencies(s).size()).sum();
+            // Battery adequacy, preventive and curative results
+            if (parameters.isWithAdequacyResults().orElse(false)) {
+                nbTimeSeries += dslData.getBatteriesForAdequacy().isEmpty() ? metrixNetwork.getBatteryList().size() : dslData.getBatteriesForAdequacy().size();
+            }
+            nbTimeSeries += dslData.getBatteriesForRedispatching().size();
+            nbTimeSeries += dslData.getBatteryContingenciesList().stream().mapToInt(s -> dslData.getBatteryContingencies(s).size()).sum();
             // Load curative only results
             nbTimeSeries += dslData.getCurativeLoadsList().stream().mapToInt(s -> dslData.getLoadContingencies(s).size()).sum();
             //Marginal variation results
