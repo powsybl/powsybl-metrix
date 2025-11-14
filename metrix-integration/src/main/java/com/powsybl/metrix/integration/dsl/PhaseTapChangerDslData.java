@@ -21,8 +21,8 @@ public class PhaseTapChangerDslData extends AbstractDslData {
     // PhaseTapChanger
     private final Map<String, List<String>> ptcContingenciesMap;
     private final Map<String, MetrixPtcControlType> ptcControlMap;
-    private final Map<String, Integer> ptcLowerTapchangeMap;
-    private final Map<String, Integer> ptcUpperTapchangeMap;
+    private final Map<String, Integer> ptcLowerTapChangerMap;
+    private final Map<String, Integer> ptcUpperTapChangerMap;
     private final Set<String> pstAngleTapResults;
 
     public PhaseTapChangerDslData() {
@@ -32,13 +32,13 @@ public class PhaseTapChangerDslData extends AbstractDslData {
     public PhaseTapChangerDslData(Map<String, List<String>> ptcContingenciesMap,
                                   Map<String, MetrixPtcControlType> ptcControlMap,
                                   Set<String> pstAngleTapResults,
-                                  Map<String, Integer> ptcLowerTapchangeMap,
-                                  Map<String, Integer> ptcUpperTapchangeMap) {
+                                  Map<String, Integer> ptcLowerTapChangerMap,
+                                  Map<String, Integer> ptcUpperTapChangerMap) {
         this.ptcContingenciesMap = ptcContingenciesMap;
         this.ptcControlMap = ptcControlMap;
         this.pstAngleTapResults = pstAngleTapResults;
-        this.ptcLowerTapchangeMap = ptcLowerTapchangeMap;
-        this.ptcUpperTapchangeMap = ptcUpperTapchangeMap;
+        this.ptcLowerTapChangerMap = ptcLowerTapChangerMap;
+        this.ptcUpperTapChangerMap = ptcUpperTapChangerMap;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("ptcContingenciesMap", ptcContingenciesMap);
         map.put("ptcControlMap", ptcControlMap);
-        map.put("ptcLowerTapchangeMap", ptcLowerTapchangeMap);
-        map.put("ptcUpperTapchangeMap", ptcUpperTapchangeMap);
+        map.put("ptcLowerTapchangeMap", ptcLowerTapChangerMap);
+        map.put("ptcUpperTapchangeMap", ptcUpperTapChangerMap);
         map.put("pstAngleTapResults", pstAngleTapResults);
         return map;
     }
@@ -61,12 +61,12 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         return ptcControlMap;
     }
 
-    public Map<String, Integer> getPtcLowerTapchangeMap() {
-        return ptcLowerTapchangeMap;
+    public Map<String, Integer> getPtcLowerTapChangerMap() {
+        return ptcLowerTapChangerMap;
     }
 
-    public Map<String, Integer> getPtcUpperTapchangeMap() {
-        return ptcUpperTapchangeMap;
+    public Map<String, Integer> getPtcUpperTapChangerMap() {
+        return ptcUpperTapChangerMap;
     }
 
     public Set<String> getPstAngleTapResults() {
@@ -103,20 +103,20 @@ public class PhaseTapChangerDslData extends AbstractDslData {
 
     @JsonIgnore
     public final Set<String> getPtcLowerTapChangeList() {
-        return ptcLowerTapchangeMap.keySet();
+        return ptcLowerTapChangerMap.keySet();
     }
 
     public final Integer getPtcLowerTapChange(String id) {
-        return ptcLowerTapchangeMap.getOrDefault(id, null);
+        return ptcLowerTapChangerMap.getOrDefault(id, null);
     }
 
     @JsonIgnore
-    public final Set<String> getPtcUpperTapChangeList() {
-        return ptcUpperTapchangeMap.keySet();
+    public final Set<String> getPtcUpperTapChangerList() {
+        return ptcUpperTapChangerMap.keySet();
     }
 
     public final Integer getPtcUpperTapChange(String id) {
-        return ptcUpperTapchangeMap.getOrDefault(id, null);
+        return ptcUpperTapChangerMap.getOrDefault(id, null);
     }
 
     public void addPtc(String id, MetrixPtcControlType type, List<String> contingencies) {
@@ -128,17 +128,17 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         }
     }
 
-    public void addLowerTapChange(String id, Integer preventiveLowerTapChange) {
+    public void addLowerTapChanger(String id, Integer preventiveLowerTapChange) {
         Objects.requireNonNull(id);
         if (!Objects.isNull(preventiveLowerTapChange)) {
-            ptcLowerTapchangeMap.put(id, preventiveLowerTapChange);
+            ptcLowerTapChangerMap.put(id, preventiveLowerTapChange);
         }
     }
 
-    public void addUpperTapChange(String id, Integer preventiveUpperTapChange) {
+    public void addUpperTapChanger(String id, Integer preventiveUpperTapChange) {
         Objects.requireNonNull(id);
         if (!Objects.isNull(preventiveUpperTapChange)) {
-            ptcUpperTapchangeMap.put(id, preventiveUpperTapChange);
+            ptcUpperTapChangerMap.put(id, preventiveUpperTapChange);
         }
     }
 
@@ -152,8 +152,8 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         return Objects.hash(
             ptcContingenciesMap,
             ptcControlMap,
-            ptcLowerTapchangeMap,
-            ptcUpperTapchangeMap,
+            ptcLowerTapChangerMap,
+            ptcUpperTapChangerMap,
             pstAngleTapResults);
     }
 
@@ -162,8 +162,8 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         if (obj instanceof PhaseTapChangerDslData other) {
             return ptcContingenciesMap.equals(other.ptcContingenciesMap) &&
                 ptcControlMap.equals(other.ptcControlMap) &&
-                ptcLowerTapchangeMap.equals(other.ptcLowerTapchangeMap) &&
-                ptcUpperTapchangeMap.equals(other.ptcUpperTapchangeMap) &&
+                ptcLowerTapChangerMap.equals(other.ptcLowerTapChangerMap) &&
+                ptcUpperTapChangerMap.equals(other.ptcUpperTapChangerMap) &&
                 pstAngleTapResults.equals(other.pstAngleTapResults);
         }
         return false;

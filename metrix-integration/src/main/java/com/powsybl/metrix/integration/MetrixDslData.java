@@ -183,11 +183,11 @@ public class MetrixDslData {
     }
 
     public Map<String, Integer> getPtcLowerTapchangeMap() {
-        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcLowerTapchangeMap());
+        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcLowerTapChangerMap());
     }
 
     public Map<String, Integer> getPtcUpperTapchangeMap() {
-        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcUpperTapchangeMap());
+        return Collections.unmodifiableMap(phaseTapChangerDslData.getPtcUpperTapChangerMap());
     }
 
     public Set<String> getPstAngleTapResults() {
@@ -348,8 +348,8 @@ public class MetrixDslData {
     }
 
     @JsonIgnore
-    public final Set<String> getPtcUpperTapChangeList() {
-        return phaseTapChangerDslData.getPtcUpperTapChangeList();
+    public final Set<String> getPtcUpperTapChangerList() {
+        return phaseTapChangerDslData.getPtcUpperTapChangerList();
     }
 
     public final Integer getPtcUpperTapChange(String id) {
@@ -360,12 +360,12 @@ public class MetrixDslData {
         phaseTapChangerDslData.addPtc(id, type, contingencies);
     }
 
-    public void addLowerTapChange(String id, Integer preventiveLowerTapChange) {
-        phaseTapChangerDslData.addLowerTapChange(id, preventiveLowerTapChange);
+    public void addLowerTapChanger(String id, Integer preventiveLowerTapChange) {
+        phaseTapChangerDslData.addLowerTapChanger(id, preventiveLowerTapChange);
     }
 
-    public void addUpperTapChange(String id, Integer preventiveUpperTapChange) {
-        phaseTapChangerDslData.addUpperTapChange(id, preventiveUpperTapChange);
+    public void addUpperTapChanger(String id, Integer preventiveUpperTapChange) {
+        phaseTapChangerDslData.addUpperTapChanger(id, preventiveUpperTapChange);
     }
 
     public void addPstAngleTapResults(String id) {

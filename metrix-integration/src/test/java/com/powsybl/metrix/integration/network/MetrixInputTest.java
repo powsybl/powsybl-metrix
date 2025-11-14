@@ -320,8 +320,8 @@ class MetrixInputTest {
         metrixDslData.addContingencyDetailedMarginalVariations("FVALDI1  FTDPRA1  1", List.of("cty9"));
 
         metrixDslData.addPtc("FP.AND1  FTDPRA1  1", MetrixPtcControlType.CONTROL_OFF, List.of(cty1.getId(), cty5.getId()));
-        metrixDslData.addLowerTapChange("FP.AND1  FTDPRA1  1", 3);
-        metrixDslData.addUpperTapChange("FP.AND1  FTDPRA1  1", 7);
+        metrixDslData.addLowerTapChanger("FP.AND1  FTDPRA1  1", 3);
+        metrixDslData.addUpperTapChanger("FP.AND1  FTDPRA1  1", 7);
 
         metrixDslData.addHvdc("HVDC1", MetrixHvdcControlType.OPTIMIZED, List.of(cty5.getId(), cty7.getId(), cty8.getId(), cty9.getId(), cty10.getId()));
 

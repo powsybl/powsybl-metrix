@@ -70,10 +70,10 @@ class PhaseShifterData {
             logDslLoader.logDebug("Found phaseTapChanger for id %s", id)
         }
         if (spec.preventiveLowerTapRange != null){
-            data.addLowerTapChange(id, spec.preventiveLowerTapRange)
+            data.addLowerTapChanger(id, spec.preventiveLowerTapRange)
         }
         if (spec.preventiveUpperTapRange != null){
-            data.addUpperTapChange(id, spec.preventiveUpperTapRange)
+            data.addUpperTapChanger(id, spec.preventiveUpperTapRange)
         }
         if (spec.angleTapResults) {
             data.addPstAngleTapResults(id)
