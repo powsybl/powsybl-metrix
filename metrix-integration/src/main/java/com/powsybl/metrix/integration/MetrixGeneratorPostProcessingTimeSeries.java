@@ -151,9 +151,11 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
     }
 
     /**
-     * For generatorId each redispatching time series name result
-     * - retrieve contingency name and contingency probability from time series name result
-     * - create all redispatching postprocessing time series of generatorId
+     * For generatorId each redispatching time series name result:
+     * <ul>
+     *     <li>retrieve contingency name and contingency probability from time series name result</li>
+     *     <li>create all redispatching postprocessing time series of generatorId</li>
+     * </ul>
      *
      * @param prefix              prefix of metrix results time series to process
      * @param generatorId         generator id
