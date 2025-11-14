@@ -32,6 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -39,11 +40,11 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.utils.AbstractCompareTxt.compareStreamTxt;
+import static com.powsybl.commons.test.ComparisonUtils.assertTxtEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -102,7 +103,7 @@ class TimeSeriesMapperTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             logger.writeCsv(bufferedWriter, ZoneId.of("UTC"));
             bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(writer.toString().getBytes(StandardCharsets.UTF_8), "/expected/", "nonIgnoredEmptyFilterLog.csv"));
+            assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream("/expected/nonIgnoredEmptyFilterLog.csv")), new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8)));
         }
     }
 

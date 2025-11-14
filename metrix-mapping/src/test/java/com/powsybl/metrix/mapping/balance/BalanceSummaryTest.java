@@ -41,8 +41,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.utils.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.powsybl.commons.test.ComparisonUtils.assertTxtEquals;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -123,18 +122,16 @@ class BalanceSummaryTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(balanceSummaryCsvOutput)) {
             balanceSummary.writeCsv(bufferedWriter, SEPARATOR, ZoneId.of("UTC"));
             bufferedWriter.flush();
-            try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.csv")) {
-                try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                    assertNotNull(compareStreamTxt(expected, actual));
-                }
+            try (InputStream expected = Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "balanceSummary.csv"));
+                 InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
+                assertTxtEquals(expected, actual);
             }
         }
 
         // Check balance summary output
-        try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceSummary.txt")) {
-            try (InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                assertNotNull(compareStreamTxt(expected, actual));
-            }
+        try (InputStream expected = Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "balanceSummary.txt"));
+             InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
+            assertTxtEquals(expected, actual);
         }
     }
 
@@ -184,18 +181,16 @@ class BalanceSummaryTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(balanceSummaryCsvOutput)) {
             balanceSummary.writeCsv(bufferedWriter, SEPARATOR, ZoneId.of("UTC"));
             bufferedWriter.flush();
-            try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceMappingNok.csv")) {
-                try (InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                    assertNotNull(compareStreamTxt(expected, actual));
-                }
+            try (InputStream expected = Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "balanceMappingNok.csv"));
+                 InputStream actual = new ByteArrayInputStream(balanceSummaryCsvOutput.toString().getBytes(StandardCharsets.UTF_8))) {
+                assertTxtEquals(expected, actual);
             }
         }
 
         // Check balance summary output
-        try (InputStream expected = getClass().getResourceAsStream(directoryName + "balanceMappingNok.txt")) {
-            try (InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
-                assertNotNull(compareStreamTxt(expected, actual));
-            }
+        try (InputStream expected = Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "balanceMappingNok.txt"));
+             InputStream actual = new ByteArrayInputStream(balanceSummaryOutput.toString().getBytes(StandardCharsets.UTF_8))) {
+            assertTxtEquals(expected, actual);
         }
     }
 }
