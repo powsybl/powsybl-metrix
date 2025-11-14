@@ -187,8 +187,10 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
 
     /**
      * Create up and down redispatching calculated time series by decomposing genTimeSeries
-     *    generator redispatching up = genTimeSeries keeping values >0 and putting 0 otherwise
-     *    generator redispatching down = genTimeSeries keeping values <0 and putting 0 otherwise
+     * <ul>
+     *     <li>generator redispatching up = genTimeSeries keeping values >0 and putting 0 otherwise</li>
+     *     <li>generator redispatching down = genTimeSeries keeping values <0 and putting 0 otherwise</li>
+     * </ul>
      * Create up and down costs calculated time series
      *    generator redispatching up cost = generator redispatching up * redispatching up doctrine cost time series * contingency probability
      *    generator redispatching down cost = |generator redispatching down| * redispatching down doctrine cost time series * contingency probability
