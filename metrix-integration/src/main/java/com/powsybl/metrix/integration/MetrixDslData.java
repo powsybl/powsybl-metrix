@@ -339,11 +339,11 @@ public class MetrixDslData {
     }
 
     @JsonIgnore
-    public final Set<String> getPtcLowerTapChangeList() {
+    public final Set<String> getPtcLowerTapChangerList() {
         return phaseTapChangerDslData.getPtcLowerTapChangerList();
     }
 
-    public final Integer getPtcLowerTapChange(String id) {
+    public final Integer getPtcLowerTapChanger(String id) {
         return phaseTapChangerDslData.getPtcLowerTapChanger(id);
     }
 
@@ -352,7 +352,7 @@ public class MetrixDslData {
         return phaseTapChangerDslData.getPtcUpperTapChangerList();
     }
 
-    public final Integer getPtcUpperTapChange(String id) {
+    public final Integer getPtcUpperTapChanger(String id) {
         return phaseTapChangerDslData.getPtcUpperTapChanger(id);
     }
 

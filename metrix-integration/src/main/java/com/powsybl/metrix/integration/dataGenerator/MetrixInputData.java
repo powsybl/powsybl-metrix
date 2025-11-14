@@ -531,13 +531,13 @@ public class MetrixInputData {
         if (dslData != null) {
             mode = dslData.getPtcControl(twt.getId());
 
-            if (dslData.getPtcLowerTapChange(twt.getId()) != null) {
+            if (dslData.getPtcLowerTapChanger(twt.getId()) != null) {
                 dtlowran.add(index);
-                dtlowran.add(dslData.getPtcLowerTapChange(twt.getId()));
+                dtlowran.add(dslData.getPtcLowerTapChanger(twt.getId()));
             }
-            if (dslData.getPtcUpperTapChange(twt.getId()) != null) {
+            if (dslData.getPtcUpperTapChanger(twt.getId()) != null) {
                 dtuppran.add(index);
-                dtuppran.add(dslData.getPtcUpperTapChange(twt.getId()));
+                dtuppran.add(dslData.getPtcUpperTapChanger(twt.getId()));
             }
         }
         return mode;

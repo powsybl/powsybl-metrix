@@ -1048,8 +1048,8 @@ class MetrixDslDataLoaderTest {
         TimeSeriesMappingConfig tsConfig = new TimeSeriesDslLoader(mappingFile).load(network, mappingParameters, store, new DataTableStore(), null);
         MetrixDslData data = MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), tsConfig);
 
-        assertEquals(Integer.valueOf(3), data.getPtcLowerTapChange("FP.AND1  FTDPRA1  1"));
-        assertEquals(Integer.valueOf(5), data.getPtcUpperTapChange("FP.AND1  FTDPRA1  1"));
+        assertEquals(Integer.valueOf(3), data.getPtcLowerTapChanger("FP.AND1  FTDPRA1  1"));
+        assertEquals(Integer.valueOf(5), data.getPtcUpperTapChanger("FP.AND1  FTDPRA1  1"));
     }
 
     @Test
