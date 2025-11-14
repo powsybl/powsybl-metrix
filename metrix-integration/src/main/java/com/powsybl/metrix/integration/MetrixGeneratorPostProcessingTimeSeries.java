@@ -29,12 +29,11 @@ import java.util.stream.Collectors;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.CURATIVE_PREFIX;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.PREVENTIVE_PREFIX;
+import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.createPostProcessingCostTimeSeries;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.findIdsToProcess;
-import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getContingencyIdFromTsName;
-import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getProbabilityNodeCalc;
+import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.forEachContingencyTimeSeries;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.GEN_CUR_PREFIX;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.GEN_PREFIX;
-import static com.powsybl.timeseries.ast.DoubleNodeCalc.ONE;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -170,19 +169,10 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
                                                              NodeCalc upCostsTimeSeries,
                                                              NodeCalc downCostsTimeSeries,
                                                              GeneratorPostProcessingPrefixContainer prefixContainer) {
-        // Find all Metrix redispatching time series result names of generatorId
-        List<String> allGeneratorRedispatchingTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(prefix + generatorId)).toList();
-        for (String tsName : allGeneratorRedispatchingTimeSeriesNames) {
-            // Retrieve contingency id from tsName
-            String contingencyId = contingencyIds.isEmpty() ? "" : getContingencyIdFromTsName(tsName, prefix + generatorId);
-            // Retrieve contingency probability
-            NodeCalc probabilityNodeCalc = contingencyIds.isEmpty() ? ONE : getProbabilityNodeCalc(contingencies.stream().filter(cty -> contingencyId.equals(cty.getId())).toList().getFirst(), calculatedTimeSeries);
-            // Reference to Metrix redispatching time series result
-            NodeCalc genTimeSeries = new TimeSeriesNameNodeCalc(tsName);
 
-            createRedispatchingPostProcessingTimeSeries(generatorId, contingencyId, probabilityNodeCalc, genTimeSeries, upCostsTimeSeries, downCostsTimeSeries, prefixContainer);
-        }
-
+        forEachContingencyTimeSeries(prefix, generatorId, contingencyIds, allTimeSeriesNames, contingencies, calculatedTimeSeries,
+                (id, contingencyId, probabilityNodeCalc, genTimeSeries) -> createRedispatchingPostProcessingTimeSeries(id, contingencyId, probabilityNodeCalc, genTimeSeries, upCostsTimeSeries, downCostsTimeSeries, prefixContainer)
+        );
     }
 
     /**
@@ -234,7 +224,6 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
 
         // Generator global redispatching cost = up cost + down cost
         NodeCalc genCostTimeSeries = BinaryOperation.plus(genUpCostTimeSeries, genDownCostTimeSeries);
-        String genCostTimeSeriesName = MetrixDataName.getNameWithSchema(prefixContainer.redispatchingCostPrefix() + "_" + generatorId, nullableSchemaName);
-        postProcessingTimeSeries.put(genCostTimeSeriesName + postfix, genCostTimeSeries);
+        createPostProcessingCostTimeSeries(postProcessingTimeSeries, genCostTimeSeries, prefixContainer.redispatchingCostPrefix(), generatorId, postfix, nullableSchemaName);
     }
 }

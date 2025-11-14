@@ -27,12 +27,11 @@ import java.util.stream.Collectors;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.CURATIVE_PREFIX;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.PREVENTIVE_PREFIX;
+import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.createPostProcessingCostTimeSeries;
 import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.findIdsToProcess;
-import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getContingencyIdFromTsName;
-import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getProbabilityNodeCalc;
+import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.forEachContingencyTimeSeries;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOAD_CUR_PREFIX;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOAD_PREFIX;
-import static com.powsybl.timeseries.ast.DoubleNodeCalc.ONE;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -135,18 +134,9 @@ public final class MetrixLoadPostProcessingTimeSeries {
                                                             NodeCalc loadSheddingCostsTimeSeries,
                                                             String sheddingPrefix,
                                                             String sheddingCostPrefix) {
-        // Find all Metrix load shedding time series result names of loadId
-        List<String> allLoadSheddingTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(prefix + loadId)).toList();
-        for (String tsName : allLoadSheddingTimeSeriesNames) {
-            // Retrieve contingency id from tsName
-            String contingencyId = contingencyIds.isEmpty() ? "" : getContingencyIdFromTsName(tsName, prefix + loadId);
-            // Retrieve contingency probability
-            NodeCalc probabilityNodeCalc = contingencyIds.isEmpty() ? ONE : getProbabilityNodeCalc(contingencies.stream().filter(cty -> contingencyId.equals(cty.getId())).toList().getFirst(), calculatedTimeSeries);
-            // Reference to Metrix load shedding time series result
-            NodeCalc loadTimeSeries = new TimeSeriesNameNodeCalc(tsName);
-
-            createLoadSheddingPostProcessingTimeSeries(loadId, contingencyId, probabilityNodeCalc, loadTimeSeries, loadSheddingCostsTimeSeries, sheddingPrefix, sheddingCostPrefix);
-        }
+        forEachContingencyTimeSeries(prefix, loadId, contingencyIds, allTimeSeriesNames, contingencies, calculatedTimeSeries,
+                (id, contingencyId, probabilityNodeCalc, loadTimeSeries) -> createLoadSheddingPostProcessingTimeSeries(id, contingencyId, probabilityNodeCalc, loadTimeSeries, loadSheddingCostsTimeSeries, sheddingPrefix, sheddingCostPrefix)
+        );
     }
 
     /**
@@ -178,7 +168,6 @@ public final class MetrixLoadPostProcessingTimeSeries {
 
         // Load shedding cost
         NodeCalc loadCostTimeSeries = BinaryOperation.multiply(BinaryOperation.multiply(loadTimeSeries, loadSheddingCostsTimeSeries), probabilityNodeCalc);
-        String loadSheddingCostTimeSeriesName = MetrixDataName.getNameWithSchema(sheddingCostPrefix + "_" + loadId, nullableSchemaName);
-        postProcessingTimeSeries.put(loadSheddingCostTimeSeriesName + postfix, loadCostTimeSeries);
+        createPostProcessingCostTimeSeries(postProcessingTimeSeries, loadCostTimeSeries, sheddingCostPrefix, loadId, postfix, nullableSchemaName);
     }
 }
