@@ -102,11 +102,11 @@ public class PhaseTapChangerDslData extends AbstractDslData {
     }
 
     @JsonIgnore
-    public final Set<String> getPtcLowerTapChangeList() {
+    public final Set<String> getPtcLowerTapChangerList() {
         return ptcLowerTapChangerMap.keySet();
     }
 
-    public final Integer getPtcLowerTapChange(String id) {
+    public final Integer getPtcLowerTapChanger(String id) {
         return ptcLowerTapChangerMap.getOrDefault(id, null);
     }
 
@@ -115,7 +115,7 @@ public class PhaseTapChangerDslData extends AbstractDslData {
         return ptcUpperTapChangerMap.keySet();
     }
 
-    public final Integer getPtcUpperTapChange(String id) {
+    public final Integer getPtcUpperTapChanger(String id) {
         return ptcUpperTapChangerMap.getOrDefault(id, null);
     }
 
