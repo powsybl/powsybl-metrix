@@ -92,7 +92,7 @@ public class MetrixInputAnalysis {
         this.scriptLogBufferedWriter = scriptLogBufferedWriter;
     }
 
-    public MetrixInputAnalysisResult runAnalysis() throws IOException {
+    public MetrixInputAnalysisResult runAnalysis() {
         List<Contingency> contingencies = loadContingencies();
         List<Remedial> remedials = loadRemedials();
         Set<String> contingencyIds = contingencies.stream().map(Contingency::getId).collect(Collectors.toSet());
@@ -349,7 +349,7 @@ public class MetrixInputAnalysis {
      * @param line a line describing a remedial in remedial file
      * @param lineId line number in remedial file
      */
-    private void checkLine(String line, int lineId) throws IOException {
+    private void checkLine(String line, int lineId) {
         if (checkIfErrorAtBeginningOrEnd(line, lineId)) {
             return;
         }
