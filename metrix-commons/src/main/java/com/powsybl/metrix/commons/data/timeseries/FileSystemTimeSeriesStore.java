@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 import java.util.stream.Stream;
 
 /**
@@ -402,13 +401,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         return Duration.between(
                 firstIndex.getInstantAt(firstIndex.getPointCount() - 1),
                 lastIndex.getInstantAt(0)).equals(firstIndex.getTimeStep());
-    }
-
-    /**
-     * Generate a LongStream with the times of a TimeSeriesIndex
-     */
-    private LongStream extractTimesFromIndex(TimeSeriesIndex timeSeriesIndex) {
-        return timeSeriesIndex.stream().map(Instant::toEpochMilli).mapToLong(Long::longValue);
     }
 
     private TimeSeriesIndex appendTimeSeriesIndex(TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex, boolean existingComesFirst) {
