@@ -15,6 +15,7 @@ import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.*;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
+import com.powsybl.metrix.integration.exceptions.MetrixException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.network.NetworkSource;
@@ -128,7 +129,7 @@ public class MetrixAnalysis {
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
             return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.contingencies(), inputs.remedials());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new MetrixException("Metrix analysis failed", e);
         }
     }
 
@@ -146,10 +147,9 @@ public class MetrixAnalysis {
             inError = true;
             throw new MappingScriptLoadingException(e);
         } catch (InterruptedException e) {
-            LOGGER.warn("Mapping has been interrupted!", e);
             inError = true;
             Thread.currentThread().interrupt();
-            throw new RuntimeException(e.getMessage());
+            throw new MetrixException("Mapping has been interrupted!", e);
         } finally {
             appLogger.tagged("performance")
                     .log(inError ? TIME_SERIES_MAPPING_LOADING_ERROR : TIME_SERIES_MAPPING_LOADING, schemaName, stopwatch.stop().elapsed(TimeUnit.MILLISECONDS));
