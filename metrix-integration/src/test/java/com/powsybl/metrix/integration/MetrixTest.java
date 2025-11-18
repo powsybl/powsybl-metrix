@@ -133,17 +133,17 @@ class MetrixTest {
             );
 
             ComputationRange computationRange = new ComputationRange(new TreeSet<>(Collections.singleton(1)), 0, 1);
-            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, 2, true, true, false, false, false);
+            MetrixRunParameters runParameters = new MetrixRunParameters(computationRange, 2, true, true, false, false, false, List.of());
             MetrixRunResult run = metrix.run(runParameters, resultListener, null);
             assertThat(run).isNotNull();
 
             ComputationRange computationRangeSmallChunkSize = new ComputationRange(new TreeSet<>(Collections.singleton(1)), 0, 3);
-            MetrixRunParameters runParametersSmallChunkSize = new MetrixRunParameters(computationRangeSmallChunkSize, 1, true, true, false, false, false);
+            MetrixRunParameters runParametersSmallChunkSize = new MetrixRunParameters(computationRangeSmallChunkSize, 1, true, true, false, false, false, List.of());
             MetrixRunResult runSmallChunkSize = metrix.run(runParametersSmallChunkSize, resultListener, null);
             assertThat(runSmallChunkSize).isNotNull();
 
             ComputationRange computationRangeFirstVariantUndefined = new ComputationRange(new TreeSet<>(Collections.singleton(1)), -1, 3);
-            MetrixRunParameters runParametersFirstVariantUndefined = new MetrixRunParameters(computationRangeFirstVariantUndefined, 2, true, true, false, false, false);
+            MetrixRunParameters runParametersFirstVariantUndefined = new MetrixRunParameters(computationRangeFirstVariantUndefined, 2, true, true, false, false, false, List.of());
             MetrixRunResult runFirstVariantUndefined = metrix.run(runParametersFirstVariantUndefined, resultListener, null);
             assertThat(runFirstVariantUndefined).isNotNull();
         }
