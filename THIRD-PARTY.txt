@@ -58,8 +58,8 @@ List of third-party dependencies grouped by their license type.
 
     Eclipse Public License - v 1.0, GNU Lesser General Public License v2.1
 
-        * Logback Classic Module (ch.qos.logback:logback-classic:1.5.18 - http://logback.qos.ch/logback-classic)
-        * Logback Core Module (ch.qos.logback:logback-core:1.5.18 - http://logback.qos.ch/logback-core)
+        * Logback Classic Module (ch.qos.logback:logback-classic:1.5.19 - http://logback.qos.ch/logback-classic)
+        * Logback Core Module (ch.qos.logback:logback-core:1.5.19 - http://logback.qos.ch/logback-core)
 
     Eclipse Public License - v 2.0, GNU Lesser General Public License v2.1
 
