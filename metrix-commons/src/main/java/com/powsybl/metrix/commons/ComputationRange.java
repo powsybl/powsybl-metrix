@@ -7,10 +7,13 @@
  */
 package com.powsybl.metrix.commons;
 
+import com.google.common.collect.Range;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
@@ -21,16 +24,23 @@ import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.che
 public class ComputationRange {
 
     private Set<Integer> versions;
-    private int firstVariant;
-    private int variantCount;
+    private List<Range<Integer>> ranges;
 
     public ComputationRange() {
     }
 
     public ComputationRange(Set<Integer> versions, int firstVariant, int variantCount) {
+        this(versions, List.of(Range.closed(firstVariant == -1 ? 0 : firstVariant, variantCount == -1 ? Integer.MAX_VALUE : firstVariant + variantCount - 1)));
+    }
+
+    public ComputationRange(Set<Integer> versions, Range<Integer> range) {
+        this(versions, List.of(range));
+    }
+
+    public ComputationRange(Set<Integer> versions, List<Range<Integer>> ranges) {
         this.versions = versions;
-        this.firstVariant = firstVariant;
-        this.variantCount = variantCount;
+        checkRanges(ranges);
+        this.ranges = new ArrayList<>(ranges);
     }
 
     public Set<Integer> getVersions() {
@@ -41,20 +51,12 @@ public class ComputationRange {
         this.versions = versions;
     }
 
-    public int getFirstVariant() {
-        return firstVariant;
+    public List<Range<Integer>> getRanges() {
+        return ranges;
     }
 
-    public void setFirstVariant(int firstVariant) {
-        this.firstVariant = firstVariant;
-    }
-
-    public int getVariantCount() {
-        return variantCount;
-    }
-
-    public void setVariantCount(int variantCount) {
-        this.variantCount = variantCount;
+    public void setRanges(List<Range<Integer>> ranges) {
+        this.ranges = ranges;
     }
 
     public static ComputationRange check(ReadOnlyTimeSeriesStore store) {
@@ -64,7 +66,7 @@ public class ComputationRange {
     public static ComputationRange check(ComputationRange computationRange, ReadOnlyTimeSeriesStore store) {
         ComputationRange fixed = computationRange;
         if (computationRange == null) {
-            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), 0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount());
+            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), List.of(Range.closed(0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount())));
         }
         if (fixed.getVersions() == null || fixed.getVersions().isEmpty()) {
             fixed.setVersions(store.getTimeSeriesDataVersions());
@@ -72,12 +74,33 @@ public class ComputationRange {
         if (fixed.getVersions().isEmpty()) {
             fixed.setVersions(Collections.singleton(1));
         }
-        if (fixed.getFirstVariant() == -1) {
-            fixed.setFirstVariant(0);
-        }
-        if (fixed.getVariantCount() == -1) {
-            fixed.setVariantCount(checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount());
+        if (fixed.getRanges().isEmpty()) {
+            fixed.setRanges(List.of(Range.closed(0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount())));
         }
         return fixed;
+    }
+
+    private static void checkRange(int lowerEndpoint, int upperEndpoint) {
+        if (lowerEndpoint < 0) {
+            throw new IllegalArgumentException("First variant (" + lowerEndpoint + ") has to be positive");
+        }
+        if (upperEndpoint < lowerEndpoint) {
+            throw new IllegalArgumentException("Last variant (" + upperEndpoint +
+                    ") has to be greater or equals to first variant (" + lowerEndpoint + ")");
+        }
+    }
+
+    private static void checkRanges(List<Range<Integer>> ranges) {
+        int nbRange = ranges.size();
+        ranges.forEach(range -> checkRange(range.lowerEndpoint(), range.upperEndpoint()));
+        for (int i = 0; i < nbRange; i++) {
+            Range<Integer> range1 = ranges.get(i);
+            for (int j = i + 1; j < nbRange; j++) {
+                Range<Integer> range2 = ranges.get(j);
+                if (range1.isConnected(range2)) {
+                    throw new IllegalArgumentException(range1 + " overlaps with range " + range2);
+                }
+            }
+        }
     }
 }

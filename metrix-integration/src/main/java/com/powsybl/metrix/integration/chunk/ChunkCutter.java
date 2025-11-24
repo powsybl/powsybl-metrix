@@ -9,31 +9,37 @@ package com.powsybl.metrix.integration.chunk;
 
 import com.google.common.collect.Range;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class ChunkCutter {
 
-    private final int firstVariant;
-
-    private final int lastVariant;
-
     private final int chunkSize;
 
-    public ChunkCutter(int firstVariant, int lastVariant, int chunkSize) {
-        if (firstVariant < 0) {
-            throw new IllegalArgumentException("First variant (" + firstVariant + ") has to be positive");
-        }
-        if (lastVariant < firstVariant) {
-            throw new IllegalArgumentException("Last variant (" + lastVariant +
-                    ") has to be greater or equals to first variant (" + firstVariant + ")");
-        }
+    private final List<Range<Integer>> ranges = new ArrayList<>();
+
+    public ChunkCutter(List<Range<Integer>> ranges, int chunkSize) {
         if (chunkSize <= 0) {
             throw new IllegalArgumentException("Chunk size (" + chunkSize + ") has to be greater or equals to one");
         }
-        this.firstVariant = firstVariant;
-        this.lastVariant = lastVariant;
         this.chunkSize = chunkSize;
+        ranges.forEach(range -> this.ranges.addAll(splitRange(range, chunkSize)));
+    }
+
+    public static List<Range<Integer>> splitRange(Range<Integer> rangeToSplit, int chunkSize) {
+        List<Range<Integer>> rangeList = new ArrayList<>();
+        int firstVariant = rangeToSplit.lowerEndpoint();
+        int lastVariant = rangeToSplit.upperEndpoint();
+        int nbChunk = (int) Math.ceil((float) (lastVariant - firstVariant + 1) / chunkSize);
+        for (int i = 0; i < nbChunk; i++) {
+            int lowerEndPoint = firstVariant + i * chunkSize;
+            int upperEndPoint = Math.min(lastVariant, lowerEndPoint + chunkSize - 1);
+            rangeList.add(Range.closed(lowerEndPoint, upperEndPoint));
+        }
+        return rangeList;
     }
 
     public int getChunkSize() {
@@ -41,11 +47,11 @@ public class ChunkCutter {
     }
 
     public int getChunkOffset() {
-        return (int) Math.floor((float) firstVariant / chunkSize);
+        return 0;
     }
 
     public int getChunkCount() {
-        return (int) Math.ceil((float) (lastVariant + 1) / chunkSize) - getChunkOffset();
+        return ranges.size();
     }
 
     public Range<Integer> getChunkRange(int chunk) {
@@ -55,7 +61,15 @@ public class ChunkCutter {
         if (chunk < -1 || chunk >= getChunkCount()) {
             throw new IllegalArgumentException("Chunk " + chunk + " is out of range [0, " + getChunkCount() + "]");
         }
-        return Range.closed(Math.max(firstVariant, (chunk + getChunkOffset()) * chunkSize),
-            Math.min(lastVariant, (chunk + getChunkOffset() + 1) * chunkSize - 1));
+        return ranges.get(chunk);
+    }
+
+    public int getChunkFromIndex(int index) {
+        for (int i = 0; i < ranges.size(); i++) {
+            if (ranges.get(i).contains(index)) {
+                return i;
+            }
+        }
+        return 0;
     }
 }
