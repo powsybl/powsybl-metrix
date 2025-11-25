@@ -38,7 +38,7 @@ public final class TimeSeriesMappingConfigStats {
 
     private DoubleStream getTimeSeriesStream(NodeCalc nodeCalc, int version, ComputationRange computationRange) {
         CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
-        return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getRanges().getFirst().lowerEndpoint()).limit(computationRange.getRanges().getLast().upperEndpoint() + 1);
+        return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getRanges().getFirst().lowerEndpoint()).limit(computationRange.getRanges().getLast().upperEndpoint() + 1L);
     }
 
     private CalculatedTimeSeries createCalculatedTimeSeries(NodeCalc nodeCalc, int version, ReadOnlyTimeSeriesStore store) {
@@ -93,7 +93,7 @@ public final class TimeSeriesMappingConfigStats {
     public double getTimeSeriesMedian(NodeCalc nodeCalc, ComputationRange computationRange) {
         double[] values = computationRange.getVersions().stream().flatMapToDouble(version -> {
             CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
-            return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getRanges().getFirst().lowerEndpoint()).limit(computationRange.getRanges().getLast().upperEndpoint() + 1);
+            return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getRanges().getFirst().lowerEndpoint()).limit(computationRange.getRanges().getLast().upperEndpoint() + 1L);
         }).toArray();
         return Arrays.stream(values).sorted().skip(new BigDecimal(values.length / 2).longValue()).limit(1).findFirst().orElse(Double.NaN);
     }

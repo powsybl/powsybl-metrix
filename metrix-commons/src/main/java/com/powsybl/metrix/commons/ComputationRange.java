@@ -75,7 +75,7 @@ public class ComputationRange {
             fixed.setVersions(Collections.singleton(1));
         }
         if (fixed.getRanges().isEmpty()) {
-            fixed.setRanges(List.of(Range.closed(0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount())));
+            fixed.setRanges(List.of(Range.closed(0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount() - 1)));
         }
         return fixed;
     }
