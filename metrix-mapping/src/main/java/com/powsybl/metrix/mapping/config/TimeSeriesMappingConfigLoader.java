@@ -191,11 +191,24 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
 
     private void addGeneratorMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, EquipmentVariable variable) {
         addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                config.timeSeriesToGeneratorsMapping, config.generatorToTimeSeriesMapping);
+            config.timeSeriesToGeneratorsMapping, config.generatorToTimeSeriesMapping);
         switch (variable) {
             case TARGET_P -> config.unmappedGenerators.remove(equipmentId);
             case MIN_P -> config.unmappedMinPGenerators.remove(equipmentId);
             case MAX_P -> config.unmappedMaxPGenerators.remove(equipmentId);
+            default -> {
+                // Do nothing
+            }
+        }
+    }
+
+    private void addBatteryMapping(String timeSeriesName, String equipmentId, DistributionKey distributionKey, EquipmentVariable variable) {
+        addMapping(timeSeriesName, equipmentId, distributionKey, variable,
+            config.timeSeriesToBatteriesMapping, config.batteryToTimeSeriesMapping);
+        switch (variable) {
+            case TARGET_P -> config.unmappedBatteries.remove(equipmentId);
+            case MIN_P -> config.unmappedMinPBatteries.remove(equipmentId);
+            case MAX_P -> config.unmappedMaxPBatteries.remove(equipmentId);
             default -> {
                 // Do nothing
             }
@@ -221,6 +234,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
                                        EquipmentVariable variable) {
         switch (equipmentType) {
             case GENERATOR -> addGeneratorMapping(timeSeriesName, equipmentId, distributionKey, variable);
+            case BATTERY -> addBatteryMapping(timeSeriesName, equipmentId, distributionKey, variable);
             case LOAD -> addLoadMapping(timeSeriesName, equipmentId, distributionKey, variable);
             case BOUNDARY_LINE -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
@@ -269,6 +283,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             MappingKey mappingKey = new MappingKey(equipmentVariable, equipmentId);
             switch (equipmentType) {
                 case GENERATOR -> config.generatorTimeSeries.add(mappingKey);
+                case BATTERY -> config.batteryTimeSeries.add(mappingKey);
                 case LOAD -> config.loadTimeSeries.add(mappingKey);
                 case BOUNDARY_LINE -> config.danglingLineTimeSeries.add(mappingKey);
                 case HVDC_LINE -> config.hvdcLineTimeSeries.add(mappingKey);

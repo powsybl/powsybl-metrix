@@ -136,6 +136,7 @@ class TimeSeriesDslLoader {
         }
 
         def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
+        def batteriesFilteringContext = network.getBatteries().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine) }
@@ -157,6 +158,9 @@ class TimeSeriesDslLoader {
         // mapping
         binding.mapToGenerators = { Closure closure ->
             mapToEquipments(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR)
+        }
+        binding.mapToBatteries = { Closure closure ->
+            mapToEquipments(binding, loader, closure, batteriesFilteringContext, MappableEquipmentType.BATTERY)
         }
         binding.mapToLoads = { Closure closure ->
             mapToEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
@@ -196,6 +200,9 @@ class TimeSeriesDslLoader {
         binding.unmappedGenerators = { Closure closure ->
             unmappedEquipments(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR)
         }
+        binding.unmappedBatteries = { Closure closure ->
+            unmappedEquipments(binding, loader, closure, batteriesFilteringContext, MappableEquipmentType.BATTERY)
+        }
         binding.unmappedLoads = { Closure closure ->
             unmappedEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
@@ -217,6 +224,9 @@ class TimeSeriesDslLoader {
         // equipments for which time series must be provided
         binding.provideTsGenerators = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR, logDslLoader)
+        }
+        binding.provideTsBatteries = { Closure closure ->
+            equipmentTimeSeries(binding, loader, closure, batteriesFilteringContext, MappableEquipmentType.BATTERY, logDslLoader)
         }
         binding.provideTsLoads = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD, logDslLoader)

@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.DanglingLine;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
@@ -22,6 +23,7 @@ import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.limits.BatteryBoundLimitBuilder;
 import com.powsybl.metrix.mapping.references.DistributionKey;
 import com.powsybl.metrix.mapping.references.IndexedMappingKey;
 import com.powsybl.metrix.mapping.references.IndexedName;
@@ -79,6 +81,7 @@ public class TimeSeriesMapper {
     private static final class MapperContext {
         private final EquipmentTimeSeriesMap timeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToGeneratorsMapping = new EquipmentTimeSeriesMap();
+        private final EquipmentTimeSeriesMap timeSeriesToBatteriesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToDanglingLinesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToHvdcLinesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToPhaseTapChangersMapping = new EquipmentTimeSeriesMap();
@@ -115,32 +118,38 @@ public class TimeSeriesMapper {
     }
 
     public static float getMax(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator generator) {
-            return (float) generator.getMaxP();
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
-            if (activePowerRange != null) {
-                return activePowerRange.getOprFromCS1toCS2();
-            } else {
-                return (float) hvdcLine.getMaxP();
-            }
+        return switch (identifiable) {
+            case Generator generator -> (float) generator.getMaxP();
+            case HvdcLine hvdcLine -> getHvdcMax(hvdcLine);
+            case Battery battery -> (float) battery.getMaxP();
+            case null, default -> Float.MIN_VALUE;
+        };
+    }
+
+    private static float getHvdcMax(HvdcLine hvdcLine) {
+        HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
+        if (activePowerRange != null) {
+            return activePowerRange.getOprFromCS1toCS2();
         } else {
-            return Float.MAX_VALUE;
+            return (float) hvdcLine.getMaxP();
         }
     }
 
     public static float getMin(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator generator) {
-            return (float) generator.getMinP();
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
-            if (activePowerRange != null) {
-                return -activePowerRange.getOprFromCS2toCS1();
-            } else {
-                return (float) -hvdcLine.getMaxP();
-            }
+        return switch (identifiable) {
+            case Generator generator -> (float) generator.getMinP();
+            case Battery battery -> (float) battery.getMinP();
+            case HvdcLine hvdcLine -> getHvdcMin(hvdcLine);
+            default -> Float.MIN_VALUE;
+        };
+    }
+
+    private static float getHvdcMin(HvdcLine hvdcLine) {
+        HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
+        if (activePowerRange != null) {
+            return -activePowerRange.getOprFromCS2toCS1();
         } else {
-            return Float.MIN_VALUE;
+            return (float) -hvdcLine.getMaxP();
         }
     }
 
@@ -183,13 +192,12 @@ public class TimeSeriesMapper {
     }
 
     public static float getP(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator generator) {
-            return (float) generator.getTargetP();
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            return getHvdcLineSetPoint(hvdcLine);
-        } else {
-            return Float.MIN_VALUE;
-        }
+        return switch (identifiable) {
+            case Generator generator -> (float) generator.getTargetP();
+            case HvdcLine hvdcLine -> getHvdcLineSetPoint(hvdcLine);
+            case Battery battery -> (float) battery.getTargetP();
+            case null, default -> Float.MIN_VALUE;
+        };
     }
 
     public static HvdcOperatorActivePowerRange addActivePowerRangeExtension(HvdcLine hvdcLine) {
@@ -218,7 +226,7 @@ public class TimeSeriesMapper {
     }
 
     public static MappingVariable getPowerVariable(Identifiable<?> identifiable) {
-        if (identifiable instanceof Generator) {
+        if (identifiable instanceof Generator || identifiable instanceof Battery) {
             return EquipmentVariable.TARGET_P;
         } else if (identifiable instanceof HvdcLine) {
             return EquipmentVariable.ACTIVE_POWER_SETPOINT;
@@ -412,6 +420,26 @@ public class TimeSeriesMapper {
 
     }
 
+    private void correctUnmappedBattery(boolean isUnmappedMinP, boolean isUnmappedMaxP, Battery battery,
+                                          int version) {
+
+        final double minP = battery.getMinP();
+        final double maxP = battery.getMaxP();
+        final double targetP = battery.getTargetP();
+
+        new BatteryBoundLimitBuilder()
+            .minP(minP)
+            .maxP(maxP)
+            .targetP(targetP)
+            .isUnmappedMinP(isUnmappedMinP)
+            .isUnmappedMaxP(isUnmappedMaxP)
+            .version(version)
+            .index(table.getTableIndex())
+            .ignoreLimits(parameters.isIgnoreLimits())
+            .setAll(battery, timeSeriesMappingLogger);
+
+    }
+
     private void correctUnmappedHvdcLine(boolean isUnmappedMinP, boolean isUnmappedMaxP, HvdcLine hvdcLine, int version) {
 
         final boolean isActivePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class) != null;
@@ -438,6 +466,7 @@ public class TimeSeriesMapper {
         MapperContext context = new MapperContext();
         context.timeSeriesToLoadsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToLoadsMapping(), table, network, config);
         context.timeSeriesToGeneratorsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToGeneratorsMapping(), table, network, config);
+        context.timeSeriesToBatteriesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToBatteriesMapping(), table, network, config);
         context.timeSeriesToDanglingLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToDanglingLinesMapping(), table, network, config);
         context.timeSeriesToHvdcLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToHvdcLinesMapping(), table, network, config);
         context.timeSeriesToPhaseTapChangersMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToPhaseTapChangersMapping(), table, network, config);
@@ -458,6 +487,7 @@ public class TimeSeriesMapper {
 
         // Check if some other mappings are constant
         identifyConstantTimeSeries(version, context.timeSeriesToGeneratorsMapping, constantTimeSeriesContext.timeSeriesToGeneratorsMapping, variableTimeSeriesContext.timeSeriesToGeneratorsMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToBatteriesMapping, constantTimeSeriesContext.timeSeriesToBatteriesMapping, variableTimeSeriesContext.timeSeriesToBatteriesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToDanglingLinesMapping, constantTimeSeriesContext.timeSeriesToDanglingLinesMapping, variableTimeSeriesContext.timeSeriesToDanglingLinesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToHvdcLinesMapping, constantTimeSeriesContext.timeSeriesToHvdcLinesMapping, variableTimeSeriesContext.timeSeriesToHvdcLinesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToPhaseTapChangersMapping, constantTimeSeriesContext.timeSeriesToPhaseTapChangersMapping, variableTimeSeriesContext.timeSeriesToPhaseTapChangersMapping);
@@ -481,6 +511,13 @@ public class TimeSeriesMapper {
                     final boolean isMinPUnmapped = config.getUnmappedMinPGenerators().contains(g.getId());
                     final boolean isMaxPUnmapped = config.getUnmappedMaxPGenerators().contains(g.getId());
                     correctUnmappedGenerator(isMinPUnmapped, isMaxPUnmapped, g, version);
+                });
+        network.getBatteryStream()
+                .filter(battery -> config.getUnmappedBatteries().contains(battery.getId()))
+                .forEach(battery -> {
+                    final boolean isMinPUnmapped = config.getUnmappedMinPBatteries().contains(battery.getId());
+                    final boolean isMaxPUnmapped = config.getUnmappedMaxPBatteries().contains(battery.getId());
+                    correctUnmappedBattery(isMinPUnmapped, isMaxPUnmapped, battery, version);
                 });
         network.getHvdcLineStream()
                 .filter(l -> config.getUnmappedHvdcLines().contains(l.getId()))
@@ -609,6 +646,7 @@ public class TimeSeriesMapper {
     boolean mapSinglePointIsEmpty(MapperContext context) {
         return context.timeSeriesToLoadsMapping.isEmpty() &&
                context.timeSeriesToGeneratorsMapping.isEmpty() &&
+               context.timeSeriesToBatteriesMapping.isEmpty() &&
                context.timeSeriesToDanglingLinesMapping.isEmpty() &&
                context.timeSeriesToHvdcLinesMapping.isEmpty() &&
                context.timeSeriesToPhaseTapChangersMapping.isEmpty() &&
@@ -630,6 +668,7 @@ public class TimeSeriesMapper {
         // process time series for mapping
         mapToNetwork(version, variantId, point, context.timeSeriesToLoadsMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToGeneratorsMapping);
+        mapToNetwork(version, variantId, point, context.timeSeriesToBatteriesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToDanglingLinesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToHvdcLinesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToPhaseTapChangersMapping);

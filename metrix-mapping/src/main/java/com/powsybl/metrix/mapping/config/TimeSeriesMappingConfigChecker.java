@@ -74,6 +74,7 @@ public class TimeSeriesMappingConfigChecker {
     public Set<MappingKey> getNotMappedEquipmentTimeSeriesKeys() {
         Set<MappingKey> keys = new HashSet<>();
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getGeneratorToTimeSeriesMapping().keySet(), config.getGeneratorTimeSeries()));
+        keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getBatteryToTimeSeriesMapping().keySet(), config.getBatteryTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getLoadToTimeSeriesMapping().keySet(), config.getLoadTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getDanglingLineToTimeSeriesMapping().keySet(), config.getDanglingLineTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getHvdcLineToTimeSeriesMapping().keySet(), config.getHvdcLineTimeSeries()));

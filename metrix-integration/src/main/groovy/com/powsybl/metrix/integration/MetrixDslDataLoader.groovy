@@ -32,6 +32,7 @@ import static BranchMonitoringData.branchData
 import static ContingenciesData.contingenciesData
 import static GeneratorData.generatorData
 import static GeneratorsBindingData.generatorsBindingData
+import static BatteriesBindingData.batteriesBindingData
 import static HvdcData.hvdcData
 import static LoadData.loadData
 import static LoadsBindingData.loadsBindingData
@@ -39,6 +40,7 @@ import static LossesData.lossesData
 import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
+import static com.powsybl.metrix.integration.BatteryData.batteryData
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -157,6 +159,11 @@ class MetrixDslDataLoader {
             generatorData(closure, id, network, loader, data, logDslLoader)
         }
 
+        // battery costs
+        binding.battery = { String id, Closure<Void> closure ->
+            batteryData(closure, id, network, loader, data, logDslLoader)
+        }
+
         // load shedding costs
         binding.load = { String id, Closure<Void> closure ->
             loadData(closure, id, network, loader, data, logDslLoader)
@@ -180,6 +187,11 @@ class MetrixDslDataLoader {
         // bound generators
         binding.generatorsGroup = { String id, Closure<Void> closure ->
             generatorsBindingData(binding, closure, id, network, data, logDslLoader)
+        }
+
+        // bound batteries
+        binding.batteriesGroup = { String id, Closure<Void> closure ->
+            batteriesBindingData(binding, closure, id, network, data, logDslLoader)
         }
 
         // bound loads
