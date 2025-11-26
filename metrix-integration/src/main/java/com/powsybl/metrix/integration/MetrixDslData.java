@@ -15,6 +15,7 @@ import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.dsl.BatteryDslData;
 import com.powsybl.metrix.integration.dsl.BoundVariablesDslData;
 import com.powsybl.metrix.integration.dsl.BranchDslData;
 import com.powsybl.metrix.integration.dsl.GeneratorDslData;
@@ -28,7 +29,6 @@ import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -47,15 +47,10 @@ public class MetrixDslData {
     private final HvdcDslData hvdcDslData;
     private final SectionDslData sectionDslData;
     private final GeneratorDslData generatorDslData;
+    private final BatteryDslData batteryDslData;
     private final LoadDslData loadDslData;
     private final BoundVariablesDslData boundVariablesDslData;
     private final Set<String> specificContingenciesList;
-
-    // Battery
-    private final Set<String> batteriesForAdequacy;
-    private final Set<String> batteriesForRedispatching;
-    private final Map<String, List<String>> batteryContingenciesMap;
-    private final Map<String, MetrixBatteriesBinding> batteriesBindings;
 
     private MetrixComputationType computationType;
 
@@ -65,11 +60,8 @@ public class MetrixDslData {
         hvdcDslData = new HvdcDslData();
         sectionDslData = new SectionDslData();
         generatorDslData = new GeneratorDslData();
-        batteriesForAdequacy = new HashSet<>();
-        batteriesForRedispatching = new HashSet<>();
-        batteryContingenciesMap = new HashMap<>();
+        batteryDslData = new BatteryDslData();
         loadDslData = new LoadDslData();
-        batteriesBindings = new HashMap<>();
         boundVariablesDslData = new BoundVariablesDslData();
         specificContingenciesList = new HashSet<>();
     }
@@ -118,12 +110,9 @@ public class MetrixDslData {
         this.hvdcDslData = new HvdcDslData(hvdcContingenciesMap, hvdcControlMap, hvdcFlowResults);
         this.sectionDslData = new SectionDslData(sectionList);
         this.generatorDslData = new GeneratorDslData(generatorsForAdequacy, generatorsForRedispatching, generatorContingenciesMap);
-        this.batteriesForAdequacy = batteriesForAdequacy;
-        this.batteriesForRedispatching = batteriesForRedispatching;
-        this.batteryContingenciesMap = batteryContingenciesMap;
+        this.batteryDslData = new BatteryDslData(batteriesForAdequacy, batteriesForRedispatching, batteryContingenciesMap);
         this.loadDslData = new LoadDslData(loadPreventivePercentageMap, loadPreventiveCostsMap, loadCurativePercentageMap, loadContingenciesMap);
-        this.batteriesBindings = batteriesBindings;
-        this.boundVariablesDslData = new BoundVariablesDslData(generatorsBindings, loadsBindings);
+        this.boundVariablesDslData = new BoundVariablesDslData(generatorsBindings, batteriesBindings, loadsBindings);
         this.specificContingenciesList = specificContingenciesList;
     }
 
@@ -134,11 +123,8 @@ public class MetrixDslData {
             hvdcDslData,
             sectionDslData,
             generatorDslData,
-            batteriesForAdequacy,
-            batteriesForRedispatching,
-            batteryContingenciesMap,
+            batteryDslData,
             loadDslData,
-            batteriesBindings,
             boundVariablesDslData,
             specificContingenciesList);
     }
@@ -151,6 +137,7 @@ public class MetrixDslData {
                 hvdcDslData.equals(other.hvdcDslData) &&
                 sectionDslData.equals(other.sectionDslData) &&
                 generatorDslData.equals(other.generatorDslData) &&
+                batteryDslData.equals(other.batteryDslData) &&
                 loadDslData.equals(other.loadDslData) &&
                 boundVariablesDslData.equals(other.boundVariablesDslData) &&
                 specificContingenciesList.equals(other.specificContingenciesList);
@@ -166,6 +153,7 @@ public class MetrixDslData {
         hvdcDslData.addToBuilder(builder);
         sectionDslData.addToBuilder(builder);
         generatorDslData.addToBuilder(builder);
+        batteryDslData.addToBuilder(builder);
         loadDslData.addToBuilder(builder);
         boundVariablesDslData.addToBuilder(builder);
         builder.put("specificContingenciesList", specificContingenciesList);
@@ -246,15 +234,15 @@ public class MetrixDslData {
     }
 
     public Map<String, List<String>> getBatteryContingenciesMap() {
-        return Collections.unmodifiableMap(batteryContingenciesMap);
+        return Collections.unmodifiableMap(batteryDslData.getBatteryContingenciesMap());
     }
 
     public Set<String> getBatteriesForAdequacy() {
-        return Collections.unmodifiableSet(batteriesForAdequacy);
+        return Collections.unmodifiableSet(batteryDslData.getBatteriesForAdequacy());
     }
 
     public Set<String> getBatteriesForRedispatching() {
-        return Collections.unmodifiableSet(batteriesForRedispatching);
+        return Collections.unmodifiableSet(batteryDslData.getBatteriesForRedispatching());
     }
 
     public Map<String, Integer> getLoadPreventivePercentageMap() {
@@ -278,7 +266,7 @@ public class MetrixDslData {
     }
 
     public Map<String, MetrixBatteriesBinding> getBatteriesBindings() {
-        return Collections.unmodifiableMap(batteriesBindings);
+        return Collections.unmodifiableMap(boundVariablesDslData.getBatteriesBindings());
     }
 
     public Map<String, MetrixLoadsBinding> getLoadsBindings() {
@@ -464,29 +452,21 @@ public class MetrixDslData {
 
     // Battery costs
     public void addBatteryForAdequacy(String id) {
-        Objects.requireNonNull(id);
-        batteriesForAdequacy.add(id);
+        batteryDslData.addBatteryForAdequacy(id);
     }
 
     public void addBatteryForRedispatching(String id, List<String> contingencies) {
-        Objects.requireNonNull(id);
-        batteriesForRedispatching.add(id);
-        if (!Objects.isNull(contingencies)) {
-            batteryContingenciesMap.put(id, contingencies);
-        }
+        batteryDslData.addBatteryForRedispatching(id, contingencies);
     }
 
     // Battery contingencies
     @JsonIgnore
     public final Set<String> getBatteryContingenciesList() {
-        return batteryContingenciesMap.keySet();
+        return batteryDslData.getBatteryContingenciesList();
     }
 
     public final List<String> getBatteryContingencies(String id) {
-        if (batteryContingenciesMap.containsKey(id)) {
-            return Collections.unmodifiableList(batteryContingenciesMap.get(id));
-        }
-        return Collections.emptyList();
+        return batteryDslData.getBatteryContingencies(id);
     }
 
     // Load shedding (preventive and curative)
@@ -544,16 +524,16 @@ public class MetrixDslData {
     }
 
     public void addBatteriesBinding(String id, Collection<String> batteriesIds, MetrixBatteriesBinding.ReferenceVariable referenceVariable) {
-        batteriesBindings.put(id, new MetrixBatteriesBinding(id, batteriesIds, referenceVariable));
+        boundVariablesDslData.addBatteriesBinding(id, batteriesIds, referenceVariable);
     }
 
     public void addBatteriesBinding(String id, Collection<String> batteriesIds) {
-        batteriesBindings.put(id, new MetrixBatteriesBinding(id, batteriesIds));
+        boundVariablesDslData.addBatteriesBinding(id, batteriesIds);
     }
 
     @JsonIgnore
     public Collection<MetrixBatteriesBinding> getBatteriesBindingsValues() {
-        return Collections.unmodifiableCollection(batteriesBindings.values());
+        return boundVariablesDslData.getBatteriesBindingsValues();
     }
 
     public void addLoadsBinding(String id, Collection<String> loadsIds) {

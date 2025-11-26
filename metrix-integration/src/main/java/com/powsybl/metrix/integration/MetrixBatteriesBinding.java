@@ -43,11 +43,11 @@ public class MetrixBatteriesBinding {
         this.reference = null;
     }
 
-    MetrixBatteriesBinding(String name, Collection<String> ids) {
+    public MetrixBatteriesBinding(String name, Collection<String> ids) {
         this(name, ids, ReferenceVariable.PMAX);
     }
 
-    MetrixBatteriesBinding(String name, Collection<String> ids, ReferenceVariable reference) {
+    public MetrixBatteriesBinding(String name, Collection<String> ids, ReferenceVariable reference) {
         this.name = name;
         this.batteriesIds.addAll(ids);
         this.reference = reference;
