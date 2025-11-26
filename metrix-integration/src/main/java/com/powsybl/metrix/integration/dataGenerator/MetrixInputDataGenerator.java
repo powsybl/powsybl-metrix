@@ -12,7 +12,13 @@ import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
-import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
+import com.powsybl.metrix.integration.chunk.MetrixChunkLogger;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
+import com.powsybl.metrix.integration.network.MetrixVariantProvider;
+import com.powsybl.metrix.integration.network.MetrixVariantsWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

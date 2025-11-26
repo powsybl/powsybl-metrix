@@ -13,7 +13,14 @@ import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
+import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixDie;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
+import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
+import com.powsybl.metrix.integration.type.MetrixHvdcRegulationType;
+import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jspecify.annotations.NonNull;
@@ -524,13 +531,13 @@ public class MetrixInputData {
         if (dslData != null) {
             mode = dslData.getPtcControl(twt.getId());
 
-            if (dslData.getPtcLowerTapChange(twt.getId()) != null) {
+            if (dslData.getPtcLowerTapChanger(twt.getId()) != null) {
                 dtlowran.add(index);
-                dtlowran.add(dslData.getPtcLowerTapChange(twt.getId()));
+                dtlowran.add(dslData.getPtcLowerTapChanger(twt.getId()));
             }
-            if (dslData.getPtcUpperTapChange(twt.getId()) != null) {
+            if (dslData.getPtcUpperTapChanger(twt.getId()) != null) {
                 dtuppran.add(index);
-                dtuppran.add(dslData.getPtcUpperTapChange(twt.getId()));
+                dtuppran.add(dslData.getPtcUpperTapChanger(twt.getId()));
             }
         }
         return mode;

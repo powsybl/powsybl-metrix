@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping
 
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
 import groovy.transform.CompileStatic
 

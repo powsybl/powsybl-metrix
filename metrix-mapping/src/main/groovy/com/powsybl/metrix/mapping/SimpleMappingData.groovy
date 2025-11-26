@@ -8,8 +8,8 @@
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
-import com.powsybl.iidm.network.Switch
-import com.powsybl.iidm.network.TopologyKind
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.references.NumberDistributionKey
 import groovy.transform.CompileStatic
 
 /**

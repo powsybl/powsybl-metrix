@@ -11,8 +11,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.EquipmentVariable;
-import com.powsybl.metrix.mapping.MappingKey;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.json.TimeSeriesMappingConfigJsonModule;
 import org.junit.jupiter.api.Test;
 
