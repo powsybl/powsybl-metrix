@@ -10,8 +10,7 @@ package com.powsybl.metrix.mapping.json;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfigJson;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 
 import java.util.Objects;
 
