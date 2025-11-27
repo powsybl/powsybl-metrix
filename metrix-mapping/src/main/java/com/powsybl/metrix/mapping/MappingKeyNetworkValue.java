@@ -9,7 +9,9 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
+import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
 import java.util.Objects;
 

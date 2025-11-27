@@ -3,8 +3,12 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
-import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
+import com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesStore;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey;
 import com.powsybl.timeseries.DoubleTimeSeries;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -34,12 +38,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.buildPlannedOutagesStore;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.buildStoreWithPlannedOutages;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkIndexUnicity;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.checkValues;
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.computeDisconnectedEquipmentTimeSeries;
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
+import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.buildPlannedOutagesStore;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.buildStoreWithPlannedOutages;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.checkValues;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.computeDisconnectedEquipmentTimeSeries;
+import static com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -182,7 +186,7 @@ class TimeSeriesMappingConfigTableLoaderTest {
         StoredDoubleTimeSeries otherTs = TimeSeries.createDouble("otherTs", otherIndex, 1d, 2d);
         ReadOnlyTimeSeriesStoreCache otherTsStore = new ReadOnlyTimeSeriesStoreCache(List.of(ts, otherTs));
         Set<String> tsSet = Set.of("ts", "otherTs");
-        TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> checkIndexUnicity(otherTsStore, tsSet));
+        TimeSeriesException exception = assertThrows(TimeSeriesException.class, () -> checkIndexUnicity(otherTsStore, tsSet));
         assertTrue(exception.getMessage().contains("Time series involved in the mapping must have the same index"));
     }
 

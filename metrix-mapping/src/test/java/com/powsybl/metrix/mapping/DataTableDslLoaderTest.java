@@ -9,8 +9,10 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.mapping.exception.DataTableException;
-import com.powsybl.metrix.mapping.util.MappingTestNetwork;
+import com.powsybl.metrix.commons.data.datatable.DataTable;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.exception.DataTableException;
+import com.powsybl.metrix.mapping.utils.MappingTestNetwork;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.BeforeEach;

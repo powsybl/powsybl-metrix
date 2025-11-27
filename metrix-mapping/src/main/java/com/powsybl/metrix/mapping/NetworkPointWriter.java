@@ -26,7 +26,9 @@ import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.iidm.serde.ExportOptions;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.mapping.common.MetrixIidmConfiguration;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
+import com.powsybl.metrix.commons.config.MetrixIidmConfiguration;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.io.BufferedOutputStream;

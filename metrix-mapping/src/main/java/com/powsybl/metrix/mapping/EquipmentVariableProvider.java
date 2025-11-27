@@ -10,6 +10,8 @@ package com.powsybl.metrix.mapping;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.auto.service.AutoService;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.MappingVariableProvider;
 
 import java.io.IOException;
 
