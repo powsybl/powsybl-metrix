@@ -8,11 +8,15 @@
 package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.contingency.Contingency;
+import com.powsybl.metrix.integration.MetrixDataName;
+import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
+import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -61,6 +65,62 @@ public final class MetrixPostProcessingTimeSeries {
                 return contingencyIds.contains(contingencyId);
             });
         }).toList();
+    }
+
+    public static String getContingencyIdFromTsName(String tsName, String prefix) {
+        return tsName.substring(prefix.length() + 1);
+    }
+
+    public static NodeCalc getProbabilityNodeCalc(Contingency contingency, Map<String, NodeCalc> calculatedTimeSeries) {
+        Probability probability = contingency.getExtension(Probability.class);
+        if (probability != null && probability.getProbabilityTimeSeriesRef() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityTimeSeriesRef(), TimeSeriesNameNodeCalc::new);
+        }
+        if (probability != null && probability.getProbabilityBase() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityBase().toString(), k -> new DoubleNodeCalc(probability.getProbabilityBase()));
+        }
+        // No probability defined > default value
+        return calculatedTimeSeries.computeIfAbsent("defaultProbability", k -> new DoubleNodeCalc(0.001F));
+    }
+
+    /**
+     * Iterates over all time series names for a given network element (generator or load),
+     * determines the contingency context, and invokes a callback to build post-processing time series.
+     */
+    public static void forEachContingencyTimeSeries(String prefix,
+                                                    String elementId,
+                                                    Set<String> contingencyIds,
+                                                    Set<String> allTimeSeriesNames,
+                                                    List<Contingency> contingencies,
+                                                    Map<String, NodeCalc> calculatedTimeSeries,
+                                                    QuadConsumer<String, String, NodeCalc, NodeCalc> handler) {
+
+        // Find all Metrix time series result names of elementId
+        List<String> elementTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(prefix + elementId)).toList();
+
+        for (String tsName : elementTimeSeriesNames) {
+            // Retrieve contingency id
+            String contingencyId = contingencyIds.isEmpty() ? "" : getContingencyIdFromTsName(tsName, prefix + elementId);
+
+            // Retrieve contingency probability
+            NodeCalc probabilityNodeCalc = contingencyIds.isEmpty() ? DoubleNodeCalc.ONE : getProbabilityNodeCalc(contingencies.stream().filter(cty -> contingencyId.equals(cty.getId())).toList().getFirst(), calculatedTimeSeries);
+
+            // Reference to the Metrix time series result
+            NodeCalc timeSeries = new TimeSeriesNameNodeCalc(tsName);
+
+            handler.accept(elementId, contingencyId, probabilityNodeCalc, timeSeries);
+        }
+    }
+
+    @FunctionalInterface
+    public interface QuadConsumer<A, B, C, D> {
+        void accept(A a, B b, C c, D d);
+    }
+
+    public static void createPostProcessingCostTimeSeries(Map<String, NodeCalc> postProcessingTimeSeries, NodeCalc nodeCalc,
+                                                          String prefix, String id, String postfix, String nullableSchemaName) {
+        String costTimeSeriesName = MetrixDataName.getNameWithSchema(prefix + "_" + id, nullableSchemaName);
+        postProcessingTimeSeries.put(costTimeSeriesName + postfix, nodeCalc);
     }
 
     /**

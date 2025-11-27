@@ -24,6 +24,7 @@ import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.ast.BinaryOperation;
+import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.IntegerNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
@@ -39,8 +40,10 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.powsybl.metrix.integration.postprocessing.MetrixGeneratorPostProcessingTimeSeries.CURATIVE;
 import static com.powsybl.metrix.integration.postprocessing.MetrixGeneratorPostProcessingTimeSeries.CURATIVE_PREFIX_CONTAINER;
 import static com.powsybl.metrix.integration.postprocessing.MetrixGeneratorPostProcessingTimeSeries.PREVENTIVE_PREFIX_CONTAINER;
+import static com.powsybl.timeseries.ast.DoubleNodeCalc.ONE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -88,24 +91,27 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
     private void verifyGeneratorPostProcessing(String generatorName,
                                                GeneratorPostProcessingPrefixContainer postProcessingPrefixContainer,
                                                String metrixOutputPrefix,
+                                               NodeCalc probabilityNodeCalc,
                                                NodeCalc tsRedispatchingUpCosts,
                                                NodeCalc tsRedispatchingDownCosts) {
-        NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(metrixOutputPrefix + generatorName);
+        boolean isCurative = postProcessingPrefixContainer.postProcessingType().equals(CURATIVE);
+        String postfix = isCurative ? "_cty" : "";
+        NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(metrixOutputPrefix + generatorName + postfix);
 
         NodeCalc expectedRedispatchingUp = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.greaterThan(metrixOutputNode, new IntegerNodeCalc(0)));
-        verifyRedispatching(generatorName, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix());
+        verifyRedispatching(generatorName + postfix, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix());
 
         NodeCalc expectedRedispatchingDown = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0)));
-        verifyRedispatching(generatorName, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
+        verifyRedispatching(generatorName + postfix, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
 
-        NodeCalc expectedRedispatchingUpCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts));
-        verifyRedispatchingCost(generatorName, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
+        NodeCalc expectedRedispatchingUpCost = BinaryOperation.multiply(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts), probabilityNodeCalc);
+        verifyRedispatchingCost(generatorName + postfix, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
 
-        NodeCalc expectedRedispatchingDownCost = UnaryOperation.abs(BinaryOperation.multiply(expectedRedispatchingDown, tsRedispatchingDownCosts));
-        verifyRedispatchingCost(generatorName, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
+        NodeCalc expectedRedispatchingDownCost = BinaryOperation.multiply(BinaryOperation.multiply(UnaryOperation.abs(expectedRedispatchingDown), tsRedispatchingDownCosts), probabilityNodeCalc);
+        verifyRedispatchingCost(generatorName + postfix, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
 
         NodeCalc expectedRedispatchingCost = BinaryOperation.plus(expectedRedispatchingUpCost, expectedRedispatchingDownCost);
-        assertEquals(expectedRedispatchingCost, postProcessingTimeSeries.get(postProcessingPrefixContainer.redispatchingCostPrefix() + "_" + generatorName));
+        assertEquals(expectedRedispatchingCost, postProcessingTimeSeries.get(postProcessingPrefixContainer.redispatchingCostPrefix() + "_" + generatorName + postfix));
     }
 
     @Test
@@ -131,6 +137,8 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
         MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, new DataTableStore(), mappingConfig, null);
         Contingency contingency = new Contingency("cty", List.of(new BranchContingency("FP.AND1  FVERGE1  1")));
+        NodeCalc preventiveProbabilityNodeCalc = ONE;
+        NodeCalc curativeProbabilityNodeCalc = new DoubleNodeCalc(0.001F);
 
         MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, List.of(contingency), metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = generatorProcessing.createPostProcessingTimeSeries();
@@ -138,9 +146,9 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
 
         NodeCalc tsRedispatchingUpCosts = new TimeSeriesNameNodeCalc("tsRedispatchingUpDoctrineCosts");
         NodeCalc tsRedispatchingDownCosts = new TimeSeriesNameNodeCalc("tsRedispatchingDownDoctrineCosts");
-        verifyGeneratorPostProcessing("FSSV.O11_G", PREVENTIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_PREFIX, tsRedispatchingUpCosts, tsRedispatchingDownCosts);
-        verifyGeneratorPostProcessing("FSSV.O11_G", CURATIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_CUR_PREFIX, tsRedispatchingUpCosts, tsRedispatchingDownCosts);
-        verifyGeneratorPostProcessing("FSSV.O12_G", PREVENTIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_PREFIX, mappingConfig.getTimeSeriesNodes().get("450"), mappingConfig.getTimeSeriesNodes().get("550"));
-        verifyGeneratorPostProcessing("FSSV.O12_G", CURATIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_CUR_PREFIX, mappingConfig.getTimeSeriesNodes().get("450"), mappingConfig.getTimeSeriesNodes().get("550"));
+        verifyGeneratorPostProcessing("FSSV.O11_G", PREVENTIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_PREFIX, preventiveProbabilityNodeCalc, tsRedispatchingUpCosts, tsRedispatchingDownCosts);
+        verifyGeneratorPostProcessing("FSSV.O11_G", CURATIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_CUR_PREFIX, curativeProbabilityNodeCalc, tsRedispatchingUpCosts, tsRedispatchingDownCosts);
+        verifyGeneratorPostProcessing("FSSV.O12_G", PREVENTIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_PREFIX, preventiveProbabilityNodeCalc, mappingConfig.getTimeSeriesNodes().get("450"), mappingConfig.getTimeSeriesNodes().get("550"));
+        verifyGeneratorPostProcessing("FSSV.O12_G", CURATIVE_PREFIX_CONTAINER, MetrixOutputData.GEN_CUR_PREFIX, curativeProbabilityNodeCalc, mappingConfig.getTimeSeriesNodes().get("450"), mappingConfig.getTimeSeriesNodes().get("550"));
     }
 }
