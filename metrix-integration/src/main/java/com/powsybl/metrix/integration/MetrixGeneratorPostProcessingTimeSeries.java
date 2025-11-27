@@ -182,10 +182,14 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
      *     <li>generator redispatching down = genTimeSeries keeping values <0 and putting 0 otherwise</li>
      * </ul>
      * Create up and down costs calculated time series
-     *    generator redispatching up cost = generator redispatching up * redispatching up doctrine cost time series * contingency probability
-     *    generator redispatching down cost = |generator redispatching down| * redispatching down doctrine cost time series * contingency probability
-     * Create global costs calculated time series
-     *    generator redispatching cost = generator redispatching up cost + generator redispatching down cost
+     * <ul>
+     *    <li>generator redispatching up cost = generator redispatching up * redispatching up doctrine cost time series * contingency probability</li>
+     *    <li>generator redispatching down cost = |generator redispatching down| * redispatching down doctrine cost time series * contingency probability</li>
+     * </ul>
+     * Create global costs calculated time series</li>
+     * <ul>
+     *    <li>generator redispatching cost = generator redispatching up cost + generator redispatching down cost
+     * </ul>
      * @param generatorId         generator id
      * @param contingencyId       contingency id (empty for preventive)
      * @param probabilityNodeCalc contingency probability (ONE for preventive)
