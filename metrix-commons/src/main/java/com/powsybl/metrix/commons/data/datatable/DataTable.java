@@ -62,16 +62,9 @@ public class DataTable {
     }
 
     private static void checkData(List<String> header, List<List<String>> content) {
-        checkEmptyColumnNames(header);
         checkDuplicateColumnNames(header);
         int nbColumns = header.size();
         content.forEach(values -> checkNbValues(nbColumns, values, content.indexOf(values)));
-    }
-
-    private static void checkEmptyColumnNames(List<String> columns) {
-        if (columns.isEmpty()) {
-            throw new DataTableException("Empty data table column list");
-        }
     }
 
     private static void checkDuplicateColumnNames(List<String> columns) {
@@ -187,7 +180,6 @@ public class DataTable {
     }
 
     private void checkColumnNames(List<String> columns) {
-        checkEmptyColumnNames(columns);
         Set<String> unknownColumns = new HashSet<>(columns);
         columnNames().forEach(unknownColumns::remove);
         if (!unknownColumns.isEmpty()) {

@@ -62,6 +62,18 @@ class DataTableTest {
     }
 
     @Test
+    void emptyDataTabletest() {
+        // GIVEN
+        List<String> header = Collections.emptyList();
+        List<List<String>> content = Collections.emptyList();
+        // WHEN
+        DataTable actualEmptyDataTable = DataTable.toDataTable(header, content);
+        // THEN
+        assertThat(actualEmptyDataTable).isNotNull();
+        assertThat(actualEmptyDataTable.columnNames()).isEmpty();
+    }
+
+    @Test
     void filterTest() {
         List<List<String>> expected = List.of(List.of("value3"), List.of("value1"));
         List<List<String>> actual = dataTable.filter(List.of("columnName1"), Map.of("columnName2", List.of("value4"))).data();
@@ -92,14 +104,6 @@ class DataTableTest {
     void unknownColumnNamesGetExceptionTest() {
         DataTableException e = assertThrows(DataTableException.class, () -> dataTable.get("other"));
         assertTrue(e.getMessage().contains("Unknown data table column names '[other]'"));
-    }
-
-    @Test
-    void emptyColumnNamesExceptionTest() {
-        List<String> header = Collections.emptyList();
-        List<List<String>> content = allRows;
-        DataTableException e = assertThrows(DataTableException.class, () -> DataTable.toDataTable(header, content));
-        assertTrue(e.getMessage().contains("Empty data table column list"));
     }
 
     @Test
