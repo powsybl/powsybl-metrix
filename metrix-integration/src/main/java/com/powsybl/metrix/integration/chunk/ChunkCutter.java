@@ -60,13 +60,4 @@ public class ChunkCutter {
         }
         return ranges.get(chunk);
     }
-
-    public int getChunkFromIndex(int index) {
-        for (int i = 0; i < ranges.size(); i++) {
-            if (ranges.get(i).contains(index)) {
-                return i;
-            }
-        }
-        return 0;
-    }
 }
