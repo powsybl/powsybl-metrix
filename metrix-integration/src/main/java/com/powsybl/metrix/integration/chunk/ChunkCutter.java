@@ -33,11 +33,8 @@ public class ChunkCutter {
         List<Range<Integer>> rangeList = new ArrayList<>();
         int firstVariant = rangeToSplit.lowerEndpoint();
         int lastVariant = rangeToSplit.upperEndpoint();
-        int nbChunk = (int) Math.ceil((float) (lastVariant - firstVariant + 1) / chunkSize);
-        for (int i = 0; i < nbChunk; i++) {
-            int lowerEndPoint = firstVariant + i * chunkSize;
-            int upperEndPoint = Math.min(lastVariant, lowerEndPoint + chunkSize - 1);
-            rangeList.add(Range.closed(lowerEndPoint, upperEndPoint));
+       for (int lower = firstVariant; lower <= lastVariant; lower += chunkSize) {
+            rangeList.add(Range.closed(lower, Math.min(lower + chunkSize - 1, lastVariant)));
         }
         return rangeList;
     }
