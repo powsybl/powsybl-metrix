@@ -66,7 +66,7 @@ class ComputationRangeTest {
     void testComputationRangeOverlap() {
         // GIVEN
         Set<Integer> versions = Set.of(1);
-        List<Range<Integer>> ranges = List.of(Range.closed(1, 10), Range.closed(5, 15), Range.closed(20, 25));
+        List<Range<Integer>> ranges = List.of(Range.closed(1, 2), Range.closed(5, 15), Range.closed(20, 25));
         // WHEN
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new ComputationRange(versions, ranges));
         // THEN
