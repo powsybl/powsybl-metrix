@@ -67,7 +67,8 @@ public class ComputationRange {
     public static ComputationRange check(ComputationRange computationRange, ReadOnlyTimeSeriesStore store) {
         ComputationRange fixed = computationRange;
         if (computationRange == null) {
-            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), List.of(Range.closed(0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount())));
+            int upperEndpoint = checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount() - 1;
+            fixed = new ComputationRange(store.getTimeSeriesDataVersions(), List.of(Range.closed(0, upperEndpoint)));
         }
         if (fixed.getVersions() == null || fixed.getVersions().isEmpty()) {
             fixed.setVersions(store.getTimeSeriesDataVersions());
@@ -76,7 +77,8 @@ public class ComputationRange {
             fixed.setVersions(Collections.singleton(1));
         }
         if (fixed.getRanges().isEmpty()) {
-            fixed.setRanges(List.of(Range.closed(0, checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount() - 1)));
+            int upperEndpoint = checkIndexUnicity(store, store.getTimeSeriesNames(new TimeSeriesFilter().setIncludeDependencies(true))).getPointCount() - 1;
+            fixed.setRanges(List.of(Range.closed(0, upperEndpoint)));
         }
         return fixed;
     }
@@ -101,7 +103,8 @@ public class ComputationRange {
         checkRange(prev.lowerEndpoint(), prev.upperEndpoint());
 
         // Check the other ranges and the overlaps
-        for (int i = 1; i < sorted.size(); i++) {
+        int nbSorted = sorted.size();
+        for (int i = 1; i < nbSorted; i++) {
             Range<Integer> curr = sorted.get(i);
             checkRange(curr.lowerEndpoint(), curr.upperEndpoint());
             if (prev.isConnected(curr)) {

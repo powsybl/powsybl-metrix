@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.mapping.config;
 
+import com.google.common.collect.Range;
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.timeseries.CalculatedTimeSeries;
 import com.powsybl.timeseries.FromStoreTimeSeriesNameResolver;
@@ -16,7 +17,9 @@ import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.DoubleStream;
 
@@ -31,6 +34,18 @@ public final class TimeSeriesMappingConfigStats {
     private final ComputationRange computationRange;
     private TimeSeriesIndex index = null;
 
+    public static double[] filterByRanges(double[] array, List<Range<Integer>> ranges) {
+        List<Double> result = new ArrayList<>();
+        for (int i = 0; i < array.length; i++) {
+            int index = i;
+            boolean inRange = ranges.stream().anyMatch(range -> range.contains(index));
+            if (inRange) {
+                result.add(array[i]);
+            }
+        }
+        return result.stream().mapToDouble(Double::doubleValue).toArray();
+    }
+
     public TimeSeriesMappingConfigStats(ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {
         this.store = Objects.requireNonNull(store);
         this.computationRange = Objects.requireNonNull(computationRange);
@@ -38,7 +53,7 @@ public final class TimeSeriesMappingConfigStats {
 
     private DoubleStream getTimeSeriesStream(NodeCalc nodeCalc, int version, ComputationRange computationRange) {
         CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
-        return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getRanges().getFirst().lowerEndpoint()).limit(computationRange.getRanges().getLast().upperEndpoint() + 1L);
+        return Arrays.stream(filterByRanges(calculatedTimeSeries.toArray(), computationRange.getRanges()));
     }
 
     private CalculatedTimeSeries createCalculatedTimeSeries(NodeCalc nodeCalc, int version, ReadOnlyTimeSeriesStore store) {
@@ -93,7 +108,7 @@ public final class TimeSeriesMappingConfigStats {
     public double getTimeSeriesMedian(NodeCalc nodeCalc, ComputationRange computationRange) {
         double[] values = computationRange.getVersions().stream().flatMapToDouble(version -> {
             CalculatedTimeSeries calculatedTimeSeries = createCalculatedTimeSeries(nodeCalc, version, store);
-            return Arrays.stream(calculatedTimeSeries.toArray()).skip(computationRange.getRanges().getFirst().lowerEndpoint()).limit(computationRange.getRanges().getLast().upperEndpoint() + 1L);
+            return Arrays.stream(filterByRanges(calculatedTimeSeries.toArray(), computationRange.getRanges()));
         }).toArray();
         return Arrays.stream(values).sorted().skip(new BigDecimal(values.length / 2).longValue()).limit(1).findFirst().orElse(Double.NaN);
     }
