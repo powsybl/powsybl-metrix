@@ -91,16 +91,22 @@ public class ComputationRange {
     }
 
     private static void checkRanges(List<Range<Integer>> ranges) {
-        int nbRange = ranges.size();
-        ranges.forEach(range -> checkRange(range.lowerEndpoint(), range.upperEndpoint()));
-        for (int i = 0; i < nbRange; i++) {
-            Range<Integer> range1 = ranges.get(i);
-            for (int j = i + 1; j < nbRange; j++) {
-                Range<Integer> range2 = ranges.get(j);
-                if (range1.isConnected(range2)) {
-                    throw new IllegalArgumentException(range1 + " overlaps with range " + range2);
-                }
+        // Sort the ranges
+        List<Range<Integer>> sorted = new ArrayList<>(ranges);
+        sorted.sort(Comparator.comparing(Range::lowerEndpoint));
+
+        // Check the first range
+        Range<Integer> prev = sorted.getFirst();
+        checkRange(prev.lowerEndpoint(), prev.upperEndpoint());
+
+        // Check the other ranges and the overlaps
+        for (int i = 1; i < sorted.size(); i++) {
+            Range<Integer> curr = sorted.get(i);
+            checkRange(curr.lowerEndpoint(), curr.upperEndpoint());
+            if (prev.isConnected(curr)) {
+                throw new IllegalArgumentException(prev + " overlaps with range " + curr);
             }
+            prev = curr;
         }
     }
 }
