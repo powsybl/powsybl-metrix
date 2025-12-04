@@ -79,7 +79,7 @@
         <mockito.version>5.18.0</mockito.version>
         <slf4j.version>2.0.17</slf4j.version>
 
-        <powsyblcore.version>7.0.1</powsyblcore.version>
+        <powsyblcore.version>7.1.0</powsyblcore.version>
 
         <!-- Parameters used to generate the javadoc for groovy and java classes.
              See the pom file in powsybl-parent for more explanations. -->
