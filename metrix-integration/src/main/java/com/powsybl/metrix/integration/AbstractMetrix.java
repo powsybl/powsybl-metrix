@@ -27,12 +27,14 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static com.powsybl.metrix.commons.ComputationRange.checkRanges;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
 
 /**
@@ -142,10 +144,12 @@ public abstract class AbstractMetrix {
     }
 
     private List<Range<Integer>> computeRangeVariant(List<Range<Integer>> ranges, TimeSeriesIndex index) {
+        checkRanges(ranges);
+        ranges.sort(Comparator.comparing(Range::lowerEndpoint));
         Range<Integer> lastRange = ranges.getLast();
         int lowerEndpoint = lastRange.lowerEndpoint();
         int lastIndexPoint = index.getPointCount() - 1;
-        if (lowerEndpoint > index.getPointCount() - 1) {
+        if (lowerEndpoint > lastIndexPoint) {
             throw new IllegalArgumentException("First variant (" + lowerEndpoint + ") is out of range [0, " + lastIndexPoint + "]");
         }
         ranges.removeLast();

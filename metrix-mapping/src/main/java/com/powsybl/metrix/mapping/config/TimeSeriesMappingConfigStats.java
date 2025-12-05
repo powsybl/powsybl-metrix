@@ -19,6 +19,7 @@ import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.DoubleStream;
@@ -35,15 +36,48 @@ public final class TimeSeriesMappingConfigStats {
     private TimeSeriesIndex index = null;
 
     public static double[] filterByRanges(double[] array, List<Range<Integer>> ranges) {
-        List<Double> result = new ArrayList<>();
-        for (int i = 0; i < array.length; i++) {
-            int index = i;
-            boolean inRange = ranges.stream().anyMatch(range -> range.contains(index));
-            if (inRange) {
-                result.add(array[i]);
+        if (array.length == 0 || ranges.isEmpty()) {
+            return new double[0];
+        }
+        // Normalize intervals by checking the coverage of the array
+        List<int[]> intervals = new ArrayList<>(ranges.size());
+        for (Range<Integer> r : ranges) {
+            int start = Math.max(0, r.lowerEndpoint());
+            int end = Math.min(array.length, r.upperEndpoint() + 1);
+            if (start < end) {
+                intervals.add(new int[]{start, end});
             }
         }
-        return result.stream().mapToDouble(Double::doubleValue).toArray();
+        // If no range covers any part of the input array, return an empty array
+        if (intervals.isEmpty()) {
+            return new double[0];
+        }
+        // Sort the intervals by start index
+        intervals.sort(Comparator.comparingInt(a -> a[0]));
+        // Merge overlapping intervals and compute the resulting sie
+        List<int[]> merged = new ArrayList<>();
+        int[] cur = intervals.getFirst();
+        int size = 0;
+        for (int i = 1; i < intervals.size(); i++) {
+            int[] next = intervals.get(i);
+            if (next[0] <= cur[1]) {
+                cur[1] = Math.max(cur[1], next[1]);
+            } else {
+                merged.add(cur);
+                size += cur[1] - cur[0];
+                cur = next;
+            }
+        }
+        merged.add(cur);
+        size += cur[1] - cur[0];
+        // Copy only needed slices
+        double[] result = new double[size];
+        int pos = 0;
+        for (int[] m : merged) {
+            System.arraycopy(array, m[0], result, pos, m[1] - m[0]);
+            pos += m[1] - m[0];
+        }
+        return result;
     }
 
     public TimeSeriesMappingConfigStats(ReadOnlyTimeSeriesStore store, ComputationRange computationRange) {

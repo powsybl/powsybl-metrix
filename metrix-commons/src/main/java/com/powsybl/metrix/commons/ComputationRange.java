@@ -83,7 +83,7 @@ public class ComputationRange {
         return fixed;
     }
 
-    private static void checkRange(int lowerEndpoint, int upperEndpoint) {
+    public static void checkRange(int lowerEndpoint, int upperEndpoint) {
         if (lowerEndpoint < 0) {
             throw new IllegalArgumentException("First variant (" + lowerEndpoint + ") has to be positive");
         }
@@ -93,7 +93,7 @@ public class ComputationRange {
         }
     }
 
-    private static void checkRanges(List<Range<Integer>> ranges) {
+    public static void checkRanges(List<Range<Integer>> ranges) {
         // Sort the ranges
         List<Range<Integer>> sorted = new ArrayList<>(ranges);
         sorted.sort(Comparator.comparing(Range::lowerEndpoint));

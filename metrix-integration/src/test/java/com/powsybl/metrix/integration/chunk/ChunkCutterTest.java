@@ -21,7 +21,7 @@ class ChunkCutterTest {
 
     @Test
     void test() {
-        ChunkCutter cutter = new ChunkCutter(List.of(Range.closed(0, 8735)), 92);
+        ChunkCutter cutter = new ChunkCutter(0, 8735, 92);
         assertEquals(95, cutter.getChunkCount());
         assertEquals(92, cutter.getChunkSize());
         assertEquals(Range.closed(-1, -1), cutter.getChunkRange(-1));
