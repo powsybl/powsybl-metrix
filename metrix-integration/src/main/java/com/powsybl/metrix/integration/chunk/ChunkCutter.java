@@ -9,31 +9,44 @@ package com.powsybl.metrix.integration.chunk;
 
 import com.google.common.collect.Range;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.powsybl.metrix.commons.ComputationRange.checkAndSortRanges;
+import static com.powsybl.metrix.commons.ComputationRange.checkRange;
+
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class ChunkCutter {
 
-    private final int firstVariant;
-
-    private final int lastVariant;
-
     private final int chunkSize;
 
+    private final List<Range<Integer>> ranges = new ArrayList<>();
+
     public ChunkCutter(int firstVariant, int lastVariant, int chunkSize) {
-        if (firstVariant < 0) {
-            throw new IllegalArgumentException("First variant (" + firstVariant + ") has to be positive");
-        }
-        if (lastVariant < firstVariant) {
-            throw new IllegalArgumentException("Last variant (" + lastVariant +
-                    ") has to be greater or equals to first variant (" + firstVariant + ")");
-        }
+        checkRange(firstVariant, lastVariant);
+        this.chunkSize = chunkSize;
+        this.ranges.addAll(splitRange(Range.closed(firstVariant, lastVariant), chunkSize));
+    }
+
+    public ChunkCutter(List<Range<Integer>> ranges, int chunkSize) {
+        List<Range<Integer>> sortedRanges = checkAndSortRanges(ranges);
         if (chunkSize <= 0) {
             throw new IllegalArgumentException("Chunk size (" + chunkSize + ") has to be greater or equals to one");
         }
-        this.firstVariant = firstVariant;
-        this.lastVariant = lastVariant;
         this.chunkSize = chunkSize;
+        sortedRanges.forEach(range -> this.ranges.addAll(splitRange(range, chunkSize)));
+    }
+
+    public static List<Range<Integer>> splitRange(Range<Integer> rangeToSplit, int chunkSize) {
+        List<Range<Integer>> rangeList = new ArrayList<>();
+        int firstVariant = rangeToSplit.lowerEndpoint();
+        int lastVariant = rangeToSplit.upperEndpoint();
+        for (int lower = firstVariant; lower <= lastVariant; lower += chunkSize) {
+            rangeList.add(Range.closed(lower, Math.min(lower + chunkSize - 1, lastVariant)));
+        }
+        return rangeList;
     }
 
     public int getChunkSize() {
@@ -41,11 +54,11 @@ public class ChunkCutter {
     }
 
     public int getChunkOffset() {
-        return (int) Math.floor((float) firstVariant / chunkSize);
+        return 0;
     }
 
     public int getChunkCount() {
-        return (int) Math.ceil((float) (lastVariant + 1) / chunkSize) - getChunkOffset();
+        return ranges.size();
     }
 
     public Range<Integer> getChunkRange(int chunk) {
@@ -55,7 +68,6 @@ public class ChunkCutter {
         if (chunk < -1 || chunk >= getChunkCount()) {
             throw new IllegalArgumentException("Chunk " + chunk + " is out of range [0, " + getChunkCount() + "]");
         }
-        return Range.closed(Math.max(firstVariant, (chunk + getChunkOffset()) * chunkSize),
-            Math.min(lastVariant, (chunk + getChunkOffset() + 1) * chunkSize - 1));
+        return ranges.get(chunk);
     }
 }
