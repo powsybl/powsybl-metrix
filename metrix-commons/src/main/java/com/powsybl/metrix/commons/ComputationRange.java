@@ -40,8 +40,7 @@ public class ComputationRange {
 
     public ComputationRange(Set<Integer> versions, List<Range<Integer>> ranges) {
         this.versions = versions;
-        checkRanges(ranges);
-        this.ranges = new ArrayList<>(ranges);
+        this.ranges = checkAndSortRanges(ranges);
     }
 
     public Set<Integer> getVersions() {
@@ -93,7 +92,7 @@ public class ComputationRange {
         }
     }
 
-    public static void checkRanges(List<Range<Integer>> ranges) {
+    public static List<Range<Integer>> checkAndSortRanges(List<Range<Integer>> ranges) {
         // Sort the ranges
         List<Range<Integer>> sorted = new ArrayList<>(ranges);
         sorted.sort(Comparator.comparing(Range::lowerEndpoint));
@@ -112,5 +111,6 @@ public class ComputationRange {
             }
             prev = curr;
         }
+        return sorted;
     }
 }

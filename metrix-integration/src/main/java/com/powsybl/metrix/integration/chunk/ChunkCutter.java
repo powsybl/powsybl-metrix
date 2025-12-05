@@ -12,8 +12,8 @@ import com.google.common.collect.Range;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.powsybl.metrix.commons.ComputationRange.checkAndSortRanges;
 import static com.powsybl.metrix.commons.ComputationRange.checkRange;
-import static com.powsybl.metrix.commons.ComputationRange.checkRanges;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -31,12 +31,12 @@ public class ChunkCutter {
     }
 
     public ChunkCutter(List<Range<Integer>> ranges, int chunkSize) {
-        checkRanges(ranges);
+        List<Range<Integer>> sortedRanges = checkAndSortRanges(ranges);
         if (chunkSize <= 0) {
             throw new IllegalArgumentException("Chunk size (" + chunkSize + ") has to be greater or equals to one");
         }
         this.chunkSize = chunkSize;
-        ranges.forEach(range -> this.ranges.addAll(splitRange(range, chunkSize)));
+        sortedRanges.forEach(range -> this.ranges.addAll(splitRange(range, chunkSize)));
     }
 
     public static List<Range<Integer>> splitRange(Range<Integer> rangeToSplit, int chunkSize) {
