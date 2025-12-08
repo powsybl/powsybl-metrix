@@ -41,6 +41,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -67,7 +68,11 @@ class MetrixBranchPostProcessingTimeSeriesTest {
             "}",
             "branch('FS.BIS1  FVALDI1  2') {",
             "    baseCaseFlowResults true",
+            "    branchRatingsBaseCase 'tsN'",
+            "}",
+            "branch('FS.BIS1 FSSV.O1 1') {",
             "    maxThreatFlowResults true",
+            "    branchRatingsOnContingency 'tsN1'",
             "}",
             "branch('FVALDI1  FTDPRA1  1') {",
             "    branchRatingsBaseCase 'tsN'",
@@ -232,6 +237,7 @@ class MetrixBranchPostProcessingTimeSeriesTest {
             "FVALDI1  FTDPRA1  1",
             "FVALDI1  FTDPRA1  2",
             "FS.BIS1  FVALDI1  2",
+            "FS.BIS1 FSSV.O1 1",
             "FTDPRA1  FVERGE1  2");
 
         Set<String> resultTimeSeriesNames = new HashSet<>();
@@ -256,8 +262,37 @@ class MetrixBranchPostProcessingTimeSeriesTest {
 
         MetrixBranchPostProcessingTimeSeries branchProcessing = new MetrixBranchPostProcessingTimeSeries(dslData, mappingConfig, metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = branchProcessing.createPostProcessingTimeSeries();
-        assertEquals(3 * 8, postProcessingTimeSeries.size());
 
+        Set<String> branchNamesWithAllResult = Sets.newHashSet(
+                "FVALDI1  FTDPRA1  1",
+                "FVALDI1  FTDPRA1  2",
+                "FTDPRA1  FVERGE1  2");
+
+        // Verify number of results
+        int expectedResultNb = branchNamesWithAllResult.size() * 8 + 4;
+        assertEquals(expectedResultNb, postProcessingTimeSeries.size());
+
+        // Verify results for branches with N and Nk results
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("basecaseLoad_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("basecaseOverload_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("outageLoad_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("outageOverload_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("overallOverload_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("itamLoad_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("itamOverload_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("overallItamOverload_" + branchName)));
+
+        // Verify results for branches with N results only
+        String branchNameWithN = "FS.BIS1  FVALDI1  2";
+        assertTrue(postProcessingTimeSeries.containsKey("basecaseLoad_" + branchNameWithN));
+        assertTrue(postProcessingTimeSeries.containsKey("basecaseOverload_" + branchNameWithN));
+
+        // Verify results for branches with Nk results only
+        String branchNameWithNk = "FS.BIS1 FSSV.O1 1";
+        assertTrue(postProcessingTimeSeries.containsKey("outageLoad_" + branchNameWithNk));
+        assertTrue(postProcessingTimeSeries.containsKey("outageOverload_" + branchNameWithNk));
+
+        // Verify single results
         verifySimpleBranchPostProcessing();
         verifyExOrBranchPostProcessing();
         verifySeparatedConfigBranchPostProcessing();
