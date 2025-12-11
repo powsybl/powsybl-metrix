@@ -10,8 +10,9 @@ package com.powsybl.metrix.integration.postprocessing;
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
-public record GeneratorPostProcessingPrefixContainer(String postProcessingType, String redispatchingUpPrefix,
-                                                     String redispatchingUpCostPrefix, String redispatchingDownPrefix,
-                                                     String redispatchingDownCostPrefix, String redispatchingPrefix,
+public record GeneratorPostProcessingPrefixContainer(String metrixResultPrefix,
+                                                     String redispatchingUpPrefix, String redispatchingUpCostPrefix,
+                                                     String redispatchingDownPrefix, String redispatchingDownCostPrefix,
+                                                     String redispatchingPrefix,
                                                      String redispatchingCostPrefix) {
 }
