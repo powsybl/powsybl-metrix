@@ -79,7 +79,7 @@ public final class MetrixPostProcessingTimeSeries {
         return ids.stream()
             .flatMap(id -> variables.stream()
                 .map(variable -> new MappingKey(variable, id)))
-            .allMatch(key -> equipmentToTimeSeries.get(key) != null);
+            .noneMatch(key -> equipmentToTimeSeries.get(key) == null);
     }
 
     public static String getContingencyIdFromTsName(String tsName, String prefix) {

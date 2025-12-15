@@ -105,28 +105,28 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
 
     private void verifyGeneratorPostProcessing(String generatorName,
                                                GeneratorPostProcessingPrefixContainer postProcessingPrefixContainer,
-                                               String postfix,
+                                               String suffix,
                                                NodeCalc probabilityNodeCalc,
                                                NodeCalc tsRedispatchingUpCosts,
                                                NodeCalc tsRedispatchingDownCosts,
                                                boolean withCostComputation) {
-        NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(postProcessingPrefixContainer.metrixResultPrefix() + generatorName + postfix);
+        NodeCalc metrixOutputNode = new TimeSeriesNameNodeCalc(postProcessingPrefixContainer.metrixResultPrefix() + generatorName + suffix);
 
         NodeCalc expectedRedispatchingUp = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.greaterThan(metrixOutputNode, new IntegerNodeCalc(0)));
-        verifyRedispatching(generatorName + postfix, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix());
+        verifyRedispatching(generatorName + suffix, expectedRedispatchingUp, postProcessingPrefixContainer.redispatchingUpPrefix());
 
         NodeCalc expectedRedispatchingDown = BinaryOperation.multiply(metrixOutputNode, BinaryOperation.lessThan(metrixOutputNode, new IntegerNodeCalc(0)));
-        verifyRedispatching(generatorName + postfix, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
+        verifyRedispatching(generatorName + suffix, expectedRedispatchingDown, postProcessingPrefixContainer.redispatchingDownPrefix());
 
         if (withCostComputation) {
             NodeCalc expectedRedispatchingUpCost = BinaryOperation.multiply(BinaryOperation.multiply(expectedRedispatchingUp, tsRedispatchingUpCosts), probabilityNodeCalc);
-            verifyRedispatchingCost(generatorName + postfix, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
+            verifyRedispatchingCost(generatorName + suffix, expectedRedispatchingUpCost, postProcessingPrefixContainer.redispatchingUpCostPrefix());
 
             NodeCalc expectedRedispatchingDownCost = BinaryOperation.multiply(BinaryOperation.multiply(UnaryOperation.abs(expectedRedispatchingDown), tsRedispatchingDownCosts), probabilityNodeCalc);
-            verifyRedispatchingCost(generatorName + postfix, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
+            verifyRedispatchingCost(generatorName + suffix, expectedRedispatchingDownCost, postProcessingPrefixContainer.redispatchingDownCostPrefix());
 
             NodeCalc expectedRedispatchingCost = BinaryOperation.plus(expectedRedispatchingUpCost, expectedRedispatchingDownCost);
-            assertEquals(expectedRedispatchingCost, postProcessingTimeSeries.get(postProcessingPrefixContainer.redispatchingCostPrefix() + "_" + generatorName + postfix));
+            assertEquals(expectedRedispatchingCost, postProcessingTimeSeries.get(postProcessingPrefixContainer.redispatchingCostPrefix() + "_" + generatorName + suffix));
         }
     }
 

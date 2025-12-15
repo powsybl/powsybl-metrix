@@ -117,8 +117,8 @@ public final class MetrixGeneratorPostProcessingTimeSeries {
     }
 
     /**
-     * Check if doctrine costs are properly defined, i.e. all generators are configured for up and down costs
-     * If not, no costs time series will be created
+     * Check if doctrine costs are properly defined, i.e., all generators are configured for up and down costs.
+     * If not, no costs time series will be created.
      * For each generator having redispatching result (generator redispatching time series) (MW)
      * - create up and down redispatching time series (MW)
      * - create up and down costs time series
