@@ -9,9 +9,11 @@ package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.contingency.Contingency;
 import com.powsybl.metrix.integration.MetrixDataName;
+import com.powsybl.metrix.integration.MetrixVariable;
 import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
 import com.powsybl.timeseries.ast.DoubleNodeCalc;
@@ -67,6 +69,19 @@ public final class MetrixPostProcessingTimeSeries {
         }).toList();
     }
 
+    /**
+     * Check if equipmentToTimeSeries contains configuration for each pair (id, variable)
+     * @param ids                   list of equipment ids to check
+     * @param variables             list of variables to check
+     * @param equipmentToTimeSeries map of configured equipment time series
+     */
+    public static boolean checkAllConfigured(List<String> ids, List<MetrixVariable> variables, Map<MappingKey, String> equipmentToTimeSeries) {
+        return ids.stream()
+            .flatMap(id -> variables.stream()
+                .map(variable -> new MappingKey(variable, id)))
+            .noneMatch(key -> equipmentToTimeSeries.get(key) == null);
+    }
+
     public static String getContingencyIdFromTsName(String tsName, String prefix) {
         return tsName.substring(prefix.length() + 1);
     }
@@ -87,7 +102,7 @@ public final class MetrixPostProcessingTimeSeries {
      * Iterates over all time series names for a given network element (generator or load),
      * determines the contingency context, and invokes a callback to build post-processing time series.
      */
-    public static void forEachContingencyTimeSeries(String prefix,
+    public static void forEachContingencyTimeSeries(String metrixResultPrefix,
                                                     String elementId,
                                                     Set<String> contingencyIds,
                                                     Set<String> allTimeSeriesNames,
@@ -96,11 +111,11 @@ public final class MetrixPostProcessingTimeSeries {
                                                     QuadConsumer<String, String, NodeCalc, NodeCalc> handler) {
 
         // Find all Metrix time series result names of elementId
-        List<String> elementTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(prefix + elementId)).toList();
+        List<String> elementTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(metrixResultPrefix + elementId)).toList();
 
         for (String tsName : elementTimeSeriesNames) {
             // Retrieve contingency id
-            String contingencyId = contingencyIds.isEmpty() ? "" : getContingencyIdFromTsName(tsName, prefix + elementId);
+            String contingencyId = contingencyIds.isEmpty() ? "" : getContingencyIdFromTsName(tsName, metrixResultPrefix + elementId);
 
             // Retrieve contingency probability
             NodeCalc probabilityNodeCalc = contingencyIds.isEmpty() ? DoubleNodeCalc.ONE : getProbabilityNodeCalc(contingencies.stream().filter(cty -> contingencyId.equals(cty.getId())).toList().getFirst(), calculatedTimeSeries);
