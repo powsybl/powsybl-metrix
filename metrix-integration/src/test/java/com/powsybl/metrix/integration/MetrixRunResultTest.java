@@ -123,7 +123,7 @@ class MetrixRunResultTest {
         // Load curative time series
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 12, true, "MELLEL41ZMAGD", timeSeriesList, network);
-        assertEquals(480 + 50, network.getLoad("FSSV.O11_L").getP0(), EPSILON_COMPARISON);
+        assertEquals(480 - 50, network.getLoad("FSSV.O11_L").getP0(), EPSILON_COMPARISON);
 
         // Hvdc curative time series
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));

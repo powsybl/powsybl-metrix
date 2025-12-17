@@ -89,9 +89,9 @@ La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. 
 | **TNNBNTOT** | I | 1 | Nombre total de sommets<br>= $\sum$ bus t.q. voltageLevel.busBreakerView.bus $\in$ composante connexe principale |
 
 ### Consommations <a id="conso"></a>
-| Nom | Type | Taille | Description |
-| :-- | :--- | :----- | :---------- |
-| **ECNBCONS** | I | 1 | Nombre de consommations élémentaires<br>= $\sum$ load t.q. load.terminal.busBreakerView.bus $\in$ composante connexe principale |
+| Nom | Type | Taille   | Description |
+| :-- | :--- |:---------| :---------- |
+| **ECNBCONS** | I | 1        | Nombre de consommations élémentaires<br>= $\sum$ load t.q. load.terminal.busBreakerView.bus $\in$ composante connexe principale |
 | **TNNOMNOE** | C | ECNBCONS | Noms des consommations<br>= load.id |
 | **TNNEUCEL** <a id="table_tnneucel"></a>| I | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE |
 | **CPPOSREG** | I | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG |
@@ -290,6 +290,7 @@ Certain tableau ne sont pas accessibles en mode SORTIES_REDUITES qui est le mode
 
 ## Tableaux descriptifs de la situation <a id="detailed_tables"></a>
 **Tableau S1** : ouvrages indisponibles (quadripôles et groupes).
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | type de l’ouvrage | I | |	1 : quadripôle ; 2 : groupe |
@@ -298,11 +299,13 @@ Certain tableau ne sont pas accessibles en mode SORTIES_REDUITES qui est le mode
 **Note** : Tableau non disponible en mode SORTIES_REDUITES
 
 **Tableau C1** (une seule ligne) : compte rendu d’exécution
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | code d’erreur | I | | **0** si « OK », sinon<br>**-1** = erreur lors de la résolution<br>**1**  = si pas de solution au problème (problème infaisable, souvent cause EOD)<br>**2**  = trop de contraintes (max atteint)<br>**3** = trop de micro-itération (max atteint)<br>**4** = données de variante non cohérentes (variante ignorée) |
 
 **Tableau C2** : liste des incidents rompant la connexité
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom de l’incident	C | | |
@@ -311,6 +314,7 @@ Certain tableau ne sont pas accessibles en mode SORTIES_REDUITES qui est le mode
 | Volume de consommation coupé | R | MW | |
 
 **Tableau C3** (une seule ligne) : nombre de « non-connexité » sur déclenchement
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nombre de « non connexité » | I | | |
@@ -318,6 +322,7 @@ Certain tableau ne sont pas accessibles en mode SORTIES_REDUITES qui est le mode
 **Note** : *ce tableau n’est pas lu par imaGrid; il n’est pas rempli*
 
 **Tableau C4** <a id="table_c4"></a>: liste des incidents contraignants, des incidents qui ont pu être traités en curatif ou des incidents ayant générés un transit maximal sur incident (cf. [tableau R3B](#table_r3b)).
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Numéro d’ordre de l’incident | I | | Numérotation à partir de 1. Numéros utilisés ensuite dans tableaux [R4](#table_r4), [R1B](#table_r1b), [R2B](#table_r2b), [R3B](#table_r3b), [R5B](#table_r5b) et [R6B](#table_r6b) (cf. ci-après) |
@@ -325,6 +330,7 @@ Certain tableau ne sont pas accessibles en mode SORTIES_REDUITES qui est le mode
 | Nom de l’incident | C | | Nom de l’incident |
 
 **Tableau C5** (une seule ligne) : bilans initiaux par zone synchrone, avant équilibrage
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Numéro de zone synchrone | I | | Ex. 0 |
@@ -334,6 +340,7 @@ Certain tableau ne sont pas accessibles en mode SORTIES_REDUITES qui est le mode
 Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EPSILON_SORTIES = 0.05 sont affichées.
 
 **Tableau R1** : résultats par sommet. 
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du sommet	C | | |
@@ -342,19 +349,22 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | défaillance AR | R | MW | Défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production |
 
 **Tableau R1B** <a id="table_r1b"></a>: résultats par consommation curative. Sont uniquement affichés les consommations activées en curatif sur un incident.
-| | | | |
-| :-- | :-- | :-- | :-- |
-| nom de la consommation | C | | nom de la consommation |
-| numéro d’incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
-| puissance effacée | R | MW | |
+
+|                        |   |    |                                                              |
+|:-----------------------|:--|:---|:-------------------------------------------------------------|
+| nom de la consommation | C |    | nom de la consommation                                       |
+| numéro d’incident      | I |    | Référence à la numérotation de la [table C4](#table_c4)      |
+| puissance effacée      | R | MW | Volume de consommation effacée en curatif (valeur positive)  |
 
 **Tableau R1C** : résultats par couplage de consommations.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du couplage | C | | nom donné au couplage dans la configuration |
 | variation | R | MW | Somme des variations sur l’ensemble des consommations du couplage |
 
 **Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale (avant ou après ajustement selon l’option choisie) sont affichés.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du groupe | C | | |		
@@ -364,6 +374,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | ajustement de puissance préventif | R | MW | $\Delta P_{cons}$ entre la phase d’équilibrage et la consigne préventive  (si > 0,001 en valeur absolue) |
 
 **Tableau R2B** <a id="table_r2b"></a>: résultats curatifs par groupe. Seuls les groupes dont la consigne curative diffère de la consigne préventive sont affichés.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | numéro d’ incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
@@ -371,12 +382,14 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | puissance ajustée | R | MW | Si supérieure à 0,001 en valeur absolue |
 
 **Tableau R2C** : résultats par couplage de groupes.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du couplage | C | | nom donné au couplage dans la configuration |
 | variation | R | MW | Somme des variations sur l’ensemble des groupes du couplage |
 
 **Tableau R3** : transits en N par quadripôle 
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | |		
@@ -385,6 +398,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 **Note** : en mode DEBUG, les 4 seuils sont également affichés
 
 **Tableau R3B** <a id="table_r3b"></a>: transits maximum par quadripôle sur incident. Seuls les ouvrages surveillés ou avec résultats sont affichés.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | | 		
@@ -396,6 +410,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | *N $^{ème}$ transit max sur incident* | | | |
 
 **Tableau R3C** : transits spécifique sur incident
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | |		
@@ -403,6 +418,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | transit | R | MW | positif de départ vers arrivée |
 
 **Tableau R4** <a id="table_r4"></a>: variations marginales par liaison, en N et sur incident
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | |		
@@ -410,6 +426,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | variation marginale | R | u.m. | Impact sur la fonction objectif d’une augmentation de 1MW sur le seuil (N, N-k ou AM) de cet ouvrage |
 
 **Tableau R4B** : variations marginales détaillées par liaison, en N et sur incident (seuls les couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont stockées dans le tableau)
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du quadripôle | C | | |		
@@ -420,6 +437,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | coût de la variation | R | u.m. | Contribution de cette variable au coût marginal |
 
 **Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom du TD	C | | |
@@ -427,6 +445,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | Consigne HR | R | ° ou MW | selon le mode de pilotage du TD |
 
 **Tableau R5B** <a id="table_r5b"></a>: résultats des actions curatives des transformateurs déphaseurs. Seules les liaisons dont la consigne curative diffère de la consigne préventive sont affichées.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Numéro de l’incident | R | | Référence à la numérotation de la [table C4](#table_c4) |
@@ -434,6 +453,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | Consigne en curatif du TD | R | ° ou MW | Selon le mode de pilotage du TD |
 
 **Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne préventive diffère de la consigne initiale sont affichées.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | nom de la ligne à courant continu | C | | |		
@@ -441,6 +461,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | Variation marginale de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives) |
  
 **Tableau R6B** <a id="table_r6b"></a>: résultats par actions curatives des HVDC. Seules les liaisons dont la consigne curative diffère de la consigne préventive sont affichées.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | numéro de l’incident  | R | | Référence à la numérotation de la [table C4](#table_c4) |
@@ -449,6 +470,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | Variation marginale curative de la HVDC | R | u.m | Gain sur la fonction coût d’1 MW de plus sur la HVDC pour cet incident (non utilisé) |
 
 **Tableau R7** : redispatching par filière
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | filière | C | | |
@@ -458,18 +480,21 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | Redispatching curatif à la hausse | R | MW | ∑ groupes de la filière |
 
 **Tableau R8** : résultats sur les pertes calculées en actif-seul
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | volume de pertes calculé | R | MW | |	
 | taux de pertes | R | % | |
 
 **Tableau R8B** : résultats sur les pertes par région
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | Région ou HVDC | R | MW | |
 | volume de pertes calculé | R | % | |
 
 **Tableau R9** : résultats de la fonction objectif
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | coût de redispatching | R | u.m. | Coût des ajustements préventifs de production |
@@ -480,6 +505,7 @@ Note : dans les tableaux de sorties, seules les valeurs supérieures au seuil EP
 | coût d’effacement curatif | | u.m. | Coût des ajustements curatifs de consommation |
 
 **Tableau R10** : résultats du curatif topologique (parades sélectionnées). Les parades « ne rien faire » ne sont pas affichées.
+
 | | | | |
 | :-- | :-- | :-- | :-- |
 | numéro de l’incident | I | | Référence à la numérotation de la [table C4](#table_c4) |
