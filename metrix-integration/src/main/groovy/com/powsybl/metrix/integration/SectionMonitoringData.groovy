@@ -8,7 +8,7 @@
 package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.*
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

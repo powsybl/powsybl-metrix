@@ -15,6 +15,7 @@ import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.metrix.mapping.references.DistributionKey;
@@ -51,13 +52,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -111,7 +106,7 @@ class TimeSeriesDslLoaderTest {
     @Test
     void mappingReaderTest() throws IOException {
         try (Reader reader = new InputStreamReader(Objects.requireNonNull(TimeSeriesDslLoaderTest.class.getResourceAsStream("/emptyScript.groovy")), StandardCharsets.UTF_8)) {
-            TimeSeriesMappingConfig config = new TimeSeriesDslLoader(reader).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), null, null);
+            TimeSeriesMappingConfig config = new TimeSeriesDslLoader(reader).load(network, parameters, new ReadOnlyTimeSeriesStoreCache(), new DataTableStore(), new ScriptLogConfig(), null);
             assertTrue(config.getMappedTimeSeriesNames().isEmpty());
         }
     }
@@ -342,7 +337,7 @@ class TimeSeriesDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dslWithoutAllVersions.load(network, parameters, store, new DataTableStore(), out, null);
+            dslWithoutAllVersions.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), null);
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -350,7 +345,7 @@ class TimeSeriesDslLoaderTest {
 
         outputStream.reset();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dslWithoutAllVersions.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
+            dslWithoutAllVersions.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), new ComputationRange(Collections.singleton(1), 0, 3));
         }
 
         output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -359,7 +354,7 @@ class TimeSeriesDslLoaderTest {
         TimeSeriesDslLoader dslWithAllVersions = new TimeSeriesDslLoader(String.format(statScript, true));
         outputStream.reset();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dslWithAllVersions.load(network, parameters, store, new DataTableStore(), out, new ComputationRange(Collections.singleton(1), 0, 3));
+            dslWithAllVersions.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), new ComputationRange(Collections.singleton(1), 0, 3));
         }
 
         output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -389,18 +384,78 @@ class TimeSeriesDslLoaderTest {
     @Test
     void writeLogTest() throws IOException {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
-        String script = "writeLog(\"LOG_TYPE\", \"LOG_SECTION\", \"LOG_MESSAGE\")";
+        String script = """
+            writeLog("LOG_TYPE", "LOG_SECTION", "LOG_MESSAGE")
+            """;
 
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            dsl.load(network, parameters, store, new DataTableStore(), out, null);
+            dsl.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), null);
         }
 
         String output = outputStream.toString();
         String expectedMessage = "LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
         assertEquals(expectedMessage, output);
+    }
+
+    @Test
+    void writeLogTestFilterLogLevelDebug() throws IOException {
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
+        String script = """
+            writeLog("TRACE",   "LOG_SECTION", "LOG_MESSAGE")
+            writeLog("DEBUG",   "LOG_SECTION", "LOG_MESSAGE")
+            writeLog("INFO",    "LOG_SECTION", "LOG_MESSAGE")
+            writeLog("WARNING", "LOG_SECTION", "LOG_MESSAGE")
+            writeLog("ERROR",   "LOG_SECTION", "LOG_MESSAGE")
+            """;
+
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        Map<System.Logger.Level, String> expectedMessageByLogLevel = new EnumMap<>(System.Logger.Level.class);
+        expectedMessageByLogLevel.put(System.Logger.Level.ALL, """
+            TRACE;LOG_SECTION;LOG_MESSAGE
+            DEBUG;LOG_SECTION;LOG_MESSAGE
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """);
+        expectedMessageByLogLevel.put(System.Logger.Level.TRACE, """
+            TRACE;LOG_SECTION;LOG_MESSAGE
+            DEBUG;LOG_SECTION;LOG_MESSAGE
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """);
+        expectedMessageByLogLevel.put(System.Logger.Level.DEBUG, """
+            DEBUG;LOG_SECTION;LOG_MESSAGE
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """);
+        expectedMessageByLogLevel.put(System.Logger.Level.INFO, """
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """);
+        expectedMessageByLogLevel.put(System.Logger.Level.WARNING, """
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """);
+        expectedMessageByLogLevel.put(System.Logger.Level.ERROR, """
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """);
+        expectedMessageByLogLevel.put(System.Logger.Level.OFF, "");
+        for (Map.Entry<System.Logger.Level, String> entry : expectedMessageByLogLevel.entrySet()) {
+            System.Logger.Level maxLogLevel = entry.getKey();
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+                dsl.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(maxLogLevel, out), null);
+            }
+            String output = outputStream.toString();
+            String expectedMessage = entry.getValue();
+            assertEquals(expectedMessage, output, "MaxLogLevel : " + maxLogLevel.getName() + " -> expected message : " + expectedMessage + " but was : " + output);
+        }
     }
 
     @Test
@@ -430,7 +485,7 @@ class TimeSeriesDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), null);
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -450,7 +505,7 @@ class TimeSeriesDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+            new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), null);
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
@@ -543,7 +598,7 @@ class TimeSeriesDslLoaderTest {
         TimeSeriesMappingConfig timeSeriesMappingConfig;
         Map<String, Map<String, String>> tags;
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            timeSeriesMappingConfig = new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), out, null);
+            timeSeriesMappingConfig = new TimeSeriesDslLoader(script).load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(out), null);
 
             timeSeriesMappingConfig.setTimeSeriesNodeTags(newTags);
             timeSeriesMappingConfig.addTag("testError", "calculatedTagError", "calculatedParamError");

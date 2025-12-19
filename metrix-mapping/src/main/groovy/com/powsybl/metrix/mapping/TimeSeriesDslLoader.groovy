@@ -14,10 +14,12 @@ import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.TwoWindingsTransformer
 import com.powsybl.metrix.commons.ComputationRange
 import com.powsybl.metrix.commons.data.datatable.DataTableStore
+import com.powsybl.metrix.mapping.config.ScriptLogConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigStats
+import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.metrix.mapping.references.MappingKey
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
@@ -110,13 +112,17 @@ class TimeSeriesDslLoader {
         config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class))
     }
 
-    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, LogDslLoader logDslLoader, ComputationRange computationRange) {
+    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore,
+                     MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader,
+                     ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = ComputationRange.check(computationRange, store)
         ComputationRange fullComputationRange = ComputationRange.check(store)
 
         // Context objects
         Map<Class<?>, Object> contextObjects = new HashMap<>()
         contextObjects.put(DataTableStore.class, dataTableStore)
+        contextObjects.put(ScriptLogConfig.class, scriptLogConfig)
+        LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig.withSection(MAPPING_SCRIPT_SECTION))
 
         // External Bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
@@ -297,13 +303,13 @@ class TimeSeriesDslLoader {
         EquipmentVariable.values().toList().forEach {value -> binding[value.getVariableName()] = value}
     }
 
-    protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
+    protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
         Binding binding = new Binding()
-        LogDslLoader logDslLoader = LogDslLoader.create(binding, out, MAPPING_SCRIPT_SECTION)
-        bind(binding, network, store, dataTableStore, parameters, config, loader, logDslLoader, computationRange)
+        LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig.withSection( MAPPING_SCRIPT_SECTION))
+        bind(binding, network, store, dataTableStore, parameters, config, loader, scriptLogConfig, computationRange)
 
-        if (out != null) {
-            binding.out = out
+        if (scriptLogConfig != null && scriptLogConfig.getOut() != null) {
+            binding.out = scriptLogConfig.getOut()
         }
 
         def shell = new GroovyShell(binding, createCompilerConfig())
@@ -322,14 +328,14 @@ class TimeSeriesDslLoader {
     }
 
     TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {
-        load(network, parameters, store, dataTableStore, null, computationRange)
+        load(network, parameters, store, dataTableStore, new ScriptLogConfig(), computationRange)
     }
 
-    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
+    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
         long start = System.currentTimeMillis()
         TimeSeriesMappingConfig config = new TimeSeriesMappingConfig(network)
         TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(config, store.getTimeSeriesNames(new TimeSeriesFilter()))
-        evaluate(config, loader, network, parameters, store, dataTableStore, out, computationRange)
+        evaluate(config, loader, network, parameters, store, dataTableStore, scriptLogConfig, computationRange)
         LOGGER.trace("Dsl Loading done in {} ms", (System.currentTimeMillis() - start))
 
         config

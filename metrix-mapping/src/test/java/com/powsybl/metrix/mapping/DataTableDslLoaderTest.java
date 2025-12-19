@@ -12,6 +12,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.data.datatable.DataTable;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.commons.exception.DataTableException;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.utils.MappingTestNetwork;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
@@ -62,7 +63,7 @@ class DataTableDslLoaderTest {
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            new TimeSeriesDslLoader(script).load(network, parameters, store, dataTableStore, out, null);
+            new TimeSeriesDslLoader(script).load(network, parameters, store, dataTableStore, new ScriptLogConfig(out), null);
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());

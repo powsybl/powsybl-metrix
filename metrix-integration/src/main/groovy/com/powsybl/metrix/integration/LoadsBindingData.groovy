@@ -11,7 +11,7 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

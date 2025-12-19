@@ -21,6 +21,7 @@ import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.network.NetworkSource;
 import com.powsybl.metrix.integration.utils.LocalThreadExecutor;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -64,6 +65,7 @@ public class MetrixAnalysis {
 
     private Consumer<Future<?>> updateTask;
     private Writer scriptLogWriter;
+    private System.Logger.Level maxLogLevel;
     private Writer inputLogWriter;
     private String schemaName;
 
@@ -73,6 +75,10 @@ public class MetrixAnalysis {
 
     public void setScriptLogWriter(Writer scriptLogWriter) {
         this.scriptLogWriter = scriptLogWriter;
+    }
+
+    public void setMaxLogLevel(System.Logger.Level maxLogLevel) {
+        this.maxLogLevel = maxLogLevel;
     }
 
     public void setInputLogWriter(Writer inputLogWriter) {
@@ -117,15 +123,16 @@ public class MetrixAnalysis {
 
         try (BufferedWriter scriptLogBufferedWriter = scriptLogWriter != null ? new BufferedWriter(scriptLogWriter) : null;
              BufferedWriter inputLogBufferedWriter = inputLogWriter != null ? new BufferedWriter(inputLogWriter) : null) {
-            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(timeSeriesDslLoader, network, mappingParameters, scriptLogBufferedWriter, id);
+            ScriptLogConfig scriptLogConfig = new ScriptLogConfig(this.maxLogLevel, scriptLogBufferedWriter);
+            TimeSeriesMappingConfig mappingConfig = loadMappingConfig(timeSeriesDslLoader, network, mappingParameters, scriptLogConfig, id);
             Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             MetrixDslData metrixDslData = null;
             Map<String, NodeCalc> timeSeriesNodesAfterMetrix = null;
             if (metrixDslReader != null) {
-                metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, scriptLogBufferedWriter, id);
+                metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, scriptLogConfig, id);
                 timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             }
-            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, scriptLogBufferedWriter).runAnalysis();
+            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, new ScriptLogConfig(scriptLogBufferedWriter)).runAnalysis();
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
             return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.contingencies(), inputs.remedials());
         } catch (IOException e) {
@@ -133,14 +140,14 @@ public class MetrixAnalysis {
         }
     }
 
-    private TimeSeriesMappingConfig loadMappingConfig(TimeSeriesDslLoader timeSeriesDslLoader, Network network, MappingParameters mappingParameters, Writer writer, String id) {
+    private TimeSeriesMappingConfig loadMappingConfig(TimeSeriesDslLoader timeSeriesDslLoader, Network network, MappingParameters mappingParameters, ScriptLogConfig scriptLogConfig, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading time series mapping...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
             CompletableFuture<TimeSeriesMappingConfig> mappingFuture = new LocalThreadExecutor<TimeSeriesMappingConfig>("Script_TS_" + id)
-                    .supplyAsync(() -> timeSeriesDslLoader.load(network, mappingParameters, store, dataTableStore, writer, computationRange));
+                    .supplyAsync(() -> timeSeriesDslLoader.load(network, mappingParameters, store, dataTableStore, scriptLogConfig, computationRange));
             updateTask.accept(mappingFuture);
             return mappingFuture.get();
         } catch (ExecutionException e) {
@@ -157,14 +164,14 @@ public class MetrixAnalysis {
         }
     }
 
-    private MetrixDslData loadMetrixDslData(Reader metrixDslReader, Network network, MetrixParameters metrixParameters, TimeSeriesMappingConfig mappingConfig, Writer writer, String id) {
+    private MetrixDslData loadMetrixDslData(Reader metrixDslReader, Network network, MetrixParameters metrixParameters, TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading metrix dsl...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
         boolean inError = false;
         try {
             CompletableFuture<MetrixDslData> metrixFuture = new LocalThreadExecutor<MetrixDslData>("Script_M_" + id)
-                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, dataTableStore, mappingConfig, writer));
+                    .supplyAsync(() -> MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, dataTableStore, mappingConfig, scriptLogConfig));
             updateTask.accept(metrixFuture);
             MetrixDslData metrixDslData = metrixFuture.get();
             metrixDslData.setComputationType(metrixParameters.getComputationType());
