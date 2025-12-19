@@ -135,7 +135,7 @@ class MetrixAnalysisTest {
             writeLog("WARNING", "From scriptLogLevelTest", "writeLog WARNING")
             writeLog("INFO", "From scriptLogLevelTest", "writeLog INFO")
             writeLog("ERROR", "From scriptLogLevelTest", "writeLog ERROR")
-            """;
+            """.replaceAll("\n", System.lineSeparator());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
             MetrixAnalysis metrixAnalysis = metrixAnalysis(script, "");
@@ -146,7 +146,7 @@ class MetrixAnalysisTest {
             assertEquals("""
                 WARNING;From scriptLogLevelTest;writeLog WARNING
                 ERROR;From scriptLogLevelTest;writeLog ERROR
-                """, output);
+                """.replaceAll("\n", System.lineSeparator()), output);
         }
     }
 

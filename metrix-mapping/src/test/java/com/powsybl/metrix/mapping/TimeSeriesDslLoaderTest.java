@@ -414,7 +414,7 @@ class TimeSeriesDslLoaderTest {
             writeLog("INFO",    "LOG_SECTION", "LOG_MESSAGE")
             writeLog("WARNING", "LOG_SECTION", "LOG_MESSAGE")
             writeLog("ERROR",   "LOG_SECTION", "LOG_MESSAGE")
-            """;
+            """.replaceAll("\n", System.lineSeparator());
 
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
