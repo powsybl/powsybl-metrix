@@ -36,6 +36,9 @@ import com.powsybl.timeseries.UncompressedDoubleDataChunk;
 import com.powsybl.timeseries.ast.IntegerNodeCalc;
 import groovy.lang.MissingMethodException;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.threeten.extra.Interval;
 
 import java.io.BufferedWriter;
@@ -53,6 +56,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -400,8 +404,9 @@ class TimeSeriesDslLoaderTest {
         assertEquals(expectedMessage, output);
     }
 
-    @Test
-    void writeLogTestFilterLogLevelDebug() throws IOException {
+    @ParameterizedTest
+    @MethodSource("provideMessageByLogLevel")
+    void writeLogTestFilterByMaxLogLevel(System.Logger.Level maxLogLevel, String expectedMessage) throws IOException {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         String script = """
             writeLog("TRACE",   "LOG_SECTION", "LOG_MESSAGE")
@@ -412,50 +417,51 @@ class TimeSeriesDslLoaderTest {
             """;
 
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        Map<System.Logger.Level, String> expectedMessageByLogLevel = new EnumMap<>(System.Logger.Level.class);
-        expectedMessageByLogLevel.put(System.Logger.Level.ALL, """
-            TRACE;LOG_SECTION;LOG_MESSAGE
-            DEBUG;LOG_SECTION;LOG_MESSAGE
-            INFO;LOG_SECTION;LOG_MESSAGE
-            WARNING;LOG_SECTION;LOG_MESSAGE
-            ERROR;LOG_SECTION;LOG_MESSAGE
-            """);
-        expectedMessageByLogLevel.put(System.Logger.Level.TRACE, """
-            TRACE;LOG_SECTION;LOG_MESSAGE
-            DEBUG;LOG_SECTION;LOG_MESSAGE
-            INFO;LOG_SECTION;LOG_MESSAGE
-            WARNING;LOG_SECTION;LOG_MESSAGE
-            ERROR;LOG_SECTION;LOG_MESSAGE
-            """);
-        expectedMessageByLogLevel.put(System.Logger.Level.DEBUG, """
-            DEBUG;LOG_SECTION;LOG_MESSAGE
-            INFO;LOG_SECTION;LOG_MESSAGE
-            WARNING;LOG_SECTION;LOG_MESSAGE
-            ERROR;LOG_SECTION;LOG_MESSAGE
-            """);
-        expectedMessageByLogLevel.put(System.Logger.Level.INFO, """
-            INFO;LOG_SECTION;LOG_MESSAGE
-            WARNING;LOG_SECTION;LOG_MESSAGE
-            ERROR;LOG_SECTION;LOG_MESSAGE
-            """);
-        expectedMessageByLogLevel.put(System.Logger.Level.WARNING, """
-            WARNING;LOG_SECTION;LOG_MESSAGE
-            ERROR;LOG_SECTION;LOG_MESSAGE
-            """);
-        expectedMessageByLogLevel.put(System.Logger.Level.ERROR, """
-            ERROR;LOG_SECTION;LOG_MESSAGE
-            """);
-        expectedMessageByLogLevel.put(System.Logger.Level.OFF, "");
-        for (Map.Entry<System.Logger.Level, String> entry : expectedMessageByLogLevel.entrySet()) {
-            System.Logger.Level maxLogLevel = entry.getKey();
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-                dsl.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(maxLogLevel, out), null);
-            }
-            String output = outputStream.toString();
-            String expectedMessage = entry.getValue();
-            assertEquals(expectedMessage, output, "MaxLogLevel : " + maxLogLevel.getName() + " -> expected message : " + expectedMessage + " but was : " + output);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            dsl.load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(maxLogLevel, out), null);
         }
+        String output = outputStream.toString();
+        String expectedMessageWithLineSeparator = expectedMessage.replaceAll("\n", System.lineSeparator());
+        assertEquals(expectedMessageWithLineSeparator, output, "MaxLogLevel : " + maxLogLevel.getName() + " -> expected message : " + expectedMessageWithLineSeparator + " but was : " + output);
+    }
+
+    private static Stream<Arguments> provideMessageByLogLevel() {
+        return Stream.of(
+            Arguments.of(System.Logger.Level.ALL, """
+            TRACE;LOG_SECTION;LOG_MESSAGE
+            DEBUG;LOG_SECTION;LOG_MESSAGE
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """),
+            Arguments.of(System.Logger.Level.TRACE, """
+            TRACE;LOG_SECTION;LOG_MESSAGE
+            DEBUG;LOG_SECTION;LOG_MESSAGE
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """),
+            Arguments.of(System.Logger.Level.DEBUG, """
+            DEBUG;LOG_SECTION;LOG_MESSAGE
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """),
+            Arguments.of(System.Logger.Level.INFO, """
+            INFO;LOG_SECTION;LOG_MESSAGE
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """),
+            Arguments.of(System.Logger.Level.WARNING, """
+            WARNING;LOG_SECTION;LOG_MESSAGE
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """),
+            Arguments.of(System.Logger.Level.ERROR, """
+            ERROR;LOG_SECTION;LOG_MESSAGE
+            """),
+            Arguments.of(System.Logger.Level.OFF, "")
+        );
     }
 
     @Test
