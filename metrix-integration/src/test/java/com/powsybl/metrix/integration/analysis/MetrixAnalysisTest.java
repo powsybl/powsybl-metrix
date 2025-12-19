@@ -124,7 +124,7 @@ class MetrixAnalysisTest {
             metrixAnalysis.setScriptLogWriter(out);
             metrixAnalysis.runAnalysis("");
             String output = outputStream.toString();
-            assertEquals("log\n", output);
+            assertEquals("log" + System.lineSeparator(), output);
         }
     }
 
