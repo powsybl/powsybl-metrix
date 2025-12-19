@@ -132,7 +132,7 @@ public class MetrixAnalysis {
                 metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, scriptLogConfig, id);
                 timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             }
-            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, new ScriptLogConfig(scriptLogBufferedWriter)).runAnalysis();
+            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, scriptLogConfig).runAnalysis();
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
             return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.contingencies(), inputs.remedials());
         } catch (IOException e) {
