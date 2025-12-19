@@ -19,15 +19,15 @@ class LogUtils {
 
     static void bindLog(Binding binding, ScriptLogConfig scriptLogConfig) {
         binding.writeLog = { String type, String section, String message ->
-            logOut(scriptLogConfig, type, message, section)
+            logOut(scriptLogConfig, type, section, message)
         }
     }
 
     static void logOut(ScriptLogConfig scriptLogConfig, System.Logger.Level logLevel, String message) {
-        logOut(scriptLogConfig, logLevel.getName(), message, scriptLogConfig.getSection())
+        logOut(scriptLogConfig, logLevel.getName(), scriptLogConfig.getSection(), message)
     }
 
-    static void logOut(ScriptLogConfig scriptLogConfig, String logLevel, String message, String section) {
+    static void logOut(ScriptLogConfig scriptLogConfig, String logLevel, String section, String message) {
         if (scriptLogConfig != null && scriptLogConfig.getOut() != null && canLog(logLevel, scriptLogConfig.getMaxLogLevel())) {
             scriptLogConfig.getOut().write(logLevel + SEPARATOR + section + SEPARATOR + message)
             scriptLogConfig.getOut().write(System.lineSeparator())
