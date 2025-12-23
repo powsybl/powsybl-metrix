@@ -28,9 +28,9 @@ class LogUtils {
     }
 
     static void logOut(ScriptLogConfig scriptLogConfig, String logLevel, String section, String message) {
-        if (scriptLogConfig != null && scriptLogConfig.getOut() != null && canLog(logLevel, scriptLogConfig.getMaxLogLevel())) {
-            scriptLogConfig.getOut().write(logLevel + SEPARATOR + section + SEPARATOR + message)
-            scriptLogConfig.getOut().write(System.lineSeparator())
+        if (scriptLogConfig != null && scriptLogConfig.getWriter() != null && canLog(logLevel, scriptLogConfig.getMaxLogLevel())) {
+            scriptLogConfig.getWriter().write(logLevel + SEPARATOR + section + SEPARATOR + message)
+            scriptLogConfig.getWriter().write(System.lineSeparator())
         }
     }
 

@@ -19,7 +19,7 @@ import static java.lang.System.Logger.Level.INFO;
 public class ScriptLogConfig {
     public static final System.Logger.Level MAX_LOG_LEVEL_DEFAULT = INFO;
 
-    private Writer out;
+    private Writer writer;
     private System.Logger.Level maxLogLevel;
     private String section;
 
@@ -27,17 +27,17 @@ public class ScriptLogConfig {
         this(MAX_LOG_LEVEL_DEFAULT, null, StringUtils.EMPTY);
     }
 
-    public ScriptLogConfig(Writer out) {
-        this(MAX_LOG_LEVEL_DEFAULT, out, StringUtils.EMPTY);
+    public ScriptLogConfig(Writer writer) {
+        this(MAX_LOG_LEVEL_DEFAULT, writer, StringUtils.EMPTY);
     }
 
-    public ScriptLogConfig(System.Logger.Level maxLogLevel, Writer out) {
-        this(maxLogLevel, out, StringUtils.EMPTY);
+    public ScriptLogConfig(System.Logger.Level maxLogLevel, Writer writer) {
+        this(maxLogLevel, writer, StringUtils.EMPTY);
     }
 
-    public ScriptLogConfig(System.Logger.Level maxLogLevel, Writer out, String section) {
+    public ScriptLogConfig(System.Logger.Level maxLogLevel, Writer writer, String section) {
         this.maxLogLevel = maxLogLevel;
-        this.out = out;
+        this.writer = writer;
         this.section = section;
     }
 
@@ -51,8 +51,8 @@ public class ScriptLogConfig {
         return this;
     }
 
-    public ScriptLogConfig withOut(Writer out) {
-        this.out = out;
+    public ScriptLogConfig withWriter(Writer writer) {
+        this.writer = writer;
         return this;
     }
 
@@ -60,8 +60,8 @@ public class ScriptLogConfig {
         return maxLogLevel != null ? maxLogLevel : MAX_LOG_LEVEL_DEFAULT;
     }
 
-    public Writer getOut() {
-        return out;
+    public Writer getWriter() {
+        return writer;
     }
 
     public String getSection() {

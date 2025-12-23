@@ -33,7 +33,7 @@ class ScriptLogConfigTest {
         ScriptLogConfig scriptLogConfig = new ScriptLogConfig();
         // THEN
         assertNotNull(scriptLogConfig);
-        assertNull(scriptLogConfig.getOut());
+        assertNull(scriptLogConfig.getWriter());
         assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
         assertEquals(ScriptLogConfig.MAX_LOG_LEVEL_DEFAULT, scriptLogConfig.getMaxLogLevel());
     }
@@ -46,7 +46,7 @@ class ScriptLogConfigTest {
         ScriptLogConfig scriptLogConfig = new ScriptLogConfig(ERROR, sw, SECTION);
         // THEN
         assertNotNull(scriptLogConfig);
-        assertEquals(sw, scriptLogConfig.getOut());
+        assertEquals(sw, scriptLogConfig.getWriter());
         assertEquals(SECTION, scriptLogConfig.getSection());
         assertEquals(ERROR, scriptLogConfig.getMaxLogLevel());
     }
@@ -60,12 +60,12 @@ class ScriptLogConfigTest {
         ScriptLogConfig scriptLogConfig2 = new ScriptLogConfig(ERROR, sw);
         // THEN
         assertNotNull(scriptLogConfig1);
-        assertEquals(sw, scriptLogConfig1.getOut());
+        assertEquals(sw, scriptLogConfig1.getWriter());
         assertEquals(StringUtils.EMPTY, scriptLogConfig1.getSection());
         assertEquals(ScriptLogConfig.MAX_LOG_LEVEL_DEFAULT, scriptLogConfig1.getMaxLogLevel());
 
         assertNotNull(scriptLogConfig2);
-        assertEquals(sw, scriptLogConfig2.getOut());
+        assertEquals(sw, scriptLogConfig2.getWriter());
         assertEquals(StringUtils.EMPTY, scriptLogConfig2.getSection());
         assertEquals(ERROR, scriptLogConfig2.getMaxLogLevel());
     }
@@ -93,16 +93,16 @@ class ScriptLogConfigTest {
     }
 
     @Test
-    void testWithOut() {
+    void testWithWriter() {
         // GIVEN
         StringWriter sw1 = new StringWriter();
         StringWriter sw2 = new StringWriter();
         ScriptLogConfig scriptLogConfig = new ScriptLogConfig(sw1);
         // WHEN
-        ScriptLogConfig scriptLogConfigWith = scriptLogConfig.withOut(sw2);
+        ScriptLogConfig scriptLogConfigWith = scriptLogConfig.withWriter(sw2);
         // THEN
         assertEquals(scriptLogConfig, scriptLogConfigWith);
-        assertEquals(sw2, scriptLogConfig.getOut());
+        assertEquals(sw2, scriptLogConfig.getWriter());
     }
 
     @Test

@@ -21,13 +21,13 @@ class LogScriptExtension implements GroovyScriptExtension {
     @Override
     void load(Binding binding, Map<Class<?>, Object> contextObjects) {
         ScriptLogConfig config = Optional.ofNullable(contextObjects.get(ScriptLogConfig.class) as ScriptLogConfig).orElse(new ScriptLogConfig())
-        Writer out = config.getOut();
+        Writer out = config.getWriter();
         if (out != null) {
             binding.out = out
         } else {
             try {
                 out = binding.getProperty("out") as Writer
-                config.withOut(out)
+                config.withWriter(out)
             } catch (MissingPropertyException ignored){
 
             }

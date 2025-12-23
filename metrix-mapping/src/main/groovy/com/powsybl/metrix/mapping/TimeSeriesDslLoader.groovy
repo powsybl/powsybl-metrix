@@ -308,8 +308,8 @@ class TimeSeriesDslLoader {
         LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig.withSection( MAPPING_SCRIPT_SECTION))
         bind(binding, network, store, dataTableStore, parameters, config, loader, scriptLogConfig, computationRange)
 
-        if (scriptLogConfig != null && scriptLogConfig.getOut() != null) {
-            binding.out = scriptLogConfig.getOut()
+        if (scriptLogConfig != null && scriptLogConfig.getWriter() != null) {
+            binding.out = scriptLogConfig.getWriter()
         }
 
         def shell = new GroovyShell(binding, createCompilerConfig())
