@@ -16,11 +16,14 @@ import static java.lang.System.Logger.Level.*
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class LogDslLoader {
-
     private final ScriptLogConfig scriptLogConfig
 
     LogDslLoader(ScriptLogConfig scriptLogConfig) {
         this.scriptLogConfig = scriptLogConfig
+    }
+
+    ScriptLogConfig getScriptLogConfig() {
+        return scriptLogConfig
     }
 
     private void logOut(System.Logger.Level logLevel, String message) {

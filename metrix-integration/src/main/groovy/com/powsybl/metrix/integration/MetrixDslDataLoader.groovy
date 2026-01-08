@@ -90,15 +90,14 @@ class MetrixDslDataLoader {
 
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore,
                      MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, MetrixDslData data,
-                     ScriptLogConfig scriptLogConfig) {
+                     LogDslLoader logDslLoader) {
         // External bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
         // Context objects
         Map<Class<?>, Object> contextObjects = new HashMap<>()
         contextObjects.put(DataTableStore.class, dataTableStore)
-        contextObjects.put(ScriptLogConfig.class, scriptLogConfig)
-        LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig)
+        contextObjects.put(ScriptLogConfig.class, logDslLoader.getScriptLogConfig())
 
         // Bindings through extensions
         Iterable<GroovyScriptExtension> extensions = ServiceLoader.load(GroovyScriptExtension.class, GroovyScripts.class.getClassLoader())
@@ -210,7 +209,7 @@ class MetrixDslDataLoader {
         Binding binding = new Binding()
         scriptLogConfig.withSection(METRIX_SCRIPT_SECTION)
         LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig)
-        bind(binding, network, store, dataTableStore, parameters, mappingConfig, data, scriptLogConfig)
+        bind(binding, network, store, dataTableStore, parameters, mappingConfig, data, logDslLoader)
 
         evaluate(dslSrc, binding)
 
