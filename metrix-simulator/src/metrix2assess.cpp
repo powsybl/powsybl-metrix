@@ -1302,7 +1302,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         for (const auto& elem : res_.groupes_) {
             const auto& grp = elem.second;
             if (grp->isBattery() && grp->prodAjust_ != Groupe::NON_HR_AR && grp->etat_) {
-                int numVar = grp->numVarGrp_;
+                numVar = grp->numVarGrp_;
                 fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar] * pbX_[numVar];
                 fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar + 1] * pbX_[numVar + 1];
             }
