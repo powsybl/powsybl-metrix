@@ -16,6 +16,7 @@ import org.apache.commons.lang3.Strings;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +77,32 @@ public class DataTable {
         }
     }
 
+    private static void checkHeaders(List<String> existingHeader, List<String> header) {
+        if (!new HashSet<>(existingHeader).equals(new HashSet<>(header))) {
+            throw new DataTableException(String.format("Headers are different: existing header=%s header to add=%s", existingHeader, header));
+        }
+    }
+
+    private static void checkValuesSize(List<String> selectedColumns, List<String> values) {
+        if (selectedColumns.size() != values.size()) {
+            throw new DataTableException(String.format("Number of selected columns '%s' different from number of values '%s'", selectedColumns.size(), values.size()));
+        }
+    }
+
+    private static QueryFilter queryFilter(List<String> selectedColumns, Map<String, List<String>> filter) {
+        QueryFilter queryFilter = new QueryFilter();
+        queryFilter.setSelectedColumns(selectedColumns);
+        List<ContentFilter> contentFilters = new ArrayList<>();
+        filter.forEach((columnName, values) -> {
+            ContentFilter contentFilter = new ContentFilter();
+            contentFilter.setColumnName(columnName);
+            contentFilter.setValues(filter.get(columnName));
+            contentFilters.add(contentFilter);
+        });
+        queryFilter.setContentFilters(contentFilters);
+        return queryFilter;
+    }
+
     public List<String> columnNames() {
         return tabColumns;
     }
@@ -106,18 +133,15 @@ public class DataTable {
             .collect(Collectors.toList());
     }
 
+    public List<LinkedHashMap<String, String>> getLines() {
+        return tabValues.stream()
+            .map(attributeNameToValue -> new LinkedHashMap<>(attributeNameToValue.getAttributeNameToValue()))
+            .collect(Collectors.toList());
+    }
+
     public DataTable filter(List<String> selectedColumns, Map<String, List<String>> filter) {
         checkColumnNames(selectedColumns);
-        QueryFilter queryFilter = new QueryFilter();
-        queryFilter.setSelectedColumns(selectedColumns);
-        List<ContentFilter> contentFilters = new ArrayList<>();
-        filter.forEach((columnName, values) -> {
-            ContentFilter contentFilter = new ContentFilter();
-            contentFilter.setColumnName(columnName);
-            contentFilter.setValues(filter.get(columnName));
-            contentFilters.add(contentFilter);
-        });
-        queryFilter.setContentFilters(contentFilters);
+        QueryFilter queryFilter = queryFilter(selectedColumns, filter);
         DataTable filteredDataTable = new DataTable(tabColumns, tabValues);
         filteredDataTable.filterInfos(queryFilter);
         return filteredDataTable;
@@ -125,15 +149,51 @@ public class DataTable {
 
     public String searchFirstValue(String selectedColumn, Map<String, List<String>> filter) {
         checkColumnNames(selectedColumn);
-        DataTable filteredDataTable = filter(List.of(selectedColumn), filter);
-        List<String> values = filteredDataTable.data(selectedColumn);
-        return values.isEmpty() ? null : values.getFirst();
+        QueryFilter queryFilter = queryFilter(List.of(selectedColumn), filter);
+        return this.tabValues.stream()
+            .filter(attributeNameToValue -> matchesQueryFilter(attributeNameToValue, queryFilter))
+            .map(attributeNameToValue -> attributeNameToValue.getValue(selectedColumn))
+            .findFirst()
+            .orElseThrow(null);
     }
 
     public List<String> searchValueList(String selectedColumn, Map<String, List<String>> filter) {
         checkColumnNames(selectedColumn);
-        DataTable filteredDataTable = filter(List.of(selectedColumn), filter);
-        return filteredDataTable.data(selectedColumn);
+        QueryFilter queryFilter = queryFilter(List.of(selectedColumn), filter);
+        return this.tabValues.stream()
+            .filter(attributeNameToValue -> matchesQueryFilter(attributeNameToValue, queryFilter))
+            .map(attributeNameToValue -> attributeNameToValue.getValue(selectedColumn))
+            .toList();
+    }
+
+    public DataTable removeLines(Map<String, List<String>> filter) {
+        QueryFilter queryFilter = queryFilter(columnNames(), filter);
+        this.tabValues.removeIf(attributeNameToValue -> matchesQueryFilter(attributeNameToValue, queryFilter));
+        return this;
+    }
+
+    public DataTable addLines(List<String> header, List<List<String>> content) {
+        checkHeaders(columnNames(), header);
+        checkData(header, content);
+        content.forEach(line -> {
+            AttributeNameToValue attributeNameToValue = new AttributeNameToValue();
+            int headerSize = header.size();
+            for (int column = 0; column < headerSize; column++) {
+                attributeNameToValue.put(header.get(column), line.get(column));
+            }
+            this.addAttributeNameToValue(attributeNameToValue);
+        });
+        return this;
+    }
+
+    public DataTable replaceValues(List<String> selectedColumns, Map<String, List<String>> filter, List<String> values) {
+        checkColumnNames(selectedColumns);
+        checkValuesSize(selectedColumns, values);
+        QueryFilter queryFilter = queryFilter(selectedColumns, filter);
+        this.tabValues.stream()
+            .filter(attributeNameToValue -> matchesQueryFilter(attributeNameToValue, queryFilter))
+            .forEach(attributeNameToValue -> applyReplacement(attributeNameToValue, selectedColumns, values));
+        return this;
     }
 
     private void addAttributeNameToValue(AttributeNameToValue attributeNameToValue) {
@@ -161,21 +221,11 @@ public class DataTable {
             .collect(Collectors.toList());
     }
 
-    private void removeNotSelectedColumns(List<String> selectedColumns) {
-        this.tabValues = this.tabValues.stream()
-            .map(attributeNameToValue -> attributeNameToValue.filterSelectedColumns(selectedColumns))
-            .toList();
-    }
-
-    private void filterOnParameter(String parameter, List<String> tabValueToFilter) {
-        this.tabValues = this.tabValues.stream()
-            .filter(attributeNameToValue -> tabValueToFilter.stream().anyMatch(filterValue -> Strings.CI.contains(attributeNameToValue.getValue(parameter), filterValue)))
-            .toList();
-    }
-
     private void filterInfos(QueryFilter filter) {
-        filter.getContentFilters().forEach(contentFilter -> filterOnParameter(contentFilter.getColumnName(), contentFilter.getValues()));
-        removeNotSelectedColumns(filter.getSelectedColumns());
+        this.tabValues = this.tabValues.stream()
+            .filter(attributeNameToValue -> matchesQueryFilter(attributeNameToValue, filter))
+            .map(attributeNameToValue -> attributeNameToValue.filterSelectedColumns(filter.getSelectedColumns()))
+            .toList();
         tabColumns = new ArrayList<>(filter.getSelectedColumns());
     }
 
@@ -189,5 +239,24 @@ public class DataTable {
 
     private void checkColumnNames(String column) {
         checkColumnNames(List.of(column));
+    }
+
+    private boolean matchesFilter(AttributeNameToValue attributeNameToValue, String columnName, List<String> filterValues) {
+        String value = attributeNameToValue.getValue(columnName);
+        if (value == null) {
+            return false;
+        }
+        return filterValues.stream().anyMatch(filterValue -> Strings.CI.contains(value, filterValue));
+    }
+
+    private boolean matchesQueryFilter(AttributeNameToValue attributeNameToValue, QueryFilter queryFilter) {
+        return queryFilter.getContentFilters().stream()
+            .allMatch(contentFilter -> matchesFilter(attributeNameToValue, contentFilter.getColumnName(), contentFilter.getValues()));
+    }
+
+    private void applyReplacement(AttributeNameToValue attributeNameToValue, List<String> selectedColumns, List<String> values) {
+        for (int i = 0; i < selectedColumns.size(); i++) {
+            attributeNameToValue.put(selectedColumns.get(i), values.get(i));
+        }
     }
 }

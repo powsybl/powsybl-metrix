@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import static com.powsybl.metrix.commons.data.datatable.DataTable.toDataTable;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -43,7 +44,7 @@ class DataTableTest {
 
     @BeforeEach
     void setUp() {
-        dataTable = DataTable.toDataTable(columnNames, allRows);
+        dataTable = toDataTable(columnNames, allRows);
     }
 
     @Test
@@ -59,15 +60,18 @@ class DataTableTest {
         assertEquals(columnWithName2, dataTable.get("columnName2"));
         assertEquals(allRows, dataTable.data());
         assertEquals(allWithNameRows, dataTable.get());
+        assertEquals(Map.of("columnName1", "value1", "columnName2", "value2"), dataTable.getLines().get(0));
+        assertEquals(Map.of("columnName1", "value3", "columnName2", "value4"), dataTable.getLines().get(1));
+        assertEquals(Map.of("columnName1", "value1", "columnName2", "value4"), dataTable.getLines().get(2));
     }
 
     @Test
-    void emptyDataTabletest() {
+    void emptyDataTableTest() {
         // GIVEN
         List<String> header = Collections.emptyList();
         List<List<String>> content = Collections.emptyList();
         // WHEN
-        DataTable actualEmptyDataTable = DataTable.toDataTable(header, content);
+        DataTable actualEmptyDataTable = toDataTable(header, content);
         // THEN
         assertThat(actualEmptyDataTable).isNotNull();
         assertThat(actualEmptyDataTable.columnNames()).isEmpty();
@@ -110,7 +114,7 @@ class DataTableTest {
     void sameColumnNamesExceptionTest() {
         List<String> header = List.of("columnName1", "columnName1");
         List<List<String>> content = allRows;
-        DataTableException e = assertThrows(DataTableException.class, () -> DataTable.toDataTable(header, content));
+        DataTableException e = assertThrows(DataTableException.class, () -> toDataTable(header, content));
         assertTrue(e.getMessage().contains("Several columns with same names '[columnName1]'"));
     }
 
@@ -118,7 +122,7 @@ class DataTableTest {
     void sizeColumnNamesExceptionTest() {
         List<String> header = List.of("columnName1");
         List<List<String>> content = allRows;
-        DataTableException e = assertThrows(DataTableException.class, () -> DataTable.toDataTable(header, content));
+        DataTableException e = assertThrows(DataTableException.class, () -> toDataTable(header, content));
         assertTrue(e.getMessage().contains("Number of columns '1' different from number of values '2' at row '1'"));
     }
 
@@ -127,5 +131,147 @@ class DataTableTest {
         Map<String, List<String>> filter = Map.of("columnName2", List.of("value4"));
         DataTableException e = assertThrows(DataTableException.class, () -> dataTable.searchFirstValue("other", filter));
         assertTrue(e.getMessage().contains("Unknown data table column names '[other]'"));
+    }
+
+    @Test
+    void removeLinesTest() {
+        // GIVEN
+        // WHEN
+        List<List<String>> actual = dataTable.removeLines(Map.of("columnName2", List.of("value2"))).data();
+        // THEN
+        List<List<String>> expected = List.of(List.of("value3", "value4"), List.of("value1", "value4"));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void removeLinesNoMatchTest() {
+        // GIVEN
+        // WHEN
+        List<List<String>> actual = dataTable.removeLines(Map.of("columnName2", List.of("noMatch"))).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, row2, row3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void removeMultipleLinesTest() {
+        // GIVEN
+        // WHEN
+        List<List<String>> actual = dataTable.removeLines(Map.of("columnName2", List.of("value4"))).data();
+        // THEN
+        List<List<String>> expected = List.of(List.of("value1", "value2"));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void removeAllLinesTest() {
+        // GIVEN
+        // WHEN
+        List<List<String>> actual = toDataTable(List.of("column"), List.of(List.of("value"))).removeLines(Map.of("column", List.of("value"))).data();
+        // THEN
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void addLinesTest() {
+        // GIVEN
+        List<String> header = List.of("columnName1", "columnName2");
+        List<String> row4 = List.of("value5", "value6");
+        List<List<String>> content = List.of(row4);
+        // WHEN
+        List<List<String>> actual = dataTable.addLines(header, content).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, row2, row3, row4);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addLinesMultipleTest() {
+        // GIVEN
+        List<String> header = List.of("columnName1", "columnName2");
+        List<String> row4 = List.of("value5", "value6");
+        List<String> row5 = List.of("value7", "value8");
+        List<List<String>> content = List.of(row4, row5);
+        // WHEN
+        List<List<String>> actual = dataTable.addLines(header, content).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, row2, row3, row4, row5);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addLinesOtherOrderTest() {
+        // GIVEN
+        List<String> header = List.of("columnName2", "columnName1");
+        List<String> row4 = List.of("value6", "value5");
+        List<List<String>> content = List.of(row4);
+        // WHEN
+        List<List<String>> actual = dataTable.addLines(header, content).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, row2, row3, row4);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void addLinesHeaderExceptionTest() {
+        // GIVEN
+        List<String> header = List.of("columnName1");
+        List<String> row4 = List.of("value5");
+        List<List<String>> content = List.of(row4);
+        // WHEN
+        DataTableException e = assertThrows(DataTableException.class, () -> dataTable.addLines(header, content));
+        // THEN
+        assertTrue(e.getMessage().contains("Headers are different: existing header=[columnName1, columnName2] header to add=[columnName1]"));
+    }
+
+    @Test
+    void replaceValuesTest() {
+        // GIVEN
+        List<String> selectedColumns = List.of("columnName2");
+        Map<String, List<String>> filter = Map.of("columnName2", List.of("value4"));
+        List<String> values = List.of("value5");
+        // WHEN
+        List<List<String>> actual = dataTable.replaceValues(selectedColumns, filter, values).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, List.of("value3", "value5"), List.of("value1", "value5"));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void replaceValuesNoMatchTest() {
+        // GIVEN
+        List<String> selectedColumns = List.of("columnName2");
+        Map<String, List<String>> filter = Map.of("columnName2", List.of("noMatch"));
+        List<String> values = List.of("value5");
+        // WHEN
+        List<List<String>> actual = dataTable.replaceValues(selectedColumns, filter, values).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, row2, row3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void replaceValuesMultipleColumnsTest() {
+        // GIVEN
+        List<String> selectedColumns = List.of("columnName1", "columnName2");
+        Map<String, List<String>> filter = Map.of("columnName2", List.of("value4"));
+        List<String> values = List.of("value5", "value6");
+        // WHEN
+        List<List<String>> actual = dataTable.replaceValues(selectedColumns, filter, values).data();
+        // THEN
+        List<List<String>> expected = List.of(row1, List.of("value5", "value6"), List.of("value5", "value6"));
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void replaceValuesSizeExceptionTest() {
+        // GIVEN
+        List<String> selectedColumns = List.of("columnName1", "columnName2");
+        Map<String, List<String>> filter = Map.of("columnName2", List.of("value4"));
+        List<String> values = List.of("value5");
+        // WHEN
+        DataTableException e = assertThrows(DataTableException.class, () -> dataTable.replaceValues(selectedColumns, filter, values));
+        // THEN
+        assertTrue(e.getMessage().contains("Number of selected columns '2' different from number of values '1'"));
     }
 }
