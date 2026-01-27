@@ -21,7 +21,7 @@
 
     <artifactId>powsybl-metrix</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>3.0.1-SNAPSHOT</version>
 
     <name>powsybl metrix</name>
     <description>Multisituation loadflow and optimization module for powsybl</description>
