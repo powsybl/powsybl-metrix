@@ -59,6 +59,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -556,5 +557,21 @@ class TimeSeriesDslLoaderTest {
         assertFalse(tags.containsKey("testError"));
         assertFalse(tags.get("test").containsKey("calculatedTagError"));
 
+    }
+
+    @Test
+    void substationFilteringTest() {
+        final String substationFilteringScript = String.join(System.lineSeparator(),
+            "mapToGenerators {",
+            "    timeSeriesName 'ts'",
+            "    filter { substation.id == 'S1' }",
+            "}");
+        TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-07-20T00:00:00Z"), Duration.ofDays(50));
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            TimeSeries.createDouble("ts", index, 1d, 2d, 3d, 4d, 5d)
+        );
+
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(substationFilteringScript).load(network, parameters, store, new DataTableStore(), null, null);
+        assertThat(config.getGeneratorToTimeSeriesMapping()).hasSize(2);
     }
 }

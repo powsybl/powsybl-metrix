@@ -194,12 +194,6 @@ class TimeSeriesMapperCheckerTest {
             "    variable targetP",
             "}");
 
-    private final String filteringContextScript = String.join(System.lineSeparator(),
-        "mapToGenerators {",
-        "    timeSeriesName 'chronique_2000'",
-        "    filter { substation.id == 'N' }",
-        "}");
-
     private final String pmax2HvdcLineScript = String.join(System.lineSeparator(),
             "mapToHvdcLines {",
             "    timeSeriesName 'chronique_2000'",
@@ -858,32 +852,6 @@ class TimeSeriesMapperCheckerTest {
         // with ignore limits
         testGenerator(NetworkSerDe.copy(network), pmin4cScript, true, "N_G", 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
-    }
-
-    @Test
-    void filteringContextGeneratorTest() {
-        Network network = createNetwork();
-        network.getGenerator("N_G").setMaxP(1000);
-
-        // targetP mapped
-        // maxP not mapped
-        // mapped targetP > maxP
-
-        String expectedLabel = SCALING_DOWN_PROBLEM + "at least one targetP changed to base case maxP";
-
-        // without ignore limits
-        // -> targetP reduced to maxP = 1000
-        testGenerator(NetworkSerDe.copy(network), filteringContextScript, false, "N_G", 1000, 0, 1000, 1000,
-            WARNING, expectedLabel, expectedLabel, VARIANT_1,
-            "Impossible to scale down 2000 of ts chronique_2000, targetP 1000 has been applied",
-            "Impossible to scale down at least one value of ts chronique_2000, modified targetP has been applied");
-
-        // with ignore limits
-        // -> maxP changed to targetP = 2000
-        testGenerator(NetworkSerDe.copy(network), filteringContextScript, true, "N_G", 2000, 0, 2000, 2001,
-            INFO, LIMIT_CHANGE + "maxP", SCALING_DOWN_PROBLEM + "at least one maxP increased", VARIANT_EMPTY,
-            "maxP of N_G lower than targetP for 1 variants, maxP increased from 1000 to 2000",
-            "maxP violated by targetP in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
     }
 
     /*
