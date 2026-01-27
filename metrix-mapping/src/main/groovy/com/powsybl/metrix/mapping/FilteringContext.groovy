@@ -26,10 +26,10 @@ class FilteringContext {
         this.identifiable = identifiable
         if (identifiable instanceof Injection) {
             voltageLevel = ((Injection) identifiable).terminal.voltageLevel
-            substation = voltageLevel.substation.get()
+            substation = voltageLevel.getNullableSubstation()
         } else if (identifiable instanceof Switch) {
             voltageLevel = ((Switch) identifiable).voltageLevel
-            substation = voltageLevel.substation.get()
+            substation = voltageLevel.getNullableSubstation()
         }
     }
 }
