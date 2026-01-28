@@ -12,6 +12,7 @@ import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -250,7 +251,7 @@ class TimeSeriesProviderTsTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try (StringWriter sw = new StringWriter()) {
-            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), sw, null);
+            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(sw), null);
             assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
             assertEquals("WARNING;Mapping script;provideTs - Time series can not be provided for id FSSV.O11_G because id is not mapped on targetP\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }
@@ -274,7 +275,7 @@ class TimeSeriesProviderTsTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try (StringWriter sw = new StringWriter()) {
-            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), sw, null);
+            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(sw), null);
             assertEquals(Collections.emptySet(), mappingConfig.getGeneratorTimeSeries());
             assertEquals("WARNING;Mapping script;provideTs - Empty filtered list for equipment type GENERATOR and variables [targetP]\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }

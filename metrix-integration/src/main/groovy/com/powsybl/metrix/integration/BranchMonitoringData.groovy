@@ -11,7 +11,7 @@ import com.powsybl.iidm.network.Branch
 import com.powsybl.iidm.network.DanglingLine
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 
 /**

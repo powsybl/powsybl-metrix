@@ -12,6 +12,7 @@ import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.MetrixDslDataLoader;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
@@ -73,7 +74,7 @@ class MetrixLossesPostProcessingTimeSeriesTest {
 
         TimeSeriesMappingConfig mappingConfig = new TimeSeriesMappingConfig();
         MetrixDslDataLoader metrixDslDataLoader = new MetrixDslDataLoader(metrixConfigurationScript);
-        metrixDslDataLoader.load(network, parameters, store, dataTableStore, mappingConfig, null);
+        metrixDslDataLoader.load(network, parameters, store, dataTableStore, mappingConfig, new ScriptLogConfig());
 
         MetrixLossesPostProcessingTimeSeries lossesProcessing = new MetrixLossesPostProcessingTimeSeries(mappingConfig, null);
         postProcessingTimeSeries = lossesProcessing.createPostProcessingTimeSeries();
