@@ -1,0 +1,354 @@
+{
+  "files" : [ {
+    "name" : "IntegerFile",
+    "attributes" : [ {
+      "name" : "CGNBREGI",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TNNBNTOT",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "CQNBQUAD",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "ECNBCONS",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TRNBGROU",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "DTNBTRDE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "DCNBLIES",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "SECTNBSE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "MODECALC",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "UNOMINAL",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 50 ]
+    }, {
+      "name" : "CPPOSREG",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 1, 1 ]
+    }, {
+      "name" : "QASURVDI",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 1, 1 ]
+    }, {
+      "name" : "QASURNMK",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 1, 1 ]
+    }, {
+      "name" : "TNNORQUA",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 1, 1 ]
+    }, {
+      "name" : "TNNEXQUA",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 2, 2 ]
+    }, {
+      "name" : "TNNEUCEL",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "TRNBTYPE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "TNNEURGT",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 1, 1 ]
+    }, {
+      "name" : "TRTYPGRP",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 0, 1 ]
+    }, {
+      "name" : "SPIMPMOD",
+      "type" : "INTEGER",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 0, 1 ]
+    }, {
+      "name" : "DCNDROOP",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "DMNBDEFK",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+          "name": "NBLDCURA",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [ 0 ]
+        },
+        {
+          "name": "LDNBDEFK",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [ 0 ]
+          }, {
+          "name": "GRNBCURA",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [ 0 ]
+        }
+          ]
+  }, {
+    "name" : "FloatFile",
+    "attributes" : [ {
+      "name" : "CGCPERTE",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0.0 ]
+    }, {
+      "name" : "CQADMITA",
+      "type" : "FLOAT",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 14.44, 14.44 ]
+    }, {
+      "name" : "CQRESIST",
+      "type" : "FLOAT",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 0.13850416, 0.13850416 ]
+    }, {
+      "name" : "ESAFIACT",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 100.0 ]
+    }, {
+      "name" : "SPPACTGT",
+      "type" : "FLOAT",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 55.0, 50.0 ]
+    }, {
+      "name" : "TRVALPMD",
+      "type" : "FLOAT",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 55.0, 50.0 ]
+    }, {
+      "name" : "TRPUIMIN",
+      "type" : "FLOAT",
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 2,
+      "values" : [ 55.0, -100.0 ]
+    }]
+  }, {
+    "name" : "DoubleFile",
+    "attributes" : [ ]
+  }, {
+    "name" : "StringFile",
+    "attributes" : [ {
+      "name" : "CGNOMREG",
+      "type" : "STRING",
+      "valueCount" : 6,
+      "firstIndexMaxValue" : 6,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 6,
+      "values" : [ "FRANCE" ]
+    }, {
+      "name" : "CQNOMQUA",
+      "type" : "STRING",
+      "valueCount" : 18,
+      "firstIndexMaxValue" : 10,
+      "secondIndexMaxValue" : 2,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 18,
+      "values" : [ "QUAD_OE_1", "QUAD_OE_2" ]
+    }, {
+      "name" : "TNNOMNOE",
+      "type" : "STRING",
+      "valueCount" : 9,
+      "firstIndexMaxValue" : 9,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 9,
+      "values" : [ "Conso_Est" ]
+    }, {
+      "name" : "TRNOMGTH",
+      "type" : "STRING",
+      "valueCount" : 28,
+      "firstIndexMaxValue" : 11,
+      "secondIndexMaxValue" : 2,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 28,
+      "values" : [ "Prod_Ouest", "Prod_Ouest_Batterie" ]
+    }, {
+      "name" : "TRNOMTYP",
+      "type" : "STRING",
+      "valueCount" : 14,
+      "firstIndexMaxValue" : 8,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 14,
+      "values" : [ "CHARBON", "BATTERIE" ]
+    }
+     ]
+  }, {
+    "name" : "BooleanFile",
+    "attributes" : [ ]
+  } ]
+}
