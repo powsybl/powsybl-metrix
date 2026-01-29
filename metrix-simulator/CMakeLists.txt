@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -6,13 +6,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 cmake_minimum_required(VERSION 3.12 FATAL_ERROR)
 
 include(CMakePackageConfigHelpers)
 
-project(MetrixSimulator 
+project(MetrixSimulator
     VERSION 7.4.0
     LANGUAGES C CXX)
 
@@ -54,20 +54,20 @@ else()
 endif()
 
 if(MSVC)
-  add_compile_definitions(WIN32)
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:5000000 ")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  # In release, we prefer speed over size of the code
-  set(CMAKE_CXX_FLAGS_RELEASE "/O2")
-  set(CMAKE_C_FLAGS_RELEASE "/O2")
+    add_compile_definitions(WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:5000000 ")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    # In release, we prefer speed over size of the code
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+    set(CMAKE_C_FLAGS_RELEASE "/O2")
 else()
-  if(NOT CMAKE_BUILD_TYPE)
-    set(CMAKE_BUILD_TYPE Release)
-  endif()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Werror -pthread")
-  set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
-  set(CMAKE_CXX_FLAGS_RELEASE "-O3")
-  set(CMAKE_C_FLAGS_RELEASE "-O3")
+    if(NOT CMAKE_BUILD_TYPE)
+        set(CMAKE_BUILD_TYPE Release)
+    endif()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Werror -pthread")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+    set(CMAKE_C_FLAGS_RELEASE "-O3")
 endif(MSVC)
 
 # Boost
@@ -93,9 +93,9 @@ if(USE_ORTOOLS)
 endif()
 
 # # Xpress
-# if(USE_XPRESS)
-#     find_package(XPRESS REQUIRED)
-# endif()
+if(USE_XPRESS)
+    find_package(XPRESS REQUIRED)
+endif()
 
 # SUITESPARSE
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/suitesparse CACHE PATH "Path where an SuiteSparse installation already exists")
@@ -105,7 +105,7 @@ add_subdirectory(log)
 
 message(STATUS "METRIX")
 
-set(METRIX_HEADERS 
+set(METRIX_HEADERS
         src/calcul.h
         src/err/error.h
         src/parametres.h
@@ -129,17 +129,17 @@ set(METRIX_HEADERS
         src/margin_variations_compute.h
     )
 
-set(METRIX_SOURCES 
+set(METRIX_SOURCES
         src/calculmacrofonctions.cpp
-        src/err/error.cpp 
-        src/reseau.cpp 
-        src/calculrepports.cpp 
-        src/calculecrirecontraintesdodu.cpp  
-        src/connexite.cpp             
-        src/err/IoDico.cpp                                 
+        src/err/error.cpp
+        src/reseau.cpp
+        src/calculrepports.cpp
+        src/calculecrirecontraintesdodu.cpp
+        src/connexite.cpp
+        src/err/IoDico.cpp
         src/calculeEmpilementGroupes.cpp
         src/metrix.cpp
-        src/metrix2assess.cpp 
+        src/metrix2assess.cpp
         src/config/configuration.cpp
         src/config/input_configuration.cpp
         src/config/variant_configuration.cpp
@@ -151,7 +151,7 @@ set(METRIX_SOURCES
         src/compute/solver.cpp
         src/margin_variations_compute.cpp
     )
- 
+
 if(USE_ORTOOLS)
     list(APPEND METRIX_SOURCES
     src/ortools/solver.cpp
@@ -165,7 +165,7 @@ set(target "metrix-simulator")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config/version.h)
 
-add_executable(${target} 
+add_executable(${target}
 ${METRIX_HEADERS} ${METRIX_SOURCES})
 
 target_include_directories(${target}
@@ -195,8 +195,8 @@ target_link_libraries(${target}
 )
 
 if(USE_ORTOOLS)
-    target_compile_definitions(${target} 
-        PRIVATE 
+    target_compile_definitions(${target}
+        PRIVATE
         USE_ORTOOLS
     )
     target_include_directories(${target}
@@ -211,8 +211,8 @@ if(USE_ORTOOLS)
 endif()
 
 if(USE_XPRESS)
-    target_compile_definitions(${target} 
-        PRIVATE 
+    target_compile_definitions(${target}
+        PRIVATE
         USE_XPRESS
     )
     # target_include_directories(${target}
@@ -233,7 +233,7 @@ endif()
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
     message(STATUS "CODE COVERAGE")
-	set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_BUILD_TYPE "Debug")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
     include(cmake/CodeCoverage)
     CODE_COVERAGE(NAME code-coverage
