@@ -92,6 +92,12 @@ class DataTableTest {
     }
 
     @Test
+    void searchValueListEqualsTest() {
+        List<String> actual = dataTable.searchValueList("columnName1", Map.of("columnName2", List.of("value")));
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
     void searchFirstValueTest() {
         String expected = "value3";
         String actual = dataTable.searchFirstValue("columnName1", Map.of("columnName2", List.of("value4")));
@@ -137,39 +143,40 @@ class DataTableTest {
     void removeLinesTest() {
         // GIVEN
         // WHEN
-        List<List<String>> actual = dataTable.removeLines(Map.of("columnName2", List.of("value2"))).data();
+        dataTable.removeLines(Map.of("columnName2", List.of("value2")));
         // THEN
         List<List<String>> expected = List.of(List.of("value3", "value4"), List.of("value1", "value4"));
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
     void removeLinesNoMatchTest() {
         // GIVEN
         // WHEN
-        List<List<String>> actual = dataTable.removeLines(Map.of("columnName2", List.of("noMatch"))).data();
+        dataTable.removeLines(Map.of("columnName2", List.of("noMatch"))).data();
         // THEN
         List<List<String>> expected = List.of(row1, row2, row3);
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
     void removeMultipleLinesTest() {
         // GIVEN
         // WHEN
-        List<List<String>> actual = dataTable.removeLines(Map.of("columnName2", List.of("value4"))).data();
+        dataTable.removeLines(Map.of("columnName2", List.of("value4")));
         // THEN
         List<List<String>> expected = List.of(List.of("value1", "value2"));
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
     void removeAllLinesTest() {
         // GIVEN
+        DataTable otherDataTable = toDataTable(List.of("column"), List.of(List.of("value")));
         // WHEN
-        List<List<String>> actual = toDataTable(List.of("column"), List.of(List.of("value"))).removeLines(Map.of("column", List.of("value"))).data();
+        otherDataTable.removeLines(Map.of("column", List.of("value")));
         // THEN
-        assertTrue(actual.isEmpty());
+        assertTrue(otherDataTable.data().isEmpty());
     }
 
     @Test
@@ -179,10 +186,10 @@ class DataTableTest {
         List<String> row4 = List.of("value5", "value6");
         List<List<String>> content = List.of(row4);
         // WHEN
-        List<List<String>> actual = dataTable.addLines(header, content).data();
+        dataTable.addLines(header, content);
         // THEN
         List<List<String>> expected = List.of(row1, row2, row3, row4);
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
@@ -193,10 +200,10 @@ class DataTableTest {
         List<String> row5 = List.of("value7", "value8");
         List<List<String>> content = List.of(row4, row5);
         // WHEN
-        List<List<String>> actual = dataTable.addLines(header, content).data();
+        dataTable.addLines(header, content);
         // THEN
         List<List<String>> expected = List.of(row1, row2, row3, row4, row5);
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
@@ -206,10 +213,10 @@ class DataTableTest {
         List<String> row4 = List.of("value6", "value5");
         List<List<String>> content = List.of(row4);
         // WHEN
-        List<List<String>> actual = dataTable.addLines(header, content).data();
+        dataTable.addLines(header, content);
         // THEN
         List<List<String>> expected = List.of(row1, row2, row3, row4);
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
@@ -231,10 +238,10 @@ class DataTableTest {
         Map<String, List<String>> filter = Map.of("columnName2", List.of("value4"));
         List<String> values = List.of("value5");
         // WHEN
-        List<List<String>> actual = dataTable.replaceValues(selectedColumns, filter, values).data();
+        dataTable.replaceValues(selectedColumns, filter, values);
         // THEN
         List<List<String>> expected = List.of(row1, List.of("value3", "value5"), List.of("value1", "value5"));
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
@@ -244,10 +251,10 @@ class DataTableTest {
         Map<String, List<String>> filter = Map.of("columnName2", List.of("noMatch"));
         List<String> values = List.of("value5");
         // WHEN
-        List<List<String>> actual = dataTable.replaceValues(selectedColumns, filter, values).data();
+        dataTable.replaceValues(selectedColumns, filter, values);
         // THEN
         List<List<String>> expected = List.of(row1, row2, row3);
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
@@ -257,10 +264,10 @@ class DataTableTest {
         Map<String, List<String>> filter = Map.of("columnName2", List.of("value4"));
         List<String> values = List.of("value5", "value6");
         // WHEN
-        List<List<String>> actual = dataTable.replaceValues(selectedColumns, filter, values).data();
+        dataTable.replaceValues(selectedColumns, filter, values);
         // THEN
         List<List<String>> expected = List.of(row1, List.of("value5", "value6"), List.of("value5", "value6"));
-        assertEquals(expected, actual);
+        assertEquals(expected, dataTable.data());
     }
 
     @Test
