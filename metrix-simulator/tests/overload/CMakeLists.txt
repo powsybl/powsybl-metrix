@@ -16,3 +16,5 @@ set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
 metrix_test("preventive_with_difference" 3)
 metrix_test("difference_var" 1)
+metrix_test("contingency_LFPlus" 1)
+metrix_test("contingency_OPF" 1)
