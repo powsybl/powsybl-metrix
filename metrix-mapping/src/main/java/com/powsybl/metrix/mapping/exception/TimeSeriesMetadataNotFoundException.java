@@ -8,8 +8,10 @@
 package com.powsybl.metrix.mapping.exception;
 
 /**
+ * @deprecated This class should be in the user application.
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
+@Deprecated(since = "3.0.0")
 public class TimeSeriesMetadataNotFoundException extends RuntimeException {
     public TimeSeriesMetadataNotFoundException(String message) {
         super(message);

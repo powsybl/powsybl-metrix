@@ -7,6 +7,8 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.integration.type.MetrixComputationType;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
