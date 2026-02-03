@@ -632,7 +632,7 @@ class TimeSeriesDslLoaderTest {
             TimeSeries.createDouble("ts", index, 1d, 2d, 3d, 4d, 5d)
         );
 
-        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(substationFilteringScript).load(network, parameters, store, new DataTableStore(), null, null);
+        TimeSeriesMappingConfig config = new TimeSeriesDslLoader(substationFilteringScript).load(network, parameters, store, new DataTableStore(), new ScriptLogConfig(), null);
         assertThat(config.getGeneratorToTimeSeriesMapping()).hasSize(2);
     }
 }
