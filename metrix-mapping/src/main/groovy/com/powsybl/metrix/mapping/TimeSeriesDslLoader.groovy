@@ -114,15 +114,14 @@ class TimeSeriesDslLoader {
 
     static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore,
                      MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader,
-                     ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
+                     LogDslLoader logDslLoader, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = ComputationRange.check(computationRange, store)
         ComputationRange fullComputationRange = ComputationRange.check(store)
 
         // Context objects
         Map<Class<?>, Object> contextObjects = new HashMap<>()
         contextObjects.put(DataTableStore.class, dataTableStore)
-        contextObjects.put(ScriptLogConfig.class, scriptLogConfig)
-        LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig.withSection(MAPPING_SCRIPT_SECTION))
+        contextObjects.put(ScriptLogConfig.class, logDslLoader.getScriptLogConfig())
 
         // External Bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
@@ -306,7 +305,7 @@ class TimeSeriesDslLoader {
     protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
         Binding binding = new Binding()
         LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig.withSection( MAPPING_SCRIPT_SECTION))
-        bind(binding, network, store, dataTableStore, parameters, config, loader, scriptLogConfig, computationRange)
+        bind(binding, network, store, dataTableStore, parameters, config, loader, logDslLoader, computationRange)
 
         if (scriptLogConfig != null && scriptLogConfig.getWriter() != null) {
             binding.out = scriptLogConfig.getWriter()
