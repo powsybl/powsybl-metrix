@@ -179,10 +179,12 @@ public class MetrixInputAnalysis {
         if (dataTableStore != null) {
             contextObjects.put(DataTableStore.class, dataTableStore);
         }
-        if (this.scriptLogConfig != null && this.scriptLogConfig.getWriter() != null) {
-            contextObjects.put(Writer.class, this.scriptLogConfig.getWriter());
+        if (this.scriptLogConfig != null) {
+            contextObjects.put(ScriptLogConfig.class, this.scriptLogConfig);
+            if (this.scriptLogConfig.getWriter() != null) {
+                contextObjects.put(Writer.class, this.scriptLogConfig.getWriter());
+            }
         }
-        contextObjects.put(ScriptLogConfig.class, this.scriptLogConfig);
         return contextObjects;
     }
 
