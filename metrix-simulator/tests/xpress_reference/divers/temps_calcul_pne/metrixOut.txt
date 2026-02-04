@@ -384,14 +384,14 @@ Résultats en volume (MW)
 Volume de production =  247042.3937 MW
 Volume de délestage  =       7.5803 MW
 Résultats sur les couts
-Cout associé aux groupes       :     102.2092
+Cout associé aux groupes       :     102.2096
 Cout associé au délestage      :   83383.5310
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :   83485.7402
+Valeur de la fonction objectif :   83485.7406
 
 Des contraintes ont été détectées : 222
-Nb termes dans la matrice : 80878 (taille de la matrice : 80878)
+Nb termes dans la matrice : 80881 (taille de la matrice : 80881)
 Ajout de 137 contraintes dans le probleme
 Micro itération 3 (nombre de contraintes 156)
 -------------------- : 
@@ -402,14 +402,14 @@ Résultats en volume (MW)
 Volume de production =  247042.3937 MW
 Volume de délestage  =       7.5803 MW
 Résultats sur les couts
-Cout associé aux groupes       :     330.0592
+Cout associé aux groupes       :     330.0597
 Cout associé au délestage      :   83383.5310
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :   83713.5902
+Valeur de la fonction objectif :   83713.5907
 
 Des contraintes ont été détectées : 116
-Nb termes dans la matrice : 2562667 (taille de la matrice : 2562667)
+Nb termes dans la matrice : 2562806 (taille de la matrice : 2562806)
 Ajout de 123 contraintes dans le probleme
 Micro itération 4 (nombre de contraintes 281)
 -------------------- : 
@@ -420,13 +420,13 @@ Résultats en volume (MW)
 Volume de production =  247042.3937 MW
 Volume de délestage  =       7.5803 MW
 Résultats sur les couts
-Cout associé aux groupes       :     330.2412
+Cout associé aux groupes       :     330.2416
 Cout associé au délestage      :   83383.5310
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :   83713.7722
+Valeur de la fonction objectif :   83713.7726
 
 Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 4770699 (taille de la matrice : 4770699)
+Nb termes dans la matrice : 4770959 (taille de la matrice : 4770959)
 Ajout de 1 contraintes dans le probleme
 nombre max d iterations est atteint : 5

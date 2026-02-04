@@ -1,11 +1,24 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 package com.powsybl.metrix.integration.dataGenerator;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.chunk.MetrixChunkLogger;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
+import com.powsybl.metrix.integration.network.MetrixVariantProvider;
+import com.powsybl.metrix.integration.network.MetrixVariantsWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,18 +32,24 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class MetrixInputDataGenerator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixInputDataGenerator.class);
 
     private static final List<InputFile> FORT_FILE_NAME = Collections.singletonList(new InputFile("fort.json"));
     private static final String VARIANTES_FILE_NAME = "variantes.csv";
-    private static final String LOGS_FILE_NAME = "logs.txt";
     private static final String METRIX_COMMAND_ID = "metrix";
-    private static final String METRIX_PROGRAM = "metrix-simulator";
     private static final String METRIX_LOG_LEVEL_ARG = "--log-level=";
+    private static final String METRIX_PTDF_ARG = "--write-PTDF";
+    private static final String METRIX_LODF_ARG = "--write-LODF";
 
+    public static final String LOGS_FILE_NAME = "logs.txt";
     public static final String REMEDIAL_ACTION_FILE_NAME = "parades.csv";
+    public static final String PTDF_MATRIX_FILE_NAME = "PTDF_matrix.csv";
+    public static final String LODF_MATRIX_FILE_NAME = "LODF_matrix.csv";
 
     private final MetrixConfig config;
     private final Path workingDir;
@@ -63,34 +82,43 @@ public class MetrixInputDataGenerator {
                 defineVariantValue(variantProvider));
     }
 
-    public List<CommandExecution> generateMetrixInputData(Path remedialActionFile,
-                                                          MetrixVariantProvider variantProvider, Network network,
-                                                          ContingenciesProvider contingenciesProvider,
+    public List<CommandExecution> generateMetrixInputData(MetrixVariantProvider variantProvider,
+                                                          Network network,
                                                           MetrixParameters parameters,
-                                                          MetrixDslData metrixDslData) throws IOException {
+                                                          MetrixDslData metrixDslData,
+                                                          MetrixChunkParam metrixChunkParam) throws IOException {
         MetrixVariantProvider.Variants variants = defineVariantValue(variantProvider);
-        List<InputFile> inputFiles = inputFiles(remedialActionFile, variantProvider, network, contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
-        List<OutputFile> outputFiles = outputFiles(variants);
-        return commandExecutionFrom(command(config, variants, inputFiles, outputFiles));
+        List<InputFile> inputFiles = inputFiles(metrixChunkParam.remedialActionsFile, variantProvider, network, metrixChunkParam.contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
+        List<OutputFile> outputFiles = outputFiles(variants, metrixChunkParam.writePtdfMatrix, metrixChunkParam.writeLodfMatrix);
+        return commandExecutionFrom(command(variants, metrixChunkParam.writePtdfMatrix, metrixChunkParam.writeLodfMatrix, inputFiles, outputFiles));
     }
 
     private List<CommandExecution> commandExecutionFrom(Command command) {
-        // overload HADES_DIR variable with working dir
-        ImmutableMap<String, String> overloadedVariables = ImmutableMap.of("HADES_DIR", ".");
-        return Collections.singletonList(new CommandExecution(command, 1, 0, null, overloadedVariables));
+        return Collections.singletonList(new CommandExecution(command, 1, 0, null));
     }
 
-    private Command command(MetrixConfig config, MetrixVariantProvider.Variants variants, List<InputFile> inputFiles, List<OutputFile> outputFiles) {
+    private List<String> getArgs(MetrixVariantProvider.Variants variants, boolean writePtdf, boolean writeLodf) {
+        List<String> args = new ArrayList<>();
+        args.add(LOGS_FILE_NAME);
+        args.add(VARIANTES_FILE_NAME);
+        args.add(MetrixOutputData.FILE_NAME_PREFIX);
+        args.add(Integer.toString(variants.firstVariant()));
+        args.add(Integer.toString(variants.variantCount()));
+        args.add(logArg(config.logLevel()));
+        if (writePtdf) {
+            args.add(METRIX_PTDF_ARG);
+        }
+        if (writeLodf) {
+            args.add(METRIX_LODF_ARG);
+        }
+        return args;
+    }
+
+    private Command command(MetrixVariantProvider.Variants variants, boolean writePtdf, boolean writeLodf, List<InputFile> inputFiles, List<OutputFile> outputFiles) {
         return new SimpleCommandBuilder()
                 .id(METRIX_COMMAND_ID)
-                .program(METRIX_PROGRAM)
-                .args(LOGS_FILE_NAME,
-                        VARIANTES_FILE_NAME,
-                        MetrixOutputData.FILE_NAME_PREFIX,
-                        Integer.toString(variants.firstVariant()),
-                        Integer.toString(variants.variantCount()),
-                        logArg(config.logLevel())
-                )
+                .program(config.getCommand())
+                .args(getArgs(variants, writePtdf, writeLodf))
                 .inputFiles(inputFiles)
                 .outputFiles(outputFiles)
                 .build();
@@ -124,20 +152,25 @@ public class MetrixInputDataGenerator {
         copyInputFile(remedialActionFile, REMEDIAL_ACTION_FILE_NAME, inputFiles); // copy parades.csv
     }
 
-    private List<OutputFile> outputFiles(MetrixVariantProvider.Variants variants) {
+    private List<OutputFile> outputFiles(MetrixVariantProvider.Variants variants, boolean writePtdf, boolean writeLodf) {
         List<OutputFile> outputFiles = new ArrayList<>(1 + variants.count());
         for (int variantNum = variants.firstVariant(); variantNum <= variants.lastVariant(); variantNum++) {
             outputFiles.add(new OutputFile(MetrixOutputData.getFileName(variantNum)));
         }
         outputFiles.add(new OutputFile(LOGS_FILE_NAME));
+        if (writePtdf) {
+            outputFiles.add(new OutputFile(PTDF_MATRIX_FILE_NAME, FilePostProcessor.FILE_GZIP));
+        }
+        if (writeLodf) {
+            outputFiles.add(new OutputFile(LODF_MATRIX_FILE_NAME, FilePostProcessor.FILE_GZIP));
+        }
         return outputFiles;
     }
 
     private MetrixVariantProvider.Variants defineVariantValue(MetrixVariantProvider variantProvider) {
-        MetrixVariantProvider.Variants variants = variantProvider == null
+        return variantProvider == null
                 ? MetrixVariantProvider.Variants.empty()
                 : variantProvider.variants();
-        return variants;
     }
 
     private void writeFileData(MetrixVariantProvider variantProvider,
@@ -152,11 +185,11 @@ public class MetrixInputDataGenerator {
         writeNetworkInLogger(metrixInputData, config.isConstantLossFactor());
     }
 
-    protected void writeNetworkInLogger(Supplier<MetrixInputData> metrixInputData, boolean angleDePerteFixe) throws IOException {
-        metrixChunkLogger.writeNetwork(() -> {
+    protected void writeNetworkInLogger(Supplier<MetrixInputData> metrixInputData, boolean isConstantLossFactor) throws IOException {
+        metrixChunkLogger.writeNetwork(() ->
             // write DIE
-            metrixInputData.get().write(workingDir, true, angleDePerteFixe);
-        });
+            metrixInputData.get().write(workingDir, true, isConstantLossFactor)
+        );
     }
 
     protected Supplier<MetrixInputData> createMetrixInputData(MetrixParameters parameters, MetrixDslData metrixDslData, MetrixNetwork metrixNetwork) {
@@ -182,7 +215,7 @@ public class MetrixInputDataGenerator {
     }
 
     public interface FileSystemUtils {
-        final FileSystemUtils DEFAULT = new FileSystemUtils() {
+        FileSystemUtils DEFAULT = new FileSystemUtils() {
             @Override
             public boolean isRegularFile(Path p) {
                 return Files.isRegularFile(p);

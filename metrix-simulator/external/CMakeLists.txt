@@ -32,15 +32,13 @@ include(ExternalProject)
 include(GetPatchCommand)
 include(CloneUrl)
 
-set(suitesparse_version  5.4.0)
-set(suitesparse_name     SuiteSparse-${suitesparse_version}.tar.gz)
-set(suitesparse_prefix_url http://faculty.cse.tamu.edu/davis/SuiteSparse)
-set(suitesparse_url      ${suitesparse_prefix_url}/${suitesparse_name})
-set(suitesparse_md5      4A6D4E74FC44C503F52996AE95CAD03A)
+set(suitesparse_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
+set(suitesparse_tag_version v5.4.0)
 
-set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/suitesparse)
-find_package(SuiteSparse QUIET)
-unset(SUITESPARSE_HOME)
+if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  get_url(NAME suitesparse URL ${suitesparse_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  set(suitesparse_url ${SUITEPARSE_URL})
+endif()
 
 GetPatchCommand(${CMAKE_CURRENT_SOURCE_DIR} suitesparse)
 if(SuiteSparse_FOUND)
@@ -49,13 +47,12 @@ if(SuiteSparse_FOUND)
 else()
   ExternalProject_Add(suitesparse
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/suitesparse
-    DOWNLOAD_DIR        ${CMAKE_CURRENT_SOURCE_DIR}/suitesparse
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/suitesparse-stamp
     SOURCE_DIR          ${DOWNLOAD_DIR}/suitesparse
     BINARY_DIR          ${DOWNLOAD_DIR}/suitesparse-build
-    URL                 ${suitesparse_url}
-    URL_MD5             ${suitesparse_md5}
+    GIT_REPOSITORY      ${suitesparse_url}
+    GIT_TAG             refs/tags/${suitesparse_tag_version}
     PATCH_COMMAND       ${suitesparse_patch}
 
     CMAKE_CACHE_ARGS    -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
@@ -67,14 +64,15 @@ else()
   set(SUITESPARSE_HOME ${install_dir})
 endif()
 
-set(sirius_solver_url https://github.com/jdarlay/sirius-solver)
-set(sirius_tag "metrix-integration-v0.1")
-set(sirius_asset "ubuntu-20.04_sirius-solver.zip")
+set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
+
+if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  set(sirius_solver_url ${SIRIUS_URL})
+endif()
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 find_package(sirius_solver QUIET)
-unset(sirius_solver_ROOT)
-
 if(sirius_solver_FOUND)
   message(STATUS "Sirius solver already found")
 else()
@@ -82,42 +80,16 @@ else()
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/sirius_solver-stamp
-    SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
+    SOURCE_DIR          ${DOWNLOAD_DIR}/sirius_solver
     BINARY_DIR          ${DOWNLOAD_DIR}/sirius_solver-build
-    URL                 ${sirius_solver_url}/releases/download/${sirius_tag}/${sirius_asset}
-    CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       ""
-    INSTALL_COMMAND     ""
+    GIT_REPOSITORY      ${sirius_solver_url}
+    GIT_TAG             origin/metrix
+
+    CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
+    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
     )
   ExternalProject_Get_Property(sirius_solver install_dir)
   set(sirius_solver_ROOT ${install_dir})
   set(sirius_solver_static_ROOT ${install_dir})
-endif()
-
-set(ortools_url https://github.com/rte-france/or-tools)
-set(ortools_tag v9.5-rte2.0)
-
-option(USE_XPRESS "Use XPRESS in ortools" OFF)
-set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix.zip")
-
-set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ortools)
-find_package(ortools QUIET)
-unset(ortools_ROOT)
-
-if(ortools_FOUND)
-  message(STATUS "Ortools already found")
-else()
-  ExternalProject_Add(ortools
-    INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/ortools
-    TMP_DIR             ${TMP_DIR}
-    STAMP_DIR           ${DOWNLOAD_DIR}/ortools-stamp
-    SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/ortools
-    BINARY_DIR          ${DOWNLOAD_DIR}/ortools-build
-    URL                 ${ortools_url}/releases/download/${ortools_tag}/${ortools_asset}
-    CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       ""
-    INSTALL_COMMAND     ""
-    )
-  ExternalProject_Get_Property(ortools install_dir)
-  set(ortools_ROOT ${install_dir})
 endif()

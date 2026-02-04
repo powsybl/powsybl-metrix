@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 package com.powsybl.metrix.integration.network;
 
 import com.powsybl.iidm.network.*;
@@ -7,8 +14,10 @@ import com.powsybl.timeseries.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public final class MetrixNetworkPoint {
 
     private static final String ID_TO_CLOSE = "+";
@@ -25,7 +34,7 @@ public final class MetrixNetworkPoint {
         List<DoubleTimeSeries> doubleTimeSeries = timeSeries.stream()
                 .filter(ts -> ts.getMetadata().getDataType() == TimeSeriesDataType.DOUBLE)
                 .map(ts -> (DoubleTimeSeries) ts)
-                .collect(Collectors.toList());
+                .toList();
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries);
         addTimeSeriesValues(version, point, isCurativeTimeSeriesAdding, defaultId, store, networkPoint);
         if (isCurativeMode) {
@@ -36,7 +45,7 @@ public final class MetrixNetworkPoint {
         List<StringTimeSeries> stringTimeSeries = timeSeries.stream()
                 .filter(ts -> isCurativeMode && ts.getMetadata().getDataType() == TimeSeriesDataType.STRING && ts.getMetadata().getName().compareTo("TOPOLOGY_" + defaultId) == 0)
                 .map(ts -> (StringTimeSeries) ts)
-                .collect(Collectors.toList());
+                .toList();
         addTopologyTimeSeries(point, stringTimeSeries, networkPoint);
     }
 
@@ -65,13 +74,13 @@ public final class MetrixNetworkPoint {
                 getSuffix(isCurativeMode, defaultId)
         ));
 
-        networkPoint.getTwoWindingsTransformerStream().filter(transformer -> transformer.getPhaseTapChanger() != null).forEach(transformer -> addTimeSeriesToPhaseTapChanger(transformer, store, version, point,
+        networkPoint.getTwoWindingsTransformerStream().filter(PhaseTapChangerHolder::hasPhaseTapChanger).forEach(transformer -> addTimeSeriesToPhaseTapChanger(transformer, store, version, point,
                 isCurativeMode ? "PST_CUR_TAP_" : "PST_TAP_",
                 getSuffix(isCurativeMode, defaultId)
         ));
     }
 
-    private static double getTimeSeriesValue(Identifiable identifiable, ReadOnlyTimeSeriesStore store, int version, int point, String prefix, String suffix) {
+    private static double getTimeSeriesValue(Identifiable<?> identifiable, ReadOnlyTimeSeriesStore store, int version, int point, String prefix, String suffix) {
         AtomicReference<Double> value = new AtomicReference<>(Double.NaN);
         String timeSeriesName = prefix + identifiable.getId() + suffix;
         if (store.timeSeriesExists(timeSeriesName)) {
@@ -116,20 +125,18 @@ public final class MetrixNetworkPoint {
         if (stringTimeSeries.isEmpty()) {
             return;
         }
-        StringTimeSeries topologyTimeSeries = stringTimeSeries.get(0);
+        StringTimeSeries topologyTimeSeries = stringTimeSeries.getFirst();
         String[] values = topologyTimeSeries.toArray();
         String value = values[point];
         String[] ids = value.split(ID_SEPARATOR);
-        for (int i = 0; i < ids.length; i++) {
-            String id = ids[i];
+        for (String id : ids) {
             boolean isToOpen = true;
             if (id.startsWith(ID_TO_CLOSE)) {
                 isToOpen = false;
                 id = id.substring(1);
             }
-            Identifiable identifiable = networkPoint.getIdentifiable(id);
-            if (identifiable instanceof Branch) {
-                Branch branch = (Branch) identifiable;
+            Identifiable<?> identifiable = networkPoint.getIdentifiable(id);
+            if (identifiable instanceof Branch<?> branch) {
                 if (isToOpen) {
                     branch.getTerminal1().disconnect();
                     branch.getTerminal2().disconnect();
@@ -137,8 +144,7 @@ public final class MetrixNetworkPoint {
                     branch.getTerminal1().connect();
                     branch.getTerminal2().connect();
                 }
-            } else if (identifiable instanceof Switch) {
-                Switch sw = (Switch) identifiable;
+            } else if (identifiable instanceof Switch sw) {
                 sw.setOpen(isToOpen);
             }
         }

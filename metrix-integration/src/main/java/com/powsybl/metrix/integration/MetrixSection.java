@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.ImmutableMap;
@@ -14,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * Created by marifunf on 23/06/17.
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class MetrixSection {
 
@@ -69,8 +68,7 @@ public class MetrixSection {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MetrixSection) {
-            MetrixSection other = (MetrixSection) obj;
+        if (obj instanceof MetrixSection other) {
             return id.equals(other.id) && maxFlowN == other.maxFlowN && coefFlowList.equals(other.coefFlowList);
         }
         return false;

@@ -3,14 +3,14 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.commons.json.JsonUtil;
-import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.log.Log;
+import com.powsybl.metrix.mapping.log.TimeSeriesLoggerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,11 +24,17 @@ import java.nio.file.Path;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.powsybl.metrix.mapping.TimeSeriesConstants.CSV_SEPARATOR;
+import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.CSV_SEPARATOR;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMappingLogger {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingLogger.class);
@@ -42,7 +48,7 @@ public class TimeSeriesMappingLogger {
     public void printLogSynthesis() {
         Map<String, AtomicInteger> labelCount = new HashMap<>();
         for (Log log : logs) {
-            AtomicInteger count = labelCount.computeIfAbsent(log.getLabel(), k -> new AtomicInteger(0));
+            AtomicInteger count = labelCount.computeIfAbsent(log.label(), k -> new AtomicInteger(0));
             count.incrementAndGet();
         }
         labelCount.forEach((label, count) -> LOGGER.error("{} {}", count, label));
@@ -101,39 +107,39 @@ public class TimeSeriesMappingLogger {
         try {
             TimeSeriesLoggerConfig config = new TimeSeriesLoggerConfig(separator, DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(zoneId));
             writer.write("Type");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Label");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Time");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Variant");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Version");
-            writer.write(config.separator);
+            writer.write(config.separator());
             writer.write("Message");
             writer.newLine();
             for (Log log : logs) {
-                int point = log.getPoint();
+                int point = log.point();
                 String pointLabel = "";
                 String dateLabel = "";
                 if (point == TimeSeriesMapper.CONSTANT_VARIANT_ID) {
                     pointLabel = "all";
                 } else if (point != Integer.MAX_VALUE) {
                     pointLabel = Integer.toString(point + 1);
-                    ZonedDateTime dateTime = ZonedDateTime.ofInstant(log.getIndex().getInstantAt(point), zoneId);
-                    dateLabel = dateTime.format(config.dateTimeFormatter);
+                    ZonedDateTime dateTime = ZonedDateTime.ofInstant(log.index().getInstantAt(point), zoneId);
+                    dateLabel = dateTime.format(config.dateTimeFormatter());
                 }
-                writer.write(log.getLevel().name());
-                writer.write(config.separator);
-                writer.write(log.getLabel());
-                writer.write(config.separator);
+                writer.write(log.level().name());
+                writer.write(config.separator());
+                writer.write(log.label());
+                writer.write(config.separator());
                 writer.write(dateLabel);
-                writer.write(config.separator);
+                writer.write(config.separator());
                 writer.write(pointLabel);
-                writer.write(config.separator);
-                writer.write(Integer.toString(log.getVersion()));
-                writer.write(config.separator);
-                writer.write(log.getMessage());
+                writer.write(config.separator());
+                writer.write(Integer.toString(log.version()));
+                writer.write(config.separator());
+                writer.write(log.message());
                 writer.newLine();
             }
         } catch (IOException e) {

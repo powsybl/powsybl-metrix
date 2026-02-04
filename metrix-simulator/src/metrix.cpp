@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
             time(&lect);
 
             config::VariantConfiguration variant_config(input_config.filepathVariant());
-
+            
             // check first variante
             if (!variant_config.variante(input_config.firstVariant())) {
                 throw ErrorI(err::ioDico().msg("ERRPremiereVarIntrouvable", input_config.filepathVariant()));
@@ -148,7 +148,6 @@ int main(int argc, char* argv[])
             // of quadripoles
             MapQuadinVar variantesOrdonnees;
             res.updateVariants(variantesOrdonnees, variant_config);
-
             time(&end);
             dif = difftime(end, lect);
 
