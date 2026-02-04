@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.tools;
 
 import com.google.auto.service.AutoService;
@@ -13,42 +12,59 @@ import com.google.common.base.Stopwatch;
 import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
-import com.powsybl.iidm.import_.ImportConfig;
-import com.powsybl.iidm.import_.Importers;
+import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.commons.ComputationRange;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.*;
-import com.powsybl.metrix.mapping.timeseries.CalculatedTimeSeriesStore;
-import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.commons.data.timeseries.CalculatedTimeSeriesStore;
+import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.mapping.balance.BalanceSummary;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
+import com.powsybl.metrix.mapping.observer.EquipmentGroupTimeSeriesWriterObserver;
+import com.powsybl.metrix.mapping.observer.EquipmentTimeSeriesWriterObserver;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigStatusCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigSynthesisCsvWriter;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreAggregator;
 import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.tools.Command;
 import com.powsybl.tools.Tool;
 import com.powsybl.tools.ToolRunningContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.io.FileSystem;
 import org.codehaus.groovy.runtime.StackTraceUtils;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.UncheckedIOException;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 @AutoService(Tool.class)
 public class MappingTool implements Tool {
 
     private static final char SEPARATOR = ';';
+    private static final String MAPPING_SYNTHESIS_DIR = "mapping-synthesis-dir";
+    private static final String CHECK_EQUIPMENT_TIME_SERIES = "check-equipment-time-series";
+    private static final String CHECK_VERSIONS = "check-versions";
+    private static final String FIRST_VARIANT = "first-variant";
+    private static final String MAX_VARIANT_COUNT = "max-variant-count";
 
     @Override
     public Command getCommand() {
@@ -65,7 +81,7 @@ public class MappingTool implements Tool {
 
             @Override
             public String getDescription() {
-                return "Time serie to network mapping tool";
+                return "Time series to network mapping tool";
             }
 
             @Override
@@ -93,17 +109,17 @@ public class MappingTool implements Tool {
                         .required()
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("mapping-synthesis-dir")
+                        .longOpt(MAPPING_SYNTHESIS_DIR)
                         .desc("output directory to write mapping synthesis files")
                         .hasArg()
                         .argName("DIR")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("check-equipment-time-series")
+                        .longOpt(CHECK_EQUIPMENT_TIME_SERIES)
                         .desc("check equipment level time series consistency")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("check-versions")
+                        .longOpt(CHECK_VERSIONS)
                         .desc("version list to check, all if option is not set")
                         .hasArg()
                         .argName("VERSION1,VERSION2,...")
@@ -127,13 +143,13 @@ public class MappingTool implements Tool {
                         .argName("DIR")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("first-variant")
+                        .longOpt(FIRST_VARIANT)
                         .desc("first variant to simulate")
                         .hasArg()
                         .argName("COUNT")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("max-variant-count")
+                        .longOpt(MAX_VARIANT_COUNT)
                         .desc("maximum number of variants simulated")
                         .hasArg()
                         .argName("COUNT")
@@ -172,22 +188,39 @@ public class MappingTool implements Tool {
         return file;
     }
 
+    private Writer getWriter(Path filePath) {
+        if (filePath != null) {
+            try {
+                return Files.newBufferedWriter(filePath, StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        }
+        return null;
+    }
+
+    private ReadOnlyTimeSeriesStoreAggregator getStoreAggregator(Map<String, NodeCalc> nodes, ReadOnlyTimeSeriesStore store) {
+        List<ReadOnlyTimeSeriesStore> stores = new ArrayList<>(2);
+        stores.add(new CalculatedTimeSeriesStore(nodes, store));
+        stores.add(store);
+        return new ReadOnlyTimeSeriesStoreAggregator(stores);
+    }
+
     @Override
-    public void run(CommandLine line, ToolRunningContext context) throws Exception {
+    public void run(CommandLine line, ToolRunningContext context) {
         try {
             Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
             Path mappingFile = context.getFileSystem().getPath(line.getOptionValue("mapping-file"));
-            List<String> tsCsvs = null;
-            tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).collect(Collectors.toList());
+            List<String> tsCsvs = Arrays.stream(line.getOptionValue("time-series").split(",")).map(String::valueOf).toList();
             if (tsCsvs.isEmpty()) {
                 throw new IllegalArgumentException("Space list is empty");
             }
-            Path mappingSynthesisDir = getDir(line, context, "mapping-synthesis-dir");
+            Path mappingSynthesisDir = getDir(line, context, MAPPING_SYNTHESIS_DIR);
             Path mappingStatusFile = getFile(line, context, "mapping-status-file");
-            boolean checkEquipmentTimeSeries = line.hasOption("check-equipment-time-series");
+            boolean checkEquipmentTimeSeries = line.hasOption(CHECK_EQUIPMENT_TIME_SERIES);
             TreeSet<Integer> versions = null;
-            if (line.hasOption("check-versions")) {
-                versions = Arrays.stream(line.getOptionValue("check-versions").split(",")).map(Integer::valueOf).collect(Collectors.toCollection(TreeSet::new));
+            if (line.hasOption(CHECK_VERSIONS)) {
+                versions = Arrays.stream(line.getOptionValue(CHECK_VERSIONS).split(",")).map(Integer::valueOf).collect(Collectors.toCollection(TreeSet::new));
                 if (versions.isEmpty()) {
                     throw new IllegalArgumentException("Version list is empty");
                 }
@@ -195,84 +228,132 @@ public class MappingTool implements Tool {
             if (checkEquipmentTimeSeries && versions == null) {
                 throw new IllegalArgumentException("check-versions has to be set when check-equipment-time-series is set");
             }
-            Path networkOutputDir = getDir(line, context, "network-output-dir");
-            int firstVariant = line.hasOption("first-variant") ? Integer.parseInt(line.getOptionValue("first-variant")) : 0;
-            int maxVariantCount = line.hasOption("max-variant-count") ? Integer.parseInt(line.getOptionValue("max-variant-count")) : Integer.MAX_VALUE;
-            Path equipmentTimeSeriesDir = getDir(line, context, "equipment-time-series-dir");
-            boolean ignoreLimits = line.hasOption("ignore-limits");
-            boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
+            int firstVariant = line.hasOption(FIRST_VARIANT) ? Integer.parseInt(line.getOptionValue(FIRST_VARIANT)) : 0;
+            int maxVariantCount = line.hasOption(MAX_VARIANT_COUNT) ? Integer.parseInt(line.getOptionValue(MAX_VARIANT_COUNT)) : Integer.MAX_VALUE;
 
             InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
-            store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).collect(Collectors.toList()));
+            store.importTimeSeries(tsCsvs.stream().map(context.getFileSystem()::getPath).toList());
 
             context.getOutputStream().println("Loading case...");
-            Network network = Importers.loadNetwork(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
+            Network network = Network.read(caseFile, context.getShortTimeExecutionComputationManager(), ImportConfig.load(), null);
 
             context.getOutputStream().println("Mapping time series to case...");
             TimeSeriesMappingConfig config;
             MappingParameters mappingParameters = MappingParameters.load();
             ComputationRange computationRange = new ComputationRange(versions != null ? versions : store.getTimeSeriesDataVersions(), firstVariant, maxVariantCount);
-            try (Reader reader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
+            TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+            try (Reader reader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8);
+                 Writer scriptLogWriter = mappingSynthesisDir != null ? getWriter(mappingSynthesisDir.resolve("script-logs.csv")) : null) {
                 TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString());
                 Stopwatch stopwatch = Stopwatch.createStarted();
-                config = dslLoader.load(network, mappingParameters, store, computationRange);
+                network.addListener(new NetworkTopographyChangeNotifier("extern tool", logger));
+                config = dslLoader.load(network, mappingParameters, store, new DataTableStore(), scriptLogWriter, computationRange);
                 context.getOutputStream().println("Mapping done in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
             }
 
-            if (!config.isMappingComplete()) {
+            if (!new TimeSeriesMappingConfigChecker(config).isMappingComplete()) {
                 context.getErrorStream().println("Mapping is incomplete");
             }
 
-            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(config, network);
-            csvWriter.printMappingSynthesis(context.getOutputStream());
+            // Local parameters
+            LocalParameters localParameters = new LocalParameters(config, store, network, versions);
+
+            // Mapping Synthesis
+            writeMappingSynthesis(context, localParameters, computationRange, mappingParameters, mappingSynthesisDir);
+
+            // Mapping Status file
+            writeMappingStatusFile(mappingStatusFile, context, localParameters);
+
+            // Computing equipment time series
+            writeEquipmentTimeSeries(line, context, localParameters, mappingParameters, logger);
 
             if (mappingSynthesisDir != null) {
-                context.getOutputStream().println("Writing mapping synthesis to " + mappingSynthesisDir + "...");
-                csvWriter.writeMappingSynthesis(mappingSynthesisDir);
-
-                List<ReadOnlyTimeSeriesStore> stores = new ArrayList<>(2);
-                stores.add(new CalculatedTimeSeriesStore(config.getTimeSeriesNodes(), store));
-                stores.add(store);
-                ReadOnlyTimeSeriesStoreAggregator storeAggregator = new ReadOnlyTimeSeriesStoreAggregator(stores);
-                csvWriter.writeMappingCsv(mappingSynthesisDir, storeAggregator, computationRange, mappingParameters);
-                csvWriter.writeMappingSynthesisCsv(mappingSynthesisDir);
-            }
-
-            if (mappingStatusFile != null) {
-                context.getOutputStream().println("Writing time series mapping status to " + mappingStatusFile + "...");
-                csvWriter.writeTimeSeriesMappingStatus(store, mappingStatusFile);
-            }
-
-            if (checkEquipmentTimeSeries) {
-                context.getOutputStream().println("Computing equipment time series...");
-
-                TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-                BalanceSummary balanceSummary = new BalanceSummary(context.getOutputStream());
-                List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
-                observers.add(balanceSummary);
-                if (networkOutputDir != null) {
-                    DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir, network.getId(), null);
-                    observers.add(new NetworkPointWriter(network, dataSource));
-                }
-                if (equipmentTimeSeriesDir != null) {
-                    observers.add(new EquipmentTimeSeriesWriter(equipmentTimeSeriesDir));
-                }
-
-                TimeSeriesMapper mapper = new TimeSeriesMapper(config, network, logger);
-                TimeSeriesIndex index = config.checkIndexUnicity(store);
-                int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
-                TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(versions, Range.closed(firstVariant, lastPoint), ignoreLimits,
-                        ignoreEmptyFilter, true,  mappingParameters.getToleranceThreshold());
-                mapper.mapToNetwork(store, parameters, observers);
-
-                if (mappingSynthesisDir != null) {
-                    balanceSummary.writeCsv(mappingSynthesisDir, SEPARATOR);
-                    logger.writeCsv(mappingSynthesisDir.resolve("mapping-logs.csv"));
-                }
+                logger.writeCsv(mappingSynthesisDir.resolve("mapping-logs.csv"));
             }
         } catch (Exception e) {
             Throwable rootCause = StackTraceUtils.sanitizeRootCause(e);
             rootCause.printStackTrace(context.getErrorStream());
         }
+    }
+
+    private void writeMappingSynthesis(ToolRunningContext context, LocalParameters localParameters,
+                                       ComputationRange computationRange, MappingParameters mappingParameters,
+                                       Path mappingSynthesisDir) {
+
+        TimeSeriesMappingConfigSynthesisCsvWriter csvSynthesisWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(localParameters.config());
+        csvSynthesisWriter.printMappingSynthesis(context.getOutputStream());
+
+        if (mappingSynthesisDir != null) {
+            context.getOutputStream().println("Writing mapping synthesis to " + mappingSynthesisDir + "...");
+            csvSynthesisWriter.writeMappingSynthesis(mappingSynthesisDir);
+
+            ReadOnlyTimeSeriesStore storeAggregator = getStoreAggregator(localParameters.config().getTimeSeriesNodes(), localParameters.store());
+            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(localParameters.config(), localParameters.network(), storeAggregator, computationRange, mappingParameters.getWithTimeSeriesStats());
+            csvWriter.writeMappingCsv(mappingSynthesisDir);
+            csvSynthesisWriter.writeMappingSynthesisCsv(mappingSynthesisDir);
+        }
+    }
+
+    private void writeMappingStatusFile(Path mappingStatusFile, ToolRunningContext context,
+                                        LocalParameters localParameters) throws IOException {
+
+        if (mappingStatusFile != null) {
+            context.getOutputStream().println("Writing time series mapping status to " + mappingStatusFile + "...");
+            new TimeSeriesMappingConfigStatusCsvWriter(localParameters.config(), localParameters.store()).writeTimeSeriesMappingStatus(mappingStatusFile);
+        }
+    }
+
+    private void writeEquipmentTimeSeries(CommandLine line, ToolRunningContext context,
+                                          LocalParameters localParameters,
+                                          MappingParameters mappingParameters,
+                                          TimeSeriesMappingLogger logger) throws IOException {
+
+        Path mappingSynthesisDir = getDir(line, context, MAPPING_SYNTHESIS_DIR);
+        Path equipmentTimeSeriesDir = getDir(line, context, "equipment-time-series-dir");
+        Path networkOutputDir = getDir(line, context, "network-output-dir");
+        boolean checkEquipmentTimeSeries = line.hasOption(CHECK_EQUIPMENT_TIME_SERIES);
+        int firstVariant = line.hasOption(FIRST_VARIANT) ? Integer.parseInt(line.getOptionValue(FIRST_VARIANT)) : 0;
+        int maxVariantCount = line.hasOption(MAX_VARIANT_COUNT) ? Integer.parseInt(line.getOptionValue(MAX_VARIANT_COUNT)) : Integer.MAX_VALUE;
+        boolean ignoreLimits = line.hasOption("ignore-limits");
+        boolean ignoreEmptyFilter = line.hasOption("ignore-empty-filter");
+
+        // Local parameters
+
+        if (checkEquipmentTimeSeries) {
+            context.getOutputStream().println("Computing equipment time series...");
+            TimeSeriesIndex index = new TimeSeriesMappingConfigTableLoader(localParameters.config(), localParameters.store()).checkIndexUnicity();
+
+            int lastPoint = Math.min(firstVariant + maxVariantCount, index.getPointCount()) - 1;
+            Range<Integer> range = Range.closed(firstVariant, lastPoint);
+
+            BalanceSummary balanceSummary = new BalanceSummary(context.getOutputStream());
+            List<TimeSeriesMapperObserver> observers = new ArrayList<>(1);
+            observers.add(balanceSummary);
+            if (networkOutputDir != null) {
+                String cleanedNetworkId = localParameters.network().getId();
+                for (char c : FileSystem.getCurrent().getIllegalFileNameChars()) {
+                    cleanedNetworkId = cleanedNetworkId.replace(c, '_');
+                }
+                DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(cleanedNetworkId), null);
+                observers.add(new NetworkPointWriter(localParameters.network(), dataSource));
+            }
+            if (equipmentTimeSeriesDir != null) {
+                observers.add(new EquipmentTimeSeriesWriterObserver(localParameters.network(), localParameters.config(), maxVariantCount, range, equipmentTimeSeriesDir));
+                observers.add(new EquipmentGroupTimeSeriesWriterObserver(localParameters.network(), localParameters.config(), maxVariantCount, range, equipmentTimeSeriesDir));
+            }
+
+            TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(localParameters.versions(), range, ignoreLimits,
+                ignoreEmptyFilter, false, mappingParameters.getToleranceThreshold());
+            TimeSeriesMapper mapper = new TimeSeriesMapper(localParameters.config(), parameters, localParameters.network(), logger);
+            mapper.mapToNetwork(localParameters.store(), observers);
+
+            if (mappingSynthesisDir != null) {
+                balanceSummary.writeCsv(mappingSynthesisDir, SEPARATOR);
+            }
+        }
+    }
+
+    private record LocalParameters(TimeSeriesMappingConfig config, InMemoryTimeSeriesStore store, Network network,
+                                   TreeSet<Integer> versions) {
     }
 }

@@ -10,8 +10,7 @@
 # 
 
 function(check_file file expected_file)
-    configure_file(${file} ${file} NEWLINE_STYLE LF) # required for windows ctest
-    execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files ${file} ${expected_file}
+    execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files --ignore-eol ${file} ${expected_file}
         RESULT_VARIABLE compare_result)
     if(compare_result)
         MESSAGE(FATAL_ERROR "File " ${file} " is different from expected file " ${expected_file})
@@ -39,17 +38,15 @@ function(check_files files_ expected_files_)
 endfunction()
 
 if (WITH_LODF_PTDF)
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF  RESULT_VARIABLE cmd_result)
 else()
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  RESULT_VARIABLE cmd_result)
 endif()
-
 if(cmd_result)
     message(FATAL_ERROR "Error running: ${EXE} returns " ${cmd_result})
 endif()
 file(GLOB test_output_files ${WORKING_DIR}/out_*)
 file(GLOB expected_output_files ${EXPECTED_DIR}/out_*)
-
 check_files("${test_output_files}" "${expected_output_files}")
 
 if(ALL_RESULTS)

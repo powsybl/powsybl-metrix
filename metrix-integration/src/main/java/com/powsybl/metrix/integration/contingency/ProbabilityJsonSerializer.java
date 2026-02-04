@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration.contingency;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -22,7 +21,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.IOException;
 
 /**
- * @author Paul Bui-Quang <paul.buiquang at rte-france.com>
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 @AutoService(ExtensionJsonSerializer.class)
 public class ProbabilityJsonSerializer implements ExtensionJsonSerializer<Contingency, Probability> {
@@ -43,14 +42,14 @@ public class ProbabilityJsonSerializer implements ExtensionJsonSerializer<Contin
         Double base = null;
         String ts = null;
         while (parser.nextToken() != JsonToken.END_OBJECT) {
-            if (parser.getCurrentName().equals("probabilityBase")) {
+            if (parser.currentName().equals("probabilityBase")) {
                 parser.nextToken();
                 base = parser.readValueAs(Double.class);
-            } else if (parser.getCurrentName().equals("probabilityTs")) {
+            } else if (parser.currentName().equals("probabilityTs")) {
                 parser.nextToken();
                 ts = parser.readValueAs(String.class);
             } else {
-                throw new PowsyblException("Unexpected field: " + parser.getCurrentName());
+                throw new PowsyblException("Unexpected field: " + parser.currentName());
             }
         }
 

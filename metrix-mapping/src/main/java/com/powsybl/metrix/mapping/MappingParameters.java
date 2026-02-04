@@ -3,19 +3,17 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableMap;
-import com.powsybl.commons.config.ModuleConfig;
 import com.powsybl.commons.config.PlatformConfig;
 
 import java.util.Objects;
 
 /**
- * Created by funfrockmar on 16/06/20.
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class MappingParameters {
 
@@ -23,13 +21,9 @@ public class MappingParameters {
 
     public static MappingParameters load() {
         MappingParameters parameters = new MappingParameters();
-        if (PlatformConfig.defaultConfig().moduleExists("mapping-default-parameters")) {
-            ModuleConfig config = PlatformConfig.defaultConfig().getModuleConfig("mapping-default-parameters");
-            if (config != null) {
-                parameters.setToleranceThreshold(config.getOptionalFloatProperty("tolerance-threshold")
-                        .orElseGet(() -> config.getFloatProperty("toleranceThreshold", DEFAULT_TOLERANCE_THRESHOLD)));
-            }
-        }
+        PlatformConfig.defaultConfig().getOptionalModuleConfig("mapping-default-parameters")
+                .ifPresent(config -> parameters.setToleranceThreshold(config.getOptionalFloatProperty("tolerance-threshold")
+                        .orElseGet(() -> config.getFloatProperty("toleranceThreshold", DEFAULT_TOLERANCE_THRESHOLD))));
         return parameters;
     }
 
@@ -71,8 +65,7 @@ public class MappingParameters {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof MappingParameters) {
-            MappingParameters other = (MappingParameters) obj;
+        if (obj instanceof MappingParameters other) {
             return toleranceThreshold == other.toleranceThreshold && withTimeSeriesStats == other.withTimeSeriesStats;
         }
         return false;

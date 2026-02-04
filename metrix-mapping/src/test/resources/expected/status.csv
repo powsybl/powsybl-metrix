@@ -1,8 +1,8 @@
-timeSeries;spaces;always zero;mapped
-Pmax;;true
-targetP_14_ts2;;true
-targetP_14_ts1;;true
-Pmin;;true
-targetP_12_13;;true
-targetP_13;;true
-targetP_14_ts3;;true
+timeSeries;mapped
+Pmax;true
+targetP_14_ts2;true
+targetP_14_ts1;true
+Pmin;true
+targetP_12_13;true
+targetP_13;true
+targetP_14_ts3;true

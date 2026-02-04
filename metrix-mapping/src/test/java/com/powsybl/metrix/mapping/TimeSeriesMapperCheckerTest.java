@@ -3,35 +3,53 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.MemDataSource;
+import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.Substation;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
-import com.powsybl.iidm.xml.NetworkXml;
-import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.balance.BalanceSummary;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.TreeSet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TimeSeriesMapperCheckerTest {
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
+class TimeSeriesMapperCheckerTest {
 
     private static final String INFO = "INFO";
 
@@ -57,7 +75,7 @@ public class TimeSeriesMapperCheckerTest {
 
     private ReadOnlyTimeSeriesStore store;
 
-    private MappingParameters mappingParameters = MappingParameters.load();
+    private final MappingParameters mappingParameters = MappingParameters.load();
 
     private final String emptyScript = String.join(System.lineSeparator(),
             "mapToLoads {",
@@ -224,11 +242,23 @@ public class TimeSeriesMapperCheckerTest {
             "    filter { hvdcLine.id == 'HVDC2' }",
             "}");
 
+    private final String phaseTapChangerLowTapPositionScript = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'chronique_m100'",
+            "    filter { twoWindingsTransformer.id == 'NE_NO_1' }",
+            "}");
+
+    private final String phaseTapChangerHighTapPositionScript = String.join(System.lineSeparator(),
+            "mapToPhaseTapChangers {",
+            "    timeSeriesName 'chronique_100'",
+            "    filter { twoWindingsTransformer.id == 'NE_NO_1' }",
+            "}");
+
     private Network createNetwork() {
-        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xiidm"));
-        List<String> generators = ImmutableList.of("SO_G1", "SO_G2", "SE_G", "N_G");
+        Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xiidm")));
+        List<String> generators = List.of("SO_G1", "SO_G2", "SE_G", "N_G");
         generators.forEach(id -> network.getGenerator(id).setTargetP(0));
-        List<String> loads = ImmutableList.of("SO_L", "SE_L1", "SE_L2");
+        List<String> loads = List.of("SO_L", "SE_L1", "SE_L2");
         loads.forEach(id -> network.getLoad(id).setP0(0));
         return network;
     }
@@ -261,7 +291,7 @@ public class TimeSeriesMapperCheckerTest {
 
     private void compareNetworkPointGenerator(String id, MemDataSource dataSource, double expectedMinP, double expectedP, double expectedMaxP) {
         try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
-            Network networkPoint = NetworkXml.read(inputStream);
+            Network networkPoint = NetworkSerDe.read(inputStream);
             Generator generator = networkPoint.getGenerator(id);
             assertEquals(expectedMinP, generator.getMinP(), 0);
             assertEquals(expectedP, generator.getTargetP(), 0);
@@ -273,7 +303,7 @@ public class TimeSeriesMapperCheckerTest {
 
     private void compareNetworkPointHvdcLine(String id, MemDataSource dataSource, double expectedSetPoint, double expectedMaxP, Double expectedCS2toCS1, Double expectedCS1toCS2) {
         try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
-            Network networkPoint = NetworkXml.read(inputStream);
+            Network networkPoint = NetworkSerDe.read(inputStream);
             HvdcLine hvdcLine = networkPoint.getHvdcLine(id);
             HvdcOperatorActivePowerRange activePowerRange = hvdcLine.getExtension(HvdcOperatorActivePowerRange.class);
             assertNotEquals(null, activePowerRange);
@@ -281,6 +311,16 @@ public class TimeSeriesMapperCheckerTest {
             assertEquals(expectedCS2toCS1, activePowerRange.getOprFromCS2toCS1(), 0);
             assertEquals(expectedCS1toCS2, activePowerRange.getOprFromCS1toCS2(), 0);
             assertEquals(expectedMaxP, hvdcLine.getMaxP(), 0);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
+        }
+    }
+
+    private void compareNetworkPointPhaseTapChanger(String id, MemDataSource dataSource, int expectedPhaseTapPosition) {
+        try (InputStream inputStream = dataSource.newInputStream("", "xiidm")) {
+            Network networkPoint = NetworkSerDe.read(inputStream);
+            int tapPosition = networkPoint.getTwoWindingsTransformer(id).getPhaseTapChanger().getTapPosition();
+            assertEquals(expectedPhaseTapPosition, tapPosition, 0);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -306,7 +346,7 @@ public class TimeSeriesMapperCheckerTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(loggerCsvOutput)) {
             logger.writeCsv(bufferedWriter);
             bufferedWriter.flush();
-            String loggerCsv = loggerCsvOutput.toString();
+            String loggerCsv = TestUtil.normalizeLineSeparator(loggerCsvOutput.toString());
             String[] lines = loggerCsv.split("\n");
             int nbLines = lines.length;
             int nbExpectedLines = 1;
@@ -351,15 +391,15 @@ public class TimeSeriesMapperCheckerTest {
                       String expectedType, String expectedLabel, String expectedSynthesisLabel, String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         BalanceSummary balanceSummary = new BalanceSummary();
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(balanceSummary, networkPointWriter));
+        mapper.mapToNetwork(store, List.of(balanceSummary, networkPointWriter));
 
         compareNetworkPointGenerator(generator, dataSource, expectedMinP, expectedP, expectedMaxP);
         compareBalance(balanceSummary, expectedBalanceValue);
@@ -404,21 +444,39 @@ public class TimeSeriesMapperCheckerTest {
                               String expectedType, String expectedVariant, String expectedLabel, String expectedSynthesisLabel, String expectedMessage, String expectedSynthesisMessage) {
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, null);
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 0), ignoreLimits, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         MemDataSource dataSource = new MemDataSource();
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
-        mapper.mapToNetwork(store, parameters, ImmutableList.of(networkPointWriter));
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
 
         compareNetworkPointHvdcLine(hvdcLine, dataSource, expectedSetPoint, expectedMaxP, expectedCS2toCS1, expectedCS1toCS2);
         compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
     }
 
-    @Before
-    public void setUp() {
+    private void testPhaseTapChanger(Network network, String script, String twoWindingsTransformer,
+                                     int expectedPhaseTapPosition,
+                                     String expectedType, String expectedVariant, String expectedLabel, String expectedSynthesisLabel, String expectedMessage, String expectedSynthesisMessage) {
+        TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+                Range.closed(0, 0), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
+
+        MemDataSource dataSource = new MemDataSource();
+        NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
+        mapper.mapToNetwork(store, List.of(networkPointWriter));
+
+        compareNetworkPointPhaseTapChanger(twoWindingsTransformer, dataSource, expectedPhaseTapPosition);
+        compareLogger(logger, expectedType, expectedLabel, expectedSynthesisLabel, expectedVariant, expectedMessage, expectedSynthesisMessage);
+    }
+
+    @BeforeEach
+    void setUp() {
         // create time series space mock
         TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("1970-01-01T00:00:00Z/1970-01-01T01:00:00Z"), Duration.ofHours(1));
 
@@ -442,7 +500,7 @@ public class TimeSeriesMapperCheckerTest {
      */
 
     @Test
-    public void pmax1Test() {
+    void pmax1Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(2000);
         network.getGenerator("N_G").setMaxP(1000);
@@ -456,21 +514,21 @@ public class TimeSeriesMapperCheckerTest {
 
         // without ignore limits
         // -> targetP reduced to maxP = 1000
-        testGenerator(NetworkXml.copy(network), emptyScript, false, "N_G", 1000, 0, 1000, 1000,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, false, "N_G", 1000, 0, 1000, 1000,
                 WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
                 "targetP 2000 of N_G not included in 0 to 1000, targetP changed to 1000",
                 null);
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testGenerator(NetworkXml.copy(network), emptyScript, true, "N_G", 2000, 0, 2000, 2000,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, true, "N_G", 2000, 0, 2000, 2000,
                 INFO, expectedLabelMaxP, expectedLabelMaxP, VARIANT_ALL,
                 "targetP 2000 of N_G not included in 0 to 1000, maxP changed to 2000",
                 null);
     }
 
     @Test
-    public void pmax2Test() {
+    void pmax2Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
 
@@ -482,21 +540,21 @@ public class TimeSeriesMapperCheckerTest {
 
         // without ignore limits
         // -> targetP reduced to maxP = 1000
-        testGenerator(NetworkXml.copy(network), pmax2Script, false, "N_G", 1000, 0, 1000, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmax2Script, false, "N_G", 1000, 0, 1000, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1,
                 "Impossible to scale down 2000 of ts chronique_2000, targetP 1000 has been applied",
                 "Impossible to scale down at least one value of ts chronique_2000, modified targetP has been applied");
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testGenerator(NetworkXml.copy(network), pmax2Script, true, "N_G", 2000, 0, 2000, 2001,
+        testGenerator(NetworkSerDe.copy(network), pmax2Script, true, "N_G", 2000, 0, 2000, 2001,
                 INFO, LIMIT_CHANGE + "maxP", SCALING_DOWN_PROBLEM + "at least one maxP increased", VARIANT_EMPTY,
                 "maxP of N_G lower than targetP for 1 variants, maxP increased from 1000 to 2000",
                 "maxP violated by targetP in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
     }
 
     @Test
-    public void pmax3Test() {
+    void pmax3Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(200);
         network.getGenerator("N_G").setMaxP(300);
@@ -511,17 +569,17 @@ public class TimeSeriesMapperCheckerTest {
 
         // without ignore limits
         // -> targetP reduced to maxP = 100
-        testGenerator(NetworkXml.copy(network), pmax3Script, false, "N_G", 100, 0, 100, 100,
+        testGenerator(NetworkSerDe.copy(network), pmax3Script, false, "N_G", 100, 0, 100, 100,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
         // -> same as without ignore limits (ignore limits disabled)
-        testGenerator(NetworkXml.copy(network), pmax3Script, true, "N_G", 100, 0, 100, 100,
+        testGenerator(NetworkSerDe.copy(network), pmax3Script, true, "N_G", 100, 0, 100, 100,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, null);
     }
 
     @Test
-    public void pmax4Test() {
+    void pmax4Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(300);
 
@@ -536,28 +594,28 @@ public class TimeSeriesMapperCheckerTest {
 
         // without ignore limits
         // -> targetP reduced to maxP = 100
-        testGenerator(NetworkXml.copy(network), pmax4Script, false, "N_G", 100, 0, 100, 100,
+        testGenerator(NetworkSerDe.copy(network), pmax4Script, false, "N_G", 100, 0, 100, 100,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, expectedSynthesisMessage);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmax4Script, true, "N_G", 100, 0, 100, 100,
+        testGenerator(NetworkSerDe.copy(network), pmax4Script, true, "N_G", 100, 0, 100, 100,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, expectedSynthesisMessage);
     }
 
     @Test
-    public void pmax5Test() {
+    void pmax5Test() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(100);
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmax5Script, false, "N_G", 1000, 0, 1000, 10000);
+        testGenerator(NetworkSerDe.copy(network), pmax5Script, false, "N_G", 1000, 0, 1000, 10000);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmax5Script, true, "N_G", 1000, 0, 1000, 10000);
+        testGenerator(NetworkSerDe.copy(network), pmax5Script, true, "N_G", 1000, 0, 1000, 10000);
     }
 
     @Test
-    public void pmin1aTest() {
+    void pmin1aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(-2000);
         network.getGenerator("N_G").setMinP(-1000);
@@ -566,20 +624,20 @@ public class TimeSeriesMapperCheckerTest {
         String expectedLabelMinP = BASE_CASE_RANGE_PROBLEM + "minP changed to base case targetP";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), emptyScript, false, "N_G", -1000, -1000, -1000, 600,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, false, "N_G", -1000, -1000, -1000, 600,
                 WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
                 "targetP -2000 of N_G not included in -1000 to 600, targetP changed to -1000",
                 null);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), emptyScript, true, "N_G", -2000, -2000, -2000, 600,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, true, "N_G", -2000, -2000, -2000, 600,
                 INFO, expectedLabelMinP, expectedLabelMinP, VARIANT_ALL,
                 "targetP -2000 of N_G not included in -1000 to 600, minP changed to -2000",
                 null);
     }
 
     @Test
-    public void pmin1bTest() {
+    void pmin1bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(-2000);
         network.getGenerator("N_G").setMaxP(2000);
@@ -590,16 +648,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedMessage = "targetP -2000 of N_G not included in 1000 to 2000, targetP changed to 0";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), emptyScript, false, "N_G", 0, 1000, 0, 2000,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, false, "N_G", 0, 1000, 0, 2000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), emptyScript, true, "N_G", 0, 1000, 0, 2000,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, true, "N_G", 0, 1000, 0, 2000,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_ALL, expectedMessage, null);
     }
 
     @Test
-    public void pmin1cTest() {
+    void pmin1cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(500);
         network.getGenerator("N_G").setMaxP(2000);
@@ -609,36 +667,36 @@ public class TimeSeriesMapperCheckerTest {
         String expectedMessage = "targetP 500 of N_G not included in 1000 to 2000, but targetP has not been changed";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), emptyScript, false, "N_G", 500, 1000, 500, 2000,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, false, "N_G", 500, 1000, 500, 2000,
                 INFO, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), emptyScript, true, "N_G", 500, 1000, 500, 2000,
+        testGenerator(NetworkSerDe.copy(network), emptyScript, true, "N_G", 500, 1000, 500, 2000,
                 INFO, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
     }
 
     @Test
-    public void pmin2aTest() {
+    void pmin2aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMinP(-1000);
 
         String expectedLabel = SCALING_DOWN_PROBLEM + "at least one targetP changed to base case minP";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2aScript, false, "N_G", -1000, -1000, -1000, 600,
+        testGenerator(NetworkSerDe.copy(network), pmin2aScript, false, "N_G", -1000, -1000, -1000, 600,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1,
                 "Impossible to scale down -2000 of ts chronique_m2000, targetP -1000 has been applied",
                 "Impossible to scale down at least one value of ts chronique_m2000, modified targetP has been applied");
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2aScript, true, "N_G", -2000, -2001, -2000, 600,
+        testGenerator(NetworkSerDe.copy(network), pmin2aScript, true, "N_G", -2000, -2001, -2000, 600,
                 INFO, LIMIT_CHANGE + "minP", SCALING_DOWN_PROBLEM + "at least one minP decreased", VARIANT_EMPTY,
                 "minP of N_G higher than targetP for 1 variants, minP decreased from -1000 to -2000",
                 "minP violated by targetP in scaling down of at least one value of ts chronique_m2000, minP has been decreased for equipments");
     }
 
     @Test
-    public void pmin2bTest() {
+    void pmin2bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setMinP(500);
@@ -650,16 +708,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_m2000, modified targetP has been applied";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2bScript, false, "N_G", 0, 500, 0, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin2bScript, false, "N_G", 0, 500, 0, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, expectedSynthesisMessage);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2bScript, true, "N_G", 0, 500, 0, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin2bScript, true, "N_G", 0, 500, 0, 1000,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, expectedSynthesisMessage);
     }
 
     @Test
-    public void pmin2cTest() {
+    void pmin2cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setTargetP(750);
         network.getGenerator("N_G").setMaxP(1000);
@@ -669,16 +727,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_250, but aimed targetP of equipments have been applied";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2cScript, false, "N_G", 250, 500, 250, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin2cScript, false, "N_G", 250, 500, 250, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin2cScript, true, "N_G", 250, 500, 250, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin2cScript, true, "N_G", 250, 500, 250, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
     }
 
     @Test
-    public void pmin3aTest() {
+    void pmin3aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setTargetP(-200);
@@ -689,16 +747,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedMessage = "targetP -200 of N_G not included in -100 to 1000, targetP changed to -100";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin3aScript, false, "N_G", -100, -100, -100, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin3aScript, false, "N_G", -100, -100, -100, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin3aScript, true, "N_G", -100, -100, -100, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin3aScript, true, "N_G", -100, -100, -100, 1000,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, null);
     }
 
     @Test
-    public void pmin3bTest() {
+    void pmin3bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setTargetP(-200);
@@ -709,16 +767,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedMessage = "targetP -200 of N_G not included in 100 to 1000, targetP changed to 0";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin3bScript, false, "N_G", 0, 100, 0, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin3bScript, false, "N_G", 0, 100, 0, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin3bScript, true, "N_G", 0, 100, 0, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin3bScript, true, "N_G", 0, 100, 0, 1000,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, null);
     }
 
     @Test
-    public void pmin3cTest() {
+    void pmin3cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setTargetP(100);
@@ -727,16 +785,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedMessage = "targetP 100 of N_G not included in 500 to 1000, but targetP has not been changed";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin3cScript, false, "N_G", 100, 500, 100, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin3cScript, false, "N_G", 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin3cScript, true, "N_G", 100, 500, 100, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin3cScript, true, "N_G", 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
     }
 
     @Test
-    public void pmin4aTest() {
+    void pmin4aTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(300);
         network.getGenerator("N_G").setMinP(-10);
@@ -748,16 +806,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_m200, modified targetP has been applied";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin4aScript, false, "N_G", -100, -100, -100, 300,
+        testGenerator(NetworkSerDe.copy(network), pmin4aScript, false, "N_G", -100, -100, -100, 300,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, expectedSynthesisMessage);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin4aScript, true, "N_G", -100, -100, -100, 300,
+        testGenerator(NetworkSerDe.copy(network), pmin4aScript, true, "N_G", -100, -100, -100, 300,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, expectedSynthesisMessage);
     }
 
     @Test
-    public void pmin4bTest() {
+    void pmin4bTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setMinP(-300);
@@ -769,16 +827,16 @@ public class TimeSeriesMapperCheckerTest {
         String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_m200, modified targetP has been applied";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin4bScript, false, "N_G", 0, 50, 0, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin4bScript, false, "N_G", 0, 50, 0, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, expectedSynthesisMessage);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin4bScript, true, "N_G", 0, 50, 0, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin4bScript, true, "N_G", 0, 50, 0, 1000,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, expectedSynthesisMessage);
     }
 
     @Test
-    public void pmin4cTest() {
+    void pmin4cTest() {
         Network network = createNetwork();
         network.getGenerator("N_G").setMaxP(1000);
         network.getGenerator("N_G").setMinP(0);
@@ -788,11 +846,11 @@ public class TimeSeriesMapperCheckerTest {
         String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_100, but aimed targetP of equipments have been applied";
 
         // without ignore limits
-        testGenerator(NetworkXml.copy(network), pmin4cScript, false, "N_G", 100, 500, 100, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin4cScript, false, "N_G", 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
 
         // with ignore limits
-        testGenerator(NetworkXml.copy(network), pmin4cScript, true, "N_G", 100, 500, 100, 1000,
+        testGenerator(NetworkSerDe.copy(network), pmin4cScript, true, "N_G", 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
     }
 
@@ -811,7 +869,7 @@ public class TimeSeriesMapperCheckerTest {
      */
 
     @Test
-    public void pmax0HvdcLineTest() {
+    void pmax0HvdcLineTest() {
         Network network = createNetwork();
         setHvdcLine(network, "HVDC2", true, false, 0);
         HvdcOperatorActivePowerRange hvdcRange = network.getHvdcLine("HVDC2").getExtension(HvdcOperatorActivePowerRange.class);
@@ -826,7 +884,7 @@ public class TimeSeriesMapperCheckerTest {
 
         // without ignore limits
         // -> CS1toCS2 reduced to maxP
-        testHvdcLine(NetworkXml.copy(network), emptyScript, false, "HVDC2", 0, 1011, 900, 1011,
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, false, "HVDC2", 0, 1011, 900, 1011,
                 WARNING,
                 VARIANT_ALL,
                 expectedLabel,
@@ -836,7 +894,7 @@ public class TimeSeriesMapperCheckerTest {
 
         // with ignore limits
         // -> maxP changed to CS1toCS2
-        testHvdcLine(NetworkXml.copy(network), emptyScript, true, "HVDC2", 0, 2000, 900, 2000,
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, true, "HVDC2", 0, 2000, 900, 2000,
                 INFO,
                 VARIANT_ALL,
                 expectedLabelIL,
@@ -846,7 +904,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax1HvdcLineTest() {
+    void pmax1HvdcLineTest() {
         double baseCaseSetpoint = 2000;
 
         // activePowerSetpoint not mapped
@@ -900,7 +958,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax2HvdcLineTest() {
+    void pmax2HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         final String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_2000, modified activePowerSetpoint has been applied";
@@ -954,7 +1012,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax3HvdcLineTest() {
+    void pmax3HvdcLineTest() {
         double baseCaseSetpoint = 500;
 
         String expectedLabel = MAPPING_RANGE_PROBLEM + "activePowerSetpoint changed to mapped maxP";
@@ -1008,7 +1066,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmax4HvdcLineTest() {
+    void pmax4HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         final String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_2000, modified activePowerSetpoint has been applied";
@@ -1062,7 +1120,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin0HvdcLineTest() {
+    void pmin0HvdcLineTest() {
         Network network = createNetwork();
         setHvdcLine(network, "HVDC2", true, false, 0);
         HvdcOperatorActivePowerRange hvdcRange = network.getHvdcLine("HVDC2").getExtension(HvdcOperatorActivePowerRange.class);
@@ -1074,10 +1132,11 @@ public class TimeSeriesMapperCheckerTest {
 
         String expectedLabel = BASE_CASE_RANGE_PROBLEM + "-CS2toCS1 changed to base case -maxP";
         String expectedLabelIL = BASE_CASE_RANGE_PROBLEM + "-maxP changed to base case -CS2toCS1";
+        String expectedLabelCase1 = BASE_CASE_RANGE_PROBLEM + "maxP changed to base case CS1toCS2";
 
         // without ignore limits
         // -> CS2toCS1 reduced to minP
-        testHvdcLine(NetworkXml.copy(network), emptyScript, false, "HVDC2", 0, 1011, 1011, 1000,
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, false, "HVDC2", 0, 1011, 1011, 1000,
                 WARNING,
                 VARIANT_ALL,
                 expectedLabel,
@@ -1087,17 +1146,63 @@ public class TimeSeriesMapperCheckerTest {
 
         // with ignore limits
         // -> minP changed to CS2toCS1
-        testHvdcLine(NetworkXml.copy(network), emptyScript, true, "HVDC2", 0, 2000, 2000, 1000,
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, true, "HVDC2", 0, 2000, 2000, 1000,
                 INFO,
                 VARIANT_ALL,
                 expectedLabelIL,
                 expectedLabelIL,
                 "-CS2toCS1 -2000 of HVDC2 not included in -1011 to 0, -maxP changed to -2000",
                 null);
+
+        // with ignore limits
+        // -> maxP changed to CS1toCS2
+        network.getHvdcLine("HVDC2").setMaxP(950);
+        hvdcRange.setOprFromCS2toCS1(975);
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, true, "HVDC2", 0, 1000, 975, 1000,
+            INFO,
+            VARIANT_ALL,
+            expectedLabelCase1,
+            expectedLabelCase1,
+            "CS1toCS2 1000 of HVDC2 not included in 0 to 950, maxP changed to 1000",
+            null);
+
+        // with ignore limits
+        // -> maxP changed to CS1toCS2
+        hvdcRange.setOprFromCS2toCS1(925);
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, true, "HVDC2", 0, 1000, 925, 1000,
+            INFO,
+            VARIANT_ALL,
+            expectedLabelCase1,
+            expectedLabelCase1,
+            "CS1toCS2 1000 of HVDC2 not included in 0 to 950, maxP changed to 1000",
+            null);
+
+        // with ignore limits
+        // -> no change
+        network.getHvdcLine("HVDC2").setMaxP(1011);
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, true, "HVDC2", 0, 1011, 925, 1000,
+            INFO,
+            VARIANT_ALL,
+            null,
+            null,
+            null,
+            null);
+
+        // with ignore limits
+        // -> no change
+        network.getHvdcLine("HVDC2").setMaxP(950);
+        hvdcRange.setOprFromCS2toCS1(2000);
+        testHvdcLine(NetworkSerDe.copy(network), emptyScript, true, "HVDC2", 0, 2000, 2000, 1000,
+            INFO,
+            VARIANT_ALL,
+            null,
+            null,
+            null,
+            null);
     }
 
     @Test
-    public void pmin1HvdcLineTest() {
+    void pmin1HvdcLineTest() {
         double baseCaseSetpoint = -2000;
 
         // activePowerSetpoint not mapped
@@ -1151,7 +1256,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin2HvdcLineTest() {
+    void pmin2HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         // activePowerSetpoint mapped
@@ -1203,7 +1308,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin3HvdcLineTest() {
+    void pmin3HvdcLineTest() {
         double baseCaseSetpoint = -500;
 
         String expectedLabel = MAPPING_RANGE_PROBLEM + "activePowerSetpoint changed to mapped minP";
@@ -1257,7 +1362,7 @@ public class TimeSeriesMapperCheckerTest {
     }
 
     @Test
-    public void pmin4HvdcLineTest() {
+    void pmin4HvdcLineTest() {
         double baseCaseSetpoint = 0;
 
         final String expectedSynthesisMessage = "Impossible to scale down at least one value of ts chronique_m2000, modified activePowerSetpoint has been applied";
@@ -1308,5 +1413,48 @@ public class TimeSeriesMapperCheckerTest {
                 expectedLabelIL,
                 expectedMessage,
                 expectedSynthesisMessage);
+    }
+
+    /*
+     * PHASE TAP CHANGER TEST
+     */
+
+    @Test
+    void isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition() {
+        Network network = createNetwork();
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("HVDC1"), EquipmentVariable.P0, 100));
+        assertTrue(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("NE_NO_1"), EquipmentVariable.PHASE_TAP_POSITION, 100));
+
+        // Add twoWindingsTransformer without phaseTapChanger
+        TwoWindingsTransformer twoWindingsTransformer = network.getTwoWindingsTransformer("NE_NO_1");
+        Substation substation = network.getSubstation("NO");
+        substation.newTwoWindingsTransformer()
+                .setId("twt")
+                .setVoltageLevel1(twoWindingsTransformer.getTerminal1().getVoltageLevel().getId())
+                .setVoltageLevel2(twoWindingsTransformer.getTerminal2().getVoltageLevel().getId())
+                .setNode1(13)
+                .setNode2(14)
+                .setR(twoWindingsTransformer.getR())
+                .setX(twoWindingsTransformer.getX())
+                .add();
+        assertFalse(TimeSeriesMapperChecker.isTwoWindingsTransformerWithOutOfBoundsPhaseTapPosition(network.getIdentifiable("twt"), EquipmentVariable.PHASE_TAP_POSITION, 10));
+    }
+
+    @Test
+    void mappingRangeProblemPhaseTapChangerTest() {
+        Network network = createNetwork();
+
+        String expectedLabelLowTapPosition = MAPPING_RANGE_PROBLEM + "phaseTapPosition changed to lowTapPosition";
+        String expectedLabelHighTapPosition = MAPPING_RANGE_PROBLEM + "phaseTapPosition changed to highTapPosition";
+
+        testPhaseTapChanger(NetworkSerDe.copy(network), phaseTapChangerLowTapPositionScript, "NE_NO_1", 0,
+                WARNING, VARIANT_ALL, expectedLabelLowTapPosition, null,
+                "phaseTapPosition -100 of NE_NO_1 not included in 0 to 32, phaseTapPosition changed to 0",
+                null);
+
+        testPhaseTapChanger(NetworkSerDe.copy(network), phaseTapChangerHighTapPositionScript, "NE_NO_1", 32,
+                WARNING, VARIANT_ALL, expectedLabelHighTapPosition, null,
+                "phaseTapPosition 100 of NE_NO_1 not included in 0 to 32, phaseTapPosition changed to 32",
+                null);
     }
 }

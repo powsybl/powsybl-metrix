@@ -3,24 +3,34 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.ImmutableMap;
-import com.powsybl.commons.AbstractConverterTest;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
 import com.powsybl.metrix.integration.network.MetrixNetworkPoint;
-import com.powsybl.timeseries.*;
-import org.junit.Before;
-import org.junit.Test;
+import com.powsybl.timeseries.DoubleTimeSeries;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesCsvConfig;
+import com.powsybl.timeseries.TimeSeriesDataType;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesMetadata;
+import com.powsybl.timeseries.TimeSeriesTable;
+import com.powsybl.timeseries.UncompressedDoubleDataChunk;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -30,26 +40,33 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
+import static com.powsybl.metrix.integration.AbstractCompareTxt.compareStreamTxt;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.HVDC_TYPE;
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.PST_TYPE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.EPSILON_COMPARISON;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class MetrixRunResultTest extends AbstractConverterTest {
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
+class MetrixRunResultTest {
 
     private Path workingDir;
     private TimeSeriesIndex index;
 
-    @Before
-    public void setUpRunResultTest() throws IOException, URISyntaxException {
-        workingDir = Paths.get(getClass().getResource("/").toURI());
+    @BeforeEach
+    void setUpRunResultTest() throws URISyntaxException {
+        workingDir = Paths.get(Objects.requireNonNull(getClass().getResource("/")).toURI());
         index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T00:00:00Z/2015-01-17T00:00:00Z"), Duration.ofDays(1));
     }
 
-    private List<TimeSeries> createResults(List<TimeSeries> initTimeSeries) throws URISyntaxException {
+    private List<TimeSeries> createResults(List<TimeSeries> initTimeSeries) {
         MetrixOutputData results = new MetrixOutputData(10, 5);
-        Path workingDir = Paths.get(getClass().getResource("/").toURI());
         results.readFile(workingDir, 10); // 0 n-k result
         results.readFile(workingDir, 11); // 1 n-k result, no remedial action, with marginal costs
         results.readFile(workingDir, 12); // 5 n-k results
@@ -64,7 +81,7 @@ public class MetrixRunResultTest extends AbstractConverterTest {
     }
 
     @Test
-    public void metrixResultTest() throws IOException, URISyntaxException {
+    void metrixResultTest() throws IOException {
         // Create results
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
@@ -78,17 +95,18 @@ public class MetrixRunResultTest extends AbstractConverterTest {
             bufferedWriter.flush();
 
             String actual = writer.toString();
-            compareTxt(getClass().getResourceAsStream("/metrixResults.csv"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixResults.csv"),
+                    new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
 
     @Test
-    public void metrixNetworkPointResultTest() throws IOException, URISyntaxException {
+    void metrixNetworkPointResultTest() {
         // Create results
         List<TimeSeries> timeSeriesList = createResults(Collections.emptyList());
 
         // Preventive time series
-        Network network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        Network network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, false, "NIORTL41SSFLO", timeSeriesList, network);
         assertEquals(480 + 4.9, network.getGenerator("FSSV.O11_G").getTargetP(), EPSILON_COMPARISON);
         assertEquals(480 - 45.155, network.getLoad("FSSV.O11_L").getP0(), EPSILON_COMPARISON);
@@ -98,34 +116,34 @@ public class MetrixRunResultTest extends AbstractConverterTest {
         assertFalse(network.getSwitch("FVERGE1_FP.AND1  FVERGE1  2_DJ7").isOpen());
 
         // Generator curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 12, true, "MELLEL41ZMAGD", timeSeriesList, network);
         assertEquals(480 - 150, network.getGenerator("FSSV.O12_G").getTargetP(), EPSILON_COMPARISON);
 
         // Load curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 12, true, "MELLEL41ZMAGD", timeSeriesList, network);
         assertEquals(480 + 50, network.getLoad("FSSV.O11_L").getP0(), EPSILON_COMPARISON);
 
         // Hvdc curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, true, "I.JOUL41LAITI", timeSeriesList, network);
         assertEquals(HvdcLine.ConvertersMode.SIDE_1_INVERTER_SIDE_2_RECTIFIER, network.getHvdcLine("HVDC1").getConvertersMode());
         assertEquals(500.0, network.getHvdcLine("HVDC1").getActivePowerSetpoint(), EPSILON_COMPARISON);
 
         // PhaseTapChanger curative timme series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, true, "MELLEL41ZMAGD", timeSeriesList, network);
         assertEquals(12, network.getTwoWindingsTransformer("FP.AND1  FTDPRA1  1").getPhaseTapChanger().getTapPosition());
 
         // Topology curative time series
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         MetrixNetworkPoint.addTimeSeriesValues(1, 14, true, "NIORTL41SSFLO", timeSeriesList, network);
         assertTrue(network.getSwitch("FVERGE1_FP.AND1  FVERGE1  2_DJ7").isOpen()); // Topology time series
     }
 
     @Test
-    public void metrixInitOptimizedResultTest() throws IOException, URISyntaxException {
+    void metrixInitOptimizedResultTest() throws IOException {
         // Init time series
         List<TimeSeries> initTimeSeriesList = new ArrayList<>();
 
@@ -162,12 +180,8 @@ public class MetrixRunResultTest extends AbstractConverterTest {
             bufferedWriter.flush();
 
             String actual = writer.toString();
-            try {
-                compareTxt(getClass().getResourceAsStream("/metrixInitOptimizedResults.csv"), new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8)));
-            } catch (UncheckedIOException e) {
-                fail();
-            }
-
+            assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/metrixInitOptimizedResults.csv"),
+                    new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
         }
     }
 }

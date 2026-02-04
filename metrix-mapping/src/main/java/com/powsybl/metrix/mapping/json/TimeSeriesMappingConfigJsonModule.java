@@ -3,19 +3,19 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
 package com.powsybl.metrix.mapping.json;
 
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.powsybl.metrix.mapping.MappingKey;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.json.TimeSeriesJsonDeserializer;
 import com.powsybl.timeseries.json.TimeSeriesJsonSerializer;
 
 /**
- * @author Marianne Funfrock <marianne.funfrock at rte-france.com>
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class TimeSeriesMappingConfigJsonModule extends SimpleModule {
 

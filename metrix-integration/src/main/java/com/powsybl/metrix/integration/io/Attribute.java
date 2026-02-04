@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration.io;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -16,9 +15,9 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * @author Geoffroy Jamgotchian <geoffroy.jamgotchian@rte-france.com>
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-interface Attribute {
+public interface Attribute {
 
     String getName();
 

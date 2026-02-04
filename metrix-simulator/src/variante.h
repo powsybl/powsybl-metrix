@@ -77,6 +77,10 @@ public:
     std::map<std::shared_ptr<ElementASurveiller>, double> quatitamnExOr_; /* seuil max avant curatif Ext -> Or */
     std::map<std::shared_ptr<ElementASurveiller>, double>
         quatitamkExOr_; /* seuil max avant curatif Ext -> Or (regime incident complexe) */
+    
+    // Liste des groupes renvoyées par le shuffle de calculecrirecontraintesdodu.cpp en G++9:
+    //(utilisée pour les tests)
+    std::vector<std::shared_ptr<Groupe>> randomGroups_;
 
     // Liste des groupes renvoyées par le shuffle de calculecrirecontraintesdodu.cpp en G++9:
     //(utilisée pour les tests)

@@ -4,7 +4,7 @@
   ~ This Source Code Form is subject to the terms of the Mozilla Public
   ~ License, v. 2.0. If a copy of the MPL was not distributed with this
   ~ file, You can obtain one at http://mozilla.org/MPL/2.0/.
-  ~
+  ~ SPDX-License-Identifier: MPL-2.0
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -13,11 +13,13 @@
     <parent>
         <artifactId>powsybl-metrix</artifactId>
         <groupId>com.powsybl</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-mapping</artifactId>
+    <name>Metrix mapping</name>
+    <description>Mapping tools for metrix I/O</description>
 
     <build>
         <plugins>
@@ -40,10 +42,6 @@
         </dependency>
         <dependency>
             <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-iidm-converter-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.powsybl</groupId>
             <artifactId>powsybl-iidm-extensions</artifactId>
         </dependency>
         <dependency>
@@ -52,11 +50,19 @@
         </dependency>
         <dependency>
             <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-iidm-xml-converter</artifactId>
+            <artifactId>powsybl-iidm-serde</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.powsybl</groupId>
+            <artifactId>powsybl-metrix-commons</artifactId>
         </dependency>
         <dependency>
             <groupId>com.powsybl</groupId>
             <artifactId>powsybl-time-series-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.powsybl</groupId>
+            <artifactId>powsybl-time-series-dsl</artifactId>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -71,7 +77,12 @@
         </dependency>
         <dependency>
             <groupId>com.powsybl</groupId>
-            <artifactId>powsybl-commons</artifactId>
+            <artifactId>powsybl-commons-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.powsybl</groupId>
+            <artifactId>powsybl-computation</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
@@ -86,8 +97,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -108,7 +119,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
-            <version>${log4joslf4j.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

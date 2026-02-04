@@ -3,25 +3,31 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
 import com.google.common.collect.Range;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.integration.contingency.Probability;
-import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
+import com.powsybl.metrix.integration.network.MetrixVariantProvider;
+import com.powsybl.metrix.integration.network.MetrixVariantReader;
 import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.balance.BalanceSummary;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeriesTable;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,7 +41,30 @@ import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
+
+    private static final Set<EquipmentVariable> METRIX_EQUIPMENT_VARIABLES = EnumSet.of(EquipmentVariable.TARGET_P,
+            EquipmentVariable.MIN_P,
+            EquipmentVariable.MAX_P,
+            EquipmentVariable.ACTIVE_POWER_SETPOINT,
+            EquipmentVariable.P0,
+            EquipmentVariable.FIXED_ACTIVE_POWER,
+            EquipmentVariable.VARIABLE_ACTIVE_POWER,
+            EquipmentVariable.PHASE_TAP_POSITION,
+            EquipmentVariable.OPEN,
+            EquipmentVariable.DISCONNECTED);
+
+    public static boolean isMetrixVariable(MappingVariable variable) {
+        if (variable instanceof MetrixVariable) {
+            return true;
+        } else if (variable instanceof EquipmentVariable) {
+            return METRIX_EQUIPMENT_VARIABLES.contains(variable);
+        }
+        return false;
+    }
 
     private final Network network;
 
@@ -61,8 +90,6 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     private final PrintStream err;
 
-    private final TimeSeriesMapper mapper;
-
     public MetrixTimeSeriesVariantProvider(Network network, ReadOnlyTimeSeriesStore store, MappingParameters mappingParameters,
                                            TimeSeriesMappingConfig config, MetrixDslData metrixDslData, MetrixChunkParam metrixChunkParam,
                                            Range<Integer> variantRange, PrintStream err) {
@@ -71,7 +98,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.store = Objects.requireNonNull(store);
         this.mappingParameters = Objects.requireNonNull(mappingParameters);
         this.config = Objects.requireNonNull(config);
-        this.metrixDslData = Objects.requireNonNull(metrixDslData);
+        this.metrixDslData = metrixDslData;
         this.version = metrixChunkParam.version;
         this.variantRange = variantRange;
         this.ignoreLimits = metrixChunkParam.ignoreLimits;
@@ -79,7 +106,6 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         this.isNetworkPointComputation = metrixChunkParam.networkPointFile != null;
         this.contingenciesProvider = metrixChunkParam.contingenciesProvider;
         this.err = Objects.requireNonNull(err);
-        mapper = new TimeSeriesMapper(config, network, new TimeSeriesMappingLogger());
     }
 
     @Override
@@ -89,14 +115,14 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
 
     @Override
     public TimeSeriesIndex getIndex() {
-        return config.checkIndexUnicity(store);
+        return new TimeSeriesMappingConfigTableLoader(config, store).checkIndexUnicity();
     }
 
     @Override
     public Set<String> getMappedBreakers() {
         return config.getBreakerToTimeSeriesMapping().keySet()
                 .stream()
-                .map(MappingKey::getId)
+                .map(MappingKey::id)
                 .collect(Collectors.toSet());
     }
 
@@ -113,18 +139,19 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         if (isNetworkPointComputation) {
             observers.add(createNetworkPointWriter(workingDir));
         }
-        if (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty()) {
+        if (metrixDslData != null && (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty())) {
             observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
         }
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, true, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
-        mapper.mapToNetwork(store, parameters, observers);
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, new TimeSeriesMappingLogger());
+        mapper.mapToNetwork(store, observers);
     }
 
     private Set<String> getContingenciesProbabilitiesTs() {
         return contingenciesProvider.getContingencies(network)
                 .stream()
                 .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
-                .map(contingency -> ((Contingency) contingency).getExtension(Probability.class).getProbabilityTimeSeriesRef())
+                .map(contingency -> contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef())
                 .collect(Collectors.toSet());
     }
 
@@ -144,7 +171,7 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
             @Override
             public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
                 super.timeSeriesMappedToEquipment(point, timeSeriesName, identifiable, variable, equipmentValue);
-                if (!Double.isNaN(equipmentValue)) {
+                if (isMetrixVariable(variable) && !Double.isNaN(equipmentValue)) {
                     reader.onEquipmentVariant(identifiable, variable, equipmentValue);
                 }
             }
@@ -157,17 +184,10 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         };
     }
 
-    private TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
+    protected TimeSeriesMapperObserver createNetworkPointWriter(Path workingDir) {
         Objects.requireNonNull(workingDir);
-        DataSource dataSource = DataSourceUtil.createDataSource(workingDir, network.getId(), null);
-        return new NetworkPointWriter(network, dataSource) {
-            @Override
-            public void timeSeriesMappingEnd(int point, TimeSeriesIndex index, double balance) {
-                if (point == variantRange.upperEndpoint().intValue()) {
-                    super.timeSeriesMappingEnd(point, index, balance);
-                }
-            }
-        };
+        DataSource dataSource = DataSourceUtil.createDataSource(workingDir.resolve(network.getId()), null);
+        return new NetworkPointWriter(network, dataSource);
     }
 
     private TimeSeriesMapperObserver createInitOptimizedTimeSeriesWriter(Path workingDir, Range<Integer> pointRange) {

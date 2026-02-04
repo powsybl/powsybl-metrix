@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 package com.powsybl.metrix.integration.timeseries;
 
 import com.google.common.collect.ImmutableMap;
@@ -5,9 +12,9 @@ import com.google.common.collect.Range;
 import com.powsybl.iidm.network.*;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
-import com.powsybl.metrix.mapping.DefaultTimeSeriesMapperObserver;
+import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.EquipmentVariable;
-import com.powsybl.metrix.mapping.MappingVariable;
+import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import com.powsybl.timeseries.*;
 
@@ -18,15 +25,18 @@ import java.util.*;
 
 import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
 
+/**
+ * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ */
 public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserver {
 
     public static final String INPUT_OPTIMIZED_FILE_NAME = "input_optimized_time_series.json";
 
-    private Network network;
-    private int length;
-    private int offset;
+    private final Network network;
+    private final int length;
+    private final int offset;
     private TimeSeriesIndex index;
-    private Writer writer;
+    private final Writer writer;
 
     Map<String, MetrixOutputData.DoubleResultChunk> constantDoubleTimeSeries = new HashMap<>();
     Map<String, MetrixOutputData.DoubleResultChunk> doubleTimeSeries = new HashMap<>();
@@ -101,12 +111,12 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
     @Override
     public void versionStart(int version) {
         super.versionStart(version);
-        hvdcToInit.stream().forEach(id -> {
+        hvdcToInit.forEach(id -> {
             HvdcLine hvdcLine = network.getHvdcLine(id);
             double activePowerSetpoint = hvdcLine.getActivePowerSetpoint();
             addHvdcTimeSeries(TimeSeriesMapper.CONSTANT_VARIANT_ID, hvdcLine, activePowerSetpoint);
         });
-        phaseTapChangerToInit.stream().forEach(id -> {
+        phaseTapChangerToInit.forEach(id -> {
             TwoWindingsTransformer twoWindingsTransformer = network.getTwoWindingsTransformer(id);
             PhaseTapChanger phaseTapChanger = twoWindingsTransformer.getPhaseTapChanger();
             int tapPosition = phaseTapChanger.getTapPosition();
@@ -123,11 +133,11 @@ public class InitOptimizedTimeSeriesWriter extends DefaultTimeSeriesMapperObserv
 
     @Override
     public void timeSeriesMappedToEquipment(int point, String timeSeriesName, Identifiable<?> identifiable, MappingVariable variable, double equipmentValue) {
-        if (identifiable instanceof HvdcLine && hvdcToInit.contains(identifiable.getId()) && variable == EquipmentVariable.activePowerSetpoint) {
+        if (identifiable instanceof HvdcLine && hvdcToInit.contains(identifiable.getId()) && variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
             addHvdcTimeSeries(point, identifiable, equipmentValue);
-        } else if (identifiable instanceof TwoWindingsTransformer && phaseTapChangerToInit.contains(identifiable.getId()) && variable == EquipmentVariable.phaseTapPosition) {
+        } else if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer && phaseTapChangerToInit.contains(identifiable.getId()) && variable == EquipmentVariable.PHASE_TAP_POSITION) {
             int tapPosition = (int) equipmentValue;
-            double alpha = ((TwoWindingsTransformer) identifiable).getPhaseTapChanger().getStep(tapPosition).getAlpha();
+            double alpha = twoWindingsTransformer.getPhaseTapChanger().getStep(tapPosition).getAlpha();
             addPhaseTapChangerTimeSeries(point, identifiable, tapPosition, alpha);
         }
     }

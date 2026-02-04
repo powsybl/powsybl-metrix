@@ -63,4 +63,4 @@ if [ "$ADD_TO_PATH" == "y" ] ; then
   fi
 fi
 
-echo "Installation sucessful"
+echo "Installation successful"

@@ -1,6 +1,6 @@
 {
   "files" : [ {
-    "name" : "fort.44_BIN",
+    "name" : "IntegerFile",
     "attributes" : [ {
       "name" : "CGNBREGI",
       "type" : "INTEGER",
@@ -642,7 +642,7 @@
       "values" : [ 2, 1, 3, 2, 2, 3 ]
     } ]
   }, {
-    "name" : "fort.45_BIN",
+    "name" : "FloatFile",
     "attributes" : [ {
       "name" : "CGCPERTE",
       "type" : "FLOAT",
@@ -906,10 +906,10 @@
       "values" : [ 1.0, -1.0 ]
     } ]
   }, {
-    "name" : "fort.46_BIN",
+    "name" : "DoubleFile",
     "attributes" : [ ]
   }, {
-    "name" : "fort.47_BIN",
+    "name" : "StringFile",
     "attributes" : [ {
       "name" : "CGNOMREG",
       "type" : "STRING",
@@ -1002,7 +1002,7 @@
       "values" : [ "3 load group", "2 load group" ]
     } ]
   }, {
-    "name" : "fort.48_BIN",
+    "name" : "BooleanFile",
     "attributes" : [ {
       "name" : "TRUTHBAR",
       "type" : "BOOLEAN",
