@@ -51,12 +51,15 @@ class DataTableDslLoaderTest {
         // mapping script
         String script = String.join(System.lineSeparator(),
                 "exists = dataTable.exists('tableName')",
-                "notExists = dataTable.exists('other')",
+                "notExists = dataTable.exists('newTableName')",
                 "names = dt.names()",
                 "newTable = toDataTable(['newColumnName'], [['newValue']])",
                 "dataTable['tableName']",
+                "dt.addTable('newTableName', newTable)",
+                "newTableExists = dataTable.exists('newTableName')",
                 "println exists",
                 "println notExists",
+                "println newTableExists",
                 "println names",
                 "println newTable.data()"
         );
@@ -67,7 +70,7 @@ class DataTableDslLoaderTest {
         }
 
         String output = TestUtil.normalizeLineSeparator(outputStream.toString());
-        assertEquals("true\nfalse\n[tableName]\n[[newValue]]\n", output);
+        assertEquals("true\nfalse\ntrue\n[newTableName, tableName]\n[[newValue]]\n", output);
     }
 
     @Test

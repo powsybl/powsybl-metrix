@@ -33,7 +33,11 @@ public class AttributeNameToValue {
     }
 
     public void put(String attributeName, String value) {
-        this.attributeNameToValueVariable.putIfAbsent(attributeName, value);
+        this.attributeNameToValueVariable.put(attributeName, value);
+    }
+
+    public Map<String, String> getAttributeNameToValue() {
+        return attributeNameToValueVariable;
     }
 
     public String getValue(String attributeName) {
