@@ -698,6 +698,15 @@
       "lastValueIndex" : 1,
       "values" : [ 100.0 ]
     }, {
+      "name" : "NULLCOST",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ -100.5 ]
+    }, {
       "name" : "PROBAINC",
       "type" : "FLOAT",
       "valueCount" : 1,
