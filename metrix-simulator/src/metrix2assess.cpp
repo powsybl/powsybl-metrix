@@ -525,7 +525,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
                         pos = elemC->positionVarCurative_;
                         if (pos != -1) {
-                            double val = pbX_[pos] - pbX_[pos + 1];
+                            double val = pbX_[pos + 1];
 
                             if (!config::inputConfiguration().useAllOutputs() && fabs(val) < EPSILON_SORTIES) {
                                 continue;
