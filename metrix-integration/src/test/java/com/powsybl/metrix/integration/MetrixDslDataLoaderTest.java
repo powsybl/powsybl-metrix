@@ -605,6 +605,7 @@ class MetrixDslDataLoaderTest {
             .setLossOfLoadCost(12000f)
             .setCurativeLossOfLoadCost(26000f)
             .setCurativeLossOfGenerationCost(100f)
+            .setGeneratorMinCost(0.5f)
             .setContingenciesProbability(0.01f)
             .setNbMaxIteration(4)
             .setNbMaxCurativeAction(2)
@@ -641,6 +642,7 @@ class MetrixDslDataLoaderTest {
                     "    lossOfLoadCost 12000",
                     "    curativeLossOfLoadCost 26000",
                     "    curativeLossOfGenerationCost 100",
+                    "    generatorMinCost 0.5",
                     "    contingenciesProbability 0.01",
                     "    maxSolverTime (-1)",
                     "    nominalU 103",

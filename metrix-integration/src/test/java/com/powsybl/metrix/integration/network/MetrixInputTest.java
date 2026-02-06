@@ -382,6 +382,7 @@ class MetrixInputTest {
                 .setLossOfLoadCost(13000f)
                 .setCurativeLossOfLoadCost(26000f)
                 .setCurativeLossOfGenerationCost(100f)
+                .setGeneratorMinCost(-100.5f)
                 .setContingenciesProbability(0.001f)
                 .setNbMaxIteration(3)
                 .setNbMaxCurativeAction(4)
