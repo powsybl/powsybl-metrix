@@ -11,7 +11,8 @@ package com.powsybl.metrix.integration
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.commons.data.datatable.DataTableStore
 import com.powsybl.metrix.integration.configuration.MetrixParameters
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
+import com.powsybl.metrix.mapping.config.ScriptLogConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.scripting.groovy.GroovyScriptExtension
@@ -65,44 +66,6 @@ class MetrixDslDataLoader {
         this(new GroovyCodeSource(reader, fileName, GroovyShell.DEFAULT_CODE_BASE))
     }
 
-    private static logError(LogDslLoader logDslLoader, String message) {
-        if (logDslLoader == null) {
-            return
-        }
-        logDslLoader.logError(message)
-    }
-
-    private static logError(LogDslLoader logDslLoader, String pattern, Object... arguments) {
-        if (logDslLoader == null) {
-            return
-        }
-        String formattedString = String.format(pattern, arguments)
-        logDslLoader.logError(formattedString)
-    }
-
-    private static logWarn(LogDslLoader logDslLoader, String message) {
-        if (logDslLoader == null) {
-            return
-        }
-        logDslLoader.logWarn(message)
-    }
-
-    private static logWarn(LogDslLoader logDslLoader, String pattern, Object... arguments) {
-        if (logDslLoader == null) {
-            return
-        }
-        String formattedString = String.format(pattern, arguments)
-        logDslLoader.logWarn(formattedString)
-    }
-
-    private static logDebug(LogDslLoader logDslLoader, String pattern, Object... arguments) {
-        if (logDslLoader == null) {
-            return
-        }
-        String formattedString = String.format(pattern, arguments)
-        logDslLoader.logDebug(formattedString)
-    }
-
     private static CompilerConfiguration createCompilerConfig() {
         def imports = new ImportCustomizer()
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixPtcControlType")
@@ -125,13 +88,16 @@ class MetrixDslDataLoader {
         shell.evaluate(dslSrc)
     }
 
-    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, MetrixDslData data, LogDslLoader logDslLoader) {
+    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore,
+                     MetrixParameters parameters, TimeSeriesMappingConfig mappingConfig, MetrixDslData data,
+                     LogDslLoader logDslLoader) {
         // External bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, mappingConfig.getTimeSeriesNodes())
 
         // Context objects
         Map<Class<?>, Object> contextObjects = new HashMap<>()
         contextObjects.put(DataTableStore.class, dataTableStore)
+        contextObjects.put(ScriptLogConfig.class, logDslLoader.getScriptLogConfig())
 
         // Bindings through extensions
         Iterable<GroovyScriptExtension> extensions = ServiceLoader.load(GroovyScriptExtension.class, GroovyScripts.class.getClassLoader())
@@ -199,48 +165,50 @@ class MetrixDslDataLoader {
     }
 
     static MetrixDslData load(Reader reader, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
-                              TimeSeriesMappingConfig mappingConfig, Writer out) {
-        load(reader, network, parameters, store, new DataTableStore(), mappingConfig, out)
+                              TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig) {
+        load(reader, network, parameters, store, new DataTableStore(), mappingConfig, scriptLogConfig)
     }
 
     static MetrixDslData load(Reader reader, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
-                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, Writer out) {
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig) {
         MetrixDslDataLoader dslLoader = new MetrixDslDataLoader(reader, "metrixDsl.groovy")
-        dslLoader.load(network, parameters, store, dataTableStore, mappingConfig, out)
+
+        dslLoader.load(network, parameters, store, dataTableStore, mappingConfig, scriptLogConfig)
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
                               TimeSeriesMappingConfig mappingConfig) {
-        load(metrixDslFile, network, parameters, store, mappingConfig, null)
+        load(metrixDslFile, network, parameters, store, mappingConfig, new ScriptLogConfig())
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
                               DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig) {
-        load(metrixDslFile, network, parameters, store, dataTableStore, mappingConfig, null)
+        load(metrixDslFile, network, parameters, store, dataTableStore, mappingConfig, new ScriptLogConfig())
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
-                              TimeSeriesMappingConfig mappingConfig, Writer out) {
+                              TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig) {
 
         Files.newBufferedReader(metrixDslFile, StandardCharsets.UTF_8).withReader { Reader reader ->
-            load(reader, network, parameters, store, mappingConfig, out)
+            load(reader, network, parameters, store, mappingConfig, scriptLogConfig)
         }
     }
 
     static MetrixDslData load(Path metrixDslFile, Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
-                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, Writer out) {
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig) {
 
         Files.newBufferedReader(metrixDslFile, StandardCharsets.UTF_8).withReader { Reader reader ->
-            load(reader, network, parameters, store, dataTableStore, mappingConfig, out)
+            load(reader, network, parameters, store, dataTableStore, mappingConfig, scriptLogConfig)
         }
     }
 
     MetrixDslData load(Network network, MetrixParameters parameters, ReadOnlyTimeSeriesStore store,
-                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, Writer out) {
+                              DataTableStore dataTableStore, TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig) {
 
         MetrixDslData data = new MetrixDslData()
         Binding binding = new Binding()
-        LogDslLoader logDslLoader = LogDslLoader.create(binding, out, METRIX_SCRIPT_SECTION)
+        scriptLogConfig.withSection(METRIX_SCRIPT_SECTION)
+        LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig)
         bind(binding, network, store, dataTableStore, parameters, mappingConfig, data, logDslLoader)
 
         evaluate(dslSrc, binding)

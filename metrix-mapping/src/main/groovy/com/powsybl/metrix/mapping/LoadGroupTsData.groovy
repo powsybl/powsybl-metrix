@@ -11,6 +11,7 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Load
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
+import com.powsybl.metrix.mapping.log.LogDslLoader
 import groovy.transform.CompileStatic
 
 /**

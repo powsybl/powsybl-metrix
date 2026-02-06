@@ -36,6 +36,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -123,7 +124,29 @@ class MetrixAnalysisTest {
             metrixAnalysis.setScriptLogWriter(out);
             metrixAnalysis.runAnalysis("");
             String output = outputStream.toString();
-            assertFalse(output.isEmpty());
+            assertEquals("log" + System.lineSeparator(), output);
+        }
+    }
+
+    @Test
+    void scriptLogLevelTest() throws IOException {
+        String script = """
+            writeLog("DEBUG", "From scriptLogLevelTest", "writeLog DEBUG")
+            writeLog("WARNING", "From scriptLogLevelTest", "writeLog WARNING")
+            writeLog("INFO", "From scriptLogLevelTest", "writeLog INFO")
+            writeLog("ERROR", "From scriptLogLevelTest", "writeLog ERROR")
+            """.replaceAll("\n", System.lineSeparator());
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            MetrixAnalysis metrixAnalysis = metrixAnalysis(script, "");
+            metrixAnalysis.setScriptLogWriter(out);
+            metrixAnalysis.setMaxLogLevel(System.Logger.Level.WARNING);
+            metrixAnalysis.runAnalysis("");
+            String output = outputStream.toString();
+            assertEquals("""
+                WARNING;From scriptLogLevelTest;writeLog WARNING
+                ERROR;From scriptLogLevelTest;writeLog ERROR
+                """.replaceAll("\n", System.lineSeparator()), output);
         }
     }
 
