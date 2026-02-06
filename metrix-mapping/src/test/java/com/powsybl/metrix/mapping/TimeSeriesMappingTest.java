@@ -15,6 +15,7 @@ import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
 import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigEquipmentCsvWriter;
@@ -345,7 +346,7 @@ class TimeSeriesMappingTest {
         // Load mapping script
         StringWriter output = new StringWriter();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), output, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(output), null);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();

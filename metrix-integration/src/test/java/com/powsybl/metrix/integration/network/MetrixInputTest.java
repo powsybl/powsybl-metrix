@@ -47,6 +47,7 @@ import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
@@ -381,6 +382,7 @@ class MetrixInputTest {
                 .setLossOfLoadCost(13000f)
                 .setCurativeLossOfLoadCost(26000f)
                 .setCurativeLossOfGenerationCost(100f)
+                .setGeneratorMinCost(-100.5f)
                 .setContingenciesProbability(0.001f)
                 .setNbMaxIteration(3)
                 .setNbMaxCurativeAction(4)
@@ -469,7 +471,7 @@ class MetrixInputTest {
         try (Reader mappingReader = Files.newBufferedReader(mappingFile, StandardCharsets.UTF_8)) {
             ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
             MappingParameters mappingParameters = MappingParameters.load();
-            TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingReader).load(n, mappingParameters, store, new DataTableStore(), null, null);
+            TimeSeriesMappingConfig mappingConfig = new TimeSeriesDslLoader(mappingReader).load(n, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(), null);
             MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder()
                     .simpleInit(1, false, false, ignored -> Collections.emptyList(),
                             null, null, null, null).build();

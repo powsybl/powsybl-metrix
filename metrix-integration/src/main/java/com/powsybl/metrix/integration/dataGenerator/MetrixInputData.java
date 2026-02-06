@@ -252,6 +252,7 @@ public class MetrixInputData {
         parameters.getOptionalLossOfLoadCost().ifPresent(value -> die.setFloat("COUTDEFA", value));
         parameters.getOptionalCurativeLossOfLoadCost().ifPresent(value -> die.setFloat("COUENDCU", value));
         parameters.getOptionalCurativeLossOfGenerationCost().ifPresent(value -> die.setFloat("COUENECU", value));
+        parameters.getOptionalGeneratorMinCost().ifPresent(value -> die.setFloat("NULLCOST", value));
         parameters.getOptionalContingenciesProbability().ifPresent(value -> die.setFloat("PROBAINC", value));
         parameters.getOptionalMaxSolverTime().ifPresent(value -> die.setInt("MAXSOLVE", value));
         parameters.getOptionalNbMaxIteration().ifPresent(value -> die.setInt("NBMAXMIT", value));
