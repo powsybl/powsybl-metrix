@@ -23,7 +23,7 @@ cmake -S or-tools/ -B or-tools/builds/ \
 cmake --build or-tools/builds --config Release --target install
 
 ### clone du dépôt git de Metrix dans un dossier metrix
-git clone https://github.com/powsybl/powsybl-metrix.git --branch=temporary_ortools powsybl-metrix
+git clone https://github.com/powsybl/powsybl-metrix.git --branch=ortools-updated powsybl-metrix
 ### configuration cmake + build en Release
 cmake -S powsybl-metrix/metrix-simulator -B powsybl-metrix/metrix-simulator/build-ortools \
       -D CMAKE_BUILD_TYPE=Release \
@@ -37,37 +37,20 @@ cmake -S powsybl-metrix/metrix-simulator -B powsybl-metrix/metrix-simulator/buil
 cmake --build powsybl-metrix/metrix-simulator/build-ortools --config Release
 ### execution des tests
 ctest --test-dir powsybl-metrix/metrix-simulator/build-ortools --build-config Release
-# NB : un fichier de log de l'exécution des tests est généré : metrix/builds/Testing/Temporary/LastTest.log
+# NB : un fichier de log de l'exécution des tests est généré : metrix-simulator/build-ortools/Testing/Temporary/LastTest.log
 ```
 
 ## Metrix : comment utiliser un autre solveur que Sirius ?
-Pour utiliser un autre solveur en passant par OR-Tools, il faut changer le type renvoyé par les fonctions `Solver::type<PROBLEME_A_RESOUDRE>()` et `Solver::type<PROBLEME_SIMPLEXE>()` du fichier src/ortools/solver.cpp (l. 245)  
-Exemple Sirius : 
-```cpp
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>()
-{
-    return operations_research::MPSolver::SIRIUS_MIXED_INTEGER_PROGRAMMING;
-}
-
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
-{
-    return operations_research::MPSolver::SIRIUS_LINEAR_PROGRAMMING;
-}
+Dans le fichier d'entrée de metrix-simulator 'fort.json' ajouter/modifier le champ "SOLVERCH" dans la liste "attributes" de la partie "IntegerFile" comme suit :
+```json
+        {
+          "name": "SOLVERCH",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [6]  <- valeur de l'enum qui correspond au solveur choisi (enum config::Configuration::SolverChoice dans metrix-simulator/src/config/configuration.h:36) ; ici 6 <=> Xpress
+        }
 ```
-Exemple Xpress : 
-```cpp
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>()
-{
-    return operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING;
-}
-
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
-{
-    return operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING;
-}
-```
-NB : Les différentes valeurs possibles sont celles de l'enum operations_research::MPSolver::OptimizationProblemType du projet OR-Tools (ortools/linear_solver/linear_solver.h:187)

@@ -861,7 +861,7 @@ Blocage des variables de defaillance
 Micro itération 1 (nombre de contraintes 0)
 -------------------- : 
 
-Des contraintes ont été détectées : 609
+Des contraintes ont été détectées : 619
 Nb termes dans la matrice : 0 (taille de la matrice : 0)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_NCW_NRF' (icdt : QUAD_NCW)
 Contraintes equivalentes : 'QUAD_YGE / QUAD_YGF / QUAD_SBX' & 'QUAD_YGE / QUAD_YGF / QUAD_SBX' (icdt : QUAD_NCW)
@@ -871,14 +871,14 @@ Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_WSV_NRF' (icdt : QUAD_WSV)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_WSW_NRF' (icdt : QUAD_WSW)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_TFB_NRF' (icdt : QUAD_TFB)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_MMA_NRF' (icdt : QUAD_MMA)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_YDJ_NRF' (icdt : QUAD_YDJ)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_OFI_NRF' (icdt : QUAD_OFI)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ONO_NRF' (icdt : QUAD_ONO)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_SNE_NRF' (icdt : QUAD_SNE)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_OFH_NRF' (icdt : QUAD_OFH)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ODY_NRF' (icdt : QUAD_ODY)
-Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_YDJ_NRF' (icdt : QUAD_YDJ)
-Ajout de 700 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 727)
+Ajout de 708 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 735)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -890,14 +890,14 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :     242.9164
-Cout des écarts de transit     :  338545.4646
-Valeur de la fonction objectif :  338788.3810
+Cout des écarts de transit     :  370583.1566
+Valeur de la fonction objectif :  370826.0730
 
-Des contraintes ont été détectées : 505
-Nb termes dans la matrice : 2454 (taille de la matrice : 2454)
+Des contraintes ont été détectées : 507
+Nb termes dans la matrice : 2478 (taille de la matrice : 2478)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ODW_NRF' (icdt : QUAD_ODW)
-Ajout de 260 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 988)
+Ajout de 267 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 1003)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -908,14 +908,14 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     243.2401
-Cout des écarts de transit     :  456441.3720
-Valeur de la fonction objectif :  456684.6120
+Cout de pénalisation TD & HVDC :     243.2617
+Cout des écarts de transit     :  495409.0869
+Valeur de la fonction objectif :  495652.3486
 
 Des contraintes ont été détectées : 11
-Nb termes dans la matrice : 3289 (taille de la matrice : 3289)
+Nb termes dans la matrice : 3346 (taille de la matrice : 3346)
 Ajout de 28 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 1016)
+Micro itération 4 (nombre de contraintes 1031)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -926,14 +926,14 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.7423
-Cout des écarts de transit     :  458941.7217
-Valeur de la fonction objectif :  459184.4640
+Cout de pénalisation TD & HVDC :     242.7309
+Cout des écarts de transit     :  498146.7671
+Valeur de la fonction objectif :  498389.4981
 
 Des contraintes ont été détectées : 5
-Nb termes dans la matrice : 3441 (taille de la matrice : 3441)
+Nb termes dans la matrice : 3498 (taille de la matrice : 3498)
 Ajout de 14 contraintes dans le probleme
-Micro itération 5 (nombre de contraintes 1030)
+Micro itération 5 (nombre de contraintes 1045)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -944,10 +944,10 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.7423
-Cout des écarts de transit     :  459079.8912
-Valeur de la fonction objectif :  459322.6334
+Cout de pénalisation TD & HVDC :     242.7309
+Cout des écarts de transit     :  498304.1401
+Valeur de la fonction objectif :  498546.8711
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 3517 (taille de la matrice : 3517)
+Nb termes dans la matrice : 3574 (taille de la matrice : 3574)
 Pas de contraintes

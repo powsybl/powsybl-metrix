@@ -673,6 +673,7 @@ Le groupe 'G1121' de la loi 8067 est introuvable
 Le noeud '99121_1' de la loi 8068 de variation de conso est introuvable
 Le noeud '99121_1' de la loi 8070 de variation de conso est introuvable
 Le groupe 'G1121' de la loi 8071 est introuvable
+Le noeud '99121_1' de la loi 8073 de variation de conso est introuvable
 La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
 La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
 Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
@@ -772,7 +773,7 @@ Noeud bilan : 1
 
 
 ********************************************
-Traitement d'un paquet de 2 variante(s)
+Traitement d'un paquet de 3 variante(s)
 ********************************************
 
 ---------------------
@@ -952,6 +953,74 @@ Cout de pénalisation TD & HVDC :       0.3196
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     736.8963
 Valeur de la fonction objectif :     770.0409
+
+
+---------------------
+---------------------
+Variante numéro 8073
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 207639.8578  MW
+Production démarrée                 = 207586.7464  MW
+Puissance à ajuster                 =    53.1114  MW
+Puissance disponible à la hausse (hors Pimp) = 272181.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -292599.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -53.1104 MW
+Zone synchrone 1 (noeud bilan 1), bilan = -0.0010 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8073 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  207639.8578 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4248.9149
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4248.9149
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 12
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 18 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1894)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8073 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  207639.8578 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 133510 (taille de la matrice : 133510)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8073 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  207639.8578 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
 
 
 ********************************************

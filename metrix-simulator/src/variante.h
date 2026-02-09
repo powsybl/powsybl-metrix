@@ -82,10 +82,6 @@ public:
     //(utilisée pour les tests)
     std::vector<std::shared_ptr<Groupe>> randomGroups_;
 
-    // Liste des groupes renvoyées par le shuffle de calculecrirecontraintesdodu.cpp en G++9:
-    //(utilisée pour les tests)
-    std::vector<std::shared_ptr<Groupe>> randomGroups_;
-
     int nbGrpIndispo() const { return static_cast<int>(grpIndispo_.size()); }
     int nbProdImposee() const { return static_cast<int>(prodImpose_.size()); }
     int nbProdMax() const { return static_cast<int>(prodMax_.size()); }

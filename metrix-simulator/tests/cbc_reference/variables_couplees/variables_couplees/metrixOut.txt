@@ -61,7 +61,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :     210.0000
 
 Prise en compte des couts avec reseau
-Attention : marge tres petite pour le groupe 'FVALDI11_G' utilise dans le couplage de variables 'Generators others'
+Attention : marge tres petite pour le groupe 'FVERGE11_G' utilise dans le couplage de variables 'Generators others'
 Micro itération 1 (nombre de contraintes 4)
 -------------------- : 
 
