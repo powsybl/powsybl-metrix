@@ -416,7 +416,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   48643.9144
 
 Des contraintes ont été détectées : 10
-Nb termes dans la matrice : 699282 (taille de la matrice : 699282)
+Nb termes dans la matrice : 699246 (taille de la matrice : 699246)
 Ajout de 342 contraintes dans le probleme
 Micro itération 3 (nombre de contraintes 428)
 -------------------- : 
@@ -434,7 +434,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   48812.4669
 
 Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 4437280 (taille de la matrice : 4437280)
+Nb termes dans la matrice : 4437028 (taille de la matrice : 4437028)
 Ajout de 36 contraintes dans le probleme
 Micro itération 4 (nombre de contraintes 464)
 -------------------- : 
@@ -452,7 +452,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   48815.4029
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 5060224 (taille de la matrice : 5060224)
+Nb termes dans la matrice : 5059936 (taille de la matrice : 5059936)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -520,7 +520,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   50910.9970
 
 Des contraintes ont été détectées : 11
-Nb termes dans la matrice : 598374 (taille de la matrice : 598374)
+Nb termes dans la matrice : 598338 (taille de la matrice : 598338)
 Ajout de 378 contraintes dans le probleme
 Micro itération 3 (nombre de contraintes 464)
 -------------------- : 
@@ -538,7 +538,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   51144.6336
 
 Des contraintes ont été détectées : 2
-Nb termes dans la matrice : 4252996 (taille de la matrice : 4252996)
+Nb termes dans la matrice : 4252708 (taille de la matrice : 4252708)
 Ajout de 72 contraintes dans le probleme
 Micro itération 4 (nombre de contraintes 536)
 -------------------- : 
@@ -556,7 +556,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   51144.6521
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 5297068 (taille de la matrice : 5297068)
+Nb termes dans la matrice : 5296708 (taille de la matrice : 5296708)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -624,7 +624,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   25137.8833
 
 Des contraintes ont été détectées : 9
-Nb termes dans la matrice : 589914 (taille de la matrice : 589914)
+Nb termes dans la matrice : 589878 (taille de la matrice : 589878)
 Ajout de 306 contraintes dans le probleme
 Micro itération 3 (nombre de contraintes 392)
 -------------------- : 
@@ -642,7 +642,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :   25228.1574
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 3158164 (taille de la matrice : 3158164)
+Nb termes dans la matrice : 3157948 (taille de la matrice : 3157948)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe

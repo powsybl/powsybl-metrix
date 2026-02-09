@@ -673,6 +673,7 @@ Le groupe 'G1121' de la loi 8067 est introuvable
 Le noeud '99121_1' de la loi 8068 de variation de conso est introuvable
 Le noeud '99121_1' de la loi 8070 de variation de conso est introuvable
 Le groupe 'G1121' de la loi 8071 est introuvable
+Le noeud '99121_1' de la loi 8073 de variation de conso est introuvable
 La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
 La branche (ligne ou couplage) 'MAMBEP6_MAMBE   6COUPL    DJ' mentionnée dans une parade est introuvable
 Parade 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' sur défaut 'QUAD_AEP' : Noeuds perdus '10895' '18021'
@@ -772,7 +773,7 @@ Noeud bilan : 1
 
 
 ********************************************
-Traitement d'un paquet de 2 variante(s)
+Traitement d'un paquet de 3 variante(s)
 ********************************************
 
 ---------------------
@@ -808,13 +809,14 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 2)
 -------------------- : 
 
-Des contraintes ont été détectées : 2
+Des contraintes ont été détectées : 3
 Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
 Contraintes equivalentes : 'QUAD_UD' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD / QUAD_BLR / QUAD_FIM' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
 Contraintes equivalentes : 'QUAD_UD / QUAD_BLR / QUAD_FIM' & 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_UD' (icdt : QUAD_FCO)
-Ajout de 7 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 425)
+Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_DIB)
+Ajout de 10 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 636)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -830,7 +832,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 44428 (taille de la matrice : 44428)
+Nb termes dans la matrice : 59267 (taille de la matrice : 59267)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -891,16 +893,16 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      30.1263
+Cout associé aux groupes       :      30.0239
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :      30.1263
+Valeur de la fonction objectif :      30.0239
 
-Des contraintes ont été détectées : 77
+Des contraintes ont été détectées : 76
 Nb termes dans la matrice : 21246 (taille de la matrice : 21246)
-Ajout de 156 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 5606)
+Ajout de 152 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 5394)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -909,17 +911,17 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      32.9245
+Cout associé aux groupes       :      32.8250
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.0093
+Cout de pénalisation TD & HVDC :       0.0088
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     736.8963
-Valeur de la fonction objectif :     769.8301
+Valeur de la fonction objectif :     769.7301
 
 Des contraintes ont été détectées : 4
-Nb termes dans la matrice : 1055056 (taille de la matrice : 1055056)
+Nb termes dans la matrice : 1026396 (taille de la matrice : 1026396)
 Ajout de 8 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 5614)
+Micro itération 4 (nombre de contraintes 5402)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -928,15 +930,15 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      32.9245
+Cout associé aux groupes       :      32.8250
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3193
+Cout de pénalisation TD & HVDC :       0.3196
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     736.8963
-Valeur de la fonction objectif :     770.1401
+Valeur de la fonction objectif :     770.0409
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 1110720 (taille de la matrice : 1110720)
+Nb termes dans la matrice : 1082060 (taille de la matrice : 1082060)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -945,12 +947,80 @@ Résultats en volume (MW)
 Volume de production =  212740.3100 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      32.9245
+Cout associé aux groupes       :      32.8250
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3193
+Cout de pénalisation TD & HVDC :       0.3196
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     736.8963
-Valeur de la fonction objectif :     770.1401
+Valeur de la fonction objectif :     770.0409
+
+
+---------------------
+---------------------
+Variante numéro 8073
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 207639.8578  MW
+Production démarrée                 = 207586.7464  MW
+Puissance à ajuster                 =    53.1114  MW
+Puissance disponible à la hausse (hors Pimp) = 272181.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -292599.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = -53.1104 MW
+Zone synchrone 1 (noeud bilan 1), bilan = -0.0010 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 8073 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  207639.8578 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4248.9149
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4248.9149
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 2)
+-------------------- : 
+
+Des contraintes ont été détectées : 12
+Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
+Ajout de 18 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1894)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 8073 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  207639.8578 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 133510 (taille de la matrice : 133510)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 8073 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  207639.8578 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0001
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0001
 
 
 ********************************************
@@ -1223,18 +1293,18 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      44.1445
+Cout associé aux groupes       :      44.2566
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.0204
+Cout de pénalisation TD & HVDC :       0.0209
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     131.1651
-Valeur de la fonction objectif :     175.3300
+Valeur de la fonction objectif :     175.4427
 
-Des contraintes ont été détectées : 84
+Des contraintes ont été détectées : 85
 Nb termes dans la matrice : 191074 (taille de la matrice : 191074)
 Contraintes equivalentes : 'QUAD_DCQ' & 'QUAD_DCQ' (icdt : QUAD_EY)
-Ajout de 162 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 6682)
+Ajout de 163 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 6683)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1243,17 +1313,17 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      77.4035
+Cout associé aux groupes       :      77.6713
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3283
+Cout de pénalisation TD & HVDC :       0.3300
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     704.2958
-Valeur de la fonction objectif :     782.0276
+Valeur de la fonction objectif :     782.2971
 
 Des contraintes ont été détectées : 5
-Nb termes dans la matrice : 1260001 (taille de la matrice : 1260001)
+Nb termes dans la matrice : 1266752 (taille de la matrice : 1266752)
 Ajout de 10 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 6692)
+Micro itération 4 (nombre de contraintes 6693)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1262,34 +1332,15 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      77.4035
+Cout associé aux groupes       :      77.6713
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3672
+Cout de pénalisation TD & HVDC :       0.3693
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     704.2958
-Valeur de la fonction objectif :     782.0665
-
-Des contraintes ont été détectées : 2
-Nb termes dans la matrice : 1329577 (taille de la matrice : 1329577)
-Ajout de 4 contraintes dans le probleme
-Micro itération 5 (nombre de contraintes 6696)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 8064 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =  189729.4792 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :      77.4035
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3671
-Cout des écarts de transit     :       0.0000
-Cout valorisation ENE/END      :     704.2958
-Valeur de la fonction objectif :     782.0664
+Valeur de la fonction objectif :     782.3364
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 1357409 (taille de la matrice : 1357409)
+Nb termes dans la matrice : 1336328 (taille de la matrice : 1336328)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -1298,14 +1349,720 @@ Résultats en volume (MW)
 Volume de production =  189729.4792 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      77.4035
+Cout associé aux groupes       :      77.6713
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.3671
+Cout de pénalisation TD & HVDC :       0.3693
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     704.2958
-Valeur de la fonction objectif :     782.0664
+Valeur de la fonction objectif :     782.3364
 
- Le nombre le contraintes (6696) est different de la taille de la base : 38
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
+variation marginale sur curatif : 8152
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8716
+variation marginale sur variable entiere : 8817
+variation marginale sur curatif : 8990
+variation marginale sur curatif : 9025
+variation marginale sur variable entiere : 9028
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9136
+variation marginale sur variable entiere : 9237
+variation marginale sur curatif : 9344
+variation marginale sur variable entiere : 9445
+variation marginale sur variable entiere : 9447
+variation marginale sur curatif : 9451
+variation marginale sur curatif : 9453
+variation marginale sur curatif : 9560
+variation marginale sur variable entiere : 9655
+variation marginale sur variable entiere : 9657
+variation marginale sur curatif : 9769
+variation marginale sur variable entiere : 9870
+variation marginale sur curatif : 10041
+variation marginale sur curatif : 10076
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10249
+variation marginale sur curatif : 10284
+variation marginale sur variable entiere : 10287
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10459
+variation marginale sur curatif : 10494
+variation marginale sur variable entiere : 10497
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10708
+variation marginale sur curatif : 10712
+variation marginale sur curatif : 10714
+variation marginale sur curatif : 10821
+variation marginale sur variable entiere : 10916
+variation marginale sur curatif : 10920
+variation marginale sur curatif : 10922
+variation marginale sur curatif : 11029
+variation marginale sur variable entiere : 11124
+variation marginale sur curatif : 11128
+variation marginale sur curatif : 11235
+variation marginale sur variable entiere : 11332
+variation marginale sur variable entiere : 11334
+variation marginale sur curatif : 11442
+variation marginale sur variable entiere : 11544
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11652
+variation marginale sur variable entiere : 11754
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11862
+variation marginale sur variable entiere : 11964
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12136
+variation marginale sur curatif : 12171
+variation marginale sur variable entiere : 12174
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12346
+variation marginale sur curatif : 12381
+variation marginale sur variable entiere : 12383
+variation marginale sur curatif : 12554
+variation marginale sur curatif : 12589
+variation marginale sur variable entiere : 12591
+variation marginale sur variable entiere : 12593
+variation marginale sur variable entiere : 12597
+variation marginale sur curatif : 12804
+variation marginale sur variable entiere : 12806
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13014
+variation marginale sur variable entiere : 13016
+variation marginale sur variable entiere : 13018
+variation marginale sur curatif : 13125
+variation marginale sur variable entiere : 13226
+variation marginale sur curatif : 13333
+variation marginale sur variable entiere : 13434
+variation marginale sur variable entiere : 13436
+variation marginale sur curatif : 13543
+variation marginale sur curatif : 13749
+variation marginale sur curatif : 13955
+variation marginale sur curatif : 14161
+variation marginale sur variable entiere : 14262
+variation marginale sur variable entiere : 14264
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14269
+variation marginale sur variable entiere : 14272
+variation marginale sur variable entiere : 14274
+variation marginale sur variable entiere : 14277
+variation marginale sur variable entiere : 14284
+variation marginale sur curatif : 14393
+variation marginale sur variable entiere : 14494
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14503
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14507
 
 ---------------------
 ---------------------
@@ -1377,15 +2134,15 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :      50.9629
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.0875
+Cout de pénalisation TD & HVDC :       0.0874
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1127.6564
-Valeur de la fonction objectif :    1178.7067
+Valeur de la fonction objectif :    1178.7066
 
-Des contraintes ont été détectées : 4
+Des contraintes ont été détectées : 3
 Nb termes dans la matrice : 1689985 (taille de la matrice : 1689985)
-Ajout de 10 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 8457)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 8453)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1399,10 +2156,10 @@ Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.1803
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1127.6564
-Valeur de la fonction objectif :    1178.7996
+Valeur de la fonction objectif :    1178.7995
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 1745651 (taille de la matrice : 1745651)
+Nb termes dans la matrice : 1731721 (taille de la matrice : 1731721)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -1416,9 +2173,1040 @@ Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.1803
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1127.6564
-Valeur de la fonction objectif :    1178.7996
+Valeur de la fonction objectif :    1178.7995
 
- Le nombre le contraintes (8457) est different de la taille de la base : 38
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
+variation marginale sur curatif : 8150
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8506
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8982
+variation marginale sur curatif : 9021
+variation marginale sur variable entiere : 9023
+variation marginale sur variable entiere : 9025
+variation marginale sur variable entiere : 9029
+variation marginale sur curatif : 9139
+variation marginale sur variable entiere : 9240
+variation marginale sur curatif : 9347
+variation marginale sur variable entiere : 9448
+variation marginale sur curatif : 9617
+variation marginale sur curatif : 9654
+variation marginale sur variable entiere : 9656
+variation marginale sur curatif : 9825
+variation marginale sur curatif : 9862
+variation marginale sur variable entiere : 9865
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10035
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10075
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 10078
+variation marginale sur curatif : 10185
+variation marginale sur variable entiere : 10286
+variation marginale sur curatif : 10395
+variation marginale sur variable entiere : 10496
+variation marginale sur curatif : 10605
+variation marginale sur variable entiere : 10706
+variation marginale sur variable entiere : 10710
+variation marginale sur curatif : 10877
+variation marginale sur curatif : 10916
+variation marginale sur variable entiere : 10919
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11087
+variation marginale sur curatif : 11126
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11237
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11445
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11653
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11945
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 11966
+variation marginale sur curatif : 12073
+variation marginale sur curatif : 12168
+variation marginale sur variable entiere : 12170
+variation marginale sur curatif : 12174
+variation marginale sur curatif : 12281
+variation marginale sur curatif : 12376
+variation marginale sur variable entiere : 12378
+variation marginale sur curatif : 12382
+variation marginale sur curatif : 12489
+variation marginale sur curatif : 12584
+variation marginale sur variable entiere : 12586
+variation marginale sur curatif : 12693
+variation marginale sur variable entiere : 12794
+variation marginale sur curatif : 12901
+variation marginale sur variable entiere : 13003
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13111
+variation marginale sur variable entiere : 13213
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 13321
+variation marginale sur variable entiere : 13423
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13426
+variation marginale sur curatif : 13534
+variation marginale sur variable entiere : 13635
+variation marginale sur variable entiere : 13637
+variation marginale sur variable entiere : 13641
+variation marginale sur curatif : 13821
+variation marginale sur variable entiere : 13850
+variation marginale sur variable entiere : 13852
+variation marginale sur curatif : 13959
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14061
+variation marginale sur curatif : 14169
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14271
+variation marginale sur curatif : 14379
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14481
+variation marginale sur curatif : 14589
+variation marginale sur variable entiere : 14690
+variation marginale sur variable entiere : 14692
+variation marginale sur curatif : 14799
+variation marginale sur variable entiere : 14900
+variation marginale sur curatif : 15007
+variation marginale sur variable entiere : 15108
+variation marginale sur variable entiere : 15110
+variation marginale sur variable entiere : 15112
+variation marginale sur variable entiere : 15116
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15121
+variation marginale sur variable entiere : 15124
+variation marginale sur variable entiere : 15127
+variation marginale sur variable entiere : 15134
+variation marginale sur curatif : 15241
+variation marginale sur variable entiere : 15342
+variation marginale sur curatif : 15451
+variation marginale sur curatif : 15657
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15759
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15763
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 15767
+variation marginale sur curatif : 15875
+variation marginale sur variable entiere : 15976
+variation marginale sur variable entiere : 15980
+variation marginale sur variable entiere : 15982
+variation marginale sur curatif : 16091
+variation marginale sur variable entiere : 16192
+variation marginale sur variable entiere : 16196
+variation marginale sur variable entiere : 16198
+variation marginale sur variable entiere : 16200
 
 ---------------------
 ---------------------
@@ -1467,12 +3255,12 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      47.8809
+Cout associé aux groupes       :      47.8014
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     235.3630
-Valeur de la fonction objectif :     283.2441
+Valeur de la fonction objectif :     283.1646
 
 Des contraintes ont été détectées : 87
 Nb termes dans la matrice : 357760 (taille de la matrice : 357760)
@@ -1487,17 +3275,17 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      72.3466
+Cout associé aux groupes       :      72.2769
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1531
+Cout de pénalisation TD & HVDC :       0.1522
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1312.7735
-Valeur de la fonction objectif :    1385.2732
+Valeur de la fonction objectif :    1385.2026
 
-Des contraintes ont été détectées : 4
+Des contraintes ont été détectées : 3
 Nb termes dans la matrice : 1406708 (taille de la matrice : 1406708)
-Ajout de 10 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 7791)
+Ajout de 6 contraintes dans le probleme
+Micro itération 4 (nombre de contraintes 7787)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1506,34 +3294,15 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      72.3466
+Cout associé aux groupes       :      72.2769
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1717
+Cout de pénalisation TD & HVDC :       0.1712
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1312.7735
-Valeur de la fonction objectif :    1385.2918
-
-Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 1462390 (taille de la matrice : 1462390)
-Ajout de 4 contraintes dans le probleme
-Micro itération 5 (nombre de contraintes 7795)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 8066 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =  167278.1295 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :      72.3466
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1717
-Cout des écarts de transit     :       0.0000
-Cout valorisation ENE/END      :    1312.7735
-Valeur de la fonction objectif :    1385.2918
+Valeur de la fonction objectif :    1385.2216
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 1476324 (taille de la matrice : 1476324)
+Nb termes dans la matrice : 1448456 (taille de la matrice : 1448456)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe
@@ -1542,14 +3311,1077 @@ Résultats en volume (MW)
 Volume de production =  167278.1295 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :      72.3466
+Cout associé aux groupes       :      72.2769
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :       0.1717
+Cout de pénalisation TD & HVDC :       0.1712
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :    1312.7735
-Valeur de la fonction objectif :    1385.2918
+Valeur de la fonction objectif :    1385.2216
 
- Le nombre le contraintes (7795) est different de la taille de la base : 47
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
+variation marginale sur curatif : 7985
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8193
+variation marginale sur curatif : 8356
+variation marginale sur curatif : 8395
+variation marginale sur variable entiere : 8398
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 8403
+variation marginale sur curatif : 8566
+variation marginale sur curatif : 8605
+variation marginale sur variable entiere : 8607
+variation marginale sur curatif : 8714
+variation marginale sur variable entiere : 8815
+variation marginale sur curatif : 8922
+variation marginale sur variable entiere : 9023
+variation marginale sur curatif : 9027
+variation marginale sur curatif : 9190
+variation marginale sur curatif : 9229
+variation marginale sur variable entiere : 9231
+variation marginale sur curatif : 9235
+variation marginale sur curatif : 9398
+variation marginale sur curatif : 9437
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9649
+variation marginale sur variable entiere : 9651
+variation marginale sur variable entiere : 9655
+variation marginale sur curatif : 9765
+variation marginale sur variable entiere : 9866
+variation marginale sur curatif : 9870
+variation marginale sur curatif : 10033
+variation marginale sur curatif : 10072
+variation marginale sur variable entiere : 10074
+variation marginale sur variable entiere : 10076
+variation marginale sur curatif : 10080
+variation marginale sur curatif : 10243
+variation marginale sur curatif : 10282
+variation marginale sur variable entiere : 10285
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10290
+variation marginale sur curatif : 10453
+variation marginale sur curatif : 10492
+variation marginale sur variable entiere : 10495
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10603
+variation marginale sur variable entiere : 10704
+variation marginale sur curatif : 10813
+variation marginale sur variable entiere : 10914
+variation marginale sur curatif : 11023
+variation marginale sur variable entiere : 11124
+variation marginale sur variable entiere : 11128
+variation marginale sur variable entiere : 11130
+variation marginale sur curatif : 11134
+variation marginale sur curatif : 11241
+variation marginale sur curatif : 11336
+variation marginale sur variable entiere : 11338
+variation marginale sur curatif : 11342
+variation marginale sur curatif : 11449
+variation marginale sur curatif : 11544
+variation marginale sur variable entiere : 11546
+variation marginale sur curatif : 11550
+variation marginale sur curatif : 11657
+variation marginale sur curatif : 11752
+variation marginale sur variable entiere : 11754
+variation marginale sur curatif : 11861
+variation marginale sur variable entiere : 11962
+variation marginale sur curatif : 12069
+variation marginale sur variable entiere : 12171
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12279
+variation marginale sur variable entiere : 12381
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 12489
+variation marginale sur variable entiere : 12591
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 12594
+variation marginale sur curatif : 12702
+variation marginale sur variable entiere : 12803
+variation marginale sur variable entiere : 12805
+variation marginale sur variable entiere : 12809
+variation marginale sur curatif : 12917
+variation marginale sur variable entiere : 13018
+variation marginale sur variable entiere : 13020
+variation marginale sur curatif : 13127
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13229
+variation marginale sur curatif : 13337
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13439
+variation marginale sur curatif : 13547
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 13649
+variation marginale sur curatif : 13757
+variation marginale sur variable entiere : 13858
+variation marginale sur variable entiere : 13860
+variation marginale sur curatif : 13967
+variation marginale sur variable entiere : 14068
+variation marginale sur curatif : 14175
+variation marginale sur variable entiere : 14276
+variation marginale sur variable entiere : 14278
+variation marginale sur variable entiere : 14282
+variation marginale sur variable entiere : 14286
+variation marginale sur variable entiere : 14289
+variation marginale sur variable entiere : 14296
+variation marginale sur variable entiere : 14298
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14301
+variation marginale sur variable entiere : 14304
+variation marginale sur curatif : 14413
+variation marginale sur curatif : 14619
+variation marginale sur curatif : 14825
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14927
+variation marginale sur variable entiere : 14930
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14935
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14939
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 14943
+variation marginale sur curatif : 15051
+variation marginale sur variable entiere : 15152
+variation marginale sur variable entiere : 15156
+variation marginale sur curatif : 15263
+variation marginale sur variable entiere : 15364
+variation marginale sur curatif : 15473
+variation marginale sur variable entiere : 15574
+variation marginale sur variable entiere : 15576
+variation marginale sur variable entiere : 15578
+variation marginale sur variable entiere : 15580
 
 ---------------------
 ---------------------
@@ -1598,12 +4430,12 @@ Résultats en volume (MW)
 Volume de production =  162166.2966 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       1.1098
+Cout associé aux groupes       :       1.1096
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0112
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     216.9926
-Valeur de la fonction objectif :     218.1136
+Valeur de la fonction objectif :     218.1134
 
 Des contraintes ont été détectées : 9
 Nb termes dans la matrice : 540883 (taille de la matrice : 540883)
@@ -1617,12 +4449,12 @@ Résultats en volume (MW)
 Volume de production =  162166.2966 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       1.1098
+Cout associé aux groupes       :       1.1096
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0256
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     216.9926
-Valeur de la fonction objectif :     218.1280
+Valeur de la fonction objectif :     218.1278
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 666119 (taille de la matrice : 666119)
@@ -1634,14 +4466,73 @@ Résultats en volume (MW)
 Volume de production =  162166.2966 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :       1.1098
+Cout associé aux groupes       :       1.1096
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0256
 Cout des écarts de transit     :       0.0000
 Cout valorisation ENE/END      :     216.9926
-Valeur de la fonction objectif :     218.1280
+Valeur de la fonction objectif :     218.1278
 
- Le nombre le contraintes (4296) est different de la taille de la base : 25
+variation marginale sur curatif : 8148
+variation marginale sur curatif : 8187
+variation marginale sur variable entiere : 8189
+variation marginale sur curatif : 8296
+variation marginale sur variable entiere : 8397
+variation marginale sur curatif : 8504
+variation marginale sur variable entiere : 8605
+variation marginale sur curatif : 8712
+variation marginale sur variable entiere : 8813
+variation marginale sur curatif : 8920
+variation marginale sur variable entiere : 9021
+variation marginale sur curatif : 9128
+variation marginale sur variable entiere : 9230
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9338
+variation marginale sur variable entiere : 9440
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 9548
+variation marginale sur variable entiere : 9650
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 9653
+variation marginale sur curatif : 9821
+variation marginale sur curatif : 9860
+variation marginale sur variable entiere : 9863
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10031
+variation marginale sur curatif : 10070
+variation marginale sur variable entiere : 10073
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 10241
+variation marginale sur curatif : 10280
+variation marginale sur variable entiere : 10282
+variation marginale sur curatif : 10449
+variation marginale sur curatif : 10488
+variation marginale sur variable entiere : 10490
+variation marginale sur curatif : 10597
+variation marginale sur variable entiere : 10698
+variation marginale sur curatif : 10805
+variation marginale sur variable entiere : 10906
+variation marginale sur curatif : 11013
+variation marginale sur variable entiere : 11114
+variation marginale sur variable entiere : 11116
+variation marginale sur variable entiere : 11123
+variation marginale sur curatif : 11230
+variation marginale sur variable entiere : 11331
+variation marginale sur curatif : 11500
+variation marginale sur curatif : 11537
+variation marginale sur variable entiere : 11539
+variation marginale sur curatif : 11710
+variation marginale sur curatif : 11745
+variation marginale sur variable entiere : 11748
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur curatif : 11920
+variation marginale sur curatif : 11955
+variation marginale sur variable entiere : 11958
+variation marginale sur un element curatif non attendu : 40
+variation marginale sur variable entiere : 11961
+variation marginale sur variable entiere : 11963
+variation marginale sur curatif : 12070
+variation marginale sur variable entiere : 12171
 
 ---------------------
 ---------------------
@@ -1676,12 +4567,12 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 2)
 -------------------- : 
 
-Des contraintes ont été détectées : 35
+Des contraintes ont été détectées : 34
 Nb termes dans la matrice : 7744 (taille de la matrice : 7744)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_TCX)
 Contraintes equivalentes : 'QUAD_TXL / QUAD_QKX / QUAD_QKW / QUAD_ERC' & 'QUAD_VQD / QUAD_VQG / QUAD_QKX / QUAD_QKW / QUAD_ERC / QUAD_IJG / QUAD_TXL' (icdt : QUAD_ACVG)
-Ajout de 54 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 4026)
+Ajout de 52 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 4023)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -1698,7 +4589,7 @@ Cout valorisation ENE/END      :     207.3838
 Valeur de la fonction objectif :     207.3840
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 286543 (taille de la matrice : 286543)
+Nb termes dans la matrice : 279782 (taille de la matrice : 279782)
 Pas de contraintes
 Relance sans variables entieres pour le calcul de la base
 Appel du simplexe

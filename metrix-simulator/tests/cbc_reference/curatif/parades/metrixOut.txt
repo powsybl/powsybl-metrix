@@ -466,8 +466,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :      33.8593
-Valeur de la fonction objectif :      33.8593
+Cout des écarts de transit     :      33.8767
+Valeur de la fonction objectif :      33.8767
 
 Des contraintes ont été détectées : 15
 Nb termes dans la matrice : 9 (taille de la matrice : 9)
@@ -484,8 +484,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
-Cout des écarts de transit     :     865.1399
-Valeur de la fonction objectif :     865.1399
+Cout des écarts de transit     :     865.1574
+Valeur de la fonction objectif :     865.1574
 
 Des contraintes ont été détectées : 13
 Nb termes dans la matrice : 123 (taille de la matrice : 123)
@@ -540,8 +540,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0001
-Cout des écarts de transit     :   13195.3326
-Valeur de la fonction objectif :   13195.3327
+Cout des écarts de transit     :   13192.2970
+Valeur de la fonction objectif :   13192.2971
 
 Des contraintes ont été détectées : 40
 Nb termes dans la matrice : 149 (taille de la matrice : 149)
@@ -558,8 +558,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   26661.3137
-Valeur de la fonction objectif :   26661.3140
+Cout des écarts de transit     :   26655.2447
+Valeur de la fonction objectif :   26655.2449
 
 Des contraintes ont été détectées : 11
 Nb termes dans la matrice : 358 (taille de la matrice : 358)
@@ -576,8 +576,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   26799.1146
-Valeur de la fonction objectif :   26799.1148
+Cout des écarts de transit     :   26793.0231
+Valeur de la fonction objectif :   26793.0233
 
 Des contraintes ont été détectées : 2
 Nb termes dans la matrice : 380 (taille de la matrice : 380)
@@ -594,8 +594,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   26806.6979
-Valeur de la fonction objectif :   26806.6982
+Cout des écarts de transit     :   26800.5976
+Valeur de la fonction objectif :   26800.5978
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 396 (taille de la matrice : 396)
@@ -650,8 +650,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0001
-Cout des écarts de transit     :   16237.5765
-Valeur de la fonction objectif :   16237.5766
+Cout des écarts de transit     :   16242.6409
+Valeur de la fonction objectif :   16242.6410
 
 Des contraintes ont été détectées : 46
 Nb termes dans la matrice : 222 (taille de la matrice : 222)
@@ -668,8 +668,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   34867.7405
-Valeur de la fonction objectif :   34867.7407
+Cout des écarts de transit     :   34877.7496
+Valeur de la fonction objectif :   34877.7499
 
 Des contraintes ont été détectées : 15
 Nb termes dans la matrice : 448 (taille de la matrice : 448)
@@ -686,8 +686,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   35115.9971
-Valeur de la fonction objectif :   35115.9973
+Cout des écarts de transit     :   35126.1414
+Valeur de la fonction objectif :   35126.1416
 
 Des contraintes ont été détectées : 3
 Nb termes dans la matrice : 492 (taille de la matrice : 492)
@@ -704,8 +704,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   35145.7187
-Valeur de la fonction objectif :   35145.7190
+Cout des écarts de transit     :   35155.8910
+Valeur de la fonction objectif :   35155.8912
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 514 (taille de la matrice : 514)
@@ -760,8 +760,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   19924.6793
-Valeur de la fonction objectif :   19924.6794
+Cout des écarts de transit     :   19926.7612
+Valeur de la fonction objectif :   19926.7614
 
 Des contraintes ont été détectées : 61
 Nb termes dans la matrice : 328 (taille de la matrice : 328)
@@ -778,8 +778,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   41634.2346
-Valeur de la fonction objectif :   41634.2349
+Cout des écarts de transit     :   41637.8969
+Valeur de la fonction objectif :   41637.8971
 
 Des contraintes ont été détectées : 9
 Nb termes dans la matrice : 596 (taille de la matrice : 596)
@@ -796,8 +796,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   41958.3457
-Valeur de la fonction objectif :   41958.3459
+Cout des écarts de transit     :   41962.2217
+Valeur de la fonction objectif :   41962.2219
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 646 (taille de la matrice : 646)
@@ -852,8 +852,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   23083.7733
-Valeur de la fonction objectif :   23083.7735
+Cout des écarts de transit     :   23082.5652
+Valeur de la fonction objectif :   23082.5653
 
 Des contraintes ont été détectées : 58
 Nb termes dans la matrice : 294 (taille de la matrice : 294)
@@ -870,8 +870,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   41761.2862
-Valeur de la fonction objectif :   41761.2864
+Cout des écarts de transit     :   41759.1459
+Valeur de la fonction objectif :   41759.1461
 
 Des contraintes ont été détectées : 7
 Nb termes dans la matrice : 556 (taille de la matrice : 556)
@@ -888,8 +888,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   41949.1524
-Valeur de la fonction objectif :   41949.1526
+Cout des écarts de transit     :   41946.9840
+Valeur de la fonction objectif :   41946.9842
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 586 (taille de la matrice : 586)
@@ -944,8 +944,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0001
-Cout des écarts de transit     :   14496.0918
-Valeur de la fonction objectif :   14496.0919
+Cout des écarts de transit     :   14492.6513
+Valeur de la fonction objectif :   14492.6514
 
 Des contraintes ont été détectées : 39
 Nb termes dans la matrice : 203 (taille de la matrice : 203)
@@ -962,8 +962,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   35938.6239
-Valeur de la fonction objectif :   35938.6242
+Cout des écarts de transit     :   35931.3454
+Valeur de la fonction objectif :   35931.3456
 
 Des contraintes ont été détectées : 16
 Nb termes dans la matrice : 394 (taille de la matrice : 394)
@@ -980,8 +980,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   36030.0831
-Valeur de la fonction objectif :   36030.0833
+Cout des écarts de transit     :   36022.6777
+Valeur de la fonction objectif :   36022.6779
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 432 (taille de la matrice : 432)
@@ -1036,8 +1036,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0001
-Cout des écarts de transit     :   20848.6925
-Valeur de la fonction objectif :   20848.6927
+Cout des écarts de transit     :   20857.5028
+Valeur de la fonction objectif :   20857.5030
 
 Des contraintes ont été détectées : 35
 Nb termes dans la matrice : 214 (taille de la matrice : 214)
@@ -1054,8 +1054,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   37923.3298
-Valeur de la fonction objectif :   37923.3300
+Cout des écarts de transit     :   37938.5022
+Valeur de la fonction objectif :   37938.5024
 
 Des contraintes ont été détectées : 9
 Nb termes dans la matrice : 384 (taille de la matrice : 384)
@@ -1072,8 +1072,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   37933.6326
-Valeur de la fonction objectif :   37933.6329
+Cout des écarts de transit     :   37948.8606
+Valeur de la fonction objectif :   37948.8608
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 392 (taille de la matrice : 392)
@@ -1128,8 +1128,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0001
-Cout des écarts de transit     :   21862.4744
-Valeur de la fonction objectif :   21862.4745
+Cout des écarts de transit     :   21861.2260
+Valeur de la fonction objectif :   21861.2261
 
 Des contraintes ont été détectées : 27
 Nb termes dans la matrice : 244 (taille de la matrice : 244)
@@ -1146,8 +1146,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   39033.0286
-Valeur de la fonction objectif :   39033.0288
+Cout des écarts de transit     :   39030.8268
+Valeur de la fonction objectif :   39030.8270
 
 Des contraintes ont été détectées : 10
 Nb termes dans la matrice : 372 (taille de la matrice : 372)
@@ -1164,8 +1164,8 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0002
-Cout des écarts de transit     :   39056.8866
-Valeur de la fonction objectif :   39056.8868
+Cout des écarts de transit     :   39054.6633
+Valeur de la fonction objectif :   39054.6635
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 384 (taille de la matrice : 384)
