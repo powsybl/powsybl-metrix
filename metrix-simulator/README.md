@@ -7,7 +7,7 @@ git clone https://github.com/rte-france/sirius-solver.git --branch=metrix sirius
 cmake -S sirius-solver/ -B sirius-solver/builds/ -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=install/sirius-solver/
 cmake --build sirius-solver/builds --config Release --target install
 
-### clone du dépôt git du fork d'OR-Tools dans un dossier or-tools
+### clone du dépôt git d'OR-Tools version RTE
 git clone https://github.com/rte-france/or-tools-rte.git --branch=release/v9.11-rte1.1 or-tools
 ### configuration cmake + build + install en Release
 cmake -S or-tools/ -B or-tools/builds/ \
