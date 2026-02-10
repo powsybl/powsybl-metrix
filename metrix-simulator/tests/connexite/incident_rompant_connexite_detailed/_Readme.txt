@@ -1,1 +1,0 @@
-Same test as "incident_rompant_connexite" but with detailed display of the consumptions

@@ -1,4 +1,5 @@
 set(MAIN_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(MAIN_REFERENCE_DIR ${CMAKE_SOURCE_DIR}/tests_reference/xpress)
 set(TEST_SOLVERCH xpress)
 
 add_subdirectory(divers)
