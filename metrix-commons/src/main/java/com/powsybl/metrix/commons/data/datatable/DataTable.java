@@ -213,6 +213,14 @@ public class DataTable {
         return this;
     }
 
+    public void verify(List<String> listColumn, String nomDT) {
+        listColumn.forEach(columName -> {
+            if (!this.columnExists(columName)) {
+                throw new IllegalArgumentException("La datatable " + nomDT + " n'est pas bien formatée");
+            }
+        });
+    }
+
     private void addAttributeNameToValue(AttributeNameToValue attributeNameToValue) {
         addValues(attributeNameToValue);
         addColumns(attributeNameToValue);
