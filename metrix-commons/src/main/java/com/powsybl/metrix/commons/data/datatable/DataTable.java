@@ -213,10 +213,15 @@ public class DataTable {
         return this;
     }
 
-    public void verify(List<String> listColumn, String nomDT) {
+    /**
+     * Verify datatable format
+     * @param listColumn list of column names to verify
+     * @param dtName     name of the datatable
+     */
+    public void verify(List<String> listColumn, String dtName) {
         listColumn.forEach(columName -> {
             if (!this.columnExists(columName)) {
-                throw new IllegalArgumentException("La datatable " + nomDT + " n'est pas bien formatée");
+                throw new IllegalArgumentException("The datatable " + dtName + " is not formatted correctly");
             }
         });
     }
