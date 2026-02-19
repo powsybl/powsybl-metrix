@@ -49,6 +49,10 @@ public class ChunkCutter {
         return rangeList;
     }
 
+    public List<Range<Integer>> getRanges() {
+        return ranges;
+    }
+
     public int getChunkSize() {
         return chunkSize;
     }
