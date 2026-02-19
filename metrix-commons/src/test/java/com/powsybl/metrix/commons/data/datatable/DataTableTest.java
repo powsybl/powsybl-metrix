@@ -297,6 +297,6 @@ class DataTableTest {
         // WHEN
         assertThatThrownBy(() -> dataTable.verify(listWrongColumns, "testDataTable"))
                 .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("La datatable testDataTable n'est pas bien formatée");
+                .hasMessage("The datatable testDataTable is not formatted correctly");
     }
 }
