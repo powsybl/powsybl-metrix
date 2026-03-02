@@ -125,7 +125,7 @@ public final class TimeSeriesStoreUtil {
             throw new TimeSeriesException("Impossible to write CSV because index is not unique");
         }
 
-        TimeSeriesTable table = new TimeSeriesTable(versions.first(), versions.last(), indexes.iterator().next(), byteBufferAllocator);
+        TimeSeriesTable table = new TimeSeriesTable(versions.stream().toList(), indexes.iterator().next(), byteBufferAllocator);
         for (int version : versions) {
             // Initialise mutable lists
             List<DoubleTimeSeries> doubleTimeSeries = new ArrayList<>();
