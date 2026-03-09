@@ -197,16 +197,16 @@ public class MetrixInputData {
             + metrixNetwork.getTwoWindingsTransformerList().size()
             + 3 * metrixNetwork.getThreeWindingsTransformerList().size()
             + metrixNetwork.getSwitchList().size()
-            + metrixNetwork.getUnpairedDanglingLineList().size()
+            + metrixNetwork.getUnpairedBoundaryLineList().size()
             + metrixNetwork.getTieLineList().size();
         dtnbtrde = metrixNetwork.getPhaseTapChangerList().size();
 
-        // Loads are loads and unpaired dangling lines
-        ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
+        // Loads are loads and unpaired boundary lines
+        ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getUnpairedBoundaryLineList().size();
 
         dcnblies = metrixNetwork.getHvdcLineList().size();
 
-        tnnbntot = metrixNetwork.getBusList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
+        tnnbntot = metrixNetwork.getBusList().size() + metrixNetwork.getUnpairedBoundaryLineList().size();
 
         if (dslData != null) {
             sectnbse = dslData.getSectionList().size();
@@ -417,8 +417,8 @@ public class MetrixInputData {
         // TieLines
         metrixNetwork.getTieLineList().forEach(tieLine -> writeTieLine(tieLine, metrixInputBranch, constantLossFactor));
 
-        // Unpaired Dangling Lines
-        metrixNetwork.getUnpairedDanglingLineList().forEach(udl -> writeUnpairedDanglingLine(udl, metrixInputBranch));
+        // Unpaired Boundary Lines
+        metrixNetwork.getUnpairedBoundaryLineList().forEach(udl -> writeUnpairedBoundaryLine(udl, metrixInputBranch));
 
         // Branch
         die.setStringArray("CQNOMQUA", cqnomqua);
@@ -551,19 +551,19 @@ public class MetrixInputData {
         writeLineOrTieLine(tieLine, tieLine.getR(), tieLine.getX(), metrixInputBranch, constantLossFactor);
     }
 
-    private void writeUnpairedDanglingLine(DanglingLine danglingLine, MetrixInputBranch metrixInputBranch) {
-        double nominalVoltage = danglingLine.getTerminal().getVoltageLevel().getNominalV();
-        double r = (danglingLine.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
-        double admittance = toAdmittance(danglingLine.getId(), danglingLine.getX(), nominalVoltage, parameters.getNominalU());
-        int index = metrixNetwork.getIndex(danglingLine);
+    private void writeUnpairedBoundaryLine(BoundaryLine boundaryLine, MetrixInputBranch metrixInputBranch) {
+        double nominalVoltage = boundaryLine.getTerminal().getVoltageLevel().getNominalV();
+        double r = (boundaryLine.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+        double admittance = toAdmittance(boundaryLine.getId(), boundaryLine.getX(), nominalVoltage, parameters.getNominalU());
+        int index = metrixNetwork.getIndex(boundaryLine);
         // side 1 is network side
-        int bus1Index = metrixNetwork.getIndex(danglingLine.getTerminal().getBusBreakerView().getBus());
+        int bus1Index = metrixNetwork.getIndex(boundaryLine.getTerminal().getBusBreakerView().getBus());
         // side 2 is boundary side
-        int bus2Index = metrixNetwork.getUnpairedDanglingLineBusIndex(danglingLine);
+        int bus2Index = metrixNetwork.getUnpairedBoundaryLineBusIndex(boundaryLine);
 
         writeBranch(metrixInputBranch,
                 index,
-                new BranchValues(danglingLine.getId(), admittance, r, getMonitoringTypeBasecase(danglingLine.getId()), getMonitoringTypeOnContingency(danglingLine.getId()), bus1Index, bus2Index));
+                new BranchValues(boundaryLine.getId(), admittance, r, getMonitoringTypeBasecase(boundaryLine.getId()), getMonitoringTypeOnContingency(boundaryLine.getId()), bus1Index, bus2Index));
     }
 
     private void writeLineOrTieLine(Branch<?> line, double lineR, double lineX, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
@@ -595,8 +595,8 @@ public class MetrixInputData {
             int index = metrixNetwork.getIndex(bus);
             cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(bus.getVoltageLevel()));
         }
-        for (DanglingLine udl : metrixNetwork.getUnpairedDanglingLineList()) {
-            int index = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
+        for (BoundaryLine udl : metrixNetwork.getUnpairedBoundaryLineList()) {
+            int index = metrixNetwork.getUnpairedBoundaryLineBusIndex(udl);
             cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(udl.getTerminal().getBusBreakerView().getBus().getVoltageLevel()));
         }
         die.setIntArray("CPPOSREG", cpposreg);
@@ -625,7 +625,7 @@ public class MetrixInputData {
             preventiveLoadsList = new HashSet<>();
         }
 
-        writeLoadsAndUnpairedDanglingLines(tnneucel, esafiact, tnnomnoe, tnvapal1, tnvacou1, preventiveLoadsList);
+        writeLoadsAndUnpairedBoundaryLines(tnneucel, esafiact, tnnomnoe, tnvapal1, tnvacou1, preventiveLoadsList);
 
         die.setStringArray("TNNOMNOE", tnnomnoe);
         die.setIntArray("TNNEUCEL", tnneucel);
@@ -637,7 +637,7 @@ public class MetrixInputData {
         }
     }
 
-    private void writeLoadsAndUnpairedDanglingLines(int[] tnneucel, float[] esafiact, String[] tnnomnoe,
+    private void writeLoadsAndUnpairedBoundaryLines(int[] tnneucel, float[] esafiact, String[] tnnomnoe,
                                                     int[] tnvapal1, float[] tnvacou1,
                                                     Set<String> preventiveLoadsList) {
         int index = 0;
@@ -655,15 +655,15 @@ public class MetrixInputData {
             index++;
         }
 
-        for (DanglingLine udl : metrixNetwork.getUnpairedDanglingLineList()) {
-            int busIndex = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
+        for (BoundaryLine udl : metrixNetwork.getUnpairedBoundaryLineList()) {
+            int busIndex = metrixNetwork.getUnpairedBoundaryLineBusIndex(udl);
             float p0 = (float) udl.getP0();
             if (udl.getGeneration() != null) {
                 // We do not create a generator, because we do not want the DL generation to be used when balancing Gen/Load.
                 // Therefore, we just remove the generation part from the load.
                 p0 -= (float) udl.getGeneration().getTargetP();
             }
-            writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, p0, udl.getId() + MetrixNetwork.getUnpairedDanglingLineLoadId(udl));
+            writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, p0, udl.getId() + MetrixNetwork.getUnpairedBoundaryLineLoadId(udl));
             index++;
         }
     }
@@ -830,7 +830,7 @@ public class MetrixInputData {
             try {
                 int type;
                 switch (element.getType()) {
-                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER, TIE_LINE, DANGLING_LINE -> type = ElementType.BRANCH.getType();
+                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER, TIE_LINE, BOUNDARY_LINE -> type = ElementType.BRANCH.getType();
                     case GENERATOR -> {
                         type = ElementType.GENERATOR.getType();
                         generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
@@ -1198,7 +1198,7 @@ public class MetrixInputData {
         if (identifiable != null) {
             if (identifiable instanceof Line ||
                     identifiable instanceof TwoWindingsTransformer ||
-                    identifiable instanceof DanglingLine ||
+                    identifiable instanceof BoundaryLine ||
                     identifiable instanceof TieLine) {
                 secttype.add(ElementType.BRANCH.getType());
             } else if (identifiable instanceof HvdcLine) {
