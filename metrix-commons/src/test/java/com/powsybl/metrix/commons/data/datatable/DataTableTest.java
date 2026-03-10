@@ -17,6 +17,8 @@ import java.util.Map;
 
 import static com.powsybl.metrix.commons.data.datatable.DataTable.toDataTable;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -280,5 +282,21 @@ class DataTableTest {
         DataTableException e = assertThrows(DataTableException.class, () -> dataTable.replaceValues(selectedColumns, filter, values));
         // THEN
         assertTrue(e.getMessage().contains("Number of selected columns '2' different from number of values '1'"));
+    }
+
+    @Test
+    void verifyWorkingTest() {
+        // WHEN
+        assertDoesNotThrow(() -> dataTable.verify(columnNames, "testDataTable"));
+    }
+
+    @Test
+    void verifyNotWorkingTest() {
+        //GIVEN
+        List<String> listWrongColumns = List.of("notColumn", "notColumn2");
+        // WHEN
+        assertThatThrownBy(() -> dataTable.verify(listWrongColumns, "testDataTable"))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("The datatable testDataTable is not formatted correctly");
     }
 }
