@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author amichaut {@literal <arthur.michaut at artelys.com>}
@@ -253,7 +254,7 @@ class TimeSeriesProviderTsTest {
         try (StringWriter sw = new StringWriter()) {
             TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(sw), null);
             assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
-            assertEquals("WARNING;Mapping script;provideTs - Time series can not be provided for id FSSV.O11_G because id is not mapped on targetP\n", TestUtil.normalizeLineSeparator(sw.toString()));
+            assertTrue(sw.toString().isEmpty());
         }
     }
 
