@@ -39,8 +39,8 @@ public class MetrixNetwork {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
     private static final String PAYS_CVG_PROPERTY = "paysCvg";
     private static final String PAYS_CVG_UNDEFINED = "Undefined";
-    private static final String METRIX_DANGLING_LINE_BUS_SUFFIX = "_metrixDanglingLineBus";
-    private static final String METRIX_DANGLING_LINE_LOAD_SUFFIX = "_metrixDanglingLineLoad";
+    private static final String METRIX_BOUNDARY_LINE_BUS_SUFFIX = "_metrixBoundaryLineBus";
+    private static final String METRIX_BOUNDARY_LINE_LOAD_SUFFIX = "_metrixBoundaryLineLoad";
 
     private final Network network;
 
@@ -57,7 +57,7 @@ public class MetrixNetwork {
     private final Set<TwoWindingsTransformer> twoWindingsTransformerList = new LinkedHashSet<>();
     private final Set<ThreeWindingsTransformer> threeWindingsTransformerList = new LinkedHashSet<>();
     private final Set<Switch> switchList = new LinkedHashSet<>();
-    private final Set<DanglingLine> unpairedDanglingLineList = new LinkedHashSet<>();
+    private final Set<BoundaryLine> unpairedBoundaryLineList = new LinkedHashSet<>();
     private final Set<TieLine> tieLineList = new LinkedHashSet<>();
 
     private final Set<PhaseTapChanger> phaseTapChangerList = new LinkedHashSet<>();
@@ -109,8 +109,8 @@ public class MetrixNetwork {
         return List.copyOf(threeWindingsTransformerList);
     }
 
-    public List<DanglingLine> getUnpairedDanglingLineList() {
-        return List.copyOf(unpairedDanglingLineList);
+    public List<BoundaryLine> getUnpairedBoundaryLineList() {
+        return List.copyOf(unpairedBoundaryLineList);
     }
 
     public List<Switch> getSwitchList() {
@@ -146,17 +146,17 @@ public class MetrixNetwork {
         return mapper.getInt(subset, identifiable.getId());
     }
 
-    public int getUnpairedDanglingLineBusIndex(DanglingLine danglingLine) {
-        Objects.requireNonNull(danglingLine);
-        if (danglingLine.isPaired()) {
-            throw new IllegalStateException("DanglingLine is paired " + danglingLine.getId());
+    public int getUnpairedBoundaryLineBusIndex(BoundaryLine boundaryLine) {
+        Objects.requireNonNull(boundaryLine);
+        if (boundaryLine.isPaired()) {
+            throw new IllegalStateException("BoundaryLine is paired " + boundaryLine.getId());
         }
-        return mapper.getInt(MetrixSubset.NOEUD, danglingLine.getId() + METRIX_DANGLING_LINE_BUS_SUFFIX);
+        return mapper.getInt(MetrixSubset.NOEUD, boundaryLine.getId() + METRIX_BOUNDARY_LINE_BUS_SUFFIX);
     }
 
-    public static String getUnpairedDanglingLineLoadId(DanglingLine danglingLine) {
-        Objects.requireNonNull(danglingLine);
-        return danglingLine.getId() + METRIX_DANGLING_LINE_LOAD_SUFFIX;
+    public static String getUnpairedBoundaryLineLoadId(BoundaryLine boundaryLine) {
+        Objects.requireNonNull(boundaryLine);
+        return boundaryLine.getId() + METRIX_BOUNDARY_LINE_LOAD_SUFFIX;
     }
 
     private MetrixSubset getMetrixSubset(Identifiable<?> identifiable) {
@@ -245,11 +245,11 @@ public class MetrixNetwork {
         }
     }
 
-    private void addUnpairedDanglingLine(DanglingLine dl) {
-        if (unpairedDanglingLineList.add(dl)) {
-            mapper.newInt(MetrixSubset.QUAD, dl.getId());
-            mapper.newInt(MetrixSubset.NOEUD, dl.getId() + METRIX_DANGLING_LINE_BUS_SUFFIX);
-            mapper.newInt(MetrixSubset.LOAD, dl.getId() + METRIX_DANGLING_LINE_LOAD_SUFFIX);
+    private void addUnpairedBoundaryLine(BoundaryLine boundaryLine) {
+        if (unpairedBoundaryLineList.add(boundaryLine)) {
+            mapper.newInt(MetrixSubset.QUAD, boundaryLine.getId());
+            mapper.newInt(MetrixSubset.NOEUD, boundaryLine.getId() + METRIX_BOUNDARY_LINE_BUS_SUFFIX);
+            mapper.newInt(MetrixSubset.LOAD, boundaryLine.getId() + METRIX_BOUNDARY_LINE_LOAD_SUFFIX);
         }
     }
 
@@ -438,21 +438,21 @@ public class MetrixNetwork {
         createThreeWindingsTransformersList();
     }
 
-    private void createUnpairedDanglingLineList() {
+    private void createUnpairedBoundaryLineList() {
         int nbNok = 0;
-        for (DanglingLine dl : network.getDanglingLines()) {
-            if (!dl.isPaired()) {
-                Terminal t = dl.getTerminal();
+        for (BoundaryLine bl : network.getBoundaryLines()) {
+            if (!bl.isPaired()) {
+                Terminal t = bl.getTerminal();
                 Bus b = t.getBusBreakerView().getBus();
                 if (b != null && busList.contains(b)) {
-                    addUnpairedDanglingLine(dl);
+                    addUnpairedBoundaryLine(bl);
                 } else {
                     nbNok++;
                 }
             }
         }
         if (LOGGER.isDebugEnabled()) {
-            String message = String.format("Dangling   total = <%5d> ok = <%5d> not = <%5d>", unpairedDanglingLineList.size() + nbNok, unpairedDanglingLineList.size(), nbNok);
+            String message = String.format("Boundary   total = <%5d> ok = <%5d> not = <%5d>", unpairedBoundaryLineList.size() + nbNok, unpairedBoundaryLineList.size(), nbNok);
             LOGGER.debug(message);
         }
     }
@@ -579,7 +579,7 @@ public class MetrixNetwork {
         createGeneratorList();
         createLineList();
         createTransformerList();
-        createUnpairedDanglingLineList();
+        createUnpairedBoundaryLineList();
         createSwitchList();
         createLoadList();
         createHvdcLineList();
@@ -715,14 +715,14 @@ public class MetrixNetwork {
             // Since switches connected to lines and TWT are "replaced" by those connectables, no need to set them retained
             case LINE, TWO_WINDINGS_TRANSFORMER -> addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
             case LOAD, GENERATOR -> addElementToRetainedBreakersList(sw, switchId, setRetained);
-            case DANGLING_LINE -> {
-                DanglingLine danglingLine = (DanglingLine) terminal.getConnectable();
-                if (danglingLine.isPaired()) {
-                    // Paired dangling line is managed as a line via the tie line
-                    TieLine tieLine = danglingLine.getTieLine().orElseThrow(() -> new PowsyblException("No tie line on a paired dangling line - should not happen"));
+            case BOUNDARY_LINE -> {
+                BoundaryLine boundaryLine = (BoundaryLine) terminal.getConnectable();
+                if (boundaryLine.isPaired()) {
+                    // Paired boundary line is managed as a line via the tie line
+                    TieLine tieLine = boundaryLine.getTieLine().orElseThrow(() -> new PowsyblException("No tie line on a paired boundary line - should not happen"));
                     addElementToRetainedBreakersList(sw, tieLine.getId(), false);
                 } else {
-                    // Unpaired dangling line is managed as a line (ending to a load)
+                    // Unpaired boundary line is managed as a line (ending to a load)
                     addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
                 }
             }

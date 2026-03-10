@@ -51,13 +51,13 @@ class SectionMonitoringData {
             if (!(identifiable instanceof Line ||
                     identifiable instanceof TwoWindingsTransformer ||
                     identifiable instanceof TieLine ||
-                    identifiable instanceof DanglingLine ||
+                    identifiable instanceof BoundaryLine ||
                     identifiable instanceof HvdcLine)) {
                 logDslLoader.logWarn("sectionMonitoring '" + id + "' type " + identifiable.getClass().name + " not supported")
                 return
             }
-            if (identifiable instanceof DanglingLine && identifiable.isPaired()) {
-                logDslLoader.logWarn("Branch %s is a paired Dangling Line, the TieLine should be used instead", id)
+            if (identifiable instanceof BoundaryLine && identifiable.isPaired()) {
+                logDslLoader.logWarn("Branch %s is a paired Boundary Line, the TieLine should be used instead", id)
                 return
             }
         }

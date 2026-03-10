@@ -450,7 +450,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 2,
-      "values" : [ "DL" ]
+      "values" : [ "BL" ]
     }, {
       "name" : "TNNOMNOE",
       "type" : "STRING",
@@ -459,7 +459,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 27,
-      "values" : [ "DLDL_metrixDanglingLineLoad" ]
+      "values" : [ "BLBL_metrixBoundaryLineLoad" ]
     }, {
       "name" : "TRNOMGTH",
       "type" : "STRING",
