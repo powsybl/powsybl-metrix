@@ -49,12 +49,11 @@ public final class MetrixLoadPostProcessingTimeSeries extends AbstractMetrixEqui
             CUR_SHEDDING_PREFIX,
             CUR_SHEDDING_COST_PREFIX);
 
-    public MetrixLoadPostProcessingTimeSeries(
-        MetrixDslData dslData,
-        TimeSeriesMappingConfig mappingConfig,
-        Map<String, NodeCalc> contingencyProbabilityById,
-        Set<String> allTimeSeriesNames,
-        String nullableSchemaName) {
+    public MetrixLoadPostProcessingTimeSeries(MetrixDslData dslData,
+                                              TimeSeriesMappingConfig mappingConfig,
+                                              Map<String, NodeCalc> contingencyProbabilityById,
+                                              Set<String> allTimeSeriesNames,
+                                              String nullableSchemaName) {
         super(dslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName, PostProcessingEquipmentType.LOAD);
     }
 
@@ -75,9 +74,13 @@ public final class MetrixLoadPostProcessingTimeSeries extends AbstractMetrixEqui
 
     /**
      * Create load shedding calculated time series
-     *    load shedding = loadTimeSeries
+     * <ul>
+     *     <li>load shedding = loadTimeSeries</li>
+     * </ul>
      * Create cost load shedding calculated time series
-     *    load shedding cost = load shedding * load shedding doctrine cost time series
+     * <ul>
+     *     <li>load shedding cost = load shedding * load shedding doctrine cost time series</li>
+     * </ul>
      * @param loadId              load id
      * @param contingencyContext  contingency context
      * @param loadTimeSeries      metrix load shedding result time series

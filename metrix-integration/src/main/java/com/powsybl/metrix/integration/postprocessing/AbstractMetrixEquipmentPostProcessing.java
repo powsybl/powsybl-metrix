@@ -1,3 +1,10 @@
+/*
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.metrix.integration.MetrixDataName;
@@ -20,6 +27,9 @@ import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessing
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.findIdsToProcess;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getContingencyIdFromTsName;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public abstract class AbstractMetrixEquipmentPostProcessing {
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrixEquipmentPostProcessing.class);
 
@@ -61,6 +71,41 @@ public abstract class AbstractMetrixEquipmentPostProcessing {
         initEquipmentToCurativeTs();
     }
 
+    /**
+     * Create preventive and curative postprocessing time series for configured equipments having redispatching or
+     * load shedding results.
+     */
+    public final Map<String, NodeCalc> createPostProcessingTimeSeries() {
+        // Preventive
+        PostProcessingPrefixContainer preventivePrefixContainer = equipmentType.preventivePrefixContainer();
+        process(equipmentToPreventiveTs.keySet(), PostProcessingType.PREVENTIVE, preventivePrefixContainer);
+
+        // Curative
+        PostProcessingPrefixContainer curativePrefixContainer = equipmentType.curativePrefixContainer();
+        process(equipmentToCurativeTs.keySet(), PostProcessingType.CURATIVE, curativePrefixContainer);
+
+        return postProcessingTimeSeries;
+    }
+
+    protected String buildName(ContingencyContext contingencyContext,
+                               String prefix,
+                               String equipmentId) {
+        String baseName = MetrixDataName.getNameWithSchema(prefix + "_" + equipmentId, nullableSchemaName);
+        return baseName + contingencyContext.postfix();
+    }
+
+    protected abstract void compute(String equipmentId,
+                                    ContingencyContext context,
+                                    NodeCalc metrixResultTimeSeries,
+                                    PostProcessingPrefixContainer prefixContainer,
+                                    boolean allCostsConfigured);
+
+    protected abstract Set<String> getPreventiveIds();
+
+    protected abstract Set<String> getCurativeIds();
+
+    protected abstract List<MetrixVariable> getRequiredVariables(PostProcessingPrefixContainer prefixContainer);
+
     private void initEquipmentToPreventiveTs() {
         String prefix = equipmentType.preventivePrefixContainer().getMetrixResultPrefix();
 
@@ -83,18 +128,6 @@ public abstract class AbstractMetrixEquipmentPostProcessing {
             List<String> elementTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(elementIdPrefix)).toList();
             elementTimeSeriesNames.forEach(tsName -> equipmentToCurativeTs.computeIfAbsent(id, k -> new HashSet<>()).add(tsName));
         }
-    }
-
-    public final Map<String, NodeCalc> createPostProcessingTimeSeries() {
-        // Preventive
-        PostProcessingPrefixContainer preventivePrefixContainer = equipmentType.preventivePrefixContainer();
-        process(equipmentToPreventiveTs.keySet(), PostProcessingType.PREVENTIVE, preventivePrefixContainer);
-
-        // Curative
-        PostProcessingPrefixContainer curativePrefixContainer = equipmentType.curativePrefixContainer();
-        process(equipmentToCurativeTs.keySet(), PostProcessingType.CURATIVE, curativePrefixContainer);
-
-        return postProcessingTimeSeries;
     }
 
     private NodeCalc getContingencyProbability(String contingencyId) {
@@ -134,10 +167,11 @@ public abstract class AbstractMetrixEquipmentPostProcessing {
      * Check if doctrine costs are properly defined, i.e., all equipments are configured for up and down costs.
      * If not, no costs time series will be created.
      * For each equipment having result (equipment time series) (MW)
-     * - create time series (MW)
-     * - create costs time series
-     * - create global cost time series
-     *
+     * <ul>
+     *     <li>create time series (MW)</li>
+     *     <li>create costs time series</li>
+     *     <li>create global cost time series</li>
+     * </ul>
      * @param equipmentIds       list of equipment ids having results (redispatching for generators, load shedding for loads)
      * @param postProcessingType postprocessing type
      * @param prefixContainer    prefix of time series to create (preventive or curative)
@@ -161,23 +195,4 @@ public abstract class AbstractMetrixEquipmentPostProcessing {
             computeEquipment(prefixContainer, equipmentId, elementTimeSeriesNames, prefixContainer.getMetrixResultPrefix() + equipmentId, postProcessingType, allCostsConfigured);
         }
     }
-
-    protected String buildName(ContingencyContext contingencyContext,
-                               String prefix,
-                               String equipmentId) {
-        String baseName = MetrixDataName.getNameWithSchema(prefix + "_" + equipmentId, nullableSchemaName);
-        return baseName + contingencyContext.postfix();
-    }
-
-    protected abstract void compute(String equipmentId,
-                                    ContingencyContext context,
-                                    NodeCalc metrixResultTimeSeries,
-                                    PostProcessingPrefixContainer prefixContainer,
-                                    boolean allCostsConfigured);
-
-    protected abstract Set<String> getPreventiveIds();
-
-    protected abstract Set<String> getCurativeIds();
-
-    protected abstract List<MetrixVariable> getRequiredVariables(PostProcessingPrefixContainer prefixContainer);
 }

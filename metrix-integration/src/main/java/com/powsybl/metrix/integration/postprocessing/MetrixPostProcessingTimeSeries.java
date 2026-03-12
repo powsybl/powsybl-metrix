@@ -151,11 +151,12 @@ public final class MetrixPostProcessingTimeSeries {
         Map<String, NodeCalc> contingencyProbabilityById = contingencies.stream().collect(Collectors.toMap(Contingency::getId, cty -> getProbabilityNodeCalc(cty, postProcessingTimeSeries)));
 
         // Generator
-        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
+        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData,
+            mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(generatorProcessing.createPostProcessingTimeSeries());
 
         // Load
-        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
+        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData,mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(loadProcessing.createPostProcessingTimeSeries());
 
         // Losses

@@ -65,13 +65,12 @@ public final class MetrixGeneratorPostProcessingTimeSeries extends AbstractMetri
             CUR_REDISPATCHING_DOWN_PREFIX, CUR_REDISPATCHING_DOWN_COST_PREFIX,
             CUR_REDISPATCHING_PREFIX, CUR_REDISPATCHING_COST_PREFIX);
 
-    public MetrixGeneratorPostProcessingTimeSeries(
-        MetrixDslData dslData,
-        TimeSeriesMappingConfig mappingConfig,
-        Map<String, NodeCalc> contingencyProbabilityById,
-        Set<String> allTimeSeriesNames,
-        String nullableSchemaName) {
-        super(dslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName, PostProcessingEquipmentType.GENERATOR);
+    public MetrixGeneratorPostProcessingTimeSeries(MetrixDslData metrixDslData,
+                                                   TimeSeriesMappingConfig mappingConfig,
+                                                   Map<String, NodeCalc> contingencyProbabilityById,
+                                                   Set<String> allTimeSeriesNames,
+                                                   String nullableSchemaName) {
+        super(metrixDslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName, PostProcessingEquipmentType.GENERATOR);
     }
 
     @Override
@@ -90,9 +89,9 @@ public final class MetrixGeneratorPostProcessingTimeSeries extends AbstractMetri
      *    <li>generator redispatching up cost = generator redispatching up * redispatching up doctrine cost time series * contingency probability</li>
      *    <li>generator redispatching down cost = |generator redispatching down| * redispatching down doctrine cost time series * contingency probability</li>
      * </ul>
-     * Create global costs calculated time series</li>
+     * Create global costs calculated time series
      * <ul>
-     *    <li>generator redispatching cost = generator redispatching up cost + generator redispatching down cost
+     *    <li>generator redispatching cost = generator redispatching up cost + generator redispatching down cost</li>
      * </ul>
      * @param generatorId         generator id
      * @param contingencyContext  contingency context
