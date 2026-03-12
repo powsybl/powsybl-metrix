@@ -156,7 +156,7 @@ public final class MetrixPostProcessingTimeSeries {
         postProcessingTimeSeries.putAll(generatorProcessing.createPostProcessingTimeSeries());
 
         // Load
-        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData,mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
+        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(loadProcessing.createPostProcessingTimeSeries());
 
         // Losses
