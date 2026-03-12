@@ -30,7 +30,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-          cache: 'maven'
 
       # Define script path variable
       - name: Set up script path
