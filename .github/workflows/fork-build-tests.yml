@@ -16,13 +16,14 @@ jobs:
 
     steps:
       - name: Set up JDK 21
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'maven'
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Build with Maven (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
@@ -43,7 +44,7 @@ jobs:
 
       - name: Upload Metrix iTools archive
         if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
           path: ${{ github.workspace }}/metrix-distribution/target/metrix
@@ -54,7 +55,7 @@ jobs:
 
       - name: Save classes and Jacoco report
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: data-for-sonar-analysis-${{ github.event.pull_request.number }}
           retention-days: 1
@@ -70,17 +71,23 @@ jobs:
 
       - name: Save PR Information
         if: matrix.os == 'ubuntu-latest'
+        env:
+          REPO_NAME: ${{ github.event.pull_request.head.repo.full_name }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
           mkdir -p pr-info
-          echo "${{ github.event.pull_request.head.repo.full_name }}" > pr-info/repo-name
-          echo "${{ github.event.pull_request.head.ref }}" > pr-info/head-ref
-          echo "${{ github.event.pull_request.head.sha }}" > pr-info/head-sha
-          echo "${{ github.event.pull_request.number }}" > pr-info/pr-number
-          echo "${{ github.event.pull_request.base.ref }}" > pr-info/base-ref
+          echo "$REPO_NAME" > pr-info/repo-name
+          echo "$HEAD_REF" > pr-info/head-ref
+          echo "$HEAD_SHA" > pr-info/head-sha
+          echo "$PR_NUMBER" > pr-info/pr-number
+          echo "$BASE_REF" > pr-info/base-ref
 
       - name: Upload PR Information
         if: matrix.os == 'ubuntu-latest'
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: pr-info-${{ github.event.pull_request.number }}
           path: pr-info/
@@ -92,10 +99,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Java 17
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
+          cache: 'maven'
 
       - name: Install gcovr
         run: |
@@ -105,7 +113,7 @@ jobs:
       - name: Install Sonar wrapper
         working-directory: ${{ runner.workspace }}
         run: |
-          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          wget --max-redirect=0 https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
 
       - name: Install Boost
@@ -114,7 +122,7 @@ jobs:
           sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -150,7 +158,7 @@ jobs:
           cp -r /usr/include/boost $GITHUB_WORKSPACE/metrix-simulator/build/boost/
 
       - name: Save C++ data
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: cpp-data-for-sonar-analysis-${{ github.event.pull_request.number }}
           retention-days: 1
@@ -158,16 +166,22 @@ jobs:
             metrix-simulator/build
 
       - name: Save PR Information
+        env:
+          REPO_NAME: ${{ github.event.pull_request.head.repo.full_name }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
-          mkdir -p cpp-pr-info
-          echo "${{ github.event.pull_request.head.repo.full_name }}" > cpp-pr-info/repo-name
-          echo "${{ github.event.pull_request.head.ref }}" > cpp-pr-info/head-ref
-          echo "${{ github.event.pull_request.head.sha }}" > cpp-pr-info/head-sha
-          echo "${{ github.event.pull_request.number }}" > cpp-pr-info/pr-number
-          echo "${{ github.event.pull_request.base.ref }}" > cpp-pr-info/base-ref
+          mkdir -p pr-info
+          echo "$REPO_NAME" > pr-info/repo-name
+          echo "$HEAD_REF" > pr-info/head-ref
+          echo "$HEAD_SHA" > pr-info/head-sha
+          echo "$PR_NUMBER" > pr-info/pr-number
+          echo "$BASE_REF" > pr-info/base-ref
 
       - name: Upload PR Information
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: cpp-pr-info-${{ github.event.pull_request.number }}
           path: cpp-pr-info/
