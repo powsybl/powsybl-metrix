@@ -20,7 +20,6 @@ import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigStats
 import com.powsybl.metrix.mapping.log.LogDslLoader
-import com.powsybl.metrix.mapping.references.MappingKey
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -84,13 +83,6 @@ class TimeSeriesDslLoader {
 
     TimeSeriesDslLoader(Path path) {
         this(Files.newBufferedReader(path), path.getFileName().toString())
-    }
-
-    private static logWarn(LogDslLoader logDslLoader, String message) {
-        if (logDslLoader == null) {
-            return
-        }
-        logDslLoader.logWarn(message)
     }
 
     protected List<String> getStaticStars() {
@@ -320,10 +312,6 @@ class TimeSeriesDslLoader {
 
         TimeSeriesMappingConfigChecker configChecker = new TimeSeriesMappingConfigChecker(config)
         configChecker.checkMappedVariables()
-        Set<MappingKey> keys = configChecker.getNotMappedEquipmentTimeSeriesKeys()
-        keys.forEach({ key ->
-            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.id() + " because id is not mapped on " + key.mappingVariable().getVariableName())
-        })
     }
 
     TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {
