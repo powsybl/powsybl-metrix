@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.powsybl.metrix.integration.metrix.MetrixInputAnalysis.propagateElementsToTrip;
+import static com.powsybl.metrix.integration.analysis.MetrixInputAnalysis.propagateElementsToTrip;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
