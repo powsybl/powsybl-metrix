@@ -10,7 +10,7 @@ package com.powsybl.metrix.integration;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.powsybl.metrix.mapping.MappingVariable;
+import com.powsybl.metrix.commons.MappingVariable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -46,7 +46,7 @@ public enum MetrixVariable implements MappingVariable {
     CURATIVE_DOCTRINE_COST_DOWN("curativeDoctrineCostDown"),
     LOSSES_DOCTRINE_COST("lossesDoctrineCost");
 
-    protected static final String NAME = "metrix";
+    static final String NAME = "metrix";
 
     @Override
     public String getFieldName() {

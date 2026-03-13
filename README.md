@@ -4,7 +4,7 @@
 [![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Apowsybl-metrix&metric=coverage)](https://sonarcloud.io/component_measures?id=com.powsybl%3Apowsybl-metrix&metric=coverage)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=com.powsybl%3Apowsybl-metrix&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.powsybl%3Apowsybl-metrix)
 [![MPL-2.0 License](https://img.shields.io/badge/license-MPL_2.0-blue.svg)](https://www.mozilla.org/en-US/MPL/2.0/)
-[![Slack](https://img.shields.io/badge/slack-powsybl-blueviolet.svg?logo=slack)](https://join.slack.com/t/powsybl/shared_invite/zt-rzvbuzjk-nxi0boim1RKPS5PjieI0rA)
+[![Slack](https://img.shields.io/badge/slack-powsybl-blueviolet.svg?logo=slack)](https://join.slack.com/t/powsybl/shared_invite/zt-36jvd725u-cnquPgZb6kpjH8SKh~FWHQ)
 
 
 This module is based on powsybl-core network modeling and framework.\
@@ -160,6 +160,7 @@ Further documentation is available on the [dedicated page](https://powsybl.readt
 #### Metrix simulator
 
 Metrix simulator is an independent C++ executable. It must be installed before using powsybl-metrix.
+Further documentation, including functional documentation (only in French at the moment) is available on the [dedicated page](https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/metrix-simulator.html) on our website.
 
 It has its own toolchain and requirements.
 

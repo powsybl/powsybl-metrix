@@ -11,14 +11,24 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.metrix.mapping.MappingParameters;
+import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
@@ -46,7 +56,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
@@ -62,7 +72,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    void tearDown() throws Exception {
         fileSystem.close();
     }
 
@@ -196,7 +206,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), out);
+            MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), new ScriptLogConfig(out));
         }
 
         String output = outputStream.toString();

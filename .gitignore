@@ -1,5 +1,6 @@
 # Maven projects
 /target
+/metrix-commons/target
 /metrix-integration/target
 /metrix-mapping/target
 /metrix-tools/target

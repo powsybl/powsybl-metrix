@@ -13,49 +13,10 @@ import java.util.List;
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
-public class Remedial {
+public record Remedial(int lineFile, String contingency, List<String> constraint, List<String> branchToOpen,
+                       List<String> branchToClose, String actions) {
 
-    private final int lineFile;
-    private final String contingency;
-    private final List<String> constraint;
-    private final List<String> branchToOpen;
-    private final List<String> branchToClose;
-    private final String actions;
-
-    public Remedial(int lineFile, String contingency, List<String> constraint, List<String> branchToOpen, List<String> branchToClose, String actions) {
-        this.lineFile = lineFile;
-        this.contingency = contingency;
-        this.constraint = constraint;
-        this.branchToOpen = branchToOpen;
-        this.branchToClose = branchToClose;
-        this.actions = actions;
-    }
-
-    public int getLineFile() {
-        return lineFile;
-    }
-
-    public String getContingency() {
-        return contingency;
-    }
-
-    public List<String> getConstraint() {
-        return constraint;
-    }
-
-    public List<String> getBranchToOpen() {
-        return branchToOpen;
-    }
-
-    public List<String> getBranchToClose() {
-        return branchToClose;
-    }
-
-    public String getActions() {
-        return actions;
-    }
-
-    public final String getNameFromActions() {
+    public String getNameFromActions() {
         List<String> name = new ArrayList<>(); //display branchToOpen ordered then branchToClose ordered
         name.addAll(branchToOpen.stream().sorted().toList());
         name.addAll(branchToClose.stream().map(action -> "+" + action).sorted().toList());

@@ -51,7 +51,7 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
         this.logger = logger;
     }
 
-    protected void sendNotification(NotificationType type, Identifiable identifiable) {
+    protected void sendNotification(NotificationType type, Identifiable<?> identifiable) {
         LogBuilder logBuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(0).point(CONSTANT_VARIANT_ID);
         LogContent logContent = new NetworkMappingBuilder().notificationTypeName(type.getName()).id(identifiable.getNameOrId()).build();
         Log log = logBuilder.logDescription(logContent).build();
@@ -60,12 +60,12 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
     }
 
     @Override
-    public void onCreation(Identifiable identifiable) {
+    public void onCreation(Identifiable<?> identifiable) {
         this.sendNotification(NotificationType.CREATION, identifiable);
     }
 
     @Override
-    public void beforeRemoval(Identifiable identifiable) {
+    public void beforeRemoval(Identifiable<?> identifiable) {
         this.sendNotification(NotificationType.REMOVE, identifiable);
     }
 
@@ -75,7 +75,7 @@ public class NetworkTopographyChangeNotifier implements NetworkListener {
     }
 
     @Override
-    public void onUpdate(Identifiable identifiable, String attribute, String variantId, Object oldValue, Object newValue) {
+    public void onUpdate(Identifiable<?> identifiable, String attribute, String variantId, Object oldValue, Object newValue) {
         if (ATTRIBUTE_BLACK_LIST.contains(attribute)) {
             this.sendNotification(NotificationType.UPDATE, identifiable);
         }

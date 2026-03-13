@@ -63,7 +63,7 @@ class MetrixDieToolTest extends AbstractToolTest {
     void run() throws IOException {
         Files.copy(Objects.requireNonNull(MetrixDieToolTest.class.getResourceAsStream("/simple-network.xiidm")), fileSystem.getPath("/network.xiidm"));
         StringBuilder expected = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(MetrixDieToolTest.class.getResourceAsStream("/mapping_result.txt")))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(MetrixDieToolTest.class.getResourceAsStream("/mapping_result.txt"))))) {
             expected.append(reader.readLine());
         }
 

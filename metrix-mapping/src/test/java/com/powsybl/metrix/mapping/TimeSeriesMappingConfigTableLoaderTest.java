@@ -3,8 +3,23 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
-import com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore;
-import com.powsybl.timeseries.*;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesStore;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey;
+import com.powsybl.timeseries.DoubleTimeSeries;
+import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.StoredDoubleTimeSeries;
+import com.powsybl.timeseries.StringTimeSeries;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesException;
+import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeriesTable;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,10 +38,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.*;
-import static com.powsybl.metrix.mapping.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
+import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.checkIndexUnicity;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.buildPlannedOutagesStore;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.buildStoreWithPlannedOutages;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.checkValues;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.computeDisconnectedEquipmentTimeSeries;
+import static com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesStore.ExistingFilePolicy.APPEND;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Nicolas Rol {@literal <nicolas.rol at rte-france.com>}
@@ -38,7 +61,7 @@ class TimeSeriesMappingConfigTableLoaderTest {
     private TimeSeriesMappingConfigTableLoader tableLoader;
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() throws IOException {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
 
         // TimeSeries index
@@ -83,7 +106,7 @@ class TimeSeriesMappingConfigTableLoaderTest {
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 
@@ -163,7 +186,7 @@ class TimeSeriesMappingConfigTableLoaderTest {
         StoredDoubleTimeSeries otherTs = TimeSeries.createDouble("otherTs", otherIndex, 1d, 2d);
         ReadOnlyTimeSeriesStoreCache otherTsStore = new ReadOnlyTimeSeriesStoreCache(List.of(ts, otherTs));
         Set<String> tsSet = Set.of("ts", "otherTs");
-        TimeSeriesMappingException exception = assertThrows(TimeSeriesMappingException.class, () -> checkIndexUnicity(otherTsStore, tsSet));
+        TimeSeriesException exception = assertThrows(TimeSeriesException.class, () -> checkIndexUnicity(otherTsStore, tsSet));
         assertTrue(exception.getMessage().contains("Time series involved in the mapping must have the same index"));
     }
 

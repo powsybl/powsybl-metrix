@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.powsybl.metrix.commons.MappingVariable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -32,7 +33,7 @@ public enum OtherVariable implements MappingVariable {
         return getName();
     }
 
-    static void writeJson(OtherVariable variable, JsonGenerator generator) throws IOException {
+    static void writeJson(OtherVariable variable, JsonGenerator generator) {
         Objects.requireNonNull(generator);
         try {
             generator.writeStartObject();
@@ -45,8 +46,8 @@ public enum OtherVariable implements MappingVariable {
     }
 
     static MappingVariable parseJson(JsonParser parser) throws IOException {
-        JsonToken token;
-        while ((token = parser.nextToken()) != null) {
+        JsonToken token = parser.nextToken();
+        if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
                 return OtherVariable.valueOf(parser.getValueAsString());
             } else {

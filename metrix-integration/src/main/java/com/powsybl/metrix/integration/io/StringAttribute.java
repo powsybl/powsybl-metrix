@@ -28,7 +28,7 @@ import java.util.Objects;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 @JsonDeserialize(using = StringAttribute.JsonDeserializer.class)
-class StringAttribute implements Attribute {
+public class StringAttribute implements Attribute {
 
     static final AttributeType TYPE = AttributeType.STRING;
 

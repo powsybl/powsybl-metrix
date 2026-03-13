@@ -10,7 +10,7 @@ package com.powsybl.metrix.mapping.json;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.powsybl.metrix.mapping.MappingKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
 import java.util.Objects;
 

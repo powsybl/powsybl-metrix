@@ -15,18 +15,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
- * @author Nicolas Rol {@literal <135979730+rolnico at users.noreply.github.com>}
+ * @author Nicolas Rol {@literal <nicoloas.rol at rte-france.com>}
  */
 class RemedialTest {
 
     @Test
     void remedialTest() {
         Remedial remedial = new Remedial(1, "cty", List.of("constraint"), List.of("branchToOpen"), List.of("branchToClose"), "actions");
-        assertEquals("cty", remedial.getContingency());
-        assertEquals(List.of("constraint"), remedial.getConstraint());
-        assertEquals(List.of("branchToOpen"), remedial.getBranchToOpen());
-        assertEquals(List.of("branchToClose"), remedial.getBranchToClose());
-        assertEquals("actions", remedial.getActions());
+        assertEquals("cty", remedial.contingency());
+        assertEquals(List.of("constraint"), remedial.constraint());
+        assertEquals(List.of("branchToOpen"), remedial.branchToOpen());
+        assertEquals(List.of("branchToClose"), remedial.branchToClose());
+        assertEquals("actions", remedial.actions());
     }
 
     @Test

@@ -42,14 +42,14 @@ public class ProbabilityJsonSerializer implements ExtensionJsonSerializer<Contin
         Double base = null;
         String ts = null;
         while (parser.nextToken() != JsonToken.END_OBJECT) {
-            if (parser.getCurrentName().equals("probabilityBase")) {
+            if (parser.currentName().equals("probabilityBase")) {
                 parser.nextToken();
                 base = parser.readValueAs(Double.class);
-            } else if (parser.getCurrentName().equals("probabilityTs")) {
+            } else if (parser.currentName().equals("probabilityTs")) {
                 parser.nextToken();
                 ts = parser.readValueAs(String.class);
             } else {
-                throw new PowsyblException("Unexpected field: " + parser.getCurrentName());
+                throw new PowsyblException("Unexpected field: " + parser.currentName());
             }
         }
 

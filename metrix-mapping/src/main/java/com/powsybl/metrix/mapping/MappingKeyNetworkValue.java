@@ -9,6 +9,9 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
 import java.util.Objects;
 
@@ -30,12 +33,12 @@ public class MappingKeyNetworkValue {
 
     public double getValue(MappingKey key) {
         Objects.requireNonNull(key);
-        Identifiable<?> identifiable = network.getIdentifiable(key.getId());
+        Identifiable<?> identifiable = network.getIdentifiable(key.id());
         boolean isExistingIdentifiable = identifiable != null;
         if (!isExistingIdentifiable) {
-            throw new TimeSeriesMappingException("Unknown identifiable " + key.getId());
+            throw new TimeSeriesMappingException("Unknown identifiable " + key.id());
         }
-        MappingVariable variable = key.getMappingVariable();
+        MappingVariable variable = key.mappingVariable();
         if (variable instanceof EquipmentVariable equipmentVariable) {
             return getValue(identifiable, equipmentVariable);
         }
@@ -43,31 +46,18 @@ public class MappingKeyNetworkValue {
     }
 
     private double getValue(Identifiable<?> identifiable, EquipmentVariable variable) {
-        if (identifiable instanceof Generator generator) {
-            return getGeneratorValue(generator, variable);
-        }
-        if (identifiable instanceof Load load) {
-            return getLoadValue(load, variable);
-        }
-        if (identifiable instanceof HvdcLine hvdcLine) {
-            return getHvdcLineValue(hvdcLine, variable);
-        }
-        if (identifiable instanceof Switch sw) {
-            return getSwitchValue(sw, variable);
-        }
-        if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer) {
-            return getTwoWindingsTransformerValue(twoWindingsTransformer, variable);
-        }
-        if (identifiable instanceof LccConverterStation lccConverterStation) {
-            return getLccConverterStationValue(lccConverterStation, variable);
-        }
-        if (identifiable instanceof VscConverterStation vscConverterStation) {
-            return getVscConverterStationValue(vscConverterStation, variable);
-        }
-        if (identifiable instanceof Line line) {
-            return getLineValue(line, variable);
-        }
-        throw new TimeSeriesMappingException("Unknown equipment type " + identifiable.getClass().getName());
+        return switch (identifiable) {
+            case Generator generator -> getGeneratorValue(generator, variable);
+            case Load load -> getLoadValue(load, variable);
+            case HvdcLine hvdcLine -> getHvdcLineValue(hvdcLine, variable);
+            case Switch sw -> getSwitchValue(sw, variable);
+            case TwoWindingsTransformer twoWindingsTransformer -> getTwoWindingsTransformerValue(twoWindingsTransformer, variable);
+            case LccConverterStation lccConverterStation -> getLccConverterStationValue(lccConverterStation, variable);
+            case VscConverterStation vscConverterStation -> getVscConverterStationValue(vscConverterStation, variable);
+            case Line line -> getLineValue(line, variable);
+            default ->
+                throw new TimeSeriesMappingException("Unknown equipment type " + identifiable.getClass().getName());
+        };
     }
 
     private double getGeneratorValue(Generator generator, EquipmentVariable variable) {
@@ -116,12 +106,11 @@ public class MappingKeyNetworkValue {
         throw new TimeSeriesMappingException(String.format("Unknown variable %s for switch %s", variable, sw.getId()));
     }
 
-    private int getRegulationModeValue(PhaseTapChanger.RegulationMode mode) {
-        return switch (mode) {
+    private int getRegulationModeValue(PhaseTapChanger.RegulationMode mode, boolean isRegulating) {
+        return isRegulating ? switch (mode) {
             case CURRENT_LIMITER -> 0;
             case ACTIVE_POWER_CONTROL -> 1;
-            case FIXED_TAP -> 2;
-        };
+        } : 2;
     }
 
     private double getTwoWindingsTransformerValue(TwoWindingsTransformer twoWindingsTransformer, EquipmentVariable variable) {
@@ -135,7 +124,8 @@ public class MappingKeyNetworkValue {
             case PHASE_REGULATING -> twoWindingsTransformer.getPhaseTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
             case TARGET_DEADBAND -> twoWindingsTransformer.getPhaseTapChanger().getTargetDeadband();
             case REGULATION_MODE ->
-                getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode());
+                getRegulationModeValue(twoWindingsTransformer.getPhaseTapChanger().getRegulationMode(),
+                    twoWindingsTransformer.getPhaseTapChanger().isRegulating());
             // mapToRatioTapChanger variables
             case RATIO_TAP_POSITION -> twoWindingsTransformer.getRatioTapChanger().getTapPosition();
             case TARGET_V -> twoWindingsTransformer.getRatioTapChanger().getTargetV();

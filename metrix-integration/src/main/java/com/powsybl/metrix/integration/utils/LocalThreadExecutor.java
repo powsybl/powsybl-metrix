@@ -35,7 +35,7 @@ public class LocalThreadExecutor<T> {
             long begin = System.currentTimeMillis();
             T result = command.get();
             long elapsed = System.currentTimeMillis() - begin;
-            LOGGER.info("{} execution time {} ms", threadName, elapsed);
+            logExecutionTime(threadName, elapsed);
             return result;
         }, r -> new Thread(r, threadName + "_" + Instant.now()).start());
     }
@@ -45,7 +45,11 @@ public class LocalThreadExecutor<T> {
             long begin = System.currentTimeMillis();
             command.run();
             long elapsed = System.currentTimeMillis() - begin;
-            LOGGER.info("{} execution time {} ms", threadName, elapsed);
+            logExecutionTime(threadName, elapsed);
         }, r -> new Thread(r, threadName + "_" + Instant.now()).start());
+    }
+
+    private static void logExecutionTime(String threadName, long elapsed) {
+        LOGGER.info("{} execution time {} ms", threadName, elapsed);
     }
 }

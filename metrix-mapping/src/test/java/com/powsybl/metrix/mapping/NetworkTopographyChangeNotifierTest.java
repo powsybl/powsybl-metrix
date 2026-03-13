@@ -10,11 +10,16 @@ package com.powsybl.metrix.mapping;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.log.Log;
-import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.threeten.extra.Interval;
 
@@ -25,6 +30,9 @@ import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -44,11 +52,11 @@ class NetworkTopographyChangeNotifierTest {
             "}");
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // create test network
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
-        logger = Mockito.mock(TimeSeriesMappingLogger.class);
+        logger = mock(TimeSeriesMappingLogger.class);
     }
 
     private void runTest(String script) {
@@ -81,19 +89,18 @@ class NetworkTopographyChangeNotifierTest {
     void checkNetworkCreationNotification() {
 
         AtomicBoolean hit = new AtomicBoolean(false);
-        Mockito.doAnswer((Answer<Void>) invocation -> {
+        doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
-            if (args.length > 0 && args[0] instanceof Log) {
-                Log log = (Log) args[0];
-                String actualLabel = log.getLabel();
+            if (args.length > 0 && args[0] instanceof Log log) {
+                String actualLabel = log.label();
                 String expectedLabel = "network update";
-                String actualMessage = log.getMessage();
+                String actualMessage = log.message();
                 String expectedMessage = "Network update not applied : Creation of item FP.AND1_1_NEW";
                 hit.set(hit.get()
                         || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
             }
             return null;
-        }).when(logger).addLog(Mockito.any(Log.class));
+        }).when(logger).addLog(any(Log.class));
 
         String script = String.join(System.lineSeparator(),
                 minimalScript,
@@ -116,19 +123,18 @@ class NetworkTopographyChangeNotifierTest {
     void checkNetworkUpdateNotification() {
 
         AtomicBoolean hit = new AtomicBoolean(false);
-        Mockito.doAnswer((Answer<Void>) invocation -> {
+        doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
-            if (args.length > 0 && args[0] instanceof Log) {
-                Log log = (Log) args[0];
-                String actualLabel = log.getLabel();
+            if (args.length > 0 && args[0] instanceof Log log) {
+                String actualLabel = log.label();
                 String expectedLabel = "network update";
-                String actualMessage = log.getMessage();
+                String actualMessage = log.message();
                 String expectedMessage = "Network update not applied : Update of item Disj FSSV.O11_L";
                 hit.set(hit.get()
                         || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
             }
             return null;
-        }).when(logger).addLog(Mockito.any(Log.class));
+        }).when(logger).addLog(any(Log.class));
 
         String script = String.join(System.lineSeparator(),
                 minimalScript,
@@ -142,19 +148,18 @@ class NetworkTopographyChangeNotifierTest {
     void checkNetworkRemovalNotification() {
 
         AtomicBoolean hit = new AtomicBoolean(false);
-        Mockito.doAnswer((Answer<Void>) invocation -> {
+        doAnswer((Answer<Void>) invocation -> {
             Object[] args = invocation.getArguments();
-            if (args.length > 0 && args[0] instanceof Log) {
-                Log log = (Log) args[0];
-                String actualLabel = log.getLabel();
+            if (args.length > 0 && args[0] instanceof Log log) {
+                String actualLabel = log.label();
                 String expectedLabel = "network update";
-                String actualMessage = log.getMessage();
+                String actualMessage = log.message();
                 String expectedMessage = "Network update not applied : Remove of item FP.AND1  FVERGE1  1";
                 hit.set(hit.get()
                         || actualLabel.compareTo(expectedLabel) == 0 && actualMessage.compareTo(expectedMessage) == 0);
             }
             return null;
-        }).when(logger).addLog(Mockito.any(Log.class));
+        }).when(logger).addLog(any(Log.class));
 
         String script = String.join(System.lineSeparator(),
                 minimalScript,

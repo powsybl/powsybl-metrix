@@ -10,6 +10,8 @@ package com.powsybl.metrix.mapping;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.google.auto.service.AutoService;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.MappingVariableProvider;
 
 import java.io.IOException;
 
@@ -19,7 +21,7 @@ import java.io.IOException;
 @AutoService(MappingVariableProvider.class)
 public class OtherVariableProvider implements MappingVariableProvider<OtherVariable> {
     @Override
-    public void writeJson(OtherVariable variable, JsonGenerator generator) throws IOException {
+    public void writeJson(OtherVariable variable, JsonGenerator generator) {
         OtherVariable.writeJson(variable, generator);
     }
 

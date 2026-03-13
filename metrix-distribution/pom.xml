@@ -13,11 +13,13 @@
     <parent>
         <artifactId>powsybl-metrix</artifactId>
         <groupId>com.powsybl</groupId>
-        <version>2.8.0-SNAPSHOT</version>
+        <version>3.1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>powsybl-metrix-distribution</artifactId>
+    <name>Metrix distribution</name>
+    <description>Metrix distribution</description>
 
     <profiles>
         <profile>
@@ -75,7 +77,6 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
         </dependency>
         <dependency>
             <groupId>com.powsybl</groupId>
@@ -88,23 +89,23 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
-            <version>${log4joslf4j.version}</version>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>powsybl-metrix-commons</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-metrix-integration</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-metrix-mapping</artifactId>
-            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>powsybl-metrix-tools</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
 </project>

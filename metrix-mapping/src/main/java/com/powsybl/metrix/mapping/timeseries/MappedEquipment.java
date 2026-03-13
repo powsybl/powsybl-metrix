@@ -8,33 +8,21 @@
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.metrix.mapping.DistributionKey;
+import com.powsybl.metrix.mapping.references.DistributionKey;
 
 import java.util.Objects;
 
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
-public class MappedEquipment {
-
-    private final Identifiable<?> identifiable;
-
-    private final DistributionKey distributionKey;
+public record MappedEquipment(Identifiable<?> identifiable, DistributionKey distributionKey) {
 
     public MappedEquipment(Identifiable<?> identifiable, DistributionKey distributionKey) {
         this.identifiable = Objects.requireNonNull(identifiable);
         this.distributionKey = distributionKey;
     }
 
-    public Identifiable<?> getIdentifiable() {
-        return identifiable;
-    }
-
     public String getId() {
         return identifiable.getId();
-    }
-
-    public DistributionKey getDistributionKey() {
-        return distributionKey;
     }
 }

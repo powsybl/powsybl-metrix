@@ -80,7 +80,7 @@ public final class MetrixNetworkPoint {
         ));
     }
 
-    private static double getTimeSeriesValue(Identifiable identifiable, ReadOnlyTimeSeriesStore store, int version, int point, String prefix, String suffix) {
+    private static double getTimeSeriesValue(Identifiable<?> identifiable, ReadOnlyTimeSeriesStore store, int version, int point, String prefix, String suffix) {
         AtomicReference<Double> value = new AtomicReference<>(Double.NaN);
         String timeSeriesName = prefix + identifiable.getId() + suffix;
         if (store.timeSeriesExists(timeSeriesName)) {
@@ -125,7 +125,7 @@ public final class MetrixNetworkPoint {
         if (stringTimeSeries.isEmpty()) {
             return;
         }
-        StringTimeSeries topologyTimeSeries = stringTimeSeries.get(0);
+        StringTimeSeries topologyTimeSeries = stringTimeSeries.getFirst();
         String[] values = topologyTimeSeries.toArray();
         String value = values[point];
         String[] ids = value.split(ID_SEPARATOR);

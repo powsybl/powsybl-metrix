@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.powsybl.metrix.commons.MappingVariable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -50,7 +51,7 @@ public enum EquipmentVariable implements MappingVariable {
     DISCONNECTED("disconnected"),
     TARGET_DEADBAND("targetDeadband");
 
-    protected static final String NAME = "equipment";
+    static final String NAME = "equipment";
 
     private static final Map<String, EquipmentVariable> NAME_TO_VARIABLE = Arrays.stream(EquipmentVariable.values()).collect(Collectors.toMap(EquipmentVariable::toString, Function.identity()));
 

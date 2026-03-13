@@ -18,14 +18,20 @@ import com.powsybl.computation.local.LocalComputationManager;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.integration.chunk.MetrixChunk;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import com.powsybl.metrix.integration.io.MetrixConfigResult;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
-import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
-import com.powsybl.metrix.mapping.ComputationRange;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
+import com.powsybl.metrix.commons.ComputationRange;
+import com.powsybl.metrix.integration.network.MetrixVariantProvider;
+import com.powsybl.metrix.integration.network.MetrixVariantReader;
 import com.powsybl.metrix.mapping.MappingParameters;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
-import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
 import com.powsybl.timeseries.InfiniteTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -39,7 +45,13 @@ import java.io.StringReader;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -54,12 +66,12 @@ class MetrixTest {
     private FileSystem fileSystem;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
     }
 
     @AfterEach
-    public void tearDown() throws IOException {
+    void tearDown() throws IOException {
         this.fileSystem.close();
     }
 

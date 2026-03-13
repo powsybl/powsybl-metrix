@@ -8,6 +8,7 @@
 package com.powsybl.metrix.integration;
 
 import com.google.common.base.Stopwatch;
+import com.powsybl.metrix.integration.chunk.MetrixChunkLogger;
 
 import java.io.PrintStream;
 import java.util.Objects;

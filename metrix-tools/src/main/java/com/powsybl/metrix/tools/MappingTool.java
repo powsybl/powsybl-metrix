@@ -14,9 +14,19 @@ import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.commons.ComputationRange;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.*;
-import com.powsybl.metrix.mapping.timeseries.CalculatedTimeSeriesStore;
-import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.commons.data.timeseries.CalculatedTimeSeriesStore;
+import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.mapping.balance.BalanceSummary;
+import com.powsybl.metrix.mapping.config.*;
+import com.powsybl.metrix.mapping.observer.EquipmentGroupTimeSeriesWriterObserver;
+import com.powsybl.metrix.mapping.observer.EquipmentTimeSeriesWriterObserver;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigStatusCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigSynthesisCsvWriter;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreAggregator;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -235,7 +245,8 @@ public class MappingTool implements Tool {
                 TimeSeriesDslLoader dslLoader = new TimeSeriesDslLoader(reader, mappingFile.getFileName().toString());
                 Stopwatch stopwatch = Stopwatch.createStarted();
                 network.addListener(new NetworkTopographyChangeNotifier("extern tool", logger));
-                config = dslLoader.load(network, mappingParameters, store, new DataTableStore(), scriptLogWriter, computationRange);
+                ScriptLogConfig scriptLogConfig = new ScriptLogConfig(scriptLogWriter);
+                config = dslLoader.load(network, mappingParameters, store, new DataTableStore(), scriptLogConfig, computationRange);
                 context.getOutputStream().println("Mapping done in " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
             }
 
