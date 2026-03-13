@@ -42,6 +42,7 @@ import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixTimeSeriesVariantProvider;
+import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
@@ -500,24 +501,22 @@ class MetrixInputTest {
         ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
         Contingency cty = new Contingency("cty", l);
 
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(n);
-
         ContingencyElement l2 = new BranchContingency("FTDPRA1  FVERGE1  2");
         ContingencyElement l3 = new BranchContingency("FVALDI1  FTDPRA1  1");
         ContingencyElement l4 = new BranchContingency("FVALDI1  FTDPRA1  2");
         ContingencyElement l5 = new BranchContingency("FP.AND1  FTDPRA1  1");
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l, l2, l3, l4, l5));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, true), ImmutableSet.of(l, l2, l3, l4, l5));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, false), ImmutableSet.of(l));
 
         ContingencyElement h = new HvdcLineContingency("HVDC1");
         cty = new Contingency("cty", l4, h);
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l4, h));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l4, h));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, true), ImmutableSet.of(l4, h));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, false), ImmutableSet.of(l4, h));
 
         ContingencyElement g = new GeneratorContingency("FSSV.O11_G");
         cty = new Contingency("cty", g, l3);
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(g, l3));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(g, l3));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, true), ImmutableSet.of(g, l3));
+        assertEquals(MetrixInputAnalysis.getElementsToTrip(n, cty, false), ImmutableSet.of(g, l3));
     }
 
     @Test
