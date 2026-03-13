@@ -173,31 +173,29 @@ public class MetrixInputAnalysis {
      * @return list of contingencies
      */
     private List<Contingency> loadContingencies() {
-        List<Contingency> allContingencies;
+        return getContingenciesFromProvider().stream()
+            .filter(this::isValidContingency)
+            .map(cty -> processContingency(cty, metrixParameters.isPropagateBranchTripping()))
+            .filter(this::hasElements)
+            .toList();
+    }
+
+    private Contingency processContingency(Contingency contingency, boolean propagateBranchTripping) {
+        Contingency processed = propagateBranchTripping ? propagateElementsToTrip(contingency, network) : contingency;
+        removeOutOfMainConnectedComponentElements(processed);
+        return processed;
+    }
+
+    private boolean hasElements(Contingency contingency) {
+        return !contingency.getElements().isEmpty();
+    }
+
+    private List<Contingency> getContingenciesFromProvider() {
         try {
-            allContingencies = contingenciesProvider.getContingencies(network, getContextObjects());
+            return contingenciesProvider.getContingencies(network, getContextObjects());
         } catch (RuntimeException e) {
             throw new ContingenciesScriptLoadingException(e);
         }
-        boolean isPropagateBranchTripping = metrixParameters.isPropagateBranchTripping();
-        List<Contingency> contingencies = new ArrayList<>();
-        for (Contingency cty : allContingencies) {
-            // Check validity for each element : identifiable exists, type is recognized, identifiable and type are compatible
-            if (!isValidContingency(cty)) {
-                continue;
-            }
-
-            // If asked, propagate contingency (in absence of switch)
-            Contingency contingency = isPropagateBranchTripping ? propagateElementsToTrip(cty, network) : cty;
-
-            // Remove out of main connected component elements
-            removeOutOfMainConnectedComponentElements(contingency);
-
-            if (!contingency.getElements().isEmpty()) {
-                contingencies.add(contingency);
-            }
-        }
-        return contingencies;
     }
 
     private Map<Class<?>, Object> getContextObjects() {
