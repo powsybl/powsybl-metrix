@@ -437,10 +437,10 @@ curatif ou des incidents ayant généré un transit maximal sur incident (cf. [t
 |:--------------------|:-----|:------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Nom du sommet       | C    |       |                                                                                                                                                                                                                 |
 | Demande             | R    | MW    | Somme des consommations à ce sommet                                                                                                                                                                             |
-| Défaillance HR      | R    | MW    | Défaillance lors de l’équilibrage due à un manque de production                                                                                                                                                 |
-| Coût défaillance HR | R    |       | Coût de la défaillance lors de l’équilibrage due à un manque de production (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                             |
-| Défaillance AR      | R    | MW    | Défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production                                                                                                                     |
-| Coût défaillance AR | R    |       | Coût de la défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator) |
+| Défaillance HR      | R    | MW    | Délestage préventif lors de l'équilibrage (valeur positive) |
+| Coût défaillance HR | R    |       | Coût du délestage préventif lors de l'équilibrage (résultat uniquement présent si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator)                             |
+| Défaillance AR      | R    | MW    | Délestage préventif lié au réseau (valeur positive), en plus de l'éventuel délestage dû au manque de production |
+| Coût défaillance AR | R    |       | Coût du délestage préventif lié au réseau (résultat uniquement présent si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator) |
 
 **Note** : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator et qu'il n'existe pas de consommation modifiable alors tous les champs, hormis le nom, valent *0*.
 
@@ -450,11 +450,11 @@ curatif ou des incidents ayant généré un transit maximal sur incident (cf. [t
 
 *Format* : ```R1B ;INCIDENT;CONSO;EFFACEMENT;```
 
-| Nom de la grandeur     | Type | Unité | Description                                                |
-|:-----------------------|:-----|:------|:-----------------------------------------------------------|
-| Nom de la consommation | C    |       | Nom de la consommation                                     |
-| Numéro d’incident      | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Puissance effacée      | R    | MW    |                                                            |
+| Nom de la grandeur     | Type | Unité | Description                                                 |
+|:-----------------------|:-----|:------|:------------------------------------------------------------|
+| Nom de la consommation | C    |       | Nom de la consommation                                      |
+| Numéro d’incident      | I    |       | Référence à la numérotation de la [table C4](#io-table_c4)  |
+| Puissance effacée      | R    | MW    | Volume de consommation effacée en curatif (valeur positive) |
 
 -----------------------------
 **Tableau R1C** : résultats par couplage de consommations
