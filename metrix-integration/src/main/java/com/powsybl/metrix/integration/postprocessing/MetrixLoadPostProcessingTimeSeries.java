@@ -26,6 +26,9 @@ import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOAD
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.CURATIVE_PREFIX;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.PREVENTIVE_PREFIX;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public final class MetrixLoadPostProcessingTimeSeries extends AbstractMetrixEquipmentPostProcessing {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixLoadPostProcessingTimeSeries.class);
