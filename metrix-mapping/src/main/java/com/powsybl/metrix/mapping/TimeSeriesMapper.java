@@ -7,7 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.DanglingLine;
+import com.powsybl.iidm.network.BoundaryLine;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
@@ -79,7 +79,7 @@ public class TimeSeriesMapper {
     private static final class MapperContext {
         private final EquipmentTimeSeriesMap timeSeriesToLoadsMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToGeneratorsMapping = new EquipmentTimeSeriesMap();
-        private final EquipmentTimeSeriesMap timeSeriesToDanglingLinesMapping = new EquipmentTimeSeriesMap();
+        private final EquipmentTimeSeriesMap timeSeriesToBoundaryLinesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToHvdcLinesMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToPhaseTapChangersMapping = new EquipmentTimeSeriesMap();
         private final EquipmentTimeSeriesMap timeSeriesToBreakersMapping = new EquipmentTimeSeriesMap();
@@ -438,7 +438,7 @@ public class TimeSeriesMapper {
         MapperContext context = new MapperContext();
         context.timeSeriesToLoadsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToLoadsMapping(), table, network, config);
         context.timeSeriesToGeneratorsMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToGeneratorsMapping(), table, network, config);
-        context.timeSeriesToDanglingLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToDanglingLinesMapping(), table, network, config);
+        context.timeSeriesToBoundaryLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToBoundaryLinesMapping(), table, network, config);
         context.timeSeriesToHvdcLinesMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToHvdcLinesMapping(), table, network, config);
         context.timeSeriesToPhaseTapChangersMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToPhaseTapChangersMapping(), table, network, config);
         context.timeSeriesToBreakersMapping.convertToEquipmentTimeSeriesMap(config.getTimeSeriesToBreakersMapping(), table, network, config);
@@ -458,7 +458,7 @@ public class TimeSeriesMapper {
 
         // Check if some other mappings are constant
         identifyConstantTimeSeries(version, context.timeSeriesToGeneratorsMapping, constantTimeSeriesContext.timeSeriesToGeneratorsMapping, variableTimeSeriesContext.timeSeriesToGeneratorsMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToDanglingLinesMapping, constantTimeSeriesContext.timeSeriesToDanglingLinesMapping, variableTimeSeriesContext.timeSeriesToDanglingLinesMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToBoundaryLinesMapping, constantTimeSeriesContext.timeSeriesToBoundaryLinesMapping, variableTimeSeriesContext.timeSeriesToBoundaryLinesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToHvdcLinesMapping, constantTimeSeriesContext.timeSeriesToHvdcLinesMapping, variableTimeSeriesContext.timeSeriesToHvdcLinesMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToPhaseTapChangersMapping, constantTimeSeriesContext.timeSeriesToPhaseTapChangersMapping, variableTimeSeriesContext.timeSeriesToPhaseTapChangersMapping);
         identifyConstantTimeSeries(version, context.timeSeriesToBreakersMapping, constantTimeSeriesContext.timeSeriesToBreakersMapping, variableTimeSeriesContext.timeSeriesToBreakersMapping);
@@ -570,12 +570,12 @@ public class TimeSeriesMapper {
         return -loadDetail.getVariableActivePower();
     }
 
-    private double getDanglingLineInjection(String id) {
-        DanglingLine danglingLine = network.getDanglingLine(id);
-        if (danglingLine == null) {
-            throw new TimeSeriesMappingException(String.format("Dangling line '%s' not found", id));
+    private double getBoundaryLineInjection(String id) {
+        BoundaryLine boundaryLine = network.getBoundaryLine(id);
+        if (boundaryLine == null) {
+            throw new TimeSeriesMappingException(String.format("Boundary line '%s' not found", id));
         }
-        return -danglingLine.getP0();
+        return -boundaryLine.getP0();
     }
 
     private double calculateConstantBalance() {
@@ -600,8 +600,8 @@ public class TimeSeriesMapper {
                 constantBalance += getVariableLoadInjection(id);
             }
         }
-        for (String id : config.getUnmappedDanglingLines()) {
-            constantBalance += getDanglingLineInjection(id);
+        for (String id : config.getUnmappedBoundaryLines()) {
+            constantBalance += getBoundaryLineInjection(id);
         }
         return constantBalance;
     }
@@ -609,7 +609,7 @@ public class TimeSeriesMapper {
     boolean mapSinglePointIsEmpty(MapperContext context) {
         return context.timeSeriesToLoadsMapping.isEmpty() &&
                context.timeSeriesToGeneratorsMapping.isEmpty() &&
-               context.timeSeriesToDanglingLinesMapping.isEmpty() &&
+               context.timeSeriesToBoundaryLinesMapping.isEmpty() &&
                context.timeSeriesToHvdcLinesMapping.isEmpty() &&
                context.timeSeriesToPhaseTapChangersMapping.isEmpty() &&
                context.timeSeriesToBreakersMapping.isEmpty() &&
@@ -630,7 +630,7 @@ public class TimeSeriesMapper {
         // process time series for mapping
         mapToNetwork(version, variantId, point, context.timeSeriesToLoadsMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToGeneratorsMapping);
-        mapToNetwork(version, variantId, point, context.timeSeriesToDanglingLinesMapping);
+        mapToNetwork(version, variantId, point, context.timeSeriesToBoundaryLinesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToHvdcLinesMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToPhaseTapChangersMapping);
         mapToNetwork(version, variantId, point, context.timeSeriesToBreakersMapping);

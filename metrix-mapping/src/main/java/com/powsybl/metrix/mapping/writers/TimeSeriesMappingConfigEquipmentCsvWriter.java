@@ -315,7 +315,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     public void writeUnmappedBoundaryLines(BufferedWriter writer) {
         try {
-            writeEquipmentSet(writer, BOUNDARY_LINE, UNMAPPED, config.getUnmappedDanglingLines(), config.getIgnoredUnmappedDanglingLines());
+            writeEquipmentSet(writer, BOUNDARY_LINE, UNMAPPED, config.getUnmappedBoundaryLines(), config.getIgnoredUnmappedBoundaryLines());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -355,7 +355,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     public void writeDisconnectedBoundaryLines(BufferedWriter writer) {
         try {
-            writeEquipmentSet(writer, BOUNDARY_LINE, DISCONNECTED, config.getDisconnectedDanglingLines(), new HashSet<>());
+            writeEquipmentSet(writer, BOUNDARY_LINE, DISCONNECTED, config.getDisconnectedBoundaryLines(), new HashSet<>());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -379,7 +379,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     public void writeIgnoredUnmappedBoundaryLines(BufferedWriter writer) {
         try {
-            writeEquipmentSet(writer, BOUNDARY_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedDanglingLines(), new HashSet<>());
+            writeEquipmentSet(writer, BOUNDARY_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedBoundaryLines(), new HashSet<>());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -419,7 +419,7 @@ public class TimeSeriesMappingConfigEquipmentCsvWriter {
 
     public void writeOutOfMainCCBoundaryLines(BufferedWriter writer) {
         try {
-            writeEquipmentSet(writer, BOUNDARY_LINE, OUT_OF_MAIN_CC, config.getOutOfMainCcDanglingLines(), new HashSet<>());
+            writeEquipmentSet(writer, BOUNDARY_LINE, OUT_OF_MAIN_CC, config.getOutOfMainCcBoundaryLines(), new HashSet<>());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

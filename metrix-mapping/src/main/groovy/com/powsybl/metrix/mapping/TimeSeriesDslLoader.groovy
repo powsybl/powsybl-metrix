@@ -134,7 +134,7 @@ class TimeSeriesDslLoader {
 
         def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
-        def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
+        def boundaryLinesFilteringContext = network.getBoundaryLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine) }
         def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter) }
         def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter) }
@@ -159,7 +159,7 @@ class TimeSeriesDslLoader {
             mapToEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.mapToBoundaryLines = { Closure closure ->
-            mapToEquipments(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            mapToEquipments(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.mapToHvdcLines = { Closure closure ->
             mapToEquipments(binding, loader, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
@@ -197,7 +197,7 @@ class TimeSeriesDslLoader {
             unmappedEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.unmappedBoundaryLines = { Closure closure ->
-            unmappedEquipments(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            unmappedEquipments(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.unmappedHvdcLines = { Closure closure ->
             unmappedEquipments(binding, loader, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
@@ -228,7 +228,7 @@ class TimeSeriesDslLoader {
             equipmentTimeSeries(binding, loader, closure, linesFilteringContext, MappableEquipmentType.LINE, logDslLoader)
         }
         binding.provideTsBoundaryLines = { Closure closure ->
-            equipmentTimeSeries(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, logDslLoader)
+            equipmentTimeSeries(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, logDslLoader)
         }
         binding.provideTsPhaseTapChangers = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER, logDslLoader)

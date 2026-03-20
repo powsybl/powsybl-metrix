@@ -15,8 +15,6 @@ import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey;
 import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNames;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.AbstractMap;
 import java.util.ArrayList;
@@ -40,9 +38,6 @@ import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.isN
  */
 public class TimeSeriesMappingConfigTableLoader {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesMappingConfigTableLoader.class);
-    private static final int MIN_NUMBER_OF_POINTS = 50;
-
     protected final TimeSeriesMappingConfig config;
     protected final ReadOnlyTimeSeriesStore store;
 
@@ -58,6 +53,14 @@ public class TimeSeriesMappingConfigTableLoader {
         return loadToTable(version, storeWithPlannedOutages, pointRange, usedTimeSeriesNames);
     }
 
+    /**
+     * Load time series values into a table
+     * @param  version             version to load
+     * @param  store               store containing the time series
+     * @param  pointRange          point range to load
+     * @param  usedTimeSeriesNames time series names to load
+     * @return table containing values of all usedTimeSeriesNames for one version and pointRange
+     */
     public TimeSeriesTable loadToTable(int version, ReadOnlyTimeSeriesStore store, Range<Integer> pointRange, Iterable<String> usedTimeSeriesNames) {
         Set<String> timeSeriesNamesToLoad = findTimeSeriesNamesToLoad(usedTimeSeriesNames);
 
@@ -70,20 +73,8 @@ public class TimeSeriesMappingConfigTableLoader {
         List<DoubleTimeSeries> loadedTimeSeries = Collections.emptyList();
         if (!timeSeriesNamesToLoad.isEmpty()) {
             List<DoubleTimeSeries> timeSeriesList = store.getDoubleTimeSeries(timeSeriesNamesToLoad, version);
-            int nbPointsToCompute = pointRange.upperEndpoint() - pointRange.lowerEndpoint() + 1;
-            if (index.getPointCount() != nbPointsToCompute) {
-                // to avoid loading all values
-                int nbPointsToLoad = Math.max(pointRange.upperEndpoint() + 1, Math.min(index.getPointCount(), MIN_NUMBER_OF_POINTS));
-                try {
-                    List<List<DoubleTimeSeries>> split = TimeSeries.split(timeSeriesList, nbPointsToLoad);
-                    loadedTimeSeries = split.getFirst();
-                } catch (RuntimeException e) {
-                    LOGGER.warn("Failed to split timeSeries with {} pointsToLoad and {} pointsToCompute (reason : {}). Will take the whole time series", nbPointsToLoad, nbPointsToCompute, e.getMessage());
-                    loadedTimeSeries = store.getDoubleTimeSeries(timeSeriesNamesToLoad, version);
-                }
-            } else {
-                loadedTimeSeries = store.getDoubleTimeSeries(timeSeriesNamesToLoad, version);
-            }
+            List<List<DoubleTimeSeries>> split = TimeSeries.splitByRanges(timeSeriesList, List.of(pointRange));
+            loadedTimeSeries = split.getFirst();
         }
         List<DoubleTimeSeries> timeSeriesToAddToTable = new ArrayList<>(loadedTimeSeries);
         ReadOnlyTimeSeriesStore storeCache = new ReadOnlyTimeSeriesStoreCache(loadedTimeSeries);
