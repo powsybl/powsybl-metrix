@@ -20,7 +20,6 @@ import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigStats
 import com.powsybl.metrix.mapping.log.LogDslLoader
-import com.powsybl.metrix.mapping.references.MappingKey
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -86,13 +85,6 @@ class TimeSeriesDslLoader {
         this(Files.newBufferedReader(path), path.getFileName().toString())
     }
 
-    private static logWarn(LogDslLoader logDslLoader, String message) {
-        if (logDslLoader == null) {
-            return
-        }
-        logDslLoader.logWarn(message)
-    }
-
     protected List<String> getStaticStars() {
         List<String> staticStars = new ArrayList<>()
         staticStars.add(equipmentGroupTypes)
@@ -142,7 +134,7 @@ class TimeSeriesDslLoader {
 
         def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
-        def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
+        def boundaryLinesFilteringContext = network.getBoundaryLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine) }
         def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter) }
         def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter) }
@@ -167,7 +159,7 @@ class TimeSeriesDslLoader {
             mapToEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.mapToBoundaryLines = { Closure closure ->
-            mapToEquipments(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            mapToEquipments(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.mapToHvdcLines = { Closure closure ->
             mapToEquipments(binding, loader, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
@@ -205,7 +197,7 @@ class TimeSeriesDslLoader {
             unmappedEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.unmappedBoundaryLines = { Closure closure ->
-            unmappedEquipments(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            unmappedEquipments(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.unmappedHvdcLines = { Closure closure ->
             unmappedEquipments(binding, loader, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
@@ -236,7 +228,7 @@ class TimeSeriesDslLoader {
             equipmentTimeSeries(binding, loader, closure, linesFilteringContext, MappableEquipmentType.LINE, logDslLoader)
         }
         binding.provideTsBoundaryLines = { Closure closure ->
-            equipmentTimeSeries(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, logDslLoader)
+            equipmentTimeSeries(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, logDslLoader)
         }
         binding.provideTsPhaseTapChangers = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER, logDslLoader)
@@ -320,10 +312,6 @@ class TimeSeriesDslLoader {
 
         TimeSeriesMappingConfigChecker configChecker = new TimeSeriesMappingConfigChecker(config)
         configChecker.checkMappedVariables()
-        Set<MappingKey> keys = configChecker.getNotMappedEquipmentTimeSeriesKeys()
-        keys.forEach({ key ->
-            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.id() + " because id is not mapped on " + key.mappingVariable().getVariableName())
-        })
     }
 
     TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {

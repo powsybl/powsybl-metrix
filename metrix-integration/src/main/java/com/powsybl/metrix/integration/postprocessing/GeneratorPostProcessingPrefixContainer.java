@@ -14,5 +14,9 @@ public record GeneratorPostProcessingPrefixContainer(String metrixResultPrefix,
                                                      String redispatchingUpPrefix, String redispatchingUpCostPrefix,
                                                      String redispatchingDownPrefix, String redispatchingDownCostPrefix,
                                                      String redispatchingPrefix,
-                                                     String redispatchingCostPrefix) {
+                                                     String redispatchingCostPrefix) implements PostProcessingPrefixContainer {
+    @Override
+    public String getMetrixResultPrefix() {
+        return metrixResultPrefix;
+    }
 }

@@ -15,5 +15,9 @@ import com.powsybl.metrix.integration.MetrixVariable;
 public record LoadPostProcessingPrefixContainer(MetrixVariable doctrineCostVariable,
                                                 String metrixResultPrefix,
                                                 String loadSheddingPrefix,
-                                                String loadSheddingCostPrefix) {
+                                                String loadSheddingCostPrefix) implements PostProcessingPrefixContainer {
+    @Override
+    public String getMetrixResultPrefix() {
+        return metrixResultPrefix;
+    }
 }
