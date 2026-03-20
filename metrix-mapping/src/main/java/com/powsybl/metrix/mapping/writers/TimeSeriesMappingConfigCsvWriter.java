@@ -385,7 +385,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     public void writeTimeSeriesToBoundaryLinesMapping(BufferedWriter writer) {
         try {
-            writeTimeSerieToEquipmentsMapping(writer, BOUNDARY_LINES, config.getTimeSeriesToDanglingLinesMapping());
+            writeTimeSerieToEquipmentsMapping(writer, BOUNDARY_LINES, config.getTimeSeriesToBoundaryLinesMapping());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -463,7 +463,7 @@ public class TimeSeriesMappingConfigCsvWriter {
             writeMappedTimeSeries(writer, config.getTimeSeriesToGeneratorsMapping(), GENERATOR_TYPE);
             writeMappedTimeSeries(writer, config.getTimeSeriesToHvdcLinesMapping(), HVDC_LINE_TYPE);
             writeMappedTimeSeries(writer, config.getTimeSeriesToPhaseTapChangersMapping(), PHASE_TAP_CHANGER_TYPE);
-            writeMappedTimeSeries(writer, config.getTimeSeriesToDanglingLinesMapping(), BOUNDARY_LINE_TYPE);
+            writeMappedTimeSeries(writer, config.getTimeSeriesToBoundaryLinesMapping(), BOUNDARY_LINE_TYPE);
             writeMappedTimeSeries(writer, config.getTimeSeriesToBreakersMapping(), BREAKER_TYPE);
             writeMappedTimeSeries(writer, config.getTimeSeriesToTransformersMapping(), TRANSFORMER_TYPE);
             writeMappedTimeSeries(writer, config.getTimeSeriesToLinesMapping(), LINE_TYPE);
@@ -496,7 +496,7 @@ public class TimeSeriesMappingConfigCsvWriter {
 
     public void writeBoundaryLineToTimeSeriesMapping(BufferedWriter writer) {
         try {
-            writeEquipmentToTimeSeriesMapping(writer, BOUNDARY_LINE, config.getDanglingLineToTimeSeriesMapping(), config.getTimeSeriesToDanglingLinesMapping());
+            writeEquipmentToTimeSeriesMapping(writer, BOUNDARY_LINE, config.getBoundaryLineToTimeSeriesMapping(), config.getTimeSeriesToBoundaryLinesMapping());
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -529,26 +529,26 @@ public class TimeSeriesMappingConfigCsvWriter {
     public void writeAllEquipmentSet(Path dir) throws IOException {
         equipmentWriter.writeEquipmentSet(dir, UNMAPPED_GENERATORS_FILE_NAME, GENERATOR, UNMAPPED, config.getUnmappedGenerators(), config.getIgnoredUnmappedGenerators());
         equipmentWriter.writeEquipmentSet(dir, UNMAPPED_LOADS_FILE_NAME, LOAD, UNMAPPED, config.getUnmappedLoads(), config.getIgnoredUnmappedLoads());
-        equipmentWriter.writeEquipmentSet(dir, UNMAPPED_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, UNMAPPED, config.getUnmappedDanglingLines(), config.getIgnoredUnmappedDanglingLines());
+        equipmentWriter.writeEquipmentSet(dir, UNMAPPED_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, UNMAPPED, config.getUnmappedBoundaryLines(), config.getIgnoredUnmappedBoundaryLines());
         equipmentWriter.writeEquipmentSet(dir, UNMAPPED_HVDC_LINES_FILE_NAME, HVDC_LINE, UNMAPPED, config.getUnmappedHvdcLines(), config.getIgnoredUnmappedHvdcLines());
         equipmentWriter.writeEquipmentSet(dir, UNMAPPED_PSTS_FILE_NAME, PST, UNMAPPED, config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers());
         equipmentWriter.writeEquipmentSet(dir, DISCONNECTED_GENERATORS_FILE_NAME, GENERATOR, DISCONNECTED, config.getDisconnectedGenerators(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, DISCONNECTED_LOADS_FILE_NAME, LOAD, DISCONNECTED, config.getDisconnectedLoads(), new HashSet<>());
-        equipmentWriter.writeEquipmentSet(dir, DISCONNECTED_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, DISCONNECTED, config.getDisconnectedDanglingLines(), new HashSet<>());
+        equipmentWriter.writeEquipmentSet(dir, DISCONNECTED_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, DISCONNECTED, config.getDisconnectedBoundaryLines(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, IGNORED_UNMAPPED_GENERATORS_FILE_NAME, GENERATOR, IGNORED_UNMAPPED, config.getIgnoredUnmappedGenerators(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, IGNORED_UNMAPPED_LOADS_FILE_NAME, LOAD, IGNORED_UNMAPPED, config.getIgnoredUnmappedLoads(), new HashSet<>());
-        equipmentWriter.writeEquipmentSet(dir, IGNORED_UNMAPPED_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedDanglingLines(), new HashSet<>());
+        equipmentWriter.writeEquipmentSet(dir, IGNORED_UNMAPPED_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedBoundaryLines(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, IGNORED_UNMAPPED_HVDC_LINES_FILE_NAME, HVDC_LINE, IGNORED_UNMAPPED, config.getIgnoredUnmappedHvdcLines(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, IGNORED_UNMAPPED_PSTS_FILE_NAME, PST, IGNORED_UNMAPPED, config.getIgnoredUnmappedPhaseTapChangers(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, OUT_OF_MAIN_CC_GENERATORS_FILE_NAME, GENERATOR, OUT_OF_MAIN_CC, config.getOutOfMainCcGenerators(), new HashSet<>());
         equipmentWriter.writeEquipmentSet(dir, OUT_OF_MAIN_CC_LOADS_FILE_NAME, LOAD, OUT_OF_MAIN_CC, config.getOutOfMainCcLoads(), new HashSet<>());
-        equipmentWriter.writeEquipmentSet(dir, OUT_OF_MAIN_CC_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, OUT_OF_MAIN_CC, config.getOutOfMainCcDanglingLines(), new HashSet<>());
+        equipmentWriter.writeEquipmentSet(dir, OUT_OF_MAIN_CC_BOUNDARY_LINES_FILE_NAME, BOUNDARY_LINE, OUT_OF_MAIN_CC, config.getOutOfMainCcBoundaryLines(), new HashSet<>());
     }
 
     public void writeAllTimeSerieToEquipmentsMapping(Path dir) throws IOException {
         writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_GENERATORS_MAPPING, GENERATORS, config.getTimeSeriesToGeneratorsMapping());
         writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_LOADS_MAPPING, LOADS, config.getTimeSeriesToLoadsMapping());
-        writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_BOUNDARY_LINES_MAPPING, BOUNDARY_LINES, config.getTimeSeriesToDanglingLinesMapping());
+        writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_BOUNDARY_LINES_MAPPING, BOUNDARY_LINES, config.getTimeSeriesToBoundaryLinesMapping());
         writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_HVDC_LINES_MAPPING, HVDC_LINES, config.getTimeSeriesToHvdcLinesMapping());
         writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_PSTS_MAPPING, PSTS, config.getTimeSeriesToPhaseTapChangersMapping());
         writeTimeSerieToEquipmentsMapping(dir, TIME_SERIES_TO_BREAKERS_MAPPING, BREAKERS, config.getTimeSeriesToBreakersMapping());
@@ -557,7 +557,7 @@ public class TimeSeriesMappingConfigCsvWriter {
     public void writeAllEquipmentToTimeSeriesMapping(Path dir) throws IOException {
         writeEquipmentToTimeSeriesMapping(dir, GENERATOR_TO_TIME_SERIES_MAPPING, GENERATOR, config.getGeneratorToTimeSeriesMapping(), config.getTimeSeriesToGeneratorsMapping());
         writeEquipmentToTimeSeriesMapping(dir, LOAD_TO_TIME_SERIES_MAPPING, LOAD, config.getLoadToTimeSeriesMapping(), config.getTimeSeriesToLoadsMapping());
-        writeEquipmentToTimeSeriesMapping(dir, BOUNDARY_LINE_TO_TIME_SERIES_MAPPING, BOUNDARY_LINE, config.getDanglingLineToTimeSeriesMapping(), config.getTimeSeriesToDanglingLinesMapping());
+        writeEquipmentToTimeSeriesMapping(dir, BOUNDARY_LINE_TO_TIME_SERIES_MAPPING, BOUNDARY_LINE, config.getBoundaryLineToTimeSeriesMapping(), config.getTimeSeriesToBoundaryLinesMapping());
         writeEquipmentToTimeSeriesMapping(dir, HVDC_LINE_TO_TIME_SERIES_MAPPING, HVDC_LINE, config.getHvdcLineToTimeSeriesMapping(), config.getTimeSeriesToHvdcLinesMapping());
         writeEquipmentToTimeSeriesMapping(dir, PST_TO_TIME_SERIES_MAPPING, PST, config.getPhaseTapChangerToTimeSeriesMapping(), config.getTimeSeriesToPhaseTapChangersMapping());
         writeEquipmentToTimeSeriesMapping(dir, BREAKER_TO_TIME_SERIES_MAPPING, BREAKER, config.getBreakerToTimeSeriesMapping(), config.getTimeSeriesToBreakersMapping());
