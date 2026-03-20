@@ -11,7 +11,7 @@ import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.integration.exceptions.MetrixException
 import com.powsybl.metrix.integration.type.MetrixPtcControlType
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

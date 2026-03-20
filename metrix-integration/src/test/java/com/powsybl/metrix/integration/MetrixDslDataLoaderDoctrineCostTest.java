@@ -13,6 +13,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
@@ -205,7 +206,7 @@ class MetrixDslDataLoaderDoctrineCostTest {
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
-            MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), out);
+            MetrixDslDataLoader.load(dslFile, network, parameters, store, new DataTableStore(), new TimeSeriesMappingConfig(), new ScriptLogConfig(out));
         }
 
         String output = outputStream.toString();

@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static com.powsybl.metrix.mapping.LogDslLoader.LogType.ERROR;
-import static com.powsybl.metrix.mapping.LogDslLoader.LogType.WARNING;
+import static java.lang.System.Logger.Level.ERROR;
+import static java.lang.System.Logger.Level.WARNING;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
