@@ -154,7 +154,7 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, new DataTableStore(), mappingConfig, new ScriptLogConfig());
         Contingency contingency = new Contingency("cty", List.of(new BranchContingency("FP.AND1  FVERGE1  1")));
 
-        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, List.of(contingency), metrixResultTimeSeries.getTimeSeriesNames(null), null);
+        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, Map.of(contingency.getId(), curativeProbabilityNodeCalc), metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = generatorProcessing.createPostProcessingTimeSeries();
         return mappingConfig.getTimeSeriesNodes();
     }

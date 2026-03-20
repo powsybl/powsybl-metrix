@@ -71,7 +71,7 @@ public class TimeSeriesMappingConfigJson {
             generator.writeStartObject();
             writeMappingKeyMap(generator, JsonFieldName.TS_TO_GENERATORS, config.getTimeSeriesToGeneratorsMapping());
             writeMappingKeyMap(generator, JsonFieldName.TS_TO_LOADS, config.getTimeSeriesToLoadsMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_DANGLING_LINES, config.getTimeSeriesToDanglingLinesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.TS_TO_BOUNDARY_LINES, config.getTimeSeriesToBoundaryLinesMapping());
             writeMappingKeyMap(generator, JsonFieldName.TS_TO_HVDC_LINES, config.getTimeSeriesToHvdcLinesMapping());
             writeMappingKeyMap(generator, JsonFieldName.TS_TO_PHASE_TAP_CHANGERS, config.getTimeSeriesToPhaseTapChangersMapping());
             writeMappingKeyMap(generator, JsonFieldName.TS_TO_BREAKERS, config.getTimeSeriesToBreakersMapping());
@@ -82,7 +82,7 @@ public class TimeSeriesMappingConfigJson {
             writeMappingKeyMap(generator, JsonFieldName.TS_TO_VSC_CONVERTER_STATIONS, config.getTimeSeriesToVscConverterStationsMapping());
             writeMappingKeyMap(generator, JsonFieldName.GENERATOR_TO_TS, config.getGeneratorToTimeSeriesMapping());
             writeMappingKeyMap(generator, JsonFieldName.LOAD_TO_TS, config.getLoadToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.DANGLING_LINE_TO_TS, config.getDanglingLineToTimeSeriesMapping());
+            writeMappingKeyMap(generator, JsonFieldName.BOUNDARY_LINE_TO_TS, config.getBoundaryLineToTimeSeriesMapping());
             writeMappingKeyMap(generator, JsonFieldName.HVDC_LINE_TO_TS, config.getHvdcLineToTimeSeriesMapping());
             writeMappingKeyMap(generator, JsonFieldName.PHASE_TAP_CHANGER_TO_TS, config.getPhaseTapChangerToTimeSeriesMapping());
             writeMappingKeyMap(generator, JsonFieldName.BREAKER_TO_TS, config.getBreakerToTimeSeriesMapping());
@@ -93,7 +93,7 @@ public class TimeSeriesMappingConfigJson {
             writeMappingKeyMap(generator, JsonFieldName.VSC_CONVERTER_STATION_TO_TS, config.getVscConverterStationToTimeSeriesMapping());
             writeMappingKeySet(generator, JsonFieldName.GENERATOR_TS, config.getGeneratorTimeSeries());
             writeMappingKeySet(generator, JsonFieldName.LOAD_TS, config.getLoadTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.DANGLING_LINE_TS, config.getDanglingLineTimeSeries());
+            writeMappingKeySet(generator, JsonFieldName.BOUNDARY_LINE_TS, config.getBoundaryLineTimeSeries());
             writeMappingKeySet(generator, JsonFieldName.HVDC_LINE_TS, config.getHvdcLineTimeSeries());
             writeMappingKeySet(generator, JsonFieldName.PHASE_TAP_CHANGER_TS, config.getPhaseTapChangerTimeSeries());
             writeMappingKeySet(generator, JsonFieldName.BREAKER_TS, config.getBreakerTimeSeries());
@@ -106,7 +106,7 @@ public class TimeSeriesMappingConfigJson {
             writeMappingSet(generator, JsonFieldName.UNMAPPED_LOADS, config.getUnmappedLoads());
             writeMappingSet(generator, JsonFieldName.UNMAPPED_FIXED_ACTIVE_POWER_LOADS, config.getUnmappedFixedActivePowerLoads());
             writeMappingSet(generator, JsonFieldName.UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS, config.getUnmappedVariableActivePowerLoads());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_DANGLING_LINES, config.getUnmappedDanglingLines());
+            writeMappingSet(generator, JsonFieldName.UNMAPPED_BOUNDARY_LINES, config.getUnmappedBoundaryLines());
             writeMappingSet(generator, JsonFieldName.UNMAPPED_HVDC_LINES, config.getUnmappedHvdcLines());
             writeMappingSet(generator, JsonFieldName.UNMAPPED_PHASE_TAP_CHANGERS, config.getUnmappedPhaseTapChangers());
             writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_GENERATORS, config.getUnmappedMinPGenerators());
@@ -115,15 +115,15 @@ public class TimeSeriesMappingConfigJson {
             writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_HVDC_LINES, config.getUnmappedMaxPHvdcLines());
             writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_GENERATORS, config.getIgnoredUnmappedGenerators());
             writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_LOADS, config.getIgnoredUnmappedLoads());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_DANGLING_LINES, config.getIgnoredUnmappedDanglingLines());
+            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_BOUNDARY_LINES, config.getIgnoredUnmappedBoundaryLines());
             writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_HVDC_LINES, config.getIgnoredUnmappedHvdcLines());
             writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_PHASE_TAP_CHANGERS, config.getIgnoredUnmappedPhaseTapChangers());
             writeMappingSet(generator, JsonFieldName.DISCONNECTED_GENERATORS, config.getDisconnectedGenerators());
             writeMappingSet(generator, JsonFieldName.DISCONNECTED_LOADS, config.getDisconnectedLoads());
-            writeMappingSet(generator, JsonFieldName.DISCONNECTED_DANGLING_LINES, config.getDisconnectedDanglingLines());
+            writeMappingSet(generator, JsonFieldName.DISCONNECTED_BOUNDARY_LINES, config.getDisconnectedBoundaryLines());
             writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_GENERATORS, config.getOutOfMainCcGenerators());
             writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_LOADS, config.getOutOfMainCcLoads());
-            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_DANGLING_LINES, config.getOutOfMainCcDanglingLines());
+            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_BOUNDARY_LINES, config.getOutOfMainCcBoundaryLines());
             writeDistributionKeys(generator, config.getDistributionKeys());
             writeTimeSeriesNodes(generator, config.getTimeSeriesNodes());
             writeTimeSeriesToEquipmentMap(generator, config.getTimeSeriesToEquipment());
@@ -704,7 +704,7 @@ public class TimeSeriesMappingConfigJson {
         switch (JsonFieldName.nameOf(fieldName)) {
             case TS_TO_GENERATORS -> config.setTimeSeriesToGeneratorsMapping(parseMappingKeyMap(parser));
             case TS_TO_LOADS -> config.setTimeSeriesToLoadsMapping(parseMappingKeyMap(parser));
-            case TS_TO_DANGLING_LINES -> config.setTimeSeriesToDanglingLinesMapping(parseMappingKeyMap(parser));
+            case TS_TO_BOUNDARY_LINES -> config.setTimeSeriesToBoundaryLinesMapping(parseMappingKeyMap(parser));
             case TS_TO_HVDC_LINES -> config.setTimeSeriesToHvdcLinesMapping(parseMappingKeyMap(parser));
             case TS_TO_PHASE_TAP_CHANGERS -> config.setTimeSeriesToPhaseTapChangersMapping(parseMappingKeyMap(parser));
             case TS_TO_BREAKERS -> config.setTimeSeriesToBreakersMapping(parseMappingKeyMap(parser));
@@ -715,7 +715,7 @@ public class TimeSeriesMappingConfigJson {
             case TS_TO_VSC_CONVERTER_STATIONS -> config.setTimeSeriesToVscConverterStationsMapping(parseMappingKeyMap(parser));
             case GENERATOR_TO_TS -> config.setGeneratorToTimeSeriesMapping(parseMappingKeyMap(parser));
             case LOAD_TO_TS -> config.setLoadToTimeSeriesMapping(parseMappingKeyMap(parser));
-            case DANGLING_LINE_TO_TS -> config.setDanglingLineToTimeSeriesMapping(parseMappingKeyMap(parser));
+            case BOUNDARY_LINE_TO_TS -> config.setBoundaryLineToTimeSeriesMapping(parseMappingKeyMap(parser));
             case HVDC_LINE_TO_TS -> config.setHvdcLineToTimeSeriesMapping(parseMappingKeyMap(parser));
             case PHASE_TAP_CHANGER_TO_TS -> config.setPhaseTapChangerToTimeSeriesMapping(parseMappingKeyMap(parser));
             case BREAKER_TO_TS -> config.setBreakerToTimeSeriesMapping(parseMappingKeyMap(parser));
@@ -726,7 +726,7 @@ public class TimeSeriesMappingConfigJson {
             case VSC_CONVERTER_STATION_TO_TS -> config.setVscConverterStationToTimeSeriesMapping(parseMappingKeyMap(parser));
             case GENERATOR_TS -> config.setGeneratorTimeSeries(parseMappingKeySet(parser));
             case LOAD_TS -> config.setLoadTimeSeries(parseMappingKeySet(parser));
-            case DANGLING_LINE_TS -> config.setDanglingLineTimeSeries(parseMappingKeySet(parser));
+            case BOUNDARY_LINE_TS -> config.setBoundaryLineTimeSeries(parseMappingKeySet(parser));
             case HVDC_LINE_TS -> config.setHvdcLineTimeSeries(parseMappingKeySet(parser));
             case PHASE_TAP_CHANGER_TS -> config.setPhaseTapChangerTimeSeries(parseMappingKeySet(parser));
             case BREAKER_TS -> config.setBreakerTimeSeries(parseMappingKeySet(parser));
@@ -739,7 +739,7 @@ public class TimeSeriesMappingConfigJson {
             case UNMAPPED_LOADS -> config.setUnmappedLoads(parseMappingSet(parser));
             case UNMAPPED_FIXED_ACTIVE_POWER_LOADS -> config.setUnmappedFixedActivePowerLoads(parseMappingSet(parser));
             case UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS -> config.setUnmappedVariableActivePowerLoads(parseMappingSet(parser));
-            case UNMAPPED_DANGLING_LINES -> config.setUnmappedDanglingLines(parseMappingSet(parser));
+            case UNMAPPED_BOUNDARY_LINES -> config.setUnmappedBoundaryLines(parseMappingSet(parser));
             case UNMAPPED_HVDC_LINES -> config.setUnmappedHvdcLines(parseMappingSet(parser));
             case UNMAPPED_PHASE_TAP_CHANGERS -> config.setUnmappedPhaseTapChangers(parseMappingSet(parser));
             case UNMAPPED_MIN_P_GENERATORS -> config.setUnmappedMinPGenerators(parseMappingSet(parser));
@@ -748,15 +748,15 @@ public class TimeSeriesMappingConfigJson {
             case UNMAPPED_MAX_P_HVDC_LINES -> config.setUnmappedMaxPHvdcLines(parseMappingSet(parser));
             case IGNORED_UNMAPPED_GENERATORS -> config.setIgnoredUnmappedGenerators(parseMappingSet(parser));
             case IGNORED_UNMAPPED_LOADS -> config.setIgnoredUnmappedLoads(parseMappingSet(parser));
-            case IGNORED_UNMAPPED_DANGLING_LINES -> config.setIgnoredUnmappedDanglingLines(parseMappingSet(parser));
+            case IGNORED_UNMAPPED_BOUNDARY_LINES -> config.setIgnoredUnmappedBoundaryLines(parseMappingSet(parser));
             case IGNORED_UNMAPPED_HVDC_LINES -> config.setIgnoredUnmappedHvdcLines(parseMappingSet(parser));
             case IGNORED_UNMAPPED_PHASE_TAP_CHANGERS -> config.setIgnoredUnmappedPhaseTapChangers(parseMappingSet(parser));
             case DISCONNECTED_GENERATORS -> config.setDisconnectedGenerators(parseMappingSet(parser));
             case DISCONNECTED_LOADS -> config.setDisconnectedLoads(parseMappingSet(parser));
-            case DISCONNECTED_DANGLING_LINES -> config.setDisconnectedDanglingLines(parseMappingSet(parser));
+            case DISCONNECTED_BOUNDARY_LINES -> config.setDisconnectedBoundaryLines(parseMappingSet(parser));
             case OUT_OF_MAIN_CC_GENERATORS -> config.setOutOfMainCcGenerators(parseMappingSet(parser));
             case OUT_OF_MAIN_CC_LOADS -> config.setOutOfMainCcLoads(parseMappingSet(parser));
-            case OUT_OF_MAIN_CC_DANGLING_LINES -> config.setOutOfMainCcDanglingLines(parseMappingSet(parser));
+            case OUT_OF_MAIN_CC_BOUNDARY_LINES -> config.setOutOfMainCcBoundaryLines(parseMappingSet(parser));
             case DISTRIBUTION_KEYS -> config.setDistributionKeys(parseDistributionKeys(parser));
             case TIME_SERIES_NODES -> config.setTimeSeriesNodes(parseTimeSeriesNodes(parser));
             case TS_TO_EQUIPMENT -> config.setTimeSeriesToEquipment(parseTimeSeriesToEquipment(parser));
