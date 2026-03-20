@@ -47,6 +47,7 @@ import static com.powsybl.metrix.commons.data.timeseries.FileSystemTimeSeriesSto
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -122,10 +123,21 @@ class TimeSeriesMappingConfigTableLoaderTest {
         assertThat(usedTimeSeriesNamesToLoad).hasSize(2).containsExactlyInAnyOrder("mappedTs", "ts1");
     }
 
+    static void verifyTableValues(TimeSeriesTable table, int timeSeriesNum) {
+        // only the two first values have been loaded
+        assertFalse(Double.isNaN(table.getDoubleValue(1, timeSeriesNum, 0)));
+        assertFalse(Double.isNaN(table.getDoubleValue(1, timeSeriesNum, 1)));
+        assertTrue(Double.isNaN(table.getDoubleValue(1, timeSeriesNum, 2)));
+        assertTrue(Double.isNaN(table.getDoubleValue(1, timeSeriesNum, 3)));
+    }
+
     @Test
     void loadTest() {
         TimeSeriesTable loadToTable = tableLoader.loadToTable(1, tsStore, Range.closed(0, 1), Set.of("ts2", "calculatedTs"));
         assertThat(loadToTable.getTimeSeriesNames()).hasSize(3).containsExactlyInAnyOrder("ts1", "ts2", "calculatedTs");
+        verifyTableValues(loadToTable, 0);
+        verifyTableValues(loadToTable, 1);
+        verifyTableValues(loadToTable, 2);
 
         TimeSeriesTable loadTable = tableLoader.load(1, Set.of("ts2"), Range.closed(0, 1));
         assertThat(loadTable.getTimeSeriesNames()).hasSize(4).containsExactlyInAnyOrder("distributionKeyTs", "equipmentTs", "mappedTs", "ts2");
