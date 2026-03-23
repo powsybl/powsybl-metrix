@@ -4,37 +4,38 @@
 # package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PowSyBl Metrix 3.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-20 10:27+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2026-03-23 14:45+0000\n"
+"Last-Translator: Weblate admin <noreply@powsybl.org>\n"
+"Language-Team: French <http://translation.powsybl.org/projects/powsybl-"
+"metrix/documentation-index/fr/>\n"
 "Language: fr\n"
-"Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #: ../../index.md:1 57ebf9e0216c407f8c6a6586ff27dff8
 msgid "![PowSyBl Logo](_static/logos/logo_lfe_powsybl.svg)"
-msgstr ""
+msgstr "![PowSyBl Logo](_static/logos/logo_lfe_powsybl.svg)"
 
 #: ../../index.md:1 6d3b6dc72cbc42bb96ff99abf8592baf
 msgid "PowSyBl Logo"
-msgstr ""
+msgstr "PowSyBl Logo"
 
 #: ../../index.md:2 190c2d28a452432da39fb5c1eea8b7a1
 msgid "PowSyBl Metrix"
-msgstr ""
+msgstr "PowSyBl Metrix"
 
 #: ../../index.md:4 5a63d5c04f11419db52ae3fa00f29e08
 msgid "Presentation"
-msgstr ""
+msgstr "Présentation"
 
 #: ../../index.md:6 c47aa6a86d0641948214682ae4c5eb05
 msgid ""
@@ -43,6 +44,10 @@ msgid ""
 " at specified times. Furthermore, it allows using the second tool, "
 "MetrixTool."
 msgstr ""
+"[MappingTool](mapping.md) propose la configuration d'un mapping entre les "
+"TimeSeries au format CSV et un réseau. Cette configuration permet de générer "
+"des réseaux IIDM à des instants spécifiques. De plus, ça permet ensuite "
+"d'utiliser MetrixTool."
 
 #: ../../index.md:10 e1af0f03f744416393f2db4933045a27
 msgid ""
@@ -158,4 +163,3 @@ msgid ""
 "Create the file if it does not already exist. Then add the following "
 "lines:"
 msgstr ""
-

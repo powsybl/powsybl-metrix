@@ -4,25 +4,26 @@
 # package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PowSyBl Metrix 3.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-20 10:27+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2026-03-23 14:45+0000\n"
+"Last-Translator: Weblate admin <noreply@powsybl.org>\n"
+"Language-Team: French <http://translation.powsybl.org/projects/powsybl-"
+"metrix/documentation-metrix-simulator/fr/>\n"
 "Language: fr\n"
-"Language-Team: fr <LL@li.org>\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.16.2\n"
 "Generated-By: Babel 2.17.0\n"
 
 #: ../../metrix-simulator.md:2 eb86f9af339e4681bf2b6f0627ba91f0
 msgid "Metrix simulator"
-msgstr ""
+msgstr "Simulateur Metrix"
 
 #: ../../metrix-simulator.md:4 f857774d7bd14d7dabeca0b9a74d983c
 msgid "Introduction"
@@ -121,4 +122,3 @@ msgstr ""
 #: ../../metrix-simulator.md:91 b8127f4c7a0f4e7686030fb757b89804
 msgid "Optimization problem formulation [Math](simulator/math.md)"
 msgstr ""
-
