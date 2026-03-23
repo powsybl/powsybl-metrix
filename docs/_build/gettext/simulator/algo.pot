@@ -1,0 +1,1520 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 
+# This file is distributed under the same license as the PowSyBl Metrix package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../simulator/algo.md:8
+#: e897faf51ee144c29c1e1619c30fe689
+msgid "Algorithm description"
+msgstr ""
+
+#: ../../simulator/algo.md:10
+#: db45beaf7e54432dacbe6d9539666701
+msgid "Introduction"
+msgstr ""
+
+#: ../../simulator/algo.md:11
+#: 9777d982796847389163154316cad6b3
+msgid "Dans le cadre de ses activités, RTE a besoin d'un outil capable, pour un réseau donné, **de simuler son fonctionnement  heure par heure** et de fournir une **estimation de son coût d'exploitation, en situation normale et face à différents  incidents**. Cela est, par exemple, nécessaire pour l'étude du développement du réseau électrique."
+msgstr ""
+
+#: ../../simulator/algo.md:15
+#: 5880f676e96d42478e74437a04e2da4f
+msgid "METRIX comprend à la fois un calcul de réseau (load-flow) en actif seul ainsi qu'un modèle d'optimisation de flux  (Optimal Power Flow ou OPF)."
+msgstr ""
+
+#: ../../simulator/algo.md:18
+#: 362812edba96401a8dd6a4540f252557
+msgid "Un **load-flow** calcule la répartition des flux sur les ouvrages du réseau en fonction des caractéristiques de ces  ouvrages et des injections du réseau (production et consommation). Le résultat d'un load-flow permet de constater les contraintes. Un **OPF** peut modifier les injections/consommations et la topologie de sorte, qu'après load-flow, il n'y ait pas de  contrainte sur les ouvrages (ou qu'elles soient, du moins, minimisées)."
+msgstr ""
+
+#: ../../simulator/algo.md:23
+#: 81fabceca7c24f64b25a219d27c02678
+msgid "De ce fait, l'objectif de METRIX est de trouver l'ajustement de moindre coût du plan de production afin de n'avoir  aucune contrainte de transit ni en N ni sur incidents. Cet outil permet de mesurer le surcoût engendré par le réseau  sur le plan de production initial et permet de valoriser un renforcement de réseau. Dans sa version 6, METRIX est intégré dans la plate-forme imaGrid où il peut être lancé sur des milliers de variantes.  Ces variantes permettent de modéliser des incertitudes sur la consommation, la production renouvelable, la disponibilité  des groupes, etc."
+msgstr ""
+
+#: ../../simulator/algo.md:30
+#: 556107665c754983879636f0759bbcb2
+msgid "Afin d'obtenir un problème plus facile et rapide à résoudre, METRIX utilise l'**approximation du courant continu** pour  modéliser le réseau. Cependant, cette simplification ne permet pas de détecter les contraintes de tension et encore  moins les problèmes liés à la dynamique des événements."
+msgstr ""
+
+#: ../../simulator/algo.md:34
+#: 121589b2e27346a1bd3b9891f4010ecf
+msgid "Que ce soit via imaGrid ou en exécution directe, un cas de base ainsi qu'un fichier annexe décrivant toutes les variantes à calculer sont envoyés en entrée de METRIX. Ce dernier applique ensuite chacune des variantes au cas de base et  retourne un résultat pour chaque variante. Les résultats sont présentés sous forme de chroniques dans imaGrid. Ce document présente la modélisation du système électrique utilisée par METRIX, la logique de l'algorithme global,  le problème d'optimisation qu'il résout et les fonctionnalités disponibles au sein de METRIX."
+msgstr ""
+
+#: ../../simulator/algo.md:41
+#: 6e3b631227d24eb5bf174cdc605c33c8
+msgid "Objectif"
+msgstr ""
+
+#: ../../simulator/algo.md:43
+#: 5e85cc8f7b1548eeb16cf946d04e6b3b
+msgid "**Le but de METRIX est de fournir une estimation du coût d'exploitation horaire d'un réseau fonctionnant de manière  optimale**, i.e. coûtant le moins possible."
+msgstr ""
+
+#: ../../simulator/algo.md:46
+#: 20625ee5462d46a289957a48195bd099
+msgid "Considérons un réseau donné. Le comportement d'un réseau étant aléatoire, le coût d'exploitation l'est également.  Posons $X$ la variable aléatoire du coût d'exploitation de ce réseau. Ce que nous voulons calculer avec METRIX, c'est  une minimisation de l'espérance de cette variable aléatoire :"
+msgstr ""
+
+#: ../../simulator/algo.md:50
+#: 88f4f3b6fa2b42a78382aee783bb13f6
+msgid "\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X))\n"
+"\\end{aligned}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:56
+#: bbe86d7a164c410789a1b7283fd62dbb
+msgid "Puisque nous ne disposons pas de loi pour déterminer cette espérance, nous allons utiliser une approche statistique  et l'approximer comme la moyenne d'un grand nombre de réalisations équiprobables. Il va donc falloir déterminer le  coût d'exploitation du réseau sur un grand nombre d'heures (que nous nommerons variantes). En notant $n$ le nombre de  réalisations :"
+msgstr ""
+
+#: ../../simulator/algo.md:61
+#: f541670c2b114c2d8b35dc03791a9962
+msgid "\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X)) \\approx  min(\\frac{1}{n}\\sum_{i=0}^{n}x_i)\n"
+"\\end{aligned}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:67
+#: 126c35a20efb4183a9cf771929645424
+msgid "D'autre part, pour simplifier le modèle et paralléliser les simulations des variantes, il a été décidé de les rendre  indépendantes les unes des autres : la réalisation de la variable sur une variante est totalement indépendante de sa  réalisation sur une autre variante. Par conséquent, minimiser la somme des coûts revient à minimiser chaque coût horaire :"
+msgstr ""
+
+#: ../../simulator/algo.md:72
+#: 2d4994c5e6a14f918d89ae4c9d334bf5
+msgid "\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X)) \\approx  min(\\frac{1}{n}\\sum_{i=0}^{n}x_i) = \\frac{1}{n}\\sum_{i=0}^{n}min(x_i)\n"
+"\\end{aligned}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:78
+#: 098f65f9c5ef4c10ac2aa8f7b872ae5c
+msgid "Pour estimer le minimum de l'espérance de $X$, nous allons donc devoir minimiser le coût de fonctionnement du réseau  de chaque variante, et ce, sur un grand nombre de variantes. Cela équivaut à simuler, pour chaque variante, un  fonctionnement optimal du réseau. Pour ce faire, nous allons utiliser les outils de **Recherche Opérationnelle**. Par ailleurs, pour avoir des variantes différentes, nous allons avoir besoin de situations différentes dans le réseau :  en termes de coûts de production, de groupes indisponibles, de consommations des centres de consommation, etc. Ces  paramètres du réseau seront représentés par des variables aléatoires, chaque variante ayant sa réalisation. METRIX  résout donc un problème d'**optimisation stochastique**."
+msgstr ""
+
+#: ../../simulator/algo.md:86
+#: 6e041ae70c8745dca76c5a9645c5d6c3
+msgid "Énoncé du problème"
+msgstr ""
+
+#: ../../simulator/algo.md:87
+#: ec6e397799d2449baaa3325df4f785b7
+msgid "Pour simuler le fonctionnement réel et optimal du réseau sur une variante, nous allons décomposer le problème en deux  problèmes d'optimisation, résolus l'un après l'autre."
+msgstr ""
+
+#: ../../simulator/algo.md:90
+#: 8ec4a5e4fc8048048648cdbaf3d18c7c
+msgid "Premier problème"
+msgstr ""
+
+#: ../../simulator/algo.md:91
+#: fbc4b061c95e4322af8b62165f3f7227
+msgid "Tout d'abord, un premier problème d'équilibrage entre production et consommation (***Adequacy phase***), simulant le  fait que, suite à un changement de la consommation, les producteurs d'électricité adaptent leur production pour répondre  à la nouvelle demande, tout en assurant un coût d'opération minimal. Si la capacité de production est insuffisante, du  délestage de consommation est également possible. Le réseau électrique n'est pas pris en compte dans cette phase, nous  supposons que tous les éléments producteurs et consommateurs se trouvent sur une même plaque de cuivre sans résistance.  Avec la résolution de ce problème, nous obtenons une **égalité production – consommation**."
+msgstr ""
+
+#: ../../simulator/algo.md:98
+#: 0beed15f1009445284cc3149345d9a6f
+msgid "Toutes les **variables du problème étant continues**, nous utilisons la **Programmation Linéaire**. Pour garder une  approche statistique, le choix des groupes (pour des coûts égaux) se fait **aléatoirement**. Toutefois, pour éviter  d'avoir une solution différente à chaque résolution, ce choix aléatoire est identique pour un même environnement  informatique."
+msgstr ""
+
+#: ../../simulator/algo.md:103
+#: b50e215989374de3a5ccf2ea069736cb
+msgid "Cette étape est explicitée dans [le schéma ci-après](#algo-adequacy-fig) : la situation initiale est déséquilibrée entre la demande  (150 MW) et la production (30 + 20 MW). Les groupes augmentent donc leur production, en appelant d'abord les productions  les moins chères."
+msgstr ""
+
+#: ../../simulator/algo.md:107
+#: ../../simulator/algo.md:113
+#: 54a0295b340549dab202da16ca997f65
+#: 3ed2359dc31443fc92d02e5dcf5e5a50
+msgid "Adequacy figure"
+msgstr ""
+
+#: ../../simulator/algo.md:116
+#: df4f51c4b25d458c9650364e2dc29a20
+msgid "Cf. [Adequacy model](#algo-adeq_math)."
+msgstr ""
+
+#: ../../simulator/algo.md:118
+#: ed84685153cb415a9832f623895baa1c
+msgid "Deuxième problème"
+msgstr ""
+
+#: ../../simulator/algo.md:119
+#: 1c05b4760e6e42fba0ccd7ca94abe675
+msgid "Mais puisque les lignes électriques n'ont pas été prises en compte, ce **nouvel équilibre peut entraîner des surcharges  sur celles-ci**. Dans une deuxième phase (***Redispatching phase***), il faut donc considérer le réseau dans son  intégralité et choisir des **actions préventives** pour éviter les surcharges tout en assurant l'équilibrage  Production – Consommation. Ces actions préventives regroupent les moyens d'actions de RTE sur le réseau, à savoir la  **modification des déphasages des Transformateurs-Déphaseurs et des flux sur les Lignes à Courant Continu**. Nous avons  également la possibilité de modifier la production ou la consommation. Néanmoins, ces actions concernent des acteurs  extérieurs à RTE, leur utilisation sera donc défavorisée par un coût plus élevé dans la simulation."
+msgstr ""
+
+#: ../../simulator/algo.md:127
+#: e83123905a94493585628045bc9db73a
+msgid "En outre, des incidents peuvent se produire sur le réseau et perturber son fonctionnement (perte d'un groupe de  production, d'une ligne, etc.) ; il faut donc choisir des **actions curatives** pour éviter d'autres surcharges. Ces  actions sont les mêmes qu'en préventif, avec, en supplément, des **parades topologiques** : ces dernières ouvrent ou  ferment des lignes ou des couplages du réseau, de façon à en modifier la topologie, et ainsi à modifier les flux sur les  lignes."
+msgstr ""
+
+#: ../../simulator/algo.md:133
+#: bb5a5c7109f343f9bcfce58aa8f65afc
+msgid "La résolution de ce deuxième problème d'optimisation va donc permettre de simuler le choix des actions préventives et  curatives garantissant le bon fonctionnement du réseau pour un coût minimal. Certaines actions curatives étant du type  “interrupteur”, **des variables booléennes** apparaissent dans le problème : nous résolvons ainsi un **Problème Linéaire  Mixte en Nombres Entiers**."
+msgstr ""
+
+#: ../../simulator/algo.md:138
+#: 91de43af180f4e1ebd11129a64863784
+msgid "Le [schéma ci-après](#algo-redis_fig) montre la partie préventive de ce second problème : après l'équilibrage du réseau, les  contraintes de seuil des lignes sont ajoutées, ce qui provoque la surcharge d'une ligne. Pour que son seuil ne soit pas  dépassé, nous modifions les productions des groupes tout en maintenant l'équilibre offre – demande, ce qui entraîne un  surcoût de 200€."
+msgstr ""
+
+#: ../../simulator/algo.md:143
+#: ../../simulator/algo.md:149
+#: 5ae102b623f34f689f67c2e4eae9e9a7
+#: a63d3585bb404b0fbba7d24b9bf200bc
+msgid "Redispatching figure"
+msgstr ""
+
+#: ../../simulator/algo.md:152
+#: 16936bf329b6444ab370a4e749045490
+msgid "Cf. [Redispathcing model](#algo-redis_math)"
+msgstr ""
+
+#: ../../simulator/algo.md:154
+#: f13dc400c31c4e8cab7140dc486c6c02
+msgid "Voici donc les deux problèmes qui doivent être résolus afin de simuler le fonctionnement du réseau sur la durée souhaitée.  Cependant, <r>pour plus de rapidité et pour rester dans une approche statistique</r>, le choix a été fait de **ne pas  lier la solution de la variante $t$ à la situation initiale de la variante $t+1$**. Les résultats de chaque variante  sont **indépendants** des autres variantes. Dès lors, chaque ensemble de problème {*Adequacy phase*, *Redispatching  phase*} est indépendant d'une variante à une autre, et chaque variante peut se résoudre en parallèle."
+msgstr ""
+
+#: ../../simulator/algo.md:160
+#: 4329f40f82ab447bb3c32d0e621dac4c
+msgid "Hypothèses et simplifications du problème"
+msgstr ""
+
+#: ../../simulator/algo.md:162
+#: 9de377e2452d48cd808d767220749cca
+msgid "Représentation des lignes et gestion de leurs contraintes"
+msgstr ""
+
+#: ../../simulator/algo.md:164
+#: 3f2c40033387448681548e4045d21cb3
+msgid "Pour simuler la *Redispatching phase*, nous résolvons un problème d'optimisation incluant des contraintes sur les  transits des lignes. Cependant, un réseau est fait d'un très grand nombre de lignes. Sachant que **seules quelques-unes  seront intéressantes à surveiller** lors d'une simulation, nous indiquons en entrée de la simulation quelles sont **les  lignes dont il faut contraindre le transit** et quelles sont **les lignes qui peuvent être laissées sans surveillance**.  Cela permet de réduire la quantité de calculs à faire sans diminuer l'utilité de la simulation."
+msgstr ""
+
+#: ../../simulator/algo.md:170
+#: 48d99313ce4345f698b34259cc0ac844
+msgid "En outre, grâce à la structure du problème, **nous pouvons éviter d'ajouter d'emblée toutes les contraintes de transit  sur les lignes**. En effet, dans un réseau électrique, si des lignes se trouvent en surcharge, cela est généralement dû  à une surcharge sur un groupe réduit de lignes qui transmettent ensuite l'excès à d'autres. En empêchant les surcharges  sur ce groupe original de lignes, nous faisons donc disparaître aussi les surcharges sur les autres lignes. **Le  problème d'optimisation peut ainsi être simplifié en réduisant le nombre de contraintes** à prendre en compte, sans  changer la validité de la simulation."
+msgstr ""
+
+#: ../../simulator/algo.md:177
+#: fa706e8fe6254cbcafd6fceabd7e903e
+msgid "Pour résoudre le problème d'optimisation, nous allons **procéder par micro-itérations* : à chaque micro-itération, nous  résolvons le problème ; puis nous cherchons si, dans la solution trouvée, il y a des lignes en surcharge. Parmi ces  lignes, nous allons rechercher quel sous-groupe de lignes engendre des surcharges ailleurs, et donc quel sous-groupe de  lignes, il faut contraindre pour faire disparaître toutes les surcharges. Ces contraintes sont alors ajoutées au  problème, puis nous relançons la résolution. Et ce, ainsi de suite, jusqu'à ce qu'il n'y ait plus de surcharges qui  apparaissent."
+msgstr ""
+
+#: ../../simulator/algo.md:184
+#: ../../simulator/algo.md:190
+#: 23ed30b257184a05a2d6165713be9b93
+#: c84954e8a32f43e9bbcdab2e60b22712
+msgid "Micro-iterations process"
+msgstr ""
+
+#: ../../simulator/algo.md:193
+#: a1407f616b124938afd2821f3d440908
+msgid "Actions préventives et curatives pour satisfaire les contraintes de seuil"
+msgstr ""
+
+#: ../../simulator/algo.md:195
+#: 228b40910c234477b50ef7722ec6b559
+msgid "Pour satisfaire les contraintes réseau lors de la *Redispatching phase*, nous utilisons des actions préventives (pour  modifier le réseau avant que les incidents ne surviennent, de façon à ce qu'ils ne provoquent pas de défaillances) et  curatives (pour corriger les défaillances survenues et continuer à satisfaire la consommation)."
+msgstr ""
+
+#: ../../simulator/algo.md:199
+#: a6c9b34858da468d83f791266730762a
+msgid "Parmi ces actions, il y a la modification de la production des groupes et le délestage de la consommation, tout comme  lors de l'*Adequacy phase*. Mais il y a également l'emploi des **Transfo-Déphaseurs** (TD), des **Lignes à Courant  Continu** (LCC) et des **Parades Topologiques**."
+msgstr ""
+
+#: ../../simulator/algo.md:203
+#: c74a61ca3e524c3694a85bf38bbe777d
+msgid "Les TDs servent à modifier la phase sur les lignes sur lesquelles ils sont implantés, et donc de changer le rapport  $\\frac{\\text{puissance active}}{\\text{puissance réactive}}$. Autrement dit, ils permettent de régler la “puissance”  circulant sur les lignes, sans toucher à la production ou la consommation."
+msgstr ""
+
+#: ../../simulator/algo.md:207
+#: 04626c9abd914a9bbdf46a86c0987144
+msgid "Le nom des LCCs est relativement explicite : ces lignes ne transportent pas du courant alternatif. Tout comme pour les  TDs, nous pouvons régler la puissance circulant dessus. Elles permettent ainsi de transférer une puissance réglable  entre deux nœuds, et notamment entre deux zones synchrones (i.e. deux ensembles de nœuds aux caractéristiques alternatives  différentes)."
+msgstr ""
+
+#: ../../simulator/algo.md:212
+#: 9279170e11d845b08f47cafb2a85c9d9
+msgid "Enfin, les parades topologiques (utilisables uniquement en curatif) correspondent à l'ouverture ou la fermeture de  lignes ou de couplages dans le réseau : elles modifient la typologie du réseau. En conséquence, elles modifient la  matrice de répartition permettant de calculer les flux sur les lignes, et donc modifient ces flux eux-mêmes. Leur  utilisation nécessitant une étude à part entière avant de l'intégrer comme action dans une simulation, nous  n'autorisons qu'**une parade topologique maximum par incident**."
+msgstr ""
+
+#: ../../simulator/algo.md:218
+#: debeee8a8723471bae961431643a3d5d
+msgid "Approximation de l'actif seul"
+msgstr ""
+
+#: ../../simulator/algo.md:220
+#: b5839f18fac74bd5a5364c0e09103108
+msgid "Hypothèses"
+msgstr ""
+
+#: ../../simulator/algo.md:221
+#: 4d4b53b3e7f64560809c3b3f828832bd
+msgid "Ces moyens d'actions sus-cités, servent donc à éviter ou réduire les surcharges sur les lignes. Mais pour les détecter,  il faut d'abord calculer les transits sur ces lignes."
+msgstr ""
+
+#: ../../simulator/algo.md:224
+#: ca627bcf579f4a72aeddda847c2a18f3
+msgid "Pour cela, nous pouvons utiliser la modélisation physique habituelle, représentant une ligne électrique comme une  inductance et une résistance en série (cf. [schéma ci-après](#algo-indRes_fig))."
+msgstr ""
+
+#: ../../simulator/algo.md:227
+#: ../../simulator/algo.md:233
+#: 69f11ef3a22a43318dc3d021b8b25be4
+#: e5b49e72cf82451a933a196ec0c3d690
+msgid "Inductance et résistance en série"
+msgstr ""
+
+#: ../../simulator/algo.md:236
+#: 2767821f6ef946e29a4f5d79d6df0630
+msgid "Dans ce cas, le transit de $i$ vers $j$, noté $T_{ij}$, est calculé de la façon suivante :"
+msgstr ""
+
+#: ../../simulator/algo.md:238
+#: f08f5ce3293047dd8eb1876feff2e836
+msgid "\n"
+"T_{ij} = \\frac{V_iV_j}{Z_{ij}}sin(\\theta_i - \\theta_j + \\gamma_{ij}) + \\frac{V_i^2}{Z_{ij}}sin(\\gamma_{ij}) \\\\\n"
+"Z = R + i\\omega L \\\\\n"
+"\\gamma_{ij} = arctan(\\frac{R}{\\omega L})\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:244
+#: b0e5a92a9a76466ea3759674badfbcce
+msgid "Cette expression est calculable. Mais <r>dans le cadre de la programmation linéaire, il est plus approprié d'utiliser  des expressions linéaires. Cela peut être obtenu avec une correspondance relativement bonne à l'aide de  l'</r>**<r>approximation de l'actif seul</r>, dans laquelle nous supposons que la source impose un déphasage global  constant, ainsi qu'une tension commune**."
+msgstr ""
+
+#: ../../simulator/algo.md:249
+#: 95ed5f1c16314beab8a39d008565f7a1
+msgid "L'approximation s'appuie sur 3 hypothèses simplificatrices :"
+msgstr ""
+
+#: ../../simulator/algo.md:250
+#: 6feb78557f164dffb28c35f5d502044d
+msgid "Chaque liaison est assimilée à une réactance pure : la résistance est supposée nulle. Nous négligeons également les  conductances et susceptances des lignes."
+msgstr ""
+
+#: ../../simulator/algo.md:252
+#: 4e815e76994446c5829ebc3f9872d7d6
+msgid "Les différences de phases entre sommets voisins sont petites ; par conséquent, nous considérons que  $sin(\\theta_{i} − \\theta_{j}) \\approx \\theta_{i}- \\theta_{j}$."
+msgstr ""
+
+#: ../../simulator/algo.md:254
+#: 3c7bd7fd542343bdb58896f4264003fa
+msgid "La tension est supposée uniforme sur l'ensemble du réseau à une valeur fixée $V_{ref}$."
+msgstr ""
+
+#: ../../simulator/algo.md:256
+#: be8017b42aa84d23a95cb3f3bcb5c232
+msgid "\n"
+"V_i = V_j = V_{ref} = \\text{constante} \\\\\n"
+"R <<< \\omega L \\Rightarrow \\gamma_{ij} \\approx 0 \\text{ car } arctan(0) = 0\\\\\n"
+"\\theta_i \\approx \\theta_j\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:262
+#: 7d762233fc2247cfb09f60950edc5b18
+msgid "Ce qui implique que le transit de puissance active sur une ligne entre les nœuds $i$ et $j$ s'écrit : $$ T_{ij} \\approx V_{ref}^{2}Y_{ij}(\\theta_i - \\theta_j)\\text{ avec }Y_{ij} = \\frac{1}{Z_{ij}} $$"
+msgstr ""
+
+#: ../../simulator/algo.md:267
+#: 536bf0d180b14995b6e5e7c27175db2e
+msgid "De plus, à chaque nœud $i$ du réseau, l'injection active s'exprime : $$ P_{i} = V_{ref}^{2} \\times \\sum_{j \\in \\alpha(i)} Y_{ij} \\times (\\theta_i - \\theta_j) $$ avec $alpha(ji)$ l'ensemble des nœuds voisins du nœud $i$. Cette approximation permet donc d'obtenir une **relation linéaire entre les transits et les injections**."
+msgstr ""
+
+#: ../../simulator/algo.md:274
+#: 9d3e5f0ee00544549219fdf3b575fac9
+msgid "Dans METRIX, nous raisonnons à partir de puissances et non d'angles ; mais nous déduisons les seconds des premiers  grâce aux coefficients PTDF en approximation du courant continu. Ensuite, nous pouvons calculer le transit sur chaque  ligne à partir de la production des groupes."
+msgstr ""
+
+#: ../../simulator/algo.md:278
+#: 7fccf53ada74480fab12a81d9e8dc6f3
+msgid "En contrepartie, nous n'avons aucune information sur le transit réactif des lignes, sur les chutes de tension, les  problèmes de « puissance maximale transmissible », etc. Les pertes ne sont pas modélisées sur les lignes : le transit  entrant dans une ligne ressort en intégralité de l'autre côté : $T_{ij} = -T_{ji}$."
+msgstr ""
+
+#: ../../simulator/algo.md:282
+#: f29344c5665f4f44afc7a32dd54d53d7
+msgid "Expression des transits pour METRIX"
+msgstr ""
+
+#: ../../simulator/algo.md:284
+#: b59be4558edd489791811f07dd95e190
+msgid "Les équations ci-dessus peuvent s'écrire sous forme matricielle : $$ [p] = V_{ref}^{2} \\times [A] \\times [\\theta] $$"
+msgstr ""
+
+#: ../../simulator/algo.md:289
+#: 170535409876468bbb87740a89bd781a
+msgid "Avec :"
+msgstr ""
+
+#: ../../simulator/algo.md:290
+#: 73a0a928c51e4caa8ea238cb20ac670f
+msgid "$[p]$ le vecteur d'injecion active nodale,"
+msgstr ""
+
+#: ../../simulator/algo.md:291
+#: 835371d9ffb54593a2453900563c93a6
+msgid "$[\\theta]$ le vecteur des phases à chaque nœud,"
+msgstr ""
+
+#: ../../simulator/algo.md:292
+#: a2c9090e8e2e416197da6114aaa02b85
+msgid "$[A]$ la matrice d'admittance du réseau. Elle est carrée et symétrique et de taille le nombre de nœuds dans le réseau : $$ [A] =   \\begin{cases}      \\alpha_{ii} = \\sum_{j \\in \\alpha(i)} Y_{ij}\\      \\alpha_{ij} =           \\begin{cases}              0\\text{ si }j \\notin \\alpha(i)\\              -Y_{ij}\\text{ sinon}          \\end{cases}  \\end{cases} $$"
+msgstr ""
+
+#: ../../simulator/algo.md:305
+#: edbac06786a4492d9e4f8fd316f3d6dd
+msgid "Dans METRIX, les variables de contrôle sont des données d'injections (production, délestage ou consigne de TD et HVDC) : $$ [\\theta] = \\frac{1}{V_{ref}^{2}}[A]^{-1}\\times[p] $$"
+msgstr ""
+
+#: ../../simulator/algo.md:310
+#: 0d7a599cbe7640838c1d5e7118035a6d
+msgid "Or $T_{ij} = V_{ref}^{2}\\times Y_{ij}\\times (\\theta_i - \\theta_j)$, donc $T_{ij} = [Y][A]^{-1}[p]$, avec $[Y]$ un  vecteur ligne de la taille des nœuds : $$ [Y] =  \\begin{cases}     y_{ij} = Y_{ij}\\     y_{ji} = -Y_{ij}\\     0\\text{ sinon} \\end{cases} $$"
+msgstr ""
+
+#: ../../simulator/algo.md:321
+#: 86c36cf7d2b84de492950b42712fbfa3
+msgid "Il est possible de calculer le vecteur ligne : $$ [B] = [Y][A]^{-1} $$"
+msgstr ""
+
+#: ../../simulator/algo.md:326
+#: 9d766b31bbc347c686521955674fa18e
+msgid "Nous pouvons alors exprimer le transit dans une ligne en fonction des variables d'injections (dnc de toutes les  variables de contrôle) : $$ T_{ij} = [B]\\times[p] $$"
+msgstr ""
+
+#: ../../simulator/algo.md:332
+#: 7f680b9c906e48d5a4b7a5d72c83c088
+msgid "METRIX utilise cette expression du transit pour écrire une contrainte dans le problème d'optimisation."
+msgstr ""
+
+#: ../../simulator/algo.md:334
+#: 893cc7d787db43318014b3e27c3745ed
+msgid "Existence de solutions équivalentes"
+msgstr ""
+
+#: ../../simulator/algo.md:335
+#: ec6451b8accd483f9c399a05e8d7c063
+msgid "Il est important de noter que, puisque simuler l'*Adequacy phase* correspond à résoudre un problème d'optimisation,  il peut y avoir des **solutions équivalentes**, i.e. des solutions avec le même coût optimal, mais des actions  différentes sur le réseau pour atteindre l'équilibre. Cela entraîne des situations initiales différentes pour la  *Redispatching phase*, et donc des solutions optimales différentes, avec des coûts optimaux complètement différents.  Identiquement, pour une même situation initale issue de l'*Adequacy phase*, la *Redispatching phase* peut aussi  renvoyer des solutions équivalentes."
+msgstr ""
+
+#: ../../simulator/algo.md:342
+#: 624799d43ec64cc8aff05d180b1f3c56
+msgid "Modélisation du réseau"
+msgstr ""
+
+#: ../../simulator/algo.md:343
+#: 4f3c2b79844e4a4faf06bdf6042674c1
+msgid "Nous allons désormais présenter la modélisation des éléments du réseau et du problème d'optimisation dans METRIX.  Pour cela, nous allons nous focaliser sur **une seule variante**."
+msgstr ""
+
+#: ../../simulator/algo.md:346
+#: c967fc05f87745b088b86301b1157a67
+msgid "Zones sychrones"
+msgstr ""
+
+#: ../../simulator/algo.md:347
+#: ff178345837a45719f03259ddd7ee426
+msgid "Tous les éléments du réseau (groupes, consommations, TDs, LCCs) sont liés à un ou plusieurs nœuds. Chaque nœud fait  partie d'une unique zone synchrone, et chaque zone synchrone en contient plusieurs milliers. Notons $ZC$ l'ensemble  des zones synchrones du réseau."
+msgstr ""
+
+#: ../../simulator/algo.md:351
+#: fc015b6fed3f4374a3123f926f030e22
+msgid "Groupes de production"
+msgstr ""
+
+#: ../../simulator/algo.md:353
+#: 5bad2ae4e4e342a48784963ad37b3b8c
+msgid "Le modèle de METRIX n'est pas destiné à l'optimisation fine de la production. De ce fait, la modélisation des groupes  est simplifiée. En tant que modèle statique, METRIX ignore la dynamique de démarrage des groupes et certaines contraintes  de fonctionnement des différents moyens de production. METRIX ne connaît que leurs bornes de variations et leurs coûts.  Tous les groupes sont décrits de la même manière indépendamment de leur type."
+msgstr ""
+
+#: ../../simulator/algo.md:358
+#: 06a7f653121946c7b3a2fb29985af9b9
+msgid "Dans les phases d'*Adequacy* (i.e. d'équilibrage) et de *Redispatching*, METRIX tient toujours compte de la puissance  maximale (*Pmax*) du groupe. En revanche, dans la phase d'équilibrage, METRIX ne tient pas compte de la puissance minimale (*Pmin*) si celle-ci est  positive. En d'autres termes, METRIX peut donc démarrer un groupe entre 0 et Pmax. En pratique, cela se produit tout au  plus pour le groupe marginal (dernier groupe ajusté)."
+msgstr ""
+
+#: ../../simulator/algo.md:364
+#: c52dd02186e540e18804b0d45a18b79d
+msgid "Dans la phase de *Redispatching* les Pmin sont prises en compte et METRIX ne peut donc pas arrêter un groupe qui est  démarré dans la phase d'équilibrage."
+msgstr ""
+
+#: ../../simulator/algo.md:367
+#: ea7e87e6d04a4038b51b4e29d142cef9
+msgid "Il est possible de contrôler pour chaque groupe sa participation dans chacune des phases via la définition de coûts.  À chaque groupe, nous pouvons associer :"
+msgstr ""
+
+#: ../../simulator/algo.md:369
+#: 3840dc14e7fc4d75bccecb36b4f3b241
+msgid "Le coût d'équilibrage à la hausse qui représente le coût de production par MW utilisé dans la phase d'équilibrage."
+msgstr ""
+
+#: ../../simulator/algo.md:370
+#: 227cb51e5a824c27a40fe8cf2143f1d4
+msgid "Le coût d'équilibrage à la baisse est utilisé dans la phase d'équilibrage."
+msgstr ""
+
+#: ../../simulator/algo.md:371
+#: c3a68ccb77194ac8ab480e8e900af302
+msgid "Le coût de 'redispatching' à la hausse correspond au coût d'augmentation en préventif de la puissance de consigne du  groupe dans le mécanisme d'ajustement. Ce coût est également utilisé en curatif."
+msgstr ""
+
+#: ../../simulator/algo.md:373
+#: 47e83c5fdc84408aaa562164e8650469
+msgid "Le coût de 'redispatching' à la baisse correspond au coût de baisse en préventif de la puissance de consigne du  groupe dans le mécanisme d'ajustement. Ce coût est également utilisé en curatif."
+msgstr ""
+
+#: ../../simulator/algo.md:376
+#: 03e9c4ee83324ac99cde9360458aa8af
+msgid "Pour une même phase, il faut toujours définir un coût à la hausse et à la baisse. Le coût de démarrage des groupes n'est pas pris en compte par METRIX."
+msgstr ""
+
+#: ../../simulator/algo.md:379
+#: 0c0054b1d0aa49699272fa817b4ff6a2
+msgid "Cf. [Variables de production](#prod_var)"
+msgstr ""
+
+#: ../../simulator/algo.md:381
+#: d1189418fc7d4bdd9a24d0a23f2b71e9
+msgid "Convention de signe"
+msgstr ""
+
+#: ../../simulator/algo.md:382
+#: e808a2f2bce943fc862d88fae9813cc6
+msgid "Soit un coût à la hausse $\\Gamma^{+}$ et un coût à la baisse $\\Gamma^{-}$. Si nous augmentons la production du groupe  de $P^{+}$, cela coûtera $\\Gamma^{+} \\times P^{+}$. Si nous baissons la production de $P^{-}$ ($P^{-} \\geq 0$), cela  coûtera $\\Gamma^{-} \\times P^{-}$."
+msgstr ""
+
+#: ../../simulator/algo.md:386
+#: f4612dbdf2284555b3618b142d1cbacc
+msgid "Avec un coût positif, cela « coûte » de modifier une production. Avec un coût négatif, cela « rapporte » de modifier  une production."
+msgstr ""
+
+#: ../../simulator/algo.md:389
+#: 074c5b3c8b914a19a749bd6ae7d0c9fa
+msgid "En conséquence, si des valeurs négatives sont utilisées pour les coûts à la baisse et que le coût à la baisse d'un  groupe est supérieur en valeur absolue au coût à la hausse d'un autre groupe, METRIX peut modifier le coût de  production uniquement pour bénéficier de cette « opportunité » sans que cela soit motivé par une contrainte  d'équilibrage ou de transit. Les paramètres `adequacyCostOffset` et `redispatchingCostOffset` permettent de contrer  ce comportement dans chacune des phases et doivent être positionnés à la valeur absolue du plus grand coût négatif."
+msgstr ""
+
+#: ../../simulator/algo.md:395
+#: 57e64cc07dde4c62802ed572c71c6eba
+msgid "Si rien n'est spécifié (i.e. aucun coût n'est défini), tous les groupes du réseau peuvent participer aux deux phases à  coût nul."
+msgstr ""
+
+#: ../../simulator/algo.md:398
+#: c718d1a5f876428e9ae9dbdc7a7c125e
+msgid "Dès qu'au moins un groupe est configuré, seuls les groupes pour lesquels un coût est défini pour une phase peuvent  participer à cette phase. La consigne de production des autres groupes ne peut pas être modifiée. Si trop peu de groupes peuvent agir, le modèle peut ne pas pouvoir trouver de solution aux contraintes et retournera  alors un code d'erreur 1 (ex. contrainte d'évacuation sur un groupe non modifiable)."
+msgstr ""
+
+#: ../../simulator/algo.md:403
+#: f628cab606dc4915942272c236a78d23
+msgid "Consommations"
+msgstr ""
+
+#: ../../simulator/algo.md:405
+#: b7546ed4b68f40d287cc0fb8d7566b26
+msgid "METRIX n'utilise que la consommation active puisqu'il repose sur l'approximation du courant continu. Une autre  conséquence de cette approximation est qu'il n'y a pas de pertes modélisées sur les lignes. Les pertes sont estimées  a posteriori (cf. [Pertes calculées a posteriori](#posteriori_losses)). Les consommations doivent donc être renseignées pertes incluses."
+msgstr ""
+
+#: ../../simulator/algo.md:410
+#: f67ec3002da649d29ca8499da66ff66d
+msgid "Afin de résoudre des contraintes de transit, METRIX a la possibilité de délester de la consommation."
+msgstr ""
+
+#: ../../simulator/algo.md:412
+#: 9b0cbd3a07a24ada8c82f52918bae2de
+msgid "Ce délestage peut prendre 3 formes :"
+msgstr ""
+
+#: ../../simulator/algo.md:413
+#: 29aa8434c35f43579f10715991970ccb
+msgid "Délestage dans la phase d'équilibrage pour respecter $P = C$"
+msgstr ""
+
+#: ../../simulator/algo.md:414
+#: ab012f3f73264b559470b936650e6509
+msgid "Délestage préventif pour respecter les contraintes de transit"
+msgstr ""
+
+#: ../../simulator/algo.md:415
+#: c463299e3b3c4d86907426cf9f23f63b
+msgid "Délestage curatif pour respecter les contraintes de transit"
+msgstr ""
+
+#: ../../simulator/algo.md:417
+#: c420282608084b8aa3d5031362be5193
+msgid "Le niveau de délestage est défini par un seuil qui correspond au pourcentage de la consommation qui peut être délesté.  Le coût de ce délestage peut également être défini (sinon la valeur par défaut, `COUTDEFA`, est utilisée). Le coût  et le seuil de délestage sont utilisés, à la fois pour le délestage de la phase d'équilibrage et pour le délestage préventif de la phase de *Redispatching*. Le délestage curatif utilise un autre coût et un autre seuil."
+msgstr ""
+
+#: ../../simulator/algo.md:422
+#: b1d9a8ef06c84a3c96dae35a94b06db9
+msgid "Par défaut, si rien n'est spécifié, toutes les consommations sont délestables à 100% dans les deux phases. Dès qu'au  moins une consommation est configurée, seules les consommations configurées sont délestables. Si trop peu de consommations sont délestables, le modèle peut ne pas pouvoir trouver de solution aux contraintes et  retournera un code d'erreur 1. Si nous souhaitons modéliser plusieurs coûts de délestage/effacement associés à différents seuils, il faut créer des  charges fictives supplémentaires sur le même nœud et répartir la consommation active sur ces charges."
+msgstr ""
+
+#: ../../simulator/algo.md:429
+#: efe70cf7a0f04fe29d673ed7d6be7c3a
+msgid "Cf. [Variables de consommation](#conso_var)"
+msgstr ""
+
+#: ../../simulator/algo.md:431
+#: bc7af8dff82b441eaa505040411c7c1c
+msgid "Lignes et transformateurs"
+msgstr ""
+
+#: ../../simulator/algo.md:433
+#: b65b5786c7754883b2ea8df28822ee23
+msgid "Transformateur-Déphaseurs"
+msgstr ""
+
+#: ../../simulator/algo.md:435
+#: f630fb67842d45cf87f4131c767df10c
+msgid "Modélisation"
+msgstr ""
+
+#: ../../simulator/algo.md:436
+#: 8458cb3a5e284d1e9b99fbf509d4bfc2
+msgid "Dans METRIX, un TD est lié à un quadripôle et sert d'échangeur de puissance entre les deux nœuds dudit quadripôle :  il prélève de la puissance sur un nœud pour l'envoyer à un autre."
+msgstr ""
+
+#: ../../simulator/algo.md:439
+#: d7d9d774e7b445b7a1579e2e1f52c2c9
+msgid "Pour bien comprendre le fonctionnement des TDs, il faut, tout d'abord, concevoir que METRIX utilise des puissances  pour faire ces calculs, alors que les TDs fonctionnent avec des angles, en modifiant le déphasage du signal électrique.  Cependant, changer le déphasage revient à changer la puissance active dudit signal électrique, grâce à une simple  multiplication :"
+msgstr ""
+
+#: ../../simulator/algo.md:444
+#: e81eebf1ba174800898e421b88c9b491
+msgid "\n"
+"Puissance = angle \\cdot \\frac{\\pi}{180} \\cdot U^2 \\cdot Y_{i,j}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:448
+#: f551a0d0e0574f1c86256ff0396e41f2
+msgid "Avec $U^2$ et $Y_{i,j}$ les valeurs de tension et d'impédance du quadripôle support du TD, qui sont des paramètres  dans METRIX. Puisque nous allons être amenés à parler d'angles ou de puissances pour décrire le fonctionnement des  TDs, afin de ne pas être perturbés, il suffit de se souvenir que les deux sont proportionnels selon cette formule."
+msgstr ""
+
+#: ../../simulator/algo.md:452
+#: c337113438d449f3842b2b2e61d57961
+msgid "Pour les calculs de METRIX, le quadripôle de support du TD va être dissocié en deux quadripôles en série. Nommons  ***quad*** le quadripôle initial, avec $(y, r)$ son impédance et sa résistance. Celui-ci relie les nœuds *Or* et *Dest*  (i.e. origine et destination). Nous allons ensuite créer un **nœud fictif** *Nf* ainsi qu'un **quadripôle fictif**  ***quadFictif***, allant du nœud *Or* au nœud *Nf* et de caractéristiques $(y/0.1, 0)$. Parallèlement, nous modifions  *quad* afin qu'il aille du nœud *Nf* vers le nœud *Dest*. Nous modifions également ses caractéristiques pour qu'elles  vaillent $(y/0.9, r)*."
+msgstr ""
+
+#: ../../simulator/algo.md:459
+#: ../../simulator/algo.md:465
+#: be39b16938d94564b843c55a520e50fb
+#: f1dbd7791efa466b8bd135ed99d2e6a2
+msgid "Transformation du TD des données à la modélisation dans METRIX"
+msgstr ""
+
+#: ../../simulator/algo.md:468
+#: 8c52ecc035784587beccba6a8c27a09d
+msgid "Le TD est porté par *quadFictif*, et assure donc le déphasage. Le quad réel *quad* assure la partie réactance.  Les pertes liées à r sont calculées à posteriori, lors de l'affichage de la solution."
+msgstr ""
+
+#: ../../simulator/algo.md:471
+#: 10929b8d1bd24f11a1964769d071ceb1
+msgid "**N.B.** : Les TDs sont portés par les lignes. Ces dernières étant ignorées en *Adequacy phase*, les TDs n'ont aucun  rôle à jouer en *Adequacy phase*."
+msgstr ""
+
+#: ../../simulator/algo.md:474
+#: 78649577db504d15840bc2546dd479ab
+msgid "Définition des valeurs min et max des TDs"
+msgstr ""
+
+#: ../../simulator/algo.md:476
+#: 5fc1cde2c9c24aa1b0c2eb2529bc77a7
+msgid "Dans la réalité, le déphasage du signal électrique se fait en passant d'une prise à l'autre. De ce fait, au sein de  METRIX, chaque TD va être associé à une liste de prises de déphasage croissant ainsi qu'à deux bornes maximum  correspondantes aux nombres maximum de changements de prises à la hausse et à la baisse : *lowran* et *uppran*.  Ces bornes sont utilisées de la manière suivante, avec $X$ le numéro de la prise du déphasage initial du TD :"
+msgstr ""
+
+#: ../../simulator/algo.md:480
+#: bc4296633f004cbb92e7403f683c5374
+msgid "à la hausse le déphasage ne pourra dépasser $X + uppran$"
+msgstr ""
+
+#: ../../simulator/algo.md:481
+#: 49ee04ad082745a8a0a5e6d9e6b593fb
+msgid "à la baisse le déphasage ne pourra dépasser $X - lowran$"
+msgstr ""
+
+#: ../../simulator/algo.md:483
+#: ebabd7b661d3496cbfdf3c8eb00b2afc
+msgid "Dans METRIX, le numéro de la prise de déphasage correspond à celui de la prise minimisant la distance entre les  déphasages du TD et celui associé à la prise."
+msgstr ""
+
+#: ../../simulator/algo.md:486
+#: dbf06da895c342e5944156af40c29e3b
+msgid "Cf. [Variables TDs](#td_var)"
+msgstr ""
+
+#: ../../simulator/algo.md:488
+#: a5c86b69ec2144e6998a0e54ab9b7010
+msgid "Lignes à courant continu"
+msgstr ""
+
+#: ../../simulator/algo.md:490
+#: 98217e8a021646d59fdcdcc778ac3d97
+msgid "Les lignes à courant continu (ou LCC) permettent de transporter du courant continu, plutôt que de l'alternatif  comme les quadripôles traditionnels. Une LCC est décrite par :"
+msgstr ""
+
+#: ../../simulator/algo.md:492
+#: a13db0fbc44145549507bb61b86a45f9
+msgid "Deux convertisseurs, chaque convertisseur se situe entre un nœud AC et un nœud DC ;"
+msgstr ""
+
+#: ../../simulator/algo.md:493
+#: 5185be925e804461b91a43a3fadc650a
+msgid "et une ligne entre les deux nœuds DC."
+msgstr ""
+
+#: ../../simulator/algo.md:495
+#: 2d44e037366b48e5b8a02824ed1d7562
+msgid "De ce fait, une ligne LCC fait donc le lien entre deux nœuds AC :"
+msgstr ""
+
+#: ../../simulator/algo.md:497
+#: ../../simulator/algo.md:503
+#: 6d56300eee2440a49436659f25d30b8f
+#: 5c471eb6bb4c446aa75ce4e6ddc0bc08
+msgid "Schéma descriptif d'une LCC"
+msgstr ""
+
+#: ../../simulator/algo.md:506
+#: 0b7fcdff1c1645fdbc1b590002233080
+msgid "Une ligne HVDC est simulée, par METRIX, comme deux injections sur les nœuds AC origine (nœud 1) et extrémité (nœud 2) :"
+msgstr ""
+
+#: ../../simulator/algo.md:508
+#: ../../simulator/algo.md:514
+#: 36b29176367149cbba5ac4471e5808dc
+#: 179f30949ce04ed08a196d2b15c1e90f
+msgid "Schéma descriptif de la simulation d'une LCC par METRIX"
+msgstr ""
+
+#: ../../simulator/algo.md:517
+#: 679cec634d7b454fa45250f4ba8db540
+msgid "La convention de signe pour la puissance transitant dans une station de conversion est la suivante : lorque la  consigne de $n$ MW est données sur la station 1, cela revient à faire transiter $n$ MW de 1 vers 2, ce qui équivaut  au soutirage de $n$ MW de la station 1 et à une injection de $n$ MW dans la station 2."
+msgstr ""
+
+#: ../../simulator/algo.md:521
+#: aa01da632ce34f63b1fd7bacdb85854f
+msgid "Une LCC peut être pilotée de différentes manières : en puissance ou en émulation AC (cf. paramètres `DCNDROOP` et  `DCDROOPK`). En outre, pour ces deux types pilotages, celui-ci peut être imposé, (la puissance de transit est alors  fixe), ou optimisé (la puissance de transit peut varier, au moins en préventif lors de la *Redispatching phase*)."
+msgstr ""
+
+#: ../../simulator/algo.md:525
+#: 6cc21a6990484a5099f9e43221994b0a
+msgid "$P_0$ étant la puissance de consigne sur la ligne, celle-ci peut être modifiée ou non suivant le caractère du pilotage retenu."
+msgstr ""
+
+#: ../../simulator/algo.md:527
+#: 2915572901894302b85debe6e876377f
+msgid "Les pertes HVDC sont calculées a posteriori (cf. [Pertes calculées a posteriori](#posteriori_losses))."
+msgstr ""
+
+#: ../../simulator/algo.md:529
+#: 8aecd6beebb249298f260e5c10db8cfa
+msgid "Cf. [Variables LCCs](#lcc_var)"
+msgstr ""
+
+#: ../../simulator/algo.md:531
+#: 544bb134c6e344bdb84f756fa0ffbe41
+msgid "Lien entre zones synchrones"
+msgstr ""
+
+#: ../../simulator/algo.md:532
+#: 5e1e5ed478834e09848caefa28942785
+msgid "Les LCCs servant de lien entre deux nœuds et transportant du courant continu, elles peuvent aussi servir  d'interconnexions entre des zones synchrones différentes (contrairement à des quadripôles classiques)."
+msgstr ""
+
+#: ../../simulator/algo.md:535
+#: 1b9ed860dce94dedb192de4911529036
+msgid "Lignes à courant continu pilotées en émulation AC"
+msgstr ""
+
+#: ../../simulator/algo.md:537
+#: 037014ec43544652aa9db5fb95c24911
+msgid "Une ligne peut être pilotée en émulation AC (cf. paramètres *`DCNDROOP`* et *`DCDROOPK`*). Le transit de la liaison HVDC  vaut alors $𝑃_0 + 𝑘(\\theta_2 − \\theta_1)$. METRIX insère alors un TD d'impédance $1/𝑘$ entre les deux injections afin de respecter la contrainte précédente. Le TD assure que la valeur du transit global de la liaison HVDC soit toujours  comprise entre $P_{min}$ et $P_{max}$. La valeur de $P_0$, quant à elle, peut être fixe ou optimisée par METRIX  (cf. paramètre *`DCREGPUI`*)."
+msgstr ""
+
+#: ../../simulator/algo.md:543
+#: a9dafad2c361489884f23b1f3476adbd
+msgid "**Modélisation des LCCs en émulation AC** Pour une LCC en émulation AC, un quadripôle fictif (nommé *quad0*) lui est associé, de mêmes nœuds origine et  destination. La résistance de ce quadripôle est nulle et son admittance est déterminée par un paramètre fourni  individuellement à chaque LCC en émulation AC. Nous associons ensuite, à ce quadripôle, un TD fictif en pilotage  d'angle optimisé, qui provoque donc la création d'un nouveau nœud fictif *Nf* et d'un quadripôle (doublement) fictif  *quad1*. Le schéma ci-dessous résume cette situation."
+msgstr ""
+
+#: ../../simulator/algo.md:550
+#: ../../simulator/algo.md:556
+#: f617d39b67a542c9ac68f8fece972171
+#: b5e65c5004b94764842b563f2380a091
+msgid "Modélisation des LCCs en émulation AC dans METRIX"
+msgstr ""
+
+#: ../../simulator/algo.md:559
+#: 475b1aef3d5b4c08b3a922298813a042
+msgid "Le quadripôle *quad0* et la LCC formeront un élément à surveiller en $N$ et en $N-k$. Quant au TD fictif, il sera mis  à disposition en curatif de tous les incidents simulés."
+msgstr ""
+
+#: ../../simulator/algo.md:562
+#: b93632c06ec34882a762db4297b42ff5
+msgid "**En résumé** : Les LCCs permettent de transporter une puissance choisie d'un nœud à un autre (et possiblement d'une  zone synchrone à une autre). Ce qui peut par exemple éviter les surcharges sur les lignes adjointes."
+msgstr ""
+
+#: ../../simulator/algo.md:565
+#: a3303eb318e141fcbfeb2fdf814ccd18
+msgid "Incidents"
+msgstr ""
+
+#: ../../simulator/algo.md:567
+#: d72ed016eae241e48956ad732aeb4426
+msgid "La solution trouvée par METRIX (plan de production et délestage) doit être robuste à une liste d'incidents donnée en  entrée. Nous distinguons les incidents de lignes et les incidents de groupes."
+msgstr ""
+
+#: ../../simulator/algo.md:570
+#: 4089d37eb4b747a4b03004567a7ffe90
+msgid "Cf. [Variables Incidents](#inc_var)"
+msgstr ""
+
+#: ../../simulator/algo.md:572
+#: 750103780b384306accf5a81eec3c6e6
+msgid "Incidents lignes"
+msgstr ""
+
+#: ../../simulator/algo.md:574
+#: bbeaddc6bc8a402db0f4ef0ab805ffbd
+msgid "METRIX est capable de simuler la perte d'une ou plusieurs ligne(s). Il utilise toujours l'approximation du courant  continu et donc des coefficients de report pour simuler ces incidents. Ici, le transit sur la ligne $ik$ après  l'incident qui simule la perte de la ligne $mn$ s'écrit :  $$ T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{mn} \\cdot T_{mn}^{N} $$"
+msgstr ""
+
+#: ../../simulator/algo.md:581
+#: c7ddc377fbe74e18b6e4bcff554be304
+msgid "Afin de déterminer $\\rho_{ik}^{mn}$ (coefficient de report), METRIX utilise la formule de Woodbury."
+msgstr ""
+
+#: ../../simulator/algo.md:583
+#: 899dfb564a6f40dca7a1ae0d49bd13b5
+msgid "À noter que, les lignes à courant continu ne permettent pas d'assurer la connexité entre leur nœud origine et extrémité.  Par conséquent, les incidents simulant la perte de la ligne d'alimentation de la ligne à courant continu seront écartés  (ils rompent la connexité). Par contre, si l'incident est bien défini sur la ligne DC (i.e. sur la ligne entre les deux  nœuds DC), alors l'incident simulant la perte de la ligne à courant continu sera bien simulé."
+msgstr ""
+
+#: ../../simulator/algo.md:588
+#: a2d4334e058240038326f9bdd0fa0d56
+msgid "Incidents groupes"
+msgstr ""
+
+#: ../../simulator/algo.md:590
+#: 450937da43e8475192b1ccc43604fdab
+msgid "Dans le cas où des incidents de groupes sont définis, METRIX répartit la production perdue lors de l'incident sur  l'ensemble des autres groupes disponibles (même s'ils ne sont pas réellement démarrés)."
+msgstr ""
+
+#: ../../simulator/algo.md:593
+#: 2e810d16a48e45619b012be09c5bd0ea
+msgid "La réserve de fréquence globale du réseau est calculée à partir de la puissance perdue par l'incident groupe le plus  dimensionnant. Cela permet d'obtenir la « demi-bande de réglage » sur chaque groupe (qui vaut 0 s'il n'y a pas  d'incident groupe). Avant de commencer la résolution, METRIX abaisse la Pmax de chaque groupe de sa « demi-bande de  réglage »."
+msgstr ""
+
+#: ../../simulator/algo.md:598
+#: 190b3c09048c4abea0193e6f320bde82
+msgid "Pour simuler les incidents de groupe, METRIX utilise un coefficient de sensibilité. Pour chaque incident $i$, METRIX  calcule l'influence sur chaque ligne $ik$, noté $\\rho_{ik}^{g}$, de la perte de 1 MW sur le groupe en incident $g$ et  la reprise de ce MW perdu par l'ensemble des autres groupes disponibles au prorata de leur Pmax."
+msgstr ""
+
+#: ../../simulator/algo.md:602
+#: 911ad7d08939436b9a8fef9d3af2c1d6
+msgid "MERIX déduit ensuite le transit sur la ligne $ik$ après la perte du groupe $g$ : $$ T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{g} \\cdot P_{g}^{N} $$"
+msgstr ""
+
+#: ../../simulator/algo.md:607
+#: e6ae7ad1b7db49e997ff4c1031633f73
+msgid "avec $P_{g}^{N}$ la puissance délivrée en N par le groupe qui a été déclenché."
+msgstr ""
+
+#: ../../simulator/algo.md:609
+#: 3ccaac42c601460d82ea9f7c43d323b6
+msgid "La même stratégie est utilisée pour simuler la perte d'une ligne DC ; la seule différence est que la variation de 1 MW  se compense entre le nœud origine et le nœud extrémité de la ligne DC."
+msgstr ""
+
+#: ../../simulator/algo.md:612
+#: 7292359c4b0749899de80b1f78c21938
+msgid "Incidents composés"
+msgstr ""
+
+#: ../../simulator/algo.md:614
+#: 3a1ebcf542bc490b822a61c29284bffa
+msgid "METRIX traite également les incidents composés de perte de groupes et de lignes. Etant donné que nous nous trouvons  dans le conetxte de l'approximation du courant continu, les équations sont linéaires et l'ordre d'apparition de la  perte du groupe ou de la ligne n'a pas d'importance."
+msgstr ""
+
+#: ../../simulator/algo.md:618
+#: 4fe966d090074242b2a0f4ea9a6329e2
+msgid "Le transit sur la ligne $ik$ après perte de la ligne $mn$ et du groupe $g$ vaut : $$ T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{g} \\cdot P_{g}^{N} + \\rho_{ik}^{mn} \\cdot (T_{mn}^{N} + \\rho_{mn}^{g} + P_{g}^{N}) $$"
+msgstr ""
+
+#: ../../simulator/algo.md:623
+#: c7fa27fe2ff0460fa0d4bff2464b2d60
+msgid "Cela revient à considérer que l'incident groupe se produit dans un premier temps, puis que l'incident ligne et l'impact  produit de l'incident groupe sur cette ligne est bien simulé ($T_{mn}^{N} + \\rho_{mn}^{g} + P_{g}^{N}$)."
+msgstr ""
+
+#: ../../simulator/algo.md:626
+#: 5e991a4422d5486a91e17299768bd2c2
+msgid "Incidents rompant la conenxité"
+msgstr ""
+
+#: ../../simulator/algo.md:628
+#: 07b7915e7b484235bc2f37a69432482a
+msgid "Par défaut, les incidents rompant la connexité sont exclus du calcul. Il est toutefois possible de les prendre en  compte via le paramètre `INCNOCON`. Dans ce cas, pour chaque incident, METRIX renseigne dans les sorties le volume  de production et/ou de consommation perdu lors de l'incident."
+msgstr ""
+
+#: ../../simulator/algo.md:632
+#: fe933700b109411e844452a077597cbf
+msgid "Si une parade topologique permet de récupérer une partie de cette puissance, cette information est donnée pour  l'incident initial et pour la parade."
+msgstr ""
+
+#: ../../simulator/algo.md:635
+#: 3f78b3eb6f34476fa2db3b78b5c857b0
+msgid "Actions curatives"
+msgstr ""
+
+#: ../../simulator/algo.md:637
+#: dc4c8e6c5ee340cd84f4ddffb61f1e8a
+msgid "Afin de corriger des incidents, l'utilisateur peut modéliser des actions curatives (i.e. activables une fois l'incident  survenu) représentant les actions prises par un opérateur ou un automate pour rétablir le transit conformément au seuil  admissible."
+msgstr ""
+
+#: ../../simulator/algo.md:641
+#: 02ea23496399458b95f39de9a6f1445f
+msgid "Dans METRIX les actions curatives peuvent être :"
+msgstr ""
+
+#: ../../simulator/algo.md:642
+#: 095f6826e5bf43f79f152ed757f94d4d
+msgid "des modifications de consigne des groupes, TD ou HVDC ;"
+msgstr ""
+
+#: ../../simulator/algo.md:643
+#: 3a292280229f4a15a837d9b3197a5b4c
+msgid "ou du délestage curatif de consommation."
+msgstr ""
+
+#: ../../simulator/algo.md:645
+#: 74114c120e434fb2984078078df0a701
+msgid "L'optimiseur choisira s'il est utile de modifier la consigne des éléments curatifs suite à l'incident. Il combinera  les actions si nécessaire et s'assurera que les modifications de consigne n'engendrent évidemment pas de nouvelle  contrainte sur une autre ligne du réseau."
+msgstr ""
+
+#: ../../simulator/algo.md:649
+#: fddc68fd831345f3ad0b4366778c83f3
+msgid "Pour respecter une contrainte sur un seuil temporaire avant activation d'actions curatives, METRIX utilisera  obligatoirement une action préventive. Cette action préventive pourra être complétée, si nécessaire, par une action  curative pour respecter le seuil permanent après incident."
+msgstr ""
+
+#: ../../simulator/algo.md:653
+#: ea45993885ab4c06b7b97b05b9f17c5e
+msgid "Si la fonctionnalité du curatif est utilisée pour modéliser le fonctionnement d'un automate, il faut bien prendre en  compte que la modélisation est optimiste : en effet, un automate agira uniquement dans le but de lever la contrainte  sur la ligne qu'il surveille ; de plus, il agira même si cela engendrait une contrainte ailleurs. METRIX peut utiliser  un levier pour lever n'importe quelle contrainte présente sur le réseau et il fait en sorte de ne pas créer de  nouvelles surcharges ailleurs."
+msgstr ""
+
+#: ../../simulator/algo.md:659
+#: c61034d4548f473ea0a4bb9e0f8bab0b
+msgid "Manœuvres topologiques curatives"
+msgstr ""
+
+#: ../../simulator/algo.md:661
+#: 8c5a0643ab4c4b34a4055a9fe3def188
+msgid "Les parades topologiques sont des actions curatives traitées de manière différente des autres actions curatives, car  ayant un impact sur la topologie, elles modifient les coefficients de report et de sensibilité. Elles ont également un  fort impact sur le temps de résolution de l'optimisation."
+msgstr ""
+
+#: ../../simulator/algo.md:665
+#: 826f722c83e84e13add0669195ea00da
+msgid "Pour METRIX, une parade topologique est toujours liée à un incident et consiste en l'ouverture (ou la fermeture) de lignes ou de couplages supplémentaires. Quand une parade est sélectionnée par le solveur, METRIX vérifie que cette  parade ne génère pas de contraintes sur les autres ouvrages surveillés du réseau."
+msgstr ""
+
+#: ../../simulator/algo.md:669
+#: 76232350cb2d4bbf9ae02545b9c0ede5
+msgid "Pour un incident donné, METRIX privilégiera toujours les parades situées en début de la liste. Ainsi si aucune des  parades fournie n'est vraiment efficace, METRIX choisira la parade « ne rien faire » qui est automatiquement ajoutée  en tout début de liste."
+msgstr ""
+
+#: ../../simulator/algo.md:673
+#: 4efdf54f5b50466db35ce89e6d29619c
+msgid "METRIX peut combiner une parade topologique avec d'autres actions curatives, mais ne peut pas combiner deux parades  topologiques. Il faut explicitement renseigner toutes les combinaisons souhaitées dans la liste fournie en entrée du  calcul."
+msgstr ""
+
+#: ../../simulator/algo.md:677
+#: 600560ec2b5f4adcbce6beb1ab570352
+msgid "Des parades peuvent avoir des effets très proches, difficilement différentiables, ce qui complique la résolution du  problème. Pour contrer ces cas pathologiques, le paramètre `PAREQUIV` permet de masquer les parades dont l'effet  semble similaire à celui d'une autre parade."
+msgstr ""
+
+#: ../../simulator/algo.md:681
+#: 66cbe4adc7274c3081eb04e6b7ebc7b6
+msgid "Une parade topologique sélectionnée par METRIX permet de lever (ou soulager) les contraintes de transit liées à un  incident. Cependant, si cette parade est composée de plusieurs actions, il n'y a pas de garantie qu'il sera possible  de réaliser toutes ces actions en pratique. De même, une parade peut être utilisée pour reconnecter une proche perdue  par un incident, mais compte tenu des simplifications du modèle METRIX, il n'est absolument pas assuré que cela serait  effectivement possible en pratique."
+msgstr ""
+
+#: ../../simulator/algo.md:687
+#: a8a292c6efd74f239b3c3465b263da5e
+msgid "Par défaut, une parade ne peut pas aggraver la rupture de connexité d'un incident (i.e. augmenter le nombre de sommets  déconnectés), sauf si le paramètre `PARNOCON` est utilisé."
+msgstr ""
+
+#: ../../simulator/algo.md:690
+#: 22389fa840a84098bc0aa22e1f380f89
+msgid "Il est possible de restreindre l'action d'une parade à la présence d'une contrainte sur un ouvrage spécifique. Dans  ce cas, la parade ne peut pas être sélectionnée tant que l'ouvrage en question n'est pas en contrainte."
+msgstr ""
+
+#: ../../simulator/algo.md:693
+#: aed8a7eef8fa4038811e222b5ef42cd9
+msgid "Problèmes d'optimisation"
+msgstr ""
+
+#: ../../simulator/algo.md:695
+#: 7fc7bf42a775450b9435d6aa0c7773ad
+msgid "Notons $W$ le nombre entier de variantes à traiter et $w$ l'indice de la variante courante."
+msgstr ""
+
+#: ../../simulator/algo.md:699
+#: f999e607272144ce80bfb146d022662c
+msgid "Adequacy phase"
+msgstr ""
+
+#: ../../simulator/algo.md:700
+#: fda241065bbe48d9b15b881e5d555463
+msgid "Notons $P_w$ ma matrice colonne des puissances produites par les groupes et $C_w$ la matrice colonne des puissances  consommées par les zones de consommation. Notons également $P_{w}^{0}$ et $C_{w}^{0}$ les matrices des valeurs initiales."
+msgstr ""
+
+#: ../../simulator/algo.md:704
+#: ../../simulator/algo.md:777
+#: 7c5a47ccb6864dac94c57eabb62d7443
+#: 355efb1fba7840dba2b6abdc19d005e8
+msgid "\n"
+"\\forall w \\leq W \\text{ :}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:708
+#: 01b5fc5ae30a4320ac12f2bfe3150a3f
+msgid "\n"
+"\\text{Données : }\\\\\n"
+"P_{w}^{max}, P_{w}^{min}, C_{w}^{max}, C_{w}^{min}, P_{w}^{0}, C_{w}^{0}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:713
+#: de0b78af82d74a3b8e80a7f7c126af30
+msgid "\n"
+"\\text{Variables :}\\\\\n"
+"P_{w}, C_{w}, \\Delta P_{w}, \\Delta C_{w}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:718
+#: 8ae84db8bb384bbc9bc3614448b4fd44
+msgid "\n"
+"\\text{Objectif :}\\\\\n"
+"min(\\Delta P_{w} + \\Delta C_{w})\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:723
+#: ../../simulator/algo.md:796
+#: c014413c7db8476baa9b4e667255cec7
+#: ce576c8e93b64f67913c5fd6863fe195
+msgid "\n"
+"\\text{s.c. :}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:728
+#: 428bdd6c3e0c44b78e29813c6c4084a9
+msgid "\n"
+"\\begin{equation}\n"
+"P_{w}^{min} \\leq P_{w} = P_{w}^{0} + \\Delta P_{w} \\leq P_{w}^{max}\n"
+"\\end{equation} \n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:735
+#: 6996b56efec94a1abcb780db8d252978
+msgid "\n"
+"\\begin{equation}\n"
+"C_{w}^{min} \\leq C_{w} = C_{w}^{0} + \\Delta C_{w} \\leq C_{w}^{max}\n"
+"\\end{equation}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:742
+#: ../../simulator/algo.md:829
+#: cb110c5d5c5444a4a19609af7f190675
+#: a296f90a9f774070b4812561353754de
+msgid "\n"
+"\\begin{equation}\n"
+"P_{w} = C_{w}\n"
+"\\end{equation}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:748
+#: 5fe3165421174e22a56e493810784bf1
+msgid "Les contraintes [(1)](#algo-Pbounds_eq) et [(2)](#algo-Cbounds_eq), définissent les limites des matrices $P_w$ et $C_w$, ainsi  que leur lien via la fonction objectif. La contrainte [(3)](#algo-adeq_eq) consitue la contrainte de base du réseau : à  tout instant, la production et la consommation doivent être égales."
+msgstr ""
+
+#: ../../simulator/algo.md:753
+#: 6a2995d53fc04e2aa5c82502bd30e417
+msgid "Redispatching phase"
+msgstr ""
+
+#: ../../simulator/algo.md:754
+#: e6eeb9728e8f432faab06aa6f988753b
+msgid "Nommons $U_w$ la matrice colonne des actions préventives et $V_w$ la matrice colonne des actions curatives pour la  variante $w$. Ces deux matrices contiennent les variables représentant les changements de production des groupes, de  consommation des zones de consommation, de déphasage des Transfo-Déphaseurs (TDs) du réseau et de flux des Lignes à  Courant Continu (LCCs). $V_w$ contiendra également les variables booléennes d'activation des parades topologiques.  En notant $p_i$, $c_i$, $td_i$, $lcc_i$, $prd_i$ les valeurs de production, consommation, de déphasage des  TDs, de flux sur les LCCs et d'activation des parades, et en notant $n_1$, $n_2$, $n_3$, $n_4$, $n_5$ leurs  cardinalités, nous pouvons formuler $U_w$ et $V_w$ de la manière suivante :  $$ U_w=(p_1, …, p_{n_1}, c_1, …, c_{n_2}, td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, 0, …, 0)^t \\ V_w=(p_1, …, p_{n_1}, c_1, …, c_{n_2}, td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, prd_1, …, prd_{n_5})^t $$"
+msgstr ""
+
+#: ../../simulator/algo.md:766
+#: 1216227c537f4187bc6d9bc18714ed5b
+msgid "$U_w$ et $V_w$ sont donc toutes deux de tailles $n_1 + n_2 + n_3 + n_4 + n_5$. De même, notons $U_{w}^{1}$ et  $V_{w}^{1}$ les matrices de leurs valeurs initiales pour ce problème. Nous noterons que, dans le cas de $U_{w}^{1}$,  les paramètres $p_1, ..., p_{n_1}, c_1, ..., c_{n_2}$ sont des $argmin$ du problème résolu en *Adequacy phase*."
+msgstr ""
+
+#: ../../simulator/algo.md:770
+#: 80a14b941c724b3da47531f3ef3816f4
+msgid "Notons également, $F_w$ la matrice des flux des lignes et $M_w$ la matrice de répartition, qui, à partir des actions  préventives et curatives, permet de calculer le flux sur les lignes en N et sur les différents incidents. En notant  $m$ le nombre de lignes et $k$ le nombre d'incidents, $F_w$ est une matrice colonne de taille $m \\cdot k$ et $M_w$  une matrice rectangulaire de taille $(m \\cdot k) \\cdot 2(n_1 + n_2 + n_3 + n_4 + n_5)$."
+msgstr ""
+
+#: ../../simulator/algo.md:775
+#: 71d7c029fc0c49a1ad7b9ff9866e548c
+msgid "Enfin notons,"
+msgstr ""
+
+#: ../../simulator/algo.md:781
+#: 4d025a27afbf4f3280df396a83b66551
+msgid "\n"
+"\\text{Données : }\\\\\n"
+"U_{w}^{1}, U_{w}^{min}, U_{w}^{max}, V_{w}^{min}, V_{w}^{max}, F_{w}^{min}, F_{w}^{max}, M_w\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:786
+#: cc6284c72fe24513b9f17341976a310b
+msgid "\n"
+"\\text{Variables :}\\\\\n"
+"U_{w}, V_{w}, \\Delta U_{w}, \\Delta V_{w}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:791
+#: 650fedd1479b42a39abc33e251ea76eb
+msgid "\n"
+"\\text{Objectif :}\\\\\n"
+"min(\\Delta U_{w} + \\Delta V_{w})\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:801
+#: 664f1075d56f4c2d9700d6fc0705ed68
+msgid "\n"
+"\\begin{equation}\n"
+"U_{w}^{min} \\leq U_{w} = U_{w}^{1} + \\Delta U_{w} \\leq U_{w}^{max}\n"
+"\\end{equation} \n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:808
+#: e5b832d4d7cc47429925b9f45f37d051
+msgid "\n"
+"\\begin{equation}\n"
+"V_{w}^{min} \\leq V_{w} = V_{w}^{1} + \\Delta V_{w} \\leq V_{w}^{max}\n"
+"\\end{equation}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:815
+#: 305927afe8c2469684b0c9a8d724b81d
+msgid "\n"
+"\\begin{equation}\n"
+"V_{w}^{1} = U_{w}\n"
+"\\end{equation}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:822
+#: 4fd6822474a24be182db90fb6aab4405
+msgid "\n"
+"\\begin{equation}\n"
+"(P_{w}, C_{w}) = f(U_{w}, V_{w})\n"
+"\\end{equation}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:836
+#: 5a17589f8e6049e09b550be4578605f1
+msgid "\n"
+"\\begin{equation}\n"
+"F_{w}^{min} \\leq F_{w} = M_{w} \\cdot  \\begin{align*} U_{w}\\\\ V_{w}\\end{align*} \\leq F_{w}^{max}\n"
+"\\end{equation}\n"
+""
+msgstr ""
+
+#: ../../simulator/algo.md:842
+#: bca39dd32725486099a1677edc72c23e
+msgid "Les équations [(4)](#Ubounds_eq) et [(5)](#Vbounds_eq) définissent les encadrements des atrices $U_{w}$ et $V_{w}$,  ainsi que leur lien avec la fonction objectif. Autrement dit, elles définissent les limites des différentes productions,  consommations, des TD, des HVDC, etc., en préventif et curatif. L'équation [(6))](#UeqV_eq) définit le fait que l'état  initial des actions curatives correspond à l'état du réseau en N, i.e. ce qui a été déterminé avec les actions  préventives. L'équation [(7)](#PCfUV_eq) indique que l'état de la production et de la consommation en N et en incident  est stockée dans $U_w$ et $V_w$. L'équation [(8)](#PC_eq) rappelle le nécessaire équilibre production – consommation  en N et en incidents. Enfin, l'équation [(9)](#FM_eq) définit et encadre le flux des lignes."
+msgstr ""
+
+#: ../../simulator/algo.md:850
+#: f3346af0faf241db8e95680c47d53db5
+msgid "Formulation du problème"
+msgstr ""
+
+#: ../../simulator/algo.md:852
+#: 4ebebdbac4c148959d9f5b95c6b87f8c
+msgid "Variantes simulables"
+msgstr ""
+
+#: ../../simulator/algo.md:854
+#: 14d27e407f4a4f4c9161f726ebff84a7
+msgid "Lorsque les modifications sont communes à l'ensemble des variantes, elles sont décrites dans une variante d'index  « -1 ». Ces variantes sont alors directement appliquées sur le cas nominal."
+msgstr ""
+
+#: ../../simulator/algo.md:857
+#: 53a4f0f2f39f4e818e05d88763a5ee7a
+msgid "Une variante METRIX peut modifier :"
+msgstr ""
+
+#: ../../simulator/algo.md:858
+#: c88e7b12df134fa9a323fb32a1d4e6b0
+msgid "La disponibilité de lignes (y compris couplage)"
+msgstr ""
+
+#: ../../simulator/algo.md:859
+#: 247953c8aee340d3bd4055bb75d28485
+msgid "Les valeurs des consommations"
+msgstr ""
+
+#: ../../simulator/algo.md:860
+#: 18dd267b082a41c8beae92260f695338
+msgid "Le coût de délestage des consommations"
+msgstr ""
+
+#: ../../simulator/algo.md:861
+#: c30fdea9b115436f9e892248e0329d25
+msgid "La disponibilité des groupes"
+msgstr ""
+
+#: ../../simulator/algo.md:862
+#: 0f2ff48dbab24368a00b81f52c37483c
+msgid "La production des groupes"
+msgstr ""
+
+#: ../../simulator/algo.md:863
+#: df91d6c65d72430e873b86b336b51232
+msgid "La puissance min et max des groupes"
+msgstr ""
+
+#: ../../simulator/algo.md:864
+#: 0a866e6ad4cf41efbd4ceff0f9e4e160
+msgid "Les coûts d'empilement hausse/baisse des groupes (phase d'équilibrage)"
+msgstr ""
+
+#: ../../simulator/algo.md:865
+#: b45e131095a340ddb04ea238c8742cb7
+msgid "Les coûts d'ajustement hausse/baisse des groupes"
+msgstr ""
+
+#: ../../simulator/algo.md:866
+#: 575ee02fe8234341b16970e232767997
+msgid "Les puissances min, max et de consigne des lignes HVDC"
+msgstr ""
+
+#: ../../simulator/algo.md:867
+#: 3ad0a8bd2a524a5cb2669f812adaac26
+msgid "Les seuils N, N-1 sur incident spécifique et avant manœuvre des ouvrages"
+msgstr ""
+
+#: ../../simulator/algo.md:868
+#: 0ef25b2b47754aacaeeb6f65bc1975f8
+msgid "Le déphasage initial et les déphasages min et max des TDs"
+msgstr ""
+
+#: ../../simulator/algo.md:870
+#: fc9eb55c841d4bbfa82527e387f7212e
+msgid "Sorties de METRIX"
+msgstr ""
+
+#: ../../simulator/algo.md:872
+#: a5a8eaee55ea4223a9e7dc36108a7c4f
+msgid "Les résultats de METRIX se présentent sous forme de chronique avec une valeur par variante. Pour réduire le volume des  sorties, seules les valeurs qui diffèrent des données d'entrée sont fournies."
+msgstr ""
+
+#: ../../simulator/algo.md:875
+#: 73cc2ed376354ca19594a6ccbc91e8ce
+msgid "Cf. [Fichiers de résultats](#io-result-file)"
+msgstr ""
+
+#: ../../simulator/algo.md:877
+#: cedeb046d2b24dc28bb70f87d49c5242
+msgid "Statut du calcul"
+msgstr ""
+
+#: ../../simulator/algo.md:879
+#: 63d0b3d02f65410884fb46cf7804ea2b
+msgid "Cf. [Tableau C1](#status_output)"
+msgstr ""
+
+#: ../../simulator/algo.md:881
+#: 602123d86a374498bbcc334dc5653024
+msgid "Transits sur les ouvrages"
+msgstr ""
+
+#: ../../simulator/algo.md:883
+#: 012c93dbfc0f4b8fa357192810324a8a
+msgid "Cf. [Tableau R3](#io-table_r3), [Tableau R3B](#io-table_r3b) et [Tableau R3C](#io-table_r3c)."
+msgstr ""
+
+#: ../../simulator/algo.md:885
+#: d16deaf341c04d6fb73cb9a6aba756c0
+msgid "Résultats sur les variables de contrôles"
+msgstr ""
+
+#: ../../simulator/algo.md:887
+#: c70f4828715048ea9678ba67ea4b0146
+msgid "Cf. [Tableau R5](#io-table_r5), [Tableau R5B](#io-table_r5b), [Tableau R6](#io-table_r6) et [Tableau R6B](#io-table_r6b)."
+msgstr ""
+
+#: ../../simulator/algo.md:889
+#: b1302dffeba8417ba560b65115bb4c08
+msgid "Résultats sur les parades"
+msgstr ""
+
+#: ../../simulator/algo.md:891
+#: d556d4fb27b44096a0339f22dfec4439
+msgid "Cf. [Tableau R10](#io-table_r10)"
+msgstr ""
+
+#: ../../simulator/algo.md:893
+#: 0ebe5c67ea06422cae34f7ae6086b109
+msgid "Le coût GRT ou de 'redispatching'"
+msgstr ""
+
+#: ../../simulator/algo.md:895
+#: 74433f3fef2f426c9c6d5927b57eaa62
+msgid "Cf. [Tableau R7](#io-table_r7)"
+msgstr ""
+
+#: ../../simulator/algo.md:897
+#: d28bbcd3eb284ffe8e640fb83185ff28
+msgid "La défaillance du réseau"
+msgstr ""
+
+#: ../../simulator/algo.md:899
+#: c732a48f2bb541b4b732060ba432e536
+msgid "En résultat de METRIX, l'utilisateur dispose du volume de dépassement et des coûts en préventif et en curatif  (i.e. post-incident)."
+msgstr ""
+
+#: ../../simulator/algo.md:902
+#: 377d625f02f6469696b290a068ff767a
+msgid "Cf. [Tableau R9](#io-table_r9)"
+msgstr ""
+
+#: ../../simulator/algo.md:905
+#: 07e6033ad10c4ea0986822d4aa1be2df
+msgid "Pertes calculées a postétiori"
+msgstr ""
+
+#: ../../simulator/algo.md:907
+#: 79698773bb374162a43150e4e7866b72
+msgid "À l'issue du calcul, METRIX calcule les pertes a posteriori."
+msgstr ""
+
+#: ../../simulator/algo.md:909
+#: 5417bb86d290468cb429d6d0cff0c6e2
+msgid "Cf. [Tableau R8](#io-table_r8) et [Tableau R8B](#io-table_r8b)."
+msgstr ""
+
+#: ../../simulator/algo.md:911
+#: e9883d8016b74f5eae48033a62677e99
+msgid "Sur les lignes AC"
+msgstr ""
+
+#: ../../simulator/algo.md:913
+#: 7b12d0fdec5845eda4fbb4b690430708
+msgid "Compte tenu des flux actifs qu'il a calculés, il estime les pertes sur les dipôles par la formule :  $pertes = R \\times (\\frac{T}{V})^2$ où $R$ est la résistance de la ligne et $T$ la puissance active transitant sur  le quadripôle."
+msgstr ""
+
+#: ../../simulator/algo.md:917
+#: 7b50dbb199c84d4c80248e29ba61e703
+msgid "**N.B.** : il s'agit d'une estimation des pertes sur la partie active seulement, on suppose que le transit réactif est  nul."
+msgstr ""
+
+#: ../../simulator/algo.md:920
+#: 24805990fa62469d88b667f75ca69aea
+msgid "Sur les lignes DC"
+msgstr ""
+
+#: ../../simulator/algo.md:922
+#: a796097cbccf4c058a465ab139d3acdd
+msgid "En ce qui concerne les liaisons à courant continu, METRIX trouve une puissance de consigne $P$ appliquée au redresseur.  Les pertes sur les liaisons à courant continu sont décomposées en trois parties : les pertes dans chacun des deux  convertisseurs et les pertes dans le câble. Le détail du calcul ci-dessous ($red$=redresseur et $ond$=onduleur) :"
+msgstr ""
+
+#: ../../simulator/algo.md:925
+#: 9d8cbcac58254ca38f9476e78f9b9c96
+msgid "**Pertes dans la station de conversion côté redresseur** Les pertes sont proportionnelles à la puissance transitée dans la station : $P$. METRIX utilise le coefficient de  pertes par station. $PerteStationOr=coeffPerteOr \\times P$. À l'origine du câble, il y a donc la puissance $P_{orCable}=(1−coeffPerteOr)\\times P$."
+msgstr ""
+
+#: ../../simulator/algo.md:928
+#: b55a17dd006e477ebccb4c9536d30322
+msgid "**Pertes dans le câble** $pertesCable=R\\times I_{DC}^{2}$ avec $I_{DC}=\\frac{(V_{DC}^{red}−V_{DC}^{ond})}{R}$,  $P_{orCable}=V_{DC}^{red} \\times I_{DC}$ et $V_{DC}^{ond}=V_{DC}^{nom}$ (i.e. la tension à l'onduleur est égale à la tension nominale DC). La valeur de $V_{DC}^{red}$ est trouvée en résolvant un polynôme de degré 2 en $V_{DC}^{red}$,  ce qui permet de déterminer les pertes sur le câble."
+msgstr ""
+
+#: ../../simulator/algo.md:933
+#: b2628acb78904d4c8e58f9c14214456e
+msgid "**Pertes dans la station de conversion côté onduleur** Les pertes sont proportionnelles à la puissance transitée dans la station $P_{exCable}$. METRIX utilise le  coefficient de perte par station : $PerteStationOnduleur = coeffPerteOnduleur \\times P_{exCable}$, avec  $P_{exCable} = P - pertesCable$. Ce calcul de perte dans les liaisons DC est le même que celui utilisé dans Convergence."
+msgstr ""
+
+#: ../../simulator/algo.md:938
+#: ac6fb0c2d83e4eb2b9e3a097a09f7c4f
+msgid "Variations marginales"
+msgstr ""
+
+#: ../../simulator/algo.md:940
+#: 47d13da3e66c42bc8110d1ecc951c6e3
+msgid "Les variations marginales permettent d'avoir des informations sur les contraintes qui limitent la solution. Cf. [Tableau R4](#io-table_r4) et [Tableau R4B](#io-table_r4b)."
+msgstr ""
+
+#: ../../simulator/algo.md:943
+#: 271eb7e9b78248408f05cce26b8eba1c
+msgid "Variations marginales sur les lignes AC"
+msgstr ""
+
+#: ../../simulator/algo.md:945
+#: a1ed42984cf04f529ac74bc07a1ba227
+msgid "La variation marginale (VM) d'une ligne à courant alternatif (AC) indique le gain sur la fonction de coût si la limite  de transit sur la ligne AC était de 1MW supplémentaire. Si ce qui limitait le problème était :"
+msgstr ""
+
+#: ../../simulator/algo.md:947
+#: 9410ed8f292742ccb3ab01390e115198
+msgid "Un transit en N, la VM donne le gain sur la fonction de coût si le seuil en N de la ligne était de 1 MW supplémentaire."
+msgstr ""
+
+#: ../../simulator/algo.md:948
+#: cde039553056452cba3b549be72177c9
+msgid "Un transit en N-1, la VM donne le gain sur la fonction de coût si le seuil en N-1 de la ligne était de 1 MW supplémentaire.  Pour une VM en N-1, il est possible de savoir quel est l'incident qui a conduit à cette contrainte limitante."
+msgstr ""
+
+#: ../../simulator/algo.md:951
+#: f2fd73d6e7f546bb9f18f2a886751969
+msgid "Variations marginales sur les lignes HVDC"
+msgstr ""
+
+#: ../../simulator/algo.md:953
+#: 23e1a8cdc082464494fd9150fb38abd9
+msgid "Une VM sur une HVDC indique le gain sur la fonction de coût si la capacité de la liaison HVDC était d'1 MW supplémentaire. Dans le cas où la liaison HVDC peut agir en curatif plusieurs variations marginales seront données :"
+msgstr ""
+
+#: ../../simulator/algo.md:955
+#: 405c93a030ff41d7a6fe2ef741cd80ed
+msgid "La VM globale HVDC indique le gain sur la fonction de coût si la capacité de la liaison HVDC était d'1 MW  supplémentaire. Le gain est ensuite détaillé dans les VM suivantes."
+msgstr ""
+
+#: ../../simulator/algo.md:957
+#: ec8c7591834c4696badb9a6639724d3e
+msgid "La VM préventive correspond au gain sur la fonction de coût si la plage admissible pour la consigne préventive  était augmentée de 1 MW."
+msgstr ""
+
+#: ../../simulator/algo.md:959
+#: 1f1374d5c87540d283b09fc7d4b194d6
+msgid "La VM curative par incident i correspond au gain sur la fonction de coût si la plage admissible pour la consigne  curative sur l'incident i était augmentée de 1 MW."
+msgstr ""
+
+#: ../../simulator/algo.md:962
+#: 042bd45386674a51b0caf7c64781e349
+msgid "**N.B.** : aujourd'hui, dans Assess, il n'y a, en pratique, qu'une plage admissible pour la consigne des HVDC. Cette  plage est utilisée par les HVDC en préventif comme en curatif. Les 2 dernières VM permettent cependant d'apporter des  informations supplémentaires : la VM globale annonce un gain lorsque la plage admissible est augmentée d'1 MW. Grâce  aux VM préventives et curatives, nous pouvons savoir si ce MW supplémentaire disponible serait utilisé en préventif  ou en curatif et sur quel incident."
+msgstr ""
+
+#: ../../simulator/algo.md:968
+#: 13e62cd2b9d04316920cc82d4173f925
+msgid "**Remarque** : les VM d'une HVDC sont directement liées à la borne de la HVDC (i.e. plage admissible). Il est donc  nécessaire de prêter attention à l'interprétation si les bornes des HVDC sont tirées des variantes : d'une variante  à l'autre, le gain annoncé par la VM ne correspond pas au même MW supplémentaire (à la même plage de fonctionnement)."
+msgstr ""
+
+#: ../../simulator/algo.md:972
+#: 4a58a94011cf4ac7957a57f4faef5e9a
+msgid "Variations marginales sur les consommations"
+msgstr ""
+
+#: ../../simulator/algo.md:974
+#: bff086144798495fa25b656550c5dee6
+msgid "Si le mécanisme d'ajustement n'est pas simulé, la VM est donnée pour toutes les consommations. La VM de consommation  indique l'impact sur la fonction de coût si la consommation était de 1MW de moins."
+msgstr ""
+
+#: ../../simulator/algo.md:977
+#: 50ce65d222354ae08dc81f89e74ec232
+msgid "Inversement, si le mécanisme d'ajustement est simulé, la VM de consommation n'est retournée que sur les nœuds pour  lesquels la défaillance est non nulle. Pour les autres nœuds, METRIX n'est pas capable d'évaluer le gain."
+msgstr ""
+
+#: ../../simulator/algo.md:980
+#: 9014be8bbcd74179a1177d81dd86f482
+msgid "Variations marginales sur les sections surveillées"
+msgstr ""
+
+#: ../../simulator/algo.md:982
+#: 2b565e84a33d4c92aee09efd6e063231
+msgid "La VM d'une section surveillée indique le gain sur la fonction coût si la borne supérieure de la somme des transits  sur la section était augmenté d'1 MW."
+msgstr ""
+
+#: ../../simulator/algo.md:985
+#: 671c9286794c4c51b1752481afb83aab
+msgid "Limitations"
+msgstr ""
+
+#: ../../simulator/algo.md:987
+#: 5d8ef3451bc3497993e8e2ac24e4bef2
+msgid "Domaine de validité limité"
+msgstr ""
+
+#: ../../simulator/algo.md:989
+#: 0b7d02b6c78740ae9088026bdde8026a
+msgid "Les VM non nulles pointent un ensemble de lignes ou de contraintes de sécurité qui ont un impact direct sur la  fonction à minimiser : ce sont les premières contraintes à résoudre pour faire baisser le coût de redispatching.  La valeur de la VM donne un gain sur la fonction coût pour une modification du seuil de 1MW ; toutefois, il n'est pas  garanti que cette VM fonctionne dans le cas où la variation n'est plus marginale (i.e. variation de nombreux MW).  Autrement dit, augmenter le seuil N d'une ligne de $x$ MW, n'apportera peut-être pas un gain sur la fonction de coût  de $x$ fois celui de la VM."
+msgstr ""
+
+#: ../../simulator/algo.md:996
+#: 047917c3f9c64e80bd0d7524bdb34795
+msgid "Prenons l'exemple d'une antenne composée de deux lignes, la première ayant une IST plus faible que la deuxième. La VM  sera associée à la première ligne. Toutefois, si nous augmentons l'IMAP de cette première ligne, la deuxième peut  devenir limitante et ainsi le gain sera moindre par rapport à ce qu'annonçait la VM. Ce même phénomène peut se produire  avec des groupes qui rentrent en butée Pmin ou Pmax."
+msgstr ""
+
+#: ../../simulator/algo.md:1001
+#: b23e29dd84e84ab0ae195967cf0a9fe0
+msgid "Toutes choses égales par ailleurs"
+msgstr ""
+
+#: ../../simulator/algo.md:1003
+#: a77d3ece281a46269b7908040c658277
+msgid "Le gain exprimé par la VM doit être compris « toute chose égale par ailleurs », c'est-à-dire que ce gain correspond  au gain si seulement la capacité de la ligne est augmentée. Or, généralement, un tel changement sur le terrain implique  également une modification de la réactance de la ligne. Cela modifierait donc le résultat."
+msgstr ""
+
+#: ../../simulator/algo.md:1007
+#: cd25e4a853f44015bd79828f030f50c7
+msgid "Contraintes masquées"
+msgstr ""
+
+#: ../../simulator/algo.md:1009
+#: a59ba198c72140669dff70120f2c619b
+msgid "Comme décrit précédemment, la variation marginale indique le gain sur la fonction de coût si la plage admissible de la ligne concernée était élargie. Par contre, ce résultat ne tient pas compte des limites des autres lignes. Par  conséquent, en relâchant la limite sur une ligne, une autre ligne devenir limitante pour le problème."
+msgstr ""
+
+#: ../../simulator/algo.md:1013
+#: 2a4adede690b4491a5d7d5be01ca4669
+msgid "METRIX n'a pas la possibilité d'expliciter à l'avance ces contraintes jugées masquées."
+msgstr ""
+
+#: ../../simulator/algo.md:1015
+#: 0f638e8baf144f0786924e111473c10f
+msgid "Conclusions sur les VM"
+msgstr ""
+
+#: ../../simulator/algo.md:1017
+#: 417defb8e5f148139df744b46db93fed
+msgid "Les VM apportent des informations intéressantes pour l'étape d'analyse des contraintes que ce soit avant renforcement,  ou après renforcement (contraintes résiduelles)."
+msgstr ""
+
+#: ../../simulator/algo.md:1020
+#: def07466b5184cd4879c60eff28a062b
+msgid "L'intérêt des VM est de pointer parmi toutes les lignes surveillées et les incidents, des éléments coûteux pour la  fonction objectif. Un interclassement de ces VM permet de classer l'importance de ces contraintes."
+msgstr ""

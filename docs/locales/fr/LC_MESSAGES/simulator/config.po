@@ -1,0 +1,354 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: fr\n"
+"Language-Team: fr <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../simulator/config.md:8 7af8170705c84cc6b95b260ba0620d1c
+msgid "Configuration"
+msgstr ""
+
+#: ../../simulator/config.md:10 54478713b4ef486dabb3f7eaf8ec4549
+msgid "Mode de lancements"
+msgstr ""
+
+#: ../../simulator/config.md:12 84a6119dc3f6403e98ce520ce263e834
+msgid "Il existe 4 modes de lancement :"
+msgstr ""
+
+#: ../../simulator/config.md:13 ../../simulator/config.md:35
+#: 9ec6eb456a144c03a6a4c39be280947a cf477bc6d71c456dbffabda3bc89d5c6
+msgid "Load Flow (LF)"
+msgstr ""
+
+#: ../../simulator/config.md:14 ../../simulator/config.md:44
+#: 42cd9af8b38446c4b143c96d84511d39 a9f9d8bd7b8b49049f6cb947cbceb755
+msgid "Optimal Power Load Flow sans redispatching (OPF w/o redispatching)"
+msgstr ""
+
+#: ../../simulator/config.md:15 ../../simulator/config.md:61
+#: 55f9ea990e234151a927cd9c2996f9ce ac04324a8794412ca5c6cae0874e3eaf
+msgid "Optimal Power Load Flow (OPF)"
+msgstr ""
+
+#: ../../simulator/config.md:16 ../../simulator/config.md:66
+#: 6de5f480ea1e4aaebebcc74ef42e8df5 df83ffd519154df4b16e46e0b2980ab1
+msgid "Optimal Power Load Flow avec surcharge (OPF with overload)"
+msgstr ""
+
+#: ../../simulator/config.md:18 c380a1219d3943438b8b1cb451b08c61
+msgid "Pour tous ces modes, les premières étapes sont :"
+msgstr ""
+
+#: ../../simulator/config.md:19 e8ce10208b8f4d269752afb82f648a1d
+msgid "construction de la jacobienne et factorisation LU de cette dernière"
+msgstr ""
+
+#: ../../simulator/config.md:20 eb8505f1436249e881cd0a0d1b314c2f
+msgid "pour chacune des variantes :"
+msgstr ""
+
+#: ../../simulator/config.md:21 7a2d8795c8624f6bafaa2673e188125b
+msgid "mise à jour de la topologie réseau"
+msgstr ""
+
+#: ../../simulator/config.md:22 1c2f36220b744ece8782c7d25f8c27ab
+msgid "mise à jour de la jacobienne"
+msgstr ""
+
+#: ../../simulator/config.md:23 c74c7419e0f34c3e85bd61e9a3e14726
+msgid "refactorisation de la jacobienne"
+msgstr ""
+
+#: ../../simulator/config.md:24 8324337d70a54a08af942b737246a469
+msgid "calculs LODFs et PTDFs"
+msgstr ""
+
+#: ../../simulator/config.md:26 dc1a950054024f25b434af36d9e277a1
+msgid "Les différents types de contraintes sont :"
+msgstr ""
+
+#: ../../simulator/config.md:27 d91202e818b2483c9c5586a164d560d4
+msgid "`CONTRAINTE_EMUL_AC_N = 1` : contrainte en N sur un quadripôle fictif"
+msgstr ""
+
+#: ../../simulator/config.md:28 b004ec23f7ad4fcd8f03dd8046b3a9b8
+msgid "`CONTRAINTE_EMULATION_AC = 2` : contrainte en N-k sur un quadripôle fictif"
+msgstr ""
+
+#: ../../simulator/config.md:29 97bc39a490444dd9890be01794779c8c
+msgid "`CONTRAINTE_N = 3` : contrainte en N sur un quadripôle non-fictif"
+msgstr ""
+
+#: ../../simulator/config.md:30 25ba5970db9643a4b120d3f206cad68b
+msgid ""
+"`CONTRAINTE_N_MOINS_K = 4` : contrainte en N-k sur un quadripôle non-"
+"fictif"
+msgstr ""
+
+#: ../../simulator/config.md:31 030b3b36af72451d9593ca3ebfb13b70
+msgid "`CONTRAINTE_PARADE = 5` : contrainte sur une parade"
+msgstr ""
+
+#: ../../simulator/config.md:32 13ed3d3abf724a369f55aecc442daa03
+msgid "`CONTRAINTE_ACTIVATION = 6` : contrainte d'activation d'une parade"
+msgstr ""
+
+#: ../../simulator/config.md:33 5f70b4650b6e4517a5ff4063de4c5c17
+msgid "`CONTRAINTE_NON_DEF = -1` : contrainte non définie"
+msgstr ""
+
+#: ../../simulator/config.md:36 77ff671dedb4414eb0d92b3b1e967fd5
+msgid ""
+"Mode basique de simulation réseau avec des productions et consommations "
+"fixes. Metrix retourne alors le flot sur les  lignes du réseau. Pour ce "
+"mode : `MODECALC = 1`."
+msgstr ""
+
+#: ../../simulator/config.md:39 ../../simulator/config.md:50
+#: 274670d337234fc4b8474685c784c49f 99029f5493e04e2db92ff00f68ed1d77
+msgid "Dans ce mode :"
+msgstr ""
+
+#: ../../simulator/config.md:40 0aa98f822c4d45d2942b6f768379bc74
+msgid "Les parades ne sont pas lues"
+msgstr ""
+
+#: ../../simulator/config.md:41 bfc4b451d83346e1b01f7d9dbd8f148b
+msgid ""
+"Si des groupes ou consommateurs sont renseignés comme étant disponibles "
+"pour le curatif, alors ils sont ignorés"
+msgstr ""
+
+#: ../../simulator/config.md:42 459fbec7837145b49b1d9179a6f0e5ce
+msgid "Il n'y a pas de phase de détection de contraintes"
+msgstr ""
+
+#: ../../simulator/config.md:45 587e16890e274a85841b567ec26c5c06
+msgid ""
+"Ce mode ne permet pas à Metrix-simulator de faire du redispatching "
+"(modifier les injections et consommations) mais il  tend à minimiser les "
+"violations des différentes contraintes grâce à l'utilisation de parades "
+"topologiques, de  modifications des déphasages des transformateurs-"
+"déphaseurs ou encore de modifications des flux sur les lignes à courant "
+"continu. Pour ce mode : `MODECALC = 2`."
+msgstr ""
+
+#: ../../simulator/config.md:51 9576e2bada2b4126982992aba1a9c619
+msgid "Si un groupe est indiqué comme disponible pour le redispatching :"
+msgstr ""
+
+#: ../../simulator/config.md:52 5fbf48b15a00458abe54e2594f63a4f3
+msgid ""
+"et uniquement pour le redispatching (i.e. `OUI_AR`), alors il est "
+"considéré comme n'étant pas disponible ni pour le  redispatching ni pour "
+"l'adequacy (i.e. `NON_HR_AR`)"
+msgstr ""
+
+#: ../../simulator/config.md:54 e756caebe1c44762afb6561f1ae2b80a
+msgid ""
+"mais aussi pour l'adequacy (i.e. `OUI_HR_AR`), alors il est considéré "
+"comme étant uniquement disponible pour  l'adequacy (i.e. `OUI_HR`)"
+msgstr ""
+
+#: ../../simulator/config.md:56 e68d4f70e40241678f580c0e086e4279
+msgid ""
+"Si des groupes sont renseignés comme étant disponibles pour le curatif, "
+"alors ils sont ignorés"
+msgstr ""
+
+#: ../../simulator/config.md:57 b0f6f1185d6e4a589298ae5f6ba20abf
+msgid ""
+"Les défaillances sont interdites ici (i.e. les variables de variations de"
+" consommation sont fixes et ???)"
+msgstr ""
+
+#: ../../simulator/config.md:58 c1a3b061fe314298a07fd848b5c3b966
+msgid ""
+"Des variables d'écart sont ajoutées pour toute contrainte avec un type "
+"autre que `CONTRAINTE_EMUL_AC_N`,  `CONTRAINTE_EMULATION_AC` ou "
+"`CONTRAINTE_ACTIVATION`."
+msgstr ""
+
+#: ../../simulator/config.md:62 aaf9c40f22a14318bd0610c3f9949e3c
+msgid ""
+"Ce mode a la possibilité toutes les actions possibles (redispatching en "
+"plus des actions énoncées dans le chapitre  précédent) afin de minimiser,"
+" à moindre coût, les violations des contraintes. Pour ce mode : `MODECALC"
+" = 0`."
+msgstr ""
+
+#: ../../simulator/config.md:67 138668cedc1f481aa9644a37a2ca9743
+msgid ""
+"Ce mode fonctionne comme le précédent, toutefois si aucune solution n'est"
+" trouvée le programme ne retourne pas d'erreur,  mais des résultats avec "
+"surcharge. Pour ce mode : `MODECALC = 3`."
+msgstr ""
+
+#: ../../simulator/config.md:71 cecc36275dde45e197c2db0d9c75159e
+msgid ""
+"Si des consommateurs sont renseignés comme étant disponibles pour le "
+"curatif, alors ils sont ignorés. Il n'y a pas de contraintes de couplage "
+"ici. Des variables d'écart sont ajoutées pour toute contrainte avec un "
+"type autre que `CONTRAINTE_EMUL_AC_N`, `CONTRAINTE_EMULATION_AC` ou "
+"`CONTRAINTE_ACTIVATION`."
+msgstr ""
+
+#: ../../simulator/config.md:75 a58b9ddd7d414fc2a2af51504c13521d
+msgid "Générations fichiers PTDFs"
+msgstr ""
+
+#: ../../simulator/config.md:77 362409c4ac8b4e4f879e1bfa68ec9b7c
+msgid ""
+"La génération des fichiers se fait via l'appel au simulateur. Il n'est "
+"pour l'instant pas possible d'uniquement générer  les fichiers PTDFs pour"
+" chacune des variantes sans lancer de résolution. Toutefois, il n'y a, a "
+"priori, pas de raison à ce que cela ne soit pas possible."
+msgstr ""
+
+#: ../../simulator/config.md:81 bade27465844447197fa1cbc5058cba1
+msgid "Codes de retour et gestion des crashs"
+msgstr ""
+
+#: ../../simulator/config.md:83 495e1d6261b845a99c6e765f61837f1b
+msgid "Les diférents status de retour sont les suivants :"
+msgstr ""
+
+#: ../../simulator/config.md:84 a654e3771dfc45bf9da647fd7d578c31
+msgid "`METRIX_PROBLEME = -1` : KO"
+msgstr ""
+
+#: ../../simulator/config.md:85 94ecc83355084d8983ddb0ccbf537599
+msgid "`METRIX_PAS_PROBLEME = 0` : OK"
+msgstr ""
+
+#: ../../simulator/config.md:86 4a314e2c28ca410697e5eba77f609f52
+msgid "`METRIX_PAS_SOLUTION = 1` : problème infaisable ou pas de solution trouvée"
+msgstr ""
+
+#: ../../simulator/config.md:87 27ca16a24bd546e6a05afabdc4d276c7
+msgid ""
+"`METRIX_NB_MAX_CONT_ATTEINT = 2` : nombre maximum de contraintes ajoutées"
+" atteint"
+msgstr ""
+
+#: ../../simulator/config.md:88 374a1d62c3a54c97b46fd36c1950a034
+msgid "`METRIX_NB_MICROIT = 3` : nombre maximum de micro-iterations atteint"
+msgstr ""
+
+#: ../../simulator/config.md:89 0638cbf9f707405b9f2262d3ffe411af
+msgid "`METRIX_VARIANTE_IGNOREE = 4` : variante ignorée"
+msgstr ""
+
+#: ../../simulator/config.md:90 34cbaa866bb64fc19ec290a818a18f0a
+msgid ""
+"`METRIX_CONTRAINTE_IGNOREE = 3` : contrainte ignorée, car équivalente, "
+"Tmax non défini ou pas d'action possible (dans  le cas d'un OPF sans "
+"redispatching ou d'un OPF avec surcharge)"
+msgstr ""
+
+#: ../../simulator/config.md:93 013d365f9e3847b297e60306aba699b0
+msgid "Parade topologique en N"
+msgstr ""
+
+#: ../../simulator/config.md:95 705c86b402524e22a07e0ae568612900
+msgid "Il est possible de ???????"
+msgstr ""
+
+#: ../../simulator/config.md:97 74c064725ccf4521a2196d5b8adb8238
+msgid "Seuils ITAM"
+msgstr ""
+
+#: ../../simulator/config.md:99 4ca51ce376be4af5aab2d884cac60233
+msgid ""
+"Il est possible de paramétrer l'outil afin d'utiliser les seuils avant "
+"manœuvre (i.e. post incident, mais avant curatif)  via le paramètre "
+"`TESTITAM`. Si ces seuils sont activés, une parade \"ne rien faire\" est "
+"ajoutée sur les incidents avec curatif, mais sans parade."
+msgstr ""
+
+#: ../../simulator/config.md:103 e16f9a4386b542f1b7ab84448cfb5e52
+msgid "Contexte LF+"
+msgstr ""
+
+#: ../../simulator/config.md:104 1bd527a83ded478593af6f4d021288cb
+msgid ""
+"En LF+, lorsqu'il y a dépassement d'un seuil ITAM avant utilisation des "
+"parades topologiques curatives, il n'y a pas  d'alerte ou d'indicateur "
+"indiquant ce dépassement. Alors que la solution retournée peut préconiser"
+" l'utilisation de  parades curatives qui favorisent, potentiellement, le "
+"respect des seuils ITAM d'après les logs finaux."
+msgstr ""
+
+#: ../../simulator/config.md:108 54b62855596344cd857a673eda59f663
+msgid ""
+"Ce comportement n'est pas réaliste puisqu'en situation réelle, les "
+"parades curatives n'ont pas le temps d'être activée  afin de respecter "
+"ces seuils ITAM."
+msgstr ""
+
+#: ../../simulator/config.md:111 fdf14700a90a4cbab5ba34f09029e578
+msgid "Problématique"
+msgstr ""
+
+#: ../../simulator/config.md:112 18351dc4b2b04da4afc53bb221270d05
+msgid ""
+"Metrix résout le problème via de l'optimisation globale. Autrement dit, "
+"ce dernier tente de trouver une solution  optimale respectant l'ensemble "
+"des contraintes tout en minimisant l'ensemble des objectifs définis (ex :"
+" minimisation  des dépassements en LF+). Ceci implique que, du point de "
+"vue de Metrix, la minimisation des dépassements se fait « d'un  coup » et"
+" non pas séquentiellement comme ce pourrait être le cas manuellement. "
+"Ainsi, en sortie de Metrix, ce dernier  peut considérer qu'il n'y a plus "
+"de dépassement alors que ce sont des parades curatives qui permettent de "
+"respecter les  seuils ITAM (non réaliste d'après le paragraphe "
+"précédent)."
+msgstr ""
+
+#: ../../simulator/config.md:120 d21544779ee04fb6ae93a7938378cc29
+msgid "Options possibles :"
+msgstr ""
+
+#: ../../simulator/config.md:122 c31f06500aed44f6901d88369e2455be
+msgid "Utiliser les fichiers « tmp » afin de lever une alerte"
+msgstr ""
+
+#: ../../simulator/config.md:123 4f1ba4c49263444ba65fa3c400506d8e
+msgid ""
+"Modifier le modèle afin que seules les parades topologiques curatives "
+"n'ayant pas d'impact sur les éléments avec  dépassements de leur seuil "
+"ITAM soient activables (cette solution semble complexe à implémenter a "
+"priori)"
+msgstr ""
+
+#: ../../simulator/config.md:125 de7a75dddb074fb1b7ac40e97a6f893a
+msgid ""
+"Pour tout élément avec un seuil N-k ainsi qu'un seuil ITAM mais pas de "
+"parade préventive pour cet élément :  suppression de seuils N-k de cet "
+"élément ?"
+msgstr ""
+
+#: ../../simulator/config.md:128 7b09b530cad34964b1dbd8cd11bea30a
+msgid ""
+"Compte tenu du paradigme LF+ (minimisation des dépassements de différents"
+" seuils pour un même élément et optimisation  globale), le process le "
+"plus réaliste semble être de lever une alerte/warning indiquant qu'un "
+"seuil n'est pas respecté."
+msgstr ""
+

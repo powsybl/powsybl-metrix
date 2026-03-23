@@ -1,0 +1,172 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 
+# This file is distributed under the same license as the PowSyBl Metrix package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../simulator/build.md:2
+#: a6e6ea6f53eb443ba73ad214c5315861
+msgid "Building Metrix simulator"
+msgstr ""
+
+#: ../../simulator/build.md:4
+#: 5f31569f32784b77832be44cadaaa423
+msgid "This page will get you through the building of the executable *metrix-simulator* for your preferred operating system."
+msgstr ""
+
+#: ../../simulator/build.md:6
+#: 2f9c3839937c477292883f4dddd660a6
+msgid "Requirements"
+msgstr ""
+
+#: ../../simulator/build.md:8
+#: 3ed8863f8c9c4b6a81b60af776278bfe
+msgid "To build metrix-simulator, you need:"
+msgstr ""
+
+#: ../../simulator/build.md:9
+#: bc534186040a4f86b6819191923bfb3b
+msgid "A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)"
+msgstr ""
+
+#: ../../simulator/build.md:10
+#: 6e67f0fe8c0443acb96b27b51dd6ffa7
+msgid "[CMake](https://cmake.org) (3.12 or higher)"
+msgstr ""
+
+#: ../../simulator/build.md:11
+#: bb96845c992f4fb6a888d7a0ef1a48b3
+msgid "[Make](https://www.gnu.org/software/make/)"
+msgstr ""
+
+#: ../../simulator/build.md:12
+#: ae43000261624becadec89e4cc3b95c1
+msgid "[Boost](https://www.boost.org) development packages (1.66 or higher)"
+msgstr ""
+
+#: ../../simulator/build.md:14
+#: d9606f76b0e04bf5ba345e605430f762
+msgid "Use the following commands to install them on your OS:"
+msgstr ""
+
+#: ../../simulator/build.md:16
+#: a9f6af858cbf43f78e89fd32e9bcf166
+msgid "Ubuntu 20.04 and later"
+msgstr ""
+
+#: ../../simulator/build.md:21
+#: b96b1c17c5f049ee8d52404be069707c
+msgid "Ubuntu 18.04"
+msgstr ""
+
+#: ../../simulator/build.md:26
+#: 6fa6532fd92649be9f1883b152e232db
+msgid "**Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), so you have to install it manually:"
+msgstr ""
+
+#: ../../simulator/build.md:33
+#: f23e4be812d14a5d8c6550206a3f6f3e
+msgid "CentOS 8"
+msgstr ""
+
+#: ../../simulator/build.md:38
+#: 848f5caf31ed478bba4e3cf8a2fc2e4d
+msgid "**Note:** Under CentOS 8, the default CMake package is too old (3.11.4), so you have to install it manually:"
+msgstr ""
+
+#: ../../simulator/build.md:45
+#: 6f1626eb05bd47208e8e77a7125decd2
+msgid "CentOS 7"
+msgstr ""
+
+#: ../../simulator/build.md:49
+#: 17c398f7854048d1a4e8352224a7fb82
+msgid "**Note:** Under CentOS 7, the default `boost-devel` package is too old (1.53), so we install Boost 1.66 from `epel-release`."
+msgstr ""
+
+#: ../../simulator/build.md:57
+#: d8c0a1d153ad43d4b61694341231fd00
+msgid "**Note:** Under CentOS 7, the default CMake package is too old (2.8.12), so you have to install it manually:"
+msgstr ""
+
+#: ../../simulator/build.md:63
+#: a63f54c0c0694102a2810f0fa9cbb47b
+msgid "Build sources"
+msgstr ""
+
+#: ../../simulator/build.md:65
+#: a7d781a07fe6450591ed1bfe0f2e5f13
+msgid "Next, you can build the executable from the sources"
+msgstr ""
+
+#: ../../simulator/build.md:67
+#: 1ee378127492444b90fb4007190a8248
+msgid "1. Clone the project"
+msgstr ""
+
+#: ../../simulator/build.md:73
+#: 9c8a5510559c416494fdae7d4aa88a13
+msgid "2. Build the third parties"
+msgstr ""
+
+#: ../../simulator/build.md:82
+#: 34fb7428b4ce48ce8bd1e483a0c21e8d
+msgid "3. Build the project executable"
+msgstr ""
+
+#: ../../simulator/build.md:89
+#: 23747414d77f4195ab0fa91593a7d6cc
+msgid "The following CMAKE options can be set for the executable configuration:"
+msgstr ""
+
+#: ../../simulator/build.md:90
+#: bfea17f6dd1d440985a45af46c4b7b0b
+msgid "`USE_SIRIUS_SHARED` (default = OFF): If active, the project will link using the shared library of sirius solver instead of the static library"
+msgstr ""
+
+#: ../../simulator/build.md:91
+#: 5a0aafc760cb44a7bc87bc1b59d3443f
+msgid "`METRIX_RUN_ALL_TESTS` (default = ON): If inactive, the project will execute a reduced scope of tests"
+msgstr ""
+
+#: ../../simulator/build.md:93
+#: a351571c04544f978da53687476b9710
+msgid "Extras"
+msgstr ""
+
+#: ../../simulator/build.md:94
+#: 20096044e92b4a32a7fd49b2885fbfe6
+msgid "Checkstyle"
+msgstr ""
+
+#: ../../simulator/build.md:95
+#: 2f830be84ad142939f9495f0ce3a3f1e
+msgid "This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To  enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command."
+msgstr ""
+
+#: ../../simulator/build.md:98
+#: 3d9458e6e7cc4a7084443032c9592030
+msgid "A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most IDEs have an option to format files using clang-format automatically."
+msgstr ""
+
+#: ../../simulator/build.md:100
+#: 5f182866f6b445f2acf560d6bd62019d
+msgid "Code coverage"
+msgstr ""
+
+#: ../../simulator/build.md:101
+#: 24455d12c6ef418eb7b60a7001a6eec5
+msgid "This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or  higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to  the configure command."
+msgstr ""

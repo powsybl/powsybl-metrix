@@ -1,0 +1,4 @@
+{"filename": "index.md", "lineno": 5, "status": "unchecked", "code": 0, "uri": "", "info": ""}
+{"filename": "metrix.md", "lineno": 9, "status": "unchecked", "code": 0, "uri": "#mapping-dsl", "info": ""}
+{"filename": "mapping.md", "lineno": 69, "status": "working", "code": 0, "uri": "https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#roles", "info": ""}
+{"filename": "README.md", "lineno": 5, "status": "broken", "code": 0, "uri": "http://powsybl-metrix.readthedocs.io/", "info": "404 Client Error: Not Found for url: https://powsybl.readthedocs.io/projects/powsybl-metrix/en/latest/"}
