@@ -64,7 +64,7 @@ msgstr ""
 
 #: ../../index.md:15 b8e4c761b3934fdb936f49b93a7236d6
 msgid "Installation"
-msgstr ""
+msgstr "Installation"
 
 #: ../../index.md:17 bf44512d898f46d3a8edd80a91303d22
 msgid ""
@@ -74,7 +74,7 @@ msgstr ""
 
 #: ../../index.md:19 6e7e0d29fb3d4a9db5f49e3cf71b01ca
 msgid "Downloads"
-msgstr ""
+msgstr "Téléchargements"
 
 #: ../../index.md:21 b76c426fee254be19d1cafa0c584e07d
 msgid ""
