@@ -297,16 +297,18 @@ public class MetrixNetwork {
         }
     }
 
-    private void addPhaseTapChanger(TwoWindingsTransformer twt) {
-        if (phaseTapChangerList.add(twt.getPhaseTapChanger())) {
-            mapper.newInt(MetrixSubset.DEPHA, twt.getId());
+    private void addPhaseTapChanger(PhaseTapChanger ptc, String id) {
+        if (phaseTapChangerList.add(ptc)) {
+            mapper.newInt(MetrixSubset.DEPHA, id);
         }
     }
 
+    private void addPhaseTapChanger(TwoWindingsTransformer twt) {
+        addPhaseTapChanger(twt.getPhaseTapChanger(), twt.getId());
+    }
+
     private void addPhaseTapChanger(ThreeWindingsTransformer.Leg leg) {
-        if (phaseTapChangerList.add(leg.getPhaseTapChanger())) {
-            mapper.newInt(MetrixSubset.DEPHA, getThreeWindingsTransformerLegId(leg));
-        }
+        addPhaseTapChanger(leg.getPhaseTapChanger(), getThreeWindingsTransformerLegId(leg));
     }
 
     private void addBus(Bus bus) {
@@ -433,28 +435,22 @@ public class MetrixNetwork {
         }
     }
 
+    private void checkAndAddConnectedLeg(List<ThreeWindingsTransformer.Leg> connectedLegs,
+                                         ThreeWindingsTransformer.Leg leg) {
+        Terminal terminal = leg.getTerminal();
+        Bus bus = terminal.getBusBreakerView().getBus();
+        if (bus != null && busList.contains(bus)) {
+            connectedLegs.add(leg);
+        }
+    }
+
     private void createThreeWindingsTransformersList() {
         int nbNok = 0;
         for (ThreeWindingsTransformer twt : network.getThreeWindingsTransformers()) {
-            ThreeWindingsTransformer.Leg leg1 = twt.getLeg1();
-            ThreeWindingsTransformer.Leg leg2 = twt.getLeg2();
-            ThreeWindingsTransformer.Leg leg3 = twt.getLeg3();
-            Terminal t1 = leg1.getTerminal();
-            Terminal t2 = leg2.getTerminal();
-            Terminal t3 = leg3.getTerminal();
-            Bus b1 = t1.getBusBreakerView().getBus();
-            Bus b2 = t2.getBusBreakerView().getBus();
-            Bus b3 = t3.getBusBreakerView().getBus();
             List<ThreeWindingsTransformer.Leg> connectedLegs = new ArrayList<>();
-            if (b1 != null && busList.contains(b1)) {
-                connectedLegs.add(leg1);
-            }
-            if (b2 != null && busList.contains(b2)) {
-                connectedLegs.add(leg2);
-            }
-            if (b3 != null && busList.contains(b3)) {
-                connectedLegs.add(leg3);
-            }
+            checkAndAddConnectedLeg(connectedLegs, twt.getLeg1());
+            checkAndAddConnectedLeg(connectedLegs, twt.getLeg2());
+            checkAndAddConnectedLeg(connectedLegs, twt.getLeg3());
             if (connectedLegs.size() >= 2) {
                 // need at least two legs for a flow to happen
                 addThreeWindingsTransformer(twt);
