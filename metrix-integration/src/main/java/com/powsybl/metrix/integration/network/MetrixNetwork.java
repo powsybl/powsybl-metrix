@@ -423,9 +423,8 @@ public class MetrixNetwork {
         }
     }
 
-    private void createTwoWindingsTransformersList() {
+    private void createTwoWindingsTransformersList(AtomicInteger nbPtcNok) {
         AtomicInteger nbNok = new AtomicInteger(0);
-        AtomicInteger nbPtcNok = new AtomicInteger(0);
         network.getTwoWindingsTransformers().forEach(twt -> addTwoWindingsTransformer(twt, nbNok, nbPtcNok));
         if (LOGGER.isDebugEnabled()) {
             String message = String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get());
@@ -444,7 +443,7 @@ public class MetrixNetwork {
         }
     }
 
-    private void createThreeWindingsTransformersList() {
+    private void createThreeWindingsTransformersList(AtomicInteger nbPtcNok) {
         int nbNok = 0;
         for (ThreeWindingsTransformer twt : network.getThreeWindingsTransformers()) {
             List<ThreeWindingsTransformer.Leg> connectedLegs = new ArrayList<>();
@@ -462,6 +461,11 @@ public class MetrixNetwork {
                 });
             } else {
                 nbNok++;
+                connectedLegs.forEach(leg -> {
+                    if (leg.hasPhaseTapChanger()) {
+                        nbPtcNok.incrementAndGet();
+                    }
+                });
             }
         }
         if (LOGGER.isDebugEnabled()) {
@@ -471,12 +475,19 @@ public class MetrixNetwork {
     }
 
     private void createTransformerList() {
+        AtomicInteger nbPtcNok = new AtomicInteger(0);
 
         // List the TwoWindingsTransformers
-        createTwoWindingsTransformersList();
+        createTwoWindingsTransformersList(nbPtcNok);
 
         // List the ThreeWindingsTransformers
-        createThreeWindingsTransformersList();
+        createThreeWindingsTransformersList(nbPtcNok);
+
+        // Logs for the PhaseTapChanger
+        if (LOGGER.isDebugEnabled()) {
+            String message = String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get());
+            LOGGER.debug(message);
+        }
     }
 
     private void createUnpairedBoundaryLineList() {
