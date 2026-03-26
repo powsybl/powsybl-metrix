@@ -60,7 +60,7 @@ public class ContingencyLoader {
         ContingencyElementType.TIE_LINE, Set.of(IdentifiableType.TIE_LINE),
         ContingencyElementType.GENERATOR, Set.of(IdentifiableType.GENERATOR),
         ContingencyElementType.HVDC_LINE, Set.of(IdentifiableType.HVDC_LINE),
-        ContingencyElementType.DANGLING_LINE, Set.of(IdentifiableType.DANGLING_LINE),
+        ContingencyElementType.BOUNDARY_LINE, Set.of(IdentifiableType.BOUNDARY_LINE),
         ContingencyElementType.BRANCH, Set.of(
             IdentifiableType.LINE,
             IdentifiableType.TWO_WINDINGS_TRANSFORMER,
