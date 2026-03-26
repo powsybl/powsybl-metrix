@@ -11,9 +11,7 @@ import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
-import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.MetrixSubset;
-import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 import org.slf4j.Logger;
@@ -29,8 +27,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static com.powsybl.metrix.integration.analysis.MetrixInputAnalysis.propagateElementsToTrip;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -522,38 +518,18 @@ public class MetrixNetwork {
         }
     }
 
-    private void createContingencyList(ContingenciesProvider provider, boolean propagate) {
+    private void createContingencyList(ContingenciesProvider provider) {
 
         if (Objects.isNull(provider)) {
             return;
         }
 
         List<Contingency> ctyList = provider.getContingencies(network);
-        ctyList.forEach(contingency -> addContingencyToList(contingency, propagate));
+        contingencyList.addAll(ctyList);
 
         if (LOGGER.isDebugEnabled()) {
             String message = String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size());
             LOGGER.debug(message);
-        }
-    }
-
-    private void addContingencyToList(Contingency contingency, boolean propagate) {
-        boolean ctyOk = true;
-        for (ContingencyElement element : contingency.getElements()) {
-            boolean elemOk = true;
-            Identifiable<?> identifiable = network.getIdentifiable(element.getId());
-            if (identifiable == null || !MetrixInputAnalysis.isValidContingencyElement(identifiable.getType(), element.getType())) {
-                elemOk = false;
-            }
-            if (!elemOk) {
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Contingency '{}' : element '{}' not found in the network", contingency.getId(), element.getId());
-                }
-                ctyOk = false;
-            }
-        }
-        if (ctyOk) {
-            contingencyList.add(propagate ? propagateElementsToTrip(contingency, network) : contingency);
         }
     }
 
@@ -580,11 +556,11 @@ public class MetrixNetwork {
     }
 
     public static MetrixNetwork create(Network network) {
-        return create(network, null, null, new MetrixParameters(), (Path) null);
+        return create(network, null, null, (Path) null);
     }
 
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
-                                       MetrixParameters parameters, Path remedialActionFile) {
+                                       Path remedialActionFile) {
         Reader reader = null;
         if (remedialActionFile != null) {
             try {
@@ -597,21 +573,19 @@ public class MetrixNetwork {
                 network,
                 contingenciesProvider,
                 mappedSwitches,
-                parameters,
                 reader
         );
     }
 
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
-                                       MetrixParameters parameters, Reader remedialActionReader) {
+                                       Reader remedialActionReader) {
 
         Objects.requireNonNull(network);
-        Objects.requireNonNull(parameters);
 
         MetrixNetwork metrixNetwork = new MetrixNetwork(network);
 
         // Create contingencies list
-        metrixNetwork.createContingencyList(contingenciesProvider, parameters.isPropagateBranchTripping());
+        metrixNetwork.createContingencyList(contingenciesProvider);
 
         // Create opened and switch-retained lists (network will be modified)
         List<Remedial> remedials = RemedialReader.parseFile(remedialActionReader);

@@ -137,14 +137,14 @@ public class MetrixInputDataGenerator {
         LOGGER.info("Generating Metrix chunk input data in '{}'", workingDir.toAbsolutePath());
         List<InputFile> inputFiles = new ArrayList<>(FORT_FILE_NAME);
         additionnal.copyToInputFiles(remedialActionFile, inputFiles);
-        MetrixNetwork metrixNetwork = createNetwork(remedialActionFile, variantProvider, network, contingenciesProvider, parameters);
+        MetrixNetwork metrixNetwork = createNetwork(remedialActionFile, variantProvider, network, contingenciesProvider);
         writeFileData(variantProvider, parameters, metrixDslData, variants, metrixNetwork);
         return inputFiles;
     }
 
-    protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters) {
+    protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider) {
         return MetrixNetwork.create(network, contingenciesProvider,
-                variantProvider != null ? variantProvider.getMappedBreakers() : null, parameters, remedialActionFile);
+                variantProvider != null ? variantProvider.getMappedBreakers() : null, remedialActionFile);
     }
 
     private void copyToInputFiles(Path remedialActionFile, List<InputFile> inputFiles) {

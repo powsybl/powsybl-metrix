@@ -119,7 +119,7 @@ class MetrixTimeSeriesVariantsProviderTest {
         };
 
         MetrixParameters metrixParameters = MetrixParameters.load();
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, new MetrixParameters(), (Path) null);
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, (Path) null);
 
         TimeSeriesMappingConfig mappingConfig;
         try (Reader mappingReader = new InputStreamReader(Objects.requireNonNull(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy")), StandardCharsets.UTF_8)) {

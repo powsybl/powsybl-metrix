@@ -396,25 +396,25 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 8 ]
+      "values" : [ 7 ]
     }, {
       "name" : "DMPTDEFK",
       "type" : "INTEGER",
-      "valueCount" : 8,
-      "firstIndexMaxValue" : 8,
+      "valueCount" : 7,
+      "firstIndexMaxValue" : 7,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 8,
-      "values" : [ 1, 4, 7, 10, 13, 22, 47, 56 ]
+      "lastValueIndex" : 7,
+      "values" : [ 1, 4, 7, 10, 17, 40, 49 ]
     }, {
       "name" : "DMDESCRK",
       "type" : "INTEGER",
-      "valueCount" : 60,
-      "firstIndexMaxValue" : 60,
+      "valueCount" : 53,
+      "firstIndexMaxValue" : 53,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 60,
-      "values" : [ 2, 1, 1, 2, 2, 1, 2, 1, 13, 2, 3, 1, 8, 1, 1, 2, 1, 1, 13, 3, 1, 24, 1, 1, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 1, 9, 1, 10, 1, 11, 1, 12, 8, 2, 1, 2, 2, 2, 3, 2, 4, 4, 3, 1, 3, 2 ]
+      "lastValueIndex" : 53,
+      "values" : [ 2, 2, 1, 2, 1, 13, 2, 3, 1, 6, 2, 1, 1, 13, 3, 1, 22, 1, 2, 1, 3, 1, 4, 1, 5, 1, 6, 1, 7, 1, 8, 1, 9, 1, 10, 1, 11, 1, 12, 8, 2, 1, 2, 2, 2, 3, 2, 4, 4, 3, 1, 3, 2 ]
     }, {
       "name" : "NBDEFSPE",
       "type" : "INTEGER",
@@ -423,16 +423,16 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 5 ]
+      "values" : [ 4 ]
     }, {
       "name" : "PTDEFSPE",
       "type" : "INTEGER",
-      "valueCount" : 5,
-      "firstIndexMaxValue" : 5,
+      "valueCount" : 4,
+      "firstIndexMaxValue" : 4,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 5,
-      "values" : [ 0, 1, 2, 3, 4 ]
+      "lastValueIndex" : 4,
+      "values" : [ 0, 1, 2, 3 ]
     }, {
       "name" : "DTNBDEFK",
       "type" : "INTEGER",
@@ -441,16 +441,16 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 2 ]
+      "values" : [ 1 ]
     }, {
       "name" : "DTPTDEFK",
       "type" : "INTEGER",
-      "valueCount" : 2,
-      "firstIndexMaxValue" : 2,
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 2,
-      "values" : [ 0, 4 ]
+      "lastValueIndex" : 1,
+      "values" : [ 3 ]
     }, {
       "name" : "DCNBDEFK",
       "type" : "INTEGER",
@@ -468,7 +468,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 3,
-      "values" : [ 4, 6, 7 ]
+      "values" : [ 3, 5, 6 ]
     }, {
       "name" : "GRNBCURA",
       "type" : "INTEGER",
@@ -495,7 +495,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 2,
-      "values" : [ 1, 3 ]
+      "values" : [ 0, 2 ]
     }, {
       "name" : "NBLDCURA",
       "type" : "INTEGER",
@@ -513,16 +513,16 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 3,
-      "values" : [ 3, 0, 0 ]
+      "values" : [ 2, 0, 0 ]
     }, {
       "name" : "LDPTDEFK",
       "type" : "INTEGER",
-      "valueCount" : 3,
-      "firstIndexMaxValue" : 3,
+      "valueCount" : 2,
+      "firstIndexMaxValue" : 2,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 3,
-      "values" : [ 0, 1, 3 ]
+      "lastValueIndex" : 2,
+      "values" : [ 0, 2 ]
     }, {
       "name" : "LDCURPER",
       "type" : "INTEGER",
@@ -540,16 +540,16 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 7 ]
+      "values" : [ 6 ]
     }, {
       "name" : "PTDEFRES",
       "type" : "INTEGER",
-      "valueCount" : 7,
-      "firstIndexMaxValue" : 7,
+      "valueCount" : 6,
+      "firstIndexMaxValue" : 6,
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 7,
-      "values" : [ 2, 2, 0, 1, 5, 1, 2 ]
+      "lastValueIndex" : 6,
+      "values" : [ 2, 1, 0, 5, 1, 1 ]
     }, {
       "name" : "NBVARMAR",
       "type" : "INTEGER",
@@ -567,7 +567,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 7,
-      "values" : [ 9, 2, 2, 3, 10, 1, 6 ]
+      "values" : [ 9, 2, 1, 2, 10, 1, 5 ]
     }, {
       "name" : "SECTNBQD",
       "type" : "INTEGER",
@@ -976,12 +976,12 @@
     }, {
       "name" : "DMNOMDEK",
       "type" : "STRING",
-      "valueCount" : 32,
+      "valueCount" : 28,
       "firstIndexMaxValue" : 4,
-      "secondIndexMaxValue" : 8,
+      "secondIndexMaxValue" : 7,
       "firstValueIndex" : 1,
-      "lastValueIndex" : 32,
-      "values" : [ "cty1", "cty2", "cty3", "cty4", "cty5", "cty6", "cty7", "cty8" ]
+      "lastValueIndex" : 28,
+      "values" : [ "cty2", "cty3", "cty4", "cty5", "cty6", "cty7", "cty8" ]
     }, {
       "name" : "SECTNOMS",
       "type" : "STRING",

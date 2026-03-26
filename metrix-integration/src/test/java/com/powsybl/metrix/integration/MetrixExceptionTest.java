@@ -15,17 +15,15 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.integration.analysis.ContingencyLoader;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
 import com.powsybl.metrix.integration.analysis.MetrixAnalysis;
-import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.network.DefaultNetworkSourceImpl;
 import com.powsybl.metrix.integration.network.NetworkSource;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +31,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
@@ -97,8 +94,8 @@ class MetrixExceptionTest {
     @Test
     void loadContingenciesScriptExceptionTest() {
         ContingenciesProvider provider = new GroovyDslContingenciesProvider(wrongDslFile);
-        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixParameters(), new MetrixDslData(), null, null, new ScriptLogConfig());
-        assertThrows(ContingenciesScriptLoadingException.class, metrixInputAnalysis::runAnalysis);
+        ContingencyLoader contingencyLoader = new ContingencyLoader(provider, network, false, null, null, null);
+        assertThrows(ContingenciesScriptLoadingException.class, contingencyLoader::load);
     }
 
     @Test
