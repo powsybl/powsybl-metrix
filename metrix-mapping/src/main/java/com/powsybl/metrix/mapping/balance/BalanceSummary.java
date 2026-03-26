@@ -9,7 +9,7 @@ package com.powsybl.metrix.mapping.balance;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.TreeBasedTable;
-import com.powsybl.iidm.network.DanglingLine;
+import com.powsybl.iidm.network.BoundaryLine;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Injection;
@@ -94,7 +94,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
             return switch (identifiable) {
                 case Generator ignored -> variable == EquipmentVariable.TARGET_P;
                 case Load ignored -> variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
-                case DanglingLine ignored -> variable == EquipmentVariable.P0;
+                case BoundaryLine ignored -> variable == EquipmentVariable.P0;
                 default -> false;
             };
         }
@@ -106,7 +106,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
             return switch (injection) {
                 case Generator generator -> generator.getTargetP();
                 case Load load -> getLoad(variable, load);
-                case DanglingLine danglingLine -> -danglingLine.getP0();
+                case BoundaryLine boundaryLine -> -boundaryLine.getP0();
                 default -> 0;
             };
         }

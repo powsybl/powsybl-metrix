@@ -121,7 +121,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             MAPPED,
             Integer.toString(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.GENERATOR))),
             Integer.toString(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.LOAD))),
-            Integer.toString(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.BOUNDARY_LINE))),
+            Integer.toString(getNbMapped(config.getBoundaryLineToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.BOUNDARY_LINE))),
             Integer.toString(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.HVDC_LINE))),
             Integer.toString(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.PHASE_TAP_CHANGER))),
             Integer.toString(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.getByDefaultVariable(MappableEquipmentType.SWITCH))));
@@ -133,7 +133,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             UNMAPPED,
             Integer.toString(getNbUnmapped(config.getUnmappedGenerators(), config.getIgnoredUnmappedGenerators())),
             Integer.toString(getNbUnmapped(config.getUnmappedLoads(), config.getIgnoredUnmappedLoads())),
-            Integer.toString(getNbUnmapped(config.getUnmappedDanglingLines(), config.getIgnoredUnmappedDanglingLines())),
+            Integer.toString(getNbUnmapped(config.getUnmappedBoundaryLines(), config.getIgnoredUnmappedBoundaryLines())),
             Integer.toString(getNbUnmapped(config.getUnmappedHvdcLines(), config.getIgnoredUnmappedHvdcLines())),
             Integer.toString(getNbUnmapped(config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers())),
             getNotSignificantValue());
@@ -145,7 +145,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             MULTI_MAPPED,
             Integer.toString(getNbMultiMapped(config.getGeneratorToTimeSeriesMapping())),
             Integer.toString(getNbMultiMapped(config.getLoadToTimeSeriesMapping())),
-            Integer.toString(getNbMultiMapped(config.getDanglingLineToTimeSeriesMapping())),
+            Integer.toString(getNbMultiMapped(config.getBoundaryLineToTimeSeriesMapping())),
             Integer.toString(getNbMultiMapped(config.getHvdcLineToTimeSeriesMapping())),
             Integer.toString(getNbMultiMapped(config.getPhaseTapChangerToTimeSeriesMapping())),
             Integer.toString(getNbMultiMapped(config.getBreakerToTimeSeriesMapping())));
@@ -157,7 +157,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             IGNORED_UNMAPPED,
             Integer.toString(config.getIgnoredUnmappedGenerators().size()),
             Integer.toString(config.getIgnoredUnmappedLoads().size()),
-            Integer.toString(config.getIgnoredUnmappedDanglingLines().size()),
+            Integer.toString(config.getIgnoredUnmappedBoundaryLines().size()),
             Integer.toString(config.getIgnoredUnmappedHvdcLines().size()),
             Integer.toString(config.getIgnoredUnmappedPhaseTapChangers().size()),
             getNotSignificantValue());
@@ -169,7 +169,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             DISCONNECTED,
             Integer.toString(config.getDisconnectedGenerators().size()),
             Integer.toString(config.getDisconnectedLoads().size()),
-            Integer.toString(config.getDisconnectedDanglingLines().size()),
+            Integer.toString(config.getDisconnectedBoundaryLines().size()),
             getNotSignificantValue(),
             getNotSignificantValue(),
             getNotSignificantValue());
@@ -181,7 +181,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             OUT_OF_MAIN_CC,
             Integer.toString(config.getOutOfMainCcGenerators().size()),
             Integer.toString(config.getOutOfMainCcLoads().size()),
-            Integer.toString(config.getOutOfMainCcDanglingLines().size()),
+            Integer.toString(config.getOutOfMainCcBoundaryLines().size()),
             getNotSignificantValue(),
             getNotSignificantValue(),
             getNotSignificantValue());
@@ -193,7 +193,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             variable.getVariableName(),
             getNbMapped(MappableEquipmentType.GENERATOR, variable, config.getGeneratorToTimeSeriesMapping()),
             getNbMapped(MappableEquipmentType.LOAD, variable, config.getLoadToTimeSeriesMapping()),
-            getNbMapped(MappableEquipmentType.BOUNDARY_LINE, variable, config.getDanglingLineToTimeSeriesMapping()),
+            getNbMapped(MappableEquipmentType.BOUNDARY_LINE, variable, config.getBoundaryLineToTimeSeriesMapping()),
             getNbMapped(MappableEquipmentType.HVDC_LINE, variable, config.getHvdcLineToTimeSeriesMapping()),
             getNbMapped(MappableEquipmentType.PHASE_TAP_CHANGER, variable, config.getPhaseTapChangerToTimeSeriesMapping()),
             getNbMapped(MappableEquipmentType.SWITCH, variable, config.getBreakerToTimeSeriesMapping()));
@@ -280,42 +280,42 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
             tableFormatter.writeCell(MAPPED)
                     .writeCell(getNbMapped(config.getGeneratorToTimeSeriesMapping(), EquipmentVariable.TARGET_P))
                     .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping()))
-                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P0))
+                    .writeCell(getNbMapped(config.getBoundaryLineToTimeSeriesMapping(), EquipmentVariable.P0))
                     .writeCell(getNbMapped(config.getHvdcLineToTimeSeriesMapping(), EquipmentVariable.ACTIVE_POWER_SETPOINT))
                     .writeCell(getNbMapped(config.getPhaseTapChangerToTimeSeriesMapping(), EquipmentVariable.PHASE_TAP_POSITION))
                     .writeCell(getNbMapped(config.getBreakerToTimeSeriesMapping(), EquipmentVariable.OPEN))
                     .writeCell(UNMAPPED)
                     .writeCell(getNbUnmapped(config.getUnmappedGenerators(), config.getIgnoredUnmappedGenerators()))
                     .writeCell(getNbUnmapped(config.getUnmappedLoads(), config.getIgnoredUnmappedLoads()))
-                    .writeCell(getNbUnmapped(config.getUnmappedDanglingLines(), config.getIgnoredUnmappedDanglingLines()))
+                    .writeCell(getNbUnmapped(config.getUnmappedBoundaryLines(), config.getIgnoredUnmappedBoundaryLines()))
                     .writeCell(getNbUnmapped(config.getUnmappedHvdcLines(), config.getIgnoredUnmappedHvdcLines()))
                     .writeCell(getNbUnmapped(config.getUnmappedPhaseTapChangers(), config.getIgnoredUnmappedPhaseTapChangers()))
                     .writeCell(getNotSignificantValue())
                     .writeCell(MULTI_MAPPED)
                     .writeCell(getNbMultiMapped(config.getGeneratorToTimeSeriesMapping()))
                     .writeCell(getNbMultiMapped(config.getLoadToTimeSeriesMapping()))
-                    .writeCell(getNbMultiMapped(config.getDanglingLineToTimeSeriesMapping()))
+                    .writeCell(getNbMultiMapped(config.getBoundaryLineToTimeSeriesMapping()))
                     .writeCell(getNbMultiMapped(config.getHvdcLineToTimeSeriesMapping()))
                     .writeCell(getNbMultiMapped(config.getPhaseTapChangerToTimeSeriesMapping()))
                     .writeCell(getNbMultiMapped(config.getBreakerToTimeSeriesMapping()))
                     .writeCell(IGNORED_UNMAPPED)
                     .writeCell(config.getIgnoredUnmappedGenerators().size())
                     .writeCell(config.getIgnoredUnmappedLoads().size())
-                    .writeCell(config.getIgnoredUnmappedDanglingLines().size())
+                    .writeCell(config.getIgnoredUnmappedBoundaryLines().size())
                     .writeCell(config.getIgnoredUnmappedHvdcLines().size())
                     .writeCell(config.getIgnoredUnmappedPhaseTapChangers().size())
                     .writeCell(getNotSignificantValue())
                     .writeCell(DISCONNECTED)
                     .writeCell(config.getDisconnectedGenerators().size())
                     .writeCell(config.getDisconnectedLoads().size())
-                    .writeCell(config.getDisconnectedDanglingLines().size())
+                    .writeCell(config.getDisconnectedBoundaryLines().size())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(OUT_OF_MAIN_CC)
                     .writeCell(config.getOutOfMainCcGenerators().size())
                     .writeCell(config.getOutOfMainCcLoads().size())
-                    .writeCell(config.getOutOfMainCcDanglingLines().size())
+                    .writeCell(config.getOutOfMainCcBoundaryLines().size())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue());
@@ -357,7 +357,7 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
                     .writeCell(EquipmentVariable.P0.getVariableName())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNbMapped(config.getLoadToTimeSeriesMapping(), EquipmentVariable.P0))
-                    .writeCell(getNbMapped(config.getDanglingLineToTimeSeriesMapping(), EquipmentVariable.P0))
+                    .writeCell(getNbMapped(config.getBoundaryLineToTimeSeriesMapping(), EquipmentVariable.P0))
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())
                     .writeCell(getNotSignificantValue())

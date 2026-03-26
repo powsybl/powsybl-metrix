@@ -150,17 +150,17 @@ class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, List.of(observer));
 
-        assertEquals(10, results.size());
-        assertThat(results).containsExactlyInAnyOrder(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
-                        new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
-                        new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
-                        new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FTDPRA1  1"),
-                        new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
-                        new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1"),
-                        new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1"),
-                        new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FVERGE1  1"),
-                        new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G"),
-                        new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1"));
+        assertThat(results).hasSize(10).containsExactlyInAnyOrder(
+            new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
+            new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
+            new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
+            new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FTDPRA1  1"),
+            new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
+            new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1"),
+            new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1"),
+            new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FVERGE1  1"),
+            new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G"),
+            new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1"));
     }
 
     @Test

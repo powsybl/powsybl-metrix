@@ -31,7 +31,7 @@ import com.powsybl.iidm.network.PhaseTapChanger;
 import com.powsybl.iidm.network.Switch;
 import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.VoltageLevel;
-import com.powsybl.iidm.network.test.DanglingLineNetworkFactory;
+import com.powsybl.iidm.network.test.BoundaryLineNetworkFactory;
 import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
 import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
@@ -225,8 +225,8 @@ class MetrixInputTest {
     }
 
     @Test
-    void metrixInputDataWithUnpairedDanglingLineTests() throws IOException {
-        Network n = DanglingLineNetworkFactory.createWithGeneration();
+    void metrixInputDataWithUnpairedBoundaryLineTests() throws IOException {
+        Network n = BoundaryLineNetworkFactory.createWithGeneration();
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
         new MetrixInputData(MetrixNetwork.create(n), null, new MetrixParameters()).writeJson(writer);
@@ -234,7 +234,7 @@ class MetrixInputTest {
 
         // Results comparison
         String actual = writer.toString();
-        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/unpairedDanglingLineNetwork.json"),
+        assertNotNull(compareStreamTxt(getClass().getResourceAsStream("/unpairedBoundaryLineNetwork.json"),
                 new ByteArrayInputStream(actual.getBytes(StandardCharsets.UTF_8))));
     }
 
