@@ -9,6 +9,7 @@ package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 import groovy.transform.CompileStatic
 
 /**

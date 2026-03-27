@@ -158,8 +158,8 @@ class TimeSeriesMapToTest {
         };
         mapper.mapToNetwork(store, List.of(observer));
 
-        assertEquals(11, results.size());
-        assertEquals(List.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
+        assertThat(results).hasSize(11).containsExactlyInAnyOrder(
+                        new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
                         new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
                         new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0"),
                         new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FTDPRA1  1"),
@@ -169,8 +169,7 @@ class TimeSeriesMapToTest {
                         new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FVERGE1  1"),
                         new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G"),
                         new MappingKey(EquipmentVariable.TARGET_P, "BATTERY_1"),
-                        new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")),
-                results);
+                        new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1"));
     }
 
     @Test

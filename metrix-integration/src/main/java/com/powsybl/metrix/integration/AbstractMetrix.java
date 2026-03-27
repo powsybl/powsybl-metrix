@@ -7,6 +7,7 @@
  */
 package com.powsybl.metrix.integration;
 
+import com.google.common.collect.Range;
 import com.google.common.io.ByteStreams;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.io.WorkingDirectory;
@@ -26,11 +27,13 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static com.powsybl.metrix.commons.ComputationRange.checkAndSortRanges;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
 
 /**
@@ -134,28 +137,22 @@ public abstract class AbstractMetrix {
     }
 
     private ChunkCutter initChunkCutter(MetrixRunParameters runParameters, int chunkSizeFromConfig, TimeSeriesIndex index) {
-        int firstVariant = computeFirstVariant(runParameters, index);
-        int lastVariant = computeLastVariant(runParameters, index, firstVariant);
+        List<Range<Integer>> ranges = computeRangeVariant(runParameters.getRanges(), index);
         int chunkSize = computeChunkSize(runParameters, chunkSizeFromConfig, index);
-        return new ChunkCutter(firstVariant, lastVariant, chunkSize);
+        return new ChunkCutter(ranges, chunkSize);
     }
 
-    private int computeFirstVariant(MetrixRunParameters runParameters, TimeSeriesIndex index) {
-        if (runParameters.getFirstVariant() == -1) {
-            return 0;
+    private List<Range<Integer>> computeRangeVariant(List<Range<Integer>> ranges, TimeSeriesIndex index) {
+        List<Range<Integer>> sortedRanges = checkAndSortRanges(ranges);
+        Range<Integer> lastRange = sortedRanges.getLast();
+        int lowerEndpoint = lastRange.lowerEndpoint();
+        int lastIndexPoint = index.getPointCount() - 1;
+        if (lowerEndpoint > lastIndexPoint) {
+            throw new IllegalArgumentException("First variant (" + lowerEndpoint + ") is out of range [0, " + lastIndexPoint + "]");
         }
-        if (runParameters.getFirstVariant() < 0 || runParameters.getFirstVariant() > index.getPointCount() - 1) {
-            throw new IllegalArgumentException("First variant is out of range [0, "
-                    + (index.getPointCount() - 1) + "]");
-        }
-        return runParameters.getFirstVariant();
-    }
-
-    private int computeLastVariant(MetrixRunParameters runParameters, TimeSeriesIndex index, int firstVariant) {
-        if (runParameters.getVariantCount() == -1) {
-            return index.getPointCount() - 1;
-        }
-        return Math.min(firstVariant + runParameters.getVariantCount() - 1, index.getPointCount() - 1);
+        sortedRanges.removeLast();
+        sortedRanges.add(Range.closed(lowerEndpoint, Math.min(lastRange.upperEndpoint(), lastIndexPoint)));
+        return sortedRanges;
     }
 
     private void addLogsToArchive(

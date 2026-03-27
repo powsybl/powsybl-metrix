@@ -38,6 +38,10 @@ class DataTableGroovyScriptExtension implements GroovyScriptExtension {
         boolean exists(String dataTableName) {
             return store.exists(dataTableName)
         }
+
+        boolean addTable(String dataTableName, DataTable dataTable) {
+            return store.addTable(dataTableName, dataTable)
+        }
     }
 
     @Override
@@ -47,8 +51,7 @@ class DataTableGroovyScriptExtension implements GroovyScriptExtension {
             def dt = new DataTableGroovyObject(dataTableStore)
             binding.dataTable = dt
             binding.dt = dt
-            binding.toDataTable = { List<String> columnNames, List<List<String>> values -> DataTable::toDataTable(columnNames, values)
-            }
+            binding.toDataTable = { List<String> columnNames, List<List<String>> values -> DataTable::toDataTable(columnNames, values) }
         }
     }
 

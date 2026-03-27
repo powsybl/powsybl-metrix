@@ -40,7 +40,7 @@ public class TimeSeriesMappingConfig {
     protected final Map<MappingKey, List<String>> timeSeriesToGeneratorsMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> timeSeriesToBatteriesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> timeSeriesToLoadsMapping = new LinkedHashMap<>();
-    protected final Map<MappingKey, List<String>> timeSeriesToDanglingLinesMapping = new LinkedHashMap<>();
+    protected final Map<MappingKey, List<String>> timeSeriesToBoundaryLinesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> timeSeriesToHvdcLinesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> timeSeriesToPhaseTapChangersMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> timeSeriesToBreakersMapping = new LinkedHashMap<>();
@@ -54,7 +54,7 @@ public class TimeSeriesMappingConfig {
     protected final Map<MappingKey, List<String>> generatorToTimeSeriesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> batteryToTimeSeriesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> loadToTimeSeriesMapping = new LinkedHashMap<>();
-    protected final Map<MappingKey, List<String>> danglingLineToTimeSeriesMapping = new LinkedHashMap<>();
+    protected final Map<MappingKey, List<String>> boundaryLineToTimeSeriesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> hvdcLineToTimeSeriesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> phaseTapChangerToTimeSeriesMapping = new LinkedHashMap<>();
     protected final Map<MappingKey, List<String>> breakerToTimeSeriesMapping = new LinkedHashMap<>();
@@ -72,7 +72,7 @@ public class TimeSeriesMappingConfig {
     protected final Set<MappingKey> generatorTimeSeries = new HashSet<>();
     protected final Set<MappingKey> batteryTimeSeries = new HashSet<>();
     protected final Set<MappingKey> loadTimeSeries = new HashSet<>();
-    protected final Set<MappingKey> danglingLineTimeSeries = new HashSet<>();
+    protected final Set<MappingKey> boundaryLineTimeSeries = new HashSet<>();
     protected final Set<MappingKey> hvdcLineTimeSeries = new HashSet<>();
     protected final Set<MappingKey> phaseTapChangerTimeSeries = new HashSet<>();
     protected final Set<MappingKey> breakerTimeSeries = new HashSet<>();
@@ -93,7 +93,7 @@ public class TimeSeriesMappingConfig {
     protected final Set<String> unmappedLoads = new HashSet<>();
     protected final Set<String> unmappedFixedActivePowerLoads = new HashSet<>();
     protected final Set<String> unmappedVariableActivePowerLoads = new HashSet<>();
-    protected final Set<String> unmappedDanglingLines = new HashSet<>();
+    protected final Set<String> unmappedBoundaryLines = new HashSet<>();
     protected final Set<String> unmappedHvdcLines = new HashSet<>();
     protected final Set<String> unmappedPhaseTapChangers = new HashSet<>();
     protected final Set<String> unmappedMinPGenerators = new HashSet<>();
@@ -107,7 +107,7 @@ public class TimeSeriesMappingConfig {
     protected final Set<String> ignoredUnmappedGenerators = new HashSet<>();
     protected final Set<String> ignoredUnmappedBatteries = new HashSet<>();
     protected final Set<String> ignoredUnmappedLoads = new HashSet<>();
-    protected final Set<String> ignoredUnmappedDanglingLines = new HashSet<>();
+    protected final Set<String> ignoredUnmappedBoundaryLines = new HashSet<>();
     protected final Set<String> ignoredUnmappedHvdcLines = new HashSet<>();
     protected final Set<String> ignoredUnmappedPhaseTapChangers = new HashSet<>();
 
@@ -115,13 +115,13 @@ public class TimeSeriesMappingConfig {
     protected final Set<String> disconnectedGenerators = new HashSet<>();
     protected final Set<String> disconnectedBatteries = new HashSet<>();
     protected final Set<String> disconnectedLoads = new HashSet<>();
-    protected final Set<String> disconnectedDanglingLines = new HashSet<>();
+    protected final Set<String> disconnectedBoundaryLines = new HashSet<>();
 
     // Out of main Cc equipments
     protected final Set<String> outOfMainCcGenerators = new HashSet<>();
     protected final Set<String> outOfMainCcBatteries = new HashSet<>();
     protected final Set<String> outOfMainCcLoads = new HashSet<>();
-    protected final Set<String> outOfMainCcDanglingLines = new HashSet<>();
+    protected final Set<String> outOfMainCcBoundaryLines = new HashSet<>();
 
     // Planned outages
     protected final Map<String, Set<String>> timeSeriesToPlannedOutagesMapping = new LinkedHashMap<>();
@@ -142,7 +142,7 @@ public class TimeSeriesMappingConfig {
                 distributionKeys,
                 timeSeriesToGeneratorsMapping,
                 timeSeriesToLoadsMapping,
-                timeSeriesToDanglingLinesMapping,
+                timeSeriesToBoundaryLinesMapping,
                 timeSeriesToHvdcLinesMapping,
                 timeSeriesToPhaseTapChangersMapping,
                 timeSeriesToBreakersMapping,
@@ -153,7 +153,7 @@ public class TimeSeriesMappingConfig {
                 timeSeriesToVscConverterStationsMapping,
                 generatorToTimeSeriesMapping,
                 loadToTimeSeriesMapping,
-                danglingLineToTimeSeriesMapping,
+                boundaryLineToTimeSeriesMapping,
                 hvdcLineToTimeSeriesMapping,
                 phaseTapChangerToTimeSeriesMapping,
                 breakerToTimeSeriesMapping,
@@ -165,7 +165,7 @@ public class TimeSeriesMappingConfig {
                 generatorTimeSeries,
                 batteryTimeSeries,
                 loadTimeSeries,
-                danglingLineTimeSeries,
+                boundaryLineTimeSeries,
                 hvdcLineTimeSeries,
                 phaseTapChangerTimeSeries,
                 breakerTimeSeries,
@@ -180,7 +180,7 @@ public class TimeSeriesMappingConfig {
                 unmappedLoads,
                 unmappedFixedActivePowerLoads,
                 unmappedVariableActivePowerLoads,
-                unmappedDanglingLines,
+                unmappedBoundaryLines,
                 unmappedHvdcLines,
                 unmappedPhaseTapChangers,
                 unmappedMinPGenerators,
@@ -189,15 +189,15 @@ public class TimeSeriesMappingConfig {
                 unmappedMaxPHvdcLines,
                 ignoredUnmappedGenerators,
                 ignoredUnmappedLoads,
-                ignoredUnmappedDanglingLines,
+                ignoredUnmappedBoundaryLines,
                 ignoredUnmappedHvdcLines,
                 ignoredUnmappedPhaseTapChangers,
                 disconnectedGenerators,
                 disconnectedLoads,
-                disconnectedDanglingLines,
+                disconnectedBoundaryLines,
                 outOfMainCcGenerators,
                 outOfMainCcLoads,
-                outOfMainCcDanglingLines,
+                outOfMainCcBoundaryLines,
                 timeSeriesNodes,
                 timeSeriesToEquipmentMap,
                 equipmentToTimeSeriesMap,
@@ -214,7 +214,7 @@ public class TimeSeriesMappingConfig {
                     && timeSeriesToGeneratorsMapping.equals(other.getTimeSeriesToGeneratorsMapping())
                     && timeSeriesToBatteriesMapping.equals(other.getTimeSeriesToBatteriesMapping())
                     && timeSeriesToLoadsMapping.equals(other.getTimeSeriesToLoadsMapping())
-                    && timeSeriesToDanglingLinesMapping.equals(other.getTimeSeriesToDanglingLinesMapping())
+                    && timeSeriesToBoundaryLinesMapping.equals(other.getTimeSeriesToBoundaryLinesMapping())
                     && timeSeriesToHvdcLinesMapping.equals(other.getTimeSeriesToHvdcLinesMapping())
                     && timeSeriesToPhaseTapChangersMapping.equals(other.getTimeSeriesToPhaseTapChangersMapping())
                     && timeSeriesToBreakersMapping.equals(other.getTimeSeriesToBreakersMapping())
@@ -226,7 +226,7 @@ public class TimeSeriesMappingConfig {
                     && generatorToTimeSeriesMapping.equals(other.getGeneratorToTimeSeriesMapping())
                     && batteryToTimeSeriesMapping.equals(other.getBatteryToTimeSeriesMapping())
                     && loadToTimeSeriesMapping.equals(other.getLoadToTimeSeriesMapping())
-                    && danglingLineToTimeSeriesMapping.equals(other.getDanglingLineToTimeSeriesMapping())
+                    && boundaryLineToTimeSeriesMapping.equals(other.getBoundaryLineToTimeSeriesMapping())
                     && hvdcLineToTimeSeriesMapping.equals(other.getHvdcLineToTimeSeriesMapping())
                     && phaseTapChangerToTimeSeriesMapping.equals(other.getPhaseTapChangerToTimeSeriesMapping())
                     && breakerToTimeSeriesMapping.equals(other.getBreakerToTimeSeriesMapping())
@@ -238,7 +238,7 @@ public class TimeSeriesMappingConfig {
                     && generatorTimeSeries.equals(other.getGeneratorTimeSeries())
                     && batteryTimeSeries.equals(other.getBatteryTimeSeries())
                     && loadTimeSeries.equals(other.getLoadTimeSeries())
-                    && danglingLineTimeSeries.equals(other.getDanglingLineTimeSeries())
+                    && boundaryLineTimeSeries.equals(other.getBoundaryLineTimeSeries())
                     && hvdcLineTimeSeries.equals(other.getHvdcLineTimeSeries())
                     && phaseTapChangerTimeSeries.equals(other.getPhaseTapChangerTimeSeries())
                     && breakerTimeSeries.equals(other.getBreakerTimeSeries())
@@ -255,7 +255,7 @@ public class TimeSeriesMappingConfig {
                     && unmappedLoads.equals(other.getUnmappedLoads())
                     && unmappedFixedActivePowerLoads.equals(other.getUnmappedFixedActivePowerLoads())
                     && unmappedVariableActivePowerLoads.equals(other.getUnmappedVariableActivePowerLoads())
-                    && unmappedDanglingLines.equals(other.getUnmappedDanglingLines())
+                    && unmappedBoundaryLines.equals(other.getUnmappedBoundaryLines())
                     && unmappedHvdcLines.equals(other.getUnmappedHvdcLines())
                     && unmappedPhaseTapChangers.equals(other.getUnmappedPhaseTapChangers())
                     && unmappedMinPGenerators.equals(other.getUnmappedMinPGenerators())
@@ -265,17 +265,17 @@ public class TimeSeriesMappingConfig {
                     && ignoredUnmappedGenerators.equals(other.getIgnoredUnmappedGenerators())
                     && ignoredUnmappedBatteries.equals(other.getIgnoredUnmappedBatteries())
                     && ignoredUnmappedLoads.equals(other.getIgnoredUnmappedLoads())
-                    && ignoredUnmappedDanglingLines.equals(other.getIgnoredUnmappedDanglingLines())
+                    && ignoredUnmappedBoundaryLines.equals(other.getIgnoredUnmappedBoundaryLines())
                     && ignoredUnmappedHvdcLines.equals(other.getIgnoredUnmappedHvdcLines())
                     && ignoredUnmappedPhaseTapChangers.equals(other.getIgnoredUnmappedPhaseTapChangers())
                     && disconnectedGenerators.equals(other.getDisconnectedGenerators())
                     && disconnectedBatteries.equals(other.getDisconnectedBatteries())
                     && disconnectedLoads.equals(other.getDisconnectedLoads())
-                    && disconnectedDanglingLines.equals(other.getDisconnectedDanglingLines())
+                    && disconnectedBoundaryLines.equals(other.getDisconnectedBoundaryLines())
                     && outOfMainCcGenerators.equals(other.getOutOfMainCcGenerators())
                     && outOfMainCcBatteries.equals(other.getOutOfMainCcBatteries())
                     && outOfMainCcLoads.equals(other.getOutOfMainCcLoads())
-                    && outOfMainCcDanglingLines.equals(other.getOutOfMainCcDanglingLines())
+                    && outOfMainCcBoundaryLines.equals(other.getOutOfMainCcBoundaryLines())
                     && timeSeriesNodes.equals(other.getTimeSeriesNodes())
                     && timeSeriesToEquipmentMap.equals(other.getTimeSeriesToEquipment())
                     && equipmentToTimeSeriesMap.equals(other.getEquipmentToTimeSeries())
@@ -311,7 +311,7 @@ public class TimeSeriesMappingConfig {
         network.getGenerators().forEach(generator -> init(generator, unmappedGenerators, disconnectedGenerators, outOfMainCcGenerators));
         network.getBatteries().forEach(battery -> init(battery, unmappedBatteries, disconnectedBatteries, outOfMainCcBatteries));
         network.getLoads().forEach(load -> init(load, unmappedLoads, disconnectedLoads, outOfMainCcLoads));
-        network.getDanglingLines().forEach(danglingLine -> init(danglingLine, unmappedDanglingLines, disconnectedDanglingLines, outOfMainCcDanglingLines));
+        network.getBoundaryLines().forEach(boundaryLine -> init(boundaryLine, unmappedBoundaryLines, disconnectedBoundaryLines, outOfMainCcBoundaryLines));
         network.getHvdcLines().forEach(hvdcLine -> unmappedHvdcLines.add(hvdcLine.getId()));
         network.getTwoWindingsTransformers().forEach(transformer -> {
             if (transformer.hasPhaseTapChanger()) {
@@ -360,8 +360,8 @@ public class TimeSeriesMappingConfig {
         timeSeriesToLoadsMapping.putAll(map);
     }
 
-    public void setTimeSeriesToDanglingLinesMapping(Map<MappingKey, List<String>> map) {
-        timeSeriesToDanglingLinesMapping.putAll(map);
+    public void setTimeSeriesToBoundaryLinesMapping(Map<MappingKey, List<String>> map) {
+        timeSeriesToBoundaryLinesMapping.putAll(map);
     }
 
     public void setTimeSeriesToHvdcLinesMapping(Map<MappingKey, List<String>> map) {
@@ -408,8 +408,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableMap(timeSeriesToLoadsMapping);
     }
 
-    public Map<MappingKey, List<String>> getTimeSeriesToDanglingLinesMapping() {
-        return Collections.unmodifiableMap(timeSeriesToDanglingLinesMapping);
+    public Map<MappingKey, List<String>> getTimeSeriesToBoundaryLinesMapping() {
+        return Collections.unmodifiableMap(timeSeriesToBoundaryLinesMapping);
     }
 
     public Map<MappingKey, List<String>> getTimeSeriesToHvdcLinesMapping() {
@@ -457,8 +457,8 @@ public class TimeSeriesMappingConfig {
         loadToTimeSeriesMapping.putAll(map);
     }
 
-    public void setDanglingLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
-        danglingLineToTimeSeriesMapping.putAll(map);
+    public void setBoundaryLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
+        boundaryLineToTimeSeriesMapping.putAll(map);
     }
 
     public void setHvdcLineToTimeSeriesMapping(Map<MappingKey, List<String>> map) {
@@ -505,8 +505,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableMap(loadToTimeSeriesMapping);
     }
 
-    public Map<MappingKey, List<String>> getDanglingLineToTimeSeriesMapping() {
-        return Collections.unmodifiableMap(danglingLineToTimeSeriesMapping);
+    public Map<MappingKey, List<String>> getBoundaryLineToTimeSeriesMapping() {
+        return Collections.unmodifiableMap(boundaryLineToTimeSeriesMapping);
     }
 
     public Map<MappingKey, List<String>> getHvdcLineToTimeSeriesMapping() {
@@ -604,8 +604,8 @@ public class TimeSeriesMappingConfig {
         loadTimeSeries.addAll(set);
     }
 
-    public void setDanglingLineTimeSeries(Set<MappingKey> set) {
-        danglingLineTimeSeries.addAll(set);
+    public void setBoundaryLineTimeSeries(Set<MappingKey> set) {
+        boundaryLineTimeSeries.addAll(set);
     }
 
     public void setHvdcLineTimeSeries(Set<MappingKey> set) {
@@ -652,8 +652,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableSet(loadTimeSeries);
     }
 
-    public Set<MappingKey> getDanglingLineTimeSeries() {
-        return Collections.unmodifiableSet(danglingLineTimeSeries);
+    public Set<MappingKey> getBoundaryLineTimeSeries() {
+        return Collections.unmodifiableSet(boundaryLineTimeSeries);
     }
 
     public Set<MappingKey> getHvdcLineTimeSeries() {
@@ -737,8 +737,8 @@ public class TimeSeriesMappingConfig {
         unmappedVariableActivePowerLoads.addAll(set);
     }
 
-    public void setUnmappedDanglingLines(Set<String> set) {
-        unmappedDanglingLines.addAll(set);
+    public void setUnmappedBoundaryLines(Set<String> set) {
+        unmappedBoundaryLines.addAll(set);
     }
 
     public void setUnmappedHvdcLines(Set<String> set) {
@@ -793,8 +793,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableSet(unmappedVariableActivePowerLoads);
     }
 
-    public Set<String> getUnmappedDanglingLines() {
-        return Collections.unmodifiableSet(unmappedDanglingLines);
+    public Set<String> getUnmappedBoundaryLines() {
+        return Collections.unmodifiableSet(unmappedBoundaryLines);
     }
 
     public Set<String> getUnmappedHvdcLines() {
@@ -842,8 +842,8 @@ public class TimeSeriesMappingConfig {
         ignoredUnmappedLoads.addAll(set);
     }
 
-    public void setIgnoredUnmappedDanglingLines(Set<String> set) {
-        ignoredUnmappedDanglingLines.addAll(set);
+    public void setIgnoredUnmappedBoundaryLines(Set<String> set) {
+        ignoredUnmappedBoundaryLines.addAll(set);
     }
 
     public void setIgnoredUnmappedHvdcLines(Set<String> set) {
@@ -866,8 +866,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableSet(ignoredUnmappedLoads);
     }
 
-    public Set<String> getIgnoredUnmappedDanglingLines() {
-        return Collections.unmodifiableSet(ignoredUnmappedDanglingLines);
+    public Set<String> getIgnoredUnmappedBoundaryLines() {
+        return Collections.unmodifiableSet(ignoredUnmappedBoundaryLines);
     }
 
     public Set<String> getIgnoredUnmappedHvdcLines() {
@@ -891,8 +891,8 @@ public class TimeSeriesMappingConfig {
         disconnectedLoads.addAll(set);
     }
 
-    public void setDisconnectedDanglingLines(Set<String> set) {
-        disconnectedDanglingLines.addAll(set);
+    public void setDisconnectedBoundaryLines(Set<String> set) {
+        disconnectedBoundaryLines.addAll(set);
     }
 
     public Set<String> getDisconnectedGenerators() {
@@ -907,8 +907,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableSet(disconnectedLoads);
     }
 
-    public Set<String> getDisconnectedDanglingLines() {
-        return Collections.unmodifiableSet(disconnectedDanglingLines);
+    public Set<String> getDisconnectedBoundaryLines() {
+        return Collections.unmodifiableSet(disconnectedBoundaryLines);
     }
 
     // Out of main Cc equipments
@@ -924,8 +924,8 @@ public class TimeSeriesMappingConfig {
         outOfMainCcLoads.addAll(set);
     }
 
-    public void setOutOfMainCcDanglingLines(Set<String> set) {
-        outOfMainCcDanglingLines.addAll(set);
+    public void setOutOfMainCcBoundaryLines(Set<String> set) {
+        outOfMainCcBoundaryLines.addAll(set);
     }
 
     public Set<String> getOutOfMainCcGenerators() {
@@ -940,8 +940,8 @@ public class TimeSeriesMappingConfig {
         return Collections.unmodifiableSet(outOfMainCcLoads);
     }
 
-    public Set<String> getOutOfMainCcDanglingLines() {
-        return Collections.unmodifiableSet(outOfMainCcDanglingLines);
+    public Set<String> getOutOfMainCcBoundaryLines() {
+        return Collections.unmodifiableSet(outOfMainCcBoundaryLines);
     }
 
     // Planned outages

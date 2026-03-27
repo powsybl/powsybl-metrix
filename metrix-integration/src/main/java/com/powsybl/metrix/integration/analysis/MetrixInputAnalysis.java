@@ -21,6 +21,7 @@ import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingExcep
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -73,15 +74,17 @@ public class MetrixInputAnalysis {
     private final MetrixDslData metrixDslData;
     private final DataTableStore dataTableStore;
     private final BufferedWriter writer;
-    private final BufferedWriter scriptLogBufferedWriter;
+    private final ScriptLogConfig scriptLogConfig;
 
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
                                MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer) {
-        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, writer, null);
+        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, writer, new ScriptLogConfig());
     }
 
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
-                               MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer, BufferedWriter scriptLogBufferedWriter) {
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore,
+                               BufferedWriter writer,
+                               ScriptLogConfig scriptLogConfig) {
         Objects.requireNonNull(contingenciesProvider);
         Objects.requireNonNull(network);
         this.remedialActionsReader = remedialActionsReader;
@@ -90,7 +93,7 @@ public class MetrixInputAnalysis {
         this.metrixDslData = metrixDslData;
         this.dataTableStore = dataTableStore;
         this.writer = writer;
-        this.scriptLogBufferedWriter = scriptLogBufferedWriter;
+        this.scriptLogConfig = scriptLogConfig;
     }
 
     public MetrixInputAnalysisResult runAnalysis() {
@@ -178,8 +181,11 @@ public class MetrixInputAnalysis {
         if (dataTableStore != null) {
             contextObjects.put(DataTableStore.class, dataTableStore);
         }
-        if (scriptLogBufferedWriter != null) {
-            contextObjects.put(Writer.class, scriptLogBufferedWriter);
+        if (this.scriptLogConfig != null) {
+            contextObjects.put(ScriptLogConfig.class, this.scriptLogConfig);
+            if (this.scriptLogConfig.getWriter() != null) {
+                contextObjects.put(Writer.class, this.scriptLogConfig.getWriter());
+            }
         }
         return contextObjects;
     }
@@ -189,7 +195,7 @@ public class MetrixInputAnalysis {
             elementType == ContingencyElementType.TWO_WINDINGS_TRANSFORMER ||
             elementType == ContingencyElementType.BRANCH ||
             elementType == ContingencyElementType.GENERATOR ||
-            elementType == ContingencyElementType.DANGLING_LINE ||
+            elementType == ContingencyElementType.BOUNDARY_LINE ||
             elementType == ContingencyElementType.TIE_LINE ||
             elementType == ContingencyElementType.HVDC_LINE;
     }
@@ -213,7 +219,7 @@ public class MetrixInputAnalysis {
         if (elementType == ContingencyElementType.HVDC_LINE && identifiableType == IdentifiableType.HVDC_LINE) {
             return true;
         }
-        return elementType == ContingencyElementType.DANGLING_LINE && identifiableType == IdentifiableType.DANGLING_LINE;
+        return elementType == ContingencyElementType.BOUNDARY_LINE && identifiableType == IdentifiableType.BOUNDARY_LINE;
     }
 
     public static boolean isValidContingencyElement(IdentifiableType identifiableType, ContingencyElementType elementType) {

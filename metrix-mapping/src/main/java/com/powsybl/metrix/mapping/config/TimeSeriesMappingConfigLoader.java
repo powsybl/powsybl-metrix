@@ -238,9 +238,9 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
             case LOAD -> addLoadMapping(timeSeriesName, equipmentId, distributionKey, variable);
             case BOUNDARY_LINE -> {
                 addMapping(timeSeriesName, equipmentId, distributionKey, variable,
-                    config.timeSeriesToDanglingLinesMapping, config.danglingLineToTimeSeriesMapping);
+                    config.timeSeriesToBoundaryLinesMapping, config.boundaryLineToTimeSeriesMapping);
                 if (variable == EquipmentVariable.P0) {
-                    config.unmappedDanglingLines.remove(equipmentId);
+                    config.unmappedBoundaryLines.remove(equipmentId);
                 }
             }
             case HVDC_LINE -> addHvdcLineMapping(timeSeriesName, equipmentId, distributionKey, variable);
@@ -271,7 +271,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
         switch (equipmentType) {
             case GENERATOR -> config.ignoredUnmappedGenerators.add(equipmentId);
             case LOAD -> config.ignoredUnmappedLoads.add(equipmentId);
-            case BOUNDARY_LINE -> config.ignoredUnmappedDanglingLines.add(equipmentId);
+            case BOUNDARY_LINE -> config.ignoredUnmappedBoundaryLines.add(equipmentId);
             case HVDC_LINE -> config.ignoredUnmappedHvdcLines.add(equipmentId);
             case PHASE_TAP_CHANGER -> config.ignoredUnmappedPhaseTapChangers.add(equipmentId);
             default -> throw new AssertionError();
@@ -285,7 +285,7 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
                 case GENERATOR -> config.generatorTimeSeries.add(mappingKey);
                 case BATTERY -> config.batteryTimeSeries.add(mappingKey);
                 case LOAD -> config.loadTimeSeries.add(mappingKey);
-                case BOUNDARY_LINE -> config.danglingLineTimeSeries.add(mappingKey);
+                case BOUNDARY_LINE -> config.boundaryLineTimeSeries.add(mappingKey);
                 case HVDC_LINE -> config.hvdcLineTimeSeries.add(mappingKey);
                 case SWITCH -> config.breakerTimeSeries.add(mappingKey);
                 case TRANSFORMER -> config.transformerTimeSeries.add(mappingKey);

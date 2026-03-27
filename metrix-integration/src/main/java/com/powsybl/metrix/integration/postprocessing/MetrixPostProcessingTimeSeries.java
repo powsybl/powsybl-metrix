@@ -8,17 +8,23 @@
 package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.contingency.Contingency;
+import com.powsybl.metrix.integration.MetrixVariable;
+import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesFilter;
+import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
+import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -64,6 +70,60 @@ public final class MetrixPostProcessingTimeSeries {
     }
 
     /**
+     * Check if equipmentToTimeSeries contains configuration for each pair (id, variable)
+     * @param ids                   list of equipment ids to check
+     * @param variables             list of variables to check
+     * @param equipmentToTimeSeries map of configured equipment time series
+     */
+    public static boolean checkAllConfigured(Set<String> ids, List<MetrixVariable> variables, Map<MappingKey, String> equipmentToTimeSeries) {
+        return ids.stream()
+            .flatMap(id -> variables.stream()
+                .map(variable -> new MappingKey(variable, id)))
+            .noneMatch(key -> equipmentToTimeSeries.get(key) == null);
+    }
+
+    /**
+     * Find contingency id from time series name
+     * @param tsName time series name formatted as a String equals to 'prefix' + 'contingency id'
+     * @param prefix time series name prefix
+     * @return contingency id
+     */
+    public static String getContingencyIdFromTsName(String tsName, String prefix) {
+        if (tsName == null || prefix == null) {
+            throw new IllegalArgumentException("Time series name and/or prefix cannot be null");
+        }
+        if (tsName.isEmpty() || prefix.isEmpty()) {
+            throw new IllegalArgumentException("Time series name and/or prefix cannot be empty");
+        }
+        if (!tsName.startsWith(prefix)) {
+            throw new IllegalArgumentException("Time series name '" + tsName + "' does not start with prefix '" + prefix + "'");
+        }
+        if (tsName.length() == prefix.length()) {
+            throw new IllegalArgumentException("Time series name '" + tsName + "' does not contain a contingency id after prefix '" + prefix + "'");
+        }
+        return tsName.substring(prefix.length());
+    }
+
+    /**
+     * Find probability NodeCalc associated with a contingency and add it to the map of calculated time series
+     * If no probability is associated with the contingency, return a default probability of 0.001
+     * @param contingency          contingency
+     * @param calculatedTimeSeries map of existing calculated time series
+     * @return if a probability time series reference is present, return TimeSeriesNameNodeCalc, otherwise return DoubleNodeCalc
+     */
+    public static NodeCalc getProbabilityNodeCalc(Contingency contingency, Map<String, NodeCalc> calculatedTimeSeries) {
+        Probability probability = contingency.getExtension(Probability.class);
+        if (probability != null && probability.getProbabilityTimeSeriesRef() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityTimeSeriesRef(), TimeSeriesNameNodeCalc::new);
+        }
+        if (probability != null && probability.getProbabilityBase() != null) {
+            return calculatedTimeSeries.computeIfAbsent(probability.getProbabilityBase().toString(), k -> new DoubleNodeCalc(probability.getProbabilityBase()));
+        }
+        // No probability defined > default value
+        return calculatedTimeSeries.computeIfAbsent("defaultProbability", k -> new DoubleNodeCalc(0.001F));
+    }
+
+    /**
      * Create branch, generator, load, losses calculated time series for postprocessing
      * @param dslData            metrix configuration
      * @param mappingConfig      mapping configuration
@@ -87,12 +147,16 @@ public final class MetrixPostProcessingTimeSeries {
         // Initialize post-processing TimeSeries
         Map<String, NodeCalc> postProcessingTimeSeries = new HashMap<>(branchProcessing.createPostProcessingTimeSeries());
 
+        // Map contingency id -> contingency probability
+        Map<String, NodeCalc> contingencyProbabilityById = contingencies.stream().collect(Collectors.toMap(Contingency::getId, cty -> getProbabilityNodeCalc(cty, postProcessingTimeSeries)));
+
         // Generator
-        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, contingencies, allTimeSeriesNames, nullableSchemaName);
+        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData,
+            mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(generatorProcessing.createPostProcessingTimeSeries());
 
         // Load
-        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, contingencies, allTimeSeriesNames, nullableSchemaName);
+        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, contingencyProbabilityById, allTimeSeriesNames, nullableSchemaName);
         postProcessingTimeSeries.putAll(loadProcessing.createPostProcessingTimeSeries());
 
         // Losses

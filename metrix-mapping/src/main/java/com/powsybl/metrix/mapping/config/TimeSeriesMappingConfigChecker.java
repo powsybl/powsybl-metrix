@@ -66,7 +66,7 @@ public class TimeSeriesMappingConfigChecker {
 
         checkMappedAndUnmapped(config.generatorToTimeSeriesMapping, config.unmappedGenerators, config.ignoredUnmappedGenerators);
         checkMappedAndUnmapped(config.loadToTimeSeriesMapping, config.unmappedLoads, config.ignoredUnmappedLoads);
-        checkMappedAndUnmapped(config.danglingLineToTimeSeriesMapping, config.unmappedDanglingLines, config.ignoredUnmappedDanglingLines);
+        checkMappedAndUnmapped(config.boundaryLineToTimeSeriesMapping, config.unmappedBoundaryLines, config.ignoredUnmappedBoundaryLines);
         checkMappedAndUnmapped(config.hvdcLineToTimeSeriesMapping, config.unmappedHvdcLines, config.ignoredUnmappedHvdcLines);
         checkMappedAndUnmapped(config.phaseTapChangerToTimeSeriesMapping, config.unmappedPhaseTapChangers, config.ignoredUnmappedPhaseTapChangers);
     }
@@ -76,7 +76,7 @@ public class TimeSeriesMappingConfigChecker {
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getGeneratorToTimeSeriesMapping().keySet(), config.getGeneratorTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getBatteryToTimeSeriesMapping().keySet(), config.getBatteryTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getLoadToTimeSeriesMapping().keySet(), config.getLoadTimeSeries()));
-        keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getDanglingLineToTimeSeriesMapping().keySet(), config.getDanglingLineTimeSeries()));
+        keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getBoundaryLineToTimeSeriesMapping().keySet(), config.getBoundaryLineTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getHvdcLineToTimeSeriesMapping().keySet(), config.getHvdcLineTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getPhaseTapChangerToTimeSeriesMapping().keySet(), config.getPhaseTapChangerTimeSeries()));
         keys.addAll(getNotMappedEquipmentTimeSeriesKeys(config.getBreakerToTimeSeriesMapping().keySet(), config.getBreakerTimeSeries()));
@@ -128,7 +128,7 @@ public class TimeSeriesMappingConfigChecker {
     public boolean isMappingComplete() {
         return getNbUnmapped(config.unmappedGenerators, config.ignoredUnmappedGenerators)
                 + getNbUnmapped(config.unmappedLoads, config.ignoredUnmappedLoads)
-                + getNbUnmapped(config.unmappedDanglingLines, config.ignoredUnmappedDanglingLines)
+                + getNbUnmapped(config.unmappedBoundaryLines, config.ignoredUnmappedBoundaryLines)
                 + getNbUnmapped(config.unmappedHvdcLines, config.ignoredUnmappedHvdcLines)
                 + getNbUnmapped(config.unmappedPhaseTapChangers, config.ignoredUnmappedPhaseTapChangers) == 0;
     }
@@ -143,7 +143,7 @@ public class TimeSeriesMappingConfigChecker {
         Set<MappingKey> keys = new HashSet<>();
         keys.addAll(getEquipmentTimeSeriesKeys(config.getGeneratorToTimeSeriesMapping().keySet(), config.getGeneratorTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(config.getLoadToTimeSeriesMapping().keySet(), config.getLoadTimeSeries()));
-        keys.addAll(getEquipmentTimeSeriesKeys(config.getDanglingLineToTimeSeriesMapping().keySet(), config.getDanglingLineTimeSeries()));
+        keys.addAll(getEquipmentTimeSeriesKeys(config.getBoundaryLineToTimeSeriesMapping().keySet(), config.getBoundaryLineTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(config.getHvdcLineToTimeSeriesMapping().keySet(), config.getHvdcLineTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(config.getPhaseTapChangerToTimeSeriesMapping().keySet(), config.getPhaseTapChangerTimeSeries()));
         keys.addAll(getEquipmentTimeSeriesKeys(config.getBreakerToTimeSeriesMapping().keySet(), config.getBreakerTimeSeries()));

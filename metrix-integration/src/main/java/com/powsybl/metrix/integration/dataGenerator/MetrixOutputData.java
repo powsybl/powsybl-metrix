@@ -131,14 +131,6 @@ public class MetrixOutputData {
         public void insertResult(int pos, double value) {
             timeSeries[pos] = value;
         }
-
-        public void addResult(int pos, double value) {
-            if (Double.isNaN(timeSeries[pos])) {
-                insertResult(pos, value);
-            } else {
-                timeSeries[pos] += value;
-            }
-        }
     }
 
     private static final class StringResultChunk {
@@ -589,7 +581,6 @@ public class MetrixOutputData {
     private void readR2BOrR2D(String prefix, int varNum, String[] chunks, Map<Integer, String> outageNames) {
         String outageName;
         DoubleResultChunk ts;
-        DoubleResultChunk tsSum;
         // Check that it's not the header
         if (isHeader(chunks, INCIDENT)) {
             return;
@@ -598,9 +589,6 @@ public class MetrixOutputData {
         ts = getDoubleTimeSeries(prefix + CUR, GENERATOR, chunks[2], outageName);
         double redispatchingValue = Double.parseDouble(chunks[3]);
         ts.insertResult(varNum - offset, redispatchingValue);
-        // Compute curative redispatching by generator = sum of generator curative redispatching for all outages
-        tsSum = getDoubleTimeSeries(prefix + CUR + chunks[2]);
-        tsSum.addResult(varNum - offset, redispatchingValue);
     }
 
     private static boolean isHeader(String[] chunks, String firstHeaderName) {
@@ -643,7 +631,6 @@ public class MetrixOutputData {
      * Curative Loads
      */
     private void readR1B(int varNum, Map<Integer, String> outageNames, String[] chunks) {
-        DoubleResultChunk tsSum;
         // Check that it's not the header
         if (isHeader(chunks, INCIDENT)) {
             return;
@@ -652,9 +639,6 @@ public class MetrixOutputData {
         DoubleResultChunk ts = getDoubleTimeSeries(LOAD_CUR_PREFIX, LOAD, chunks[2], outageName);
         double sheddingValue = Double.parseDouble(chunks[3]);
         ts.insertResult(varNum - offset, sheddingValue);
-        // Compute curative load shedding by load = sum of curative load shedding for all outages
-        tsSum = getDoubleTimeSeries(LOAD_CUR_PREFIX + chunks[2]);
-        tsSum.addResult(varNum - offset, sheddingValue);
     }
 
     /**
