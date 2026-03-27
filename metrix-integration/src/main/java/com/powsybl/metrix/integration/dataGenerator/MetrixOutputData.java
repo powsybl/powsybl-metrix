@@ -33,68 +33,68 @@ public class MetrixOutputData {
 
     private static final String EMPTY_STRING = "";
 
-    private static final String ERROR_CODE_NAME = "ERROR_CODE";
-    private static final String OVERLOAD_BASECASE = "OVERLOAD_BASECASE";
-    private static final String OVERLOAD_OUTAGES = "OVERLOAD_OUTAGES";
+    public static final String ERROR_CODE_NAME = "ERROR_CODE";
+    public static final String OVERLOAD_BASECASE = "OVERLOAD_BASECASE";
+    public static final String OVERLOAD_OUTAGES = "OVERLOAD_OUTAGES";
 
-    private static final String VOL_UP = "VOL_UP_";
-    private static final String VOL_DOWN = "VOL_DOWN_";
-    private static final String COST = "COST";
-    private static final String CUR = "CUR_";
+    public static final String VOL_UP = "VOL_UP_";
+    public static final String VOL_DOWN = "VOL_DOWN_";
+    public static final String COST = "COST";
+    public static final String CUR = "CUR_";
 
     public static final String GEN_PREFIX = "GEN_";
     public static final String GEN_CUR_PREFIX = GEN_PREFIX + CUR;
-    private static final String GEN_COST = GEN_PREFIX + COST;
-    private static final String GEN_CUR_COST = GEN_CUR_PREFIX + COST;
+    public static final String GEN_COST = GEN_PREFIX + COST;
+    public static final String GEN_CUR_COST = GEN_CUR_PREFIX + COST;
 
-    private static final String BAT_PREFIX = "BAT_";
-    private static final String BAT_CUR_PREFIX = BAT_PREFIX + CUR;
-    private static final String BAT_COST = BAT_PREFIX + COST;
-    private static final String BAT_CUR_COST = BAT_CUR_PREFIX + COST;
+    public static final String BAT_PREFIX = "BAT_";
+    public static final String BAT_CUR_PREFIX = BAT_PREFIX + CUR;
+    public static final String BAT_COST = BAT_PREFIX + COST;
+    public static final String BAT_CUR_COST = BAT_CUR_PREFIX + COST;
 
     public static final String LOAD_PREFIX = "LOAD_";
     public static final String LOAD_CUR_PREFIX = LOAD_PREFIX + CUR;
-    private static final String LOAD_COST = LOAD_PREFIX + COST;
-    private static final String LOAD_CUR_COST = LOAD_CUR_PREFIX + COST;
+    public static final String LOAD_COST = LOAD_PREFIX + COST;
+    public static final String LOAD_CUR_COST = LOAD_CUR_PREFIX + COST;
 
     public static final String FLOW_NAME = "FLOW_";
     public static final String MAX_THREAT_NAME = "MAX_THREAT_";
     public static final String MAX_TMP_THREAT_FLOW = "MAX_TMP_THREAT_FLOW_";
     public static final String LOSSES = "LOSSES";
-    private static final String LOSSES_BY_COUNTRY = "LOSSES_";
+    public static final String LOSSES_BY_COUNTRY = "LOSSES_";
     public static final String HVDC_NAME = "HVDC_";
     public static final String PST_NAME = "PST_";
     public static final String PST_TAP_NAME = "PST_TAP_";
-    private static final String PST_CUR_NAME = "PST_CUR_";
-    private static final String PST_CUR_TAP_NAME = "PST_CUR_TAP_";
+    public static final String PST_CUR_NAME = "PST_CUR_";
+    public static final String PST_CUR_TAP_NAME = "PST_CUR_TAP_";
     public static final String HVDC_TYPE = "hvdc";
     public static final String PST_TYPE = "pst";
-    private static final String GEN_TYPE = "generator-type";
-    private static final String GENERATOR = "generator";
-    private static final String LOAD = "load";
-    private static final String BRANCH = "branch";
+    public static final String GEN_TYPE = "generator-type";
+    public static final String GENERATOR = "generator";
+    public static final String LOAD = "load";
+    public static final String BRANCH = "branch";
     public static final String CONTINGENCY_TYPE = "contingency";
     public static final String BASECASE_TYPE = "basecase";
-    private static final String UNKNOWN_OUTAGE = "Unknown outage";
+    public static final String UNKNOWN_OUTAGE = "Unknown outage";
 
     // HEADER
-    private static final String INCIDENT = "INCIDENT";
-    private static final String PAR_LIGNE = "PAR LIGNE";
-    private static final String FCT_OBJECTIF = "FCT OBJECTIF";
-    private static final String PERTES = "PERTES";
-    private static final String PAR_FILIERE = "PAR FILIERE";
-    private static final String PAR_LCC = " PAR LCC";
-    private static final String PAR_TD = "PAR TD";
-    private static final String VAR_MARGINALES = "VAR. MARGINALES";
-    private static final String NOM_REGROUPEMENT = "NOM REGROUPEMENT";
-    private static final String PAR_GROUPE = "PAR GROUPE";
-    private static final String PAR_CONSO = "PAR CONSO";
-    private static final String ZONE_SYNC = "ZONE SYNC";
-    private static final String INCIDENTS = "INCIDENTS";
-    private static final String NON_CONNEXITE = "NON CONNEXITE";
-    private static final String COMPTE_RENDU = "COMPTE RENDU";
+    public static final String INCIDENT = "INCIDENT";
+    public static final String PAR_LIGNE = "PAR LIGNE";
+    public static final String FCT_OBJECTIF = "FCT OBJECTIF";
+    public static final String PERTES = "PERTES";
+    public static final String PAR_FILIERE = "PAR FILIERE";
+    public static final String PAR_LCC = " PAR LCC";
+    public static final String PAR_TD = "PAR TD";
+    public static final String VAR_MARGINALES = "VAR. MARGINALES";
+    public static final String NOM_REGROUPEMENT = "NOM REGROUPEMENT";
+    public static final String PAR_GROUPE = "PAR GROUPE";
+    public static final String PAR_CONSO = "PAR CONSO";
+    public static final String ZONE_SYNC = "ZONE SYNC";
+    public static final String INCIDENTS = "INCIDENTS";
+    public static final String NON_CONNEXITE = "NON CONNEXITE";
+    public static final String COMPTE_RENDU = "COMPTE RENDU";
 
-    private static final Double ERROR_CODE = 1d;
+    public static final Double ERROR_CODE = 1d;
 
     private final Map<String, DoubleResultChunk> doubleTimeSeries = new ConcurrentHashMap<>();
 
