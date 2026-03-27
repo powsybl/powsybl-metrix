@@ -24,7 +24,6 @@ import com.powsybl.iidm.network.VoltageLevel;
 import com.powsybl.iidm.network.test.FourSubstationsNodeBreakerFactory;
 import com.powsybl.iidm.serde.ExportOptions;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.contingency.Probability;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -90,7 +89,7 @@ class MetrixNetworkTest {
         };
 
         // Initialize the MetrixNetwork
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, mappedSwitches, new MetrixParameters(), (Path) null);
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, mappedSwitches, (Path) null);
 
         // Check the lists
         assertThat(metrixNetwork.getCountryList()).containsExactlyInAnyOrderElementsOf(Collections.singletonList("Undefined"));
@@ -150,7 +149,7 @@ class MetrixNetworkTest {
         };
 
         // Initialize the MetrixNetwork
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, mappedSwitches, new MetrixParameters(), (Path) null);
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, mappedSwitches, (Path) null);
 
         // Check the lists
         assertThat(metrixNetwork.getCountryList()).containsExactlyInAnyOrderElementsOf(Collections.singletonList("Undefined"));

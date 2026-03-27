@@ -152,7 +152,7 @@ public class MetrixDieTool implements Tool {
         context.getOutputStream().println("Writing DIE ...");
 
         // write DIE
-        new MetrixInputData(MetrixNetwork.create(network, contingenciesProvider, null, parameters, remedialActionFile), metrixDslData, parameters)
+        new MetrixInputData(MetrixNetwork.create(network, contingenciesProvider, null, remedialActionFile), metrixDslData, parameters)
                 .write(outputDir, true, config.isConstantLossFactor());
     }
 }

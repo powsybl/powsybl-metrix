@@ -10,11 +10,8 @@ package com.powsybl.metrix.integration.network;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.util.StringToIntMapper;
 import com.powsybl.contingency.*;
-import com.powsybl.iidm.modification.tripping.Tripping;
 import com.powsybl.iidm.network.*;
-import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.MetrixSubset;
-import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 import org.slf4j.Logger;
@@ -521,46 +518,18 @@ public class MetrixNetwork {
         }
     }
 
-    private void createContingencyList(ContingenciesProvider provider, boolean propagate) {
+    private void createContingencyList(ContingenciesProvider provider) {
 
         if (Objects.isNull(provider)) {
             return;
         }
 
         List<Contingency> ctyList = provider.getContingencies(network);
-        ctyList.forEach(contingency -> addContingencyToList(contingency, propagate));
+        contingencyList.addAll(ctyList);
 
         if (LOGGER.isDebugEnabled()) {
             String message = String.format("Cty        total = <%5d> ok = <%5d> not = <%5d>", contingencyList.size(), ctyList.size(), contingencyList.size() - ctyList.size());
             LOGGER.debug(message);
-        }
-    }
-
-    private void addContingencyToList(Contingency contingency, boolean propagate) {
-        boolean ctyOk = true;
-        for (ContingencyElement element : contingency.getElements()) {
-            boolean elemOk = true;
-            Identifiable<?> identifiable = network.getIdentifiable(element.getId());
-            if (identifiable == null || !MetrixInputAnalysis.isValidContingencyElement(identifiable.getType(), element.getType())) {
-                elemOk = false;
-            }
-            if (!elemOk) {
-                if (LOGGER.isWarnEnabled()) {
-                    LOGGER.warn("Contingency '{}' : element '{}' not found in the network", contingency.getId(), element.getId());
-                }
-                ctyOk = false;
-            }
-        }
-        if (ctyOk) {
-            if (propagate) {
-                // replace elements with new elements from propagation
-                // this will keep the original extensions
-                List<ContingencyElement> extendedElements = new ArrayList<>(getElementsToTrip(contingency, true));
-                Collection<ContingencyElement> originalElements = new ArrayList<>(contingency.getElements());
-                originalElements.forEach(contingency::removeElement);
-                extendedElements.forEach(contingency::addElement);
-            }
-            contingencyList.add(contingency);
         }
     }
 
@@ -587,11 +556,11 @@ public class MetrixNetwork {
     }
 
     public static MetrixNetwork create(Network network) {
-        return create(network, null, null, new MetrixParameters(), (Path) null);
+        return create(network, null, null, (Path) null);
     }
 
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
-                                       MetrixParameters parameters, Path remedialActionFile) {
+                                       Path remedialActionFile) {
         Reader reader = null;
         if (remedialActionFile != null) {
             try {
@@ -604,21 +573,19 @@ public class MetrixNetwork {
                 network,
                 contingenciesProvider,
                 mappedSwitches,
-                parameters,
                 reader
         );
     }
 
     public static MetrixNetwork create(Network network, ContingenciesProvider contingenciesProvider, Set<String> mappedSwitches,
-                                       MetrixParameters parameters, Reader remedialActionReader) {
+                                       Reader remedialActionReader) {
 
         Objects.requireNonNull(network);
-        Objects.requireNonNull(parameters);
 
         MetrixNetwork metrixNetwork = new MetrixNetwork(network);
 
         // Create contingencies list
-        metrixNetwork.createContingencyList(contingenciesProvider, parameters.isPropagateBranchTripping());
+        metrixNetwork.createContingencyList(contingenciesProvider);
 
         // Create opened and switch-retained lists (network will be modified)
         List<Remedial> remedials = RemedialReader.parseFile(remedialActionReader);
@@ -796,49 +763,5 @@ public class MetrixNetwork {
             return Optional.ofNullable(mappedSwitchMap.get(sw.getId()));
         }
         return Optional.empty();
-    }
-
-    public Set<ContingencyElement> getElementsToTrip(Contingency contingency, boolean propagate) {
-
-        if (!propagate) {
-            return new HashSet<>(contingency.getElements());
-        } else {
-
-            Set<ContingencyElement> elementsToTrip = new HashSet<>();
-
-            Set<Switch> switchesToOpen = new HashSet<>();
-            Set<Terminal> terminalsToDisconnect = new HashSet<>();
-
-            for (ContingencyElement element : contingency.getElements()) {
-                if (element.getType() == ContingencyElementType.GENERATOR ||
-                        element.getType() == ContingencyElementType.HVDC_LINE) {
-                    elementsToTrip.add(element);
-                } else {
-                    Tripping modification = element.toModification();
-                    modification.traverse(network, switchesToOpen, terminalsToDisconnect);
-                }
-            }
-
-            Set<IdentifiableType> types = EnumSet.of(IdentifiableType.LINE,
-                    IdentifiableType.TWO_WINDINGS_TRANSFORMER,
-                    IdentifiableType.THREE_WINDINGS_TRANSFORMER,
-                    IdentifiableType.HVDC_CONVERTER_STATION);
-
-            // disconnect equipments and open switches
-            for (Switch s : switchesToOpen) {
-                VoltageLevel.NodeBreakerView nodeBreakerView = s.getVoltageLevel().getNodeBreakerView();
-                terminalsToDisconnect.add(nodeBreakerView.getTerminal1(s.getId()));
-                terminalsToDisconnect.add(nodeBreakerView.getTerminal2(s.getId()));
-            }
-            terminalsToDisconnect.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(t -> {
-                        Connectable<?> connectable = t.getConnectable();
-                        if (connectable != null && types.contains(connectable.getType())) {
-                            elementsToTrip.add(new BranchContingency(connectable.getId()));
-                        }
-                    });
-            return elementsToTrip;
-        }
     }
 }

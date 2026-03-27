@@ -276,7 +276,7 @@ class MetrixInputDataGeneratorTest {
     }
 
     interface CreateNetwork {
-        MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters);
+        MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider);
     }
 
     interface WriteVariantsInLogger {
@@ -333,8 +333,8 @@ class MetrixInputDataGeneratorTest {
         public MetrixInputDataGenerator create() {
             return new MetrixInputDataGenerator(conf, path, null, fsu) {
                 @Override
-                protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters) {
-                    return createNetwork != null ? createNetwork.createNetwork(remedialActionFile, variantProvider, network, contingenciesProvider, parameters) : null;
+                protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider) {
+                    return createNetwork != null ? createNetwork.createNetwork(remedialActionFile, variantProvider, network, contingenciesProvider) : null;
                 }
 
                 @Override

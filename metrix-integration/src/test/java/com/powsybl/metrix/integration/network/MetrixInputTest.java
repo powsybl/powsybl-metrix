@@ -36,15 +36,16 @@ import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
 import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
-import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
-import com.powsybl.metrix.integration.configuration.MetrixParameters;
-import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import com.powsybl.metrix.integration.MetrixSection;
+import com.powsybl.metrix.integration.analysis.ContingencyLoader;
+import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.MetrixTimeSeriesVariantProvider;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
+import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
@@ -111,7 +112,7 @@ class MetrixInputTest {
 
         Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, new MetrixParameters(), remedialActionFile);
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, null, remedialActionFile);
         Set<Switch> retainedSwitchList = new HashSet<>();
         for (VoltageLevel vl : n.getVoltageLevels()) {
             for (Switch sw : vl.getBusBreakerView().getSwitches()) {
@@ -277,7 +278,11 @@ class MetrixInputTest {
         Contingency cty9 = new Contingency("cty9", Collections.singletonList(l13));
         Contingency cty10 = new Contingency("cty10", Arrays.asList(l1, l13));
 
-        ContingenciesProvider provider = network -> List.of(cty1, cty2, cty3, cty4, cty5, cty6, cty7, cty8, cty9, cty10);
+        ContingenciesProvider ctyProvider = network -> List.of(cty1, cty2, cty3, cty4, cty5, cty6, cty7, cty8, cty9, cty10);
+        ContingencyLoader ctyLoader = new ContingencyLoader(ctyProvider, n, false, null, null, null);
+        List<Contingency> contingencies = new ArrayList<>(ctyLoader.load());
+        // terminal1 of l1 is not connected
+        ContingenciesProvider provider = network -> contingencies;
 
         // Metrix dsl data
         MetrixDslData metrixDslData = new MetrixDslData();
@@ -416,12 +421,12 @@ class MetrixInputTest {
 
         // Conversion iidm to die
         StringWriter writer = new StringWriter();
-        MetrixInputData inputData = new MetrixInputData(MetrixNetwork.create(n, provider, null, parameters, remedialActionFile), metrixDslData, parameters);
+        MetrixInputData inputData = new MetrixInputData(MetrixNetwork.create(n, provider, null, remedialActionFile), metrixDslData, parameters);
 
         // 175 = 13 branches * 13 (N, 2*5 Nk, 2*Itam) + 5 detailed + 1 section
         assertEquals(175, inputData.minResultNumberEstimate());
-        // 315 = 175 + (2adcy, 2prev, 4cur) gen + 2pst cur + (1prev, 5cur) hvdc + 4 load cur + (12*9 + 1section + 1hvdc + 2*5 detailed)marg.var.
-        assertEquals(315, inputData.maxResultNumberEstimate());
+        // 303 = 175 + (2adcy, 2prev, 4cur) gen + 2pst cur + (1prev, 5cur) hvdc + 4 load cur + ((12-1)*9 + 1section + 1hvdc + 2*5 detailed)marg.var.
+        assertEquals(303, inputData.maxResultNumberEstimate()); // 12-1 because cty1 element is out of the main connected component (terminal1 of l1 is not connected)
 
         inputData.writeJson(writer);
         writer.close();
@@ -479,7 +484,7 @@ class MetrixInputTest {
                     Range.closed(0, 1), System.err);
         }
 
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, variantProvider.getMappedBreakers(), new MetrixParameters(), (Path) null);
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(n, null, variantProvider.getMappedBreakers(), (Path) null);
 
         assertEquals("FP.AND1  FTDPRA1  1", metrixNetwork.getMappedBranch(n.getSwitch(mappedBreakers[0])).orElse("NOT PRESENT"));
         assertEquals("FS.BIS1  FVALDI1  1", metrixNetwork.getMappedBranch(n.getSwitch(mappedBreakers[1])).orElse("NOT PRESENT"));
@@ -491,33 +496,6 @@ class MetrixInputTest {
         assertEquals("FSSV.O1_Disj FSSV.O12_G", metrixNetwork.getMappedBranch(n.getSwitch(mappedBreakers[7])).orElse("NOT PRESENT"));
         assertEquals("NOT PRESENT", metrixNetwork.getMappedBranch(n.getSwitch(mappedBreakers[8])).orElse("NOT PRESENT"));
         assertEquals("NOT PRESENT", metrixNetwork.getMappedBranch(n.getSwitch(mappedBreakers[9])).orElse("NOT PRESENT"));
-    }
-
-    @Test
-    void propagateTrippingTest() {
-        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
-
-        ContingencyElement l = new BranchContingency("FTDPRA1  FVERGE1  1");
-        Contingency cty = new Contingency("cty", l);
-
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(n);
-
-        ContingencyElement l2 = new BranchContingency("FTDPRA1  FVERGE1  2");
-        ContingencyElement l3 = new BranchContingency("FVALDI1  FTDPRA1  1");
-        ContingencyElement l4 = new BranchContingency("FVALDI1  FTDPRA1  2");
-        ContingencyElement l5 = new BranchContingency("FP.AND1  FTDPRA1  1");
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l, l2, l3, l4, l5));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l));
-
-        ContingencyElement h = new HvdcLineContingency("HVDC1");
-        cty = new Contingency("cty", l4, h);
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l4, h));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l4, h));
-
-        ContingencyElement g = new GeneratorContingency("FSSV.O11_G");
-        cty = new Contingency("cty", g, l3);
-        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(g, l3));
-        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(g, l3));
     }
 
     @Test
@@ -540,7 +518,7 @@ class MetrixInputTest {
                     "cty1;1;FSSV.O1_Disj FSSV.O11_L;"));
         }
 
-        MetrixNetwork metrixNetwork = MetrixNetwork.create(n, provider, null, parameters, remedialActionFile);
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(n, provider, null, remedialActionFile);
         new MetrixInputData(metrixNetwork, new MetrixDslData(), parameters);
 
         assertEquals(List.of(n.getSwitch("FSSV.O1_Disj FSSV.O11_L")), metrixNetwork.getSwitchList());
