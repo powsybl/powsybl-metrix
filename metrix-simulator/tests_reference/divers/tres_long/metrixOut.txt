@@ -374,10 +374,10 @@ Blocage des variables de defaillance
 Micro itération 1 (nombre de contraintes 0)
 -------------------- : 
 
-Des contraintes ont été détectées : 37
+Des contraintes ont été détectées : 331
 Nb termes dans la matrice : 0 (taille de la matrice : 0)
-Ajout de 8 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 17)
+Ajout de 41 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 77)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -389,12 +389,12 @@ Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :      80.5176
-Cout des écarts de transit     :  157205.8474
-Valeur de la fonction objectif :  157286.3651
+Cout des écarts de transit     :  733627.2873
+Valeur de la fonction objectif :  733707.8050
 
-Des contraintes ont été détectées : 296
-Nb termes dans la matrice : 38 (taille de la matrice : 38)
-Ajout de 42 contraintes dans le probleme
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 174 (taille de la matrice : 174)
+Ajout de 9 contraintes dans le probleme
 Micro itération 3 (nombre de contraintes 86)
 -------------------- : 
 
@@ -448,10 +448,10 @@ Blocage des variables de defaillance
 Micro itération 1 (nombre de contraintes 0)
 -------------------- : 
 
-Des contraintes ont été détectées : 678
+Des contraintes ont été détectées : 2092
 Nb termes dans la matrice : 0 (taille de la matrice : 0)
-Ajout de 666 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 699)
+Ajout de 1308 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 1344)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -462,14 +462,14 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     102.7022
-Cout des écarts de transit     : 52988366.0549
-Valeur de la fonction objectif : 52988468.7571
+Cout de pénalisation TD & HVDC :     103.4851
+Cout des écarts de transit     : 99182252.2365
+Valeur de la fonction objectif : 99182355.7216
 
-Des contraintes ont été détectées : 1055
-Nb termes dans la matrice : 2211 (taille de la matrice : 2211)
-Ajout de 261 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 962)
+Des contraintes ont été détectées : 206
+Nb termes dans la matrice : 4165 (taille de la matrice : 4165)
+Ajout de 238 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 1582)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -480,28 +480,10 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :      77.3728
-Cout des écarts de transit     : 59424701.1949
-Valeur de la fonction objectif : 59424778.5677
-
-Des contraintes ont été détectées : 2
-Nb termes dans la matrice : 2985 (taille de la matrice : 2985)
-Ajout de 4 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 966)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 4016 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =  282476.0290 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :      77.2244
-Cout des écarts de transit     : 59426143.9780
-Valeur de la fonction objectif : 59426221.2024
+Cout de pénalisation TD & HVDC :      60.0346
+Cout des écarts de transit     : 99294931.8591
+Valeur de la fonction objectif : 99294991.8936
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 3009 (taille de la matrice : 3009)
+Nb termes dans la matrice : 5006 (taille de la matrice : 5006)
 Pas de contraintes
