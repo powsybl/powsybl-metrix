@@ -278,11 +278,11 @@ class MetrixInputTest {
         Contingency cty9 = new Contingency("cty9", Collections.singletonList(l13));
         Contingency cty10 = new Contingency("cty10", Arrays.asList(l1, l13));
 
-        ContingenciesProvider ctyProvider = __ -> List.of(cty1, cty2, cty3, cty4, cty5, cty6, cty7, cty8, cty9, cty10);
+        ContingenciesProvider ctyProvider = network -> List.of(cty1, cty2, cty3, cty4, cty5, cty6, cty7, cty8, cty9, cty10);
         ContingencyLoader ctyLoader = new ContingencyLoader(ctyProvider, n, false, null, null, null);
         List<Contingency> contingencies = new ArrayList<>(ctyLoader.load());
         // terminal1 of l1 is not connected
-        ContingenciesProvider provider = __ -> contingencies;
+        ContingenciesProvider provider = network -> contingencies;
 
         // Metrix dsl data
         MetrixDslData metrixDslData = new MetrixDslData();

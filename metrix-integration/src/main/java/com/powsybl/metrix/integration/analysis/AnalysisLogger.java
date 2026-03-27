@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ResourceBundle;
 
 import static java.lang.String.format;
@@ -103,7 +102,6 @@ public class AnalysisLogger {
             logWriter.newLine();
         } catch (IOException e) {
             LOGGER.error("Error encountered while logging message {} in {} section", messageKey, section, e);
-            throw new UncheckedIOException(e);
         }
     }
 

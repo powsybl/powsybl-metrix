@@ -16,7 +16,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UncheckedIOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -62,7 +61,7 @@ public class RemedialLoader {
             remedials = RemedialReader.parseFile(fileContent);
         } catch (IOException e) {
             LOGGER.error("Error encountered while reading remedials", e);
-            throw new UncheckedIOException(e);
+            return Collections.emptyList();
         }
         return remedials;
     }
@@ -119,7 +118,6 @@ public class RemedialLoader {
             }
         } catch (IOException e) {
             LOGGER.error("Error encountered while checking remedials", e);
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -161,10 +159,8 @@ public class RemedialLoader {
         }
 
         String[] actions = line.split(RemedialReader.COLUMN_SEPARATOR);
-        if (actions.length >= RemedialReader.FIRST_ACTION_INDEX) {
-            if (!checkNumber(actions[1], lineId, "invalidRemedialFileAction")) {
-                return;
-            }
+        if (actions.length >= RemedialReader.FIRST_ACTION_INDEX && !checkNumber(actions[1], lineId, "invalidRemedialFileAction")) {
+            return;
         }
 
         boolean isNbActionsEqualToZero = actions.length >= RemedialReader.FIRST_ACTION_INDEX && Integer.parseInt(actions[1]) == 0;

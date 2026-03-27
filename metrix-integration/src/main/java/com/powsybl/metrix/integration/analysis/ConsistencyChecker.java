@@ -179,6 +179,7 @@ public class ConsistencyChecker {
             case GENERATOR -> contingenciesMap = metrixDslData.getGeneratorContingenciesMap();
             case LOAD -> contingenciesMap = metrixDslData.getLoadContingenciesMap();
             case TWO_WINDINGS_TRANSFORMER -> contingenciesMap = metrixDslData.getPtcContingenciesMap();
+            default -> throw new IllegalStateException("Unexpected identifiable type: " + identifiableType);
         }
         return contingenciesMap;
     }
