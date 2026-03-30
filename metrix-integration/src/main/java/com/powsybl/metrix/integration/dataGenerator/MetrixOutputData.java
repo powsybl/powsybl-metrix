@@ -40,20 +40,28 @@ public class MetrixOutputData {
     public static final String VOL_UP = "VOL_UP_";
     public static final String VOL_DOWN = "VOL_DOWN_";
     public static final String COST = "COST";
-    public static final String CUR = "CUR_";
+    public static final String CUR_PREFIX = "CUR_";
 
     public static final String GEN_PREFIX = "GEN_";
-    public static final String GEN_CUR_PREFIX = GEN_PREFIX + CUR;
+    public static final String GEN_CUR_PREFIX = GEN_PREFIX + CUR_PREFIX;
     public static final String GEN_COST = GEN_PREFIX + COST;
     public static final String GEN_CUR_COST = GEN_CUR_PREFIX + COST;
+    public static final String GEN_VOL_UP = GEN_PREFIX + VOL_UP;
+    public static final String GEN_VOL_DOWN = GEN_PREFIX + VOL_DOWN;
+    public static final String GEN_CUR_VOL_UP = GEN_CUR_PREFIX + VOL_UP;
+    public static final String GEN_CUR_VOL_DOWN = GEN_CUR_PREFIX + VOL_DOWN;
 
     public static final String BAT_PREFIX = "BAT_";
-    public static final String BAT_CUR_PREFIX = BAT_PREFIX + CUR;
+    public static final String BAT_CUR_PREFIX = BAT_PREFIX + CUR_PREFIX;
     public static final String BAT_COST = BAT_PREFIX + COST;
     public static final String BAT_CUR_COST = BAT_CUR_PREFIX + COST;
+    public static final String BAT_VOL_UP = BAT_PREFIX + VOL_UP;
+    public static final String BAT_VOL_DOWN = BAT_PREFIX + VOL_DOWN;
+    public static final String BAT_CUR_VOL_UP = BAT_CUR_PREFIX + VOL_UP;
+    public static final String BAT_CUR_VOL_DOWN = BAT_CUR_PREFIX + VOL_DOWN;
 
     public static final String LOAD_PREFIX = "LOAD_";
-    public static final String LOAD_CUR_PREFIX = LOAD_PREFIX + CUR;
+    public static final String LOAD_CUR_PREFIX = LOAD_PREFIX + CUR_PREFIX;
     public static final String LOAD_COST = LOAD_PREFIX + COST;
     public static final String LOAD_CUR_COST = LOAD_CUR_PREFIX + COST;
 
@@ -360,28 +368,27 @@ public class MetrixOutputData {
      * Redispatching by generator types
      */
     private void readR7(int varNum, String[] chunks) {
-        DoubleResultChunk ts;
         // Check that it's not the header
         if (isHeader(chunks, PAR_FILIERE)) {
             return;
         }
         String currentGenType = chunks[2];
-        String prefixGenType = Objects.equals(currentGenType, BATTERY.name()) ? BAT_PREFIX : GEN_PREFIX;
-        if (!EMPTY_STRING.equals(chunks[3])) {
-            ts = getDoubleTimeSeries(prefixGenType + VOL_DOWN, GEN_TYPE, currentGenType);
-            ts.insertResult(varNum - offset, Double.parseDouble(chunks[3]));
-        }
-        if (!EMPTY_STRING.equals(chunks[4])) {
-            ts = getDoubleTimeSeries(prefixGenType + VOL_UP, GEN_TYPE, currentGenType);
-            ts.insertResult(varNum - offset, Double.parseDouble(chunks[4]));
-        }
-        if (!EMPTY_STRING.equals(chunks[5])) {
-            ts = getDoubleTimeSeries(prefixGenType + CUR + VOL_DOWN, GEN_TYPE, currentGenType);
-            ts.insertResult(varNum - offset, Double.parseDouble(chunks[5]));
-        }
-        if (!EMPTY_STRING.equals(chunks[6])) {
-            ts = getDoubleTimeSeries(prefixGenType + CUR + VOL_UP, GEN_TYPE, currentGenType);
-            ts.insertResult(varNum - offset, Double.parseDouble(chunks[6]));
+        boolean isBattery = Objects.equals(currentGenType, BATTERY.name());
+        String prefixVolDown = isBattery ? BAT_VOL_DOWN : GEN_VOL_DOWN;
+        String prefixVolUp = isBattery ? BAT_VOL_UP : GEN_VOL_UP;
+        String prefixCurVolDown = isBattery ? BAT_CUR_VOL_DOWN : GEN_CUR_VOL_DOWN;
+        String prefixCurVolUp = isBattery ? BAT_CUR_VOL_UP : GEN_CUR_VOL_UP;
+
+        insertDoubleIfChunkPresent(varNum, chunks[3], prefixVolDown, currentGenType);
+        insertDoubleIfChunkPresent(varNum, chunks[4], prefixVolUp, currentGenType);
+        insertDoubleIfChunkPresent(varNum, chunks[5], prefixCurVolDown, currentGenType);
+        insertDoubleIfChunkPresent(varNum, chunks[6], prefixCurVolUp, currentGenType);
+    }
+
+    private void insertDoubleIfChunkPresent(int varNum, String chunk, String prefix, String currentGenType) {
+        if (!EMPTY_STRING.equals(chunk)) {
+            DoubleResultChunk ts = getDoubleTimeSeries(prefix, GEN_TYPE, currentGenType);
+            ts.insertResult(varNum - offset, Double.parseDouble(chunk));
         }
     }
 
@@ -586,7 +593,7 @@ public class MetrixOutputData {
             return;
         }
         outageName = Optional.ofNullable(outageNames.get(Integer.parseInt(chunks[1]))).orElseThrow(() -> new PowsyblException(UNKNOWN_OUTAGE));
-        ts = getDoubleTimeSeries(prefix + CUR, GENERATOR, chunks[2], outageName);
+        ts = getDoubleTimeSeries(prefix + CUR_PREFIX, GENERATOR, chunks[2], outageName);
         double redispatchingValue = Double.parseDouble(chunks[3]);
         ts.insertResult(varNum - offset, redispatchingValue);
     }
