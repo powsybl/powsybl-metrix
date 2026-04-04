@@ -698,7 +698,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         list<tuple<const int, const string, const double>> nonBatteriesResults;
         list<tuple<const int, const string, const double>> batteriesResults;
-            
+
         if (res_.nbGroupesCuratifs_ > 0) {
 
             for (const auto& elem : res_.incidents_) {
@@ -756,7 +756,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                                 else {
                                     nonBatteriesResults.push_back(tupleToAdd);
                                 }
-                                
+
                             }
                         }
                     }
@@ -778,7 +778,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         for (auto& itLog : nonBatteriesResults) {
             fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
--                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
+                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
         }
         nonBatteriesResults.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
@@ -786,7 +786,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         for (auto& itLog : batteriesResults) {
             fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
--                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
+                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
         }
         batteriesResults.clear();
         // ecriture : R2C: Couplages de groupes
@@ -1312,13 +1312,13 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         for (const auto& elem : res_.incidents_) {
             const auto& icdt = elem.second;
-            
+
             if (!icdt->validite_) {
                 continue;
             }
-            
+
             auto tmpListeElemCur = icdt->listeElemCur_;
-            
+
             // Prendre en compte les parades activées
             if (icdt->paradesActivees_) {
                 for (const auto& parade : icdt->parades_) {
@@ -1328,19 +1328,19 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     }
                 }
             }
-            
+
             // Parcourir les éléments curatifs de cet incident
             for (const auto& elemC : tmpListeElemCur) {
                 if (elemC->typeElem_ != ElementCuratif::GROUPE) {
                     continue;
                 }
-                
+
                 int pos = elemC->positionVarEntiereCur_;
                 if ((pos == -1) || (pbX_[pos] > 0.5)) { // Curatif activé sur cette parade
                     pos = elemC->positionVarCurative_;
                     if (pos != -1) {
                         const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
-                        
+
                         // Si c'est une batterie, accumuler son coût curatif
                         if (grp->isBattery()) {
                             coutGrpBatteryC += pbCoutLineaireSansOffset_[pos] * pbX_[pos];
@@ -1351,9 +1351,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             }
         }
 
-        double coutGrp = (fonction_objectif_G_ - fonction_objectif_G_battery_prev) 
+        double coutGrp = (fonction_objectif_G_ - fonction_objectif_G_battery_prev)
                  - (volGrp * config::configuration().redispatchCostOffset());
-        double coutGrpBattery = fonction_objectif_G_battery_prev 
+        double coutGrpBattery = fonction_objectif_G_battery_prev
                                 - (volGrpBattery * config::configuration().redispatchCostOffset());
         double coutGrpC = fonction_objectif_G_cur_sans_offset_ - coutGrpBatteryC;
         double coutConso = fonction_objectif_D_ - (volDel * config::configuration().redispatchCostOffset());
