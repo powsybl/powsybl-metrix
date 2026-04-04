@@ -8,7 +8,7 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 #include <algorithm>
-#include <cctype> 
+#include <cctype>
 #include <cmath>
 #include <cstdio>
 #include <iomanip>
@@ -562,7 +562,7 @@ void Reseau::lireDonnees()
         }
 
         string grpTypeStr = "";
-        if(static_cast<unsigned int>(config.trtypgrpDIE().size()) > i && static_cast<int>(config.trnomtypDIE().size()) > config.trtypgrpDIE()[i]) {
+        if(static_cast<unsigned int>(config.trtypgrpDIE().size()) > i && config.trtypgrpDIE()[i] >= 0 && static_cast<int>(config.trnomtypDIE().size()) > config.trtypgrpDIE()[i]) {
             grpTypeStr = config.trnomtypDIE()[config.trtypgrpDIE()[i]];
             std::transform(grpTypeStr.begin(), grpTypeStr.end(), grpTypeStr.begin(),
                 [](unsigned char c) { return std::toupper(c); });
@@ -3067,7 +3067,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
             }
         }
     }
-    
+
     mapping[variant->indispoLignes_].push_back(variant);
 }
 
