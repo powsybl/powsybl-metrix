@@ -81,6 +81,19 @@ static std::string computeC2IncidentName(const std::shared_ptr<Incident>& inc)
     return nomInc;
 }
 
+static const std::vector<std::shared_ptr<ElementCuratif>>&
+resolveActiveElemCur(const std::shared_ptr<Incident>& icdt, const std::vector<double>& pbX)
+{
+    if (icdt->paradesActivees_) {
+        for (const auto& parade : icdt->parades_) {
+            if ((parade->numVarActivation_ != -1) && (pbX[parade->numVarActivation_] > 0.5)) {
+                return parade->listeElemCur_;
+            }
+        }
+    }
+    return icdt->listeElemCur_;
+}
+
 bool Calculer::findNumIncident(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants,
                                int indexConstraint,
                                int& numIncident) const
@@ -1317,37 +1330,30 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            auto tmpListeElemCur = icdt->listeElemCur_;
+            const auto& tmpListeElemCur = resolveActiveElemCur(icdt, pbX_);
 
-            // Prendre en compte les parades activées
-            if (icdt->paradesActivees_) {
-                for (const auto& parade : icdt->parades_) {
-                    if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
-                        tmpListeElemCur = parade->listeElemCur_;
-                        break;
-                    }
-                }
-            }
-
-            // Parcourir les éléments curatifs de cet incident
             for (const auto& elemC : tmpListeElemCur) {
                 if (elemC->typeElem_ != ElementCuratif::GROUPE) {
                     continue;
                 }
 
                 int pos = elemC->positionVarEntiereCur_;
-                if ((pos == -1) || (pbX_[pos] > 0.5)) { // Curatif activé sur cette parade
-                    pos = elemC->positionVarCurative_;
-                    if (pos != -1) {
-                        const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
-
-                        // Si c'est une batterie, accumuler son coût curatif
-                        if (grp->isBattery()) {
-                            coutGrpBatteryC += pbCoutLineaireSansOffset_[pos] * pbX_[pos];
-                            coutGrpBatteryC += pbCoutLineaireSansOffset_[pos + 1] * pbX_[pos + 1];
-                        }
-                    }
+                if ((pos != -1) && (pbX_[pos] <= 0.5)) {
+                    continue;
                 }
+
+                pos = elemC->positionVarCurative_;
+                if (pos == -1) {
+                    continue;
+                }
+
+                const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
+                if (!grp->isBattery()) {
+                    continue;
+                }
+
+                coutGrpBatteryC += pbCoutLineaireSansOffset_[pos] * pbX_[pos];
+                coutGrpBatteryC += pbCoutLineaireSansOffset_[pos + 1] * pbX_[pos + 1];
             }
         }
 
