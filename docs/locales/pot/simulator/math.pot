@@ -1,0 +1,1350 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 
+# This file is distributed under the same license as the PowSyBl Metrix package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../simulator/math.md:9
+#: 8a8a52e3962a4dd586630e2aea7c5e96
+msgid "Mathematical model"
+msgstr ""
+
+#: ../../simulator/math.md:11
+#: c4cb686c46d34f379cbe53ea434011be
+msgid "Variables"
+msgstr ""
+
+#: ../../simulator/math.md:14
+#: acd99317e69e4a2e813d14a2399015c3
+msgid "Incidents"
+msgstr ""
+
+#: ../../simulator/math.md:15
+#: 7316b5b4e21b47c593866688ed2abc10
+msgid "Les incidents sont listés dans le conteneur $INCIDENT$. Nous noterons $inc$ un élément de cette liste. Ce dernier peut provoquer :"
+msgstr ""
+
+#: ../../simulator/math.md:17
+#: 61edb57a08aa47e087bef8e52e75470e
+msgid "l'ouverture d'un certain nombre de lignes $DEFAUTQUAD_{inc}$ ;"
+msgstr ""
+
+#: ../../simulator/math.md:18
+#: da2842d4f6984945aa83f2ed9c99c0cb
+msgid "l'ouverture d'un certain nombre de LCCs $DEFAUTLCC_{inc}$ ;"
+msgstr ""
+
+#: ../../simulator/math.md:19
+#: 9332283ecc1c464e8f8721d8c00ae2a6
+msgid "et/ou l'arrêt de certains groupes $DEFAUTGRP_{inc}$."
+msgstr ""
+
+#: ../../simulator/math.md:21
+#: 186de7e5e62a4acbb5f04cc326b95711
+msgid "Parallèlement, afin de corriger cet incident, certains moyens curatifs pourront être utilisés. Ils sont stockés dans  la liste $CURATIF_{inc}$ et contiennent des groupes, des consommations, des TDs, des HVDCs et/ou des parades."
+msgstr ""
+
+#: ../../simulator/math.md:24
+#: c9dd586573ff4800acc35a5ce87aad72
+msgid "Enfin, cet incident a une certaine probabilité de survenir, notée $proba_{inc}$. Cet incident sera forcément appliqué  sur le réseau lors de la simulation de METRIX, mais cette probabilité permet de pondérer le coût d’utilisation des  actions curatives."
+msgstr ""
+
+#: ../../simulator/math.md:29
+#: 96a6e5e5a83243eeac15c75ad6972021
+msgid "Groupes"
+msgstr ""
+
+#: ../../simulator/math.md:30
+#: 893f98e610834527905c1b80665b2313
+msgid "Les groupes du réseau modélisé dans METRIX sont stockés dans une liste $GROUPE$. La production d’un groupe peut être modifiée en *Adequacy phase*, en *Redispatching phase*, les deux ou aucune. Nous  ne considérerons dans les équations, que les groupes modifiables en toute circonstance."
+msgstr ""
+
+#: ../../simulator/math.md:34
+#: ../../simulator/math.md:170
+#: ../../simulator/math.md:256
+#: f8735ab169694db08fc50fe4a7a7afc4
+#: 7d5bb1800cd34338b1d6a3719d5085e4
+#: 64ef1014983549228a7fd080c8b83908
+msgid "Définition des variables"
+msgstr ""
+
+#: ../../simulator/math.md:35
+#: 776f8f30581c4cd898f134fa93cfe541
+msgid "Soit $i$ un groupe de $GROUPE$."
+msgstr ""
+
+#: ../../simulator/math.md:37
+#: 9e3c1a23a0b34d138a43002f96e197ce
+msgid "Sa production se définit par une valeur initiale $P_i^0$ et des valeurs minimum et maximum $P_{i}^{min}$ et  $P_{i}^{max}$. Il existe deux valeurs pour la puissance minimum : $P_{i_{ad}}^{min}$ et $P_{i_{red}}^{min}$,  représentant les minimums pour l'*Adequacy* et le *Redispatching* tels que :"
+msgstr ""
+
+#: ../../simulator/math.md:41
+#: 8ae7d7a9c1c34d21988cac54f46be0cc
+msgid "\n"
+"P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:45
+#: 6a88fb5c8c0e446d8b883c21fe81db61
+msgid "La variation de puissance du groupe $i$ est décrite dans les problèmes d'*Adequacy* et de *Redispatching* en N par  deux variables : $p_i^+$ et $p_i^-$, **toutes deux positives**, et représentant respectivement la hausse et la baisse  de la production du groupe $i$. De même, pour chaque incident $inc$, nous disposons de deux variables $p_{i_{inc}}^{-}$  et $p_{i_{inc}}^{+}$ représentant la variation de la puissance en curatif sur cet incident $inc$, et d'une variable  booléenne d'activation du curatif sur l'incident $actP_{i}^{inc}$. Ces trois variables curatives sont ainsi reliées  de la manière suivante :"
+msgstr ""
+
+#: ../../simulator/math.md:52
+#: 82d1e98d301b4f278fc4e6ca3d65eb0e
+msgid "\n"
+"p_{i_{inc}}^{-} + p_{i_{inc}}^{+} \\leq M \\cdot actP_{i}^{inc}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:56
+#: 33c99efa1b3b4bd5bc5d01947287a9e3
+msgid "Avec $M$ une très grande valeur."
+msgstr ""
+
+#: ../../simulator/math.md:58
+#: ../../simulator/math.md:184
+#: ../../simulator/math.md:270
+#: ../../simulator/math.md:301
+#: 43f507472a43424f99f88dc592f70151
+#: e9f98a1249df452ca4bbd9c886cf84cc
+#: cb5aac02bc0b4e2d8fc2755666659232
+#: 6c88011d1f51478d98827eb1d4f5fe5f
+msgid "Domaines de définition des variables"
+msgstr ""
+
+#: ../../simulator/math.md:59
+#: c961929d34ca4b8fb84be51b283a385b
+msgid "Les domaines de définitions pour les variables liées à la production sont :"
+msgstr ""
+
+#: ../../simulator/math.md:60
+#: dcbd8bea063e44b2bb9be08deac75849
+msgid "*Adequacy phase* (EOD - Équilibre Offre Demande) :"
+msgstr ""
+
+#: ../../simulator/math.md:62
+#: e3a35a484bca40f4b0d70401ad405a7c
+msgid "\n"
+"\\begin{aligned}\n"
+" \\text{Si }P_{i_{ad}}^{min}\\geq 0\\text{ et }P_{i_{ad}}^{min} > P_{i}^{0} \\Rightarrow &\n"
+" \\begin{cases}\n"
+"    p_{i}^{-} = 0\\\\\n"
+"    p_{i}^{+} \\in [P_{i_{ad}}^{min} - P_{i}^{0}; P_{i}^{max} - P_{i}^{0}]\n"
+" \\end{cases}\\\\\n"
+" \\text{Sinon }&\n"
+" \\begin{cases}\n"
+"    p_{i}^{-} \\in [0; P_{i}^{0} - P_{i_{ad}}^{min}]\\\\\n"
+"    p_{i}^{+} \\in [0; P_{i}^{max} - P_{i}^{0}]\n"
+" \\end{cases}\n"
+"\\end{aligned}\n"
+" "
+msgstr ""
+
+#: ../../simulator/math.md:77
+#: d37ad2095bea402a8f3720a9931b726d
+msgid "<o>YJ : pourquoi le $P_{i_{ad}}^{min}\\geq 0$ ??</o>"
+msgstr ""
+
+#: ../../simulator/math.md:79
+#: cf27a898513c474bac2927ef71f40cf0
+msgid "*Redispatching phase* en préventif :"
+msgstr ""
+
+#: ../../simulator/math.md:81
+#: ba0219c06841453597989a6c9282c856
+msgid "**Les variables et paramètres sont modifiés à partir du résultat de l’*Adequacy phase*** pour les intégrer dans la  *Redispatching phase* : $P_i^0 = p_i^+ - p_i^- + P_i^0$. Autrement dit, la puissance de consigne en  préventif prend pour valeur le résultat de l’*Adequacy phase* et les variables de production à la hausse ou à la  baisse sont ensuite réinitialisées (N.B. : **c’est un comportement propre aux groupes**). Les bornes sont alors  les suivantes :"
+msgstr ""
+
+#: ../../simulator/math.md:87
+#: af6df63be0bd4b5187c9c16fbefc2c5a
+msgid "\n"
+"\\begin{aligned}\n"
+"p_{i}^{+} &\\in [0; P_{i}^{max} - P_{i}^{0}]\\\\\n"
+"p_{i}^{-} &\n"
+" \\begin{cases}\n"
+"    \\in [0; P_{i}^{0} - P_{i_{red}}^{min}]\\text{ si }P_{i}^{0}\\geq P_{i}^{min}\\\\\n"
+"    = 0\\text{ sinon}\n"
+" \\end{cases}\n"
+" \\end{aligned}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:98
+#: 927944805560446d880ae5fcfb76cb0b
+msgid "*Redispatching phase* en curatif :"
+msgstr ""
+
+#: ../../simulator/math.md:100
+#: 266f8aee98fb434f848c9bb19621a7fb
+msgid " \n"
+"\\begin{cases}\n"
+"p_{i}^{+} - p_{i}^{-} + p_{i_{inc}}^{+} \\leq P_{i}^{max} - P_{i}^{0}\\\\\n"
+"min(0; P_{i_{red}}^{min} - P_{i}^{0}) \\leq p_{i}^{+} - p_{i}^{-} - p_{i_{inc}}^{-}\n"
+"\\end{cases}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:107
+#: 15cb83d6a9e443d8b3573371d998e537
+msgid "Coûts"
+msgstr ""
+
+#: ../../simulator/math.md:109
+#: a9b099d7e7f041578ccc12ebde024cb4
+msgid "En outre, la modification des variables de production des groupes a un coût. Plus précisément, nous allons associer  des coûts à la hausse et à la baisse en *Adequacy phase* : $\\Gamma_{i_{ad}}^{-}$ et $\\Gamma_{i_{ad}}^{+}$ ; et en  *Redispatching phase* : $\\Gamma_{i_{red}}^{-}$ et $\\Gamma_{i_{red}}^{+}$."
+msgstr ""
+
+#: ../../simulator/math.md:113
+#: ../../simulator/math.md:209
+#: 5e9091ae4465465da76258840ca0c69b
+#: fe72ad51ae5447a69d4961674355b551
+msgid "Appartenance à une zone synchrone"
+msgstr ""
+
+#: ../../simulator/math.md:115
+#: c329af14af1e404f9d2d8aa7562df890
+msgid "Chaque groupe est rattaché à un unique nœud du réseau, appartenant, lui-même, à une unique zone synchrone. Pour chaque  zone synchrone $zc \\in ZC$, nous notons $GROUPE_{zc}$ l'ensemble des groupes appartenant à cette zone synchrone."
+msgstr ""
+
+#: ../../simulator/math.md:119
+#: ../../simulator/math.md:161
+#: 88abc27fd71740ceba04d5119091633e
+#: 9e8a9be7b4a14cd2923447f580747748
+msgid "Contrainte de couplage des groupes"
+msgstr ""
+
+#: ../../simulator/math.md:121
+#: df59181b46ab4dcf8b2a76014b913d58
+msgid "Lors de la *Redispatching phase*, nous pouvons définir dans le réseau un ensemble de groupes dont la production en N  doit varier de façon proportionnelle. Notons $COUPLAGE^{GRP}$ l'ensemble des couplages groupés. Afin de définir cette  variation, nous allons définir une valeur de référence pour chacun des groupes de cet ensemble. Cette valeur de  référence peut être $P^{max}$, $P^{min}$, $P^{0}$ ou encore $P^{max} - P^{0}$. Celle-ci sera notée $P^{ref}$."
+msgstr ""
+
+#: ../../simulator/math.md:126
+#: 5816fe7cee924c20a5e6a8e7e3873aa6
+msgid "Soit $i_0$ le premier groupe de cet ensemble. $\\forall i \\in COUPLAGE^{GRP}$, $i \\not = i_0$ :"
+msgstr ""
+
+#: ../../simulator/math.md:128
+#: 0b1ae8b809374d62ac948550bbf27e09
+msgid "\n"
+"\\frac{p_i^+ - p_i^-}{P_i^{ref}} = \\frac{p_{i_0}^+ - p_{i_0}^-}{P_{i_0}^{ref}}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:133
+#: ../../simulator/math.md:162
+#: 5e8d91d3311c466ab1b4302453681717
+#: 4f2478aec4a4471e94f0738baaa90084
+msgid "Contrainte de limitation des changements curatifs"
+msgstr ""
+
+#: ../../simulator/math.md:134
+#: b87433ccf89544b18afdf702d6691510
+msgid "Cette contrainte est **facultative**, il faut indiquer dans les données METRIX que nous souhaitons l'appliquer (avec  le paramètre *LimiteCurGroupe*). Cette contrainte permet de limiter la baisse cumulée de la production en curatif  sur un incident $inc$ :"
+msgstr ""
+
+#: ../../simulator/math.md:138
+#: 0f2df0233fc24a69a7ef3a379155db7d
+msgid "\n"
+"\\sum_{i\\in GROUPE} p_{inc}^{-} \\leq LimiteCurGroupe\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:142
+#: 726fb89a43b845f0a6bc1b97e8d766a3
+msgid "**Note** : la contrainte ne considère que les variations à la baisse afin de prendre en compte le délestage de  consommation."
+msgstr ""
+
+#: ../../simulator/math.md:145
+#: ../../simulator/math.md:225
+#: ../../simulator/math.md:309
+#: ../../simulator/math.md:403
+#: ../../simulator/math.md:475
+#: 1d5d2dc850af439a9e597f4d69d7a2c3
+#: ca667e45ed1f4bfa87f3c7adc2cb6308
+#: 42e3409287de4786b6c6265b4edc31e7
+#: eddffc201846457c8fe05eaca2cf1cbe
+#: 7c28dbfc1bc14699895e29bee8fa2543
+msgid "<r>Résumé des notations :</r>"
+msgstr ""
+
+#: ../../simulator/math.md:147
+#: ../../simulator/math.md:227
+#: ../../simulator/math.md:311
+#: ../../simulator/math.md:405
+#: ../../simulator/math.md:477
+#: 67021f322a0340f6b3ffb3a5a6b545af
+#: 460ab3b1105e41308bbafa19bb5f8454
+#: a2ee2d2e37f14a45a80b900c3fe1294d
+#: b90867b8365d4b639bf8bd45134dcf37
+#: f29c977fcf0c47df9ee413b6e1d85ef3
+msgid "**Données**"
+msgstr ""
+
+#: ../../simulator/math.md:149
+#: 243ba52cc8c34f83be2e17699b2e5769
+msgid "Ensembles : $GROUPE$, $COUPLAGE^{GRP}$, $GROUPE_{zc}$"
+msgstr ""
+
+#: ../../simulator/math.md:151
+#: e0b4ee0a496e4b6ab5e77f43f583a459
+msgid "Valeurs :"
+msgstr ""
+
+#: ../../simulator/math.md:152
+#: dc8c6d409a0e4fd49c7ef157013d8507
+msgid "LimiteCurGroupe"
+msgstr ""
+
+#: ../../simulator/math.md:153
+#: d1a72bffd93b4409b361632b8ef4901b
+msgid "$\\forall i \\in GROUPE : P_{i}^{max}, P_{i_{ad}}^{min}, P_{i_{red}}^{min}, P_{i}^{ref}, \\Gamma_{i_{ad}}^{-}, \\Gamma_{i_{ad}}^{+}, \\Gamma_{i_{red}}^{-}, \\Gamma_{i_{red}}^{+}$"
+msgstr ""
+
+#: ../../simulator/math.md:155
+#: ../../simulator/math.md:233
+#: ../../simulator/math.md:317
+#: ../../simulator/math.md:411
+#: ../../simulator/math.md:487
+#: 097b8ef3f21447c7afe682c9a303e1e7
+#: cc1013d44971443e8c1723aa146680d0
+#: 91895884c1324796b6198338a70c29b9
+#: f82a3dfa08da462ca8b62add2d705f85
+#: d2d378616b334a2cb5efca2c4c2e4f89
+msgid "**Variables**"
+msgstr ""
+
+#: ../../simulator/math.md:157
+#: 9d463e6614314ca6bf5ade4519c3c508
+msgid "$\\forall i \\in GROUPE, \\forall inc \\in INCIDENT : p_{i}^{+}, p_{i}^{-}, p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, actP_{i}^{inc}$"
+msgstr ""
+
+#: ../../simulator/math.md:159
+#: ../../simulator/math.md:491
+#: cfa8c004a3224408a834ae12c238fb42
+#: f1121c3fccd4447881d4bd63145c849e
+msgid "**Contraintes**"
+msgstr ""
+
+#: ../../simulator/math.md:160
+#: 367e7b69f5254fca8a13a85ecd93570c
+msgid "Contraintes des domaines de définition"
+msgstr ""
+
+#: ../../simulator/math.md:165
+#: 76965dcaf98f44af8658f02c0c850198
+msgid "Consommations"
+msgstr ""
+
+#: ../../simulator/math.md:167
+#: acb1a5eafb7d45229e6308f7a6c29144
+msgid "Les centres de consommations (appelés consommations) sont dans la liste $CONSO$.  La puissance utilisée par une consommation peut être modifiée aussi bien en *Adequacy* qu'en *Redispatching phase*."
+msgstr ""
+
+#: ../../simulator/math.md:172
+#: 51d93e2eca7b444cbe0cde979d1fa2fb
+msgid "Soit $i$ une consommation du groupe $CONSO$."
+msgstr ""
+
+#: ../../simulator/math.md:174
+#: 71ac818acb594744860a3f4a1872c866
+msgid "$C_{i}^{0}$ définit la puissance consommée à l'état initial ; le délestage est représenté en *Adequacy phase* et en  préventif par la variable $c_i^{-}$ et en curatif sur un incident $inc$ par la variable $c_{i_{inc}}^{-}$ et la  variable booléenne d'activation $actC_i^{inc}$. Tel que :"
+msgstr ""
+
+#: ../../simulator/math.md:178
+#: be6ff0a033a747c19cdd0224910af415
+msgid "\n"
+"c_{i_{inc}}^{-} \\leq M \\cdot actC_{i}^{inc}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:182
+#: deef8cdfe1884aa4909ef0d6457a3931
+msgid "Avec $M$ une valeur très élevée."
+msgstr ""
+
+#: ../../simulator/math.md:186
+#: 0b629b6fc7e941a29c2ce6e261d4f9a3
+msgid "Pour fixer la valeur maximale du délestage, un pourcentage est utilisé. Celui-ci est défini par les paramètres $\\Phi_i$   en *Adequacy phase* et en préventif, et $\\Phi_{i_{cur}}$ en curatif. Ainsi, nous obtenons les encadrements suivants :"
+msgstr ""
+
+#: ../../simulator/math.md:188
+#: 5bc2ba3c8b63464eb1188cd8ca3eea72
+msgid "Pour l'*Adequacy phase* et le préventif :"
+msgstr ""
+
+#: ../../simulator/math.md:190
+#: 12454544219c4e03ac1c4c1e67b6d14d
+msgid " \n"
+" c_{i}^{-} \\in\n"
+" \\begin{cases}\n"
+" [0; \\Phi_i \\cdot C_i^0]\\text{, si }C_i^{0} \\geq 0\\\\\n"
+" [\\Phi_i \\cdot C_i^0; 0]\\text{, sinon. }\n"
+" \\end{cases}\n"
+" "
+msgstr ""
+
+#: ../../simulator/math.md:198
+#: 958c7fcfb82941fea0c63b403cc50a3a
+msgid "Pour le curatif :"
+msgstr ""
+
+#: ../../simulator/math.md:200
+#: 679b96c47f1241be81fd1bf07cecf6f5
+msgid "\n"
+" \\forall inc \\in INCIDENT, c_{i_{inc}}^{-} \\in [0; max(0; C_i^{0} \\cdot \\Phi_{i_{cur}})]\n"
+" "
+msgstr ""
+
+#: ../../simulator/math.md:204
+#: ../../simulator/math.md:368
+#: 6aaeedef05ec468dac791754aeb3cdb2
+#: 8271dbefdbb34be19fc27e1d41a6d416
+msgid "Définition des coûts"
+msgstr ""
+
+#: ../../simulator/math.md:206
+#: 0092c3f1d9cb4ee2bcabcd8fd67ee78d
+msgid "Pout chaque groupe, nous définissons un coût pour l'*Adequacy phase* et le préventif $\\Gamma_i^{conso}$ et un autre  pour le curatif $\\Gamma_{i_{cur}}^{conso}$."
+msgstr ""
+
+#: ../../simulator/math.md:211
+#: f1f32eaf2a5d45978a7c82bca6ccf4c6
+msgid "Chaque consommation se rattache à un unique nœud du réseau, qui fait lui-même parti d’une unique zone synchrone. Pour  chaque zone synchrone $zc \\in ZC$, nous notons $CONSO_{zc}$ les consos appartenant à cette zone synchrone."
+msgstr ""
+
+#: ../../simulator/math.md:215
+#: 72bb1076fbba407b961571b7285592bb
+msgid "Contrainte de couplage des consos"
+msgstr ""
+
+#: ../../simulator/math.md:216
+#: 940f0110333e42fe977e16f37436c376
+msgid "Tout comme pour les groupes, des consommations peuvent être couplées afin que leur délestage en N soient proportionnels.  Notons $COUPLAGE_{CONSO}$ la liste de ces consommations couplées."
+msgstr ""
+
+#: ../../simulator/math.md:219
+#: d165f768b9c04c86b182e93594cf1b9a
+msgid "Soit i$_0$ le premier groupe de cette liste. $\\forall i \\in COUPLAGE_{CONSO}, i \\neq i_0$ :"
+msgstr ""
+
+#: ../../simulator/math.md:221
+#: 9645bc32a16d46f6ba9f4379b7e67bc6
+msgid "\n"
+"\\frac{c_i^{-}}{C_i^{0}} = \\frac{c_{i_0}^{-}}{C_{i_0}^{0}}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:229
+#: 07a957cb6f614348b019108b94642c0c
+msgid "Ensembles : $CONSO$, $COUPLAGE_{CONSO}$, $CONSO_{zc}$"
+msgstr ""
+
+#: ../../simulator/math.md:231
+#: 0c96ebd7fec24837a09c21cf4025fcb4
+msgid "Valeurs : $\\forall i \\in CONSO : C_i^{0}, \\Phi_i, \\Phi_{i_{cur}}$"
+msgstr ""
+
+#: ../../simulator/math.md:235
+#: 905e4ed3e7e24a9f8cf270b8c8f65f01
+msgid "\n"
+"\\forall i \\in CONSO, \\forall inc \\in INCIDENT : c_i^{-}, c_{i_{inc}}^{-}, actC_i^{inc}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:239
+#: a5bf230c065a4ccb9fdd05df99bfcf6c
+msgid "**Contraintes** Contrainte de couplage des consos."
+msgstr ""
+
+#: ../../simulator/math.md:243
+#: 101063bec0764b10be9d8ff1199c558e
+msgid "Transformateur-Déphaseur (TD)"
+msgstr ""
+
+#: ../../simulator/math.md:245
+#: d332e54f916543d0b8992f9a2b798fa8
+msgid "Les TDs sont stockés dans une liste $TD$. Soit $i$ un élément de cette liste."
+msgstr ""
+
+#: ../../simulator/math.md:247
+#: c7be0ab348964706941a572732c4754e
+msgid "Valeurs min et max des TDs"
+msgstr ""
+
+#: ../../simulator/math.md:249
+#: 9d93f423d39649c89abc912b03ab612a
+msgid "Dans METRIX, le déphasage se fera sans passer d’une prise à l’autre de manière discrète, mais avec des variables  continues évoluant entre une puissance min et une puissance max. Les listes des prises de déphasage d'un TD sont  toutefois utilisées afin de fixer ces puissances min et max, notées $TD_i^{min}$ et $TD_i^{max}$."
+msgstr ""
+
+#: ../../simulator/math.md:253
+#: 3ead84f3969641818cf622d55243b5b9
+msgid "Ces valeurs pourront être tirées des données d'entrée si les bornes de changement de prises à la hausse et à la  baisse ne sont pas définies."
+msgstr ""
+
+#: ../../simulator/math.md:258
+#: 7972e9d0605b427db1f1f2dd109a217d
+msgid "La puissance de consigne transmise par $i$ du nœud *Or* au nœud *Nf* va être représentée par le paramètre $TD^{0}_i$.  La variation de cette puissance en préventif  va être représentée par les variables **positives** $td^{+}_i$ à la  hausse et $td^{-}_i$ à la baisse. De même, si le TD est autorisé à agir en curatif sur l’incident $inc$, nous allons  utiliser les variables curatives **positives** $td^{+}_{i_{inc}}$ et $td^{-}_{i_{inc}}$ et la vraiable booléenne  $actTD_{i}^{inc}$. Ces trois variables sont reliées par la contrainte suivante :"
+msgstr ""
+
+#: ../../simulator/math.md:264
+#: ecb761f64dee472ea1a36888fead7285
+msgid "\n"
+"td^{+}_{i_{inc}} + td^{-}_{i_{inc}}\\leq M \\cdot actTD_{i}^{inc}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:268
+#: 64008ae817a14cabb77801a28181278e
+msgid "Avec $M$ ue valeur très élevée."
+msgstr ""
+
+#: ../../simulator/math.md:272
+#: 596ec401f9d64a139d0ea539905fc48d
+msgid "Chaque TD est pilotable de quatre manières différentes :"
+msgstr ""
+
+#: ../../simulator/math.md:273
+#: ea6d39e9657940878462560ab5280e86
+msgid "En puissance imposée"
+msgstr ""
+
+#: ../../simulator/math.md:274
+#: 205b7c232c1745eb8c5cabd8e3265504
+msgid "En puissance optimisée"
+msgstr ""
+
+#: ../../simulator/math.md:275
+#: c43ae8016f44412d920bf5b8f892bf0c
+msgid "En angle imposé"
+msgstr ""
+
+#: ../../simulator/math.md:276
+#: 565d71018fee4c59b5ef6cf44e3567be
+msgid "En angle optimisé"
+msgstr ""
+
+#: ../../simulator/math.md:278
+#: 8a337c9b3afb439db23f85539fd8fdbb
+msgid "Les pilotages imposés impliquent que le TD échangera toujours la même puissance entre les deux nœuds *Or* et *Nf* :  $td^{+}_{i} = td^{-}_{i} = td^{+}_{i_{inc}} = td^{-}_{i_{inc}} = 0$."
+msgstr ""
+
+#: ../../simulator/math.md:281
+#: 0ec246d99d244b15b8e0992f68a9fcf1
+msgid "Pour les pilotages en puissance (imposée et optimisée), le *quadFictif* est ouvert : seule la puissance du TD sera  transmise entre les nœuds *Or* et *Nf*."
+msgstr ""
+
+#: ../../simulator/math.md:284
+#: f71a88e9a8f04087a02c77f9baf328b6
+msgid "Pour le pilotage optimisé (en angle ou en puissance), les paramètres  $TD_i^{min}$ et $TD_i^{max}$ définis  précédemment, sont utilisés tels que :"
+msgstr ""
+
+#: ../../simulator/math.md:287
+#: 91f67e37dec34b1a86f60f7fceb59e5f
+msgid "\n"
+"0 \\leq td^{+}_{i} \\leq max(TD_i^{max} - TD_i^{0}; 0) \\text{ et } 0 \\leq td^{-}_{i} \\leq max(TD_i^{0} - TD_i^{min}; 0)\\\\\n"
+"\\forall inc \\in INCIDENT:\\\\\n"
+"0 \\leq td^{+}_{i_{inc}} \\leq max(TD_i^{max} - TD_i^{min}; 0) \\text{ et } 0 \\leq td^{-}_{i_{inc}} \\leq max(TD_i^{max} - TD_i^{min}; 0)\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:293
+#: aefb098eae7341f8bba751e63dfc5743
+msgid "Pour l'encadrement curatif, les contraintes suivantes sont ajoutées :"
+msgstr ""
+
+#: ../../simulator/math.md:295
+#: 7a3d4b1a5fa143b695cd7682453e68dd
+msgid "\n"
+"\\forall inc \\in INCIDENT:\\\\\n"
+"td^{+}_{i} + td^{+}_{i_{inc}} \\leq max(TD^{max}_{i} - TD^{0}_i; 0)\\\\\n"
+"td^{-}_{i} + td^{-}_{i_{inc}} \\leq max(TD^{0}_{i} - TD^{min}_i; 0)\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:302
+#: 47d55c90911e4f3f9d2d3472a3ee75ff
+msgid "En ce qui concerne le coût, les TDs ont tous le même coût d’utilisation en préventif $\\Gamma^{TD}$, défini dans les  paramètres de METRIX. En curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, et va donc  dépendre de chaque incident."
+msgstr ""
+
+#: ../../simulator/math.md:306
+#: 6e5f6713571a4423884dc60585a3111a
+msgid "**En résumé** : Les TDs permettent de modifier le transit des lignes pour éviter les surcharges, sans modifier  l’équilibrage offre-demande."
+msgstr ""
+
+#: ../../simulator/math.md:313
+#: eb2f236038b340f4ba532599f9457121
+msgid "Ensembles : $TD$"
+msgstr ""
+
+#: ../../simulator/math.md:315
+#: 903c16fe83a7405d9d763a0d43666cd0
+msgid "Valeurs : $TD^{0}_i$, $TD^{max}_i$, $TD^{min}_i$, $\\Gamma^{TD}$"
+msgstr ""
+
+#: ../../simulator/math.md:319
+#: c4bd74d951dd4a19a912025625976290
+msgid "\n"
+"\\forall i \\in TD, \\forall inc \\in INCIDENT : td^{+}_{i}, td^{-}_{i}, td^{+}_{i_{inc}}, td^{-}_{i_{inc}}, actTD_{i}^{inc}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:324
+#: a81b1a289c3d4049bb8d2c30bbeeb577
+msgid "Lignes à Courant Continu (LCC)"
+msgstr ""
+
+#: ../../simulator/math.md:326
+#: 900a010ab5da4d1e896f4349abe12456
+msgid "Les LCCs du réseau simulé par METRIX sont stockées dans l'ensemble $LCC$."
+msgstr ""
+
+#: ../../simulator/math.md:328
+#: a719d6dd905545b2b07945388fb45b4e
+msgid "Variables et encadrement"
+msgstr ""
+
+#: ../../simulator/math.md:330
+#: ac5dc0c7ff8944ce81895468568c5669
+msgid "Soit $i \\in LCC$, notons :"
+msgstr ""
+
+#: ../../simulator/math.md:331
+#: 54fc1ced81a749b982083028fc599e03
+msgid "$Lcc_i^{0}$ sa puissance de consigne ;"
+msgstr ""
+
+#: ../../simulator/math.md:332
+#: 06bddebab7e144e983472282653ac3e3
+msgid "$Lcc_i^{min}$ sa puissance minimale ;"
+msgstr ""
+
+#: ../../simulator/math.md:333
+#: cd16ea6d586b4edc87223f896fba620d
+msgid "et $Lcc_i^{max}$ sa puissance maximale."
+msgstr ""
+
+#: ../../simulator/math.md:335
+#: 4bd607b654f04d66b0aeb63efdef01bf
+msgid "Les variations de $i$ sont représentées :"
+msgstr ""
+
+#: ../../simulator/math.md:336
+#: e6e606ff011641c19600a28f12d7fa26
+msgid "en préventif par les variables **positives** $lcc_i^{+}$ et $lcc_i^{-}$ ;"
+msgstr ""
+
+#: ../../simulator/math.md:337
+#: a02da556d50d49598e23fca2d702763a
+msgid "et en curatif par les variables **positives** $lcc_{i_{inc}}^{+}$ et $lcc_{i_{inc}}^{-}$ ainsi que par la variable  booléenne $actLCC_{i}^{inc}$."
+msgstr ""
+
+#: ../../simulator/math.md:340
+#: a1e59fc8ed3147489610d1a0d2dd1479
+msgid "Ces trois variables sont reliées pâr la contrainte suivante :"
+msgstr ""
+
+#: ../../simulator/math.md:342
+#: 646885c9930648bd88ac8d5d82667575
+msgid "\n"
+"lcc_{i_{inc}}^{+} + lcc_{i_{inc}}^{-} \\leq M \\cdot actLCC_{i}^{inc}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:346
+#: 60c5cf70dba449c7b73c42bbf4bc6ea0
+msgid "Avec $M$ une valeur très grande."
+msgstr ""
+
+#: ../../simulator/math.md:348
+#: 29415ddb6e844810a93d9cece49ae6ee
+msgid "Les variables représentant les variations de puissance de la LCC ont l’encadrement suivant :"
+msgstr ""
+
+#: ../../simulator/math.md:349
+#: de88afd31b494088836964eb42833555
+msgid "Si le pilotage est en puissance optimisée ou en émulation AC optimisée :"
+msgstr ""
+
+#: ../../simulator/math.md:351
+#: 37292ae0ba104c2fb15f4f67a652248c
+msgid "\n"
+"lcc_i^+ \\in [0; max(Lcc_i^{max}-Lcc_i^{0}; 0)]\\text{ et }lcc_i^- \\in [0; max(Lcc_i^{0}-Lcc_i^{min}; 0)]\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:355
+#: c5cab27a0f8e420c98ea251586499ec6
+msgid "Sinon, il est imposé :"
+msgstr ""
+
+#: ../../simulator/math.md:357
+#: 89afdf968a0248f083c85e610bb118e8
+msgid "\n"
+"lcc_i^{+} = lcc_i^{-} = 0\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:361
+#: fb26f517e9094af2bf329eb91af4c287
+msgid "En curatif, les encadrements pourt les pilotages optimisés sont les suivants :"
+msgstr ""
+
+#: ../../simulator/math.md:363
+#: 2ab0f159cf4c4aeea9b4f36878b91e9c
+msgid "\n"
+"lcc_i^{+} + lcc_{i_{inc}}^{+} \\leq Lcc_i^{max} - Lcc_i^{0}\\\\\n"
+"lcc_i^{-} + lcc_{i_{inc}}^{-} \\leq Lcc_i^{0} - Lcc_i^{min}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:369
+#: a0053d1a280146a79a0d61f8eb208faa
+msgid "En ce qui concerne le coûts, les LCCs ont toutes le même coût d’utilisation en préventif $\\Gamma^{LCC}$, défini dans  les paramètres de METRIX. En curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, et dépendra  donc de chaque incident."
+msgstr ""
+
+#: ../../simulator/math.md:373
+#: 9c15eda1539646a39606154bf1444415
+msgid "Lien entre zones synchrones"
+msgstr ""
+
+#: ../../simulator/math.md:374
+#: 8545a6891ad54a0cb2dd57604718b816
+msgid "Notons $\\forall zc \\in ZC$ , $LCC_{zc}^+$ l’ensemble des LCCs transportant le courant de la zone synchrone $zc$ vers  une autre zone synchrone. De même, $LCC_{zc}^-$ est l’ensemble des LCCs prélevant de la puissance à la zone synchrone  $zc$ pour l’envoyer vers une autre zone synchrone."
+msgstr ""
+
+#: ../../simulator/math.md:378
+#: fe06f93f71314a5a924d087406c19d03
+msgid "LCC en émulation AC"
+msgstr ""
+
+#: ../../simulator/math.md:379
+#: b2558eb4513c4dfaa45aacb5010035b3
+msgid "Le TD fictif ne pourra jamais agir en préventif : $\\forall inc \\in INCIDENT$, une contrainte d’activation relie les  variables préventives du TD à la variable d’activation en curatif du même TD sur cet incident ($actLCC_{inc}^i$) ; et  cette variable d’activation va être bloquée à $0$, empêchant toute variation des variables préventives. Plus tard, si  la variable d’activation est débloquée, les variables préventives ne seront utilisées par le problème que dans le  calcul du transit sur quadripôle, et de toute façon le coefficient associé sera nul.   Quant aux variables curatives (linéaires et booléennes), elles sont reliées par une contrainte d’activation. Soit  $i \\in TD, inc \\in INCIDENT$ :"
+msgstr ""
+
+#: ../../simulator/math.md:387
+#: dfefb1db69a04a3b8faf53bbda7c722b
+msgid "\n"
+"td_{i_{inc}}^+ + td_{i_{inc}}^- \\leq M \\cdot actLCC_{inc}^i\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:391
+#: 552f66a78ce441568db1d55e4b98707a
+msgid "La variable d’activation est bloquée à $0$, à moins que le quadripôle *quad0* soit en contrainte. Dans ce cas, la  variable est libre de changer de valeur."
+msgstr ""
+
+#: ../../simulator/math.md:394
+#: 6cb973ed5483462f97034a38d4a113e5
+msgid "Ce TD fictif aura un coût d’utilisation nul. Il aura le même encadrement en préventif que les TDs normaux, avec des  puissances max et min issues de la LCC en émulation AC. Il aura également comme encadrement en curatif :"
+msgstr ""
+
+#: ../../simulator/math.md:397
+#: 312411ce069941e28184a6fbda259a7b
+msgid "\n"
+"0 \\leq td_{i_{inc}}^+ \\leq td_i^{max}\\text{ et }0\\leq td_{i_{in}}^- \\leq -td_i^{min}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:401
+#: 8a29e7d19a164740bfb24c9efa98927f
+msgid "Les TDs fictifs sont stockés dans l’ensemble $TDF$."
+msgstr ""
+
+#: ../../simulator/math.md:407
+#: 9caa0e3738154fa2aadebce315edb747
+msgid "Ensembles : $LCC$, $TDF$, $\\forall zc \\in ZC: LCC_{zc}^+, LCC_{zc}^-$"
+msgstr ""
+
+#: ../../simulator/math.md:409
+#: 9a503de1aec14ceb84ce6f5663d07559
+msgid "Valeurs : $\\forall i \\in LCC : Lcc_i^{0}, Lcc_i^{max}, Lcc_i^{min}, \\Gamma^{LCC}$"
+msgstr ""
+
+#: ../../simulator/math.md:413
+#: f76abf0d7063456f8a32f7cfe88bfbd9
+msgid "\n"
+"\\forall i \\in LCC, \\forall inc \\in INCIDENT: lcc_{i}^{+}, lcc_{i}^{-}, lcc_{i_{inc}}^{+}, lcc_{i_{inc}}^{-}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:418
+#: 53c16768e9954036b9839b368964e977
+msgid "Parades"
+msgstr ""
+
+#: ../../simulator/math.md:420
+#: 045c84867c2c411fb344930f52d269d3
+msgid "Les parades sont listées dans $PARADE$. Soit $prd \\in PARADE$. Chaque parade est associée à un unique incident  $inc \\in INCIDENT$."
+msgstr ""
+
+#: ../../simulator/math.md:423
+#: 8917f983a56a4c2fb81c788a9f905555
+msgid "$prd$ possède en paramètre la liste des couplages qu’elle ferme ($COUPLAGEFERMER_{prd}$) et ceux qu’elle ouvre  ($COUPLAGEOUVRIR_{prd}$)."
+msgstr ""
+
+#: ../../simulator/math.md:426
+#: fc8d283f24164a26a7ba69f97a917a48
+msgid "Nous définissons, pour un incident $inc$ et une parade $prd$, la variable d’activation de la parade sur cet incident  $actPRD_{prd}^{inc}$, de coût dans la fonction objectif $\\Gamma^{PRD}$."
+msgstr ""
+
+#: ../../simulator/math.md:430
+#: ../../simulator/math.md:493
+#: c78f2e64408340728af396e8f650738a
+#: 061dc7627d0742e1b5d7ecfbc382ceae
+msgid "Contrainte d'unicité des parades"
+msgstr ""
+
+#: ../../simulator/math.md:432
+#: faff746b00f9400c8a3560627d0991b6
+msgid "Pour chaque incident, une parade unique est applicable, $\\forall inc \\in INDICENT$ :"
+msgstr ""
+
+#: ../../simulator/math.md:434
+#: bacf29029c6a4af2954bf738f94f0119
+msgid "\n"
+"\\sum_{prd \\in PARADE \\cap CURATIF_{inc}} actPRD_{prd}^{inc} \\leq 1\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:438
+#: 6647b4d6493e4776aaecba424ec1fe7d
+msgid "Dans le code, l’inégalité de cette contrainte est transformée en une égalité, par l'intermédiaire de l'introduction  d'une parade “Ne Rien Faire” pour chaque incident possédant des parades topologiques en actions curatives. Cette  parade n’a aucune action sur le réseau."
+msgstr ""
+
+#: ../../simulator/math.md:443
+#: ../../simulator/math.md:494
+#: 9fec3c4b9c6f490eadf5679aa92da77e
+#: b7b990e8b05040d68f5171aa6c435539
+msgid "Contrainte d'utilisation des parades"
+msgstr ""
+
+#: ../../simulator/math.md:445
+#: aef41eff7e124ebb9370dcacee0d08d1
+msgid "L'activation d'une parade $prd$ peut être empêchée si il n'existe aucune ligne, parmi un certain ensemble de lignes,  non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble."
+msgstr ""
+
+#: ../../simulator/math.md:448
+#: bee9c557b865419ca7090ce6a938cdd3
+msgid "Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à l'incident $inc$. Alors  $\\forall inc \\in INCIDENT, \\forall prd \\in PARADE \\cap CURATIF_{inc}$ :"
+msgstr ""
+
+#: ../../simulator/math.md:451
+#: d08018cd7f3d469c908398259b955d35
+msgid "\n"
+"(\\nexists quad \\in QUADNECESSAIRES_{prd}\\text{ tel que }quad \\in QUADENCONTRAINTE_{inc}) \\Rightarrow actPRD_{prd}^{inc} = 0\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:456
+#: ../../simulator/math.md:495
+#: 71ed8e42b169401988fddeda629c1c55
+#: 69eeadaee27f46588e67cd4fd855d526
+msgid "Contrainte de valorisation des poches perdues"
+msgstr ""
+
+#: ../../simulator/math.md:458
+#: 25081c87927143f18eaa9e514fbfe7d9
+msgid "Lors de son utilisation, il est possible qu’une parade rompe la connexité du réseau en déconnectant des nœuds de ce  dernier. Les productions et consommations présentes sur ces nœuds vont alors être perdues. Si cela survient, une  sanction économique dans la fonction objectif doit être appliquée."
+msgstr ""
+
+#: ../../simulator/math.md:462
+#: cc5ac2102d7040c2b00769e083b458f2
+msgid "Soit $inc \\in INCIDENT$ et $prd \\in PARADE$ une parade rompant la connexité du réseau en déconnectant certains nœuds  de celui-ci."
+msgstr ""
+
+#: ../../simulator/math.md:465
+#: 59754cb75e164a98850a97f45584a67c
+msgid "Notons :"
+msgstr ""
+
+#: ../../simulator/math.md:466
+#: 1e912cebd35445339b979fa6b54e1a20
+msgid "$\\Gamma^{ENE}$ le coût de l'énergie non évacuée"
+msgstr ""
+
+#: ../../simulator/math.md:467
+#: 2813a51742f945b181c98c8cfeb816de
+msgid "$\\Gamma^{END}$ le coût de l'énergie non distribuée"
+msgstr ""
+
+#: ../../simulator/math.md:468
+#: 9627c2d59869483593244d567104f5a4
+msgid "$GRPDECO$ l'ensemble des groupes liés aux nœuds de la poche perdue"
+msgstr ""
+
+#: ../../simulator/math.md:469
+#: d352cd5f9527440dac8930739555f2ad
+msgid "$CONSODECO$ l'ensemble des consos liées aux nœuds de la poche perdue"
+msgstr ""
+
+#: ../../simulator/math.md:470
+#: 44be68a2f5e148f88ed0ae1a1dfbe000
+msgid "$VALOMax = proba_{inc} \\cdot (\\Gamma_{ENE} \\cdot \\sum_{i \\in GRPDECO} (|P_i^0| + P_i^{max}) + \\Gamma^{END} \\cdot \\sum_{i \\in CONSODECO} C_i^0)$"
+msgstr ""
+
+#: ../../simulator/math.md:472
+#: e06a487d0d424efdbde2cfaea2ff4d86
+msgid "Afin de quantifier la sanction économique, une nouvelle variable **positive** est introduite telle que :  $val_{prd}^{inc} \\in [0; max(0; VALOMax)]$."
+msgstr ""
+
+#: ../../simulator/math.md:479
+#: f6d2ef4517d14434bd98c2f0ca0ccdad
+msgid "Ensembles : $PARADE$, $\\forall prd \\in PARADE$ :"
+msgstr ""
+
+#: ../../simulator/math.md:481
+#: f4da4af30fa248209a88eb1b02a99329
+msgid "\n"
+"COUPLAGEFERMER_{prd}, COUPLAGEOUVRIR_{prd}, QUADNECESSAIRES_{prd}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:485
+#: f4e07ecf1b3241d48521cf7a4a55ed3e
+msgid "Valeur : $\\Gamma^{PRD}$"
+msgstr ""
+
+#: ../../simulator/math.md:489
+#: 35457d94b4cc4b8591a977dc2d19cceb
+msgid "$\\forall inc \\in INCIDENT, \\forall prd \\in PARADE : actPRD_{prd}^{inc}, val_{prd}^{inc}$"
+msgstr ""
+
+#: ../../simulator/math.md:497
+#: 48754f1f3bee4a9393fc4380f89a872d
+msgid "Problèmes d'optimisation"
+msgstr ""
+
+#: ../../simulator/math.md:499
+#: e35856889669438793a12379752838ee
+msgid "Ci-après, les modèles mathématiques des deux phases d'optimisation :"
+msgstr ""
+
+#: ../../simulator/math.md:500
+#: 9aa7688d79474520b1243206e4de5d87
+msgid "l'*Adequacy phase* (i.e. équilibrage production - consommation);"
+msgstr ""
+
+#: ../../simulator/math.md:501
+#: c5088379aff7419b85d39d48aaea0e6b
+msgid "et la *Redispatching phase* (i.e. résolution des contraintes réseau)."
+msgstr ""
+
+#: ../../simulator/math.md:503
+#: 03203a2cd728486a91c9d5a7fbe9049e
+msgid "Modèle mathématique de l'*Adequacy phase*"
+msgstr ""
+
+#: ../../simulator/math.md:505
+#: a2bc1cc3e178495e99da581affe5d419
+msgid "Lors de cette phase, nous ne nous occuppons que de l'équilibrage production - consommation, sans tenir compte du réseau  électrique en lui-même."
+msgstr ""
+
+#: ../../simulator/math.md:508
+#: ../../simulator/math.md:544
+#: 81b02d5c175c42d48a0dcbd8d159c7e3
+#: a5ce60bfd2584463a41a9f7b5ae4d3fd
+msgid "Contraintes"
+msgstr ""
+
+#: ../../simulator/math.md:510
+#: 0dd78b9162374a64a0df084fc6b62b45
+msgid "**Équilibrage Offre-Demande global**"
+msgstr ""
+
+#: ../../simulator/math.md:512
+#: 443f11fdaefc4bb38fcef06d3b361be6
+msgid "L'équilibrage du réseau revient à avoir une égalité entre la production et la consommation afin que la demande soit  satisfaite sans aucun excès de prodution :"
+msgstr ""
+
+#: ../../simulator/math.md:515
+#: 322c185649a44349a5c6e45f1689bc1b
+msgid "\n"
+"\\sum_{i \\in GROUPE}(P_i^0 + p_i^+ + p_i^-) - \\sum_{i \\in CONSO}(C_i^0 - c_i^-) = 0\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:519
+#: 124287ba16b343c982b954897eb9234f
+msgid "**Équilibrage Offre-Demande par zone synchrone**"
+msgstr ""
+
+#: ../../simulator/math.md:521
+#: 8ac87f261dd34ba0b7ca3a9c04ab19c3
+msgid "Le réseau est composé de nœuds, se répartissant dans des zones synchrones. Les Lignes à Courant Continu peuvent servir  d’interconnexion entre ces zones synchrones, et il est possible de faire varier la puissance transmise par ces interconnexions."
+msgstr ""
+
+#: ../../simulator/math.md:524
+#: b350fd10d7b3491491e2e1e05b531353
+msgid "Dès lors, $\\forall zc \\in ZC$ :"
+msgstr ""
+
+#: ../../simulator/math.md:526
+#: 89a6042ad0bb4149bef3825c03c1eb1a
+msgid "\n"
+"\\sum_{i \\in GROUPE_{zc}}(P_i^0 + p_i^+ + p_i^-) - \\sum_{i \\in CONSO_{zc}}(C_i^0 - c_i^-) + \\sum_{i \\in LCC_{zc}^+}(Lcc_i^{0} + lcc_i^ + lcc_i^-) - \\sum_{i \\in LCC_{zc}^-}(Lcc_i^{0} + lcc_i^ + lcc_i^-) = 0\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:530
+#: 4161f5ccc7d84a4ab1ea96be8bad6135
+msgid "**Fonction objectif**"
+msgstr ""
+
+#: ../../simulator/math.md:532
+#: 1dad8f8767434c8c868119b0c225e5ce
+msgid "\n"
+"min \\sum_{i \\in GROUPE}(p_i^+ \\cdot \\Gamma_{i_{ad}}^+ + p_i^- \\cdot \\Gamma_{i_{ad}}^-) + \\sum_{i \\in CONSO}(|c_i^-|\\cdot \\Gamma_i^{conso}) + \\sum_{i \\in LCC}(lcc_i^+ + lcc_i^-) \\cdot \\Gamma^{LCC}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:536
+#: a0b45ad379b04d5aae519e32c6c511a0
+msgid "Modèle mathématique de la *Redispatching phase*"
+msgstr ""
+
+#: ../../simulator/math.md:538
+#: ea9c8a079555473cb196eeff58a5c2ab
+msgid "Lors de cette phase, nous ajoutons la prise en compte du réseau via la gestion des flux sur les lignes. L'ensemble des  données, variables et contraintes du problème d'*Adequacy* sont gardées et nous y ajoutons certains éléments : **aucune  des contraintes précédentes n'est affectée**. <o>Seule la valeur de certains paramètres peut être modifiée.</o>"
+msgstr ""
+
+#: ../../simulator/math.md:542
+#: cbcbd465a09546c79fcd675ee0c4c1c1
+msgid "De ce fait, les contraintes de transit apparaissent, mais aussi sur les TDs, LCCs, parades et incidents."
+msgstr ""
+
+#: ../../simulator/math.md:546
+#: 76260543b71042768c211b5b15ef25bb
+msgid "Définies dans la section [Groupes](#prod_var)"
+msgstr ""
+
+#: ../../simulator/math.md:547
+#: 180c463ec1c94d5488aac27f95301cbf
+msgid "[Contrainte de couplage des groupes](#coup_grp_ctr)"
+msgstr ""
+
+#: ../../simulator/math.md:548
+#: 9308bc7d036b456c862ca5ada0574d40
+msgid "[Contrainte de limitation des changements curatifs](#lim_cur_ctr)"
+msgstr ""
+
+#: ../../simulator/math.md:550
+#: e06e44dc08f3484cb77e6517c6329fa5
+msgid "Définies dans la section [Consommations](#conso_var)"
+msgstr ""
+
+#: ../../simulator/math.md:551
+#: eecdc17f644d46cfa90cad8b24b94ad1
+msgid "[Contrainte de couplage des consos](#coup_conso_ctr)"
+msgstr ""
+
+#: ../../simulator/math.md:553
+#: 35f4542932814939bb4c6bc74948a584
+msgid "Définies dans la section [Parades](#parades_var)"
+msgstr ""
+
+#: ../../simulator/math.md:554
+#: b7fe4c84123a40a1969ad9286e6be81f
+msgid "[Contrainte d'unicité des parades](#unicity_prd_ctr)"
+msgstr ""
+
+#: ../../simulator/math.md:555
+#: ff1116edd5084b0595a81d727dd57b1a
+msgid "[Contrainte d'utilisation des parades](#usage_prd_ctr)"
+msgstr ""
+
+#: ../../simulator/math.md:556
+#: f2663f52710840b684ee64c0dacb45d7
+msgid "[Contrainte de valorisation des poches perdues](#val_prd_ctr)"
+msgstr ""
+
+#: ../../simulator/math.md:558
+#: 7fbf3ab9cc584becb0009eb111bca124
+msgid "Nouvelles contraintes"
+msgstr ""
+
+#: ../../simulator/math.md:560
+#: 35f0e59567cf47489e4b6774369240bb
+msgid "**Équilibrage Offre-Demande en curatif**"
+msgstr ""
+
+#: ../../simulator/math.md:562
+#: d39428a1c6574388ab52151c3658f65d
+msgid "Au sein de cette phase, l'équilibre entre production et consommation doit aussi être respecté en curatif, quel que soit  l'incident."
+msgstr ""
+
+#: ../../simulator/math.md:565
+#: 5d8e7bd61f9b4a9d897a5fc4c774f1e3
+msgid "$\\forall inc \\in INCIDENT, \\forall zc \\in ZC$ :"
+msgstr ""
+
+#: ../../simulator/math.md:567
+#: 08cd5afddd3f459d8df79406aadc5871
+msgid "\n"
+"\\sum_{i \\in CURATIF_{inc} \\cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) + \\sum_{i \\in CURATIF_{inc} \\cap CONSO_{zc}}c_{i_{inc}}^{-} + \\sum_{i \\in CURATIF_{inc} \\cap LCC_{zc}^{+}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) - \\sum_{i \\in CURATIF_{inc} \\cap LCC_{zc}^{-}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) = 0\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:571
+#: de2ea1f547ee4775a2c0968d43117225
+msgid "**N.B.** : Exprimée ainsi, cette contrainte devrait être fausse en cas de perte d'un groupe, car elle maintient l’EOD  alors qu’une perte de groupe briserait l’équilibre. Dans les faits, METRIX prévoit en pré-traitement une “demi-bande  de réglage” sur chaque groupe, en fonction de l’incident groupe le plus dimensionnant. Avant chaque résolution, METRIX  abaisse la Pmax de chaque groupe de sa “demi-bande de réglage”. Lors de la perte d’un groupe, on ventile alors la  production perdue sur l’ensemble des autres groupes disponibles."
+msgstr ""
+
+#: ../../simulator/math.md:577
+#: 85806399f7e341adb5b8a03bcbff4a05
+msgid "**Contraintes des seuils de transit**"
+msgstr ""
+
+#: ../../simulator/math.md:579
+#: b4b885cffc9543f4bb1b8bb825de26f4
+msgid "Le transit sur les lignes notifiées dans les données comme étant “À surveiller” va être calculé à chaque micro-itération  de la résolution. En effet, ces lignes doivent respecter trois seuils :"
+msgstr ""
+
+#: ../../simulator/math.md:581
+#: c641ac63e38c423cb43fccac96194c7f
+msgid "En N"
+msgstr ""
+
+#: ../../simulator/math.md:582
+#: 370cc7554fc54698b0c67119b90715aa
+msgid "En N-k après actions curatives"
+msgstr ""
+
+#: ../../simulator/math.md:583
+#: 80b1625171c54e858de1becdababe542
+msgid "En N-k après incident mais avant les actions curatives ou maneouvres (i.e. seuil ITAM)"
+msgstr ""
+
+#: ../../simulator/math.md:585
+#: e3e61b9f23904dbfbe74553a89f14c91
+msgid "Si un de ces seuils n’est pas respecté à la fin de la micro-itération, la contrainte associée est rajoutée. Pour chacune de ces situations (notée $situ$), et $\\forall i \\in QUADRIPOLE$ (i.e. pour toute ligne) :"
+msgstr ""
+
+#: ../../simulator/math.md:588
+#: 0545ec3f19b540279fb7c9ca1e8fe81b
+msgid "\n"
+"transit_i^{situ} \\leq Max_i^{situ}\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:592
+#: f0d37f9774824c39b7949b393cc2242a
+msgid "Ce transit est déterminé via l'influence d'un ensemble de variables $VARINFLU^{situ}$ sur le transit de $i$. Cet ensemble dépendra de la situation $situ$ considérée et, dans le cas d'une situtation de type N-k, de l'incident concerné. Chaque variable de cete ensemble va ainsi être associée à un coefficient d'influence. Ces coefficients dépendent de la tologie du réseau en situation $situ$ et sont stockés dans l'ensemble $COEFINFLU_i^{situ}$. Ces deux ensembles sont de même cardinalité, notée $N$, puisque toute variable a, par définition, une influence et donc un coefficient d'influence. De ce fait :"
+msgstr ""
+
+#: ../../simulator/math.md:594
+#: 8d98a5e1d8e74f0cbc58e82af4b9ac5f
+msgid "\n"
+"transit_i^{situ} = \\sum_{j = 1}^N COEFINFLU_i^{situ}[j] \\cdot VARINFLU^{situ}[j]\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:598
+#: dec27d9779fc4b31ab5d3c6fec688169
+msgid "Pour une même ligne, la valeur du maximum $Max_i^{situ}$, les coefficients d'influence $COEFINFLU_i^{situ}$ (car la  topologie du réseau peut changer avec les incidents), et surtout l'ensemble $VARINFLU^{situ}$, vont changer d'une  situation à l'autre. Plus précisément, selon la situation l'ensemble $VARINFLU^{situ}$ contient :"
+msgstr ""
+
+#: ../../simulator/math.md:601
+#: d21a068edb2f4546bd8dd2665cee6774
+msgid "En N : toutes les variables préventives des groupes, consommations, HVDCs et TDs."
+msgstr ""
+
+#: ../../simulator/math.md:602
+#: 516f7b2026634266947ecbea49b736f8
+msgid "En N-k après actions curatives : toutes les variables préventives continues des groupes, consommations, HVDCs et TDs  pouvant agir en préventif, ainsi que les variables curatives continues de ces mêmes éléments pouvant agir en curatif  sur l’incident concerné."
+msgstr ""
+
+#: ../../simulator/math.md:605
+#: 4875dec62639461aaea84772a1833e09
+msgid "En N-k après un incident mais avant les actions curatives : toutes les variables préventives des groupes,  consommations, HVDCs et TDs, ainsi que les variables curatives continues de tous les TDs fictifs des HVDCs en  émulation AC."
+msgstr ""
+
+#: ../../simulator/math.md:609
+#: b5761bd7834c48fb8707ef2aebdbcca3
+msgid "<b>Cas des incidents avec parades provoquant des surcharges</b>"
+msgstr ""
+
+#: ../../simulator/math.md:611
+#: 808b0bfa4ce74a719ebc516882e9de84
+msgid "La formulation de la contrainte de transit va être différente lorsque des parades peuvent être utilisées."
+msgstr ""
+
+#: ../../simulator/math.md:613
+#: 938c603396c84828aae4f3333cdff754
+msgid "Tout comme les autres contraintes de transit, ces contraintes seront ajoutées au fur et à mesure des micro-itérations,  dès qu’une contrainte sur une ligne à surveiller est détectée. Si un incident possédant des parades en actions  curatives engendre une contrainte sur un quadripôle, alors des contraintes pour chaque parade de cet incident seront  également ajoutées. Soit $inc \\in INCIDENT$ un tel incident, $quad \\in QUADRIPOLE$ le quadripôle en contrainte et  $prd \\in PARADE \\cap CURATIF_{inc}$ une parade qui est curative de cet incident. Posons aussi $M$ une très grande valeur, et $situ$ la situation \"N-k après actions curatives\". Deux scénarios sont  possibles :"
+msgstr ""
+
+#: ../../simulator/math.md:620
+#: bfb53a4bb4a64bfbb95502cdb0243698
+msgid "soit la parade $prd$ ouvre le quadripôle $quad$, dans ce cas il n'y a pas de raison d'introduire une contrainte  de transit liant $quad$ et $prd$."
+msgstr ""
+
+#: ../../simulator/math.md:622
+#: c3fcca76d0844430863aeb7829edd87a
+msgid "sinon, la contrainte suivante est introduite :"
+msgstr ""
+
+#: ../../simulator/math.md:624
+#: ../../simulator/math.md:656
+#: 1b33ed435d4041859b432adb21f99731
+#: 7d1f1b7906c245bc87262400d1445d3d
+msgid "\n"
+"transit_{quad}^{situ} + M \\cdot act_{prd}^{inc} \\leq Max_{quad}^{situ} + M\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:628
+#: 4409cc41e1254550b9226b22456d064c
+msgid "Avec $transit_{quad}^{situ}$ le transit sur $quad$ lorsque $prd$ est activée. Le transit sur $quad$ est donc seulement  contraint (par rapport à $Max_{quad}^{situ}$) si $prd$ est activée (qui peut être la parade \"Ne rien faire\")."
+msgstr ""
+
+#: ../../simulator/math.md:631
+#: 1e5f7cab15644cb58dab792bce378bce
+msgid "En outre, si la parade possède une liste $QUADNECESSAIRES_{prd}$ non vide (i.e. un ensemble de lignes dont au moins  une doit être en contrainte pour que $prd$ soit activable) :"
+msgstr ""
+
+#: ../../simulator/math.md:633
+#: 963163a9815d44e2ba467ac830ed56a1
+msgid "Si $quad \\notin QUADNECESSAIRES_{prd}$, alors $prd$ n'est, dans un premier temps, pas activable sur $inc$ :  $act_{prd}^{inc} = 0$. $prd$ redeviendra activable, dès lors que $inc$ provoquera une surcharge sur un autre  quadripôle $quad' \\in QUADNECESSAIRES_{prd}$."
+msgstr ""
+
+#: ../../simulator/math.md:636
+#: 42c6cca551474a158b89b94b3c7a6afa
+msgid "Sinon, la contrainte d'activation de la parade suivante est ajoutée :"
+msgstr ""
+
+#: ../../simulator/math.md:638
+#: cf976a6a45eb413480d819f9a7aaea06
+msgid "\n"
+"transit_{quad}^{situ} - M \\cdot act_{prd}^{inc} \\geq Max_{quad}^{situ} - M\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:642
+#: a3318f01c1f345c99c26f3451d756819
+msgid "Cette contrainte n'a de sens que si $quad$ est en surcharge."
+msgstr ""
+
+#: ../../simulator/math.md:644
+#: a54b5e14d5fd45fb8bf0a47e55e14d4a
+msgid "Si les conditions nécessaires pour avoir les deux contraintes de transit précédentes sont réunies, alors utiliser la  parade revient à avoir la contrainte $transit_{quad}^{situ} = Max_{quad}^{situ}$. Ce qui se traduit informatiquement  par $transit_{quad}^{situ} \\in [Max_{quad}^{situ} - \\epsilon; Max_{quad}^{situ} + \\epsilon]$ avec $\\epsilon > 0 $ et  très petit. Cela se traduit fonctionnellement par le fait qu'il faille être très proche de la surcharge afin de pouvoir  utiliser la parade sans vraiment l'être."
+msgstr ""
+
+#: ../../simulator/math.md:650
+#: dc3eb95522db4ca9954a47689c1ca20a
+msgid "<b>Cas des parades provoquant des surcharges</b>"
+msgstr ""
+
+#: ../../simulator/math.md:652
+#: 269ed46aeff34a50a7608a539439b43c
+msgid "En étant utilisée pour corriger une surcharge générée par un incident $inc$, une parade peut également provoquer des  surcharges sur un autre quadripôle $quad$. Ainsi, $\\forall prd \\in PARADE \\cap CURATIF_{inc}$ tq $prd$ ne coupe pas  $quad$, la contrainte suivante est ajoutée :"
+msgstr ""
+
+#: ../../simulator/math.md:660
+#: 1a170eb4f0674051b366e196d5a23480
+msgid "Nous ne nous préoccupons pas des variables d’activation ou des contraintes d’activation puisque ce n’est pas un  incident qui provoque la surcharge, mais une parade. Seules les contraintes permettant de respecter le seuil de  transit du quadripôle sont ajoutées si les parades sont utilisées."
+msgstr ""
+
+#: ../../simulator/math.md:664
+#: a49251e05ba744cbb52f84794f6f419b
+msgid "<b>Contrainte sur le nombre d’actions curatives</b>"
+msgstr ""
+
+#: ../../simulator/math.md:666
+#: 4933c5082cdb4d86926168e0a55d590c
+msgid "METRIX impose un nombre maximal d’actions curatives par incident. Les TD fictifs ne sont pas comptabilisés, et les  lignes coupées ou fermées par les parades sont comptabilisées plutôt que les parades activées."
+msgstr ""
+
+#: ../../simulator/math.md:669
+#: 14c16d5b93424602b8fe2ac87d7e65ad
+msgid "Soit $inc \\in INCIDENT, prd \\in PARADE \\cap CURATIF_{inc}$. Notons respectivement $NbLignesACouper$, $NbLignesAFermer$  et $NbLignesCoupees$ les cardinalités des ensembles $COUPLAGEOUVRIR_{prd}$, $COUPLAGEFERMER_{prd}$ et $DEFAUTQUAD_{inc}$."
+msgstr ""
+
+#: ../../simulator/math.md:672
+#: 7ff37ecf6938460db7d23ffdeead34b0
+msgid "Nous obtenons ainsi le nombre d'actions : $NbActions = NbLignesACouper + NbLignesAFermer - NbLignesCoupees$."
+msgstr ""
+
+#: ../../simulator/math.md:674
+#: 4621972606b04c6db7428e8870cb6d2d
+msgid "De même, notons :"
+msgstr ""
+
+#: ../../simulator/math.md:675
+#: 72658f9ca0114bb59311167da420f8e7
+msgid "$ECSTF = CURATIF_{inc}/TDF$ l’ensemble des éléments curatifs de l’incident sans les TDs fictifs."
+msgstr ""
+
+#: ../../simulator/math.md:676
+#: 062ff443645a45c2bdde8e9fe9b4217e
+msgid "$CoutAction$ un ensemble de coefficients, de même cardinalité que $ECSTF$, tq $\\forall j \\in ECSTF$ :"
+msgstr ""
+
+#: ../../simulator/math.md:677
+#: df2068a25d4e4b7db13815a5722202b8
+msgid "$CoutAction[j] = 0.5$ si $j$ est un groupe ou une conso ;"
+msgstr ""
+
+#: ../../simulator/math.md:678
+#: 20e640b41de345b984670efffad95311
+msgid "$CoutAction[j] = 1$ sinon."
+msgstr ""
+
+#: ../../simulator/math.md:680
+#: 0936d0e2b6a64474acedfecc564834b1
+msgid "Enfin, notons $NbMaxActCur$ le nombre maximum d’actions curatives autorisées sur un incident."
+msgstr ""
+
+#: ../../simulator/math.md:682
+#: 3b8fd2bed0024eac8cd115db70cbb7dc
+msgid "La contrainte de formule ainsi :"
+msgstr ""
+
+#: ../../simulator/math.md:684
+#: dcf82cb22f1640ad98afa0955d354257
+msgid "\n"
+"NbActions \\cdot act_{prd}^{inc} + \\sum_{j \\in ECSTF} act_{j}^{inc} \\cdot CoutAction[j] < NbMaxActCur\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:688
+#: 41644912ae784e90b9cae4c1533693ce
+msgid "Fonction objectif"
+msgstr ""
+
+#: ../../simulator/math.md:690
+#: c8e90374e3d4499a8f793d877297b6e6
+msgid "Notons, $\\forall inc \\in INCIDENT, NbCtre_{inc}$ le nombre de contraintes dues à $inc$. Posons également :"
+msgstr ""
+
+#: ../../simulator/math.md:692
+#: 5f9eec897d474b798256aa7ee53b89fb
+msgid "\n"
+"\\gamma_{inc}^{tot} = \\sum_{i \\in GROUPE \\cap CURATIF_{inc}} (p_{i_{inc}}^+ \\cdot \\Gamma_{i_{red}}^{+} + p_{i_{inc}}^- \\cdot \\Gamma_{i_{red}}^{-}) \\cdot proba_{inc} + \\sum_{i \\in CONSO \\cap CURATIF_{inc}} (|c_{i_{inc}}^-| \\cdot \\Gamma_{i_{cur}}^{CONSO}) \\cdot proba_{inc} + \\sum_{i \\in LCC \\cap CURATIF_{inc}} (td_{i_{inc}}^+ + td_{i_{inc}}^-) \\cdot \\Gamma^{TD} \\cdot proba_{inc} + \\sum_{prd \\in PARADE \\cap CURATIF_{inc}} (act_{prd}^{inc} \\cdot \\Gamma^{PRD} \\cdot proba_{inc} \\cdot  NbCtre_{inc} + val_{prd}^{inc})\n"
+""
+msgstr ""
+
+#: ../../simulator/math.md:696
+#: 57aee54ab7d247059576fc5c9a6de141
+msgid "Nous obetnons la fonction objectif suivante :"
+msgstr ""
+
+#: ../../simulator/math.md:698
+#: afdd461568064b70bb19e71d3b3ac7fe
+msgid "\n"
+"min \\sum_{i \\in GROUPE} (p_{i}^+ \\cdot \\Gamma_{i_{red}}^{+} + p_{i}^- \\cdot \\Gamma_{i_{red}}^{-}) + \\sum_{i \\in CONSO} (|c_{i}^-| \\cdot \\Gamma_{i}^{CONSO}) + \\sum_{i \\in LCC} (lcc_{i}^+ + lcc_{i}^-) \\cdot \\Gamma^{LCC} + \\sum_{i \\in TD} (td_{i}^+ + td_{i}^-) \\cdot \\Gamma^{TD} + \\sum_{inc \\in INCIDENT} \\gamma_{inc}^{tot}\n"
+""
+msgstr ""

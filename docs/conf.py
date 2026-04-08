@@ -164,3 +164,8 @@ def replace_versions(intersphinx_mapping, file):
     return intersphinx_mapping
 
 intersphinx_mapping = replace_versions(intersphinx_mapping, file_with_version)
+
+# -- Internationalization ----------------------------------------------------------------------------
+language = 'en'
+gettext_uuid = True
+gettext_compact = False

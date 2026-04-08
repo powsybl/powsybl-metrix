@@ -1,0 +1,3370 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 
+# This file is distributed under the same license as the PowSyBl Metrix package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../../simulator/io_doc.md:9
+#: 2c6bd7e3355044d3af153c72d0e3a436
+msgid "Inputs and outputs"
+msgstr ""
+
+#: ../../simulator/io_doc.md:11
+#: bc89d5ec1ca14a649ea74fc6963d2970
+msgid "Sommaire"
+msgstr ""
+
+#: ../../simulator/io_doc.md:12
+#: b2598c93b35a47648106cd53dcc082cf
+msgid "[Introduction](#io-intro)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:13
+#: 13833b7812d14d0e9523d02e22cdf45c
+msgid "[Données d’entrée au format *json*](#io-inputs-json)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:14
+#: 275295ff514a416aa22c15e9dfb2dc0c
+msgid "[Options de calcul](#io-computing-options)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:15
+#: 54f942cce24643cc8af00d488aadd1ab
+msgid "[Options de résultats](#io-results-options)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:16
+#: 2880196d6b59411292480542785ba25a
+msgid "[Régions](#io-regions)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:17
+#: 86adb74f0103456d9854d9c794ae89be
+msgid "[Informations nodales](#io-nodal-information)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:18
+#: 260cd0361a1343b99bb4e8f5ac321561
+msgid "[Sommets](#io-summits)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:19
+#: cac2780528bf456c8d34e7a34518be5e
+msgid "[Consommations](#io-loads)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:20
+#: 485db2c50594437f9e005af5f4943c51
+msgid "[Groupes](#io-generators)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:21
+#: 078d2e5d489b4f61a8f39a052af38958
+msgid "[Quadripôles](#io-quadripoles)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:22
+#: 981c8054c0dd40e9ab69e16fbe9011b8
+msgid "[Quadripôles élémentaires](#io-elementary-quadripoles)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:23
+#: dbde571fcce74e6d809d42b05fb5d5ca
+msgid "[Déphaseurs](#io-phase-shifters)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:24
+#: 3f59524a73574ea28c882bfcdd3d3656
+msgid "[Lignes à courant continu](#io-dc-lines)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:25
+#: 425e0a49d62649f5b5a6082fefd5342f
+msgid "[Incidents N-1 et N-k](#io-contingencies)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:26
+#: e94fe0c0cb6f433799ae0ea11eae32c7
+msgid "[Curatif](#io-curative)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:27
+#: 08351724f9f241f88f8257e85e5f3568
+msgid "[Sections surveillées](#io-monitored-sections)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:28
+#: d21c0eed640e4080ac7c1c937a44cf77
+msgid "[Variables couplées](#io-coupled-variables)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:29
+#: 4a41955639694235bdf8ecd87bec83e1
+msgid "[Variations marginales détaillées](#io-detailed-marginal-variations)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:30
+#: 71e81dedbf02482790d8e2339b091c0b
+msgid "[Variantes](#io-variants)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:31
+#: ba4929a550954280933ecdddf1e28bc7
+msgid "[Parades](#io-remedial-actions)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:32
+#: 5970ad7c51574992abad0e4674c43c24
+msgid "[Données de sorties](#io-outputs)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:33
+#: e6144639fe3246ee8771fed0233beaef
+msgid "[Fichier de résultat](#io-result-file)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:34
+#: f8d734acfc6248e78288917afaa99d24
+msgid "[Tableaux descriptifs de la situation](#io-detailed-situation-tables)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:35
+#: f6be118ba34b4a5e86c064b7345d372a
+msgid "[Tableaux de résultats](#io-result-table)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:36
+#: 798647fd64874a4ea4d8053c98eef1cc
+msgid "[Fichier de logs](#io-logs)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:37
+#: 8332135106ef45f9a56a6d5ea100ea0f
+msgid "[Fichier LODF](#io-lodf)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:38
+#: 0440f25585724fb4bd6d1c29616da94a
+msgid "[Fichier PTDF](#io-ptdf)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:39
+#: 0278d9ff0bf6484eb93cc27abb449cdb
+msgid "[Fichier MPS](#io-mps)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:42
+#: 3edf65f894b64fb4a62078a2375a41ba
+msgid "Introduction"
+msgstr ""
+
+#: ../../simulator/io_doc.md:43
+#: 75b6fb3f23134ff6b964667c1643c6fa
+msgid "Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme imaGrid). Suite à  l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à  savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant-à-elle,  été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format  de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle."
+msgstr ""
+
+#: ../../simulator/io_doc.md:50
+#: 61e096c611194f819a5e76df0e04d50f
+msgid "Données d’entrée au format *json*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:51
+#: d5236a16fb12420f94d3daf5db42a9e9
+msgid "La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au  format Groovy. Elle génère 1 fichier *json* : '*fort.json*'."
+msgstr ""
+
+#: ../../simulator/io_doc.md:54
+#: 90c2b74791334266968a16b01129f504
+msgid "Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée,  les autres sont optionnelles. La valeur par défaut configurée dans METRIX est indiquée entre parenthèses. Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires, mais qui provoquent des erreurs de  segmentation si elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> provoquent des erreurs (cf.  fichier de logs) si elles ne sont pas renseignées."
+msgstr ""
+
+#: ../../simulator/io_doc.md:62
+#: 70c96e5896154a06acd8e9e4bf14af05
+msgid "N.B. : Les types de données sont définis par une lettre comme suit <a id=\"types\"></a>:"
+msgstr ""
+
+#: ../../simulator/io_doc.md:63
+#: 58b4d6225bbb45ce8a417c91a3c8fdae
+msgid "B = *BOOLEAN*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:64
+#: 31bc67ff82894b439e4f002e97587c79
+msgid "C = *STRING*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:65
+#: 046c88df092d4cc88d3d6dd204604c66
+msgid "I = *INTEGER*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:66
+#: 2f2b20f400154869a73eab7e210b6332
+msgid "R = *FLOAT*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:69
+#: 3506624ec08244a48cf3e8abf488c980
+msgid "Options de calcul"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a1d4681bb0a140419255127cb3596767
+#: 6ab871ea00cd4ebe93eade1aa1dfa273
+#: 20aa41267486406495280623a27346f9
+#: 7603084f1a2b45229e140b6e282ea28b
+#: 0add0bf94315423c9a8b51b3f8b9622c
+#: 85ef9cdbfa9a4647a27f062653f55b55
+#: 9a583d75fa744e01b3209c60769fe036
+#: 0e9271ba6a014576a98af8750072afe3
+#: ea2e7f419dab4b4b9f5f5a3dc5830cc2
+#: 1d33f2eec3064fa488632bde3a866459
+#: 779bb16447064d5d8e77ffd7491bb25a
+#: 80a627563dd64333b81b4002f15dab6d
+#: 54461c4f800644509d40d5c50e725ca7
+#: 43c12936da3b4288b54a6f8d815b3afc
+msgid "Nom"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 45db00d5a0cd4c62bddc39350720a819
+#: 1de4466896194de598d68012ea2cffec
+#: 8b131cb171c64e0499b31c98b06b3b50
+#: 90953fbb9ff94daabdea63de3c0ac9a0
+#: b31aac25d3e44c0d9d8564dd8375ec2a
+#: 0cd4b5420d86480cbb12ea9358582d51
+#: cbe26792fdb34ef1b5059f99eda34619
+#: fef52eebc26b4b1baf2d6b30e253c314
+#: bb06aba43daa496c86ed6f5bbbd5f65f
+#: 2d4a030d64de400b8fc0d2179bb8c68c
+#: 09c98338517841c398c2c4d768761156
+#: 995d82feb73445079f14470b8c076e49
+#: 6f9abfbfea0f4180b1698a6e04b3eca6
+#: 65879bf9dc514601ac085b029450bb2f
+#: 5216548009da436385dc87a5cc079f70
+#: b35dd184558e40fe9488d3f63693714d
+#: 6070e5d36fb64145a43b0d15afc57d49
+#: 7de7a31b109a4b84af84b07e697e4533
+#: cb19dca3d7b8432ca0f5634eefc72a1b
+#: ab59a85c5ba842e59571a73b9ce768ee
+#: 7420d99e1b6f41db9c5b6f90eedc8415
+#: 93e06b14a2e44b83b3b98b3e0b2c4fd1
+#: a17e54ce7ae1467f9a815488fd28f004
+#: 4256c273b00d4bab8ce1d14a8d770ab9
+#: a542747c7a6040de941e293018f51f58
+#: 7a9472e742434c6897ff38c5ed3fb6a3
+#: d23c8e3c1b414c268eb00b33f30837f8
+#: 642a9709b87748e3bda77ae11763ef05
+#: 7b0eec6cceea471e9c40c347d003c3c7
+#: f951419344be41d7ab5c87696dd64069
+#: 6615c7dd8e6d49ac89011f81e91dd715
+#: 3d10bdf2e50c443ea23ed9592cb67d9d
+#: c17d7daa1aac4b3f9dfaceb5acf2f4e3
+#: 7422cdf16df9411a8ac0517e6e7dca4c
+#: 142bca37fc0246d19dbcebacbb997afb
+#: f209f79300ee4328830e735cc75ad82e
+#: 499980b59e3f4d7f89aa2fc3f296b38b
+#: 31ee65949006424f9627c6b6a74a106f
+#: 29e14c0bd3774823b2331ac4de9f01b5
+#: 552d8c5678394742a76ef2b0342d085c
+msgid "Type"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e2d63fe6d2964be38f7c125123fb3a60
+#: 8ab20c07bc874f7fb07c980bcc9bf7a1
+#: 552677f0f9e044cdaf06af3ba2308bf3
+#: df55498356c642e7b57211df3b8351ea
+#: 3145666a40f440879cfd9de3d963c601
+#: e2301f7c48dd41c980ff8fa5616aafa9
+#: 79a4a617bf4140f9a1bfe952b7fe6de3
+#: 70f7b86d73ac4905a7349f310f4ef776
+#: 7c07f37b5fc74e68855a88476af4eb75
+#: 78312a7828f642499156b1533d01c560
+#: d036926c94d0433eae8439ccb6f38353
+#: 87dafeffa3c9442ebffe9d1f22a03cad
+#: 92eafe85ad4642c9b2540122ebf53f39
+#: 4ba0feb0ef1d4a61a16c34fea71b3c13
+msgid "Taille"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 10871346d269435b9fbe91a379f2f428
+#: 453ff7086bbc41be9ac85fdf4d2cd840
+#: ef86710a23ce4f7ea56642edffdaef82
+#: 8941f52ca5f744eeb05343ab86c015f9
+#: fae70a909a2549e48d323647abd82c96
+#: cfc9d8f029594e09a3a92b6e8271f810
+#: bd6868501c9a490ba54779e7cdc70591
+#: 2d4e83ee187d4877930abd2a286aad98
+#: e89dc2ae5c324b62be2b806ab139bf9d
+#: 7156173605bf463391940cae2105109e
+#: 6e4c379819a3401b9da28c83f547ab9a
+#: f43a203acd6243ceabbca7fa99ac7dab
+#: b96a99deedd54122900aad2c3c115a3e
+#: d346f6f1a4a648d39fa002ec3f8e7c48
+#: 73390697545a4004ab3e5894f27da3ff
+#: 5b5a0b5463d1451baec15accaf943da1
+#: c5cb3f20fb244032b54ead34d45dfd42
+#: ac590e9d5ceb45d49d1867979dd7ad14
+#: c6c82d49a6314e89a09061957504f0ec
+#: 2db362a0cbbe4aef8f63c884c0a4c48d
+#: 187abaae2ba44501a4e5726189e954c4
+#: 783f2c99f1b345ac87169f256d2dfc8b
+#: af409627d11c4ab6b36982260edef0de
+#: 9a0d1e7b712d49a5beec577014cb7812
+#: 65d64a819cf049cbbaeee82b06f4ab3a
+#: e3fe9be730b54baea785a0e595347957
+#: 96d8f0540e1f4aad9c5d8de8a1afee9f
+#: 870faeb8d7f64519a52197bed6efeb39
+#: 7085e5f2f2744e05ac7d16db032a0b0b
+#: ced1114f3d8d46caa33d4c1ed0e40fd0
+#: 52d3369bf26944639809e49c9865d901
+#: 96237f82449c431fbd9b4c60063774f4
+#: 3c8332f0378c45caa7d4c60b69821b5c
+#: 9471f1c4c9f8400d821ddfdc4b25de2d
+#: 557f2962b50c4dfca07bc4fc41434dcc
+#: 858fce97b8ea475aa07e99a5fc292284
+#: cd35d4df2bd446378d71323b216ad850
+#: 63134000bb5f48af95f9fff0cdbf54b0
+#: 3298094f8db046f9b2c58ae6d080f0a7
+msgid "Description"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e769a07ada2f486387d7a55f8a35dcf1
+msgid "**CGCPERTE**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b8b667714d4443db91ed5f2a194d5807
+#: 907384d7895347e5bf23b1233704e6ce
+#: c1886f63f6314e22bf9c2c490438210d
+#: d2558bbb1baa4dd0bd87599acfcd6ac7
+#: 41b7a2b2e56549a6878b72efc9ac109f
+#: 47105eab3f6042b8a4ee8e0bc4616aae
+#: 4da2dba22880408e90b1005d7590bc60
+#: e474f7e45fc646a7bd42e14d6e3dc841
+#: d26fa3e9f4e04c5ca42b63e7f50773a2
+#: 4d0edb2af5df45bea9948739e8bb5307
+#: 509b3f87ca1a4f83923ffa7ef0c6502f
+#: c4a9948f942442aa8dcc4782f725e957
+#: 9cc8b0314665472b8ca2ad564b018a99
+#: 570b9650ed1941b48f4011c60d2de46c
+#: d317f9015b9144e1911d3f449ce77111
+#: 16a006ed69c84335a4bbdadc8bc46447
+#: e586b140cc734dce82e77c46d2c6000f
+#: 38fef37e6d5545a38e47d61c4ab5413e
+#: 06c39f9835e7446da43f160071666042
+#: d978f052d08246e98edef9d90fcca2b9
+#: c15c3c7835cd4cb8a423063a9317ad9a
+#: 3cce3c3441e44ecdb1c2157c482685d7
+#: e57c02952630485992d63d807a41442c
+#: ce1a7015f5964ffc8f48fc1eb98008cd
+#: 0ff0bb11bc384bc49cf8cb5e4eea85ee
+#: af07ed51420d49229eeb109c72597c86
+#: 0188894ed4ec4367a12f6da336b99954
+#: 5d58891ffb024bddbb3d981205ef61d0
+#: 2998fceea4794ab98ca69d91afae18dd
+#: be008e44c9694209ac77e283693129bc
+#: 154c7f0bd7744e608c1c6d3695aaae75
+#: d7bf31a7f9d0417aa5ed6667857d5d0e
+#: 0f91c2dcc8134898938db9e550391973
+#: 07dd0c110f5e46a4935dfefd02637481
+#: 7891153648274e4ab1535b35daef0ff4
+#: ca2974eda0c34f89b72c1daf680c418c
+#: 22fb5c2cebd54a0e9d467f284a900bea
+#: 9e51e7aef8ab4bb4a1bf4db2df7fe68f
+#: be186cc8636e47e7b25a47ac1673b04e
+#: 6b93b1b734994d148d3850f23522187a
+#: dbe6e9df4fce49239e4cfcf855e0fd99
+#: 7bdb9edb129d4bedbe508fe244e72dae
+#: 3bfba6ac22744931bc93827747980efb
+#: 9741841b9f9342c7a3f74115166567d8
+#: f002484e3f964de09cfe3f7352f85684
+#: 098a49e7ac074598a45d1d19c9fc0aac
+#: 5152d4ffb3684f0db31efa1e40960fcf
+#: e8ae0829b63a4f89808f30d3dc5c1668
+#: 65e0d3d9453a49eb98d010a50385fdb3
+#: 8e28a2e8674049938ac9d4e5a20c398e
+#: 7cbf8fb3a36b4c5b98a9b0e50c15668c
+#: b487d57bec8b4bc7b5b3397a28b5408d
+#: 25d075017c504268b6b07d812dc67083
+#: a62e630da263427e98a58d4ab55c553d
+#: 4da6ea71bd74473f8af2df127b115239
+#: f05e114a8cc9417381d4264ab8f5f886
+#: a9d5be2b9706462dae94d7d86610763a
+#: fca15a5ab6354faea490dfc9295021cc
+#: 67e40bf61e0d44e892c0fef1eaa81601
+#: 8e2cb0c5651242c18bfe1bf795c85ebd
+#: 7dce1b67f0b14577867f61de5087e1ad
+#: 08ab1ce07a844cf184069322940e32b8
+#: efc4ff4005714da1822351aaafb71b8c
+#: cb0c3720458f4b1da4afcf1d6016c470
+#: 191a8f739f1248ba88f7ce2ae9cc960b
+#: ada89e1c63de4651bb550c8d95b1f4f6
+#: f049851d332a49e1ab6f1b52cc33629e
+#: 8fb1aaa6cd074e54959941d9ef47c6f5
+#: ead29e7508474f2eb6bbcb6c431f9404
+#: 040261861d294755bdcb8639983f4312
+#: 6596ee8049f34154af3290a7ad5ac584
+#: 6b80742262d74abd9c74e02da9ddd6b0
+#: 8bbdbe2e80b24f49b1fc87ee53deda44
+#: fdb14736018c407a96eba7c06771f6cf
+#: d0ff82a5d76c451f9e620ef2e47ba29b
+#: 37b4a6e686c54fbc870a30de128d2d4a
+#: 18eb31452b8e4e93b03bd2b189daba0e
+#: 53719ca6ef54499aa9d2e5c1ae411223
+#: e69aa4a547d041b7afd33d47b3e09305
+#: db2faef9cdf349249fdd9d7736717a79
+#: 8cb6faebe65f400e8a13e98a0caa282f
+#: bf4a200e6573434d9337db89434c7d7f
+#: ed381cb66f954e299d743d0b63f38ed1
+#: 6a78abe69e48425d93d1ba45977314bd
+msgid "R"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a5184a2d0d3b4940bda004d3899efa9b
+#: 1b39889b92db48f8a321fc1a3babe269
+#: 71c5110a543b4216899368a32d7cde4b
+#: 9177d16f5d6248e2b476f703116a3baa
+#: 82e0bc5916944e619e0fbd4545ea74c0
+#: 51307a87a05c41728588ea25c83aa5a6
+#: 719a18a79a0d4a79bf97737badbbde9d
+#: f275051933b8443ba904d8b933bae9d1
+#: 31e846f027124167ae4732c8f958dbc6
+#: 4d29e64fa67b4da88d1e5e6888619ce8
+#: b24b4f0b69604c0db52acd06ebb11bbd
+#: 962991a03e564deaa2b2aaf3b88ce4dc
+#: d012c8f49df64608b178920d98e8d3f8
+#: 700417dbd75f430db50e32eea8b546a3
+#: b791d774edd141abbe3cf86a885d2f9a
+#: 4a2a4f5a497c4f6fb7d789ed1fc26ac5
+#: 7dd70ee80bf2430489050cb76617bad5
+#: 4c20f9aac1ee43b18087bf28fdf18c8a
+#: 185c043345404d6fa7078183e548471a
+#: f62875e76106413fb6411bffdcae5719
+#: 93a21fe897574c498d49e74660d5d69e
+#: 6c2bd9dd2f3c4477950846b3582c9dd6
+#: 0e88e7ca93b94c3d844061b7139368b7
+#: 0ba8357656ad471387dc0f4c27298692
+#: 880c44055ca64f2689a2767495407539
+#: a8aaecc276af47ae9821a05040c6f70e
+#: 96b01b1beb44431ba8b6718f9ee408f4
+#: e410bda8b0964b30af3159a9bf6fb384
+#: 4e854bd82da64d02a9a57a9c259a3e52
+#: 159db1e6c4874aa19b343de0da901565
+#: f0f2e9c6d97648ca9decb8299831eb0e
+#: 5f6e5b4d862744839055423ddc4754a2
+#: 94b3c8526d5d497c8b3ec0d00ea792bd
+#: eeeb3ffcdefe4f16ac231c84e0414332
+#: e38149ec54844ffaab88b3907220e391
+#: 8faa7cbf047d454ca986e6913b953cff
+#: 491e09dca21042f3aedead902d9796ac
+#: 6a70d18c635144e9a8c66c5f6d4da5f5
+#: d5f573321fcb405680498771e434f716
+#: db2e05b6870f4639ab10a4004740fb5e
+#: adf3b93220114c0fa196371f898832cd
+#: 6775d46ccb554d5d9ddeaa72716cb003
+#: 000ded523a9a4cac8366662639017748
+#: 92b27d93a726478aa68a0b7a8f0031e7
+#: 70d215e50484463aacb82c2e2d6a2625
+#: d16d6fedff1d472bb58d4160fd747c6d
+#: bebfe87544a146ada25019a893cb8682
+msgid "1"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d710460d2f4a49a2bdc920899b0926c2
+msgid "Coefficient de perte initial.<br>= lossFactor (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4b1f180f36d14f4a8bff3c6b360bda90
+msgid "**UNOMINAL**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 00ad196d26154882977b7a92a0e5ba68
+#: d8a0bb8389124f07af19e585364faa67
+#: ae5eaedab175491b8c09c44ae93eb380
+#: 0bd66ffcc12a4cbfa2a47b8fc4781269
+#: 2a12cb72a367401a908aaf2c7a98dc16
+#: ecf79e6ea3e34174b072f3f186d7c5e8
+#: 69c040e494bc4a9fb0d297b72c5ffadb
+#: aae566a400704f04a4892e4c279daca0
+#: bba926ce73b44372b9a7af5223b25daa
+#: dba544d8b8fb47868cb7f10c33795247
+#: 117759edf3e249ababce6ef124069da0
+#: fab51f4539794d909794384578398267
+#: b41f927d7b174acdb4e5edc795acff29
+#: 4fd5627b4abe4fa396baee0e10b98f1c
+#: 3c754074593e4d1c91ed17beaf5b326b
+#: cb435e6898524083b8611d7c4b9ca757
+#: 50a077f074574c708e6725c22d674265
+#: 2f251303df3d45b08d0a6c78d6583ef7
+#: 97ad9b18015e41c38493235e0a7e301f
+#: 98d440aebd8e4e0d87eb5a537e5e7f2c
+#: 6b61737ef1e74ad78989f624acb81ff3
+#: 295afafcb87b485da781d6eb798adee6
+#: 9df2d45015c64798b1e160a7ecc303cc
+#: 426afde2081e4628b6a3070da1ee6f10
+#: 88d0bc7fd8df4d9999b6c7b743831d51
+#: 448174d3d0d54e8da4b7b15906c11a10
+#: 4b6c9987c5274fb194bb695b4893489b
+#: 18f78181f9f34312befde12058c751ea
+#: 241ce829487d4ce3a2dfae5d05d8c8d8
+#: b25506e51e4343f49f2e98026a4215f0
+#: c688c6071fd84ff3b9780c02eaa49c15
+#: 0cf006b3c6a543ac825a1053b2f97cfa
+#: 1da9c1e84be144e69abcf6b6c6691dbc
+#: ed1cd2e98951492cb8a74aac8b1a0b8c
+#: c9d7e8163570430eb051861186345d43
+#: 75ff402100484d4da9abc5d64570346c
+#: 98506fee6bbd4ba18f0e7d0a6d1cb842
+#: 9649e21c776245e6b0178a15b5eba73f
+#: 3bb262cb0c834259b7eeb6475be15464
+#: 5bd2c5f20c004ab09d62b230d83ecf8d
+#: 8810548f8c5943e79768ff36b9e8d1c7
+#: 72367a4fc75a4588956306e226592f9d
+#: 34a04a560b704f32bbfe707c05c09ce8
+#: f585684fb1674837a1389fa43891b4d3
+#: 0f99e326af954793b3f85d28a37896e4
+#: 3be209206aba4ff395c0e21290ae8a00
+#: 0a6996e7729f4c80b121914c92b4f6ad
+#: ca6b1be627b74989b6b9eaf9c9c8e0a3
+#: 33a6bcdb3ee24f318d96f4feb965808f
+#: ad28d62397764514ae6e3bc29fd95651
+#: adfc4eb79c88482a9031c7b119bc5119
+#: 129c95d7f9ae43ba9b292a07bcd8df05
+#: 4a67f275a4aa4cccaac87a79ee6d4ee9
+#: e974f782f00f4b2ca69b4a1092f30318
+#: dffed21901d94c1aaf99a006adfd824e
+#: 7ab455f4d2d042cebc4ab3de0896d34b
+#: a9cb85c0b64e48b0a33ffbd95d8d325a
+#: 7d81940e83404a87af70faf94835fa31
+#: 7c224bb8f68045c6b3b0424113c3e993
+#: bd3952c73bd34967a052808047179cea
+#: 636162298f5c4c9881b6e6bb25b02a62
+#: 87c282b4d41e4783b6f1741ff5ea0ffe
+#: eeb2ec3c0e774b6faf611f20f32fb13b
+#: e57a2ed416b0475c966ccdfd192642c4
+#: f4554103e82d46d499cc5afd6b06dbb9
+#: ca427d7692244bd1a6d467f21ad17b50
+#: 4a1f3ffdeb5347fd982f2faba65059ca
+#: 14a2a1b2e58e44849e035bffdfa45add
+#: 9cb5d1cdd3584c5b9a113d25c4be5221
+#: e86e0f7a9a6e4db287e9ca96a4e639f5
+#: 7499569f9598464dba891e3403407d0d
+#: 11f88fc83e5149cfa95cb0d1d476e059
+#: 1f6dfecc2ce14c28aaa8e5dcc6d3b536
+#: b4eceddb43ef4c10a7124b1fce09d9e9
+#: 04c73a64768e4304b43849b8f1b59a29
+#: e6c68a2d5e8844d49625af9eac5c2beb
+#: 01c60d3cb30a42449f75fbc0f56c8de7
+msgid "I"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 850600118ad24b129bfcc7fd62767f85
+msgid "Tension nominale utilisée dans le per-unitage côté imaGrid.<br>= nominalU (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fb784b73371041fe8de873c152164072
+msgid "MODECALC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2349adcdb25348c68fabb25a03216f84
+msgid "0 OPF, 1 Load Flow seulement, 2 OPF sans redispatching (avec variables d’écart) et 3 OPF_WITH_OVERLOAD.<br>= computationType (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 57717121b6b64719bdc9f99fb5006dad
+msgid "NBMAXMIT"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 06f2e416c4bc4088852a8d9aa5691f65
+msgid "Nombre maximum de micro-itérations par variante.<br>= nbMaxIteration (30)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 17dcefd8c69346e7ae2e711eee2c3d0a
+msgid "NBMAXCUR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8b65269ac7324eef997c1ee3213f73cb
+msgid "Nombre maximum d’actions curatives par incident. Pas de limitation si la valeur est négative ou nulle.<br>= nbMaxCurativeAction (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d98e0bec4b1d41f48f4456098202eeb4
+msgid "COUTECAR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d72207501959418ba9b7875a366d555b
+msgid "Coût des variables d’écart<br>= gapVariableCost (10)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2dcd5338455a4b93a1f5d3c24ce18129
+msgid "RELPERTE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ba65bd6f4d78456eadb9cbb9477ba529
+msgid "Nombre maximum de relance(s) pour écart de pertes (valeur par défaut : 0 = pas de relance)<br>= lossNbRelaunch (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 94dbcff58910413282441c441644e0dc
+msgid "SEUILPER"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5ab706199cd94979ac029b76aee26a87
+msgid "Seuil d’écart entre les pertes théoriques et les pertes calculées nécessitant une relance (MW)<br>= lossThreshold (500)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 202925c47c50400d9002c5750355267a
+msgid "COUTDEFA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 442b747508294b42ac3569f7574d5a4c
+msgid "Coût par défaut de la défaillance<br>= lossOfLoadCost (13000)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7d8b3b7deb3e4d318c30e54b9a36f6e8
+msgid "MAXSOLVE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 76dc2e9dc8494aa5b7a65380b7311fe9
+msgid "Temps maximum autorisé pour chaque résolution de solveur. 0 : pas de limite.<br>= maxSolverTime (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1f058b91d8ec487996a0706468083866
+msgid "TDPENALI"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5eeb6598d6df46aeb8d87361392bc864
+msgid "Coût de déphasage des TD dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (déphasage non pénalisé).<br>= pstCostPenality (10-2)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7f9a3d35d4cf4926a902763d5e4c27f9
+msgid "HVDCPENA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c66be46e086142a99c9f771023ed8d78
+msgid "Coût de transit des HVDC dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (transit non pénalisé).<br>= hvdcCostPenality (10-1)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 71f216e245e44dfeb47c6fa83f2afee5
+msgid "PROBAINC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a5a705af19e6420185ff1da5ab5eb5c9
+msgid "Probabilité des incidents<br>= contingenciesProbability(10-3)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 747202dc02364e3b97fcd65a4942ea76
+msgid "TESTITAM"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e23dc0301e214145ab7ee424a8aa4f49
+#: e0aa96417b9d44bca1e8a755f3cbccd3
+#: fc0e908ab8324a77b7322ac92e2f8353
+#: c7ea241d5e154d5eab81bc35c6060ec1
+#: 8786311172e34cc4b17e77ca2aa235bd
+#: fc989a0d6b5e4ff0ba52cd62c459c27e
+#: bdd5662dce5240ea887f2a26ca36e4c2
+#: 0b5051e38059477d82eae01157c23c7f
+#: 931cd77057e54f5c9dea303772a5d58b
+#: 6bb27bbc9c39415983e063ce4b458824
+msgid "B"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d5e846c6cb78422ba4afdb764ec9450a
+msgid "Prise en compte de l’instant post-incident<br>= preCurativeThresholds (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 80c72d26c6f54965985d216f778d810d
+msgid "INCNOCON"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f1e37c3719c2413393bb1015f9c435ab
+msgid "Prise en compte des incidents rompant la connexité<br>= outagesBreakingConnexity (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f968acfe4b5b4f86a674883210fe23d6
+msgid "PARNOCON"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 99c9f315c058431fa7c83cd934e19005
+msgid "Prise en compte des parades rompant la connexité<br>= remedialActionsBreakingConnexity (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f2bb71d8e1ad4b039827bcc5e25d6f21
+msgid "PAREQUIV"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 26fcd820411d4a93b28d537eb68a53ef
+msgid "Détection des parades équivalentes<br>= analogousRemedialActionDetection(false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 979f2a6c0d944f17b27155c485e4bbf7
+msgid "COUENDCU"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 12aa6672c7a44f5fa583bda823fd9a35
+msgid "Coût de l’énergie non distribuée pour un incident rompant la connexité (consommation déconnectée du réseau)<br>= curativeLossOfLoadCost(26000)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5efa7a460bc94adcbe5bfb1d26f6e3fc
+msgid "COUENECU"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9d4acd9439344d39bc67c6646b890baf
+msgid "Coût de l’énergie non évacuée sur incident rompant la connexité (production déconnectée du réseau)<br>= curativeLossOfGenerationCost(100)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6805976c38ce41d28c0d3fa2a9ae321b
+msgid "LIMCURGR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 61109c267691430bbc8c9c7f83c8e189
+msgid "Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b3a91cde985040afb8d8bbf6b4ddc6f9
+msgid "ADEQUAOF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 088c80f03a4c41cebbfbf527b45236b0
+msgid "Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0e6eb73c82f243f5b48ff918e7bb1895
+msgid "REDISPOF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8844cab8f6684da08d30345a647d954a
+msgid "Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:96
+#: c54fd1602c5b46e9a279f97393d54590
+msgid "Options de résultats"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ed7a28f5eb8a46a6af15e06f61932ce2
+msgid "NBTHREAT"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8d62574b41ae4b858028867bf25da408
+msgid "Nombre de menaces N-k dans les résultats<br>= nbThreatResults (1)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 38a2a937df1645be8e861a462278a078
+msgid "EQUILRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 583aa4cbe66846fca889823085d8576d
+msgid "Sortie des résultats détaillés de l’équilibrage initial<br>= withAdequacyResults (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: be7774a5166d4afbba0720607c17a9f3
+msgid "REDISRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1499bf215b094ef99743d8c0bd326100
+msgid "Sortie des résultats détaillés du redispatching préventif<br>= withRedispatchingResults (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a65d81e85d6f42548ade52118ea0e8da
+msgid "VARMARES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 973ac4c9a55a4343967fadbb3a1c2bf4
+msgid "Calcul de variations marginales sur les branches<br>= marginalVariationsOnBranches (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 212518d55a4d4a2db7fdd440116dd31b
+msgid "LCCVMRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 894f31d9c75a4d58aa3914c071badac9
+msgid "Calcul des variations marginales sur les HVDC<br>= marginalVariationsOnHvdc (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 71ffcbb7d9ba4f4a8d786fc40c0c61f1
+msgid "LOSSDETA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4b7d71ba8be6460cbd80fd6e0f1e56b3
+msgid "Calcul des pertes par régions/pays<br>= lossDetailPerCountry (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4094c4c6a7f14353b46a05b293986f40
+msgid "OVRLDRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 31d199217b9749e9a0ac648a08999798
+msgid "Sortie uniquement des ouvrages en contrainte<br>= overloadResultsOnly (false)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:108
+#: 638a3b7bc513443b98ce7357a869f143
+msgid "Régions"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b8213c0a2ede41318e9fa5de95756d2d
+msgid "**CGNBREGI**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d5d6b7bd8f3b431f8bdcf83dd4b50978
+msgid "Nombre total de régions<br>= $\\sum$ country"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6d008bea8e294f9395f075b900dc1ba2
+msgid "CGNOMREG"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e149c8b4062442beafae4bb558afac4c
+#: 9c275463bbea4636ad9de8e267b785bd
+#: e00cc796d87247c1892939d39ce1f668
+#: faf4d957a5b243858df256f0e3600b3b
+#: d8c1875111b14b8789b3a68587cea945
+#: 62b042b17d67484ea257fd4984c9c5c7
+#: 93866e98e8d247e49ec736f65c44478d
+#: 9546960f179d4bb4a0718ec085ec6773
+#: ffb43ac8c4c741ad96dbcfc02a458e85
+#: dd896e25ad9447849f656dad1f491798
+#: 7445c5b82ac04e75b10ef23553835f5c
+#: 18ba747a90a144fbb519b3646a9741e2
+#: ce1bdb797b8548d68a4deafa72ddf233
+#: 60c3ceae3b0a4e3788bc1c0dabea2aeb
+#: 1a26dbcc8d3146d7ba9cefddf57ceac1
+#: bf7c1db6877d4498a54c2bc8acc3a94f
+#: 816dd4ddc92a471f83b1bbaae526cf0d
+#: cdd778c1c43b47109c9a46289bf2cda9
+#: d95ef35c954c46bdb60b7715346fe052
+#: 9234d347415e4f489389fe8f3ab1a5d8
+#: 83f489e5855e4d10a6bcfbcab6500b5c
+#: be5ac2d3b1c94ba5bf322642d571ed76
+#: eec1fe9f326d4961b17154f9a86c9211
+#: 33990aa1acb34c379251ee8a8ee815ad
+#: e12b94c95b354c96a00b0f24a1ff5df0
+#: 084d416323484692b5004d1b29d5b089
+#: 4047cb99962942dea1bd46cf32dfd424
+#: c2000735f5d54820bb7e2172a3ced3d4
+#: fc719623596b445f8c29e63d4819563a
+#: 8dbb8dda5fd34dcfaccc9196b3fbc371
+#: 38d6deaf281c4f05bf6b3b3619a06027
+#: 65fb9735443542bd9947afcd26646968
+#: fc4e256be26e427f890bbf53d918fd82
+#: 283b755ee7f44ddaaefe55c564da25b4
+#: ca5b446fbf8f4ca0954f0d0607a15ace
+msgid "C"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3cc109b0cb7141e0804037298782ca77
+msgid "CGNBREGI"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9b3195ca34cb464bb14b3603e870a0db
+msgid "Pour région, nom de la région<br>= « paysCvg » si existe « country » sinon"
+msgstr ""
+
+#: ../../simulator/io_doc.md:115
+#: 8f5d34d013224e6e8f76237207fc50b4
+msgid "Informations nodales"
+msgstr ""
+
+#: ../../simulator/io_doc.md:118
+#: bcb3b9955aa44c8f9bde2add0b022158
+msgid "Sommets"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 93082018da93409582bf549073d71a9d
+msgid "**TNNBNTOT**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: dd8ab82fce374790864815c2a39dd50a
+msgid "Nombre total de sommets<br>= $\\sum$ bus t.q. voltageLevel.busBreakerView.bus $\\in$ composante connexe principale"
+msgstr ""
+
+#: ../../simulator/io_doc.md:124
+#: ca4b3e0ead62432ab98b681887db416a
+msgid "Consommations"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 122882ff80fb456486c6f54aff63bba2
+msgid "**ECNBCONS**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cf2e70dd4e694c95bb465d61fc2981da
+msgid "Nombre de consommations élémentaires<br>= $\\sum$ load t.q. load.terminal.busBreakerView.bus $\\in$ composante connexe principale"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 444581181c6846a9b278582d4e71a767
+msgid "<o>TNNOMNOE</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1e8385a0fa774fc69f5873caa51c19f0
+#: 303a4f38afb2495e9ee6e096a4988c26
+#: 78373f54859e4600b4fa79229b23eb24
+#: 00d8f6a57cf340d4bc30b29958b6b4ef
+#: 5f2d641993804c998aef37699eb1509f
+#: 8a1833b2240448d5adbe25a1ba627168
+#: fdc7e6ede00847749b889e7c42392554
+msgid "ECNBCONS"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1374476ed1784931a3fa977e74fdbe33
+msgid "Noms des consommations<br>= load.id"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8bce28d1355b48dc9435b67b24fbe039
+msgid "<o>TNNEUCEL</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c4831ffadaf7443fa08eb2ecc5a09a3b
+msgid "Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a9d6cf16a8124981ba1d98e46b0ba86d
+msgid "<o>CPPOSREG</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b734e0e1630e4eefb623bbcab1cf7839
+msgid "Lien sommet-région<br>= indice de la région dans CGNOMREG"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 494ebb899b834aefa04761778525cc7e
+msgid "<o>ESAFIACT</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9705b9a40dd34a1c9ec58fecd23ab489
+msgid "Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cf01229a315045f0be271e236aec7ecc
+msgid "TNVAPAL1"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 93a9a6c3b7bf40efa773f14791d03f73
+msgid "Pourcentage du premier palier de délestage.<br>(100 si aucun nœud configuré)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6d1221bdec084c2f9b4b474493d655a4
+msgid "TNVACOU1"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1ef93810460f4a7998985aa3f374eade
+msgid "Coût du délestage (valeur de COUTDEFA par défaut)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:139
+#: 6dfd00bcc55e4de1846d0f83ba288fc4
+msgid "Groupes"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 11cb2ba54d374406ac52e161d4726d9f
+msgid "**TRNBGROU**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3f6ae063d6494479af0f9267bb79b36d
+msgid "Nombre de groupes raccordés<br>= $\\sum$ generator t.q. generator.terminal.busBreakerView.bus $\\in$  composante connexe principale"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e57c68ba1b394c1f9434002ed31ff904
+msgid "<o>TRNOMGTH</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 50edf577c7bf436d96424fe8cb74c27a
+#: f1924ca8c8eb4383947320d913277037
+#: 1675f40cbf614e1d9c9c9b94a78de30b
+#: 76f6efd8a0b4470db2245cfd96fe9f9a
+#: 57b4268660104b03ab2dc2b49a25a5a8
+#: 8636e2933f8b4eabb1c4fe0a6a35792f
+#: b99ca0b0386c46e9bb20229dc540c9fc
+#: a711df58d0b941ccb1be15323e05efcf
+msgid "TRNBGROU"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 348602d5767f4233916194e695a6bc2d
+msgid "Nom du groupe<br>= generator.id"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0fa711020a5e4b8383a7bbadd0a82a04
+msgid "<o>TNNEURGT</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 93ba237337164e5795e887bc6bc2d618
+msgid "Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 881d182a92fc4cd583d780d5a511b8bd
+msgid "<o>SPPACTGT</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5c963ee105bf4d8fb4424f4138b65407
+msgid "Puissance de consigne $P_{obj} \\in [\\underline{P},\\overline{P}]$<br>= generator.targetP"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f32d1cf3f8784d75ab33aebfba8122d4
+msgid "<y>TRVALPMD</y>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ad6c764b7c6948709c8a3abf3e976967
+msgid "Puissance max disponible<br>= generator.maxP"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9ee6bab6ba8e4797b0e5959b8c49060c
+msgid "<o>TRPUIMIN</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a592c68f700b4ae58a345bf1a4994b92
+msgid "Puissance min<br>= generator.minP"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cdefa06ece804f788f13b1009ff282b5
+msgid "**TRNBTYPE**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8675bfc1d0a348eea7fd5424774723ad
+msgid "Nombre de types de groupe"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b3734be3c02d4712bf60db581c5fe39f
+msgid "<o>TRNOMTYP</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3d8d214e225e43559eca758d2fda3f14
+msgid "TRNBTYPE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8ed4245485fb435a96679fe5c84f7cd3
+msgid "Noms des types de groupes"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: edfec097a9104d96832847315ebbb604
+msgid "<o>TRTYPGRP</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 26dcaf44249f4e32baeaa038fc675146
+msgid "Indice du type de groupe dans TRNOMTYP"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d4055d88c9934c4abd1eaefb8ba5aabe
+msgid "<o>SPIMPMOD</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 748b62fdafb346efa34f5f2d9e4b73c4
+msgid "Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>(1 si aucun groupe n’est configuré et 0 sinon.)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 10639dc008ab40cab8c1ee8f1f25bab4
+msgid "TRDEMBAN"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0d588c2ac1fb49d88146233fe072c1b3
+msgid "Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:158
+#: 6dbbaf23ef484253be2dbe2ace361940
+msgid "Quadripôles"
+msgstr ""
+
+#: ../../simulator/io_doc.md:161
+#: cf55cce8fb7b4b43aff117e6bebcef19
+msgid "Quadripôles élémentaires"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e4faf811f51447e5a822a4f39b4de487
+msgid "**CQNBQUAD**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: dfa8db503e9b432c88180ca49b9d89c0
+msgid "Nombre de quadripôles élémentaires<br>= $\\sum$ (quad = *line* &#124;&#124; *twoWindingsTransformer*) t.q. quad.terminal1.busBreakerView.bus && quad.terminal2.busBreakerView.bus $\\in$ composante connexe principale<br>+ $\\in$ *switch* t.q. switch.retained && (switch.voltageLevel.busBreakerView.bus1 && switch.voltageLevel.busBreakerView.bus2 $\\in$ composante connexe principale)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0382dd897b67485ab307c2979f5fed06
+msgid "<o>CQNOMQUA</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b34f1f91f6d4430f90d0c2eadaaefc6d
+#: 97c68a21566242caa0610ffe0a5fb5cd
+#: e8cd0c8cd1ca4582a92d809271ce64be
+#: 0ab2abc19f0548f09828465fad798272
+#: e9324d3b1bff45b29ea3b64bde4ed15e
+#: 9ce5cced19314fad9fb5163a147b9786
+#: 6cd8cb6745794dbc8aaa3f6d7b449038
+msgid "CQNBQUAD"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: aea5a162e4c045d9b24330cc034d5978
+msgid "Nom du quadripôle<br>= quad.id"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e252c517b97345ffb5c192cda55be452
+msgid "<o>CQADMITA</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a73a6603674041bfba261974bedca013
+msgid "Admittance du quadripôle ramené à Ubase (inverse de la réactance, i.e. négliger la valeur de la résistance)<br>= $1 / (X * nominalU^2 / Unom^2)$<br>Pour les lignes :<br>$X = line.x$<br>Pour les transformateurs :<br>$X_{transfo} = twoWindingsTransformer.x$<br>Pour les transformateurs déphaseurs :<br>$X = X_{transfo} * (1 + X_{prise} / 100)$<br>$X_{prise} = phaseTapChanger.phaseTapPosition.x$<br>Pour les couplages :<br>$X = 10^-5$<br>Unom = line.terminal2.voltageLevel.nominalV"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 06f511d041ec4d8cb2993e9534ba3641
+msgid "<o>CQRESIST</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5bb32c8e237d4118bfb175a004c28865
+msgid "Résistance utilisée pour le calcul des pertes (en pu, base nominalU)<br>Les formules sont les mêmes que pour CQADMITA en remplaçant X par R"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 27bb403f870f40afa18a6ccf853ab4d4
+msgid "<o>QASURVDI</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b09984bea4f24b298bffae1ba13cbc47
+msgid "Indicateur de surveillance du quadripôle en N. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4f3ded2317b24cdf8971d67a810dce19
+msgid "<o>QASURNMK</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2f2b6df5a08f46858a8e1f266e8d151c
+msgid "Indicateur de surveillance du quadripôle en N-K. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f7f015e9559d4440a509dd87eb5a4af2
+msgid "<y>TNNORQUA</y>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d4ebe27b44f44f538fe89c44becf0ece
+msgid "Indice du nœud origine du quadripôle (quad.terminal1.busBreakerView.bus) dans la table TNNOMNOE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a53bb1f6ca8e4836906d63835538afd6
+msgid "<y>TNNEXQUA</y>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8109aef431a247a785fbc9ee6763baf3
+msgid "Indice du nœud extrémité du quadripôle (quad.terminal2.busBreakerView.bus) dans la table TNNOMNOE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 80f20fd265004fac87f8355fbdab45b8
+#: 9d6920356567461f851596a132f3d6d7
+msgid "NBOPEBRA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 01cc52dd365b48878f98ae78d21eed95
+msgid "Nombre de branches ouvertes conservées car elles peuvent être refermées par une parade<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 72d195e02c4447c3b7bdfa8d6e1e803e
+msgid "OPENBRAN"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7f6e56d9563848c98492f5e6610aa44f
+msgid "Indices des branches ouvertes dans la table CQNOMQUA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:176
+#: 57b5a48b6b6449538608d77084397dc5
+msgid "Déphaseurs"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e58132908ded49e5a9c351c6a54be313
+msgid "**DTNBTRDE**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 82a82842b88d479485837cafc9f3c05a
+msgid "Nombre total de transformateurs déphaseurs<br>$\\sum$ twoWindingsTransformer.phaseTapChanger si twoWindingsTransformer est dans la table CQNOMQUA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 94fcefb805484b6c99a9382dff6247b9
+msgid "<o>DTTRDEQU</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 62995c7eb9af454e95373e6b54804684
+#: b3880c4e17144c9f86e1a98f92c7a3f1
+#: 7885f672254d478ebbfd5a40ebed9bf0
+#: cb9be58458fa47659413530aeb0eeee4
+#: 86531e04ea2147cb8bfd1ca84c548970
+#: 6f9e102b56224e319fc4ccca973854b9
+msgid "DTNBTRDE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4aaa16b7b9254d3eb8d0cf2bba3ca46b
+msgid "Correspondance déphaseur-numéro du quadripôle élémentaire<br>= indice de twt.id dans les tables de quadripôles"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 92905a16ca954a849803d57abb29d64f
+msgid "<o>DTMODREG</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2236b356f833451d8e46aed6fd8334a1
+msgid "Type de contrôle<br>0 : Hors service<br>1 : angle optimisé<br>2 : angle fixe<br>3 : puissance optimisé (non utilisé)<br>4 : puissance fixe (non utilisé)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 248d8ad683ed4348b3f4ba036851007f
+msgid "<o>DTVALINF</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0e6f47b63ce14ec1821ee7d934d710ad
+msgid "Valeur min du déphasage du TD en N, en degrés<br>= phaseTapChanger.lowTapPosition.alpha"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5bc19c1bbdf14e108358638e143173fb
+msgid "<o>DTVALSUP</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: bfa26e5cce37460492ea51973248f2d9
+msgid "Valeur max du déphasage du TD en N, en degrés <br>= phaseTapChanger.highTapPosition.alpha"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 38485671173e433a9d1c9255b24f16d6
+msgid "<o>DTVALDEP</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6ef7ed0f112949ad850bec2bd752f810
+msgid "Valeur initiale du déphasage par TD en degrés, c’est la valeur utilisée si DTMODREG $\\in {1, 2}$<br>= phaseTapChanger.tapPosition.alpha"
+msgstr ""
+
+#: ../../simulator/io_doc.md:187
+#: 439b8c5a60b94538ae154966634dfb89
+msgid "Lignes à courant continu"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c654cb076eab4430aab0923bc112700e
+msgid "**DCNBLIES**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f85d577aed2c4b59bc9ada378f7f567d
+msgid "Nombre de lignes à courant continu<br>= $\\sum$ hvdcLine t.q.  (hvdcLine.converterStation1.terminal.busBreakerView.bus && hvdcLine.converterStation2.terminal.busBreakerView.bus) $\\in$ composante connexe principale"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 99ab0dea08f44f43afb102b8210ef669
+msgid "<o>DCNOMQUA</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7ad931b81b904eb194fc61ec28842064
+#: b900edfbe0874f5fb442899bd8b7640b
+#: 4d92ebbdd90b455b8491546f24f8170f
+#: add66d4438314c509dde6ddb848b9a58
+#: ce057e5d9f1b488cb8fe7f38c7bb2f8a
+#: b83eea1c53a14d2f81cc7c4073882c83
+#: 541c219b442f46bb996eda27475a0fba
+#: ccc06edf9995410cada6fd0efb75f446
+#: 930f2fac69d642d79df2021a0bd6130f
+#: cf998c371b8849c89a2c358a063bf835
+#: be96d5cb7cb948b790a9ef42f4ddeb4d
+#: 8f8363503ff0408daff692e745e023be
+msgid "DCNBLIES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4a10027170cf4a67b69d0be708cb51fd
+msgid "Nom de la ligne à courant continu<br>= hvdcLine.id"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 589502492086414d960d251be7c2c51f
+msgid "<o>DCNORQUA</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 19c4f2622a7445e7af6ff45f4a2edbed
+msgid "Indice du nœud origine de la ligne (hvdcLine.converterStation1.terminal.busBreakerView.bus) dans la table TNNOMNOE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 237789af35f14825bed2afda69917cea
+msgid "<o>DCNEXQUA</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3b03970085c1463680ec2d6678ea7ead
+msgid "Indice du nœud extrémité de la ligne (hvdcLine.converterStation2.terminal.busBreakerView.bus) dans la table TNNOMNOE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7c75b76a223c4792aea6a543b424aec8
+msgid "<o>DCMINPUI</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e5b6c909e562483a948218c5a7193d07
+msgid "Puissance minimale<br>= - activePowerRange.oPRFromCS2toCS1 si l’extension HvdcOperatorActivePowerRange est utilisée, - hvdcLine.maxP sinon."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2b375bd4f3e94f69a088fcacb87b6f05
+msgid "<o>DCMAXPUI</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 14b49e99e84c4e2f881add92a8d6a2d9
+msgid "Puissance maximale<br>= activePowerRange.oPRFromCS1toCS2 si l’extension HvdcOperatorActivePowerRange est utilisée, hvdcLine.maxP sinon."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 140d733937d4474599b4a022b6ec9168
+msgid "<o>DCIMPPUI</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: da8e1d2f05e14e7f8ba199fec50324d2
+msgid "Puissance imposée $P_0$<br>= activePowerControl.p0 si l’extension  HvdcAngleDroopActivePowerControl est utilisée, +/- hvdcLine.activePowerSetPoint sinon"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a33cf2e98a3f4caaa5de3be9ebd69be6
+msgid "<o>DCREGPUI</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9f59efc3057e4a7db175ef2e0451c132
+msgid "Type de réglage de transit sur la ligne<br>1 : puissance fixe<br>2 : puissance optimisée"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3c0025def377484899f6dd43d320e4b2
+msgid "<o>DCTENSDC</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 29938e6e1d8f4cacb07ff79556d99743
+msgid "Tension nominale du câble DC<br>= hvdcLine.nominalV"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5dc44e2d66c94f1a908c486340304e0f
+msgid "<o>DCRESIST</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: dd2453600d214b9e88362cac016cc089
+msgid "Résistance du câble DC en pu (base nominalV), normalisée par rapport à la tension DC.<br>= hvdcLine.r * nominalU $^2$ / hvdcLine.nominalV $^2$"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fb42bcdd76de4ec6a6f985573a126a26
+msgid "<o>DCPERST1</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: caa88e3604524886bc50678dd3d0cf42
+msgid "Coefficient de pertes (en %) de la station de conversion origine<br>= hvdcLine.converterStation1.lossFactor"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8b243729edaf4b419465981234dbfee9
+msgid "<o>DCPERST2</o>"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 720b5e9c71f34137b04520daa5dfecca
+msgid "Coefficient de pertes (en %) de la station de conversion extrémité<br>= hvdcLine.converterStation2.lossFactor"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 45ca0b212bca4134b5ae446315ad8442
+#: f920ca90c27645a1893b6e51368364fa
+msgid "DCNDROOP"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5a639bb3437d4acca6dafe2d4e1b2be7
+msgid "Nombre de HVDC opérée en mode émulation AC ($P = P_0 + k \\Delta\\Theta$)<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6a3a132c405a4dc8af4eb0c05b83af11
+msgid "DCDROOPK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8208c6205cbe48cab08c28f85bbf131c
+msgid "Pour chaque HVDC en émulation AC, dans l’ordre de la [table DCNOMQUA](#table_dcnomqua), valeur du coefficient k (en MW/°)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:209
+#: dbe8244016be4b55ae59ab6c08e4148f
+msgid "Incidents N-1 et N-k"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7f0bc0c3fae74c0aab6fd3b157ea7a62
+msgid "**DMNBDEFK**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: bab289b5f7464858905a1eb753665b4c
+msgid "Nombre d’incidents"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ce117385f20c44bf9b2728c8d38b902b
+msgid "DMNOMDEK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 22194cadb10547d394131b11a7887b34
+#: e587475f27e245aab29c920f1e871d17
+msgid "DMNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 709a6e4115ac4bc1a866ae481f2dd41b
+#: 0540f35497dd4786abfaa9dcb5f9fafd
+#: d1575760e2d4475db1305b86190f917d
+#: b09fe568e761443fb296fb8997d9fbc5
+msgid "Nom de l’incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 59624ca5193d405183d6a27d15c92350
+msgid "DMPTDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b2b9b7bea89a4c6ea8e83c1c7da4761e
+msgid "Par incident, pointeur sur DMDESCRK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a26c449711c348cf883bf607108e819b
+msgid "DMDESCRK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b27ddd0d2bd84980bf98533a209683aa
+msgid "DMNBDEFK<br>$+ 2 * \\sum nb_{<i>}$"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 59a06aafeadc4df6b9e2f8400bff949a
+msgid "Description des incidents<br>Pour chaque incident :<br>Nb, $Type_{<1>}$, $Indice_{<1>}$, …, $Type_{<nb>}$, $Indice_{<nb>}$<br>Nb : nombre d’éléments dans l’incident<br>Type :<br>1 pour un quadripôle (ligne, transfo)<br>2 pour un groupe<br>3 pour une liaison à courant continu<br>Indice : dans la liste de quadripôles, dans la liste des groupes ou dans la liste des liaisons à courant continu selon le type"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 80e09e668b664710b72173dff2ef6a67
+msgid "BDEFRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7e32cec157724e599d85de0c18e98758
+msgid "Taille du tableau des défauts avec résultats détaillés<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 37edb2eed61f4e61b23fcd52a9271e27
+msgid "TDEFRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8f8043d2d73f41e0b88ed0cbf6ff4ac0
+msgid "NBDEFRES"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7b36fd595b264d79b8a121c3c3b98ac9
+msgid "Suite de triplets : indice du quadripôle, nombre de défauts avec résultats détaillés, liste des indices de ces défauts."
+msgstr ""
+
+#: ../../simulator/io_doc.md:220
+#: f78e27377d0f48a0a7ef61d89b7befe2
+msgid "Curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 55923172f1b846ab889018e6dfbe6aa2
+msgid "DTNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cf2a8c8ac79d4c15aba246a780617d04
+#: bfc102cb1f0c46abbf67f41da5b50dd1
+msgid "Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c3b52ed1c1fe416bb3e8b3c0cca0ea7d
+msgid "DTPTDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 426a2e6c355f45018dc2fda589950ae6
+msgid "≤ DTNBTRDE  * DMNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 165923f1448e45a7a683c0f0983572bd
+#: 418b9a2eb5454affab66699ed4a214a8
+msgid "Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e8dd9c39ef084879b7faedbbf92e6290
+msgid "DCNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f0361177065c42b689d98db671152c5a
+msgid "DCPTDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fe26211218434beeb1bc4de31d3d071b
+msgid "≤ DCNBLIES * DMNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8e7eb0ad83cc43858a72811b23445d9b
+#: 91cf8ac2dd264d2fbede95ae5bbb5373
+msgid "NBLDCURA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9b11fa9ce8584e91a9af43cdd1f1f6af
+msgid "Nombre de consommations pouvant s’effacer en curatif<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 866104d6b65f4b13b337fde8f4f25a52
+msgid "LDNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 465a5649d2bf486db2c37c232368a75c
+msgid "Pour chaque consommation, nombre d’incidents traités en curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8f8f808c7dfb44de8d891c0718ff31bb
+msgid "LDCURPER"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6590880f80024caa9c696b2f5b65efc2
+msgid "Pour chaque consommation curative, dans l’ordre des indices, pourcentage d’effacement en curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 91621967b9d042ebaefcbfc7c2c8ed2b
+msgid "LDPTDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 84f0354e0a454484aa22a55e12a0fa77
+msgid "≤ NBLDCURA * DMNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 115be2d0a27d421e85f3b6590e0611cd
+msgid "Pour chaque consommation curative, dans l’ordre de la [table TNNEUCEL](#table_tnneucel), pointeur des incidents traités en curatif."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f68e7ea0974a439286182ba324ed4a95
+#: 29214c00f2994600927df277db2ae257
+msgid "GRNBCURA"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 398fe252215a4e08b25f71dc8a7b93c2
+msgid "Nombre de groupes pouvant agir en curatif<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ac6302c8651745e9ba3616546bbcbf29
+msgid "GRNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b8fc9dd185714a2791b9c6940c7cc253
+msgid "Pour chaque groupe curatif, nombre d’incidents traités en curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3ea8b48a9b2b483185ffe307295b0483
+msgid "GRPTDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 242cb1d55e9d45c3bf86c00e10e41a0a
+msgid "≤ GRNBCURA * DMNBDEFK"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6b6982b336734588aca0a78689850d64
+msgid "Pour chaque groupe curatif, dans l’ordre de la [table TRNOMGTH](#table_trnomgth), pointeur des incidents traités en curatif."
+msgstr ""
+
+#: ../../simulator/io_doc.md:236
+#: 8b520eff932f4fb3822e28cd85941ebb
+msgid "Sections surveillées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6b503b3b61bb4ae684e7de77862bf3fd
+msgid "**SECTNBSE**"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 134fdb4132554f159b783b35224ec8d1
+msgid "Nombre de sections surveillées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e3fe3ef42ddb4eb9b87e16a7e2ff8485
+msgid "SECTNOMS"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e76757289d604c28ab43135af29b3239
+#: fb263bbe82b54fbcbbccef685e9d6903
+#: 5300a2828df24aafbe3bac0da4a12295
+msgid "SECTNBSE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b589033fcb7c4ca8a51a0297dc082833
+msgid "Nom de la section"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: bf3a1c21751a4b9295ce971313d6e3da
+msgid "SECTMAXN"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 17b063378f2147daa42d0effbf22d827
+msgid "Seuil N de la section"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cbaec4b8d1af4c54b3b2d5ac023bc1ca
+msgid "SECTNBQD"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b0ea91bd48494d2c9a69019e6859f9e6
+msgid "Nombre de quadripôles de la section (nb1, nb2, …)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6c0fd0778f45404091ae179190a18b18
+msgid "SECTTYPE"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e5a101754690450f8132e18bee1b3848
+#: bd342cc0e9964a6c91e741d75f8de8fb
+#: ab84fafdbe1a4978ac28632ea7ba5607
+msgid "$\\sum nb_{<i>}$"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 272cc8c325ce430b99c07de894d19131
+msgid "Table des types de quadripôles (liste des nb1 types de la section 1, liste des nb2 types de la section 2, …)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 45326af06e0143a195710e70dd95b0b1
+msgid "SECTNUMQ"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 09c90bab9e164df7818f1d7473df7c8b
+msgid "Table des numéros dans la liste de quadripôles ou dans la liste des liaisons à courant continu (liste des nb1 numéros de la section 1, liste des nb2 numéros de la section 2, …)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 73a95c0b106c4880b4dcbbb56e0dca23
+msgid "SECTCOEF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6d5781d4272c494bb80c47c2f6112906
+msgid "Table des coefficients associés aux quadripôles (liste des nb1 coefficients de la section 1, liste des nb2 coefficients de la section 2, …)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:248
+#: 371edbed04854694aa8e0dbaa460158a
+msgid "Variables couplées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 39167f6ca74648aaa5f5a2db460ba0ca
+#: d814242ccad64d5ca74375b6e6e1cdf2
+#: 8dfaa1b692714c08b66e735e998ae7b2
+msgid "NBGBINDS"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 936c27d2f83740ffa8771388e9236a9b
+msgid "Nombre de couplages de groupes<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1f933818c696450c8f9ed74443a04a4a
+#: c1077578f29547eba9ae7868307a9780
+msgid "NBLBINDS"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fed7082a606b43d98cc9e966c9ab1ec9
+msgid "Nombre de couplages de consommations<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cf7ad8ad66cc482cab5c9ad905d26b96
+msgid "GBINDDEF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c725747cf18849deab88b153740d6c24
+msgid "≤ NBGBINDS + TRNBGROU"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1e4b0c73435e48cebd9ee7b4d3d04485
+msgid "Pour chaque couplage, nombre de groupes dans le couplage puis indices des groupes couplés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 649e7b8982b6461daf250807c41dc9e1
+msgid "GBINDNOM"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f765aa12d6ca4fe4aabc3c0e902af5a8
+msgid "Noms des couplages de groupes"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5d8ab77085f642fdba94174dd66b3832
+msgid "GBINDREF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e2d6a71b1d3f4521a74a0701b7e7262c
+msgid "Pour chaque couplage, type de la variable de référence (0 = PMAX, 1 = PMIN, 2 = POBJ, 3 = PMAX-POBJ)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f93c5f0618a94c4384ed4be2000345f5
+msgid "LBINDDEF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 27504f77b49040faa0c03c37388a2fef
+msgid "≤ NBLBINDS + ECNBCONS"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d98a61845bc540de88cb923ecde4fdfc
+msgid "Pour chaque couplage, nombre de consommations dans le couplage puis indices des consommations couplées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d24a296657444a74a76a2a6f39eb013a
+msgid "LBINDNOM"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2660de0555404c53a758a039ef07edd9
+msgid "Noms des couplages de consommations"
+msgstr ""
+
+#: ../../simulator/io_doc.md:260
+#: dc4ab3a43dda4444902a93e399c702e3
+msgid "Variations marginales détaillées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4d192e349d2d469080ed2e4b8add0ecb
+#: 537f862332e54e19ada74b17fc4db941
+msgid "NBVARMAR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9118e25376ff4ac5ab4ad04b2ed7e1b5
+msgid "Taille du tableau des variations marginales détaillées (PTVARMAR)<br>(0)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cdbd58691aa943ca9deb0d286e30ae23
+msgid "PTVARMAR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 14f5107f0938462e9204375ea3e32a02
+msgid "Suite de triplets : indice du quadripôle, nombre de défauts avec variations marginales détaillées, liste des indices de ces défauts."
+msgstr ""
+
+#: ../../simulator/io_doc.md:267
+#: 6352d9497a244c21b76142c5cd25c16e
+msgid "Variantes"
+msgstr ""
+
+#: ../../simulator/io_doc.md:268
+#: 6c1c3d50ea304c1798b020d2c768d4c4
+msgid "Les données spécifiques à chaque variante sont décrites dans un fichier au format csv. La première ligne indique le nombre de tirages (i.e. de variantes), après le mot-clé *NT*.  Chaque ligne du fichier commence ensuite par le numéro du tirage suivi par le type de la loi décrite identifiée par un mot-clé. Les données propres à la loi et au tirage sont écrites à la suite du mot-clé, à savoir :"
+msgstr ""
+
+#: ../../simulator/io_doc.md:272
+#: 903816311bfc44eda842bbe3a357a881
+msgid "**PRODIN** : le nombre de groupes, puis les noms des groupes indisponibles."
+msgstr ""
+
+#: ../../simulator/io_doc.md:273
+#: 883dd5e55c2c4e2ea79d38c00c022028
+msgid "**PRODIM** : le nombre de groupes, puis autant de couples (indice de groupe, puissance de consigne) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:274
+#: 32a0b2ffe5ed43e4b829fd00883a7fb2
+msgid "**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms des ouvrages indisponibles"
+msgstr ""
+
+#: ../../simulator/io_doc.md:275
+#: 825548b1eccb49c793b814a1f3e78278
+msgid "**TRVALPMD** : le nombre de groupes, puis autant de couples (indice de groupe, puissance maximale disponible) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:276
+#: 5f35faf6c98a4009a8d70106bacaa4a1
+msgid "**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de groupe, puissance minimale disponible) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:277
+#: 21e2f018453248a9a389aba91a0989d4
+msgid "**CONELE** : le nombre de consommations, puis autant de couples (nom de la consommation, nouvelle valeur de consommation) que le nombre de consommations indiqué. Il s’agit de consommations nodales. Convention Eurostag : 1 nœud = 1 conso"
+msgstr ""
+
+#: ../../simulator/io_doc.md:278
+#: 02bbd8d4c41c4c49b2f42ada39c927d6
+msgid "**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. Le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\\Delta1$. À noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\\Delta2$ ; notons que si la grandeur $\\Delta2$ est positive, alors il y a plus de production que de consommations. La différence ($\\Delta1 - \\Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\\Delta1 - \\Delta2)  / sumC$ ; $c_i$ est la consommation au nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée.  Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid."
+msgstr ""
+
+#: ../../simulator/io_doc.md:280
+#: 08a22f8885714fdc9f6fc85a3f64de0f
+msgid "**ECHANGP** : le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Cette loi est similaire à la loi ECHANG mais elle agit sur les groupes de production au lieu des consommations. Après application de toutes les autres lois du même tirage, METRIX ajuste les puissances des groupes modifiables de la région pour équilibrer le bilan (somme des productions moins somme des consommations) à la valeur indiquée dans la variante. La sélection des groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la hausse et à la baisse). Si, sur une région, il y a trop de production non modifiable ou trop peu de production disponible pour équilibrer le bilan, la variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir des coûts d’empilement hors réseau prohibitifs pour la région considérée par rapport aux régions d’étude.  Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid."
+msgstr ""
+
+#: ../../simulator/io_doc.md:282
+#: f328671671144e7488bc08e276ee4cda
+msgid "**CTORDR** : le nombre de coûts à la hausse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:283
+#: 331f0aec3dab40a29a17397f31a07f66
+msgid "**COUBHR** : le nombre de coûts à la baisse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:284
+#: 993cf1417891416ca5225a1365f94f9a
+msgid "**COUHAR** : le nombre de coûts à la hausse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:285
+#: f2b00329dd2448768f8b924cde003bdc
+msgid "**COUBAR** : le nombre de coûts à la baisse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:286
+#: d463528b75104076a1a234b8ddba1e2e
+msgid "**DCMINPUI** : le nombre de modifications de puissance min HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmin) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:287
+#: e94e2563ddee464da4dee14e871b7392
+msgid "**DCMAXPUI** : le nombre de modifications de puissance max HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmax) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:288
+#: a1fcbf41fd084413a17abc1ce405ea88
+msgid "**DCIMPPUI** : le nombre de modifications de la puissance de consigne des lignes HVDC, puis autant de couples (nom de la ligne à courant continu, puissance de consigne) qu’indiqué. Si la ligne à courant continu n’est pas en mode « consigne imposée » dans le cas de base, METRIX modifie automatiquement le mode de fonctionnement de la ligne HVDC (pour cette variante uniquement)."
+msgstr ""
+
+#: ../../simulator/io_doc.md:290
+#: 1eac10f1a9154a77afb53a3bcb602ebf
+msgid "**Remarque** : Si une ligne HVDC est en mode « consigne imposée », avant d’analyser la variante, METRIX vérifie que la  puissance de consigne de la ligne est bien comprise entre les bornes MAX et MIN. Si ce n’est pas le cas, la variante est rejetée."
+msgstr ""
+
+#: ../../simulator/io_doc.md:292
+#: 02fb072758f04e0780bd077bf95a5e58
+msgid "**DTVALDEP** : le nombre de modifications de la valeur initiale du déphasage du TD, puis autant de couples (nom du TD, déphasage initial) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:293
+#: 010287754f514899b9ae72a328b7daf5
+msgid "**COUEFF** : le nombre de modifications du coût d’effacement de la consommation, puis autant de couples (indice de la consommation, coût) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:294
+#: 550e5e1c3b1941b88fb486a1f0bfe94d
+msgid "**QATI00MN** : le nombre de modifications du seuil N, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:295
+#: 50529eacd0a34336955851ad4362e329
+msgid "**QATI5MNS** : le nombre de modifications du seuil N-1, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:296
+#: c07b15e90b2d4659b045e49f70d7c7ad
+msgid "**QATI20MN** : le nombre de modifications du seuil N-k, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:297
+#: 454871bbb8c64c2499b4ca4d3686b085
+msgid "**QATITAMN** : le nombre de modifications du seuil avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:298
+#: a86e6b2ccf754773b858ca3531bc01ba
+msgid "**GROURAND** : le nombre de groupes, la liste ordonnée des groupes pour le 'mélange' pour ne pas avoir à bruiter les coûts."
+msgstr ""
+
+#: ../../simulator/io_doc.md:299
+#: 0578d28e9e8e46a9ba29b4bd7f9d5373
+msgid "**PROBABINC** : le nombre de probabilités des incidents, puis autant de couples (nom de l'incident, probabilité)."
+msgstr ""
+
+#: ../../simulator/io_doc.md:300
+#: 8e86d4289a4648c3ad9dd0e312bb1b09
+msgid "**QATI00MN2** : le nombre de modifications du seuil N de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:301
+#: cf27ca077b95439db778e14a540c7ed7
+msgid "**QATI20MN2** : le nombre de modifications du seuil N-k de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:302
+#: 46efa4e4cca146ad88fdaaa056527dab
+msgid "**QATITAMK** : le nombre de modifications du seuil N-k avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:303
+#: 26cef1d7fd314d4d81b4b13d3fc6c43e
+msgid "**QATITAMK2** : le nombre de modifications du seuil N-k avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:304
+#: 10ba40bbf8204155b83b557ce375e7f0
+msgid "**QATITAMN2** : le nombre de modifications du seuil avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+msgstr ""
+
+#: ../../simulator/io_doc.md:306
+#: 5e3eccc564614147bd2323a09533766f
+msgid "**Attention** : pour chaque variante, le modèle ne tient compte que d’une seule ligne pour chaque type de loi. Si  plusieurs lois sont définies pour une même variante seule la dernière sera conservée."
+msgstr ""
+
+#: ../../simulator/io_doc.md:309
+#: f371e9c23d104c4fbdaf6d0997d1df4f
+msgid "Le numéro de la première variante est toujours $\\geq 0$."
+msgstr ""
+
+#: ../../simulator/io_doc.md:311
+#: bc88db8091654d7998d73bb10f4c184e
+msgid "La variante « -1 » permet d’indiquer des modifications sur le cas de base qui seront valables pour toutes les variantes  (à moins qu’elles ne soient modifiées par les données d’une variante)."
+msgstr ""
+
+#: ../../simulator/io_doc.md:314
+#: ../../simulator/io_doc.md:333
+#: 005e57de8de94bc3b0edc30143f56a34
+#: e62951b5d0644027bc7692c12d43fad3
+msgid "**Exemple** :"
+msgstr ""
+
+#: ../../simulator/io_doc.md:325
+#: 0c11cc185ac4405e82f2b9b891ede352
+msgid "Parades"
+msgstr ""
+
+#: ../../simulator/io_doc.md:327
+#: 2d823d94a89e4131936eafafcb2d4950
+msgid "Les données spécifiques à chaque parade sont décrites dans un fichier au format csv. La première ligne indique le nombre de parades, après le mot-clé *NB*. Chacune des lignes correspond à une parade, telle que :"
+msgstr ""
+
+#: ../../simulator/io_doc.md:331
+#: ab0a1c84a3524dfd856ecc526363d549
+msgid "*<Nom de l'incident>*|*<Sections à surveiller séparées par un pipe>*;*<Nombre des premiers quadripôles listés concernés>*;<Liste de *<Nom(s) du(es) quadripôle(s)>* séparé(s) par un point virgule>;"
+msgstr ""
+
+#: ../../simulator/io_doc.md:343
+#: 57267292ea25406799cfb7f73e55b69b
+msgid "N.B. : Les parades renseignées ne sont pas considérées si le mode de lancement est *LOAD FLOW* (i.e. mode 1)."
+msgstr ""
+
+#: ../../simulator/io_doc.md:346
+#: 7e361172c3a54c8bba1d4155af9aa6d7
+msgid "Données de sorties"
+msgstr ""
+
+#: ../../simulator/io_doc.md:347
+#: c976422eba744f588d7aa24132bef6cb
+msgid "Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des  fichiers tabulés d’ASSESS (et de METRIS). Plusieurs fichiers de sortie sont ou peuvent être générés à l'issue d'une simulation."
+msgstr ""
+
+#: ../../simulator/io_doc.md:352
+#: a5b6229e06164e9fbb31649a94239867
+msgid "Fichier de résultats"
+msgstr ""
+
+#: ../../simulator/io_doc.md:353
+#: 5027c38ef6e6478588bcf1d1af1729eb
+msgid "Il y a un seul fichier de résultats par variante nommé de la manière suivante : *\\<resultsFilepath\\>_s\\<numéroVariante\\>*.  Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier  commence par l’identifiant du tableau."
+msgstr ""
+
+#: ../../simulator/io_doc.md:357
+#: 1f282e16faa248498a63dbadb3cb7969
+msgid "Pour chaque champ de chaque tableau, on définit :"
+msgstr ""
+
+#: ../../simulator/io_doc.md:358
+#: 54644c89ce714b26a14b8e80ed0683c4
+msgid "le nom de la grandeur stockée ;"
+msgstr ""
+
+#: ../../simulator/io_doc.md:359
+#: 3883ba7d55fb42dcbdf3bbb10ddc9bbb
+msgid "le format de la donnée (cf. [formats de données](#io-types)) ;"
+msgstr ""
+
+#: ../../simulator/io_doc.md:360
+#: 371b7957a0254286b22fd75c3a5033b9
+msgid "et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire)  pour un coût, sans unité autrement."
+msgstr ""
+
+#: ../../simulator/io_doc.md:363
+#: bba15ee50ce74db9aa1e448f00a45e69
+msgid "Certains tableaux ne sont pas accessibles sauf si l'option `--all-outputs` est donnée lors du lancement de l'exécutable METRIX simulator. Notons `EPSILON_SORTIES = 0.05`."
+msgstr ""
+
+#: ../../simulator/io_doc.md:367
+#: 7e3eb3b88a6446dcb14d09b01fa8dce6
+msgid "Tableaux descriptifs de la situation"
+msgstr ""
+
+#: ../../simulator/io_doc.md:368
+#: 6ef0616764ce43beb5f8c9ea3838c684
+msgid "**Tableau S1** : ouvrages indisponibles (quadripôles et groupes)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:370
+#: 4066aff288264e2784dd189c537fd5e1
+msgid "*Format* : ```S1 ;INDISPONIBILITE; OUVRAGE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 76babe91f7da442da79e0b593b08b328
+#: 8f453fe83d054c3d9d7d944b194514b9
+#: 035751bb778a4cc6ad7ceb25f3411aec
+#: 1c53086ff8dc432d8a39dad0f1b94399
+#: 6a8fc27da63344abbd1b755a3bbb9b56
+#: b3a11ec5ac7b442fa25af6729e1c2384
+#: 5119d18fe17a4d0e84a8a5ac036002e5
+#: 1609f9d677b249dd9a330b4d604e5ca9
+#: 8ad88733665b475eb7c62dd0751d454a
+#: 80657e94296d44c2bbb8f790c02f9291
+#: 76fe564d50a641dab2d97c3241b3f16b
+#: a21e980468f347428959ab5014645bfc
+#: 1a960c6cfd5f4424ae1dc8812a746672
+#: bdaaee9b37404f6d9945dda9c4659ed1
+#: b2e85d0f62544e7ea865e738085c201e
+#: 992bbcae0bc546538d0998d9921014b9
+#: 65d4069844cf46acb5678bf99702cb6c
+#: 107bf20d9ac8441f9a6c0613c5b3f155
+#: 3280e75ab2764b94a52ff7e2f089959c
+#: 720d25d5559f4d2787014bf6a69f745e
+#: ec191adf762b4fcf8f1bc1e2e1e177c9
+#: 7bc6abd28ae64e1886af606a1ba0e11b
+#: d766d32827364980b40331386412485a
+#: 8aaa5a5c36924623a9312b29dab4f09b
+#: 258b45addc0a47fea773fdbe075ab533
+msgid "Nom de la grandeur"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6c4cf2939cda4a50bff519876eeea58b
+#: 8eeee8e182294939bcdbc1ae98bf2775
+#: 1479da65470449efa9d9637839e4585d
+#: 98324fbceb004b45bd2d60981c8635f6
+#: b920a666a4ae4809b93cb31589d0e83d
+#: e0cea23f21bd49538ea742304042ed5d
+#: 3dbce78755d0424caea9bb1604e4c283
+#: 92428cec9157414b92fd21f1b80fc400
+#: b3367fa0e33d4f74b2fde0d78ee93221
+#: 28e00a0e56974d54b5b4baeb79e9a03d
+#: 1a7fe4a3af354b8eafbf6c4b03cb79f5
+#: a4dc1f42c1074c909e637e2383196173
+#: 14e2a402d6bd468ab340ba38550ee951
+#: 67fb1c27a87c494fafe01a81fd057e86
+#: c1e6f5eca1224b90837ac2381bfdbb69
+#: e6cc807926174e8e833f0a6a18326dbe
+#: 02e633782b1f454c97b0b7960624be29
+#: 5e89d227554b4230b31eecfa25b56cbc
+#: 46a13abe92dd4bc5907a61fa0066e238
+#: 88124add9ea4419fb4bf105d2ca14319
+#: 6f45fe08bdbd40fcb4411ca90dfbdfc6
+#: faa70993b6924d02a07f05f5597af804
+#: 1948662ab0944d7cbb01fcbaf2ff6b96
+#: 8f08eaa0c2c043cca8225bfe9d6a2202
+#: 412b9b67e43c440085d3466006f40d21
+msgid "Unité"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e6b84af54fd949d590aee812b011bf96
+msgid "Type de l’ouvrage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d351e307f6554cee8e244d7846a16898
+msgid "1 : quadripôle; 2 : groupe"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 734b7cd4eb2c453aaae8a292f8db55a6
+msgid "Nom de l’ouvrage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:377
+#: 0622eb869f50414688820aad933514cd
+msgid "**Note** : Tableau disponible si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator."
+msgstr ""
+
+#: ../../simulator/io_doc.md:382
+#: afd1143c62724fb7b67170d019086673
+msgid "**Tableau C1** (une seule ligne) : compte rendu d’exécution"
+msgstr ""
+
+#: ../../simulator/io_doc.md:384
+#: 7837be54b9bc48f19584c20f6616e2b6
+msgid "*Format* : ```C1 ;COMPTE RENDU;CODE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8d604125832b462b809ab2ee4e07b051
+msgid "Code d’erreur"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 42a195b1adff4db9bc2048c0f46d5ae8
+msgid "**0** si « OK », sinon<br>**-1** = erreur lors de la résolution<br>**1**  = si pas de solution au problème (problème infaisable, souvent cause EOD)<br>**2**  = trop de contraintes (max atteint)<br>**3** = trop de micro-itération (max atteint)<br>**4** = données de variante non cohérentes (variante ignorée)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:391
+#: 639159df7c4e4523ae32724bd72ddd02
+msgid "**Tableau C2** : liste des incidents rompant la connexité"
+msgstr ""
+
+#: ../../simulator/io_doc.md:393
+#: 14a0cbe0fb724cea8bb583e4895c8245
+msgid "*Format* : ```C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO COUPEE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 04103d72bf764d118d4e19a07515bf99
+msgid "Nombre de nœuds déconnectés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 44df870568ac41deba88525ee048ae83
+msgid "Volume de production coupé"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f43fdbb9592e41209accaa6a9a8e03a7
+#: 8aede8b9cd034c12a0375ce9eee6039c
+#: 75f45ba2fbec432c821a150f6b9087ff
+#: d89b50cd55104672ab4890c7aa229be8
+#: 3eb3d3a261174bcc811248e55d7cba57
+#: 62b0895e85c744979bb86c4e73afd95d
+#: e81710a02fee4db7ac4759dad9bc4360
+#: 7045896ac78343e6aed78f61029db3be
+#: 91cbd63df0674d5b8adae66c3264ba3d
+#: fa814f512bb24839ba6dbaef55130135
+#: 24e1577513454445b02ae077959a1715
+#: cb05c6e018984cf0a761046400163b77
+#: d632f97b437c487f88fa88573cbaab92
+#: f5553b2bfabc4d0b96076a19f558549e
+#: c9c02ba5987e40798c8b01c8caa81520
+#: f00081245d774bfc8baf3f1ddc4b5779
+#: a336e08bd93248f796bfc56b4a6d31e6
+#: 570a4eb851044cc6952a67e89dd0e243
+#: f9086928041845868126ce6bb76414f6
+#: 773ebab0aff343d2b3a20e36b335c253
+#: 062ba3421c7e45bbb55ba17641f64cf9
+#: e71f7b9e1da44731b89b56723ccb7f77
+#: 9147af462a034c418cb3029f8a0395fc
+#: 463169ca6d0b477686fe74f49b8297a8
+#: 05c1f250d639494986d699db29b452c4
+#: fb2dc7db0dfa4f6bb92e334a2ecc5cf6
+#: d61106b0b9444904b9309461f56578ba
+#: 5c3610d0f3fb4111ba9d583ae169a27e
+#: 9c4251da2b00420daa54a1cadf8634dc
+#: ba98555e2ff64f668ebad5e278d4d0ef
+#: fdc04d60ec5542b698c7efc0eeeeed22
+msgid "MW"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6a113267288948cca93654f31d11c12b
+msgid "Volume de consommation coupé"
+msgstr ""
+
+#: ../../simulator/io_doc.md:404
+#: 14fa547e4f9946739cf27816e5f4bb27
+msgid "**Tableau C4** : liste des incidents contraignants, des incidents qui ont pu être traités en  curatif ou des incidents ayant généré un transit maximal sur incident (cf. [tableau R3B](#io-table_r3b))"
+msgstr ""
+
+#: ../../simulator/io_doc.md:407
+#: d4e7a0d9281b4089b75745c925f4e66b
+msgid "*Format* : ```C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 982b2056f93f4ce08ce08a3be6c462b7
+msgid "Numéro d’ordre de l’incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6028afcc024041638763609790904250
+msgid "Numérotation à partir de 1. Numéros utilisés ensuite dans tableaux [R4](#io-table_r4), [R1B](#io-table_r1b), [R2B](#io-table_r2b), [R3B](#io-table_r3b), [R5B](#io-table_r5b) et [R6B](#io-table_r6b) (cf. ci-après)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6aedd9ed9490466db94066e51654c85e
+msgid "«N-1L», «N-KL», «N-KG», «N-HVDC», «COMBO»"
+msgstr ""
+
+#: ../../simulator/io_doc.md:416
+#: f106874acc8844c9a80edafedea6450d
+msgid "**Tableau C5** (une seule ligne) : bilans initiaux par zone synchrone, avant équilibrage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:418
+#: c2a7b836d8dc411bb9d77b43671f558f
+msgid "*Format* : ```C5 ;ZONE SYNC;NUM ZONE;BILAN;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3ad65eec1f664a398e48a8f185e15b11
+msgid "Numéro de zone synchrone"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 59893828b1364edf98cc10a5f7893f50
+msgid "Ex. 0"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7b1855927ef546ada3a947811c4d0d15
+msgid "Valeur du bilan initial"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 32c3019e84984e8796c6ffe9c51f2bca
+msgid "Ex. -20.5"
+msgstr ""
+
+#: ../../simulator/io_doc.md:426
+#: 6a1752c7369340aba9329736d435cadf
+msgid "Tableaux de résultats"
+msgstr ""
+
+#: ../../simulator/io_doc.md:427
+#: a7e995280bf141da94081506f44a5100
+msgid "**Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'option  `--all-outputs` est donnée lors du lancement à METRIX simulator."
+msgstr ""
+
+#: ../../simulator/io_doc.md:430
+#: 7eec4c78bd254ea0a076cc650689c094
+msgid "**Tableau R1** : résultats par sommet"
+msgstr ""
+
+#: ../../simulator/io_doc.md:432
+#: ../../simulator/io_doc.md:473
+#: ../../simulator/io_doc.md:621
+#: e43c90895413448da4bbea27038cbde2
+#: 2caf7ac9f4af4909a1ba8e1cb0113da8
+#: f8375554aa75484da772a699bac64d0f
+msgid "*Format* :"
+msgstr ""
+
+#: ../../simulator/io_doc.md:433
+#: 5212eae197f0422a8af6430842ad4f26
+msgid "```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator,"
+msgstr ""
+
+#: ../../simulator/io_doc.md:434
+#: 77c65e9ebeee4bc593cae841bcf07c62
+msgid "```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8c4aa5c071cb472982f789f05c584b6c
+msgid "Nom du sommet"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 14bdc04d576d4d84bc0b0b2332492eaf
+msgid "Demande"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4d7423403a8947a2a7172bf623b84091
+msgid "Somme des consommations à ce sommet"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4a6741c48fda462784aaada2c4c56b4b
+msgid "Défaillance HR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 36a7bae6753f421fbaea9c5517c1f42a
+msgid "Défaillance lors de l’équilibrage due à un manque de production"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 75ca81e3ab8640f0be2837503b2543ae
+msgid "Coût défaillance HR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 07439f1d0c4a43df8ab31b0b5ae685dc
+msgid "Coût de la défaillance lors de l’équilibrage due à un manque de production (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a044e857f084482fabf69d0ea248222b
+msgid "Défaillance AR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a011e8a5056b455bbdc9f5fabe3ba1b7
+msgid "Défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0c400098db914a32b61c006d67112364
+msgid "Coût défaillance AR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0e10093c02194eaebe62f35fcacd64b7
+msgid "Coût de la défaillance liée au réseau, en plus de l’éventuelle défaillance due au manque de production (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:445
+#: 009ac0bd68cd4123904e27ce1aa54d75
+msgid "**Note** : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator et qu'il n'existe pas de consommation modifiable alors tous les champs, hormis le nom, valent *0*."
+msgstr ""
+
+#: ../../simulator/io_doc.md:449
+#: 7eea977d18654863bf9da3077071b5e8
+msgid "**Tableau R1B** : résultats par consommation curative. Sont uniquement affichés les consommations activées en curatif sur un incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:451
+#: b126f16e40fa40aca7c11ec1ecac1bbd
+msgid "*Format* : ```R1B ;INCIDENT;CONSO;EFFACEMENT;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7c8f081f8db942a2a92ea76f3f72f980
+#: bf991d25db3248129d179ba747ec9f75
+msgid "Nom de la consommation"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fd4229b1f6074e468f4f2d8679da15a7
+#: 158d2b2a6b0d4923a5f938ba374bf2f0
+msgid "Numéro d’incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 56c7f58a579f48c5923685f417260f63
+#: 60b575fcfab7444e87ccfff774d3d4f9
+#: 9d1687adbf7e44f0a785bc49b5c780e7
+#: df15fce1d5a1412b94b8c1b49f2178df
+#: db3942442fe848549445ee3b6b10350d
+#: 0dbb0202bc7c4444a2d08ea6d8cb9111
+#: 3e44fc8f64cd4623beb0a1e14346133b
+#: 8ea07e493c8c4f9c85caf0c2cba0bbb5
+msgid "Référence à la numérotation de la [table C4](#io-table_c4)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d6f3ec94444b49b2bb84ef9ff329349e
+msgid "Puissance effacée"
+msgstr ""
+
+#: ../../simulator/io_doc.md:460
+#: b502e42606e14c04b385aa9b416d5b39
+msgid "**Tableau R1C** : résultats par couplage de consommations"
+msgstr ""
+
+#: ../../simulator/io_doc.md:462
+#: 1bf2f0d54d5c483590fef8057d9079c7
+msgid "*Format* : ```R1C ;NOM REGROUPEMENT;DELTA_C;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5d63b80bb3dc430cb4d69f4f23a03be8
+#: aa06261b517a4fc59b046a199bd58c6c
+msgid "Nom du couplage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 5618d88b06e648c18139318f17bed707
+#: d7d9df080328456d8dfbd4003cbb4c88
+msgid "Nom donné au couplage dans la configuration"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: bca1e55729604b678e8b85e9fde21b9c
+#: cfcface3f8d64695b0627fc88800f847
+msgid "Variation"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 25cb4000b1304f718b534aad985ec750
+msgid "Somme des variations sur l’ensemble des consommations du couplage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:470
+#: 5dd4be4a3c5a48c084d306d9cda779d0
+msgid "**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale  (avant ou après ajustement selon l’option choisie) sont affichés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:474
+#: 09b9e717b5204901b1791e8805eeac77
+msgid "```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;``` si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator"
+msgstr ""
+
+#: ../../simulator/io_doc.md:476
+#: 2ba0c922bd3843ec8dc5971ca6aca32a
+msgid "```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` sinon."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 45ecb996828643de879a32a4773b4660
+#: 15b3f3938d9c444aaefdaacc6670daaf
+msgid "Nom du groupe"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: df902a2d4c1549baab3047eef2608ebc
+msgid "Puissance disponible"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 25d14be90a824900895c134d2f82a200
+msgid "Pmax du groupe dans la variante"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ed0bb2ff84fb41d4a8c1e17241bc41ad
+msgid "Ajustement de puissance imposé"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e282c483c1664d44b10b0ffdfa5c5c2d
+msgid "$\\Delta P_{cons}$ entre la donnée *json* et celle de la variante"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 013f382166f84d2ea3e9a22da3972c97
+msgid "Ajustement de puissance lors de l’équilibrage initial"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ede04bd69e754a4ebdcc9ab8a5de58d7
+msgid "$\\Delta P_{cons}$ entre la donnée de la variante et la valeur après la phase d’équilibrage (si l'opton `--all-outputs` n'est pas donnée lors du lancement à METRIX simulator, que l'option *EQUILRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option `--all-outputs`)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 27ca55921abf47e9ae650a6e6a8abf29
+msgid "Ajustement de puissance préventif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 42a85e6e7e6842349ab2a63876f2c8ff
+msgid "$\\Delta P_{cons}$ entre la phase d’équilibrage et la consigne préventive  (si l'opton `--all-outputs` n'est pas donnée lors du lancement à METRIX simulator, que l'option *REDISRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option `--all-outputs`)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 40b502617f4b4182864e7cfb9ba50bcb
+msgid "Coût hors réseau"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 823a57db3c1b460dabeb9cd501e0e57e
+msgid "Somme des coûts à la hausse et à la baisse hors réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 63ae280298de440f8b8435b442e94205
+msgid "*CT AR*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 333de062064c4cbea28dd59216ef8894
+#: 7bbcdeb8b0e74d4399c567840726a471
+#: a76f2f2a60c24021a4127d2852376ff4
+msgid "= 0.0 (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 26dc9502b9284b0ca0dc55d31b645220
+msgid "*CT ARP*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 584d040d30d04a6daa486f160b57d8fb
+msgid "Coût du delta de puissance"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f846a08fcc81438289e5bf6f50605393
+#: ffcbe85204414385a09e16fe3a46fe0f
+msgid "(résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ce329cdf46464b388c4ed4e7f372df14
+msgid "*CT GRTP*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ba9519c823fd4da9aba27df1f43571e1
+msgid "Coût hausse AR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b565f71b29e34a109c31bf443b89c6f4
+msgid "Coût à la hausse avec réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7f63cdc319574b27ab021663943a863a
+msgid "Coût baisse AR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: af146d1b2fa248b4ae07611363f1ef3d
+msgid "Coût à la baisse avec réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 28b044faf86e4faeb83979d2c662ecfc
+msgid "Coût hausse HR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 2e89b34bbd98445bbeceee78ebbc5f50
+msgid "Coût à la hausse hors réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: cf31a0156ee2485b821d83e2cb359bd1
+msgid "Coût baisse HR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a770591672824c4f87ee8e787326fe02
+msgid "Coût à la baisse hors réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:497
+#: 918808cba08e402dbca3420cdcd38e7f
+msgid "**Tableau R2B** : résultats curatifs par groupe. Seuls les groupes dont la consigne curative  diffère de la consigne préventive sont affichés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:500
+#: e2dddf5e0cdd450597d37a5c9a66b9df
+msgid "*Format* : ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 70b307d2b6244e2292f8577c01d235b3
+#: 4fef9ff9b61449c3a12da5ee6af8ea96
+#: 03990ab44264482fbd1682ddc610c129
+msgid "Numéro d’ incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f5f37724faf74aa388a94deb8a219165
+msgid "Puissance ajustée"
+msgstr ""
+
+#: ../../simulator/io_doc.md:509
+#: f9f2c4b1cee447b09c92cec3dda6e053
+msgid "**Tableau R2C** : résultats par couplage de groupes"
+msgstr ""
+
+#: ../../simulator/io_doc.md:511
+#: 0633c9be520f47e4bcc6a64631d22713
+msgid "*Format* : ```R2C ;NOM REGROUPEMENT;DELTA_P;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 45c2ace601c640c1b3178789293c2a19
+msgid "Somme des variations sur l’ensemble des groupes du couplage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:520
+#: c4996cd67394404ba88c180ab708cfd9
+msgid "**Tableau R3** : transits en N par quadripôle"
+msgstr ""
+
+#: ../../simulator/io_doc.md:522
+#: 6ebbb6c8fe5541b6b2dbe1105c096c9d
+msgid "*Format* : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: dd25f0c244a142f29b9fea0aa05dc142
+#: efa2aeb1afcd4908837e69da49f300dc
+#: 85385ed7c88a45beba26bf3f9b8b47bf
+#: 8390db0506a44765b34704f87d32da26
+msgid "Nom du quadripôle"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 29185efa49f24747ba1deaeeabcbdc04
+msgid "Transit N"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 674494b485914959bffa222c5c418d3d
+#: b907a3e0e7614eecb8e3426ff4a8af3d
+msgid "Positif de départ vers arrivée"
+msgstr ""
+
+#: ../../simulator/io_doc.md:529
+#: a7e45d78678d4208bb212a6577269b50
+msgid "*Note : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator, les quatre seuils sont également affichés.*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:533
+#: d25f5b4b78bd479b92ff9c4d84744a4c
+msgid "**Tableau R3B** : transits maximum par quadripôle sur incident. Seuls les ouvrages surveillés ou avec résultats sont affichés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:535
+#: a4233e1867ec47329fa7c6534df9daa9
+msgid "*Format* : ```R3B ;PAR LIGNE;LIGNE;INCIDENT AM;MENACE MAX AM;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b339851ece054edcbc4fd88741500d51
+msgid "nom du quadripôle"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9826092c5e3e4500bc436713bea93f6f
+msgid "incident cause du transit max avant manœuvres"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d47713ea6dcf4d729d7c68a8286586ee
+msgid "transit max avant manœuvres"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 86a74551eeb54808a8863f5f8b6a4f94
+#: 55daffdd373045a99b96269f47016731
+msgid "positif de départ vers arrivée"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: def3e8af5cf7413c9e0b1882112d4d9d
+msgid "incident cause du 1er transit max sur  incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: df1286198c34458ea6d6312ee61ef5c9
+msgid "1 $^{er}$ transit max sur incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 299305270a1e49969bae65e35ec5def8
+msgid "*incident cause du N $^{ème}$ transit max sur  incident*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f09d77154e77410988a7aa8b4ef3e820
+msgid "*Autant de résultats que demandé dans les paramètres*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: a96e29dd0c524c0bba2a8b6ecac9979c
+msgid "*N $^{ème}$ transit max sur incident*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:547
+#: 2e249fde6d9f453693608f5b3502b82f
+msgid "*Note : ce tableau n'est pas écrit s'il n'y a pas d'incident sur le réseau.*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:551
+#: 914a91fb6e644f32804f91e442294fdc
+msgid "**Tableau R3C** : transits spécifiques sur incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:553
+#: e791a0e74279446fb26369c58b9a731f
+msgid "*Format* : ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8da1e4b96a5145339e761f73ad563d0d
+msgid "Transit"
+msgstr ""
+
+#: ../../simulator/io_doc.md:563
+#: ee58ff9e2a724d7fba80f0bac5df4c8d
+msgid "**Tableau R4** : variations marginales par liaison, en N et sur incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:565
+#: 831bad65c1f04158aae2decb10bbdf86
+msgid "*Format* : ```R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 35ed1f49d2154fe08425647875ff3444
+#: e31a2592052940e19222f0ba6fd779bb
+msgid "0 pour N, sinon cf. [tableau C4](#io-table_c4)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 91ff71a9c3a04232a0c2750f1ac01aab
+msgid "Variation marginale"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fb4bd43559c6422889b1937e4aa5bc30
+#: 5e931f9e91244ba4bee83601de408c35
+#: 7156c1159c42420f911cc27d7ab5fd61
+#: 8341f3a6662f481da1e12b18e6212edb
+#: fe5560e0e70d4aeb8aeae18f05a2dad9
+#: 759c0f725f80446eb0a4f8c047c4b3b4
+msgid "u.m."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 75682cf87f5a4d31a3f314d6b32668f4
+msgid "Impact sur la fonction objectif d’une augmentation de 1MW sur le seuil (N, N-k ou AM) de cet ouvrage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:575
+#: c32e2eccbdb240b58f78804a63fd7adf
+msgid "**Tableau R4B** : variations marginales détaillées par liaison, en N et sur incident (seuls les  couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont  stockées dans le tableau)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:579
+#: e197c3d229e7469c81862d87e05763b8
+msgid "*Format* : ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 253c8f0054da49c88cbb4f033a81f523
+msgid "Type de l’ouvrage ou de la transaction qui varie"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 8ccb4613c312488b8724f232c1b2111c
+msgid "Sommet « N », groupe « G » ou action curative « C »"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d78a111c3b6e480e9f956ea108d59d2c
+msgid "Nom de l’ouvrage qui varie"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 83b0a181855f485a8c82ea46b25977e0
+msgid "Sommet (si variation de défaillance) ou groupe (si variation de production)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9cca5894fbe945e2a961d9609ac4201e
+msgid "Volume de variation"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9cac151074094c46a57677d7d0246f1f
+msgid "Coefficient de sensibilité de l’ouvrage"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 64c0a3d55ec647418b73f4d9d94b5cbb
+msgid "Coût de la variation"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 1f2e10ce071d43758e300c926f65fdc6
+msgid "Contribution de cette variable au coût marginal"
+msgstr ""
+
+#: ../../simulator/io_doc.md:592
+#: c9145bcecd39473a90e920a20c041817
+msgid "**Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons dont la consigne  préventive diffère de la consigne initiale sont affichées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:595
+#: 1a1f2aac269044aaaab288dd5c7ce449
+msgid "*Format* : ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3d69bbbdf8e54b3bbcaecb091181031d
+#: 727bd16064b34638b07a93b3368a347d
+msgid "Nom du TD"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3c1798bb07c84c89871c6dfe566841d1
+msgid "Consigne"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c487c6f6cb9d40f7b12f072c7960dede
+#: 9db8682b90ba4247b3e280d41d71bea7
+#: 654639afe8b847c4ad29f4e3656060c5
+msgid "° ou MW"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 3c71f41f6119402a8fe472d7f9536798
+#: 84405e4a209b4fa1803801f22dc143ee
+msgid "selon le mode de pilotage du TD"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b091c1136c444a458e3b9fa5179d5c46
+msgid "Consigne HR"
+msgstr ""
+
+#: ../../simulator/io_doc.md:605
+#: 24320bccac624623a7816dd88cbbe7e7
+msgid "**Tableau R5B** : résultats des actions curatives des transformateurs déphaseurs. Seules les  liaisons dont la consigne curative diffère de la consigne préventive sont affichées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:608
+#: bd358ea5df0543efa876c5ce444e7034
+msgid "*Format* : ```R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 878b5390ea8c4283abc225d97f50d54b
+#: 6e1fc8bfe37e42b884ff99c5e98fa651
+#: 7f3ddead92fb4ec9990de1e5a7ad11c5
+msgid "Numéro de l’incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e06eb10edc7548d79ba0679f05861a61
+msgid "Consigne en curatif du TD"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d04334f1d94f4140bdc82fb512ddab0b
+msgid "Selon le mode de pilotage du TD"
+msgstr ""
+
+#: ../../simulator/io_doc.md:618
+#: e2f84ffdb6374433a4787b617f58b2da
+msgid "**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne  préventive diffère de la consigne initiale sont affichées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:622
+#: 53044084271147e08592a9f91b63e99b
+msgid "```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton `--all-outputs` est donnée lors du  lancement à METRIX simulator"
+msgstr ""
+
+#: ../../simulator/io_doc.md:624
+#: c514e6bbfa6d45d5a6d3d18c674e2a35
+msgid "```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon."
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ebd06a2b2d844936b4516eafa023f262
+msgid "Nom de la ligne à courant continu"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 01d08849149b4c9aa947e9e264b4dcca
+msgid "Puissance transitant"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6d3189efa4604c90ba0718ef53f988d3
+msgid "Variation marginale préventive de la HVDC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b34a8f0f3131485fae5150e39ed1d8b4
+#: beb10d84ac2a47a8b8699f1eb35bb298
+#: e9a5af34f8794743b9b7d5f222420022
+msgid "u.m"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 224984fb2989419bb8fe4874a758e531
+msgid "Gain sur la fonction de coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b38e2dea4c784f49967097033eeacb37
+msgid "Variation marginale de la HVDC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: bd9343b5c6c14e81856725c6e2d1163d
+msgid "Gain sur la fonction de coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 66d2686d362f4c79bb73ed2e484a08bf
+msgid "Transit hor réseau"
+msgstr ""
+
+#: ../../simulator/io_doc.md:636
+#: 6dca68483ae04bdd990c9528da14db58
+msgid "**Tableau R6B** : résultats par actions curatives des HVDC. Seules les liaisons dont la consigne  curative diffère de la consigne préventive sont affichées"
+msgstr ""
+
+#: ../../simulator/io_doc.md:639
+#: 552aa0dec70c4da4b4cc56aa5d580ecc
+msgid "*Format* : ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e60e96ecbf2248ffb1aa3b63f1f13ca8
+msgid "Nom de la HVDC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: eeece331c7ab493bb15d028aee8d7c4e
+msgid "Consigne en curatif de la HVDC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 66961a176f364c56a38f4e4f347ebd1e
+msgid "Variation marginale curative de la HVDC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6fe1ce03d7e14501b4fd78e6dfe7d44a
+msgid "Gain sur la fonction de coût d’1 MW de plus sur la HVDC pour cet incident (non utilisé)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:650
+#: 59e70169329849e88e9f76d812383c74
+msgid "**Tableau R7** : redispatching par filière"
+msgstr ""
+
+#: ../../simulator/io_doc.md:652
+#: 32a55f4ffc9e4ff3a492406d64bdf7a6
+msgid "*Format* : ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e22e0744e9624b1a8521da0d50783d0a
+msgid "Filière"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d5c89472037e445c9f45bf44e39d1047
+msgid "Redispatching préventif à la baisse"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 9c87722a50504f73ae1d615cedce2c71
+#: 00574e4cdca5497da553b21e71d439c8
+msgid "∑ groupes de la filière"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: e99cc397c47943999ab9d1a439f5f73a
+msgid "Redispatching préventif à la hausse"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 6239840b8901480badcfff1520f17694
+msgid "Redispatching curatif à la baisse"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c473a677167743cdbb5603d134d8411e
+#: de5d3530db2d4ad79a00b4c454fc2953
+msgid "max(groupes de la filière)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fd1e6ab237f34c80a4a94028515d11f9
+msgid "Redispatching curatif à la hausse"
+msgstr ""
+
+#: ../../simulator/io_doc.md:664
+#: d81705fcbcd74496a26d7074d8ad4f63
+msgid "**Tableau R8**: résultats sur les pertes calculées en actif-seul"
+msgstr ""
+
+#: ../../simulator/io_doc.md:666
+#: 4810641d57a24109aec0e043798ed652
+msgid "*Format* : ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c6e1470c544b4522bfd9dccd3ce9d509
+#: ddb4ffc3427c46e4bee6012aa39303e8
+msgid "Volume de pertes calculé"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 10281b85e09343bd82f633e5d27cd505
+msgid "Taux de pertes"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 4a29225565814a438c8d701214f7c9af
+msgid "%"
+msgstr ""
+
+#: ../../simulator/io_doc.md:675
+#: 80131f20e0d84e2ea2f66eb9830b84c6
+msgid "**Tableau R8B**: résultats sur les pertes par région"
+msgstr ""
+
+#: ../../simulator/io_doc.md:677
+#: 9dcb5fa725724b9b8bc39dccfac4f458
+msgid "*Format* : ```R8B ;PERTES;REGION;VOLUME CALCULE;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: d3b248839ec9429b8e9eda12b29557d0
+msgid "Région ou HVDC"
+msgstr ""
+
+#: ../../simulator/io_doc.md:686
+#: 9309b092f57c47389cc35453da25cb86
+msgid "**Tableau R9** : résultats de la fonction objectif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:688
+#: 16c7d34ca1054ffeb78b6fe20afc3eb2
+msgid "*Format* : ```R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT CONSO CUR;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 599406da29e14445899e502defad21de
+msgid "Coût de redispatching"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: ae7820eae8d84310a491b8871ef552db
+msgid "Coût des ajustements préventifs de production"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 7a853ef63b234e89a03e8b50c9995cc8
+msgid "Coût de la défaillance"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 766e9219b46c49d59e9a31bc8a8baa53
+msgid "Coût des ajustements préventifs de consommation (i.e. du délestage préventif)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: bf5a2603d4ec40b98dab8bf4a6694447
+msgid "Volume de dépassement sur incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 44173e2576d94545adf96b8b38308c46
+msgid "Somme des dépassements de seuils sur incidents pour les ouvrages surveillés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 16dbdc5d2934455b9e3e6f9cc1378485
+msgid "Volume de dépassement en N"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: fbeaf676156a4c5fae14b283e7d06fba
+msgid "Somme des dépassement en N pour les ouvrages surveillés"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: b30dff70ee5d460d9dc69babbf49e81c
+msgid "Coût de redispatching curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 20278b9edb084353a8b45f47a2e923d7
+msgid "Coût des ajustements curatifs de production"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: c478d20e421e4e5ca12cc83ac4e6a0cf
+msgid "Coût d’effacement curatif"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: dedbd8d300b740c78f2416bcbb165c2a
+msgid "Coût des ajustements curatifs de consommation (i.e. du délestage curatif)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:701
+#: 52c969b2e14c424ea58cf99149c6fbde
+msgid "**Tableau R10** : résultats du curatif topologique (parades sélectionnées)"
+msgstr ""
+
+#: ../../simulator/io_doc.md:703
+#: 3addbd35e4f04cc3bb99f30766810fff
+msgid "*Format* : ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0771ae30b99746e8a2355b5c7a7e1cc4
+msgid "Nom incident"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: f92585a64490440685e9f8ed9226687d
+msgid "Nom de l’incident initial"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 0e5277e50bce4112a621d015f8238196
+msgid "Nombre d’action(s) de la parade"
+msgstr ""
+
+#: ../../simulator/io_doc.md:0
+#: 35c0ff6097cd4845bb498462fa50cd17
+msgid "Nom de la parade"
+msgstr ""
+
+#: ../../simulator/io_doc.md:712
+#: 2607019d02254dd5976ecb88e789da1c
+msgid "*Note : Les parades « ne rien faire » ne sont pas affichées*"
+msgstr ""
+
+#: ../../simulator/io_doc.md:715
+#: d9d31350dff840e7885f07ab04fbad62
+msgid "Fichier de logs"
+msgstr ""
+
+#: ../../simulator/io_doc.md:716
+#: e7b6d8d4084b47bba0de9e7b420706fa
+msgid "Il y a deux fichiers de logs générés par simulation :"
+msgstr ""
+
+#: ../../simulator/io_doc.md:717
+#: 42d14a5af8f4440193c11cbfc5b65b1d
+msgid "*\\<errorFilepath\\>* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option `--log-level`  sans formattage."
+msgstr ""
+
+#: ../../simulator/io_doc.md:719
+#: 6fcd664a44044db0a43821cc9e9a4d6d
+msgid "*metrix\\<ID_de_rotation\\>.log* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option  `--log-level` avec formattage (l'*\\<ID_de_rotation\\>* correspond au numéro d'ID du fichier de logs généré avec une  certaine taille)."
+msgstr ""
+
+#: ../../simulator/io_doc.md:723
+#: bef12c3886134fcbbd9fddc95418d8d9
+msgid "Il est également possible d'afficher les logs sur la sortie standard via l'option `-p [ --print-log ]`."
+msgstr ""
+
+#: ../../simulator/io_doc.md:726
+#: f98abc6d294b48088886364b3458ca3d
+msgid "Fichier LODF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:728
+#: b2f8a3eab5f440a99ab7415ea89290c8
+msgid "Un fichier *LODF_matrix.csv* est généré si l'opion `--write-LODF` est renseignée. Ce fichier correspond à la matrice  LODF (Line Outage Distribution Factor) de la dernière variante simulée."
+msgstr ""
+
+#: ../../simulator/io_doc.md:732
+#: 29ecf3913e4c4c72be6e1dd24d7e83b3
+msgid "Fichier PTDF"
+msgstr ""
+
+#: ../../simulator/io_doc.md:734
+#: 60cf0d3b789e49fea35248407a54e8f8
+msgid "Un fichier *PTDF_matrix.csv* est généré si l'opion `--write-PTDF` est renseignée. Ce fichier correspond à la matrice  PTDF (Power Transfer Distribution Factor) de la dernière variante simulée."
+msgstr ""
+
+#: ../../simulator/io_doc.md:738
+#: 04ddf5a001be4cb388cf79440b4f503a
+msgid "Fichier MPS"
+msgstr ""
+
+#: ../../simulator/io_doc.md:740
+#: 2396a492cd3c42cd93fdda255f650f64
+msgid "Le fichier MPS (*Donnees_Probleme_Solveur.mps*) du dernier problème peut être généré via l'option `--mps-file`."
+msgstr ""
