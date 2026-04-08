@@ -117,7 +117,7 @@ ComputationManager computationManager = LocalComputationManager.getDefault();
 
 // Network
 NetworkSource networkSource = new DefaultNetworkSourceImpl(Paths.get("/path/to/case.xiidm"), computationManager)
-    
+
 // Timeseries
 InMemoryTimeSeriesStore store = new InMemoryTimeSeriesStore();
 store.importTimeSeries(Collections.singletonList(Paths.get("/path/to/timeseries.csv")));
@@ -190,7 +190,7 @@ To build metrix-simulator, you need:
 ###### Ubuntu 20.04
 ```
 $> apt install -y cmake g++ git libboost-all-dev libxml2-dev make
-``` 
+```
 
 ###### Ubuntu 18.04
 ```
@@ -216,24 +216,6 @@ $> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
 $> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 
-###### CentOS 7
-```
-$> yum install -y gcc-c++ git libxml2-devel make wget
-```
-**Note:** Under CentOS 7, the default `boost-devel` package is too old (1.53), so we install Boost 1.66 from `epel-release`.
-```
-$> yum install -y epel-release
-$> yum install -y boost166-devel
-$> export BOOST_INCLUDEDIR=/usr/include/boost166
-$> export BOOST_LIBRARYDIR=/usr/lib64/boost166
-```
-
-**Note:** Under CentOS 7, the default CMake package is too old (2.8.12), so you have to install it manually:
-```
-$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
-```
 ##### Build sources
 
 1 - Clone the project
@@ -281,36 +263,36 @@ All options are detailed in the helper
 ```
 $> ./metrix-simulator --help
 Usage:
- metrix-simulator <errorFilepath> <variantFilepath> <resultsFilepath> <firstVariantIndex> <numberVariants> <paradesFilepath> 
-<paradesFilepath> = "parades.csv" by default 
-[options] 
+ metrix-simulator <errorFilepath> <variantFilepath> <resultsFilepath> <firstVariantIndex> <numberVariants> <paradesFilepath>
+<paradesFilepath> = "parades.csv" by default
+[options]
 Metrix options:
   -h [ --help ]                 Display help message
-  --log-level arg               Logger level (allowed values are critical, 
+  --log-level arg               Logger level (allowed values are critical,
                                 error, warning, info, debug, trace): default is
                                 info
   -p [ --print-log ]            Print developer log in standard output
-  --verbose-config              Activate debug/trace logs relative to 
+  --verbose-config              Activate debug/trace logs relative to
                                 configuration
-  --verbose-constraints         Activate debug/trace logs relative to 
+  --verbose-constraints         Activate debug/trace logs relative to
                                 constraint detection
   --write-constraints           Write the constraints in a dedicated file
-  --print-constraints           Trace in logs the constraints matrix (time 
-                                consuming even if trace logs are not active), 
+  --print-constraints           Trace in logs the constraints matrix (time
+                                consuming even if trace logs are not active),
                                 log level at trace is required
   --write-sensitivity           Write the sensivity matrix in a dedicated file
-  --write-report                Write the rate matrix report in a dedicated 
+  --write-report                Write the rate matrix report in a dedicated
                                 file
   --check-constraints-level arg Check adding constraints:
                                 0: no check (default)
-                                1: When adding a constraint, perform a load 
+                                1: When adding a constraint, perform a load
                                 flow to check transit (more time consuming)
                                 2: When adding a constraint, run every incident
-                                to check that we didn't forget a constraint 
+                                to check that we didn't forget a constraint
                                 (even more time consuming
-  --compare-reports             Compare load flow reports after application of 
+  --compare-reports             Compare load flow reports after application of
                                 report factors to check trigger of coupling
-  --no-incident-group           Ignore incident if a group of N-K is not 
+  --no-incident-group           Ignore incident if a group of N-K is not
                                 available
   --all-outputs                 Display all values in results files
   --mps-file                    Export MPS file

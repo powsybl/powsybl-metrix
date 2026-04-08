@@ -33,45 +33,6 @@ jobs:
         with:
           files: ./metrix-distribution/target/itools-metrix.zip
 
-  cpp_centos7:
-    name: Package C++ CentOS7
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Build the Docker image
-        run: |
-          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE --file $GITHUB_WORKSPACE/.github/workflows/docker/Dockerfile
-
-      - name: Run build steps in Docker container
-        run: |
-          docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
-            source /opt/rh/devtoolset-9/enable &&
-            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
-            cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
-            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
-            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 &&
-            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
-          "
-
-      - name: Prepare Metrix package
-        id: metrix-install
-        run: |
-          ARCHIVE_NAME="metrix-simulator-centos7"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build/install/
-          zip -r $ARCHIVE_PATH bin etc
-          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
-
-      - name: Upload release package
-        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
-        with:
-          files: ${{ steps.metrix-install.outputs.archive_path }}.zip
-
   cpp_oraclelinux8:
     name: Package C++ Oracle Linux 8
     runs-on: ubuntu-latest
