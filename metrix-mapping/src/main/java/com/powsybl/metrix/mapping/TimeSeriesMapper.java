@@ -122,7 +122,7 @@ public class TimeSeriesMapper {
             case Generator generator -> (float) generator.getMaxP();
             case HvdcLine hvdcLine -> getHvdcMax(hvdcLine);
             case Battery battery -> (float) battery.getMaxP();
-            case null, default -> Float.MIN_VALUE;
+            case null, default -> Float.MAX_VALUE;
         };
     }
 
