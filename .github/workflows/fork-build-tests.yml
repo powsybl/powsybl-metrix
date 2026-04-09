@@ -78,7 +78,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
-          mkdir -p pr-info
+          mkdir -p java-pr-info
           echo "$REPO_NAME" > java-pr-info/repo-name
           echo "$HEAD_REF" > java-pr-info/head-ref
           echo "$HEAD_SHA" > java-pr-info/head-sha
@@ -173,7 +173,7 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
-          mkdir -p pr-info
+          mkdir -p cpp-pr-info
           echo "$REPO_NAME" > cpp-pr-info/repo-name
           echo "$HEAD_REF" > cpp-pr-info/head-ref
           echo "$HEAD_SHA" > cpp-pr-info/head-sha
