@@ -8,7 +8,10 @@
 package com.powsybl.metrix.integration.chunk;
 
 import com.google.common.collect.Range;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,32 +29,36 @@ class ChunkCutterTest {
         assertEquals(Range.closed(0, 91), cutter.getChunkRange(0));
         assertEquals(Range.closed(92, 183), cutter.getChunkRange(1));
         assertEquals(Range.closed(8648, 8735), cutter.getChunkRange(94));
+        Assertions.assertThat(cutter.getRanges()).hasSize(95);
     }
 
     @Test
     void test2() {
-        ChunkCutter cutter = new ChunkCutter(0, 8735, 10000);
+        ChunkCutter cutter = new ChunkCutter(List.of(Range.closed(0, 8735)), 10000);
         assertEquals(1, cutter.getChunkCount());
         assertEquals(10000, cutter.getChunkSize());
         assertEquals(Range.closed(0, 8735), cutter.getChunkRange(0));
+        assertEquals(List.of(Range.closed(0, 8735)), cutter.getRanges());
     }
 
     @Test
     void test3() {
-        ChunkCutter cutter = new ChunkCutter(0, 8735, 1);
+        ChunkCutter cutter = new ChunkCutter(List.of(Range.closed(0, 8735)), 1);
         assertEquals(8736, cutter.getChunkCount());
         assertEquals(1, cutter.getChunkSize());
         assertEquals(Range.closed(0, 0), cutter.getChunkRange(0));
         assertEquals(Range.closed(1, 1), cutter.getChunkRange(1));
         assertEquals(Range.closed(8735, 8735), cutter.getChunkRange(8735));
+        Assertions.assertThat(cutter.getRanges()).hasSize(8736);
     }
 
     @Test
     void test4() {
-        ChunkCutter cutter = new ChunkCutter(100, 200, 92);
+        ChunkCutter cutter = new ChunkCutter(List.of(Range.closed(100, 200)), 92);
         assertEquals(2, cutter.getChunkCount());
         assertEquals(92, cutter.getChunkSize());
-        assertEquals(Range.closed(100, 183), cutter.getChunkRange(0));
-        assertEquals(Range.closed(184, 200), cutter.getChunkRange(1));
+        assertEquals(Range.closed(100, 191), cutter.getChunkRange(0));
+        assertEquals(Range.closed(192, 200), cutter.getChunkRange(1));
+        assertEquals(List.of(Range.closed(100, 191), Range.closed(192, 200)), cutter.getRanges());
     }
 }

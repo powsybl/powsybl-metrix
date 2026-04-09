@@ -24,7 +24,7 @@ jobs:
       statuses: write
     steps:
       - name: Download PR information
-        uses: actions/github-script@v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           script: |
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -33,7 +33,7 @@ jobs:
                run_id: context.payload.workflow_run.id,
             });
             let prInfoArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name.startsWith("pr-info-")
+              return artifact.name.startsWith("java-pr-info-")
             })[0];
             if (!prInfoArtifact) {
               core.setFailed("❌ No PR info artifact found");
@@ -47,22 +47,22 @@ jobs:
             });
             const fs = require('fs');
             const path = require('path');
-            const temp = '${{ runner.temp }}/pr-info';
+            const temp = '${{ runner.temp }}/java-pr-info';
             if (!fs.existsSync(temp)){
               fs.mkdirSync(temp, { recursive: true });
             }
-            fs.writeFileSync(path.join(temp, 'pr-info.zip'), Buffer.from(download.data));
+            fs.writeFileSync(path.join(temp, 'java-pr-info.zip'), Buffer.from(download.data));
             console.log("PR information downloaded");
 
       - name: Extract PR Information
         run: |
-          mkdir -p ${{ runner.temp }}/pr-info-extracted
-          unzip -q ${{ runner.temp }}/pr-info/pr-info.zip -d ${{ runner.temp }}/pr-info-extracted
-          REPO_NAME=$(cat ${{ runner.temp }}/pr-info-extracted/repo-name)
-          HEAD_REF=$(cat ${{ runner.temp }}/pr-info-extracted/head-ref)
-          HEAD_SHA=$(cat ${{ runner.temp }}/pr-info-extracted/head-sha)
-          PR_NUMBER=$(cat ${{ runner.temp }}/pr-info-extracted/pr-number)
-          BASE_REF=$(cat ${{ runner.temp }}/pr-info-extracted/base-ref)
+          mkdir -p ${{ runner.temp }}/java-pr-info-extracted
+          unzip -q ${{ runner.temp }}/java-pr-info/java-pr-info.zip -d ${{ runner.temp }}/java-pr-info-extracted
+          REPO_NAME=$(cat ${{ runner.temp }}/java-pr-info-extracted/repo-name)
+          HEAD_REF=$(cat ${{ runner.temp }}/java-pr-info-extracted/head-ref)
+          HEAD_SHA=$(cat ${{ runner.temp }}/java-pr-info-extracted/head-sha)
+          PR_NUMBER=$(cat ${{ runner.temp }}/java-pr-info-extracted/pr-number)
+          BASE_REF=$(cat ${{ runner.temp }}/java-pr-info-extracted/base-ref)
           echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
           echo "HEAD_REF=$HEAD_REF" >> $GITHUB_ENV
           echo "HEAD_SHA=$HEAD_SHA" >> $GITHUB_ENV
@@ -71,20 +71,21 @@ jobs:
           echo "PR information extracted: $REPO_NAME $HEAD_REF $HEAD_SHA $PR_NUMBER $BASE_REF"
 
       - name: Checkout sources
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ env.HEAD_REF }}
           repository: ${{ env.REPO_NAME }}
           fetch-depth: 0
 
       - name: Set up JDK 21
-        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'maven'
 
       - name: Download artifact
-        uses: actions/github-script@v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           script: |
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -93,13 +94,13 @@ jobs:
                run_id: context.payload.workflow_run.id,
             });
             let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name.startsWith("data-for-sonar-analysis-")
+              return artifact.name.startsWith("java-data-for-sonar-analysis-")
             })[0];
             if (!matchArtifact) {
               core.setFailed("❌ No matching artifact found");
               return;
             }
-            const prNumber = matchArtifact.name.replace("data-for-sonar-analysis-", "");
+            const prNumber = matchArtifact.name.replace("java-data-for-sonar-analysis-", "");
             console.log(`PR number: ${prNumber}`);
             core.exportVariable('PR_NUMBER', prNumber);
             let download = await github.rest.actions.downloadArtifact({
@@ -114,12 +115,12 @@ jobs:
             if (!fs.existsSync(temp)){
               fs.mkdirSync(temp);
             }
-            fs.writeFileSync(path.join(temp, 'sonar-data.zip'), Buffer.from(download.data));
+            fs.writeFileSync(path.join(temp, 'java-sonar-data.zip'), Buffer.from(download.data));
 
       - name: Extract Sonar Analysis Data
         run: |
           mkdir -p ${{ runner.temp }}/extracted
-          unzip -q ${{ runner.temp }}/artifacts/sonar-data.zip -d ${{ runner.temp }}/extracted
+          unzip -q ${{ runner.temp }}/artifacts/java-sonar-data.zip -d ${{ runner.temp }}/extracted
           cp -r ${{ runner.temp }}/extracted/* .
           ls -la metrix-distribution/target/site/jacoco-aggregate/ || echo "Jacoco report directory not found"
 
@@ -171,7 +172,7 @@ jobs:
       # This sonar action should NOT be replaced by a direct use of the mvn verify command since we don't want external
       # code to run in a workflow_run workflow (it may lead to security issues).
       - name: Run Sonar Analysis (Java)
-        uses: SonarSource/sonarqube-scan-action@2500896589ef8f7247069a56136f8dc177c27ccf # v5.2.0
+        uses: SonarSource/sonarqube-scan-action@a31c9398be7ace6bbfaf30c0bd5d415f843d45e9 # v7.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -179,16 +180,16 @@ jobs:
           args: >
             -Dsonar.projectKey=com.powsybl:powsybl-metrix
             -Dsonar.organization=powsybl-ci-github
-            -Dsonar.sources="${{ env.SOURCES }}"
-            -Dsonar.generatedSources="${{ env.GENERATED }}"
-            -Dsonar.tests="${{ env.TESTS }}"
-            -Dsonar.java.binaries="${{ env.BINARIES }}"
-            -Dsonar.java.libraries="${{ env.LIBRARIES }}"
-            -Dsonar.java.test.libraries="${{ env.LIBRARIES }}"
-            -Dsonar.coverage.jacoco.xmlReportPaths="metrix-distribution/target/site/jacoco-aggregate/jacoco.xml"
-            -Dsonar.pullrequest.key="${{ env.PR_NUMBER }}"
-            -Dsonar.pullrequest.branch="${{ env.HEAD_REF }}"
-            -Dsonar.pullrequest.base="${{ env.BASE_REF }}"
+            "-Dsonar.sources=${{ env.SOURCES }}"
+            "-Dsonar.generatedSources=${{ env.GENERATED }}"
+            "-Dsonar.tests=${{ env.TESTS }}"
+            "-Dsonar.java.binaries=${{ env.BINARIES }}"
+            "-Dsonar.java.libraries=${{ env.LIBRARIES }}"
+            "-Dsonar.java.test.libraries=${{ env.LIBRARIES }}"
+            "-Dsonar.coverage.jacoco.xmlReportPaths=metrix-distribution/target/site/jacoco-aggregate/jacoco.xml"
+            "-Dsonar.pullrequest.key=${{ env.PR_NUMBER }}"
+            "-Dsonar.pullrequest.branch=${{ env.HEAD_REF }}"
+            "-Dsonar.pullrequest.base=${{ env.BASE_REF }}"
             -Dsonar.pullrequest.provider=github
             -Dsonar.pullrequest.github.repository=${{ github.repository }}
             -Dsonar.host.url=https://sonarcloud.io
@@ -198,7 +199,7 @@ jobs:
 
       - name: Delete artifacts used in analysis
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -209,8 +210,8 @@ jobs:
             });
             for (const artifact of artifacts.data.artifacts) {
               if (
-                artifact.name.startsWith("data-for-sonar-analysis-") ||
-                artifact.name.startsWith("pr-info-")
+                artifact.name.startsWith("java-data-for-sonar-analysis-") ||
+                artifact.name.startsWith("java-pr-info-")
               ) {
                 console.log(`Deleting artifact: ${artifact.name} (ID: ${artifact.id})`);
                 await github.rest.actions.deleteArtifact({
@@ -227,6 +228,13 @@ jobs:
     if: >
       github.event.workflow_run.event == 'pull_request' &&
       github.event.workflow_run.conclusion == 'success'
+    permissions:
+      actions: write
+      checks: write
+      contents: read
+      issues: read
+      pull-requests: write
+      statuses: write
     steps:
       - name: Download PR information
         uses: actions/github-script@v7
@@ -276,20 +284,21 @@ jobs:
           echo "PR information extracted: $REPO_NAME $HEAD_REF $HEAD_SHA $PR_NUMBER $BASE_REF"
 
       - name: Checkout sources
-        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ env.HEAD_REF }}
           repository: ${{ env.REPO_NAME }}
           fetch-depth: 0
 
       - name: Set up JDK 21
-        uses: actions/setup-java@387ac29b308b003ca37ba93a6cab5eb57c8f5f93 # v4.0.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: 'temurin'
           java-version: '21'
+          cache: 'maven'
 
       - name: Download C++ artifact
-        uses: actions/github-script@v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           script: |
             let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
@@ -332,18 +341,18 @@ jobs:
       - name: Install Sonar wrapper
         working-directory: ${{ runner.workspace }}
         run: |
-          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          wget --max-redirect=0 https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
 
       - name: Install Sonar scanner
         working-directory: ${{ runner.workspace }}
         run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+          wget --max-redirect=0 https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
           unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
           ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
           rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
         env:
-          SONAR_SCANNER_VERSION: 3.3.0.1492
+          SONAR_SCANNER_VERSION: 8.0.1.6346
 
       # This step uses the sonar-project.properties file to get some parameters for the Sonar analysis
       - name: Run Sonar Analysis (C++)
@@ -365,7 +374,7 @@ jobs:
 
       - name: Delete artifacts used in analysis
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

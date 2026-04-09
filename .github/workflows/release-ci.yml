@@ -5,73 +5,40 @@ on:
     types:
       - published
 
-permissions:
-  contents: write
+permissions: {}
 
 jobs:
   java:
     name: Package Java
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
+      - name: Checkout sources
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
       - name: Set up JDK 21
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+          cache: 'maven'
 
       - name: Package with Maven
         run: ./mvnw --batch-mode package
 
       - name: Upload release package
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2.0.9
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           files: ./metrix-distribution/target/itools-metrix.zip
-
-  cpp_centos7:
-    name: Package C++ CentOS7
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Build the Docker image
-        run: |
-          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE --file $GITHUB_WORKSPACE/.github/workflows/docker/Dockerfile
-
-      - name: Run build steps in Docker container
-        run: |
-          docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
-            source /opt/rh/devtoolset-9/enable && 
-            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external && 
-            cmake --build /workspace/metrix-simulator/build/external --parallel 2 && 
-            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build && 
-            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 && 
-            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
-          "
-
-      - name: Prepare Metrix package
-        id: metrix-install
-        run: |
-          ARCHIVE_NAME="metrix-simulator-centos7"
-          ARCHIVE_PATH="$PWD/${ARCHIVE_NAME}"
-          cd metrix-simulator/build/install/
-          zip -r $ARCHIVE_PATH bin etc
-          echo "archive_name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
-          echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
-
-      - name: Upload release package
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2.0.9
-        with:
-          files: ${{ steps.metrix-install.outputs.archive_path }}.zip
 
   cpp_oraclelinux8:
     name: Package C++ Oracle Linux 8
     runs-on: ubuntu-latest
     container: 'oraclelinux:8'
+    permissions:
+      contents: write
     steps:
       - name: Install Boost
         run: |
@@ -80,7 +47,7 @@ jobs:
           dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -113,13 +80,15 @@ jobs:
           echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload release package
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2.0.9
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           files: ${{ steps.metrix-install.outputs.archive_path }}.zip
 
   cpp_ubuntu:
     name: Package C++ Ubuntu
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Install Boost
         run: |
@@ -127,7 +96,7 @@ jobs:
           sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -160,13 +129,15 @@ jobs:
           echo "archive_path=$ARCHIVE_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Upload release package
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2.0.9
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           files: ${{ steps.metrix-install.outputs.archive_path }}.zip
 
   cpp_windows:
     name: Package C++ Windows
     runs-on: windows-latest
+    permissions:
+      contents: write
     defaults:
       run:
         shell: cmd
@@ -182,7 +153,7 @@ jobs:
           boost-installer.exe /dir=%BOOST_ROOT% /sp- /verysilent /suppressmsgboxes /norestart
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -217,6 +188,6 @@ jobs:
           echo "archive_path=$env:ARCHIVE_PATH" >> "$env:GITHUB_OUTPUT"
 
       - name: Upload release package
-        uses: softprops/action-gh-release@e7a8f85e1c67a31e6ed99a94b41bd0b71bbee6b8 # v2.0.9
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
         with:
           files: ${{ steps.metrix-install.outputs.archive_path }}.zip

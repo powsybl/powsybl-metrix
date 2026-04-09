@@ -121,7 +121,7 @@ public final class MetrixBranchPostProcessingTimeSeries {
     }
 
     private void createOutagePostProcessingTimeSeries() {
-        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNList(), allTimeSeriesNames, OUTAGE_PREFIX_CONTAINER.maxThreatPrefix());
+        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNkList(), allTimeSeriesNames, OUTAGE_PREFIX_CONTAINER.maxThreatPrefix());
         for (String branch : branchIds) {
             MetrixVariable threshold = metrixDslData.getBranchMonitoringStatisticsThresholdNk(branch);
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
@@ -132,7 +132,7 @@ public final class MetrixBranchPostProcessingTimeSeries {
     }
 
     private void createItamPostProcessingTimeSeries() {
-        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNList(), allTimeSeriesNames, ITAM_PREFIX_CONTAINER.maxThreatPrefix());
+        List<String> branchIds = findIdsToProcess(metrixDslData.getBranchMonitoringNkList(), allTimeSeriesNames, ITAM_PREFIX_CONTAINER.maxThreatPrefix());
         for (String branch : branchIds) {
             MetrixVariable threshold = MetrixVariable.THRESHOLD_ITAM;
             if (mappingConfig.getTimeSeriesName(new MappingKey(threshold, branch)) != null) {
