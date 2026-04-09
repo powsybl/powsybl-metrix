@@ -7,14 +7,13 @@
  */
 package com.powsybl.metrix.integration
 
-
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.commons.data.datatable.DataTableStore
 import com.powsybl.metrix.integration.configuration.MetrixParameters
-import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.metrix.mapping.config.ScriptLogConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -29,11 +28,12 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
+import static BatteriesBindingData.batteriesBindingData
+import static BatteryData.batteryData
 import static BranchMonitoringData.branchData
 import static ContingenciesData.contingenciesData
 import static GeneratorData.generatorData
 import static GeneratorsBindingData.generatorsBindingData
-import static BatteriesBindingData.batteriesBindingData
 import static HvdcData.hvdcData
 import static LoadData.loadData
 import static LoadsBindingData.loadsBindingData
@@ -41,7 +41,6 @@ import static LossesData.lossesData
 import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
-import static BatteryData.batteryData
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

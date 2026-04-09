@@ -9,10 +9,14 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
+import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.log.LogDslLoader
 
+/**
+ * @author Matthieu SAUR {@literal <matthieu.saur at rte-france.com>}
+ */
 class BatteriesBindingData extends LoadsBindingData {
 
     MetrixBatteriesBinding.ReferenceVariable referenceVariable

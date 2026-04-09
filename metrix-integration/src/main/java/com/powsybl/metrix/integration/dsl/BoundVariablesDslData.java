@@ -1,7 +1,7 @@
 package com.powsybl.metrix.integration.dsl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.powsybl.metrix.integration.MetrixBatteriesBinding;
+import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 

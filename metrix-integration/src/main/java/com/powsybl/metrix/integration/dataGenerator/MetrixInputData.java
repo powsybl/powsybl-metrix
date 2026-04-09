@@ -25,7 +25,7 @@ import com.powsybl.iidm.network.Switch;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.integration.MetrixBatteriesBinding;
+import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixSubset;

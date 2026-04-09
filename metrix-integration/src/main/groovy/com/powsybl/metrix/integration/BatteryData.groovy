@@ -12,6 +12,9 @@ import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
 
+/**
+ * @author Matthieu SAUR {@literal <matthieu.saur at rte-france.com>}
+ */
 class BatteryData {
 
     List<String> onContingencies

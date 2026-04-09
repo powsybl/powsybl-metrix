@@ -11,7 +11,7 @@ import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 /**
- * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
+ * @author Matthieu SAUR {@literal <matthieu.saur at rte-france.com>}
  */
 public abstract class AbstractBoundLimitBuilder {
     double minP;
