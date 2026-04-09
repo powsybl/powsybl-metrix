@@ -1,0 +1,124 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: 2026-03-23 14:45+0000\n"
+"Last-Translator: Weblate admin <noreply@powsybl.org>\n"
+"Language-Team: French <http://translation.powsybl.org/projects/powsybl-"
+"metrix/documentation-metrix-simulator/fr/>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.16.2\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../metrix-simulator.md:2 eb86f9af339e4681bf2b6f0627ba91f0
+msgid "Metrix simulator"
+msgstr "Simulateur Metrix"
+
+#: ../../metrix-simulator.md:4 f857774d7bd14d7dabeca0b9a74d983c
+msgid "Introduction"
+msgstr ""
+
+#: ../../metrix-simulator.md:6 b5f3caaa87db4cac8f235fc74b0de49b
+msgid ""
+"*Metrix simulator* is an independent C++ executable. This module is "
+"capable of performing Power Load Flow calculations as  well as Optimal "
+"Power Load Flow for networks with multiple variants."
+msgstr ""
+
+#: ../../metrix-simulator.md:9 f144204fd3fc453ab58fde074a3d2ce9
+msgid "Installation"
+msgstr ""
+
+#: ../../metrix-simulator.md:11 43ec4cc0c2894eb6adf24f9f28b74e2a
+msgid ""
+"*Metrix simulator* must be installed before using *powsybl-metrix*. It "
+"has its own toolchain and requirements. You can either download the "
+"already built and released executable on GitHub (for example  "
+"[here](https://github.com/powsybl/powsybl-metrix/releases/download/v2.7.0"
+"/metrix-simulator-ubuntu.zip) for the last  version built for Ubuntu at "
+"the time of writing), or build the executable by yourself."
+msgstr ""
+
+#: ../../metrix-simulator.md:16 a1d930309078429aa841bb51da0b4ced
+msgid ""
+"Detailed build instructions are available [on this "
+"page](simulator/build.md)."
+msgstr ""
+
+#: ../../metrix-simulator.md:18 76088927eb1e4392b2fd00a8fd7dea6b
+msgid "Running the simulator"
+msgstr ""
+
+#: ../../metrix-simulator.md:19 e311124ce7d046ab825c7236df55c593
+msgid ""
+"The following environment variables must be defined to run metrix "
+"properly:"
+msgstr ""
+
+#: ../../metrix-simulator.md:20 6aa0bccb20e04e048b79bcf927119b6c
+msgid ""
+"`METRIX_ETC`: location of the `.dic` files for a language region (some of"
+" these dictionaries are exported in `etc` directory in installation "
+"directory)"
+msgstr ""
+
+#: ../../metrix-simulator.md:22 22af874354da4688846da5e87a47740c
+msgid "All options are detailed in the helper"
+msgstr ""
+
+#: ../../metrix-simulator.md:69 0b6b4fe4b1d54a9f942e0602812abd64
+msgid "Inputs and outputs"
+msgstr ""
+
+#: ../../metrix-simulator.md:71 372b21dbb8ae45c28c6c8e8c49de10bc
+msgid ""
+"The inputs and outputs available for Metrix simulator are detailed [on "
+"the specific page](simulator/io_doc.md)."
+msgstr ""
+
+#: ../../metrix-simulator.md:73 2a5b8dbbafb44ca89529847a483c005a
+msgid "Functional and mathematical descriptions"
+msgstr ""
+
+#: ../../metrix-simulator.md:75 ee47231a60344d659b2697dc364731d1
+msgid "Configuration and scenarios"
+msgstr ""
+
+#: ../../metrix-simulator.md:77 9fdedd5273e4470ea4c127e85ed4db78
+msgid ""
+"OPF, Load Flow only, OPF w/o redispatching (with gap variables), and "
+"OPF_WITH_OVERLOAD. PTDFs, LODF Gestion des crashs Parade topologique en N"
+msgstr ""
+
+#: ../../metrix-simulator.md:82 d881045e364649039baccc16d5f12505
+msgid "[Config](simulator/config.md)"
+msgstr ""
+
+#: ../../metrix-simulator.md:84 2ae90701a1434806a2342b3d31d5605e
+msgid "Algorithm description"
+msgstr ""
+
+#: ../../metrix-simulator.md:86 aa941ca6b341417684c1901d75f95bbc
+msgid ""
+"Steps, micro-iterations, variants, network modeling. "
+"[Algo](simulator/algo.md)"
+msgstr ""
+
+#: ../../metrix-simulator.md:89 681b017dd4cb4d288d7aa2b5b5d5e9f2
+msgid "Mathematical model"
+msgstr ""
+
+#: ../../metrix-simulator.md:91 b8127f4c7a0f4e7686030fb757b89804
+msgid "Optimization problem formulation [Math](simulator/math.md)"
+msgstr ""

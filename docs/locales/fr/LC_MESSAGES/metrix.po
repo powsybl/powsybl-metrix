@@ -1,0 +1,974 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-20 10:27+0100\n"
+"PO-Revision-Date: 2026-03-23 14:45+0000\n"
+"Last-Translator: Weblate admin <noreply@powsybl.org>\n"
+"Language-Team: French <http://translation.powsybl.org/projects/powsybl-"
+"metrix/documentation-metrix/fr/>\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.16.2\n"
+"Generated-By: Babel 2.17.0\n"
+
+#: ../../metrix.md:2 f1afc614e1d0407fbc4b75ad2de3fbad
+msgid "Metrix simulation"
+msgstr "Simulation Metrix"
+
+#: ../../metrix.md:4 6e254d18baf34f0aa2fa20d9da048802
+msgid "Introduction"
+msgstr ""
+
+#: ../../metrix.md:6 afe34ba05541488eb1f81c71321152aa
+msgid "To launch a Metrix simulation, you need:"
+msgstr ""
+
+#: ../../metrix.md:7 4b5234bdb2444157b6e6419f2466ca18
+msgid "the mapping requirements:"
+msgstr ""
+
+#: ../../metrix.md:8 b4f865a1f29c4bb580c87dab55532755
+msgid "a network in IIDM format"
+msgstr ""
+
+#: ../../metrix.md:9 233b3484b6584866ac54f0d649a5528b
+msgid "a time series store (csv)"
+msgstr ""
+
+#: ../../metrix.md:10 9b955e592cc245d1b9ec0ff1b9c8bea5
+msgid "a mapping groovy script using the [mapping DSL](mapping.md#mapping-dsl)"
+msgstr ""
+
+#: ../../metrix.md:11 9c441568f84a4133a4a47679c51d1069
+msgid ""
+"a Metrix configuration script using the [Metrix configuration DSL"
+"](#configuration-dsl)"
+msgstr ""
+
+#: ../../metrix.md:12 795d789d1ff94e0294bb34bffc47fe99
+msgid "(optional) [contingency script](#contingency-dsl)"
+msgstr ""
+
+#: ../../metrix.md:13 982b92d8661848ab89ace5fdca2d4806
+msgid "(optional) [remedial action list](#remedial-actions)"
+msgstr ""
+
+#: ../../metrix.md:15 61d1a4c541574d999ae965198169fc7a
+msgid "Module configuration"
+msgstr ""
+
+#: ../../metrix.md:17 4950fe015049496aaead2344d3ffa806
+msgid ""
+"The module can be configured with the following properties and default "
+"values described further below.   All properties are optional.   For "
+"further information about PowSyBl module configuration please refer to "
+"the dedicated [PowSyBl Core Configuration "
+"page](inv:powsyblcore:*:*#user/configuration/index)"
+msgstr ""
+
+#: ../../metrix.md:42 81b8d469b5974f9a905b8b4dda4a3080
+msgid "Configuration DSL"
+msgstr ""
+
+#: ../../metrix.md:44 3e5edcf236bf46d6b8497ee54671784c
+msgid ""
+"As many of Powsybl tools scripts, this DSL is based on the groovy "
+"language. It describes the general configuration of the solver and "
+"indicates which network elements have to be monitored and controlled."
+msgstr ""
+
+#: ../../metrix.md:46 1e6de865d7394826be4a4064384e1bdb
+msgid "General parameters"
+msgstr ""
+
+#: ../../metrix.md:48 51e3bd2213ea4f21a19053cd78d18379
+msgid ""
+"There is a lot of tunable parameters that will be briefly describe "
+"inline. Yet the most important one is the `computationType` which "
+"determines which kind of computation will be operated:"
+msgstr ""
+
+#: ../../metrix.md:50 8916db4656b441a5a63e95b2b0b810d2
+msgid ""
+"`LF` the LOAD FLOW mode is a basic network flow simulation, production "
+"and consumption are fixed and Metrix simulator returns the flow on the "
+"lines of the network."
+msgstr ""
+
+#: ../../metrix.md:51 f48b5e7a65824c6e9dcf65e6733f8a50
+msgid ""
+"`OPF_WITHOUT_REDISPATCHING` in this mode, Metrix simulator is allowed to "
+"use some actions (topological actions, use of phase tap changers, HVDC "
+"lines) to minimize constraints."
+msgstr ""
+
+#: ../../metrix.md:52 d3d75d3e245d46e28d3b8ebad47c6838
+msgid ""
+"`OPF` in OPTIMAL POWER FLOW mode, Metrix simulator will leverage all "
+"available actions (that of the previous mode plus generator and load "
+"dispatching) to minimize constraints at best cost. If no solution is "
+"found, the program will exit with error code 1."
+msgstr ""
+
+#: ../../metrix.md:53 567c9b37f2ac418db39436c4636b6fe2
+msgid ""
+"`OPF_WITH_OVERLOAD` in this OPTIMAL POWER FLOW mode, Metrix simulator "
+"works like in the previous mode. If no solution is found, the program "
+"returns overload results."
+msgstr ""
+
+#: ../../metrix.md:55 24463b0ef9b7442cab49ffaa74e00d45
+msgid "All parameters are optional:"
+msgstr ""
+
+#: ../../metrix.md:84 907d54ad2084409da53efbd43c3a1551
+msgid ""
+"Since there is default value for each parameter, only useful parameters "
+"can be filled in. For instance:"
+msgstr ""
+
+#: ../../metrix.md:95 b9132c6b1cfd43acad1aa47f5d4c106b
+msgid ""
+"Note that to use a negative value, you must surround it with parenthesis,"
+" eg: `maxCurativeAction: (-1)`."
+msgstr ""
+
+#: ../../metrix.md:97 51cc2092c6544e85a49b1646b53c61b3
+msgid "Monitored branches and observed branches"
+msgstr ""
+
+#: ../../metrix.md:99 86cabbf278df4db4bb43f558af0fbdb5
+msgid ""
+"There is a distinction between _monitored branches_ where Metrix will "
+"take action to enforce threshold limits and the _observed branches_ where"
+" we only want the resulting flow values. Note that in the LF (Load Flow) "
+"mode, there is no difference between monitored elements and observed "
+"elements."
+msgstr ""
+
+#: ../../metrix.md:101 44b5713f93af4a1392a5765a62e69e7b
+msgid ""
+"To indicate that a element should be _monitored_ we have to define "
+"thresholds in MW. It can be a time series name (defined in the mapping "
+"script provided) or an fixed value (constant time series). The "
+"`branchRatingsBaseCase` parameter will contain the threshold for the base"
+" case (also called network N), the `branchRatingsBeforeCurative` and "
+"`branchRatingsOnContingency` parameters will contain the threshold to be "
+"used for the post-contingency state (also called network N-k) "
+"respectively before and after remedial actions. Threshold can be defined "
+"with a direction constraint with default being the origin to end "
+"direction (the opposite direction is specified with the same parameter "
+"name followed by `EndOr`). Origin is the node corresponding to "
+"`voltageLevelId1` in the network file."
+msgstr ""
+
+#: ../../metrix.md:103 18ffd8a39e02441ba7905b335077ac4c
+msgid ""
+"The syntax to define monitored/observed elements (called `component` "
+"below) is :"
+msgstr ""
+
+#: ../../metrix.md:125 6ede46255770473b92e7fe0af63120bc
+msgid ""
+"Note that monitored branches (when `branchRatingsXXX` is specified) "
+"automatically provides resulting flows (when `baseCaseFlowResults` is "
+"true). If no branch is monitored, then Metrix does not compute anything "
+"beside balance adjustment phase. HVDC lines cannot be monitored. Flows "
+"for HVDC lines in AC emulation mode are always provided, alongside their "
+"optimized tuning."
+msgstr ""
+
+#: ../../metrix.md:127 ../../metrix.md:280 ../../metrix.md:394
+#: 240b1e19c18c46398e8a9b25896aa6b6 665ff1184d4141ed9076d2340671b199
+#: 6c182fb00c8142dba66f2fd0e97d6253
+msgid "Examples"
+msgstr ""
+
+#: ../../metrix.md:129 cb336f91bb044f91a1c30569a14f4099
+msgid ""
+"To monitor branches on base case and on post-contingency states with a "
+"threshold of 100 MW:"
+msgstr ""
+
+#: ../../metrix.md:148 4c7f44a7f5704f6d8a540863bd5b359d
+msgid "or"
+msgstr ""
+
+#: ../../metrix.md:166 6c2a27ece40e43c8905e3ee1f3397420
+msgid ""
+"To gather the flow result of every 400 kV lines and transformers in base "
+"case and in post-contingency states:"
+msgstr ""
+
+#: ../../metrix.md:178 bbfd6905cc5844e497854acfb768f9cb
+msgid "or with more checks:"
+msgstr ""
+
+#: ../../metrix.md:206 b60c927e733d4e309324149324e0ccb1
+msgid "To define the list of contingencies where threshold might be different:"
+msgstr ""
+
+#: ../../metrix.md:212 f684289cd97341f5a313a07febc36576
+msgid ""
+"The threshold defined for this list is then defined with the keywords "
+"`branchRatingsOnSpecificContingency` or "
+"`branchRatingsBeforeCurativeOnSpecificContingency`"
+msgstr ""
+
+#: ../../metrix.md:222 b9c5e0b0cb24410f9df6ac7ad60aba45
+msgid "Generators"
+msgstr ""
+
+#: ../../metrix.md:224 7a87f5f748684c849f2f1003a0af25fe
+msgid "We can define generators whose target can be changed by Metrix:"
+msgstr ""
+
+#: ../../metrix.md:225 659e10cb6edf4cc1bb209743227db6ac
+msgid "In the adequacy phase to match the production and load"
+msgstr ""
+
+#: ../../metrix.md:226 daa65a0a537b4163a43a75dd7b036fbf
+msgid ""
+"In remedial actions to comply with the defined monitored branch "
+"thresholds (only in OPF mode)"
+msgstr ""
+
+#: ../../metrix.md:228 dd8ead8c2c254dea992c635d58655979
+msgid ""
+"For this to happen, we must define ramp up/down costs. Metrix will then "
+"adapt the setpoints of the cheapest generators to maintain the "
+"generation/demand balance (adequacy phase) or resolve the grid "
+"constraints (OPF)."
+msgstr ""
+
+#: ../../metrix.md:231 b4b58204043c4009a0bcdcbe8d0b747a
+msgid ""
+"To solve grid constraints violations in the OPF, there should be at least"
+" two generators for Metrix to be able to decrease or increase production "
+"in order to respect active power balance. If no generator is configured "
+"to be managed by Metrix, then all generators are implicitly managed with "
+"zero cost. Note that Metrix will take into account the Pmin and Pmax "
+"values of generators (which can be modified through the mapping script). "
+"In the same way than most parameters, the value can be a fixed "
+"integer/float or a time series name."
+msgstr ""
+
+#: ../../metrix.md:236 e589b7b5baa84ff4916a65d364d5269a
+msgid ""
+"Doctrine costs can be defined for postprocessing purpose (up and down "
+"redispatching and costs timeseries)"
+msgstr ""
+
+#: ../../metrix.md:238 93fff5f9a538471c82450d750cb12ed0
+msgid "The syntax to define a managed generator is:"
+msgstr ""
+
+#: ../../metrix.md:252 6b919a4994684eb592f53f739de433e9
+msgid ""
+"Metrix optimization aims to limit the deviations with respect to the "
+"initial production plan, both for adequacy and redispatch. For this "
+"reason, Metrix sees all deviations of the initial production plan ($$|P -"
+" P0|$$) as a cost. Therefore, both up and down costs (adequacy and "
+"redispatch) should be defined as positive costs. The total generation "
+"costs for redispatch seen by Metrix is  as follows:"
+msgstr ""
+
+#: ../../metrix.md:256 11d4c68187c74cf39b769f8f02026dad
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{align*}\n"
+"RedispatchCosts = \\sum_{g\\in Generators} RedispatchUp_g \\cdot "
+"redispatchUpCosts_g +\n"
+"\\sum_{g\\in Generators} RedispatchDown_g \\cdot redispatchDownCosts_g\n"
+"\\end{align*}\n"
+msgstr ""
+
+#: ../../metrix.md:263 212ba15a199840cb9d00bed0218e28ac
+msgid "With"
+msgstr ""
+
+#: ../../metrix.md:265 5892ba382a6a43ed8c1431510f9a06f6
+msgid "$RedispatchUp_g = max(P_g - P0_g, 0)$,"
+msgstr ""
+
+#: ../../metrix.md:267 828e155095ea46fb95e16100eab5c6ae
+msgid "$RedispatchDown_g = max(P0_g - P_g, 0)$."
+msgstr ""
+
+#: ../../metrix.md:269 a1805c5b82324ff395887b09db1add6a
+msgid ""
+"It should be noted that this is different from redispatching cost in real"
+" systems' operation, where in case of downwards activations, the "
+"generator _pays_ the TSO for the generation reduction (not delivered "
+"energy). Moreover, to prioritize topological solutions over redispatch "
+"solutions, the redispatching up and down costs have a lower bound of >= "
+"0.5. Metrix will correct any adequacy or redispatch cost below the lower "
+"bound, setting it to lower bound value."
+msgstr ""
+
+#: ../../metrix.md:272 cc9ba8424b624a7bb950e3ba57ba79a8
+msgid ""
+"Note that if at least one generator is managed, then only defined "
+"generators will be managed to match adequacy. In some cases, it could "
+"result in a program failure (return code -1) where constraints cannot be "
+"resolved in OPF mode. Also:"
+msgstr ""
+
+#: ../../metrix.md:273 5617871c42a64123b326e6c190dcd20c
+msgid ""
+"Generators used for the adequacy phase are not necessarily the same used "
+"for the redispatching phase. If `onContingency` isn't defined but "
+"`redispatchingCost` is, then the generator will be used only in "
+"preventive actions. For the generator to be fully used for preventive and"
+" curative remedial action, both of these parameters must be defined."
+msgstr ""
+
+#: ../../metrix.md:274 1c00b37d8f9640ecb2ebc60d2cf35450
+msgid ""
+"Cost must always be defined for both directions. If we want to prevent a "
+"generator to ramp up or down, we can set a high prohibitive cost."
+msgstr ""
+
+#: ../../metrix.md:275 ba461e27da994d55ba9fca54570c9556
+msgid "Rules that take into account Pmax and Pmin are:"
+msgstr ""
+
+#: ../../metrix.md:276 516ff587a2bb4412900cd294d78eb142
+msgid ""
+"if the targetP is out of bounds (targetP > Pmax or targetP < Pmin) then "
+"targetP is adjusted to the closest bound. This can happen when `ignore-"
+"limits` is set in the mapping script or the tool parameter."
+msgstr ""
+
+#: ../../metrix.md:277 622583f354e941f6898fba2458a1f109
+msgid ""
+"during the adequacy phase, the Pmax constraints are enforced but Pmin are"
+" temporary set to 0. It results that a (only one at most) generator can "
+"have a targetP out of its lower bound (0 < targetP < Pmin)."
+msgstr ""
+
+#: ../../metrix.md:278 6c7efbe543af48bfa1d471ae465d567a
+msgid ""
+"in the redispatching phase, generators with Pmin < targetP < Pmax are "
+"enforced between their bounds. If a group have an initial targetP below "
+"Pmin, the constraints will be initialTargetP < targetP < Pmax."
+msgstr ""
+
+#: ../../metrix.md:282 a485e1eb0be1442d9e0f554c68b414cb
+msgid "To allow the slack generator to ramp:"
+msgstr ""
+
+#: ../../metrix.md:292 d22a139958b2438e981112ca3c75f01d
+msgid ""
+"To allow generators to ramp depending on zone or type (if these "
+"properties exists in IIDM network file):"
+msgstr ""
+
+#: ../../metrix.md:304 b83ccc96e3094ae5b4d53fe66b8a74df
+msgid "Loads"
+msgstr ""
+
+#: ../../metrix.md:306 c25f7706841f4ee4ad7bfb4abcaedca8
+msgid ""
+"Similarly to generators, loads can be adjusted in the OPF simulation (in "
+"preventive and curative mode), but only as a decrease. The cost in "
+"preventive action is fixed (default 13000 €/MWh) and can be modified in "
+"the global parameters with the keyword `lossOfLoadCost`. We can also "
+"override this value for specific loads. The specified cost will "
+"automatically be weighted with the contingency probability (default : "
+"10^-3). We can also limit the maximum percentage of load shedding (in "
+"preventive and curative mode)."
+msgstr ""
+
+#: ../../metrix.md:308 e6245dcbff7e442188f3f937578d7abb
+msgid ""
+"Doctrine costs can be defined for postprocessing purpose (load shedding "
+"costs timeseries)"
+msgstr ""
+
+#: ../../metrix.md:310 fa154bde6ef24487a8b24154c4312088
+msgid "Here is the corresponding syntax:"
+msgstr ""
+
+#: ../../metrix.md:323 dc83f95b37cb4ab68b7432a0dc84e51f
+#, python-format
+msgid ""
+"Note that, as generators, if no load is configured then all loads can be "
+"used with 100 % shedding capabilities."
+msgstr ""
+
+#: ../../metrix.md:325 705f3f5b568242ae8a23018bbfe444e5
+msgid "Phase-shifting transformer"
+msgstr ""
+
+#: ../../metrix.md:327 315c5c9521d7403aa2920203e65dc8d6
+msgid ""
+"Phase shifting transformers can be controlled with the following syntax "
+"(default mode is fixed tap):"
+msgstr ""
+
+#: ../../metrix.md:338 ../../metrix.md:355 1159893ec0ef430196229313ce9c8948
+#: 3b55e3fbde1d4d1185f669377b23b805
+msgid "Control types:"
+msgstr ""
+
+#: ../../metrix.md:339 bf7725ab69dd49039f45a2b7a1046eb5
+msgid "`FIXED_ANGLE_CONTROL`: (default) the original phase tap is fixed"
+msgstr ""
+
+#: ../../metrix.md:340 ccc2a364afb04b1fb8ca5bb4bb51762d
+msgid ""
+"`OPTIMIZED_ANGLE_CONTROL`: can shift to different phase tap to solve "
+"constraints"
+msgstr ""
+
+#: ../../metrix.md:341 aa56212cd4aa46b994ea2d45d7793d3b
+msgid "`CONTROL_OFF`: the transformer is deactivated (phase shift is equal to 0)"
+msgstr ""
+
+#: ../../metrix.md:343 46406bf1bc3747dd8e547628f9f69c53
+msgid ""
+"Note that while the optimization will use phase in a continuous range, "
+"Metrix will then find the closest phase tap in the results."
+msgstr ""
+
+#: ../../metrix.md:345 e53992b25d2e4698abc06a555081e8f0
+msgid "HVDC"
+msgstr ""
+
+#: ../../metrix.md:347 2ae07622f3b943398c5dc08f98f5e4a8
+msgid "For HVDC line, the syntax is similar to phase tap changers one:"
+msgstr ""
+
+#: ../../metrix.md:356 f5f0d9335f41429ca73c44b7cbc4d07f
+msgid ""
+"`OPTIMIZED`: can optimize the p0 target in adequacy phase and preventive "
+"(and curative if contingencies were defined)"
+msgstr ""
+
+#: ../../metrix.md:357 277413003b2749c3bc0590425c6ec37c
+msgid "`FIXED`: the target p0 is fixed"
+msgstr ""
+
+#: ../../metrix.md:359 1ea21bf8d5084fa7bd58157c90974f6a
+msgid "Losses"
+msgstr ""
+
+#: ../../metrix.md:361 728e70d80fee492e851eba284bbaad12
+msgid ""
+"Doctrine costs can be defined for postprocessing purpose (global losses "
+"cost time series)"
+msgstr ""
+
+#: ../../metrix.md:369 1abbbb9edbca4a34b9bb8af7f7ddd22f
+msgid "Monitored sections"
+msgstr ""
+
+#: ../../metrix.md:371 9864eec9e3e749d8aa42b8314c5ac4bc
+msgid ""
+"It is possible to monitor a constraint on a weighted sum of a set of "
+"branch flows:"
+msgstr ""
+
+#: ../../metrix.md:382 39f0d7348da14d37bc7159b9b7b64e9c
+msgid "Contingency DSL"
+msgstr ""
+
+#: ../../metrix.md:384 ec27597f459743cbbaf2a97b6fc66a75
+msgid ""
+"Contingencies are specified in an other configuration file. They can "
+"represent the loss of one or several network equipments. Every "
+"contingency will be simulated."
+msgstr ""
+
+#: ../../metrix.md:386 dfb4b98c8bdd41bc941c963717aab032
+msgid "To define a contingency:"
+msgstr ""
+
+#: ../../metrix.md:392 09a2ba5c0b2d4a30bc8db632a84eff13
+msgid ""
+"Note that to propagate a contingency defined on branches without breaker,"
+" the global option `propagateBranchTripping` can be used to propagate the"
+" contingency on connected branches. Contingencies that breaks the network"
+" connectivity are ignored unless `outagesBreakingConnexity` global "
+"parameter is set to true. In this case, Metrix will try to reach adequacy"
+" using all loads and generators equally and the results will show the cut"
+" off equipments. HVDC lines can be tripped off only in a synchronized "
+"network."
+msgstr ""
+
+#: ../../metrix.md:396 96f781b04dd9487bb8534dc34212a7e0
+msgid "To define a list of contingency for a list of components:"
+msgstr ""
+
+#: ../../metrix.md:410 60bc221030254649b7a6497f7b52acf7
+msgid "and for multiple components:"
+msgstr ""
+
+#: ../../metrix.md:422 5153e3180fed45dc9dd04119fa157e7e
+msgid "To simulate every single contingency on the 400 kV network:"
+msgstr ""
+
+#: ../../metrix.md:431 43ec5b75ed16448b903822fc77789fd0
+msgid "Remedial actions"
+msgstr ""
+
+#: ../../metrix.md:433 f74a7a36ba8d4dbe97b0122fb106ceeb
+msgid ""
+"Only defined topological remedial actions can be used by Metrix. They are"
+" defined per contingency in an third file with the following syntax. On "
+"the first line is the keyword `NB` followed by the number of remedial "
+"actions defined, eg:"
+msgstr ""
+
+#: ../../metrix.md:437 19d1ead7522849199de02108f17369b6
+msgid "Then each line will define a remedial action with:"
+msgstr ""
+
+#: ../../metrix.md:441 a5045fff7dc3480380bcd731a91a8d00
+msgid ""
+"where ```EQUIPMENT1_ACTION``` being the id of a branch or bus coupling. "
+"The default action is to open the related breakers. To close a line the "
+"`+` sign must be prepended to the branch id."
+msgstr ""
+
+#: ../../metrix.md:443 9c62a9498dea4b25abc28403768088c0
+msgid "Remedial action can be limited to specific branch constraints with:"
+msgstr ""
+
+#: ../../metrix.md:447 573a5a3800044ef1a2b0f494c8ed4e16
+msgid ""
+"where ```BRANCH_CONSTRAINT_1``` should be the id of a [monitored "
+"component](#monitored-branches-and-observed-branches) "
+"(`onBranchRatingContingencies`)."
+msgstr ""
+
+#: ../../metrix.md:449 cd066f1f85d94573b2ed21fbc9811895
+msgid ""
+"Note that Metrix won't combine multiple defined remedial actions set, "
+"each line is tried independently.These topological actions may be "
+"combined with generators/loads/phase tap changers/... optimizations. If "
+"several actions are equivalents, the first defined one will be used."
+msgstr ""
+
+#: ../../metrix.md:451 12e667f6007d4a58b9ef4751370ff9e9
+msgid "Example"
+msgstr ""
+
+#: ../../metrix.md:461 c874e65271614630846a27a308ead3bb
+msgid ""
+"Using a lot of remedial actions will increase the simulation duration, "
+"especially with numerous alternatives for a same contingency. The option "
+"`analogousRemedialActionDetection` may detect equivalent remedial actions"
+" and speed up the process. They will be indicated in logs."
+msgstr ""
+
+#: ../../metrix.md:463 c6bf5c5dc5e84302a4067aab872b3db0
+msgid "Binding constraints"
+msgstr ""
+
+#: ../../metrix.md:465 8d8fb089b1d44749ae21076976a5f778
+msgid ""
+"Finally, we can define binding constraints between some variables so to "
+"force them to vary along. Each item of the binding constraint set will "
+"then vary proportionally to a reference variable."
+msgstr ""
+
+#: ../../metrix.md:467 164ca824e660417faeb714d0b6bc6613
+msgid "For generators, the syntax is:"
+msgstr ""
+
+#: ../../metrix.md:475 e7a80850b38c4be58125202e7acf53bd
+msgid "For loads, the only reference variable is the initial load:"
+msgstr ""
+
+#: ../../metrix.md:482 7a264501f9754ed384c4b8cb300d0352
+msgid ""
+"Note that if one of the item in the set reach its limit (eg. its Pmax), "
+"no further variation can be made on other items."
+msgstr ""
+
+#: ../../metrix.md:484 ca799bd348034433a2f6d5aba9b72331
+msgid "Outputs"
+msgstr ""
+
+#: ../../metrix.md:486 0a45ede51f3540a08338dc6e6a7627cb
+msgid ""
+"All outputs of Metrix are time series that will be stored in a single "
+"file."
+msgstr ""
+
+#: ../../metrix.md:488 0962a5a08c644932b0aa40243e875251
+msgid "Simulation result"
+msgstr ""
+
+#: ../../metrix.md:490 2e02ef70ac3d4a21b17c931c67dd61c3
+msgid ""
+"The time series ```ERROR_CODE``` reports the exit value of the Metrix "
+"computation process, 0 being the standard OK. Any other value will hint "
+"toward one of the following issues :"
+msgstr ""
+
+#: ../../metrix.md:492 d1d6c92476884df0936beb0127e5a19d
+msgid "1 : No solution was found"
+msgstr ""
+
+#: ../../metrix.md:493 79d16e0c39544809aa154ac3a6cddce5
+msgid "2 : The maximum number of constraints was reached"
+msgstr ""
+
+#: ../../metrix.md:494 04ba4027dc3c49f396347c02b546f0be
+msgid ""
+"3 : The maximum of micro iteration was reached (can be increased with "
+"global parameter `nbMaxIteration`)"
+msgstr ""
+
+#: ../../metrix.md:495 99acf573f29344e781739970f24ea9a7
+msgid "4 : Ignored variant (when input isn't consistent)"
+msgstr ""
+
+#: ../../metrix.md:497 2cc6801e10394618813f026cba1a49a4
+msgid "Global results"
+msgstr ""
+
+#: ../../metrix.md:499 8ad5225987214aff860f551ef64aed5c
+msgid "```LOSSES``` total losses (in MW) (for all synchronous components)"
+msgstr ""
+
+#: ../../metrix.md:501 366b90e71337483f9da0e2b6686d4e3a
+msgid ""
+"```LOSSES_country``` total losses per country (in MW) (only available if "
+"option `lossDetailPerCountry` is enabled)"
+msgstr ""
+
+#: ../../metrix.md:503 96bf29ffb04b44e18ebda14c4240ed2c
+msgid ""
+"```LOSSES_hvdc``` total losses for HVDC (in MW) (only available if option"
+" `lossDetailPerCountry` is enabled)"
+msgstr ""
+
+#: ../../metrix.md:505 1ba1200d26f448ac9729e598a7e76d14
+msgid ""
+"```OVERLOAD_BASECASE``` sum of threshold overage on monitored components "
+"in base case (en MW)"
+msgstr ""
+
+#: ../../metrix.md:507 b68236ca7a16492db585762b67e1dbbe
+msgid ""
+"```OVERLOAD_OUTAGES``` sum of threshold overage on monitored components "
+"for all defined contingencies (en MW)"
+msgstr ""
+
+#: ../../metrix.md:509 b794dbea10e04ed6908efc761ed50744
+msgid ""
+"```GEN_COST``` total cost of generator redispatching in preventive "
+"actions. It should be noted that as redispatching costs Up and Down are "
+"seen as positive costs for the system in Metrix, this computed cost does "
+"not represent the actual cost for the TSO."
+msgstr ""
+
+#: ../../metrix.md:511 fdaff32704ea491299f65339a41c497c
+msgid ""
+"```GEN_CUR_COST``` total cost of generator redispatching in curative "
+"actions"
+msgstr ""
+
+#: ../../metrix.md:513 9a9e32734892487183b1c09212f17d24
+msgid "```LOAD_COST``` total cost of preventive load shedding"
+msgstr ""
+
+#: ../../metrix.md:515 f44a5b64452c4ef9856917bce91aae0b
+msgid "```LOAD_CUR_COST``` total cost of curative load shedding"
+msgstr ""
+
+#: ../../metrix.md:517 920c9a62b16445c8b0ce6383a5d8a820
+msgid ""
+"```basecaseLoad_branchId``` load percentage (the flow divided by the "
+"threshold)"
+msgstr ""
+
+#: ../../metrix.md:519 fd69a541591c48279dd4f430e6e394fb
+msgid ""
+"```basecaseOverload_branchId``` overload flow (difference between flow "
+"and threshold if greater than threshold)"
+msgstr ""
+
+#: ../../metrix.md:521 d077f370fb104d1c8b6756037fa56dc5
+msgid ""
+"```outageLoad_branchId``` load percentage for N-1 (the flow divided by "
+"the N-1 threshold)"
+msgstr ""
+
+#: ../../metrix.md:523 e9c06b4ef1cf447cb7f6add5975e6013
+msgid ""
+"```outageOverload_branchId``` overload flow for N-1 (difference between "
+"flow and N-1 threshold if greater than threshold)"
+msgstr ""
+
+#: ../../metrix.md:525 dd013d8f5ac54f7f80eb645d8e6d4915
+msgid "```overallOverload_branchID``` sum of base case and outage overload values"
+msgstr ""
+
+#: ../../metrix.md:527 ee1814bb465a4928b82cf328b53ca9d9
+msgid "Load flow results"
+msgstr ""
+
+#: ../../metrix.md:529 26b418067b0749d9802bc66ebf03e19d
+msgid "```FLOW_branchId``` flow in base case (in MW)"
+msgstr ""
+
+#: ../../metrix.md:531 23e31694768c43c484a4026494e60017
+msgid ""
+"```FLOW_branchId_contingencyId``` flow for a specific contingency outage "
+"(when using the option `contingencyFlowResults`)"
+msgstr ""
+
+#: ../../metrix.md:533 2a7742ca5b504420a54c3f125157791e
+msgid ""
+"```MAX_THREAT_index_FLOW_branchId``` (index-th) maximum flow (in MW) on "
+"branch after contingencies (default only index 1 is returned but may be "
+"increased using option `nbMaxThreat`)"
+msgstr ""
+
+#: ../../metrix.md:535 a1f06792acc04ce485400b7b84d7ec20
+msgid ""
+"```MAX_THREAT_index_NAME_branchId``` id of the contingency that caused "
+"the maximum flow for specified index (see previous result time series)"
+msgstr ""
+
+#: ../../metrix.md:537 d9f68c29ccc842c58779ea69c759ab18
+msgid ""
+"```MAX_TMP_THREAT_FLOW_branchId``` maximum flow on branch after "
+"contingency and before remedial action (if option `preCurativeResults` is"
+" enabled)"
+msgstr ""
+
+#: ../../metrix.md:539 fe588ceff5554dcf86702b315721bf39
+msgid ""
+"```MAX_TMP_THREAT_NAME_branchId``` id of the contingency that caused the "
+"maximum flow after contingency and before remedial action (see previous "
+"result time series)"
+msgstr ""
+
+#: ../../metrix.md:541 5b833db241fd48638992432ff4a52e44
+msgid "Adequacy results"
+msgstr ""
+
+#: ../../metrix.md:543 65f458da29db485d8da3236da7fa910b
+msgid ""
+"```INIT_BAL_AREA_X``` initial difference between load and production (in "
+"MW) for synchronous zone X before adequacy phase"
+msgstr ""
+
+#: ../../metrix.md:545 9e45e29e034e49b6bc5ef071652fd8e2
+msgid "With option `withAdequacyResults`:"
+msgstr ""
+
+#: ../../metrix.md:547 cecb6a5287974b219f403e0918d3b5b1
+msgid ""
+"```INIT_BAL_GEN_generator``` if not nul, the MW adjustement for the "
+"generator in the adequacy phase"
+msgstr ""
+
+#: ../../metrix.md:549 24e2c19d6a0740d9aaa38f1b80beb937
+msgid ""
+"```INIT_BAL_LOAD_node``` if not nul, load shedding for node (en MW) in "
+"the adequacy phase"
+msgstr ""
+
+#: ../../metrix.md:551 6b6252eb3a0a4875bac064c0c83434be
+msgid ""
+"With option `outagesBreakingConnexity` or "
+"`remedialActionsBreakingConnexity`:"
+msgstr ""
+
+#: ../../metrix.md:553 3414c849991e4f41a0e4ab7b3b2b2b20
+msgid ""
+"```LOST_LOAD_contingencyId``` total load loss (in MW) when network "
+"connectivity is broken"
+msgstr ""
+
+#: ../../metrix.md:555 57967b16970349fdbd53cc07451db650
+msgid ""
+"```LOST_LOAD_BEFORE_CURATIVE_contingencyId``` total load loss (in MW) "
+"when network connectivity is broken (before remedial actions)"
+msgstr ""
+
+#: ../../metrix.md:557 4562c9ae70724cf6a19a10085f5c12b5
+msgid ""
+"```LOST_GEN_contingencyId``` total production loss (in MW) when network "
+"connectivity is broken"
+msgstr ""
+
+#: ../../metrix.md:559 ef50c09e521941ffaab271e2a96e963d
+msgid "Preventive actions results"
+msgstr ""
+
+#: ../../metrix.md:561 03bd7c6cc8714126a8c207f90b18db23
+msgid "```PST_pstId``` angle value for phase shift if different of initial value"
+msgstr ""
+
+#: ../../metrix.md:563 81f72beb070447ecadce59f4de7d1a7f
+msgid "```PST_TAP``` phase shifting tap if different of initial value"
+msgstr ""
+
+#: ../../metrix.md:565 152088ac85e842fb94437dc7381b3c10
+msgid ""
+"```HVDC_hvdcId``` p0 value (in MW) for the HVDC if different of initial "
+"value"
+msgstr ""
+
+#: ../../metrix.md:567 9c3611b6de4b4d749c9ef3428f15452f
+msgid ""
+"```GEN_VOL_DOWN_genType``` total volume (in MW) of decreased production "
+"for generator of type genType"
+msgstr ""
+
+#: ../../metrix.md:569 edcdeeadd8b248b6a249eb395b554c3a
+msgid ""
+"```GEN_VOL_UP_genType``` total volume (in MW) of increased production for"
+" generator of type genType"
+msgstr ""
+
+#: ../../metrix.md:571 ae5cc362a21a47dcace34d06d15882e2
+msgid ""
+"```GEN_genId``` variation of targetP for a generator in preventive "
+"actions (in MW) (if not nul and if option `withRedispatchingResults` is "
+"enabled)"
+msgstr ""
+
+#: ../../metrix.md:573 ce60266c85b04cc6a03fb360011dbfb2
+msgid "```LOAD_loadId``` shedding volume (in MW) for a load in remedial actions"
+msgstr ""
+
+#: ../../metrix.md:575 760bf58a8468411fbaefae8494d0f53f
+msgid "Curative actions results"
+msgstr ""
+
+#: ../../metrix.md:577 7c3c955478a940c5bd0e460e23fb8783
+msgid ""
+"```PST_CUR_pstId_contingencyId``` angle value for phase shift if "
+"different of preventive action value"
+msgstr ""
+
+#: ../../metrix.md:579 4f37bf82747946759f9fa9d066d2e6c3
+msgid ""
+"```PST_CUR_TAP``` phase shifting tap for the curative angle value "
+"(previous time series)"
+msgstr ""
+
+#: ../../metrix.md:581 e560afe19e844f5e93a3d745abd5938f
+msgid ""
+"```HVDC_CUR_hvdc_contingencyId``` p0 value (in MW) for the HVDC if "
+"different of initial value"
+msgstr ""
+
+#: ../../metrix.md:583 446f256aeb1f4305a379761a35f9c3cf
+msgid ""
+"```GEN_CUR_VOL_DOWN_genType``` total volume (in MW) of decreased "
+"production on the maximal threat contingency for generator of type "
+"genType"
+msgstr ""
+
+#: ../../metrix.md:585 778364f362344a4aa0dc781694161b4a
+msgid ""
+"```GEN_CUR_VOL_UP_genType``` total volume (in MW) of increased production"
+" on the maximal threat contingency for generator of type genType"
+msgstr ""
+
+#: ../../metrix.md:587 9b991ec8bbc54234beb40a3013842941
+msgid ""
+"```GEN_CUR_generator_contingencyId``` variation of production (in MW) for"
+" the generator under the specified contingency (if different of the "
+"preventive value and if option `withRedispatchingResults` is enabled)"
+msgstr ""
+
+#: ../../metrix.md:589 ac7a92ec95134105ac97bd576d0166e7
+msgid ""
+"```LOAD_CUR_load_contingencyId``` shedding volume (in MW) of a load  "
+"under the specified contingency (if different of the preventive value)"
+msgstr ""
+
+#: ../../metrix.md:591 67b6d33ee8c9486999d2e07456e8163b
+msgid ""
+"```TOPOLOGY_contingencyId``` topological remedial action chosen for the "
+"specified contingency"
+msgstr ""
+
+#: ../../metrix.md:593 dcba1ea3da7b4cd3957f28071356b21a
+msgid "Marginal variation results"
+msgstr ""
+
+#: ../../metrix.md:595 5f642ccabb4f4b4ab0dd51a9ba146e44
+msgid ""
+"The following results will be produced when option "
+"`marginalVariationsOnBranches` is enabled."
+msgstr ""
+
+#: ../../metrix.md:597 7bdb99812d0b447381f80ba28b34bf8b
+msgid ""
+"```MV_branchId``` theoretical effect on the cost function if the "
+"threshold were to be increase of 1 MW on the branch"
+msgstr ""
+
+#: ../../metrix.md:599 3f5c214a967747928d7ba355bbb9675a
+msgid ""
+"```MV_branchId_contingencyId``` theoretical effect on the cost function "
+"if the threshold were to be increase of 1 MW on the branch under "
+"contingency"
+msgstr ""
+
+#: ../../metrix.md:601 23f3ba0aeafd45179ed652bcc683ed7b
+msgid "With option `contingencyDetailedMarginalVariations`:"
+msgstr ""
+
+#: ../../metrix.md:603 e84e09eb6534497eaddc206842780888
+msgid ""
+"```MV_POW_branchId_equipmentId``` load variation on generator or load "
+"_equipmentId_ to obtain a 1 MW increase on branch"
+msgstr ""
+
+#: ../../metrix.md:605 52e4a77dca2f43ff871a5141d4ca427a
+msgid ""
+"```MV_POW_branchId_contingencyId_equipmentId``` load variation on "
+"generator or load _equipmentId_ to obtain a 1 MW increase on branch after"
+" contingency"
+msgstr ""
+
+#: ../../metrix.md:607 dc573137672742f5b21dac48b5aad53e
+msgid ""
+"```MV_COST_branchId_equipmentId``` cost variation on generator or load "
+"_equipmentId_ to obtain a 1 MW increase on branch"
+msgstr ""
+
+#: ../../metrix.md:609 f8e80c14ac694a6f88469d98639a1b59
+msgid ""
+"```MV_COST_branchId_contingencyId_equipmentId``` cost variation on "
+"generator or load _equipmentId_ to obtain a 1 MW increase on branch after"
+" contingency"
+msgstr ""
+
+#: ../../metrix.md:611 f63aea7474be4716863c0932c3a8cec8
+msgid "Binding constraints results"
+msgstr ""
+
+#: ../../metrix.md:613 771c6d97a95d439c9384037b83b7b90a
+msgid "```GEN_setId``` sum of variations on the binding constraint set (in MW)"
+msgstr ""
+
+#: ../../metrix.md:615 50a93e83a906410ba8ad1963526113b2
+msgid ""
+"```LOAD_setId``` sum of load shedding variations on the binding "
+"constraint set (in MW)"
+msgstr ""
