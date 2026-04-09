@@ -57,7 +57,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
-          name: data-for-sonar-analysis-${{ github.event.pull_request.number }}
+          name: java-data-for-sonar-analysis-${{ github.event.pull_request.number }}
           retention-days: 1
           path: |
             */target/classes
@@ -79,18 +79,18 @@ jobs:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
           mkdir -p pr-info
-          echo "$REPO_NAME" > pr-info/repo-name
-          echo "$HEAD_REF" > pr-info/head-ref
-          echo "$HEAD_SHA" > pr-info/head-sha
-          echo "$PR_NUMBER" > pr-info/pr-number
-          echo "$BASE_REF" > pr-info/base-ref
+          echo "$REPO_NAME" > java-pr-info/repo-name
+          echo "$HEAD_REF" > java-pr-info/head-ref
+          echo "$HEAD_SHA" > java-pr-info/head-sha
+          echo "$PR_NUMBER" > java-pr-info/pr-number
+          echo "$BASE_REF" > java-pr-info/base-ref
 
       - name: Upload PR Information
         if: matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
-          name: pr-info-${{ github.event.pull_request.number }}
-          path: pr-info/
+          name: java-pr-info-${{ github.event.pull_request.number }}
+          path: java-pr-info/
           retention-days: 1
 
   cpp_ubuntu_qa:
@@ -174,11 +174,11 @@ jobs:
           BASE_REF: ${{ github.event.pull_request.base.ref }}
         run: |
           mkdir -p pr-info
-          echo "$REPO_NAME" > pr-info/repo-name
-          echo "$HEAD_REF" > pr-info/head-ref
-          echo "$HEAD_SHA" > pr-info/head-sha
-          echo "$PR_NUMBER" > pr-info/pr-number
-          echo "$BASE_REF" > pr-info/base-ref
+          echo "$REPO_NAME" > cpp-pr-info/repo-name
+          echo "$HEAD_REF" > cpp-pr-info/head-ref
+          echo "$HEAD_SHA" > cpp-pr-info/head-sha
+          echo "$PR_NUMBER" > cpp-pr-info/pr-number
+          echo "$BASE_REF" > cpp-pr-info/base-ref
 
       - name: Upload PR Information
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
