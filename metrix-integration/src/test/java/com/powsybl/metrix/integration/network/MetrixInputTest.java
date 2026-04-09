@@ -37,7 +37,7 @@ import com.powsybl.iidm.network.test.EurostagTutorialExample1Factory;
 import com.powsybl.iidm.network.test.ThreeWindingsTransformerNetworkFactory;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding;
 import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.type.MetrixPtcControlType;
@@ -360,7 +360,7 @@ class MetrixInputTest {
 
         metrixDslData.addGeneratorsBinding("1 generator group", ImmutableSet.of("FSSV.O11_G", "TOTO"));
         metrixDslData.addGeneratorsBinding("2 generator group", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G"));
-        metrixDslData.addGeneratorsBinding("3 generator group", ImmutableSet.of("FSSV.O12_G", "FVALDI11_G", "FVERGE11_G"), MetrixGeneratorsBinding.ReferenceVariable.POBJ);
+        metrixDslData.addGeneratorsBinding("3 generator group", ImmutableSet.of("FSSV.O12_G", "FVALDI11_G", "FVERGE11_G"), AbstractMetrixGroupBinding.ReferenceVariable.POBJ);
         metrixDslData.addBatteriesBinding("1 battery group", ImmutableSet.of("FP.AND1_BATTERY"));
         metrixDslData.addLoadsBinding("1 load group", ImmutableSet.of("FVALDI11_L", "TOTO"));
         metrixDslData.addLoadsBinding("2 load group", ImmutableSet.of("FVALDI11_L", "FVALDI11_L2"));

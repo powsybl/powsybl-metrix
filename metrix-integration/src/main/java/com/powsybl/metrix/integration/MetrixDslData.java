@@ -11,9 +11,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
-import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
-import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
-import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
+import com.powsybl.metrix.integration.binding.*;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
 import com.powsybl.metrix.integration.dsl.BatteryDslData;
@@ -511,7 +509,7 @@ public class MetrixDslData {
     }
 
     // Bound variables
-    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
+    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         boundVariablesDslData.addGeneratorsBinding(id, generatorsIds, referenceVariable);
     }
 
@@ -524,7 +522,7 @@ public class MetrixDslData {
         return boundVariablesDslData.getGeneratorsBindingsValues();
     }
 
-    public void addBatteriesBinding(String id, Collection<String> batteriesIds, MetrixBatteriesBinding.ReferenceVariable referenceVariable) {
+    public void addBatteriesBinding(String id, Collection<String> batteriesIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         boundVariablesDslData.addBatteriesBinding(id, batteriesIds, referenceVariable);
     }
 

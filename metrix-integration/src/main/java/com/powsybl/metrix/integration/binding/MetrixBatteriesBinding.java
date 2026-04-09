@@ -8,42 +8,14 @@
 package com.powsybl.metrix.integration.binding;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 /**
  * @author Matthieu SAUR {@literal <matthieu.saur at rte-france.com>}
  */
-public class MetrixBatteriesBinding {
-
-    public enum ReferenceVariable {
-
-        PMAX(0), // default value
-        PMIN(1),
-        POBJ(2),
-        PMAX_MINUS_POBJ(3);
-
-        private final int type;
-
-        ReferenceVariable(int type) {
-            this.type = type;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-    }
-
-    private final String name;
-    private final Set<String> batteriesIds = new HashSet<>();
-    private final ReferenceVariable reference;
+public class MetrixBatteriesBinding extends AbstractMetrixGroupBinding {
 
     MetrixBatteriesBinding() {
-        this.name = null;
-        this.reference = null;
+        super();
     }
 
     public MetrixBatteriesBinding(String name, Collection<String> ids) {
@@ -51,39 +23,17 @@ public class MetrixBatteriesBinding {
     }
 
     public MetrixBatteriesBinding(String name, Collection<String> ids, ReferenceVariable reference) {
-        this.name = name;
-        this.batteriesIds.addAll(ids);
-        this.reference = reference;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<String> getBatteriesIds() {
-        return Collections.unmodifiableSet(batteriesIds);
-    }
-
-    public ReferenceVariable getReference() {
-        return reference;
+        super(name, ids, reference);
     }
 
     @Override
-    public String toString() {
-        return "Batteries binding '" + name + "' (ref. variable : " + reference + ") [ " + String.join(", ", batteriesIds) + " ]";
+    protected String getGroupName() {
+        return "Batteries";
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MetrixBatteriesBinding other)) {
-            return false;
-        }
-        return name.equals(other.name) && reference == other.reference && batteriesIds.equals(other.batteriesIds);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, reference, batteriesIds);
+    public String getGroupNameSingular() {
+        return "Battery";
     }
 
 }

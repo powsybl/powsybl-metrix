@@ -9,7 +9,7 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
-import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
 import com.powsybl.metrix.mapping.log.LogDslLoader
@@ -19,9 +19,9 @@ import com.powsybl.metrix.mapping.log.LogDslLoader
  */
 class BatteriesBindingData extends LoadsBindingData {
 
-    MetrixBatteriesBinding.ReferenceVariable referenceVariable
+    AbstractMetrixGroupBinding.ReferenceVariable referenceVariable
 
-    void referenceVariable(MetrixBatteriesBinding.ReferenceVariable referenceVariable) {
+    void referenceVariable(AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         this.referenceVariable = referenceVariable
     }
 

@@ -25,12 +25,10 @@ import com.powsybl.iidm.network.Switch;
 import com.powsybl.iidm.network.TieLine;
 import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
+import com.powsybl.metrix.integration.binding.*;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixSubset;
-import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
-import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
@@ -1326,18 +1324,18 @@ public class MetrixInputData {
         }
     }
 
-    private void getGeneratorBindings(Collection<MetrixGeneratorsBinding> bindings,
-                                      List<String> gbindnom,
-                                      List<Integer> gbindref,
-                                      List<Integer> gbinddef) {
-        for (MetrixGeneratorsBinding binding : bindings) {
+    private <T extends AbstractMetrixGroupBinding> void getGroupBindings(Collection<T> bindings,
+                                                                         List<String> gbindnom,
+                                                                         List<Integer> gbindref,
+                                                                         List<Integer> gbinddef) {
+        for (AbstractMetrixGroupBinding binding : bindings) {
             List<Integer> idList = new ArrayList<>();
-            for (String generatorId : binding.getGeneratorsIds()) {
+            for (String id : binding.getIds()) {
                 try {
-                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
+                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, id));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn("generator group '{}' : generator '{}' not found", binding.getName(), generatorId);
+                        LOGGER.warn("{} group '{}' : {} '{}' not found", binding.getGroupNameSingular(), binding.getName(), binding.getGroupNameSingular(), id);
                     }
                 }
             }
@@ -1348,35 +1346,7 @@ public class MetrixInputData {
                 gbinddef.add(idList.size());
                 gbinddef.addAll(idList);
             } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("generator group '{}' ignored because it contains too few elements ({})", binding.getName(), idList.size());
-            }
-
-        }
-    }
-
-    private void getBatteryBindings(Collection<MetrixBatteriesBinding> bindings,
-                                      List<String> gbindnom,
-                                      List<Integer> gbindref,
-                                      List<Integer> gbinddef) {
-        for (MetrixBatteriesBinding binding : bindings) {
-            List<Integer> idList = new ArrayList<>();
-            for (String generatorId : binding.getBatteriesIds()) {
-                try {
-                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
-                } catch (IllegalStateException ise) {
-                    if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn("battery group '{}' : battery '{}' not found", binding.getName(), generatorId);
-                    }
-                }
-            }
-
-            if (idList.size() > 1) {
-                gbindnom.add(binding.getName());
-                gbindref.add(binding.getReference().getType());
-                gbinddef.add(idList.size());
-                gbinddef.addAll(idList);
-            } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("battery group '{}' ignored because it contains too few elements ({})", binding.getName(), idList.size());
+                LOGGER.warn("{} group '{}' ignored because it contains too few elements ({})", binding.getGroupNameSingular(), binding.getName(), idList.size());
             }
 
         }
@@ -1393,11 +1363,11 @@ public class MetrixInputData {
                 List<Integer> gbinddef = new ArrayList<>();
 
                 if (!generatorBindings.isEmpty()) {
-                    getGeneratorBindings(generatorBindings, gbindnom, gbindref, gbinddef);
+                    getGroupBindings(generatorBindings, gbindnom, gbindref, gbinddef);
                 }
 
                 if (!batterybindings.isEmpty()) {
-                    getBatteryBindings(batterybindings, gbindnom, gbindref, gbinddef);
+                    getGroupBindings(batterybindings, gbindnom, gbindref, gbinddef);
                 }
 
                 die.setInt("NBGBINDS", gbindnom.size());

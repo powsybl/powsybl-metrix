@@ -72,7 +72,7 @@ class MetrixDslDataLoader {
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixPtcControlType")
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixHvdcControlType")
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixComputationType")
-        imports.addStaticStars("com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding.ReferenceVariable")
+        imports.addStaticStars("com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding.ReferenceVariable")
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
 

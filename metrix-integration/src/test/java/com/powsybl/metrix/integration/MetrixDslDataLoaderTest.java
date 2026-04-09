@@ -12,6 +12,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
@@ -833,7 +834,7 @@ class MetrixDslDataLoaderTest {
         assertEquals(2, data.getGeneratorsBindings().size());
         Iterator<MetrixGeneratorsBinding> bindings = data.getGeneratorsBindingsValues().iterator();
         assertEquals(new MetrixGeneratorsBinding("binding2", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G", "FVALDI11_G", "FVERGE11_G")), bindings.next());
-        assertEquals(new MetrixGeneratorsBinding("binding3", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G"), MetrixGeneratorsBinding.ReferenceVariable.POBJ), bindings.next());
+        assertEquals(new MetrixGeneratorsBinding("binding3", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G"), AbstractMetrixGroupBinding.ReferenceVariable.POBJ), bindings.next());
 
         assertEquals(2, data.getLoadsBindings().size());
         Iterator<MetrixLoadsBinding> loadBindings = data.getLoadsBindingsValues().iterator();

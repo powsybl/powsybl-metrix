@@ -1,6 +1,7 @@
 package com.powsybl.metrix.integration.dsl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding;
 import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
@@ -56,7 +57,7 @@ public class BoundVariablesDslData extends AbstractDslData {
     }
 
     // Bound variables
-    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
+    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         generatorsBindings.put(id, new MetrixGeneratorsBinding(id, generatorsIds, referenceVariable));
     }
 
@@ -69,7 +70,7 @@ public class BoundVariablesDslData extends AbstractDslData {
         return Collections.unmodifiableCollection(generatorsBindings.values());
     }
 
-    public void addBatteriesBinding(String id, Collection<String> batteriesIds, MetrixBatteriesBinding.ReferenceVariable referenceVariable) {
+    public void addBatteriesBinding(String id, Collection<String> batteriesIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         batteriesBindings.put(id, new MetrixBatteriesBinding(id, batteriesIds, referenceVariable));
     }
 
