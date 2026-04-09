@@ -170,6 +170,10 @@ public class MetrixOutputData {
         }
     }
 
+    private static boolean isHeader(String[] chunks, String firstHeaderName) {
+        return chunks.length > 1 && firstHeaderName.equals(chunks[1]);
+    }
+
     /**
      * @param length number of data in each time series
      */
@@ -596,10 +600,6 @@ public class MetrixOutputData {
         ts = getDoubleTimeSeries(prefix + CUR_PREFIX, GENERATOR, chunks[2], outageName);
         double redispatchingValue = Double.parseDouble(chunks[3]);
         ts.insertResult(varNum - offset, redispatchingValue);
-    }
-
-    private static boolean isHeader(String[] chunks, String firstHeaderName) {
-        return chunks.length > 1 && firstHeaderName.equals(chunks[1]);
     }
 
     /**
