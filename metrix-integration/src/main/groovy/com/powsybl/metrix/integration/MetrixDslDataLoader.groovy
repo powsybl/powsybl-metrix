@@ -41,7 +41,7 @@ import static LossesData.lossesData
 import static ParametersData.parametersData
 import static PhaseShifterData.phaseShifterData
 import static SectionMonitoringData.sectionMonitoringData
-import static com.powsybl.metrix.integration.BatteryData.batteryData
+import static BatteryData.batteryData
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

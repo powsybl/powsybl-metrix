@@ -75,7 +75,7 @@ The `variable` allows to specify which network element attribute will be overwri
 It is an optional variable (except for `mapToTransformers`) which values depends on the element type (default is in bold) :
 
 - `mapToGenerators` **targetP**, minP, maxP, targetQ
-- `mapToBateries` **targetP**, minP, maxP, targetQ
+- `mapToBatteries` **targetP**, minP, maxP, targetQ
 - `mapToLoads` **p0**, fixedActivePower, variableActivePower, q0, fixedReactivePower, variableReactivePower
 - `mapToHvdcLines` **activePowerSetpoint**, minP, maxP
 - `mapToBoundaryLines` **p0**
@@ -96,7 +96,7 @@ The filter must be a groovy statement returning `true` or `false`. It has access
 related to the current object filtered.
 - depending on the `mapToXXX` type:
   - `mapToGenerators`: `generator`
-  - `mapToBateries`: `battery`
+  - `mapToBatteries`: `battery`
   - `mapToLoads`: `load`
   - `mapToHvdcLines`: `hvdcLine`
   - `mapToBoundaryLines`: `boundaryLine`

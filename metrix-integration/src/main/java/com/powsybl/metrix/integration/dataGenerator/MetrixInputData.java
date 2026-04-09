@@ -751,7 +751,7 @@ public class MetrixInputData {
         } else if (injection instanceof Battery) {
             return trnomtyp.indexOf(BATTERY.name());
         }
-        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type : Generator, Battery");
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
     private double getTargetP(Injection<?> injection) {
@@ -760,7 +760,7 @@ public class MetrixInputData {
         } else if (injection instanceof Battery battery) {
             return battery.getTargetP();
         }
-        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type : Generator, Battery");
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
     private double getMaxP(Injection<?> injection) {
@@ -769,7 +769,7 @@ public class MetrixInputData {
         } else if (injection instanceof Battery battery) {
             return battery.getMaxP();
         }
-        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type : Generator, Battery");
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
     private double getMinP(Injection<?> injection) {
@@ -778,7 +778,7 @@ public class MetrixInputData {
         } else if (injection instanceof Battery battery) {
             return battery.getMinP();
         }
-        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type : Generator, Battery");
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
     public static float getHvdcLineMax(HvdcLine hvdcLine) {
