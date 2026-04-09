@@ -96,6 +96,12 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         return "point-" + index.getInstantAt(point);
     }
 
+    private static void disconnectInjection(double equipmentValue, Injection<?> injection) {
+        if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
+            injection.getTerminal().disconnect();
+        }
+    }
+
     private void mapToEquipmentVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         if (Double.isNaN(equipmentValue)) {
             return;
@@ -290,12 +296,6 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case TARGET_V -> generator.setTargetV(equipmentValue);
             case DISCONNECTED -> disconnectInjection(equipmentValue, generator);
             default -> { /* Do nothing */ }
-        }
-    }
-
-    private static void disconnectInjection(double equipmentValue, Injection<?> injection) {
-        if (Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON) {
-            injection.getTerminal().disconnect();
         }
     }
 
