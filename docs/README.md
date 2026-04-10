@@ -2,7 +2,7 @@
 
 These are the documentation sources for PowSyBl-Metrix features.
 
-Please keep them up to date with your developments.  
+Please keep them up to date with your developments.
 They are published on [powsybl-metrix.readthedocs.io](http://powsybl-metrix.readthedocs.io/) and pull requests are built and previewed automatically.
 
 To build the docs locally, run the following commands:
@@ -26,7 +26,7 @@ intersphinx_mapping = {
 Then in your documentation file, you can add links to PowSyBl-Core documentation. If you want to link to a whole page,
 use one of the following example:
 ~~~Markdown
-- Let's talk about the power of {doc}`powsyblcore:simulation/loadflow/loadflow`. 
+- Let's talk about the power of {doc}`powsyblcore:simulation/loadflow/loadflow`.
 - Let's talk about the power of {doc}`loadflow <powsyblcore:simulation/loadflow/loadflow>`.
 - Let's talk about the power of [Load Flow](inv:powsyblcore:std:doc#simulation/loadflow/loadflow).
 ~~~
@@ -39,9 +39,9 @@ If you want to link a specific part of a page, use one of those examples:
 - Let's talk about the power of [calculated time series](inv:powsyblcore:std:label:#calculated-timeseries).
 - Let's talk about the power of [calculated time series](inv:powsyblcore:*:*:#calculated-timeseries).
 ~~~
-*Note: for the last examples to work, there need to be a corresponding reference in the external documentation. 
-For those examples, `(timeseries)=` and `(calculated-timeseries)=` have been added right before the corresponding titles 
-in the [TimeSeries page](inv:powsyblcore:std:doc#data/timeseries). Another way to make it work is to use the `autosectionlabel` module in Sphinx to 
+*Note: for the last examples to work, there need to be a corresponding reference in the external documentation.
+For those examples, `(timeseries)=` and `(calculated-timeseries)=` have been added right before the corresponding titles
+in the [TimeSeries page](inv:powsyblcore:std:doc#data/timeseries). Another way to make it work is to use the `autosectionlabel` module in Sphinx to
 automatically generate anchors for each title.*
 
 *Note²: if the build fails, try with the `-E` option to clear the cache:*

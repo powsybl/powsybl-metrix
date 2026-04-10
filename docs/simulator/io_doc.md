@@ -40,22 +40,22 @@ y { color: yellow}
 
 (io-intro)=
 ## Introduction
-Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme imaGrid). Suite à 
-l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à 
-savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant-à-elle, 
-été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format 
+Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme imaGrid). Suite à
+l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à
+savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant à elle,
+été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format
 de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
 
 (io-inputs-json)=
 ## Données d’entrée au format *json*
-La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au 
-format Groovy. Elle génère 1 fichier *json* : '*fort.json*'.
+La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au
+format Groovy. Elle génère un fichier *json* : '*fort.json*'.
 
-Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée, 
+Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée,
 les autres sont optionnelles.
 La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
-Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires, mais qui provoquent des erreurs de 
-segmentation si elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> provoquent des erreurs (cf. 
+Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires, mais qui provoquent des erreurs de
+segmentation si elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> provoquent des erreurs (cf.
 fichier de logs) si elles ne sont pas renseignées.
 
 (io-types)=
@@ -266,18 +266,18 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 (io-variants)=
 ## Variantes
 Les données spécifiques à chaque variante sont décrites dans un fichier au format csv.
-La première ligne indique le nombre de tirages (i.e. de variantes), après le mot-clé *NT*. 
+La première ligne indique le nombre de tirages (i.e. de variantes), après le mot-clé *NT*.
 Chaque ligne du fichier commence ensuite par le numéro du tirage suivi par le type de la loi décrite identifiée par un mot-clé.
 Les données propres à la loi et au tirage sont écrites à la suite du mot-clé, à savoir :
 - >**PRODIN** : le nombre de groupes, puis les noms des groupes indisponibles.
 - >**PRODIM** : le nombre de groupes, puis autant de couples (indice de groupe, puissance de consigne) que le nombre de groupes indiqué.
-- >**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms des ouvrages indisponibles 
+- >**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms des ouvrages indisponibles
 - >**TRVALPMD** : le nombre de groupes, puis autant de couples (indice de groupe, puissance maximale disponible) que le nombre de groupes indiqué.
 - >**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de groupe, puissance minimale disponible) que le nombre de groupes indiqué.
 - >**CONELE** : le nombre de consommations, puis autant de couples (nom de la consommation, nouvelle valeur de consommation) que le nombre de consommations indiqué. Il s’agit de consommations nodales. Convention Eurostag : 1 nœud = 1 conso
-- >**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. Le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\Delta1$. À noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\Delta2$ ; notons que si la grandeur $\Delta2$ est positive, alors il y a plus de production que de consommations. La différence ($\Delta1 - \Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$ ; $c_i$ est la consommation au nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée. 
-Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.    
-- >**ECHANGP** : le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Cette loi est similaire à la loi ECHANG mais elle agit sur les groupes de production au lieu des consommations. Après application de toutes les autres lois du même tirage, METRIX ajuste les puissances des groupes modifiables de la région pour équilibrer le bilan (somme des productions moins somme des consommations) à la valeur indiquée dans la variante. La sélection des groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la hausse et à la baisse). Si, sur une région, il y a trop de production non modifiable ou trop peu de production disponible pour équilibrer le bilan, la variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir des coûts d’empilement hors réseau prohibitifs pour la région considérée par rapport aux régions d’étude. 
+- >**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. Le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\Delta1$. À noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\Delta2$ ; notons que si la grandeur $\Delta2$ est positive, alors il y a plus de production que de consommations. La différence ($\Delta1 - \Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$ ; $c_i$ est la consommation au nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée.
+Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
+- >**ECHANGP** : le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Cette loi est similaire à la loi ECHANG mais elle agit sur les groupes de production au lieu des consommations. Après application de toutes les autres lois du même tirage, METRIX ajuste les puissances des groupes modifiables de la région pour équilibrer le bilan (somme des productions moins somme des consommations) à la valeur indiquée dans la variante. La sélection des groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la hausse et à la baisse). Si, sur une région, il y a trop de production non modifiable ou trop peu de production disponible pour équilibrer le bilan, la variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir des coûts d’empilement hors réseau prohibitifs pour la région considérée par rapport aux régions d’étude.
 Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
 - >**CTORDR** : le nombre de coûts à la hausse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
 - >**COUBHR** : le nombre de coûts à la baisse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
@@ -285,10 +285,10 @@ Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
 - >**COUBAR** : le nombre de coûts à la baisse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
 - >**DCMINPUI** : le nombre de modifications de puissance min HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmin) qu’indiqué.
 - >**DCMAXPUI** : le nombre de modifications de puissance max HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmax) qu’indiqué.
-- >**DCIMPPUI** : le nombre de modifications de la puissance de consigne des lignes HVDC, puis autant de couples (nom de la ligne à courant continu, puissance de consigne) qu’indiqué. Si la ligne à courant continu n’est pas en mode « consigne imposée » dans le cas de base, METRIX modifie automatiquement le mode de fonctionnement de la ligne HVDC (pour cette variante uniquement). 
+- >**DCIMPPUI** : le nombre de modifications de la puissance de consigne des lignes HVDC, puis autant de couples (nom de la ligne à courant continu, puissance de consigne) qu’indiqué. Si la ligne à courant continu n’est pas en mode « consigne imposée » dans le cas de base, METRIX modifie automatiquement le mode de fonctionnement de la ligne HVDC (pour cette variante uniquement).
 
-**Remarque** : Si une ligne HVDC est en mode « consigne imposée », avant d’analyser la variante, METRIX vérifie que la 
-puissance de consigne de la ligne est bien comprise entre les bornes MAX et MIN. Si ce n’est pas le cas, la variante est rejetée. 
+**Remarque** : Si une ligne HVDC est en mode « consigne imposée », avant d’analyser la variante, METRIX vérifie que la
+puissance de consigne de la ligne est bien comprise entre les bornes MAX et MIN. Si ce n’est pas le cas, la variante est rejetée.
 - >**DTVALDEP** : le nombre de modifications de la valeur initiale du déphasage du TD, puis autant de couples (nom du TD, déphasage initial) qu’indiqué.
 - >**COUEFF** : le nombre de modifications du coût d’effacement de la consommation, puis autant de couples (indice de la consommation, coût) qu’indiqué.
 - >**QATI00MN** : le nombre de modifications du seuil N, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
@@ -301,14 +301,14 @@ puissance de consigne de la ligne est bien comprise entre les bornes MAX et MIN.
 - >**QATI20MN2** : le nombre de modifications du seuil N-k de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATITAMK** : le nombre de modifications du seuil N-k avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 - >**QATITAMK2** : le nombre de modifications du seuil N-k avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATITAMN2** : le nombre de modifications du seuil avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué. 
+- >**QATITAMN2** : le nombre de modifications du seuil avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
 
-**Attention** : pour chaque variante, le modèle ne tient compte que d’une seule ligne pour chaque type de loi. Si 
+**Attention** : pour chaque variante, le modèle ne tient compte que d’une seule ligne pour chaque type de loi. Si
 plusieurs lois sont définies pour une même variante seule la dernière sera conservée.
 
 Le numéro de la première variante est toujours $\geq 0$.
 
-La variante « -1 » permet d’indiquer des modifications sur le cas de base qui seront valables pour toutes les variantes 
+La variante « -1 » permet d’indiquer des modifications sur le cas de base qui seront valables pour toutes les variantes
 (à moins qu’elles ne soient modifiées par les données d’une variante).
 
 **Exemple** :
@@ -328,7 +328,7 @@ Les données spécifiques à chaque parade sont décrites dans un fichier au for
 La première ligne indique le nombre de parades, après le mot-clé *NB*.
 Chacune des lignes correspond à une parade, telle que :
 
-*<Nom de l'incident>*|*<Sections à surveiller séparées par un pipe>*;*<Nombre des premiers quadripôles listés concernés>*;<Liste de *<Nom(s) du(es) quadripôle(s)>* séparé(s) par un point virgule>;
+*<Nom de l'incident>*|*<Sections à surveiller séparées par un "pipe">*;*<Nombre des premiers quadripôles listés concernés>*;<Liste de *<Nom(s) du(es) quadripôle(s)>* séparé(s) par un point virgule>;
 
 **Exemple** :
 
@@ -344,20 +344,20 @@ N.B. : Les parades renseignées ne sont pas considérées si le mode de lancemen
 
 (io-outputs)=
 ## Données de sorties
-Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des 
+Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des
 fichiers tabulés d’ASSESS (et de METRIS).
 Plusieurs fichiers de sortie sont ou peuvent être générés à l'issue d'une simulation.
 
 (io-result-file)=
 ### Fichier de résultats
-Il y a un seul fichier de résultats par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*. 
-Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier 
-commence par l’identifiant du tableau. 
+Il y a un seul fichier de résultats par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*.
+Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier
+commence par l’identifiant du tableau.
 
 Pour chaque champ de chaque tableau, on définit :
 - le nom de la grandeur stockée ;
 - le format de la donnée (cf. [formats de données](#io-types)) ;
-- et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire) 
+- et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire)
 pour un coût, sans unité autrement.
 
 Certains tableaux ne sont pas accessibles sauf si l'option `--all-outputs` est donnée lors du lancement de l'exécutable METRIX simulator.
@@ -396,12 +396,12 @@ Notons `EPSILON_SORTIES = 0.05`.
 |:-----------------------------|:-----|:------|:------------|
 | Nom de l’incident            | C    |       |             |
 | Nombre de nœuds déconnectés  | I    |       |             |
-| Volume de production coupé   | R    | MW    |             |	
+| Volume de production coupé   | R    | MW    |             |
 | Volume de consommation coupé | R    | MW    |             |
 
 -----------------------------
 (io-table_c4)=
-**Tableau C4** : liste des incidents contraignants, des incidents qui ont pu être traités en 
+**Tableau C4** : liste des incidents contraignants, des incidents qui ont pu être traités en
 curatif ou des incidents ayant généré un transit maximal sur incident (cf. [tableau R3B](#io-table_r3b))
 
 *Format* : ```C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;```
@@ -424,13 +424,13 @@ curatif ou des incidents ayant généré un transit maximal sur incident (cf. [t
 
 (io-result-table)=
 #### Tableaux de résultats
-**Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'option 
+**Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'option
 `--all-outputs` est donnée lors du lancement à METRIX simulator.
 
 **Tableau R1** : résultats par sommet
 
-*Format* : 
-* ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator, 
+*Format* :
+* ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator,
 * ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon.
 
 | Nom de la grandeur  | Type | Unité | Description                                                                                                                                                                                                     |
@@ -467,17 +467,17 @@ curatif ou des incidents ayant généré un transit maximal sur incident (cf. [t
 | Variation          | R    | MW    | Somme des variations sur l’ensemble des consommations du couplage |
 
 -----------------------------
-**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale 
+**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale
 (avant ou après ajustement selon l’option choisie) sont affichés
 
-*Format* : 
+*Format* :
 * ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;```
 si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator
 * ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` sinon.
 
 | Nom de la grandeur                                    | Type | Unité | Description                                                                                                                                                                                                                                                                                          |
 |:------------------------------------------------------|:-----|:------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom du groupe                                         | C    |       |                                                                                                                                                                                                                                                                                                      |		
+| Nom du groupe                                         | C    |       |                                                                                                                                                                                                                                                                                                      |
 | Puissance disponible                                  | R    | MW    | Pmax du groupe dans la variante                                                                                                                                                                                                                                                                      |
 | Ajustement de puissance imposé                        | R    | MW    | $\Delta P_{cons}$ entre la donnée *json* et celle de la variante                                                                                                                                                                                                                                     |
 | Ajustement de puissance lors de l’équilibrage initial | R    | MW    | $\Delta P_{cons}$ entre la donnée de la variante et la valeur après la phase d’équilibrage (si l'opton `--all-outputs` n'est pas donnée lors du lancement à METRIX simulator, que l'option *EQUILRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option `--all-outputs`) |
@@ -494,7 +494,7 @@ si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator
 
 -----------------------------
 (io-table_r2b)=
-**Tableau R2B** : résultats curatifs par groupe. Seuls les groupes dont la consigne curative 
+**Tableau R2B** : résultats curatifs par groupe. Seuls les groupes dont la consigne curative
 diffère de la consigne préventive sont affichés
 
 *Format* : ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```
@@ -523,7 +523,7 @@ diffère de la consigne préventive sont affichés
 
 | Nom de la grandeur | Type | Unité | Description                    |
 |:-------------------|:-----|:------|:-------------------------------|
-| Nom du quadripôle  | C    |       |                                |		
+| Nom du quadripôle  | C    |       |                                |
 | Transit N          | R    | MW    | Positif de départ vers arrivée |
 
 *Note : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator, les quatre seuils sont également affichés.*
@@ -536,7 +536,7 @@ diffère de la consigne préventive sont affichés
 
 | Nom de la grandeur                                       | Type | Unité | Description                                                |
 |:---------------------------------------------------------|:-----|:------|:-----------------------------------------------------------|
-| nom du quadripôle                                        | C    |       |                                                            | 		
+| nom du quadripôle                                        | C    |       |                                                            |
 | incident cause du transit max avant manœuvres            |      |       | Référence à la numérotation de la [table C4](#io-table_c4) |
 | transit max avant manœuvres                              | R    | MW    | positif de départ vers arrivée                             |
 | incident cause du 1er transit max sur  incident          |      |       | Référence à la numérotation de la [table C4](#io-table_c4) |
@@ -554,7 +554,7 @@ diffère de la consigne préventive sont affichés
 
 | Nom de la grandeur | Type | Unité | Description                                                |
 |:-------------------|:-----|:------|:-----------------------------------------------------------|
-| Nom du quadripôle  | C    |       |                                                            |		
+| Nom du quadripôle  | C    |       |                                                            |
 | Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
 | Transit            | R    | MW    | Positif de départ vers arrivée                             |
 
@@ -566,21 +566,21 @@ diffère de la consigne préventive sont affichés
 
 | Nom de la grandeur  | Type | Unité | Description                                                                                          |
 |:--------------------|:-----|:------|:-----------------------------------------------------------------------------------------------------|
-| Nom du quadripôle   | C    |       |                                                                                                      |		
+| Nom du quadripôle   | C    |       |                                                                                                      |
 | Numéro d’incident   | I    |       | 0 pour N, sinon cf. [tableau C4](#io-table_c4)                                                       |
 | Variation marginale | R    | u.m.  | Impact sur la fonction objectif d’une augmentation de 1MW sur le seuil (N, N-k ou AM) de cet ouvrage |
 
 -----------------------------
 (io-table_r4b)=
-**Tableau R4B** : variations marginales détaillées par liaison, en N et sur incident (seuls les 
-couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont 
+**Tableau R4B** : variations marginales détaillées par liaison, en N et sur incident (seuls les
+couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont
 stockées dans le tableau)
 
 *Format* : ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;```
 
 | Nom de la grandeur                               | Type | Unité | Description                                                                 |
 |:-------------------------------------------------|:-----|:------|:----------------------------------------------------------------------------|
-| Nom du quadripôle                                | C    |       |                                                                             |		
+| Nom du quadripôle                                | C    |       |                                                                             |
 | Numéro d’ incident                               | I    |       | 0 pour N, sinon cf. [tableau C4](#io-table_c4)                              |
 | Type de l’ouvrage ou de la transaction qui varie | C    |       | Sommet « N », groupe « G » ou action curative « C »                         |
 | Nom de l’ouvrage qui varie                       | C    |       | Sommet (si variation de défaillance) ou groupe (si variation de production) |
@@ -589,7 +589,7 @@ stockées dans le tableau)
 
 -----------------------------
 (io-table_r5)=
-**Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons dont la consigne 
+**Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons dont la consigne
 préventive diffère de la consigne initiale sont affichées
 
 *Format* : ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```
@@ -602,7 +602,7 @@ préventive diffère de la consigne initiale sont affichées
 
 -----------------------------
 (io-table_r5b)=
-**Tableau R5B** : résultats des actions curatives des transformateurs déphaseurs. Seules les 
+**Tableau R5B** : résultats des actions curatives des transformateurs déphaseurs. Seules les
 liaisons dont la consigne curative diffère de la consigne préventive sont affichées
 
 *Format* : ```R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;```
@@ -615,17 +615,17 @@ liaisons dont la consigne curative diffère de la consigne préventive sont affi
 
 -----------------------------
 (io-table_r6)=
-**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne 
+**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne
 préventive diffère de la consigne initiale sont affichées
 
-*Format* : 
-* ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton `--all-outputs` est donnée lors du 
+*Format* :
+* ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton `--all-outputs` est donnée lors du
 lancement à METRIX simulator
 * ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
 
 | Nom de la grandeur                        | Type | Unité | Description                                                                                                                                                                   |
 |:------------------------------------------|:-----|:------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom de la ligne à courant continu         | C    |       |                                                                                                                                                                               |		
+| Nom de la ligne à courant continu         | C    |       |                                                                                                                                                                               |
 | Puissance transitant                      | R    | MW    |                                                                                                                                                                               |
 | Variation marginale préventive de la HVDC | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator) |
 | Variation marginale de la HVDC            | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives)                     |
@@ -633,7 +633,7 @@ lancement à METRIX simulator
 
 -----------------------------
 (io-table_r6b)=
-**Tableau R6B** : résultats par actions curatives des HVDC. Seules les liaisons dont la consigne 
+**Tableau R6B** : résultats par actions curatives des HVDC. Seules les liaisons dont la consigne
 curative diffère de la consigne préventive sont affichées
 
 *Format* : ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```
@@ -667,7 +667,7 @@ curative diffère de la consigne préventive sont affichées
 
 | Nom de la grandeur       | Type | Unité | Description |
 |:-------------------------|:-----|:------|:------------|
-| Volume de pertes calculé | R    | MW    |             |	
+| Volume de pertes calculé | R    | MW    |             |
 | Taux de pertes           | R    | %     |             |
 
 -----------------------------
@@ -714,10 +714,10 @@ curative diffère de la consigne préventive sont affichées
 (io-logs)=
 ### Fichier de logs
 Il y a deux fichiers de logs générés par simulation :
-- *\<errorFilepath\>* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option `--log-level` 
+- *\<errorFilepath\>* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option `--log-level`
 sans formattage.
-- *metrix\<ID_de_rotation\>.log* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option 
-`--log-level` avec formattage (l'*\<ID_de_rotation\>* correspond au numéro d'ID du fichier de logs généré avec une 
+- *metrix\<ID_de_rotation\>.log* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option
+`--log-level` avec formattage (l'*\<ID_de_rotation\>* correspond au numéro d'ID du fichier de logs généré avec une
 certaine taille).
 
 Il est également possible d'afficher les logs sur la sortie standard via l'option `-p [ --print-log ]`.
@@ -725,13 +725,13 @@ Il est également possible d'afficher les logs sur la sortie standard via l'opti
 (io-lodf)=
 ### Fichier LODF
 
-Un fichier *LODF_matrix.csv* est généré si l'opion `--write-LODF` est renseignée. Ce fichier correspond à la matrice 
+Un fichier *LODF_matrix.csv* est généré si l'opion `--write-LODF` est renseignée. Ce fichier correspond à la matrice
 LODF (Line Outage Distribution Factor) de la dernière variante simulée.
 
 (io-ptdf)=
 ### Fichier PTDF
 
-Un fichier *PTDF_matrix.csv* est généré si l'opion `--write-PTDF` est renseignée. Ce fichier correspond à la matrice 
+Un fichier *PTDF_matrix.csv* est généré si l'opion `--write-PTDF` est renseignée. Ce fichier correspond à la matrice
 PTDF (Power Transfer Distribution Factor) de la dernière variante simulée.
 
 (io-mps)=
