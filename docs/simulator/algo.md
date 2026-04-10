@@ -612,7 +612,7 @@ se compense entre le nœud origine et le nœud extrémité de la ligne DC.
 #### Incidents composés
 
 METRIX traite également les incidents composés de perte de groupes et de lignes. Étant donné que nous nous trouvons
-dans le concrete de l'approximation du courant continu, les équations sont linéaires et l'ordre d'apparition de la
+dans le contexte de l'approximation du courant continu, les équations sont linéaires et l'ordre d'apparition de la
 perte du groupe ou de la ligne n'a pas d'importance.
 
 Le transit sur la ligne $ik$ après perte de la ligne $mn$ et du groupe $g$ vaut :
