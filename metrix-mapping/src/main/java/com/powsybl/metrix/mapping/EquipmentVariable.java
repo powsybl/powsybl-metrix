@@ -96,6 +96,11 @@ public enum EquipmentVariable implements MappingVariable {
                                                                                  EquipmentVariable.VOLTAGE_REGULATOR_ON,
                                                                                  EquipmentVariable.TARGET_V,
                                                                                  EquipmentVariable.DISCONNECTED);
+    private static final Set<EquipmentVariable> BATTERY_VARIABLES = EnumSet.of(EquipmentVariable.TARGET_P,
+                                                                                 EquipmentVariable.TARGET_Q,
+                                                                                 EquipmentVariable.MIN_P,
+                                                                                 EquipmentVariable.MAX_P,
+                                                                                 EquipmentVariable.DISCONNECTED);
     private static final Set<EquipmentVariable> HVDC_LINE_VARIABLES = EnumSet.of(EquipmentVariable.ACTIVE_POWER_SETPOINT,
                                                                                  EquipmentVariable.MIN_P,
                                                                                  EquipmentVariable.MAX_P,
@@ -141,7 +146,7 @@ public enum EquipmentVariable implements MappingVariable {
 
     public static EquipmentVariable getByDefaultVariable(MappableEquipmentType equipmentType) {
         return switch (equipmentType) {
-            case GENERATOR -> EquipmentVariable.TARGET_P;
+            case GENERATOR, BATTERY -> EquipmentVariable.TARGET_P;
             case HVDC_LINE -> EquipmentVariable.ACTIVE_POWER_SETPOINT;
             case LOAD, BOUNDARY_LINE -> EquipmentVariable.P0;
             case SWITCH -> EquipmentVariable.OPEN;
@@ -166,6 +171,7 @@ public enum EquipmentVariable implements MappingVariable {
     public static boolean isVariableCompatible(MappableEquipmentType equipmentType, EquipmentVariable equipmentVariable) {
         return switch (equipmentType) {
             case GENERATOR -> GENERATOR_VARIABLES.contains(equipmentVariable);
+            case BATTERY -> BATTERY_VARIABLES.contains(equipmentVariable);
             case HVDC_LINE -> HVDC_LINE_VARIABLES.contains(equipmentVariable);
             case LOAD -> LOAD_VARIABLES.contains(equipmentVariable);
             case BOUNDARY_LINE -> equipmentVariable == EquipmentVariable.P0;

@@ -29,6 +29,9 @@
                 <iidm:switch id="FP.AND1_FP.AND1_DJ_OMN" name="FP.AND1_DJ_OMN" kind="BREAKER" retained="false" open="false" node1="12" node2="13"/>
                 <iidm:bus v="380.0" angle="0.0" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13"/>
             </iidm:nodeBreakerTopology>
+            <iidm:battery id="BATTERY_1" targetP="20.0" targetQ="20.0" minP="10.0" maxP="200.0" node="6">
+                <iidm:minMaxReactiveLimits minQ="-1.7976931348623157E308" maxQ="1.7976931348623157E308"/>
+            </iidm:battery>
         </iidm:voltageLevel>
         <iidm:voltageLevel id="FTDPRA1" nominalV="380.0" lowVoltageLimit="342.0" highVoltageLimit="418.0001220703125" topologyKind="NODE_BREAKER">
             <iidm:property name="siteInit" value="FTDPR"/>

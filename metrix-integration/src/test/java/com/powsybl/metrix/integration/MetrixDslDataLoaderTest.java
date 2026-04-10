@@ -12,6 +12,7 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
@@ -88,7 +89,7 @@ class MetrixDslDataLoaderTest {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         dslFile = fileSystem.getPath("/test.dsl");
         mappingFile = fileSystem.getPath("/mapping.dsl");
-        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
         // Create mapping file for use in all tests
         try (Writer writer = Files.newBufferedWriter(mappingFile, StandardCharsets.UTF_8)) {
@@ -152,6 +153,7 @@ class MetrixDslDataLoaderTest {
             "ts4", Set.of(mk8)
         ));
         expectedTsConfig.setUnmappedGenerators(Set.of("FSSV.O11_G", "FVALDI11_G", "FSSV.O12_G", "FVERGE11_G"));
+        expectedTsConfig.setUnmappedBatteries(Set.of("FP.AND1_BATTERY"));
         expectedTsConfig.setUnmappedLoads(Set.of("FSSV.O11_L", "FVALDI11_L", "FVALDI11_L2"));
         expectedTsConfig.setUnmappedHvdcLines(Set.of("HVDC1", "HVDC2"));
         expectedTsConfig.setUnmappedPhaseTapChangers(Set.of("FP.AND1  FTDPRA1  1"));
@@ -253,6 +255,7 @@ class MetrixDslDataLoaderTest {
         // Compare TimeSeriesMappingConfig
         TimeSeriesMappingConfig expectedTsConfig = new TimeSeriesMappingConfig();
         expectedTsConfig.setUnmappedGenerators(generatorSet);
+        expectedTsConfig.setUnmappedBatteries(Set.of("FP.AND1_BATTERY"));
         expectedTsConfig.setUnmappedLoads(Set.of("FSSV.O11_L", "FVALDI11_L", "FVALDI11_L2"));
         expectedTsConfig.setUnmappedHvdcLines(hvdcSet);
         expectedTsConfig.setUnmappedPhaseTapChangers(Set.of("FP.AND1  FTDPRA1  1"));
@@ -321,29 +324,35 @@ class MetrixDslDataLoaderTest {
     void testListAsParameter() throws IOException {
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
-            writer.write(String.join(System.lineSeparator(),
-                "def contingenciesList = network.branches.collect()",
-                "branch('FP.AND1  FVERGE1  1') {",
-                "    contingencyFlowResults contingenciesList",
-                "}",
-                "generator('FSSV.O11_G') {",
-                "    redispatchingDownCosts (-10)",
-                "    redispatchingUpCosts 100",
-                "    onContingencies contingenciesList",
-                "}",
-                "hvdc('HVDC1') {",
-                "    controlType OPTIMIZED",
-                "    onContingencies contingenciesList",
-                "}",
-                "phaseShifter('FP.AND1  FTDPRA1  1') {",
-                "    controlType OPTIMIZED_ANGLE_CONTROL",
-                "    onContingencies contingenciesList",
-                "}",
-                "load('FVALDI11_L') {",
-                "    curativeSheddingPercentage 50",
-                "    curativeSheddingCost 12345",
-                "    onContingencies contingenciesList",
-                "}"));
+            writer.write("""
+                    def contingenciesList = network.branches.collect()
+                    branch('FP.AND1  FVERGE1  1') {
+                        contingencyFlowResults contingenciesList
+                    }
+                    generator('FSSV.O11_G') {
+                        redispatchingDownCosts (-10)
+                        redispatchingUpCosts 100
+                        onContingencies contingenciesList
+                    }
+                    battery('FP.AND1_BATTERY') {
+                        redispatchingDownCosts (-10)
+                        redispatchingUpCosts 100
+                        onContingencies contingenciesList
+                    }
+                    hvdc('HVDC1') {
+                        controlType OPTIMIZED
+                        onContingencies contingenciesList
+                    }
+                    phaseShifter('FP.AND1  FTDPRA1  1') {
+                        controlType OPTIMIZED_ANGLE_CONTROL
+                        onContingencies contingenciesList
+                    }
+                    load('FVALDI11_L') {
+                        curativeSheddingPercentage 50
+                        curativeSheddingCost 12345
+                        onContingencies contingenciesList
+                    }
+                    """);
         }
 
         ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
@@ -352,6 +361,7 @@ class MetrixDslDataLoaderTest {
 
         assertEquals(13, data.getContingencyFlowResult("FP.AND1  FVERGE1  1").size());
         assertEquals(13, data.getGeneratorContingencies("FSSV.O11_G").size());
+        assertEquals(13, data.getBatteryContingencies("FP.AND1_BATTERY").size());
         assertEquals(13, data.getHvdcContingencies("HVDC1").size());
         assertEquals(13, data.getPtcContingencies("FP.AND1  FTDPRA1  1").size());
         assertEquals(13, data.getLoadContingencies("FVALDI11_L").size());
@@ -824,7 +834,7 @@ class MetrixDslDataLoaderTest {
         assertEquals(2, data.getGeneratorsBindings().size());
         Iterator<MetrixGeneratorsBinding> bindings = data.getGeneratorsBindingsValues().iterator();
         assertEquals(new MetrixGeneratorsBinding("binding2", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G", "FVALDI11_G", "FVERGE11_G")), bindings.next());
-        assertEquals(new MetrixGeneratorsBinding("binding3", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G"), MetrixGeneratorsBinding.ReferenceVariable.POBJ), bindings.next());
+        assertEquals(new MetrixGeneratorsBinding("binding3", ImmutableSet.of("FSSV.O11_G", "FSSV.O12_G"), AbstractMetrixGroupBinding.ReferenceVariable.POBJ), bindings.next());
 
         assertEquals(2, data.getLoadsBindings().size());
         Iterator<MetrixLoadsBinding> loadBindings = data.getLoadsBindingsValues().iterator();

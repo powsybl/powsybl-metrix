@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2021, RTE (http://www.rte-france.com)
+/**
+ * Copyright (c) 2021-2025, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
@@ -8,7 +8,6 @@
 package com.powsybl.metrix.mapping.limits;
 
 import com.powsybl.iidm.network.Generator;
-import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMappingLogger;
 import com.powsybl.metrix.mapping.log.LogBuilder;
 import com.powsybl.metrix.mapping.log.LogContent;
@@ -19,22 +18,7 @@ import com.powsybl.timeseries.TimeSeriesIndex;
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
  */
-public class GeneratorBoundLimitBuilder {
-    private double minP;
-    private double maxP;
-    private double targetP;
-    private boolean ignoreLimits;
-    private boolean isOkMinP;
-    private boolean isOkMaxP;
-    private boolean isUnmappedMinP;
-    private boolean isUnmappedMaxP;
-    private int version;
-    private TimeSeriesIndex index;
-    final String targetPVariableName = EquipmentVariable.TARGET_P.getVariableName();
-    final String maxPVariableName = EquipmentVariable.MAX_P.getVariableName();
-    final String minPVariableName = EquipmentVariable.MIN_P.getVariableName();
-    public static final int CONSTANT_VARIANT_ID = -1;
-    private String id;
+public class GeneratorBoundLimitBuilder extends AbstractBoundLimitBuilder {
 
     public GeneratorBoundLimitBuilder() {
         //nothing to do
