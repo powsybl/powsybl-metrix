@@ -39,6 +39,8 @@ endfunction()
 
 if (WITH_LODF_PTDF)
     execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF  RESULT_VARIABLE cmd_result)
+elseif(ALL_OUTPUTS)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --all-outputs  RESULT_VARIABLE cmd_result)
 else()
     execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  RESULT_VARIABLE cmd_result)
 endif()
