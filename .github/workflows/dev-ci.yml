@@ -76,37 +76,6 @@ jobs:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
           path: ${{ github.workspace }}/metrix-distribution/target/metrix
 
-  cpp_centos7:
-    name: Build C++ CentOS7
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Build the Docker image
-        run: |
-          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE --file $GITHUB_WORKSPACE/.github/workflows/docker/Dockerfile
-
-      - name: Run build steps in Docker container
-        run: |
-          docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
-            source /opt/rh/devtoolset-9/enable &&
-            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
-            cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
-            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
-            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 &&
-            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
-          "
-
-      - name: Upload Metrix Simulator archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
-        with:
-          name: metrix-simulator-centos7
-          path: |
-            metrix-simulator/build/install/bin
-            metrix-simulator/build/install/etc
-
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
     runs-on: ubuntu-latest
