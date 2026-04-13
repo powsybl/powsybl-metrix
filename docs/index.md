@@ -3,7 +3,7 @@
 
 ## Presentation
 
-[MappingTool](mapping.md) provides a mapping configuration from csv timeseries to network.
+[MappingTool](mapping.md) provides a mapping configuration from csv time series to network.
 This configuration allows to generate iidm network at specified times. Furthermore,
 it allows using the second tool, MetrixTool.
 
@@ -18,13 +18,13 @@ PowSyBl-Metrix can be installed easily in just a few steps, so that you can use 
 
 ### Downloads
 
-First, on [the release page](https://github.com/powsybl/powsybl-metrix/releases), you can download: 
+First, on [the release page](https://github.com/powsybl/powsybl-metrix/releases), you can download:
 
 * itools-metrix
 * metrix-simulator
 
 *itools-metrix* is written in Java, so there is only one version per release, and it works for
-every OS. *metrix-simulator* however is written in C++ so you will need to
+every OS. *metrix-simulator*, however, is written in C++, so you will need to
 choose the version corresponding to your OS.
 
 Note: Current versions of *metrix-simulator-ubuntu* were compiled on Ubuntu 24. If
@@ -39,7 +39,7 @@ Once the two zip files are downloaded, unzip them in a repository of your choosi
 
 Now we need to make the *itools* command available. For this, you need to add itools to your PATH.
 
-On Linux, you can for example do this by adding a few lines in your `.bashrc` file (or equivalent):
+On Linux, you can, for example, do this by adding a few lines in your `.bashrc` file (or equivalent):
 
 ```shell
 # PowSyBl-Metrix itools repository
@@ -48,7 +48,7 @@ export POWSYBL_METRIX_HOME=<repository_where_you_unzipped_itools-metrix>
 export PATH=$POWSYBL_METRIX_HOME/bin:$PATH
 ```
 
-On Windows, follow for example [this guide](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
+On Windows, follow, for example, [this guide](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/).
 
 To check if it works, open a new terminal and type the `itools` command. You should see
 the following answer:
@@ -81,7 +81,7 @@ Script:
     run-script                               run script (only groovy is supported)
 ```
 
-*Note: If you already have another version of itools installed (for example if you use powsybl-distribution),
+*Note: If you already have another version of itools installed (for example, if you use powsybl-distribution),
 you may want to have another configuration to use a specific command so that you can
 use both independently:*
 
@@ -99,7 +99,7 @@ Then add the following lines:
 metrix:
   home-dir: <directory_where_you_unzipped_metrix-simulator> # required
   command: metrix-simulator
- 
+
   iidm-export-version: "1.11" # default to latest available version
   constant-loss-factor: false # enable constant loss factor
   chunk-size: 10 # size of the batch processed by Metrix
@@ -107,10 +107,10 @@ metrix:
   debug: false # enable debug mode
   log-level: 2 # Metrix log level, available values: 0 (trace), 1 (debug), 2 (info), 3 (warn), 4 (error), 5 (critical)
   debug-log-level: 0 # Metrix log level when debug mode is enabled, available values: 0 (trace), 1 (debug), 2 (info), 3 (warn), 4 (error), 5 (critical)
- 
+
 mapping-default-parameters:
   tolerance-threshold: 0.0001f
- 
+
 metrix-default-parameters:
   computation-type: LF # default computation type
   loss-factor: 0f # default loss factor value

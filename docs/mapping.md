@@ -3,28 +3,28 @@
 
 ## Introduction
 
-A mapping configuration is made of 3 objects: 
+A mapping configuration is made of 3 objects:
 - an IIDM network
 - a time series store (in csv format)
-- a mapping groovy script using the [mapping DSL](#mapping-dsl) described below
+- a mapping Groovy script using the [mapping DSL](#mapping-dsl) described below
 
-The mapping process is mainly used through Metrix simulator, but it may be executed separately in order to check its intermediate results.
+The mapping process is mainly used through Metrix simulator, but it may be executed separately to check its intermediate results.
 
-With only required options, the mapping does not produce any output. In adding option `--mapping-synthesis-dir`, it will output a [synthesis](#synthesis) of the mapping, allowing you to check the consistency of the produced multi cases. If you want to go deeper in the mapping process, the option `--check-equipment-time-series` will produce the full time series mapping. Lastly, the option `--network-output-dir` will output the network case with mapped values for the steps requested.
+With only the required options, the mapping does not produce any output. In adding option `--mapping-synthesis-dir`, it will output a [synthesis](#synthesis) of the mapping, allowing you to check the consistency of the produced multi cases. If you want to go deeper in the mapping process, the option `--check-equipment-time-series` will produce the full time series mapping. Lastly, the option `--network-output-dir` will output the network case with mapped values for the steps requested.
 
 ## Mapping DSL
 
-The purpose of the mapping is to map time series values on network elements. As it is a groovy script, it can create composite time series or modify the network.
+The purpose of the mapping is to map time series values on network elements. As it is a Groovy script, it can create composite time series or modify the network.
 
 ### General parameters
 
-The general parameters are used to configure globally the mapping.
+The general parameters are used to globally configure the mapping.
 
 ```groovy
 parameters {
-    toleranceThreshold // Tolerance threshold when comparing the mapped power to the limit defined by the network element (default : 0.0001) 
+    toleranceThreshold // Tolerance threshold when comparing the mapped power to the limit defined by the network element (default : 0.0001)
 }
-``` 
+```
 
 ### Time series mapping to network
 
@@ -44,7 +44,7 @@ mapToLccConverterStations { /* ... */ }
 mapToVscConverterStations { /* ... */ }
 ```
 
-the general syntax is: 
+the general syntax is:
 
 ```groovy
 mapToXXX {
@@ -52,27 +52,27 @@ mapToXXX {
  timeSeriesName 'timeseriesName' // name of the time series to map
  filter { /* ... */ } // a filter predicate allowing to select which item of the element type we wish to map
  distributionKey { /* ... */ } // optional, a repartition key that will define how the time serie values will be distributed for each selected items (default is equipartition : val / N)
-}   
+}
 ```
-The element of the general syntax are described below. 
+The elements of the general syntax are described below.
 
 Note that for the `mapToBreakers` function, the `variable` and `distributionKey` are always ignored.
 
 #### Time series
 
-With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series 
-must exist in the input data set or be created within the groovy script. For more details about time series management, 
+With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series
+must exist in the input data set or be created within the Groovy script. For more details about time series management,
 refer to the [time series description](inv:powsyblcore:*:*#timeseries).
 
-Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping 
-behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions. 
-For instance, if we map a constant time series of value 100, to a generator A and in another mapTo, to a generator B, 
-then, with the default distributionKey, it will map the value 50 to each generator.
+Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping
+behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions.
+For instance, if we map a constant time series of value 100 to a generator A and in another mapTo to a generator B,
+then, with the default distributionKey, it will map value 50 to each generator.
 
 #### Variable
 
 The `variable` allows to specify which network element attribute will be overwritten by its mapped time series value.
-It is an optional variable (except for `mapToTransformers`) which values depends on the element type (default is in bold) :
+It is an optional variable (except for `mapToTransformers`) which values depend on the element type (default is in bold) :
 
 - `mapToGenerators` **targetP**, minP, maxP, targetQ
 - `mapToBatteries` **targetP**, minP, maxP, targetQ
@@ -86,7 +86,7 @@ It is an optional variable (except for `mapToTransformers`) which values depends
 - `mapToLccConverterStations` **powerFactor**
 - `mapToVscConverterStations` **voltageSetpoint**, voltageRegulatorOn, reactivePowerSetpoint
 
-For the loads, it is forbidden to map `p0` and in the same time `fixedActivePower` or `variableActivePower`, as these variables are linked (`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If only `fixedActivePower` or `variableActivePower` is mapped, then the value of the other unmapped one will be set to 0 by default. 
+For the loads, it is forbidden to map `p0` and in the same time `fixedActivePower` or `variableActivePower`, as these variables are linked (`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If only `fixedActivePower` or `variableActivePower` is mapped, then the value of the other unmapped one will be set to 0 by default.
 
 #### Filter
 
@@ -121,7 +121,7 @@ mapToGenerators {
     filter { generator.terminal.voltageLevel.substation.country == Country.FR && generator.energySource == EnergySource.THERMAL }
 }
 ```
-or 
+or
 ```groovy
 import com.powsybl.iidm.network.Country
 import com.powsybl.iidm.network.EnergySource
@@ -137,12 +137,12 @@ To filter the generators connected to a list of voltage levels:
 filter { ['D.BURP7', 'D.BUXP7'].contains(generator.terminal.voltageLevel.id) }
 ```
 
-To filter the loads of a particular region (assuming the IIDM model has been extended with a custom property `region`):  
+To filter the loads of particular regions (assuming the IIDM model has been extended with a custom property `region`):
 ```groovy
 filter { ['05', '08', '09', '13', '14', '17', '24', '25', '28'].contains(load.voltageLevel.substation.region) }
 ```
 
-To filter generators that belong to the main connected component: 
+To filter generators that belong to the main connected component:
 ```groovy
 filter { generator.terminal.busView.bus?.inMainConnectedComponent }
 ```
@@ -171,10 +171,10 @@ distributionKey { generator.targetP }
 To create a distribution key defined by time series (assuming we have or created the time series SO_G1_key and SO_G2_key):
 ```groovy
 mapToGenerators {
-    timeSeriesName 'SO_G' 
-    variable targetP 
-    filter { generator.id == 'SO_G1' || generator.id == 'SO_G2' } 
-    distributionKey { generator.id + '_key' } 
+    timeSeriesName 'SO_G'
+    variable targetP
+    filter { generator.id == 'SO_G1' || generator.id == 'SO_G2' }
+    distributionKey { generator.id + '_key' }
 }
 ```
 
@@ -182,13 +182,13 @@ To create a distribution key relative to the base load:
 ```groovy
 mapToLoads {
     /* ... */
-    distributionKey { load.p0 }    
+    distributionKey { load.p0 }
 }
-``` 
+```
 
 ### Unmapping
 
-We use that if we want to `unmap` items in order to keep their original static value. The main purpose (aside unmapping previously mapped items due to too broad filter maybe) is to prevent the selected items to appear in the `not mapped` section in the mapping synthesis that we will see later.
+We use that if we want to `unmap` items to keep their original static value. The main purpose (aside unmapping previously mapped items due to too broad filter maybe) is to prevent the selected items to appear in the `not mapped` section in the mapping synthesis that we will see later.
 ```groovy
 unmappedXXX { // unmappedGenerators, unmappedLoads, …
    filter { /* ... */ } // same usage as a normal mapToXXX
@@ -197,12 +197,12 @@ unmappedXXX { // unmappedGenerators, unmappedLoads, …
 
 ### Generators and HVDC limits
 
-When mapping a time series to a generator or a HVDC line, a time series value may break a threshold defined in the network case 
-(a max power or min power for instance). To handle this case we can choose to ignore the limit with either:
-- a global parameter : use `--ignore-limits` in the command line interface parameter
-- a per time series configuration : add `ignoreLimits { "timeSeriesName" }` for each wanted time series
+When mapping a time series to a generator or an HVDC line, a time series value may break a threshold defined in the network case
+(a max power or min power, for instance). To handle this case, we can choose to ignore the limit with either:
+- a global parameter: use `--ignore-limits` in the command line interface parameter
+- a per time series configuration: add `ignoreLimits { "timeSeriesName" }` for each wanted time series
 
-If no option is set to ignore the limits, then if it happens, the program will exit with an exception. Otherwise it will log a warning message.
+If no option is set to ignore the limits, then, if it happens, the program will exit with an exception. Otherwise, it will log a warning message.
 
 ## Examples
 
@@ -244,11 +244,11 @@ Mapping on Phase Tap Shifters:
 ```groovy
 mapToPhaseTapChangers {
     timeSeriesName 'N1_TD'
-    filter { twoWindingsTransformer.id == 'TD_1' } 
+    filter { twoWindingsTransformer.id == 'TD_1' }
 }
 ```
 
-With added properties in IIDM we can, using the groovy language, map multiple configurations:
+With added properties in IIDM we can, using the Groovy language, map multiple configurations:
 ```groovy
 for (area in ['05', '08', '09', '13', '14', '17', '24', '25', '28']) {
     // on définit des couples "AA" / "BB" pour mapper pour chaque zone, les chroniques contenant "AA" sur les générateurs de la zone de type "BB"
@@ -263,7 +263,7 @@ for (area in ['05', '08', '09', '13', '14', '17', '24', '25', '28']) {
             distributionKey {
                 generator.maxP
             }
-        }  
+        }
     }
 }
 ```
@@ -287,9 +287,9 @@ The file `mappingSynthesis.csv/txt` contains a csv/text formatted (also displaye
 - mapped: elements that were mapped with time series
 - unmapped: elements that weren't mapped at all
 - ignored unmapped: elements that weren't mapped but specifically indicated so
-- multi-mapped: elements that were mapped multiple times (often when we map all elements of one type once then we apply another with a specific filter), only the last mapping will be applied
-- disconnected: number of disconnected elements (as mapping do not apply to them)
-- out of main cc: number of elements that are out of the main connected component (as mapping do not apply to them)
+- multi-mapped: elements that were mapped multiple times (often when we map all elements of one type once, then we apply another with a specific filter), only the last mapping will be applied
+- disconnected: number of disconnected elements (as mapping does not apply to them)
+- out of main cc: number of elements that are out of the main connected component (as mapping does not apply to them)
 
 Component type represents the network element (generators, loads, breakers, etc.):
 - Files with template name `<componentType>ToTimeSeriesMapping.csv` show the effective mapping between time series and the element.
@@ -299,7 +299,7 @@ Component type represents the network element (generators, loads, breakers, etc.
 
 When combining with the option `--check-equipment-time-series` (and the required associated option `--check-versions`), two new files are produced:
 - `balanceSummary.csv` which contains the overall power balance at each time step
-- `mapping-logs.csv` which contains information and warnings about the mapping process (for instance Pmin/Pmax violations)   
+- `mapping-logs.csv` which contains information and warnings about the mapping process (for instance Pmin/Pmax violations)
 
 ### Mapping status file
 
@@ -307,9 +307,9 @@ The use of the option `--mapping-status-file` produces a file which indicates fo
 
 ### Time series mapping generation
 
-The use of the option `--equipment-time-series-dir` (with required associated options `--check-equipment-time-series` and `--check-versions`) produces a csv with template name `version_<version_number>.csv` containing for each time step the associated value for each component/variable mapped couple. 
+The use of the option `--equipment-time-series-dir` (with required associated options `--check-equipment-time-series` and `--check-versions`) produces a csv with template name `version_<version_number>.csv` containing for each time step the associated value for each component/variable mapped couple.
 
 ### Network variant generation
 
 The use of the option `--network-output-dir`  (with required associated options `--check-equipment-time-series` and `--check-versions`) produces as many IIDM network files as time steps we have in the input time series (with filtering by `--check-versions`, `--first-variant` and `--max-variant-count` options).
-Each produced file has the template name `<network_id>_<version>_<YYYYMMDD>_<HHmm>.xiidm` and is the network generated with values mapped at indicated time step.
+Each produced file has the template name `<network_id>_<version>_<YYYYMMDD>_<HHmm>.xiidm` and is the network generated with values mapped at an indicated time step.
