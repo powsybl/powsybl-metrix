@@ -40,15 +40,15 @@ y { color: yellow}
 
 (io-intro)=
 ## Introduction
-Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme imaGrid). Suite à
-l’intégration dans imaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à
+Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme ImaGrid). Suite à
+l’intégration dans ImaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à
 savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant à elle,
 été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format
 de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
 
 (io-inputs-json)=
 ## Données d’entrée au format *json*
-La passerelle imaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au
+La passerelle ImaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au
 format Groovy. Elle génère un fichier *json* : '*fort.json*'.
 
 Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée,
@@ -70,7 +70,7 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | Nom          | Type | Taille | Description                                                                                                                                                                     |
 |:-------------|:-----|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **CGCPERTE** | R    | 1      | Coefficient de perte initial.<br>= lossFactor (0)                                                                                                                               |
-| **UNOMINAL** | I    | 1      | Tension nominale utilisée dans le per-unitage côté imaGrid.<br>= nominalU (0)                                                                                                   |
+| **UNOMINAL** | I    | 1      | Tension nominale utilisée dans le per-unitage côté ImaGrid.<br>= nominalU (0)                                                                                                   |
 | MODECALC     | I    | 1      | 0 OPF, 1 Load Flow seulement, 2 OPF sans redispatching (avec variables d’écart) et 3 OPF_WITH_OVERLOAD.<br>= computationType (0)                                                |
 | NBMAXMIT     | I    | 1      | Nombre maximum de micro-itérations par variante.<br>= nbMaxIteration (30)                                                                                                       |
 | NBMAXCUR     | I    | 1      | Nombre maximum d’actions curatives par incident. Pas de limitation si la valeur est négative ou nulle.<br>= nbMaxCurativeAction (0)                                             |
@@ -276,9 +276,9 @@ Les données propres à la loi et au tirage sont écrites à la suite du mot-cl�
 - >**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de groupe, puissance minimale disponible) que le nombre de groupes indiqué.
 - >**CONELE** : le nombre de consommations, puis autant de couples (nom de la consommation, nouvelle valeur de consommation) que le nombre de consommations indiqué. Il s’agit de consommations nodales. Convention Eurostag : 1 nœud = 1 conso
 - >**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. Le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\Delta1$. À noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\Delta2$ ; notons que si la grandeur $\Delta2$ est positive, alors il y a plus de production que de consommations. La différence ($\Delta1 - \Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$ ; $c_i$ est la consommation au nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée.
-Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
+Cette loi datant d’ASSESS n’est actuellement pas utilisée dans ImaGrid.
 - >**ECHANGP** : le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Cette loi est similaire à la loi ECHANG mais elle agit sur les groupes de production au lieu des consommations. Après application de toutes les autres lois du même tirage, METRIX ajuste les puissances des groupes modifiables de la région pour équilibrer le bilan (somme des productions moins somme des consommations) à la valeur indiquée dans la variante. La sélection des groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la hausse et à la baisse). Si, sur une région, il y a trop de production non modifiable ou trop peu de production disponible pour équilibrer le bilan, la variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir des coûts d’empilement hors réseau prohibitifs pour la région considérée par rapport aux régions d’étude.
-Cette loi datant d’ASSESS n’est actuellement pas utilisée dans imaGrid.
+Cette loi datant d’ASSESS n’est actuellement pas utilisée dans ImaGrid.
 - >**CTORDR** : le nombre de coûts à la hausse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
 - >**COUBHR** : le nombre de coûts à la baisse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
 - >**COUHAR** : le nombre de coûts à la hausse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
@@ -344,7 +344,7 @@ N.B. : Les parades renseignées ne sont pas considérées si le mode de lancemen
 
 (io-outputs)=
 ## Données de sorties
-Pour faciliter l’intégration et les tests de METRIX dans imaGrid, les sorties de METRIX v6 conservent le format des
+Pour faciliter l’intégration et les tests de METRIX dans ImaGrid, les sorties de METRIX v6 conservent le format des
 fichiers tabulés d’ASSESS (et de METRIS).
 Plusieurs fichiers de sortie sont ou peuvent être générés à l'issue d'une simulation.
 
