@@ -17,7 +17,7 @@ METRIX comprend à la fois un calcul de réseau (load-flow) en actif seul ainsi 
 
 Un **load-flow** calcule la répartition des flux sur les ouvrages du réseau en fonction des caractéristiques de ces
 ouvrages et des injections du réseau (production et consommation). Le résultat d'un load-flow permet de constater et d'évaluer les contraintes présentes.
-Un **OPF**, quant-à-lui, peut modifier les injections/consommations et la topologie, de sorte, qu'après le lancement d'un load-flow, il n'y ait pas de
+Un **OPF**, quant à lui, peut modifier les injections/consommations et la topologie, de sorte, qu'après le lancement d'un load-flow, il n'y ait pas de
 contrainte sur les ouvrages (ou qu'elles soient, du moins, minimisées).
 
 De ce fait, l'objectif de METRIX est de trouver l'ajustement de moindre coût du plan de production afin de n'avoir
