@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.ImmutableMap;
-import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
-import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
+import com.powsybl.metrix.integration.binding.*;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.dsl.BatteryDslData;
 import com.powsybl.metrix.integration.dsl.BoundVariablesDslData;
 import com.powsybl.metrix.integration.dsl.BranchDslData;
 import com.powsybl.metrix.integration.dsl.GeneratorDslData;
@@ -46,6 +46,7 @@ public class MetrixDslData {
     private final HvdcDslData hvdcDslData;
     private final SectionDslData sectionDslData;
     private final GeneratorDslData generatorDslData;
+    private final BatteryDslData batteryDslData;
     private final LoadDslData loadDslData;
     private final BoundVariablesDslData boundVariablesDslData;
     private final Set<String> specificContingenciesList;
@@ -58,6 +59,7 @@ public class MetrixDslData {
         hvdcDslData = new HvdcDslData();
         sectionDslData = new SectionDslData();
         generatorDslData = new GeneratorDslData();
+        batteryDslData = new BatteryDslData();
         loadDslData = new LoadDslData();
         boundVariablesDslData = new BoundVariablesDslData();
         specificContingenciesList = new HashSet<>();
@@ -82,11 +84,15 @@ public class MetrixDslData {
                          @JsonProperty("generatorsForAdequacy") Set<String> generatorsForAdequacy,
                          @JsonProperty("generatorsForRedispatching") Set<String> generatorsForRedispatching,
                          @JsonProperty("generatorContingenciesMap") Map<String, List<String>> generatorContingenciesMap,
+                         @JsonProperty("batteriesForAdequacy") Set<String> batteriesForAdequacy,
+                         @JsonProperty("batteriesForRedispatching") Set<String> batteriesForRedispatching,
+                         @JsonProperty("batteryContingenciesMap") Map<String, List<String>> batteryContingenciesMap,
                          @JsonProperty("loadPreventivePercentageMap") Map<String, Integer> loadPreventivePercentageMap,
                          @JsonProperty("loadPreventiveCostsMap") Map<String, Float> loadPreventiveCostsMap,
                          @JsonProperty("loadCurativePercentageMap") Map<String, Integer> loadCurativePercentageMap,
                          @JsonProperty("loadContingenciesMap") Map<String, List<String>> loadContingenciesMap,
                          @JsonProperty("generatorsBindings") Map<String, MetrixGeneratorsBinding> generatorsBindings,
+                         @JsonProperty("batteriesBindings") Map<String, MetrixBatteriesBinding> batteriesBindings,
                          @JsonProperty("loadsBindings") Map<String, MetrixLoadsBinding> loadsBindings,
                          @JsonProperty("specificContingenciesList") Set<String> specificContingenciesList) {
         this.branchDslData = new BranchDslData(branchMonitoringListN,
@@ -103,8 +109,9 @@ public class MetrixDslData {
         this.hvdcDslData = new HvdcDslData(hvdcContingenciesMap, hvdcControlMap, hvdcFlowResults);
         this.sectionDslData = new SectionDslData(sectionList);
         this.generatorDslData = new GeneratorDslData(generatorsForAdequacy, generatorsForRedispatching, generatorContingenciesMap);
+        this.batteryDslData = new BatteryDslData(batteriesForAdequacy, batteriesForRedispatching, batteryContingenciesMap);
         this.loadDslData = new LoadDslData(loadPreventivePercentageMap, loadPreventiveCostsMap, loadCurativePercentageMap, loadContingenciesMap);
-        this.boundVariablesDslData = new BoundVariablesDslData(generatorsBindings, loadsBindings);
+        this.boundVariablesDslData = new BoundVariablesDslData(generatorsBindings, batteriesBindings, loadsBindings);
         this.specificContingenciesList = specificContingenciesList;
     }
 
@@ -115,6 +122,7 @@ public class MetrixDslData {
             hvdcDslData,
             sectionDslData,
             generatorDslData,
+            batteryDslData,
             loadDslData,
             boundVariablesDslData,
             specificContingenciesList);
@@ -128,6 +136,7 @@ public class MetrixDslData {
                 hvdcDslData.equals(other.hvdcDslData) &&
                 sectionDslData.equals(other.sectionDslData) &&
                 generatorDslData.equals(other.generatorDslData) &&
+                batteryDslData.equals(other.batteryDslData) &&
                 loadDslData.equals(other.loadDslData) &&
                 boundVariablesDslData.equals(other.boundVariablesDslData) &&
                 specificContingenciesList.equals(other.specificContingenciesList);
@@ -143,6 +152,7 @@ public class MetrixDslData {
         hvdcDslData.addToBuilder(builder);
         sectionDslData.addToBuilder(builder);
         generatorDslData.addToBuilder(builder);
+        batteryDslData.addToBuilder(builder);
         loadDslData.addToBuilder(builder);
         boundVariablesDslData.addToBuilder(builder);
         builder.put("specificContingenciesList", specificContingenciesList);
@@ -222,6 +232,18 @@ public class MetrixDslData {
         return Collections.unmodifiableMap(generatorDslData.getGeneratorContingenciesMap());
     }
 
+    public Map<String, List<String>> getBatteryContingenciesMap() {
+        return Collections.unmodifiableMap(batteryDslData.getBatteryContingenciesMap());
+    }
+
+    public Set<String> getBatteriesForAdequacy() {
+        return Collections.unmodifiableSet(batteryDslData.getBatteriesForAdequacy());
+    }
+
+    public Set<String> getBatteriesForRedispatching() {
+        return Collections.unmodifiableSet(batteryDslData.getBatteriesForRedispatching());
+    }
+
     public Map<String, Integer> getLoadPreventivePercentageMap() {
         return Collections.unmodifiableMap(loadDslData.getLoadPreventivePercentageMap());
     }
@@ -240,6 +262,10 @@ public class MetrixDslData {
 
     public Map<String, MetrixGeneratorsBinding> getGeneratorsBindings() {
         return Collections.unmodifiableMap(boundVariablesDslData.getGeneratorsBindings());
+    }
+
+    public Map<String, MetrixBatteriesBinding> getBatteriesBindings() {
+        return Collections.unmodifiableMap(boundVariablesDslData.getBatteriesBindings());
     }
 
     public Map<String, MetrixLoadsBinding> getLoadsBindings() {
@@ -423,6 +449,25 @@ public class MetrixDslData {
         return generatorDslData.getGeneratorContingencies(id);
     }
 
+    // Battery costs
+    public void addBatteryForAdequacy(String id) {
+        batteryDslData.addBatteryForAdequacy(id);
+    }
+
+    public void addBatteryForRedispatching(String id, List<String> contingencies) {
+        batteryDslData.addBatteryForRedispatching(id, contingencies);
+    }
+
+    // Battery contingencies
+    @JsonIgnore
+    public final Set<String> getBatteryContingenciesList() {
+        return batteryDslData.getBatteryContingenciesList();
+    }
+
+    public final List<String> getBatteryContingencies(String id) {
+        return batteryDslData.getBatteryContingencies(id);
+    }
+
     // Load shedding (preventive and curative)
     public void addPreventiveLoad(String id, int percentage) {
         loadDslData.addPreventiveLoad(id, percentage);
@@ -464,7 +509,7 @@ public class MetrixDslData {
     }
 
     // Bound variables
-    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
+    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         boundVariablesDslData.addGeneratorsBinding(id, generatorsIds, referenceVariable);
     }
 
@@ -475,6 +520,19 @@ public class MetrixDslData {
     @JsonIgnore
     public Collection<MetrixGeneratorsBinding> getGeneratorsBindingsValues() {
         return boundVariablesDslData.getGeneratorsBindingsValues();
+    }
+
+    public void addBatteriesBinding(String id, Collection<String> batteriesIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
+        boundVariablesDslData.addBatteriesBinding(id, batteriesIds, referenceVariable);
+    }
+
+    public void addBatteriesBinding(String id, Collection<String> batteriesIds) {
+        boundVariablesDslData.addBatteriesBinding(id, batteriesIds);
+    }
+
+    @JsonIgnore
+    public Collection<MetrixBatteriesBinding> getBatteriesBindingsValues() {
+        return boundVariablesDslData.getBatteriesBindingsValues();
     }
 
     public void addLoadsBinding(String id, Collection<String> loadsIds) {

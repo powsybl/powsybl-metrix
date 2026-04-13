@@ -7,14 +7,13 @@
  */
 package com.powsybl.metrix.integration
 
-
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.commons.data.datatable.DataTableStore
 import com.powsybl.metrix.integration.configuration.MetrixParameters
-import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.metrix.mapping.config.ScriptLogConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
@@ -29,6 +28,8 @@ import java.nio.charset.StandardCharsets
 import java.nio.file.Files
 import java.nio.file.Path
 
+import static BatteriesBindingData.batteriesBindingData
+import static BatteryData.batteryData
 import static BranchMonitoringData.branchData
 import static ContingenciesData.contingenciesData
 import static GeneratorData.generatorData
@@ -71,7 +72,7 @@ class MetrixDslDataLoader {
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixPtcControlType")
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixHvdcControlType")
         imports.addStaticStars("com.powsybl.metrix.integration.type.MetrixComputationType")
-        imports.addStaticStars("com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding.ReferenceVariable")
+        imports.addStaticStars("com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding.ReferenceVariable")
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
 
@@ -123,6 +124,11 @@ class MetrixDslDataLoader {
             generatorData(closure, id, network, loader, data, logDslLoader)
         }
 
+        // battery costs
+        binding.battery = { String id, Closure<Void> closure ->
+            batteryData(closure, id, network, loader, data, logDslLoader)
+        }
+
         // load shedding costs
         binding.load = { String id, Closure<Void> closure ->
             loadData(closure, id, network, loader, data, logDslLoader)
@@ -146,6 +152,11 @@ class MetrixDslDataLoader {
         // bound generators
         binding.generatorsGroup = { String id, Closure<Void> closure ->
             generatorsBindingData(binding, closure, id, network, data, logDslLoader)
+        }
+
+        // bound batteries
+        binding.batteriesGroup = { String id, Closure<Void> closure ->
+            batteriesBindingData(binding, closure, id, network, data, logDslLoader)
         }
 
         // bound loads

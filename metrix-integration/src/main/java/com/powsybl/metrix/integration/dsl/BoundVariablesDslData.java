@@ -1,6 +1,8 @@
 package com.powsybl.metrix.integration.dsl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding;
+import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
 import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
 import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 
@@ -18,15 +20,17 @@ public class BoundVariablesDslData extends AbstractDslData {
 
     // Bound variables
     private final Map<String, MetrixGeneratorsBinding> generatorsBindings;
+    private final Map<String, MetrixBatteriesBinding> batteriesBindings;
     private final Map<String, MetrixLoadsBinding> loadsBindings;
 
     public BoundVariablesDslData() {
-        this(new HashMap<>(), new HashMap<>());
+        this(new HashMap<>(), new HashMap<>(), new HashMap<>());
     }
 
-    public BoundVariablesDslData(Map<String, MetrixGeneratorsBinding> generatorsBindings,
+    public BoundVariablesDslData(Map<String, MetrixGeneratorsBinding> generatorsBindings, Map<String, MetrixBatteriesBinding> batteriesBindings,
                                  Map<String, MetrixLoadsBinding> loadsBindings) {
         this.generatorsBindings = generatorsBindings;
+        this.batteriesBindings = batteriesBindings;
         this.loadsBindings = loadsBindings;
     }
 
@@ -34,6 +38,7 @@ public class BoundVariablesDslData extends AbstractDslData {
     protected LinkedHashMap<String, Object> getMapElements() {
         LinkedHashMap<String, Object> map = new LinkedHashMap<>();
         map.put("generatorsBindings", generatorsBindings);
+        map.put("batteriesBindingMap", batteriesBindings);
         map.put("loadsBindings", loadsBindings);
         return map;
     }
@@ -43,12 +48,16 @@ public class BoundVariablesDslData extends AbstractDslData {
         return generatorsBindings;
     }
 
+    public Map<String, MetrixBatteriesBinding> getBatteriesBindings() {
+        return batteriesBindings;
+    }
+
     public Map<String, MetrixLoadsBinding> getLoadsBindings() {
         return loadsBindings;
     }
 
     // Bound variables
-    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
+    public void addGeneratorsBinding(String id, Collection<String> generatorsIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         generatorsBindings.put(id, new MetrixGeneratorsBinding(id, generatorsIds, referenceVariable));
     }
 
@@ -59,6 +68,19 @@ public class BoundVariablesDslData extends AbstractDslData {
     @JsonIgnore
     public Collection<MetrixGeneratorsBinding> getGeneratorsBindingsValues() {
         return Collections.unmodifiableCollection(generatorsBindings.values());
+    }
+
+    public void addBatteriesBinding(String id, Collection<String> batteriesIds, AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
+        batteriesBindings.put(id, new MetrixBatteriesBinding(id, batteriesIds, referenceVariable));
+    }
+
+    public void addBatteriesBinding(String id, Collection<String> batteriesIds) {
+        batteriesBindings.put(id, new MetrixBatteriesBinding(id, batteriesIds));
+    }
+
+    @JsonIgnore
+    public Collection<MetrixBatteriesBinding> getBatteriesBindingsValues() {
+        return Collections.unmodifiableCollection(batteriesBindings.values());
     }
 
     public void addLoadsBinding(String id, Collection<String> loadsIds) {
@@ -73,6 +95,7 @@ public class BoundVariablesDslData extends AbstractDslData {
     @Override
     public int hashCode() {
         return Objects.hash(generatorsBindings,
+            batteriesBindings,
             loadsBindings);
     }
 
@@ -80,6 +103,7 @@ public class BoundVariablesDslData extends AbstractDslData {
     public boolean equals(Object obj) {
         if (obj instanceof BoundVariablesDslData other) {
             return generatorsBindings.equals(other.generatorsBindings) &&
+                batteriesBindings.equals(other.batteriesBindings) &&
                 loadsBindings.equals(other.loadsBindings);
         }
         return false;

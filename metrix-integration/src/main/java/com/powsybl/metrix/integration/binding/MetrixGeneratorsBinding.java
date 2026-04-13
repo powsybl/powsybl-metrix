@@ -7,39 +7,15 @@
  */
 package com.powsybl.metrix.integration.binding;
 
-import java.util.*;
+import java.util.Collection;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
-public class MetrixGeneratorsBinding {
-
-    public enum ReferenceVariable {
-
-        PMAX(0), // default value
-        PMIN(1),
-        POBJ(2),
-        PMAX_MINUS_POBJ(3);
-
-        private final int type;
-
-        ReferenceVariable(int type) {
-            this.type = type;
-        }
-
-        public int getType() {
-            return type;
-        }
-
-    }
-
-    private final String name;
-    private final Set<String> generatorsIds = new HashSet<>();
-    private final ReferenceVariable reference;
+public class MetrixGeneratorsBinding extends AbstractMetrixGroupBinding {
 
     MetrixGeneratorsBinding() {
-        this.name = null;
-        this.reference = null;
+        super();
     }
 
     public MetrixGeneratorsBinding(String name, Collection<String> ids) {
@@ -47,39 +23,17 @@ public class MetrixGeneratorsBinding {
     }
 
     public MetrixGeneratorsBinding(String name, Collection<String> ids, ReferenceVariable reference) {
-        this.name = name;
-        this.generatorsIds.addAll(ids);
-        this.reference = reference;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Set<String> getGeneratorsIds() {
-        return Collections.unmodifiableSet(generatorsIds);
-    }
-
-    public ReferenceVariable getReference() {
-        return reference;
+        super(name, ids, reference);
     }
 
     @Override
-    public String toString() {
-        return "Generators binding '" + name + "' (ref. variable : " + reference + ") [ " + String.join(", ", generatorsIds) + " ]";
+    protected String getGroupName() {
+        return "Generators";
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MetrixGeneratorsBinding other)) {
-            return false;
-        }
-        return name.equals(other.name) && reference == other.reference && generatorsIds.equals(other.generatorsIds);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, reference, generatorsIds);
+    public String getGroupNameSingular() {
+        return "Generator";
     }
 
 }

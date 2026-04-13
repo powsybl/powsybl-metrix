@@ -685,7 +685,7 @@ curative diffère de la consigne préventive sont affichées
 (io-table_r9)=
 **Tableau R9** : résultats de la fonction objectif
 
-*Format* : ```R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT CONSO CUR;```
+*Format* : ```R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS BATTERIES CUR;COUT BATTERIES CUR;COUT CONSO CUR;```
 
 | Nom de la grandeur                 | Type | Unité | Description                                                                   |
 |:-----------------------------------|:-----|:------|:------------------------------------------------------------------------------|
