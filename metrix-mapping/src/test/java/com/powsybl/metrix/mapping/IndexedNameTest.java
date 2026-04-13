@@ -1,5 +1,6 @@
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.metrix.mapping.references.IndexedName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

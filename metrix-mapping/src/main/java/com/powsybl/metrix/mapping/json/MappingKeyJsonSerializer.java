@@ -10,7 +10,7 @@ package com.powsybl.metrix.mapping.json;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import com.powsybl.metrix.mapping.MappingKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
 import java.util.Objects;
 

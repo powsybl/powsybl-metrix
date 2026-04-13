@@ -9,18 +9,19 @@ package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding
 import com.powsybl.metrix.mapping.Filter
 import com.powsybl.metrix.mapping.FilteringContext
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.mapping.log.LogDslLoader
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class GeneratorsBindingData extends LoadsBindingData {
 
-    MetrixGeneratorsBinding.ReferenceVariable referenceVariable
+    AbstractMetrixGroupBinding.ReferenceVariable referenceVariable
 
-    void referenceVariable(MetrixGeneratorsBinding.ReferenceVariable referenceVariable) {
+    void referenceVariable(AbstractMetrixGroupBinding.ReferenceVariable referenceVariable) {
         this.referenceVariable = referenceVariable
     }
 

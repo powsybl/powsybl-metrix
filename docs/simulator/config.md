@@ -33,7 +33,7 @@ Les différents types de contraintes sont :
 - `CONTRAINTE_NON_DEF = -1` : contrainte non définie
 
 ### Load Flow (LF)
-Mode basique de simulation réseau avec des productions et consommations fixes. Metrix retourne alors le flot sur les 
+Mode basique de simulation réseau avec des productions et consommations fixes. Metrix retourne alors le flot sur les
 lignes du réseau. Pour ce mode : `MODECALC = 1`.
 
 Dans ce mode :
@@ -42,29 +42,29 @@ Dans ce mode :
  - Il n'y a pas de phase de détection de contraintes
 
 ### Optimal Power Load Flow sans redispatching (OPF w/o redispatching)
-Ce mode ne permet pas à Metrix-simulator de faire du redispatching (modifier les injections et consommations) mais il 
-tend à minimiser les violations des différentes contraintes grâce à l'utilisation de parades topologiques, de 
+Ce mode ne permet pas à Metrix-simulator de faire du redispatching (modifier les injections et consommations) mais il
+tend à minimiser les violations des différentes contraintes grâce à l'utilisation de parades topologiques, de
 modifications des déphasages des transformateurs-déphaseurs ou encore de modifications des flux sur les lignes à courant continu.
 Pour ce mode : `MODECALC = 2`.
 
 Dans ce mode :
 - Si un groupe est indiqué comme disponible pour le redispatching :
-  - et uniquement pour le redispatching (i.e. `OUI_AR`), alors il est considéré comme n'étant pas disponible ni pour le 
+  - et uniquement pour le redispatching (i.e. `OUI_AR`), alors il est considéré comme n'étant pas disponible ni pour le
   redispatching ni pour l'adequacy (i.e. `NON_HR_AR`)
-  - mais aussi pour l'adequacy (i.e. `OUI_HR_AR`), alors il est considéré comme étant uniquement disponible pour 
+  - mais aussi pour l'adequacy (i.e. `OUI_HR_AR`), alors il est considéré comme étant uniquement disponible pour
   l'adequacy (i.e. `OUI_HR`)
 - Si des groupes sont renseignés comme étant disponibles pour le curatif, alors ils sont ignorés
 - Les défaillances sont interdites ici (i.e. les variables de variations de consommation sont fixes et ???)
-- Des variables d'écart sont ajoutées pour toute contrainte avec un type autre que `CONTRAINTE_EMUL_AC_N`, 
+- Des variables d'écart sont ajoutées pour toute contrainte avec un type autre que `CONTRAINTE_EMUL_AC_N`,
 `CONTRAINTE_EMULATION_AC` ou `CONTRAINTE_ACTIVATION`.
 
 ### Optimal Power Load Flow (OPF)
-Ce mode a la possibilité toutes les actions possibles (redispatching en plus des actions énoncées dans le chapitre 
+Ce mode a la possibilité toutes les actions possibles (redispatching en plus des actions énoncées dans le chapitre
 précédent) afin de minimiser, à moindre coût, les violations des contraintes.
 Pour ce mode : `MODECALC = 0`.
 
 ### Optimal Power Load Flow avec surcharge (OPF with overload)
-Ce mode fonctionne comme le précédent, toutefois si aucune solution n'est trouvée le programme ne retourne pas d'erreur, 
+Ce mode fonctionne comme le précédent, toutefois si aucune solution n'est trouvée le programme ne retourne pas d'erreur,
 mais des résultats avec surcharge.
 Pour ce mode : `MODECALC = 3`.
 
@@ -74,7 +74,7 @@ Des variables d'écart sont ajoutées pour toute contrainte avec un type autre q
 
 ## Générations fichiers PTDFs
 
-La génération des fichiers se fait via l'appel au simulateur. Il n'est pour l'instant pas possible d'uniquement générer 
+La génération des fichiers se fait via l'appel au simulateur. Il n'est pour l'instant pas possible d'uniquement générer
 les fichiers PTDFs pour chacune des variantes sans lancer de résolution.
 Toutefois, il n'y a, a priori, pas de raison à ce que cela ne soit pas possible.
 
@@ -87,7 +87,7 @@ Les diférents status de retour sont les suivants :
 - `METRIX_NB_MAX_CONT_ATTEINT = 2` : nombre maximum de contraintes ajoutées atteint
 - `METRIX_NB_MICROIT = 3` : nombre maximum de micro-iterations atteint
 - `METRIX_VARIANTE_IGNOREE = 4` : variante ignorée
-- `METRIX_CONTRAINTE_IGNOREE = 3` : contrainte ignorée, car équivalente, Tmax non défini ou pas d'action possible (dans 
+- `METRIX_CONTRAINTE_IGNOREE = 3` : contrainte ignorée, car équivalente, Tmax non défini ou pas d'action possible (dans
 le cas d'un OPF sans redispatching ou d'un OPF avec surcharge)
 
 ## Parade topologique en N
@@ -96,34 +96,34 @@ L'utilisation de parades topologiques en N n'est théoriquement pas possible. To
 
 ## Seuils ITAM
 
-Il est possible de paramétrer l'outil afin d'utiliser les seuils avant manœuvre (i.e. post incident, mais avant curatif) 
+Il est possible de paramétrer l'outil afin d'utiliser les seuils avant manœuvre (i.e. post incident, mais avant curatif)
 via le paramètre `TESTITAM`.
 Si ces seuils sont activés, une parade "ne rien faire" est ajoutée sur les incidents avec curatif, mais sans parade.
 
 ### Contexte LF+
-En LF+, lorsqu'il y a dépassement d'un seuil ITAM avant utilisation des parades topologiques curatives, il n'y a pas 
-d'alerte ou d'indicateur indiquant ce dépassement. Alors que la solution retournée peut préconiser l'utilisation de 
+En LF+, lorsqu'il y a dépassement d'un seuil ITAM avant utilisation des parades topologiques curatives, il n'y a pas
+d'alerte ou d'indicateur indiquant ce dépassement. Alors que la solution retournée peut préconiser l'utilisation de
 parades curatives qui favorisent, potentiellement, le respect des seuils ITAM d'après les logs finaux.
 
-Ce comportement n'est pas réaliste puisqu'en situation réelle, les parades curatives n'ont pas le temps d'être activée 
+Ce comportement n'est pas réaliste puisqu'en situation réelle, les parades curatives n'ont pas le temps d'être activée
 afin de respecter ces seuils ITAM.
 
 ### Problématique
-Metrix résout le problème via de l'optimisation globale. Autrement dit, ce dernier tente de trouver une solution 
-optimale respectant l'ensemble des contraintes tout en minimisant l'ensemble des objectifs définis (ex : minimisation 
-des dépassements en LF+). Ceci implique que, du point de vue de Metrix, la minimisation des dépassements se fait « d'un 
-coup » et non pas séquentiellement comme ce pourrait être le cas manuellement. Ainsi, en sortie de Metrix, ce dernier 
-peut considérer qu'il n'y a plus de dépassement alors que ce sont des parades curatives qui permettent de respecter les 
-seuils ITAM (non réaliste d'après le paragraphe précédent). 
- 
+Metrix résout le problème via de l'optimisation globale. Autrement dit, ce dernier tente de trouver une solution
+optimale respectant l'ensemble des contraintes tout en minimisant l'ensemble des objectifs définis (ex : minimisation
+des dépassements en LF+). Ceci implique que, du point de vue de Metrix, la minimisation des dépassements se fait « d'un
+coup » et non pas séquentiellement comme ce pourrait être le cas manuellement. Ainsi, en sortie de Metrix, ce dernier
+peut considérer qu'il n'y a plus de dépassement alors que ce sont des parades curatives qui permettent de respecter les
+seuils ITAM (non réaliste d'après le paragraphe précédent).
+
 
 ### Options possibles :
- 
+
  - Utiliser les fichiers « tmp » afin de lever une alerte
- - Modifier le modèle afin que seules les parades topologiques curatives n'ayant pas d'impact sur les éléments avec 
+ - Modifier le modèle afin que seules les parades topologiques curatives n'ayant pas d'impact sur les éléments avec
 dépassements de leur seuil ITAM soient activables (cette solution semble complexe à implémenter a priori)
- - Pour tout élément avec un seuil N-k ainsi qu'un seuil ITAM mais pas de parade préventive pour cet élément : 
+ - Pour tout élément avec un seuil N-k ainsi qu'un seuil ITAM mais pas de parade préventive pour cet élément :
 suppression de seuils N-k de cet élément ?
- 
-Compte tenu du paradigme LF+ (minimisation des dépassements de différents seuils pour un même élément et optimisation 
+
+Compte tenu du paradigme LF+ (minimisation des dépassements de différents seuils pour un même élément et optimisation
 globale), le process le plus réaliste semble être de lever une alerte/warning indiquant qu'un seuil n'est pas respecté.

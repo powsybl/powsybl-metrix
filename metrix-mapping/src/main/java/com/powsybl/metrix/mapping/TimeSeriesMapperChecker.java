@@ -7,11 +7,14 @@
  */
 package com.powsybl.metrix.mapping;
 
+import com.powsybl.iidm.network.Battery;
 import com.powsybl.iidm.network.Generator;
 import com.powsybl.iidm.network.HvdcLine;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.log.LimitLogBuilder;
 import com.powsybl.metrix.mapping.log.Log;
 import com.powsybl.metrix.mapping.log.LogBuilder;
@@ -21,11 +24,13 @@ import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
 import com.powsybl.metrix.mapping.log.RangeWithMinPViolatedByTargetP;
 import com.powsybl.metrix.mapping.log.ScalingDownChangeToVariable;
 import com.powsybl.metrix.mapping.log.ScalingDownLimitChangeSynthesis;
+import com.powsybl.metrix.mapping.observer.MultipleTimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.timeseries.LimitChange;
 import com.powsybl.metrix.mapping.timeseries.MappedEquipments;
 import com.powsybl.metrix.mapping.timeseries.MappedPower;
 import com.powsybl.metrix.mapping.timeseries.ScalingDownLimitViolation;
 import com.powsybl.metrix.mapping.timeseries.ScalingDownPowerChange;
+import com.powsybl.metrix.mapping.utils.TimeSeriesConstants;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.util.HashMap;
@@ -44,6 +49,7 @@ import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExt
 public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
     private static final String UNHANDLED_SCALING_OPERATION_ERROR = "Unhandled scaling operation %s";
+    public static final String EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S = "Equipment '%s' : invalid active limits [%s, %s] at point %s";
 
     private int version;
 
@@ -64,6 +70,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     private final Map<String, Set<ScalingDownLimitViolation>> setpointTimeSeriesToScalingDownLimitViolationSynthesis = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> generatorToMaxValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> generatorToMinValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> batteryToMaxValues = new HashMap<>();
+    private final Map<Identifiable<?>, LimitChange> batteryToMinValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> hvdcLineToMaxValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> hvdcLineToMinValues = new HashMap<>();
     private final Map<Identifiable<?>, LimitChange> hvdcLineToCS1toCS2Values = new HashMap<>();
@@ -96,6 +104,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         // With ignore limits option, restore previous extended limits (potentially overwritten by NetworkPointWriter)
         generatorToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Generator) (e.getKey())).setMaxP(e.getValue().getLimit()));
         generatorToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Generator) (e.getKey())).setMinP(e.getValue().getLimit()));
+        batteryToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Battery) (e.getKey())).setMaxP(e.getValue().getLimit()));
+        batteryToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Battery) (e.getKey())).setMinP(e.getValue().getLimit()));
         hvdcLineToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(e.getValue().getLimit()));
         hvdcLineToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(Math.abs(e.getValue().getLimit())));
         hvdcLineToCS1toCS2Values.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) e.getValue().getLimit()));
@@ -135,6 +145,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         // Add limit change warnings to logger
         addLimitChangeLog(generatorToMinValues, MappingLimitType.MIN, version, MIN_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
         addLimitChangeLog(generatorToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
+        addLimitChangeLog(batteryToMinValues, MappingLimitType.MIN, version, MIN_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
+        addLimitChangeLog(batteryToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
         addLimitChangeLog(hvdcLineToMinValues, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_MAXP, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
         addLimitChangeLog(hvdcLineToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
         addLimitChangeLog(hvdcLineToCS2toCS1Values, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_CS21, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
@@ -149,6 +161,8 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         identifiableToConstantMappedPowers.clear();
         generatorToMinValues.clear();
         generatorToMaxValues.clear();
+        batteryToMinValues.clear();
+        batteryToMaxValues.clear();
         hvdcLineToMinValues.clear();
         hvdcLineToMaxValues.clear();
         hvdcLineToCS1toCS2Values.clear();
@@ -254,14 +268,12 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     }
 
     private void correctAndNotifyMappedPowers(int point, Identifiable<?> identifiable, MappedPower mappedPower) {
-        double value;
-        if (identifiable instanceof Generator generator) {
-            value = correctMappedPowerGenerator(point, generator, mappedPower);
-        } else if (identifiable instanceof HvdcLine hvdcLine) {
-            value = correctMappedPowerHvdcLine(point, hvdcLine, mappedPower);
-        } else {
-            throw new AssertionError("Unsupported equipment type for id " + identifiable.getId());
-        }
+        double value = switch (identifiable) {
+            case Generator generator -> correctMappedPowerGenerator(point, generator, mappedPower);
+            case HvdcLine hvdcLine -> correctMappedPowerHvdcLine(point, hvdcLine, mappedPower);
+            case Battery battery -> correctMappedPowerBattery(point, battery, mappedPower);
+            default -> throw new AssertionError("Unsupported equipment type for id " + identifiable.getId());
+        };
         mappedPower.setP(value);
         super.timeSeriesMappedToEquipment(point, timeSeriesName != null ? timeSeriesName : "", identifiable, TimeSeriesMapper.getPowerVariable(identifiable), value);
     }
@@ -273,7 +285,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         minP = isMappedMinP ? mappedPower.getMinP() : generator.getMinP();
         maxP = isMappedMaxP ? mappedPower.getMaxP() : generator.getMaxP();
         if (minP > maxP) {
-            throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
+            throw new AssertionError(String.format(EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S, id, minP, maxP, point));
         }
         final boolean isMappedTargetP = mappedPower.getP() != null;
         double targetP = isMappedTargetP ? mappedPower.getP() : TimeSeriesMapper.getP(generator);
@@ -292,6 +304,40 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
 
         if (ignoreLimits) {
             double result = correctMappedPowerGeneratorWithIgnoreLimits(targetP, generator);
+            if (!Double.isNaN(result)) {
+                return result;
+            }
+        }
+
+        return correctMappedPowerGeneratorIsTargetP(targetP, isMappedTargetP);
+    }
+
+    private double correctMappedPowerBattery(int point, Battery battery, MappedPower mappedPower) {
+
+        initCorrector(mappedPower);
+        id = battery.getId();
+        minP = isMappedMinP ? mappedPower.getMinP() : battery.getMinP();
+        maxP = isMappedMaxP ? mappedPower.getMaxP() : battery.getMaxP();
+        if (minP > maxP) {
+            throw new AssertionError(String.format(EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S, id, minP, maxP, point));
+        }
+        final boolean isMappedTargetP = mappedPower.getP() != null;
+        double targetP = isMappedTargetP ? mappedPower.getP() : TimeSeriesMapper.getP(battery);
+        isOkMinP = targetP >= minP - toleranceThreshold;
+        isOkMaxP = targetP <= maxP + toleranceThreshold;
+        targetP = applyToleranceThresholdOnTargetP(isMappedTargetP, targetP);
+
+        addBatteryLimitValue(battery, isMappedTargetP, targetP);
+
+        if (!isMappedTargetP) {
+            double result = correctMappedPowerGeneratorWhenTargetPIsNotMapped(targetP, point, TARGET_P_VARIABLE_NAME, false);
+            if (!Double.isNaN(result)) {
+                return result;
+            }
+        }
+
+        if (ignoreLimits) {
+            double result = correctMappedPowerBatteryWithIgnoreLimits(targetP, battery);
             if (!Double.isNaN(result)) {
                 return result;
             }
@@ -340,6 +386,30 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         } else if (!isOkMinP && minP <= 0 && !isMappedMinP) {
             // targetP is mapped, minP is not mapped -> reduce base case minP to targetP
             generator.setMinP(Math.floor(targetP - 0.5f));
+            mappedEquipments.getScalingDownLimitViolation().add(ScalingDownLimitViolation.MINP_BY_TARGETP);
+            return targetP;
+        } else if (!isOkMinP && minP <= 0) {
+            mappedEquipments.getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MINP_DISABLED);
+            return minP;
+        } else if (!isOkMinP && targetP < 0) {
+            mappedEquipments.getScalingDownPowerChange().add(ScalingDownPowerChange.ZERO_DISABLED);
+            return 0;
+        }
+        return Double.NaN;
+    }
+
+    private double correctMappedPowerBatteryWithIgnoreLimits(double targetP, Battery battery) {
+        MappedEquipments mappedEquipments = targetPTimeSeriesToEquipments.get(timeSeriesName);
+        if (!isOkMaxP && !isMappedMaxP) {
+            battery.setMaxP(Math.round(targetP + 0.5f));
+            mappedEquipments.getScalingDownLimitViolation().add(ScalingDownLimitViolation.MAXP_BY_TARGETP);
+            return targetP;
+        } else if (!isOkMaxP) {
+            mappedEquipments.getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MAXP_DISABLED);
+            return maxP;
+        } else if (!isOkMinP && minP <= 0 && !isMappedMinP) {
+            // targetP is mapped, minP is not mapped -> reduce base case minP to targetP
+            battery.setMinP(Math.floor(targetP - 0.5f));
             mappedEquipments.getScalingDownLimitViolation().add(ScalingDownLimitViolation.MINP_BY_TARGETP);
             return targetP;
         } else if (!isOkMinP && minP <= 0) {
@@ -465,6 +535,17 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         }
     }
 
+    private void addBatteryLimitValue(Battery battery, boolean isMappedTargetP, double targetP) {
+        if (ignoreLimits && isMappedTargetP) {
+            if (!isMappedMaxP) {
+                addLimitValueChange(MappingLimitType.MAX, batteryToMaxValues, battery, battery.getMaxP(), targetP);
+            }
+            if (!isMappedMinP && minP <= 0) {
+                addLimitValueChange(MappingLimitType.MIN, batteryToMinValues, battery, battery.getMinP(), targetP);
+            }
+        }
+    }
+
     private void addHvdcLineLimitValue(HvdcLine hvdcLine, boolean isMappedSetpoint, boolean isActivePowerRange, double setpoint) {
         if (ignoreLimits && isMappedSetpoint) {
             if (!isMappedMaxP) {
@@ -493,7 +574,7 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         if (hvdcLine.getMaxP() < 0) {
             throw new AssertionError(String.format("Equipment '%s' : invalid active limit maxP %s at point %s", id, hvdcLine.getMaxP(), point));
         } else if (isActivePowerRange && (minP > 0 || maxP < 0)) {
-            throw new AssertionError(String.format("Equipment '%s' : invalid active limits [%s, %s] at point %s", id, minP, maxP, point));
+            throw new AssertionError(String.format(EQUIPMENT_S_INVALID_ACTIVE_LIMITS_S_S_AT_POINT_S, id, minP, maxP, point));
         }
 
         addHvdcLineLimitValue(hvdcLine, isMappedSetpoint, isActivePowerRange, setpoint);

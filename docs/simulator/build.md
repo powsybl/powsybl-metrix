@@ -16,7 +16,7 @@ Use the following commands to install them on your OS:
 ### Ubuntu 20.04 and later
 ```
 $> apt install -y cmake g++ git libboost-all-dev libxml2-dev make
-``` 
+```
 
 ### Ubuntu 18.04
 ```
@@ -42,24 +42,6 @@ $> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
 $> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
 ```
 
-### CentOS 7
-```
-$> yum install -y gcc-c++ git libxml2-devel make wget
-```
-**Note:** Under CentOS 7, the default `boost-devel` package is too old (1.53), so we install Boost 1.66 from `epel-release`.
-```
-$> yum install -y epel-release
-$> yum install -y boost166-devel
-$> export BOOST_INCLUDEDIR=/usr/include/boost166
-$> export BOOST_LIBRARYDIR=/usr/lib64/boost166
-```
-
-**Note:** Under CentOS 7, the default CMake package is too old (2.8.12), so you have to install it manually:
-```
-$> wget https://cmake.org/files/v3.12/cmake-3.12.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.12.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.12.0-Linux-x86_64/bin:$PATH
-```
 ## Build sources
 
 Next, you can build the executable from the sources
@@ -92,12 +74,12 @@ The following CMAKE options can be set for the executable configuration:
 
 ## Extras
 ### Checkstyle
-This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To 
+This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to verify the code style. This tool is provided with the clang extra tools. To
 enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` flag to the configure command.
 
 A clang-format file is also provided to format the code by using [clang-format](https://clang.llvm.org/docs/ClangFormat.html). Most IDEs have an option to format files using clang-format automatically.
 
 ### Code coverage
-This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or 
-higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to 
+This project uses either [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or
+higher) to generate both sonar and HTML reports. To compute the code coverage, add the `-DCODE_COVERAGE=TRUE` flag to
 the configure command.

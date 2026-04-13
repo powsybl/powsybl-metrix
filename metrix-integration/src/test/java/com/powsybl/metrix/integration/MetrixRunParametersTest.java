@@ -7,9 +7,12 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.powsybl.metrix.mapping.ComputationRange;
+import com.google.common.collect.Range;
+import com.powsybl.metrix.commons.ComputationRange;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -21,8 +24,7 @@ class MetrixRunParametersTest {
     @Test
     void parametersTest() {
         MetrixRunParameters parameters = new MetrixRunParameters(new ComputationRange(Set.of(1), 1, 2), 3, false, false, false, false, false);
-        assertEquals(1, parameters.getFirstVariant());
-        assertEquals(2, parameters.getVariantCount());
+        assertEquals(List.of(Range.closed(1, 2)), parameters.getRanges());
         assertEquals(3, parameters.getChunkSize());
     }
 

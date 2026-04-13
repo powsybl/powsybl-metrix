@@ -29,14 +29,17 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
+      - name: Checkout sources
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
       - name: Set up JDK 21
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
         with:
           distribution: 'temurin'
           java-version: '21'
-
-      - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+          cache: 'maven'
 
       - name: Build with Maven (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
@@ -68,41 +71,10 @@ jobs:
 
       - name: Upload Metrix iTools archive
         if: ${{ matrix.os == 'ubuntu-latest' && github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: itools-metrix-${{ env.MAVEN_PROJECT_VERSION }}
           path: ${{ github.workspace }}/metrix-distribution/target/metrix
-
-  cpp_centos7:
-    name: Build C++ CentOS7
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Build the Docker image
-        run: |
-          docker build -t centos7withcmake:latest $GITHUB_WORKSPACE --file $GITHUB_WORKSPACE/.github/workflows/docker/Dockerfile
-
-      - name: Run build steps in Docker container
-        run: |
-          docker run --name build_container -v $GITHUB_WORKSPACE:/workspace centos7withcmake:latest /bin/bash -c "
-            source /opt/rh/devtoolset-9/enable &&
-            cmake -S /workspace/metrix-simulator/external -B /workspace/metrix-simulator/build/external &&
-            cmake --build /workspace/metrix-simulator/build/external --parallel 2 &&
-            cmake -S /workspace/metrix-simulator -Wno-dev -DCMAKE_BUILD_TYPE=Release -DBoost_ROOT=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DBoost_INCLUDE_DIR=/usr/local/src/__w/Boost/Boost/boost_1_73_0/installBoost -DCMAKE_INSTALL_PREFIX=/workspace/metrix-simulator/build/install -B /workspace/metrix-simulator/build &&
-            cmake --build /workspace/metrix-simulator/build --target install --parallel 2 &&
-            cd /workspace/metrix-simulator/build && ctest -j2 --output-on-failure
-          "
-
-      - name: Upload Metrix Simulator archive
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
-        with:
-          name: metrix-simulator-centos7
-          path: |
-            metrix-simulator/build/install/bin
-            metrix-simulator/build/install/etc
 
   cpp_oraclelinux8:
     name: Build C++ Oracle Linux 8
@@ -116,7 +88,7 @@ jobs:
           dnf --enablerepo=ol8_codeready_builder install boost-static
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -140,7 +112,7 @@ jobs:
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: metrix-simulator-ol8
           path: |
@@ -157,7 +129,7 @@ jobs:
           sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -181,7 +153,7 @@ jobs:
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: metrix-simulator-ubuntu
           path: |
@@ -206,7 +178,7 @@ jobs:
           boost-installer.exe /dir=%BOOST_ROOT% /sp- /verysilent /suppressmsgboxes /norestart
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Configure 3rd parties
         run: >
@@ -230,7 +202,7 @@ jobs:
 
       - name: Upload Metrix Simulator archive
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.generate_artifacts }}
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: metrix-simulator-windows
           path: |
@@ -242,12 +214,6 @@ jobs:
     if: github.event.pull_request.head.repo.fork == false
     runs-on: ubuntu-latest
     steps:
-      - name: Install Java 17
-        uses: actions/setup-java@3a4f6e1af504cf6a31855fa899c6aa5355ba6c12 # v4.7.0
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
       - name: Install gcovr
         run: |
           sudo apt-get update -y
@@ -256,18 +222,18 @@ jobs:
       - name: Install Sonar wrapper
         working-directory: ${{ runner.workspace }}
         run: |
-          wget https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
+          wget --max-redirect=0 https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
           unzip build-wrapper-linux-x86.zip
 
       - name: Install Sonar scanner
         working-directory: ${{ runner.workspace }}
         run: |
-          wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
+          wget --max-redirect=0 https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
           unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
           ln -s sonar-scanner-${SONAR_SCANNER_VERSION} sonar
           rm sonar-scanner-cli-${SONAR_SCANNER_VERSION}.zip
         env:
-          SONAR_SCANNER_VERSION: 7.1.0.4889
+          SONAR_SCANNER_VERSION: 8.0.1.6346
 
       - name: Install Boost
         run: |
@@ -275,9 +241,16 @@ jobs:
           sudo apt-get install -y libboost-all-dev
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
+
+      - name: Install Java 17
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
 
       - name: Configure 3rd parties
         run: >
@@ -332,14 +305,16 @@ jobs:
           sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
 
       - name: Checkout sources
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
 
       - name: Git fetch base_ref and head_ref
+        env:
+          HEAD_REF: ${{ github.head_ref }}
         run: |
           git fetch --no-tags --depth=1 origin ${{ github.base_ref }}
-          git fetch --no-tags --depth=1 ${{ github.event.pull_request.head.repo.clone_url }} ${{ github.head_ref }}
+          git fetch --no-tags --depth=1 ${{ github.event.pull_request.head.repo.clone_url }} ${HEAD_REF}
           git show-ref
 
       - name: Configure 3rd parties
@@ -373,7 +348,7 @@ jobs:
 
       - name: Upload Clang Tidy Report (Modified C++ sources in PR)
         if: steps.clang-pr.outputs.report_exists
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # 4.6.2
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # 7.0.0
         with:
           name: ${{ steps.clang-pr.outputs.report_name }}
           path: ${{ steps.clang-pr.outputs.report_path }}

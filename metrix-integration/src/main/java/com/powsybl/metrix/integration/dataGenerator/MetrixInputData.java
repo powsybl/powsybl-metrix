@@ -10,10 +10,31 @@ package com.powsybl.metrix.integration.dataGenerator;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
-import com.powsybl.iidm.network.*;
+import com.powsybl.iidm.network.Battery;
+import com.powsybl.iidm.network.Branch;
+import com.powsybl.iidm.network.Bus;
+import com.powsybl.iidm.network.BoundaryLine;
+import com.powsybl.iidm.network.Generator;
+import com.powsybl.iidm.network.HvdcLine;
+import com.powsybl.iidm.network.Identifiable;
+import com.powsybl.iidm.network.Injection;
+import com.powsybl.iidm.network.Line;
+import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.PhaseTapChanger;
+import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.TieLine;
+import com.powsybl.iidm.network.TwoWindingsTransformer;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.binding.*;
+import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.integration.MetrixSection;
+import com.powsybl.metrix.integration.MetrixSubset;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixDie;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
+import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
+import com.powsybl.metrix.integration.type.MetrixHvdcRegulationType;
+import com.powsybl.metrix.integration.type.MetrixPtcControlType;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import org.apache.commons.lang3.ArrayUtils;
 import org.jspecify.annotations.NonNull;
@@ -26,8 +47,20 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.powsybl.iidm.network.IdentifiableType.BATTERY;
 
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}
@@ -183,23 +216,23 @@ public class MetrixInputData {
 
         cgnbregi = metrixNetwork.getCountryList().size();
 
-        trnbgrou = metrixNetwork.getGeneratorList().size();
+        trnbgrou = metrixNetwork.getGeneratorList().size() + metrixNetwork.getBatteryList().size();
 
         // Quadripoles are lines, transformers and switches
         cqnbquad = metrixNetwork.getLineList().size()
             + metrixNetwork.getTwoWindingsTransformerList().size()
             + 3 * metrixNetwork.getThreeWindingsTransformerList().size()
             + metrixNetwork.getSwitchList().size()
-            + metrixNetwork.getUnpairedDanglingLineList().size()
+            + metrixNetwork.getUnpairedBoundaryLineList().size()
             + metrixNetwork.getTieLineList().size();
         dtnbtrde = metrixNetwork.getPhaseTapChangerList().size();
 
-        // Loads are loads and unpaired dangling lines
-        ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
+        // Loads are loads and unpaired boundary lines
+        ecnbcons = metrixNetwork.getLoadList().size() + metrixNetwork.getUnpairedBoundaryLineList().size();
 
         dcnblies = metrixNetwork.getHvdcLineList().size();
 
-        tnnbntot = metrixNetwork.getBusList().size() + metrixNetwork.getUnpairedDanglingLineList().size();
+        tnnbntot = metrixNetwork.getBusList().size() + metrixNetwork.getUnpairedBoundaryLineList().size();
 
         if (dslData != null) {
             sectnbse = dslData.getSectionList().size();
@@ -245,6 +278,7 @@ public class MetrixInputData {
         parameters.getOptionalLossOfLoadCost().ifPresent(value -> die.setFloat("COUTDEFA", value));
         parameters.getOptionalCurativeLossOfLoadCost().ifPresent(value -> die.setFloat("COUENDCU", value));
         parameters.getOptionalCurativeLossOfGenerationCost().ifPresent(value -> die.setFloat("COUENECU", value));
+        parameters.getOptionalGeneratorMinCost().ifPresent(value -> die.setFloat("NULLCOST", value));
         parameters.getOptionalContingenciesProbability().ifPresent(value -> die.setFloat("PROBAINC", value));
         parameters.getOptionalMaxSolverTime().ifPresent(value -> die.setInt("MAXSOLVE", value));
         parameters.getOptionalNbMaxIteration().ifPresent(value -> die.setInt("NBMAXMIT", value));
@@ -410,8 +444,8 @@ public class MetrixInputData {
         // TieLines
         metrixNetwork.getTieLineList().forEach(tieLine -> writeTieLine(tieLine, metrixInputBranch, constantLossFactor));
 
-        // Unpaired Dangling Lines
-        metrixNetwork.getUnpairedDanglingLineList().forEach(udl -> writeUnpairedDanglingLine(udl, metrixInputBranch));
+        // Unpaired Boundary Lines
+        metrixNetwork.getUnpairedBoundaryLineList().forEach(udl -> writeUnpairedBoundaryLine(udl, metrixInputBranch));
 
         // Branch
         die.setStringArray("CQNOMQUA", cqnomqua);
@@ -524,13 +558,13 @@ public class MetrixInputData {
         if (dslData != null) {
             mode = dslData.getPtcControl(twt.getId());
 
-            if (dslData.getPtcLowerTapChange(twt.getId()) != null) {
+            if (dslData.getPtcLowerTapChanger(twt.getId()) != null) {
                 dtlowran.add(index);
-                dtlowran.add(dslData.getPtcLowerTapChange(twt.getId()));
+                dtlowran.add(dslData.getPtcLowerTapChanger(twt.getId()));
             }
-            if (dslData.getPtcUpperTapChange(twt.getId()) != null) {
+            if (dslData.getPtcUpperTapChanger(twt.getId()) != null) {
                 dtuppran.add(index);
-                dtuppran.add(dslData.getPtcUpperTapChange(twt.getId()));
+                dtuppran.add(dslData.getPtcUpperTapChanger(twt.getId()));
             }
         }
         return mode;
@@ -544,19 +578,19 @@ public class MetrixInputData {
         writeLineOrTieLine(tieLine, tieLine.getR(), tieLine.getX(), metrixInputBranch, constantLossFactor);
     }
 
-    private void writeUnpairedDanglingLine(DanglingLine danglingLine, MetrixInputBranch metrixInputBranch) {
-        double nominalVoltage = danglingLine.getTerminal().getVoltageLevel().getNominalV();
-        double r = (danglingLine.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
-        double admittance = toAdmittance(danglingLine.getId(), danglingLine.getX(), nominalVoltage, parameters.getNominalU());
-        int index = metrixNetwork.getIndex(danglingLine);
+    private void writeUnpairedBoundaryLine(BoundaryLine boundaryLine, MetrixInputBranch metrixInputBranch) {
+        double nominalVoltage = boundaryLine.getTerminal().getVoltageLevel().getNominalV();
+        double r = (boundaryLine.getR() * Math.pow(parameters.getNominalU(), 2)) / Math.pow(nominalVoltage, 2);
+        double admittance = toAdmittance(boundaryLine.getId(), boundaryLine.getX(), nominalVoltage, parameters.getNominalU());
+        int index = metrixNetwork.getIndex(boundaryLine);
         // side 1 is network side
-        int bus1Index = metrixNetwork.getIndex(danglingLine.getTerminal().getBusBreakerView().getBus());
+        int bus1Index = metrixNetwork.getIndex(boundaryLine.getTerminal().getBusBreakerView().getBus());
         // side 2 is boundary side
-        int bus2Index = metrixNetwork.getUnpairedDanglingLineBusIndex(danglingLine);
+        int bus2Index = metrixNetwork.getUnpairedBoundaryLineBusIndex(boundaryLine);
 
         writeBranch(metrixInputBranch,
                 index,
-                new BranchValues(danglingLine.getId(), admittance, r, getMonitoringTypeBasecase(danglingLine.getId()), getMonitoringTypeOnContingency(danglingLine.getId()), bus1Index, bus2Index));
+                new BranchValues(boundaryLine.getId(), admittance, r, getMonitoringTypeBasecase(boundaryLine.getId()), getMonitoringTypeOnContingency(boundaryLine.getId()), bus1Index, bus2Index));
     }
 
     private void writeLineOrTieLine(Branch<?> line, double lineR, double lineX, MetrixInputBranch metrixInputBranch, boolean constantLossFactor) {
@@ -588,8 +622,8 @@ public class MetrixInputData {
             int index = metrixNetwork.getIndex(bus);
             cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(bus.getVoltageLevel()));
         }
-        for (DanglingLine udl : metrixNetwork.getUnpairedDanglingLineList()) {
-            int index = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
+        for (BoundaryLine udl : metrixNetwork.getUnpairedBoundaryLineList()) {
+            int index = metrixNetwork.getUnpairedBoundaryLineBusIndex(udl);
             cpposreg[index - 1] = metrixNetwork.getCountryIndex(metrixNetwork.getCountryCode(udl.getTerminal().getBusBreakerView().getBus().getVoltageLevel()));
         }
         die.setIntArray("CPPOSREG", cpposreg);
@@ -618,7 +652,7 @@ public class MetrixInputData {
             preventiveLoadsList = new HashSet<>();
         }
 
-        writeLoadsAndUnpairedDanglingLines(tnneucel, esafiact, tnnomnoe, tnvapal1, tnvacou1, preventiveLoadsList);
+        writeLoadsAndUnpairedBoundaryLines(tnneucel, esafiact, tnnomnoe, tnvapal1, tnvacou1, preventiveLoadsList);
 
         die.setStringArray("TNNOMNOE", tnnomnoe);
         die.setIntArray("TNNEUCEL", tnneucel);
@@ -630,7 +664,7 @@ public class MetrixInputData {
         }
     }
 
-    private void writeLoadsAndUnpairedDanglingLines(int[] tnneucel, float[] esafiact, String[] tnnomnoe,
+    private void writeLoadsAndUnpairedBoundaryLines(int[] tnneucel, float[] esafiact, String[] tnnomnoe,
                                                     int[] tnvapal1, float[] tnvacou1,
                                                     Set<String> preventiveLoadsList) {
         int index = 0;
@@ -648,20 +682,20 @@ public class MetrixInputData {
             index++;
         }
 
-        for (DanglingLine udl : metrixNetwork.getUnpairedDanglingLineList()) {
-            int busIndex = metrixNetwork.getUnpairedDanglingLineBusIndex(udl);
+        for (BoundaryLine udl : metrixNetwork.getUnpairedBoundaryLineList()) {
+            int busIndex = metrixNetwork.getUnpairedBoundaryLineBusIndex(udl);
             float p0 = (float) udl.getP0();
             if (udl.getGeneration() != null) {
                 // We do not create a generator, because we do not want the DL generation to be used when balancing Gen/Load.
                 // Therefore, we just remove the generation part from the load.
                 p0 -= (float) udl.getGeneration().getTargetP();
             }
-            writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, p0, udl.getId() + MetrixNetwork.getUnpairedDanglingLineLoadId(udl));
+            writeLoad(tnneucel, esafiact, tnnomnoe, index, busIndex, p0, udl.getId() + MetrixNetwork.getUnpairedBoundaryLineLoadId(udl));
             index++;
         }
     }
 
-    private void writeGenerators(MetrixDie die) {
+    private void writeGeneratorsAndBatteries(MetrixDie die) {
 
         String[] trnomgth = new String[trnbgrou];
         int[] tnneurgt = new int[trnbgrou];
@@ -674,20 +708,10 @@ public class MetrixInputData {
         int[] trtypgrp = new int[trnbgrou];
 
         for (Generator generator : metrixNetwork.getGeneratorList()) {
-            int index = metrixNetwork.getIndex(generator);
-            int busIndex = metrixNetwork.getIndex(generator.getTerminal().getBusBreakerView().getBus());
-            trnomgth[index - 1] = generator.getId();
-            tnneurgt[index - 1] = busIndex;
-            trtypgrp[index - 1] = trnomtyp.indexOf(metrixNetwork.getGeneratorType(generator));
-            GeneratorAdjustmentMode adjustmentMode = getGeneratorAdjustmentMode(generator.getId());
-            spimpmod[index - 1] = adjustmentMode.getType();
-            sppactgt[index - 1] = (float) generator.getTargetP();
-            trvalpmd[index - 1] = (float) generator.getMaxP();
-            trpuimin[index - 1] = (float) generator.getMinP();
-            if (adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_AND_REDISPATCHING ||
-                    adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_ONLY) {
-                sumPmax += generator.getMaxP();
-            }
+            addGeneratorOrBatteryData(generator, trnomgth, tnneurgt, trtypgrp, spimpmod, sppactgt, trvalpmd, trpuimin);
+        }
+        for (Battery battery : metrixNetwork.getBatteryList()) {
+            addGeneratorOrBatteryData(battery, trnomgth, tnneurgt, trtypgrp, spimpmod, sppactgt, trvalpmd, trpuimin);
         }
 
         die.setInt("TRNBTYPE", trnomtyp.size());
@@ -699,6 +723,60 @@ public class MetrixInputData {
         die.setFloatArray("SPPACTGT", sppactgt);
         die.setFloatArray("TRVALPMD", trvalpmd);
         die.setFloatArray("TRPUIMIN", trpuimin);
+    }
+
+    private void addGeneratorOrBatteryData(Injection<?> injection, String[] trnomgth, int[] tnneurgt, int[] trtypgrp, int[] spimpmod, float[] sppactgt, float[] trvalpmd, float[] trpuimin) {
+        List<String> trnomtyp = metrixNetwork.getGeneratorTypeList();
+        int index = metrixNetwork.getIndex(injection);
+        int busIndex = metrixNetwork.getIndex(injection.getTerminal().getBusBreakerView().getBus());
+        trnomgth[index - 1] = injection.getId();
+        tnneurgt[index - 1] = busIndex;
+        trtypgrp[index - 1] = getTrnomtyp(injection, trnomtyp);
+        GeneratorAdjustmentMode adjustmentMode = getGeneratorAdjustmentMode(injection.getId());
+        spimpmod[index - 1] = adjustmentMode.getType();
+        sppactgt[index - 1] = (float) getTargetP(injection);
+        trvalpmd[index - 1] = (float) getMaxP(injection);
+        trpuimin[index - 1] = (float) getMinP(injection);
+        if (adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_AND_REDISPATCHING ||
+            adjustmentMode == GeneratorAdjustmentMode.ADEQUACY_ONLY) {
+            sumPmax += getMaxP(injection);
+        }
+    }
+
+    private int getTrnomtyp(Injection<?> injection, List<String> trnomtyp) {
+        if (injection instanceof Generator generator) {
+            return trnomtyp.indexOf(metrixNetwork.getGeneratorType(generator));
+        } else if (injection instanceof Battery) {
+            return trnomtyp.indexOf(BATTERY.name());
+        }
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
+    }
+
+    private double getTargetP(Injection<?> injection) {
+        if (injection instanceof Generator generator) {
+            return generator.getTargetP();
+        } else if (injection instanceof Battery battery) {
+            return battery.getTargetP();
+        }
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
+    }
+
+    private double getMaxP(Injection<?> injection) {
+        if (injection instanceof Generator generator) {
+            return generator.getMaxP();
+        } else if (injection instanceof Battery battery) {
+            return battery.getMaxP();
+        }
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
+    }
+
+    private double getMinP(Injection<?> injection) {
+        if (injection instanceof Generator generator) {
+            return generator.getMinP();
+        } else if (injection instanceof Battery battery) {
+            return battery.getMinP();
+        }
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
     public static float getHvdcLineMax(HvdcLine hvdcLine) {
@@ -823,7 +901,7 @@ public class MetrixInputData {
             try {
                 int type;
                 switch (element.getType()) {
-                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER, TIE_LINE, DANGLING_LINE -> type = ElementType.BRANCH.getType();
+                    case BRANCH, LINE, TWO_WINDINGS_TRANSFORMER, TIE_LINE, BOUNDARY_LINE -> type = ElementType.BRANCH.getType();
                     case GENERATOR -> {
                         type = ElementType.GENERATOR.getType();
                         generatorPowerLost += metrixNetwork.getNetwork().getGenerator(element.getId()).getMaxP();
@@ -1191,7 +1269,7 @@ public class MetrixInputData {
         if (identifiable != null) {
             if (identifiable instanceof Line ||
                     identifiable instanceof TwoWindingsTransformer ||
-                    identifiable instanceof DanglingLine ||
+                    identifiable instanceof BoundaryLine ||
                     identifiable instanceof TieLine) {
                 secttype.add(ElementType.BRANCH.getType());
             } else if (identifiable instanceof HvdcLine) {
@@ -1246,18 +1324,18 @@ public class MetrixInputData {
         }
     }
 
-    private void getGeneratorBindings(Collection<MetrixGeneratorsBinding> bindings,
-                                      List<String> gbindnom,
-                                      List<Integer> gbindref,
-                                      List<Integer> gbinddef) {
-        for (MetrixGeneratorsBinding binding : bindings) {
+    private <T extends AbstractMetrixGroupBinding> void getGroupBindings(Collection<T> bindings,
+                                                                         List<String> gbindnom,
+                                                                         List<Integer> gbindref,
+                                                                         List<Integer> gbinddef) {
+        for (AbstractMetrixGroupBinding binding : bindings) {
             List<Integer> idList = new ArrayList<>();
-            for (String generatorId : binding.getGeneratorsIds()) {
+            for (String id : binding.getIds()) {
                 try {
-                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, generatorId));
+                    idList.add(metrixNetwork.getIndex(MetrixSubset.GROUPE, id));
                 } catch (IllegalStateException ise) {
                     if (LOGGER.isWarnEnabled()) {
-                        LOGGER.warn("generator group '{}' : generator '{}' not found", binding.getName(), generatorId);
+                        LOGGER.warn("{} group '{}' : {} '{}' not found", binding.getGroupNameSingular(), binding.getName(), binding.getGroupNameSingular(), id);
                     }
                 }
             }
@@ -1268,23 +1346,29 @@ public class MetrixInputData {
                 gbinddef.add(idList.size());
                 gbinddef.addAll(idList);
             } else if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("generator group '{}' ignored because it contains too few elements ({})", binding.getName(), idList.size());
+                LOGGER.warn("{} group '{}' ignored because it contains too few elements ({})", binding.getGroupNameSingular(), binding.getName(), idList.size());
             }
 
         }
     }
 
-    private void writeGeneratorsBindings(MetrixDie die) {
+    private void writeGeneratorsAndBatteriesBindings(MetrixDie die) {
         if (dslData != null) {
-            Collection<MetrixGeneratorsBinding> bindings = dslData.getGeneratorsBindingsValues();
+            Collection<MetrixGeneratorsBinding> generatorBindings = dslData.getGeneratorsBindingsValues();
+            Collection<MetrixBatteriesBinding> batterybindings = dslData.getBatteriesBindingsValues();
 
-            if (!bindings.isEmpty()) {
-
+            if (!generatorBindings.isEmpty() || !batterybindings.isEmpty()) {
                 List<String> gbindnom = new ArrayList<>();
                 List<Integer> gbindref = new ArrayList<>();
                 List<Integer> gbinddef = new ArrayList<>();
 
-                getGeneratorBindings(bindings, gbindnom, gbindref, gbinddef);
+                if (!generatorBindings.isEmpty()) {
+                    getGroupBindings(generatorBindings, gbindnom, gbindref, gbinddef);
+                }
+
+                if (!batterybindings.isEmpty()) {
+                    getGroupBindings(batterybindings, gbindnom, gbindref, gbinddef);
+                }
 
                 die.setInt("NBGBINDS", gbindnom.size());
                 die.setStringArray("GBINDNOM", gbindnom.toArray(new String[0]));
@@ -1347,7 +1431,7 @@ public class MetrixInputData {
         writeTopology(die);
         writeBranches(constantLossFactor, die);
         writeLoads(die);
-        writeGenerators(die);
+        writeGeneratorsAndBatteries(die);
         writeHvdc(die);
         writeContingencies(die);
         writeSpecificContingencies(die);
@@ -1355,7 +1439,7 @@ public class MetrixInputData {
         writeContingencyFlowResults(die);
         writeDetailedMarginalVariations(die);
         writeSections(die);
-        writeGeneratorsBindings(die);
+        writeGeneratorsAndBatteriesBindings(die);
         writeLoadsBindings(die);
 
         if (writeJson && dir != null) {
@@ -1407,10 +1491,16 @@ public class MetrixInputData {
             nbTimeSeries += dslData.getHvdcContingenciesList().stream().mapToInt(s -> dslData.getHvdcContingencies(s).size()).sum();
             // Generator adequacy, preventive and curative results
             if (parameters.isWithAdequacyResults().orElse(false)) {
-                nbTimeSeries += dslData.getGeneratorsForAdequacy().isEmpty() ? trnbgrou : dslData.getGeneratorsForAdequacy().size();
+                nbTimeSeries += dslData.getGeneratorsForAdequacy().isEmpty() ? metrixNetwork.getGeneratorList().size() : dslData.getGeneratorsForAdequacy().size();
             }
             nbTimeSeries += dslData.getGeneratorsForRedispatching().size();
             nbTimeSeries += dslData.getGeneratorContingenciesList().stream().mapToInt(s -> dslData.getGeneratorContingencies(s).size()).sum();
+            // Battery adequacy, preventive and curative results
+            if (parameters.isWithAdequacyResults().orElse(false)) {
+                nbTimeSeries += dslData.getBatteriesForAdequacy().isEmpty() ? metrixNetwork.getBatteryList().size() : dslData.getBatteriesForAdequacy().size();
+            }
+            nbTimeSeries += dslData.getBatteriesForRedispatching().size();
+            nbTimeSeries += dslData.getBatteryContingenciesList().stream().mapToInt(s -> dslData.getBatteryContingencies(s).size()).sum();
             // Load curative only results
             nbTimeSeries += dslData.getCurativeLoadsList().stream().mapToInt(s -> dslData.getLoadContingencies(s).size()).sum();
             //Marginal variation results

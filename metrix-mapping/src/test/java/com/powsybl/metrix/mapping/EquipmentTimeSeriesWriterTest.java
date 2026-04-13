@@ -12,6 +12,11 @@ import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.observer.EquipmentGroupTimeSeriesWriterObserver;
+import com.powsybl.metrix.mapping.observer.EquipmentTimeSeriesWriterObserver;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
@@ -33,8 +38,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.util.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.powsybl.commons.test.ComparisonUtils.assertTxtEquals;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -116,10 +120,10 @@ class EquipmentTimeSeriesWriterTest {
 
         Path expectedFile = Paths.get(Objects.requireNonNull(getClass().getResource(directoryName + "version_1.csv")).toURI());
         Path actualFile = fileSystem.getPath("version_1.csv");
-        assertNotNull(compareStreamTxt(Files.newInputStream(expectedFile), Files.newInputStream(actualFile)));
+        assertTxtEquals(Files.newInputStream(expectedFile), Files.newInputStream(actualFile));
 
         Path expectedGroupFile = Paths.get(Objects.requireNonNull(getClass().getResource(directoryName + "group_version_1.csv")).toURI());
         Path actualGroupFile = fileSystem.getPath("group_version_1.csv");
-        assertNotNull(compareStreamTxt(Files.newInputStream(expectedGroupFile), Files.newInputStream(actualGroupFile)));
+        assertTxtEquals(Files.newInputStream(expectedGroupFile), Files.newInputStream(actualGroupFile));
     }
 }

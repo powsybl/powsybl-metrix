@@ -10,6 +10,7 @@ package com.powsybl.metrix.mapping;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
+import com.powsybl.metrix.commons.MappingVariable;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;

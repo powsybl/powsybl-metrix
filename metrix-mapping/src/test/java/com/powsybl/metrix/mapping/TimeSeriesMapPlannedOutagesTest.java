@@ -13,7 +13,11 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.mapping.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.observer.DefaultEquipmentTimeSeriesMapperObserver;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreAggregator;
 import org.junit.jupiter.api.AfterEach;
@@ -32,7 +36,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeSet;
 
-import static com.powsybl.metrix.mapping.TimeSeriesMappingConfigTableLoader.plannedOutagesEquipmentTsName;
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.plannedOutagesEquipmentTsName;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

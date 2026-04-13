@@ -1,7 +1,9 @@
 package com.powsybl.metrix.mapping
 
 import com.google.auto.service.AutoService
-import com.powsybl.metrix.mapping.exception.DataTableException
+import com.powsybl.metrix.commons.data.datatable.DataTable
+import com.powsybl.metrix.commons.data.datatable.DataTableStore
+import com.powsybl.metrix.commons.exception.DataTableException
 import com.powsybl.scripting.groovy.GroovyScriptExtension
 
 /**
@@ -36,6 +38,10 @@ class DataTableGroovyScriptExtension implements GroovyScriptExtension {
         boolean exists(String dataTableName) {
             return store.exists(dataTableName)
         }
+
+        boolean addTable(String dataTableName, DataTable dataTable) {
+            return store.addTable(dataTableName, dataTable)
+        }
     }
 
     @Override
@@ -45,8 +51,7 @@ class DataTableGroovyScriptExtension implements GroovyScriptExtension {
             def dt = new DataTableGroovyObject(dataTableStore)
             binding.dataTable = dt
             binding.dt = dt
-            binding.toDataTable = { List<String> columnNames, List<List<String>> values -> DataTable::toDataTable(columnNames, values)
-            }
+            binding.toDataTable = { List<String> columnNames, List<List<String>> values -> DataTable::toDataTable(columnNames, values) }
         }
     }
 

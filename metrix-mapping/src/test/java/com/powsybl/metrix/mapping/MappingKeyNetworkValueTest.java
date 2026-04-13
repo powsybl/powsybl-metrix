@@ -11,6 +11,7 @@ import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.PhaseTapChanger;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.Test;
 

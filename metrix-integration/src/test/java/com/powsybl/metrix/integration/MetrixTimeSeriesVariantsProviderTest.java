@@ -15,12 +15,17 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.contingency.Probability;
-import com.powsybl.metrix.integration.metrix.MetrixChunkParam;
-import com.powsybl.metrix.mapping.DataTableStore;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
+import com.powsybl.metrix.integration.network.MetrixVariantProvider;
+import com.powsybl.metrix.integration.network.MetrixVariantReaderImpl;
 import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.timeseries.RegularTimeSeriesIndex;
@@ -118,11 +123,11 @@ class MetrixTimeSeriesVariantsProviderTest {
 
         TimeSeriesMappingConfig mappingConfig;
         try (Reader mappingReader = new InputStreamReader(Objects.requireNonNull(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy")), StandardCharsets.UTF_8)) {
-            mappingConfig = new TimeSeriesDslLoader(mappingReader).load(network, mappingParameters, store, new DataTableStore(), null, null);
+            mappingConfig = new TimeSeriesDslLoader(mappingReader).load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(), null);
         }
 
         try (Reader metrixDslReader = Files.newBufferedReader(metrixFile, StandardCharsets.UTF_8)) {
-            MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, new DataTableStore(), mappingConfig, null);
+            MetrixDslDataLoader.load(metrixDslReader, network, metrixParameters, store, new DataTableStore(), mappingConfig, new ScriptLogConfig());
         }
 
         Range<Integer> variantRange = Range.closed(0, 1);
