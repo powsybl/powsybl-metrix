@@ -22,3 +22,250 @@ table.docutils {
     margin-left: 0;
     margin-right: auto;
 }
+
+/* ============================================================
+   Diagrams — micro-iterations (metrix-simulator)
+   ============================================================ */
+
+/* --- Diagram custom color variables (light) --- */
+:root {
+    --diag-purple-fill: #eeedfe;
+    --diag-purple-stroke: #534ab7;
+    --diag-purple-th: #3c3489;
+    --diag-purple-ts: #534ab7;
+
+    --diag-teal-fill: #e1f5ee;
+    --diag-teal-stroke: #0f6e56;
+    --diag-teal-th: #085041;
+    --diag-teal-ts: #0f6e56;
+
+    --diag-coral-fill: #faece7;
+    --diag-coral-stroke: #993c1d;
+    --diag-coral-th: #712b13;
+    --diag-coral-ts: #993c1d;
+
+    --diag-blue-fill: #e6f1fb;
+    --diag-blue-stroke: #185fa5;
+    --diag-blue-th: #0c447c;
+    --diag-blue-ts: #185fa5;
+
+    --diag-amber-fill: #faeeda;
+    --diag-amber-stroke: #854f0b;
+    --diag-amber-th: #633806;
+    --diag-amber-ts: #854f0b;
+
+    --diag-gray-fill: #f1efe8;
+    --diag-gray-stroke: #5f5e5a;
+    --diag-gray-th: #444441;
+    --diag-gray-ts: #5f5e5a;
+
+    --diag-red: #e24b4a;
+    --diag-green: #1d9e75;
+}
+
+/* --- Dark overrides: Furo explicit dark theme --- */
+body[data-theme="dark"] {
+    --diag-purple-fill: #3c3489;
+    --diag-purple-stroke: #afa9ec;
+    --diag-purple-th: #cecbf6;
+    --diag-purple-ts: #afa9ec;
+
+    --diag-teal-fill: #085041;
+    --diag-teal-stroke: #5dcaa5;
+    --diag-teal-th: #9fe1cb;
+    --diag-teal-ts: #5dcaa5;
+
+    --diag-coral-fill: #712b13;
+    --diag-coral-stroke: #f0997b;
+    --diag-coral-th: #f5c4b3;
+    --diag-coral-ts: #f0997b;
+
+    --diag-blue-fill: #0c447c;
+    --diag-blue-stroke: #85b7eb;
+    --diag-blue-th: #b5d4f4;
+    --diag-blue-ts: #85b7eb;
+
+    --diag-amber-fill: #633806;
+    --diag-amber-stroke: #fac775;
+    --diag-amber-th: #faeeda;
+    --diag-amber-ts: #fac775;
+
+    --diag-gray-fill: #444441;
+    --diag-gray-stroke: #b4b2a9;
+    --diag-gray-th: #d3d1c7;
+    --diag-gray-ts: #b4b2a9;
+
+    --diag-red: #f09595;
+    --diag-green: #5dcaa5;
+}
+
+/* --- Dark overrides: Furo "auto" theme (follows OS preference) --- */
+@media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+        --diag-purple-fill: #3c3489;
+        --diag-purple-stroke: #afa9ec;
+        --diag-purple-th: #cecbf6;
+        --diag-purple-ts: #afa9ec;
+
+        --diag-teal-fill: #085041;
+        --diag-teal-stroke: #5dcaa5;
+        --diag-teal-th: #9fe1cb;
+        --diag-teal-ts: #5dcaa5;
+
+        --diag-coral-fill: #712b13;
+        --diag-coral-stroke: #f0997b;
+        --diag-coral-th: #f5c4b3;
+        --diag-coral-ts: #f0997b;
+
+        --diag-blue-fill: #0c447c;
+        --diag-blue-stroke: #85b7eb;
+        --diag-blue-th: #b5d4f4;
+        --diag-blue-ts: #85b7eb;
+
+        --diag-amber-fill: #633806;
+        --diag-amber-stroke: #fac775;
+        --diag-amber-th: #faeeda;
+        --diag-amber-ts: #fac775;
+
+        --diag-gray-fill: #444441;
+        --diag-gray-stroke: #b4b2a9;
+        --diag-gray-th: #d3d1c7;
+        --diag-gray-ts: #b4b2a9;
+
+        --diag-red: #f09595;
+        --diag-green: #5dcaa5;
+    }
+}
+
+/* --- Diagram card container --- */
+.diagram-card {
+    margin: 1.5rem 0 2rem 0;
+    padding: 1.25rem;
+    border: 1px solid var(--color-background-border);
+    border-radius: 12px;
+    background: var(--color-background-secondary);
+    overflow-x: auto;
+}
+
+.diagram-card svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.legend {
+    font-size: 0.92rem;
+    margin-top: 0.85rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--color-background-border);
+    color: var(--color-foreground-secondary);
+}
+
+/* --- SVG text classes --- */
+svg text.th {
+    font-family: var(--font-stack);
+    font-size: 14px;
+    font-weight: 600;
+    fill: var(--color-foreground-primary);
+}
+
+svg text.ts {
+    font-family: var(--font-stack);
+    font-size: 12px;
+    font-weight: 400;
+    fill: var(--color-foreground-secondary);
+}
+
+/* --- SVG lines --- */
+svg .arr {
+    stroke: var(--color-foreground-secondary);
+    stroke-width: 1.5;
+}
+
+svg .leader {
+    stroke: var(--color-foreground-secondary);
+    stroke-width: 0.5;
+    stroke-dasharray: 4 3;
+}
+
+/* --- SVG zones --- */
+svg .dashed-zone {
+    fill: none;
+    stroke: var(--color-background-border);
+    stroke-width: 0.8;
+    stroke-dasharray: 6 4;
+}
+
+svg .dashed-inner {
+    fill: none;
+    stroke: var(--color-background-border);
+    stroke-width: 0.8;
+    stroke-dasharray: 4 3;
+}
+
+/* --- SVG color fills (using custom variables) --- */
+svg .fill-purple rect {
+    fill: var(--diag-purple-fill);
+    stroke: var(--diag-purple-stroke);
+}
+svg .fill-purple text.th {
+    fill: var(--diag-purple-th);
+}
+svg .fill-purple text.ts {
+    fill: var(--diag-purple-ts);
+}
+
+svg .fill-teal rect {
+    fill: var(--diag-teal-fill);
+    stroke: var(--diag-teal-stroke);
+}
+svg .fill-teal text.th {
+    fill: var(--diag-teal-th);
+}
+svg .fill-teal text.ts {
+    fill: var(--diag-teal-ts);
+}
+
+svg .fill-coral rect {
+    fill: var(--diag-coral-fill);
+    stroke: var(--diag-coral-stroke);
+}
+svg .fill-coral text.th {
+    fill: var(--diag-coral-th);
+}
+svg .fill-coral text.ts {
+    fill: var(--diag-coral-ts);
+}
+
+svg .fill-blue rect {
+    fill: var(--diag-blue-fill);
+    stroke: var(--diag-blue-stroke);
+}
+svg .fill-blue text.th {
+    fill: var(--diag-blue-th);
+}
+svg .fill-blue text.ts {
+    fill: var(--diag-blue-ts);
+}
+
+svg .fill-amber rect {
+    fill: var(--diag-amber-fill);
+    stroke: var(--diag-amber-stroke);
+}
+svg .fill-amber text.th {
+    fill: var(--diag-amber-th);
+}
+svg .fill-amber text.ts {
+    fill: var(--diag-amber-ts);
+}
+
+svg .fill-gray rect {
+    fill: var(--diag-gray-fill);
+    stroke: var(--diag-gray-stroke);
+}
+svg .fill-gray text.th {
+    fill: var(--diag-gray-th);
+}
+svg .fill-gray text.ts {
+    fill: var(--diag-gray-ts);
+}
