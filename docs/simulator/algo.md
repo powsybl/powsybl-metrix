@@ -1789,7 +1789,7 @@ chaque incident. Quatre filtres successifs éliminent les contraintes redondante
 
         <g class="fill-amber">
             <rect x="55" y="938" width="260" height="28" rx="8" stroke-width="0.5"/>
-            <text class="th" x="185" y="952" text-anchor="middle" dominant-baseline="central">Filtre 3 : écart > seuil ?</text>
+            <text class="th" x="185" y="952" text-anchor="middle" dominant-baseline="central">Filtre 3 : écart > seuil de détection ?</text>
         </g>
         <line x1="315" y1="952" x2="370" y2="952" class="arr" marker-end="url(#a2)"/>
         <text class="ts" x="380" y="952" text-anchor="start" style="fill: var(--diag-green)">Non → skip</text>
@@ -1845,7 +1845,7 @@ sont créées, et que les coupes de transit sont écrites.
 <div class="diagram-card">
     <svg
         width="100%"
-        viewBox="0 0 680 1100"
+        viewBox="0 0 680 1180"
         xmlns="http://www.w3.org/2000/svg"
     >
         <defs>
@@ -1874,629 +1874,160 @@ sont créées, et que les coupes de transit sont écrites.
         </text>
 
         <g class="fill-amber">
-            <rect
-                x="170"
-                y="46"
-                width="340"
-                height="60"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="340"
-                y="64"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Trop de contraintes ?
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="82"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                nbCtr_ > max, mode OPF/OPF_OVERLOAD
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="96"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                et micro-itération ≤ 5
-            </text>
+            <rect x="170" y="46" width="340" height="60" rx="8" stroke-width="0.5"/>
+            <text class="th" x="340" y="64" text-anchor="middle" dominant-baseline="central">Trop de contraintes ?</text>
+            <text class="ts" x="340" y="82" text-anchor="middle" dominant-baseline="central">nbCtr_ > max, mode OPF/OPF_OVERLOAD</text>
+            <text class="ts" x="340" y="96" text-anchor="middle" dominant-baseline="central">et micro-itération ≤ 5</text>
         </g>
-        <line
-            x1="510"
-            y1="76"
-            x2="570"
-            y2="76"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="510" y1="76" x2="570" y2="76" class="arr" marker-end="url(#a3)"/>
         <text class="ts" x="576" y="70" text-anchor="start">Oui →</text>
         <text class="ts" x="576" y="86" text-anchor="start">dédoublonnage</text>
-        <line
-            x1="340"
-            y1="106"
-            x2="340"
-            y2="130"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="340" y1="106" x2="340" y2="130" class="arr" marker-end="url(#a3)"/>
 
-        <rect
-            class="dashed-zone"
-            x="20"
-            y="130"
-            width="640"
-            height="940"
-            rx="16"
-        />
-        <text class="th" x="40" y="152">
-            Boucle sur icdtQdt_[0..nbCtr_]
-        </text>
+        <rect class="dashed-zone" x="20" y="130" width="640" height="1020" rx="16"/>
+        <text class="th" x="40" y="152">Boucle sur icdtQdt_[0..nbCtr_]</text>
 
         <g class="fill-gray">
-            <rect
-                x="140"
-                y="168"
-                width="220"
-                height="44"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="250"
-                y="190"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Type de contrainte ?
-            </text>
+            <rect x="140" y="168" width="220" height="44" rx="8" stroke-width="0.5"/>
+            <text class="th" x="250" y="190" text-anchor="middle" dominant-baseline="central">Type de contrainte ?</text>
         </g>
 
-        <line
-            x1="200"
-            y1="212"
-            x2="140"
-            y2="258"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="200" y1="212" x2="140" y2="258" class="arr" marker-end="url(#a3)"/>
 
-        <line x1="360" y1="190" x2="400" y2="190" class="arr" />
-        <line
-            x1="400"
-            y1="190"
-            x2="400"
-            y2="540"
-            class="arr"
-            stroke-width="1.5"
-        />
-        <line
-            x1="400"
-            y1="282"
-            x2="430"
-            y2="282"
-            class="arr"
-            marker-end="url(#a3)"
-        />
-        <line
-            x1="400"
-            y1="402"
-            x2="430"
-            y2="402"
-            class="arr"
-            marker-end="url(#a3)"
-        />
-        <line
-            x1="400"
-            y1="530"
-            x2="430"
-            y2="530"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="360" y1="190" x2="400" y2="190" class="arr"/>
+        <line x1="400" y1="190" x2="400" y2="540" class="arr" stroke-width="1.5"/>
+        <line x1="400" y1="282" x2="430" y2="282" class="arr" marker-end="url(#a3)"/>
+        <line x1="400" y1="402" x2="430" y2="402" class="arr" marker-end="url(#a3)"/>
+        <line x1="400" y1="530" x2="430" y2="530" class="arr" marker-end="url(#a3)"/>
 
-        <rect
-            class="dashed-inner"
-            x="30"
-            y="258"
-            width="250"
-            height="380"
-            rx="12"
-        />
-        <text class="ts" x="45" y="278">
-            Cas A : 1ère contrainte d'un
-        </text>
+        <rect class="dashed-inner" x="30" y="258" width="250" height="460" rx="12"/>
+        <text class="ts" x="45" y="278">Cas A : 1ère contrainte d'un</text>
         <text class="ts" x="45" y="292">incident avec parades</text>
 
         <g class="fill-blue">
-            <rect
-                x="42"
-                y="306"
-                width="226"
-                height="50"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="155"
-                y="324"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >Activer les parades</text>
-            <text
-                class="ts"
-                x="155"
-                y="342"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                paradesActivees_ = true
-            </text>
+            <rect x="42" y="306" width="226" height="50" rx="8" stroke-width="0.5"/>
+            <text class="th" x="155" y="324" text-anchor="middle" dominant-baseline="central">Activer les parades</text>
+            <text class="ts" x="155" y="342" text-anchor="middle" dominant-baseline="central">paradesActivees_ = true</text>
         </g>
-        <line
-            x1="155"
-            y1="356"
-            x2="155"
-            y2="372"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="155" y1="356" x2="155" y2="372" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-purple">
-            <rect
-                x="42"
-                y="372"
-                width="226"
-                height="50"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="155"
-                y="390"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Var. entières activation
-            </text>
-            <text
-                class="ts"
-                x="155"
-                y="408"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                cost_parade × proba
-            </text>
+            <rect x="42" y="372" width="226" height="50" rx="8" stroke-width="0.5"/>
+            <text class="th" x="155" y="390" text-anchor="middle" dominant-baseline="central">Var. entières activation</text>
+            <text class="ts" x="155" y="408" text-anchor="middle" dominant-baseline="central">cost_parade × proba</text>
         </g>
-        <line
-            x1="155"
-            y1="422"
-            x2="155"
-            y2="438"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="155" y1="422" x2="155" y2="438" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-teal">
-            <rect
-                x="42"
-                y="438"
-                width="226"
-                height="44"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="155"
-                y="460"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >Variables curatives</text>
+            <rect x="42" y="438" width="226" height="44" rx="8" stroke-width="0.5"/>
+            <text class="th" x="155" y="460" text-anchor="middle" dominant-baseline="central">Variables curatives</text>
         </g>
-        <line
-            x1="155"
-            y1="482"
-            x2="155"
-            y2="498"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="155" y1="482" x2="155" y2="498" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-teal">
-            <rect
-                x="42"
-                y="498"
-                width="226"
-                height="50"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="155"
-                y="516"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Heuristique eval_parade
-            </text>
-            <text
-                class="ts"
-                x="155"
-                y="534"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Pré-filtrage efficacité
-            </text>
+            <rect x="42" y="498" width="226" height="50" rx="8" stroke-width="0.5"/>
+            <text class="th" x="155" y="516" text-anchor="middle" dominant-baseline="central">Heuristique eval_parade</text>
+            <text class="ts" x="155" y="534" text-anchor="middle" dominant-baseline="central">Pré-filtrage efficacité</text>
         </g>
-        <line
-            x1="155"
-            y1="548"
-            x2="155"
-            y2="564"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="155" y1="548" x2="155" y2="564" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-blue">
-            <rect
-                x="42"
-                y="564"
-                width="226"
-                height="50"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="155"
-                y="578"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Contrainte par parade
-            </text>
-            <text
-                class="ts"
-                x="155"
-                y="596"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                + contrainte d'activation
-            </text>
+            <rect x="42" y="564" width="226" height="50" rx="8" stroke-width="0.5"/>
+            <text class="th" x="155" y="578" text-anchor="middle" dominant-baseline="central">Contrainte par parade</text>
+            <text class="ts" x="155" y="596" text-anchor="middle" dominant-baseline="central">+ contrainte d'activation</text>
         </g>
-
-        <rect
-            class="dashed-inner"
-            x="430"
-            y="248"
-            width="220"
-            height="108"
-            rx="12"
-        />
-        <text class="ts" x="445" y="268">
-            Cas B : contrainte détectée
-        </text>
-        <text class="ts" x="445" y="282">
-            sur une parade (micro-it. préc.)
-        </text>
+        <line x1="155" y1="614" x2="155" y2="630" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-blue">
-            <rect
-                x="442"
-                y="296"
-                width="196"
-                height="50"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="540"
-                y="314"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >Contrainte</text>
-<text
-                class="ts"
-                x="540"
-                y="332"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >par parade</text>
+            <rect x="42" y="630" width="226" height="62" rx="8" stroke-width="0.5"/>
+            <text class="th" x="155" y="648" text-anchor="middle" dominant-baseline="central">Si ITAM : contrainte ITAM</text>
+            <text class="ts" x="155" y="666" text-anchor="middle" dominant-baseline="central">sur seuilMaxAvantCur_</text>
+            <text class="ts" x="155" y="682" text-anchor="middle" dominant-baseline="central">(si écart pré-curatif significatif)</text>
         </g>
 
-        <rect
-            class="dashed-inner"
-            x="430"
-            y="368"
-            width="220"
-            height="128"
-            rx="12"
-        />
-        <text class="ts" x="445" y="388">
-            Cas B' : autre contrainte,
-        </text>
-        <text class="ts" x="445" y="402">
-            parades activées cette micro-it.
-        </text>
+        <rect class="dashed-inner" x="430" y="248" width="220" height="108" rx="12"/>
+        <text class="ts" x="445" y="268">Cas B : contrainte détectée</text>
+        <text class="ts" x="445" y="282">sur une parade (micro-it. préc.)</text>
 
         <g class="fill-blue">
-            <rect
-                x="442"
-                y="416"
-                width="196"
-                height="28"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="540"
-                y="430"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Contrainte par parade
-            </text>
+            <rect x="442" y="296" width="196" height="50" rx="8" stroke-width="0.5"/>
+            <text class="th" x="540" y="314" text-anchor="middle" dominant-baseline="central">Contrainte</text>
+            <text class="ts" x="540" y="332" text-anchor="middle" dominant-baseline="central">par parade</text>
         </g>
-        <line
-            x1="540"
-            y1="444"
-            x2="540"
-            y2="460"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+
+        <rect class="dashed-inner" x="430" y="368" width="220" height="128" rx="12"/>
+        <text class="ts" x="445" y="388">Cas B' : autre contrainte,</text>
+        <text class="ts" x="445" y="402">parades activées cette micro-it.</text>
+
+        <g class="fill-blue">
+            <rect x="442" y="416" width="196" height="28" rx="8" stroke-width="0.5"/>
+            <text class="th" x="540" y="430" text-anchor="middle" dominant-baseline="central">Contrainte par parade</text>
+        </g>
+        <line x1="540" y1="444" x2="540" y2="460" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-purple">
-            <rect
-                x="442"
-                y="460"
-                width="196"
-                height="28"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="540"
-                y="474"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Contrainte d'activation
-            </text>
+            <rect x="442" y="460" width="196" height="28" rx="8" stroke-width="0.5"/>
+            <text class="th" x="540" y="474" text-anchor="middle" dominant-baseline="central">Contrainte d'activation</text>
         </g>
 
-        <rect
-            class="dashed-inner"
-            x="430"
-            y="508"
-            width="220"
-            height="88"
-            rx="12"
-        />
-        <text class="ts" x="445" y="528">
-            Cas C : contrainte simple
-        </text>
+        <rect class="dashed-inner" x="430" y="508" width="220" height="88" rx="12"/>
+        <text class="ts" x="445" y="528">Cas C : contrainte simple</text>
         <text class="ts" x="445" y="542">N ou N-k sans parade</text>
 
         <g class="fill-gray">
-            <rect
-                x="442"
-                y="556"
-                width="196"
-                height="28"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="540"
-                y="570"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Ajout direct
-            </text>
+            <rect x="442" y="556" width="196" height="28" rx="8" stroke-width="0.5"/>
+            <text class="th" x="540" y="570" text-anchor="middle" dominant-baseline="central">Ajout direct</text>
         </g>
 
-        <line x1="155" y1="614" x2="155" y2="670" class="arr" />
-        <path d="M155 670 L340 690" fill="none" class="arr" />
-        <path
-            d="M540 346 L600 346 L600 670 L345 690"
-            fill="none"
-            class="arr"
-        />
-        <path d="M540 488 L590 488 L590 672" fill="none" class="arr" />
-        <path d="M540 584 L580 584 L580 674" fill="none" class="arr" />
-        <circle cx="340" cy="690" r="3" fill="var(--color-foreground-secondary)" />
-        <line
-            x1="340"
-            y1="693"
-            x2="340"
-            y2="718"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="155" y1="692" x2="155" y2="750" class="arr"/>
+        <path d="M155 750 L340 770" fill="none" class="arr"/>
+        <path d="M540 346 L600 346 L600 750 L345 770" fill="none" class="arr"/>
+        <path d="M540 488 L590 488 L590 752" fill="none" class="arr"/>
+        <path d="M540 584 L580 584 L580 754" fill="none" class="arr"/>
+        <circle cx="340" cy="770" r="3" fill="var(--color-foreground-secondary)"/>
+        <line x1="340" y1="773" x2="340" y2="798" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-coral">
-            <rect
-                x="120"
-                y="718"
-                width="440"
-                height="80"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="340"
-                y="742"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                ajoutContrainte
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="762"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Détection équivalence entre parades
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="780"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Calcul coefficients : coeffPourQuadEnN /
-                coeffPourQuadInc
-            </text>
+            <rect x="120" y="798" width="440" height="80" rx="8" stroke-width="0.5"/>
+            <text class="th" x="340" y="822" text-anchor="middle" dominant-baseline="central">ajoutContrainte</text>
+            <text class="ts" x="340" y="842" text-anchor="middle" dominant-baseline="central">Détection équivalence entre parades</text>
+            <text class="ts" x="340" y="860" text-anchor="middle" dominant-baseline="central">Calcul coefficients : coeffPourQuadEnN / coeffPourQuadInc</text>
         </g>
-        <line
-            x1="340"
-            y1="798"
-            x2="340"
-            y2="828"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="340" y1="878" x2="340" y2="908" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-gray">
-            <rect
-                x="120"
-                y="828"
-                width="440"
-                height="52"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="340"
-                y="846"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                Vérification cohérence
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="866"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                |transitDétecté - transitCalculé| > seuil → erreur
-            </text>
+            <rect x="120" y="908" width="440" height="52" rx="8" stroke-width="0.5"/>
+            <text class="th" x="340" y="926" text-anchor="middle" dominant-baseline="central">Vérification cohérence</text>
+            <text class="ts" x="340" y="946" text-anchor="middle" dominant-baseline="central">|transitDétecté - transitCalculé| > seuil → erreur</text>
         </g>
-        <line
-            x1="340"
-            y1="880"
-            x2="340"
-            y2="910"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="340" y1="960" x2="340" y2="990" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-blue">
-            <rect
-                x="120"
-                y="910"
-                width="440"
-                height="56"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="340"
-                y="930"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                ecrireCoupeTransit
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="950"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                minT ≤ Σ(coefs[j] × x[j]) + partieFixe ≤ maxT
-            </text>
+            <rect x="120" y="990" width="440" height="56" rx="8" stroke-width="0.5"/>
+            <text class="th" x="340" y="1010" text-anchor="middle" dominant-baseline="central">ecrireCoupeTransit</text>
+            <text class="ts" x="340" y="1030" text-anchor="middle" dominant-baseline="central">minT ≤ Σ(coefs[j] × x[j]) + partieFixe ≤ maxT</text>
         </g>
-        <line
-            x1="340"
-            y1="966"
-            x2="340"
-            y2="996"
-            class="arr"
-            marker-end="url(#a3)"
-        />
+        <line x1="340" y1="1046" x2="340" y2="1076" class="arr" marker-end="url(#a3)"/>
 
         <g class="fill-purple">
-            <rect
-                x="120"
-                y="996"
-                width="440"
-                height="44"
-                rx="8"
-                stroke-width="0.5"
-            />
-            <text
-                class="th"
-                x="340"
-                y="1012"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                + variable d'écart
-            </text>
-            <text
-                class="ts"
-                x="340"
-                y="1030"
-                text-anchor="middle"
-                dominant-baseline="central"
-            >
-                modes OPF_WITHOUT_REDISPATCH / OPF_WITH_OVERLOAD
-            </text>
+            <rect x="120" y="1076" width="440" height="44" rx="8" stroke-width="0.5"/>
+            <text class="th" x="340" y="1092" text-anchor="middle" dominant-baseline="central">+ variable d'écart</text>
+            <text class="ts" x="340" y="1110" text-anchor="middle" dominant-baseline="central">modes OPF_WITHOUT_REDISPATCH / OPF_WITH_OVERLOAD</text>
         </g>
     </svg>
     <div class="legend">
         Les 4 cas correspondent à la chaîne if/else if/else if/else du
         code. Case A: première contrainte d'un incident avec parades —
-        crée les variables entières, curatives, et les contraintes
-        d'activation. Cas B : la contrainte a été détectée sur une
-        parade (activée dans une micro-itération précédente) — crée les
-        contraintes par parade sans contrainte d'activation. Cas B' :
-        autre contrainte sur un incident dont les parades ont été
-        activées plus tôt dans cette même micro-itération — crée les
-        contraintes par parade avec contrainte d'activation. Cas C :
-        contrainte en N ou N-k simple, ajout direct.
+        crée les variables entières, curatives, les contraintes d'activation,
+        et — si <code>TESTITAM</code> est activé et que l'écart pré-curatif
+        dépasse le seuil de détection — une contrainte ITAM dédiée sur
+        <code>seuilMaxAvantCur_</code>. Cas B : la contrainte a été détectée
+        sur une parade (activée dans une micro-itération précédente) — crée
+        les contraintes par parade sans contrainte d'activation. Cas B' :
+        autre contrainte sur un incident dont les parades ont été activées
+        plus tôt dans cette même micro-itération — crée les contraintes par
+        parade avec contrainte d'activation. Cas C : contrainte en N ou
+        N-k simple, ajout direct.
     </div>
 </div>
 ```
