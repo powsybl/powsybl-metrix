@@ -1,1 +1,0 @@
-../../../sirius/curatif/parade_ouverture_interrupteur/_Readme.txt

@@ -1,1 +1,0 @@
-../../../sirius/curatif/contraintes_equivalentes/_Readme.txt

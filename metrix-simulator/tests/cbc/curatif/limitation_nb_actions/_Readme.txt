@@ -1,1 +1,0 @@
-../../../sirius/curatif/limitation_nb_actions/_Readme.txt

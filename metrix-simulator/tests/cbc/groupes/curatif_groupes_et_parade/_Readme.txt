@@ -1,1 +1,0 @@
-../../../sirius/groupes/curatif_groupes_et_parade/_Readme.txt
