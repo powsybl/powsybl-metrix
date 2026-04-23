@@ -9,6 +9,7 @@ MESSAGE("LODF and PTDF tests...")
 
 set(TEST_DIR_NAME LODF_PTDF)
 set(TEST_DIR ${MAIN_TEST_DIR}/${TEST_DIR_NAME})
-set(EXPECTED_TEST_DIR ${MAIN_REFERENCE_DIR}/${TEST_DIR_NAME})
+set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
 metrix_test_with_lodf_pdtf("LODF_PTDF_matrices" 3)
+
