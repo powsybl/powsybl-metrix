@@ -124,8 +124,7 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
     const auto& params = config::configuration().specificSolverParams();
     bool forceOrt = config::configuration().useOrtoolsForSirius();
 
-    solver_simplex_ = makeSolver(config::configuration().solverChoice(), params, forceOrt);
-    solver_pne_ = solver_simplex_;
+    solver_pne_ = makeSolver(config::configuration().solverChoice(), params, forceOrt);
     pc_solver_ = makeSolver(config::configuration().pcSolverChoice(), params, forceOrt);
 #else
     solver_simplex_ = std::make_shared<compute::Solver>();
@@ -341,6 +340,7 @@ int Calculer::resolutionProbleme()
 
                 // Free the problem at the end of the resolution
                 solver_pne_->free();
+                pc_solver_->free();
 
                 // No solution variant (but not due to internal problem)
                 if (status == METRIX_PAS_SOLUTION || status == METRIX_NB_MAX_CONT_ATTEINT
@@ -429,8 +429,20 @@ int Calculer::resolutionProbleme()
 void Calculer::perturberCoutsAvantSolve()
 {
     const double epsilon = 1e-6;
-    for (int i = 0; i < pbNombreDeVariables_; ++i) {
-        pbCoutLineaire_[i] += static_cast<double>(i) * epsilon;
+    const int n = pbNombreDeVariables_;
+
+    // Retirer la perturbation précédente sur les variables qu'on avait déjà perturbées
+    const int nPrecedent = static_cast<int>(pbPerturbationCouts_.size());
+    const int nCommun = std::min(n, nPrecedent);
+    for (int i = 0; i < nCommun; ++i) {
+        pbCoutLineaire_[i] -= pbPerturbationCouts_[i];
+    }
+
+    // Redimensionner et calculer la nouvelle perturbation
+    pbPerturbationCouts_.assign(n, 0.0);
+    for (int i = 0; i < n; ++i) {
+        pbPerturbationCouts_[i] = static_cast<double>(i) * epsilon;
+        pbCoutLineaire_[i] += pbPerturbationCouts_[i];
     }
 }
 

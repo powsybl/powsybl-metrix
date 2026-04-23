@@ -102,6 +102,8 @@ int Calculer::allocationProblemeDodu()
 
     unsigned int taille = pbNombreDeVariables_;
 
+    pbPerturbationCouts_.clear(); // reset de la perturbation pour cette variante
+
     if (!problemeAlloue_) { // le premier cas traite
         pbTypeDeVariable_.resize(taille, REEL);
         pbTypeDeBorneDeLaVariable_.resize(taille, VARIABLE_BORNEE_DES_DEUX_COTES);

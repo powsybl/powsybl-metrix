@@ -204,6 +204,7 @@ public:
     vector<int> pbComplementDeLaBase_;              // defini dans pne ou spx
     vector<double> pbCoutsMarginauxDesContraintes_; // defini dans pne ou spx
     vector<double> pbCoutsReduits_;                 // defini dans pne ou spx
+    vector<double> pbPerturbationCouts_;            // perturbation courante appliquée aux coûts (PERTURBCOST)
     vector<TypeCoupes> pbTypeContrainte_;           // type de la coupe surete N : 1, surete N-1 Ligne : 2,
     // surete N-1 Groupe : 3, surete N-K : 4, autre : 5
     // pour ajouter des coupes
@@ -255,7 +256,6 @@ public:
 
     std::map<ListeQuadsIncident, MATRICE*> jacIncidentsModifies_;
 
-    Calculer();
     ~Calculer();
 
     unsigned int numMicroIteration_ = 0; // iterations correspondant au contraintes ajoutees pour une variante (1,2,...)
