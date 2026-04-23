@@ -202,6 +202,8 @@ public:
     SolverChoice solverChoice() const { return solver_choice_; }
     SolverChoice pcSolverChoice() const { return pc_solver_choice_; }
     const std::string& specificSolverParams() const { return specific_solver_params_; }
+    bool useOrtoolsForSirius() const { return use_ortools_for_sirius_; }
+    bool perturbCost() const { return perturb_cost_; }
     double noiseCost() const { return noise_cost_; }
 
     unsigned int lostLoadDetailedMax() const { return lost_load_detailed_max_; }
@@ -371,6 +373,8 @@ private:
     SolverChoice solver_choice_;
     SolverChoice pc_solver_choice_;
     std::string specific_solver_params_;
+    bool use_ortools_for_sirius_;
+    bool perturb_cost_;
     double noise_cost_;
 
     unsigned int lost_load_detailed_max_;

@@ -143,9 +143,14 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
             // If ortools is not used, only Sirius is allowed
             helper::check(solver_choice == static_cast<int>(SolverChoice::SIRIUS), solver_choice_key);
 #endif
+#if defined(USE_ORTOOLS) && !defined(USE_XPRESS)
+            helper::check(solver_choice != static_cast<int>(SolverChoice::XPRESS), solver_choice_key);
+#endif
         }
     }
 
+    helper::checkAtMostKeyOnce(std::get<BOOLEAN>(raw_config), "USEORTSIRIUS");
+    helper::checkAtMostKeyOnce(std::get<BOOLEAN>(raw_config), "PERTURBCOST");
     auto specific_solver_params_key = "SPECIFICSOLVERPARAMS";
     if (helper::checkAtMostKeyOnce(std::get<STRING>(raw_config), specific_solver_params_key)) {
         helper::check(std::get<STRING>(raw_config).at(specific_solver_params_key).size() == 1, specific_solver_params_key);
@@ -336,6 +341,8 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "SOLVERCH", SolverChoice::SIRIUS);
     pc_solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "PCSOLVERCH", SolverChoice::SIRIUS);
     specific_solver_params_ = helper::updateValueNumber(std::get<STRING>(raw_config), "SPECIFICSOLVERPARAMS", std::string(""));
+    use_ortools_for_sirius_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "USEORTSIRIUS", false);
+    perturb_cost_ = helper::updateValueNumber(std::get<BOOLEAN>(raw_config), "PERTURBCOST", false);
     noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
 
     lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);
