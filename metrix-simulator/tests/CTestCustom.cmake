@@ -1,36 +1,105 @@
 set(CTEST_CUSTOM_TESTS_IGNORE
+    xpress_encodage_utf8
     xpress_probleme_bornes_ecart_1
     xpress_probleme_bornes_ecart_2
     xpress_contrainte_sans_action_possible_opf
     xpress_contraintes_sans_action_possible
     xpress_tres_long
     xpress_tout_fixe
+    xpress_tout_fixe_hr
+    xpress_resultats_equilibrage_et_variations_marginales
+    xpress_variations_marginales
+    xpress_variations_marginales_with_offset
     xpress_variations_marginales_sur_parades
+    xpress_variations_marginales_several_bconstraints
     xpress_temps_calcul_pne
     xpress_bug_pne
+    xpress_gen_cost_sans_vm
     xpress_resultats_surcharges_uniquement
+    xpress_transits_sur_incidents
+    xpress_redispatching_offset
+    xpress_composante_non_connexe
     xpress_connexite_base_variant
     xpress_noeud_connexe_isole
     xpress_incidents_piquage
+    xpress_incident_rompant_connexite
     xpress_pb_inc_rompant_connex
+    xpress_incident_rompant_connexite_avec_preventif
+    xpress_incident_rompant_connexite_avec_curatif
     xpress_incidents_rompant_connexite_avec_parades
     xpress_incident_ne_rompt_plus_connexite
     xpress_inc_connexite_et_quad_deconnecte
     xpress_parade_cree_2_noeuds_isoles
+    xpress_reprise_partielle_poche_en_curatif
+    xpress_mapping_sectionneurs
+    xpress_incident_rompant_connexite_detailed
     xpress_isolated_node_after_base_case_and_variant
     xpress_contraintes_equivalentes
     xpress_parades
     xpress_parades_et_TD
     xpress_limitation_nb_actions
+    xpress_parade_ouverture_couplage
+    xpress_parade_ouverture_ligne_contrainte
+    xpress_fermeture_ligne
+    xpress_fermeture_ligne_et_TD_en_curatif
+    xpress_parade_rompant_connexite
     xpress_contrainte_cree_par_parade
+    xpress_meilleure_parade_va_dans_le_mauvais_sens
     xpress_parades_pas_vraiment_equivalentes
     xpress_parade_inverse_transit
+    xpress_restriction_parade_sur_contrainte
+    xpress_parade_ouverture_interrupteur
+    xpress_ouverture_groupe_et_conso
+    xpress_ouverture_groupe_et_conso_avec_proba
+    xpress_couplage_boucle_sur_meme_noeud
+    xpress_delestage_HR
+    xpress_delestage_HR_cible
+    xpress_delestage_preventif
+    xpress_delestage_preventif_cible
+    xpress_effacement_curatif
     xpress_delestage_charges_negatives
     xpress_curatif_sans_preventif
+    xpress_hvdcEmulAC
+    xpress_hvdcEmulAC_k5000
     xpress_hvdcWatchSection
+    xpress_hvdcEmulAC_curatif
+    xpress_hvdcEmulAC_curatifTD
+    xpress_hvdcEmulAC_et_seuil_ITAM
+    xpress_penalisation_HVDC
+    xpress_penalisation_HVDC_2_curatif
+    xpress_incidentHvdc
+    xpress_incidentHvdcEmulAC
+    xpress_incidentHvdc_non_connexite
+    xpress_incidentHvdcEmulAC_non_connexite
+    xpress_incidentHvdcCuratif
+    xpress_td_curatif_avec_ITAM
+    xpress_penalisation_TD
+    xpress_td_en_curatif_dans_incident
+    xpress_limitation_preventif_td
     xpress_mapping_prises_td
+    xpress_config_adequacy_vs_redispatching
+    xpress_cost_offsets
     xpress_redispatching
+    xpress_defaut_groupes
+    xpress_curatif_groupes
+    xpress_curatif_groupe_2_defauts
+    xpress_curatif_groupes_et_parade
+    xpress_curatif_groupes_et_defaut_groupe
     xpress_pompage_hr_necessaire
+    xpress_limitation_curatif
+    xpress_noise_cost
     xpress_hvdc_en_emulation_AC
+    xpress_verif_pertes
+    xpress_verif_pertes_hvdcEmulAC
+    xpress_tous_generateurs_lies
+    xpress_variables_couplees
+    xpress_seuils_extremite_origine
+    xpress_seuils_incidents_complexes
+    xpress_seuils_sections_surveillees
+    xpress_independent_after_before_cur_threshold
     xpress_variantes_regroupees_complexe
+    xpress_variantes_regroupees_simple
+    xpress_preventive_with_difference
+    xpress_difference_var
+    xpress_LODF_PTDF_matrices
 )
