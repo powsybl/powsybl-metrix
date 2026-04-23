@@ -16,9 +16,10 @@ project(MetrixSimulator
     VERSION 7.4.0
     LANGUAGES C CXX)
 
-cmake_policy(SET CMP0028 NEW) # Fatal error if "::" link is not imported / alias target
+cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables in find_package
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
 
 include(CMakeDependentOption)
 include(InstallLib)
@@ -52,16 +53,16 @@ else()
         message(VERBOSE "Use static library for sirius solver")
     endif()
 endif()
-if(MSVC)
 
-  add_definitions(-D_WIN32_WINNT=0x0A00)
-  add_compile_definitions("_CRT_SECURE_NO_WARNINGS")
-  set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:5000000 ")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-  # In release, we prefer speed over size of the code
-  set(CMAKE_CXX_FLAGS_RELEASE "/O2")
-  set(CMAKE_C_FLAGS_RELEASE "/O2")
-  set(Boost_USE_STATIC_RUNTIME ON)
+if(MSVC)
+    add_definitions(-D_WIN32_WINNT=0x0A00)
+    add_compile_definitions("_CRT_SECURE_NO_WARNINGS")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /STACK:5000000 ")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+    # In release, we prefer speed over size of the code
+    set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+    set(CMAKE_C_FLAGS_RELEASE "/O2")
+    set(Boost_USE_STATIC_RUNTIME ON)
 else()
     if(NOT CMAKE_BUILD_TYPE)
         set(CMAKE_BUILD_TYPE Release)

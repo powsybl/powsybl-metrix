@@ -1,56 +1,165 @@
-## Configuration et build de la chaîne Sirius - OR-Tools - Metrix
+## Building metrix-simulator
+
+### Prerequisites
+
+- **CMake** ≥ 3.14
+- **C/C++ compiler** with C++11 support
+- **Boost** ≥ 1.66 — must be installed on the system
+- **Git** — for downloading external dependencies
+- **Xpress** (optional): pre-installed commercial solver, with the `XPRESS_ROOT` environment variable pointing to the installation directory
+
+### Build
 
 ```bash
-### clone du dépôt git de Sirius dans un dossier sirius-solver
-git clone https://github.com/rte-france/sirius-solver.git --branch=metrix sirius-solver
-### configuration cmake + build + install en Release
-cmake -S sirius-solver/ -B sirius-solver/builds/ -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=install/sirius-solver/
-cmake --build sirius-solver/builds --config Release --target install
+# Clone the repository
+git clone https://github.com/powsybl/powsybl-metrix.git powsybl-metrix
 
-### clone du dépôt git d'OR-Tools version RTE
-git clone https://github.com/rte-france/or-tools-rte.git --branch=release/v9.11-rte1.1 or-tools
-### configuration cmake + build + install en Release
-cmake -S or-tools/ -B or-tools/builds/ \
+# Build external dependencies (SuiteSparse, Sirius, OR-Tools)
+mkdir -p powsybl-metrix/metrix-simulator/build/external
+cd powsybl-metrix/metrix-simulator/build/external
+
+cmake ../../external \
       -D CMAKE_BUILD_TYPE=Release \
-      -D CMAKE_INSTALL_PREFIX=install/or-tools/ \
-      -D ortools_REPO=https://github.com/google/or-tools \
-      -D ortools_REF=v9.11 \
-      -D USE_SIRIUS=ON \
-      -D CMAKE_PREFIX_PATH="$SIRIUS_ROOT" \
+      -D USE_ORTOOLS=ON \
       -D USE_XPRESS=ON \
       -D XPRESS_ROOT="$XPRESS_ROOT"
-# NB : Afin de diminuer le temps de compilations, certaines options peuvent être désactivées : BUILD_CXX_SAMPLES / BUILD_CXX_EXAMPLES
-cmake --build or-tools/builds --config Release --target install
 
-### clone du dépôt git de Metrix dans un dossier metrix
-git clone https://github.com/powsybl/powsybl-metrix.git --branch=ortools-updated powsybl-metrix
-### configuration cmake + build en Release
-cmake -S powsybl-metrix/metrix-simulator -B powsybl-metrix/metrix-simulator/build-ortools \
+cmake --build . -j$(nproc)
+cd ../../../..
+
+# Build metrix-simulator
+cmake -S powsybl-metrix/metrix-simulator \
+      -B powsybl-metrix/metrix-simulator/build \
       -D CMAKE_BUILD_TYPE=Release \
-      -D sirius_solver_ROOT="$SIRIUS_ROOT" \
-      -D CMAKE_PREFIX_PATH="$HOME/software/install/or-tools" \
-      -D XPRESS_ROOT="$XPRESS_ROOT" \
       -D USE_ORTOOLS=ON \
-      -D KLU_INCLUDE_DIR=/usr/include/suitesparse \
-      -D INSTALL_CMAKE_DIR=lib/cmake/metrix-simulator
-# NB : la valeur de l'option USE_ORTOOLS permet d'activer ou non l'appel de Sirius via OR-Tools. Par défaut cette option vaut OFF.
-cmake --build powsybl-metrix/metrix-simulator/build-ortools --config Release
-### execution des tests
-ctest --test-dir powsybl-metrix/metrix-simulator/build-ortools --build-config Release
-# NB : un fichier de log de l'exécution des tests est généré : metrix-simulator/build-ortools/Testing/Temporary/LastTest.log
+      -D USE_XPRESS=ON \
+      -D XPRESS_ROOT="$XPRESS_ROOT"
+
+cmake --build powsybl-metrix/metrix-simulator/build -j$(nproc)
+
+# Run tests
+ctest --test-dir powsybl-metrix/metrix-simulator/build
 ```
 
-## Metrix : comment utiliser un autre solveur que Sirius ?
-Dans le fichier d'entrée de metrix-simulator 'fort.json' ajouter/modifier le champ "SOLVERCH" dans la liste "attributes" de la partie "IntegerFile" comme suit :
+> **Note**: building external dependencies includes downloading and compiling OR-Tools and its own dependencies (abseil, protobuf, etc.). The first run may take several minutes. Subsequent builds are incremental.
+
+### CMake options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `USE_ORTOOLS` | `OFF` | Enable multi-solver support via OR-Tools |
+| `USE_XPRESS` | `OFF` | Enable the Xpress backend in OR-Tools (requires `USE_ORTOOLS=ON`) |
+| `XPRESS_ROOT` | `$XPRESS_ROOT` | Xpress installation path (cmake variable or environment variable) |
+
+Without `USE_ORTOOLS`, the build produces a Sirius-only binary, identical to the legacy production version.
+
+---
+
+## Runtime solver selection
+
+A single build supports both Sirius and Xpress. The solver is selected at runtime through the `SOLVERCH` and/or `PCSOLVERCH` fields in the `attributes` list of the `IntegerFile` section of the input file `fort.json`.
+
+### Solver parameters
+
+| Parameter | Used for | Default value |
+|-----------|----------|---------------|
+| `SOLVERCH` | Main network optimization (MIP/LP) | SIRIUS (5) |
+| `PCSOLVERCH` | Economic stacking of generators (initial phase, without network) | SIRIUS (5) |
+
+### Available values
+
+| Value | Solver | Execution path |
+|-------|--------|----------------|
+| 5 | SIRIUS | Direct call to `PNE_Solveur` / `SPX_Simplexe` (no OR-Tools involved) |
+| 6 | XPRESS | Via OR-Tools `MPSolver` |
+| 0 | GLPK | Via OR-Tools `MPSolver` |
+| 1 | CBC | Via OR-Tools `MPSolver` |
+| 2 | SCIP_GLOP | Via OR-Tools `MPSolver` |
+| 3 | GUROBI | Via OR-Tools `MPSolver` |
+| 4 | CPLEX | Via OR-Tools `MPSolver` |
+
+> **Important**: `SOLVERCH=5` (SIRIUS) uses the direct call path, identical to the legacy production behavior. All other values go through the OR-Tools abstraction layer. Commercial solvers (GUROBI, CPLEX, XPRESS) require a license installed on the machine.
+
+### Configuration examples
+
+**Sirius direct for both phases** (default behavior, identical to production):
+
+No configuration needed, or explicitly:
 ```json
-        {
-          "name": "SOLVERCH",
-          "type": "INTEGER",
-          "valueCount": 1,
-          "firstIndexMaxValue": 1,
-          "secondIndexMaxValue": 1,
-          "firstValueIndex": 1,
-          "lastValueIndex": 1,
-          "values": [6]  <- valeur de l'enum qui correspond au solveur choisi (enum config::Configuration::SolverChoice dans metrix-simulator/src/config/configuration.h:36) ; ici 6 <=> Xpress
-        }
+{
+  "name": "SOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [5]
+},
+{
+  "name": "PCSOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [5]
+}
 ```
+
+**Xpress for both phases**:
+```json
+{
+  "name": "SOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [6]
+},
+{
+  "name": "PCSOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [6]
+}
+```
+
+**Mixed configuration** — economic stacking with Sirius direct, main optimization with Xpress:
+```json
+{
+  "name": "PCSOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [5]
+},
+{
+  "name": "SOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [6]
+}
+```
+
+> **Note**: if only `SOLVERCH` is configured, `PCSOLVERCH` defaults to SIRIUS (5). This may be intentional when using Sirius for the economic stacking phase and a higher-performance solver for the main optimization.
+
+### Advanced parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `SPECIFICSOLVERPARAMS` | STRING | Solver-specific parameters passed through to the solver (e.g. Xpress options) |

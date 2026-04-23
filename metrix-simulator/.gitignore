@@ -19,8 +19,6 @@ coverage
 /tests/**/PTDF_matrix.csv
 !tests/*_reference/**/*
 out/**
-/tests/*/*/LODF_matrix.csv
-/tests/*/*/PTDF_matrix.csv
 
 docs/doc/**
 
@@ -33,7 +31,6 @@ src/config/version.h
 
 # cmake build directory
 build/*
-build-ortools/*
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
