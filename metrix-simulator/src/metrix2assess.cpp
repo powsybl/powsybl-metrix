@@ -9,6 +9,7 @@
 //
 
 #include "calcul.h"
+#include "compute/solver.h"
 #include "config/configuration.h"
 #include "config/constants.h"
 #include "config/input_configuration.h"
@@ -267,7 +268,19 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 // Relance avec SPX car PNE ne retourne pas la base de la solution optimale
                 LOG_ALL(info) << "Relance sans variables entieres pour le calcul de la base";
                 fixerVariablesEntieres();
+                // On force Sirius pour cette étape car Xpress ne reporte pas correctement
+                // le statut de base des variables fixées (nécessaire pour les variations marginales)
+                const bool needSirius = (config::configuration().solverChoice()
+                                         == config::Configuration::SolverChoice::XPRESS);
+                std::shared_ptr<compute::ISolver> saved_solver;
+                if (needSirius) {
+                    saved_solver = solver_pne_;
+                    solver_pne_ = std::make_shared<compute::Solver>();
+                }
                 PneSolveur(UTILISATION_SIMPLEXE, var);
+                if (needSirius) {
+                    solver_pne_ = saved_solver;
+                }
             }
 
             for (int i = 1; i < pbNombreDeContraintes_; ++i) {
@@ -540,8 +553,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                         }
                     }
                 } // end for elemCur
-            }     // end for incident
-        }         // End R1B
+            } // end for incident
+        } // End R1B
 
         // ecriture : R1C: Couplages de consos
         //---------------
@@ -569,10 +582,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (!config::inputConfiguration().useAllOutputs()) {
             fprintf(fr, "R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;\n");
         } else {
-            fprintf(
-                fr,
-                "R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR; "
-                "CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;\n");
+            fprintf(fr,
+                    "R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR; "
+                    "CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;\n");
         }
 
         double deltaHR;
@@ -757,8 +769,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     }
 
                 } // end for elemCur
-            }     // end for incident
-        }         // End R2B
+            } // end for incident
+        } // End R2B
 
         // ecriture : R2C: Couplages de groupes
         //---------------
@@ -1029,7 +1041,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                             config::constants::valdef);
                 }
             } // end for
-        }     // end for
+        } // end for
 
         // ecriture : R6B: HVDC en mode curatif
         //--------------
@@ -1130,7 +1142,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                             0.0);
                 }
             } // end for elemCur
-        }     // end for incident
+        } // end for incident
 
 
         // ecriture : R6.

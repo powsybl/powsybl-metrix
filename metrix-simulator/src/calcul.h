@@ -91,9 +91,7 @@ public:
     // Quelques methodes
     string typeDeContrainteToString() const;
     string toString() const
-    {
-        return "(" + typeDeContrainteToString() + " " + nomInc() + " || " + elemAS_->nom_ + ")";
-    };
+    { return "(" + typeDeContrainteToString() + " " + nomInc() + " || " + elemAS_->nom_ + ")"; };
     string nomInc() const { return icdt_ ? icdt_->nom_ : "N"; };
     int numInc() const { return icdt_ ? icdt_->num_ : SITU_N; };
 
@@ -106,9 +104,7 @@ public:
                double ecart,
                TypeDeContrainte type,
                bool ctrSup)
-    {
-        init(qdt, icdt, T_N, Tmax, Tmin, ecart, type, ctrSup);
-    }
+    { init(qdt, icdt, T_N, Tmax, Tmin, ecart, type, ctrSup); }
 
     // constructeur par defaut
     Contrainte() { init(nullptr, nullptr, 0.0, 0.0, 0.0, 0.0, Contrainte::CONTRAINTE_NON_DEF, false); }
@@ -136,11 +132,7 @@ bool compareGroupeBaisse(const std::shared_ptr<Groupe>& grp1, const std::shared_
 class Calculer
 {
 public:
-    enum TypeDeSolveur {
-        UTILISATION_PNE_SOLVEUR = 1,
-        UTILISATION_SIMPLEXE = 2,
-        UTILISATION_PC_SIMPLEXE = 3
-    };
+    enum TypeDeSolveur { UTILISATION_PNE_SOLVEUR = 1, UTILISATION_SIMPLEXE = 2, UTILISATION_PC_SIMPLEXE = 3 };
 
     enum TypeCoupes {
         COUPE_SURETE_N = 1,
@@ -458,6 +450,7 @@ private:
 
 private:
     void videMatricesDesContraintes();
+    void perturberCoutsAvantSolve();
 
     void printStats();
     void printMatriceDesContraintes();
