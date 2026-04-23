@@ -1,1 +1,0 @@
-../../sirius/curatif/CMakeLists.txt

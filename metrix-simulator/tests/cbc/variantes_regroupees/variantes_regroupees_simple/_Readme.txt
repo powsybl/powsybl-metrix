@@ -1,1 +1,0 @@
-../../../sirius/variantes_regroupees/variantes_regroupees_simple/_Readme.txt

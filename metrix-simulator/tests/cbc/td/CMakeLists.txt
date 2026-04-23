@@ -1,1 +1,0 @@
-../../sirius/td/CMakeLists.txt

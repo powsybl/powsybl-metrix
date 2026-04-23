@@ -1,1 +1,0 @@
-../../../sirius/seuils/seuils_extremite_origine/_Readme.txt

@@ -1,1 +1,0 @@
-../../../sirius/connexite/reprise_partielle_poche_en_curatif/_Readme.txt
