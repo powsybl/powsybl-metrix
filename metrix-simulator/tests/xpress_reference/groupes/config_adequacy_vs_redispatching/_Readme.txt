@@ -1,0 +1,1 @@
+../../../sirius/groupes/config_adequacy_vs_redispatching/_Readme.txt
