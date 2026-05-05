@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.buildEquipmentToCurativeTs;
+import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.buildEquipmentToPreventiveTs;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.findIdsToProcess;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getContingencyIdFromTsName;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getProbabilityNodeCalc;
@@ -47,6 +49,18 @@ class MetrixPostProcessingTimeSeriesTest {
     void findIdsToProcessSimpleWithSuffixTest() {
         List<String> actual = findIdsToProcess(Set.of("id1", "id1_suffix"), Set.of("PREFIX_id1"), "PREFIX_");
         Assertions.assertThat(actual).containsExactly("id1");
+    }
+
+    @Test
+    void buildEquipmentToPreventiveTsTest() {
+        Map<String, Set<String>> actual = buildEquipmentToPreventiveTs(Set.of("id1", "id11"), Set.of("PREFIX_id1", "PREFIX_id11", "PREFIX_other"), "PREFIX_");
+        assertEquals(Map.of("id1", Set.of("PREFIX_id1"), "id11", Set.of("PREFIX_id11")), actual);
+    }
+
+    @Test
+    void buildEquipmentToCurativeTsTest() {
+        Map<String, Set<String>> actual = buildEquipmentToCurativeTs(Set.of("id1", "id11"), Set.of("PREFIX_id1_cty1", "PREFIX_id1_cty2", "PREFIX_id11_cty1", "PREFIX_other"), "PREFIX_", Set.of("cty1", "cty2"));
+        assertEquals(Map.of("id1", Set.of("PREFIX_id1_cty1", "PREFIX_id1_cty2"), "id11", Set.of("PREFIX_id11_cty1")), actual);
     }
 
     @Test
