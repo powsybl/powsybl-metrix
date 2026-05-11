@@ -51,22 +51,52 @@ public final class MetrixPostProcessingTimeSeries {
     }
 
     /**
-     * Applies a filter on allIds : id is kept if allTimeSeriesNames contains a String starting with 'prefix' + 'id' + '_'
-     * and followed by one element of contingencyIds
+     * For each id having metrix results, find all time series names results of the form 'prefix + id'
+     * For preventive results only (redispatching and load shedding)
+     * @param allIds             list of equipment ids to filter
+     * @param allTimeSeriesNames all metrix results time series names
+     * @param prefix             prefix of metrix results time series names to keep
+     * @return map of equipment id to their corresponding time series names
+     */
+    public static Map<String, Set<String>> buildEquipmentToPreventiveTs(Set<String> allIds, Set<String> allTimeSeriesNames, String prefix) {
+        Map<String, Set<String>> result = new HashMap<>();
+        for (String id : allIds) {
+            String prefixAndId = prefix + id;
+            Set<String> tsNames = allTimeSeriesNames.stream()
+                .filter(tsName -> tsName.equals(prefixAndId))
+                .collect(Collectors.toSet());
+            if (!tsNames.isEmpty()) {
+                result.put(id, tsNames);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * For each id having metrix results, find all time series names results of the form 'prefix + id + contingency'
      * For curative results only (redispatching and load shedding)
      * @param allIds             list of equipment ids to filter
      * @param allTimeSeriesNames all metrix results time series names
      * @param prefix             prefix of metrix results time series names to keep
      * @param contingencyIds     list of contingency ids
+     * @return map of equipment id to their corresponding time series names
      */
-    public static List<String> findIdsToProcess(Set<String> allIds, Set<String> allTimeSeriesNames, String prefix, Set<String> contingencyIds) {
-        return allIds.stream().filter(id -> {
+    public static Map<String, Set<String>> buildEquipmentToCurativeTs(Set<String> allIds, Set<String> allTimeSeriesNames, String prefix, Set<String> contingencyIds) {
+        Map<String, Set<String>> result = new HashMap<>();
+        for (String id : allIds) {
             String prefixAndId = prefix + id + "_";
-            return allTimeSeriesNames.stream().filter(tsName -> tsName.startsWith(prefixAndId)).anyMatch(s -> {
-                String contingencyId = s.substring(prefixAndId.length());
-                return contingencyIds.contains(contingencyId);
-            });
-        }).toList();
+            Set<String> tsNames = allTimeSeriesNames.stream()
+                .filter(tsName -> tsName.startsWith(prefixAndId))
+                .filter(tsName -> {
+                    String contingencyId = tsName.substring(prefixAndId.length());
+                    return contingencyIds.contains(contingencyId);
+                })
+                .collect(Collectors.toSet());
+            if (!tsNames.isEmpty()) {
+                result.put(id, tsNames);
+            }
+        }
+        return result;
     }
 
     /**
