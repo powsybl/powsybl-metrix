@@ -41,6 +41,8 @@ public class MetrixNetwork {
     private static final Logger LOGGER = LoggerFactory.getLogger(MetrixNetwork.class);
     private static final String PAYS_CVG_PROPERTY = "paysCvg";
     private static final String PAYS_CVG_UNDEFINED = "Undefined";
+    private static final String METRIX_T3WT_STAR_BUS_SUFFIX = "_metrixT3wtStarBus";
+    private static final String METRIX_T3WT_LEG_SUFFIX = "_metrixT3wtLeg";
     private static final String METRIX_BOUNDARY_LINE_BUS_SUFFIX = "_metrixBoundaryLineBus";
     private static final String METRIX_BOUNDARY_LINE_LOAD_SUFFIX = "_metrixBoundaryLineLoad";
 
@@ -59,6 +61,7 @@ public class MetrixNetwork {
     private final Set<Line> lineList = new LinkedHashSet<>();
     private final Set<TwoWindingsTransformer> twoWindingsTransformerList = new LinkedHashSet<>();
     private final Set<ThreeWindingsTransformer> threeWindingsTransformerList = new LinkedHashSet<>();
+    private final Set<ThreeWindingsTransformer.Leg> threeWindingsTransformerLegsList = new LinkedHashSet<>();
     private final Set<Switch> switchList = new LinkedHashSet<>();
     private final Set<BoundaryLine> unpairedBoundaryLineList = new LinkedHashSet<>();
     private final Set<TieLine> tieLineList = new LinkedHashSet<>();
@@ -76,7 +79,6 @@ public class MetrixNetwork {
     private final Map<String, String> mappedSwitchMap = new HashMap<>();
 
     protected MetrixNetwork(Network network) {
-        // TODO: switch T3T for 3xTWT in the network using a network modification
         this.network = Objects.requireNonNull(network);
     }
 
@@ -114,6 +116,10 @@ public class MetrixNetwork {
 
     public List<ThreeWindingsTransformer> getThreeWindingsTransformerList() {
         return List.copyOf(threeWindingsTransformerList);
+    }
+
+    public List<ThreeWindingsTransformer.Leg> getThreeWindingsTransformerLegsList() {
+        return List.copyOf(threeWindingsTransformerLegsList);
     }
 
     public List<BoundaryLine> getUnpairedBoundaryLineList() {
@@ -164,6 +170,20 @@ public class MetrixNetwork {
     public static String getUnpairedBoundaryLineLoadId(BoundaryLine boundaryLine) {
         Objects.requireNonNull(boundaryLine);
         return boundaryLine.getId() + METRIX_BOUNDARY_LINE_LOAD_SUFFIX;
+    }
+
+    public int getThreeWindingsTransformerLegIndex(ThreeWindingsTransformer.Leg leg) {
+        Objects.requireNonNull(leg);
+        return mapper.getInt(MetrixSubset.QUAD, getThreeWindingsTransformerLegId(leg));
+    }
+
+    public static String getThreeWindingsTransformerLegId(ThreeWindingsTransformer.Leg leg) {
+        return leg.getTransformer().getId() + METRIX_T3WT_LEG_SUFFIX + leg.getSide().getNum();
+    }
+
+    public int getThreeWindingsTransformerStarBusIndex(ThreeWindingsTransformer t3wt) {
+        Objects.requireNonNull(t3wt);
+        return mapper.getInt(MetrixSubset.NOEUD, t3wt.getId() + METRIX_T3WT_STAR_BUS_SUFFIX);
     }
 
     private MetrixSubset getMetrixSubset(Identifiable<?> identifiable) {
@@ -255,7 +275,13 @@ public class MetrixNetwork {
 
     private void addThreeWindingsTransformer(ThreeWindingsTransformer twt) {
         if (threeWindingsTransformerList.add(twt)) {
-            mapper.newInt(MetrixSubset.QUAD, twt.getId());
+            mapper.newInt(MetrixSubset.NOEUD, twt.getId() + METRIX_T3WT_STAR_BUS_SUFFIX);
+        }
+    }
+
+    private void addThreeWindingsTransformerLeg(ThreeWindingsTransformer.Leg leg) {
+        if (threeWindingsTransformerLegsList.add(leg)) {
+            mapper.newInt(MetrixSubset.QUAD, getThreeWindingsTransformerLegId(leg));
         }
     }
 
@@ -285,10 +311,18 @@ public class MetrixNetwork {
         }
     }
 
-    private void addPhaseTapChanger(TwoWindingsTransformer twt) {
-        if (phaseTapChangerList.add(twt.getPhaseTapChanger())) {
-            mapper.newInt(MetrixSubset.DEPHA, twt.getId());
+    private void addPhaseTapChanger(PhaseTapChanger ptc, String id) {
+        if (phaseTapChangerList.add(ptc)) {
+            mapper.newInt(MetrixSubset.DEPHA, id);
         }
+    }
+
+    private void addPhaseTapChanger(TwoWindingsTransformer twt) {
+        addPhaseTapChanger(twt.getPhaseTapChanger(), twt.getId());
+    }
+
+    private void addPhaseTapChanger(ThreeWindingsTransformer.Leg leg) {
+        addPhaseTapChanger(leg.getPhaseTapChanger(), getThreeWindingsTransformerLegId(leg));
     }
 
     private void addBus(Bus bus) {
@@ -423,9 +457,8 @@ public class MetrixNetwork {
         }
     }
 
-    private void createTwoWindingsTransformersList() {
+    private void createTwoWindingsTransformersList(AtomicInteger nbPtcNok) {
         AtomicInteger nbNok = new AtomicInteger(0);
-        AtomicInteger nbPtcNok = new AtomicInteger(0);
         network.getTwoWindingsTransformers().forEach(twt -> addTwoWindingsTransformer(twt, nbNok, nbPtcNok));
         if (LOGGER.isDebugEnabled()) {
             String message = String.format("Twotrfo    total = <%5d> ok = <%5d> not = <%5d>", twoWindingsTransformerList.size() + nbNok.get(), twoWindingsTransformerList.size(), nbNok.get());
@@ -435,26 +468,38 @@ public class MetrixNetwork {
         }
     }
 
-    private void createThreeWindingsTransformersList() {
+    private void checkAndAddConnectedLeg(List<ThreeWindingsTransformer.Leg> connectedLegs,
+                                         ThreeWindingsTransformer.Leg leg) {
+        Terminal terminal = leg.getTerminal();
+        Bus bus = terminal.getBusBreakerView().getBus();
+        if (bus != null && busList.contains(bus)) {
+            connectedLegs.add(leg);
+        }
+    }
+
+    private void createThreeWindingsTransformersList(AtomicInteger nbPtcNok) {
         int nbNok = 0;
         for (ThreeWindingsTransformer twt : network.getThreeWindingsTransformers()) {
-            ThreeWindingsTransformer.Leg leg1 = twt.getLeg1();
-            ThreeWindingsTransformer.Leg leg2 = twt.getLeg2();
-            ThreeWindingsTransformer.Leg leg3 = twt.getLeg3();
-            Terminal t1 = leg1.getTerminal();
-            Terminal t2 = leg2.getTerminal();
-            Terminal t3 = leg3.getTerminal();
-            Bus b1 = t1.getBusBreakerView().getBus();
-            Bus b2 = t2.getBusBreakerView().getBus();
-            Bus b3 = t3.getBusBreakerView().getBus();
-            if (b1 != null && b2 != null && b3 != null) {
-                if (busList.contains(b1) && busList.contains(b2) && busList.contains(b3)) {
-                    addThreeWindingsTransformer(twt);
-                } else {
-                    nbNok++;
-                }
+            List<ThreeWindingsTransformer.Leg> connectedLegs = new ArrayList<>();
+            checkAndAddConnectedLeg(connectedLegs, twt.getLeg1());
+            checkAndAddConnectedLeg(connectedLegs, twt.getLeg2());
+            checkAndAddConnectedLeg(connectedLegs, twt.getLeg3());
+            if (connectedLegs.size() >= 2) {
+                // need at least two legs for a flow to happen
+                addThreeWindingsTransformer(twt);
+                connectedLegs.forEach(leg -> {
+                    addThreeWindingsTransformerLeg(leg);
+                    if (leg.hasPhaseTapChanger()) {
+                        addPhaseTapChanger(leg);
+                    }
+                });
             } else {
                 nbNok++;
+                connectedLegs.forEach(leg -> {
+                    if (leg.hasPhaseTapChanger()) {
+                        nbPtcNok.incrementAndGet();
+                    }
+                });
             }
         }
         if (LOGGER.isDebugEnabled()) {
@@ -464,12 +509,19 @@ public class MetrixNetwork {
     }
 
     private void createTransformerList() {
+        AtomicInteger nbPtcNok = new AtomicInteger(0);
 
         // List the TwoWindingsTransformers
-        createTwoWindingsTransformersList();
+        createTwoWindingsTransformersList(nbPtcNok);
 
         // List the ThreeWindingsTransformers
-        createThreeWindingsTransformersList();
+        createThreeWindingsTransformersList(nbPtcNok);
+
+        // Logs for the PhaseTapChanger
+        if (LOGGER.isDebugEnabled()) {
+            String message = String.format("PhaseTC    total = <%5d> ok = <%5d> not = <%5d>", phaseTapChangerList.size() + nbPtcNok.get(), phaseTapChangerList.size(), nbPtcNok.get());
+            LOGGER.debug(message);
+        }
     }
 
     private void createUnpairedBoundaryLineList() {
