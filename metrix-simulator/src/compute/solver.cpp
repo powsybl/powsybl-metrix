@@ -10,7 +10,6 @@
 
 #include "solver.h"
 
-#include <config/constants.h>
 #include <metrix/log.h>
 
 namespace compute

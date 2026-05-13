@@ -1,7 +1,7 @@
 Use dictionnary file METRIX.dic
-Incident 'incident_connexite' : Noeuds perdus '2 [FS.BIS1_3]' '3 [FSSV.O1_3]' '4 [FVALDI1_3]'
-Incident 'incident_connexite_mixte' : Noeuds perdus '5 [FVERGE1_1]'
-Incident 'incident_connexite_2' : Noeuds perdus '5 [FVERGE1_1]'
+Incident 'incident_connexite' :Noeuds perdus '2 [FS.BIS1_3]' '3 [FSSV.O1_3]' '4 [FVALDI1_3]'
+Incident 'incident_connexite_mixte' :Noeuds perdus '5 [FVERGE1_1]'
+Incident 'incident_connexite_2' :Noeuds perdus '5 [FVERGE1_1]'
 L'incident incident_connexite_hvdc (4) contient une HVDC et rompt la connexité, ce n'est pas autorisé
 L'incident N-k numero 4 (incident_connexite_hvdc) rompt la connexité, il est ignoré
 L'incident incident_connexite_groupe (5) contient un groupe et rompt la connexité, ce n'est pas autorisé

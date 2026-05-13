@@ -311,7 +311,7 @@ Pas de limitation du nombre d'actions curatives sur incident
 Nombre de composantes synchrones 2
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
-Sortie des résultats uniquement sur les surcharges 
+Sortie des résultats uniquement sur les surcharges
 
 L'incident parade numero QUAD_MMA (QUAD_MLZ / QUAD_MFK) rompt la connexité, il est ignoré
  Nb total d'incidents + parades : 439

@@ -1,6 +1,6 @@
 Use dictionnary file METRIX.dic
-Incident 'incident_connexite' : Noeuds perdus '2 [FS.BIS1_3]' '3 [FSSV.O1_3]' '4 [FVALDI1_3]'
-Incident 'incident_connexite_2' : Noeuds perdus '5 [FVERGE1_1]'
+Incident 'incident_connexite' :Noeuds perdus '2 [FS.BIS1_3]' '3 [FSSV.O1_3]' '4 [FVALDI1_3]'
+Incident 'incident_connexite_2' :Noeuds perdus '5 [FVERGE1_1]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes

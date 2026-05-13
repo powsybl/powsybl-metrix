@@ -17,7 +17,7 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Parade 'FP.AND1  FVERGE1  2 / FTDPRA1  FVERGE1  1 / FTDPRA1  FVERGE1  2' sur défaut 'FP.AND1  FVERGE1  1' : Noeuds perdus '5 [FVERGE1_1]'
+Parade 'FP.AND1  FVERGE1  2 / FTDPRA1  FVERGE1  1 / FTDPRA1  FVERGE1  2' sur défaut 'FP.AND1  FVERGE1  1' :Noeuds perdus '5 [FVERGE1_1]'
  Nb total d'incidents + parades : 3
 Mode de calcul : OPF sans redispatching de groupes
 Noeud bilan : 0 [FP.AND1_1]

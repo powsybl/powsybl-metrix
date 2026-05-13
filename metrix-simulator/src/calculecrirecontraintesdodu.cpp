@@ -4652,6 +4652,8 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
 void Calculer::printMatriceDesContraintes()
 {
     std::stringstream ss;
+    auto indiceDebut = pbIndicesColonnes_.begin();
+    auto indiceFin = pbIndicesColonnes_.end();
 
     ss << "Matrice des contraintes" << std::endl;
 
@@ -4659,13 +4661,16 @@ void Calculer::printMatriceDesContraintes()
 
     ss << "Var;";
     for (int i = 0; i < pbNombreDeVariables_; i++) {
-        if (find(pbIndicesColonnes_.begin(), pbIndicesColonnes_.end(), i) == pbIndicesColonnes_.end()) {
+        if (find(indiceDebut, indiceFin, i) == indiceFin) {
             continue; // variable non utilisee dans les contraintes
         }
 
         variables.push_back(i);
         ss << i << ";";
     }
+
+    indiceDebut = variables.begin();
+    indiceFin = variables.end();
 
     ss << ";B;";
 
@@ -4773,7 +4778,7 @@ void Calculer::printMatriceDesContraintes()
         int pos = 0;
         for (int j = firstCoeff; j < lastCoeff; j++) {
             while (pos < pbIndicesColonnes_[j]) {
-                if (find(variables.begin(), variables.end(), pos) != variables.end()) {
+                if (find(indiceDebut, indiceFin, pos) != indiceFin) {
                     ss << ";";
                 }
                 pos++;
@@ -4782,7 +4787,7 @@ void Calculer::printMatriceDesContraintes()
             pos++;
         }
         while (pos < pbNombreDeVariables_) {
-            if (find(variables.begin(), variables.end(), pos) != variables.end()) {
+            if (find(indiceDebut, indiceFin, pos) != indiceFin) {
                 ss << ";";
             }
             pos++;

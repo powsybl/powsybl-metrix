@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -27,11 +27,14 @@ macro(metrix_test TEST_NAME NB_TESTS)
         -DALL_OUTPUTS=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT LD_LIBRARY_PATH=${XPRESS_ROOT}/lib)
+    endif()
 endmacro()
 
 macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
@@ -39,7 +42,7 @@ macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+    add_test(NAME ${FULL_TEST_NAME} COMMAND  ${CMAKE_COMMAND}
         -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}

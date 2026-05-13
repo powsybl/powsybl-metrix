@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -6,19 +6,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 include(CMakePackageConfigHelpers)
 
-project(MetrixSimulator 
+project(MetrixSimulator
     VERSION 7.4.0
     LANGUAGES C CXX)
 
 cmake_policy(SET CMP0028 NEW) # Fatal error if "::" link is not imported / alias target
+cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
 
 include(CMakeDependentOption)
 include(InstallLib)
@@ -107,7 +109,7 @@ add_subdirectory(log)
 
 message(STATUS "METRIX")
 
-set(METRIX_HEADERS 
+set(METRIX_HEADERS
         src/calcul.h
         src/err/error.h
         src/parametres.h
@@ -131,17 +133,17 @@ set(METRIX_HEADERS
         src/margin_variations_compute.h
     )
 
-set(METRIX_SOURCES 
+set(METRIX_SOURCES
         src/calculmacrofonctions.cpp
-        src/err/error.cpp 
-        src/reseau.cpp 
-        src/calculrepports.cpp 
-        src/calculecrirecontraintesdodu.cpp  
-        src/connexite.cpp             
-        src/err/IoDico.cpp                                 
+        src/err/error.cpp
+        src/reseau.cpp
+        src/calculrepports.cpp
+        src/calculecrirecontraintesdodu.cpp
+        src/connexite.cpp
+        src/err/IoDico.cpp
         src/calculeEmpilementGroupes.cpp
         src/metrix.cpp
-        src/metrix2assess.cpp 
+        src/metrix2assess.cpp
         src/config/configuration.cpp
         src/config/input_configuration.cpp
         src/config/variant_configuration.cpp
@@ -153,7 +155,7 @@ set(METRIX_SOURCES
         src/compute/solver.cpp
         src/margin_variations_compute.cpp
     )
- 
+
 if(USE_ORTOOLS)
     list(APPEND METRIX_SOURCES
     src/ortools/solver.cpp
@@ -167,7 +169,7 @@ set(target "metrix-simulator")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config/version.h)
 
-add_executable(${target} 
+add_executable(${target}
 ${METRIX_HEADERS} ${METRIX_SOURCES})
 
 target_include_directories(${target}
@@ -198,8 +200,8 @@ target_link_libraries(${target}
 )
 
 if(USE_ORTOOLS)
-    target_compile_definitions(${target} 
-        PRIVATE 
+    target_compile_definitions(${target}
+        PRIVATE
         USE_ORTOOLS
     )
     target_include_directories(${target}
@@ -214,8 +216,8 @@ if(USE_ORTOOLS)
 endif()
 
 if(USE_XPRESS)
-    target_compile_definitions(${target} 
-        PRIVATE 
+    target_compile_definitions(${target}
+        PRIVATE
         USE_XPRESS
     )
     # target_include_directories(${target}

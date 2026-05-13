@@ -57,8 +57,8 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 6 variante(s)
 ********************************************
-Incident 'incident_poche' : Noeuds perdus '5 [FVERGE1_1]'
-Parade 'incident_poche_NRF' sur défaut 'incident_poche' : Noeuds perdus '5 [FVERGE1_1]'
+Incident 'incident_poche' :Noeuds perdus '5 [FVERGE1_1]'
+Parade 'incident_poche_NRF' sur défaut 'incident_poche' :Noeuds perdus '5 [FVERGE1_1]'
 
 ---------------------
 ---------------------
