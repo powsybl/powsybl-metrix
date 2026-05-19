@@ -28,7 +28,7 @@ namespace config
  */
 namespace helper
 {
-    static inline void check(bool cond, const std::string& key)
+static inline void check(bool cond, const std::string& key)
 {
     if (!cond) {
         LOG_ALL(error) << err::ioDico().msg("ERRPbLectureParam", key);
@@ -143,13 +143,13 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
             // If ortools is not used, only Sirius is allowed
             helper::check(solver_choice == static_cast<int>(SolverChoice::SIRIUS), solver_choice_key);
 #endif
+#if defined(USE_ORTOOLS) && !defined(USE_XPRESS)
+            helper::check(solver_choice != static_cast<int>(SolverChoice::XPRESS), solver_choice_key);
+#endif
         }
     }
 
-    auto specific_solver_params_key = "SPECIFICSOLVERPARAMS";
-    if (helper::checkAtMostKeyOnce(std::get<STRING>(raw_config), specific_solver_params_key)) {
-        helper::check(std::get<STRING>(raw_config).at(specific_solver_params_key).size() == 1, specific_solver_params_key);
-    }
+    helper::checkAtMostKeyOnce(std::get<STRING>(raw_config), "SPECIFICSOLVERPARAMS");
 }
 
 auto Configuration::readRawConfiguration(const std::string& pathname) -> raw_configuration
