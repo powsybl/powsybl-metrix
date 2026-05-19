@@ -20,6 +20,12 @@ class Solver : public ISolver
 {
 public:
     Solver();
+    ~Solver() override { free(); }
+
+    Solver(const Solver&) = delete;
+    Solver& operator=(const Solver&) = delete;
+    Solver(Solver&&) = delete;
+    Solver& operator=(Solver&&) = delete;
 
     void solve(PROBLEME_A_RESOUDRE* pne_problem) final;
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
