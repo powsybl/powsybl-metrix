@@ -1,61 +1,204 @@
-## Configuration et build de la chaîne Sirius - OR-Tools - Metrix
+## Building metrix-simulator
+
+### Prerequisites
+
+- **CMake** ≥ 3.14
+- **C/C++ compiler** with C++11 support
+- **Boost** ≥ 1.66 — must be installed on the system
+- **Git** — for downloading external dependencies
+- **Xpress** (optional): pre-installed commercial solver, with `XPRESS_ROOT` pointing to the installation directory (as an environment variable or a CMake `-D` flag passed to `external/`)
+
+### Build
 
 ```bash
-### clone du dépôt git de Sirius dans un dossier sirius-solver
-git clone https://github.com/rte-france/temp-pne.git --branch=metrix sirius-solver
-### configuration cmake + build + install en Release
-cmake -S sirius-solver/ -B sirius-solver/builds/ -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=install/sirius-solver/
-cmake --build sirius-solver/builds --config Release --target install
+# Clone the repository
+git clone https://github.com/powsybl/powsybl-metrix.git powsybl-metrix
 
-### clone du dépôt git du fork d'OR-Tools dans un dossier or-tools
-git clone https://github.com/rte-france/or-tools.git --branch=rte_dev or-tools
-### configuration cmake + build + install en Release
-cmake -S or-tools/ -B or-tools/builds/ -D CMAKE_BUILD_TYPE=Release -D CMAKE_INSTALL_PREFIX=install/or-tools/ \
-      -D BUILD_DEPS=ON -D USE_SIRIUS=ON -D sirius_solver_ROOT=install/sirius-solver -D USE_XPRESS=ON -D XPRESS_ROOT="path/to/xpress/install"
-# NB : Afin de diminuer le temps de compilations, certaines options peuvent être désactivées : BUILD_CXX_SAMPLES / BUILD_CXX_EXAMPLES
-cmake --build or-tools/builds --config Release --target install
+# Build external dependencies (SuiteSparse, Sirius, OR-Tools).
+# OR-Tools is built unconditionally. The Xpress backend is enabled
+# automatically if XPRESS_ROOT is set, disabled otherwise.
+mkdir -p powsybl-metrix/metrix-simulator/build/external
+cd powsybl-metrix/metrix-simulator/build/external
 
-### clone du dépôt git de Metrix dans un dossier metrix
-git clone https://devin-source.rte-france.com/imagrid/metrix.git --branch=dev_ortools metrix
-### configuration cmake + build en Release
-cmake -S metrix/ -B metrix/builds/ -D CMAKE_BUILD_TYPE=Release \
-      -D BOOST_ROOT="path/to/boost-1.66.0/install" -D sirius_solver_ROOT=install/sirius-solver/ -D ortools_ROOT=install/or-tools -D XPRESS_ROOT:="path/to/xpress/install" \
-      -D USE_ORTOOLS=ON
-# NB : la valeur de l'option USE_ORTOOLS permet d'activer ou non l'appel de Sirius via OR-Tools. Par défaut cette option vaut OFF.
-cmake --build metrix/builds --config Release
-### execution des tests
-cd metrix/builds; ctest --build-config Release; cd -
-# NB : un fichier de log de l'exécution des tests est généré : metrix/builds/Testing/Temporary/LastTest.log
+cmake ../../external \
+      -D CMAKE_BUILD_TYPE=Release \
+      -D XPRESS_ROOT=/path/to/xpress    # optional, builds OR-Tools with Xpress backend
+
+cmake --build . -j$(nproc)
+cd ../../../..
+
+# Build metrix-simulator.
+# USE_ORTOOLS enables the multi-solver runtime path.
+# USE_XPRESS authorizes SOLVERCH=6 at runtime; it must reflect whether
+# OR-Tools was actually built with the Xpress backend (i.e. whether
+# XPRESS_ROOT was set when external/ was built).
+cmake -S powsybl-metrix/metrix-simulator \
+      -B powsybl-metrix/metrix-simulator/build \
+      -D CMAKE_BUILD_TYPE=Release \
+      -D USE_ORTOOLS=ON \
+      -D USE_XPRESS=ON
+
+cmake --build powsybl-metrix/metrix-simulator/build -j$(nproc)
+
+# Run tests
+ctest --test-dir powsybl-metrix/metrix-simulator/build
 ```
 
-## Metrix : comment utiliser un autre solveur que Sirius ?
-Pour utiliser un autre solveur en passant par OR-Tools, il faut changer le type renvoyé par les fonctions `Solver::type<PROBLEME_A_RESOUDRE>()` et `Solver::type<PROBLEME_SIMPLEXE>()` du fichier src/ortools/solver.cpp (l. 245)  
-Exemple Sirius : 
-```cpp
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>()
-{
-    return operations_research::MPSolver::SIRIUS_MIXED_INTEGER_PROGRAMMING;
-}
+> **Note**: building external dependencies includes downloading and
+> compiling OR-Tools along with its own dependencies (abseil, protobuf,
+> etc.).
 
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
+#### Skipping `external/` (system-installed dependencies)
+
+If SuiteSparse, Sirius, and OR-Tools are already installed system-wide
+(or in custom locations), `external/` can be bypassed. Point the root
+configure at the installs directly:
+
+```bash
+cmake -S powsybl-metrix/metrix-simulator \
+      -B powsybl-metrix/metrix-simulator/build \
+      -D CMAKE_BUILD_TYPE=Release \
+      -D USE_ORTOOLS=ON \
+      -D USE_XPRESS=ON \
+      -D USE_SIRIUS_SHARED=ON \
+      -D sirius_solver_ROOT=/path/to/sirius \
+      -D SUITESPARSE_HOME=/path/to/suitesparse \
+      -D ortools_ROOT=/path/to/ortools
+```
+
+The variant of Sirius to point at depends on `USE_SIRIUS_SHARED`:
+`sirius_solver_ROOT` for the shared library, `sirius_solver_static_ROOT`
+for the static one.
+
+### CMake options
+
+#### `external/` options
+
+`external/` exposes no user-facing CMake options. Behavior is controlled
+through environment variables or CMake `-D` flags:
+
+| Variable | Form | Description |
+|----------|------|-------------|
+| `XPRESS_ROOT` | env var or `-D` flag | Path to the Xpress SDK. If set, OR-Tools is built with the Xpress backend; otherwise without. |
+| `NNI`, `NNI_PASSWORD` | env var only | Internal RTE credentials for Git proxy. Optional. |
+
+#### Root options
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `USE_ORTOOLS` | `OFF` | Enable multi-solver support via OR-Tools. When `OFF`, the binary is Sirius-only, identical to the legacy production version. |
+| `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Must reflect whether OR-Tools was effectively built with the Xpress backend; mismatch results in a runtime error from OR-Tools when `SOLVERCH=6` is requested. |
+| `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, deploys `libsirius_solver.so` alongside the binary. |
+| `CODE_COVERAGE` | `OFF` | Instrument the binary for coverage analysis (forces `Debug` build type). |
+| `METRIX_RUN_ALL_TESTS` | `ON` | Run the full TNR test suite. Set to `OFF` for a reduced suite. |
+
+---
+
+## Runtime solver selection
+
+A single build supports both Sirius and Xpress. The solver is selected at runtime through the `SOLVERCH` and/or `PCSOLVERCH` fields in the `attributes` list of the `IntegerFile` section of the input file `fort.json`.
+
+### Solver parameters
+
+| Parameter | Used for | Default value |
+|-----------|----------|---------------|
+| `SOLVERCH` | Main network optimization (MIP/LP) | SIRIUS (5) |
+| `PCSOLVERCH` | Economic stacking of generators (initial phase, without network) | SIRIUS (5) |
+
+### Available values
+
+| Value | Solver | Execution path |
+|-------|--------|----------------|
+| 5 | SIRIUS | Direct call to `PNE_Solveur` / `SPX_Simplexe` (no OR-Tools involved) |
+| 6 | XPRESS | Via OR-Tools `MPSolver` |
+| 0 | GLPK | Via OR-Tools `MPSolver` |
+| 1 | CBC | Via OR-Tools `MPSolver` |
+| 2 | SCIP_GLOP | Via OR-Tools `MPSolver` |
+| 3 | GUROBI | Via OR-Tools `MPSolver` |
+| 4 | CPLEX | Via OR-Tools `MPSolver` |
+
+> **Important**: `SOLVERCH=5` (SIRIUS) uses the direct call path, identical to the legacy production behavior. All other values go through the OR-Tools abstraction layer. Commercial solvers (GUROBI, CPLEX, XPRESS) require a license installed on the machine.
+
+### Configuration examples
+
+**Sirius direct for both phases** (default behavior, identical to production):
+
+No configuration needed, or explicitly:
+```json
 {
-    return operations_research::MPSolver::SIRIUS_LINEAR_PROGRAMMING;
+  "name": "SOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [5]
+},
+{
+  "name": "PCSOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [5]
 }
 ```
-Exemple Xpress : 
-```cpp
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>()
-{
-    return operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING;
-}
 
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>()
+**Xpress for both phases**:
+```json
 {
-    return operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING;
+  "name": "SOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [6]
+},
+{
+  "name": "PCSOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [6]
 }
 ```
-NB : Les différentes valeurs possibles sont celles de l'enum operations_research::MPSolver::OptimizationProblemType du projet OR-Tools (ortools/linear_solver/linear_solver.h:187)
+
+**Mixed configuration** — economic stacking with Sirius direct, main optimization with Xpress:
+```json
+{
+  "name": "PCSOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [5]
+},
+{
+  "name": "SOLVERCH",
+  "type": "INTEGER",
+  "valueCount": 1,
+  "firstIndexMaxValue": 1,
+  "secondIndexMaxValue": 1,
+  "firstValueIndex": 1,
+  "lastValueIndex": 1,
+  "values": [6]
+}
+```
+
+> **Note**: if only `SOLVERCH` is configured, `PCSOLVERCH` defaults to SIRIUS (5). This may be intentional when using Sirius for the economic stacking phase and a higher-performance solver for the main optimization.
+
+### Advanced parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `SPECIFICSOLVERPARAMS` | STRING | Solver-specific parameters passed through to the solver (e.g. Xpress options) |
