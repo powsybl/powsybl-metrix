@@ -25,9 +25,6 @@ const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver
     std::make_pair(config::Configuration::SolverChoice::CPLEX,
                    std::make_pair(operations_research::MPSolver::CPLEX_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::CPLEX_MIXED_INTEGER_PROGRAMMING)),
-    std::make_pair(config::Configuration::SolverChoice::SIRIUS,
-                   std::make_pair(operations_research::MPSolver::SIRIUS_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::SIRIUS_MIXED_INTEGER_PROGRAMMING)),
     std::make_pair(config::Configuration::SolverChoice::XPRESS,
                    std::make_pair(operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
@@ -37,16 +34,48 @@ Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::str
     : solver_choice_(solver_choice),
       specific_params_(specific_params) {}
 
-void Solver::solve(PROBLEME_SIMPLEXE* spx_problem) { solve_impl(spx_problem); }
-
-static std::string convertTypeDeBorneDeLaVariableToParameterAsString(int nbVar, int* typeDeBorneDeLaVariable)
+void Solver::solve(PROBLEME_A_RESOUDRE* problem)
 {
-    std::stringstream ss;
-    ss << "VAR_BOUNDS_TYPE";
-    for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
-        ss << " " << typeDeBorneDeLaVariable[idxVar];
+    solver_ = toMPSolver(*problem);
+
+    if (problem->AffichageDesTraces) {
+        solver_->EnableOutput();
     }
-    return ss.str();
+
+    auto params = makeParams<PROBLEME_A_RESOUDRE>(*problem);
+    auto status = solver_->Solve(*params);
+
+    if (status == operations_research::MPSolver::ResultStatus::OPTIMAL) {
+        problem->ExistenceDUneSolution = SOLUTION_OPTIMALE_TROUVEE;
+        updateProblem(*problem, solver_);
+    } else if (status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
+        problem->ExistenceDUneSolution = ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE;
+        updateProblem(*problem, solver_);
+    } else if (status == operations_research::MPSolver::ResultStatus::INFEASIBLE) {
+        problem->ExistenceDUneSolution = PROBLEME_INFAISABLE;
+    } else {
+        problem->ExistenceDUneSolution = PAS_DE_SOLUTION_TROUVEE;
+    }
+}
+
+void Solver::solve(PROBLEME_SIMPLEXE* problem)
+{
+    solver_ = toMPSolver(*problem);
+
+    if (problem->AffichageDesTraces) {
+        solver_->EnableOutput();
+    }
+
+    auto params = makeParams<PROBLEME_SIMPLEXE>(*problem);
+    auto status = solver_->Solve(*params);
+
+    if (status == operations_research::MPSolver::ResultStatus::OPTIMAL
+        || status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
+        problem->ExistenceDUneSolution = OUI_SPX;
+        updateProblem(*problem, solver_);
+    } else {
+        problem->ExistenceDUneSolution = NON_SPX;
+    }
 }
 
 std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME_A_RESOUDRE& problem)
@@ -73,12 +102,9 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                    problem.NombreDeContraintes);
 
     // set time limit
-    solver->set_time_limit(problem.TempsDExecutionMaximum);
-
-    if (solver_choice_ == config::Configuration::SolverChoice::SIRIUS) {
-        // transfer bounds type
-        solver->SetSolverSpecificParametersAsString(
-            convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeBorneDeLaVariable));
+    // TempsDExecutionMaximum est en secondes, set_time_limit attend des millisecondes
+    if (problem.TempsDExecutionMaximum > 0) {
+        solver->set_time_limit(static_cast<int64_t>(problem.TempsDExecutionMaximum) * 1000);
     }
 
     return solver;
@@ -89,8 +115,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
     auto solver = makeMPSolver<PROBLEME_SIMPLEXE>();
 
     // Create the variables and set objective cost.
-    // transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables);
-    transferVariables(solver, problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables, problem.X, problem.TypeDeVariable);
+    transferVariables(solver,
+                      problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables,
+                      problem.X, problem.TypeDeVariable,
+                      /*typeDeVariable=*/nullptr,
+                      /*useHint=*/false);
 
     // Create constraints and set coefs
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
@@ -100,12 +129,6 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                    problem.IndicesColonnes,
                    problem.CoefficientsDeLaMatriceDesContraintes,
                    problem.NombreDeContraintes);
-
-    if (solver_choice_ == config::Configuration::SolverChoice::SIRIUS) {
-        // transfer bounds type
-        solver->SetSolverSpecificParametersAsString(
-            convertTypeDeBorneDeLaVariableToParameterAsString(problem.NombreDeVariables, problem.TypeDeVariable));
-    }
 
     return solver;
 }
@@ -117,10 +140,14 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
                                int nbVar,
                                double* xValues,
                                int const* typeDeBorneDeLaVariable,
-                               int const* typeDeVariable)
+                               int const* typeDeVariable,
+                               bool useHint)
 {
-    // Store current X values to set solution hint
-    std::vector<std::pair<const operations_research::MPVariable*, double>> hint(nbVar);
+    // Store current X values to set solution hint (allocated lazily when useHint is active)
+    std::vector<std::pair<const operations_research::MPVariable*, double>> hint;
+    if (useHint && nullptr != xValues) {
+        hint.reserve(nbVar);
+    }
 
     MPObjective* const objective = solver->MutableObjective();
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
@@ -156,7 +183,7 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
             default: {
                 std::ostringstream ss;
                 ss << "Unknown typeDeBorneDeLaVariable: " << typeDeBorneDeLaVariable[idxVar];
-                ErrorI(ss.str());
+                throw ErrorI(ss.str());
             }
         }
 
@@ -169,12 +196,12 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
             objective->SetCoefficient(x, costs[idxVar]);
         }
 
-        if (nullptr != xValues) {
-            hint[idxVar] = std::make_pair(x, xValues[idxVar]);
+        if (useHint && nullptr != xValues) {
+            hint.emplace_back(x, xValues[idxVar]);
         }
     }
 
-    if (nullptr != xValues) {
+    if (useHint && nullptr != xValues) {
         solver->SetHint(hint);
     }
 }
@@ -206,8 +233,8 @@ void Solver::transferMatrix(const std::shared_ptr<operations_research::MPSolver>
                             double* coeffs,
                             int nbRow)
 {
-    auto variables = solver->variables();
-    auto constraints = solver->constraints();
+    const auto& variables = solver->variables();
+    const auto& constraints = solver->constraints();
 
     for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
         MPConstraint* const ct = constraints[idxRow];
@@ -219,20 +246,17 @@ void Solver::transferMatrix(const std::shared_ptr<operations_research::MPSolver>
     }
 }
 
-bool Solver::solve(const std::shared_ptr<operations_research::MPSolver>& solver, const MPSolverParameters& params)
-{
-    auto status = solver->Solve(params);
-
-    return (status == MPSolver::OPTIMAL || status == MPSolver::FEASIBLE);
-}
-
 template<>
 std::shared_ptr<operations_research::MPSolverParameters>
 Solver::makeParams<PROBLEME_SIMPLEXE>(const PROBLEME_SIMPLEXE& problem)
 {
     static_cast<void>(problem);
-    // no parameters other than default
-    return std::make_shared<MPSolverParameters>();
+    auto params = std::make_shared<MPSolverParameters>();
+
+    params->SetIntegerParam(MPSolverParameters::SCALING, MPSolverParameters::SCALING_ON);
+    params->SetIntegerParam(MPSolverParameters::LP_ALGORITHM, MPSolverParameters::DUAL);
+
+    return params;
 }
 
 template<>
@@ -243,6 +267,9 @@ Solver::makeParams<PROBLEME_A_RESOUDRE>(const PROBLEME_A_RESOUDRE& problem)
     auto presolve = (problem.FaireDuPresolve == NON_PNE) ? MPSolverParameters::PRESOLVE_OFF
                                                          : MPSolverParameters::PRESOLVE_ON;
     params->SetIntegerParam(MPSolverParameters::PRESOLVE, presolve);
+    params->SetDoubleParam(MPSolverParameters::RELATIVE_MIP_GAP, problem.ToleranceDOptimalite / 100.0);
+    params->SetIntegerParam(MPSolverParameters::SCALING, MPSolverParameters::SCALING_ON);
+    params->SetIntegerParam(MPSolverParameters::LP_ALGORITHM, MPSolverParameters::DUAL);
 
     return params;
 }
@@ -292,11 +319,10 @@ static int extractBasisStatus(operations_research::MPVariable& var)
     }
 }
 
-static int extractBasisStatus(operations_research::MPConstraint& cnt)
+static bool isSlackInBase(operations_research::MPConstraint& cnt)
 {
-    // extract and return correct basis status
-    int basisStatus = (cnt.basis_status() == MPSolver::FREE ? EN_BASE_LIBRE : EN_BASE);
-    return basisStatus;
+    // return true if the slack variable is in the base, false otherwise
+    return cnt.basis_status() == MPSolver::BASIC;
 }
 
 
@@ -317,12 +343,12 @@ void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem,
 
     auto& constraints = solver->constraints();
     int nbRow = problem.NombreDeContraintes;
+    problem.NbVarDeBaseComplementaires = 0;
     int idxCmpVar = 0;
     for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
         auto& row = constraints[idxRow];
         problem.CoutsMarginauxDesContraintes[idxRow] = row->dual_value();
-        int basisStatus = extractBasisStatus(*row);
-        if (basisStatus == EN_BASE_LIBRE) {
+        if (isSlackInBase(*row)) {
             problem.NbVarDeBaseComplementaires++;
             problem.ComplementDeLaBase[idxCmpVar] = idxRow;
             idxCmpVar++;

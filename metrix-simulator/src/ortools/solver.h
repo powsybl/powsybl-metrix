@@ -1,10 +1,18 @@
 #pragma once
 
+// OR-Tools tire glog transitivement, qui définit un macro `LOG` en collision
+// avec celui de metrix::log. On inclut OR-Tools et on undef le macro ici afin
+// que les consommateurs n'aient pas à le gérer eux-mêmes.
+// IMPORTANT : ce header doit être inclus AVANT <metrix/log.h> dans tout .cpp.
+#include <ortools/linear_solver/linear_solver.h>
+#ifdef LOG
+#  undef LOG
+#endif
+
 #include "compute/isolver.h"
 #include "config/configuration.h"
 #include "config/constants.h"
 #include "pne.h"
-#include <ortools/linear_solver/linear_solver.h>
 
 #include <map>
 #include <memory>
@@ -27,9 +35,9 @@ class Solver : public compute::ISolver
 public:
     explicit Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params);
 
-    void solve(PROBLEME_A_RESOUDRE* pne_problem) final { solve_impl(pne_problem); }
+    void solve(PROBLEME_A_RESOUDRE* pne_problem) final;
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
-    void free() final {}
+    void free() final { solver_.reset(); }
 
 private:
     // First = linear solver choice ; second = mixed solver choice
@@ -54,7 +62,8 @@ private:
                                   int nbVar,
                                   double* xValues,
                                   int const* typeDeBorneDeLaVariable,
-                                  int const* typeDeVariable = nullptr);
+                                  int const* typeDeVariable = nullptr,
+                                  bool useHint = true);
 
     static void transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
                              double const* rhs,
@@ -67,9 +76,6 @@ private:
                                int* indexCols,
                                double* coeffs,
                                int nbRow);
-
-    static bool solve(const std::shared_ptr<operations_research::MPSolver>& solver,
-                      const operations_research::MPSolverParameters& params);
 
 private:
 
@@ -87,27 +93,6 @@ private:
 
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_SIMPLEXE& problem);
-
-    template<class PROBLEM>
-    void solve_impl(PROBLEM* problem)
-    {
-        solver_ = toMPSolver(*problem);
-
-        if (problem->AffichageDesTraces) {
-            solver_->EnableOutput();
-        }
-
-        auto params = makeParams<PROBLEM>(*problem);
-        auto status = solver_->Solve(*params);
-
-        if (status == operations_research::MPSolver::ResultStatus::OPTIMAL
-            || status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
-            problem->ExistenceDUneSolution = OUI_SPX;
-            updateProblem(*problem, solver_);
-        } else {
-            problem->ExistenceDUneSolution = NON_SPX;
-        }
-    }
 
 private:
     std::shared_ptr<operations_research::MPSolver> solver_;
