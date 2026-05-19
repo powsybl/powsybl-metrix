@@ -431,11 +431,11 @@ qu'aucun élément surveillé ne dépasse sa limite thermique. Cette vérificati
         <text class="ts" x="50" y="348" text-anchor="start">via les facteurs de sensibilité (PTDF/LODF), évitant un load-flow complet par contingence.</text>
 
         <text class="th" x="50" y="386">Règles de filtrage (une surcharge est écartée si) :</text>
-        <text class="ts" x="50" y="406" text-anchor="start">• L'incident a déjà une parade choisie par le solveur</text>
+        <text class="ts" x="50" y="406" text-anchor="start">• L'incident a déjà ses parades activées</text>
         <text class="ts" x="58" y="420" text-anchor="start">(sans ITAM : ignoré ; avec ITAM : détection sur seuil avant-curatif)</text>
         <text class="ts" x="50" y="440" text-anchor="start">• La contrainte a déjà été ajoutée dans une micro-itération précédente</text>
         <text class="ts" x="58" y="454" text-anchor="start">(modes avec variables d'écart uniquement)</text>
-        <text class="ts" x="50" y="474" text-anchor="start">• Aucune action corrective n'est disponible</text>
+        <text class="ts" x="50" y="474" text-anchor="start">• Aucun levier d'action n'est mobilisable</text>
         <text class="ts" x="58" y="488" text-anchor="start">(modes avec variables d'écart uniquement)</text>
         <text class="ts" x="50" y="508" text-anchor="start">• La surcharge est inférieure à la tolérance numérique</text>
         <text class="ts" x="50" y="528" text-anchor="start">• La surcharge est plus petite que la surcharge N sur le même élément</text>
@@ -530,7 +530,7 @@ d'actions correctives, en plus du redispatching préventif.
 </div>
 ```
 
-#### Mécanisme ITAM (Instant Très Après Manœuvre)
+#### Mécanisme ITAM
 
 Lorsque l'option ITAM est activée (paramètre `TESTITAM` dans `fort.json`),
 METRIX vérifie un seuil supplémentaire : la **limite avant action curative**
@@ -1688,20 +1688,19 @@ chaque incident. Quatre filtres successifs éliminent les contraintes redondante
         <text class="ts" x="186" y="160" text-anchor="start">Non ↓</text>
 
         <g class="fill-teal">
-            <rect x="50" y="170" width="260" height="52" rx="8" stroke-width="0.5"/>
-            <text class="th" x="180" y="188" text-anchor="middle" dominant-baseline="central">Calcul transit en N</text>
-            <text class="ts" x="180" y="208" text-anchor="middle" dominant-baseline="central">Σ(coeff × transitSurQuad(N))</text>
+            <rect x="50" y="170" width="260" height="66" rx="8" stroke-width="0.5"/>
+            <text class="th" x="180" y="186" text-anchor="middle" dominant-baseline="central">Calcul transit en N</text>
+            <text class="ts" x="180" y="206" text-anchor="middle" dominant-baseline="central">Σ(coeff × transitSurQuad(N))</text>
+            <text class="ts" x="180" y="222" text-anchor="middle" dominant-baseline="central">→ stocke depassementEnN_</text>
         </g>
-        <line x1="180" y1="222" x2="180" y2="250" class="arr" marker-end="url(#a2)"/>
-
+        <line x1="180" y1="236" x2="180" y2="250" class="arr" marker-end="url(#a2)"/>
         <g class="fill-teal">
             <rect x="50" y="250" width="260" height="52" rx="8" stroke-width="0.5"/>
             <text class="th" x="180" y="268" text-anchor="middle" dominant-baseline="central">Dépassement ?</text>
-            <text class="ts" x="180" y="288" text-anchor="middle" dominant-baseline="central">|transit| - seuil > acceptable_diff</text>
+            <text class="ts" x="180" y="288" text-anchor="middle" dominant-baseline="central">depassementEnN_ > acceptable_diff</text>
         </g>
         <line x1="310" y1="276" x2="370" y2="276" class="arr" marker-end="url(#a2)"/>
-        <text class="ts" x="390" y="272" text-anchor="start" style="fill: var(--diag-green)">Non → skip</text>
-        <text class="ts" x="390" y="288" text-anchor="start" style="fill: var(--diag-green)">Stocker depassementEnN_</text>
+        <text class="ts" x="390" y="280" text-anchor="start" style="fill: var(--diag-green)">Non → skip</text>
         <line x1="180" y1="302" x2="180" y2="330" class="arr" marker-end="url(#a2)"/>
 
         <g class="fill-amber">
