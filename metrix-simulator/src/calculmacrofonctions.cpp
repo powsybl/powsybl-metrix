@@ -9,15 +9,10 @@
 //
 
 // clang-format off
-/*
- * These two headers SHALL be written in this order and with the undef because ortools library
- * is using the macro LOG for google log which is in conflict with LOG macro for metrix::log
- * This ensures that metrix::log logger is used after this inclusion (no garantee for inline 
- * functions in embeded headers)
- */
+// ortools/solver.h prend en charge le conflit de macro LOG (glog vs metrix::log)
+// en interne et DOIT être inclus avant <metrix/log.h>.
 #ifdef USE_ORTOOLS
-#   include <ortools/linear_solver/linear_solver.h>
-#   undef LOG
+#   include "ortools/solver.h"
 #endif
 #include <metrix/log.h>
 #include "compute/solver.h"
@@ -28,9 +23,6 @@
 #include "cte.h"
 #include "err/IoDico.h"
 #include "err/error.h"
-#ifdef USE_ORTOOLS
-#    include "ortools/solver.h"
-#endif
 #include "parametres.h"
 #include "pne.h"
 #include "prototypes.h"
@@ -38,6 +30,7 @@
 #include "status.h"
 #include "variante.h"
 
+#include <chrono>
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -109,18 +102,24 @@ string Contrainte::typeDeContrainteToString() const
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
 #ifdef USE_ORTOOLS
-    solver_simplex_ = std::make_shared<ortools::Solver>(
-        config::configuration().solverChoice(),
-        config::configuration().specificSolverParams());
-    solver_pne_ = solver_simplex_;
-    pc_solver_ = std::make_shared<ortools::Solver>(
-        config::configuration().pcSolverChoice(),
-        config::configuration().specificSolverParams());
+    auto makeSolver = [](config::Configuration::SolverChoice choice,
+                         const std::string& specificParams) -> std::shared_ptr<compute::ISolver> {
+        if (choice == config::Configuration::SolverChoice::SIRIUS) {
+            LOG(debug) << "Solver: Sirius direct";
+            return std::make_shared<compute::Solver>();
+        }
+        LOG(debug) << "Solver: OR-Tools (backend " << static_cast<int>(choice) << ")";
+        return std::make_shared<ortools::Solver>(choice, specificParams);
+    };
+
+    const auto& params = config::configuration().specificSolverParams();
+
+    solver_pne_ = makeSolver(config::configuration().solverChoice(), params);
+    pc_solver_ = makeSolver(config::configuration().pcSolverChoice(), params);
 #else
-    // use same solver
-    solver_simplex_ = std::make_shared<compute::Solver>();
-    solver_pne_ = solver_simplex_;
-    pc_solver_ = solver_simplex_;
+    auto shared_solver = std::make_shared<compute::Solver>();
+    solver_pne_ = shared_solver;
+    pc_solver_ = shared_solver;
 #endif
 
     // Réglage des paramètres en fonction du mode de calcul
@@ -331,6 +330,7 @@ int Calculer::resolutionProbleme()
 
                 // Free the problem at the end of the resolution
                 solver_pne_->free();
+                pc_solver_->free();
 
                 // No solution variant (but not due to internal problem)
                 if (status == METRIX_PAS_SOLUTION || status == METRIX_NB_MAX_CONT_ATTEINT
@@ -426,6 +426,19 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
     // Solveur I : utilisation de PNE_SOLVEUR
     //--------------------------------------
     if (typeSolveur == UTILISATION_PNE_SOLVEUR) {
+        // Comptage des variables entières actives
+        int nbVarEntieresActives = 0;
+        for (int i = 0; i < pbNombreDeVariables_; ++i) {
+            if (pbTypeDeVariable_[i] == ENTIER
+                && pbTypeDeBorneDeLaVariable_[i] != VARIABLE_FIXE) {
+                nbVarEntieresActives++;
+            }
+        }
+        LOG(debug) << "MIP stats: variante " << varianteCourante->num_
+                   << ", micro-iteration " << numMicroIteration_
+                   << ", nb variables = " << pbNombreDeVariables_
+                   << ", nb contraintes = " << pbNombreDeContraintes_
+                   << ", nb variables entieres actives = " << nbVarEntieresActives;
         LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineairePNE");
 
         pbCoutsMarginauxDesContraintes_.resize(pbNombreDeContraintes_);
@@ -462,7 +475,14 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Resolution du probleme
         //----------------------
+        auto startTime = std::chrono::high_resolution_clock::now();
         solver_pne_->solve(&pbPNE_);
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+        LOG(debug) << "MIP solve time: variante " << varianteCourante->num_
+                   << ", micro-iteration " << numMicroIteration_
+                   << ", " << duration.count() << " ms"
+                   << " (nb var entieres actives = " << nbVarEntieresActives << ")";
         pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
 
         if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
@@ -881,7 +901,7 @@ int Calculer::calculReportInfluencement()
         string LODFfileName = "LODF_matrix.csv";
         printLODF(LODFfileName, config::inputConfiguration().writeLODFfile());
     }
-    
+
     return METRIX_PAS_PROBLEME;
 }
 
@@ -985,8 +1005,6 @@ void Calculer::fixerVariablesEntieres()
         }
     }
 }
-
-Calculer::~Calculer() { icdtQdt_.clear(); }
 
 void Calculer::printStats()
 {
