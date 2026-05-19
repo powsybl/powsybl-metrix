@@ -1,0 +1,807 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_AAPN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AAQD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AARF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AARL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AARX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AASK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole 270_271_2 forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ABHM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ABIS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ABKE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ABLJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ABWE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ABZW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ACIB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ACPR a une admittance tres grande (2500.0000000000)
+Attention: Le quadripole QUAD_ACSL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ACSM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJN a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJO a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AEJY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AELQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AENN a une admittance tres grande (752.0832519531)
+Attention: Le quadripole QUAD_AENO a une admittance tres grande (752.0832519531)
+Attention: Le quadripole QUAD_AETL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AETM forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AFKJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AFMI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AFWV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AFYT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AFZX forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGAX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AGAY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AGFJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGLQ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AGMC forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGOQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGOR forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGRH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGSI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGTI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AGTQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGTS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AGTY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AGVA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AGZM a une admittance tres grande (962.6669311523)
+Attention: Le quadripole QUAD_AHDZ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AHIJ a une admittance tres grande (1137.0085449219)
+Attention: Le quadripole QUAD_AJCK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJCL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJCS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJGV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJMY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJNJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJOL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJOT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AJSV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJTF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AJTG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AJVF a une admittance tres grande (1110.7694091797)
+Attention: Le quadripole QUAD_AJYV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKCD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKCE a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKDB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKDL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKFD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKIG forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKJG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKJH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMJ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMK a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKML a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMP a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMQ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMR a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMU a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMW a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKMZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNC a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKND a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNE a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNG a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNJ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNK a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNL a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNM a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNP a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNQ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNR a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNS a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNT a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNU a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNW a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKNZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKOA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKOB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKOC a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKOD a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKOE a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKOF a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AKSO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKTJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AKTN a une admittance tres grande (1443.9342041016)
+Attention: Le quadripole QUAD_AKWL forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ALAO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ALAX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ALDL a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ALFK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ALHD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ALJA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ALJE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_APKQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_APMU a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_APMX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ARFK a une admittance tres grande (1110.7694091797)
+Attention: Le quadripole QUAD_ASRS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_ASXE forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ASYT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATDN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATKA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATKQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATKW forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATLB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATLX a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATQI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATRD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATTD forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATUB forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATWH a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATWI a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATWV a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATWW a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATWZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATXA a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATXB a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_ATXV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_ATZD a une admittance tres grande (2500.0000000000)
+Attention: Le quadripole QUAD_ATZS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUBT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUOA forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUTO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUUN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUUO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUUP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUUS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUUT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AUUU forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AVET a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole QUAD_AVEV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AVFV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AVHN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AVHO a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AVQN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AVVP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AWUF a une admittance tres grande (627.8260498047)
+Attention: Le quadripole QUAD_AWXN forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AWYH forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AWYI forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AWYJ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AWYK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXAP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AXEU a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AXGN a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AXGS forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXJO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXMP a une admittance tres grande (722.0001831055)
+Attention: Le quadripole QUAD_AXMQ a une admittance tres grande (722.0001831055)
+Attention: Le quadripole QUAD_AXQR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_AXQU a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole QUAD_AXRT forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXTV forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXXO forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXXP forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXXQ forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AXYK forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AYDR a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AYDS a une admittance tres grande (1250.0000000000)
+Attention: Le quadripole QUAD_AYDY forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AYFY a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AYFZ a une admittance tres grande (1443.9997558594)
+Attention: Le quadripole QUAD_AYJF forme une boucle sur le même noeud. Une de ses extrémités a été ouverte.
+Attention: Le quadripole QUAD_AYOA a une admittance tres grande (722.0001831055)
+Attention: Le quadripole QUAD_AYOB a une admittance tres grande (722.0001831055)
+Attention: Le quadripole QUAD_AYOC a une admittance tres grande (722.0001831055)
+Attention: Le quadripole QUAD_AYOD a une admittance tres grande (722.0001831055)
+Attention: Le quadripole QUAD_AYRK a une admittance tres grande (1599.9997558594)
+Attention: Le quadripole QUAD_BCHH a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_BCOW a une admittance tres grande (1600.0002441406)
+Attention: Le quadripole QUAD_BCHH_Td a une admittance tres grande (1000000.0000000000)
+Attention: Le quadripole QUAD_BEMN_Td a une admittance tres grande (715.9485626221)
+L'incident N-k numero 38 (QUAD_AFRQ) rompt la connexité, il est ignoré
+L'incident N-k numero 75 (484_4261_1) rompt la connexité, il est ignoré
+L'incident N-k numero 81 (QUAD_AJRJ) rompt la connexité, il est ignoré
+L'incident N-k numero 91 (QUAD_AEDW) rompt la connexité, il est ignoré
+L'incident N-k numero 97 (QUAD_AYMQ) rompt la connexité, il est ignoré
+L'incident N-k numero 103 (QUAD_AJGT) rompt la connexité, il est ignoré
+L'incident N-k numero 104 (QUAD_ARAF) rompt la connexité, il est ignoré
+L'incident N-k numero 108 (QUAD_AHIK) rompt la connexité, il est ignoré
+L'incident N-k numero 130 (419_4841_1) rompt la connexité, il est ignoré
+L'incident N-k numero 154 (QUAD_AEQI) rompt la connexité, il est ignoré
+L'incident N-k numero 164 (QUAD_AXZI) rompt la connexité, il est ignoré
+L'incident N-k numero 169 (QUAD_ACIM) rompt la connexité, il est ignoré
+L'incident N-k numero 175 (QUAD_ABHA) rompt la connexité, il est ignoré
+L'incident N-k numero 178 (QUAD_ALZU) rompt la connexité, il est ignoré
+L'incident N-k numero 185 (QUAD_AILL) rompt la connexité, il est ignoré
+L'incident N-k numero 200 (560_564_2) rompt la connexité, il est ignoré
+L'incident N-k numero 220 (QUAD_AECC) rompt la connexité, il est ignoré
+L'incident N-k numero 243 (QUAD_AKQQ) rompt la connexité, il est ignoré
+L'incident N-k numero 245 (QUAD_ABJY) rompt la connexité, il est ignoré
+L'incident N-k numero 251 (QUAD_AECW) rompt la connexité, il est ignoré
+L'incident N-k numero 255 (QUAD_ACDG) rompt la connexité, il est ignoré
+L'incident N-k numero 264 (QUAD_ATSP) rompt la connexité, il est ignoré
+L'incident N-k numero 285 (QUAD_AFJW) rompt la connexité, il est ignoré
+L'incident N-k numero 287 (QUAD_AQKK) rompt la connexité, il est ignoré
+L'incident N-k numero 299 (QUAD_AKMR) rompt la connexité, il est ignoré
+L'incident N-k numero 334 (QUAD_AEJW) rompt la connexité, il est ignoré
+L'incident N-k numero 350 (QUAD_AEJY) rompt la connexité, il est ignoré
+L'incident N-k numero 355 (QUAD_AKNR) rompt la connexité, il est ignoré
+L'incident N-k numero 380 (484_4262_2) rompt la connexité, il est ignoré
+L'incident N-k numero 383 (QUAD_AXBU) rompt la connexité, il est ignoré
+L'incident N-k numero 385 (QUAD_AKNF) rompt la connexité, il est ignoré
+L'incident N-k numero 389 (QUAD_AQXT) rompt la connexité, il est ignoré
+L'incident N-k numero 397 (QUAD_AUHI) rompt la connexité, il est ignoré
+L'incident N-k numero 404 (QUAD_AMFL) rompt la connexité, il est ignoré
+L'incident N-k numero 408 (QUAD_AMFM) rompt la connexité, il est ignoré
+L'incident N-k numero 410 (494_4370_1) rompt la connexité, il est ignoré
+L'incident N-k numero 412 (QUAD_AFAO) rompt la connexité, il est ignoré
+L'incident N-k numero 458 (QUAD_AHCT) rompt la connexité, il est ignoré
+L'incident N-k numero 466 (QUAD_AFRZ) rompt la connexité, il est ignoré
+L'incident N-k numero 482 (QUAD_ATSR) rompt la connexité, il est ignoré
+L'incident N-k numero 506 (QUAD_APID) rompt la connexité, il est ignoré
+L'incident N-k numero 509 (QUAD_APIE) rompt la connexité, il est ignoré
+L'incident N-k numero 516 (QUAD_AHCU) rompt la connexité, il est ignoré
+L'incident N-k numero 518 (QUAD_ACIZ) rompt la connexité, il est ignoré
+L'incident N-k numero 541 (489_4090_3) rompt la connexité, il est ignoré
+L'incident N-k numero 549 (50_27_1) rompt la connexité, il est ignoré
+L'incident N-k numero 550 (QUAD_AFIQ) rompt la connexité, il est ignoré
+L'incident N-k numero 551 (QUAD_AFRD) rompt la connexité, il est ignoré
+L'incident N-k numero 572 (QUAD_AOYU) rompt la connexité, il est ignoré
+L'incident N-k numero 573 (QUAD_AOYP) rompt la connexité, il est ignoré
+L'incident N-k numero 578 (QUAD_ACDN) rompt la connexité, il est ignoré
+L'incident N-k numero 582 (QUAD_AVQD) rompt la connexité, il est ignoré
+L'incident N-k numero 590 (QUAD_AXRO) rompt la connexité, il est ignoré
+L'incident N-k numero 591 (QUAD_AXRN) rompt la connexité, il est ignoré
+L'incident N-k numero 598 (QUAD_AJXN) rompt la connexité, il est ignoré
+L'incident N-k numero 599 (QUAD_APMU) rompt la connexité, il est ignoré
+L'incident N-k numero 614 (45_17_1) rompt la connexité, il est ignoré
+L'incident N-k numero 615 (QUAD_AQXV) rompt la connexité, il est ignoré
+L'incident N-k numero 625 (QUAD_AFPA) rompt la connexité, il est ignoré
+L'incident N-k numero 634 (QUAD_AKNJ) rompt la connexité, il est ignoré
+L'incident N-k numero 636 (QUAD_AKNT) rompt la connexité, il est ignoré
+L'incident N-k numero 648 (QUAD_ATDF) rompt la connexité, il est ignoré
+L'incident N-k numero 653 (QUAD_ASWZ) rompt la connexité, il est ignoré
+L'incident N-k numero 657 (QUAD_ALLT) rompt la connexité, il est ignoré
+L'incident N-k numero 664 (QUAD_AWOS) rompt la connexité, il est ignoré
+L'incident N-k numero 696 (QUAD_AJTK) rompt la connexité, il est ignoré
+L'incident N-k numero 701 (QUAD_AQXX) rompt la connexité, il est ignoré
+L'incident N-k numero 709 (QUAD_ALMD) rompt la connexité, il est ignoré
+L'incident N-k numero 711 (QUAD_ALME) rompt la connexité, il est ignoré
+L'incident N-k numero 721 (QUAD_AKOD) rompt la connexité, il est ignoré
+L'incident N-k numero 723 (101050_101055_1) rompt la connexité, il est ignoré
+L'incident N-k numero 738 (QUAD_AILM) rompt la connexité, il est ignoré
+L'incident N-k numero 757 (426_5465_1) rompt la connexité, il est ignoré
+L'incident N-k numero 762 (QUAD_AFQV) rompt la connexité, il est ignoré
+L'incident N-k numero 773 (QUAD_AHUZ) rompt la connexité, il est ignoré
+L'incident N-k numero 784 (QUAD_AFJV) rompt la connexité, il est ignoré
+L'incident N-k numero 790 (QUAD_AQYE) rompt la connexité, il est ignoré
+L'incident N-k numero 795 (QUAD_ATJB) rompt la connexité, il est ignoré
+L'incident N-k numero 800 (QUAD_ATDM) rompt la connexité, il est ignoré
+L'incident N-k numero 819 (QUAD_AKOB) rompt la connexité, il est ignoré
+L'incident N-k numero 820 (QUAD_ALMG) rompt la connexité, il est ignoré
+L'incident N-k numero 828 (QUAD_AMNS) rompt la connexité, il est ignoré
+L'incident N-k numero 843 (QUAD_AXTN) rompt la connexité, il est ignoré
+L'incident N-k numero 858 (QUAD_ANGY) rompt la connexité, il est ignoré
+L'incident N-k numero 861 (QUAD_ACFH) rompt la connexité, il est ignoré
+L'incident N-k numero 869 (QUAD_AFRB) rompt la connexité, il est ignoré
+L'incident N-k numero 896 (QUAD_AEQJ) rompt la connexité, il est ignoré
+L'incident N-k numero 907 (QUAD_APAT) rompt la connexité, il est ignoré
+L'incident N-k numero 908 (QUAD_APAV) rompt la connexité, il est ignoré
+L'incident N-k numero 915 (QUAD_ATUK) rompt la connexité, il est ignoré
+L'incident N-k numero 918 (QUAD_AVET) rompt la connexité, il est ignoré
+L'incident N-k numero 927 (QUAD_ATUL) rompt la connexité, il est ignoré
+L'incident N-k numero 929 (QUAD_AYMN) rompt la connexité, il est ignoré
+L'incident N-k numero 945 (QUAD_ATUM) rompt la connexité, il est ignoré
+L'incident N-k numero 958 (QUAD_AXTP) rompt la connexité, il est ignoré
+L'incident N-k numero 965 (QUAD_AKBS) rompt la connexité, il est ignoré
+L'incident N-k numero 979 (296_298_1) rompt la connexité, il est ignoré
+L'incident N-k numero 983 (QUAD_AKBT) rompt la connexité, il est ignoré
+L'incident N-k numero 986 (QUAD_ATDL) rompt la connexité, il est ignoré
+L'incident N-k numero 1000 (QUAD_AMRU) rompt la connexité, il est ignoré
+L'incident N-k numero 1032 (QUAD_AHLR) rompt la connexité, il est ignoré
+L'incident N-k numero 1054 (449_5480_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1069 (QUAD_AUXP) rompt la connexité, il est ignoré
+L'incident N-k numero 1079 (457_5475_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1080 (QUAD_AKOE) rompt la connexité, il est ignoré
+L'incident N-k numero 1099 (429_4310_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1101 (QUAD_AERS) rompt la connexité, il est ignoré
+L'incident N-k numero 1102 (QUAD_AKFZ) rompt la connexité, il est ignoré
+L'incident N-k numero 1110 (QUAD_AMIF) rompt la connexité, il est ignoré
+L'incident N-k numero 1112 (QUAD_AMHQ) rompt la connexité, il est ignoré
+L'incident N-k numero 1114 (QUAD_AMGR) rompt la connexité, il est ignoré
+L'incident N-k numero 1144 (QUAD_AKNI) rompt la connexité, il est ignoré
+L'incident N-k numero 1148 (QUAD_AYRA) rompt la connexité, il est ignoré
+L'incident N-k numero 1156 (QUAD_AKMS) rompt la connexité, il est ignoré
+L'incident N-k numero 1180 (QUAD_AIWC) rompt la connexité, il est ignoré
+L'incident N-k numero 1189 (QUAD_AKNU) rompt la connexité, il est ignoré
+L'incident N-k numero 1202 (QUAD_ASWY) rompt la connexité, il est ignoré
+L'incident N-k numero 1206 (QUAD_AFWK) rompt la connexité, il est ignoré
+L'incident N-k numero 1207 (QUAD_AKNX) rompt la connexité, il est ignoré
+L'incident N-k numero 1210 (QUAD_AGNL) rompt la connexité, il est ignoré
+L'incident N-k numero 1214 (QUAD_AKGV) rompt la connexité, il est ignoré
+L'incident N-k numero 1219 (QUAD_AKBR) rompt la connexité, il est ignoré
+L'incident N-k numero 1223 (QUAD_AMHT) rompt la connexité, il est ignoré
+L'incident N-k numero 1225 (QUAD_ANKF) rompt la connexité, il est ignoré
+L'incident N-k numero 1226 (QUAD_AQYF) rompt la connexité, il est ignoré
+L'incident N-k numero 1229 (1020_101023_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1260 (QUAD_ANKW) rompt la connexité, il est ignoré
+L'incident N-k numero 1280 (QUAD_AKNQ) rompt la connexité, il est ignoré
+L'incident N-k numero 1293 (45_20_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1295 (QUAD_AFIR) rompt la connexité, il est ignoré
+L'incident N-k numero 1298 (600_960_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1300 (QUAD_AFWM) rompt la connexité, il est ignoré
+L'incident N-k numero 1302 (QUAD_AJRM) rompt la connexité, il est ignoré
+L'incident N-k numero 1305 (QUAD_AQYG) rompt la connexité, il est ignoré
+L'incident N-k numero 1307 (QUAD_ARNX) rompt la connexité, il est ignoré
+L'incident N-k numero 1308 (QUAD_ABYC) rompt la connexité, il est ignoré
+L'incident N-k numero 1309 (QUAD_ABYD) rompt la connexité, il est ignoré
+L'incident N-k numero 1316 (QUAD_AFWJ) rompt la connexité, il est ignoré
+L'incident N-k numero 1324 (QUAD_AXBT) rompt la connexité, il est ignoré
+L'incident N-k numero 1338 (QUAD_AOEC) rompt la connexité, il est ignoré
+L'incident N-k numero 1340 (QUAD_AOED) rompt la connexité, il est ignoré
+L'incident N-k numero 1358 (QUAD_AWWC) rompt la connexité, il est ignoré
+L'incident N-k numero 1361 (QUAD_AYKF) rompt la connexité, il est ignoré
+L'incident N-k numero 1362 (QUAD_AAYA) rompt la connexité, il est ignoré
+L'incident N-k numero 1371 (QUAD_ACDM) rompt la connexité, il est ignoré
+L'incident N-k numero 1402 (15_11_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1405 (QUAD_AQXZ) rompt la connexité, il est ignoré
+L'incident N-k numero 1422 (977_78988_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1430 (4360_4362_2) rompt la connexité, il est ignoré
+L'incident N-k numero 1454 (QUAD_AQXE) rompt la connexité, il est ignoré
+L'incident N-k numero 1474 (QUAD_AKOA) rompt la connexité, il est ignoré
+L'incident N-k numero 1479 (560_563_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1485 (QUAD_AFBT) rompt la connexité, il est ignoré
+L'incident N-k numero 1495 (QUAD_AKMY) rompt la connexité, il est ignoré
+L'incident N-k numero 1506 (QUAD_AFWW) rompt la connexité, il est ignoré
+L'incident N-k numero 1508 (QUAD_AORI) rompt la connexité, il est ignoré
+L'incident N-k numero 1510 (QUAD_AXZE) rompt la connexité, il est ignoré
+L'incident N-k numero 1511 (QUAD_AXZF) rompt la connexité, il est ignoré
+L'incident N-k numero 1518 (QUAD_AKNV) rompt la connexité, il est ignoré
+L'incident N-k numero 1531 (QUAD_AOAK) rompt la connexité, il est ignoré
+L'incident N-k numero 1538 (QUAD_AJRL) rompt la connexité, il est ignoré
+L'incident N-k numero 1549 (QUAD_AGGY) rompt la connexité, il est ignoré
+L'incident N-k numero 1561 (QUAD_ATZC) rompt la connexité, il est ignoré
+L'incident N-k numero 1578 (QUAD_AMYD) rompt la connexité, il est ignoré
+L'incident N-k numero 1595 (QUAD_AGMS) rompt la connexité, il est ignoré
+L'incident N-k numero 1601 (QUAD_AKNW) rompt la connexité, il est ignoré
+L'incident N-k numero 1602 (4360_4361_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1611 (QUAD_AMBB) rompt la connexité, il est ignoré
+L'incident N-k numero 1618 (QUAD_AKNK) rompt la connexité, il est ignoré
+L'incident N-k numero 1622 (QUAD_AECB) rompt la connexité, il est ignoré
+L'incident N-k numero 1636 (QUAD_AKNM) rompt la connexité, il est ignoré
+L'incident N-k numero 1640 (431_200360_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1651 (QUAD_AESF) rompt la connexité, il est ignoré
+L'incident N-k numero 1664 (QUAD_AMYF) rompt la connexité, il est ignoré
+L'incident N-k numero 1665 (QUAD_AMYE) rompt la connexité, il est ignoré
+L'incident N-k numero 1669 (QUAD_AMHI) rompt la connexité, il est ignoré
+L'incident N-k numero 1676 (QUAD_AVRL) rompt la connexité, il est ignoré
+L'incident N-k numero 1693 (QUAD_AGKL) rompt la connexité, il est ignoré
+L'incident N-k numero 1702 (QUAD_AWZB) rompt la connexité, il est ignoré
+L'incident N-k numero 1704 (QUAD_AYNA) rompt la connexité, il est ignoré
+L'incident N-k numero 1709 (QUAD_ACJF) rompt la connexité, il est ignoré
+L'incident N-k numero 1728 (490_5266_1) rompt la connexité, il est ignoré
+L'incident N-k numero 1745 (QUAD_AQKH) rompt la connexité, il est ignoré
+L'incident N-k numero 1746 (QUAD_AQKI) rompt la connexité, il est ignoré
+L'incident N-k numero 1747 (QUAD_ATMA) rompt la connexité, il est ignoré
+L'incident N-k numero 1749 (QUAD_ATMB) rompt la connexité, il est ignoré
+L'incident N-k numero 1753 (QUAD_ASXB) rompt la connexité, il est ignoré
+L'incident N-k numero 1759 (QUAD_AECX) rompt la connexité, il est ignoré
+L'incident N-k numero 1761 (QUAD_AECY) rompt la connexité, il est ignoré
+L'incident N-k numero 1772 (QUAD_AECA) rompt la connexité, il est ignoré
+L'incident N-k numero 1782 (QUAD_AVAL) rompt la connexité, il est ignoré
+L'incident N-k numero 1790 (QUAD_ATQN) rompt la connexité, il est ignoré
+L'incident N-k numero 1809 (QUAD_AERF) rompt la connexité, il est ignoré
+L'incident N-k numero 1813 (QUAD_AGHA) rompt la connexité, il est ignoré
+L'incident N-k numero 1831 (QUAD_ATLU) rompt la connexité, il est ignoré
+L'incident N-k numero 1835 (QUAD_AGVI) rompt la connexité, il est ignoré
+L'incident N-k numero 1838 (QUAD_ATDI) rompt la connexité, il est ignoré
+L'incident N-k numero 1839 (QUAD_AGNK) rompt la connexité, il est ignoré
+L'incident N-k numero 1857 (QUAD_AKGB) rompt la connexité, il est ignoré
+L'incident N-k numero 1864 (QUAD_AUYL) rompt la connexité, il est ignoré
+L'incident N-k numero 1876 (QUAD_AQYA) rompt la connexité, il est ignoré
+L'incident N-k numero 1883 (QUAD_AGTG) rompt la connexité, il est ignoré
+L'incident N-k numero 1884 (QUAD_AGTF) rompt la connexité, il est ignoré
+L'incident N-k numero 1886 (QUAD_AGTH) rompt la connexité, il est ignoré
+L'incident N-k numero 1933 (QUAD_AKNL) rompt la connexité, il est ignoré
+L'incident N-k numero 1940 (QUAD_ANMV) rompt la connexité, il est ignoré
+L'incident N-k numero 1955 (4360_4382_2) rompt la connexité, il est ignoré
+L'incident N-k numero 1975 (QUAD_ANQC) rompt la connexité, il est ignoré
+L'incident N-k numero 1988 (QUAD_ANQD) rompt la connexité, il est ignoré
+L'incident N-k numero 1996 (QUAD_AQYK) rompt la connexité, il est ignoré
+L'incident N-k numero 2002 (QUAD_AGBI) rompt la connexité, il est ignoré
+L'incident N-k numero 2008 (QUAD_AROE) rompt la connexité, il est ignoré
+L'incident N-k numero 2011 (QUAD_AFBQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2013 (QUAD_ACIY) rompt la connexité, il est ignoré
+L'incident N-k numero 2016 (QUAD_ACQA) rompt la connexité, il est ignoré
+L'incident N-k numero 2018 (QUAD_AYNK) rompt la connexité, il est ignoré
+L'incident N-k numero 2019 (QUAD_ALIK) rompt la connexité, il est ignoré
+L'incident N-k numero 2036 (QUAD_AYLX) rompt la connexité, il est ignoré
+L'incident N-k numero 2052 (QUAD_AXAQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2064 (QUAD_AKOH) rompt la connexité, il est ignoré
+L'incident N-k numero 2083 (QUAD_AUPP) rompt la connexité, il est ignoré
+L'incident N-k numero 2084 (QUAD_AUPO) rompt la connexité, il est ignoré
+L'incident N-k numero 2106 (QUAD_ACGQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2111 (QUAD_ACGO) rompt la connexité, il est ignoré
+L'incident N-k numero 2112 (QUAD_ACGP) rompt la connexité, il est ignoré
+L'incident N-k numero 2113 (QUAD_ACGN) rompt la connexité, il est ignoré
+L'incident N-k numero 2121 (QUAD_AGWG) rompt la connexité, il est ignoré
+L'incident N-k numero 2125 (QUAD_AWTB) rompt la connexité, il est ignoré
+L'incident N-k numero 2128 (450_5478_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2133 (QUAD_ALVN) rompt la connexité, il est ignoré
+L'incident N-k numero 2143 (QUAD_APTH) rompt la connexité, il est ignoré
+L'incident N-k numero 2155 (QUAD_ATQG) rompt la connexité, il est ignoré
+L'incident N-k numero 2158 (QUAD_AAWE) rompt la connexité, il est ignoré
+L'incident N-k numero 2177 (QUAD_ACRB) rompt la connexité, il est ignoré
+L'incident N-k numero 2183 (650_760_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2187 (QUAD_ATSV) rompt la connexité, il est ignoré
+L'incident N-k numero 2192 (QUAD_AKMP) rompt la connexité, il est ignoré
+L'incident N-k numero 2195 (QUAD_ATST) rompt la connexité, il est ignoré
+L'incident N-k numero 2196 (QUAD_ATSU) rompt la connexité, il est ignoré
+L'incident N-k numero 2197 (QUAD_ATSS) rompt la connexité, il est ignoré
+L'incident N-k numero 2208 (405_5472_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2219 (QUAD_AUGY) rompt la connexité, il est ignoré
+L'incident N-k numero 2231 (QUAD_ACDJ) rompt la connexité, il est ignoré
+L'incident N-k numero 2234 (QUAD_AYMT) rompt la connexité, il est ignoré
+L'incident N-k numero 2253 (QUAD_AXTO) rompt la connexité, il est ignoré
+L'incident N-k numero 2272 (QUAD_AYMJ) rompt la connexité, il est ignoré
+L'incident N-k numero 2287 (QUAD_AYDG) rompt la connexité, il est ignoré
+L'incident N-k numero 2289 (QUAD_ASLG) rompt la connexité, il est ignoré
+L'incident N-k numero 2304 (QUAD_AECD) rompt la connexité, il est ignoré
+L'incident N-k numero 2306 (QUAD_AKNS) rompt la connexité, il est ignoré
+L'incident N-k numero 2311 (QUAD_AERT) rompt la connexité, il est ignoré
+L'incident N-k numero 2316 (QUAD_AWWD) rompt la connexité, il est ignoré
+L'incident N-k numero 2322 (QUAD_AFRX) rompt la connexité, il est ignoré
+L'incident N-k numero 2324 (QUAD_AEQG) rompt la connexité, il est ignoré
+L'incident N-k numero 2335 (QUAD_APDG) rompt la connexité, il est ignoré
+L'incident N-k numero 2337 (QUAD_AKLB) rompt la connexité, il est ignoré
+L'incident N-k numero 2343 (QUAD_APDF) rompt la connexité, il est ignoré
+L'incident N-k numero 2345 (QUAD_AGKM) rompt la connexité, il est ignoré
+L'incident N-k numero 2346 (QUAD_ANIE) rompt la connexité, il est ignoré
+L'incident N-k numero 2358 (QUAD_ATQO) rompt la connexité, il est ignoré
+L'incident N-k numero 2374 (4360_4381_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2376 (QUAD_ATJC) rompt la connexité, il est ignoré
+L'incident N-k numero 2378 (QUAD_AWTQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2395 (QUAD_AWOM) rompt la connexité, il est ignoré
+L'incident N-k numero 2400 (QUAD_AFWL) rompt la connexité, il est ignoré
+L'incident N-k numero 2410 (QUAD_AUPN) rompt la connexité, il est ignoré
+L'incident N-k numero 2426 (QUAD_AUHH) rompt la connexité, il est ignoré
+L'incident N-k numero 2442 (QUAD_AFBR) rompt la connexité, il est ignoré
+L'incident N-k numero 2471 (QUAD_AYDR) rompt la connexité, il est ignoré
+L'incident N-k numero 2472 (QUAD_AOQC) rompt la connexité, il est ignoré
+L'incident N-k numero 2475 (QUAD_AOQF) rompt la connexité, il est ignoré
+L'incident N-k numero 2477 (QUAD_AOQG) rompt la connexité, il est ignoré
+L'incident N-k numero 2480 (QUAD_AKIK) rompt la connexité, il est ignoré
+L'incident N-k numero 2503 (QUAD_AJRK) rompt la connexité, il est ignoré
+L'incident N-k numero 2526 (QUAD_AKNZ) rompt la connexité, il est ignoré
+L'incident N-k numero 2529 (46_18_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2538 (QUAD_AJRH) rompt la connexité, il est ignoré
+L'incident N-k numero 2539 (QUAD_AKMZ) rompt la connexité, il est ignoré
+L'incident N-k numero 2540 (QUAD_ALUX) rompt la connexité, il est ignoré
+L'incident N-k numero 2555 (460_4851_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2573 (QUAD_ANMS) rompt la connexité, il est ignoré
+L'incident N-k numero 2578 (QUAD_AQYH) rompt la connexité, il est ignoré
+L'incident N-k numero 2591 (QUAD_AUMO) rompt la connexité, il est ignoré
+L'incident N-k numero 2607 (QUAD_AUUF) rompt la connexité, il est ignoré
+L'incident N-k numero 2608 (QUAD_AUUG) rompt la connexité, il est ignoré
+L'incident N-k numero 2614 (QUAD_AWOL) rompt la connexité, il est ignoré
+L'incident N-k numero 2643 (QUAD_APGD) rompt la connexité, il est ignoré
+L'incident N-k numero 2666 (QUAD_ALSD) rompt la connexité, il est ignoré
+L'incident N-k numero 2669 (QUAD_ALSE) rompt la connexité, il est ignoré
+L'incident N-k numero 2681 (QUAD_AFIG) rompt la connexité, il est ignoré
+L'incident N-k numero 2692 (14_32_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2694 (QUAD_AKNG) rompt la connexité, il est ignoré
+L'incident N-k numero 2696 (QUAD_ACPR) rompt la connexité, il est ignoré
+L'incident N-k numero 2708 (QUAD_AEJX) rompt la connexité, il est ignoré
+L'incident N-k numero 2713 (QUAD_AWTC) rompt la connexité, il est ignoré
+L'incident N-k numero 2726 (QUAD_ASHB) rompt la connexité, il est ignoré
+L'incident N-k numero 2738 (QUAD_ATLY) rompt la connexité, il est ignoré
+L'incident N-k numero 2741 (QUAD_ASXA) rompt la connexité, il est ignoré
+L'incident N-k numero 2746 (QUAD_AEDT) rompt la connexité, il est ignoré
+L'incident N-k numero 2747 (QUAD_APZK) rompt la connexité, il est ignoré
+L'incident N-k numero 2750 (QUAD_APZJ) rompt la connexité, il est ignoré
+L'incident N-k numero 2756 (QUAD_AQWL) rompt la connexité, il est ignoré
+L'incident N-k numero 2765 (QUAD_AQYD) rompt la connexité, il est ignoré
+L'incident N-k numero 2787 (QUAD_AGMT) rompt la connexité, il est ignoré
+L'incident N-k numero 2796 (51_35_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2800 (QUAD_ALSQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2813 (QUAD_AEMG) rompt la connexité, il est ignoré
+L'incident N-k numero 2832 (QUAD_AKNY) rompt la connexité, il est ignoré
+L'incident N-k numero 2835 (QUAD_AOBB) rompt la connexité, il est ignoré
+L'incident N-k numero 2850 (QUAD_AXYZ) rompt la connexité, il est ignoré
+L'incident N-k numero 2853 (QUAD_AFQX) rompt la connexité, il est ignoré
+L'incident N-k numero 2856 (QUAD_AWOR) rompt la connexité, il est ignoré
+L'incident N-k numero 2860 (QUAD_AOBH) rompt la connexité, il est ignoré
+L'incident N-k numero 2861 (QUAD_AFBS) rompt la connexité, il est ignoré
+L'incident N-k numero 2864 (QUAD_AOBE) rompt la connexité, il est ignoré
+L'incident N-k numero 2865 (QUAD_AOBD) rompt la connexité, il est ignoré
+L'incident N-k numero 2873 (QUAD_ATLZ) rompt la connexité, il est ignoré
+L'incident N-k numero 2887 (QUAD_AQYI) rompt la connexité, il est ignoré
+L'incident N-k numero 2900 (QUAD_AJRI) rompt la connexité, il est ignoré
+L'incident N-k numero 2907 (QUAD_AUSV) rompt la connexité, il est ignoré
+L'incident N-k numero 2909 (QUAD_AUSU) rompt la connexité, il est ignoré
+L'incident N-k numero 2912 (QUAD_AUST) rompt la connexité, il est ignoré
+L'incident N-k numero 2914 (QUAD_AUSS) rompt la connexité, il est ignoré
+L'incident N-k numero 2915 (QUAD_AUSR) rompt la connexité, il est ignoré
+L'incident N-k numero 2916 (QUAD_AUSQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2918 (QUAD_AEGQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2919 (QUAD_AKMQ) rompt la connexité, il est ignoré
+L'incident N-k numero 2921 (QUAD_ACRR) rompt la connexité, il est ignoré
+L'incident N-k numero 2926 (4360_4384_4) rompt la connexité, il est ignoré
+L'incident N-k numero 2931 (QUAD_ALXT) rompt la connexité, il est ignoré
+L'incident N-k numero 2932 (QUAD_ALXS) rompt la connexité, il est ignoré
+L'incident N-k numero 2943 (QUAD_ARHX) rompt la connexité, il est ignoré
+L'incident N-k numero 2964 (QUAD_AOJD) rompt la connexité, il est ignoré
+L'incident N-k numero 2965 (QUAD_AQXY) rompt la connexité, il est ignoré
+L'incident N-k numero 2974 (46_19_1) rompt la connexité, il est ignoré
+L'incident N-k numero 2976 (QUAD_ALZC) rompt la connexité, il est ignoré
+L'incident N-k numero 2983 (QUAD_ANYJ) rompt la connexité, il est ignoré
+L'incident N-k numero 2986 (QUAD_AGWF) rompt la connexité, il est ignoré
+L'incident N-k numero 2988 (QUAD_ASVV) rompt la connexité, il est ignoré
+L'incident N-k numero 2998 (QUAD_ANYN) rompt la connexité, il est ignoré
+L'incident N-k numero 2999 (QUAD_ANYM) rompt la connexité, il est ignoré
+L'incident N-k numero 3000 (QUAD_ANYL) rompt la connexité, il est ignoré
+L'incident N-k numero 3003 (QUAD_ABHD) rompt la connexité, il est ignoré
+L'incident N-k numero 3008 (QUAD_AKNN) rompt la connexité, il est ignoré
+L'incident N-k numero 3021 (QUAD_AXTR) rompt la connexité, il est ignoré
+L'incident N-k numero 3023 (QUAD_ANUW) rompt la connexité, il est ignoré
+L'incident N-k numero 3024 (QUAD_ANUV) rompt la connexité, il est ignoré
+L'incident N-k numero 3027 (QUAD_ATSQ) rompt la connexité, il est ignoré
+L'incident N-k numero 3028 (QUAD_AKOC) rompt la connexité, il est ignoré
+L'incident N-k numero 3039 (QUAD_ADYX) rompt la connexité, il est ignoré
+L'incident N-k numero 3042 (QUAD_ABQO) rompt la connexité, il est ignoré
+L'incident N-k numero 3055 (QUAD_ALLQ) rompt la connexité, il est ignoré
+L'incident N-k numero 3056 (QUAD_ALLP) rompt la connexité, il est ignoré
+L'incident N-k numero 3057 (QUAD_ALLR) rompt la connexité, il est ignoré
+L'incident N-k numero 3058 (QUAD_AOJG) rompt la connexité, il est ignoré
+L'incident N-k numero 3060 (QUAD_AOJE) rompt la connexité, il est ignoré
+L'incident N-k numero 3061 (QUAD_AOJF) rompt la connexité, il est ignoré
+L'incident N-k numero 3067 (QUAD_ADUB) rompt la connexité, il est ignoré
+L'incident N-k numero 3070 (475_970_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3080 (QUAD_ADWK) rompt la connexité, il est ignoré
+L'incident N-k numero 3083 (QUAD_AFRE) rompt la connexité, il est ignoré
+L'incident N-k numero 3084 (QUAD_AWOO) rompt la connexité, il est ignoré
+L'incident N-k numero 3098 (QUAD_AJUO) rompt la connexité, il est ignoré
+L'incident N-k numero 3099 (QUAD_AJUP) rompt la connexité, il est ignoré
+L'incident N-k numero 3101 (QUAD_AMSN) rompt la connexité, il est ignoré
+L'incident N-k numero 3107 (QUAD_AMSO) rompt la connexité, il est ignoré
+L'incident N-k numero 3112 (QUAD_AMSL) rompt la connexité, il est ignoré
+L'incident N-k numero 3125 (QUAD_ABRY) rompt la connexité, il est ignoré
+L'incident N-k numero 3126 (QUAD_AMSJ) rompt la connexité, il est ignoré
+L'incident N-k numero 3134 (QUAD_AFHC) rompt la connexité, il est ignoré
+L'incident N-k numero 3143 (980_78556_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3145 (QUAD_AQXU) rompt la connexité, il est ignoré
+L'incident N-k numero 3158 (QUAD_AUXM) rompt la connexité, il est ignoré
+L'incident N-k numero 3172 (QUAD_AOVS) rompt la connexité, il est ignoré
+L'incident N-k numero 3175 (QUAD_AOVT) rompt la connexité, il est ignoré
+L'incident N-k numero 3176 (QUAD_AMMT) rompt la connexité, il est ignoré
+L'incident N-k numero 3177 (QUAD_AMMU) rompt la connexité, il est ignoré
+L'incident N-k numero 3179 (QUAD_ACHK) rompt la connexité, il est ignoré
+L'incident N-k numero 3181 (QUAD_AKOF) rompt la connexité, il est ignoré
+L'incident N-k numero 3185 (101020_101023_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3190 (QUAD_ALES) rompt la connexité, il est ignoré
+L'incident N-k numero 3193 (426_4320_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3203 (QUAD_AMSS) rompt la connexité, il est ignoré
+L'incident N-k numero 3221 (QUAD_AUMP) rompt la connexité, il est ignoré
+L'incident N-k numero 3230 (QUAD_AGVH) rompt la connexité, il est ignoré
+L'incident N-k numero 3231 (QUAD_ADIY) rompt la connexité, il est ignoré
+L'incident N-k numero 3244 (16_64_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3246 (QUAD_ATJA) rompt la connexité, il est ignoré
+L'incident N-k numero 3255 (QUAD_AQXW) rompt la connexité, il est ignoré
+L'incident N-k numero 3265 (QUAD_AKMT) rompt la connexité, il est ignoré
+L'incident N-k numero 3274 (484_5483_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3277 (498_4350_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3291 (QUAD_AEJP) rompt la connexité, il est ignoré
+L'incident N-k numero 3294 (QUAD_AFQZ) rompt la connexité, il est ignoré
+L'incident N-k numero 3297 (QUAD_AMPU) rompt la connexité, il est ignoré
+L'incident N-k numero 3306 (QUAD_AJTJ) rompt la connexité, il est ignoré
+L'incident N-k numero 3307 (QUAD_AEJQ) rompt la connexité, il est ignoré
+L'incident N-k numero 3309 (QUAD_AKNP) rompt la connexité, il est ignoré
+L'incident N-k numero 3318 (QUAD_AXAD) rompt la connexité, il est ignoré
+L'incident N-k numero 3319 (QUAD_AHLQ) rompt la connexité, il est ignoré
+L'incident N-k numero 3321 (QUAD_AEJR) rompt la connexité, il est ignoré
+L'incident N-k numero 3324 (QUAD_AWLR) rompt la connexité, il est ignoré
+L'incident N-k numero 3331 (QUAD_AKNH) rompt la connexité, il est ignoré
+L'incident N-k numero 3333 (419_4842_2) rompt la connexité, il est ignoré
+L'incident N-k numero 3350 (QUAD_AROD) rompt la connexité, il est ignoré
+L'incident N-k numero 3366 (QUAD_ADGJ) rompt la connexité, il est ignoré
+L'incident N-k numero 3372 (QUAD_AQYJ) rompt la connexité, il est ignoré
+L'incident N-k numero 3383 (QUAD_ACIS) rompt la connexité, il est ignoré
+L'incident N-k numero 3384 (QUAD_ANXP) rompt la connexité, il est ignoré
+L'incident N-k numero 3390 (QUAD_AKNA) rompt la connexité, il est ignoré
+L'incident N-k numero 3419 (4360_4383_3) rompt la connexité, il est ignoré
+L'incident N-k numero 3421 (QUAD_AYRC) rompt la connexité, il est ignoré
+L'incident N-k numero 3427 (QUAD_AUPQ) rompt la connexité, il est ignoré
+L'incident N-k numero 3446 (QUAD_ACWL) rompt la connexité, il est ignoré
+L'incident N-k numero 3466 (QUAD_ACYM) rompt la connexité, il est ignoré
+L'incident N-k numero 3485 (QUAD_AVMA) rompt la connexité, il est ignoré
+L'incident N-k numero 3503 (QUAD_AWLT) rompt la connexité, il est ignoré
+L'incident N-k numero 3506 (QUAD_AFRU) rompt la connexité, il est ignoré
+L'incident N-k numero 3510 (QUAD_AWVT) rompt la connexité, il est ignoré
+L'incident N-k numero 3512 (QUAD_AQXS) rompt la connexité, il est ignoré
+L'incident N-k numero 3513 (492_5471_1) rompt la connexité, il est ignoré
+L'incident N-k numero 3545 (QUAD_AEVM) rompt la connexité, il est ignoré
+L'incident N-k numero 3549 (QUAD_AYMP) rompt la connexité, il est ignoré
+L'incident N-k numero 3551 (QUAD_AEQH) rompt la connexité, il est ignoré
+L'incident N-k numero 3558 (QUAD_ABJU) rompt la connexité, il est ignoré
+L'incident N-k numero 3567 (QUAD_AYQF) rompt la connexité, il est ignoré
+L'incident N-k numero 3568 (QUAD_AMTC) rompt la connexité, il est ignoré
+L'incident N-k numero 3569 (QUAD_AMTB) rompt la connexité, il est ignoré
+L'incident N-k numero 3572 (QUAD_AKNO) rompt la connexité, il est ignoré
+L'incident N-k numero 3579 (QUAD_AMSY) rompt la connexité, il est ignoré
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 11143.540932
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 3153 (sur 3583)
+Nombre de regions       = 26
+Nombre total de noeuds  = 18935
+Nombre de consommations = 18817 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 26366 (dont 8139 surveillés en N et 8139 surveillés sur défaut)
+Nombre de groupes       = 16507 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 118 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 40 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 2
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [CONSO_AA]
+0 [CONSO_AA](1) <-> 9 [CONSO_AJ](8) <-> 1 [CONSO_AB](1)
+                                    <-> 2 [CONSO_AC](1)
+                                    <-> 3 [CONSO_AD](1)
+                                    <-> 4 [CONSO_AE](1)
+                                    <-> 5 [CONSO_AF](1)
+                                    <-> 6 [CONSO_AG](1)
+                                    <-> 7 [CONSO_AH](1)
+                |=| 11586 [CONSO_PWE](6) <-> 11589 [CONSO_PWH](1)
+                                         <-> 15018 [CONSO_UYE](11)
+                                         <-> 11588 [CONSO_PWG](1)
+                                         <-> 11585 [CONSO_PWD](5)
+
+Noeud bilan : 8 [CONSO_AI]
+8 [CONSO_AI](12) <-> 10 [CONSO_AK](1)
+                 <-> 11 [CONSO_AL](1)
+                 <-> 12 [CONSO_AM](1)
+                 <-> 13 [CONSO_AN](1)
+                 <-> 18297 [CONSO_ZUH](2) <-> 1785 [CONSO_BOO](12)
+                 <-> 18298 [CONSO_ZUI](2) <-> 1785 [CONSO_BOO](12)
+                 <-> 18328 [CONSO_ZVM](2) <-> 2664 [CONSO_CWJ](6)
+                 <-> 18329 [CONSO_ZVN](2) <-> 2664 [CONSO_CWJ](6)
+                 <-> 14 [CONSO_AO](1)
+                 <-> 18383 [CONSO_ZXP](2) <-> 3590 [CONSO_EFZ](7)
+                 <-> 18384 [CONSO_ZXQ](2) <-> 3590 [CONSO_EFZ](7)
+                 <-> 15 [CONSO_AP](1)
+                 |=| 18456 [CONSO_AAAK](1) <-> 15792 [CONSO_WBY](9)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+L'incident N-1 numero 23 (QUAD_AKMX) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.91715e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 140 (QUAD_AYDS) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.25e+07  g_mk[m] 0  -8e-08 denominateur 0  quad 1250
+L'incident N-1 numero 213 (QUAD_AKNC) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.6944e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 214 (QUAD_ATLX) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -2.43982e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 235 (QUAD_APTB) rompt la connexité, il est ignoré  non connexe a cause du denominateur 5.55385e+06  g_mk[m] 1.80055e-07  0 denominateur 0  quad 555.385
+L'incident N-1 numero 279 (QUAD_AATS) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 284 (QUAD_ATZD) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.5e+07  g_mk[m] 4e-08  0 denominateur 0  quad 2500
+L'incident N-1 numero 325 (QUAD_ACUG) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.00997e+06  g_mk[m] 4.97521e-07  0 denominateur 0  quad 200.997
+L'incident N-1 numero 396 (QUAD_AHGP) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+06  g_mk[m] 6.92521e-07  -3.02924e-20 denominateur 1.11022e-16  quad 144.4
+L'incident N-1 numero 531 (QUAD_AKND) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -6.41526e-21 denominateur -2.22045e-16  quad 1444
+L'incident N-1 numero 533 (QUAD_AGKU) rompt la connexité, il est ignoré  non connexe a cause du denominateur 15394.5  g_mk[m] 6.49584e-05  0 denominateur 0  quad 1.53945
+L'incident N-1 numero 553 (QUAD_AKMI) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.75166e-20 denominateur -2.22045e-16  quad 1444
+L'incident N-1 numero 601 (QUAD_AKTN) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.44393e+07  g_mk[m] 6.92552e-08  -1.22824e-20 denominateur 1.11022e-16  quad 1443.93
+L'incident N-1 numero 612 (QUAD_AAUE) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.9252e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 726 (QUAD_ATWZ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.51724e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 733 (QUAD_AATU) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 742 (QUAD_ATXA) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -2.28871e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 779 (QUAD_AGVA) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.98646e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 956 (QUAD_ATXB) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 2.28948e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 978 (QUAD_AKMU) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -6.23475e-21 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 997 (QUAD_AQJJ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 131153  g_mk[m] 7.62466e-06  0 denominateur 0  quad 13.1153
+L'incident N-1 numero 1008 (QUAD_AKML) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.75166e-20 denominateur -2.22045e-16  quad 1444
+L'incident N-1 numero 1018 (QUAD_AKMH) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.80746e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 1118 (QUAD_AKMW) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.91638e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 1173 (QUAD_AATI) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 0  -6.92521e-05 denominateur 0  quad 1.444
+L'incident N-1 numero 1283 (QUAD_AAUF) rompt la connexité, il est ignoré  non connexe a cause du denominateur 102049  g_mk[m] 9.79917e-06  0 denominateur 0  quad 10.2049
+L'incident N-1 numero 1285 (QUAD_ASHX) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.66667e+06  g_mk[m] 0  -6e-07 denominateur 0  quad 166.667
+L'incident N-1 numero 1370 (QUAD_AJBP) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1e+06  g_mk[m] 0  -1e-06 denominateur 0  quad 100
+L'incident N-1 numero 1392 (QUAD_AESG) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+06  g_mk[m] 1.75463e-20  -6.92521e-07 denominateur 1.11022e-16  quad 144.4
+L'incident N-1 numero 1399 (QUAD_AAUK) rompt la connexité, il est ignoré  non connexe a cause du denominateur 144400  g_mk[m] 0  -6.92521e-06 denominateur 0  quad 14.44
+L'incident N-1 numero 1418 (QUAD_AAUL) rompt la connexité, il est ignoré  non connexe a cause du denominateur 144400  g_mk[m] 0  -6.92521e-06 denominateur 0  quad 14.44
+L'incident N-1 numero 1441 (QUAD_AAUA) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 1458 (QUAD_AKNB) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.69363e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 1469 (QUAD_AQSS) rompt la connexité, il est ignoré  non connexe a cause du denominateur 5.55385e+06  g_mk[m] 1.80055e-07  0 denominateur 0  quad 555.385
+L'incident N-1 numero 1494 (QUAD_AAUC) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 1519 (QUAD_AAUJ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 144400  g_mk[m] 0  -6.92521e-06 denominateur 0  quad 14.44
+L'incident N-1 numero 1522 (QUAD_AVVL) rompt la connexité, il est ignoré  non connexe a cause du denominateur 28880  g_mk[m] 3.4626e-05  0 denominateur 0  quad 2.888
+L'incident N-1 numero 1524 (QUAD_AKMV) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.24244e-21  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 1756 (QUAD_AGLQ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.98384e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 2129 (QUAD_AATZ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.00997e+06  g_mk[m] 4.97521e-07  0 denominateur 0  quad 200.997
+L'incident N-1 numero 2236 (QUAD_AKDK) rompt la connexité, il est ignoré  non connexe a cause du denominateur 144400  g_mk[m] 0  -6.92521e-06 denominateur 0  quad 14.44
+L'incident N-1 numero 2245 (QUAD_AATT) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 2270 (QUAD_AKMJ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.75243e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 2301 (QUAD_ABNG) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+L'incident N-1 numero 2388 (QUAD_AKMF) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.51647e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 2454 (QUAD_AKMN) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.98548e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 2519 (QUAD_AYRK) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.6e+07  g_mk[m] 0  -6.25e-08 denominateur 0  quad 1600
+L'incident N-1 numero 2521 (QUAD_ACUE) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.00997e+06  g_mk[m] 4.97519e-07  0 denominateur 0  quad 200.997
+L'incident N-1 numero 2561 (QUAD_AYRN) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.66936e+06  g_mk[m] 0  -5.9903e-07 denominateur 0  quad 166.936
+L'incident N-1 numero 2736 (QUAD_AKMK) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 1.75243e-20  -6.92521e-08 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 2781 (QUAD_AKMG) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -1.80669e-20 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 2867 (QUAD_AUAU) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.11077e+06  g_mk[m] 0  -9.00277e-07 denominateur 0  quad 111.077
+L'incident N-1 numero 2937 (QUAD_AFCS) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.6e+06  g_mk[m] 6.25e-07  0 denominateur 0  quad 160
+L'incident N-1 numero 2953 (QUAD_AAUT) rompt la connexité, il est ignoré  non connexe a cause du denominateur 144400  g_mk[m] 0  -6.92521e-06 denominateur 0  quad 14.44
+L'incident N-1 numero 3001 (QUAD_AAUQ) rompt la connexité, il est ignoré  non connexe a cause du denominateur 144400  g_mk[m] 0  -6.92521e-06 denominateur 0  quad 14.44
+L'incident N-1 numero 3130 (QUAD_AKNE) rompt la connexité, il est ignoré  non connexe a cause du denominateur 1.444e+07  g_mk[m] 6.92521e-08  -6.40757e-21 denominateur 1.11022e-16  quad 1444
+L'incident N-1 numero 3166 (QUAD_ACVO) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.888e+06  g_mk[m] 3.4626e-07  0 denominateur 0  quad 288.8
+L'incident N-1 numero 3228 (QUAD_AAUI) rompt la connexité, il est ignoré  non connexe a cause du denominateur 160000  g_mk[m] 0  -6.25e-06 denominateur 0  quad 16
+L'incident N-1 numero 3282 (QUAD_AGMI) rompt la connexité, il est ignoré  non connexe a cause du denominateur 5.26316e+06  g_mk[m] 7.92691e-20  -1.9e-07 denominateur 4.44089e-16  quad 526.316
+L'incident N-1 numero 3348 (QUAD_ACUF) rompt la connexité, il est ignoré  non connexe a cause du denominateur 2.00997e+06  g_mk[m] 4.97519e-07  0 denominateur 0  quad 200.997
+L'incident N-1 numero 3413 (QUAD_AAUH) rompt la connexité, il est ignoré  non connexe a cause du denominateur 14440  g_mk[m] 6.92521e-05  0 denominateur 0  quad 1.444
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 251268.9837  MW
+Production démarrée                 = 306294.6924  MW
+Puissance à ajuster                 = -55025.7086  MW
+Puissance disponible à la hausse (hors Pimp) = 808059.4227  MW
+Puissance disponible à la baisse (hors Pimp) = -418714.7931  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_AA]), bilan = 0.0000 MW
+Zone synchrone 1 (noeud bilan 8 [CONSO_AI]), bilan = 55025.7086 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  251268.9837 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :   27512.8543
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :   27512.8543
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
