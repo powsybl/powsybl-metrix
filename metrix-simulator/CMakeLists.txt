@@ -31,13 +31,9 @@ message("Source directory : ${CMAKE_SOURCE_DIR}")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
-add_compile_definitions(
-    USE_SIRIUS=1 # Use sirius
-)
-
 option(USE_ORTOOLS "Toggle or-tools usage" OFF) # disable by default
 cmake_dependent_option(USE_XPRESS "Use XPress solver (must be same as 3rd party compilation)" OFF "USE_ORTOOLS" OFF) # not using xpress without ortools
-cmake_dependent_option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF "NOT USE_ORTOOLS" ON) # static if not using ortools
+option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
 
 if(USE_ORTOOLS)
     message(VERBOSE "Use ortools")
@@ -48,11 +44,12 @@ if(USE_ORTOOLS)
     endif()
 else()
     message(VERBOSE "Not using ortools")
-    if(USE_SIRIUS_SHARED)
-        message(VERBOSE "Use shared library for sirius solver")
-    else()
-        message(VERBOSE "Use static library for sirius solver")
-    endif()
+endif()
+
+if(USE_SIRIUS_SHARED)
+    message(VERBOSE "Use shared library for sirius solver")
+else()
+    message(VERBOSE "Use static library for sirius solver")
 endif()
 
 if(MSVC)
@@ -92,14 +89,9 @@ find_package(${SIRIUS_NAME} REQUIRED)
 # Ortools
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
 if(USE_ORTOOLS)
-    set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/ortools)
+    set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/ortools CACHE PATH "Path where an OR-Tools installation already exists")
     find_package(ortools CONFIG REQUIRED)
 endif()
-
-# # Xpress
-# if(USE_XPRESS)
-#     find_package(XPRESS REQUIRED)
-# endif()
 
 # SUITESPARSE
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/suitesparse CACHE PATH "Path where an SuiteSparse installation already exists")
@@ -216,18 +208,15 @@ if(USE_ORTOOLS)
 endif()
 
 if(USE_XPRESS)
+    # XPRESS is consumed transitively through ortools::ortools, which was built
+    # against libxprs at its own link step. metrix-simulator does not need to
+    # link libxprs directly; this compile definition only signals to the C++
+    # configuration validation layer that the OR-Tools build supports XPRESS.
+    # libxprs.so must be reachable at runtime (LD_LIBRARY_PATH).
     target_compile_definitions(${target}
         PRIVATE
         USE_XPRESS
     )
-    # target_include_directories(${target}
-    #     PRIVATE
-    #     XPRESS::XPRESS
-    # )
-    # target_link_libraries(${target}
-    #     PRIVATE
-    #     XPRESS::XPRESS
-    # )
 endif()
 
 if (USE_SIRIUS_SHARED)
@@ -238,7 +227,7 @@ endif()
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
     message(STATUS "CODE COVERAGE")
-	set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_BUILD_TYPE "Debug")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
     include(cmake/CodeCoverage)
     CODE_COVERAGE(NAME code-coverage

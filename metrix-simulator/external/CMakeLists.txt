@@ -32,6 +32,10 @@ include(ExternalProject)
 include(GetPatchCommand)
 include(CloneUrl)
 
+# ============================================================================
+# SuiteSparse
+# ============================================================================
+
 set(suitesparse_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
 set(suitesparse_tag_version v5.4.0)
 
@@ -65,14 +69,19 @@ else()
   set(SUITESPARSE_HOME ${install_dir})
 endif()
 
-set(sirius_solver_url https://github.com/jdarlay/sirius-solver)
-set(sirius_tag "metrix-integration-v0.1")
-set(sirius_asset "ubuntu-20.04_sirius-solver.zip")
+# ============================================================================
+# Sirius
+# ============================================================================
+
+set(sirius_solver_url https://github.com/rte-france/sirius-solver.git)
+
+if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  get_url(NAME sirius URL ${sirius_solver_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  set(sirius_solver_url ${SIRIUS_URL})
+endif()
 
 set(sirius_solver_ROOT ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver)
 find_package(sirius_solver QUIET)
-unset(sirius_solver_ROOT)
-
 if(sirius_solver_FOUND)
   message(STATUS "Sirius solver already found")
 else()
@@ -80,42 +89,78 @@ else()
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/sirius_solver-stamp
-    SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver
+    SOURCE_DIR          ${DOWNLOAD_DIR}/sirius_solver
     BINARY_DIR          ${DOWNLOAD_DIR}/sirius_solver-build
-    URL                 ${sirius_solver_url}/releases/download/${sirius_tag}/${sirius_asset}
-    CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       ""
-    INSTALL_COMMAND     ""
-    )
+    GIT_REPOSITORY      ${sirius_solver_url}
+    GIT_TAG             origin/metrix
+    CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
+    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+  )
   ExternalProject_Get_Property(sirius_solver install_dir)
   set(sirius_solver_ROOT ${install_dir})
   set(sirius_solver_static_ROOT ${install_dir})
 endif()
 
-set(ortools_url https://github.com/rte-france/or-tools)
-set(ortools_tag v9.5-rte2.0)
+# ============================================================================
+# OR-Tools
+#
+# Builds the OR-Tools RTE wrapper (rte-france/or-tools-rte).
+# OR-Tools manages its own dependencies (abseil, protobuf, etc.) via BUILD_DEPS=ON.
+#
+# Xpress backend is enabled automatically if XPRESS_ROOT is set (CMake variable
+# or environment variable). No user-facing option: external/ fabricates what it
+# can, the consuming project decides whether to use it.
+# ============================================================================
 
-option(USE_XPRESS "Use XPRESS in ortools" OFF)
-set(ortools_asset "ortools_cxx_ubuntu-20.04_shared_sirius-metrix.zip")
+set(ortools_rte_url https://github.com/rte-france/or-tools-rte.git)
+set(ortools_rte_tag "v9.13-rte1.3")
+
+if(DEFINED ENV{NNI} AND DEFINED ENV{NNI_PASSWORD})
+  get_url(NAME ortools URL ${ortools_rte_url} NNI $ENV{NNI} PASSWORD $ENV{NNI_PASSWORD})
+  set(ortools_rte_url ${ORTOOLS_URL})
+endif()
 
 set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/ortools)
-find_package(ortools QUIET)
-unset(ortools_ROOT)
-
+find_package(ortools CONFIG QUIET)
 if(ortools_FOUND)
-  message(STATUS "Ortools already found")
+  message(STATUS "OR-Tools already found")
+  add_custom_target(ortools)
 else()
+  # Detect Xpress SDK from environment; fall back gracefully if absent
+  if(NOT XPRESS_ROOT AND DEFINED ENV{XPRESS_ROOT})
+    set(XPRESS_ROOT $ENV{XPRESS_ROOT})
+  endif()
+
+  if(XPRESS_ROOT)
+    message(STATUS "OR-Tools will be built with Xpress backend (XPRESS_ROOT=${XPRESS_ROOT})")
+    set(ORTOOLS_XPRESS_ARGS
+      -DUSE_XPRESS:BOOL=ON
+      -DXPRESS_ROOT:PATH=${XPRESS_ROOT}
+    )
+  else()
+    message(STATUS "OR-Tools will be built without Xpress backend (XPRESS_ROOT not set)")
+    set(ORTOOLS_XPRESS_ARGS -DUSE_XPRESS:BOOL=OFF)
+  endif()
+
   ExternalProject_Add(ortools
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/ortools
     TMP_DIR             ${TMP_DIR}
     STAMP_DIR           ${DOWNLOAD_DIR}/ortools-stamp
-    SOURCE_DIR          ${CMAKE_CURRENT_BINARY_DIR}/ortools
+    SOURCE_DIR          ${DOWNLOAD_DIR}/ortools
     BINARY_DIR          ${DOWNLOAD_DIR}/ortools-build
-    URL                 ${ortools_url}/releases/download/${ortools_tag}/${ortools_asset}
-    CONFIGURE_COMMAND   ""
-    BUILD_COMMAND       ""
-    INSTALL_COMMAND     ""
-    )
+    GIT_REPOSITORY      ${ortools_rte_url}
+    GIT_TAG             ${ortools_rte_tag}
+    CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
+                        -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
+    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
+                        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+                        -DBUILD_DEPS:BOOL=ON
+                        -DUSE_SIRIUS:BOOL=OFF
+                        -Dortools_REPO:STRING=https://github.com/google/or-tools.git
+                        -Dortools_REF:STRING=v9.13
+                        ${ORTOOLS_XPRESS_ARGS}
+  )
   ExternalProject_Get_Property(ortools install_dir)
   set(ortools_ROOT ${install_dir})
 endif()
