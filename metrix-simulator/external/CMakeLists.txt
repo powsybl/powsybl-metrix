@@ -157,6 +157,9 @@ else()
                         -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
                         -DBUILD_DEPS:BOOL=ON
                         -DUSE_SIRIUS:BOOL=OFF
+                        -DBUILD_SAMPLES:BOOL=OFF
+                        -DBUILD_EXAMPLES:BOOL=OFF
+                        -DBUILD_TESTING:BOOL=OFF
                         -Dortools_REPO:STRING=https://github.com/google/or-tools.git
                         -Dortools_REF:STRING=v9.13
                         ${ORTOOLS_XPRESS_ARGS}
