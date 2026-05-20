@@ -12,12 +12,12 @@ import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
+import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.integration.MetrixVariable;
 import com.powsybl.metrix.integration.contingency.Probability;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.data.generator.MetrixInputData;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.MappableEquipmentType;
-import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import com.powsybl.timeseries.TimeSeriesTable;
 import gnu.trove.list.array.TDoubleArrayList;
@@ -89,12 +89,15 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         this.contingencyVariableProbabilities = metrixNetwork
                 .getContingencyList()
                 .stream()
-                .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
+                .filter(contingency -> contingency.getExtension(Probability.class) != null
+                    && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() != null)
                 .collect(Collectors.groupingBy(contingency -> contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef(), Collectors.toList()));
         this.contingencyConstantProbabilities = metrixNetwork
                 .getContingencyList()
                 .stream()
-                .filter(contingency -> contingency.getExtension(Probability.class) != null && contingency.getExtension(Probability.class).getProbabilityBase() != null && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() == null)
+                .filter(contingency -> contingency.getExtension(Probability.class) != null
+                    && contingency.getExtension(Probability.class).getProbabilityBase() != null
+                    && contingency.getExtension(Probability.class).getProbabilityTimeSeriesRef() == null)
                 .collect(Collectors.groupingBy(contingency -> contingency.getExtension(Probability.class).getProbabilityBase(), Collectors.toList()));
     }
 

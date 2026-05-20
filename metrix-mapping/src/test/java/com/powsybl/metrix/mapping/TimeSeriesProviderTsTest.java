@@ -102,14 +102,24 @@ class TimeSeriesProviderTsTest {
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"), new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L")), mappingConfig.getLoadTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")), mappingConfig.getHvdcLineTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")), mappingConfig.getBreakerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1")), mappingConfig.getPhaseTapChangerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1")), mappingConfig.getRatioTapChangerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1")), mappingConfig.getLccConverterStationTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1")), mappingConfig.getVscConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")),
+            mappingConfig.getGeneratorTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
+            new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"),
+            new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L")),
+            mappingConfig.getLoadTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")),
+            mappingConfig.getHvdcLineTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")),
+            mappingConfig.getBreakerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1")),
+            mappingConfig.getPhaseTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1")),
+            mappingConfig.getRatioTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1")),
+            mappingConfig.getLccConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1")),
+            mappingConfig.getVscConverterStationTimeSeries());
     }
 
     @Test

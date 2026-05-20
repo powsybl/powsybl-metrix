@@ -9,14 +9,10 @@ package com.powsybl.metrix.mapping.balance;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.TreeBasedTable;
-import com.powsybl.iidm.network.BoundaryLine;
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.iidm.network.Injection;
-import com.powsybl.iidm.network.Load;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.LoadDetail;
-import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import com.powsybl.timeseries.TimeSeriesIndex;
@@ -32,13 +28,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

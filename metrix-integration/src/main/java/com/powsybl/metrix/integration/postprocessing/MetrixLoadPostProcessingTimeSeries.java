@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOAD_CUR_PREFIX;
-import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOAD_PREFIX;
+import static com.powsybl.metrix.integration.data.generator.MetrixOutputData.LOAD_CUR_PREFIX;
+import static com.powsybl.metrix.integration.data.generator.MetrixOutputData.LOAD_PREFIX;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.CURATIVE_PREFIX;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.PREVENTIVE_PREFIX;
 

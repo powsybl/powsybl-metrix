@@ -12,18 +12,14 @@ import com.powsybl.contingency.BranchContingency;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixDslDataLoader;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
-import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
-import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.data.generator.MetrixOutputData;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.BinaryOperation;
 import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -33,11 +29,7 @@ import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.powsybl.metrix.integration.postprocessing.MetrixLoadPostProcessingTimeSeries.CUR_SHEDDING_COST_PREFIX;
 import static com.powsybl.metrix.integration.postprocessing.MetrixLoadPostProcessingTimeSeries.CUR_SHEDDING_PREFIX;
@@ -144,7 +136,8 @@ class MetrixLoadPostProcessingTimeSeriesTest {
         MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, new DataTableStore(), mappingConfig, new ScriptLogConfig());
         Contingency contingency = new Contingency("cty", List.of(new BranchContingency("FP.AND1  FVERGE1  1")));
 
-        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig, Map.of(contingency.getId(), curativeProbabilityNodeCalc), metrixResultTimeSeries.getTimeSeriesNames(null), null);
+        MetrixLoadPostProcessingTimeSeries loadProcessing = new MetrixLoadPostProcessingTimeSeries(dslData, mappingConfig,
+            Map.of(contingency.getId(), curativeProbabilityNodeCalc), metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = loadProcessing.createPostProcessingTimeSeries();
         return mappingConfig.getTimeSeriesNodes();
     }
@@ -157,10 +150,14 @@ class MetrixLoadPostProcessingTimeSeriesTest {
 
         NodeCalc tsPreventiveSheddingDoctrineCost = new TimeSeriesNameNodeCalc("tsPreventiveSheddingDoctrineCost");
         NodeCalc tsCurativeSheddingDoctrineCost = new TimeSeriesNameNodeCalc("tsCurativeSheddingDoctrineCost");
-        verifyLoadPostProcessing("FSSV.O11_L", PRE_SHEDDING_PREFIX, PRE_SHEDDING_COST_PREFIX, MetrixOutputData.LOAD_PREFIX, preventiveProbabilityNodeCalc, tsPreventiveSheddingDoctrineCost, true);
-        verifyLoadPostProcessing("FSSV.O11_L", CUR_SHEDDING_PREFIX, CUR_SHEDDING_COST_PREFIX, MetrixOutputData.LOAD_CUR_PREFIX, curativeProbabilityNodeCalc, tsCurativeSheddingDoctrineCost, true);
-        verifyLoadPostProcessing("FVALDI11_L", PRE_SHEDDING_PREFIX, PRE_SHEDDING_COST_PREFIX, MetrixOutputData.LOAD_PREFIX, preventiveProbabilityNodeCalc, timeSeriesNodes.get("450"), true);
-        verifyLoadPostProcessing("FVALDI11_L", CUR_SHEDDING_PREFIX, CUR_SHEDDING_COST_PREFIX, MetrixOutputData.LOAD_CUR_PREFIX, curativeProbabilityNodeCalc, timeSeriesNodes.get("550"), true);
+        verifyLoadPostProcessing("FSSV.O11_L", PRE_SHEDDING_PREFIX, PRE_SHEDDING_COST_PREFIX,
+            MetrixOutputData.LOAD_PREFIX, preventiveProbabilityNodeCalc, tsPreventiveSheddingDoctrineCost, true);
+        verifyLoadPostProcessing("FSSV.O11_L", CUR_SHEDDING_PREFIX, CUR_SHEDDING_COST_PREFIX,
+            MetrixOutputData.LOAD_CUR_PREFIX, curativeProbabilityNodeCalc, tsCurativeSheddingDoctrineCost, true);
+        verifyLoadPostProcessing("FVALDI11_L", PRE_SHEDDING_PREFIX, PRE_SHEDDING_COST_PREFIX,
+            MetrixOutputData.LOAD_PREFIX, preventiveProbabilityNodeCalc, timeSeriesNodes.get("450"), true);
+        verifyLoadPostProcessing("FVALDI11_L", CUR_SHEDDING_PREFIX, CUR_SHEDDING_COST_PREFIX,
+            MetrixOutputData.LOAD_CUR_PREFIX, curativeProbabilityNodeCalc, timeSeriesNodes.get("550"), true);
     }
 
     @Test

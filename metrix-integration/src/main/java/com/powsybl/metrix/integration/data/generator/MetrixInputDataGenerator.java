@@ -1,17 +1,17 @@
 /*
- * Copyright (c) 2021, RTE (http://www.rte-france.com)
+ * Copyright (c) 2021-2026, RTE (https://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.integration.dataGenerator;
+package com.powsybl.metrix.integration.data.generator;
 
 import com.google.common.collect.Range;
 import com.powsybl.computation.*;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.*;
+import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.chunk.MetrixChunkLogger;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.integration.configuration.MetrixConfig;
@@ -88,7 +88,8 @@ public class MetrixInputDataGenerator {
                                                           MetrixDslData metrixDslData,
                                                           MetrixChunkParam metrixChunkParam) throws IOException {
         MetrixVariantProvider.Variants variants = defineVariantValue(variantProvider);
-        List<InputFile> inputFiles = inputFiles(metrixChunkParam.remedialActionsFile, variantProvider, network, metrixChunkParam.contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
+        List<InputFile> inputFiles = inputFiles(metrixChunkParam.remedialActionsFile, variantProvider, network,
+            metrixChunkParam.contingenciesProvider, parameters, metrixDslData, this::copyToInputFiles, variants);
         List<OutputFile> outputFiles = outputFiles(variants, metrixChunkParam.writePtdfMatrix, metrixChunkParam.writeLodfMatrix);
         return commandExecutionFrom(command(variants, metrixChunkParam.writePtdfMatrix, metrixChunkParam.writeLodfMatrix, inputFiles, outputFiles));
     }
@@ -126,23 +127,27 @@ public class MetrixInputDataGenerator {
 
     interface CopyInputAdditionalFiles {
         static CopyInputAdditionalFiles nothing() {
-            return (_a, _b) -> {
+            return (path, inputFiles) -> {
             };
         }
 
         void copyToInputFiles(Path remedialActionFile, List<InputFile> inputFiles);
     }
 
-    private List<InputFile> inputFiles(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters, MetrixDslData metrixDslData, CopyInputAdditionalFiles additionnal, MetrixVariantProvider.Variants variants) throws IOException {
+    private List<InputFile> inputFiles(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network,
+                                       ContingenciesProvider contingenciesProvider, MetrixParameters parameters,
+                                       MetrixDslData metrixDslData, CopyInputAdditionalFiles additional,
+                                       MetrixVariantProvider.Variants variants) throws IOException {
         LOGGER.info("Generating Metrix chunk input data in '{}'", workingDir.toAbsolutePath());
         List<InputFile> inputFiles = new ArrayList<>(FORT_FILE_NAME);
-        additionnal.copyToInputFiles(remedialActionFile, inputFiles);
+        additional.copyToInputFiles(remedialActionFile, inputFiles);
         MetrixNetwork metrixNetwork = createNetwork(remedialActionFile, variantProvider, network, contingenciesProvider, parameters);
         writeFileData(variantProvider, parameters, metrixDslData, variants, metrixNetwork);
         return inputFiles;
     }
 
-    protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters) {
+    protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network,
+                                          ContingenciesProvider contingenciesProvider, MetrixParameters parameters) {
         return MetrixNetwork.create(network, contingenciesProvider,
                 variantProvider != null ? variantProvider.getMappedBreakers() : null, parameters, remedialActionFile);
     }

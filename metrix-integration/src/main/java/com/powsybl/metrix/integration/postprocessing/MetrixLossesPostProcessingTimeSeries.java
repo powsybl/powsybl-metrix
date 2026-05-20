@@ -20,8 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.powsybl.metrix.integration.data.generator.MetrixOutputData.LOSSES;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
-import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.LOSSES;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

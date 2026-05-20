@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright (c) 2021, RTE (http://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -18,10 +18,10 @@ import com.powsybl.metrix.mapping.log.LogContent;
 import com.powsybl.metrix.mapping.log.RangeLogWithVariableChanged;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
+import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.CS12;
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.MINUS_CS21;
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.MINUS_MAXP;
-import static com.powsybl.metrix.mapping.TimeSeriesMapper.addActivePowerRangeExtension;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

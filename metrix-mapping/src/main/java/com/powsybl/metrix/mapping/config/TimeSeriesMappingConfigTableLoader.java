@@ -16,22 +16,13 @@ import com.powsybl.timeseries.*;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNames;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.CONNECTED_VALUE;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
-import static com.powsybl.metrix.commons.data.timeseries.TimeSeriesStoreUtil.isNotVersioned;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -190,8 +181,10 @@ public class TimeSeriesMappingConfigTableLoader {
         for (Map.Entry<String, Set<String>> entry : timeSeriesToPlannedOutagesMapping.entrySet()) {
             String timeSeriesName = entry.getKey();
             Set<String> disconnectedIds = entry.getValue();
-            StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name " + timeSeriesName));
-            List<DoubleTimeSeries> disconnectedEquipmentTimeSeries = computeDisconnectedEquipmentTimeSeries(timeSeriesName, plannedOutagesTimeSeries.toArray(), disconnectedIds, index);
+            StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version)
+                .orElseThrow(() -> new TimeSeriesException("Invalid planned outages time series name " + timeSeriesName));
+            List<DoubleTimeSeries> disconnectedEquipmentTimeSeries = computeDisconnectedEquipmentTimeSeries(timeSeriesName,
+                plannedOutagesTimeSeries.toArray(), disconnectedIds, index);
             doubleTimeSeries.addAll(disconnectedEquipmentTimeSeries);
         }
         return new ReadOnlyTimeSeriesStoreCache(doubleTimeSeries);

@@ -347,7 +347,6 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private <T extends DataChunk> List<T> appendChunks(List<T> existingChunks, List<T> newChunks,
                                                        TimeSeriesIndex existingIndex, TimeSeriesIndex newIndex,
                                                        boolean existingComesFirst) {
@@ -370,31 +369,34 @@ public class FileSystemTimeSeriesStore implements ReadOnlyTimeSeriesStore {
         final AtomicInteger offset = new AtomicInteger(existingComesFirst ? existingIndex.getPointCount() : newIndex.getPointCount());
 
         // Add the other chunks
-        lastChunks.forEach(chunk -> {
-            T chunkWithOffset;
-            int chunkOffset = chunk.getOffset();
-            if (chunk instanceof DoubleDataChunk doubleChunk) {
-                chunkWithOffset = (T) new UncompressedDoubleDataChunk(
-                    offset.get() + chunkOffset,
-                    doubleChunk
-                        .stream(lastIndex)
-                        .map(DoublePoint::getValue)
-                        .mapToDouble(Double::doubleValue)
-                        .toArray()).tryToCompress();
-            } else if (chunk instanceof StringDataChunk stringChunk) {
-                chunkWithOffset = (T) new UncompressedStringDataChunk(
-                    offset.get() + chunkOffset,
-                    stringChunk
-                        .stream(lastIndex)
-                        .map(StringPoint::getValue)
-                        .toArray(String[]::new)).tryToCompress();
-            } else {
-                // This case should not happen
-                throw new PowsyblException("Unsupported chunk type: " + chunk.getClass().getName());
-            }
-            chunks.add(chunkWithOffset);
-        });
+        lastChunks.forEach(chunk -> addChunk(chunks, chunk, offset, lastIndex));
         return chunks;
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends DataChunk> void addChunk(List<T> chunks, T chunk, AtomicInteger offset, TimeSeriesIndex lastIndex) {
+        T chunkWithOffset;
+        int chunkOffset = chunk.getOffset();
+        if (chunk instanceof DoubleDataChunk doubleChunk) {
+            chunkWithOffset = (T) new UncompressedDoubleDataChunk(
+                offset.get() + chunkOffset,
+                doubleChunk
+                    .stream(lastIndex)
+                    .map(DoublePoint::getValue)
+                    .mapToDouble(Double::doubleValue)
+                    .toArray()).tryToCompress();
+        } else if (chunk instanceof StringDataChunk stringChunk) {
+            chunkWithOffset = (T) new UncompressedStringDataChunk(
+                offset.get() + chunkOffset,
+                stringChunk
+                    .stream(lastIndex)
+                    .map(StringPoint::getValue)
+                    .toArray(String[]::new)).tryToCompress();
+        } else {
+            // This case should not happen
+            throw new PowsyblException("Unsupported chunk type: " + chunk.getClass().getName());
+        }
+        chunks.add(chunkWithOffset);
     }
 
     private boolean compareSpacingWithDurationBetweenIndexes(RegularTimeSeriesIndex firstIndex, RegularTimeSeriesIndex lastIndex) {

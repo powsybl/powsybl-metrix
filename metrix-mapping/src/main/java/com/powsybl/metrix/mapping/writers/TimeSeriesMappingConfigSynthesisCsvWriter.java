@@ -16,34 +16,16 @@ import com.powsybl.metrix.mapping.MappableEquipmentType;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.io.UncheckedIOException;
-import java.io.Writer;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.BOUNDARY_LINES;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.BREAKERS;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.CSV_SEPARATOR;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.DISCONNECTED;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.GENERATORS;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.HVDC_LINES;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.IGNORED_UNMAPPED;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.LOADS;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.MAPPED;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.MULTI_MAPPED;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.OUT_OF_MAIN_CC;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.PSTS;
-import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.UNMAPPED;
 import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker.getNbMapped;
 import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker.getNbMultiMapped;
 import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker.getNbUnmapped;
+import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.*;
 import static com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter.getNotSignificantValue;
 
 /**
@@ -102,7 +84,8 @@ public class TimeSeriesMappingConfigSynthesisCsvWriter {
         writer.write(BREAKERS);
     }
 
-    private void writeSynthesisLine(BufferedWriter writer, String name, String nbGenerator, String nbLoad, String nbBoundaryLine, String nbHvdcLine, String nbPhaseTapChanger, String nbBreaker) throws IOException {
+    private void writeSynthesisLine(BufferedWriter writer, String name, String nbGenerator, String nbLoad, String nbBoundaryLine,
+                                    String nbHvdcLine, String nbPhaseTapChanger, String nbBreaker) throws IOException {
         writer.newLine();
         writer.write(name);
         writeValue(writer, nbGenerator);

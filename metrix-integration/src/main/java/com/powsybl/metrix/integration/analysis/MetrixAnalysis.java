@@ -132,15 +132,18 @@ public class MetrixAnalysis {
                 metrixDslData = loadMetrixDslData(metrixDslReader, network, metrixParameters, mappingConfig, scriptLogConfig, id);
                 timeSeriesNodesAfterMetrix = new HashMap<>(mappingConfig.getTimeSeriesNodes());
             }
-            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogBufferedWriter, scriptLogConfig).runAnalysis();
+            MetrixInputAnalysisResult inputs = new MetrixInputAnalysis(remedialActionsReader, contingenciesProvider,
+                network, metrixDslData, dataTableStore, inputLogBufferedWriter, scriptLogConfig).runAnalysis();
             MetrixConfigResult metrixConfigResult = new MetrixConfigResult(timeSeriesNodesAfterMapping, timeSeriesNodesAfterMetrix);
-            return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters, metrixConfigResult, inputs.contingencies(), inputs.remedials());
+            return new MetrixAnalysisResult(metrixDslData, mappingConfig, network, metrixParameters, mappingParameters,
+                metrixConfigResult, inputs.contingencies(), inputs.remedials());
         } catch (IOException e) {
             throw new MetrixException("Metrix analysis failed", e);
         }
     }
 
-    private TimeSeriesMappingConfig loadMappingConfig(TimeSeriesDslLoader timeSeriesDslLoader, Network network, MappingParameters mappingParameters, ScriptLogConfig scriptLogConfig, String id) {
+    private TimeSeriesMappingConfig loadMappingConfig(TimeSeriesDslLoader timeSeriesDslLoader, Network network,
+                                                      MappingParameters mappingParameters, ScriptLogConfig scriptLogConfig, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading time series mapping...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
@@ -164,7 +167,8 @@ public class MetrixAnalysis {
         }
     }
 
-    private MetrixDslData loadMetrixDslData(Reader metrixDslReader, Network network, MetrixParameters metrixParameters, TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig, String id) {
+    private MetrixDslData loadMetrixDslData(Reader metrixDslReader, Network network, MetrixParameters metrixParameters,
+                                            TimeSeriesMappingConfig mappingConfig, ScriptLogConfig scriptLogConfig, String id) {
         appLogger.tagged("info")
                 .log("[%s] Loading metrix dsl...", schemaName);
         Stopwatch stopwatch = Stopwatch.createStarted();
