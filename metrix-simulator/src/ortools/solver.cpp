@@ -254,7 +254,6 @@ Solver::makeParams<PROBLEME_SIMPLEXE>(const PROBLEME_SIMPLEXE& problem)
     auto params = std::make_shared<MPSolverParameters>();
 
     params->SetIntegerParam(MPSolverParameters::SCALING, MPSolverParameters::SCALING_ON);
-    params->SetIntegerParam(MPSolverParameters::LP_ALGORITHM, MPSolverParameters::DUAL);
 
     return params;
 }
@@ -269,7 +268,6 @@ Solver::makeParams<PROBLEME_A_RESOUDRE>(const PROBLEME_A_RESOUDRE& problem)
     params->SetIntegerParam(MPSolverParameters::PRESOLVE, presolve);
     params->SetDoubleParam(MPSolverParameters::RELATIVE_MIP_GAP, problem.ToleranceDOptimalite / 100.0);
     params->SetIntegerParam(MPSolverParameters::SCALING, MPSolverParameters::SCALING_ON);
-    params->SetIntegerParam(MPSolverParameters::LP_ALGORITHM, MPSolverParameters::DUAL);
 
     return params;
 }

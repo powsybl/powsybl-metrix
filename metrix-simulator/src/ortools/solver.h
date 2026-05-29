@@ -63,7 +63,7 @@ private:
                                   double* xValues,
                                   int const* typeDeBorneDeLaVariable,
                                   int const* typeDeVariable = nullptr,
-                                  bool useHint = true);
+                                  bool useHint = false);
 
     static void transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
                              double const* rhs,
