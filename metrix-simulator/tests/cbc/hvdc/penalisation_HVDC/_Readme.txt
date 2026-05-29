@@ -1,1 +1,0 @@
-../../../sirius/hvdc/penalisation_HVDC/_Readme.txt

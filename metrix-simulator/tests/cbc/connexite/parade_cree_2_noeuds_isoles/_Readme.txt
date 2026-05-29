@@ -1,1 +1,0 @@
-../../../sirius/connexite/parade_cree_2_noeuds_isoles/_Readme.txt

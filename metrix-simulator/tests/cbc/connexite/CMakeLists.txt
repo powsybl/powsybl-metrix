@@ -1,1 +1,0 @@
-../../sirius/connexite/CMakeLists.txt

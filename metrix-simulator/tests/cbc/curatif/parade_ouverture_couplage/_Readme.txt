@@ -1,1 +1,0 @@
-../../../sirius/curatif/parade_ouverture_couplage/_Readme.txt

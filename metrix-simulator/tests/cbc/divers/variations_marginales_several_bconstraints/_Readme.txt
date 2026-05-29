@@ -1,1 +1,0 @@
-../../../sirius/divers/variations_marginales_several_bconstraints/_Readme.txt

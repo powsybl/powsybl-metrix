@@ -1,1 +1,0 @@
-../../../sirius/groupes/noise_cost/_Readme.txt

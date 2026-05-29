@@ -1,1 +1,0 @@
-../../../sirius/divers/temps_calcul_pne/Readme.txt

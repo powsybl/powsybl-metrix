@@ -1,1 +1,0 @@
-../../../sirius/connexite/incident_rompant_connexite_detailed/_Readme.txt

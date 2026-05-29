@@ -130,7 +130,6 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
 endmacro()
 
 add_subdirectory(sirius)
-add_subdirectory(cbc)
 if (USE_XPRESS)
     add_subdirectory(xpress)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_BINARY_DIR}/CTestCustom.cmake)

@@ -1,1 +1,0 @@
-../../../sirius/hvdc/hvdcEmulAC_k5000/_Readme.txt

@@ -1,1 +1,0 @@
-../../../sirius/effacements/delestage_HR_cible/_Readme.txt

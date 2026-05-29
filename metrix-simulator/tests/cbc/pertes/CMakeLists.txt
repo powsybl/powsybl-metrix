@@ -1,1 +1,0 @@
-../../sirius/pertes/CMakeLists.txt

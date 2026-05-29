@@ -1,1 +1,0 @@
-../../../sirius/divers/contrainte_sans_action_possible_opf/_Readme.txt

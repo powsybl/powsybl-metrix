@@ -1,1 +1,0 @@
-../../sirius/effacements/CMakeLists.txt

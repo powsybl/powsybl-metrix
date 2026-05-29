@@ -1,1 +1,0 @@
-../../../sirius/divers/resultats_equilibrage_et_variations_marginales/_Readme.txt

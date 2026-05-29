@@ -1,1 +1,0 @@
-../../../sirius/connexite/inc_connexite_et_quad_deconnecte/_Readme.txt

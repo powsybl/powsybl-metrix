@@ -1,1 +1,0 @@
-../../../sirius/effacements/effacement_curatif/_Readme.txt

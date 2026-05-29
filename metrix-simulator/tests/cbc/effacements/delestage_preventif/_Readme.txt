@@ -1,1 +1,0 @@
-../../../sirius/effacements/delestage_preventif/_Readme.txt

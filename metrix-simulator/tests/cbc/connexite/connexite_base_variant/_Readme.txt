@@ -1,1 +1,0 @@
-../../../sirius/connexite/connexite_base_variant/_Readme.txt
