@@ -59,7 +59,8 @@ class MetrixPostProcessingTimeSeriesTest {
 
     @Test
     void buildEquipmentToCurativeTsTest() {
-        Map<String, Set<String>> actual = buildEquipmentToCurativeTs(Set.of("id1", "id11"), Set.of("PREFIX_id1_cty1", "PREFIX_id1_cty2", "PREFIX_id11_cty1", "PREFIX_other"), "PREFIX_", Set.of("cty1", "cty2"));
+        Map<String, Set<String>> actual = buildEquipmentToCurativeTs(Set.of("id1", "id11"), Set.of("PREFIX_id1_cty1", "PREFIX_id1_cty2", "PREFIX_id11_cty1", "PREFIX_other"),
+            "PREFIX_", Set.of("cty1", "cty2"));
         assertEquals(Map.of("id1", Set.of("PREFIX_id1_cty1", "PREFIX_id1_cty2"), "id11", Set.of("PREFIX_id11_cty1")), actual);
     }
 

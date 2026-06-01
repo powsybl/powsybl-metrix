@@ -15,11 +15,11 @@ import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.metrix.commons.ComputationRange;
 import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.EquipmentVariable;
-import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigStats;
 import com.powsybl.metrix.mapping.references.DistributionKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ast.NodeCalc;
@@ -33,16 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 
 import static com.powsybl.metrix.mapping.utils.TimeSeriesConstants.*;
@@ -112,7 +103,8 @@ public class TimeSeriesMappingConfigCsvWriter {
     private final TimeSeriesMappingConfigEquipmentCsvWriter equipmentWriter;
     private final TimeSeriesMappingConfigStats stats;
 
-    public TimeSeriesMappingConfigCsvWriter(TimeSeriesMappingConfig config, Network network, ReadOnlyTimeSeriesStore store, ComputationRange computationRange, boolean withTimeSeriesStats) {
+    public TimeSeriesMappingConfigCsvWriter(TimeSeriesMappingConfig config, Network network, ReadOnlyTimeSeriesStore store,
+                                            ComputationRange computationRange, boolean withTimeSeriesStats) {
         this.config = Objects.requireNonNull(config);
         this.network = Objects.requireNonNull(network);
         this.withTimeSeriesStats = withTimeSeriesStats;
@@ -120,7 +112,9 @@ public class TimeSeriesMappingConfigCsvWriter {
         this.stats = new TimeSeriesMappingConfigStats(store, Objects.requireNonNull(computationRange));
     }
 
-    public TimeSeriesMappingConfigCsvWriter(TimeSeriesMappingConfigEquipmentCsvWriter equipmentWriter, TimeSeriesMappingConfig config, Network network, ReadOnlyTimeSeriesStore store, ComputationRange computationRange, boolean withTimeSeriesStats) {
+    public TimeSeriesMappingConfigCsvWriter(TimeSeriesMappingConfigEquipmentCsvWriter equipmentWriter, TimeSeriesMappingConfig config,
+                                            Network network, ReadOnlyTimeSeriesStore store, ComputationRange computationRange,
+                                            boolean withTimeSeriesStats) {
         this.config = Objects.requireNonNull(config);
         this.network = Objects.requireNonNull(network);
         this.withTimeSeriesStats = withTimeSeriesStats;
@@ -256,7 +250,8 @@ public class TimeSeriesMappingConfigCsvWriter {
         writeMultimap(writer, equipmentsLabel, variable, key, values, false, null, 1, false);
     }
 
-    private void writeMultimap(BufferedWriter writer, String equipmentsLabel, MappingVariable variable, String key, Collection<String> values, boolean withTimeSeriesStats, Map<MappingKey, Double> networkPowerMap, int nbEquipmentValues, boolean isEqToTS) {
+    private void writeMultimap(BufferedWriter writer, String equipmentsLabel, MappingVariable variable, String key, Collection<String> values,
+                               boolean withTimeSeriesStats, Map<MappingKey, Double> networkPowerMap, int nbEquipmentValues, boolean isEqToTS) {
         try {
             double power;
 
@@ -314,7 +309,8 @@ public class TimeSeriesMappingConfigCsvWriter {
         }
     }
 
-    private void writeTimeSerieToEquipmentsMapping(BufferedWriter writer, String equipmentsLabel, Map<MappingKey, List<String>> timeSerieToEquipmentsMapping) throws IOException {
+    private void writeTimeSerieToEquipmentsMapping(BufferedWriter writer, String equipmentsLabel, Map<MappingKey,
+        List<String>> timeSerieToEquipmentsMapping) throws IOException {
         writer.write(TIME_SERIES);
         writer.write(CSV_SEPARATOR);
         if (withTimeSeriesStats) {
@@ -332,17 +328,21 @@ public class TimeSeriesMappingConfigCsvWriter {
         writer.write(equipmentsLabel);
         writer.newLine();
         Map<MappingKey, Double> networkPowerMap = new LinkedHashMap<>();
-        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) -> computeNetworkPower(timeSerie.id(), timeSerie.mappingVariable(), ids, networkPowerMap));
-        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) -> writeMultimap(writer, equipmentsLabel, timeSerie.mappingVariable(), timeSerie.id(), ids, withTimeSeriesStats, networkPowerMap, 0, false));
+        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) ->
+            computeNetworkPower(timeSerie.id(), timeSerie.mappingVariable(), ids, networkPowerMap));
+        timeSerieToEquipmentsMapping.forEach((timeSerie, ids) ->
+            writeMultimap(writer, equipmentsLabel, timeSerie.mappingVariable(), timeSerie.id(), ids, withTimeSeriesStats, networkPowerMap, 0, false));
     }
 
-    private void writeTimeSerieToEquipmentsMapping(Path dir, String fileName, String equipmentsLabel, Map<MappingKey, List<String>> timeSerieToEquipmentsMapping) throws IOException {
+    private void writeTimeSerieToEquipmentsMapping(Path dir, String fileName, String equipmentsLabel, Map<MappingKey,
+        List<String>> timeSerieToEquipmentsMapping) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(dir.resolve(fileName))) {
             writeTimeSerieToEquipmentsMapping(writer, equipmentsLabel, timeSerieToEquipmentsMapping);
         }
     }
 
-    private void writeEquipmentToTimeSeriesMapping(BufferedWriter writer, String equipmentLabel, Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, Map<MappingKey, List<String>> timeSeriesToEquipmentsMapping) throws IOException {
+    private void writeEquipmentToTimeSeriesMapping(BufferedWriter writer, String equipmentLabel, Map<MappingKey,
+        List<String>> equipmentToTimeSeriesMapping, Map<MappingKey, List<String>> timeSeriesToEquipmentsMapping) throws IOException {
         writer.write(equipmentLabel);
         writer.write(CSV_SEPARATOR);
         int nbEquipmentValues = equipmentWriter.writeEquipmentHeader(writer, equipmentLabel);
@@ -357,11 +357,15 @@ public class TimeSeriesMappingConfigCsvWriter {
         writer.write(UNUSED_TIME_SERIES);
         writer.newLine();
         Map<MappingKey, Double> networkPowerMap = new LinkedHashMap<>();
-        timeSeriesToEquipmentsMapping.forEach((timeSerie, ids) -> computeNetworkPower(timeSerie.id(), timeSerie.mappingVariable(), ids, networkPowerMap));
-        equipmentToTimeSeriesMapping.forEach((equipmentId, timeSeries) -> writeMultimap(writer, equipmentLabel, equipmentId.mappingVariable(), equipmentId.id(), timeSeries, withTimeSeriesStats, networkPowerMap, nbEquipmentValues, true));
+        timeSeriesToEquipmentsMapping.forEach((timeSerie, ids) ->
+            computeNetworkPower(timeSerie.id(), timeSerie.mappingVariable(), ids, networkPowerMap));
+        equipmentToTimeSeriesMapping.forEach((equipmentId, timeSeries) ->
+            writeMultimap(writer, equipmentLabel, equipmentId.mappingVariable(), equipmentId.id(), timeSeries,
+                withTimeSeriesStats, networkPowerMap, nbEquipmentValues, true));
     }
 
-    private void writeEquipmentToTimeSeriesMapping(Path dir, String fileName, String equipmentLabel, Map<MappingKey, List<String>> equipmentToTimeSeriesMapping, Map<MappingKey, List<String>> timeSeriesToEquipmentsMapping) throws IOException {
+    private void writeEquipmentToTimeSeriesMapping(Path dir, String fileName, String equipmentLabel, Map<MappingKey,
+        List<String>> equipmentToTimeSeriesMapping, Map<MappingKey, List<String>> timeSeriesToEquipmentsMapping) throws IOException {
         try (BufferedWriter writer = Files.newBufferedWriter(dir.resolve(fileName))) {
             writeEquipmentToTimeSeriesMapping(writer, equipmentLabel, equipmentToTimeSeriesMapping, timeSeriesToEquipmentsMapping);
         }

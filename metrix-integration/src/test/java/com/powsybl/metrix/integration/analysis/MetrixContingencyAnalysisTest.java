@@ -7,12 +7,7 @@
  */
 package com.powsybl.metrix.integration.analysis;
 
-import com.powsybl.contingency.BranchContingency;
-import com.powsybl.contingency.BusbarSectionContingency;
-import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
-import com.powsybl.contingency.ContingencyElement;
-import com.powsybl.contingency.EmptyContingencyListProvider;
+import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
@@ -30,8 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static java.lang.System.Logger.Level.WARNING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}

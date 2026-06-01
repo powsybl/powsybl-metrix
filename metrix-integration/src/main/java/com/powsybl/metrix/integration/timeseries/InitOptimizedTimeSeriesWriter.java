@@ -10,11 +10,11 @@ package com.powsybl.metrix.integration.timeseries;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.*;
-import com.powsybl.metrix.integration.MetrixDslData;
-import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
-import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
-import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
+import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.integration.data.generator.MetrixOutputData;
+import com.powsybl.metrix.mapping.EquipmentVariable;
 import com.powsybl.metrix.mapping.TimeSeriesMapper;
 import com.powsybl.timeseries.*;
 
@@ -23,7 +23,7 @@ import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.util.*;
 
-import static com.powsybl.metrix.integration.dataGenerator.MetrixOutputData.*;
+import static com.powsybl.metrix.integration.data.generator.MetrixOutputData.*;
 
 /**
  * @author Valentin Berthault {@literal <valentin.berthault at rte-france.com>}

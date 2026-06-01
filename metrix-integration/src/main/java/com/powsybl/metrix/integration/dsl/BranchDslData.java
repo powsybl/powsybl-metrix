@@ -2,7 +2,7 @@ package com.powsybl.metrix.integration.dsl;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.powsybl.metrix.integration.MetrixVariable;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
+import com.powsybl.metrix.integration.data.generator.MetrixInputData;
 
 import java.util.Collections;
 import java.util.HashMap;

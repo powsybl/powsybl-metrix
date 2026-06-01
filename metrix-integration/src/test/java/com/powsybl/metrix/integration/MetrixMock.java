@@ -9,11 +9,11 @@ package com.powsybl.metrix.integration;
 
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.integration.chunk.ChunkCutter;
 import com.powsybl.metrix.integration.configuration.MetrixConfig;
 import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 
 import java.io.Reader;
@@ -30,7 +30,8 @@ public class MetrixMock extends AbstractMetrix {
     }
 
     @Override
-    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig, WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) {
+    protected void executeMetrixChunks(MetrixRunParameters runParameters, ResultListener listener, MetrixConfig metrixConfig,
+                                       WorkingDirectory commonWorkingDir, ChunkCutter chunkCutter, String schemaName) {
         // Do nothing
     }
 }

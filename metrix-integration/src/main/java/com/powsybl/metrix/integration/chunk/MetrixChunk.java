@@ -9,13 +9,13 @@ package com.powsybl.metrix.integration.chunk;
 
 import com.powsybl.computation.*;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.configuration.MetrixConfig;
 import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
-import com.powsybl.metrix.integration.network.MetrixVariantProvider;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
-import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
+import com.powsybl.metrix.integration.data.generator.MetrixInputDataGenerator;
+import com.powsybl.metrix.integration.data.generator.MetrixOutputData;
 import com.powsybl.metrix.integration.exceptions.MetrixException;
+import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.timeseries.TimeSeries;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +29,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.LODF_MATRIX_FILE_NAME;
-import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.LOGS_FILE_NAME;
-import static com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator.PTDF_MATRIX_FILE_NAME;
+import static com.powsybl.metrix.integration.data.generator.MetrixInputDataGenerator.LODF_MATRIX_FILE_NAME;
+import static com.powsybl.metrix.integration.data.generator.MetrixInputDataGenerator.LOGS_FILE_NAME;
+import static com.powsybl.metrix.integration.data.generator.MetrixInputDataGenerator.PTDF_MATRIX_FILE_NAME;
 import static com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter.INPUT_OPTIMIZED_FILE_NAME;
 
 /**

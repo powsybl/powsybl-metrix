@@ -7,13 +7,7 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.powsybl.iidm.network.Battery;
-import com.powsybl.iidm.network.BoundaryLine;
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.iidm.network.Load;
-import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRangeAdder;
@@ -24,20 +18,10 @@ import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
 import com.powsybl.metrix.mapping.limits.BatteryBoundLimitBuilder;
-import com.powsybl.metrix.mapping.references.DistributionKey;
-import com.powsybl.metrix.mapping.references.IndexedMappingKey;
-import com.powsybl.metrix.mapping.references.IndexedName;
-import com.powsybl.metrix.mapping.references.MappingKey;
-import com.powsybl.metrix.mapping.references.NumberDistributionKey;
-import com.powsybl.metrix.mapping.references.TimeSeriesDistributionKey;
 import com.powsybl.metrix.mapping.limits.GeneratorBoundLimitBuilder;
 import com.powsybl.metrix.mapping.limits.HvdcBoundLimitBuilder;
-import com.powsybl.metrix.mapping.log.EmptyFilter;
-import com.powsybl.metrix.mapping.log.LimitSignBuilder;
-import com.powsybl.metrix.mapping.log.Log;
-import com.powsybl.metrix.mapping.log.LogBuilder;
-import com.powsybl.metrix.mapping.log.LogContent;
-import com.powsybl.metrix.mapping.log.ZeroDistributionKeyInfo;
+import com.powsybl.metrix.mapping.log.*;
+import com.powsybl.metrix.mapping.references.*;
 import com.powsybl.metrix.mapping.timeseries.EquipmentTimeSeriesMap;
 import com.powsybl.metrix.mapping.timeseries.MappedEquipment;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -45,13 +29,7 @@ import com.powsybl.timeseries.TimeSeriesTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -249,7 +227,8 @@ public class TimeSeriesMapper {
 
         double timeSeriesValue = table.getDoubleValue(version, mappingKey.num(), point);
         if (Double.isNaN(timeSeriesValue) || Double.isInfinite(timeSeriesValue)) {
-            throw new TimeSeriesMappingException("Impossible to scale down " + timeSeriesValue + " of ts " + timeSeriesName + " at time index '" + table.getTableIndex().getInstantAt(point) + "' and version " + version);
+            throw new TimeSeriesMappingException("Impossible to scale down " + timeSeriesValue + " of ts " + timeSeriesName +
+                " at time index '" + table.getTableIndex().getInstantAt(point) + "' and version " + version);
         }
 
         LogBuilder logBuilder = new LogBuilder().level(System.Logger.Level.WARNING).version(version).point(variantId).index(table.getTableIndex());
@@ -258,7 +237,8 @@ public class TimeSeriesMapper {
             if (mappedEquipments.isEmpty()) {
                 logEmptyFilter(timeSeriesName, timeSeriesValue, point, logBuilder);
             } else {
-                distributionKeySum = logDistributionKeySumNull(mappedEquipments, timeSeriesName, distributionKeys, distributionKeySum, timeSeriesValue, logBuilder);
+                distributionKeySum = logDistributionKeySumNull(mappedEquipments, timeSeriesName, distributionKeys,
+                    distributionKeySum, timeSeriesValue, logBuilder);
 
                 if (logHvdcLimitSign(mappedEquipments, timeSeriesName, variable, timeSeriesValue, logBuilder)) {
                     return;
@@ -276,7 +256,8 @@ public class TimeSeriesMapper {
 
         if (checker != null) {
             List<Identifiable<?>> ids = mappedEquipments.stream().map(MappedEquipment::identifiable).collect(Collectors.toList());
-            boolean ignoreLimitsForTimeSeries = parameters.isIgnoreLimits() || TimeSeriesMapper.isPowerVariable(variable) && config.getIgnoreLimitsTimeSeriesNames().contains(timeSeriesName);
+            boolean ignoreLimitsForTimeSeries = parameters.isIgnoreLimits() ||
+                TimeSeriesMapper.isPowerVariable(variable) && config.getIgnoreLimitsTimeSeriesNames().contains(timeSeriesName);
             checker.timeSeriesMappedToEquipments(variantId, timeSeriesName, timeSeriesValue, ids, variable, equipmentValues, ignoreLimitsForTimeSeries);
         }
     }
@@ -310,7 +291,8 @@ public class TimeSeriesMapper {
         return false;
     }
 
-    private double logDistributionKeySumNull(List<MappedEquipment> mappedEquipments, String timeSeriesName, double[] distributionKeys, double distributionKeySum, double timeSeriesValue, LogBuilder logBuilder) {
+    private double logDistributionKeySumNull(List<MappedEquipment> mappedEquipments, String timeSeriesName,
+                                             double[] distributionKeys, double distributionKeySum, double timeSeriesValue, LogBuilder logBuilder) {
         double resultDistributionKeySum = distributionKeySum;
         if (resultDistributionKeySum == 0) {
             double distributionKey = NumberDistributionKey.ONE.value();
@@ -486,17 +468,28 @@ public class TimeSeriesMapper {
         variableTimeSeriesContext.timeSeriesToLoadsMapping.init(context.timeSeriesToLoadsMapping);
 
         // Check if some other mappings are constant
-        identifyConstantTimeSeries(version, context.timeSeriesToGeneratorsMapping, constantTimeSeriesContext.timeSeriesToGeneratorsMapping, variableTimeSeriesContext.timeSeriesToGeneratorsMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToBatteriesMapping, constantTimeSeriesContext.timeSeriesToBatteriesMapping, variableTimeSeriesContext.timeSeriesToBatteriesMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToBoundaryLinesMapping, constantTimeSeriesContext.timeSeriesToBoundaryLinesMapping, variableTimeSeriesContext.timeSeriesToBoundaryLinesMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToHvdcLinesMapping, constantTimeSeriesContext.timeSeriesToHvdcLinesMapping, variableTimeSeriesContext.timeSeriesToHvdcLinesMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToPhaseTapChangersMapping, constantTimeSeriesContext.timeSeriesToPhaseTapChangersMapping, variableTimeSeriesContext.timeSeriesToPhaseTapChangersMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToBreakersMapping, constantTimeSeriesContext.timeSeriesToBreakersMapping, variableTimeSeriesContext.timeSeriesToBreakersMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToTransformersMapping, constantTimeSeriesContext.timeSeriesToTransformersMapping, variableTimeSeriesContext.timeSeriesToTransformersMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToRatioTapChangersMapping, constantTimeSeriesContext.timeSeriesToRatioTapChangersMapping, variableTimeSeriesContext.timeSeriesToRatioTapChangersMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToLccConverterStationsMapping, constantTimeSeriesContext.timeSeriesToLccConverterStationsMapping, variableTimeSeriesContext.timeSeriesToLccConverterStationsMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToVscConverterStationsMapping, constantTimeSeriesContext.timeSeriesToVscConverterStationsMapping, variableTimeSeriesContext.timeSeriesToVscConverterStationsMapping);
-        identifyConstantTimeSeries(version, context.timeSeriesToLinesMapping, constantTimeSeriesContext.timeSeriesToLinesMapping, variableTimeSeriesContext.timeSeriesToLinesMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToGeneratorsMapping,
+            constantTimeSeriesContext.timeSeriesToGeneratorsMapping, variableTimeSeriesContext.timeSeriesToGeneratorsMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToBatteriesMapping,
+            constantTimeSeriesContext.timeSeriesToBatteriesMapping, variableTimeSeriesContext.timeSeriesToBatteriesMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToBoundaryLinesMapping,
+            constantTimeSeriesContext.timeSeriesToBoundaryLinesMapping, variableTimeSeriesContext.timeSeriesToBoundaryLinesMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToHvdcLinesMapping,
+            constantTimeSeriesContext.timeSeriesToHvdcLinesMapping, variableTimeSeriesContext.timeSeriesToHvdcLinesMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToPhaseTapChangersMapping,
+            constantTimeSeriesContext.timeSeriesToPhaseTapChangersMapping, variableTimeSeriesContext.timeSeriesToPhaseTapChangersMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToBreakersMapping,
+            constantTimeSeriesContext.timeSeriesToBreakersMapping, variableTimeSeriesContext.timeSeriesToBreakersMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToTransformersMapping,
+            constantTimeSeriesContext.timeSeriesToTransformersMapping, variableTimeSeriesContext.timeSeriesToTransformersMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToRatioTapChangersMapping,
+            constantTimeSeriesContext.timeSeriesToRatioTapChangersMapping, variableTimeSeriesContext.timeSeriesToRatioTapChangersMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToLccConverterStationsMapping,
+            constantTimeSeriesContext.timeSeriesToLccConverterStationsMapping, variableTimeSeriesContext.timeSeriesToLccConverterStationsMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToVscConverterStationsMapping,
+            constantTimeSeriesContext.timeSeriesToVscConverterStationsMapping, variableTimeSeriesContext.timeSeriesToVscConverterStationsMapping);
+        identifyConstantTimeSeries(version, context.timeSeriesToLinesMapping,
+            constantTimeSeriesContext.timeSeriesToLinesMapping, variableTimeSeriesContext.timeSeriesToLinesMapping);
 
         // Check if some equipment mappings are constant
         constantTimeSeriesContext.equipmentTimeSeries = new LinkedHashMap<>();
