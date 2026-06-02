@@ -261,7 +261,7 @@ class MetrixBranchPostProcessingTimeSeriesTest {
                 "FTDPRA1  FVERGE1  2");
 
         // Verify number of results
-        int expectedResultNb = branchNamesWithAllResult.size() * 8 + 4;
+        int expectedResultNb = branchNamesWithAllResult.size() * 10 + 6;
         assertEquals(expectedResultNb, postProcessingTimeSeries.size());
 
         // Verify results for branches with N and Nk results
@@ -269,6 +269,8 @@ class MetrixBranchPostProcessingTimeSeriesTest {
         branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("basecaseOverload_" + branchName)));
         branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("outageLoad_" + branchName)));
         branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("outageOverload_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("outageRatingOrEx_" + branchName)));
+        branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("outageRatingExOr_" + branchName)));
         branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("overallOverload_" + branchName)));
         branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("itamLoad_" + branchName)));
         branchNamesWithAllResult.forEach(branchName -> assertTrue(postProcessingTimeSeries.containsKey("itamOverload_" + branchName)));
@@ -283,6 +285,8 @@ class MetrixBranchPostProcessingTimeSeriesTest {
         String branchNameWithNk = "FS.BIS1 FSSV.O1 1";
         assertTrue(postProcessingTimeSeries.containsKey("outageLoad_" + branchNameWithNk));
         assertTrue(postProcessingTimeSeries.containsKey("outageOverload_" + branchNameWithNk));
+        assertTrue(postProcessingTimeSeries.containsKey("outageRatingOrEx_" + branchNameWithNk));
+        assertTrue(postProcessingTimeSeries.containsKey("outageRatingExOr_" + branchNameWithNk));
 
         // Verify single results
         verifySimpleBranchPostProcessing();
