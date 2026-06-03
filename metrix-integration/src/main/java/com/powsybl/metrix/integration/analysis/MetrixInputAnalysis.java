@@ -18,6 +18,7 @@ import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingExcep
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.log.LogUtils;
 
 import java.io.*;
 import java.util.*;
@@ -56,17 +57,16 @@ public class MetrixInputAnalysis {
     private final Network network;
     private final MetrixDslData metrixDslData;
     private final DataTableStore dataTableStore;
-    private final BufferedWriter writer;
+    private final ScriptLogConfig inputLogConfig;
     private final ScriptLogConfig scriptLogConfig;
 
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
-                               MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer) {
-        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, writer, new ScriptLogConfig());
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore, ScriptLogConfig inputLogConfig) {
+        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogConfig, new ScriptLogConfig());
     }
 
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
-                               MetrixDslData metrixDslData, DataTableStore dataTableStore,
-                               BufferedWriter writer,
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore, ScriptLogConfig inputLogConfig,
                                ScriptLogConfig scriptLogConfig) {
         Objects.requireNonNull(contingenciesProvider);
         Objects.requireNonNull(network);
@@ -75,7 +75,7 @@ public class MetrixInputAnalysis {
         this.network = network;
         this.metrixDslData = metrixDslData;
         this.dataTableStore = dataTableStore;
-        this.writer = writer;
+        this.inputLogConfig = inputLogConfig;
         this.scriptLogConfig = scriptLogConfig;
     }
 
@@ -103,20 +103,8 @@ public class MetrixInputAnalysis {
         remedials.forEach(remedial -> checkRemedial(remedial, contingencyIds));
     }
 
-    private void writeLog(String type, String section, String message, BufferedWriter writer) {
-        if (writer == null) {
-            return;
-        }
-        try {
-            writer.write(type + SEPARATOR + section + SEPARATOR + message);
-            writer.newLine();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
     private void writeLog(String type, String section, String message) {
-        writeLog(type, section, message, writer);
+        LogUtils.logOut(inputLogConfig, type, section, message);
     }
 
     private void writeContingencyLog(String contingencyId, String elementId, String messageReason) {

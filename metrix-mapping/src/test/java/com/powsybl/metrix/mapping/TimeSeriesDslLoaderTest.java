@@ -54,7 +54,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -403,6 +406,31 @@ class TimeSeriesDslLoaderTest {
 
         String output = outputStream.toString();
         String expectedMessage = "LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
+        assertEquals(expectedMessage, output);
+    }
+
+    @Test
+    void writeLogTestWithTimestamp() throws IOException {
+        Clock fixedClock = Clock.fixed(Instant.parse("2026-06-03T07:15:38Z"), ZoneOffset.UTC);
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
+        String script = """
+            writeLog("LOG_TYPE", "LOG_SECTION", "LOG_MESSAGE")
+            """;
+
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            ScriptLogConfig scriptLogConfig = ScriptLogConfig.builder()
+                .writer(out)
+                .withTimestamp(true)
+                .clock(fixedClock)
+                .build();
+            dsl.load(network, parameters, store, new DataTableStore(), scriptLogConfig, null);
+        }
+
+        String output = outputStream.toString();
+        String expectedMessage = "2026-06-03T07:15:38Z;LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
         assertEquals(expectedMessage, output);
     }
 
