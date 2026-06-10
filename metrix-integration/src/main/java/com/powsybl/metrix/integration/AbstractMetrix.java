@@ -12,19 +12,22 @@ import com.google.common.io.ByteStreams;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.integration.chunk.ChunkCutter;
 import com.powsybl.metrix.integration.configuration.MetrixConfig;
 import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
-import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
+import com.powsybl.metrix.integration.data.generator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -128,7 +131,8 @@ public abstract class AbstractMetrix {
 
             MetrixRunResult runResult = new MetrixRunResult();
             appLogger.log("[%s] Computing postprocessing timeseries", schemaName);
-            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData(), analysisResult.mappingConfig(), analysisResult.contingencies(), resultStore, nullableSchemaName));
+            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData(),
+                analysisResult.mappingConfig(), analysisResult.contingencies(), resultStore, nullableSchemaName));
             return runResult;
 
         } catch (IOException e) {

@@ -10,19 +10,11 @@ package com.powsybl.metrix.integration.timeseries;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
-import com.powsybl.metrix.mapping.MappingParameters;
-import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
-import com.powsybl.metrix.mapping.TimeSeriesMapper;
-import com.powsybl.metrix.mapping.TimeSeriesMapperParameters;
+import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.mapping.*;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
-import com.powsybl.metrix.mapping.TimeSeriesMappingLogger;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -82,11 +74,13 @@ class InitOptimizedTimeSeriesWriterTest {
         metrixDslData.addHvdcFlowResults("HVDC2");
         metrixDslData.addPstAngleTapResults("FP.AND1  FTDPRA1  1");
         StringWriter writer = new StringWriter();
-        InitOptimizedTimeSeriesWriter initOptimizedTimeSeriesWriter = new InitOptimizedTimeSeriesWriter(network, metrixDslData, Range.closed(0, 1), writer);
+        InitOptimizedTimeSeriesWriter initOptimizedTimeSeriesWriter = new InitOptimizedTimeSeriesWriter(network, metrixDslData,
+            Range.closed(0, 1), writer);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)), Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
+            Range.closed(0, 1), true, false, false, mappingParameters.getToleranceThreshold());
         TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
 
         // Launch mapper

@@ -251,7 +251,8 @@ class TimeSeriesDslLoaderTest {
         Map<String, Set<String>> timeSeriesToPlannedOutagesMappingExpected = Map.of("multiple_ouverture_id", Set.of("1", "G1", "twt", "L1"));
         expectedConfig.setTimeSeriesToPlannedOutagesMapping(timeSeriesToPlannedOutagesMappingExpected);
         expectedConfig.setTimeSeriesNodes(Map.of("zero", new IntegerNodeCalc(0)));
-        expectedConfig.setMappedTimeSeriesNames(Set.of("zero", "nucl_ts", "hydro_ts", "load1_ts", "load2_ts", "switch_ts", "multiple_ouverture_id_G1", "multiple_ouverture_id_L1", "multiple_ouverture_id_twt"));
+        expectedConfig.setMappedTimeSeriesNames(Set.of("zero", "nucl_ts", "hydro_ts", "load1_ts", "load2_ts", "switch_ts",
+            "multiple_ouverture_id_G1", "multiple_ouverture_id_L1", "multiple_ouverture_id_twt"));
         Map<MappingKey, DistributionKey> distributionKeyMapping = getMappingKeyDistributionKeyMap();
         expectedConfig.setDistributionKeys(distributionKeyMapping);
         assertEquals(expectedConfig, config);

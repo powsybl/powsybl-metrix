@@ -15,11 +15,11 @@ import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
-import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
-import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
+import com.powsybl.metrix.integration.contingency.Probability;
 import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantReader;
+import com.powsybl.metrix.integration.timeseries.InitOptimizedTimeSeriesWriter;
 import com.powsybl.metrix.mapping.*;
 import com.powsybl.metrix.mapping.balance.BalanceSummary;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
@@ -142,7 +142,8 @@ public class MetrixTimeSeriesVariantProvider implements MetrixVariantProvider {
         if (metrixDslData != null && (!metrixDslData.getHvdcFlowResults().isEmpty() || !metrixDslData.getPstAngleTapResults().isEmpty())) {
             observers.add(createInitOptimizedTimeSeriesWriter(workingDir, variantReadRange));
         }
-        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)), variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
+        TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(version)),
+            variantReadRange, ignoreLimits, ignoreEmptyFilter, !isNetworkPointComputation, getContingenciesProbabilitiesTs(), mappingParameters.getToleranceThreshold());
         TimeSeriesMapper mapper = new TimeSeriesMapper(config, parameters, network, new TimeSeriesMappingLogger());
         mapper.mapToNetwork(store, observers);
     }

@@ -11,33 +11,16 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.contingency.ContingencyElementType;
-import com.powsybl.iidm.network.Branch;
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.iidm.network.IdentifiableType;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.*;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
-import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UncheckedIOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.remedials.RemedialReader.rTrim;
@@ -160,6 +143,7 @@ public class MetrixInputAnalysis {
      * load contingencies
      * @return list of contingencies
      */
+    @SuppressWarnings("checkstyle:IllegalCatchError")
     private List<Contingency> loadContingencies() {
         List<Contingency> allContingencies;
         try {
@@ -210,7 +194,10 @@ public class MetrixInputAnalysis {
         if (elementType == ContingencyElementType.TIE_LINE && identifiableType == IdentifiableType.TIE_LINE) {
             return true;
         }
-        if (elementType == ContingencyElementType.BRANCH && (identifiableType == IdentifiableType.LINE || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER || identifiableType == IdentifiableType.TIE_LINE)) {
+        if (elementType == ContingencyElementType.BRANCH &&
+            (identifiableType == IdentifiableType.LINE
+                || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER
+                || identifiableType == IdentifiableType.TIE_LINE)) {
             return true;
         }
         if (elementType == ContingencyElementType.GENERATOR && identifiableType == IdentifiableType.GENERATOR) {
@@ -351,7 +338,7 @@ public class MetrixInputAnalysis {
     }
 
     /**
-     * check remedial line <contingency|<constraints>;<nb actions>;<actions>;
+     * check remedial line {@code <contingency|<constraints>;<nb actions>;<actions>;}
      * constraints are optional
      *
      * @param line a line describing a remedial in remedial file

@@ -1,34 +1,24 @@
 /*
- * Copyright (c) 2020, RTE (http://www.rte-france.com)
+ * Copyright (c) 2020-2026, RTE (https://www.rte-france.com)
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  * SPDX-License-Identifier: MPL-2.0
  */
-package com.powsybl.metrix.integration.dataGenerator;
+package com.powsybl.metrix.integration.data.generator;
 
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
-import com.powsybl.iidm.network.Battery;
-import com.powsybl.iidm.network.Branch;
-import com.powsybl.iidm.network.Bus;
-import com.powsybl.iidm.network.BoundaryLine;
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.iidm.network.Injection;
-import com.powsybl.iidm.network.Line;
-import com.powsybl.iidm.network.Load;
-import com.powsybl.iidm.network.PhaseTapChanger;
-import com.powsybl.iidm.network.Switch;
-import com.powsybl.iidm.network.TieLine;
-import com.powsybl.iidm.network.TwoWindingsTransformer;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcAngleDroopActivePowerControl;
-import com.powsybl.metrix.integration.binding.*;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixSection;
 import com.powsybl.metrix.integration.MetrixSubset;
+import com.powsybl.metrix.integration.binding.AbstractMetrixGroupBinding;
+import com.powsybl.metrix.integration.binding.MetrixBatteriesBinding;
+import com.powsybl.metrix.integration.binding.MetrixGeneratorsBinding;
+import com.powsybl.metrix.integration.binding.MetrixLoadsBinding;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.io.MetrixDie;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
@@ -47,17 +37,7 @@ import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.powsybl.iidm.network.IdentifiableType.BATTERY;

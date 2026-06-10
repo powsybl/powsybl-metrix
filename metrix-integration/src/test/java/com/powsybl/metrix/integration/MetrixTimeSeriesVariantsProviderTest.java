@@ -15,10 +15,10 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
 import com.powsybl.metrix.integration.contingency.Probability;
-import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
-import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantReaderImpl;
@@ -26,21 +26,13 @@ import com.powsybl.metrix.mapping.MappingParameters;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
@@ -122,7 +114,8 @@ class MetrixTimeSeriesVariantsProviderTest {
         MetrixNetwork metrixNetwork = MetrixNetwork.create(network, contingenciesProvider, null, new MetrixParameters(), (Path) null);
 
         TimeSeriesMappingConfig mappingConfig;
-        try (Reader mappingReader = new InputStreamReader(Objects.requireNonNull(MetrixTimeSeriesVariantsProviderTest.class.getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy")), StandardCharsets.UTF_8)) {
+        try (Reader mappingReader = new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/inputs/constantVariantTestMappingInput.groovy")),
+            StandardCharsets.UTF_8)) {
             mappingConfig = new TimeSeriesDslLoader(mappingReader).load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(), null);
         }
 
@@ -138,7 +131,7 @@ class MetrixTimeSeriesVariantsProviderTest {
         metrixDslData.addPstAngleTapResults("FP.AND1  FTDPRA1  1");
 
         MetrixChunkParam metrixChunkParam = new MetrixChunkParam.MetrixChunkParamBuilder()
-                .simpleInit(1, false, false, __ -> Collections.emptyList(),
+                .simpleInit(1, false, false, ignored -> Collections.emptyList(),
                         null, null, null, null).build();
 
         MetrixVariantProvider variantProvider = new MetrixTimeSeriesVariantProvider(network, store, mappingParameters,

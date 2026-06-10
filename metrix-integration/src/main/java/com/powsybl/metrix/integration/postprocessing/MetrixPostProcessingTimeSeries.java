@@ -8,9 +8,9 @@
 package com.powsybl.metrix.integration.postprocessing;
 
 import com.powsybl.contingency.Contingency;
+import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixVariable;
 import com.powsybl.metrix.integration.contingency.Probability;
-import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
@@ -19,11 +19,7 @@ import com.powsybl.timeseries.ast.DoubleNodeCalc;
 import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**

@@ -12,11 +12,11 @@ import com.powsybl.computation.CommandExecution;
 import com.powsybl.computation.InputFile;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
 import com.powsybl.metrix.integration.configuration.MetrixConfig;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputDataGenerator;
-import com.powsybl.metrix.integration.chunk.MetrixChunkParam;
+import com.powsybl.metrix.integration.data.generator.MetrixInputData;
+import com.powsybl.metrix.integration.data.generator.MetrixInputDataGenerator;
 import com.powsybl.metrix.integration.network.MetrixNetwork;
 import com.powsybl.metrix.integration.network.MetrixVariantProvider;
 import com.powsybl.metrix.integration.network.MetrixVariantReader;
@@ -333,7 +333,8 @@ class MetrixInputDataGeneratorTest {
         public MetrixInputDataGenerator create() {
             return new MetrixInputDataGenerator(conf, path, null, fsu) {
                 @Override
-                protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider, Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters) {
+                protected MetrixNetwork createNetwork(Path remedialActionFile, MetrixVariantProvider variantProvider,
+                                                      Network network, ContingenciesProvider contingenciesProvider, MetrixParameters parameters) {
                     return createNetwork != null ? createNetwork.createNetwork(remedialActionFile, variantProvider, network, contingenciesProvider, parameters) : null;
                 }
 

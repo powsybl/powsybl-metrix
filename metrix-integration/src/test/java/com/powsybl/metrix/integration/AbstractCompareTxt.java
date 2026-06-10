@@ -33,8 +33,8 @@ public abstract class AbstractCompareTxt {
     public static Object compareStreamTxt(InputStream expected, InputStream actual) {
         try {
             return compareStreamTxt(expected, new String(ByteStreams.toByteArray(actual), StandardCharsets.UTF_8));
-        } catch (IOException var3) {
-            throw new UncheckedIOException(var3);
+        } catch (IOException ioException) {
+            throw new UncheckedIOException(ioException);
         }
     }
 
@@ -44,8 +44,8 @@ public abstract class AbstractCompareTxt {
             String actualStr = normalizeLineSeparator(actual);
             assertEquals(expectedStr, actualStr);
             return "";
-        } catch (IOException var4) {
-            throw new UncheckedIOException(var4);
+        } catch (IOException ioException) {
+            throw new UncheckedIOException(ioException);
         }
     }
 

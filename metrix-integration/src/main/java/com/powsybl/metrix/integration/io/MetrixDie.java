@@ -91,7 +91,7 @@ public class MetrixDie {
 
     private static <T extends Attribute> void loadFromJson(JsonNode nodes, Map<String, T> attributes, Class<T> attributeClass) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        for (Iterator<JsonNode> nodeAttributes = nodes.elements(); nodeAttributes.hasNext(); ) {
+        for (Iterator<JsonNode> nodeAttributes = nodes.elements(); nodeAttributes.hasNext();) {
             JsonNode attr = nodeAttributes.next();
             T attribute = mapper.readValue(attr.toString(), attributeClass);
             attributes.put(attribute.getName(), attribute);
@@ -102,7 +102,7 @@ public class MetrixDie {
         try (BufferedReader reader = Files.newBufferedReader(jsonFile)) {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(reader).path("files");
-            for (Iterator<JsonNode> files = rootNode.elements(); files.hasNext(); ) {
+            for (Iterator<JsonNode> files = rootNode.elements(); files.hasNext();) {
                 JsonNode dieFile = files.next();
                 String name = dieFile.path("name").textValue();
                 JsonNode attributes = dieFile.path("attributes");

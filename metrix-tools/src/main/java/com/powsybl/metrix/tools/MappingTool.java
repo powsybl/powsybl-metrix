@@ -15,13 +15,16 @@ import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.commons.ComputationRange;
-import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
-import com.powsybl.metrix.mapping.*;
 import com.powsybl.metrix.commons.data.timeseries.CalculatedTimeSeriesStore;
 import com.powsybl.metrix.commons.data.timeseries.InMemoryTimeSeriesStore;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
+import com.powsybl.metrix.mapping.*;
 import com.powsybl.metrix.mapping.balance.BalanceSummary;
-import com.powsybl.metrix.mapping.config.*;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.metrix.mapping.observer.EquipmentGroupTimeSeriesWriterObserver;
 import com.powsybl.metrix.mapping.observer.EquipmentTimeSeriesWriterObserver;
 import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
@@ -204,6 +207,7 @@ public class MappingTool implements Tool {
         return new ReadOnlyTimeSeriesStoreAggregator(stores);
     }
 
+    @SuppressWarnings("checkstyle:IllegalCatchWarning") // Every type of exception has to be caught here
     @Override
     public void run(CommandLine line, ToolRunningContext context) {
         try {
@@ -287,7 +291,8 @@ public class MappingTool implements Tool {
             csvSynthesisWriter.writeMappingSynthesis(mappingSynthesisDir);
 
             ReadOnlyTimeSeriesStore storeAggregator = getStoreAggregator(localParameters.config().getTimeSeriesNodes(), localParameters.store());
-            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(localParameters.config(), localParameters.network(), storeAggregator, computationRange, mappingParameters.getWithTimeSeriesStats());
+            TimeSeriesMappingConfigCsvWriter csvWriter = new TimeSeriesMappingConfigCsvWriter(localParameters.config(), localParameters.network(),
+                storeAggregator, computationRange, mappingParameters.getWithTimeSeriesStats());
             csvWriter.writeMappingCsv(mappingSynthesisDir);
             csvSynthesisWriter.writeMappingSynthesisCsv(mappingSynthesisDir);
         }

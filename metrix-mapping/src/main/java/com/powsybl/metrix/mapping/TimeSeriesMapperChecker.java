@@ -102,14 +102,32 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
     @Override
     public void timeSeriesMappingStart(int point, TimeSeriesIndex index) {
         // With ignore limits option, restore previous extended limits (potentially overwritten by NetworkPointWriter)
-        generatorToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Generator) (e.getKey())).setMaxP(e.getValue().getLimit()));
-        generatorToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Generator) (e.getKey())).setMinP(e.getValue().getLimit()));
-        batteryToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Battery) (e.getKey())).setMaxP(e.getValue().getLimit()));
-        batteryToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((Battery) (e.getKey())).setMinP(e.getValue().getLimit()));
-        hvdcLineToMaxValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(e.getValue().getLimit()));
-        hvdcLineToMinValues.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(Math.abs(e.getValue().getLimit())));
-        hvdcLineToCS1toCS2Values.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) e.getValue().getLimit()));
-        hvdcLineToCS2toCS1Values.entrySet().stream().filter(e -> !Double.isNaN(e.getValue().getLimit())).forEach(e -> ((HvdcLine) (e.getKey())).getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS2toCS1((float) Math.abs(e.getValue().getLimit())));
+        generatorToMaxValues.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((Generator) (e.getKey())).setMaxP(e.getValue().getLimit()));
+        generatorToMinValues.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((Generator) (e.getKey())).setMinP(e.getValue().getLimit()));
+        batteryToMaxValues.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((Battery) (e.getKey())).setMaxP(e.getValue().getLimit()));
+        batteryToMinValues.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((Battery) (e.getKey())).setMinP(e.getValue().getLimit()));
+        hvdcLineToMaxValues.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(e.getValue().getLimit()));
+        hvdcLineToMinValues.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((HvdcLine) (e.getKey())).setMaxP(Math.abs(e.getValue().getLimit())));
+        hvdcLineToCS1toCS2Values.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((HvdcLine) (e.getKey())).getExtension(HvdcOperatorActivePowerRange.class)
+                .setOprFromCS1toCS2((float) e.getValue().getLimit()));
+        hvdcLineToCS2toCS1Values.entrySet().stream()
+            .filter(e -> !Double.isNaN(e.getValue().getLimit()))
+            .forEach(e -> ((HvdcLine) (e.getKey())).getExtension(HvdcOperatorActivePowerRange.class)
+                .setOprFromCS2toCS1((float) Math.abs(e.getValue().getLimit())));
 
         super.timeSeriesMappingStart(point, index);
         this.index = index;
@@ -147,16 +165,24 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         addLimitChangeLog(generatorToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
         addLimitChangeLog(batteryToMinValues, MappingLimitType.MIN, version, MIN_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
         addLimitChangeLog(batteryToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.TARGET_P.getVariableName());
-        addLimitChangeLog(hvdcLineToMinValues, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_MAXP, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
-        addLimitChangeLog(hvdcLineToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
-        addLimitChangeLog(hvdcLineToCS2toCS1Values, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_CS21, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
-        addLimitChangeLog(hvdcLineToCS1toCS2Values, MappingLimitType.MAX, version, TimeSeriesConstants.CS12, EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
+        addLimitChangeLog(hvdcLineToMinValues, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_MAXP,
+            EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
+        addLimitChangeLog(hvdcLineToMaxValues, MappingLimitType.MAX, version, MAX_P_VARIABLE_NAME,
+            EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
+        addLimitChangeLog(hvdcLineToCS2toCS1Values, MappingLimitType.MIN, version, TimeSeriesConstants.MINUS_CS21,
+            EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
+        addLimitChangeLog(hvdcLineToCS1toCS2Values, MappingLimitType.MAX, version, TimeSeriesConstants.CS12,
+            EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName());
 
         // Add scaling down logs synthesis to logger
-        targetPTimeSeriesToScalingDownPowerChangeSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.TARGET_P.getVariableName(), change, version, key)));
-        targetPTimeSeriesToScalingDownLimitViolationSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, key)));
-        setpointTimeSeriesToScalingDownPowerChangeSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName(), change, version, key)));
-        setpointTimeSeriesToScalingDownLimitViolationSynthesis.forEach((key, value) -> value.forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, key)));
+        targetPTimeSeriesToScalingDownPowerChangeSynthesis.forEach((key, value) ->
+            value.forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.TARGET_P.getVariableName(), change, version, key)));
+        targetPTimeSeriesToScalingDownLimitViolationSynthesis.forEach((key, value) ->
+            value.forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, key)));
+        setpointTimeSeriesToScalingDownPowerChangeSynthesis.forEach((key, value) ->
+            value.forEach(change -> addScalingDownLogSynthesis(EquipmentVariable.ACTIVE_POWER_SETPOINT.getVariableName(), change, version, key)));
+        setpointTimeSeriesToScalingDownLimitViolationSynthesis.forEach((key, value) ->
+            value.forEach(change -> addScalingDownLimitViolationLogSynthesis(change, version, key)));
 
         identifiableToConstantMappedPowers.clear();
         generatorToMinValues.clear();
@@ -188,13 +214,15 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
         return value < lowTapPosition || value > highTapPosition;
     }
 
-    public TimeSeriesMapperChecker(List<TimeSeriesMapperObserver> observers, TimeSeriesMappingLogger timeSeriesMappingLogger, TimeSeriesMapperParameters parameters) {
+    public TimeSeriesMapperChecker(List<TimeSeriesMapperObserver> observers, TimeSeriesMappingLogger timeSeriesMappingLogger,
+                                   TimeSeriesMapperParameters parameters) {
         super(observers);
         this.timeSeriesMappingLogger = Objects.requireNonNull(timeSeriesMappingLogger);
         this.toleranceThreshold = parameters.getToleranceThreshold();
     }
 
-    public void timeSeriesMappedToEquipments(int point, String timeSeriesName, double timeSeriesValue, List<Identifiable<?>> identifiables, MappingVariable variable, double[] equipmentValues, boolean ignoreLimits) {
+    public void timeSeriesMappedToEquipments(int point, String timeSeriesName, double timeSeriesValue, List<Identifiable<?>> identifiables,
+                                             MappingVariable variable, double[] equipmentValues, boolean ignoreLimits) {
         if (variable == EquipmentVariable.TARGET_P) {
             targetPTimeSeriesToEquipments.put(timeSeriesName, new MappedEquipments(timeSeriesValue, new HashSet<>(identifiables)));
         } else if (variable == EquipmentVariable.ACTIVE_POWER_SETPOINT) {
@@ -431,7 +459,9 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
                 hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS1toCS2((float) Math.abs(hvdcLineToMinValues.get(hvdcLine).getBaseCaseLimit()));
             }
             TimeSeriesMapper.setHvdcMax(hvdcLine, round);
-            setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(isActivePowerRange ? ScalingDownLimitViolation.CS1TOCS2_BY_ACTIVEPOWER : ScalingDownLimitViolation.MAXP_BY_ACTIVEPOWER);
+            setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(isActivePowerRange ?
+                ScalingDownLimitViolation.CS1TOCS2_BY_ACTIVEPOWER :
+                ScalingDownLimitViolation.MAXP_BY_ACTIVEPOWER);
             return setpoint;
         } else if (!isOkMaxP) {
             setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MAXP_DISABLED);
@@ -442,7 +472,9 @@ public class TimeSeriesMapperChecker extends MultipleTimeSeriesMapperObserver {
                 hvdcLine.getExtension(HvdcOperatorActivePowerRange.class).setOprFromCS2toCS1((float) Math.abs(hvdcLineToMaxValues.get(hvdcLine).getBaseCaseLimit()));
             }
             TimeSeriesMapper.setHvdcMin(hvdcLine, round);
-            setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(isActivePowerRange ? ScalingDownLimitViolation.CS2TOCS1_BY_ACTIVEPOWER : ScalingDownLimitViolation.MINP_BY_ACTIVEPOWER);
+            setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownLimitViolation().add(isActivePowerRange ?
+                ScalingDownLimitViolation.CS2TOCS1_BY_ACTIVEPOWER :
+                ScalingDownLimitViolation.MINP_BY_ACTIVEPOWER);
             return setpoint;
         } else if (!isOkMinP) {
             setpointTimeSeriesToEquipments.get(timeSeriesName).getScalingDownPowerChange().add(ScalingDownPowerChange.MAPPED_MINP_DISABLED);
