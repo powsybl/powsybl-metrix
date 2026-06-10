@@ -157,11 +157,10 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
         double min_l = 0., max_l = 0.;
         switch (typeDeBorneDeLaVariable[idxVar]) {
             case VARIABLE_FIXE:
-                if (typeDeVariable == nullptr && nullptr != xValues) {
+                if (xValues != nullptr) {
                     min_l = max_l = xValues[idxVar];
                 } else {
-                    min_l = bMin[idxVar];
-                    max_l = bMin[idxVar];
+                    min_l = max_l = bMin[idxVar];
                 }
                 break;
             case VARIABLE_BORNEE_DES_DEUX_COTES:
