@@ -19,8 +19,8 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Parade 'FSSV.O1_FSSV.O11_G_DJ3' sur défaut 'FS.BIS1 FSSV.O1 1' :Noeuds perdus '4 [FSSV.O1_4]'
-Parade 'FVALDI1_Disj FVALDI11_L2' sur défaut 'FS.BIS1 FSSV.O1 1' :Noeuds perdus '6 [FVALDI1_4]'
+Parade 'FSSV.O1_FSSV.O11_G_DJ3' sur défaut 'FS.BIS1 FSSV.O1 1' : Noeuds perdus '4 [FSSV.O1_4]'
+Parade 'FVALDI1_Disj FVALDI11_L2' sur défaut 'FS.BIS1 FSSV.O1 1' : Noeuds perdus '6 [FVALDI1_4]'
  Nb total d'incidents + parades : 4
 Mode de calcul : OPF
 Noeud bilan : 0 [FP.AND1_1]

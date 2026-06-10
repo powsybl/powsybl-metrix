@@ -1,19 +1,19 @@
 Use dictionnary file METRIX.dic
 Attention: Le quadripole QUAD_VAQ a une admittance tres grande (100000.0000000000)
 Attention: Le quadripole QUAD_VAR a une admittance tres grande (100000.0000000000)
-Incident 'INC_YUB' :Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]' '5893 [CONSO_HRS]'
-Incident 'QUAD_JXX' :Noeuds perdus '894 [CONSO_AHL]'
-Incident 'QUAD_QRI' :Noeuds perdus '3995 [CONSO_EWS]'
-Incident 'QUAD_RRN' :Noeuds perdus '4492 [CONSO_FPV]'
-Incident 'INC_YUC' :Noeuds perdus '2873 [CONSO_DFO]' '5898 [CONSO_HRX]'
-Incident 'INC_YUD' :Noeuds perdus '3865 [CONSO_ERS]'
-Incident 'QUAD_UCF' :Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]'
-Incident 'QUAD_PMQ' :Noeuds perdus '3107 [CONSO_DOO]'
-Incident 'INC_YUE' :Noeuds perdus '3848 [CONSO_ERB]' '6043 [CONSO_HXM]'
-Incident 'QUAD_SGU' :Noeuds perdus '5064 [CONSO_GLV]'
-Incident 'QUAD_UDG' :Noeuds perdus '2945 [CONSO_DII]'
-Incident 'QUAD_UDF' :Noeuds perdus '2944 [CONSO_DIH]'
-Incident 'QUAD_PZE' :Noeuds perdus '3363 [CONSO_DYK]'
+Incident 'INC_YUB' : Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]' '5893 [CONSO_HRS]'
+Incident 'QUAD_JXX' : Noeuds perdus '894 [CONSO_AHL]'
+Incident 'QUAD_QRI' : Noeuds perdus '3995 [CONSO_EWS]'
+Incident 'QUAD_RRN' : Noeuds perdus '4492 [CONSO_FPV]'
+Incident 'INC_YUC' : Noeuds perdus '2873 [CONSO_DFO]' '5898 [CONSO_HRX]'
+Incident 'INC_YUD' : Noeuds perdus '3865 [CONSO_ERS]'
+Incident 'QUAD_UCF' : Noeuds perdus '2850 [CONSO_DER]' '2851 [CONSO_DES]'
+Incident 'QUAD_PMQ' : Noeuds perdus '3107 [CONSO_DOO]'
+Incident 'INC_YUE' : Noeuds perdus '3848 [CONSO_ERB]' '6043 [CONSO_HXM]'
+Incident 'QUAD_SGU' : Noeuds perdus '5064 [CONSO_GLV]'
+Incident 'QUAD_UDG' : Noeuds perdus '2945 [CONSO_DII]'
+Incident 'QUAD_UDF' : Noeuds perdus '2944 [CONSO_DIH]'
+Incident 'QUAD_PZE' : Noeuds perdus '3363 [CONSO_DYK]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes

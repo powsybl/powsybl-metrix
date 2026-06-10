@@ -1,11 +1,11 @@
 Use dictionnary file METRIX.dic
 Attention: Le quadripole QUAD_WAF_Td a une admittance tres grande (715.9485626221)
 Attention: Le quadripole QUAD_WVH_Td a une admittance tres grande (1444.0574645996)
-Incident 'INC_AMII' :Noeuds perdus '6631 [CONSO_IUK]'
-Incident 'INC_AMIJ' :Noeuds perdus '3426 [CONSO_EBD]'
-Incident 'INC_AMIK' :Noeuds perdus '3425 [CONSO_EBC]'
-Incident 'INC_AMIL' :Noeuds perdus '6991 [CONSO_JIG]'
-Incident 'INC_AMIM' :Noeuds perdus '5159 [CONSO_GPU]' '6938 [CONSO_JGF]'
+Incident 'INC_AMII' : Noeuds perdus '6631 [CONSO_IUK]'
+Incident 'INC_AMIJ' : Noeuds perdus '3426 [CONSO_EBD]'
+Incident 'INC_AMIK' : Noeuds perdus '3425 [CONSO_EBC]'
+Incident 'INC_AMIL' : Noeuds perdus '6991 [CONSO_JIG]'
+Incident 'INC_AMIM' : Noeuds perdus '5159 [CONSO_GPU]' '6938 [CONSO_JGF]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes

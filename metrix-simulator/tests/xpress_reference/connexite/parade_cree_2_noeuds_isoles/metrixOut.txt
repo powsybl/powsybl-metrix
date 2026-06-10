@@ -1,19 +1,19 @@
 Use dictionnary file METRIX.dic
 Attention: Le quadripole QUAD_VLA a une admittance tres grande (100000.0000000000)
 Attention: Le quadripole QUAD_VLB a une admittance tres grande (100000.0000000000)
-Incident 'QUAD_KBS' :Noeuds perdus '916 [CONSO_AIH]'
-Incident 'QUAD_PSS' :Noeuds perdus '3145 [CONSO_DQA]'
-Incident 'QUAD_QFN' :Noeuds perdus '3403 [CONSO_DZY]'
-Incident 'QUAD_QXZ' :Noeuds perdus '4042 [CONSO_EYN]'
-Incident 'QUAD_RYO' :Noeuds perdus '4541 [CONSO_FRS]'
-Incident 'QUAD_SOA' :Noeuds perdus '5118 [CONSO_GNX]'
-Incident 'QUAD_UMR' :Noeuds perdus '2982 [CONSO_DJT]'
-Incident 'QUAD_UMS' :Noeuds perdus '2983 [CONSO_DJU]'
-Incident 'INC_ZFM' :Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
-Incident 'INC_ZFN' :Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
-Incident 'INC_ZFO' :Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
-Incident 'INC_ZFP' :Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
-Incident 'INC_ZFQ' :Noeuds perdus '3911 [CONSO_ETM]'
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFP' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFQ' : Noeuds perdus '3911 [CONSO_ETM]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -32,7 +32,7 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' :Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
  Nb total d'incidents + parades : 59
 Mode de calcul : OPF sans redispatching de groupes
 Noeud bilan : 0 [CONSO_B]
@@ -140,20 +140,20 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
-Incident 'QUAD_KBS' :Noeuds perdus '916 [CONSO_AIH]'
-Incident 'QUAD_PSS' :Noeuds perdus '3145 [CONSO_DQA]'
-Incident 'QUAD_QFN' :Noeuds perdus '3403 [CONSO_DZY]'
-Incident 'QUAD_QXZ' :Noeuds perdus '4042 [CONSO_EYN]'
-Incident 'QUAD_RYO' :Noeuds perdus '4541 [CONSO_FRS]'
-Incident 'QUAD_SOA' :Noeuds perdus '5118 [CONSO_GNX]'
-Incident 'QUAD_UMR' :Noeuds perdus '2982 [CONSO_DJT]'
-Incident 'QUAD_UMS' :Noeuds perdus '2983 [CONSO_DJU]'
-Incident 'INC_ZFM' :Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
-Incident 'INC_ZFN' :Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
-Incident 'INC_ZFO' :Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
-Incident 'INC_ZFP' :Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
-Incident 'INC_ZFQ' :Noeuds perdus '3911 [CONSO_ETM]'
-Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' :Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFP' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFQ' : Noeuds perdus '3911 [CONSO_ETM]'
+Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
 
 ---------------------
 ---------------------
@@ -210,17 +210,17 @@ Valeur de la fonction objectif :       4.1556
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 20 (taille de la matrice : 20)
 Pas de contraintes
-Incident 'QUAD_KBS' :Noeuds perdus '916 [CONSO_AIH]'
-Incident 'QUAD_PSS' :Noeuds perdus '3145 [CONSO_DQA]'
-Incident 'QUAD_QFN' :Noeuds perdus '3403 [CONSO_DZY]'
-Incident 'QUAD_QXZ' :Noeuds perdus '4042 [CONSO_EYN]'
-Incident 'QUAD_RYO' :Noeuds perdus '4541 [CONSO_FRS]'
-Incident 'QUAD_SOA' :Noeuds perdus '5118 [CONSO_GNX]'
-Incident 'QUAD_UMR' :Noeuds perdus '2982 [CONSO_DJT]'
-Incident 'QUAD_UMS' :Noeuds perdus '2983 [CONSO_DJU]'
-Incident 'INC_ZFM' :Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
-Incident 'INC_ZFN' :Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
-Incident 'INC_ZFO' :Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
-Incident 'INC_ZFP' :Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
-Incident 'INC_ZFQ' :Noeuds perdus '3911 [CONSO_ETM]'
-Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' :Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+Incident 'QUAD_KBS' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSS' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFN' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXZ' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYO' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SOA' : Noeuds perdus '5118 [CONSO_GNX]'
+Incident 'QUAD_UMR' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMS' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFM' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5961 [CONSO_HUI]'
+Incident 'INC_ZFN' : Noeuds perdus '4540 [CONSO_FRR]' '6204 [CONSO_IDR]'
+Incident 'INC_ZFO' : Noeuds perdus '2911 [CONSO_DHA]' '5966 [CONSO_HUN]'
+Incident 'INC_ZFP' : Noeuds perdus '3894 [CONSO_ESV]' '6111 [CONSO_IAC]'
+Incident 'INC_ZFQ' : Noeuds perdus '3911 [CONSO_ETM]'
+Parade 'QUAD_QPS / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_KLT' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'

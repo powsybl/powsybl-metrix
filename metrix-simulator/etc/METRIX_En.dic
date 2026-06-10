@@ -44,11 +44,11 @@ INFOBilanParZoneSync                        Synchronous area balancing :
 INFOBilanZoneSync                           Synchronous area $1 (slack node $2), balance = $3 MW
 INFOParamOpt								Optional parameter '$1' not set
 INFOIncident                                Contigency '$1' :
-INFOParade                                  Remedial action '$1' on contingency '$2' : 
+INFOParade                                  Remedial action '$1' on contingency '$2' :
 INFOPochePerdue                             Lost buses
 INFOLimiteRedispatchingCuratif              Curative redispatching limit per synchronous area (MW) : $1
 INFONouveauPaquetVariantes					Processing a set of $1 variant(s)
-			
+
 // ------- Messages infos sur le calcul  ----------------
 INFOPasDeContraintes						No constraints
 INFOContraintesDetectees					Some constraints are detected $1
@@ -63,7 +63,7 @@ INFOSPXPminSupZero							Use of simplex method because Pmin is non zero
 INFOSPXPObjSupZero							Use of simplex method because PObj is non zero
 INFOSPXPlusieursZonesSynch					Use of simplex method because there are more than 1 synchronous area
 INFOSPXDelestageNecessaire					Curtailment is necessary because Pimp + Pmax available < load
-INFOSPXPenalisationTDHVDC					Use of simplex method because cost of using PSTs and/or HVDC is not null 
+INFOSPXPenalisationTDHVDC					Use of simplex method because cost of using PSTs and/or HVDC is not null
 INFOResEmpilEco								Results of pure economic production unit start
 INFOVolProd									Production volume    = $1 MW
 INFOVolDelestage							Curtailment volume   = $1 MW
@@ -108,12 +108,12 @@ ERRLectFicPointVirgule						Error while reading file $1 : missing semicolon ($2,
 ERRLectureVariante							Error while reading variant $1 in file $2
 ERRPremiereVarIntrouvable					First variant number cannot be found in file $1
 ERRFormatNombre                             Invalid number format : '$2' in law $1
-ERRRegionIntrouvable						Area '$1' of law $2 cannot be found 
-ERRGroupeIntrouvable						Production unit '$1' in law $2 cannot be found 
-ERRTDPriseIntrouvable						For PST '$1' required tap $2 cannot be found for variant $3 
-ERRNoeudConsoIntrouvable					Node '$1' in load variation law number $2 cannot be found 
+ERRRegionIntrouvable						Area '$1' of law $2 cannot be found
+ERRGroupeIntrouvable						Production unit '$1' in law $2 cannot be found
+ERRTDPriseIntrouvable						For PST '$1' required tap $2 cannot be found for variant $3
+ERRNoeudConsoIntrouvable					Node '$1' in load variation law number $2 cannot be found
 ERRIncidentIntrouvable                      Outage id '$1' in variation law $2 for variant $3 cannot be found
-ERRQuadIntrouvable							Line '$1' in law $2:$3 cannot be found 
+ERRQuadIntrouvable							Line '$1' in law $2:$3 cannot be found
 ERRConsoIntrouvable							Load id '$1' in variation law $2 for variant $3 cannot be found
 ERRTypeLoiInconnu							Law type $1 is unknown
 ERRPasDeconsoSurNoeud						There is no load on node $1
@@ -133,7 +133,7 @@ ERRPalierNoeudSup100						Curtailment ratio of node $1 is higher than 100 : $2
 ERRPalierNoeudNegatif						Curtailment ratio of node $1 is negative : $2
 ERRNoeudsQuadripole							Wrong data (node  number) for line $1
 ERRDonneeAnormaleTD							Wrong data on phase shifter $1
-ERRPuissanceConsigneTD				        Value set for phase shifter $1 violates boundaries 
+ERRPuissanceConsigneTD				        Value set for phase shifter $1 violates boundaries
 ERRNoeudGroupe								Production unit $1 connecting node not found $2
 ERRNoeudConso								Load $1 connecting node not found $2
 ERRGroupePminPmax							Production unit $1: Pmin ($2) > Pmax ($3)
@@ -164,7 +164,7 @@ ERRIDemiBandeReglInsuf						Possible lost power during contingency $1 MW, freque
 ERRAjoutCtr									Error while adding constraint on line $2 after contingency $1
 ERRAjoutCtrN								Error while adding constraint on line $1
 ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
-ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes 
+ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes
 
 
 //------------- Warning --------------------
@@ -180,9 +180,9 @@ WARNTdHs                                    PST $1 is not operational
 WARNAdmitFaible								Warning: admittance for connection $1  is very low( $2)
 WARNAdmitGrande								Warning: admittance for connection $1  is very high ( $2)
 WARNIncCurNonTraiteOuvInc					$2 cannot be used as a curative action on contingency $1 because it makes part of the contingency
-WARNTDCurNonTraite							No curative action for phase shifter $1 because it is not adjustable 
+WARNTDCurNonTraite							No curative action for phase shifter $1 because it is not adjustable
 WARNHVDCCurNonTraiteEntreCompSyn			No curative action possible for HVDC link $1 because it is between 2 different synchronous area
-WARNHVDCCurNonTraite						No curative action for HVDC link $1 because it is not adjustable 
+WARNHVDCCurNonTraite						No curative action for HVDC link $1 because it is not adjustable
 WARNHVDCConsigneImposee						Control mode of HVDC $1 set to -- Imposed --
 WARNQuadBoucle								Warning: Connection $1 creates a loop on the same node. A breaker on one side had to be opened.
 WARNPimpInfConso                            Available production is below consumption. Offgrid curtailment is required
@@ -199,7 +199,7 @@ WarnElementDejaDansParade                   Duplicate branch '$1' used in a reme
 
 //---------------- Variables li�es ---------------------
 ERRConsoNulle								Error: load value is null on bus '$1' used in variable binding '$2'
-ERRVarRefNulle								Error: reference variable is null for generator '$1' used in variable binding '$2' 
+ERRVarRefNulle								Error: reference variable is null for generator '$1' used in variable binding '$2'
 ERRGrpNonAjustable							Error : non ajustable group '$1' used in variable coupling '$2'
 ERRGroupeLieNonModifiable                   Error : generator '$1' used in variable binding '$2' is not modifiable
 ERRConsoLieeNonModifiable                   Error : load '$1' used in variable binding '$2' is not modifiable
