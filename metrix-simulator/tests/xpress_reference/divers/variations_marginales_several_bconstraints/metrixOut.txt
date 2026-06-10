@@ -471,10 +471,10 @@ Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 3)
 -------------------- : 
 
-Des contraintes ont été détectées : 5
+Des contraintes ont été détectées : 4
 Nb termes dans la matrice : 2223 (taille de la matrice : 2223)
-Ajout de 5 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 8)
+Ajout de 4 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 7)
 -------------------- : 
 
 Appel du simplexe
@@ -489,9 +489,9 @@ Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif : 20079722.2067
 
-Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 5607 (taille de la matrice : 5607)
-Ajout de 1 contraintes dans le probleme
+Des contraintes ont été détectées : 2
+Nb termes dans la matrice : 5595 (taille de la matrice : 5595)
+Ajout de 2 contraintes dans le probleme
 Micro itération 3 (nombre de contraintes 9)
 -------------------- : 
 
@@ -557,13 +557,12 @@ Résultats en volume (MW)
 Volume de production =  283377.0106 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :    3675.2929
+Cout associé aux groupes       :    3676.9982
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :    3675.2929
+Valeur de la fonction objectif :    3676.9982
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 6457 (taille de la matrice : 6457)
 Pas de contraintes
- Le nombre le contraintes (5) est different de la taille de la base : 2

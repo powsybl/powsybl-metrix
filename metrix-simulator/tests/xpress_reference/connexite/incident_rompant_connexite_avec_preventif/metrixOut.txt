@@ -1,6 +1,6 @@
 Use dictionnary file METRIX.dic
-Incident 'incident_connexite' : Noeuds perdus '2 [FS.BIS1_3]' '3 [FSSV.O1_3]' '4 [FVALDI1_3]'
-Incident 'incident_connexite_2' : Noeuds perdus '5 [FVERGE1_1]'
+Incident 'incident_connexite' :Noeuds perdus '2 [FS.BIS1_3]' '3 [FSSV.O1_3]' '4 [FVALDI1_3]'
+Incident 'incident_connexite_2' :Noeuds perdus '5 [FVERGE1_1]'
 Informations générales sur le réseau :
 Demi-bande de réglage globale = 0.000000
 Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
@@ -142,9 +142,9 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :      57.6982
+Cout de pénalisation TD & HVDC :       6.0061
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :      57.6982
+Valeur de la fonction objectif :       6.0061
 
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 3 (taille de la matrice : 3)

@@ -147,7 +147,7 @@ Bilans par zones synchrones :
 Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
 
 Prise en compte des couts avec reseau
-Erreur : variable de reference nulle pour le groupe 'FVALDI11_G' utilise dans le couplage de variables 'Generators others' 
+Erreur : variable de reference nulle pour le groupe 'FVALDI11_G' utilise dans le couplage de variables 'Generators others'
 Probleme lors de l'ecriture des contraintes de la phase avec reseau
 
 ---------------------
@@ -252,7 +252,7 @@ Bilans par zones synchrones :
 Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
 
 Prise en compte des couts avec reseau
-Erreur : variable de reference nulle pour le groupe 'FSSV.O11_G' utilise dans le couplage de variables 'Generators SSV.O' 
+Erreur : variable de reference nulle pour le groupe 'FSSV.O11_G' utilise dans le couplage de variables 'Generators SSV.O'
 Probleme lors de l'ecriture des contraintes de la phase avec reseau
 
 ---------------------

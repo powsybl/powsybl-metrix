@@ -861,7 +861,7 @@ Blocage des variables de defaillance
 Micro itération 1 (nombre de contraintes 0)
 -------------------- : 
 
-Des contraintes ont été détectées : 609
+Des contraintes ont été détectées : 507
 Nb termes dans la matrice : 0 (taille de la matrice : 0)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_NCW_NRF' (icdt : QUAD_NCW)
 Contraintes equivalentes : 'QUAD_YGE / QUAD_YGF / QUAD_SBX' & 'QUAD_YGE / QUAD_YGF / QUAD_SBX' (icdt : QUAD_NCW)
@@ -872,32 +872,32 @@ Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_WSW_NRF' (icdt : QUAD_WSW)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_TFB_NRF' (icdt : QUAD_TFB)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_MMA_NRF' (icdt : QUAD_MMA)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_OFI_NRF' (icdt : QUAD_OFI)
-Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ONO_NRF' (icdt : QUAD_ONO)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_SNE_NRF' (icdt : QUAD_SNE)
+Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ONO_NRF' (icdt : QUAD_ONO)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_OFH_NRF' (icdt : QUAD_OFH)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ODY_NRF' (icdt : QUAD_ODY)
+Ajout de 593 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 617)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  250499.9640 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :     242.6737
+Cout des écarts de transit     :  206896.4441
+Valeur de la fonction objectif :  207139.1177
+
+Des contraintes ont été détectées : 597
+Nb termes dans la matrice : 2100 (taille de la matrice : 2100)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_YDJ_NRF' (icdt : QUAD_YDJ)
-Ajout de 700 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 727)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 0 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =  250499.9640 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.9164
-Cout des écarts de transit     :  330382.5842
-Valeur de la fonction objectif :  330625.5006
-
-Des contraintes ont été détectées : 504
-Nb termes dans la matrice : 2454 (taille de la matrice : 2454)
 Contraintes equivalentes : 'PARADE_NRF' & 'QUAD_ODW_NRF' (icdt : QUAD_ODW)
-Ajout de 256 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 984)
+Ajout de 346 contraintes dans le probleme
+Micro itération 3 (nombre de contraintes 967)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -908,32 +908,14 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     243.2496
-Cout des écarts de transit     :  445582.1141
-Valeur de la fonction objectif :  445825.3636
+Cout de pénalisation TD & HVDC :     242.9504
+Cout des écarts de transit     :  399121.2836
+Valeur de la fonction objectif :  399364.2340
 
-Des contraintes ont été détectées : 11
-Nb termes dans la matrice : 3273 (taille de la matrice : 3273)
-Ajout de 28 contraintes dans le probleme
-Micro itération 4 (nombre de contraintes 1012)
--------------------- : 
-
-Appel du solveur linéaire en nombre entier
-Solution optimale trouvée pour la variante 0 (code retour = 1)
-Résultats en volume (MW)
-Volume de production =  250499.9640 MW
-Volume de délestage  =       0.0000 MW
-Résultats sur les couts
-Cout associé aux groupes       :       0.0000
-Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.7484
-Cout des écarts de transit     :  448005.6650
-Valeur de la fonction objectif :  448248.4134
-
-Des contraintes ont été détectées : 5
-Nb termes dans la matrice : 3425 (taille de la matrice : 3425)
+Des contraintes ont été détectées : 6
+Nb termes dans la matrice : 3177 (taille de la matrice : 3177)
 Ajout de 14 contraintes dans le probleme
-Micro itération 5 (nombre de contraintes 1026)
+Micro itération 4 (nombre de contraintes 981)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -944,10 +926,28 @@ Volume de délestage  =       0.0000 MW
 Résultats sur les couts
 Cout associé aux groupes       :       0.0000
 Cout associé au délestage      :       0.0000
-Cout de pénalisation TD & HVDC :     242.7484
-Cout des écarts de transit     :  448164.2441
-Valeur de la fonction objectif :  448406.9926
+Cout de pénalisation TD & HVDC :     242.9049
+Cout des écarts de transit     :  400074.2465
+Valeur de la fonction objectif :  400317.1513
+
+Des contraintes ont été détectées : 6
+Nb termes dans la matrice : 3253 (taille de la matrice : 3253)
+Ajout de 12 contraintes dans le probleme
+Micro itération 5 (nombre de contraintes 993)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  250499.9640 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0000
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :     242.6875
+Cout des écarts de transit     :  400445.0106
+Valeur de la fonction objectif :  400687.6981
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 3501 (taille de la matrice : 3501)
+Nb termes dans la matrice : 3325 (taille de la matrice : 3325)
 Pas de contraintes

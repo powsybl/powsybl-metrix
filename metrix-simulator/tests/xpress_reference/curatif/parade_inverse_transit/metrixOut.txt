@@ -19,7 +19,7 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' :Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
  Nb total d'incidents + parades : 5
 Mode de calcul : OPF sans redispatching de groupes
 Noeud bilan : 0 [CONSO_B]
@@ -72,7 +72,7 @@ Pas de contraintes
 ********************************************
 Traitement d'un paquet de 1 variante(s)
 ********************************************
-Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' :Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
 
 ---------------------
 ---------------------
@@ -147,4 +147,4 @@ Valeur de la fonction objectif :       7.6014
 Des contraintes ont été détectées : 0
 Nb termes dans la matrice : 44 (taille de la matrice : 44)
 Pas de contraintes
-Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' : Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
+Parade 'QUAD_VLA / QUAD_QPS / QUAD_PGI / QUAD_KAX / QUAD_UMR / QUAD_UMS' sur défaut 'QUAD_JDK' :Noeuds perdus '2982 [CONSO_DJT]' '2983 [CONSO_DJU]'
