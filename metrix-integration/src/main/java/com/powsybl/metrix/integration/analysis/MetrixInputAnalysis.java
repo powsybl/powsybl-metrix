@@ -37,7 +37,6 @@ public class MetrixInputAnalysis {
         INFO
     }
 
-    private static final char SEPARATOR = ';';
     private static final String SECTION_SEPARATOR = " - ";
     private static final String COMMENT_SYMBOL = "/*";
     private static final String COMMENT_LINE_SYMBOL = "//";
