@@ -13,6 +13,7 @@ import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
 import com.powsybl.metrix.integration.type.MetrixPtcControlType;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -66,7 +67,12 @@ class MetrixContingencyAnalysisTest {
     private void metrixDslDataContingencyAnalysisTest(MetrixDslData metrixDslData, String expected) throws IOException {
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), new EmptyContingencyListProvider(), network, metrixDslData, null, bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""),
+                new EmptyContingencyListProvider(),
+                network,
+                metrixDslData,
+                null,
+                new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -81,7 +87,7 @@ class MetrixContingencyAnalysisTest {
 
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -169,7 +175,7 @@ class MetrixContingencyAnalysisTest {
                     String.join(System.lineSeparator(),
                             "NB;1;",
                             "ctyId;1;FP.AND1  FVERGE1  1;")
-            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), null, bufferedWriter);
+            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), null, new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
