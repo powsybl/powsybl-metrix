@@ -91,6 +91,9 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | LIMCURGR     | I    | 1      | Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1)                                                                                                             |
 | ADEQUAOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0)                                                                              |
 | REDISPOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0)                                                                      |
+| SOLVERCH     | I    | 1      | Choix du solveur pour l'optimisation principale (LP/MIP) : 0 GLPK, 1 CBC, 2 SCIP_GLOP, 3 GUROBI, 4 CPLEX, 5 SIRIUS, 6 XPRESS. Toute valeur différente de 5 nécessite un binaire compilé avec `USE_ORTOOLS` (et `USE_XPRESS` pour la valeur 6), faute de quoi la configuration est rejetée ; un solveur accepté à la compilation mais indisponible à l'exécution (backend absent du build OR-Tools, licence manquante) provoque une erreur `ERRSolveurIndisponible` à la première résolution.<br>= solverChoice (5)  |
+| PCSOLVERCH   | I    | 1      | Choix du solveur pour la phase d'empilement économique. Mêmes valeurs et mêmes contraintes que SOLVERCH.<br>= pcSolverChoice (5)                                                |
+| SPECIFICSOLVERPARAMS | C | 1 | Paramètres spécifiques transmis tels quels au solveur via OR-Tools (par exemple `"THREADS 1"` pour Xpress, format natif du solveur). Ignoré lorsque le solveur est SIRIUS.<br>= specificSolverParams (vide)                                                                     |
 
 (io-results-options)=
 ### Options de résultats

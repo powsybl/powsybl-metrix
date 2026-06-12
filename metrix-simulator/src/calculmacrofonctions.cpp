@@ -8,6 +8,14 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
+// clang-format off
+// ortools/solver.h prend en charge le conflit de macro LOG (glog vs metrix::log)
+// en interne et DOIT être inclus avant <metrix/log.h>.
+#ifdef USE_ORTOOLS
+#   include "ortools/solver.h"
+#endif
+#include <metrix/log.h>
+#include "compute/solver.h"
 #include "calcul.h"
 #include "config/configuration.h"
 #include "config/constants.h"
@@ -22,10 +30,11 @@
 #include "status.h"
 #include "variante.h"
 
+#include <chrono>
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <fstream> //attention
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
@@ -92,6 +101,27 @@ string Contrainte::typeDeContrainteToString() const
 
 Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), variantesOrdonnees_(variantesOrdonnees)
 {
+#ifdef USE_ORTOOLS
+    auto makeSolver = [](config::Configuration::SolverChoice choice,
+                         const std::string& specificParams) -> std::shared_ptr<compute::ISolver> {
+        if (choice == config::Configuration::SolverChoice::SIRIUS) {
+            LOG(debug) << "Solver: Sirius direct";
+            return std::make_shared<compute::Solver>();
+        }
+        LOG(debug) << "Solver: OR-Tools (backend " << static_cast<int>(choice) << ")";
+        return std::make_shared<ortools::Solver>(choice, specificParams);
+    };
+
+    const auto& params = config::configuration().specificSolverParams();
+
+    solver_pne_ = makeSolver(config::configuration().solverChoice(), params);
+    pc_solver_ = makeSolver(config::configuration().pcSolverChoice(), params);
+#else
+    auto shared_solver = std::make_shared<compute::Solver>();
+    solver_pne_ = shared_solver;
+    pc_solver_ = shared_solver;
+#endif
+
     // Réglage des paramètres en fonction du mode de calcul
     std::stringstream ss;
     ss << "Mode de calcul : ";
@@ -299,7 +329,8 @@ int Calculer::resolutionProbleme()
                 status = resolutionUnProblemeDodu(varianteCourante_);
 
                 // Free the problem at the end of the resolution
-                solver_.free();
+                solver_pne_->free();
+                pc_solver_->free();
 
                 // No solution variant (but not due to internal problem)
                 if (status == METRIX_PAS_SOLUTION || status == METRIX_NB_MAX_CONT_ATTEINT
@@ -395,6 +426,19 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
     // Solveur I : utilisation de PNE_SOLVEUR
     //--------------------------------------
     if (typeSolveur == UTILISATION_PNE_SOLVEUR) {
+        // Comptage des variables entières actives
+        int nbVarEntieresActives = 0;
+        for (int i = 0; i < pbNombreDeVariables_; ++i) {
+            if (pbTypeDeVariable_[i] == ENTIER
+                && pbTypeDeBorneDeLaVariable_[i] != VARIABLE_FIXE) {
+                nbVarEntieresActives++;
+            }
+        }
+        LOG(debug) << "MIP stats: variante " << varianteCourante->num_
+                   << ", micro-iteration " << numMicroIteration_
+                   << ", nb variables = " << pbNombreDeVariables_
+                   << ", nb contraintes = " << pbNombreDeContraintes_
+                   << ", nb variables entieres actives = " << nbVarEntieresActives;
         LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineairePNE");
 
         pbCoutsMarginauxDesContraintes_.resize(pbNombreDeContraintes_);
@@ -431,7 +475,14 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Resolution du probleme
         //----------------------
-        solver_.solve(&pbPNE_);
+        auto startTime = std::chrono::high_resolution_clock::now();
+        solver_pne_->solve(&pbPNE_);
+        auto endTime = std::chrono::high_resolution_clock::now();
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+        LOG(debug) << "MIP solve time: variante " << varianteCourante->num_
+                   << ", micro-iteration " << numMicroIteration_
+                   << ", " << duration.count() << " ms"
+                   << " (nb var entieres actives = " << nbVarEntieresActives << ")";
         pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
 
         if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
@@ -452,7 +503,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
 
         // Solveur II : utilisation du SIMPLEXE;
         //------------------------------------
-    } else if (typeSolveur == UTILISATION_SIMPLEXE) {
+    } else if (typeSolveur == UTILISATION_SIMPLEXE || typeSolveur == UTILISATION_PC_SIMPLEXE) {
         LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineaireSPX");
 
         for (int i = 0; i < pbNombreDeVariables_; ++i) {
@@ -517,7 +568,11 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
             SPX_EcrireProblemeAuFormatMPS(pb_);
         }
 
-        solver_.solve(&pb_);
+        if (typeSolveur == UTILISATION_PC_SIMPLEXE) {
+            pc_solver_->solve(&pb_);
+        } else {
+            solver_pne_->solve(&pb_);
+        }
         pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
         pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
 
@@ -846,7 +901,7 @@ int Calculer::calculReportInfluencement()
         string LODFfileName = "LODF_matrix.csv";
         printLODF(LODFfileName, config::inputConfiguration().writeLODFfile());
     }
-    
+
     return METRIX_PAS_PROBLEME;
 }
 
@@ -950,7 +1005,6 @@ void Calculer::fixerVariablesEntieres()
         }
     }
 }
-
 
 void Calculer::printStats()
 {

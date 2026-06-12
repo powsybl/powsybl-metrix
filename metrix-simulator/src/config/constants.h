@@ -23,6 +23,7 @@ namespace config
  */
 namespace constants
 {
+
 #ifdef M_PI
 constexpr double pi = M_PI;
 #else

@@ -1,0 +1,1 @@
+../../../sirius/connexite/isolated_node_after_base_case_and_variant/_Readme.txt
