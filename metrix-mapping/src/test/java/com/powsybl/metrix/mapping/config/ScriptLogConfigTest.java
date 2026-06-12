@@ -43,12 +43,47 @@ class ScriptLogConfigTest {
         // THEN
         assertNotNull(scriptLogConfig);
         assertNull(scriptLogConfig.getWriter());
-        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
         assertEquals(MAX_LOG_LEVEL_DEFAULT, scriptLogConfig.getMaxLogLevel());
+        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
+        assertFalse(scriptLogConfig.isWithTimeStamp());
+        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
+        assertNotNull(scriptLogConfig.getClock());
     }
 
     @Test
-    void testConstructorFull() {
+    void testConstructorWriter() {
+        // GIVEN
+        StringWriter sw = new StringWriter();
+        // WHEN
+        ScriptLogConfig scriptLogConfig = new ScriptLogConfig(sw);
+        // THEN
+        assertNotNull(scriptLogConfig);
+        assertEquals(sw, scriptLogConfig.getWriter());
+        assertEquals(MAX_LOG_LEVEL_DEFAULT, scriptLogConfig.getMaxLogLevel());
+        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
+        assertFalse(scriptLogConfig.isWithTimeStamp());
+        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
+        assertNotNull(scriptLogConfig.getClock());
+    }
+
+    @Test
+    void testConstructorMaxLogLevelWriter() {
+        // GIVEN
+        StringWriter sw = new StringWriter();
+        // WHEN
+        ScriptLogConfig scriptLogConfig = new ScriptLogConfig(ERROR, sw);
+        // THEN
+        assertNotNull(scriptLogConfig);
+        assertEquals(sw, scriptLogConfig.getWriter());
+        assertEquals(ERROR, scriptLogConfig.getMaxLogLevel());
+        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
+        assertFalse(scriptLogConfig.isWithTimeStamp());
+        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
+        assertNotNull(scriptLogConfig.getClock());
+    }
+
+    @Test
+    void testConstructorMaxLogLevelWriterSection() {
         // GIVEN
         StringWriter sw = new StringWriter();
         // WHEN
@@ -56,63 +91,20 @@ class ScriptLogConfigTest {
         // THEN
         assertNotNull(scriptLogConfig);
         assertEquals(sw, scriptLogConfig.getWriter());
-        assertEquals(SECTION, scriptLogConfig.getSection());
         assertEquals(ERROR, scriptLogConfig.getMaxLogLevel());
+        assertEquals(SECTION, scriptLogConfig.getSection());
+        assertFalse(scriptLogConfig.isWithTimeStamp());
+        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
+        assertNotNull(scriptLogConfig.getClock());
     }
 
     @Test
-    void testConstructors() {
+    void testConstructorMaxLogLevelWriterSectionWithTimestamp() {
         // GIVEN
         StringWriter sw = new StringWriter();
         boolean withTimestamp = true;
-        ScriptLogConfig scriptLogConfig;
-
         // WHEN
-        scriptLogConfig = new ScriptLogConfig();
-        // THEN
-        assertNotNull(scriptLogConfig);
-        assertNull(scriptLogConfig.getWriter());
-        assertEquals(MAX_LOG_LEVEL_DEFAULT, scriptLogConfig.getMaxLogLevel());
-        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
-        assertFalse(scriptLogConfig.isWithTimeStamp());
-        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
-        assertNotNull(scriptLogConfig.getClock());
-
-        // WHEN
-        scriptLogConfig = new ScriptLogConfig(sw);
-        // THEN
-        assertNotNull(scriptLogConfig);
-        assertEquals(sw, scriptLogConfig.getWriter());
-        assertEquals(MAX_LOG_LEVEL_DEFAULT, scriptLogConfig.getMaxLogLevel());
-        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
-        assertFalse(scriptLogConfig.isWithTimeStamp());
-        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
-        assertNotNull(scriptLogConfig.getClock());
-
-        // WHEN
-        scriptLogConfig = new ScriptLogConfig(ERROR, sw);
-        // THEN
-        assertNotNull(scriptLogConfig);
-        assertEquals(sw, scriptLogConfig.getWriter());
-        assertEquals(ERROR, scriptLogConfig.getMaxLogLevel());
-        assertEquals(StringUtils.EMPTY, scriptLogConfig.getSection());
-        assertFalse(scriptLogConfig.isWithTimeStamp());
-        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
-        assertNotNull(scriptLogConfig.getClock());
-
-        // WHEN
-        scriptLogConfig = new ScriptLogConfig(ERROR, sw, SECTION);
-        // THEN
-        assertNotNull(scriptLogConfig);
-        assertEquals(sw, scriptLogConfig.getWriter());
-        assertEquals(ERROR, scriptLogConfig.getMaxLogLevel());
-        assertEquals(SECTION, scriptLogConfig.getSection());
-        assertFalse(scriptLogConfig.isWithTimeStamp());
-        assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
-        assertNotNull(scriptLogConfig.getClock());
-
-        // WHEN
-        scriptLogConfig = new ScriptLogConfig(ERROR, sw, SECTION, withTimestamp);
+        ScriptLogConfig scriptLogConfig = new ScriptLogConfig(ERROR, sw, SECTION, withTimestamp);
         // THEN
         assertNotNull(scriptLogConfig);
         assertEquals(sw, scriptLogConfig.getWriter());
@@ -121,9 +113,15 @@ class ScriptLogConfigTest {
         assertTrue(scriptLogConfig.isWithTimeStamp());
         assertEquals(DATE_TIME_FORMATTER_DEFAULT, scriptLogConfig.getDateTimeFormatter());
         assertNotNull(scriptLogConfig.getClock());
+    }
 
+    @Test
+    void testConstructorMaxLogLevelWriterSectionWithTimestampDateTimeFormatter() {
+        // GIVEN
+        StringWriter sw = new StringWriter();
+        boolean withTimestamp = true;
         // WHEN
-        scriptLogConfig = new ScriptLogConfig(ERROR, sw, SECTION, withTimestamp, DATE_TIME_FORMATTER);
+        ScriptLogConfig scriptLogConfig = new ScriptLogConfig(ERROR, sw, SECTION, withTimestamp, DATE_TIME_FORMATTER);
         // THEN
         assertNotNull(scriptLogConfig);
         assertEquals(sw, scriptLogConfig.getWriter());
