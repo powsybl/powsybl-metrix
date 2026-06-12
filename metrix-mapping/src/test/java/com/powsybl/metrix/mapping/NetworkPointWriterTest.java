@@ -36,6 +36,7 @@ import java.util.Objects;
 import java.util.TreeSet;
 
 import static com.powsybl.commons.test.ComparisonUtils.assertXmlEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -152,6 +153,35 @@ class NetworkPointWriterTest {
             );
 
             assertMapping(script, store, expectedDirectoryName);
+        }
+    }
+
+    @Test
+    void networkPointGeneratorRestoreInitialStateTest() throws Exception {
+        try (InputStream scriptStream = Objects.requireNonNull(getClass().getResourceAsStream("/network_point_writer_mapping_script.groovy"))) {
+            // Mapping script
+            String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+                TimeSeries.createDouble("constant_ts1", index, -5d, -5d),
+                TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
+                TimeSeries.createDouble("variable_ts1", index, -10d, -11d),
+                TimeSeries.createDouble("switch_ts", index, 0d, 1d),
+                TimeSeries.createDouble("ts1", index, 10d, 11d),
+                TimeSeries.createDouble("ts2", index, -10d, -11d),
+                TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
+                TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
+            );
+
+            // Create Mapper
+            TimeSeriesMapper mapper = prepareMapper(script, store);
+
+            // Launch mapper
+            // FSSV.O11_G generator in base case minP=0 maxP=500
+            // mapping of maxP with constant_ts1 time series -> maxP=-5
+            // mapping of minP with variable_ts1 time series -> minP=-10
+            // restoreInitialState to minP=0 should pass ValidationUtil.checkActivePowerLimits
+            assertDoesNotThrow(() -> mapper.mapToNetwork(store, networkPointWriterList));
         }
     }
 
