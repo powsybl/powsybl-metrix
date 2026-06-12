@@ -328,6 +328,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         for (Map.Entry<String, GeneratorInitialValues> e : generatorToInitialValues.entrySet()) {
             Generator g = network.getGenerator(e.getKey());
             GeneratorInitialValues initialValues = e.getValue();
+            // Set maxP to maxValue to pass ValidationUtil.checkActivePowerLimits
+            g.setMaxP(Double.MAX_VALUE);
             g.setMinP(initialValues.minP);
             g.setMaxP(initialValues.maxP);
         }
