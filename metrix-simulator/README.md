@@ -87,7 +87,7 @@ through environment variables or CMake `-D` flags:
 | Option | Default | Description |
 |--------|---------|-------------|
 | `USE_ORTOOLS` | `OFF` | Enable multi-solver support via OR-Tools. When `OFF`, the binary is Sirius-only, identical to the legacy production version. |
-| `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Must reflect whether OR-Tools was effectively built with the Xpress backend; mismatch results in a runtime error from OR-Tools when `SOLVERCH=6` is requested. |
+| `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Must reflect whether OR-Tools was effectively built with the Xpress backend; a mismatch (or a missing Xpress license) is reported at runtime as a metrix error (`ERRSolveurIndisponible`) when `SOLVERCH=6` is requested. |
 | `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, deploys `libsirius_solver.so` alongside the binary. |
 | `CODE_COVERAGE` | `OFF` | Instrument the binary for coverage analysis (forces `Debug` build type). |
 | `METRIX_RUN_ALL_TESTS` | `ON` | Run the full TNR test suite. Set to `OFF` for a reduced suite. |
