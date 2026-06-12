@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
+import static com.powsybl.metrix.integration.postprocessing.MetrixBranchPostProcessingTimeSeries.createOverloadTimeSeries;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -134,12 +135,16 @@ class MetrixBranchPostProcessingTimeSeriesTest {
     }
 
     private NodeCalc verifyOverload(String branchName, NodeCalc maxThreat, NodeCalc ratingNkExOr, NodeCalc ratingNkOrEx, String overloadPrefix) {
-        NodeCalc outageOverload = BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(maxThreat, ratingNkExOr),
-                        BinaryOperation.minus(maxThreat, ratingNkExOr)),
-                BinaryOperation.multiply(BinaryOperation.lessThan(maxThreat, UnaryOperation.negative(ratingNkOrEx)),
-                        BinaryOperation.minus(maxThreat, UnaryOperation.negative(ratingNkOrEx))));
-        assertEquals(outageOverload, postProcessingTimeSeries.get(overloadPrefix + branchName));
+        NodeCalc outageOverload = getExpectedOverload(maxThreat, ratingNkExOr, ratingNkOrEx);
+        assertEquals(getExpectedOverload(maxThreat, ratingNkExOr, ratingNkOrEx), postProcessingTimeSeries.get(overloadPrefix + branchName));
         return outageOverload;
+    }
+
+    private NodeCalc getExpectedOverload(NodeCalc maxThreat, NodeCalc ratingNkExOr, NodeCalc ratingNkOrEx) {
+        return BinaryOperation.plus(BinaryOperation.multiply(BinaryOperation.greaterThan(maxThreat, ratingNkExOr),
+                BinaryOperation.minus(maxThreat, ratingNkExOr)),
+            BinaryOperation.multiply(BinaryOperation.lessThan(maxThreat, UnaryOperation.negative(ratingNkOrEx)),
+                BinaryOperation.minus(maxThreat, UnaryOperation.negative(ratingNkOrEx))));
     }
 
     private NodeCalc verifyOutageOverload(String branchName, NodeCalc maxThreat, NodeCalc ratingNkOrEx, NodeCalc ratingNkExOr) {
@@ -292,5 +297,13 @@ class MetrixBranchPostProcessingTimeSeriesTest {
         verifySimpleBranchPostProcessing();
         verifyExOrBranchPostProcessing();
         verifySeparatedConfigBranchPostProcessing();
+    }
+
+    @Test
+    void createOverloadTimeSeriesTest() {
+        NodeCalc flow = new TimeSeriesNameNodeCalc("flows");
+        NodeCalc ratingOrExNk = new IntegerNodeCalc(1000);
+        NodeCalc ratingExOrNk = new IntegerNodeCalc(2000);
+        assertEquals(getExpectedOverload(flow, ratingOrExNk, ratingExOrNk), createOverloadTimeSeries(flow, ratingOrExNk, ratingExOrNk));
     }
 }
