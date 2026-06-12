@@ -2,6 +2,7 @@ set(MAIN_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(TEST_SOLVERCH sirius)
 
 add_subdirectory(divers)
+add_subdirectory(config_validation)
 add_subdirectory(connexite)
 add_subdirectory(curatif)
 add_subdirectory(effacements)

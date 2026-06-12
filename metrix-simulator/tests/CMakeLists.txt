@@ -103,6 +103,28 @@ macro(metrix_test_no_check TEST_NAME NB_TESTS)
     message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${FULL_TEST_NAME} "\" must be checked manually")
 endmacro()
 
+# This macro defines a test that must fail while validating the fort.json
+# configuration. The expected error message is checked on the process output:
+# a configuration error is thrown before the logger is configured, so main()
+# prints it on stderr (see the outer catch in metrix.cpp). With
+# PASS_REGULAR_EXPRESSION set, the test passes if and only if the message is
+# emitted, whatever the exit code.
+macro(metrix_test_config_error TEST_NAME EXPECTED_MESSAGE)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
+    set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
+    file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
+    list(LENGTH TEST_OUTPUT_FILES RES_LEN)
+    if(RES_LEN GREATER 0)
+        file(REMOVE ${TEST_OUTPUT_FILES})
+    endif()
+    add_test(NAME ${FULL_TEST_NAME} COMMAND metrix-simulator metrixOut.txt VariantSet.csv out 0 1 WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY PASS_REGULAR_EXPRESSION ${EXPECTED_MESSAGE})
+    set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT LD_LIBRARY_PATH=${XPRESS_ROOT}/lib)
+    endif()
+endmacro()
+
 macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
     set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
