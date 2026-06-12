@@ -166,6 +166,7 @@ ERRAjoutCtr									Erreur lors de l'ajout de la contrainte sur quad $2 et incid
 ERRAjoutCtrN								Erreur lors de l'ajout de la contrainte sur quad $1
 ERRHVDCNbCellules							Erreur : la HVDC $1 n a pas de cellules ; pas de calcul de pertes a posteriori
 ERRCompensationInsuffisante                 Erreur : puissance disponible insuffisante pour compenser la perte de la poche
+ERRSolveurIndisponible                      Le solveur '$1' n'est pas disponible dans cette installation (OR-Tools compilé sans ce solveur ou licence absente)
 
 //------------- Warning --------------------
 WARNIncidentOuvrageDejaOuvert				Attention: incident $1, l'ouvrage $2 est deja deconnecte

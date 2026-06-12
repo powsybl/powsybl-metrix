@@ -43,7 +43,7 @@ INFOResultatsSurchargesUniquement           Overload results only
 INFOBilanParZoneSync                        Synchronous area balancing :
 INFOBilanZoneSync                           Synchronous area $1 (slack node $2), balance = $3 MW
 INFOParamOpt								Optional parameter '$1' not set
-INFOIncident                                Contigency '$1' :
+INFOIncident                                Contingency '$1' :
 INFOParade                                  Remedial action '$1' on contingency '$2' :
 INFOPochePerdue                             Lost buses
 INFOLimiteRedispatchingCuratif              Curative redispatching limit per synchronous area (MW) : $1
@@ -165,6 +165,7 @@ ERRAjoutCtr									Error while adding constraint on line $2 after contingency $
 ERRAjoutCtrN								Error while adding constraint on line $1
 ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
 ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes
+ERRSolveurIndisponible                      Solver '$1' is not available in this installation (OR-Tools built without it or missing license)
 
 
 //------------- Warning --------------------

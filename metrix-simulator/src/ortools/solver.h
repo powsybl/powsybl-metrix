@@ -85,11 +85,15 @@ private:
     template<class PROBLEM>
     std::shared_ptr<operations_research::MPSolver> makeMPSolver()
     {
-        auto solver = std::make_shared<operations_research::MPSolver>(solverName_, type<PROBLEM>());
+        auto problemType = type<PROBLEM>();
+        checkSolverAvailability(problemType);
+        auto solver = std::make_shared<operations_research::MPSolver>(solverName_, problemType);
         if (specific_params_.size() > 0)
             solver->SetSolverSpecificParametersAsString(specific_params_);
         return solver;
     }
+
+    void checkSolverAvailability(operations_research::MPSolver::OptimizationProblemType problemType) const;
 
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_SIMPLEXE& problem);

@@ -1,4 +1,5 @@
 #include "solver.h"
+#include "err/IoDico.h"
 #include "err/error.h"
 
 #include <iostream>
@@ -33,6 +34,34 @@ const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver
 Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params)
     : solver_choice_(solver_choice),
       specific_params_(specific_params) {}
+
+static const std::string& solverChoiceName(config::Configuration::SolverChoice choice)
+{
+    static const std::map<config::Configuration::SolverChoice, std::string> names = {
+        {config::Configuration::SolverChoice::GLPK, "GLPK"},
+        {config::Configuration::SolverChoice::CBC, "CBC"},
+        {config::Configuration::SolverChoice::SCIP_GLOP, "SCIP/GLOP"},
+        {config::Configuration::SolverChoice::GUROBI, "GUROBI"},
+        {config::Configuration::SolverChoice::CPLEX, "CPLEX"},
+        {config::Configuration::SolverChoice::SIRIUS, "SIRIUS"},
+        {config::Configuration::SolverChoice::XPRESS, "XPRESS"},
+    };
+    static const std::string unknown = "UNKNOWN";
+    auto it = names.find(choice);
+    return it != names.end() ? it->second : unknown;
+}
+
+void Solver::checkSolverAvailability(operations_research::MPSolver::OptimizationProblemType problemType) const
+{
+    static std::map<operations_research::MPSolver::OptimizationProblemType, bool> available;
+    auto it = available.find(problemType);
+    if (it == available.end()) {
+        it = available.emplace(problemType, operations_research::MPSolver::SupportsProblemType(problemType)).first;
+    }
+    if (!it->second) {
+        throw ErrorI(err::ioDico().msg("ERRSolveurIndisponible", solverChoiceName(solver_choice_)));
+    }
+}
 
 void Solver::solve(PROBLEME_A_RESOUDRE* problem)
 {
