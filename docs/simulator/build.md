@@ -70,7 +70,7 @@ $> cmake --build . --target install
 
 The following CMAKE options can be set for the executable configuration:
 - `USE_SIRIUS_SHARED` (default = OFF): If active, the project will link using the shared library of sirius solver instead of the static library
-- `USE_ORTOOLS` (default = OFF): If active, enables multi-solver support through [OR-Tools](https://developers.google.com/optimization). The solver used at runtime is then selected with the `SOLVERCH` / `PCSOLVERCH` input options (see [Inputs and outputs](io)). When inactive, the binary is Sirius-only, identical to the legacy behavior
+- `USE_ORTOOLS` (default = OFF): If active, enables multi-solver support through [OR-Tools](https://developers.google.com/optimization). The solver used at runtime is then selected with the `SOLVERCH` / `PCSOLVERCH` input options (see [Inputs and outputs](io)). The third parties must have been built with `-DUSE_ORTOOLS=ON` as well, so that OR-Tools is available. When inactive, the binary is Sirius-only, identical to the legacy behavior
 - `USE_XPRESS` (default = OFF): If active, authorizes the Xpress solver (`SOLVERCH=6`) at runtime. Requires `USE_ORTOOLS=ON`, and OR-Tools must have been built with the Xpress backend: set `XPRESS_ROOT` to the Xpress SDK path (environment variable or `-D` flag) when building the third parties in `external/`. See `metrix-simulator/README.md` for the detailed multi-solver build matrix
 - `METRIX_RUN_ALL_TESTS` (default = ON): If inactive, the project will execute a reduced scope of tests
 

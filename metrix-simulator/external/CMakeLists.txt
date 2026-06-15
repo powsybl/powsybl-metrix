@@ -103,15 +103,22 @@ else()
 endif()
 
 # ============================================================================
-# OR-Tools
+# OR-Tools (optional)
 #
-# Builds the OR-Tools RTE wrapper (rte-france/or-tools-rte).
+# Builds the OR-Tools RTE wrapper (rte-france/or-tools-rte), only when
+# -DUSE_ORTOOLS=ON, mirroring the metrix-simulator flag: building OR-Tools is
+# long and brings extra toolchain requirements (Python3 with development
+# headers, a recent C++ compiler), so default builds — whose binary would not
+# use it anyway — skip it entirely.
 # OR-Tools manages its own dependencies (abseil, protobuf, etc.) via BUILD_DEPS=ON.
 #
 # Xpress backend is enabled automatically if XPRESS_ROOT is set (CMake variable
-# or environment variable). No user-facing option: external/ fabricates what it
-# can, the consuming project decides whether to use it.
+# or environment variable).
 # ============================================================================
+
+option(USE_ORTOOLS "Build the OR-Tools third party (required when metrix-simulator is configured with USE_ORTOOLS=ON)" OFF)
+
+if(USE_ORTOOLS)
 
 set(ortools_rte_url https://github.com/rte-france/or-tools-rte.git)
 set(ortools_rte_tag "v9.13-rte1.3")
@@ -167,3 +174,5 @@ else()
   ExternalProject_Get_Property(ortools install_dir)
   set(ortools_ROOT ${install_dir})
 endif()
+
+endif() # USE_ORTOOLS

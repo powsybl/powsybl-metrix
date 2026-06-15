@@ -14,14 +14,16 @@
 # Clone the repository
 git clone https://github.com/powsybl/powsybl-metrix.git powsybl-metrix
 
-# Build external dependencies (SuiteSparse, Sirius, OR-Tools).
-# OR-Tools is built unconditionally. The Xpress backend is enabled
-# automatically if XPRESS_ROOT is set, disabled otherwise.
+# Build external dependencies (SuiteSparse, Sirius, and optionally OR-Tools).
+# OR-Tools is built only when USE_ORTOOLS=ON (default OFF, mirroring the
+# metrix-simulator flag). The Xpress backend is enabled automatically if
+# XPRESS_ROOT is set, disabled otherwise.
 mkdir -p powsybl-metrix/metrix-simulator/build/external
 cd powsybl-metrix/metrix-simulator/build/external
 
 cmake ../../external \
       -D CMAKE_BUILD_TYPE=Release \
+      -D USE_ORTOOLS=ON \
       -D XPRESS_ROOT=/path/to/xpress    # optional, builds OR-Tools with Xpress backend
 
 cmake --build . -j$(nproc)
@@ -74,12 +76,10 @@ for the static one.
 
 #### `external/` options
 
-`external/` exposes no user-facing CMake options. Behavior is controlled
-through environment variables or CMake `-D` flags:
-
 | Variable | Form | Description |
 |----------|------|-------------|
-| `XPRESS_ROOT` | env var or `-D` flag | Path to the Xpress SDK. If set, OR-Tools is built with the Xpress backend; otherwise without. |
+| `USE_ORTOOLS` | CMake option | Default `OFF`. Build the OR-Tools third party. Must be `ON` when `metrix-simulator` is configured with `USE_ORTOOLS=ON` (OR-Tools requires Python3 with development headers and a recent C++ compiler, hence the opt-in). |
+| `XPRESS_ROOT` | env var or `-D` flag | Path to the Xpress SDK. If set, OR-Tools is built with the Xpress backend; otherwise without. Only meaningful with `USE_ORTOOLS=ON`. |
 | `NNI`, `NNI_PASSWORD` | env var only | Internal RTE credentials for Git proxy. Optional. |
 
 #### Root options
