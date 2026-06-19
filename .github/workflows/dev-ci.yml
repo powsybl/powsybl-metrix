@@ -162,7 +162,7 @@ jobs:
 
   cpp_windows:
     name: Build C++ Windows
-    runs-on: windows-2025
+    runs-on: windows-2022
     defaults:
       run:
         shell: cmd
