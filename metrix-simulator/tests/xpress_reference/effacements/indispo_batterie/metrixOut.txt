@@ -1,0 +1,50 @@
+Use dictionnary file METRIX.dic
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 1
+Nombre total de noeuds  = 2
+Nombre de consommations = 1 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 2 (dont 2 surveillés en N et 2 surveillés sur défaut)
+Nombre de groupes       = 2 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 0 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0
+0(2) <-> 1 [Conso_Est](2)
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =   100.0000  MW
+Production démarrée                 =   100.0000  MW
+Puissance à ajuster                 =     0.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 0.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -0.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0), bilan = 0.0000 MW
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 3 (taille de la matrice : 3)
+Pas de contraintes

@@ -1,0 +1,98 @@
+Use dictionnary file METRIX.dic
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 1
+Nombre total de noeuds  = 9
+Nombre de consommations = 6 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 18 (dont 2 surveillés en N et 2 surveillés sur défaut)
+Nombre de groupes       = 4 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 1 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 2 (dont 0 peuvent agir en curatif et 2 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Mode de calcul : LOAD-FLOW
+Noeud bilan : 0 [FP.AND1_1]
+0 [FP.AND1_1](5) <-> 5 [FVERGE1_1](4) <-> 1 [FTDPRA1_1](5)
+                 <-> 3 [FSSV.O1_2](6) <-> 2 [FS.BIS1_1](4)
+                                      <-> 7(2)
+                                      <-> 8(2)
+                                      |=| 4 [FVALDI1_1](6)
+                 <-> 6(2) <-> 1 [FTDPRA1_1](5)
+
+
+********************************************
+Traitement d'un paquet de 3 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =   960.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =     0.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [FP.AND1_1]), bilan = 0.0000 MW
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 3)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 20 (taille de la matrice : 20)
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =   960.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =     0.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [FP.AND1_1]), bilan = 0.0000 MW
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 3)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 20 (taille de la matrice : 20)
+
+---------------------
+---------------------
+Variante numéro 2
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =   960.0000  MW
+Production démarrée                 =   960.0000  MW
+Puissance à ajuster                 =     0.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 6140.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -960.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [FP.AND1_1]), bilan = 0.0000 MW
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 3)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 20 (taille de la matrice : 20)

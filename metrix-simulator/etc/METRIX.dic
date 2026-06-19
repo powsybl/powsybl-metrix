@@ -39,12 +39,12 @@ INFOPasDePenalisationTDHVDC					Pas de pénalisation des TD ni des HVDC
 INFOPriseEnCompteItam                       Prise en compte du seuil max avant manoeuvre curative (ITAM)
 INFONbMaxActionCurative                     Nombre max d'action(s) curative(s) autorisée(s) sur incident : $1
 INFOPasLimiteActionCurative                 Pas de limitation du nombre d'actions curatives sur incident
-INFOResultatsSurchargesUniquement           Sortie des résultats uniquement sur les surcharges 
+INFOResultatsSurchargesUniquement           Sortie des résultats uniquement sur les surcharges
 INFOBilanParZoneSync                        Bilans par zones synchrones :
 INFOBilanZoneSync                           Zone synchrone $1 (noeud bilan $2), bilan = $3 MW
 INFOParamOpt								Parametre optionnel '$1' non renseigne
-INFOIncident                                Incident '$1' : 
-INFOParade                                  Parade '$1' sur défaut '$2' : 
+INFOIncident                                Incident '$1' :
+INFOParade                                  Parade '$1' sur défaut '$2' :
 INFOPochePerdue                             Noeuds perdus
 INFOLimiteRedispatchingCuratif              Limite de redispatching curatif par zone synchrone (MW) : $1
 INFONouveauPaquetVariantes					Traitement d'un paquet de $1 variante(s)
@@ -107,7 +107,7 @@ ERRLectureFichier							Erreur lors de la lecture du fichier $1
 ERRMotCleNbVar								Mot cle NT nombre de tirages introuvable dans fichier $1
 ERRLectFicPointVirgule						Erreur lecture fichier $1 : pas de point virgule ($2, $3)
 ERRLectureVariante							Problème lors de la lecture de la variante $1 dans le fichier $2
-ERRPremiereVarIntrouvable					Le numéro de la première variante est introuvable dans le fichier $1 
+ERRPremiereVarIntrouvable					Le numéro de la première variante est introuvable dans le fichier $1
 ERRFormatNombre                             Format de nombre incorrect : '$2' pour la loi $1
 ERRRegionIntrouvable						La région '$1' de la loi $2 est introuvable
 ERRGroupeIntrouvable						Le groupe '$1' de la loi $2 est introuvable
@@ -162,10 +162,11 @@ ERRPasDeSolEmpilEco							Pas de solution à l'empilement économique
 ERRPasDeGroupe								Pas de groupes modulables !
 ERRInciGrpDemiBandeRegl						Incident $1 contenant le groupe $2: la demi bande de réglage est insufisante :
 ERRIDemiBandeReglInsuf						Puissance qui peut être perdue lors de l incident $1 MW, demi bande de réglage $2 MW
-ERRAjoutCtr									Erreur lors de l'ajout de la contrainte sur quad $2 et incident $1 
+ERRAjoutCtr									Erreur lors de l'ajout de la contrainte sur quad $2 et incident $1
 ERRAjoutCtrN								Erreur lors de l'ajout de la contrainte sur quad $1
 ERRHVDCNbCellules							Erreur : la HVDC $1 n a pas de cellules ; pas de calcul de pertes a posteriori
-ERRCompensationInsuffisante                 Erreur : puissance disponible insuffisante pour compenser la perte de la poche 
+ERRCompensationInsuffisante                 Erreur : puissance disponible insuffisante pour compenser la perte de la poche
+ERRSolveurIndisponible                      Le solveur '$1' n'est pas disponible dans cette installation (OR-Tools compilé sans ce solveur ou licence absente)
 
 //------------- Warning --------------------
 WARNIncidentOuvrageDejaOuvert				Attention: incident $1, l'ouvrage $2 est deja deconnecte
@@ -199,7 +200,7 @@ WarnElementDejaDansParade                   Element '$1' mentionne en double dan
 
 //---------------- Variables liées ---------------------
 ERRConsoNulle								Erreur : consommation nulle au noeud '$1' utilise dans le regroupement '$2'
-ERRVarRefNulle								Erreur : variable de reference nulle pour le groupe '$1' utilise dans le couplage de variables '$2' 
+ERRVarRefNulle								Erreur : variable de reference nulle pour le groupe '$1' utilise dans le couplage de variables '$2'
 ERRGrpNonAjustable							Erreur : groupe non-ajustable '$1' utilise dans le couplage de variables '$2'
 ERRGroupeLieNonModifiable                   Erreur : le groupe '$1' utilise dans le couplage de variables '$2' n'est pas modifiable
 ERRConsoLieeNonModifiable                   Erreur : la consommation '$1' utilisee dans le couplage de variables '$2' n'est pas modifiable
