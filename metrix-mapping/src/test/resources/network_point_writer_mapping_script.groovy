@@ -32,6 +32,11 @@ mapToBatteries {
     variable minP
 }
 mapToGenerators {
+    timeSeriesName 'variable_ts1'
+    filter {generator.id == 'FSSV.O11_G'}
+    variable minP
+}
+mapToGenerators {
     timeSeriesName 'constant_ts1'
     filter {generator.id == 'FSSV.O11_G'}
     variable maxP
@@ -39,11 +44,6 @@ mapToGenerators {
 mapToGenerators {
     timeSeriesName 'constant_ts2'
     filter {generator.id == 'FSSV.O12_G'}
-}
-mapToGenerators {
-    timeSeriesName 'variable_ts1'
-    filter {generator.id == 'FSSV.O11_G'}
-    variable minP
 }
 mapToGenerators {
     timeSeriesName 'ts1'
