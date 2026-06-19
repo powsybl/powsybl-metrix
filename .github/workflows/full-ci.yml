@@ -132,6 +132,7 @@ jobs:
     env:
       BOOST_ROOT: C:\thirdparties\boost-1.72.0
       BOOST_URL: https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe/download
+      CMAKE_POLICY_VERSION_MINIMUM: "3.5"
     steps:
       - name: Install Boost
         run: |
