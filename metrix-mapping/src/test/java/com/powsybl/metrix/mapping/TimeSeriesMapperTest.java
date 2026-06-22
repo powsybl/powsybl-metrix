@@ -103,7 +103,8 @@ class TimeSeriesMapperTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
             logger.writeCsv(bufferedWriter, ZoneId.of("UTC"));
             bufferedWriter.flush();
-            assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream("/expected/nonIgnoredEmptyFilterLog.csv")), new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8)));
+            assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream("/expected/nonIgnoredEmptyFilterLog.csv")),
+                new ByteArrayInputStream(writer.toString().getBytes(StandardCharsets.UTF_8)));
         }
     }
 

@@ -9,28 +9,15 @@ package com.powsybl.metrix.mapping;
 
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.MemDataSource;
-import com.powsybl.iidm.network.Battery;
-import com.powsybl.iidm.network.Generator;
-import com.powsybl.iidm.network.HvdcLine;
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.iidm.network.Injection;
-import com.powsybl.iidm.network.LccConverterStation;
-import com.powsybl.iidm.network.Line;
-import com.powsybl.iidm.network.Load;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.network.PhaseTapChanger;
-import com.powsybl.iidm.network.Switch;
-import com.powsybl.iidm.network.TwoWindingsTransformer;
-import com.powsybl.iidm.network.VariantManagerConstants;
-import com.powsybl.iidm.network.VscConverterStation;
+import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
 import com.powsybl.iidm.serde.ExportOptions;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.MappingVariable;
-import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.config.MetrixIidmConfiguration;
+import com.powsybl.metrix.commons.observer.DefaultTimeSeriesMapperObserver;
 import com.powsybl.timeseries.TimeSeriesIndex;
 
 import java.io.BufferedOutputStream;
@@ -341,6 +328,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         for (Map.Entry<String, GeneratorInitialValues> e : generatorToInitialValues.entrySet()) {
             Generator g = network.getGenerator(e.getKey());
             GeneratorInitialValues initialValues = e.getValue();
+            // Set maxP to maxValue to pass ValidationUtil.checkActivePowerLimits
+            g.setMaxP(Double.MAX_VALUE);
             g.setMinP(initialValues.minP);
             g.setMaxP(initialValues.maxP);
         }

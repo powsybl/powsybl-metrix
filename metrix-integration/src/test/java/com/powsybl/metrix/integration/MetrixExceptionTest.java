@@ -15,12 +15,12 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysis;
+import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MappingScriptLoadingException;
 import com.powsybl.metrix.integration.exceptions.MetrixScriptLoadingException;
-import com.powsybl.metrix.integration.analysis.MetrixAnalysis;
-import com.powsybl.metrix.integration.analysis.MetrixInputAnalysis;
-import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.network.DefaultNetworkSourceImpl;
 import com.powsybl.metrix.integration.network.NetworkSource;
 import com.powsybl.metrix.mapping.TimeSeriesDslLoader;
@@ -96,7 +96,7 @@ class MetrixExceptionTest {
     @Test
     void loadContingenciesScriptExceptionTest() {
         ContingenciesProvider provider = new GroovyDslContingenciesProvider(wrongDslFile);
-        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, null, new ScriptLogConfig());
+        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, new ScriptLogConfig());
         assertThrows(ContingenciesScriptLoadingException.class, metrixInputAnalysis::runAnalysis);
     }
 

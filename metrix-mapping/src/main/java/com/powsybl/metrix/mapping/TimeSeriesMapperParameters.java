@@ -34,7 +34,8 @@ public class TimeSeriesMapperParameters {
 
     private final Set<String> requiredTimeseries;
 
-    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, boolean identifyConstantTimeSeries, float toleranceThreshold) {
+    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits,
+                                      boolean ignoreEmptyFilter, boolean identifyConstantTimeSeries, float toleranceThreshold) {
         this(versions, pointRange, ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, Collections.emptySet(), toleranceThreshold);
     }
 

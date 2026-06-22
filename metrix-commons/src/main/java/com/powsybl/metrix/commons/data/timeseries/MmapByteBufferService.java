@@ -71,7 +71,7 @@ public class MmapByteBufferService {
             scheduledExecutorService.scheduleAtFixedRate(() -> {
                 lock.lock();
                 try {
-                    for (Iterator<Map.Entry<String, BufferContext>> it = contexts.entrySet().iterator(); it.hasNext(); ) {
+                    for (Iterator<Map.Entry<String, BufferContext>> it = contexts.entrySet().iterator(); it.hasNext();) {
                         Map.Entry<String, BufferContext> e = it.next();
                         BufferContext context = e.getValue();
                         // only try to delete file already closed

@@ -12,34 +12,21 @@ import com.powsybl.contingency.BranchContingency;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.MetrixDslDataLoader;
 import com.powsybl.metrix.integration.configuration.MetrixParameters;
-import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
-import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.integration.data.generator.MetrixOutputData;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
-import com.powsybl.timeseries.ast.BinaryOperation;
-import com.powsybl.timeseries.ast.DoubleNodeCalc;
-import com.powsybl.timeseries.ast.IntegerNodeCalc;
-import com.powsybl.timeseries.ast.NodeCalc;
-import com.powsybl.timeseries.ast.TimeSeriesNameNodeCalc;
-import com.powsybl.timeseries.ast.UnaryOperation;
+import com.powsybl.timeseries.*;
+import com.powsybl.timeseries.ast.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
 import java.time.Duration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 import static com.powsybl.metrix.integration.postprocessing.MetrixGeneratorPostProcessingTimeSeries.CURATIVE_PREFIX_CONTAINER;
 import static com.powsybl.metrix.integration.postprocessing.MetrixGeneratorPostProcessingTimeSeries.PREVENTIVE_PREFIX_CONTAINER;
@@ -154,7 +141,8 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         MetrixDslData dslData = metrixDslDataLoader.load(network, parameters, store, new DataTableStore(), mappingConfig, new ScriptLogConfig());
         Contingency contingency = new Contingency("cty", List.of(new BranchContingency("FP.AND1  FVERGE1  1")));
 
-        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig, Map.of(contingency.getId(), curativeProbabilityNodeCalc), metrixResultTimeSeries.getTimeSeriesNames(null), null);
+        MetrixGeneratorPostProcessingTimeSeries generatorProcessing = new MetrixGeneratorPostProcessingTimeSeries(dslData, mappingConfig,
+            Map.of(contingency.getId(), curativeProbabilityNodeCalc), metrixResultTimeSeries.getTimeSeriesNames(null), null);
         postProcessingTimeSeries = generatorProcessing.createPostProcessingTimeSeries();
         return mappingConfig.getTimeSeriesNodes();
     }
@@ -168,10 +156,14 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
         NodeCalc tsRedispatchingUpCosts = new TimeSeriesNameNodeCalc("tsRedispatchingUpDoctrineCosts");
         NodeCalc tsRedispatchingDownCosts = new TimeSeriesNameNodeCalc("tsRedispatchingDownDoctrineCosts");
 
-        verifyGeneratorPostProcessing("FSSV.O11_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc, tsRedispatchingUpCosts, tsRedispatchingDownCosts, true);
-        verifyGeneratorPostProcessing("FSSV.O11_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc, tsRedispatchingUpCosts, tsRedispatchingDownCosts, true);
-        verifyGeneratorPostProcessing("FSSV.O12_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc, timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), true);
-        verifyGeneratorPostProcessing("FSSV.O12_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc, timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), true);
+        verifyGeneratorPostProcessing("FSSV.O11_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc,
+            tsRedispatchingUpCosts, tsRedispatchingDownCosts, true);
+        verifyGeneratorPostProcessing("FSSV.O11_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc,
+            tsRedispatchingUpCosts, tsRedispatchingDownCosts, true);
+        verifyGeneratorPostProcessing("FSSV.O12_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc,
+            timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), true);
+        verifyGeneratorPostProcessing("FSSV.O12_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc,
+            timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), true);
     }
 
     @Test
@@ -182,9 +174,13 @@ class MetrixGeneratorPostProcessingTimeSeriesTest {
 
         NodeCalc tsRedispatchingUpCosts = new TimeSeriesNameNodeCalc("tsRedispatchingUpDoctrineCosts");
         NodeCalc tsRedispatchingDownCosts = new TimeSeriesNameNodeCalc("tsRedispatchingDownDoctrineCosts");
-        verifyGeneratorPostProcessing("FSSV.O11_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc, tsRedispatchingUpCosts, tsRedispatchingDownCosts, false);
-        verifyGeneratorPostProcessing("FSSV.O11_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc, tsRedispatchingUpCosts, tsRedispatchingDownCosts, false);
-        verifyGeneratorPostProcessing("FSSV.O12_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc, timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), false);
-        verifyGeneratorPostProcessing("FSSV.O12_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc, timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), false);
+        verifyGeneratorPostProcessing("FSSV.O11_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc,
+            tsRedispatchingUpCosts, tsRedispatchingDownCosts, false);
+        verifyGeneratorPostProcessing("FSSV.O11_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc,
+            tsRedispatchingUpCosts, tsRedispatchingDownCosts, false);
+        verifyGeneratorPostProcessing("FSSV.O12_G", PREVENTIVE_PREFIX_CONTAINER, "", preventiveProbabilityNodeCalc,
+            timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), false);
+        verifyGeneratorPostProcessing("FSSV.O12_G", CURATIVE_PREFIX_CONTAINER, "_cty", curativeProbabilityNodeCalc,
+            timeSeriesNodes.get("450"), timeSeriesNodes.get("550"), false);
     }
 }

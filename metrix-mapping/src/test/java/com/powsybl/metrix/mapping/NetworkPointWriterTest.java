@@ -14,14 +14,10 @@ import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
-import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
-import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
-import com.powsybl.timeseries.RegularTimeSeriesIndex;
-import com.powsybl.timeseries.TimeSeries;
-import com.powsybl.timeseries.TimeSeriesIndex;
+import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,6 +25,7 @@ import org.threeten.extra.Interval;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,6 +36,7 @@ import java.util.Objects;
 import java.util.TreeSet;
 
 import static com.powsybl.commons.test.ComparisonUtils.assertXmlEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -139,271 +137,11 @@ class NetworkPointWriterTest {
         // Resource directory
         String expectedDirectoryName = expectedDirectoryNameBase + "full/";
 
-        // Mapping script
-        String script = """
-            mapToBatteries {
-                timeSeriesName 'constant_ts1'
-                filter {battery.id == 'BATTERY_1'}
-                variable targetP
-            }
-            mapToBatteries {
-                timeSeriesName 'variable_ts1'
-                filter {battery.id == 'BATTERY_1'}
-                variable targetQ
-            }
-            mapToBatteries {
-                timeSeriesName 'switch_ts'
-                filter {battery.id == 'BATTERY_1'}
-                variable disconnected
-            }
-            mapToBatteries {
-                timeSeriesName 'constant_ts2'
-                filter {battery.id == 'BATTERY_1'}
-                variable maxP
-            }
-            mapToBatteries {
-                timeSeriesName 'constant_ts1'
-                filter {battery.id == 'BATTERY_1'}
-                variable minP
-            }
-            mapToGenerators {
-                timeSeriesName 'constant_ts1'
-                filter {generator.id == 'FSSV.O11_G'}
-                variable maxP
-            }
-            mapToGenerators {
-                timeSeriesName 'constant_ts2'
-                filter {generator.id == 'FSSV.O12_G'}
-            }
-            mapToGenerators {
-                timeSeriesName 'variable_ts1'
-                filter {generator.id == 'FSSV.O11_G'}
-                variable minP
-            }
-            mapToGenerators {
-                timeSeriesName 'ts1'
-                filter {
-                    generator.id=="FVALDI11_G"
-                }
-                variable voltageRegulatorOn
-            }
-            mapToGenerators {
-                timeSeriesName 'ts1'
-                filter {
-                    generator.id=="FSSV.O11_G"
-                }
-                variable targetQ
-            }
-            mapToGenerators {
-                timeSeriesName 'ts1'
-                filter {
-                    generator.id=="FSSV.O11_G"
-                }
-                variable targetV
-            }
-            mapToGenerators {
-                timeSeriesName 'ts1'
-                filter {
-                    generator.id=="FSSV.O11_G"
-                }
-                variable voltageRegulatorOn
-            }
-            mapToGenerators {
-                timeSeriesName 'ts1'
-                filter {
-                    generator.id=="FSSV.O11_G"
-                }
-                variable disconnected
-            }
-            mapToLoads {
-                timeSeriesName 'ts1'
-                filter {
-                    load.id=="FSSV.O11_L"
-                }
-                variable p0
-            }
-            mapToLoads {
-                timeSeriesName 'ts1'
-                filter {
-                    load.id=="FSSV.O11_L"
-                }
-                variable q0
-            }
-            mapToLoads {
-                timeSeriesName 'ts1'
-                filter {
-                    load.id=="FVALDI11_L"
-                }
-                variable fixedActivePower
-            }
-            mapToLoads {
-                timeSeriesName 'ts1'
-                filter {
-                    load.id=="FVALDI11_L2"
-                }
-                variable variableActivePower
-            }
-            mapToLoads {
-                timeSeriesName 'ts1'
-                filter {
-                    load.id=="FVALDI11_L"
-                }
-                variable fixedReactivePower
-            }
-            mapToLoads {
-                timeSeriesName 'ts1'
-                filter {
-                    load.id=="FVALDI11_L2"
-                }
-                variable variableReactivePower
-            }
-            mapToHvdcLines {
-                timeSeriesName 'ts1'
-                filter {
-                    hvdcLine.id=="HVDC1"
-                }
-                variable activePowerSetpoint
-            }
-            mapToHvdcLines {
-                timeSeriesName 'ts2'
-                filter {
-                    hvdcLine.id=="HVDC2"
-                }
-                variable minP
-            }
-            mapToHvdcLines {
-                timeSeriesName 'ts1'
-                filter {
-                    hvdcLine.id=="HVDC2"
-                }
-                variable maxP
-            }
-            mapToHvdcLines {
-                timeSeriesName 'ts1'
-                filter {
-                    hvdcLine.id=="HVDC1"
-                }
-                variable nominalV
-            }
-            mapToBreakers {
-                timeSeriesName 'switch_ts'
-                filter {breaker.id == 'FP.AND1_FP.AND1_DJ_OMN'}
-            }
-            mapToPhaseTapChangers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable phaseTapPosition
-            }
-            mapToPhaseTapChangers {
-                timeSeriesName 'regulation_mode_ts'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable regulationMode
-            }
-            mapToPhaseTapChangers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable phaseRegulating
-            }
-            mapToPhaseTapChangers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable targetDeadband
-            }
-            mapToTransformers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable ratedU1
-            }
-            mapToTransformers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable ratedU2
-            }
-            mapToTransformers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable disconnected
-            }
-            mapToRatioTapChangers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable targetV
-            }
-            mapToRatioTapChangers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable ratioTapPosition
-            }
-            mapToRatioTapChangers {
-                timeSeriesName 'ts1'
-                filter {
-                    twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
-                }
-                variable loadTapChangingCapabilities
-            }
-            mapToLccConverterStations {
-                timeSeriesName 'power_factor_ts'
-                filter {
-                    lccConverterStation.id=="FVALDI1_FVALDI1_HVDC1"
-                }
-                variable powerFactor
-            }
-            mapToVscConverterStations {
-                timeSeriesName 'ts1'
-                filter {
-                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
-                }
-                variable voltageRegulatorOn
-            }
-            mapToVscConverterStations {
-                timeSeriesName 'ts1'
-                filter {
-                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
-                }
-                variable voltageSetpoint
-            }
-            mapToVscConverterStations {
-                timeSeriesName 'ts1'
-                filter {
-                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
-                }
-                variable reactivePowerSetpoint
-            }
-            mapToVscConverterStations {
-                timeSeriesName 'ts1'
-                filter {
-                    vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
-                }
-                variable voltageRegulatorOn
-            }
-            mapToLines {
-                timeSeriesName 'ts1'
-                filter {
-                    line.id=="FP.AND1  FVERGE1  1"
-                }
-                variable disconnected
-            }
-            """;
+        try (InputStream scriptStream = Objects.requireNonNull(getClass().getResourceAsStream("/network_point_writer_mapping_script.groovy"))) {
+            // Mapping script
+            String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
 
-        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
                 TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
                 TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
                 TimeSeries.createDouble("variable_ts1", index, 10d, 11d),
@@ -412,9 +150,39 @@ class NetworkPointWriterTest {
                 TimeSeries.createDouble("ts2", index, -10d, -11d),
                 TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
                 TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
-        );
+            );
 
-        assertMapping(script, store, expectedDirectoryName);
+            assertMapping(script, store, expectedDirectoryName);
+        }
+    }
+
+    @Test
+    void networkPointGeneratorRestoreInitialStateTest() throws Exception {
+        try (InputStream scriptStream = Objects.requireNonNull(getClass().getResourceAsStream("/network_point_writer_mapping_script.groovy"))) {
+            // Mapping script
+            String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
+
+            ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+                TimeSeries.createDouble("constant_ts1", index, -5d, -5d),
+                TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
+                TimeSeries.createDouble("variable_ts1", index, -10d, -11d),
+                TimeSeries.createDouble("switch_ts", index, 0d, 1d),
+                TimeSeries.createDouble("ts1", index, 10d, 11d),
+                TimeSeries.createDouble("ts2", index, -10d, -11d),
+                TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
+                TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
+            );
+
+            // Create Mapper
+            TimeSeriesMapper mapper = prepareMapper(script, store);
+
+            // Launch mapper
+            // FSSV.O11_G generator in base case minP=0 maxP=500
+            // mapping of maxP with constant_ts1 time series -> maxP=-5
+            // mapping of minP with variable_ts1 time series -> minP=-10
+            // restoreInitialState to minP=0 should pass ValidationUtil.checkActivePowerLimits
+            assertDoesNotThrow(() -> mapper.mapToNetwork(store, networkPointWriterList));
+        }
     }
 
     private TimeSeriesMapper prepareMapper(String script, ReadOnlyTimeSeriesStore store) {

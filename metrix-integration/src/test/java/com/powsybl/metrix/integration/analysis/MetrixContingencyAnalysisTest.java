@@ -7,17 +7,13 @@
  */
 package com.powsybl.metrix.integration.analysis;
 
-import com.powsybl.contingency.BranchContingency;
-import com.powsybl.contingency.BusbarSectionContingency;
-import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.contingency.Contingency;
-import com.powsybl.contingency.ContingencyElement;
-import com.powsybl.contingency.EmptyContingencyListProvider;
+import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.type.MetrixHvdcControlType;
 import com.powsybl.metrix.integration.type.MetrixPtcControlType;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,8 +26,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static java.lang.System.Logger.Level.WARNING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -71,7 +67,12 @@ class MetrixContingencyAnalysisTest {
     private void metrixDslDataContingencyAnalysisTest(MetrixDslData metrixDslData, String expected) throws IOException {
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), new EmptyContingencyListProvider(), network, metrixDslData, null, bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""),
+                new EmptyContingencyListProvider(),
+                network,
+                metrixDslData,
+                null,
+                new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -86,7 +87,7 @@ class MetrixContingencyAnalysisTest {
 
         StringWriter writer = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(writer)) {
-            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, bufferedWriter);
+            MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();
@@ -174,7 +175,7 @@ class MetrixContingencyAnalysisTest {
                     String.join(System.lineSeparator(),
                             "NB;1;",
                             "ctyId;1;FP.AND1  FVERGE1  1;")
-            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), null, bufferedWriter);
+            ), new EmptyContingencyListProvider(), network, new MetrixDslData(), null, new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();

@@ -7,10 +7,10 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.powsybl.metrix.mapping.log.LogDslLoader;
-import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.log.LogDslLoader;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
 import java.util.Objects;
 import java.util.Set;

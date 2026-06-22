@@ -182,7 +182,8 @@ abstract class AbstractTimeSeriesMapperCheckerTest {
         }
     }
 
-    void compareLogger(TimeSeriesMappingLogger logger, String expectedType, String expectedLabel, String expectedSynthesisLabel, String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
+    void compareLogger(TimeSeriesMappingLogger logger, String expectedType, String expectedLabel, String expectedSynthesisLabel,
+                       String expectedVariant, String expectedMessage, String expectedSynthesisMessage) {
         StringWriter loggerCsvOutput = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(loggerCsvOutput)) {
             logger.writeCsv(bufferedWriter);

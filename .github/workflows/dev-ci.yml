@@ -43,21 +43,21 @@ jobs:
 
       - name: Build with Maven (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
-        run: ./mvnw --batch-mode -Pjacoco install
+        run: ./mvnw -B -ntp -Pjacoco install
 
       - name: Build with Maven (Windows)
         if: matrix.os == 'windows-latest'
-        run: mvnw.cmd --batch-mode install
+        run: mvnw.cmd -B -ntp verify -Dpowsybl.checks.skip=true
         shell: cmd
 
       - name: Build with Maven (MacOS)
         if: matrix.os == 'macos-latest'
-        run: ./mvnw --batch-mode install
+        run: ./mvnw -B -ntp verify -Dpowsybl.checks.skip=true
 
       - name: Run SonarCloud analysis
         if: matrix.os == 'ubuntu-latest'
         run: >
-          ./mvnw --batch-mode -DskipTests sonar:sonar
+          ./mvnw -B -ntp  -DskipTests sonar:sonar
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.organization=powsybl-ci-github
           -Dsonar.projectKey=com.powsybl:powsybl-metrix
@@ -169,6 +169,7 @@ jobs:
     env:
       BOOST_ROOT: C:\thirdparties\boost-1.72.0
       BOOST_URL: https://sourceforge.net/projects/boost/files/boost-binaries/1.72.0/boost_1_72_0-msvc-14.2-64.exe/download
+      CMAKE_POLICY_VERSION_MINIMUM: "3.5"
     steps:
       - name: Install Boost
         run: |

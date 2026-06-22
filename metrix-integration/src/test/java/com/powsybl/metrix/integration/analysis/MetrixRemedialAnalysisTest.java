@@ -15,6 +15,7 @@ import com.powsybl.contingency.EmptyContingencyListProvider;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.integration.MetrixDslData;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -88,7 +89,7 @@ class MetrixRemedialAnalysisTest {
                 network,
                 metrixDslData,
                 null,
-                bufferedWriter);
+                new ScriptLogConfig(bufferedWriter));
             metrixInputAnalysis.runAnalysis();
             bufferedWriter.flush();
             String actual = writer.toString();

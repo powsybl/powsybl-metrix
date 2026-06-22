@@ -54,7 +54,10 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Clock;
 import java.time.Duration;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -251,7 +254,8 @@ class TimeSeriesDslLoaderTest {
         Map<String, Set<String>> timeSeriesToPlannedOutagesMappingExpected = Map.of("multiple_ouverture_id", Set.of("1", "G1", "twt", "L1"));
         expectedConfig.setTimeSeriesToPlannedOutagesMapping(timeSeriesToPlannedOutagesMappingExpected);
         expectedConfig.setTimeSeriesNodes(Map.of("zero", new IntegerNodeCalc(0)));
-        expectedConfig.setMappedTimeSeriesNames(Set.of("zero", "nucl_ts", "hydro_ts", "load1_ts", "load2_ts", "switch_ts", "multiple_ouverture_id_G1", "multiple_ouverture_id_L1", "multiple_ouverture_id_twt"));
+        expectedConfig.setMappedTimeSeriesNames(Set.of("zero", "nucl_ts", "hydro_ts", "load1_ts", "load2_ts", "switch_ts",
+            "multiple_ouverture_id_G1", "multiple_ouverture_id_L1", "multiple_ouverture_id_twt"));
         Map<MappingKey, DistributionKey> distributionKeyMapping = getMappingKeyDistributionKeyMap();
         expectedConfig.setDistributionKeys(distributionKeyMapping);
         assertEquals(expectedConfig, config);
@@ -402,6 +406,31 @@ class TimeSeriesDslLoaderTest {
 
         String output = outputStream.toString();
         String expectedMessage = "LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
+        assertEquals(expectedMessage, output);
+    }
+
+    @Test
+    void writeLogTestWithTimestamp() throws IOException {
+        Clock fixedClock = Clock.fixed(Instant.parse("2026-06-03T07:15:38Z"), ZoneOffset.UTC);
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
+        String script = """
+            writeLog("LOG_TYPE", "LOG_SECTION", "LOG_MESSAGE")
+            """;
+
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            ScriptLogConfig scriptLogConfig = ScriptLogConfig.builder()
+                .writer(out)
+                .withTimestamp(true)
+                .clock(fixedClock)
+                .build();
+            dsl.load(network, parameters, store, new DataTableStore(), scriptLogConfig, null);
+        }
+
+        String output = outputStream.toString();
+        String expectedMessage = "2026-06-03T07:15:38Z;LOG_TYPE;LOG_SECTION;LOG_MESSAGE" + System.lineSeparator();
         assertEquals(expectedMessage, output);
     }
 

@@ -11,33 +11,17 @@ import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.ContingencyElement;
 import com.powsybl.contingency.ContingencyElementType;
-import com.powsybl.iidm.network.Branch;
-import com.powsybl.iidm.network.Identifiable;
-import com.powsybl.iidm.network.IdentifiableType;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.network.Switch;
+import com.powsybl.iidm.network.*;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.integration.MetrixDslData;
 import com.powsybl.metrix.integration.exceptions.ContingenciesScriptLoadingException;
 import com.powsybl.metrix.integration.remedials.Remedial;
 import com.powsybl.metrix.integration.remedials.RemedialReader;
-import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.log.LogUtils;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.UncheckedIOException;
-import java.io.Writer;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.powsybl.metrix.integration.remedials.RemedialReader.rTrim;
@@ -53,7 +37,6 @@ public class MetrixInputAnalysis {
         INFO
     }
 
-    private static final char SEPARATOR = ';';
     private static final String SECTION_SEPARATOR = " - ";
     private static final String COMMENT_SYMBOL = "/*";
     private static final String COMMENT_LINE_SYMBOL = "//";
@@ -73,17 +56,16 @@ public class MetrixInputAnalysis {
     private final Network network;
     private final MetrixDslData metrixDslData;
     private final DataTableStore dataTableStore;
-    private final BufferedWriter writer;
+    private final ScriptLogConfig inputLogConfig;
     private final ScriptLogConfig scriptLogConfig;
 
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
-                               MetrixDslData metrixDslData, DataTableStore dataTableStore, BufferedWriter writer) {
-        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, writer, new ScriptLogConfig());
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore, ScriptLogConfig inputLogConfig) {
+        this(remedialActionsReader, contingenciesProvider, network, metrixDslData, dataTableStore, inputLogConfig, new ScriptLogConfig());
     }
 
     public MetrixInputAnalysis(Reader remedialActionsReader, ContingenciesProvider contingenciesProvider, Network network,
-                               MetrixDslData metrixDslData, DataTableStore dataTableStore,
-                               BufferedWriter writer,
+                               MetrixDslData metrixDslData, DataTableStore dataTableStore, ScriptLogConfig inputLogConfig,
                                ScriptLogConfig scriptLogConfig) {
         Objects.requireNonNull(contingenciesProvider);
         Objects.requireNonNull(network);
@@ -92,7 +74,7 @@ public class MetrixInputAnalysis {
         this.network = network;
         this.metrixDslData = metrixDslData;
         this.dataTableStore = dataTableStore;
-        this.writer = writer;
+        this.inputLogConfig = inputLogConfig;
         this.scriptLogConfig = scriptLogConfig;
     }
 
@@ -120,20 +102,8 @@ public class MetrixInputAnalysis {
         remedials.forEach(remedial -> checkRemedial(remedial, contingencyIds));
     }
 
-    private void writeLog(String type, String section, String message, BufferedWriter writer) {
-        if (writer == null) {
-            return;
-        }
-        try {
-            writer.write(type + SEPARATOR + section + SEPARATOR + message);
-            writer.newLine();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
     private void writeLog(String type, String section, String message) {
-        writeLog(type, section, message, writer);
+        LogUtils.logOut(inputLogConfig, type, section, message);
     }
 
     private void writeContingencyLog(String contingencyId, String elementId, String messageReason) {
@@ -160,6 +130,7 @@ public class MetrixInputAnalysis {
      * load contingencies
      * @return list of contingencies
      */
+    @SuppressWarnings("checkstyle:IllegalCatchError")
     private List<Contingency> loadContingencies() {
         List<Contingency> allContingencies;
         try {
@@ -210,7 +181,10 @@ public class MetrixInputAnalysis {
         if (elementType == ContingencyElementType.TIE_LINE && identifiableType == IdentifiableType.TIE_LINE) {
             return true;
         }
-        if (elementType == ContingencyElementType.BRANCH && (identifiableType == IdentifiableType.LINE || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER || identifiableType == IdentifiableType.TIE_LINE)) {
+        if (elementType == ContingencyElementType.BRANCH &&
+            (identifiableType == IdentifiableType.LINE
+                || identifiableType == IdentifiableType.TWO_WINDINGS_TRANSFORMER
+                || identifiableType == IdentifiableType.TIE_LINE)) {
             return true;
         }
         if (elementType == ContingencyElementType.GENERATOR && identifiableType == IdentifiableType.GENERATOR) {
@@ -351,7 +325,7 @@ public class MetrixInputAnalysis {
     }
 
     /**
-     * check remedial line <contingency|<constraints>;<nb actions>;<actions>;
+     * check remedial line {@code <contingency|<constraints>;<nb actions>;<actions>;}
      * constraints are optional
      *
      * @param line a line describing a remedial in remedial file

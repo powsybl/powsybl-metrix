@@ -17,14 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.DOCTRINE_COSTS_ARE_NOT_PROPERLY_CONFIGURED;
+import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.buildEquipmentToCurativeTs;
+import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.buildEquipmentToPreventiveTs;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.checkAllConfigured;
-import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.findIdsToProcess;
 import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getContingencyIdFromTsName;
 
 /**
@@ -110,24 +110,14 @@ public abstract class AbstractMetrixEquipmentPostProcessing {
         String prefix = equipmentType.preventivePrefixContainer().getMetrixResultPrefix();
 
         // Filter equipment ids who have preventive time series results
-        List<String> idsToProcess = findIdsToProcess(getPreventiveIds(), allTimeSeriesNames, prefix);
-
-        for (String id : idsToProcess) {
-            equipmentToPreventiveTs.computeIfAbsent(id, k -> new HashSet<>()).add(prefix + id);
-        }
+        equipmentToPreventiveTs.putAll(buildEquipmentToPreventiveTs(getPreventiveIds(), allTimeSeriesNames, prefix));
     }
 
     private void initEquipmentToCurativeTs() {
         String prefix = equipmentType.curativePrefixContainer().getMetrixResultPrefix();
 
         // Filter equipment ids who have curative time series results
-        List<String> idsToProcess = findIdsToProcess(getCurativeIds(), allTimeSeriesNames, prefix, contingencyProbabilityById.keySet());
-
-        for (String id : idsToProcess) {
-            String elementIdPrefix = prefix + id;
-            List<String> elementTimeSeriesNames = allTimeSeriesNames.stream().filter(s -> s.startsWith(elementIdPrefix)).toList();
-            elementTimeSeriesNames.forEach(tsName -> equipmentToCurativeTs.computeIfAbsent(id, k -> new HashSet<>()).add(tsName));
-        }
+        equipmentToCurativeTs.putAll(buildEquipmentToCurativeTs(getCurativeIds(), allTimeSeriesNames, prefix, contingencyProbabilityById.keySet()));
     }
 
     private NodeCalc getContingencyProbability(String contingencyId) {
