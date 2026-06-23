@@ -57,7 +57,7 @@ parseValue(const boost::property_tree::ptree& item, bool tolerate_non_finite)
             char* end = nullptr;
             const double parsed = std::strtod(raw.c_str(), &end);
             if (end != raw.c_str() && *end == '\0' && std::isinf(parsed)) {
-                const T unbounded_p_limit = static_cast<T>(99999);
+                const auto unbounded_p_limit = static_cast<T>(99999);
                 return parsed > 0 ? unbounded_p_limit : -unbounded_p_limit;
             }
         }
