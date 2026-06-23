@@ -24,6 +24,8 @@
 #include <cmath>
 #include <cstdio>
 #include <iostream>
+#include <algorithm>
+#include <cctype>
 #include <numeric>
 #include <string>
 
@@ -1259,7 +1261,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            if(res_.typesGroupes_[i] == config::constants::battery_type)
+            std::string typeGroupeMaj = res_.typesGroupes_[i];
+            std::transform(typeGroupeMaj.begin(), typeGroupeMaj.end(), typeGroupeMaj.begin(),
+                           [](unsigned char c) { return std::toupper(c); });
+            if (typeGroupeMaj == config::constants::battery_type)
             {
                 volGrpBattery += redispatchParTypeB[i] + redispatchParTypeH[i];
                 volGrpBatteryCur += redispCurParType[i];
