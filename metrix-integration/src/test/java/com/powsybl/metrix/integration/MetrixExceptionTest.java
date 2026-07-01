@@ -96,7 +96,7 @@ class MetrixExceptionTest {
     @Test
     void loadContingenciesScriptExceptionTest() {
         ContingenciesProvider provider = new GroovyDslContingenciesProvider(wrongDslFile);
-        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, null, new ScriptLogConfig());
+        MetrixInputAnalysis metrixInputAnalysis = new MetrixInputAnalysis(new StringReader(""), provider, network, new MetrixDslData(), null, new ScriptLogConfig());
         assertThrows(ContingenciesScriptLoadingException.class, metrixInputAnalysis::runAnalysis);
     }
 

@@ -17,6 +17,8 @@
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 
+#include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <sstream>
 #include <type_traits>
@@ -28,20 +30,57 @@ namespace config
  */
 namespace helper
 {
+// Non floating-point fields: convert as-is (throws on malformed data, as before).
 template<typename T>
-static std::vector<T> asVector(const boost::property_tree::ptree& pt, const boost::property_tree::ptree::key_type& key)
+static typename std::enable_if<!std::is_floating_point<T>::value, T>::type
+parseValue(const boost::property_tree::ptree& item, bool /*tolerate_non_finite*/)
+{
+    return item.get_value<T>();
+}
+
+// Floating-point fields: boost lexical_cast cannot parse non-finite tokens such as
+// "Infinity"/"-Infinity", which read_json keeps as quoted strings. Generators without P
+// limits in IIDM have Pmin/Pmax = +/-Double.MAX_VALUE, serialized that way in fort.json.
+// For those fields only (tolerate_non_finite), fall back to strtod and clamp to a finite
+// sentinel (same magnitude as constants::valdef) so an unbounded limit does not propagate
+// as an infinite bound in the optimization problem. Any other parsing error (NaN, garbage,
+// other fields) is re-thrown so that malformed data keeps failing fast.
+template<typename T>
+static typename std::enable_if<std::is_floating_point<T>::value, T>::type
+parseValue(const boost::property_tree::ptree& item, bool tolerate_non_finite)
+{
+    try {
+        return item.get_value<T>();
+    } catch (const boost::property_tree::ptree_bad_data&) {
+        if (tolerate_non_finite) {
+            const std::string raw = item.get_value<std::string>();
+            char* end = nullptr;
+            const double parsed = std::strtod(raw.c_str(), &end);
+            if (end != raw.c_str() && *end == '\0' && std::isinf(parsed)) {
+                const auto unbounded_p_limit = static_cast<T>(99999);
+                return parsed > 0 ? unbounded_p_limit : -unbounded_p_limit;
+            }
+        }
+        throw;
+    }
+}
+
+template<typename T>
+static std::vector<T> asVector(const boost::property_tree::ptree& pt,
+                               const boost::property_tree::ptree::key_type& key,
+                               bool tolerate_non_finite = false)
 {
     std::vector<T> r;
     for (auto& item : pt.get_child(key)) {
-        r.push_back(item.second.get_value<T>());
+        r.push_back(parseValue<T>(item.second, tolerate_non_finite));
     }
     return r;
 }
 
 template<class T>
-static void updateRaw(std::vector<T>& raw_values, const boost::property_tree::ptree& pt)
+static void updateRaw(std::vector<T>& raw_values, const boost::property_tree::ptree& pt, bool tolerate_non_finite = false)
 {
-    auto values = helper::asVector<T>(pt, "values");
+    auto values = helper::asVector<T>(pt, "values", tolerate_non_finite);
     raw_values.insert(raw_values.end(), values.begin(), values.end());
 }
 
@@ -164,7 +203,11 @@ auto Configuration::readRawConfiguration(const std::string& pathname) -> raw_con
             if (type_str == "INTEGER") {
                 helper::updateRaw(map_int[key], attribute.second);
             } else if (type_str == "FLOAT") {
-                helper::updateRaw(map_float[key], attribute.second);
+                // Generators without P limits in IIDM yield Pmin/Pmax = +/-Double.MAX_VALUE,
+                // serialized as +/-Infinity in fort.json (issue #289). Tolerate non-finite
+                // values for these two fields only; all other FLOAT fields keep failing fast.
+                const bool tolerate_non_finite = (key == "TRVALPMD" || key == "TRPUIMIN");
+                helper::updateRaw(map_float[key], attribute.second, tolerate_non_finite);
             } else if (type_str == "DOUBLE") {
                 helper::updateRaw(map_double[key], attribute.second);
             } else if (type_str == "STRING") {
