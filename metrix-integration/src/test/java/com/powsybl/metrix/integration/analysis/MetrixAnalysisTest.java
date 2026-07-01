@@ -32,6 +32,7 @@ import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -135,12 +136,35 @@ class MetrixAnalysisTest {
             MetrixAnalysis metrixAnalysis = metrixAnalysis(script, "");
             metrixAnalysis.setScriptLogWriter(out);
             metrixAnalysis.setMaxLogLevel(System.Logger.Level.WARNING);
+            metrixAnalysis.setWithTimestamp(false);
             metrixAnalysis.runAnalysis("");
             String output = outputStream.toString();
             assertEquals("""
                 WARNING;From scriptLogLevelTest;writeLog WARNING
                 ERROR;From scriptLogLevelTest;writeLog ERROR
                 """.replaceAll("\n", System.lineSeparator()), output);
+        }
+    }
+
+    @Test
+    void scriptWithTimestampTest() throws IOException {
+        String script = """
+            writeLog("ERROR", "From scriptLogLevelTest", "writeLog ERROR")""";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            MetrixAnalysis metrixAnalysis = metrixAnalysis(script, "");
+            metrixAnalysis.setScriptLogWriter(out);
+            metrixAnalysis.setMaxLogLevel(System.Logger.Level.WARNING);
+            metrixAnalysis.setWithTimestamp(true);
+            metrixAnalysis.runAnalysis("");
+            String output = outputStream.toString();
+            String[] outputSplitted = output.split(";");
+            assertEquals(4, outputSplitted.length);
+            assertNotNull(outputSplitted[0]);
+            assertEquals(20, outputSplitted[0].length()); // Format 2026-06-03T11:26:00Z
+            assertEquals("ERROR", outputSplitted[1]);
+            assertEquals("From scriptLogLevelTest", outputSplitted[2]);
+            assertEquals("writeLog ERROR" + System.lineSeparator(), outputSplitted[3]);
         }
     }
 
