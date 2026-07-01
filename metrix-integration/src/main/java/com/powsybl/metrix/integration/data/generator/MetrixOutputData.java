@@ -66,6 +66,7 @@ public class MetrixOutputData {
     public static final String LOAD_CUR_COST = LOAD_CUR_PREFIX + COST;
 
     public static final String FLOW_NAME = "FLOW_";
+    public static final String NAME_NAME = "NAME_";
     public static final String MAX_THREAT_NAME = "MAX_THREAT_";
     public static final String MAX_TMP_THREAT_FLOW = "MAX_TMP_THREAT_FLOW_";
     public static final String LOSSES = "LOSSES";
@@ -541,7 +542,7 @@ public class MetrixOutputData {
         while ((chunkNum = 5 + 2 * i) < chunks.length &&
             !EMPTY_STRING.equals(chunks[chunkNum])) {
             i++;
-            sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_NAME_", BRANCH, chunks[2]);
+            sts = getStringTimeSeries(MAX_THREAT_NAME + i + "_" + NAME_NAME, BRANCH, chunks[2]);
             sts.insertResult(varNum - offset, outageNames.get(Integer.parseInt(chunks[chunkNum])));
 
             ts = getDoubleTimeSeries(MAX_THREAT_NAME + i + "_" + FLOW_NAME, chunks[2]);
