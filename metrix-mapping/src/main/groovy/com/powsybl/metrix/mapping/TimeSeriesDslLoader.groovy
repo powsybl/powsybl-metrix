@@ -114,6 +114,7 @@ class TimeSeriesDslLoader {
         Map<Class<?>, Object> contextObjects = new HashMap<>()
         contextObjects.put(DataTableStore.class, dataTableStore)
         contextObjects.put(ScriptLogConfig.class, logDslLoader.getScriptLogConfig())
+        contextObjects.put(ScriptTimeSeriesNames.class, new ScriptTimeSeriesNames(loader.getInputTimeSeriesNames(), loader.getCalculatedTsNames()))
 
         // External Bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
