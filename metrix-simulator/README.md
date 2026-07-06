@@ -46,6 +46,12 @@ cmake --build powsybl-metrix/metrix-simulator/build -j$(nproc)
 ctest --test-dir powsybl-metrix/metrix-simulator/build
 ```
 
+> **Note**: the Xpress TNR suite (`tests/xpress`) is disabled by default
+> because FICO Xpress is a licensed product: it must never run in
+> automated environments. Developers with a licensed Xpress installation
+> can enable it by configuring with `-D METRIX_RUN_XPRESS_TESTS=ON`
+> (in addition to `USE_XPRESS=ON`).
+
 > **Note**: building external dependencies includes downloading and
 > compiling OR-Tools along with its own dependencies (abseil, protobuf,
 > etc.).

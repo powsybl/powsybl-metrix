@@ -246,6 +246,7 @@ install(EXPORT targets
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 
 option(METRIX_RUN_ALL_TESTS "Run reduced scope of tests" ON)
+option(METRIX_RUN_XPRESS_TESTS "Enable the Xpress TNR test suite (requires a licensed FICO Xpress installation)" OFF)
 
 enable_testing()
 add_subdirectory(tests)

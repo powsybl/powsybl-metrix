@@ -171,7 +171,11 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
 endmacro()
 
 add_subdirectory(sirius)
-if (USE_XPRESS)
+# The Xpress test suite is opt-in: FICO Xpress is a licensed product, so these
+# tests must never run in automated environments (CI). Licensed developers can
+# enable them locally with -D METRIX_RUN_XPRESS_TESTS=ON (requires USE_XPRESS=ON).
+if (USE_XPRESS AND METRIX_RUN_XPRESS_TESTS)
     add_subdirectory(xpress)
-    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake ${CMAKE_BINARY_DIR}/CTestCustom.cmake)
+elseif (METRIX_RUN_XPRESS_TESTS)
+    message(WARNING "METRIX_RUN_XPRESS_TESTS is ON but USE_XPRESS is OFF: the Xpress test suite will not be added")
 endif()
