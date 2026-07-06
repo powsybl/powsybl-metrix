@@ -1,3 +1,13 @@
+//
+// Copyright (c) 2021, RTE (http://www.rte-france.com)
+// See AUTHORS.txt
+// All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, you can obtain one at http://mozilla.org/MPL/2.0/.
+// SPDX-License-Identifier: MPL-2.0
+//
+
 #pragma once
 
 // OR-Tools tire glog transitivement, qui définit un macro `LOG` en collision
@@ -21,15 +31,6 @@
 
 namespace ortools
 {
-namespace helper
-{
-template<class T>
-inline std::vector<T> makeVectorFromPointer(T* array, size_t nb_elements)
-{
-    return std::vector<T>(array, array + nb_elements);
-}
-} // namespace helper
-
 class Solver : public compute::ISolver
 {
 public:
@@ -88,8 +89,14 @@ private:
         auto problemType = type<PROBLEM>();
         checkSolverAvailability(problemType);
         auto solver = std::make_shared<operations_research::MPSolver>(solverName_, problemType);
-        if (specific_params_.size() > 0)
-            solver->SetSolverSpecificParametersAsString(specific_params_);
+        if (specific_params_.size() > 0 && !solver->SetSolverSpecificParametersAsString(specific_params_)) {
+            static bool warned = false; // avoid repeating the warning on every (micro-iteration) solve
+            if (!warned) {
+                LOG_ALL(warning) << "SPECIFICSOLVERPARAMS rejected by the solver backend: '" << specific_params_
+                                 << "'";
+                warned = true;
+            }
+        }
         return solver;
     }
 

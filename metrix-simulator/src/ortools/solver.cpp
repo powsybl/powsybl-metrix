@@ -1,3 +1,13 @@
+//
+// Copyright (c) 2021, RTE (http://www.rte-france.com)
+// See AUTHORS.txt
+// All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, you can obtain one at http://mozilla.org/MPL/2.0/.
+// SPDX-License-Identifier: MPL-2.0
+//
+
 #include "solver.h"
 #include "err/IoDico.h"
 #include "err/error.h"
@@ -307,7 +317,14 @@ void Solver::updateProblem<PROBLEME_A_RESOUDRE>(PROBLEME_A_RESOUDRE& problem,
     auto& variables = solver->variables();
     int nbVar = problem.NombreDeVariables;
 
-    // Extracting variable values and reduced costs
+    // NOTE: constraint duals (VariablesDualesDesContraintes) are deliberately not
+    // extracted here: MPSolver does not expose meaningful duals for MIP solves.
+    // This is safe because metrix always re-solves a simplex with fixed integer
+    // variables before reading any dual value (see the UTILISATION_PNE_SOLVEUR
+    // handling at the beginning of metrix2assess). Keep that invariant in mind
+    // if the result flow ever changes.
+
+    // Extracting variable values
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
         auto& var = variables[idxVar];
         problem.X[idxVar] = var->solution_value();
