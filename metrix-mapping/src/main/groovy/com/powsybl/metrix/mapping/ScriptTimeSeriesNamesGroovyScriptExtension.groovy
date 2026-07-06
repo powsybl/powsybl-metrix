@@ -27,16 +27,13 @@ class ScriptTimeSeriesNamesGroovyScriptExtension implements GroovyScriptExtensio
         if (contextObjects.keySet().contains(ScriptTimeSeriesNames.class)) {
             ScriptTimeSeriesNames scriptTimeSeriesNames = contextObjects.get(ScriptTimeSeriesNames.class) as ScriptTimeSeriesNames
             binding.inputTsNames = {
-                return new HashSet<>(scriptTimeSeriesNames.inputNames)
+                return scriptTimeSeriesNames.inputNames.asImmutable()
             }
             binding.calculatedTsNames = {
-                return new HashSet<>(scriptTimeSeriesNames.calculatedNames)
+                return scriptTimeSeriesNames.calculatedNames.asImmutable()
             }
             binding.tsNames = {
-                Set<String> tsNames = new HashSet<>()
-                tsNames.addAll(scriptTimeSeriesNames.inputNames)
-                tsNames.addAll(scriptTimeSeriesNames.calculatedNames)
-                return tsNames
+                return (scriptTimeSeriesNames.inputNames + scriptTimeSeriesNames.calculatedNames).asImmutable()
             }
             binding.inputTsExists = { String tsName ->
                 return exists(tsName, scriptTimeSeriesNames.inputNames)

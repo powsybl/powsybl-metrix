@@ -17,6 +17,9 @@ import com.powsybl.timeseries.RegularTimeSeriesIndex;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 import org.threeten.extra.Interval;
 
@@ -26,8 +29,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.time.Duration;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
@@ -85,5 +90,45 @@ class ScriptTimeSeriesDslLoaderTest {
             """;
 
         launchTest(script, expectedTsExists);
+    }
+
+    @Test
+    void testAllTsNames() throws IOException {
+        final String expectedTsNames = "ts = true\none = false\ntsNames = [ts]\none = true\ntsNames = [ts, one]\n";
+
+        // mapping script
+        String script = """
+            println("ts = " + tsExists('ts'))
+            println("one = " + tsExists('one'))
+            println("tsNames = " + tsNames())
+            ts['one'] = 1
+            println("one = " + tsExists('one'))
+            println("tsNames = " + tsNames())
+            """;
+
+        launchTest(script, expectedTsNames);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForbiddenModificationScript")
+    void testAddingNameInUnmodifiableInputTsNames(String script) {
+        assertThrows(UnsupportedOperationException.class, () -> launchTest(script, ""));
+    }
+
+    private static Stream<Arguments> provideForbiddenModificationScript() {
+        return Stream.of(
+            Arguments.of("""
+            timeSeriesNames = inputTsNames()
+            timeSeriesNames.add("otherTimeSeriesName")
+            """),
+            Arguments.of("""
+            timeSeriesNames = calculatedTsNames()
+            timeSeriesNames.add("otherTimeSeriesName")
+            """),
+            Arguments.of("""
+            timeSeriesNames = tsNames()
+            timeSeriesNames.add("otherTimeSeriesName")
+            """)
+        );
     }
 }
