@@ -44,6 +44,14 @@ public class TimeSeriesMappingConfigLoader implements DefaultGenericMetadata {
     private final TimeSeriesMappingConfig config;
     private final Set<String> existingTimeSeriesNames;
 
+    public Set<String> getInputTimeSeriesNames() {
+        return existingTimeSeriesNames;
+    }
+
+    public Set<String> getCalculatedTsNames() {
+        return config.getTimeSeriesNodesKeys();
+    }
+
     public TimeSeriesMappingConfigLoader(TimeSeriesMappingConfig config, Set<String> existingTimeSeriesNames) {
         this.config = config;
         this.existingTimeSeriesNames = existingTimeSeriesNames;
