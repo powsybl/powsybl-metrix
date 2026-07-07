@@ -8,6 +8,9 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
+# A test belongs to the xpress suite iff its execution reaches a solve;
+# tests that provably never solve are guarded sirius-only
+
 set(MAIN_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 set(TEST_SOLVERCH xpress)
 

@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 MESSAGE("Connexity checks and issues tests...")
 
@@ -14,7 +14,6 @@ set(TEST_DIR_NAME connexite)
 set(TEST_DIR ${MAIN_TEST_DIR}/${TEST_DIR_NAME})
 set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
-metrix_test("composante_non_connexe" 1)
 metrix_test("connexite_base_variant" 1)
 metrix_test("noeud_connexe_isole" 2)
 metrix_test("incidents_piquage" 1)
@@ -32,3 +31,6 @@ metrix_test("reprise_partielle_poche_en_curatif" 7)
 metrix_test("mapping_sectionneurs" 3)
 metrix_test("incident_rompant_connexite_detailed" 4)
 metrix_test("isolated_node_after_base_case_and_variant" 1)
+if(TEST_SOLVERCH STREQUAL "sirius")
+metrix_test("composante_non_connexe" 1)
+endif()
