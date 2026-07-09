@@ -839,7 +839,7 @@ public class MetrixNetwork {
             return new HashSet<>(contingency.getElements());
         } else {
 
-            Set<ContingencyElement> elementsToTrip = new HashSet<>();
+            Set<ContingencyElement> elementsToTrip = new HashSet<>(contingency.getElements());
 
             Set<Switch> switchesToOpen = new HashSet<>();
             Set<Terminal> terminalsToDisconnect = new HashSet<>();
