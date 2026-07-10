@@ -834,19 +834,14 @@ public class MetrixNetwork {
     }
 
     public Set<ContingencyElement> getElementsToTrip(Contingency contingency, boolean propagate) {
-
-        if (!propagate) {
-            return new HashSet<>(contingency.getElements());
-        } else {
-
-            Set<ContingencyElement> elementsToTrip = new HashSet<>(contingency.getElements());
-
+        Set<ContingencyElement> elementsToTrip = new HashSet<>(contingency.getElements());
+        if (propagate) {
             Set<Switch> switchesToOpen = new HashSet<>();
             Set<Terminal> terminalsToDisconnect = new HashSet<>();
 
             for (ContingencyElement element : contingency.getElements()) {
                 if (element.getType() == ContingencyElementType.GENERATOR ||
-                        element.getType() == ContingencyElementType.HVDC_LINE) {
+                    element.getType() == ContingencyElementType.HVDC_LINE) {
                     elementsToTrip.add(element);
                 } else {
                     Tripping modification = element.toModification();
@@ -855,9 +850,9 @@ public class MetrixNetwork {
             }
 
             Set<IdentifiableType> types = EnumSet.of(IdentifiableType.LINE,
-                    IdentifiableType.TWO_WINDINGS_TRANSFORMER,
-                    IdentifiableType.THREE_WINDINGS_TRANSFORMER,
-                    IdentifiableType.HVDC_CONVERTER_STATION);
+                IdentifiableType.TWO_WINDINGS_TRANSFORMER,
+                IdentifiableType.THREE_WINDINGS_TRANSFORMER,
+                IdentifiableType.HVDC_CONVERTER_STATION);
 
             // disconnect equipments and open switches
             for (Switch s : switchesToOpen) {
@@ -866,14 +861,14 @@ public class MetrixNetwork {
                 terminalsToDisconnect.add(nodeBreakerView.getTerminal2(s.getId()));
             }
             terminalsToDisconnect.stream()
-                    .filter(Objects::nonNull)
-                    .forEach(t -> {
-                        Connectable<?> connectable = t.getConnectable();
-                        if (connectable != null && types.contains(connectable.getType())) {
-                            elementsToTrip.add(new BranchContingency(connectable.getId()));
-                        }
-                    });
-            return elementsToTrip;
+                .filter(Objects::nonNull)
+                .forEach(t -> {
+                    Connectable<?> connectable = t.getConnectable();
+                    if (connectable != null && types.contains(connectable.getType())) {
+                        elementsToTrip.add(new BranchContingency(connectable.getId()));
+                    }
+                });
         }
+        return elementsToTrip;
     }
 }
