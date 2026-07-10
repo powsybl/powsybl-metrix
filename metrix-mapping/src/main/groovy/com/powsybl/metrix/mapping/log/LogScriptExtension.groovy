@@ -33,6 +33,7 @@ class LogScriptExtension implements GroovyScriptExtension {
             }
         }
         LogUtils.bindLog(binding, config)
+        LogUtils.writeHeader(config)
     }
 
     @Override

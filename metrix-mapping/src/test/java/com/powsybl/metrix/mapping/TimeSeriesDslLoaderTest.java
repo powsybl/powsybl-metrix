@@ -434,6 +434,30 @@ class TimeSeriesDslLoaderTest {
         assertEquals(expectedMessage, output);
     }
 
+    @Test
+    void writeLogTestWithHeader() throws IOException {
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache();
+        String script = """
+            // empty script
+            """;
+
+        TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            ScriptLogConfig scriptLogConfig = ScriptLogConfig.builder()
+                .writer(out)
+                .withTimestamp(true)
+                .withHeader(true)
+                .build();
+            dsl.load(network, parameters, store, new DataTableStore(), scriptLogConfig, null);
+        }
+
+        String output = outputStream.toString();
+        String expectedMessage = "LogTimestamp;LogLevel;LogSection;LogMessage" + System.lineSeparator();
+        assertEquals(expectedMessage, output);
+    }
+
     @ParameterizedTest
     @MethodSource("provideMessageByLogLevel")
     void writeLogTestFilterByMaxLogLevel(System.Logger.Level maxLogLevel, String expectedMessage) throws IOException {
