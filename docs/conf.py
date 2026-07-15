@@ -126,7 +126,7 @@ todo_include_todos = True
 
 # Links to external documentations : python 3 and pandas
 intersphinx_mapping = {
-    "powsyblcore": ("https://powsybl.readthedocs.io/projects/powsybl-core/en/latest/", None)
+    "powsybl-core": ("https://powsybl.readthedocs.io/projects/powsybl-core/en/latest/", None)
 }
 intersphinx_disabled_reftypes = ["*"]
 
