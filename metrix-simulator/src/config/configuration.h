@@ -203,6 +203,7 @@ public:
     SolverChoice pcSolverChoice() const { return pc_solver_choice_; }
     const std::string& specificSolverParams() const { return specific_solver_params_; }
     double noiseCost() const { return noise_cost_; }
+    double perturbationCout() const { return perturbation_cout_; }
 
     unsigned int lostLoadDetailedMax() const { return lost_load_detailed_max_; }
 
@@ -372,6 +373,7 @@ private:
     SolverChoice pc_solver_choice_;
     std::string specific_solver_params_;
     double noise_cost_;
+    double perturbation_cout_;
 
     unsigned int lost_load_detailed_max_;
 

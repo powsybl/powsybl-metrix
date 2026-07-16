@@ -380,6 +380,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     pc_solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "PCSOLVERCH", SolverChoice::SIRIUS);
     specific_solver_params_ = helper::updateValueNumber(std::get<STRING>(raw_config), "SPECIFICSOLVERPARAMS", std::string(""));
     noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
+    perturbation_cout_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "PERTURBCOST", 0.0);
 
     lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);
 
