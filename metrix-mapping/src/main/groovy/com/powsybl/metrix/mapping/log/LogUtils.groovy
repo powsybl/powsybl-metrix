@@ -18,6 +18,11 @@ import static java.lang.System.Logger.Level.valueOf
  */
 class LogUtils {
 
+    public static final String HEADER_LOG_LEVEL = "LogLevel"
+    public static final String HEADER_LOG_SECTION = "LogSection"
+    public static final String HEADER_LOG_MESSAGE = "LogMessage"
+    public static final String HEADER_LOG_TIMESTAMP = "LogTimestamp"
+
     static void bindLog(Binding binding, ScriptLogConfig scriptLogConfig) {
         binding.writeLog = { String type, String section, String message ->
             logOut(scriptLogConfig, type, section, message)
@@ -32,6 +37,13 @@ class LogUtils {
         if (scriptLogConfig != null && scriptLogConfig.getWriter() != null && canLog(logLevel, scriptLogConfig.getMaxLogLevel())) {
             String timeStampFormatted = scriptLogConfig.getDateTimeFormatter().format(getInstantNow(scriptLogConfig))
             String line = buildLine(logLevel, section, message, scriptLogConfig.isWithTimeStamp(), timeStampFormatted)
+            scriptLogConfig.getWriter().write(line)
+        }
+    }
+
+    static void writeHeader(ScriptLogConfig scriptLogConfig) {
+        if (scriptLogConfig != null && scriptLogConfig.getWriter() != null && scriptLogConfig.isWithHeader()) {
+            String line = buildLine(HEADER_LOG_LEVEL, HEADER_LOG_SECTION, HEADER_LOG_MESSAGE, scriptLogConfig.isWithTimeStamp(), HEADER_LOG_TIMESTAMP)
             scriptLogConfig.getWriter().write(line)
         }
     }

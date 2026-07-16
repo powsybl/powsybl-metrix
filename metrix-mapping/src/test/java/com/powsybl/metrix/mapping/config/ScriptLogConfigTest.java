@@ -190,6 +190,17 @@ class ScriptLogConfigTest {
     }
 
     @Test
+    void testWithHeader() {
+        // GIVEN
+        ScriptLogConfig scriptLogConfig = new ScriptLogConfig();
+        // WHEN
+        ScriptLogConfig scriptLogConfigWith = scriptLogConfig.withHeader(true);
+        // THEN
+        assertEquals(scriptLogConfig, scriptLogConfigWith);
+        assertTrue(scriptLogConfig.isWithHeader());
+    }
+
+    @Test
     void testWithDateTimeFormatter() {
         // GIVEN
         ScriptLogConfig scriptLogConfig = new ScriptLogConfig();

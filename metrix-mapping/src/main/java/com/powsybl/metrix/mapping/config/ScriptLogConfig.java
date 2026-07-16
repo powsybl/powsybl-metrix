@@ -23,11 +23,13 @@ public class ScriptLogConfig {
     public static final System.Logger.Level MAX_LOG_LEVEL_DEFAULT = INFO;
     public static final DateTimeFormatter DATE_TIME_FORMATTER_DEFAULT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneOffset.UTC);
     public static final boolean WITH_TIMESTAMP_DEFAULT = false;
+    public static final boolean WITH_HEADER_DEFAULT = false;
 
     private Writer writer;
     private System.Logger.Level maxLogLevel;
     private String section;
     private boolean withTimestamp;
+    private boolean withHeader;
     private DateTimeFormatter dateTimeFormatter;
     private final Clock clock;
 
@@ -56,6 +58,7 @@ public class ScriptLogConfig {
         this.writer = writer;
         this.section = section;
         this.withTimestamp = withTimestamp;
+        this.withHeader = WITH_HEADER_DEFAULT;
         this.dateTimeFormatter = dateTimeFormatter;
         this.clock = Clock.systemUTC();
     }
@@ -65,6 +68,7 @@ public class ScriptLogConfig {
         this.maxLogLevel = builder.maxLogLevel;
         this.section = builder.section;
         this.withTimestamp = builder.withTimestamp;
+        this.withHeader = builder.withHeader;
         this.dateTimeFormatter = builder.dateTimeFormatter;
         this.clock = builder.clock;
     }
@@ -89,6 +93,11 @@ public class ScriptLogConfig {
         return this;
     }
 
+    public ScriptLogConfig withHeader(boolean withHeader) {
+        this.withHeader = withHeader;
+        return this;
+    }
+
     public ScriptLogConfig withDateTimeFormatter(DateTimeFormatter dateTimeFormatter) {
         this.dateTimeFormatter = dateTimeFormatter;
         return this;
@@ -110,6 +119,10 @@ public class ScriptLogConfig {
         return this.withTimestamp;
     }
 
+    public boolean isWithHeader() {
+        return this.withHeader;
+    }
+
     public DateTimeFormatter getDateTimeFormatter() {
         return dateTimeFormatter;
     }
@@ -128,6 +141,7 @@ public class ScriptLogConfig {
         private System.Logger.Level maxLogLevel = MAX_LOG_LEVEL_DEFAULT;
         private String section = null;
         private boolean withTimestamp = WITH_TIMESTAMP_DEFAULT;
+        private boolean withHeader = WITH_HEADER_DEFAULT;
         private DateTimeFormatter dateTimeFormatter = DATE_TIME_FORMATTER_DEFAULT;
         private Clock clock = Clock.systemUTC();
 
@@ -151,6 +165,11 @@ public class ScriptLogConfig {
 
         public Builder withTimestamp(boolean withTimestamp) {
             this.withTimestamp = withTimestamp;
+            return this;
+        }
+
+        public Builder withHeader(boolean withHeader) {
+            this.withHeader = withHeader;
             return this;
         }
 
