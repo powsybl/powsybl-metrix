@@ -167,6 +167,15 @@ else()
                         -DBUILD_SAMPLES:BOOL=OFF
                         -DBUILD_EXAMPLES:BOOL=OFF
                         -DBUILD_TESTING:BOOL=OFF
+                        # metrix-simulator only ever uses the Xpress backend, so the other
+                        # optional solvers are not built (this trims the third-party build,
+                        # SCIP and Coin-OR being the heaviest). GLOP, BOP and PDLP are part
+                        # of the OR-Tools core and are kept. Re-enabling any of these also
+                        # requires re-adding it to Configuration::SolverChoice.
+                        -DUSE_COINOR:BOOL=OFF
+                        -DUSE_GLPK:BOOL=OFF
+                        -DUSE_HIGHS:BOOL=OFF
+                        -DUSE_SCIP:BOOL=OFF
                         -Dortools_REPO:STRING=https://github.com/google/or-tools.git
                         -Dortools_REF:STRING=v9.13
                         ${ORTOOLS_XPRESS_ARGS}
