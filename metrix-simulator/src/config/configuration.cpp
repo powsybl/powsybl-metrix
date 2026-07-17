@@ -177,7 +177,9 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
     for (auto solver_choice_key : {"SOLVERCH", "PCSOLVERCH"}) {
         if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), solver_choice_key)) {
             unsigned int solver_choice = std::get<INTEGER>(raw_config).at(solver_choice_key).front();
-            helper::check(solver_choice <= static_cast<unsigned int>(SolverChoice::XPRESS), solver_choice_key);
+            helper::check(solver_choice >= static_cast<unsigned int>(SolverChoice::SIRIUS)
+                              && solver_choice <= static_cast<unsigned int>(SolverChoice::XPRESS),
+                          solver_choice_key);
 #ifndef USE_ORTOOLS
             // If ortools is not used, only Sirius is allowed
             helper::check(solver_choice == static_cast<int>(SolverChoice::SIRIUS), solver_choice_key);

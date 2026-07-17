@@ -21,21 +21,6 @@ namespace ortools
 const std::string Solver::solverName_ = "simple_lp_program";
 
 const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
-    std::make_pair(config::Configuration::SolverChoice::GLPK,
-                   std::make_pair(operations_research::MPSolver::GLPK_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::GLPK_MIXED_INTEGER_PROGRAMMING)),
-    std::make_pair(config::Configuration::SolverChoice::CBC,
-                   std::make_pair(operations_research::MPSolver::CLP_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::CBC_MIXED_INTEGER_PROGRAMMING)),
-    std::make_pair(config::Configuration::SolverChoice::SCIP_GLOP,
-                   std::make_pair(operations_research::MPSolver::GLOP_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::SCIP_MIXED_INTEGER_PROGRAMMING)),
-    std::make_pair(config::Configuration::SolverChoice::GUROBI,
-                   std::make_pair(operations_research::MPSolver::GUROBI_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::GUROBI_MIXED_INTEGER_PROGRAMMING)),
-    std::make_pair(config::Configuration::SolverChoice::CPLEX,
-                   std::make_pair(operations_research::MPSolver::CPLEX_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::CPLEX_MIXED_INTEGER_PROGRAMMING)),
     std::make_pair(config::Configuration::SolverChoice::XPRESS,
                    std::make_pair(operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
@@ -48,11 +33,6 @@ Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::str
 static const std::string& solverChoiceName(config::Configuration::SolverChoice choice)
 {
     static const std::map<config::Configuration::SolverChoice, std::string> names = {
-        {config::Configuration::SolverChoice::GLPK, "GLPK"},
-        {config::Configuration::SolverChoice::CBC, "CBC"},
-        {config::Configuration::SolverChoice::SCIP_GLOP, "SCIP/GLOP"},
-        {config::Configuration::SolverChoice::GUROBI, "GUROBI"},
-        {config::Configuration::SolverChoice::CPLEX, "CPLEX"},
         {config::Configuration::SolverChoice::SIRIUS, "SIRIUS"},
         {config::Configuration::SolverChoice::XPRESS, "XPRESS"},
     };

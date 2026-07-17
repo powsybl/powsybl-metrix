@@ -234,7 +234,7 @@
       "secondIndexMaxValue" : 1,
       "firstValueIndex" : 1,
       "lastValueIndex" : 1,
-      "values" : [ 0 ]
+      "values" : [ 6 ]
     } ]
   }, {
     "name" : "FloatFile",
