@@ -245,7 +245,7 @@ $> cmake --build . --target install
 ```
 
 The following CMake options can be set for the executable configuration:
-- `USE_ORTOOLS` (default = OFF): enable multi-solver support via OR-Tools. When OFF, the binary is Sirius-only, identical to the legacy production version.
+- `USE_ORTOOLS` (default = OFF): enable the OR-Tools Xpress backend. When OFF, the binary is Sirius-only, identical to the legacy production version.
 - `USE_XPRESS` (default = OFF, requires `USE_ORTOOLS=ON`): authorize `SOLVERCH=6` at runtime. Must reflect whether OR-Tools was built with the Xpress backend.
 - `USE_SIRIUS_SHARED` (default = OFF): if active, link Sirius as a shared library instead of static.
 - `METRIX_RUN_ALL_TESTS` (default = ON): if inactive, projects will execute a reduced scope of tests.

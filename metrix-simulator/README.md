@@ -30,7 +30,7 @@ cmake --build . -j$(nproc)
 cd ../../../..
 
 # Build metrix-simulator.
-# USE_ORTOOLS enables the multi-solver runtime path.
+# USE_ORTOOLS enables the OR-Tools Xpress backend at runtime.
 # USE_XPRESS authorizes SOLVERCH=6 at runtime; it must reflect whether
 # OR-Tools was actually built with the Xpress backend (i.e. whether
 # XPRESS_ROOT was set when external/ was built).
@@ -92,7 +92,7 @@ for the static one.
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `USE_ORTOOLS` | `OFF` | Enable multi-solver support via OR-Tools. When `OFF`, the binary is Sirius-only, identical to the legacy production version. |
+| `USE_ORTOOLS` | `OFF` | Enable the OR-Tools Xpress backend. When `OFF`, the binary is Sirius-only, identical to the legacy production version. |
 | `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Must reflect whether OR-Tools was effectively built with the Xpress backend; a mismatch (or a missing Xpress license) is reported at runtime as a metrix error (`ERRSolveurIndisponible`) when `SOLVERCH=6` is requested. |
 | `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, deploys `libsirius_solver.so` alongside the binary. |
 | `CODE_COVERAGE` | `OFF` | Instrument the binary for coverage analysis (forces `Debug` build type). |
@@ -117,13 +117,8 @@ A single build supports both Sirius and Xpress. The solver is selected at runtim
 |-------|--------|----------------|
 | 5 | SIRIUS | Direct call to `PNE_Solveur` / `SPX_Simplexe` (no OR-Tools involved) |
 | 6 | XPRESS | Via OR-Tools `MPSolver` |
-| 0 | GLPK | Via OR-Tools `MPSolver` |
-| 1 | CBC | Via OR-Tools `MPSolver` |
-| 2 | SCIP_GLOP | Via OR-Tools `MPSolver` |
-| 3 | GUROBI | Via OR-Tools `MPSolver` |
-| 4 | CPLEX | Via OR-Tools `MPSolver` |
 
-> **Important**: `SOLVERCH=5` (SIRIUS) uses the direct call path, identical to the legacy production behavior. All other values go through the OR-Tools abstraction layer. Commercial solvers (GUROBI, CPLEX, XPRESS) require a license installed on the machine.
+> **Important**: `SOLVERCH=5` (SIRIUS) uses the direct call path, identical to the legacy production behavior. `SOLVERCH=6` (XPRESS) goes through the OR-Tools abstraction layer and requires a binary built with `USE_ORTOOLS` and `USE_XPRESS`, plus an Xpress license installed on the machine.
 
 ### Configuration examples
 
