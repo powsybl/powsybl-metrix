@@ -61,9 +61,9 @@ private:
     static void transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver,
                                   double const* bMin,
                                   double const* bMax,
-                                  double* costs,
+                                  double const* costs,
                                   int nbVar,
-                                  double* xValues,
+                                  double const* xValues,
                                   int const* typeDeBorneDeLaVariable,
                                   int const* typeDeVariable = nullptr,
                                   bool useHint = false);
@@ -76,8 +76,8 @@ private:
     static void transferMatrix(const std::shared_ptr<operations_research::MPSolver>& solver,
                                int const* indexRows,
                                int const* terms,
-                               int* indexCols,
-                               double* coeffs,
+                               int const* indexCols,
+                               double const* coeffs,
                                int nbRow);
 
 private:

@@ -155,9 +155,9 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
 void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver,
                                double const* bMin,
                                double const* bMax,
-                               double* costs,
+                               double const* costs,
                                int nbVar,
-                               double* xValues,
+                               double const* xValues,
                                int const* typeDeBorneDeLaVariable,
                                int const* typeDeVariable,
                                bool useHint)
@@ -173,13 +173,16 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
         std::ostringstream oss;
         oss << "x" << idxVar;
 
-        double min_l = 0., max_l = 0.;
+        double min_l = 0.;
+        double max_l = 0.;
         switch (typeDeBorneDeLaVariable[idxVar]) {
             case VARIABLE_FIXE:
                 if (xValues != nullptr) {
-                    min_l = max_l = xValues[idxVar];
+                    min_l = xValues[idxVar];
+                    max_l = min_l;
                 } else {
-                    min_l = max_l = bMin[idxVar];
+                    min_l = bMin[idxVar];
+                    max_l = min_l;
                 }
                 break;
             case VARIABLE_BORNEE_DES_DEUX_COTES:
@@ -230,9 +233,11 @@ void Solver::transferRows(const std::shared_ptr<operations_research::MPSolver>& 
                           int nbRow)
 {
     for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
-        double bMin = -MPSolver::infinity(), bMax = MPSolver::infinity();
+        double bMin = -MPSolver::infinity();
+        double bMax = MPSolver::infinity();
         if (sens[idxRow] == '=') {
-            bMin = bMax = rhs[idxRow];
+            bMin = rhs[idxRow];
+            bMax = bMin;
         } else if (sens[idxRow] == '<') {
             bMax = rhs[idxRow];
         } else if (sens[idxRow] == '>') {
@@ -247,8 +252,8 @@ void Solver::transferRows(const std::shared_ptr<operations_research::MPSolver>& 
 void Solver::transferMatrix(const std::shared_ptr<operations_research::MPSolver>& solver,
                             int const* indexRows,
                             int const* terms,
-                            int* indexCols,
-                            double* coeffs,
+                            int const* indexCols,
+                            double const* coeffs,
                             int nbRow)
 {
     const auto& variables = solver->variables();
@@ -311,7 +316,7 @@ void Solver::updateProblem<PROBLEME_A_RESOUDRE>(PROBLEME_A_RESOUDRE& problem,
     }
 }
 
-static int extractBasisStatus(operations_research::MPVariable& var)
+static int extractBasisStatus(const operations_research::MPVariable& var)
 {
     // get the variable value
     double solutionValue = var.solution_value();
@@ -342,7 +347,7 @@ static int extractBasisStatus(operations_research::MPVariable& var)
     }
 }
 
-static bool isSlackInBase(operations_research::MPConstraint& cnt)
+static bool isSlackInBase(const operations_research::MPConstraint& cnt)
 {
     // return true if the slack variable is in the base, false otherwise
     return cnt.basis_status() == MPSolver::BASIC;

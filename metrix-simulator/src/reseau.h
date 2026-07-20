@@ -39,7 +39,7 @@ void randomShuffle(RandomIt first, RandomIt last, Rand&& rand)
         return;
     }
     for (RandomIt i = first + 1; i != last; ++i) {
-        RandomIt j = first + rand((i - first) + 1);
+        RandomIt j = first + rand(static_cast<int>(i - first) + 1);
         if (i != j) {
             std::iter_swap(i, j);
         }
