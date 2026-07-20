@@ -879,14 +879,15 @@ int Calculer::ecrireContraintesDodu()
 
     // Perturbation deterministe des couts pour lever la degenerescence (optima alternatifs
     // de l'empilement et du delestage -> resultat solveur-dependant). Perturbation RELATIVE
-    // au cout (magnitudes de ~1e2 pour les groupes a ~1e4 pour le VOLL conso), deterministe
-    // par indice de variable, economiquement negligeable. Portee : groupes et consos
-    // uniquement (pas TD/HVDC). Appliquee une seule fois par variante, donc pas d'accumulation.
+    // au cout, croissante avec l'indice et normalisee par le nombre de variables perturbees.
+    // Portee : groupes et consos uniquement (pas TD/HVDC). Les couts etant reconstruits
+    // a chaque appel, pas d'accumulation entre les resolutions successives d'une meme variante.
     const double epsilonPerturbation = config::configuration().perturbationCout();
-    if (epsilonPerturbation > 0.0) {
-        const int finVarGroupesConsos = res_.nbVarGroupes_ + res_.nbVarConsos_;
+    const int finVarGroupesConsos = res_.nbVarGroupes_ + res_.nbVarConsos_;
+    if (epsilonPerturbation > 0.0 && finVarGroupesConsos > 0) {
+        const double pasPerturbation = epsilonPerturbation / finVarGroupesConsos;
         for (int numVar = 0; numVar < finVarGroupesConsos; ++numVar) {
-            pbCoutLineaire_[numVar] *= (1.0 + numVar * epsilonPerturbation);
+            pbCoutLineaire_[numVar] *= (1.0 + numVar * pasPerturbation);
         }
     }
 
