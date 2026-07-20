@@ -184,6 +184,10 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
     endif()
 endmacro()
 
+# Solver-independent tests: configuration or input validation failures and
+# pure load-flow runs that never reach a solver call. They run once, whatever
+# the solver backends compiled in.
+add_subdirectory(common)
 add_subdirectory(sirius)
 # The Xpress test suite is opt-in: FICO Xpress is a licensed product, so these
 # tests must never run in automated environments (CI). Licensed developers can

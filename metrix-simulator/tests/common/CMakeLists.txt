@@ -8,22 +8,16 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-# A test belongs to the xpress suite iff its execution reaches a solve;
-# solver-independent tests, which never reach a solve, live in tests/common
+# Solver-independent test suite: every test here fails during configuration or
+# input validation, or runs a pure load-flow, and therefore never reaches a
+# solver call. Tests that do reach a solve belong to the sirius and xpress
+# suites instead.
 
 set(MAIN_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(TEST_SOLVERCH xpress)
+set(TEST_SOLVERCH common)
 
-add_subdirectory(divers)
+add_subdirectory(config_validation)
 add_subdirectory(connexite)
-add_subdirectory(curatif)
 add_subdirectory(effacements)
-add_subdirectory(hvdc)
-add_subdirectory(td)
 add_subdirectory(groupes)
-add_subdirectory(load_flow)
-add_subdirectory(variables_couplees)
-add_subdirectory(seuils)
-add_subdirectory(variantes_regroupees)
-add_subdirectory(overload)
-add_subdirectory(LODF_PTDF)
+add_subdirectory(pertes)

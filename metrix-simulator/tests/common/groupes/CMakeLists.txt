@@ -8,19 +8,11 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-MESSAGE("Load shedding and curtainment tests...")
+MESSAGE("Generator tests (solver-independent)...")
 
-set(TEST_DIR_NAME effacements)
+set(TEST_DIR_NAME groupes)
 set(TEST_DIR ${MAIN_TEST_DIR}/${TEST_DIR_NAME})
 set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
-metrix_test("delestage_HR" 4)
-metrix_test("delestage_HR_cible" 4)
-metrix_test("delestage_preventif" 4)
-metrix_test("delestage_preventif_cible" 4)
-metrix_test("effacement_curatif" 8)
-metrix_test("effacement_batterie" 1)
-metrix_test("delestage_charges_negatives" 2)
-if(METRIX_RUN_ALL_TESTS)
-metrix_test_no_check("curatif_sans_preventif" 4) # order of display
-endif()
+metrix_test("defaut_groupes" 3)
+metrix_test_expect_failure("generateurs_pmin_pmax_invalides" 3)
