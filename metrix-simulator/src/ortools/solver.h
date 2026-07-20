@@ -19,6 +19,8 @@
 #  undef LOG
 #endif
 
+#include <metrix/log.h>
+
 #include "compute/isolver.h"
 #include "config/configuration.h"
 #include "config/constants.h"

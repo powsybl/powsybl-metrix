@@ -37,6 +37,16 @@ function(check_files files_ expected_files_)
     endforeach()
 endfunction()
 
+# Remove outputs from any previous run. The cleanup performed in the test
+# macros happens at CMake configure time only: between two `ctest` invocations,
+# stale out_* files from an earlier run could otherwise satisfy the comparison
+# even when the current run did not produce them.
+file(GLOB stale_output_files ${WORKING_DIR}/out_* ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/LODF_matrix.csv ${WORKING_DIR}/PTDF_matrix.csv)
+list(LENGTH stale_output_files stale_output_len)
+if(stale_output_len GREATER 0)
+    file(REMOVE ${stale_output_files})
+endif()
+
 if (WITH_LODF_PTDF)
     execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
 elseif(ALL_OUTPUTS)
