@@ -880,8 +880,9 @@ int Calculer::ecrireContraintesDodu()
     // Perturbation deterministe des couts pour lever la degenerescence (optima alternatifs
     // de l'empilement et du delestage -> resultat solveur-dependant). Perturbation RELATIVE
     // au cout, croissante avec l'indice et normalisee par le nombre de variables perturbees.
-    // Portee : groupes et consos uniquement (pas TD/HVDC). Les couts etant reconstruits
-    // a chaque appel, pas d'accumulation entre les resolutions successives d'une meme variante.
+    // Portee : groupes et consos uniquement (pas TD/HVDC), et phase HORS RESEAU uniquement :
+    // fixerProdSansReseau() (et ajoutRedispatchCostOffsetConsos() si les offsets HR/AR
+    // different) reecrivent ensuite ces couts pour la phase AR sans perturbation.
     const double epsilonPerturbation = config::configuration().perturbationCout();
     const int finVarGroupesConsos = res_.nbVarGroupes_ + res_.nbVarConsos_;
     if (epsilonPerturbation > 0.0 && finVarGroupesConsos > 0) {

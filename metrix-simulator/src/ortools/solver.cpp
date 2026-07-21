@@ -12,6 +12,7 @@
 #include "err/IoDico.h"
 #include "err/error.h"
 
+#include <cmath>
 #include <iostream>
 
 using namespace operations_research;
@@ -90,6 +91,12 @@ void Solver::solve(PROBLEME_SIMPLEXE* problem)
 
     if (status == operations_research::MPSolver::ResultStatus::OPTIMAL
         || status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
+        if (status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
+            // Arret premature (limite d'iterations/temps du backend) avec une solution
+            // admissible : on la restitue comme Sirius le ferait, mais on trace car la
+            // solution n'est pas prouvee optimale.
+            LOG_ALL(warning) << "LP solve stopped before proven optimality, using the feasible solution";
+        }
         problem->ExistenceDUneSolution = OUI_SPX;
         updateProblem(*problem, solver_);
     } else {
@@ -134,11 +141,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
     auto solver = makeMPSolver<PROBLEME_SIMPLEXE>();
 
     // Create the variables and set objective cost.
+    // NB : pour un PROBLEME_SIMPLEXE, le champ TypeDeVariable contient en realite
+    // les types de borne (cf. le renseignement de pb_ dans calculmacrofonctions.cpp).
     transferVariables(solver,
                       problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables,
-                      problem.X, problem.TypeDeVariable,
-                      /*typeDeVariable=*/nullptr,
-                      /*useHint=*/false);
+                      problem.X, problem.TypeDeVariable);
 
     // Create constraints and set coefs
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
@@ -159,15 +166,8 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
                                int nbVar,
                                double const* xValues,
                                int const* typeDeBorneDeLaVariable,
-                               int const* typeDeVariable,
-                               bool useHint)
+                               int const* typeDeVariable)
 {
-    // Store current X values to set solution hint (allocated lazily when useHint is active)
-    std::vector<std::pair<const operations_research::MPVariable*, double>> hint;
-    if (useHint && nullptr != xValues) {
-        hint.reserve(nbVar);
-    }
-
     MPObjective* const objective = solver->MutableObjective();
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
         std::ostringstream oss;
@@ -211,19 +211,10 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
         operations_research::MPVariable* x(nullptr);
         if (typeDeVariable != nullptr && typeDeVariable[idxVar] == ENTIER) {
             x = solver->MakeIntVar(min_l, max_l, oss.str());
-            objective->SetCoefficient(x, costs[idxVar]);
         } else {
             x = solver->MakeNumVar(min_l, max_l, oss.str());
-            objective->SetCoefficient(x, costs[idxVar]);
         }
-
-        if (useHint && nullptr != xValues) {
-            hint.emplace_back(x, xValues[idxVar]);
-        }
-    }
-
-    if (useHint && nullptr != xValues) {
-        solver->SetHint(hint);
+        objective->SetCoefficient(x, costs[idxVar]);
     }
 }
 
@@ -242,6 +233,12 @@ void Solver::transferRows(const std::shared_ptr<operations_research::MPSolver>& 
             bMax = rhs[idxRow];
         } else if (sens[idxRow] == '>') {
             bMin = rhs[idxRow];
+        } else {
+            // Un sens inconnu produirait silencieusement une contrainte libre
+            // (-inf, +inf) : mieux vaut echouer explicitement.
+            std::ostringstream ss;
+            ss << "Unknown constraint sense '" << sens[idxRow] << "' at row " << idxRow;
+            throw ErrorI(ss.str());
         }
         std::ostringstream oss;
         oss << "c" << idxRow;
@@ -324,9 +321,9 @@ static int extractBasisStatus(const operations_research::MPVariable& var)
     MPSolver::BasisStatus ortoolsBasisStatus = var.basis_status();
     switch(ortoolsBasisStatus) {
         case MPSolver::FREE: {
-            if (fabs(var.lb() - solutionValue) < config::constants::epsilon) {
+            if (std::fabs(var.lb() - solutionValue) < config::constants::epsilon) {
                 return HORS_BASE_SUR_BORNE_INF;
-            } else if (fabs(var.ub() - solutionValue) < config::constants::epsilon) {
+            } else if (std::fabs(var.ub() - solutionValue) < config::constants::epsilon) {
                 return HORS_BASE_SUR_BORNE_SUP;
             }
             return HORS_BASE_A_ZERO;

@@ -65,8 +65,7 @@ private:
                                   int nbVar,
                                   double const* xValues,
                                   int const* typeDeBorneDeLaVariable,
-                                  int const* typeDeVariable = nullptr,
-                                  bool useHint = false);
+                                  int const* typeDeVariable = nullptr);
 
     static void transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
                              double const* rhs,
@@ -91,7 +90,7 @@ private:
         auto problemType = type<PROBLEM>();
         checkSolverAvailability(problemType);
         auto solver = std::make_shared<operations_research::MPSolver>(solverName_, problemType);
-        if (specific_params_.size() > 0 && !solver->SetSolverSpecificParametersAsString(specific_params_)) {
+        if (!specific_params_.empty() && !solver->SetSolverSpecificParametersAsString(specific_params_)) {
             static bool warned = false; // avoid repeating the warning on every (micro-iteration) solve
             if (!warned) {
                 LOG_ALL(warning) << "SPECIFICSOLVERPARAMS rejected by the solver backend: '" << specific_params_

@@ -50,7 +50,13 @@ ctest --test-dir powsybl-metrix/metrix-simulator/build
 > because FICO Xpress is a licensed product: it must never run in
 > automated environments. Developers with a licensed Xpress installation
 > can enable it by configuring with `-D METRIX_RUN_XPRESS_TESTS=ON`
-> (in addition to `USE_XPRESS=ON`).
+> (in addition to `USE_XPRESS=ON`). The per-category `CMakeLists.txt`
+> files under `tests/xpress/` are symbolic links to their `tests/sirius/`
+> counterparts (single source of truth for test registrations): on
+> Windows, the repository must be cloned with `git config core.symlinks
+> true` (and the *Developer Mode* or admin rights required by Windows for
+> symlink creation), otherwise CMake will fail on these files when the
+> Xpress suite is enabled.
 
 > **Note**: building external dependencies includes downloading and
 > compiling OR-Tools along with its own dependencies (abseil, protobuf,
