@@ -205,7 +205,7 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
         for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
             grp_melanges.push_back(grpIt->second);
         }
-        std::random_shuffle(grp_melanges.begin(), grp_melanges.end(), &Reseau::myRandom);
+        randomShuffle(grp_melanges.begin(), grp_melanges.end(), &Reseau::myRandom);
     }
 
     for (int i = 0; i < res_.nbGroupes_; ++i) {
@@ -875,6 +875,21 @@ int Calculer::ecrireContraintesDodu()
     status = ecrireContraintesDeBordLignesCC();
     if (status != METRIX_PAS_PROBLEME) {
         return METRIX_PROBLEME;
+    }
+
+    // Perturbation deterministe des couts pour lever la degenerescence (optima alternatifs
+    // de l'empilement et du delestage -> resultat solveur-dependant). Perturbation RELATIVE
+    // au cout, croissante avec l'indice et normalisee par le nombre de variables perturbees.
+    // Portee : groupes et consos uniquement (pas TD/HVDC), et phase HORS RESEAU uniquement :
+    // fixerProdSansReseau() (et ajoutRedispatchCostOffsetConsos() si les offsets HR/AR
+    // different) reecrivent ensuite ces couts pour la phase AR sans perturbation.
+    const double epsilonPerturbation = config::configuration().perturbationCout();
+    const int finVarGroupesConsos = res_.nbVarGroupes_ + res_.nbVarConsos_;
+    if (epsilonPerturbation > 0.0 && finVarGroupesConsos > 0) {
+        const double pasPerturbation = epsilonPerturbation / finVarGroupesConsos;
+        for (int numVar = 0; numVar < finVarGroupesConsos; ++numVar) {
+            pbCoutLineaire_[numVar] *= (1.0 + numVar * pasPerturbation);
+        }
     }
 
     return METRIX_PAS_PROBLEME;

@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -8,9 +8,22 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-set(MAIN_TEST_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+if(USE_XPRESS)
+    # XPRESS_ROOT is only auto-detected (CMake variable or environment) by the
+    # external superbuild; resolve it here as well, otherwise the test
+    # environment below would silently expand to "LD_LIBRARY_PATH=/lib".
+    if(NOT XPRESS_ROOT AND DEFINED ENV{XPRESS_ROOT})
+        set(XPRESS_ROOT $ENV{XPRESS_ROOT})
+    endif()
+    if(NOT XPRESS_ROOT)
+        message(WARNING "USE_XPRESS is ON but XPRESS_ROOT is not set: tests will not find libxprs.so unless it is already on LD_LIBRARY_PATH")
+    endif()
+    # Prepend to the caller's LD_LIBRARY_PATH instead of overwriting it
+    set(METRIX_TEST_LD_LIBRARY_PATH "${XPRESS_ROOT}/lib:$ENV{LD_LIBRARY_PATH}")
+endif()
 
 macro(metrix_test TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
@@ -18,7 +31,7 @@ macro(metrix_test TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+    add_test(NAME ${FULL_TEST_NAME} COMMAND ${CMAKE_COMMAND}
         -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
@@ -28,11 +41,14 @@ macro(metrix_test TEST_NAME NB_TESTS)
         -DALL_OUTPUTS=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
 endmacro()
 
 macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
@@ -40,7 +56,7 @@ macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+    add_test(NAME ${FULL_TEST_NAME} COMMAND  ${CMAKE_COMMAND}
         -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
@@ -50,11 +66,14 @@ macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
         -DALL_OUTPUTS=1
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
 endmacro()
 
 macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
@@ -62,7 +81,7 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+    add_test(NAME ${FULL_TEST_NAME} COMMAND  ${CMAKE_COMMAND}
         -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
@@ -72,42 +91,75 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
         -DALL_OUTPUTS=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    message(AUTHOR_WARNING "Only checks on output results files performed: metrixOut.txt result file of test \"" ${TEST_NAME} "\" must be checked manually")
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
+    message(AUTHOR_WARNING "Only checks on output results files performed: metrixOut.txt result file of test \"" ${FULL_TEST_NAME} "\" must be checked manually")
 endmacro()
 
 # This macro defines the test only by launching the metrix computation, without checking the outputs
 # Used in case the order in the output file is not garanteed between two runs at the same configuration
 macro(metrix_test_no_check TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
     list(LENGTH TEST_OUTPUT_FILES RES_LEN)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${TEST_NAME} "\" must be checked manually")
+    add_test(NAME ${FULL_TEST_NAME} COMMAND  metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
+    set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
+    message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${FULL_TEST_NAME} "\" must be checked manually")
+endmacro()
+
+# This macro defines a test that must fail while validating the fort.json
+# configuration. The expected error message is checked on the process output:
+# a configuration error is thrown before the logger is configured, so main()
+# prints it on stderr (see the outer catch in metrix.cpp). With
+# PASS_REGULAR_EXPRESSION set, the test passes if and only if the message is
+# emitted, whatever the exit code.
+macro(metrix_test_config_error TEST_NAME EXPECTED_MESSAGE)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
+    set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
+    file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
+    list(LENGTH TEST_OUTPUT_FILES RES_LEN)
+    if(RES_LEN GREATER 0)
+        file(REMOVE ${TEST_OUTPUT_FILES})
+    endif()
+    add_test(NAME ${FULL_TEST_NAME} COMMAND metrix-simulator metrixOut.txt VariantSet.csv out 0 1 WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY PASS_REGULAR_EXPRESSION ${EXPECTED_MESSAGE})
+    set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
 endmacro()
 
 # This macro defines a test that is expected to fail (non-zero return code),
 # e.g. when the input configuration is intentionally invalid and must be rejected.
 macro(metrix_test_expect_failure TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
     list(LENGTH TEST_OUTPUT_FILES RES_LEN)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    set_property(TEST ${TEST_NAME} PROPERTY WILL_FAIL TRUE)
+    add_test(NAME ${FULL_TEST_NAME} COMMAND metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
+    set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY WILL_FAIL TRUE)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
 endmacro()
 
 macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
     file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
@@ -115,7 +167,7 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
     if(RES_LEN GREATER 0)
         file(REMOVE ${TEST_OUTPUT_FILES})
     endif()
-    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+    add_test(NAME ${FULL_TEST_NAME} COMMAND  ${CMAKE_COMMAND}
         -DEXE=$<TARGET_FILE:metrix-simulator>
         -DWORKING_DIR=${WORKING_DIR}
         -DEXPECTED_DIR=${EXPECTED_DIR}
@@ -125,21 +177,23 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
         -DALL_OUTPUTS=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
-    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
-    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
+    set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    if(USE_XPRESS)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    endif()
 endmacro()
 
-add_subdirectory(divers)
-add_subdirectory(connexite)
-add_subdirectory(curatif)
-add_subdirectory(effacements)
-add_subdirectory(hvdc)
-add_subdirectory(td)
-add_subdirectory(groupes)
-add_subdirectory(load_flow)
-add_subdirectory(pertes)
-add_subdirectory(variables_couplees)
-add_subdirectory(seuils)
-add_subdirectory(variantes_regroupees)
-add_subdirectory(overload)
-add_subdirectory(LODF_PTDF)
+# Solver-independent tests: configuration or input validation failures and
+# pure load-flow runs that never reach a solver call. They run once, whatever
+# the solver backends compiled in.
+add_subdirectory(common)
+add_subdirectory(sirius)
+# The Xpress test suite is opt-in: FICO Xpress is a licensed product, so these
+# tests must never run in automated environments (CI). Licensed developers can
+# enable them locally with -D METRIX_RUN_XPRESS_TESTS=ON (requires USE_XPRESS=ON).
+if (USE_XPRESS AND METRIX_RUN_XPRESS_TESTS)
+    add_subdirectory(xpress)
+elseif (METRIX_RUN_XPRESS_TESTS)
+    message(WARNING "METRIX_RUN_XPRESS_TESTS is ON but USE_XPRESS is OFF: the Xpress test suite will not be added")
+endif()

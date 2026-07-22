@@ -1,5 +1,5 @@
 
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -7,7 +7,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 function(check_file file expected_file)
     execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files --ignore-eol ${file} ${expected_file}
@@ -37,18 +37,30 @@ function(check_files files_ expected_files_)
     endforeach()
 endfunction()
 
-if (WITH_LODF_PTDF)
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF  RESULT_VARIABLE cmd_result)
-elseif(ALL_OUTPUTS)
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --all-outputs  RESULT_VARIABLE cmd_result)
-else()
-    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  RESULT_VARIABLE cmd_result)
+# Remove outputs from any previous run. The cleanup performed in the test
+# macros happens at CMake configure time only: between two `ctest` invocations,
+# stale out_* files from an earlier run could otherwise satisfy the comparison
+# even when the current run did not produce them.
+file(GLOB stale_output_files ${WORKING_DIR}/out_* ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/LODF_matrix.csv ${WORKING_DIR}/PTDF_matrix.csv)
+list(LENGTH stale_output_files stale_output_len)
+if(stale_output_len GREATER 0)
+    file(REMOVE ${stale_output_files})
 endif()
+
+if (WITH_LODF_PTDF)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
+elseif(ALL_OUTPUTS)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --all-outputs WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
+else()
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  WORKING_DIRECTORY ${WORKING_DIR} RESULT_VARIABLE cmd_result)
+endif()
+
 if(cmd_result)
     message(FATAL_ERROR "Error running: ${EXE} returns " ${cmd_result})
 endif()
 file(GLOB test_output_files ${WORKING_DIR}/out_*)
 file(GLOB expected_output_files ${EXPECTED_DIR}/out_*)
+
 check_files("${test_output_files}" "${expected_output_files}")
 
 if(ALL_RESULTS)

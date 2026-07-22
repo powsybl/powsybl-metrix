@@ -225,12 +225,17 @@ $> cd powsybl-metrix/metrix-simulator
 ```
 
 2 - Build the project, with 3rd parties
-First build the 3rd parties
+First build the 3rd parties. This step downloads and compiles SuiteSparse
+and Sirius, and optionally OR-Tools: pass `-DUSE_ORTOOLS=ON` to build it
+(default OFF, mirroring the executable flag below). When OR-Tools is built,
+its Xpress backend is enabled automatically if `XPRESS_ROOT` is set
+(environment variable or `-D` flag), otherwise OR-Tools is built without
+Xpress.
 ```
 $> mkdir build
 $> mkdir build/external
 $> cd build/external
-$> cmake ../../external -DCMAKE_BUILD_TYPE=<BUILD_TYPE_3PARTIES>
+$> cmake ../../external -DCMAKE_BUILD_TYPE=<BUILD_TYPE_3PARTIES> [-DUSE_ORTOOLS=ON [-DXPRESS_ROOT=<XPRESS_DIR>]]
 $> cmake --build .
 ```
 
@@ -241,9 +246,13 @@ $> cmake .. -DCMAKE_INSTALL_PREFIX=<PREFIX> -DCMAKE_BUILD_TYPE=<BUILD_TYPE>
 $> cmake --build . --target install
 ```
 
-The following CMAKE options can be set for the executable configuration:
-- USE_SIRIUS_SHARED (default = OFF): If active, projects will link using the shared library of sirius solver instead of the static library
-- METRIX_RUN_ALL_TESTS (default = ON): If inactive, projects will execute a reduced scope of tests
+The following CMake options can be set for the executable configuration:
+- `USE_ORTOOLS` (default = OFF): enable the OR-Tools Xpress backend. When OFF, the binary is Sirius-only, identical to the legacy production version. The third parties must have been built with `-DUSE_ORTOOLS=ON` as well.
+- `USE_XPRESS` (default = OFF, requires `USE_ORTOOLS=ON`): authorize `SOLVERCH=6` at runtime. Must reflect whether OR-Tools was built with the Xpress backend.
+- `USE_SIRIUS_SHARED` (default = OFF): if active, link Sirius as a shared library instead of static.
+- `METRIX_RUN_ALL_TESTS` (default = ON): if inactive, projects will execute a reduced scope of tests.
+
+Refer to `metrix-simulator/README.md` for runtime solver selection (`SOLVERCH`/`PCSOLVERCH`) and the full build documentation.
 
 ##### Contributing
 

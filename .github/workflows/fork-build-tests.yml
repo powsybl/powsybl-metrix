@@ -127,6 +127,7 @@ jobs:
       - name: Configure 3rd parties
         run: >
           cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+          -DUSE_ORTOOLS=ON
 
       - name: Build 3rd parties
         run: >
@@ -138,6 +139,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -DCODE_COVERAGE=TRUE
           -DMETRIX_RUN_ALL_TESTS=OFF
+          -DUSE_ORTOOLS=ON
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build

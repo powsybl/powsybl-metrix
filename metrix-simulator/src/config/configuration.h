@@ -32,6 +32,13 @@ class Configuration
 {
 public:
     enum class ComputationType { OPF = 0, LOAD_FLOW, OPF_WITHOUT_REDISPATCH, OPF_WITH_OVERLOAD };
+    // Sirius is the historical backend (handled outside OR-Tools); Xpress is the only
+    // OR-Tools backend we support. The numeric values are kept stable (they appear as
+    // SOLVERCH/PCSOLVERCH in the input files) so this list is intentionally not renumbered.
+    enum class SolverChoice {
+        SIRIUS = 5,
+        XPRESS = 6, // Must always be the last of the list
+    };
 
 public:
     /**
@@ -187,7 +194,11 @@ public:
     int adequacyCostOffset() const { return adequacy_cost_offset_; }
     int redispatchCostOffset() const { return redispatch_cost_offset_; }
     int costEcart() const { return cost_ecart_; }
+    SolverChoice solverChoice() const { return solver_choice_; }
+    SolverChoice pcSolverChoice() const { return pc_solver_choice_; }
+    const std::string& specificSolverParams() const { return specific_solver_params_; }
     double noiseCost() const { return noise_cost_; }
+    double perturbationCout() const { return perturbation_cout_; }
 
     unsigned int lostLoadDetailedMax() const { return lost_load_detailed_max_; }
 
@@ -353,7 +364,11 @@ private:
     int adequacy_cost_offset_;
     int redispatch_cost_offset_;
     int cost_ecart_;
+    SolverChoice solver_choice_;
+    SolverChoice pc_solver_choice_;
+    std::string specific_solver_params_;
     double noise_cost_;
+    double perturbation_cout_;
 
     unsigned int lost_load_detailed_max_;
 

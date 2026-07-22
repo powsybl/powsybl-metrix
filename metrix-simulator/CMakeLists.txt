@@ -1,4 +1,4 @@
-# 
+#
 # Copyright (c) 2021, RTE (http://www.rte-france.com)
 # See AUTHORS.txt
 # All rights reserved.
@@ -6,17 +6,24 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, you can obtain one at http://mozilla.org/MPL/2.0/.
 # SPDX-License-Identifier: MPL-2.0
-# 
+#
 
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 include(CMakePackageConfigHelpers)
 
-project(MetrixSimulator 
+project(MetrixSimulator
     VERSION 7.4.0
     LANGUAGES C CXX)
 
+cmake_policy(SET CMP0028 NEW) # Fatal error if "::" link is not imported / alias target
 cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
+
+include(CMakeDependentOption)
+include(InstallLib)
 
 message("Build directory : ${CMAKE_BINARY_DIR}")
 message("Source directory : ${CMAKE_SOURCE_DIR}")
@@ -24,8 +31,26 @@ message("Source directory : ${CMAKE_SOURCE_DIR}")
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
-set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
-set(INSTALL_CMAKE_DIR cmake CACHE PATH "Installation directory for cmake files")
+option(USE_ORTOOLS "Toggle or-tools usage" OFF) # disable by default
+cmake_dependent_option(USE_XPRESS "Use XPress solver (must be same as 3rd party compilation)" OFF "USE_ORTOOLS" OFF) # not using xpress without ortools
+option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
+
+if(USE_ORTOOLS)
+    message(VERBOSE "Use ortools")
+    if(USE_XPRESS)
+        message(VERBOSE "Use xpress with ortools")
+    else()
+        message(VERBOSE "Not using xpress")
+    endif()
+else()
+    message(VERBOSE "Not using ortools")
+endif()
+
+if(USE_SIRIUS_SHARED)
+    message(VERBOSE "Use shared library for sirius solver")
+else()
+    message(VERBOSE "Use static library for sirius solver")
+endif()
 
 if(MSVC)
   add_definitions(-D_WIN32_WINNT=0x0A00)
@@ -46,11 +71,12 @@ else()
   set(CMAKE_C_FLAGS_RELEASE "-O3")
 endif(MSVC)
 
+# Boost
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
 
-option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
+# Sirius
 if (USE_SIRIUS_SHARED)
     set(SIRIUS_NAME sirius_solver)
 else()
@@ -60,6 +86,13 @@ endif()
 set(${SIRIUS_NAME}_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/sirius_solver CACHE PATH "Path where a Sirius installation already exists")
 find_package(${SIRIUS_NAME} REQUIRED)
 
+# Ortools
+set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
+if(USE_ORTOOLS)
+    set(ortools_ROOT ${CMAKE_CURRENT_BINARY_DIR}/external/ortools CACHE PATH "Path where an OR-Tools installation already exists")
+    find_package(ortools CONFIG REQUIRED)
+endif()
+
 # SUITESPARSE
 set(SUITESPARSE_HOME ${CMAKE_CURRENT_BINARY_DIR}/external/suitesparse CACHE PATH "Path where an SuiteSparse installation already exists")
 find_package(SuiteSparse REQUIRED)
@@ -68,7 +101,7 @@ add_subdirectory(log)
 
 message(STATUS "METRIX")
 
-set(METRIX_HEADERS 
+set(METRIX_HEADERS
         src/calcul.h
         src/err/error.h
         src/parametres.h
@@ -92,17 +125,17 @@ set(METRIX_HEADERS
         src/margin_variations_compute.h
     )
 
-set(METRIX_SOURCES 
+set(METRIX_SOURCES
         src/calculmacrofonctions.cpp
-        src/err/error.cpp 
-        src/reseau.cpp 
-        src/calculrepports.cpp 
-        src/calculecrirecontraintesdodu.cpp  
-        src/connexite.cpp             
-        src/err/IoDico.cpp                                 
+        src/err/error.cpp
+        src/reseau.cpp
+        src/calculrepports.cpp
+        src/calculecrirecontraintesdodu.cpp
+        src/connexite.cpp
+        src/err/IoDico.cpp
         src/calculeEmpilementGroupes.cpp
         src/metrix.cpp
-        src/metrix2assess.cpp 
+        src/metrix2assess.cpp
         src/config/configuration.cpp
         src/config/input_configuration.cpp
         src/config/variant_configuration.cpp
@@ -115,17 +148,27 @@ set(METRIX_SOURCES
         src/margin_variations_compute.cpp
     )
 
+if(USE_ORTOOLS)
+    list(APPEND METRIX_SOURCES
+    src/ortools/solver.cpp
+    )
+    list(APPEND METRIX_HEADERS
+    src/ortools/solver.h
+    )
+endif()
+
 set(target "metrix-simulator")
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/cmake/version.h.in ${CMAKE_CURRENT_SOURCE_DIR}/src/config/version.h)
 
-add_executable(${target} 
+add_executable(${target}
 ${METRIX_HEADERS} ${METRIX_SOURCES})
 
 target_include_directories(${target}
     PRIVATE
     metrix::log
     src
+
     ${SIRIUS_NAME}
     SuiteSparse::SuiteSparse_KLU
     SuiteSparse::SuiteSparse_AMD
@@ -137,6 +180,7 @@ target_include_directories(${target}
 target_link_libraries(${target}
     PRIVATE
     metrix::log
+
     ${SIRIUS_NAME}
     SuiteSparse::SuiteSparse_KLU
     SuiteSparse::SuiteSparse_AMD
@@ -147,25 +191,43 @@ target_link_libraries(${target}
     $<$<BOOL:${MSVC}>:msvcrt.lib>
 )
 
+if(USE_ORTOOLS)
+    target_compile_definitions(${target}
+        PRIVATE
+        USE_ORTOOLS
+    )
+    target_include_directories(${target}
+        PRIVATE
+        ortools::ortools
+    )
+    target_link_libraries(${target}
+        PRIVATE
+        ortools::ortools
+    )
+    install_lib(ortools::ortools)
+endif()
+
+if(USE_XPRESS)
+    # XPRESS is consumed transitively through ortools::ortools, which was built
+    # against libxprs at its own link step. metrix-simulator does not need to
+    # link libxprs directly; this compile definition only signals to the C++
+    # configuration validation layer that the OR-Tools build supports XPRESS.
+    # libxprs.so must be reachable at runtime (LD_LIBRARY_PATH).
+    target_compile_definitions(${target}
+        PRIVATE
+        USE_XPRESS
+    )
+endif()
+
 if (USE_SIRIUS_SHARED)
     # Export sirius library if using shared
-    get_target_property(sirius_PATH_LIB_RELEASE sirius_solver IMPORTED_LOCATION_RELEASE)
-    get_target_property(sirius_PATH_LIB_DEBUG sirius_solver IMPORTED_LOCATION_DEBUG)
-    if (EXISTS ${sirius_PATH_LIB_RELEASE})
-        set(sirius_PATH_LIB ${sirius_PATH_LIB_RELEASE})
-    elseif(EXISTS ${sirius_PATH_LIB_DEBUG})
-        set(sirius_PATH_LIB ${sirius_PATH_LIB_DEBUG})
-    else()
-        # shouldn't happen if find_package worked
-        message(FATAL_ERROR "sirius_solver imported location for debug or release was not found: check external installation")
-    endif()
-    install(FILES ${sirius_PATH_LIB} DESTINATION lib)
+    install_lib(sirius_solver)
 endif()
 
 set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
     message(STATUS "CODE COVERAGE")
-	set(CMAKE_BUILD_TYPE "Debug")
+    set(CMAKE_BUILD_TYPE "Debug")
     list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
     include(cmake/CodeCoverage)
     CODE_COVERAGE(NAME code-coverage
@@ -184,6 +246,7 @@ install(EXPORT targets
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/etc DESTINATION .)
 
 option(METRIX_RUN_ALL_TESTS "Run reduced scope of tests" ON)
+option(METRIX_RUN_XPRESS_TESTS "Enable the Xpress TNR test suite (requires a licensed FICO Xpress installation)" OFF)
 
 enable_testing()
 add_subdirectory(tests)
