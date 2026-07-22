@@ -417,181 +417,187 @@ int Calculer::resolutionProbleme()
 }
 
 
+int Calculer::resoudrePNE(const std::shared_ptr<Variante>& varianteCourante)
+{
+    // Comptage des variables entières actives
+    int nbVarEntieresActives = 0;
+    for (int i = 0; i < pbNombreDeVariables_; ++i) {
+        if (pbTypeDeVariable_[i] == ENTIER && pbTypeDeBorneDeLaVariable_[i] != VARIABLE_FIXE) {
+            nbVarEntieresActives++;
+        }
+    }
+    LOG(debug) << "MIP stats: variante " << varianteCourante->num_ << ", micro-iteration " << numMicroIteration_
+               << ", nb variables = " << pbNombreDeVariables_ << ", nb contraintes = " << pbNombreDeContraintes_
+               << ", nb variables entieres actives = " << nbVarEntieresActives;
+    LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineairePNE");
+
+    pbCoutsMarginauxDesContraintes_.resize(pbNombreDeContraintes_);
+
+    // Options du solveur
+    //------------------
+    pbPNE_.AffichageDesTraces = TRACES_PNE;
+    pbPNE_.SortirLesDonneesDuProbleme = config::inputConfiguration().exportMPSFile() ? OUI_PNE
+                                                                                     : NON_PNE; // fichier mps
+    pbPNE_.FaireDuPresolve = PNE_PRESOLVE; /* si NON : attention a ne pas mettre de colonne vide ou avec que des 0.*/
+    pbPNE_.TempsDExecutionMaximum = config::configuration().timeMaxPne(); // (0 illimité, sinon en secondes)
+    pbPNE_.NombreMaxDeSolutionsEntieres = -1;
+    pbPNE_.ToleranceDOptimalite = 1.e-4; // En %
+
+    // valeur des variables du problemes a resoudre
+    //--------------------------------------------
+    pbPNE_.NombreDeVariables = pbNombreDeVariables_;
+    pbPNE_.TypeDeVariable = &pbTypeDeVariable_[0];
+    pbPNE_.TypeDeBorneDeLaVariable = &pbTypeDeBorneDeLaVariable_[0];
+    pbPNE_.X = &pbX_[0];
+    pbPNE_.Xmax = &pbXmax_[0];
+    pbPNE_.Xmin = &pbXmin_[0];
+    pbPNE_.CoutLineaire = &pbCoutLineaire_[0];
+    pbPNE_.NombreDeContraintes = pbNombreDeContraintes_;
+    pbPNE_.SecondMembre = &pbSecondMembre_[0];
+    pbPNE_.Sens = &pbSens_[0];
+    pbPNE_.IndicesDebutDeLigne = &pbIndicesDebutDeLigne_[0];
+    pbPNE_.NombreDeTermesDesLignes = &pbNombreDeTermesDesLignes_[0];
+    pbPNE_.CoefficientsDeLaMatriceDesContraintes = &pbCoefficientsDeLaMatriceDesContraintes_[0];
+    pbPNE_.IndicesColonnes = &pbIndicesColonnes_[0];
+    pbPNE_.VariablesDualesDesContraintes = &pbCoutsMarginauxDesContraintes_[0];
+    pbPNE_.AlgorithmeDeResolution = SIMPLEXE;
+
+    // Resolution du probleme
+    //----------------------
+    auto startTime = std::chrono::high_resolution_clock::now();
+    solver_pne_->solve(&pbPNE_);
+    auto endTime = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+    LOG(debug) << "MIP solve time: variante " << varianteCourante->num_ << ", micro-iteration " << numMicroIteration_
+               << ", " << duration.count() << " ms"
+               << " (nb var entieres actives = " << nbVarEntieresActives << ")";
+    pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
+
+    if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
+        || pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE_MAIS_QUELQUES_CONTRAINTES_SONT_VIOLEES
+        || pbExistenceDUneSolution_ == ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE) {
+        LOG_ALL(info) << err::ioDico().msg(
+            "INFOSolOptTrouve", c_fmt("%d", varianteCourante->num_), c_fmt("%d", pbExistenceDUneSolution_));
+    } else if (pbExistenceDUneSolution_ == PROBLEME_INFAISABLE
+               || pbExistenceDUneSolution_ == PAS_DE_SOLUTION_TROUVEE) {
+        LOG_ALL(info) << err::ioDico().msg("INFOPasDeSol", c_fmt("%d", varianteCourante->num_));
+        return METRIX_PAS_SOLUTION;
+    } else {
+        return METRIX_PROBLEME;
+    }
+
+    // affichage de la fonction cout
+    printFctObj(false);
+
+    return METRIX_PAS_PROBLEME;
+}
+
+
+int Calculer::resoudreSimplexe(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante)
+{
+    LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineaireSPX");
+
+    for (int i = 0; i < pbNombreDeVariables_; ++i) {
+        if (pbXmin_[i] > pbXmax_[i] + config::constants::acceptable_diff) {
+            LOG(debug) << i << " probleme Xmin (" << pbXmin_[i] << ") > xmax (" << pbXmax_[i] << ")";
+        }
+    }
+
+    pbCoutsMarginauxDesContraintes_.resize(pbNombreDeContraintes_);
+    pbComplementDeLaBase_.resize(pbNombreDeContraintes_);
+    pbCoutsReduits_.resize(pbNombreDeVariables_);
+
+    // definition des paramaitres de pb qui ne changent pas en fonction de la variante et de numMicroIteration_
+
+    pb_.TypeDePricing = PRICING_STEEPEST_EDGE;  /*PRICING_DANTZIG()*/
+    pb_.FaireDuScaling = OUI_SPX;               // Vaut OUI_SPX ou NON_SPX
+    pb_.StrategieAntiDegenerescence = AGRESSIF; // Vaut AGRESSIF ou PEU_AGRESSIF
+    pb_.NombreMaxDIterations = -1;              // si i < 0 , alors le simplexe prendre sa valeur par defaut
+    pb_.DureeMaxDuCalcul = -1;                  // si i < 0 , alors le simplexe prendre sa valeur par defaut
+    pb_.CoutLineaire = &pbCoutLineaire_[0];
+    pb_.X = &pbX_[0];
+    pb_.Xmin = &pbXmin_[0];
+    pb_.Xmax = &pbXmax_[0];
+    pb_.NombreDeVariables = pbNombreDeVariables_;
+    pb_.TypeDeVariable = &pbTypeDeBorneDeLaVariable_[0]; //&pbTypeDeVariable_[0];
+    pb_.NombreDeContraintes = pbNombreDeContraintes_;
+    pb_.IndicesDebutDeLigne = &pbIndicesDebutDeLigne_[0];
+    pb_.NombreDeTermesDesLignes = &pbNombreDeTermesDesLignes_[0];
+    pb_.IndicesColonnes = &pbIndicesColonnes_[0];
+    pb_.CoefficientsDeLaMatriceDesContraintes = &pbCoefficientsDeLaMatriceDesContraintes_[0];
+    pb_.Sens = &pbSens_[0];
+    pb_.SecondMembre = &pbSecondMembre_[0];
+    pb_.ChoixDeLAlgorithme = SPX_DUAL;
+
+    pb_.LibererMemoireALaFin = OUI_SPX /*OUI_SPX*/; // attention ca libere problemeSpx
+    pb_.CoutsMarginauxDesContraintes
+        = &pbCoutsMarginauxDesContraintes_[0]; // size = nb_contraintes + nb_coupes  ettention
+    pb_.CoutsReduits = &pbCoutsReduits_[0];    // size = nb_variables
+    pb_.AffichageDesTraces = TRACES_PNE /*NON_SPX*/;
+    pb_.CoutMax = -1;
+    pb_.UtiliserCoutMax = NON_SPX;
+    // resoudre le probleme et definition des parametres de pb qui changent en fonction de variante et de
+    // numMicroIteration_
+
+
+    pb_.BCoupes = nullptr;                          /*&pbBCoupes_[0];*/
+    pb_.PositionDeLaVariableDEcartCoupes = nullptr; /*&pbPositionDeLaVariableDEcartCoupes_[0];*/
+    pb_.MdebCoupes = nullptr;                       /*&pbMdebCoupes_[0];*/
+    pb_.NbTermCoupes = nullptr;                     /*&pbNbTermCoupes_[0];*/
+    pb_.NuvarCoupes = nullptr;                      /*&pbNuvarCoupes_[0];*/
+    pb_.ACoupes = nullptr;                          /*&pbACoupes_[0];*/
+
+    pb_.Contexte = SIMPLEXE_SEUL;
+    pb_.BaseDeDepartFournie = NON_SPX;                            // OUI_SPX ;//(pas de demarrage a chaud!!)
+    pb_.NombreDeContraintesCoupes = pbNombreDeContraintesCoupes_; // nombre de coupes
+    pb_.PositionDeLaVariable = &pbPositionDeLaVariable_[0];       // size = nb_variables (demarage a chaud!!)
+    pb_.NbVarDeBaseComplementaires = pbNbVarDeBaseComplementaires_;
+    pb_.ComplementDeLaBase = &pbComplementDeLaBase_[0]; // size = nb_contraintes (demarage a chaud!!)
+
+    // Création du fichier MPS
+    if (config::inputConfiguration().exportMPSFile()) {
+        SPX_EcrireProblemeAuFormatMPS(pb_);
+    }
+
+    if (typeSolveur == UTILISATION_PC_SIMPLEXE) {
+        pc_solver_->solve(&pb_);
+    } else {
+        solver_pne_->solve(&pb_);
+    }
+    pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
+    pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
+
+    if (pbExistenceDUneSolution_ != OUI_SPX) {
+        LOG_ALL(info) << err::ioDico().msg("INFOPasDeSol", c_fmt("%d", varianteCourante->num_));
+        return METRIX_PAS_SOLUTION;
+    }
+
+    LOG_ALL(info) << err::ioDico().msg(
+        "INFOSolOptTrouve", c_fmt("%d", varianteCourante->num_), c_fmt("%d", pbExistenceDUneSolution_));
+
+    // Traces
+    printFctObj(false);
+
+    return METRIX_PAS_PROBLEME;
+}
+
+
 int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante)
 {
     if (config::inputConfiguration().printConstraintsMatrix()) {
         printMatriceDesContraintes();
     }
 
-    // Solveur I : utilisation de PNE_SOLVEUR
-    //--------------------------------------
-    if (typeSolveur == UTILISATION_PNE_SOLVEUR) {
-        // Comptage des variables entières actives
-        int nbVarEntieresActives = 0;
-        for (int i = 0; i < pbNombreDeVariables_; ++i) {
-            if (pbTypeDeVariable_[i] == ENTIER
-                && pbTypeDeBorneDeLaVariable_[i] != VARIABLE_FIXE) {
-                nbVarEntieresActives++;
-            }
-        }
-        LOG(debug) << "MIP stats: variante " << varianteCourante->num_
-                   << ", micro-iteration " << numMicroIteration_
-                   << ", nb variables = " << pbNombreDeVariables_
-                   << ", nb contraintes = " << pbNombreDeContraintes_
-                   << ", nb variables entieres actives = " << nbVarEntieresActives;
-        LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineairePNE");
-
-        pbCoutsMarginauxDesContraintes_.resize(pbNombreDeContraintes_);
-
-        // Options du solveur
-        //------------------
-        pbPNE_.AffichageDesTraces = TRACES_PNE;
-        pbPNE_.SortirLesDonneesDuProbleme = config::inputConfiguration().exportMPSFile() ? OUI_PNE
-                                                                                         : NON_PNE; // fichier mps
-        pbPNE_.FaireDuPresolve
-            = PNE_PRESOLVE; /* si NON : attention a ne pas mettre de colonne vide ou avec que des 0.*/
-        pbPNE_.TempsDExecutionMaximum = config::configuration().timeMaxPne(); // (0 illimité, sinon en secondes)
-        pbPNE_.NombreMaxDeSolutionsEntieres = -1;
-        pbPNE_.ToleranceDOptimalite = 1.e-4; // En %
-
-        // valeur des variables du problemes a resoudre
-        //--------------------------------------------
-        pbPNE_.NombreDeVariables = pbNombreDeVariables_;
-        pbPNE_.TypeDeVariable = &pbTypeDeVariable_[0];
-        pbPNE_.TypeDeBorneDeLaVariable = &pbTypeDeBorneDeLaVariable_[0];
-        pbPNE_.X = &pbX_[0];
-        pbPNE_.Xmax = &pbXmax_[0];
-        pbPNE_.Xmin = &pbXmin_[0];
-        pbPNE_.CoutLineaire = &pbCoutLineaire_[0];
-        pbPNE_.NombreDeContraintes = pbNombreDeContraintes_;
-        pbPNE_.SecondMembre = &pbSecondMembre_[0];
-        pbPNE_.Sens = &pbSens_[0];
-        pbPNE_.IndicesDebutDeLigne = &pbIndicesDebutDeLigne_[0];
-        pbPNE_.NombreDeTermesDesLignes = &pbNombreDeTermesDesLignes_[0];
-        pbPNE_.CoefficientsDeLaMatriceDesContraintes = &pbCoefficientsDeLaMatriceDesContraintes_[0];
-        pbPNE_.IndicesColonnes = &pbIndicesColonnes_[0];
-        pbPNE_.VariablesDualesDesContraintes = &pbCoutsMarginauxDesContraintes_[0];
-        pbPNE_.AlgorithmeDeResolution = SIMPLEXE;
-
-        // Resolution du probleme
-        //----------------------
-        auto startTime = std::chrono::high_resolution_clock::now();
-        solver_pne_->solve(&pbPNE_);
-        auto endTime = std::chrono::high_resolution_clock::now();
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
-        LOG(debug) << "MIP solve time: variante " << varianteCourante->num_
-                   << ", micro-iteration " << numMicroIteration_
-                   << ", " << duration.count() << " ms"
-                   << " (nb var entieres actives = " << nbVarEntieresActives << ")";
-        pbExistenceDUneSolution_ = pbPNE_.ExistenceDUneSolution;
-
-        if (pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE
-            || pbExistenceDUneSolution_ == SOLUTION_OPTIMALE_TROUVEE_MAIS_QUELQUES_CONTRAINTES_SONT_VIOLEES
-            || pbExistenceDUneSolution_ == ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE) {
-            LOG_ALL(info) << err::ioDico().msg(
-                "INFOSolOptTrouve", c_fmt("%d", varianteCourante->num_), c_fmt("%d", pbExistenceDUneSolution_));
-        } else if (pbExistenceDUneSolution_ == PROBLEME_INFAISABLE
-                   || pbExistenceDUneSolution_ == PAS_DE_SOLUTION_TROUVEE) {
-            LOG_ALL(info) << err::ioDico().msg("INFOPasDeSol", c_fmt("%d", varianteCourante->num_));
-            return METRIX_PAS_SOLUTION;
-        } else {
+    switch (typeSolveur) {
+        // Solveur I : utilisation de PNE_SOLVEUR
+        case UTILISATION_PNE_SOLVEUR: return resoudrePNE(varianteCourante);
+        // Solveur II : utilisation du SIMPLEXE (reseau ou empilement economique)
+        case UTILISATION_SIMPLEXE:
+        case UTILISATION_PC_SIMPLEXE: return resoudreSimplexe(typeSolveur, varianteCourante);
+        default:
+            LOG_ALL(error) << "Unknown solver type";
             return METRIX_PROBLEME;
-        }
-
-        // affichage de la fonction cout
-        printFctObj(false);
-
-        // Solveur II : utilisation du SIMPLEXE;
-        //------------------------------------
-    } else if (typeSolveur == UTILISATION_SIMPLEXE || typeSolveur == UTILISATION_PC_SIMPLEXE) {
-        LOG_ALL(info) << err::ioDico().msg("INFOAppelSolvLineaireSPX");
-
-        for (int i = 0; i < pbNombreDeVariables_; ++i) {
-            if (pbXmin_[i] > pbXmax_[i] + config::constants::acceptable_diff) {
-                LOG(debug) << i << " probleme Xmin (" << pbXmin_[i] << ") > xmax (" << pbXmax_[i] << ")";
-            }
-        }
-
-        pbCoutsMarginauxDesContraintes_.resize(pbNombreDeContraintes_);
-        pbComplementDeLaBase_.resize(pbNombreDeContraintes_);
-        pbCoutsReduits_.resize(pbNombreDeVariables_);
-
-        // definition des paramaitres de pb qui ne changent pas en fonction de la variante et de numMicroIteration_
-
-        pb_.TypeDePricing = PRICING_STEEPEST_EDGE;  /*PRICING_DANTZIG()*/
-        pb_.FaireDuScaling = OUI_SPX;               // Vaut OUI_SPX ou NON_SPX
-        pb_.StrategieAntiDegenerescence = AGRESSIF; // Vaut AGRESSIF ou PEU_AGRESSIF
-        pb_.NombreMaxDIterations = -1;              // si i < 0 , alors le simplexe prendre sa valeur par defaut
-        pb_.DureeMaxDuCalcul = -1;                  // si i < 0 , alors le simplexe prendre sa valeur par defaut
-        pb_.CoutLineaire = &pbCoutLineaire_[0];
-        pb_.X = &pbX_[0];
-        pb_.Xmin = &pbXmin_[0];
-        pb_.Xmax = &pbXmax_[0];
-        pb_.NombreDeVariables = pbNombreDeVariables_;
-        pb_.TypeDeVariable = &pbTypeDeBorneDeLaVariable_[0]; //&pbTypeDeVariable_[0];
-        pb_.NombreDeContraintes = pbNombreDeContraintes_;
-        pb_.IndicesDebutDeLigne = &pbIndicesDebutDeLigne_[0];
-        pb_.NombreDeTermesDesLignes = &pbNombreDeTermesDesLignes_[0];
-        pb_.IndicesColonnes = &pbIndicesColonnes_[0];
-        pb_.CoefficientsDeLaMatriceDesContraintes = &pbCoefficientsDeLaMatriceDesContraintes_[0];
-        pb_.Sens = &pbSens_[0];
-        pb_.SecondMembre = &pbSecondMembre_[0];
-        pb_.ChoixDeLAlgorithme = SPX_DUAL;
-
-        pb_.LibererMemoireALaFin = OUI_SPX /*OUI_SPX*/; // attention ca libere problemeSpx
-        pb_.CoutsMarginauxDesContraintes
-            = &pbCoutsMarginauxDesContraintes_[0]; // size = nb_contraintes + nb_coupes  ettention
-        pb_.CoutsReduits = &pbCoutsReduits_[0];    // size = nb_variables
-        pb_.AffichageDesTraces = TRACES_PNE /*NON_SPX*/;
-        pb_.CoutMax = -1;
-        pb_.UtiliserCoutMax = NON_SPX;
-        // resoudre le probleme et definition des parametres de pb qui changent en fonction de variante et de
-        // numMicroIteration_
-
-
-        pb_.BCoupes = nullptr;                          /*&pbBCoupes_[0];*/
-        pb_.PositionDeLaVariableDEcartCoupes = nullptr; /*&pbPositionDeLaVariableDEcartCoupes_[0];*/
-        pb_.MdebCoupes = nullptr;                       /*&pbMdebCoupes_[0];*/
-        pb_.NbTermCoupes = nullptr;                     /*&pbNbTermCoupes_[0];*/
-        pb_.NuvarCoupes = nullptr;                      /*&pbNuvarCoupes_[0];*/
-        pb_.ACoupes = nullptr;                          /*&pbACoupes_[0];*/
-
-        pb_.Contexte = SIMPLEXE_SEUL;
-        pb_.BaseDeDepartFournie = NON_SPX;                            // OUI_SPX ;//(pas de demarrage a chaud!!)
-        pb_.NombreDeContraintesCoupes = pbNombreDeContraintesCoupes_; // nombre de coupes
-        pb_.PositionDeLaVariable = &pbPositionDeLaVariable_[0];       // size = nb_variables (demarage a chaud!!)
-        pb_.NbVarDeBaseComplementaires = pbNbVarDeBaseComplementaires_;
-        pb_.ComplementDeLaBase = &pbComplementDeLaBase_[0]; // size = nb_contraintes (demarage a chaud!!)
-
-        // Création du fichier MPS
-        if (config::inputConfiguration().exportMPSFile()) {
-            SPX_EcrireProblemeAuFormatMPS(pb_);
-        }
-
-        if (typeSolveur == UTILISATION_PC_SIMPLEXE) {
-            pc_solver_->solve(&pb_);
-        } else {
-            solver_pne_->solve(&pb_);
-        }
-        pbNbVarDeBaseComplementaires_ = pb_.NbVarDeBaseComplementaires;
-        pbExistenceDUneSolution_ = pb_.ExistenceDUneSolution;
-
-        if (pbExistenceDUneSolution_ == OUI_SPX) {
-            LOG_ALL(info) << err::ioDico().msg(
-                "INFOSolOptTrouve", c_fmt("%d", varianteCourante->num_), c_fmt("%d", pbExistenceDUneSolution_));
-        } else {
-            LOG_ALL(info) << err::ioDico().msg("INFOPasDeSol", c_fmt("%d", varianteCourante->num_));
-            return METRIX_PAS_SOLUTION;
-        }
-
-        // Traces
-        printFctObj(false);
-
-    } else {
-        LOG_ALL(error) << "Unknown solver type";
-        return METRIX_PROBLEME;
     }
-    return METRIX_PAS_PROBLEME;
 }
 
 int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& varianteCourante)

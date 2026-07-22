@@ -271,6 +271,9 @@ public:
     static double round(double x, double prec); // utiliser pour arrondir les calculs
     Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees);
     int PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante);
+    // branches de resolution appelees par PneSolveur
+    int resoudrePNE(const std::shared_ptr<Variante>& varianteCourante);
+    int resoudreSimplexe(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante);
     void comput_ParticipationGrp(const std::shared_ptr<Incident>& icdt) const;
     void fixerVariablesEntieres(); // Fixe les variables entieres pour lancement avec SPX
 
