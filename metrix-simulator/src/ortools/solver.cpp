@@ -208,7 +208,7 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
             }
         }
 
-        operations_research::MPVariable* x(nullptr);
+        const operations_research::MPVariable* x = nullptr;
         if (typeDeVariable != nullptr && typeDeVariable[idxVar] == ENTIER) {
             x = solver->MakeIntVar(min_l, max_l, oss.str());
         } else {
