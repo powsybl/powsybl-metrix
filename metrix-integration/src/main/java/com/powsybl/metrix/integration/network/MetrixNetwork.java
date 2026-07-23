@@ -860,15 +860,25 @@ public class MetrixNetwork {
                 terminalsToDisconnect.add(nodeBreakerView.getTerminal1(s.getId()));
                 terminalsToDisconnect.add(nodeBreakerView.getTerminal2(s.getId()));
             }
-            terminalsToDisconnect.stream()
-                .filter(Objects::nonNull)
-                .forEach(t -> {
-                    Connectable<?> connectable = t.getConnectable();
-                    if (connectable != null && types.contains(connectable.getType())) {
-                        elementsToTrip.add(new BranchContingency(connectable.getId()));
-                    }
-                });
+            addConnectableFromTerminalToDisconnectToElementsToTrip(terminalsToDisconnect, types, elementsToTrip);
         }
         return elementsToTrip;
+    }
+
+    private static void addConnectableFromTerminalToDisconnectToElementsToTrip(Set<Terminal> terminalsToDisconnect, Set<IdentifiableType> types, Set<ContingencyElement> elementsToTrip) {
+        Set<String> addedIds = elementsToTrip.stream()
+            .map(ContingencyElement::getId)
+            .collect(Collectors.toCollection(HashSet::new));
+        for (Terminal terminal : terminalsToDisconnect) {
+            if (terminal != null) {
+                Connectable<?> connectable = terminal.getConnectable();
+                if (connectable != null && types.contains(connectable.getType())) {
+                    String connectableId = connectable.getId();
+                    if (addedIds.add(connectableId)) {
+                        elementsToTrip.add(new BranchContingency(connectableId));
+                    }
+                }
+            }
+        }
     }
 }
