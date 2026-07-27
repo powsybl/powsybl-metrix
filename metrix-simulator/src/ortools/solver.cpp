@@ -69,6 +69,7 @@ void Solver::applySpecificParams(operations_research::MPSolver& solver) const
 
 void Solver::solve(PROBLEME_A_RESOUDRE* problem)
 {
+    solver_.reset();
     solver_ = toMPSolver(*problem);
 
     if (problem->AffichageDesTraces) {
@@ -96,6 +97,7 @@ void Solver::solve(PROBLEME_A_RESOUDRE* problem)
 
 void Solver::solve(PROBLEME_SIMPLEXE* problem)
 {
+    solver_.reset();
     solver_ = toMPSolver(*problem);
 
     if (problem->AffichageDesTraces) {
@@ -186,8 +188,7 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
 {
     MPObjective* const objective = solver->MutableObjective();
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
-        std::ostringstream oss;
-        oss << "x" << idxVar;
+        const std::string name = "x" + std::to_string(idxVar);
 
         double min_l = 0.;
         double max_l = 0.;
@@ -226,11 +227,13 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
 
         const operations_research::MPVariable* x = nullptr;
         if (typeDeVariable != nullptr && typeDeVariable[idxVar] == ENTIER) {
-            x = solver->MakeIntVar(min_l, max_l, oss.str());
+            x = solver->MakeIntVar(min_l, max_l, name);
         } else {
-            x = solver->MakeNumVar(min_l, max_l, oss.str());
+            x = solver->MakeNumVar(min_l, max_l, name);
         }
-        objective->SetCoefficient(x, costs[idxVar]);
+        if (costs[idxVar] != 0.) {
+            objective->SetCoefficient(x, costs[idxVar]);
+        }
     }
 }
 
@@ -256,9 +259,7 @@ void Solver::transferRows(const std::shared_ptr<operations_research::MPSolver>& 
             ss << "Unknown constraint sense '" << sens[idxRow] << "' at row " << idxRow;
             throw ErrorI(ss.str());
         }
-        std::ostringstream oss;
-        oss << "c" << idxRow;
-        solver->MakeRowConstraint(bMin, bMax, oss.str());
+        solver->MakeRowConstraint(bMin, bMax, "c" + std::to_string(idxRow));
     }
 }
 
