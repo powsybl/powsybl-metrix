@@ -508,7 +508,7 @@ class MetrixInputTest {
         Contingency cty = new Contingency("cty", l);
 
         MetrixNetwork metrixNetwork = MetrixNetwork.create(n);
-        // As we
+        // As we trip a line already reached by propagation, it must not be duplicated in the elements to trip
         assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l));
         assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l));
     }
