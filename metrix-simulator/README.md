@@ -209,3 +209,4 @@ No configuration needed, or explicitly:
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `SPECIFICSOLVERPARAMS` | STRING | Solver-specific parameters passed through to the solver (e.g. Xpress options) |
+| `PERTURBCOST` | FLOAT | Deterministic perturbation of generator and load costs, lifting the degeneracy that makes alternate optima solver-dependent. `0` (default) disables it. Applies to the off-network phase only; see `docs/simulator/io_doc.md` for the formula and its limits. |
