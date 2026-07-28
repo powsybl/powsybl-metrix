@@ -501,6 +501,19 @@ class MetrixInputTest {
     }
 
     @Test
+    void propagateTrippingNoDuplicatesTest() {
+        Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
+
+        ContingencyElement l = new LineContingency("FP.AND1  FVERGE1  1");
+        Contingency cty = new Contingency("cty", l);
+
+        MetrixNetwork metrixNetwork = MetrixNetwork.create(n);
+        // As we trip a line already reached by propagation, it must not be duplicated in the elements to trip
+        assertEquals(metrixNetwork.getElementsToTrip(cty, true), ImmutableSet.of(l));
+        assertEquals(metrixNetwork.getElementsToTrip(cty, false), ImmutableSet.of(l));
+    }
+
+    @Test
     void loadBreakTest() throws IOException {
         Network n = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork_with_battery.xml")));
 
