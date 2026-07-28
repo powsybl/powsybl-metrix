@@ -69,6 +69,7 @@ public class MetrixAnalysis {
     private Writer inputLogWriter;
     private String schemaName;
     private boolean withTimestamp;
+    private boolean withHeader;
 
     public void setUpdateTask(Consumer<Future<?>> updateTask) {
         this.updateTask = updateTask;
@@ -84,6 +85,10 @@ public class MetrixAnalysis {
 
     public void setWithTimestamp(boolean withTimestamp) {
         this.withTimestamp = withTimestamp;
+    }
+
+    public void setWithHeader(boolean withHeader) {
+        this.withHeader = withHeader;
     }
 
     public void setInputLogWriter(Writer inputLogWriter) {
@@ -132,11 +137,13 @@ public class MetrixAnalysis {
                 .maxLogLevel(this.maxLogLevel)
                 .writer(scriptLogBufferedWriter)
                 .withTimestamp(this.withTimestamp)
+                .withHeader(this.withHeader)
                 .build();
             ScriptLogConfig inputLogConfig = ScriptLogConfig.builder()
                 .maxLogLevel(this.maxLogLevel)
                 .writer(inputLogBufferedWriter)
                 .withTimestamp(this.withTimestamp)
+                .withHeader(this.withHeader)
                 .build();
             TimeSeriesMappingConfig mappingConfig = loadMappingConfig(timeSeriesDslLoader, network, mappingParameters, scriptLogConfig, id);
             Map<String, NodeCalc> timeSeriesNodesAfterMapping = new HashMap<>(mappingConfig.getTimeSeriesNodes());
