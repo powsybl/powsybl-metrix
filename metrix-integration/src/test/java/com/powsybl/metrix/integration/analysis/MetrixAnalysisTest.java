@@ -39,6 +39,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
  */
 class MetrixAnalysisTest {
+    private static final String LOG_SEPARATOR = ";";
     private FileSystem fileSystem;
     private Network network;
     private NetworkSource networkSource;
@@ -158,13 +159,42 @@ class MetrixAnalysisTest {
             metrixAnalysis.setWithTimestamp(true);
             metrixAnalysis.runAnalysis("");
             String output = outputStream.toString();
-            String[] outputSplitted = output.split(";");
+            String[] outputSplitted = output.split(LOG_SEPARATOR);
             assertEquals(4, outputSplitted.length);
             assertNotNull(outputSplitted[0]);
             assertEquals(20, outputSplitted[0].length()); // Format 2026-06-03T11:26:00Z
             assertEquals("ERROR", outputSplitted[1]);
             assertEquals("From scriptLogLevelTest", outputSplitted[2]);
             assertEquals("writeLog ERROR" + System.lineSeparator(), outputSplitted[3]);
+        }
+    }
+
+    @Test
+    void scriptWithHeaderTest() throws IOException {
+        String script = """
+            writeLog("ERROR", "From scriptLogLevelTest", "writeLog ERROR")""";
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(outputStream))) {
+            MetrixAnalysis metrixAnalysis = metrixAnalysis(script, "");
+            metrixAnalysis.setScriptLogWriter(out);
+            metrixAnalysis.setMaxLogLevel(System.Logger.Level.WARNING);
+            metrixAnalysis.setWithHeader(true);
+            metrixAnalysis.runAnalysis("");
+            String output = outputStream.toString();
+            String[] outputSplittedByLine = output.split(System.lineSeparator());
+            assertEquals(2, outputSplittedByLine.length);
+
+            String[] header = outputSplittedByLine[0].split(LOG_SEPARATOR);
+            assertEquals(3, header.length);
+            assertEquals("LogLevel", header[0]);
+            assertEquals("LogSection", header[1]);
+            assertEquals("LogMessage", header[2]);
+
+            String[] firstLine = outputSplittedByLine[1].split(LOG_SEPARATOR);
+            assertEquals(3, firstLine.length);
+            assertEquals("ERROR", firstLine[0]);
+            assertEquals("From scriptLogLevelTest", firstLine[1]);
+            assertEquals("writeLog ERROR", firstLine[2]);
         }
     }
 
