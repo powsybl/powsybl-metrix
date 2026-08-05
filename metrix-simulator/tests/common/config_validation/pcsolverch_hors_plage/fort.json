@@ -227,7 +227,7 @@
       "lastValueIndex" : 1,
       "values" : [ 0 ]
     }, {
-      "name" : "PCSOLVERCH",
+      "name" : "PCSOLVER",
       "type" : "INTEGER",
       "valueCount" : 1,
       "firstIndexMaxValue" : 1,

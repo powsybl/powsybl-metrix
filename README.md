@@ -252,7 +252,7 @@ The following CMake options can be set for the executable configuration:
 - `USE_SIRIUS_SHARED` (default = OFF): if active, link Sirius as a shared library instead of static.
 - `METRIX_RUN_ALL_TESTS` (default = ON): if inactive, projects will execute a reduced scope of tests.
 
-Refer to `metrix-simulator/README.md` for runtime solver selection (`SOLVERCH`/`PCSOLVERCH`) and the full build documentation.
+Refer to `metrix-simulator/README.md` for runtime solver selection (`SOLVERCH`/`PCSOLVER`) and the full build documentation.
 
 ##### Contributing
 

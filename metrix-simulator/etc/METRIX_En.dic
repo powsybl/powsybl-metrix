@@ -166,7 +166,7 @@ ERRAjoutCtrN								Error while adding constraint on line $1
 ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
 ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes
 ERRSolveurIndisponible                      Solver '$1' is not available in this installation (OR-Tools built without it or missing license)
-ERRParamSolveurRefuse                       Solver parameters rejected by OR-Tools: '$1' (SPECIFICSOLVERPARAMS; they may have been partially applied)
+ERRParamSolveurRefuse                       Solver parameters rejected by OR-Tools: '$1' (SOLVPARA; they may have been partially applied)
 
 
 //------------- Warning --------------------

@@ -717,7 +717,7 @@ int Calculer::resolutionUnProblemeDodu(const std::shared_ptr<Variante>& variante
     // initialisation de la prod AR si simulation du MA ou si pas de redispatching
     fixerProdSansReseau();
 
-    // Fin de portee de PERTURBCOST (HR uniquement) : les couts consos sont restaures a
+    // Fin de portee de PRTBCOST (HR uniquement) : les couts consos sont restaures a
     // l'identique pour la phase AR ; ceux des groupes viennent d'etre reecrits sans
     // perturbation par fixerProdSansReseau().
     if (!pbCoutLineaireConsosSansPerturbation_.empty()) {

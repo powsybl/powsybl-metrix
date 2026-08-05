@@ -108,14 +108,14 @@ for the static one.
 
 ## Runtime solver selection
 
-A single build supports both Sirius and Xpress. The solver is selected at runtime through the `SOLVERCH` and/or `PCSOLVERCH` fields in the `attributes` list of the `IntegerFile` section of the input file `fort.json`.
+A single build supports both Sirius and Xpress. The solver is selected at runtime through the `SOLVERCH` and/or `PCSOLVER` fields in the `attributes` list of the `IntegerFile` section of the input file `fort.json`.
 
 ### Solver parameters
 
 | Parameter | Used for | Default value |
 |-----------|----------|---------------|
 | `SOLVERCH` | Main network optimization (MIP/LP) | SIRIUS (5) |
-| `PCSOLVERCH` | Economic stacking of generators (initial phase, without network) | SIRIUS (5) |
+| `PCSOLVER` | Economic stacking of generators (initial phase, without network) | SIRIUS (5) |
 
 ### Available values
 
@@ -143,7 +143,7 @@ No configuration needed, or explicitly:
   "values": [5]
 },
 {
-  "name": "PCSOLVERCH",
+  "name": "PCSOLVER",
   "type": "INTEGER",
   "valueCount": 1,
   "firstIndexMaxValue": 1,
@@ -167,7 +167,7 @@ No configuration needed, or explicitly:
   "values": [6]
 },
 {
-  "name": "PCSOLVERCH",
+  "name": "PCSOLVER",
   "type": "INTEGER",
   "valueCount": 1,
   "firstIndexMaxValue": 1,
@@ -181,7 +181,7 @@ No configuration needed, or explicitly:
 **Mixed configuration** — economic stacking with Sirius direct, main optimization with Xpress:
 ```json
 {
-  "name": "PCSOLVERCH",
+  "name": "PCSOLVER",
   "type": "INTEGER",
   "valueCount": 1,
   "firstIndexMaxValue": 1,
@@ -202,11 +202,11 @@ No configuration needed, or explicitly:
 }
 ```
 
-> **Note**: if only `SOLVERCH` is configured, `PCSOLVERCH` defaults to SIRIUS (5). This may be intentional when using Sirius for the economic stacking phase and a higher-performance solver for the main optimization.
+> **Note**: if only `SOLVERCH` is configured, `PCSOLVER` defaults to SIRIUS (5). This may be intentional when using Sirius for the economic stacking phase and a higher-performance solver for the main optimization.
 
 ### Advanced parameters
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `SPECIFICSOLVERPARAMS` | STRING | Solver-specific parameters passed through to the solver (e.g. Xpress options) |
-| `PERTURBCOST` | FLOAT | Deterministic perturbation of generator and load costs, lifting the degeneracy that makes alternate optima solver-dependent. `0` (default) disables it. Applies to the off-network phase only; see `docs/simulator/io_doc.md` for the formula and its limits. |
+| `SOLVPARA` | STRING | Solver-specific parameters passed through to the solver (e.g. Xpress options) |
+| `PRTBCOST` | FLOAT | Deterministic perturbation of generator and load costs, lifting the degeneracy that makes alternate optima solver-dependent. `0` (default) disables it. Applies to the off-network phase only; see `docs/simulator/io_doc.md` for the formula and its limits. |

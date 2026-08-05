@@ -31,7 +31,7 @@ metrix_test("batterie_hr_necessaire" 1)
 endif()
 metrix_test("limitation_curatif" 5)
 metrix_test("noise_cost" 3)
-# Empilement HR degenere (couts de demarrage identiques) departage par PERTURBCOST :
+# Empilement HR degenere (couts de demarrage identiques) departage par PRTBCOST :
 # la reference xpress doit etre identique a la reference sirius, c'est la garantie
 # apportee par la perturbation deterministe des couts.
 metrix_test_all_outputs("perturbcost_empilement" 1)

@@ -34,7 +34,7 @@ public:
     enum class ComputationType { OPF = 0, LOAD_FLOW, OPF_WITHOUT_REDISPATCH, OPF_WITH_OVERLOAD };
     // Sirius is the historical backend (handled outside OR-Tools); Xpress is the only
     // OR-Tools backend we support. The numeric values are kept stable (they appear as
-    // SOLVERCH/PCSOLVERCH in the input files) so this list is intentionally not renumbered.
+    // SOLVERCH/PCSOLVER in the input files) so this list is intentionally not renumbered.
     enum class SolverChoice {
         SIRIUS = 5,
         XPRESS = 6, // Must always be the last of the list

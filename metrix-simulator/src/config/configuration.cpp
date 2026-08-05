@@ -174,7 +174,7 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
         helper::check(log_level <= metrix::log::severity::critical, log_level_key);
     }
 
-    for (auto solver_choice_key : {"SOLVERCH", "PCSOLVERCH"}) {
+    for (auto solver_choice_key : {"SOLVERCH", "PCSOLVER"}) {
         if (helper::checkAtMostKeyOnce(std::get<INTEGER>(raw_config), solver_choice_key)) {
             unsigned int solver_choice = std::get<INTEGER>(raw_config).at(solver_choice_key).front();
             helper::check(solver_choice >= static_cast<unsigned int>(SolverChoice::SIRIUS)
@@ -190,7 +190,7 @@ void Configuration::checkConfiguration(const raw_configuration& raw_config)
         }
     }
 
-    helper::checkAtMostKeyOnce(std::get<STRING>(raw_config), "SPECIFICSOLVERPARAMS");
+    helper::checkAtMostKeyOnce(std::get<STRING>(raw_config), "SOLVPARA");
 }
 
 auto Configuration::readRawConfiguration(const std::string& pathname) -> raw_configuration
@@ -379,10 +379,10 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     redispatch_cost_offset_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "REDISPOF", 0);
     cost_ecart_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "COUTECAR", 10);
     solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "SOLVERCH", SolverChoice::SIRIUS);
-    pc_solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "PCSOLVERCH", SolverChoice::SIRIUS);
-    specific_solver_params_ = helper::updateValueNumber(std::get<STRING>(raw_config), "SPECIFICSOLVERPARAMS", std::string(""));
+    pc_solver_choice_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "PCSOLVER", SolverChoice::SIRIUS);
+    specific_solver_params_ = helper::updateValueNumber(std::get<STRING>(raw_config), "SOLVPARA", std::string(""));
     noise_cost_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "NULLCOST", 0.5);
-    perturbation_cout_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "PERTURBCOST", 0.0);
+    perturbation_cout_ = helper::updateValueNumber(std::get<FLOAT>(raw_config), "PRTBCOST", 0.0);
 
     lost_load_detailed_max_ = helper::updateValueNumber(std::get<INTEGER>(raw_config), "LOSTCMAX", 100U);
 

@@ -191,7 +191,7 @@ public:
     vector<double>
         pbCoutLineaireSansOffset_; // sert uniquement pour l'affichage des couts finaux curatifs production et conso. On
                                    // ne remplit donc le vecteur que sur les variables gen_cur et conso_cur
-    vector<double> pbCoutLineaireConsosSansPerturbation_; // couts consos avant PERTURBCOST, restaures en phase AR
+    vector<double> pbCoutLineaireConsosSansPerturbation_; // couts consos avant PRTBCOST, restaures en phase AR
     vector<char> pbSens_;          // defini dans pne ou spx
     vector<double> pbSecondMembre_;                          // defini dans pne ou spx
     vector<int> pbIndicesDebutDeLigne_;                      // defini dans pne ou spx
