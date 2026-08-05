@@ -9,7 +9,7 @@
 //
 
 // clang-format off
-// ortools/solver.h prend en charge le conflit de macro LOG (glog vs metrix::log)
+// ortools/solver.h prend en charge le conflit de macro LOG (absl/log vs metrix::log)
 // en interne et DOIT être inclus avant <metrix/log.h>.
 #ifdef USE_ORTOOLS
 #   include "ortools/solver.h"

@@ -10,9 +10,10 @@
 
 #pragma once
 
-// OR-Tools tire glog transitivement, qui définit un macro `LOG` en collision
-// avec celui de metrix::log. On inclut OR-Tools et on undef le macro ici afin
-// que les consommateurs n'aient pas à le gérer eux-mêmes.
+// OR-Tools tire absl/log transitivement (via ortools/base/logging.h), qui
+// définit un macro `LOG` en collision avec celui de metrix::log. On inclut
+// OR-Tools et on undef le macro ici afin que les consommateurs n'aient pas à
+// le gérer eux-mêmes.
 // IMPORTANT : ce header doit être inclus AVANT <metrix/log.h> dans tout .cpp.
 #include <ortools/linear_solver/linear_solver.h>
 #ifdef LOG
