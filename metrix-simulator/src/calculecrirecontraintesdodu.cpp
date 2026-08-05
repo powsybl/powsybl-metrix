@@ -881,11 +881,13 @@ int Calculer::ecrireContraintesDodu()
     // de l'empilement et du delestage -> resultat solveur-dependant). Perturbation RELATIVE
     // au cout, croissante avec l'indice et normalisee par le nombre de variables perturbees.
     // Portee : groupes et consos uniquement (pas TD/HVDC), et phase HORS RESEAU uniquement :
-    // fixerProdSansReseau() (et ajoutRedispatchCostOffsetConsos() si les offsets HR/AR
-    // different) reecrivent ensuite ces couts pour la phase AR sans perturbation.
+    // fixerProdSansReseau() reecrit ensuite les couts AR des groupes, et la sauvegarde
+    // ci-dessous restaure ceux des consos au passage en AR (cf. resolutionUnProblemeDodu).
     const double epsilonPerturbation = config::configuration().perturbationCout();
     const int finVarGroupesConsos = res_.nbVarGroupes_ + res_.nbVarConsos_;
     if (epsilonPerturbation > 0.0 && finVarGroupesConsos > 0) {
+        pbCoutLineaireConsosSansPerturbation_.assign(pbCoutLineaire_.begin() + res_.nbVarGroupes_,
+                                                     pbCoutLineaire_.begin() + finVarGroupesConsos);
         const double pasPerturbation = epsilonPerturbation / finVarGroupesConsos;
         for (int numVar = 0; numVar < finVarGroupesConsos; ++numVar) {
             pbCoutLineaire_[numVar] *= (1.0 + numVar * pasPerturbation);
