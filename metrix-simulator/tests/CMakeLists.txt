@@ -184,6 +184,16 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
     endif()
 endmacro()
 
+# Asserts that two committed reference files are byte-identical. This encodes
+# an invariant that must survive reference regeneration: the regular TNR tests
+# only compare each run against its own reference, and are therefore blind to
+# a behavior change that gets baked into regenerated references.
+macro(metrix_test_identical_references TEST_NAME FILE_A FILE_B)
+    set(FULL_TEST_NAME ${TEST_SOLVERCH}_${TEST_NAME})
+    add_test(NAME ${FULL_TEST_NAME}
+        COMMAND ${CMAKE_COMMAND} -E compare_files ${FILE_A} ${FILE_B})
+endmacro()
+
 # Solver-independent tests: configuration or input validation failures and
 # pure load-flow runs that never reach a solver call. They run once, whatever
 # the solver backends compiled in.

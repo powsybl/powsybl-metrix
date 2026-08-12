@@ -1,0 +1,71 @@
+Use dictionnary file METRIX.dic
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 1
+Nombre total de noeuds  = 4
+Nombre de consommations = 4 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 3 (dont 1 surveillés en N et 0 surveillés sur défaut)
+Nombre de groupes       = 1 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 0 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Prise en compte du seuil max avant manoeuvre curative (ITAM)
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0 [FGEN.A1_1]
+0 [FGEN.A1_1](1) <-> 1 [FHUB.B1_1](3) <-> 2 [FCHA.A1_1](1)
+                                      <-> 3 [FCHA.B1_1](1)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =   200.0000  MW
+Production démarrée                 =   200.0000  MW
+Puissance à ajuster                 =     0.0000  MW
+Puissance disponible à la hausse (hors Pimp) = 100.0000  MW
+Puissance disponible à la baisse (hors Pimp) = -200.0000  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [FGEN.A1_1]), bilan = 0.0000 MW
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 1
+Nb termes dans la matrice : 6 (taille de la matrice : 6)
+Ajout de 1 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 2)
+-------------------- : 
+
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =     149.9900 MW
+Volume de délestage  =      50.0100 MW
+Résultats sur les couts
+Cout associé aux groupes       :     500.1000
+Cout associé au délestage      :  650130.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  650630.1000
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 8 (taille de la matrice : 8)
+Pas de contraintes
