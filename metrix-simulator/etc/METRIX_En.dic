@@ -165,7 +165,7 @@ ERRAjoutCtr									Error while adding constraint on line $2 after contingency $
 ERRAjoutCtrN								Error while adding constraint on line $1
 ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
 ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes
-ERRSolveurIndisponible                      Solver '$1' is not available in this installation (OR-Tools built without it or missing license)
+ERRSolveurIndisponible                      Solver '$1' is not available in this installation (library not found or missing license; for Xpress, check the XPRESSDIR environment variable)
 ERRParamSolveurRefuse                       Solver parameters rejected by OR-Tools: '$1' (SOLVPARA; they may have been partially applied)
 
 
