@@ -32,7 +32,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 option(USE_ORTOOLS "Toggle or-tools usage" OFF) # disable by default
-cmake_dependent_option(USE_XPRESS "Use XPress solver (must be same as 3rd party compilation)" OFF "USE_ORTOOLS" OFF) # not using xpress without ortools
+cmake_dependent_option(USE_XPRESS "Authorize the Xpress solver (SOLVERCH/PCSOLVER=6) at runtime; the machine then needs XPRESSDIR and an Xpress license" OFF "USE_ORTOOLS" OFF) # not using xpress without ortools
 option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
 
 if(USE_ORTOOLS)
@@ -208,11 +208,13 @@ if(USE_ORTOOLS)
 endif()
 
 if(USE_XPRESS)
-    # XPRESS is consumed transitively through ortools::ortools, which was built
-    # against libxprs at its own link step. metrix-simulator does not need to
-    # link libxprs directly; this compile definition only signals to the C++
-    # configuration validation layer that the OR-Tools build supports XPRESS.
-    # libxprs.so must be reachable at runtime (LD_LIBRARY_PATH).
+    # Pure authorization switch: this compile definition only lets the C++
+    # configuration validation layer (config/configuration.cpp) accept
+    # SOLVERCH/PCSOLVER=6. Nothing links libxprs, not even OR-Tools: its Xpress
+    # backend is always compiled in (9.13) and loads "$XPRESSDIR/lib/libxprs.so"
+    # with dlopen() at the first Xpress solve (ortools/xpress/environment.cc).
+    # At runtime, XPRESSDIR must point to a licensed Xpress installation;
+    # LD_LIBRARY_PATH is not consulted by that loader.
     target_compile_definitions(${target}
         PRIVATE
         USE_XPRESS

@@ -112,8 +112,14 @@ endif()
 # use it anyway — skip it entirely.
 # OR-Tools manages its own dependencies (abseil, protobuf, etc.) via BUILD_DEPS=ON.
 #
-# Xpress backend is enabled automatically if XPRESS_ROOT is set (CMake variable
-# or environment variable).
+# Xpress needs no configuration here. In OR-Tools 9.13 the Xpress backend of
+# the MPSolver API is always compiled in (OR-Tools' own CMakeLists.txt states
+# that USE_XPRESS=OFF is not supported, as the library is loaded on use), and
+# nothing links libxprs: OR-Tools dlopen()s "$XPRESSDIR/lib/libxprs.so" at the
+# first Xpress solve (see ortools/xpress/environment.cc). Whether a given
+# metrix-simulator binary may request Xpress is decided by the USE_XPRESS
+# option of the root project; whether it works on a given machine is decided
+# at runtime by XPRESSDIR and the Xpress license.
 # ============================================================================
 
 option(USE_ORTOOLS "Build the OR-Tools third party (required when metrix-simulator is configured with USE_ORTOOLS=ON)" OFF)
@@ -134,22 +140,6 @@ if(ortools_FOUND)
   message(STATUS "OR-Tools already found")
   add_custom_target(ortools)
 else()
-  # Detect Xpress SDK from environment; fall back gracefully if absent
-  if(NOT XPRESS_ROOT AND DEFINED ENV{XPRESS_ROOT})
-    set(XPRESS_ROOT $ENV{XPRESS_ROOT})
-  endif()
-
-  if(XPRESS_ROOT)
-    message(STATUS "OR-Tools will be built with Xpress backend (XPRESS_ROOT=${XPRESS_ROOT})")
-    set(ORTOOLS_XPRESS_ARGS
-      -DUSE_XPRESS:BOOL=ON
-      -DXPRESS_ROOT:PATH=${XPRESS_ROOT}
-    )
-  else()
-    message(STATUS "OR-Tools will be built without Xpress backend (XPRESS_ROOT not set)")
-    set(ORTOOLS_XPRESS_ARGS -DUSE_XPRESS:BOOL=OFF)
-  endif()
-
   ExternalProject_Add(ortools
     INSTALL_DIR         ${CMAKE_CURRENT_BINARY_DIR}/ortools
     TMP_DIR             ${TMP_DIR}
@@ -178,7 +168,6 @@ else()
                         -DUSE_SCIP:BOOL=OFF
                         -Dortools_REPO:STRING=https://github.com/google/or-tools.git
                         -Dortools_REF:STRING=v9.13
-                        ${ORTOOLS_XPRESS_ARGS}
   )
   ExternalProject_Get_Property(ortools install_dir)
   set(ortools_ROOT ${install_dir})

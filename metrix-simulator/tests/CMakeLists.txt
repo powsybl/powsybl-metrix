@@ -9,17 +9,36 @@
 #
 
 if(USE_XPRESS)
-    # XPRESS_ROOT is only auto-detected (CMake variable or environment) by the
-    # external superbuild; resolve it here as well, otherwise the test
-    # environment below would silently expand to "LD_LIBRARY_PATH=/lib".
+    # OR-Tools never links libxprs: at the first Xpress solve it dlopen()s
+    # "$XPRESSDIR/lib/libxprs.so" (xprs.dll under %XPRESSDIR%\bin on Windows),
+    # then falls back to the canonical install location (/opt/xpressmp). See
+    # ortools/xpress/environment.cc. The variable that loader honours is
+    # XPRESSDIR; LD_LIBRARY_PATH plays no part in locating libxprs.so.
+    # The Xpress location is taken from XPRESS_ROOT (CMake variable or
+    # environment) or, failing that, from the XPRESSDIR a licensed workstation
+    # usually exports (xpvars.sh), and handed to every test as XPRESSDIR.
     if(NOT XPRESS_ROOT AND DEFINED ENV{XPRESS_ROOT})
         set(XPRESS_ROOT $ENV{XPRESS_ROOT})
     endif()
-    if(NOT XPRESS_ROOT)
-        message(WARNING "USE_XPRESS is ON but XPRESS_ROOT is not set: tests will not find libxprs.so unless it is already on LD_LIBRARY_PATH")
+    if(NOT XPRESS_ROOT AND DEFINED ENV{XPRESSDIR})
+        set(XPRESS_ROOT $ENV{XPRESSDIR})
     endif()
-    # Prepend to the caller's LD_LIBRARY_PATH instead of overwriting it
-    set(METRIX_TEST_LD_LIBRARY_PATH "${XPRESS_ROOT}/lib:$ENV{LD_LIBRARY_PATH}")
+    if(XPRESS_ROOT)
+        # LD_LIBRARY_PATH is still prepended (never overwritten) for the runtime
+        # dependencies of libxprs.so itself, as xpvars.sh does. The caller's
+        # value is only appended when non-empty: a trailing ":" would add an
+        # empty element, which the dynamic loader reads as the current directory.
+        set(METRIX_TEST_LD_LIBRARY_PATH "${XPRESS_ROOT}/lib")
+        if(NOT "$ENV{LD_LIBRARY_PATH}" STREQUAL "")
+            string(APPEND METRIX_TEST_LD_LIBRARY_PATH ":$ENV{LD_LIBRARY_PATH}")
+        endif()
+        set(METRIX_TEST_XPRESS_ENV
+            "XPRESSDIR=${XPRESS_ROOT}"
+            "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    else()
+        set(METRIX_TEST_XPRESS_ENV "")
+        message(WARNING "USE_XPRESS is ON but neither XPRESS_ROOT nor XPRESSDIR is set: OR-Tools will only look for libxprs.so under /opt/xpressmp")
+    endif()
 endif()
 
 macro(metrix_test TEST_NAME NB_TESTS)
@@ -42,8 +61,8 @@ macro(metrix_test TEST_NAME NB_TESTS)
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
 endmacro()
 
@@ -67,8 +86,8 @@ macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
 endmacro()
 
@@ -92,8 +111,8 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
     message(AUTHOR_WARNING "Only checks on output results files performed: metrixOut.txt result file of test \"" ${FULL_TEST_NAME} "\" must be checked manually")
 endmacro()
@@ -111,8 +130,8 @@ macro(metrix_test_no_check TEST_NAME NB_TESTS)
     add_test(NAME ${FULL_TEST_NAME} COMMAND  metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
     set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
     message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${FULL_TEST_NAME} "\" must be checked manually")
 endmacro()
@@ -134,8 +153,8 @@ macro(metrix_test_config_error TEST_NAME EXPECTED_MESSAGE)
     add_test(NAME ${FULL_TEST_NAME} COMMAND metrix-simulator metrixOut.txt VariantSet.csv out 0 1 WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${FULL_TEST_NAME} PROPERTY PASS_REGULAR_EXPRESSION ${EXPECTED_MESSAGE})
     set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
 endmacro()
 
@@ -153,8 +172,8 @@ macro(metrix_test_expect_failure TEST_NAME NB_TESTS)
     set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
     set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
     set_property(TEST ${FULL_TEST_NAME} PROPERTY WILL_FAIL TRUE)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
 endmacro()
 
@@ -179,8 +198,8 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${FULL_TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
     set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
-    if(USE_XPRESS)
-        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${METRIX_TEST_LD_LIBRARY_PATH}")
+    if(METRIX_TEST_XPRESS_ENV)
+        set_property(TEST ${FULL_TEST_NAME} APPEND PROPERTY ENVIRONMENT ${METRIX_TEST_XPRESS_ENV})
     endif()
 endmacro()
 
