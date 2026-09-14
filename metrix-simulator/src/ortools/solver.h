@@ -15,16 +15,16 @@
 // et solver.cpp n'incluent donc aucun en-tête de log metrix (les messages
 // passent par log_bridge.h), et le reste de metrix ne doit pas inclure ce
 // header : il passe par factory.h.
-#include <ortools/linear_solver/linear_solver.h>
-
 #include "compute/isolver.h"
 #include "config/constants.h"
 #include "config/solver_choice.h"
 #include "pne.h"
+#include <ortools/linear_solver/linear_solver.h>
 
 #include <map>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <vector>
 
 namespace ortools
@@ -32,7 +32,7 @@ namespace ortools
 class Solver : public compute::ISolver
 {
 public:
-    explicit Solver(config::SolverChoice solver_choice, const std::string& specific_params);
+    explicit Solver(config::SolverChoice solver_choice, std::string_view specific_params);
 
     void solve(PROBLEME_A_RESOUDRE* pne_problem) final;
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
@@ -43,25 +43,27 @@ private:
     using SolverChoice = std::pair<operations_research::MPSolver::OptimizationProblemType,
                                    operations_research::MPSolver::OptimizationProblemType>;
 
-private:
     static const std::string solverName_;
     static const std::map<config::SolverChoice, SolverChoice> solver_choices_;
 
-private:
     template<class PROBLEM>
     static std::shared_ptr<operations_research::MPSolverParameters> makeParams(const PROBLEM& problem);
 
     template<class PROBLEM>
     static void updateProblem(PROBLEM& problem, const std::shared_ptr<operations_research::MPSolver>& solver);
 
-    static void transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver,
-                                  double const* bMin,
-                                  double const* bMax,
-                                  double const* costs,
-                                  int nbVar,
-                                  double const* xValues,
-                                  int const* typeDeBorneDeLaVariable,
-                                  int const* typeDeVariable = nullptr);
+    /// Column data of a Sirius problem, as the parallel arrays of PROBLEME_SIMPLEXE / PROBLEME_A_RESOUDRE
+    struct Columns {
+        int count;               ///< NombreDeVariables
+        double const* min;       ///< Xmin
+        double const* max;       ///< Xmax
+        double const* cost;      ///< CoutLineaire
+        double const* x;         ///< X, input value of the VARIABLE_FIXE columns (may be nullptr)
+        int const* boundType;    ///< TypeDeBorneDeLaVariable (VARIABLE_FIXE, VARIABLE_BORNEE_...)
+        int const* variableType; ///< TypeDeVariable (ENTIER / REEL), nullptr for a pure LP
+    };
+
+    static void transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver, const Columns& columns);
 
     static void transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
                              double const* rhs,
@@ -74,8 +76,6 @@ private:
                                int const* indexCols,
                                double const* coeffs,
                                int nbRow);
-
-private:
 
     template<class PROBLEM>
     operations_research::MPSolver::OptimizationProblemType type() const;
@@ -97,7 +97,6 @@ private:
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
     std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_SIMPLEXE& problem);
 
-private:
     std::shared_ptr<operations_research::MPSolver> solver_;
     config::SolverChoice solver_choice_;
     std::string specific_params_;

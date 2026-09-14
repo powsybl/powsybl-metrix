@@ -15,6 +15,7 @@
 #include <boost/filesystem.hpp>
 
 #include <algorithm>
+#include <cstdio>
 #include <cstring>
 
 #if defined(_MSC_VER)
@@ -89,6 +90,8 @@ Logger::~Logger()
         core::get()->flush();
         core::get()->remove_all_sinks();
     } catch (...) {
+        // The logger itself is going away, so stderr is the only channel left.
+        std::fputs("metrix logger: error while shutting down the log sinks\n", stderr);
     }
 }
 

@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include <string>
+#include <string_view>
 
 namespace ortools
 {
@@ -26,5 +26,5 @@ namespace ortools
  * @param line  __LINE__ of the caller
  * @param message text of the warning (dev log and result file)
  */
-void logWarning(const char* file, int line, const std::string& message);
+void logWarning(const char* file, int line, std::string_view message);
 } // namespace ortools

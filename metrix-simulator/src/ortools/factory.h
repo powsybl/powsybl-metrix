@@ -14,7 +14,7 @@
 #include "config/solver_choice.h"
 
 #include <memory>
-#include <string>
+#include <string_view>
 
 namespace ortools
 {
@@ -28,5 +28,5 @@ namespace ortools
  * @param solver_choice backend to use (must not be SIRIUS)
  * @param specific_params content of SOLVPARA, forwarded to the backend
  */
-std::shared_ptr<compute::ISolver> makeSolver(config::SolverChoice solver_choice, const std::string& specific_params);
+std::shared_ptr<compute::ISolver> makeSolver(config::SolverChoice solver_choice, std::string_view specific_params);
 } // namespace ortools

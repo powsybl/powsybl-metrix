@@ -14,7 +14,7 @@
 
 namespace ortools
 {
-void logWarning(const char* file, int line, const std::string& message)
+void logWarning(const char* file, int line, std::string_view message)
 {
     metrix::log::Logger::instance().log(
         metrix::log::severity::warning, file, line, metrix::log::Logger::TargetOutput::ALL)
