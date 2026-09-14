@@ -9,12 +9,10 @@
 //
 
 // clang-format off
-// ortools/solver.h prend en charge le conflit de macro LOG (absl/log vs metrix::log)
-// en interne et DOIT être inclus avant <metrix/log.h>.
-#ifdef USE_ORTOOLS
-#   include "ortools/solver.h"
-#endif
 #include <metrix/log.h>
+#ifdef USE_ORTOOLS
+#   include "ortools/factory.h"
+#endif
 #include "compute/solver.h"
 #include "calcul.h"
 #include "config/configuration.h"
@@ -126,7 +124,7 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
             return std::make_shared<compute::Solver>();
         }
         LOG(debug) << "Solver: OR-Tools (backend " << static_cast<int>(choice) << ")";
-        return std::make_shared<ortools::Solver>(choice, specificParams);
+        return ortools::makeSolver(choice, specificParams);
     };
 
     const auto& params = config::configuration().specificSolverParams();

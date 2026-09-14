@@ -11,9 +11,12 @@
 #include "solver.h"
 #include "err/IoDico.h"
 #include "err/error.h"
+#include "factory.h"
+#include "log_bridge.h"
 
 #include <cmath>
 #include <iostream>
+#include <sstream>
 
 using namespace operations_research;
 
@@ -21,21 +24,21 @@ namespace ortools
 {
 const std::string Solver::solverName_ = "simple_lp_program";
 
-const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
-    std::make_pair(config::Configuration::SolverChoice::XPRESS,
+const std::map<config::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
+    std::make_pair(config::SolverChoice::XPRESS,
                    std::make_pair(operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
 };
 
-Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params)
+Solver::Solver(config::SolverChoice solver_choice, const std::string& specific_params)
     : solver_choice_(solver_choice),
       specific_params_(specific_params) {}
 
-static const std::string& solverChoiceName(config::Configuration::SolverChoice choice)
+static const std::string& solverChoiceName(config::SolverChoice choice)
 {
-    static const std::map<config::Configuration::SolverChoice, std::string> names = {
-        {config::Configuration::SolverChoice::SIRIUS, "SIRIUS"},
-        {config::Configuration::SolverChoice::XPRESS, "XPRESS"},
+    static const std::map<config::SolverChoice, std::string> names = {
+        {config::SolverChoice::SIRIUS, "SIRIUS"},
+        {config::SolverChoice::XPRESS, "XPRESS"},
     };
     static const std::string unknown = "UNKNOWN";
     auto it = names.find(choice);
@@ -113,7 +116,7 @@ void Solver::solve(PROBLEME_SIMPLEXE* problem)
             // Arret premature (limite d'iterations/temps du backend) avec une solution
             // admissible : on la restitue comme Sirius le ferait, mais on trace car la
             // solution n'est pas prouvee optimale.
-            LOG_ALL(warning) << "LP solve stopped before proven optimality, using the feasible solution";
+            logWarning(__FILE__, __LINE__, "LP solve stopped before proven optimality, using the feasible solution");
         }
         problem->ExistenceDUneSolution = OUI_SPX;
         updateProblem(*problem, solver_);
@@ -410,4 +413,8 @@ operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIM
     return solver_choices_.at(solver_choice_).first;
 }
 
+std::shared_ptr<compute::ISolver> makeSolver(config::SolverChoice solver_choice, const std::string& specific_params)
+{
+    return std::make_shared<Solver>(solver_choice, specific_params);
+}
 } // namespace ortools

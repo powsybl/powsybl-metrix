@@ -74,16 +74,22 @@ Logger& operator<<(Logger& logger, const Verbose& element)
 
 Logger::~Logger()
 {
-    if (!context_.stopped()) {
-        context_.stop();
-    }
-    if (thread_ && !(thread_->get_id() == std::this_thread::get_id())) {
-        thread_->join();
-    }
+    // Nothing may escape a destructor (std::terminate if another exception is
+    // already in flight), and there is nowhere left to report a failure of the
+    // logger's own teardown: errors from stop/join/flush are deliberately dropped.
+    try {
+        if (!context_.stopped()) {
+            context_.stop();
+        }
+        if (thread_ && !(thread_->get_id() == std::this_thread::get_id())) {
+            thread_->join();
+        }
 
-    resultFileStream_.flush();
-    core::get()->flush();
-    core::get()->remove_all_sinks();
+        resultFileStream_.flush();
+        core::get()->flush();
+        core::get()->remove_all_sinks();
+    } catch (...) {
+    }
 }
 
 std::string Logger::computeDevfilePattern(const std::string& filepath)
