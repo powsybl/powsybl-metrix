@@ -29,7 +29,7 @@
                 <iidm:switch id="FP.AND1_FP.AND1_DJ_OMN" name="FP.AND1_DJ_OMN" kind="BREAKER" open="false" node1="12" node2="13"/>
                 <iidm:bus v="380.0" angle="0.0" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13"/>
             </iidm:nodeBreakerTopology>
-            <iidm:battery id="BATTERY_1" targetP="20.0" targetQ="20.0" minP="10.0" maxP="200.0" node="6">
+            <iidm:battery id="BATTERY_1" targetP="20.0" localTargetQ="20.0" minP="10.0" maxP="200.0" node="6">
                 <iidm:minMaxReactiveLimits minQ="-1.7976931348623157E308" maxQ="1.7976931348623157E308"/>
             </iidm:battery>
         </iidm:voltageLevel>
@@ -210,28 +210,30 @@
                 <iidm:switch id="FSSV.O1_Sect mnv FSSV.O12_G" name="Sect mnv FSSV.O12_G" kind="DISCONNECTOR" open="false" node1="21" node2="1"/>
                 <iidm:bus v="380.0" angle="0.038091349365863954" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FSSV.O11_G" energySource="THERMAL" minP="0.0" maxP="500.0" voltageRegulatorOn="true" targetP="480.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="3" p="-480.0">
+            <iidm:generator id="FSSV.O11_G" energySource="THERMAL" minP="0.0" maxP="500.0" targetP="480.0" localTargetV="406.4500427246094" localTargetQ="2.3523099422454834" node="3" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="500.0" voltageRegulatorOn="true" targetP="480.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="20" p="-480.0">
+            <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="500.0" targetP="480.0" localTargetV="406.4500427246094" localTargetQ="2.3523099422454834" node="20" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
             <iidm:load id="FSSV.O11_L" loadType="UNDEFINED" p0="480.0" q0="4.800000190734863" node="18" p="480.0"/>
-            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="10" p="0.0">
+            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" lossFactor="2.0" localTargetV="406.0" localTargetQ="0.0" node="10" p="0.0">
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
                 </iidm:reactiveCapabilityCurve>
             </iidm:vscConverterStation>
-            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="12" p="0.0">
+            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" lossFactor="2.0" localTargetV="406.0" localTargetQ="0.0" node="12" p="0.0">
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
@@ -295,47 +297,53 @@
                 <iidm:switch id="FVALDI1_FVALDI16_G_DJ3" name="FVALDI16_G_DJ3" kind="BREAKER" open="true" node1="30" node2="31"/>
                 <iidm:bus v="380.0" angle="-0.07618282626649227" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FVALDI11_G" energySource="THERMAL" minP="0.0" maxP="2000.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="3" p="-0.0">
+            <iidm:generator id="FVALDI11_G" energySource="THERMAL" minP="0.0" maxP="2000.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="3" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI12_G" energySource="THERMAL" minP="-100.0" maxP="2500.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="23" p="-0.0">
+            <iidm:generator id="FVALDI12_G" energySource="THERMAL" minP="-100.0" maxP="2500.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="23" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI13_G" energySource="THERMAL" minP="500.0" maxP="1000.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="25" p="-0.0">
+            <iidm:generator id="FVALDI13_G" energySource="THERMAL" minP="500.0" maxP="1000.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="25" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI14_G" energySource="THERMAL" minP="-1000.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="27" p="-0.0">
+            <iidm:generator id="FVALDI14_G" energySource="THERMAL" minP="-1000.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="27" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI15_G" energySource="THERMAL" minP="0.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="29" p="-0.0">
+            <iidm:generator id="FVALDI15_G" energySource="THERMAL" minP="0.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="29" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI16_G" energySource="THERMAL" minP="0.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="31" p="-0.0">
+            <iidm:generator id="FVALDI16_G" energySource="THERMAL" minP="0.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="31" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
             <iidm:load id="FVALDI11_L" loadType="UNDEFINED" p0="470.0" q0="4.800000190734863" node="18" p="480.0"/>
             <iidm:load id="FVALDI11_L2" loadType="UNDEFINED" p0="10.0" q0="4.800000190734863" node="20" p="0.0"/>
@@ -372,12 +380,13 @@
                 <iidm:switch id="FVERGE1_FVERGE1_DJ_OMN" name="FVERGE1_DJ_OMN" kind="BREAKER" open="false" node1="12" node2="13"/>
                 <iidm:bus v="380.0" angle="-0.01904573845031415" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FVERGE11_G" energySource="THERMAL" minP="0.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="7.481579780578613" node="3" p="-0.0">
+            <iidm:generator id="FVERGE11_G" energySource="THERMAL" minP="0.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="7.481579780578613" node="3" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="600.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
         </iidm:voltageLevel>
     </iidm:substation>
