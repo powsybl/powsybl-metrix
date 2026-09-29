@@ -1,0 +1,102 @@
+Use dictionnary file METRIX.dic
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 2
+Nombre total de noeuds  = 143
+Nombre de consommations = 118 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 213 (dont 0 surveillés en N et 0 surveillés sur défaut)
+Nombre de groupes       = 248 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 25 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Mode de calcul : LOAD-FLOW
+Noeud bilan : 0 [O-9KIRB2_11]
+0 [O-9KIRB2_11](2) <-> 4 [O-9STRA2_9](6) <-> 5 [O-9THAU2_14](4)
+                                         <-> 85 [O-ZELL_2_20](6)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =  9072.6132  MW
+Production démarrée                 =  9116.1525  MW
+Puissance à ajuster                 =   -43.5393  MW
+Puissance disponible à la hausse (hors Pimp) = 21314.8045  MW
+Puissance disponible à la baisse (hors Pimp) = -15171.3085  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [O-9KIRB2_11]), bilan = 43.5393 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    9072.6132 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      21.7696
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      21.7696
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 614 (taille de la matrice : 614)
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 1
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                =  9072.6132  MW
+Production démarrée                 =  9116.1525  MW
+Puissance à ajuster                 =   -43.5393  MW
+Puissance disponible à la hausse (hors Pimp) = 21314.8045  MW
+Puissance disponible à la baisse (hors Pimp) = -15171.3085  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [O-9KIRB2_11]), bilan = 43.5393 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 1 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =    9072.6132 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :      21.7696
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :      21.7696
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 614 (taille de la matrice : 614)

@@ -313,11 +313,11 @@ void Reseau::correctConnexite(bool was_connexe,
                             icdt->validite_ = false;
                             return;
                         }
-                        LOG_ALL(info) << err::ioDico().msg("INFOParade", icdt->nom_, icdtPere->nom_)
+                        LOG_ALL(info) << err::ioDico().msg("INFOParade", icdt->nom_, icdtPere->nom_) << " "
                                       << icdt->pochePerdue_->print().c_str();
                     } else {
                         // This is not a remedial action
-                        LOG_ALL(info) << err::ioDico().msg("INFOIncident", icdt->nom_)
+                        LOG_ALL(info) << err::ioDico().msg("INFOIncident", icdt->nom_) << " "
                                       << icdt->pochePerdue_->print().c_str();
                     }
                     incidentsRompantConnexite_.push_back(icdt);

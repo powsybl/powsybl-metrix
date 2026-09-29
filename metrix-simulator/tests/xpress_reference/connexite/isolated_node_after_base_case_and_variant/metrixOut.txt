@@ -1,0 +1,163 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole BRIOUP3_BRIOU   3MASSI.1  DJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole SSFL8P3_SSFL8   3SSFL7.1  DJ a une admittance tres grande (100000.0000000000)
+Groupe BLENO.TG51 : Pobj (264.403992) est superieur a Pmax (250.000000): Pobj mis a Pmax.
+Groupe DURRE_PV_FA_19-078A : Pobj (4.176000) est superieur a Pmax (4.000000): Pobj mis a Pmax.
+Groupe SALINT07 : Pobj (5.000000) est superieur a Pmax (4.700000): Pobj mis a Pmax.
+Groupe RNURSTA1 : Pobj (1.000000) est superieur a Pmax (0.800000): Pobj mis a Pmax.
+Groupe SSGUI_HY_FA_19-062A : Pobj (10.395000) est superieur a Pmax (10.000000): Pobj mis a Pmax.
+Groupe VICHY_PV_FA_19-076A : Pobj (1.365000) est superieur a Pmax (1.000000): Pobj mis a Pmax.
+Groupe YZEUR_PV_FA_19-080A : Pobj (2.232000) est superieur a Pmax (2.000000): Pobj mis a Pmax.
+Incident 'ARCOML31SSFL8' : Noeuds perdus '1078 [ARCOM3SNCF]' '7024'
+Incident 'ARCOML31ZSSAP' : Noeuds perdus '1078 [ARCOM3SNCF]' '7024'
+Incident 'BRIOUL31ZSALZ' : Noeuds perdus '5248 [SALZU3T311]' '6997'
+Incident 'BROMML61RUEYR' : Noeuds perdus '1680'
+Incident 'BROMML62RUEYR' : Noeuds perdus '1681'
+Incident 'BROMML63RUEYR' : Noeuds perdus '1682'
+Incident 'BROMML64RUEYR' : Noeuds perdus '1683'
+Incident 'BROMML65RUEYR' : Noeuds perdus '1684'
+Incident 'BROMML66RUEYR' : Noeuds perdus '1685'
+Incident 'C.AIGL31MARGE' : Noeuds perdus '1803 [C.AIG3TR311]'
+Incident 'GRANDL61ZLANA' : Noeuds perdus '3564' '6749'
+Incident 'ISSOIL31TAUPE' : Noeuds perdus '5818 [TAUPE3T311, TAUPE3T312]'
+Incident 'LANAUL61ZLANA' : Noeuds perdus '3564' '6749'
+Incident 'LANGEL31ZSALZ' : Noeuds perdus '5248 [SALZU3T311]' '6997'
+Incident 'LIORAL31NEUSS' : Noeuds perdus '3703 [LIORA3TR311, LIORA3TR312]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3797' '3798' '3799'
+Incident 'MARGEL31SSAPC' : Noeuds perdus '5459 [SSAPC3T311]'
+Incident 'MARGEL31SSSA7' : Noeuds perdus '5692 [SSSA73SNCF]'
+Incident 'MARGEL31ZANCE' : Noeuds perdus '1038 [ANCEL3TR311]' '6374'
+Incident 'MARGEL31ZSSAP' : Noeuds perdus '1078 [ARCOM3SNCF]' '7024'
+Incident 'MARGEL32SSAPC' : Noeuds perdus '5458 [SSAP53SN]' '5460 [SSAPC3T312]'
+Incident 'MASSIL31ZPEY5' : Noeuds perdus '4704' '4705' '6917'
+Incident 'NEUSSL31ZPEY5' : Noeuds perdus '4704' '4705' '6917'
+Incident 'NEUSSL31ZTALI' : Noeuds perdus '7068'
+Incident 'PEYRUL31ZPEY5' : Noeuds perdus '4704' '4705' '6917'
+Incident 'PRATCL31ZANCE' : Noeuds perdus '1038 [ANCEL3TR311]' '6374'
+Incident 'PRATCL31ZPRA5' : Noeuds perdus '4339' '6866' '6935'
+Incident 'RUEYRL61SARRA' : Noeuds perdus '5275'
+Incident 'RUEYRL61ZCOUE' : Noeuds perdus '2292' '3158' '3607' '6554' '6752'
+Incident 'RUEYRL61ZLANA' : Noeuds perdus '3564' '6749'
+Incident 'RUEYRL62ZMEAL' : Noeuds perdus '4003' '6812'
+Incident 'SALZUL31ZSALZ' : Noeuds perdus '5248 [SALZU3T311]' '6997'
+Incident 'SAVIGL31TALIZ' : Noeuds perdus '5798 [TALIZ3SNCF]'
+Incident 'SAVIGL31ZTALI' : Noeuds perdus '7068'
+Incident 'SSAP5L31ZSSAP' : Noeuds perdus '1078 [ARCOM3SNCF]' '7024'
+Incident 'TALIZL31ZTALI' : Noeuds perdus '7068'
+Incident 'RUEYRY761' : Noeuds perdus '714' '716'
+Incident 'RUEYRY762' : Noeuds perdus '715' '717'
+Incident 'PEYRUY311' : Noeuds perdus '4704'
+Incident 'SAVIGY632' : Noeuds perdus '5317 [SAVIG6T611]'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 60 (sur 60)
+Nombre de regions       = 11
+Nombre total de noeuds  = 7173
+Nombre de consommations = 7944 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 10036 (dont 14 surveillés en N et 14 surveillés sur défaut)
+Nombre de groupes       = 8943 (dont 107 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 40 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 4 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Incident 'ARCOML31SSFL8' : Noeuds perdus '1078 [ARCOM3SNCF]' '5563 [SSFL83T311, SSFL83T313]' '5564' '7024'
+Incident 'ARCOML31ZSSAP' : Noeuds perdus '1078 [ARCOM3SNCF]' '5563 [SSFL83T311, SSFL83T313]' '5564' '7024'
+Incident 'BRIOUL31ZSALZ' : Noeuds perdus '1674 [BRIOU3T311, BRIOU3T312]' '1675' '5248 [SALZU3T311]' '6997'
+Incident 'BROMML61RUEYR' : Noeuds perdus '1680'
+Incident 'BROMML62RUEYR' : Noeuds perdus '1681'
+Incident 'BROMML63RUEYR' : Noeuds perdus '1682'
+Incident 'BROMML64RUEYR' : Noeuds perdus '1683'
+Incident 'BROMML65RUEYR' : Noeuds perdus '1684'
+Incident 'BROMML66RUEYR' : Noeuds perdus '1685'
+Incident 'C.AIGL31MARGE' : Noeuds perdus '1803 [C.AIG3TR311]'
+Incident 'GRANDL61ZLANA' : Noeuds perdus '3564' '6749'
+Incident 'ISSOIL31TAUPE' : Noeuds perdus '5818 [TAUPE3T311, TAUPE3T312]'
+Incident 'LANAUL61ZLANA' : Noeuds perdus '3564' '6749'
+Incident 'LANGEL31PRATC' : Noeuds perdus '1674 [BRIOU3T311, BRIOU3T312]' '1675' '3586 [LANGE3T311, LANGE3T312, LANGE3T313, LANGE3T314]' '5248 [SALZU3T311]' '6997'
+Incident 'LANGEL31ZSALZ' : Noeuds perdus '1674 [BRIOU3T311, BRIOU3T312]' '1675' '5248 [SALZU3T311]' '6997'
+Incident 'LIORAL31NEUSS' : Noeuds perdus '3703 [LIORA3TR311, LIORA3TR312]'
+Incident 'M.ALLL31PRATC' : Noeuds perdus '3797' '3798' '3799'
+Incident 'MARGEL31SSAPC' : Noeuds perdus '5459 [SSAPC3T311]'
+Incident 'MARGEL31SSSA7' : Noeuds perdus '5692 [SSSA73SNCF]'
+Incident 'MARGEL31ZANCE' : Noeuds perdus '1038 [ANCEL3TR311]' '6374'
+Incident 'MARGEL31ZSSAP' : Noeuds perdus '1078 [ARCOM3SNCF]' '5563 [SSFL83T311, SSFL83T313]' '5564' '7024'
+Incident 'MARGEL32SSAPC' : Noeuds perdus '5458 [SSAP53SN]' '5460 [SSAPC3T312]'
+Incident 'MASSIL31ZPEY5' : Noeuds perdus '4704' '4705' '6917'
+Incident 'NEUSSL31ZPEY5' : Noeuds perdus '4704' '4705' '6917'
+Incident 'NEUSSL31ZTALI' : Noeuds perdus '7068'
+Incident 'PEYRUL31ZPEY5' : Noeuds perdus '4704' '4705' '6917'
+Incident 'PRATCL31ZANCE' : Noeuds perdus '1038 [ANCEL3TR311]' '6374'
+Incident 'PRATCL31ZPRA5' : Noeuds perdus '4339' '6866' '6935'
+Incident 'RUEYRL61SARRA' : Noeuds perdus '5275'
+Incident 'RUEYRL61SAVIG' : Noeuds perdus '3703 [LIORA3TR311, LIORA3TR312]' '3968 [MASSI3T311]' '4357 [NEUSS3T311, NEUSS3T312]' '4704' '4705' '5316' '5317 [SAVIG6T611]' '5562 [SSFL73SNCF]' '5798 [TALIZ3SNCF]' '6917' '7068'
+Incident 'RUEYRL61ZCOUE' : Noeuds perdus '2292' '3158' '3607' '6554' '6752'
+Incident 'RUEYRL61ZLANA' : Noeuds perdus '3564' '6749'
+Incident 'RUEYRL62ZMEAL' : Noeuds perdus '4003' '6812'
+Incident 'SALZUL31ZSALZ' : Noeuds perdus '1674 [BRIOU3T311, BRIOU3T312]' '1675' '5248 [SALZU3T311]' '6997'
+Incident 'SAVIGL31SSFL7' : Noeuds perdus '5562 [SSFL73SNCF]'
+Incident 'SAVIGL31TALIZ' : Noeuds perdus '5798 [TALIZ3SNCF]'
+Incident 'SAVIGL31ZTALI' : Noeuds perdus '7068'
+Incident 'SSAP5L31ZSSAP' : Noeuds perdus '1078 [ARCOM3SNCF]' '5563 [SSFL83T311, SSFL83T313]' '5564' '7024'
+Incident 'TALIZL31ZTALI' : Noeuds perdus '7068'
+Incident 'RUEYRY761' : Noeuds perdus '714' '716'
+Incident 'RUEYRY762' : Noeuds perdus '715' '717'
+Incident 'PEYRUY311' : Noeuds perdus '4704'
+Incident 'SAVIGY632' : Noeuds perdus '3703 [LIORA3TR311, LIORA3TR312]' '3968 [MASSI3T311]' '4357 [NEUSS3T311, NEUSS3T312]' '4704' '4705' '5316' '5317 [SAVIG6T611]' '5562 [SSFL73SNCF]' '5798 [TALIZ3SNCF]' '6917' '7068'
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF
+Noeud bilan : 0 [.A.ZA 6 .ACAM 1, .A.ZA 6 AVEZT_2]
+0 [.A.ZA 6 .ACAM 1, .A.ZA 6 AVEZT_2](1) <-> 332 [.PENA 6 TR654 1](6) <-> 87(2)
+                                                                     <-> 301 [.MTTO 6 .MARI 1, .MTTO 6 .MARI 2, .MTTO 6 TR 638 C, .MTTO 6 TR 651 C, .MTTO 6 TR 652 C, .MTTO 6 TR 653 C, .MTTO 6 TR 654 C](5)
+                                                                     <-> 489 [.VILN 6 TR 651 C, .VILN 6 TR 652 C, .VILN 6 TR 653 C](5)
+                                                                     <-> 333(4)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+Attention: incident 2, l'ouvrage BRIOUL31MASSI est deja deconnecte
+Attention: incident 49, l'ouvrage SSFL7L31SSFL8 est deja deconnecte
+Attention: incident 62, l'ouvrage BRIOUL31MASSI est deja deconnecte
+Attention: incident 118, l'ouvrage SSFL7L31SSFL8 est deja deconnecte
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 86580.8361  MW
+Production démarrée                 = 86588.8585  MW
+Puissance à ajuster                 =    -8.0224  MW
+Puissance disponible à la hausse (hors Pimp) = 23623.3600  MW
+Puissance disponible à la baisse (hors Pimp) = -41221.6400  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [.A.ZA 6 .ACAM 1, .A.ZA 6 AVEZT_2]), bilan = 8.0224 MW
+
+Utilisation du simplexe car une PObj est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   86580.8361 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     641.7958
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     641.7958
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 8158 (taille de la matrice : 8158)
+Pas de contraintes

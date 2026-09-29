@@ -1,0 +1,843 @@
+{
+  "files": [
+    {
+      "name": "fort.44_BIN",
+      "attributes": [
+        {
+          "name": "CGNBREGI",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "TNNBNTOT",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            4
+          ]
+        },
+        {
+          "name": "CQNBQUAD",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            3
+          ]
+        },
+        {
+          "name": "ECNBCONS",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            4
+          ]
+        },
+        {
+          "name": "TRNBGROU",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "DTNBTRDE",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "DCNBLIES",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "DMNBDEFK",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "SECTNBSE",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "MODECALC",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "UNOMINAL",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            100
+          ]
+        },
+        {
+          "name": "CPPOSREG",
+          "type": "INTEGER",
+          "valueCount": 4,
+          "firstIndexMaxValue": 4,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 4,
+          "values": [
+            1,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "name": "QASURVDI",
+          "type": "INTEGER",
+          "valueCount": 3,
+          "firstIndexMaxValue": 3,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 3,
+          "values": [
+            1,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "QASURNMK",
+          "type": "INTEGER",
+          "valueCount": 3,
+          "firstIndexMaxValue": 3,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 3,
+          "values": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "TNNORQUA",
+          "type": "INTEGER",
+          "valueCount": 3,
+          "firstIndexMaxValue": 3,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 3,
+          "values": [
+            1,
+            2,
+            2
+          ]
+        },
+        {
+          "name": "TNNEXQUA",
+          "type": "INTEGER",
+          "valueCount": 3,
+          "firstIndexMaxValue": 3,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 3,
+          "values": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "DTTRDEQU",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DTMODREG",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "TNNEUCEL",
+          "type": "INTEGER",
+          "valueCount": 4,
+          "firstIndexMaxValue": 4,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 4,
+          "values": [
+            1,
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "name": "TRNBTYPE",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "TRTYPGRP",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "TNNEURGT",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "SPIMPMOD",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            1
+          ]
+        },
+        {
+          "name": "DCNDROOP",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "DCNORQUA",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCNEXQUA",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCREGPUI",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DMPTDEFK",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DMDESCRK",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DTNBDEFK",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCNBDEFK",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "GRNBCURA",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "GRNBDEFK",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "NBLDCURA",
+          "type": "INTEGER",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0
+          ]
+        },
+        {
+          "name": "LDNBDEFK",
+          "type": "INTEGER",
+          "valueCount": 4,
+          "firstIndexMaxValue": 4,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 4,
+          "values": [
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "name": "SECTNBQD",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "SECTTYPE",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "SECTNUMQ",
+          "type": "INTEGER",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        }
+      ]
+    },
+    {
+      "name": "fort.45_BIN",
+      "attributes": [
+        {
+          "name": "CGCPERTE",
+          "type": "FLOAT",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0.0
+          ]
+        },
+        {
+          "name": "CQADMITA",
+          "type": "FLOAT",
+          "valueCount": 3,
+          "firstIndexMaxValue": 3,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 3,
+          "values": [
+            10.0,
+            10.0,
+            10.0
+          ]
+        },
+        {
+          "name": "CQRESIST",
+          "type": "FLOAT",
+          "valueCount": 3,
+          "firstIndexMaxValue": 3,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 3,
+          "values": [
+            0.001,
+            0.001,
+            0.001
+          ]
+        },
+        {
+          "name": "DTVALSUP",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DTVALINF",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DTVALDEP",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "ESAFIACT",
+          "type": "FLOAT",
+          "valueCount": 4,
+          "firstIndexMaxValue": 4,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 4,
+          "values": [
+            0.0,
+            0.0,
+            100.0,
+            100.0
+          ]
+        },
+        {
+          "name": "SPPACTGT",
+          "type": "FLOAT",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            200.0
+          ]
+        },
+        {
+          "name": "TRVALPMD",
+          "type": "FLOAT",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            300.0
+          ]
+        },
+        {
+          "name": "TRPUIMIN",
+          "type": "FLOAT",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0.0
+          ]
+        },
+        {
+          "name": "TRDEMBAN",
+          "type": "FLOAT",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0.0
+          ]
+        },
+        {
+          "name": "DCMINPUI",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCMAXPUI",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCIMPPUI",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCTENSDC",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCRESIST",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCPERST1",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DCPERST2",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "SECTMAXN",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "SECTCOEF",
+          "type": "FLOAT",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "PRTBCOST",
+          "type": "FLOAT",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            0.01
+          ]
+        }
+      ]
+    },
+    {
+      "name": "fort.46_BIN",
+      "attributes": []
+    },
+    {
+      "name": "fort.47_BIN",
+      "attributes": [
+        {
+          "name": "CGNOMREG",
+          "type": "STRING",
+          "valueCount": 2,
+          "firstIndexMaxValue": 2,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 2,
+          "values": [
+            "FR"
+          ]
+        },
+        {
+          "name": "TRNOMTYP",
+          "type": "STRING",
+          "valueCount": 7,
+          "firstIndexMaxValue": 7,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 7,
+          "values": [
+            "CHARBON"
+          ]
+        },
+        {
+          "name": "TNNOMNOE",
+          "type": "STRING",
+          "valueCount": 36,
+          "firstIndexMaxValue": 9,
+          "secondIndexMaxValue": 4,
+          "firstValueIndex": 1,
+          "lastValueIndex": 36,
+          "values": [
+            "FGEN.A1_1",
+            "FHUB.B1_1",
+            "FCHA.A1_1",
+            "FCHA.B1_1"
+          ]
+        },
+        {
+          "name": "CQNOMQUA",
+          "type": "STRING",
+          "valueCount": 57,
+          "firstIndexMaxValue": 19,
+          "secondIndexMaxValue": 3,
+          "firstValueIndex": 1,
+          "lastValueIndex": 57,
+          "values": [
+            "FGEN.A1  FHUB.B1  1",
+            "FHUB.B1  FCHA.A1  1",
+            "FHUB.B1  FCHA.B1  1"
+          ]
+        },
+        {
+          "name": "TRNOMGTH",
+          "type": "STRING",
+          "valueCount": 10,
+          "firstIndexMaxValue": 10,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 10,
+          "values": [
+            "FGEN.A11_G"
+          ]
+        },
+        {
+          "name": "DCNOMQUA",
+          "type": "STRING",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 0,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "DMNOMDEK",
+          "type": "STRING",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 0,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        },
+        {
+          "name": "SECTNOMS",
+          "type": "STRING",
+          "valueCount": 0,
+          "firstIndexMaxValue": 0,
+          "secondIndexMaxValue": 0,
+          "firstValueIndex": 1,
+          "lastValueIndex": 0,
+          "values": []
+        }
+      ]
+    },
+    {
+      "name": "fort.48_BIN",
+      "attributes": [
+        {
+          "name": "TESTITAM",
+          "type": "BOOLEAN",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            "true"
+          ]
+        },
+        {
+          "name": "REDISRES",
+          "type": "BOOLEAN",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            "true"
+          ]
+        },
+        {
+          "name": "EQUILRES",
+          "type": "BOOLEAN",
+          "valueCount": 1,
+          "firstIndexMaxValue": 1,
+          "secondIndexMaxValue": 1,
+          "firstValueIndex": 1,
+          "lastValueIndex": 1,
+          "values": [
+            "true"
+          ]
+        }
+      ]
+    }
+  ]
+}

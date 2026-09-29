@@ -395,7 +395,7 @@ void VariantConfiguration::processRandomGroups(VariantConfig& variant, std::istr
     rtrim(sub_line);
     variant.randomGroups.push_back(sub_line);
 
-    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : group " << sub_line << 
+    LOG(debug) << metrix::log::verbose_config << "Variant " << variant.num << " : group " << sub_line <<
     "is in position " << variant.randomGroups.size()-1;
 }
 

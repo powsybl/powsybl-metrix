@@ -1,0 +1,148 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_VKZ a une admittance tres grande (100000.0000000000)
+Incident 'QUAD_KBR' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSR' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFM' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXY' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYN' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SNZ' : Noeuds perdus '5117 [CONSO_GNW]'
+Incident 'QUAD_UMQ' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMR' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFK' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5960 [CONSO_HUH]'
+Incident 'INC_ZFL' : Noeuds perdus '4540 [CONSO_FRR]' '6203 [CONSO_IDQ]'
+Incident 'INC_ZFM' : Noeuds perdus '2911 [CONSO_DHA]' '5965 [CONSO_HUM]'
+Incident 'INC_ZFN' : Noeuds perdus '3894 [CONSO_ESV]' '6110 [CONSO_IAB]'
+Incident 'INC_ZFO' : Noeuds perdus '3911 [CONSO_ETM]'
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 57 (sur 57)
+Nombre de regions       = 1
+Nombre total de noeuds  = 6365
+Nombre de consommations = 6351 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 8846 (dont 0 surveillés en N et 9 surveillés sur défaut)
+Nombre de groupes       = 2558 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 14 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 0 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Lancement de METRIX sans curatif topologique
+Mode de calcul : OPF sans redispatching de groupes
+Noeud bilan : 0 [CONSO_B]
+0 [CONSO_B](1) <-> 2 [CONSO_D](4) <-> 1 [CONSO_C](1)
+                                  <-> 2236 [CONSO_CHB](2)
+                                  <-> 5974 [CONSO_HUV](3)
+
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 84238.6266  MW
+Production démarrée                 = 75403.7445  MW
+Puissance à ajuster                 =  8834.8821  MW
+Puissance disponible à la hausse (hors Pimp) = 25502038.2555  MW
+Puissance disponible à la baisse (hors Pimp) = -25652845.7445  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = -8834.8821 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   84238.6266 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    4417.4410
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    4417.4410
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+
+********************************************
+Traitement d'un paquet de 1 variante(s)
+********************************************
+Incident 'QUAD_KBR' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSR' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFM' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXY' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYN' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SNZ' : Noeuds perdus '5117 [CONSO_GNW]'
+Incident 'QUAD_UMQ' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMR' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFK' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5960 [CONSO_HUH]'
+Incident 'INC_ZFL' : Noeuds perdus '4540 [CONSO_FRR]' '6203 [CONSO_IDQ]'
+Incident 'INC_ZFM' : Noeuds perdus '2911 [CONSO_DHA]' '5965 [CONSO_HUM]'
+Incident 'INC_ZFN' : Noeuds perdus '3894 [CONSO_ESV]' '6110 [CONSO_IAB]'
+Incident 'INC_ZFO' : Noeuds perdus '3911 [CONSO_ETM]'
+
+---------------------
+---------------------
+Variante numéro 2189
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 64126.2215  MW
+Production démarrée                 = 64126.2280  MW
+Puissance à ajuster                 =    -0.0065  MW
+Puissance disponible à la hausse (hors Pimp) = 25513315.7720  MW
+Puissance disponible à la baisse (hors Pimp) = -25641568.2280  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_B]), bilan = 0.0065 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 2189 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =   64126.2215 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :       0.0033
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :       0.0033
+
+Prise en compte des couts avec reseau
+Blocage des variables de defaillance
+Micro itération 1 (nombre de contraintes 0)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 0 (taille de la matrice : 0)
+Pas de contraintes
+Incident 'QUAD_KBR' : Noeuds perdus '916 [CONSO_AIH]'
+Incident 'QUAD_PSR' : Noeuds perdus '3145 [CONSO_DQA]'
+Incident 'QUAD_QFM' : Noeuds perdus '3403 [CONSO_DZY]'
+Incident 'QUAD_QXY' : Noeuds perdus '4042 [CONSO_EYN]'
+Incident 'QUAD_RYN' : Noeuds perdus '4541 [CONSO_FRS]'
+Incident 'QUAD_SNZ' : Noeuds perdus '5117 [CONSO_GNW]'
+Incident 'QUAD_UMQ' : Noeuds perdus '2982 [CONSO_DJT]'
+Incident 'QUAD_UMR' : Noeuds perdus '2983 [CONSO_DJU]'
+Incident 'INC_ZFK' : Noeuds perdus '2888 [CONSO_DGD]' '2889 [CONSO_DGE]' '5960 [CONSO_HUH]'
+Incident 'INC_ZFL' : Noeuds perdus '4540 [CONSO_FRR]' '6203 [CONSO_IDQ]'
+Incident 'INC_ZFM' : Noeuds perdus '2911 [CONSO_DHA]' '5965 [CONSO_HUM]'
+Incident 'INC_ZFN' : Noeuds perdus '3894 [CONSO_ESV]' '6110 [CONSO_IAB]'
+Incident 'INC_ZFO' : Noeuds perdus '3911 [CONSO_ETM]'
