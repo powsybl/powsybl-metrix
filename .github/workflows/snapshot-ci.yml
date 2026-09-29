@@ -53,7 +53,7 @@ jobs:
 
       # Build powsybl-core
       - name: Detect which powsybl-core reference to use
-        run: ./check_core_ref.sh
+        run: bash ./check_core_ref.sh
         working-directory: ${{ env.SCRIPTS_PATH }}
 
       - name: Checkout core sources
