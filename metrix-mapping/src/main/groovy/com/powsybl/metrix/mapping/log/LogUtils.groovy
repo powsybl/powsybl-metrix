@@ -34,6 +34,7 @@ class LogUtils {
     }
 
     static void logOut(ScriptLogConfig scriptLogConfig, String logLevel, String section, String message) {
+        writeHeader(scriptLogConfig);
         if (scriptLogConfig != null && scriptLogConfig.getWriter() != null && canLog(logLevel, scriptLogConfig.getMaxLogLevel())) {
             String timeStampFormatted = scriptLogConfig.getDateTimeFormatter().format(getInstantNow(scriptLogConfig))
             String line = buildLine(logLevel, section, message, scriptLogConfig.isWithTimeStamp(), timeStampFormatted)
@@ -42,9 +43,10 @@ class LogUtils {
     }
 
     static void writeHeader(ScriptLogConfig scriptLogConfig) {
-        if (scriptLogConfig != null && scriptLogConfig.getWriter() != null && scriptLogConfig.isWithHeader()) {
+        if (scriptLogConfig != null && scriptLogConfig.getWriter() != null && scriptLogConfig.isWithHeader() && !scriptLogConfig.isHeaderWritten()) {
             String line = buildLine(HEADER_LOG_LEVEL, HEADER_LOG_SECTION, HEADER_LOG_MESSAGE, scriptLogConfig.isWithTimeStamp(), HEADER_LOG_TIMESTAMP)
             scriptLogConfig.getWriter().write(line)
+            scriptLogConfig.setHeaderWritten(true)
         }
     }
 
