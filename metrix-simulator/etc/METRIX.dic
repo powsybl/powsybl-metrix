@@ -140,6 +140,7 @@ ERRNoeudConso								Noeud de connexion de la consommation $1 introuvable $2
 ERRGroupePminPmax							Groupe $1 Pmin ($2) > Pmax ($3)
 ERRGroupesPminPmax							Au moins un groupe avec Pmin > Pmax : Arrêt du calcul
 ERRReseauNonConnexe							Réseau non connexe
+ERRNomSectionSurvDuplique					Le nom de la section surveillée '$1' est déjà utilisé par un autre ouvrage surveillé
 ERROuvrageInconnuIncident					Ouvrage inconnu pour l'incident $1
 ERRTypeOuvrageInconnuIncident				Type d'ouvrage inconnu pour l'incident $1
 ERRBandeReglInsuffisante					Demi-bande de réglage insuffisante, reconfigurez la $1 > $2

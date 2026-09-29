@@ -244,6 +244,10 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | SECTNUMQ     | I    | $\sum nb_{<i>}$ | Table des numéros dans la liste de quadripôles ou dans la liste des liaisons à courant continu (liste des nb1 numéros de la section 1, liste des nb2 numéros de la section 2, …) |
 | SECTCOEF     | R    | $\sum nb_{<i>}$ | Table des coefficients associés aux quadripôles (liste des nb1 coefficients de la section 1, liste des nb2 coefficients de la section 2, …)                                      |
 
+*Note : le seuil `SECTMAXN` ne s'applique que lorsque la somme pondérée des transits de la section est positive.
+Le sens inverse n'est pas contraint ; pour borner les deux sens, déclarer une seconde section de coefficients
+opposés, de même seuil et de nom différent.*
+
 (io-coupled-variables)=
 ### Variables couplées
 | Nom      | Type | Taille                | Description                                                                                            |
@@ -517,7 +521,7 @@ diffère de la consigne préventive sont affichés
 
 -----------------------------
 (io-table_r3)=
-**Tableau R3** : transits en N par quadripôle
+**Tableau R3** : transits en N par quadripôle et par section surveillée
 
 *Format* : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```
 
@@ -527,6 +531,9 @@ diffère de la consigne préventive sont affichés
 | Transit N          | R    | MW    | Positif de départ vers arrivée |
 
 *Note : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator, les quatre seuils sont également affichés.*
+
+*Note : une section surveillée est restituée sous son nom, avec la somme pondérée des transits de ses ouvrages.
+Les colonnes seuil N-k et seuil ITAM valent 99999 (non défini), une section n'étant surveillée qu'en N.*
 
 -----------------------------
 (io-table_r3b)=

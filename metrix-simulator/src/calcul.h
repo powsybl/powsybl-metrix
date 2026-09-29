@@ -335,6 +335,7 @@ public:
     double transitSurQuad(const std::shared_ptr<Quadripole>& quad,
                           std::shared_ptr<Incident> icdt,
                           const vector<double>& theta);
+    double transitSurSection(const std::shared_ptr<ElementASurveiller>& section, const vector<double>& theta);
     double transitSurQuadIncidentNonConnexe(const std::shared_ptr<Quadripole>& quad,
                                             const std::shared_ptr<Incident>& icdt) const;
     void choixContraintesAajouter();

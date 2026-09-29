@@ -139,6 +139,7 @@ ERRNoeudConso								Load $1 connecting node not found $2
 ERRGroupePminPmax							Production unit $1: Pmin ($2) > Pmax ($3)
 ERRGroupesPminPmax							At least one production unit with Pmin > Pmax : abort
 ERRReseauNonConnexe							Network is not connex
+ERRNomSectionSurvDuplique					Watched section name '$1' is already used by another monitored element
 ERROuvrageInconnuIncident					Unknown line ou production unit in contingency $1
 ERRTypeOuvrageInconnuIncident				Unknown kind of contingency $1
 ERRBandeReglInsuffisante					Frequency reserve insufficient, to be changed. $1 > $2

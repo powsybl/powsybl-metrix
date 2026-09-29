@@ -835,7 +835,36 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            if (elemSurv->quadsASurv_.size() == 1 && elemSurv->hvdcASurv_.empty()) {
+            if (elemSurv->isWatchedSection) {
+                transitN = transitSurSection(elemSurv, theta);
+
+                // Ecart calcule comme dans Calculer::detectionContraintes : le seuil extremite -> origine
+                // d'une section reste a valdef (cf. Reseau::lireDonnees), donc seuilMin(nullptr) vaut
+                // -valdef et le sens inverse aux coefficients n'est pas borne
+                double maxTSect = elemSurv->seuilMax(nullptr);
+                double ecartSect = 0.;
+
+                if (transitN > 0 && maxTSect != config::constants::valdef) {
+                    ecartSect = std::max(transitN - maxTSect, 0.);
+                }
+                sommeEcartsN += ecartSect;
+
+                if (config::inputConfiguration().useAllOutputs()) {
+                    fprintf(fr,
+                            "R3 ;;%s;%.1f;%.1f;%.1f;%.1f;\n",
+                            elemSurv->nom_.c_str(),
+                            transitN,
+                            elemSurv->seuilMaxN_,
+                            elemSurv->seuilMaxInc_,
+                            elemSurv->seuilMaxAvantCur_);
+                } else if (!config::configuration().displayResultatsSurcharges() || ecartSect >= EPSILON_SORTIES) {
+                    double transitAffiche = (fabs(transitN) < EPSILON_SORTIES) ? 0.0 : transitN;
+                    fprintf(fr,
+                            "R3 ;;%s;%s;\n",
+                            elemSurv->nom_.c_str(),
+                            c_fmt(PREC_FLOAT.c_str(), transitAffiche).c_str());
+                }
+            } else if (elemSurv->quadsASurv_.size() == 1 && elemSurv->hvdcASurv_.empty()) {
                 const auto& quad = elemSurv->quadsASurv_.begin()->first;
 
                 if (quad->typeQuadripole_ != Quadripole::QUADRIPOLE_REEL) {
