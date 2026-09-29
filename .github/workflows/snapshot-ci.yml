@@ -56,6 +56,13 @@ jobs:
         run: ./check_core_ref.sh
         working-directory: ${{ env.SCRIPTS_PATH }}
 
+      - name: Checkout core sources
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: powsybl/powsybl-core
+          ref: ${{ env.CORE_REF }}
+          path: powsybl-core
+          persist-credentials: false
 
       - name: Build powsybl-core
         run: mvn -batch-mode --no-transfer-progress clean install -DskipTests
