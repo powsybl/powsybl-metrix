@@ -1,0 +1,70 @@
+<svg width="100%" viewBox="0 0 680 580" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="b3-t b3-d">
+    <title id="b3-t">Scan de sûreté en deux étapes</title>
+    <desc id="b3-d">Étape 1 sur le réseau intact, étape 2 pour chaque contingence, avec les règles de filtrage qui écartent une surcharge détectée.</desc>
+    <defs>
+        <marker id="b3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+    </defs>
+
+    <text class="th" x="340" y="24" text-anchor="middle">Scan de sûreté en deux étapes</text>
+
+    <!-- Stage 1 -->
+    <rect class="dashed-zone" x="30" y="44" width="620" height="150" rx="16"/>
+    <text class="th" x="50" y="66">Étape 1 — Réseau intact (N)</text>
+
+    <g class="fill-teal">
+        <rect x="50" y="82" width="240" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="170" y="104" text-anchor="middle" dominant-baseline="central">Calculer le transit</text>
+    </g>
+    <line x1="290" y1="104" x2="318" y2="104" class="arr" marker-end="url(#b3)"/>
+    <g class="fill-teal">
+        <rect x="318" y="82" width="164" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="400" y="104" text-anchor="middle" dominant-baseline="central">Comparer à la limite N</text>
+    </g>
+    <line x1="482" y1="104" x2="510" y2="104" class="arr" marker-end="url(#b3)"/>
+    <g class="fill-coral">
+        <rect x="510" y="82" width="120" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="570" y="104" text-anchor="middle" dominant-baseline="central">Surcharge ?</text>
+    </g>
+
+    <text class="ts" x="50" y="152" text-anchor="start">Pour chaque élément surveillé, en utilisant le résultat du load-flow DC.</text>
+    <text class="ts" x="50" y="168" text-anchor="start">Une surcharge en N est enregistrée et masquera les surcharges N-k plus petites sur le même élément.</text>
+
+    <!-- Stage 2 -->
+    <rect class="dashed-zone" x="30" y="210" width="620" height="370" rx="16"/>
+    <text class="th" x="50" y="232">Étape 2 — Post-contingence (N-k)</text>
+
+    <g class="fill-blue">
+        <rect x="50" y="248" width="240" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="170" y="268" text-anchor="middle" dominant-baseline="central">Estimer le transit post-contingence</text>
+        <text class="ts" x="170" y="286" text-anchor="middle" dominant-baseline="central">(via facteurs de sensibilité)</text>
+    </g>
+    <line x1="290" y1="276" x2="330" y2="276" class="arr" marker-end="url(#b3)"/>
+    <g class="fill-blue">
+        <rect x="330" y="248" width="140" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="400" y="268" text-anchor="middle" dominant-baseline="central">Comparer à la limite</text>
+        <text class="ts" x="400" y="286" text-anchor="middle" dominant-baseline="central">N-1 / N-k / ITAM</text>
+    </g>
+    <line x1="470" y1="276" x2="510" y2="276" class="arr" marker-end="url(#b3)"/>
+    <g class="fill-coral">
+        <rect x="510" y="248" width="120" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="570" y="268" text-anchor="middle" dominant-baseline="central">Surcharge ?</text>
+        <text class="ts" x="570" y="286" text-anchor="middle" dominant-baseline="central">Appliquer les filtres</text>
+    </g>
+
+    <text class="ts" x="50" y="332" text-anchor="start">Pour chaque contingence × chaque élément surveillé. Les transits post-contingence sont estimés</text>
+    <text class="ts" x="50" y="348" text-anchor="start">via les facteurs de sensibilité (PTDF/LODF), évitant un load-flow complet par contingence.</text>
+
+    <text class="th" x="50" y="386">Règles de filtrage (une surcharge est écartée si) :</text>
+    <text class="ts" x="50" y="406" text-anchor="start">• L'incident a déjà ses parades activées</text>
+    <text class="ts" x="58" y="420" text-anchor="start">(sans ITAM : ignoré ; avec ITAM : détection sur seuil avant-curatif)</text>
+    <text class="ts" x="50" y="440" text-anchor="start">• La contrainte a déjà été ajoutée dans une micro-itération précédente</text>
+    <text class="ts" x="58" y="454" text-anchor="start">(modes avec variables d'écart uniquement)</text>
+    <text class="ts" x="50" y="474" text-anchor="start">• Aucun levier d'action n'est mobilisable</text>
+    <text class="ts" x="58" y="488" text-anchor="start">(modes avec variables d'écart uniquement)</text>
+    <text class="ts" x="50" y="508" text-anchor="start">• La surcharge est inférieure à la tolérance numérique</text>
+    <text class="ts" x="50" y="528" text-anchor="start">• La surcharge est plus petite que la surcharge N sur le même élément</text>
+
+    <text class="ts" x="50" y="556" text-anchor="start">Les menaces les plus sévères par élément sont enregistrées pour les résultats.</text>
+</svg>

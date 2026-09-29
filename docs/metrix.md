@@ -16,7 +16,7 @@ To launch a Metrix simulation, you need:
 
 The module can be configured with the following properties and default values described further below.
 All properties are optional.
-For further information about PowSyBl module configuration, please refer to the dedicated [PowSyBl Core Configuration page](inv:powsyblcore:*:*#user/configuration/index)
+For further information about PowSyBl module configuration, please refer to the dedicated [PowSyBl Core Configuration page](inv:powsybl-core:*:*#user/configuration/index)
 
 ```yaml
 metrix:

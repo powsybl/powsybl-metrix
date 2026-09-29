@@ -1,0 +1,76 @@
+<svg width="100%" viewBox="0 0 680 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="b2-t b2-d">
+    <defs>
+        <marker id="b2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+    </defs>
+
+    <title id="b2-t">Arbre de décision de sélection du seuil applicable à un élément surveillé</title>
+    <desc id="b2-d">Trois tests successifs — situation N, objet évalué de type parade, parades déjà activées — orientent vers le seuil N, le seuil post-incident, le seuil avant action curative, ou le seuil post-incident avec repli sur le seuil avant curatif.</desc>
+
+    <text class="th" x="340" y="24" text-anchor="middle">Sélection du seuil applicable à un élément surveillé</text>
+
+    <!-- Test 1 : situation N -->
+    <g class="fill-amber">
+        <rect x="40" y="48" width="290" height="54" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="68" text-anchor="middle" dominant-baseline="central">Aucun incident évalué ?</text>
+        <text class="ts" x="185" y="88" text-anchor="middle" dominant-baseline="central">réseau intact (situation N)</text>
+    </g>
+    <line x1="330" y1="75" x2="376" y2="75" class="arr" marker-end="url(#b2)"/>
+    <text class="ts" x="353" y="68" text-anchor="middle">oui</text>
+    <g class="fill-teal">
+        <rect x="380" y="48" width="260" height="54" rx="8" stroke-width="0.5"/>
+        <text class="th" x="510" y="68" text-anchor="middle" dominant-baseline="central">Seuil N</text>
+        <text class="ts" x="510" y="88" text-anchor="middle" dominant-baseline="central">régime permanent</text>
+    </g>
+    <line x1="185" y1="102" x2="185" y2="128" class="arr" marker-end="url(#b2)"/>
+    <text class="ts" x="193" y="120" text-anchor="start">non</text>
+
+    <!-- Test 2 : l'objet évalué est une parade -->
+    <g class="fill-amber">
+        <rect x="40" y="130" width="290" height="54" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="150" text-anchor="middle" dominant-baseline="central">L'objet évalué est-il une parade ?</text>
+        <text class="ts" x="185" y="170" text-anchor="middle" dominant-baseline="central">manœuvre curative déjà appliquée</text>
+    </g>
+    <line x1="330" y1="157" x2="376" y2="157" class="arr" marker-end="url(#b2)"/>
+    <text class="ts" x="353" y="150" text-anchor="middle">oui</text>
+    <g class="fill-blue">
+        <rect x="380" y="130" width="260" height="54" rx="8" stroke-width="0.5"/>
+        <text class="th" x="510" y="150" text-anchor="middle" dominant-baseline="central">Seuil post-incident</text>
+        <text class="ts" x="510" y="170" text-anchor="middle" dominant-baseline="central">régime stabilisé après curatif</text>
+    </g>
+    <line x1="185" y1="184" x2="185" y2="210" class="arr" marker-end="url(#b2)"/>
+    <text class="ts" x="193" y="202" text-anchor="start">non</text>
+
+    <!-- Test 3 : parades déjà activées -->
+    <g class="fill-amber">
+        <rect x="40" y="212" width="290" height="54" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="232" text-anchor="middle" dominant-baseline="central">Parades de l'incident activées ?</text>
+        <text class="ts" x="185" y="252" text-anchor="middle" dominant-baseline="central">le mécanisme de parade est enclenché</text>
+    </g>
+    <line x1="330" y1="239" x2="376" y2="239" class="arr" marker-end="url(#b2)"/>
+    <text class="ts" x="353" y="232" text-anchor="middle">oui</text>
+    <g class="fill-purple">
+        <rect x="380" y="212" width="260" height="54" rx="8" stroke-width="0.5"/>
+        <text class="th" x="510" y="232" text-anchor="middle" dominant-baseline="central">Seuil avant action curative</text>
+        <text class="ts" x="510" y="252" text-anchor="middle" dominant-baseline="central">fenêtre transitoire (ITAM)</text>
+    </g>
+
+    <!-- Cas par défaut -->
+    <path d="M185 266 L185 325 L376 325" fill="none" class="arr" marker-end="url(#b2)"/>
+    <text class="ts" x="193" y="292" text-anchor="start">non</text>
+    <g class="fill-blue">
+        <rect x="380" y="294" width="260" height="62" rx="8" stroke-width="0.5"/>
+        <text class="th" x="510" y="312" text-anchor="middle" dominant-baseline="central">Seuil post-incident</text>
+        <text class="ts" x="510" y="330" text-anchor="middle" dominant-baseline="central">avec repli sur le seuil avant curatif</text>
+        <text class="ts" x="510" y="346" text-anchor="middle" dominant-baseline="central">si le premier n'est pas renseigné</text>
+    </g>
+
+    <!-- Variantes transverses -->
+    <rect class="dashed-zone" x="30" y="376" width="620" height="110" rx="16"/>
+    <text class="th" x="50" y="400">Deux variantes se superposent à chaque branche</text>
+    <text class="ts" x="50" y="424" text-anchor="start">• Incidents déclarés spécifiques : des seuils dédiés remplacent les seuils génériques lorsqu'ils</text>
+    <text class="ts" x="58" y="440" text-anchor="start">sont renseignés. Il s'agit d'une liste fournie en entrée, non du nombre d'ouvrages perdus.</text>
+    <text class="ts" x="50" y="464" text-anchor="start">• Seuils asymétriques : par défaut la limite négative vaut l'opposé de la limite positive ; des</text>
+    <text class="ts" x="58" y="480" text-anchor="start">seuils « extrémité vers origine » distincts peuvent être fournis pour le sens de flux inverse.</text>
+</svg>
