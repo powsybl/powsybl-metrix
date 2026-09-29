@@ -390,7 +390,10 @@ En conséquence, si des valeurs négatives sont utilisées pour les coûts à la
 groupe est supérieur en valeur absolue au coût à la hausse d'un autre groupe, METRIX peut modifier le coût de
 production uniquement pour bénéficier de cette « opportunité » sans que cela soit motivé par une contrainte
 d'équilibrage ou de transit. Les paramètres `adequacyCostOffset` et `redispatchingCostOffset` permettent de contrer
-ce comportement dans chacune des phases et doivent être positionnés à la valeur absolue du plus grand coût négatif.
+ce comportement dans chacune des phases : l'offset est ajouté aux coûts de groupes et de délestage de la phase, puis
+le résultat est borné inférieurement par `generatorMinCost` (0,5 par défaut). Pour que l'ordre entre tous les coûts
+soit conservé, l'offset doit être au moins égal à la valeur absolue du plus grand coût négatif augmentée de
+cette borne.
 
 Si rien n'est spécifié (i.e. aucun coût n'est défini), tous les groupes du réseau peuvent participer aux deux phases à
 coût nul.
