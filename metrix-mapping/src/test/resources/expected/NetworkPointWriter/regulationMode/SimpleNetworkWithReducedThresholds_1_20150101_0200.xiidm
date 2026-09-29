@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<iidm:network xmlns:iidm="http://www.powsybl.org/schema/iidm/1_17" xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF" minimumValidationLevel="STEADY_STATE_HYPOTHESIS">
+<iidm:network xmlns:iidm="http://www.powsybl.org/schema/iidm/1_18" xmlns:ld="http://www.itesla_project.eu/schema/iidm/ext/load_detail/1_0" xmlns:hopr="http://www.itesla_project.eu/schema/iidm/ext/hvdc_operator_active_power_range/1_0" xmlns:hapc="http://www.itesla_project.eu/schema/iidm/ext/hvdc_angle_droop_active_power_control/1_0" id="SimpleNetworkWithReducedThresholds" caseDate="2015-09-29T09:14:00.000+01:00" forecastDistance="0" sourceFormat="NF" minimumValidationLevel="STEADY_STATE_HYPOTHESIS">
     <iidm:substation id="FP.AN" country="FR" tso="RTE">
         <iidm:property name="paysCvg" value="FRANCE"/>
         <iidm:property name="regionCvg" value="LILLE"/>
@@ -29,7 +29,7 @@
                 <iidm:switch id="FP.AND1_FP.AND1_DJ_OMN" name="FP.AND1_DJ_OMN" kind="BREAKER" open="false" node1="12" node2="13"/>
                 <iidm:bus v="380.0" angle="0.0" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13"/>
             </iidm:nodeBreakerTopology>
-            <iidm:battery id="BATTERY_1" targetP="20.0" targetQ="20.0" minP="10.0" maxP="200.0" node="6">
+            <iidm:battery id="BATTERY_1" targetP="20.0" localTargetQ="20.0" minP="10.0" maxP="200.0" node="6">
                 <iidm:minMaxReactiveLimits minQ="-1.7976931348623157E308" maxQ="1.7976931348623157E308"/>
             </iidm:battery>
         </iidm:voltageLevel>
@@ -130,10 +130,10 @@
                 <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" rho="1.0" alpha="9.167247772216797"/>
             </iidm:phaseTapChanger>
             <iidm:operationalLimitsGroup1 id="DEFAULT">
-                <iidm:currentLimits permanentLimit="400.0"/>
+                <iidm:currentLimits permanentLimit="400.0" detectionKind="HIGH"/>
             </iidm:operationalLimitsGroup1>
             <iidm:operationalLimitsGroup2 id="DEFAULT">
-                <iidm:currentLimits permanentLimit="400.0">
+                <iidm:currentLimits permanentLimit="400.0" detectionKind="HIGH">
                     <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="450.0000305175781"/>
                     <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="500.0000305175781"/>
                     <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
@@ -210,28 +210,30 @@
                 <iidm:switch id="FSSV.O1_Sect mnv FSSV.O12_G" name="Sect mnv FSSV.O12_G" kind="DISCONNECTOR" open="false" node1="21" node2="1"/>
                 <iidm:bus v="380.0" angle="0.038091349365863954" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FSSV.O11_G" energySource="THERMAL" minP="0.0" maxP="500.0" voltageRegulatorOn="true" targetP="480.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="3" p="-480.0">
+            <iidm:generator id="FSSV.O11_G" energySource="THERMAL" minP="0.0" maxP="500.0" targetP="480.0" localTargetV="406.4500427246094" localTargetQ="2.3523099422454834" node="3" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="500.0" voltageRegulatorOn="true" targetP="480.0" targetV="406.4500427246094" targetQ="2.3523099422454834" node="20" p="-480.0">
+            <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="500.0" targetP="480.0" localTargetV="406.4500427246094" localTargetQ="2.3523099422454834" node="20" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
             <iidm:load id="FSSV.O11_L" loadType="UNDEFINED" p0="480.0" q0="4.800000190734863" node="18" p="480.0"/>
-            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="10" p="0.0">
+            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" lossFactor="2.0" localTargetV="406.0" localTargetQ="0.0" node="10" p="0.0">
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
                 </iidm:reactiveCapabilityCurve>
             </iidm:vscConverterStation>
-            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" voltageRegulatorOn="false" lossFactor="2.0" voltageSetpoint="406.0" reactivePowerSetpoint="0.0" node="12" p="0.0">
+            <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" lossFactor="2.0" localTargetV="406.0" localTargetQ="0.0" node="12" p="0.0">
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
@@ -295,47 +297,53 @@
                 <iidm:switch id="FVALDI1_FVALDI16_G_DJ3" name="FVALDI16_G_DJ3" kind="BREAKER" open="true" node1="30" node2="31"/>
                 <iidm:bus v="380.0" angle="-0.07618282626649227" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FVALDI11_G" energySource="THERMAL" minP="0.0" maxP="2000.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="3" p="-0.0">
+            <iidm:generator id="FVALDI11_G" energySource="THERMAL" minP="0.0" maxP="2000.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="3" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI12_G" energySource="THERMAL" minP="-100.0" maxP="2500.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="23" p="-0.0">
+            <iidm:generator id="FVALDI12_G" energySource="THERMAL" minP="-100.0" maxP="2500.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="23" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI13_G" energySource="THERMAL" minP="500.0" maxP="1000.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="25" p="-0.0">
+            <iidm:generator id="FVALDI13_G" energySource="THERMAL" minP="500.0" maxP="1000.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="25" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI14_G" energySource="THERMAL" minP="-1000.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="27" p="-0.0">
+            <iidm:generator id="FVALDI14_G" energySource="THERMAL" minP="-1000.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="27" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI15_G" energySource="THERMAL" minP="0.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="29" p="-0.0">
+            <iidm:generator id="FVALDI15_G" energySource="THERMAL" minP="0.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="29" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
-            <iidm:generator id="FVALDI16_G" energySource="THERMAL" minP="0.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="6.45497989654541" node="31" p="-0.0">
+            <iidm:generator id="FVALDI16_G" energySource="THERMAL" minP="0.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="31" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
             <iidm:load id="FVALDI11_L" loadType="UNDEFINED" p0="470.0" q0="4.800000190734863" node="18" p="480.0"/>
             <iidm:load id="FVALDI11_L2" loadType="UNDEFINED" p0="10.0" q0="4.800000190734863" node="20" p="0.0"/>
@@ -372,42 +380,43 @@
                 <iidm:switch id="FVERGE1_FVERGE1_DJ_OMN" name="FVERGE1_DJ_OMN" kind="BREAKER" open="false" node1="12" node2="13"/>
                 <iidm:bus v="380.0" angle="-0.01904573845031415" nodes="0,1,2,3,4,5,6,7,8,9,10,11,12,13"/>
             </iidm:nodeBreakerTopology>
-            <iidm:generator id="FVERGE11_G" energySource="THERMAL" minP="0.0" maxP="0.0" voltageRegulatorOn="true" targetP="0.0" targetV="406.4500427246094" targetQ="7.481579780578613" node="3" p="-0.0">
+            <iidm:generator id="FVERGE11_G" energySource="THERMAL" minP="0.0" maxP="0.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="7.481579780578613" node="3" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="600.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:generator>
         </iidm:voltageLevel>
     </iidm:substation>
     <iidm:line id="FP.AND1  FVERGE1  1" r="1.0" x="1.0" voltageLevelId1="FP.AND1" node1="3" voltageLevelId2="FVERGE1" node2="5" p1="48.0001285680805" p2="-48.0001285680805" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FP.AND1  FVERGE1  2" r="2.0" x="1.0" voltageLevelId1="FP.AND1" node1="5" voltageLevelId2="FVERGE1" node2="7" p1="48.0001285680805" p2="-48.0001285680805" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FS.BIS1  FVALDI1  1" r="3.0" x="1.0" voltageLevelId1="FS.BIS1" node1="3" voltageLevelId2="FVALDI1" node2="5" p1="144.0000642840403" p2="-144.0000642840403" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625">
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
@@ -415,12 +424,12 @@
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625"/>
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FS.BIS1  FVALDI1  2" r="4.0" x="1.0" voltageLevelId1="FS.BIS1" node1="5" voltageLevelId2="FVALDI1" node2="7" p1="144.0000642840403" p2="-144.0000642840403" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625">
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
@@ -428,12 +437,12 @@
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625"/>
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FS.BIS1 FSSV.O1 1" r="5.0" x="1.0" voltageLevelId1="FS.BIS1" node1="8" voltageLevelId2="FSSV.O1" node2="14" p1="-144.00006428404023" p2="144.00006428404023" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625">
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
@@ -441,12 +450,12 @@
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625"/>
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FS.BIS1 FSSV.O1 2" r="6.0" x="1.0" voltageLevelId1="FS.BIS1" node1="10" voltageLevelId2="FSSV.O1" node2="16" p1="-144.00006428404023" p2="144.00006428404023" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625">
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IST" value="550.0" fictitious="true"/>
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="500.00006103515625"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="600.0"/>
@@ -454,79 +463,79 @@
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="500.00006103515625"/>
+            <iidm:currentLimits permanentLimit="500.00006103515625" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FSSV.O1  FP.AND1  1" r="7.0" x="1.0" voltageLevelId1="FSSV.O1" node1="5" voltageLevelId2="FP.AND1" node2="7" p1="95.99993571595975" p2="-95.99993571595975" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FSSV.O1  FP.AND1  2" r="8.0" x="1.0" voltageLevelId1="FSSV.O1" node1="7" voltageLevelId2="FP.AND1" node2="9" p1="95.99993571595975" p2="-95.99993571595975" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FTDPRA1  FVERGE1  1" r="9.0" x="1.0" voltageLevelId1="FTDPRA1" node1="3" voltageLevelId2="FVERGE1" node2="9" p1="-48.0001285680805" p2="48.0001285680805" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FTDPRA1  FVERGE1  2" r="10.0" x="1.0" voltageLevelId1="FTDPRA1" node1="5" voltageLevelId2="FVERGE1" node2="11" p1="-48.0001285680805" p2="48.0001285680805" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FVALDI1  FTDPRA1  1" r="11.0" x="1.0" voltageLevelId1="FVALDI1" node1="9" voltageLevelId2="FTDPRA1" node2="7" p1="-95.99993571595978" p2="95.99993571595978" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:line id="FVALDI1  FTDPRA1  2" r="12.0" x="1.0" voltageLevelId1="FVALDI1" node1="11" voltageLevelId2="FTDPRA1" node2="9" p1="-95.99993571595978" p2="95.99993571595978" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
         <iidm:operationalLimitsGroup1 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0">
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH">
                 <iidm:temporaryLimit name="IT20" acceptableDuration="1200" value="650.0"/>
                 <iidm:temporaryLimit name="IT10" acceptableDuration="600" value="700.0"/>
                 <iidm:temporaryLimit name="IT0.0166667" acceptableDuration="1"/>
             </iidm:currentLimits>
         </iidm:operationalLimitsGroup1>
         <iidm:operationalLimitsGroup2 id="DEFAULT">
-            <iidm:currentLimits permanentLimit="600.0"/>
+            <iidm:currentLimits permanentLimit="600.0" detectionKind="HIGH"/>
         </iidm:operationalLimitsGroup2>
     </iidm:line>
     <iidm:hvdcLine id="HVDC1" r="0.25" nominalV="320.0" convertersMode="SIDE_1_RECTIFIER_SIDE_2_INVERTER" activePowerSetpoint="0.0" maxP="1011.0" converterStation1="FSSV.O1_FSSV.O1_HVDC1" converterStation2="FVALDI1_FVALDI1_HVDC1"/>
