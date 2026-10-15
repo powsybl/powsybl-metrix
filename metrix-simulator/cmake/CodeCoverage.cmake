@@ -73,6 +73,10 @@ function(code_coverage)
         --gcov-executable "${GCOV_CMD}"
         --root ${CMAKE_SOURCE_DIR}
         --keep --object-directory ${Coverage_OUTPUT_DIR}/reports
+        # compiler-generated branches (exception edges, unreachable blocks) are
+        # measurement artifacts, not testable logic: exclude them so that the
+        # branch-coverage part of the metric only reflects actual conditions
+        --exclude-throw-branches --exclude-unreachable-branches
         --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
         ${GCOVR_OPTIONS}
 
