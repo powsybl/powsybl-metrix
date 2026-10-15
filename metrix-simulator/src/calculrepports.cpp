@@ -43,6 +43,7 @@ int Calculer::calculInitCoefs(std::shared_ptr<Incident> icdt) const
 {
     if (icdt->pochePerdue_) {
         if (icdt->pochePerdue_->pocheAvecConsoProd_) {
+            // TODO: remove this TODO, it was for a test
             return METRIX_PAS_PROBLEME; // les coefficients sont calculés spécifiquement
         }
         icdt = icdt->pochePerdue_->incidentModifie_;
