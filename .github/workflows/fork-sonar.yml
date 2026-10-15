@@ -338,12 +338,6 @@ jobs:
           cp -r ${{ runner.temp }}/extracted/* ./metrix-simulator/build/
           ls -la metrix-simulator/build/ || echo "build directory not found"
 
-      - name: Install Sonar wrapper
-        working-directory: ${{ runner.workspace }}
-        run: |
-          wget --max-redirect=0 https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
-
       - name: Install Sonar scanner
         working-directory: ${{ runner.workspace }}
         run: |
