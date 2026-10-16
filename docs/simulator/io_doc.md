@@ -91,6 +91,7 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | LIMCURGR     | I    | 1      | Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1)                                                                                                             |
 | ADEQUAOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0)                                                                              |
 | REDISPOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0)                                                                      |
+| NULLCOST     | R    | 1      | Coût minimal des groupes et du délestage, appliqué après ajout de l’offset de la phase<br>= generatorMinCost(0.5)                                                               |
 
 (io-results-options)=
 ### Options de résultats

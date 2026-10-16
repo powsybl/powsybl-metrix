@@ -2685,18 +2685,17 @@ void Calculer::addCurativeVariable(const std::shared_ptr<LigneCC>& lcc, double p
 void Calculer::addCurativeVariable(const std::shared_ptr<Groupe>& grp, double proba, int numVarCur)
 {
     // curatif Groupe
+    const auto& config = config::configuration();
     typeEtat_.push_back(GRP_CUR_H);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-    double value = std::max(grp->coutHausseAR_, config::configuration().noiseCost())
-                   + config::configuration().redispatchCostOffset();
+    double value = std::max(grp->coutHausseAR_ + config.redispatchCostOffset(), config.noiseCost());
     pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((grp->coutHausseAR_) * proba);
     typeEtat_.push_back(GRP_CUR_B);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(std::max(grp->puisMax_ - grp->puisMin_, 0.));
-    value = std::max(grp->coutBaisseAR_, config::configuration().noiseCost())
-            + config::configuration().redispatchCostOffset();
+    value = std::max(grp->coutBaisseAR_ + config.redispatchCostOffset(), config.noiseCost());
     pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((grp->coutBaisseAR_) * proba);
     ajouterContraintesBorneCuratifGroupe(grp->numVarGrp_, numVarCur, grp);
@@ -2705,17 +2704,16 @@ void Calculer::addCurativeVariable(const std::shared_ptr<Groupe>& grp, double pr
 void Calculer::addCurativeVariable(const std::shared_ptr<Consommation>& conso, double proba, int numVarCur)
 {
     // curatif Conso
+    const auto& config = config::configuration();
     typeEtat_.push_back(CONSO_H);
     pbXmin_.push_back(0.);
     pbXmax_.push_back(0.);
-    double value = std::max(conso->coutEffacement_, config::configuration().noiseCost())
-                   + config::configuration().redispatchCostOffset();
+    double value = std::max(conso->coutEffacement_ + config.redispatchCostOffset(), config.noiseCost());
     pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
     typeEtat_.push_back(CONSO_B);
     pbXmin_.push_back(0.);
-    value = std::max(conso->coutEffacement_, config::configuration().noiseCost())
-            + config::configuration().redispatchCostOffset();
+    value = std::max(conso->coutEffacement_ + config.redispatchCostOffset(), config.noiseCost());
     pbCoutLineaire_.push_back(value * proba);
     pbCoutLineaireSansOffset_.push_back((conso->coutEffacement_) * proba);
     double effacementMax = conso->pourcentEffacement_ * conso->valeur_;
@@ -4289,17 +4287,15 @@ int Calculer::fixerProdSansReseau()
             if (grpe->prodAjust_ == Groupe::OUI_HR_AR || grpe->prodAjust_ == Groupe::OUI_AR) {
                 const auto& config = config::configuration();
                 pbX_[numVar] = 0.0;
-                pbCoutLineaire_[numVar] = (config.computationType()
-                                           == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
-                                              ? 0.
-                                              : std::max(grpe->coutHausseAR_, config::configuration().noiseCost())
-                                                    + config::configuration().redispatchCostOffset();
+                pbCoutLineaire_[numVar]
+                    = (config.computationType() == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
+                          ? 0.
+                          : std::max(grpe->coutHausseAR_ + config.redispatchCostOffset(), config.noiseCost());
                 pbX_[numVar + 1] = 0.0;
-                pbCoutLineaire_[numVar + 1] = (config.computationType()
-                                               == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
-                                                  ? 0.
-                                                  : std::max(grpe->coutBaisseAR_, config::configuration().noiseCost())
-                                                        + config::configuration().redispatchCostOffset();
+                pbCoutLineaire_[numVar + 1]
+                    = (config.computationType() == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
+                          ? 0.
+                          : std::max(grpe->coutBaisseAR_ + config.redispatchCostOffset(), config.noiseCost());
                 pbXmin_[numVar] = 0.0;
                 pbXmax_[numVar] = (config.computationType()
                                    == config::Configuration::ComputationType::OPF_WITHOUT_REDISPATCH)
