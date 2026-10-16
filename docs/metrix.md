@@ -379,6 +379,10 @@ sectionMonitoring(id) { // Nom de la section
 }
 ```
 
+The threshold applies to the weighted sum in the direction carried by the coefficients: METRIX keeps the sum
+below `maxFlowN` and leaves it unconstrained when it flows the other way. To bound both directions, declare a
+second section with opposite coefficients, the same `maxFlowN` and a different id.
+
 ## Contingency DSL
 
 Contingencies are specified in another configuration file. They can represent the loss of one or several network elements. Every contingency will be simulated.

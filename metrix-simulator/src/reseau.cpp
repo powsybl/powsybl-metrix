@@ -683,6 +683,16 @@ void Reseau::lireDonnees()
 
     // Traitement des sections surveillees
     //-------------------------------------
+    // Les ouvrages surveilles et les sections partagent l'espace de noms des tableaux R3 et R3B :
+    // un doublon rendrait la sortie ambigue et empecherait la section d'entrer dans
+    // elementsASurveillerN_, donc d'etre detectee et contrainte
+    std::unordered_set<string> nomsSurveilles;
+    if (nbSectSurv_ > 0) {
+        for (const auto& elem : elementsASurveiller_) {
+            nomsSurveilles.insert(elem->nom_);
+        }
+    }
+
     int cptTableDescr = 0; // iterateur sur les tables de description des sect. surv.
                            //( secttype, sectnumq et sectcoef)
     for (int i = 0; i < nbSectSurv_; ++i) {
@@ -702,6 +712,10 @@ void Reseau::lireDonnees()
                                                            true);
 
         elemAS->seuilsAssymetriques_ = true;
+
+        if (!nomsSurveilles.insert(elemAS->nom_).second) {
+            throw ErrorI(err::ioDico().msg("ERRNomSectionSurvDuplique", elemAS->nom_));
+        }
 
         for (int j = 0; j < config.sectnbqdDIE()[i]; ++j) {
             int type = config.secttypeDIE()[j + cptTableDescr];
