@@ -1,0 +1,69 @@
+<svg width="100%" viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="b4-t b4-d">
+    <title id="b4-t">Mécanismes d'actions correctives</title>
+    <desc id="b4-d">Actions préventives appliquées avant contingence, puis actions curatives et parades topologiques appliquées après contingence, l'optimiseur retenant la combinaison de moindre coût.</desc>
+    <defs>
+        <marker id="b4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+    </defs>
+
+    <text class="th" x="340" y="24" text-anchor="middle">Mécanismes d'actions correctives</text>
+
+    <!-- Preventive -->
+    <g class="fill-teal">
+        <rect x="40" y="50" width="600" height="60" rx="8" stroke-width="0.5"/>
+        <text class="th" x="340" y="72" text-anchor="middle" dominant-baseline="central">Actions préventives (appliquées avant toute contingence)</text>
+        <text class="ts" x="340" y="92" text-anchor="middle" dominant-baseline="central">Redispatching de production · Réglage des transformateurs déphaseurs · Consigne HVDC · Délestage</text>
+    </g>
+
+    <line x1="340" y1="110" x2="340" y2="138" class="arr" marker-end="url(#b4)"/>
+    <text class="ts" x="346" y="130" text-anchor="start">Si la surcharge persiste en N-k</text>
+
+    <!-- Curative split -->
+    <rect class="dashed-zone" x="30" y="138" width="300" height="190" rx="12"/>
+    <text class="th" x="50" y="160">Actions curatives</text>
+    <text class="ts" x="50" y="176">(appliquées après la contingence)</text>
+
+    <g class="fill-blue">
+        <rect x="42" y="192" width="276" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="206" text-anchor="middle" dominant-baseline="central">Redispatching de production</text>
+    </g>
+    <g class="fill-blue">
+        <rect x="42" y="228" width="276" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="242" text-anchor="middle" dominant-baseline="central">Transformateur déphaseur</text>
+    </g>
+    <g class="fill-blue">
+        <rect x="42" y="264" width="276" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="278" text-anchor="middle" dominant-baseline="central">Consigne HVDC</text>
+    </g>
+    <g class="fill-blue">
+        <rect x="42" y="300" width="276" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="314" text-anchor="middle" dominant-baseline="central">Délestage</text>
+    </g>
+
+    <rect class="dashed-zone" x="350" y="138" width="300" height="190" rx="12"/>
+    <text class="th" x="370" y="160">Parades topologiques</text>
+    <text class="ts" x="370" y="176">(manœuvres réseau après contingence)</text>
+
+    <g class="fill-purple">
+        <rect x="362" y="192" width="276" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="500" y="206" text-anchor="middle" dominant-baseline="central">Ouvrir une ligne ou un couplage</text>
+    </g>
+    <g class="fill-purple">
+        <rect x="362" y="228" width="276" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="500" y="242" text-anchor="middle" dominant-baseline="central">Fermer un couplage</text>
+    </g>
+    <g class="fill-purple">
+        <rect x="362" y="264" width="276" height="62" rx="8" stroke-width="0.5"/>
+        <text class="th" x="500" y="278" text-anchor="middle" dominant-baseline="central">Parade « ne rien faire »</text>
+        <text class="ts" x="500" y="296" text-anchor="middle" dominant-baseline="central">ajoutée automatiquement : actions</text>
+        <text class="ts" x="500" y="310" text-anchor="middle" dominant-baseline="central">curatives seules, topologie inchangée</text>
+    </g>
+
+    <g class="fill-gray">
+        <rect x="40" y="350" width="600" height="80" rx="8" stroke-width="0.5"/>
+        <text class="th" x="340" y="374" text-anchor="middle" dominant-baseline="central">L'optimiseur sélectionne la combinaison de moindre coût</text>
+        <text class="ts" x="340" y="394" text-anchor="middle" dominant-baseline="central">Exactement une parade est activée par contingence (modélisée comme choix binaire).</text>
+        <text class="ts" x="340" y="412" text-anchor="middle" dominant-baseline="central">Les actions curatives sont attachées à la parade choisie.</text>
+    </g>
+</svg>
