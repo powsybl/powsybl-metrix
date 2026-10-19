@@ -3,15 +3,18 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.tools;
 
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.config.InMemoryPlatformConfig;
-import com.powsybl.computation.*;
+import com.powsybl.computation.CompletableFutureTask;
+import com.powsybl.computation.ComputationManager;
+import com.powsybl.computation.DefaultExecutionReport;
+import com.powsybl.computation.ExecutionEnvironment;
+import com.powsybl.computation.ExecutionHandler;
 import com.powsybl.computation.local.LocalCommandExecutor;
 import com.powsybl.computation.local.LocalComputationConfig;
 import com.powsybl.computation.local.LocalComputationManager;
@@ -22,7 +25,9 @@ import com.powsybl.tools.ToolInitializationContext;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -42,6 +47,9 @@ import java.util.regex.Pattern;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public abstract class AbstractToolTest {
 
     protected FileSystem fileSystem;
@@ -51,7 +59,7 @@ public abstract class AbstractToolTest {
     private CommandLineTools tools;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         fileSystem = Jimfs.newFileSystem(Configuration.unix());
         platformConfig = new InMemoryPlatformConfig(fileSystem);
         tools = new CommandLineTools(getTools());
@@ -86,10 +94,12 @@ public abstract class AbstractToolTest {
 
                 @Override
                 public void stop(Path path) {
+                    // Nothing to do here
                 }
 
                 @Override
                 public void stopForcibly(Path path) {
+                    // Nothing to do here
                 }
             };
             ComputationManager computationManager = new LocalComputationManager(localComputationConfig, commandExecutor, Executors.newSingleThreadExecutor()) {
@@ -141,11 +151,11 @@ public abstract class AbstractToolTest {
             status = tools.run(args, toolInitializationContext);
         }
         if (expectedErr != null) {
-            assertMatches(expectedErr, berr.toString(StandardCharsets.UTF_8.name()));
+            assertMatches(expectedErr, berr.toString(StandardCharsets.UTF_8));
         }
         assertEquals(expectedStatus, status);
         if (expectedOut != null) {
-            assertMatches(expectedOut, bout.toString(StandardCharsets.UTF_8.name()));
+            assertMatches(expectedOut, bout.toString(StandardCharsets.UTF_8));
         }
     }
 

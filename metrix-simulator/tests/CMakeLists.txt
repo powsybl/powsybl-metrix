@@ -25,6 +25,29 @@ macro(metrix_test TEST_NAME NB_TESTS)
         -DNB_TESTS=${NB_TESTS}
         -DALL_RESULTS=1
         -DWITH_LODF_PTDF=0
+        -DALL_OUTPUTS=0
+        -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
+        WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
+    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+endmacro()
+
+macro(metrix_test_all_outputs TEST_NAME NB_TESTS)
+    set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
+    set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
+    file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
+    list(LENGTH TEST_OUTPUT_FILES RES_LEN)
+    if(RES_LEN GREATER 0)
+        file(REMOVE ${TEST_OUTPUT_FILES})
+    endif()
+    add_test(NAME ${TEST_NAME} COMMAND  ${CMAKE_COMMAND}
+        -DEXE=$<TARGET_FILE:metrix-simulator>
+        -DWORKING_DIR=${WORKING_DIR}
+        -DEXPECTED_DIR=${EXPECTED_DIR}
+        -DNB_TESTS=${NB_TESTS}
+        -DALL_RESULTS=1
+        -DWITH_LODF_PTDF=0
+        -DALL_OUTPUTS=1
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
@@ -46,6 +69,7 @@ macro(metrix_test_check_only_results TEST_NAME NB_TESTS)
         -DNB_TESTS=${NB_TESTS}
         -DALL_RESULTS=0
         -DWITH_LODF_PTDF=0
+        -DALL_OUTPUTS=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
@@ -68,6 +92,21 @@ macro(metrix_test_no_check TEST_NAME NB_TESTS)
     message(AUTHOR_WARNING "No check on output files performed: outputs of test \"" ${TEST_NAME} "\" must be checked manually")
 endmacro()
 
+# This macro defines a test that is expected to fail (non-zero return code),
+# e.g. when the input configuration is intentionally invalid and must be rejected.
+macro(metrix_test_expect_failure TEST_NAME NB_TESTS)
+    set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
+    file(GLOB TEST_OUTPUT_FILES ${WORKING_DIR}/contraintes_*.txt ${WORKING_DIR}/metrixOut.txt ${WORKING_DIR}/out_* ${WORKING_DIR}/metrix*.log)
+    list(LENGTH TEST_OUTPUT_FILES RES_LEN)
+    if(RES_LEN GREATER 0)
+        file(REMOVE ${TEST_OUTPUT_FILES})
+    endif()
+    add_test(NAME ${TEST_NAME} COMMAND metrix-simulator metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} WORKING_DIRECTORY ${WORKING_DIR})
+    set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)
+    set_property(TEST ${TEST_NAME} APPEND PROPERTY ENVIRONMENT METRIX_ETC=${CMAKE_SOURCE_DIR}/etc)
+    set_property(TEST ${TEST_NAME} PROPERTY WILL_FAIL TRUE)
+endmacro()
+
 macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
     set(WORKING_DIR ${TEST_DIR}/${TEST_NAME})
     set(EXPECTED_DIR ${EXPECTED_TEST_DIR}/${TEST_NAME})
@@ -83,6 +122,7 @@ macro(metrix_test_with_lodf_pdtf TEST_NAME NB_TESTS)
         -DNB_TESTS=${NB_TESTS}
         -DALL_RESULTS=1
         -DWITH_LODF_PTDF=1
+        -DALL_OUTPUTS=0
         -P ${CMAKE_SOURCE_DIR}/cmake/tnr.cmake
         WORKING_DIRECTORY ${WORKING_DIR})
     set_property(TEST ${TEST_NAME} PROPERTY ENVIRONMENT HADES_DIR=.)

@@ -3,16 +3,19 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration
 
 import com.powsybl.iidm.network.Identifiable
 import com.powsybl.iidm.network.Network
 import com.powsybl.metrix.integration.exceptions.MetrixException
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.metrix.integration.type.MetrixPtcControlType
+import com.powsybl.metrix.mapping.log.LogDslLoader
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class PhaseShifterData {
 
     List<String> onContingencies
@@ -67,10 +70,10 @@ class PhaseShifterData {
             logDslLoader.logDebug("Found phaseTapChanger for id %s", id)
         }
         if (spec.preventiveLowerTapRange != null){
-            data.addLowerTapChange(id, spec.preventiveLowerTapRange)
+            data.addLowerTapChanger(id, spec.preventiveLowerTapRange)
         }
         if (spec.preventiveUpperTapRange != null){
-            data.addUpperTapChange(id, spec.preventiveUpperTapRange)
+            data.addUpperTapChanger(id, spec.preventiveUpperTapRange)
         }
         if (spec.angleTapResults) {
             data.addPstAngleTapResults(id)

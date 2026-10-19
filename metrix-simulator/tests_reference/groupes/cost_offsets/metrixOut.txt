@@ -52,11 +52,11 @@ Résultats en volume (MW)
 Volume de production =     960.0000 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :     630.0000
+Cout associé aux groupes       :     600.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :     630.0000
+Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
@@ -88,11 +88,11 @@ Résultats en volume (MW)
 Volume de production =     960.0000 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :     630.0000
+Cout associé aux groupes       :     600.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :     630.0000
+Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
@@ -124,11 +124,11 @@ Résultats en volume (MW)
 Volume de production =     960.0000 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :     630.0000
+Cout associé aux groupes       :     600.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :     630.0000
+Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
@@ -178,11 +178,11 @@ Résultats en volume (MW)
 Volume de production =     960.0000 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :     630.0000
+Cout associé aux groupes       :     600.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :     630.0000
+Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)
@@ -232,11 +232,11 @@ Résultats en volume (MW)
 Volume de production =     960.0000 MW
 Volume de délestage  =       0.0000 MW
 Résultats sur les couts
-Cout associé aux groupes       :     630.0000
+Cout associé aux groupes       :     600.0000
 Cout associé au délestage      :       0.0000
 Cout de pénalisation TD & HVDC :       0.0000
 Cout des écarts de transit     :       0.0000
-Valeur de la fonction objectif :     630.0000
+Valeur de la fonction objectif :     600.0000
 
 Prise en compte des couts avec reseau
 Micro itération 1 (nombre de contraintes 1)

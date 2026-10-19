@@ -3,16 +3,18 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
-import com.powsybl.iidm.network.Switch
-import com.powsybl.iidm.network.TopologyKind
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.references.NumberDistributionKey
 import groovy.transform.CompileStatic
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class SimpleMappingData extends FilteredData {
 
     String timeSeriesName
@@ -40,12 +42,8 @@ class SimpleMappingData extends FilteredData {
         // for each filtered equipment, compute the distribution key and add it to the config
         if (!filteredEquipments.isEmpty()) {
 
-            if (((Switch) filteredEquipments[0]).voltageLevel.topologyKind == TopologyKind.BUS_BREAKER) {
-                throw new TimeSeriesMappingException("Bus breaker topology not supported for switch mapping")
-            }
-
             filteredEquipments.forEach({ Identifiable identifiable ->
-                configLoader.addEquipmentMapping(breakerType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.open)
+                configLoader.addEquipmentMapping(breakerType, spec.timeSeriesName, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.OPEN)
             })
         }
     }

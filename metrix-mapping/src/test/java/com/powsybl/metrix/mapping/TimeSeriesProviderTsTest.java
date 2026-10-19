@@ -3,16 +3,23 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
 import com.powsybl.commons.test.TestUtil;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.iidm.xml.NetworkXml;
-import com.powsybl.timeseries.*;
+import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.references.MappingKey;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
+import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
+import com.powsybl.timeseries.RegularTimeSeriesIndex;
+import com.powsybl.timeseries.TimeSeries;
+import com.powsybl.timeseries.TimeSeriesIndex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
@@ -20,9 +27,14 @@ import org.threeten.extra.Interval;
 import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * @author amichaut {@literal <arthur.michaut at artelys.com>}
+ */
 class TimeSeriesProviderTsTest {
 
     private Network network;
@@ -30,9 +42,9 @@ class TimeSeriesProviderTsTest {
     private final MappingParameters mappingParameters = MappingParameters.load();
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
     }
 
     @Test
@@ -90,14 +102,24 @@ class TimeSeriesProviderTsTest {
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"), new MappingKey(EquipmentVariable.variableActivePower, "FSSV.O11_L"), new MappingKey(EquipmentVariable.fixedActivePower, "FSSV.O11_L")), mappingConfig.getLoadTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1")), mappingConfig.getHvdcLineTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")), mappingConfig.getBreakerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1")), mappingConfig.getPhaseTapChangerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1")), mappingConfig.getRatioTapChangerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1")), mappingConfig.getLccConverterStationTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1")), mappingConfig.getVscConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")),
+            mappingConfig.getGeneratorTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
+            new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"),
+            new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L")),
+            mappingConfig.getLoadTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1")),
+            mappingConfig.getHvdcLineTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")),
+            mappingConfig.getBreakerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1")),
+            mappingConfig.getPhaseTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1")),
+            mappingConfig.getRatioTapChangerTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1")),
+            mappingConfig.getLccConverterStationTimeSeries());
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1")),
+            mappingConfig.getVscConverterStationTimeSeries());
     }
 
     @Test
@@ -177,48 +199,48 @@ class TimeSeriesProviderTsTest {
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), null);
 
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.minP, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.maxP, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.targetQ, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.voltageRegulatorOn, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.targetV, "FSSV.O11_G"),
-                                     new MappingKey(EquipmentVariable.disconnected, "FSSV.O11_G")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.MIN_P, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.MAX_P, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.TARGET_Q, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.TARGET_V, "FSSV.O11_G"),
+                                     new MappingKey(EquipmentVariable.DISCONNECTED, "FSSV.O11_G")),
                                      mappingConfig.getGeneratorTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.p0, "FSSV.O11_L"),
-                                     new MappingKey(EquipmentVariable.variableActivePower, "FSSV.O11_L"),
-                                     new MappingKey(EquipmentVariable.fixedActivePower, "FSSV.O11_L"),
-                                     new MappingKey(EquipmentVariable.q0, "FSSV.O11_L"),
-                                     new MappingKey(EquipmentVariable.variableReactivePower, "FSSV.O11_L"),
-                                     new MappingKey(EquipmentVariable.fixedReactivePower, "FSSV.O11_L")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.P0, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.VARIABLE_ACTIVE_POWER, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.FIXED_ACTIVE_POWER, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.Q0, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.VARIABLE_REACTIVE_POWER, "FSSV.O11_L"),
+                                     new MappingKey(EquipmentVariable.FIXED_REACTIVE_POWER, "FSSV.O11_L")),
                                      mappingConfig.getLoadTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.activePowerSetpoint, "HVDC1"),
-                                     new MappingKey(EquipmentVariable.minP, "HVDC1"),
-                                     new MappingKey(EquipmentVariable.maxP, "HVDC1"),
-                                     new MappingKey(EquipmentVariable.nominalV, "HVDC1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ACTIVE_POWER_SETPOINT, "HVDC1"),
+                                     new MappingKey(EquipmentVariable.MIN_P, "HVDC1"),
+                                     new MappingKey(EquipmentVariable.MAX_P, "HVDC1"),
+                                     new MappingKey(EquipmentVariable.NOMINAL_V, "HVDC1")),
                                      mappingConfig.getHvdcLineTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.open, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.OPEN, "FTDPRA1_FTDPRA1  FVERGE1  1_SC5_0")),
                                      mappingConfig.getBreakerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratedU1, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.ratedU2, "FP.AND1  FTDPRA1  1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATED_U1, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.RATED_U2, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getTransformerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.phaseTapPosition, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.regulationMode, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.phaseRegulating, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.targetDeadband, "FP.AND1  FTDPRA1  1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.PHASE_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.REGULATION_MODE, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.PHASE_REGULATING, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.TARGET_DEADBAND, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getPhaseTapChangerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.ratioTapPosition, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.targetV, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.loadTapChangingCapabilities, "FP.AND1  FTDPRA1  1"),
-                                     new MappingKey(EquipmentVariable.ratioRegulating, "FP.AND1  FTDPRA1  1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.RATIO_TAP_POSITION, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.TARGET_V, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.LOAD_TAP_CHANGING_CAPABILITIES, "FP.AND1  FTDPRA1  1"),
+                                     new MappingKey(EquipmentVariable.RATIO_REGULATING, "FP.AND1  FTDPRA1  1")),
                                      mappingConfig.getRatioTapChangerTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.powerFactor, "FVALDI1_FVALDI1_HVDC1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.POWER_FACTOR, "FVALDI1_FVALDI1_HVDC1")),
                                      mappingConfig.getLccConverterStationTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.voltageSetpoint, "FSSV.O1_FSSV.O1_HVDC1"),
-                                     new MappingKey(EquipmentVariable.voltageRegulatorOn, "FSSV.O1_FSSV.O1_HVDC1"),
-                                     new MappingKey(EquipmentVariable.reactivePowerSetpoint, "FSSV.O1_FSSV.O1_HVDC1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1"),
+                                     new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, "FSSV.O1_FSSV.O1_HVDC1"),
+                                     new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, "FSSV.O1_FSSV.O1_HVDC1")),
                                      mappingConfig.getVscConverterStationTimeSeries());
-        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.disconnected, "FP.AND1  FVERGE1  1")),
+        assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.DISCONNECTED, "FP.AND1  FVERGE1  1")),
                                      mappingConfig.getLineTimeSeries());
     }
 
@@ -240,9 +262,9 @@ class TimeSeriesProviderTsTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try (StringWriter sw = new StringWriter()) {
-            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), sw, null);
-            assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.targetP, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
-            assertEquals("WARNING;Mapping script;provideTs - Time series can not be provided for id FSSV.O11_G because id is not mapped on targetP\n", TestUtil.normalizeLineSeparator(sw.toString()));
+            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(sw), null);
+            assertEquals(ImmutableSet.of(new MappingKey(EquipmentVariable.TARGET_P, "FSSV.O11_G")), mappingConfig.getGeneratorTimeSeries());
+            assertTrue(sw.toString().isEmpty());
         }
     }
 
@@ -264,7 +286,7 @@ class TimeSeriesProviderTsTest {
         // load mapping script
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
         try (StringWriter sw = new StringWriter()) {
-            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), sw, null);
+            TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(sw), null);
             assertEquals(Collections.emptySet(), mappingConfig.getGeneratorTimeSeries());
             assertEquals("WARNING;Mapping script;provideTs - Empty filtered list for equipment type GENERATOR and variables [targetP]\n", TestUtil.normalizeLineSeparator(sw.toString()));
         }

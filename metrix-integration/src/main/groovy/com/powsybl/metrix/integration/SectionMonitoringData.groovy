@@ -3,18 +3,16 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration
 
-import com.powsybl.iidm.network.HvdcLine
-import com.powsybl.iidm.network.Identifiable
-import com.powsybl.iidm.network.Line
-import com.powsybl.iidm.network.Network
-import com.powsybl.iidm.network.TwoWindingsTransformer
-import com.powsybl.metrix.mapping.LogDslLoader
+import com.powsybl.iidm.network.*
+import com.powsybl.metrix.mapping.log.LogDslLoader
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class SectionMonitoringData {
 
     Map<String, Float> branchList = new HashMap<>()
@@ -50,8 +48,16 @@ class SectionMonitoringData {
                 logDslLoader.logWarn("sectionMonitoring '" + id + "' branch id '"+branch.getKey()+"' not found in the network")
                 return
             }
-            if (!(identifiable instanceof Line || identifiable instanceof TwoWindingsTransformer || identifiable instanceof HvdcLine)) {
+            if (!(identifiable instanceof Line ||
+                    identifiable instanceof TwoWindingsTransformer ||
+                    identifiable instanceof TieLine ||
+                    identifiable instanceof BoundaryLine ||
+                    identifiable instanceof HvdcLine)) {
                 logDslLoader.logWarn("sectionMonitoring '" + id + "' type " + identifiable.getClass().name + " not supported")
+                return
+            }
+            if (identifiable instanceof BoundaryLine && identifiable.isPaired()) {
+                logDslLoader.logWarn("Branch %s is a paired Boundary Line, the TieLine should be used instead", id)
                 return
             }
         }

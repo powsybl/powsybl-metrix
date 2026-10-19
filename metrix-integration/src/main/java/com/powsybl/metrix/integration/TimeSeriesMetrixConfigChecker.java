@@ -3,18 +3,21 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
-import com.powsybl.metrix.mapping.LogDslLoader;
-import com.powsybl.metrix.mapping.MappingKey;
-import com.powsybl.metrix.mapping.MappingVariable;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.commons.MappingVariable;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.log.LogDslLoader;
+import com.powsybl.metrix.mapping.references.MappingKey;
 
-import java.util.*;
+import java.util.Objects;
+import java.util.Set;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class TimeSeriesMetrixConfigChecker {
 
     static final String BRANCH_RATINGS_BASE_CASE = "branchRatingsBaseCase";
@@ -41,15 +44,15 @@ public class TimeSeriesMetrixConfigChecker {
     public void checkBranchThreshold() {
         Set<String> equipmentIds = config.getEquipmentIds();
         equipmentIds.forEach(id -> {
-            checkBranchThreshold(BRANCH_RATINGS_BASE_CASE, MetrixVariable.thresholdN, MetrixVariable.thresholdNEndOr, id);
-            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, MetrixVariable.analysisThresholdN, MetrixVariable.analysisThresholdNEndOr, id);
+            checkBranchThreshold(BRANCH_RATINGS_BASE_CASE, MetrixVariable.THRESHOLD_N, MetrixVariable.THRESHOLD_N_END_OR, id);
+            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_BASE_CASE, MetrixVariable.ANALYSIS_THRESHOLD_N, MetrixVariable.ANALYSIS_THRESHOLD_N_END_OR, id);
         });
         equipmentIds.forEach(id -> {
-            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, MetrixVariable.thresholdN1, MetrixVariable.thresholdN1EndOr, id);
-            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, MetrixVariable.thresholdITAM, MetrixVariable.thresholdITAMEndOr, id);
-            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, MetrixVariable.analysisThresholdNk, MetrixVariable.analysisThresholdNkEndOr, id);
-            checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, MetrixVariable.thresholdNk, MetrixVariable.thresholdNkEndOr, id);
-            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY, MetrixVariable.thresholdITAMNk, MetrixVariable.thresholdITAMNkEndOr, id);
+            checkBranchThreshold(BRANCH_RATINGS_ON_CONTINGENCY, MetrixVariable.THRESHOLD_N1, MetrixVariable.THRESHOLD_N1_END_OR, id);
+            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE, MetrixVariable.THRESHOLD_ITAM, MetrixVariable.THRESHOLD_ITAM_END_OR, id);
+            checkBranchThreshold(BRANCH_ANALYSIS_RATINGS_ON_CONTINGENCY, MetrixVariable.ANALYSIS_THRESHOLD_NK, MetrixVariable.ANALYSIS_THRESHOLD_NK_END_OR, id);
+            checkBranchThreshold(BRANCH_RATINGS_ON_SPECIFIC_CONTINGENCY, MetrixVariable.THRESHOLD_NK, MetrixVariable.THRESHOLD_NK_END_OR, id);
+            checkBranchThreshold(BRANCH_RATINGS_BEFORE_CURATIVE_ON_SPECIFIC_CONTINGENCY, MetrixVariable.THRESHOLD_ITAM_NK, MetrixVariable.THRESHOLD_ITAM_NK_END_OR, id);
         });
     }
 
@@ -62,4 +65,3 @@ public class TimeSeriesMetrixConfigChecker {
         }
     }
 }
-

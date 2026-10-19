@@ -3,40 +3,45 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration;
 
+import com.google.common.collect.Range;
 import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.io.WorkingDirectory;
 import com.powsybl.computation.ComputationManager;
-import com.powsybl.contingency.ContingenciesProvider;
-import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.integration.dataGenerator.MetrixOutputData;
+import com.powsybl.metrix.integration.analysis.MetrixAnalysisResult;
+import com.powsybl.metrix.integration.chunk.ChunkCutter;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixRunParameters;
+import com.powsybl.metrix.integration.data.generator.MetrixOutputData;
 import com.powsybl.metrix.integration.io.ResultListener;
-import com.powsybl.metrix.integration.metrix.MetrixAnalysisResult;
-import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.TimeSeriesIndex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static com.powsybl.metrix.integration.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
+import static com.powsybl.metrix.commons.ComputationRange.checkAndSortRanges;
+import static com.powsybl.metrix.integration.postprocessing.MetrixPostProcessingTimeSeries.getPostProcessingTimeSeries;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public abstract class AbstractMetrix {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractMetrix.class);
@@ -44,7 +49,6 @@ public abstract class AbstractMetrix {
     protected static final String DEFAULT_SCHEMA_NAME = "default";
 
     protected static final String REMEDIAL_ACTIONS_CSV = "remedialActions.csv";
-    protected static final String REMEDIAL_ACTIONS_CSV_GZ = REMEDIAL_ACTIONS_CSV + ".gz";
 
     protected static final String LOG_FILE_PREFIX = "log";
     protected static final String LOG_FILE_DETAIL_PREFIX = "metrix";
@@ -63,19 +67,7 @@ public abstract class AbstractMetrix {
 
     protected final MetrixAppLogger appLogger;
 
-    // Fields from analysis
-    protected final ContingenciesProvider contingenciesProvider;
-
-    protected final TimeSeriesMappingConfig mappingConfig;
-
-    @Nullable
-    protected final MetrixDslData metrixDslData;
-
-    protected final Network network;
-
-    protected final MetrixParameters metrixParameters;
-
-    protected final MappingParameters mappingParameters;
+    protected final MetrixAnalysisResult analysisResult;
 
     protected AbstractMetrix(Reader remedialActionsReader, ReadOnlyTimeSeriesStore store, ReadOnlyTimeSeriesStore resultStore,
                              ZipOutputStream logArchive, ComputationManager computationManager,
@@ -86,32 +78,14 @@ public abstract class AbstractMetrix {
         this.logArchive = logArchive;
         this.computationManager = Objects.requireNonNull(computationManager);
         this.appLogger = Objects.requireNonNull(appLogger);
-        Objects.requireNonNull(analysisResult);
-        this.contingenciesProvider = network -> analysisResult.contingencies;
-        this.mappingConfig = analysisResult.mappingConfig;
-        this.metrixDslData = analysisResult.metrixDslData;
-        this.network = analysisResult.network;
-        this.metrixParameters = analysisResult.metrixParameters;
-        this.mappingParameters = analysisResult.mappingParameters;
+        this.analysisResult = Objects.requireNonNull(analysisResult);
     }
 
-    protected static void compress(Reader reader, WorkingDirectory directory, String fileNameGz) {
-        try (BufferedReader bufferedReader = new BufferedReader(reader);
-             Writer writer = new OutputStreamWriter(new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(directory.toPath().resolve(fileNameGz)))), StandardCharsets.UTF_8)) {
-            CharStreams.copy(bufferedReader, writer);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-    }
-
-    protected static int computeChunkSize(MetrixRunParameters runParameters, MetrixConfig metrixConfig, TimeSeriesIndex index) {
+    protected static int computeChunkSize(MetrixRunParameters runParameters, int chunkSizeFromConfig, TimeSeriesIndex index) {
         if (runParameters.getChunkSize() != -1 && runParameters.getChunkSize() < index.getPointCount()) {
             return runParameters.getChunkSize();
-        } else if (metrixConfig.getChunkSize() != -1 && metrixConfig.getChunkSize() < index.getPointCount()) {
-            return metrixConfig.getChunkSize();
-        } else {
-            return index.getPointCount();
         }
+        return chunkSizeFromConfig != -1 && chunkSizeFromConfig < index.getPointCount() ? chunkSizeFromConfig : index.getPointCount();
     }
 
     public MetrixRunResult run(MetrixRunParameters runParameters, ResultListener listener, String nullableSchemaName) {
@@ -121,8 +95,8 @@ public abstract class AbstractMetrix {
 
         MetrixConfig metrixConfig = MetrixConfig.load();
 
-        if (metrixDslData != null) {
-            int estimatedResultNumber = metrixDslData.minResultNumberEstimate(metrixParameters);
+        if (analysisResult.metrixDslData() != null) {
+            int estimatedResultNumber = analysisResult.metrixDslData().minResultNumberEstimate(analysisResult.metrixParameters());
             if (estimatedResultNumber > metrixConfig.getResultNumberLimit()) {
                 throw new PowsyblException(String.format("Metrix configuration will produce more result time-series (%d) than the maximum allowed (%d).\n" +
                         "Reduce the number of monitored branches and/or number of contingencies.", estimatedResultNumber, metrixConfig.getResultNumberLimit()));
@@ -130,66 +104,35 @@ public abstract class AbstractMetrix {
         }
 
         if (runParameters.isNetworkComputation()) {
-            metrixParameters.setWithAdequacyResults(true);
-            metrixParameters.setWithRedispatchingResults(true);
+            analysisResult.metrixParameters().setWithAdequacyResults(true);
+            analysisResult.metrixParameters().setWithRedispatchingResults(true);
         }
 
-        TimeSeriesMappingConfigTableLoader loader = new TimeSeriesMappingConfigTableLoader(mappingConfig, store);
-        TimeSeriesIndex timeSeriesMappingIndex = loader.checkIndexUnicity();
+        TimeSeriesMappingConfigTableLoader loader = new TimeSeriesMappingConfigTableLoader(analysisResult.mappingConfig(), store);
+        TimeSeriesIndex index = loader.checkIndexUnicity();
         loader.checkValues(runParameters.getVersions());
+        ChunkCutter chunkCutter = initChunkCutter(runParameters, metrixConfig.getChunkSize(), index);
 
-        int firstVariant;
-        if (runParameters.getFirstVariant() != -1) {
-            if (runParameters.getFirstVariant() < 0 || runParameters.getFirstVariant() > timeSeriesMappingIndex.getPointCount() - 1) {
-                throw new IllegalArgumentException("First variant is out of range [0, "
-                        + (timeSeriesMappingIndex.getPointCount() - 1) + "]");
-            }
-            firstVariant = runParameters.getFirstVariant();
-        } else {
-            firstVariant = 0;
-        }
-
-        int lastVariant;
-        if (runParameters.getVariantCount() != -1) {
-            lastVariant = firstVariant + runParameters.getVariantCount() - 1;
-            if (lastVariant > timeSeriesMappingIndex.getPointCount() - 1) {
-                lastVariant = timeSeriesMappingIndex.getPointCount() - 1;
-            }
-        } else {
-            lastVariant = timeSeriesMappingIndex.getPointCount() - 1;
-        }
-
-        int chunkSize = computeChunkSize(runParameters, metrixConfig, timeSeriesMappingIndex);
-
-        ChunkCutter chunkCutter = new ChunkCutter(firstVariant, lastVariant, chunkSize);
-        int chunkCount = chunkCutter.getChunkCount();
-        int chunkOffset = chunkCutter.getChunkOffset();
-
-        LOGGER.info("Running metrix {} on network {}", metrixParameters.getComputationType(), network.getNameOrId());
+        LOGGER.info("Running metrix {} on network {}", analysisResult.metrixParameters().getComputationType(), analysisResult.network().getNameOrId());
         appLogger.log("[%s] Running metrix", schemaName);
 
         try (WorkingDirectory commonWorkingDir = new WorkingDirectory(computationManager.getLocalDir(), "metrix-commons-", metrixConfig.isDebug())) {
 
             executeMetrixChunks(
-                    network,
                     runParameters,
                     listener,
                     metrixConfig,
-                    metrixParameters,
-                    mappingParameters,
                     commonWorkingDir,
                     chunkCutter,
-                    schemaName,
-                    chunkCount,
-                    chunkSize,
-                    chunkOffset);
+                    schemaName);
 
-            addLogsToArchive(runParameters, commonWorkingDir, chunkCount, chunkOffset);
+            addLogsToArchive(runParameters, commonWorkingDir, chunkCutter.getChunkCount(), chunkCutter.getChunkOffset());
             listener.onEnd();
 
             MetrixRunResult runResult = new MetrixRunResult();
             appLogger.log("[%s] Computing postprocessing timeseries", schemaName);
-            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(metrixDslData, mappingConfig, resultStore, nullableSchemaName));
+            runResult.setPostProcessingTimeSeries(getPostProcessingTimeSeries(analysisResult.metrixDslData(),
+                analysisResult.mappingConfig(), analysisResult.contingencies(), resultStore, nullableSchemaName));
             return runResult;
 
         } catch (IOException e) {
@@ -197,7 +140,26 @@ public abstract class AbstractMetrix {
         }
     }
 
-    void addLogsToArchive(
+    private ChunkCutter initChunkCutter(MetrixRunParameters runParameters, int chunkSizeFromConfig, TimeSeriesIndex index) {
+        List<Range<Integer>> ranges = computeRangeVariant(runParameters.getRanges(), index);
+        int chunkSize = computeChunkSize(runParameters, chunkSizeFromConfig, index);
+        return new ChunkCutter(ranges, chunkSize);
+    }
+
+    private List<Range<Integer>> computeRangeVariant(List<Range<Integer>> ranges, TimeSeriesIndex index) {
+        List<Range<Integer>> sortedRanges = checkAndSortRanges(ranges);
+        Range<Integer> lastRange = sortedRanges.getLast();
+        int lowerEndpoint = lastRange.lowerEndpoint();
+        int lastIndexPoint = index.getPointCount() - 1;
+        if (lowerEndpoint > lastIndexPoint) {
+            throw new IllegalArgumentException("First variant (" + lowerEndpoint + ") is out of range [0, " + lastIndexPoint + "]");
+        }
+        sortedRanges.removeLast();
+        sortedRanges.add(Range.closed(lowerEndpoint, Math.min(lastRange.upperEndpoint(), lastIndexPoint)));
+        return sortedRanges;
+    }
+
+    private void addLogsToArchive(
             MetrixRunParameters runParameters,
             WorkingDirectory commonWorkingDir,
             int chunkCount,
@@ -207,32 +169,35 @@ public abstract class AbstractMetrix {
             return;
         }
         for (int version : runParameters.getVersions()) {
-            for (int chunk = chunkOffset; chunk < chunkCount; chunk++) {
-                try {
-                    addLogToArchive(commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)), logArchive);
-                    addLogDetailToArchive(commonWorkingDir.toPath(), getLogDetailFileNameFormat(version, chunk), logArchive);
-                } catch (IOException e) {
-                    LOGGER.error(e.toString(), e);
-                    appLogger.tagged("info")
-                            .log("Log file not found for chunk %d of version %d", chunk, version);
-                }
+            addVersionLogsToArchive(commonWorkingDir, chunkCount, chunkOffset, version);
+        }
+    }
+
+    private void addVersionLogsToArchive(
+            WorkingDirectory commonWorkingDir,
+            int chunkCount,
+            int chunkOffset,
+            int version
+    ) {
+        for (int chunk = chunkOffset; chunk < chunkCount; chunk++) {
+            try {
+                addLogToArchive(commonWorkingDir.toPath().resolve(getLogFileName(version, chunk)), logArchive);
+                addLogDetailToArchive(commonWorkingDir.toPath(), getLogDetailFileNameFormat(version, chunk), logArchive);
+            } catch (IOException e) {
+                LOGGER.error(e.toString(), e);
+                appLogger.tagged("info")
+                        .log("Log file not found for chunk %d of version %d", chunk, version);
             }
         }
     }
 
     protected abstract void executeMetrixChunks(
-            Network network,
             MetrixRunParameters runParameters,
             ResultListener listener,
             MetrixConfig metrixConfig,
-            MetrixParameters metrixParameters,
-            MappingParameters mappingParameters,
             WorkingDirectory commonWorkingDir,
             ChunkCutter chunkCutter,
-            String schemaName,
-            int chunkCount,
-            int chunkSize,
-            int chunkOffset
+            String schemaName
     ) throws IOException;
 
     protected static String getLogFileName(int version, int chunk) {

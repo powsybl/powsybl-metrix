@@ -3,11 +3,16 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.integration
 
+import com.powsybl.metrix.integration.configuration.MetrixParameters
+import com.powsybl.metrix.integration.type.MetrixComputationType
+
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class ParametersData {
 
     MetrixComputationType computationType
@@ -34,6 +39,7 @@ class ParametersData {
     Float lossOfLoadCost
     Float curativeLossOfLoadCost
     Float curativeLossOfGenerationCost
+    Float generatorMinCost
     Float contingenciesProbability
     Integer nominalU
     Integer nbMaxIteration
@@ -139,6 +145,10 @@ class ParametersData {
 
     void curativeLossOfGenerationCost(Float lossOfGenerationCost) {
         this.curativeLossOfGenerationCost = lossOfGenerationCost
+    }
+
+    void generatorMinCost(Float generatorMinCost) {
+        this.generatorMinCost = generatorMinCost
     }
 
     void contingenciesProbability(Float contingenciesProbability) {
@@ -266,6 +276,9 @@ class ParametersData {
         }
         if (spec.curativeLossOfGenerationCost != null) {
             parameters.setCurativeLossOfGenerationCost(spec.curativeLossOfGenerationCost)
+        }
+        if (spec.generatorMinCost != null) {
+            parameters.setGeneratorMinCost(spec.generatorMinCost)
         }
         if (spec.contingenciesProbability != null) {
             parameters.setContingenciesProbability(spec.contingenciesProbability)

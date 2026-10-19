@@ -10,8 +10,7 @@
 # 
 
 function(check_file file expected_file)
-    configure_file(${file} ${file} NEWLINE_STYLE LF) # required for windows ctest
-    execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files ${file} ${expected_file}
+    execute_process( COMMAND ${CMAKE_COMMAND} -E compare_files --ignore-eol ${file} ${expected_file}
         RESULT_VARIABLE compare_result)
     if(compare_result)
         MESSAGE(FATAL_ERROR "File " ${file} " is different from expected file " ${expected_file})
@@ -40,6 +39,8 @@ endfunction()
 
 if (WITH_LODF_PTDF)
     execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --write-PTDF --write-LODF  RESULT_VARIABLE cmd_result)
+elseif(ALL_OUTPUTS)
+    execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS} --all-outputs  RESULT_VARIABLE cmd_result)
 else()
     execute_process(COMMAND ${EXE} metrixOut.txt VariantSet.csv out 0 ${NB_TESTS}  RESULT_VARIABLE cmd_result)
 endif()

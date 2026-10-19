@@ -3,36 +3,51 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.iidm.network.VariantManagerConstants;
-import com.powsybl.iidm.xml.NetworkXml;
+import com.powsybl.iidm.serde.NetworkSerDe;
+import com.powsybl.metrix.commons.ComputationRange;
+import com.powsybl.metrix.commons.data.datatable.DataTableStore;
+import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
+import com.powsybl.metrix.mapping.config.ScriptLogConfig;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigEquipmentCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigStatusCsvWriter;
+import com.powsybl.metrix.mapping.writers.TimeSeriesMappingConfigSynthesisCsvWriter;
 import com.powsybl.timeseries.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.threeten.extra.Interval;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
+import java.util.function.Consumer;
 
-import static com.powsybl.metrix.mapping.AbstractCompareTxt.compareStreamTxt;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static com.powsybl.commons.test.ComparisonUtils.assertTxtEquals;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesMappingTest {
 
     private Network network;
 
     private MappingParameters mappingParameters;
 
-    private void checkMappingConfigOutput(TimeSeriesMappingConfig mappingConfig, String directoryName, ReadOnlyTimeSeriesStore store, ComputationRange computationRange) throws Exception {
+    private void checkMappingConfigOutput(TimeSeriesMappingConfig mappingConfig, String directoryName,
+                                          ReadOnlyTimeSeriesStore store, ComputationRange computationRange) throws Exception {
 
         TimeSeriesMappingConfigSynthesisCsvWriter synthesisCsvWriter = new TimeSeriesMappingConfigSynthesisCsvWriter(mappingConfig);
         TimeSeriesMappingConfigEquipmentCsvWriter equipmentCsvWriter = new TimeSeriesMappingConfigEquipmentCsvWriter(mappingConfig, network);
@@ -41,226 +56,56 @@ class TimeSeriesMappingTest {
         StringWriter timeSeriesMappingSynthesisTxt = new StringWriter();
         try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesMappingSynthesisTxt)) {
             synthesisCsvWriter.writeMappingSynthesis(bufferedWriter);
-            assertNotNull(compareStreamTxt(timeSeriesMappingSynthesisTxt.toString().getBytes(StandardCharsets.UTF_8), directoryName, "mappingSynthesis.txt"));
+            assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "mappingSynthesis.txt")),
+                new ByteArrayInputStream(timeSeriesMappingSynthesisTxt.toString().getBytes(StandardCharsets.UTF_8)));
         }
 
-        StringWriter timeSeriesMappingSynthesis = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesMappingSynthesis)) {
-            synthesisCsvWriter.writeMappingSynthesisCsv(bufferedWriter);
+        assertScript(synthesisCsvWriter::writeMappingSynthesisCsv, directoryName, "mappingSynthesis.csv");
+        assertScript(mappingCsvWriter::writeTimeSeriesToGeneratorsMapping, directoryName, "timeSeriesToGeneratorsMapping.csv");
+        assertScript(mappingCsvWriter::writeTimeSeriesToLoadsMapping, directoryName, "timeSeriesToLoadsMapping.csv");
+        assertScript(mappingCsvWriter::writeTimeSeriesToBoundaryLinesMapping, directoryName, "timeSeriesToBoundaryLinesMapping.csv");
+        assertScript(mappingCsvWriter::writeTimeSeriesToHvdcLinesMapping, directoryName, "timeSeriesToHvdcLinesMapping.csv");
+        assertScript(mappingCsvWriter::writeTimeSeriesToPstMapping, directoryName, "timeSeriesToPstMapping.csv");
+        assertScript(mappingCsvWriter::writeTimeSeriesToBreakersMapping, directoryName, "timeSeriesToBreakersMapping.csv");
+        assertScript(mappingCsvWriter::writeGeneratorToTimeSeriesMapping, directoryName, "generatorToTimeSeriesMapping.csv");
+        assertScript(mappingCsvWriter::writeLoadToTimeSeriesMapping, directoryName, "loadToTimeSeriesMapping.csv");
+        assertScript(mappingCsvWriter::writeBoundaryLineToTimeSeriesMapping, directoryName, "boundaryLineToTimeSeriesMapping.csv");
+        assertScript(mappingCsvWriter::writeHvdcLineToTimeSeriesMapping, directoryName, "hvdcLineToTimeSeriesMapping.csv");
+        assertScript(mappingCsvWriter::writePstToTimeSeriesMapping, directoryName, "pstToTimeSeriesMapping.csv");
+        assertScript(mappingCsvWriter::writeBreakerToTimeSeriesMapping, directoryName, "breakerToTimeSeriesMapping.csv");
+        assertScript(equipmentCsvWriter::writeUnmappedGenerators, directoryName, "unmappedGenerators.csv");
+        assertScript(equipmentCsvWriter::writeUnmappedLoads, directoryName, "unmappedLoads.csv");
+        assertScript(equipmentCsvWriter::writeUnmappedBoundaryLines, directoryName, "unmappedBoundaryLines.csv");
+        assertScript(equipmentCsvWriter::writeUnmappedHvdcLines, directoryName, "unmappedHvdcLines.csv");
+        assertScript(equipmentCsvWriter::writeUnmappedPst, directoryName, "unmappedPsts.csv");
+        assertScript(equipmentCsvWriter::writeDisconnectedGenerators, directoryName, "disconnectedGenerators.csv");
+        assertScript(equipmentCsvWriter::writeDisconnectedLoads, directoryName, "disconnectedLoads.csv");
+        assertScript(equipmentCsvWriter::writeDisconnectedBoundaryLines, directoryName, "disconnectedBoundaryLines.csv");
+        assertScript(equipmentCsvWriter::writeIgnoredUnmappedGenerators, directoryName, "ignoredUnmappedGenerators.csv");
+        assertScript(equipmentCsvWriter::writeIgnoredUnmappedLoads, directoryName, "ignoredUnmappedLoads.csv");
+        assertScript(equipmentCsvWriter::writeIgnoredUnmappedBoundaryLines, directoryName, "ignoredUnmappedBoundaryLines.csv");
+        assertScript(equipmentCsvWriter::writeIgnoredUnmappedHvdcLines, directoryName, "ignoredUnmappedHvdcLines.csv");
+        assertScript(equipmentCsvWriter::writeIgnoredUnmappedPst, directoryName, "ignoredUnmappedPsts.csv");
+        assertScript(equipmentCsvWriter::writeOutOfMainCCGenerators, directoryName, "outOfMainCcGenerators.csv");
+        assertScript(equipmentCsvWriter::writeOutOfMainCCLoads, directoryName, "outOfMainCcLoads.csv");
+        assertScript(equipmentCsvWriter::writeOutOfMainCCBoundaryLines, directoryName, "outOfMainCcBoundaryLines.csv");
+        assertScript(mappingCsvWriter::writeMappedTimeSeries, directoryName, "mappedTimeSeries.csv");
+    }
+
+    private void assertScript(Consumer<BufferedWriter> consumer, String directoryName, String fileName) throws IOException {
+        StringWriter stringWriter = new StringWriter();
+        try (BufferedWriter bufferedWriter = new BufferedWriter(stringWriter)) {
+            consumer.accept(bufferedWriter);
             bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesMappingSynthesis.toString().getBytes(StandardCharsets.UTF_8), directoryName, "mappingSynthesis.csv"));
-        }
-
-        StringWriter timeSeriesToGeneratorsMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToGeneratorsMapping)) {
-            mappingCsvWriter.writeTimeSeriesToGeneratorsMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToGeneratorsMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "timeSeriesToGeneratorsMapping.csv"));
-        }
-
-        StringWriter timeSeriesToLoadsMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToLoadsMapping)) {
-            mappingCsvWriter.writeTimeSeriesToLoadsMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToLoadsMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "timeSeriesToLoadsMapping.csv"));
-        }
-
-        StringWriter timeSeriesToBoundaryLinesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToBoundaryLinesMapping)) {
-            mappingCsvWriter.writeTimeSeriesToBoundaryLinesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToBoundaryLinesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "timeSeriesToBoundaryLinesMapping.csv"));
-
-        }
-
-        StringWriter timeSeriesToHvdcLinesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToHvdcLinesMapping)) {
-            mappingCsvWriter.writeTimeSeriesToHvdcLinesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToHvdcLinesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "timeSeriesToHvdcLinesMapping.csv"));
-        }
-
-        StringWriter timeSeriesToPstMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToPstMapping)) {
-            mappingCsvWriter.writeTimeSeriesToPstMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToPstMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "timeSeriesToPstMapping.csv"));
-        }
-
-        StringWriter timeSeriesToBreakersMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesToBreakersMapping)) {
-            mappingCsvWriter.writeTimeSeriesToBreakersMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesToBreakersMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "timeSeriesToBreakersMapping.csv"));
-
-        }
-
-        StringWriter generatorToTimeSeriesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(generatorToTimeSeriesMapping)) {
-            mappingCsvWriter.writeGeneratorToTimeSeriesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(generatorToTimeSeriesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "generatorToTimeSeriesMapping.csv"));
-        }
-
-        StringWriter loadToTimeSeriesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(loadToTimeSeriesMapping)) {
-            mappingCsvWriter.writeLoadToTimeSeriesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(loadToTimeSeriesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "loadToTimeSeriesMapping.csv"));
-        }
-
-        StringWriter boundaryLineToTimeSeriesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(boundaryLineToTimeSeriesMapping)) {
-            mappingCsvWriter.writeBoundaryLineToTimeSeriesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(boundaryLineToTimeSeriesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "boundaryLineToTimeSeriesMapping.csv"));
-        }
-
-        StringWriter hvdcLineToTimeSeriesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(hvdcLineToTimeSeriesMapping)) {
-            mappingCsvWriter.writeHvdcLineToTimeSeriesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(hvdcLineToTimeSeriesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "hvdcLineToTimeSeriesMapping.csv"));
-        }
-
-        StringWriter pstToTimeSeriesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(pstToTimeSeriesMapping)) {
-            mappingCsvWriter.writePstToTimeSeriesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(pstToTimeSeriesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "pstToTimeSeriesMapping.csv"));
-        }
-
-        StringWriter breakerToTimeSeriesMapping = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(breakerToTimeSeriesMapping)) {
-            mappingCsvWriter.writeBreakerToTimeSeriesMapping(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(breakerToTimeSeriesMapping.toString().getBytes(StandardCharsets.UTF_8), directoryName, "breakerToTimeSeriesMapping.csv"));
-        }
-
-        StringWriter unmappedGenerators = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(unmappedGenerators)) {
-            equipmentCsvWriter.writeUnmappedGenerators(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(unmappedGenerators.toString().getBytes(StandardCharsets.UTF_8), directoryName, "unmappedGenerators.csv"));
-        }
-
-        StringWriter unmappedLoads = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(unmappedLoads)) {
-            equipmentCsvWriter.writeUnmappedLoads(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(unmappedLoads.toString().getBytes(StandardCharsets.UTF_8), directoryName, "unmappedLoads.csv"));
-        }
-
-        StringWriter unmappedBoundaryLines = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(unmappedBoundaryLines)) {
-            equipmentCsvWriter.writeUnmappedBoundaryLines(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(unmappedBoundaryLines.toString().getBytes(StandardCharsets.UTF_8), directoryName, "unmappedBoundaryLines.csv"));
-        }
-
-        StringWriter unmappedHvdcLines = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(unmappedHvdcLines)) {
-            equipmentCsvWriter.writeUnmappedHvdcLines(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(unmappedHvdcLines.toString().getBytes(StandardCharsets.UTF_8), directoryName, "unmappedHvdcLines.csv"));
-        }
-
-        StringWriter unmappedPst = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(unmappedPst)) {
-            equipmentCsvWriter.writeUnmappedPst(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(unmappedPst.toString().getBytes(StandardCharsets.UTF_8), directoryName, "unmappedPsts.csv"));
-        }
-
-        StringWriter disconnectedGenerators = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(disconnectedGenerators)) {
-            equipmentCsvWriter.writeDisconnectedGenerators(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(disconnectedGenerators.toString().getBytes(StandardCharsets.UTF_8), directoryName, "disconnectedGenerators.csv"));
-        }
-
-        StringWriter disconnectedLoads = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(disconnectedLoads)) {
-            equipmentCsvWriter.writeDisconnectedLoads(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(disconnectedLoads.toString().getBytes(StandardCharsets.UTF_8), directoryName, "disconnectedLoads.csv"));
-        }
-
-        StringWriter disconnectedBoundaryLines = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(disconnectedBoundaryLines)) {
-            equipmentCsvWriter.writeDisconnectedBoundaryLines(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(disconnectedBoundaryLines.toString().getBytes(StandardCharsets.UTF_8), directoryName, "disconnectedBoundaryLines.csv"));
-        }
-
-        StringWriter ignoredUnmappedGenerators = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(ignoredUnmappedGenerators)) {
-            equipmentCsvWriter.writeIgnoredUnmappedGenerators(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(ignoredUnmappedGenerators.toString().getBytes(StandardCharsets.UTF_8), directoryName, "ignoredUnmappedGenerators.csv"));
-        }
-
-        StringWriter ignoredUnmappedLoads = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(ignoredUnmappedLoads)) {
-            equipmentCsvWriter.writeIgnoredUnmappedLoads(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(ignoredUnmappedLoads.toString().getBytes(StandardCharsets.UTF_8), directoryName, "ignoredUnmappedLoads.csv"));
-        }
-
-        StringWriter ignoredUnmappedBoundaryLines = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(ignoredUnmappedBoundaryLines)) {
-            equipmentCsvWriter.writeIgnoredUnmappedBoundaryLines(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(ignoredUnmappedBoundaryLines.toString().getBytes(StandardCharsets.UTF_8), directoryName, "ignoredUnmappedBoundaryLines.csv"));
-        }
-
-        StringWriter ignoredUnmappedHvdcLines = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(ignoredUnmappedHvdcLines)) {
-            equipmentCsvWriter.writeIgnoredUnmappedHvdcLines(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(ignoredUnmappedHvdcLines.toString().getBytes(StandardCharsets.UTF_8), directoryName, "ignoredUnmappedHvdcLines.csv"));
-        }
-
-        StringWriter ignoredUnmappedPst = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(ignoredUnmappedPst)) {
-            equipmentCsvWriter.writeIgnoredUnmappedPst(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(ignoredUnmappedPst.toString().getBytes(StandardCharsets.UTF_8), directoryName, "ignoredUnmappedPsts.csv"));
-        }
-
-        StringWriter outOfMainCcGenerators = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(outOfMainCcGenerators)) {
-            equipmentCsvWriter.writeOutOfMainCCGenerators(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(outOfMainCcGenerators.toString().getBytes(StandardCharsets.UTF_8), directoryName, "outOfMainCcGenerators.csv"));
-        }
-
-        StringWriter outOfMainCcLoads = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(outOfMainCcLoads)) {
-            equipmentCsvWriter.writeOutOfMainCCLoads(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(outOfMainCcLoads.toString().getBytes(StandardCharsets.UTF_8), directoryName, "outOfMainCcLoads.csv"));
-        }
-
-        StringWriter outOfMainCcBoundaryLines = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(outOfMainCcBoundaryLines)) {
-            equipmentCsvWriter.writeOutOfMainCCBoundaryLines(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(outOfMainCcBoundaryLines.toString().getBytes(StandardCharsets.UTF_8), directoryName, "outOfMainCcBoundaryLines.csv"));
-        }
-
-        StringWriter mappedTimeSeries = new StringWriter();
-        try (BufferedWriter bufferedWriter = new BufferedWriter(mappedTimeSeries)) {
-            mappingCsvWriter.writeMappedTimeSeries(bufferedWriter);
-            bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(mappedTimeSeries.toString().getBytes(StandardCharsets.UTF_8), directoryName, "mappedTimeSeries.csv"));
+            assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream(directoryName + fileName)),
+                new ByteArrayInputStream(stringWriter.toString().getBytes(StandardCharsets.UTF_8)));
         }
     }
 
     @BeforeEach
-    public void setUp() throws IOException {
+    void setUp() {
         // create test network
-        network = NetworkXml.read(getClass().getResourceAsStream("/simpleNetwork.xml"));
+        network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
 
         // create mapping parameters
         mappingParameters = MappingParameters.load();
@@ -328,20 +173,20 @@ class TimeSeriesMappingTest {
         // Load mapping script
         StringWriter output = new StringWriter();
         TimeSeriesDslLoader dsl = new TimeSeriesDslLoader(script);
-        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), output, null);
+        TimeSeriesMappingConfig mappingConfig = dsl.load(network, mappingParameters, store, new DataTableStore(), new ScriptLogConfig(output), null);
 
         // Create mapper
         TimeSeriesMappingLogger logger = new TimeSeriesMappingLogger();
-        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, network, logger);
         TimeSeriesMapperParameters parameters = new TimeSeriesMapperParameters(new TreeSet<>(Collections.singleton(1)),
                 Range.closed(0, 1), false, false, true, mappingParameters.getToleranceThreshold());
+        TimeSeriesMapper mapper = new TimeSeriesMapper(mappingConfig, parameters, network, logger);
         ComputationRange computationRange = new ComputationRange(ImmutableSet.of(1), 0, 1);
 
         // Create observers
         List<TimeSeriesMapperObserver> observers = new ArrayList<>(2);
 
         // Launch TimeSeriesMapper test
-        mapper.mapToNetwork(store, parameters, observers);
+        mapper.mapToNetwork(store, observers);
 
         network.getVariantManager().setWorkingVariant(VariantManagerConstants.INITIAL_VARIANT_ID);
 
@@ -350,11 +195,13 @@ class TimeSeriesMappingTest {
         try (BufferedWriter bufferedWriter = new BufferedWriter(timeSeriesMappingStatusWriter)) {
             new TimeSeriesMappingConfigStatusCsvWriter(mappingConfig, store).writeTimeSeriesMappingStatus(bufferedWriter);
             bufferedWriter.flush();
-            assertNotNull(compareStreamTxt(timeSeriesMappingStatusWriter.toString().getBytes(StandardCharsets.UTF_8), directoryName, "status.csv"));
+            assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "status.csv")),
+                new ByteArrayInputStream(timeSeriesMappingStatusWriter.toString().getBytes(StandardCharsets.UTF_8)));
         }
 
         // Check mapping output
-        assertNotNull(compareStreamTxt(output.toString().getBytes(StandardCharsets.UTF_8), directoryName, "output.txt"));
+        assertTxtEquals(Objects.requireNonNull(getClass().getResourceAsStream(directoryName + "output.txt")),
+            new ByteArrayInputStream(output.toString().getBytes(StandardCharsets.UTF_8)));
 
         // Check mapping config output
         checkMappingConfigOutput(mappingConfig, directoryName, store, computationRange);

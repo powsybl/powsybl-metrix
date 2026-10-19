@@ -1,11 +1,26 @@
+/*
+ * Copyright (c) 2022, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 package com.powsybl.metrix.mapping
 
 import com.powsybl.iidm.network.Identifiable
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException
+import com.powsybl.metrix.mapping.references.NumberDistributionKey
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.StringTimeSeries
 import groovy.transform.CompileStatic
 import org.apache.commons.lang3.StringUtils
 
+import static com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigTableLoader.plannedOutagesEquipmentTsName
+
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 class PlannedOutagesData {
 
     @CompileStatic
@@ -24,6 +39,9 @@ class PlannedOutagesData {
             StringTimeSeries plannedOutagesTimeSeries = store.getStringTimeSeries(timeSeriesName, version).orElseThrow({ new TimeSeriesMappingException("Invalid planned outages time series name " + timeSeriesName) })
             String[] array = plannedOutagesTimeSeries.toArray()
             for (int i = 0; i < array.length; i++) {
+                if (array[i] == null) {
+                    continue
+                }
                 String[] ids = array[i].split(",")
                 disconnectedIds.addAll(ids)
             }
@@ -44,13 +62,13 @@ class PlannedOutagesData {
 
         // for each filtered equipment, add it to the config
         for (Identifiable identifiable in filteredTransformers) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.TRANSFORMER, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
         for (Identifiable identifiable in filteredLines) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.LINE, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.LINE, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
         for (Identifiable identifiable in filteredGenerators) {
-            configLoader.addEquipmentMapping(MappableEquipmentType.GENERATOR, timeSeriesName + "_" + identifiable.id, identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.disconnected)
+            configLoader.addEquipmentMapping(MappableEquipmentType.GENERATOR, plannedOutagesEquipmentTsName(timeSeriesName, identifiable.id), identifiable.id, NumberDistributionKey.ONE, EquipmentVariable.DISCONNECTED)
         }
     }
 }

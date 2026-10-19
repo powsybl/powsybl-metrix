@@ -3,20 +3,29 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping.timeseries;
 
 import com.powsybl.iidm.network.Identifiable;
 import com.powsybl.iidm.network.Network;
-import com.powsybl.metrix.mapping.*;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
+import com.powsybl.metrix.mapping.exception.TimeSeriesMappingException;
+import com.powsybl.metrix.mapping.references.DistributionKey;
+import com.powsybl.metrix.mapping.references.IndexedMappingKey;
+import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.TimeSeriesTable;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.indexMappingKey;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 public class EquipmentTimeSeriesMap {
     private final Map<IndexedMappingKey, List<MappedEquipment>> equimentTimeSeries = new LinkedHashMap<>();
 
@@ -26,16 +35,16 @@ public class EquipmentTimeSeriesMap {
 
     public void convertToEquipmentTimeSeriesMap(Map<MappingKey, List<String>> timeSerieMap, TimeSeriesTable table, Network network, TimeSeriesMappingConfig config) {
         equimentTimeSeries.clear();
-        timeSerieMap.entrySet().stream().forEach(timeSeries -> equimentTimeSeries
-                .put(indexMappingKey(table, timeSeries.getKey()), mapEquipments(timeSeries.getKey(), timeSeries.getValue(), network, config)));
+        timeSerieMap.forEach((key, value) -> equimentTimeSeries
+            .put(indexMappingKey(table, key), mapEquipments(key, value, network, config)));
     }
 
     public List<MappedEquipment> mapEquipments(MappingKey key, List<String> equipmentIds, Network network, TimeSeriesMappingConfig config) {
         return equipmentIds.stream().map(equipmentId -> {
             Identifiable<?> identifiable = getIdentifiable(network, equipmentId);
-            DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.getMappingVariable(), equipmentId));
+            DistributionKey distributionKey = config.getDistributionKey(new MappingKey(key.mappingVariable(), equipmentId));
             return new MappedEquipment(identifiable, distributionKey);
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     private static Identifiable<?> getIdentifiable(Network network, String equipmentId) {

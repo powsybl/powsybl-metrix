@@ -24,6 +24,8 @@
 #include <cmath>
 #include <cstdio>
 #include <iostream>
+#include <algorithm>
+#include <cctype>
 #include <numeric>
 #include <string>
 
@@ -32,7 +34,8 @@ using cte::c_fmt;
 
 using std::string;
 using std::vector;
-
+using std::list;
+using std::tuple;
 
 static constexpr double EPSILON_SORTIES = 0.05; // seuil de precision pour les sorties
 static const string PREC_FLOAT = "%.1f";        // Doit etre coherent avec EPSILON_SORTIE
@@ -78,6 +81,19 @@ static std::string computeC2IncidentName(const std::shared_ptr<Incident>& inc)
     }
 
     return nomInc;
+}
+
+static const std::vector<std::shared_ptr<ElementCuratif>>&
+resolveActiveElemCur(const std::shared_ptr<Incident>& icdt, const std::vector<double>& pbX)
+{
+    if (icdt->paradesActivees_) {
+        for (const auto& parade : icdt->parades_) {
+            if ((parade->numVarActivation_ != -1) && (pbX[parade->numVarActivation_] > 0.5)) {
+                return parade->listeElemCur_;
+            }
+        }
+    }
+    return icdt->listeElemCur_;
 }
 
 bool Calculer::findNumIncident(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants,
@@ -188,10 +204,13 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (config::inputConfiguration().useAllOutputs()) {
             // ecriture : S1.
             //--------------
-            fprintf(fr, "S1 ;INDISPONIBILITE; OUVRAGE.\n");
+            fprintf(fr, "S1 ;INDISPONIBILITE; OUVRAGE;\n");
             if (var->num_ != -1) {
                 for (const auto& grp : var->grpIndispo_) {
-                    fprintf(fr, "S1 ;;2; %s;\n", grp->nom_.c_str());
+                    constexpr unsigned int ouvrageTypeBattery = 3;
+                    constexpr unsigned int ouvrageTypeGroupWithoutBattery = 2;
+                    const int grpType = grp->isBattery() ? ouvrageTypeBattery : ouvrageTypeGroupWithoutBattery;
+                    fprintf(fr, "S1 ;;%d; %s;\n", grpType, grp->nom_.c_str());
                 }
                 for (const auto& quad : var->indispoLignes_) {
                     fprintf(fr, "S1 ;;1; %s;\n", quad->nom_.c_str());
@@ -437,7 +456,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R1.
         //--------------
         if (!config::inputConfiguration().useAllOutputs()) {
-            fprintf(fr, "R1 ;PAR CONSO;CONSO;VALEUR;DF HR;DF AR;\n");
+            fprintf(fr, "R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;\n");
         } else {
             fprintf(fr, "R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;\n");
         }
@@ -525,7 +544,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
                         pos = elemC->positionVarCurative_;
                         if (pos != -1) {
-                            double val = pbX_[pos] - pbX_[pos + 1];
+                            double val = pbX_[pos + 1];
 
                             if (!config::inputConfiguration().useAllOutputs() && fabs(val) < EPSILON_SORTIES) {
                                 continue;
@@ -560,8 +579,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             }
         } // End R1C
 
-        // ecriture : R2. Productions groupe
-        //---------------------------------
+        // ecriture : R2. Productions groupe (hors batteries et batteries)
+        //----------------------------------------------------------------
 
         vector<double> redispatchParTypeH(res_.nbTypesGroupes_, 0.);
         vector<double> redispatchParTypeB(res_.nbTypesGroupes_, 0.);
@@ -571,8 +590,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         } else {
             fprintf(
                 fr,
-                "R2 ;PAR GROUPE;GROUPE;PDISPO;PIMP;PU HR;PU AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSE AR;CT BAISSE "
-                "AR;CT ORDRE;CT EMPIL HR;\n");
+                "R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR; "
+                "CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;\n");
         }
 
         double deltaHR;
@@ -655,18 +674,15 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 } else {
                     double c_ar = 0.0;
                     double c_grt = 0.0;
-                    double cout_hausse = 0.0;
-                    double cout_baisse = 0.0;
+                    double cout_hausse = grp->coutHausseAR_;
+                    double cout_baisse = grp->coutBaisseAR_;
                     double p_ar = grp->prod_ + deltaAR;
                     double p_hr = grp->prodPobj_ + deltaHR;
                     if (p_ar > p_hr) {
-                        c_grt = (p_ar - p_hr) * grp->coutHausseAR_;
+                        c_grt = (p_ar - p_hr) * cout_hausse;
                     } else {
-                        c_grt = (p_hr - p_ar) * grp->coutBaisseAR_;
+                        c_grt = (p_hr - p_ar) * cout_baisse;
                     }
-                    cout_baisse = grp->coutBaisseAR_;
-                    cout_hausse = grp->coutHausseAR_;
-                    c_ar = 0.;
 
                     fprintf(fr,
                             "R2 ;;%s;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;%.3f;\n",
@@ -688,14 +704,17 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             }
         }
 
-        // ecriture : R2B: Curatif des groupes
-        //--------------
+        // recuperation : R2B: Curatif des groupes hors batteries
+        // recuperation : R2D: Curatif des groupes batteries
+        //-------------------------------------------------------
         vector<double> maxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
         vector<double> maxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
         vector<double> redispCurParType(res_.nbTypesGroupes_, 0.);
 
+        list<tuple<const int, const string, const double>> nonBatteriesResults;
+        list<tuple<const int, const string, const double>> batteriesResults;
+
         if (res_.nbGroupesCuratifs_ > 0) {
-            fprintf(fr, "R2B ;INCIDENT;NOM GROUPE;DELTA_P;\n");
 
             for (const auto& elem : res_.incidents_) {
                 const auto& icdt = elem.second;
@@ -728,11 +747,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
                         pos = elemC->positionVarCurative_;
                         if (pos != -1) {
-                            double val = config::constants::valdef;
                             const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
-                            string s = grp->nom_;
+                            string grpName = grp->nom_;
 
-                            val = pbX_[pos] - pbX_[pos + 1];
+                            double val = pbX_[pos] - pbX_[pos + 1];
 
                             if (grp->type_ != -1) {
                                 redispCurParType[grp->type_] += pbX_[pos] + pbX_[pos + 1];
@@ -746,11 +764,14 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                             if (config::inputConfiguration().useAllOutputs()
                                 || (config::configuration().displayResultatsRedispatch()
                                     && fabs(val) >= EPSILON_SORTIES)) {
-                                fprintf(fr,
-                                        ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
-                                        incidentsContraignants.find(icdt)->second,
-                                        s.c_str(),
-                                        val);
+                                tuple<const int, const string, const double> tupleToAdd(incidentsContraignants.find(icdt)->second, grpName, val);
+                                if (grp->isBattery()) {
+                                    batteriesResults.push_back(tupleToAdd);
+                                }
+                                else {
+                                    nonBatteriesResults.push_back(tupleToAdd);
+                                }
+
                             }
                         }
                     }
@@ -764,6 +785,25 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             }     // end for incident
         }         // End R2B
 
+        // ecriture : R2B: Curatif des groupes hors batteries
+        // ecriture : R2D: Curatif des groupes batteries
+        //---------------
+        if (res_.nbGroupesCuratifs_ > 0) {
+            fprintf(fr, "R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;\n");
+        }
+        for (auto& itLog : nonBatteriesResults) {
+            fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
+                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
+        }
+        nonBatteriesResults.clear();
+        if (res_.nbGroupesCuratifs_ > 0) {
+            fprintf(fr, "R2D ;INCIDENT;NOM BATTERIE;DELTA_P;\n");
+        }
+        for (auto& itLog : batteriesResults) {
+            fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
+                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
+        }
+        batteriesResults.clear();
         // ecriture : R2C: Couplages de groupes
         //---------------
         if (res_.nbGroupesCouples_ > 0) {
@@ -795,7 +835,36 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            if (elemSurv->quadsASurv_.size() == 1 && elemSurv->hvdcASurv_.empty()) {
+            if (elemSurv->isWatchedSection) {
+                transitN = transitSurSection(elemSurv, theta);
+
+                // Ecart calcule comme dans Calculer::detectionContraintes : le seuil extremite -> origine
+                // d'une section reste a valdef (cf. Reseau::lireDonnees), donc seuilMin(nullptr) vaut
+                // -valdef et le sens inverse aux coefficients n'est pas borne
+                double maxTSect = elemSurv->seuilMax(nullptr);
+                double ecartSect = 0.;
+
+                if (transitN > 0 && maxTSect != config::constants::valdef) {
+                    ecartSect = std::max(transitN - maxTSect, 0.);
+                }
+                sommeEcartsN += ecartSect;
+
+                if (config::inputConfiguration().useAllOutputs()) {
+                    fprintf(fr,
+                            "R3 ;;%s;%.1f;%.1f;%.1f;%.1f;\n",
+                            elemSurv->nom_.c_str(),
+                            transitN,
+                            elemSurv->seuilMaxN_,
+                            elemSurv->seuilMaxInc_,
+                            elemSurv->seuilMaxAvantCur_);
+                } else if (!config::configuration().displayResultatsSurcharges() || ecartSect >= EPSILON_SORTIES) {
+                    double transitAffiche = (fabs(transitN) < EPSILON_SORTIES) ? 0.0 : transitN;
+                    fprintf(fr,
+                            "R3 ;;%s;%s;\n",
+                            elemSurv->nom_.c_str(),
+                            c_fmt(PREC_FLOAT.c_str(), transitAffiche).c_str());
+                }
+            } else if (elemSurv->quadsASurv_.size() == 1 && elemSurv->hvdcASurv_.empty()) {
                 const auto& quad = elemSurv->quadsASurv_.begin()->first;
 
                 if (quad->typeQuadripole_ != Quadripole::QUADRIPOLE_REEL) {
@@ -923,7 +992,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         // ecriture : R5.
         //--------------
-        fprintf(fr, "R5 ;PAR TD;TD;CONSIGNE;PRISE; \n");
+        fprintf(fr, "R5 ;PAR TD;TD;CONSIGNE;PRISE;\n");
         for (const auto& elem : res_.TransfoDephaseurs_) {
             const auto& td = elem.second;
 
@@ -954,7 +1023,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         }
         // ecriture : R5B: Td en mode curatif
         //--------------
-        fprintf(fr, "R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE; \n");
+        fprintf(fr, "R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;\n");
 
         for (const auto& elem : res_.incidents_) {
             const auto& icdt = elem.second;
@@ -1213,14 +1282,27 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         fprintf(fr, "R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;\n");
         double volGrp = 0.;
         double volGrpCur = 0.;
+        double volGrpBattery = 0.;
+        double volGrpBatteryCur = 0.;
         for (int i = 0; i < res_.nbTypesGroupes_; ++i) {
             if (redispatchParTypeB[i] < EPSILON_SORTIES && redispatchParTypeH[i] < EPSILON_SORTIES
                 && maxRedispCurParTypeB[i] < EPSILON_SORTIES && maxRedispCurParTypeH[i] < EPSILON_SORTIES) {
                 continue;
             }
 
-            volGrp += redispatchParTypeB[i] + redispatchParTypeH[i];
-            volGrpCur += redispCurParType[i];
+            std::string typeGroupeMaj = res_.typesGroupes_[i];
+            std::transform(typeGroupeMaj.begin(), typeGroupeMaj.end(), typeGroupeMaj.begin(),
+                           [](unsigned char c) { return std::toupper(c); });
+            if (typeGroupeMaj == config::constants::battery_type)
+            {
+                volGrpBattery += redispatchParTypeB[i] + redispatchParTypeH[i];
+                volGrpBatteryCur += redispCurParType[i];
+            }
+            else
+            {
+                volGrp += redispatchParTypeB[i] + redispatchParTypeH[i];
+                volGrpCur += redispCurParType[i];
+            }
 
             fprintf(fr,
                     "R7 ;;%s;%s;%s;%s;%s;\n",
@@ -1257,32 +1339,85 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R9.
         //--------------
         fprintf(fr,
-                "R9 ;FCT OBJECTIF;COUT GROUPES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP CUR;COUT "
+                "R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS BATTERIES CUR;COUT BATTERIES CUR;COUT "
                 "CONSO CUR;\n");
         string coutGrpCur;
+        string coutGrpBatteryCur;
         string coutConsoCur;
 
-        // on ote les offsets dans les couts restitues pour les groupes
-        double coutGrp = fonction_objectif_G_ - (volGrp * config::configuration().redispatchCostOffset());
-        double coutGrpC = fonction_objectif_G_cur_sans_offset_;
+        double fonction_objectif_G_battery_prev = 0.0;
+        for (const auto& elem : res_.groupes_) {
+            const auto& grp = elem.second;
+            if (grp->isBattery() && grp->prodAjust_ != Groupe::NON_HR_AR && grp->etat_) {
+                numVar = grp->numVarGrp_;
+                fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar] * pbX_[numVar];
+                fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar + 1] * pbX_[numVar + 1];
+            }
+        }
+
+        double coutGrpBatteryC = 0.0;
+
+        for (const auto& elem : res_.incidents_) {
+            const auto& icdt = elem.second;
+
+            if (!icdt->validite_) {
+                continue;
+            }
+
+            const auto& tmpListeElemCur = resolveActiveElemCur(icdt, pbX_);
+
+            for (const auto& elemC : tmpListeElemCur) {
+                if (elemC->typeElem_ != ElementCuratif::GROUPE) {
+                    continue;
+                }
+
+                int pos = elemC->positionVarEntiereCur_;
+                if ((pos != -1) && (pbX_[pos] <= 0.5)) {
+                    continue;
+                }
+
+                pos = elemC->positionVarCurative_;
+                if (pos == -1) {
+                    continue;
+                }
+
+                const auto& grp = std::dynamic_pointer_cast<ElementCuratifGroupe>(elemC)->groupe_;
+                if (!grp->isBattery()) {
+                    continue;
+                }
+
+                coutGrpBatteryC += pbCoutLineaireSansOffset_[pos] * pbX_[pos];
+                coutGrpBatteryC += pbCoutLineaireSansOffset_[pos + 1] * pbX_[pos + 1];
+            }
+        }
+
+        double coutGrp = (fonction_objectif_G_ - fonction_objectif_G_battery_prev)
+                 - (volGrp * config::configuration().redispatchCostOffset());
+        double coutGrpBattery = fonction_objectif_G_battery_prev
+                                - (volGrpBattery * config::configuration().redispatchCostOffset());
+        double coutGrpC = fonction_objectif_G_cur_sans_offset_ - coutGrpBatteryC;
         double coutConso = fonction_objectif_D_ - (volDel * config::configuration().redispatchCostOffset());
         double coutConsoC = fonction_objectif_D_cur_sans_offset_;
 
         if (coutGrpC >= EPSILON_SORTIES) {
             coutGrpCur = c_fmt(PREC_FLOAT.c_str(), coutGrpC);
         }
-
+        if (coutGrpBatteryC >= EPSILON_SORTIES) {
+            coutGrpBatteryCur = c_fmt(PREC_FLOAT.c_str(), coutGrpBatteryC);
+        }
         if (fonction_objectif_D_cur_ >= EPSILON_SORTIES) {
             coutConsoCur = c_fmt(PREC_FLOAT.c_str(), coutConsoC);
         }
 
         fprintf(fr,
-                ("R9 ;;" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";%s;%s;\n").c_str(),
+                ("R9 ;;" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";" + PREC_FLOAT + ";%s;%s;%s;\n").c_str(),
                 coutGrp,
+                coutGrpBattery,
                 coutConso,
                 sommeEcartsNk_,
                 sommeEcartsN,
                 coutGrpCur.c_str(),
+                coutGrpBatteryCur.c_str(),
                 coutConsoCur.c_str());
 
         // ecriture : R10

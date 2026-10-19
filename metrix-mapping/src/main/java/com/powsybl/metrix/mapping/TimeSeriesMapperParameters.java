@@ -3,15 +3,21 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping;
 
 import com.google.common.collect.Range;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.NavigableSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 public class TimeSeriesMapperParameters {
 
     private final TreeSet<Integer> versions;
@@ -28,7 +34,8 @@ public class TimeSeriesMapperParameters {
 
     private final Set<String> requiredTimeseries;
 
-    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits, boolean ignoreEmptyFilter, boolean identifyConstantTimeSeries, float toleranceThreshold) {
+    public TimeSeriesMapperParameters(NavigableSet<Integer> versions, Range<Integer> pointRange, boolean ignoreLimits,
+                                      boolean ignoreEmptyFilter, boolean identifyConstantTimeSeries, float toleranceThreshold) {
         this(versions, pointRange, ignoreLimits, ignoreEmptyFilter, identifyConstantTimeSeries, Collections.emptySet(), toleranceThreshold);
     }
 

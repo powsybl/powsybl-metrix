@@ -3,9 +3,8 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.tools;
 
 import com.google.auto.service.AutoService;
@@ -14,8 +13,11 @@ import com.powsybl.contingency.dsl.GroovyDslContingenciesProvider;
 import com.powsybl.iidm.network.ImportConfig;
 import com.powsybl.iidm.network.Network;
 import com.powsybl.metrix.integration.*;
-import com.powsybl.metrix.integration.dataGenerator.MetrixInputData;
-import com.powsybl.metrix.mapping.TimeSeriesMappingConfig;
+import com.powsybl.metrix.integration.configuration.MetrixConfig;
+import com.powsybl.metrix.integration.configuration.MetrixParameters;
+import com.powsybl.metrix.integration.data.generator.MetrixInputData;
+import com.powsybl.metrix.integration.network.MetrixNetwork;
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore;
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import com.powsybl.tools.Command;
@@ -27,8 +29,16 @@ import org.apache.commons.cli.Options;
 
 import java.nio.file.Path;
 
+/**
+ * @author Marianne Funfrock {@literal <marianne.funfrock at rte-france.com>}
+ */
 @AutoService(Tool.class)
 public class MetrixDieTool implements Tool {
+
+    private static final String CONTINGENCIES_FILE = "contingencies-file";
+    private static final String METRIX_DSL_FILE = "metrix-dsl-file";
+    private static final String REMEDIAL_ACTIONS_FILE = "remedial-actions-file";
+    private static final String OUTPUT_DIR = "output-dir";
 
     @Override
     public Command getCommand() {
@@ -59,25 +69,25 @@ public class MetrixDieTool implements Tool {
                         .required()
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("contingencies-file")
+                        .longOpt(CONTINGENCIES_FILE)
                         .desc("Groovy DSL file that describes contingencies")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("metrix-dsl-file")
+                        .longOpt(METRIX_DSL_FILE)
                         .desc("Groovy DSL file that describes the branch monitoring and the phase shifter actions")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("remedial-actions-file")
+                        .longOpt(REMEDIAL_ACTIONS_FILE)
                         .desc("name of the remedial actions file")
                         .hasArg()
                         .argName("FILE")
                         .build());
                 options.addOption(Option.builder()
-                        .longOpt("output-dir")
+                        .longOpt(OUTPUT_DIR)
                         .desc("Output directory")
                         .hasArg()
                         .argName("DIR")
@@ -97,20 +107,20 @@ public class MetrixDieTool implements Tool {
 
         Path caseFile = context.getFileSystem().getPath(line.getOptionValue("case-file"));
 
-        Path contingenciesFile = line.hasOption("contingencies-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("contingencies-file"))
+        Path contingenciesFile = line.hasOption(CONTINGENCIES_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(CONTINGENCIES_FILE))
                 : null;
 
-        Path metrixDslFile = line.hasOption("metrix-dsl-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("metrix-dsl-file"))
+        Path metrixDslFile = line.hasOption(METRIX_DSL_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(METRIX_DSL_FILE))
                 : null;
 
-        Path remedialActionFile = line.hasOption("remedial-actions-file")
-                ? context.getFileSystem().getPath(line.getOptionValue("remedial-actions-file"))
+        Path remedialActionFile = line.hasOption(REMEDIAL_ACTIONS_FILE)
+                ? context.getFileSystem().getPath(line.getOptionValue(REMEDIAL_ACTIONS_FILE))
                 : null;
 
-        Path outputDir = line.hasOption("output-dir")
-                ? context.getFileSystem().getPath(line.getOptionValue("output-dir"))
+        Path outputDir = line.hasOption(OUTPUT_DIR)
+                ? context.getFileSystem().getPath(line.getOptionValue(OUTPUT_DIR))
                 : null;
 
         context.getOutputStream().println("Loading case ...");

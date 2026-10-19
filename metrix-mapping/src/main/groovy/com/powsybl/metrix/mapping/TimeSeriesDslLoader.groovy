@@ -3,21 +3,33 @@
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
- *
+ * SPDX-License-Identifier: MPL-2.0
  */
-
 package com.powsybl.metrix.mapping
+
 
 import com.powsybl.iidm.network.Bus
 import com.powsybl.iidm.network.Injection
 import com.powsybl.iidm.network.Network
 import com.powsybl.iidm.network.TwoWindingsTransformer
+import com.powsybl.metrix.commons.ComputationRange
+import com.powsybl.metrix.commons.data.datatable.DataTableStore
+import com.powsybl.metrix.mapping.config.ScriptLogConfig
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigChecker
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigLoader
+import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfigStats
+import com.powsybl.metrix.mapping.log.LogDslLoader
+import com.powsybl.scripting.groovy.GroovyScriptExtension
+import com.powsybl.scripting.groovy.GroovyScripts
 import com.powsybl.timeseries.ReadOnlyTimeSeriesStore
 import com.powsybl.timeseries.TimeSeriesFilter
 import com.powsybl.timeseries.ast.NodeCalc
 import com.powsybl.timeseries.dsl.CalculatedTimeSeriesGroovyDslLoader
+import groovy.transform.ThreadInterrupt
 import org.apache.commons.lang3.StringUtils
 import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.control.customizers.ASTTransformationCustomizer
 import org.codehaus.groovy.control.customizers.ImportCustomizer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -36,6 +48,9 @@ import static com.powsybl.metrix.mapping.PlannedOutagesData.mapPlannedOutages
 import static com.powsybl.metrix.mapping.SimpleMappingData.mapToBreakers
 import static com.powsybl.metrix.mapping.SimpleVariableMappingData.mapToSimpleVariableEquipments
 
+/**
+ * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
+ */
 class TimeSeriesDslLoader {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeSeriesDslLoader.class)
@@ -44,6 +59,7 @@ class TimeSeriesDslLoader {
     protected static final String DEFAULT_MAPPING_SCRIPT_NAME = "mapping.groovy"
 
     protected final GroovyCodeSource dslSrc
+    protected String equipmentGroupTypes = "com.powsybl.metrix.mapping.SimpleEquipmentGroupType"
 
     TimeSeriesDslLoader(GroovyCodeSource dslSrc) {
         this.dslSrc = Objects.requireNonNull(dslSrc)
@@ -69,16 +85,9 @@ class TimeSeriesDslLoader {
         this(Files.newBufferedReader(path), path.getFileName().toString())
     }
 
-    private static logWarn(LogDslLoader logDslLoader, String message) {
-        if (logDslLoader == null) {
-            return
-        }
-        logDslLoader.logWarn(message)
-    }
-
     protected List<String> getStaticStars() {
         List<String> staticStars = new ArrayList<>()
-        staticStars.add("com.powsybl.metrix.mapping.SimpleEquipmentGroupType")
+        staticStars.add(equipmentGroupTypes)
         return staticStars
     }
 
@@ -90,13 +99,30 @@ class TimeSeriesDslLoader {
         getStaticStars().forEach(staticStars -> imports.addStaticStars(staticStars))
         def config = CalculatedTimeSeriesGroovyDslLoader.createCompilerConfig()
         config.addCompilationCustomizers(imports)
+
+        // Add a check on thread interruption in every loop (for, while) in the script
+        config.addCompilationCustomizers(new ASTTransformationCustomizer(ThreadInterrupt.class))
     }
 
-    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, LogDslLoader logDslLoader, ComputationRange computationRange) {
+    static void bind(Binding binding, Network network, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore,
+                     MappingParameters parameters, TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader,
+                     LogDslLoader logDslLoader, ComputationRange computationRange) {
         ComputationRange checkedComputationRange = ComputationRange.check(computationRange, store)
         ComputationRange fullComputationRange = ComputationRange.check(store)
+
+        // Context objects
+        Map<Class<?>, Object> contextObjects = new HashMap<>()
+        contextObjects.put(DataTableStore.class, dataTableStore)
+        contextObjects.put(ScriptLogConfig.class, logDslLoader.getScriptLogConfig())
+        contextObjects.put(ScriptTimeSeriesNames.class, new ScriptTimeSeriesNames(loader.getInputTimeSeriesNames(), loader.getCalculatedTsNames()))
+
+        // External Bindings
         CalculatedTimeSeriesGroovyDslLoader.bind(binding, store, config.getTimeSeriesNodes())
-        DataTableDslLoader.bind(binding, dataTableStore)
+
+        // Bindings through extensions
+        Iterable<GroovyScriptExtension> extensions = ServiceLoader.load(GroovyScriptExtension.class, GroovyScripts.class.getClassLoader())
+        extensions.forEach { it.load(binding, contextObjects) }
+
         TimeSeriesMappingConfigStats stats = new TimeSeriesMappingConfigStats(store, checkedComputationRange)
 
         // map the base case to network variable
@@ -108,8 +134,9 @@ class TimeSeriesDslLoader {
         }
 
         def generatorsFilteringContext = network.getGenerators().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
+        def batteriesFilteringContext = network.getBatteries().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def loadsFilteringContext = network.getLoads().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
-        def danglingLinesFilteringContext = network.getDanglingLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
+        def boundaryLinesFilteringContext = network.getBoundaryLines().findAll(mappeable).collect { injection -> new FilteringContext((Injection) injection) }
         def hvdcLinesFilteringContext = network.getHvdcLines().collect { hvdcLine -> new FilteringContext(hvdcLine) }
         def lccConverterStationsFilteringContext = network.getLccConverterStations().collect { converter -> new FilteringContext(converter) }
         def vscConverterStationsFilteringContext = network.getVscConverterStations().collect { converter -> new FilteringContext(converter) }
@@ -130,11 +157,14 @@ class TimeSeriesDslLoader {
         binding.mapToGenerators = { Closure closure ->
             mapToEquipments(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR)
         }
+        binding.mapToBatteries = { Closure closure ->
+            mapToEquipments(binding, loader, closure, batteriesFilteringContext, MappableEquipmentType.BATTERY)
+        }
         binding.mapToLoads = { Closure closure ->
             mapToEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.mapToBoundaryLines = { Closure closure ->
-            mapToEquipments(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            mapToEquipments(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.mapToHvdcLines = { Closure closure ->
             mapToEquipments(binding, loader, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
@@ -168,11 +198,14 @@ class TimeSeriesDslLoader {
         binding.unmappedGenerators = { Closure closure ->
             unmappedEquipments(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR)
         }
+        binding.unmappedBatteries = { Closure closure ->
+            unmappedEquipments(binding, loader, closure, batteriesFilteringContext, MappableEquipmentType.BATTERY)
+        }
         binding.unmappedLoads = { Closure closure ->
             unmappedEquipments(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD)
         }
         binding.unmappedBoundaryLines = { Closure closure ->
-            unmappedEquipments(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
+            unmappedEquipments(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE)
         }
         binding.unmappedHvdcLines = { Closure closure ->
             unmappedEquipments(binding, loader, closure, hvdcLinesFilteringContext, MappableEquipmentType.HVDC_LINE)
@@ -190,6 +223,9 @@ class TimeSeriesDslLoader {
         binding.provideTsGenerators = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, generatorsFilteringContext, MappableEquipmentType.GENERATOR, logDslLoader)
         }
+        binding.provideTsBatteries = { Closure closure ->
+            equipmentTimeSeries(binding, loader, closure, batteriesFilteringContext, MappableEquipmentType.BATTERY, logDslLoader)
+        }
         binding.provideTsLoads = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, loadsFilteringContext, MappableEquipmentType.LOAD, logDslLoader)
         }
@@ -203,7 +239,7 @@ class TimeSeriesDslLoader {
             equipmentTimeSeries(binding, loader, closure, linesFilteringContext, MappableEquipmentType.LINE, logDslLoader)
         }
         binding.provideTsBoundaryLines = { Closure closure ->
-            equipmentTimeSeries(binding, loader, closure, danglingLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, logDslLoader)
+            equipmentTimeSeries(binding, loader, closure, boundaryLinesFilteringContext, MappableEquipmentType.BOUNDARY_LINE, logDslLoader)
         }
         binding.provideTsPhaseTapChangers = { Closure closure ->
             equipmentTimeSeries(binding, loader, closure, phaseTapChangersFilteringContext, MappableEquipmentType.PHASE_TAP_CHANGER, logDslLoader)
@@ -240,60 +276,64 @@ class TimeSeriesDslLoader {
         binding.booleanMetadatas = { Closure closure ->
             loader.booleanMetadatas(store)
         }
-        binding.metadata = { NodeCalc tsNode ->
-            loader.tsMetadata(tsNode, store)
+        binding.getMetadataTags = { NodeCalc tsNode ->
+            loader.getMetadataTags(tsNode, store)
         }
         binding.tag = { NodeCalc tsNode, String tag, String parameter = StringUtils.EMPTY ->
             loader.tag(tsNode, tag, parameter)
         }
 
         // statistics
-        binding.sum = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.sum = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesSum(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.min = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.min = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMin(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.max = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.max = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMax(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.avg = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.avg = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesAvg(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
-        binding.median = { NodeCalc tsNode, Boolean all_versions = false ->
+        binding.median = { NodeCalc tsNode, Boolean all_versions = true ->
             stats.getTimeSeriesMedian(tsNode, all_versions ? fullComputationRange : checkedComputationRange)
         }
+
+        // Since the values of EquipmentVariable were previously written in camelCase, we need to add them again for
+        // backward compatibility
+        EquipmentVariable.values().toList().forEach {value -> binding[value.getVariableName()] = value}
     }
 
-    protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
+    protected evaluate(TimeSeriesMappingConfig config, TimeSeriesMappingConfigLoader loader, Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
         Binding binding = new Binding()
-        LogDslLoader logDslLoader = LogDslLoader.create(binding, out, MAPPING_SCRIPT_SECTION)
+        LogDslLoader logDslLoader = new LogDslLoader(scriptLogConfig.withSection( MAPPING_SCRIPT_SECTION))
         bind(binding, network, store, dataTableStore, parameters, config, loader, logDslLoader, computationRange)
 
-        if (out != null) {
-            binding.out = out
+        if (scriptLogConfig != null && scriptLogConfig.getWriter() != null) {
+            binding.out = scriptLogConfig.getWriter()
         }
 
         def shell = new GroovyShell(binding, createCompilerConfig())
+
+        // Check for thread interruption right before beginning the evaluation
+        if (Thread.currentThread().isInterrupted()) throw new InterruptedException("Execution Interrupted")
+
         shell.evaluate(dslSrc)
 
         TimeSeriesMappingConfigChecker configChecker = new TimeSeriesMappingConfigChecker(config)
         configChecker.checkMappedVariables()
-        Set<MappingKey> keys = configChecker.getNotMappedEquipmentTimeSeriesKeys()
-        keys.forEach({ key ->
-            logWarn(logDslLoader, "provideTs - Time series can not be provided for id " + key.getId() + " because id is not mapped on " + key.getMappingVariable().getVariableName())
-        })
     }
 
     TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ComputationRange computationRange) {
-        load(network, parameters, store, dataTableStore, null, computationRange)
+        load(network, parameters, store, dataTableStore, new ScriptLogConfig(), computationRange)
     }
 
-    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, Writer out, ComputationRange computationRange) {
+    TimeSeriesMappingConfig load(Network network, MappingParameters parameters, ReadOnlyTimeSeriesStore store, DataTableStore dataTableStore, ScriptLogConfig scriptLogConfig, ComputationRange computationRange) {
         long start = System.currentTimeMillis()
         TimeSeriesMappingConfig config = new TimeSeriesMappingConfig(network)
         TimeSeriesMappingConfigLoader loader = new TimeSeriesMappingConfigLoader(config, store.getTimeSeriesNames(new TimeSeriesFilter()))
-        evaluate(config, loader, network, parameters, store, dataTableStore, out, computationRange)
+        evaluate(config, loader, network, parameters, store, dataTableStore, scriptLogConfig, computationRange)
         LOGGER.trace("Dsl Loading done in {} ms", (System.currentTimeMillis() - start))
 
         config
