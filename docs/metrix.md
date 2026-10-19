@@ -60,6 +60,7 @@ parameters {
   computationType // (LF) Simulation Mode : LF, OPF_WITHOUT_REDISPATCHING, OPF
   contingenciesProbability // (0.001) Contingency probability
   gapVariableCost // (10) Gap variable cost
+  generatorMinCost // (0.5) Lower bound of generator and load shedding costs, applied after adding the cost offsets
   hvdcCostPenality // (0.01) Penality cost for HVDC usage
   lossDetailPerCountry // (false) Output the loss detail per country
   lossOfLoadCost // (13000) Cost of the load shedding
@@ -267,7 +268,7 @@ $RedispatchUp_g = max(P_g - P0_g, 0)$,
 $RedispatchDown_g = max(P0_g - P_g, 0)$.
 
 It should be noted that this is different from redispatching cost in real systems' operation, where in the case of downwards activations, the generator _pays_ the TSO for the generation reduction (not delivered energy).
-Moreover, to prioritize topological solutions over redispatching solutions, the redispatching up and down costs have a lower bound of >= 0.5. Metrix will correct any adequacy or redispatch cost below the lower bound, setting it to lower bound value.
+Moreover, to prioritize topological solutions over redispatching solutions, adequacy and redispatching costs have a lower bound set by the `generatorMinCost` parameter (0.5 by default). This lower bound applies to each cost after the offset of the corresponding step (`adequacyCostOffset` or `redispatchingCostOffset`) has been added: Metrix replaces any value below the lower bound with the lower bound value. Load shedding costs follow the same rule.
 
 Note that if at least one generator is managed, then only defined generators will be managed to match adequacy. In some cases, it could result in a program failure (return code -1) where constraints cannot be resolved in OPF mode. Also:
 - Generators used for the adequacy phase are not necessarily the same used for the redispatching phase. If `onContingency` isn't defined but `redispatchingCost` is, then the generator will be used only in preventive actions. For the generator to be fully used for preventive and curative remedial action, both of these parameters must be defined.
