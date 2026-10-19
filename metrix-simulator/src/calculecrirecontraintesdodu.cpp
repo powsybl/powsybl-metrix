@@ -2083,6 +2083,28 @@ double Calculer::transitSurQuad(const std::shared_ptr<Quadripole>& quad,
     return tranN + variationTranSurIncident;
 }
 
+double Calculer::transitSurSection(const std::shared_ptr<ElementASurveiller>& section, const std::vector<double>& theta)
+{
+    // Somme ponderee des transits en N des elements connectes de la section
+    double transit = 0.;
+
+    for (const auto& elem : section->quadsASurv_) {
+        const auto& quad = elem.first;
+        if (quad->connecte()) {
+            transit += elem.second * transitSurQuad(quad, nullptr, theta);
+        }
+    }
+
+    for (const auto& elem : section->hvdcASurv_) {
+        const auto& lcc = elem.first;
+        if (lcc->connecte()) {
+            transit += elem.second * (lcc->puiCons_ + pbX_[lcc->numVar_] - pbX_[lcc->numVar_ + 1]);
+        }
+    }
+
+    return transit;
+}
+
 
 /** Enregistre la menace correspondant a l'incident si elle fait partie des menaces max */
 void enregistreMenaces(const std::shared_ptr<Incident>& icdt,
