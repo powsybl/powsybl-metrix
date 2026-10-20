@@ -78,6 +78,9 @@ function(code_coverage)
         # branch-coverage part of the metric only reflects actual conditions
         --exclude-throw-branches --exclude-unreachable-branches
         --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
+        # gcov reports the exception edge of every call as a branch; those edges are never taken
+        # and would otherwise count as uncovered conditions in the SonarQube coverage metric
+        --exclude-throw-branches
         ${GCOVR_OPTIONS}
 
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}

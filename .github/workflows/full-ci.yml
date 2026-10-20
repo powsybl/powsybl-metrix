@@ -173,11 +173,8 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y gcovr
 
-      - name: Install Sonar wrapper
-        working-directory: ${{ runner.workspace }}
-        run: |
-          wget --max-redirect=0 https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
+      - name: Install Build Wrapper
+        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
 
       - name: Install Sonar scanner
         working-directory: ${{ runner.workspace }}
@@ -226,7 +223,7 @@ jobs:
 
       - name: Build
         run: >
-          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
+          build-wrapper-linux-x86-64
           --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
 
