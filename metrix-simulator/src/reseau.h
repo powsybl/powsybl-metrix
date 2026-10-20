@@ -494,6 +494,9 @@ public:
     int getClosestTapPosition(double angleFinal);
     double getPuiMax();
     double getPuiMin();
+
+    // Modifie la consigne de dephasage. En pilotage impose, les bornes suivent la consigne (cf. constructeur)
+    void setPuiCons(double puiCons);
 };
 
 //---------------------------------
