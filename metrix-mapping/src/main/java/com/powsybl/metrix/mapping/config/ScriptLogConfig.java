@@ -30,6 +30,7 @@ public class ScriptLogConfig {
     private String section;
     private boolean withTimestamp;
     private boolean withHeader;
+    private boolean headerWritten;
     private DateTimeFormatter dateTimeFormatter;
     private final Clock clock;
 
@@ -84,6 +85,11 @@ public class ScriptLogConfig {
     }
 
     public ScriptLogConfig withWriter(Writer writer) {
+        // If the writer is changed, we reset the headerWritten flag to false
+        // because the new writer may not have the header written yet
+        if (this.writer != writer) {
+            this.headerWritten = false;
+        }
         this.writer = writer;
         return this;
     }
@@ -133,6 +139,14 @@ public class ScriptLogConfig {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public boolean isHeaderWritten() {
+        return headerWritten;
+    }
+
+    public void setHeaderWritten(boolean headerWritten) {
+        this.headerWritten = headerWritten;
     }
 
     public static final class Builder {

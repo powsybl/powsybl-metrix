@@ -6,7 +6,7 @@
 - **C/C++ compiler** with C++11 support
 - **Boost** ≥ 1.66 — must be installed on the system
 - **Git** — for downloading external dependencies
-- **Xpress** (optional): pre-installed commercial solver, with `XPRESS_ROOT` pointing to the installation directory (as an environment variable or a CMake `-D` flag passed to `external/`)
+- **Xpress** (optional, **runtime only**): a licensed FICO Xpress installation on the machine that runs `SOLVERCH=6`, located through the `XPRESSDIR` environment variable. Nothing from Xpress is needed to build: OR-Tools does not link `libxprs`, it loads `$XPRESSDIR/lib/libxprs.so` with `dlopen` at the first Xpress solve (falling back to `/opt/xpressmp`). `XPRESSDIR` is normally exported by the `xpvars.sh` script shipped with Xpress
 
 ### Build
 
@@ -16,24 +16,23 @@ git clone https://github.com/powsybl/powsybl-metrix.git powsybl-metrix
 
 # Build external dependencies (SuiteSparse, Sirius, and optionally OR-Tools).
 # OR-Tools is built only when USE_ORTOOLS=ON (default OFF, mirroring the
-# metrix-simulator flag). The Xpress backend is enabled automatically if
-# XPRESS_ROOT is set, disabled otherwise.
+# metrix-simulator flag). Its Xpress backend is always compiled in and needs
+# no Xpress installation at build time.
 mkdir -p powsybl-metrix/metrix-simulator/build/external
 cd powsybl-metrix/metrix-simulator/build/external
 
 cmake ../../external \
       -D CMAKE_BUILD_TYPE=Release \
-      -D USE_ORTOOLS=ON \
-      -D XPRESS_ROOT=/path/to/xpress    # optional, builds OR-Tools with Xpress backend
+      -D USE_ORTOOLS=ON
 
 cmake --build . -j$(nproc)
 cd ../../../..
 
 # Build metrix-simulator.
 # USE_ORTOOLS enables the OR-Tools Xpress backend at runtime.
-# USE_XPRESS authorizes SOLVERCH=6 at runtime; it must reflect whether
-# OR-Tools was actually built with the Xpress backend (i.e. whether
-# XPRESS_ROOT was set when external/ was built).
+# USE_XPRESS authorizes SOLVERCH=6 at runtime. It is a pure authorization
+# switch: whether Xpress actually works is decided on the running machine
+# by XPRESSDIR and the Xpress license.
 cmake -S powsybl-metrix/metrix-simulator \
       -B powsybl-metrix/metrix-simulator/build \
       -D CMAKE_BUILD_TYPE=Release \
@@ -42,7 +41,7 @@ cmake -S powsybl-metrix/metrix-simulator \
 
 cmake --build powsybl-metrix/metrix-simulator/build -j$(nproc)
 
-# Run tests
+# Run tests (the Xpress suite, if enabled, receives XPRESSDIR from the harness)
 ctest --test-dir powsybl-metrix/metrix-simulator/build
 ```
 
@@ -50,7 +49,10 @@ ctest --test-dir powsybl-metrix/metrix-simulator/build
 > because FICO Xpress is a licensed product: it must never run in
 > automated environments. Developers with a licensed Xpress installation
 > can enable it by configuring with `-D METRIX_RUN_XPRESS_TESTS=ON`
-> (in addition to `USE_XPRESS=ON`). The per-category `CMakeLists.txt`
+> (in addition to `USE_XPRESS=ON`); the harness hands the Xpress location
+> to every test as `XPRESSDIR`, taken from `XPRESS_ROOT` (CMake variable or
+> environment) or, failing that, from the `XPRESSDIR` already exported in
+> the environment. The per-category `CMakeLists.txt`
 > files under `tests/xpress/` are symbolic links to their `tests/sirius/`
 > counterparts (single source of truth for test registrations): on
 > Windows, the repository must be cloned with `git config core.symlinks
@@ -91,7 +93,6 @@ for the static one.
 | Variable | Form | Description |
 |----------|------|-------------|
 | `USE_ORTOOLS` | CMake option | Default `OFF`. Build the OR-Tools third party. Must be `ON` when `metrix-simulator` is configured with `USE_ORTOOLS=ON` (OR-Tools requires Python3 with development headers and a recent C++ compiler, hence the opt-in). |
-| `XPRESS_ROOT` | env var or `-D` flag | Path to the Xpress SDK. If set, OR-Tools is built with the Xpress backend; otherwise without. Only meaningful with `USE_ORTOOLS=ON`. |
 | `NNI`, `NNI_PASSWORD` | env var only | Internal RTE credentials for Git proxy. Optional. |
 
 #### Root options
@@ -99,7 +100,8 @@ for the static one.
 | Option | Default | Description |
 |--------|---------|-------------|
 | `USE_ORTOOLS` | `OFF` | Enable the OR-Tools Xpress backend. When `OFF`, the binary is Sirius-only, identical to the legacy production version. |
-| `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Must reflect whether OR-Tools was effectively built with the Xpress backend; a mismatch (or a missing Xpress license) is reported at runtime as a metrix error (`ERRSolveurIndisponible`) when `SOLVERCH=6` is requested. |
+| `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Pure authorization switch: the Xpress backend is always compiled into OR-Tools 9.13, and whether it works on a given machine depends on `XPRESSDIR` and the Xpress license; a missing library or license is reported at runtime as a metrix error (`ERRSolveurIndisponible`) when `SOLVERCH=6` is requested. |
+| `XPRESS_ROOT` | `-D` flag or env var | Test harness only: Xpress installation handed to the test suite as `XPRESSDIR`. Defaults to the `XPRESSDIR` of the environment. Not needed to build. |
 | `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, deploys `libsirius_solver.so` alongside the binary. |
 | `CODE_COVERAGE` | `OFF` | Instrument the binary for coverage analysis (forces `Debug` build type). |
 | `METRIX_RUN_ALL_TESTS` | `ON` | Run the full TNR test suite. Set to `OFF` for a reduced suite. |
@@ -124,7 +126,7 @@ A single build supports both Sirius and Xpress. The solver is selected at runtim
 | 5 | SIRIUS | Direct call to `PNE_Solveur` / `SPX_Simplexe` (no OR-Tools involved) |
 | 6 | XPRESS | Via OR-Tools `MPSolver` |
 
-> **Important**: `SOLVERCH=5` (SIRIUS) uses the direct call path, identical to the legacy production behavior. `SOLVERCH=6` (XPRESS) goes through the OR-Tools abstraction layer and requires a binary built with `USE_ORTOOLS` and `USE_XPRESS`, plus an Xpress license installed on the machine.
+> **Important**: `SOLVERCH=5` (SIRIUS) uses the direct call path, identical to the legacy production behavior. `SOLVERCH=6` (XPRESS) goes through the OR-Tools abstraction layer and requires a binary built with `USE_ORTOOLS` and `USE_XPRESS`, plus a licensed Xpress installation on the machine, located through the `XPRESSDIR` environment variable (OR-Tools loads `$XPRESSDIR/lib/libxprs.so` with `dlopen` at the first solve, falling back to `/opt/xpressmp`; `LD_LIBRARY_PATH` is not consulted). Any of these missing raises `ERRSolveurIndisponible`. The same binary serves machines with and without Xpress.
 
 ### Configuration examples
 

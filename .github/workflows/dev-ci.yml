@@ -220,11 +220,8 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y gcovr
 
-      - name: Install Sonar wrapper
-        working-directory: ${{ runner.workspace }}
-        run: |
-          wget --max-redirect=0 https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip
-          unzip build-wrapper-linux-x86.zip
+      - name: Install Build Wrapper
+        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@d209202bc7d53ff1cc128f7f907dac145c9d6ae9 # v8.3.0
 
       - name: Install Sonar scanner
         working-directory: ${{ runner.workspace }}
@@ -253,9 +250,15 @@ jobs:
           java-version: '17'
           cache: 'maven'
 
+      # USE_ORTOOLS=ON mirrors the Full QA job of full-ci.yml and the fork QA job
+      # of fork-build-tests.yml, so that the OR-Tools solver wrapper
+      # (src/ortools/solver.cpp) and the #ifdef USE_ORTOOLS branches are
+      # compiled on every PR, not only after merge. Only Sirius is exercised by
+      # the tests: Xpress is a licensed product and never runs in CI.
       - name: Configure 3rd parties
         run: >
           cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+          -DUSE_ORTOOLS=ON
 
       - name: Build 3rd parties
         run: >
@@ -267,11 +270,12 @@ jobs:
           -DCMAKE_BUILD_TYPE=Debug
           -DCODE_COVERAGE=TRUE
           -DMETRIX_RUN_ALL_TESTS=OFF
+          -DUSE_ORTOOLS=ON
           -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/metrix-simulator/build/install
 
       - name: Build
         run: >
-          ${{ runner.workspace }}/build-wrapper-linux-x86/build-wrapper-linux-x86-64
+          build-wrapper-linux-x86-64
           --out-dir $GITHUB_WORKSPACE/metrix-simulator/build/output
           cmake --build $GITHUB_WORKSPACE/metrix-simulator/build --parallel 2 --target install
 
@@ -318,9 +322,13 @@ jobs:
           git fetch --no-tags --depth=1 ${{ github.event.pull_request.head.repo.clone_url }} ${HEAD_REF}
           git show-ref
 
+      # USE_ORTOOLS=ON so that src/ortools/solver.cpp and the #ifdef USE_ORTOOLS
+      # branches appear in compile_commands.json: clang-tidy silently skips any
+      # modified file it has no compile command for.
       - name: Configure 3rd parties
         run: >
           cmake -S $GITHUB_WORKSPACE/metrix-simulator/external -B $GITHUB_WORKSPACE/metrix-simulator/build/external
+          -DUSE_ORTOOLS=ON
 
       - name: Build 3rd parties
         run: >
@@ -331,6 +339,7 @@ jobs:
           cmake -S $GITHUB_WORKSPACE/metrix-simulator -B $GITHUB_WORKSPACE/metrix-simulator/build
           -DCMAKE_BUILD_TYPE=Debug
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          -DUSE_ORTOOLS=ON
 
       - name: Generate Clang Tidy Report (Modified C++ sources only)
         id: clang-pr

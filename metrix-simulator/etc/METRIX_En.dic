@@ -139,6 +139,7 @@ ERRNoeudConso								Load $1 connecting node not found $2
 ERRGroupePminPmax							Production unit $1: Pmin ($2) > Pmax ($3)
 ERRGroupesPminPmax							At least one production unit with Pmin > Pmax : abort
 ERRReseauNonConnexe							Network is not connex
+ERRNomSectionSurvDuplique					Monitored section name '$1' is already used by another monitored element
 ERROuvrageInconnuIncident					Unknown line ou production unit in contingency $1
 ERRTypeOuvrageInconnuIncident				Unknown kind of contingency $1
 ERRBandeReglInsuffisante					Frequency reserve insufficient, to be changed. $1 > $2
@@ -165,7 +166,7 @@ ERRAjoutCtr									Error while adding constraint on line $2 after contingency $
 ERRAjoutCtrN								Error while adding constraint on line $1
 ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
 ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes
-ERRSolveurIndisponible                      Solver '$1' is not available in this installation (OR-Tools built without it or missing license)
+ERRSolveurIndisponible                      Solver '$1' is not available in this installation (library not found or missing license; for Xpress, check the XPRESSDIR environment variable)
 ERRParamSolveurRefuse                       Solver parameters rejected by OR-Tools: '$1' (SOLVPARA; they may have been partially applied)
 
 

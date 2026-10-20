@@ -20,6 +20,7 @@ metrix_test("delestage_preventif" 4)
 metrix_test("delestage_preventif_cible" 4)
 metrix_test("effacement_curatif" 8)
 metrix_test("effacement_batterie" 1)
+metrix_test("effacement_batterie_loglevel_debug" 1)
 metrix_test("delestage_charges_negatives" 2)
 # Canari PRTBCOST : la perturbation ne doit pas departager la phase AR ; les
 # references des deux jumeaux doivent donc rester identiques (cf. _Readme.txt).

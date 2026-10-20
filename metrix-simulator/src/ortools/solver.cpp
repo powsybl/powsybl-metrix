@@ -11,9 +11,12 @@
 #include "solver.h"
 #include "err/IoDico.h"
 #include "err/error.h"
+#include "factory.h"
+#include "log_bridge.h"
 
 #include <cmath>
 #include <iostream>
+#include <sstream>
 
 using namespace operations_research;
 
@@ -21,21 +24,21 @@ namespace ortools
 {
 const std::string Solver::solverName_ = "simple_lp_program";
 
-const std::map<config::Configuration::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
-    std::make_pair(config::Configuration::SolverChoice::XPRESS,
+const std::map<config::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
+    std::make_pair(config::SolverChoice::XPRESS,
                    std::make_pair(operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING,
                                   operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
 };
 
-Solver::Solver(config::Configuration::SolverChoice solver_choice, const std::string& specific_params)
+Solver::Solver(config::SolverChoice solver_choice, std::string_view specific_params)
     : solver_choice_(solver_choice),
       specific_params_(specific_params) {}
 
-static const std::string& solverChoiceName(config::Configuration::SolverChoice choice)
+static const std::string& solverChoiceName(config::SolverChoice choice)
 {
-    static const std::map<config::Configuration::SolverChoice, std::string> names = {
-        {config::Configuration::SolverChoice::SIRIUS, "SIRIUS"},
-        {config::Configuration::SolverChoice::XPRESS, "XPRESS"},
+    static const std::map<config::SolverChoice, std::string> names = {
+        {config::SolverChoice::SIRIUS, "SIRIUS"},
+        {config::SolverChoice::XPRESS, "XPRESS"},
     };
     static const std::string unknown = "UNKNOWN";
     auto it = names.find(choice);
@@ -47,7 +50,7 @@ void Solver::checkSolverAvailability(operations_research::MPSolver::Optimization
     static std::map<operations_research::MPSolver::OptimizationProblemType, bool> available;
     auto it = available.find(problemType);
     if (it == available.end()) {
-        it = available.emplace(problemType, operations_research::MPSolver::SupportsProblemType(problemType)).first;
+        it = available.try_emplace(problemType, operations_research::MPSolver::SupportsProblemType(problemType)).first;
     }
     if (!it->second) {
         throw ErrorI(err::ioDico().msg("ERRSolveurIndisponible", solverChoiceName(solver_choice_)));
@@ -113,7 +116,7 @@ void Solver::solve(PROBLEME_SIMPLEXE* problem)
             // Arret premature (limite d'iterations/temps du backend) avec une solution
             // admissible : on la restitue comme Sirius le ferait, mais on trace car la
             // solution n'est pas prouvee optimale.
-            LOG_ALL(warning) << "LP solve stopped before proven optimality, using the feasible solution";
+            logWarning(__FILE__, __LINE__, "LP solve stopped before proven optimality, using the feasible solution");
         }
         problem->ExistenceDUneSolution = OUI_SPX;
         updateProblem(*problem, solver_);
@@ -128,13 +131,13 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
 
     // Create the variables and set objective cost.
     transferVariables(solver,
-                      problem.Xmin,
-                      problem.Xmax,
-                      problem.CoutLineaire,
-                      problem.NombreDeVariables,
-                      problem.X,
-                      problem.TypeDeBorneDeLaVariable,
-                      problem.TypeDeVariable);
+                      Columns{problem.NombreDeVariables,
+                              problem.Xmin,
+                              problem.Xmax,
+                              problem.CoutLineaire,
+                              problem.X,
+                              problem.TypeDeBorneDeLaVariable,
+                              problem.TypeDeVariable});
 
     // Create constraints and set coefs
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
@@ -162,8 +165,13 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
     // NB : pour un PROBLEME_SIMPLEXE, le champ TypeDeVariable contient en realite
     // les types de borne (cf. le renseignement de pb_ dans calculmacrofonctions.cpp).
     transferVariables(solver,
-                      problem.Xmin, problem.Xmax, problem.CoutLineaire, problem.NombreDeVariables,
-                      problem.X, problem.TypeDeVariable);
+                      Columns{problem.NombreDeVariables,
+                              problem.Xmin,
+                              problem.Xmax,
+                              problem.CoutLineaire,
+                              problem.X,
+                              problem.TypeDeVariable,
+                              nullptr});
 
     // Create constraints and set coefs
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
@@ -177,42 +185,35 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
     return solver;
 }
 
-void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver,
-                               double const* bMin,
-                               double const* bMax,
-                               double const* costs,
-                               int nbVar,
-                               double const* xValues,
-                               int const* typeDeBorneDeLaVariable,
-                               int const* typeDeVariable)
+void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver, const Columns& columns)
 {
     MPObjective* const objective = solver->MutableObjective();
-    for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
+    for (int idxVar = 0; idxVar < columns.count; ++idxVar) {
         const std::string name = "x" + std::to_string(idxVar);
 
         double min_l = 0.;
         double max_l = 0.;
-        switch (typeDeBorneDeLaVariable[idxVar]) {
+        switch (columns.boundType[idxVar]) {
             case VARIABLE_FIXE:
-                if (xValues != nullptr) {
-                    min_l = xValues[idxVar];
+                if (columns.x != nullptr) {
+                    min_l = columns.x[idxVar];
                     max_l = min_l;
                 } else {
-                    min_l = bMin[idxVar];
+                    min_l = columns.min[idxVar];
                     max_l = min_l;
                 }
                 break;
             case VARIABLE_BORNEE_DES_DEUX_COTES:
-                min_l = bMin[idxVar];
-                max_l = bMax[idxVar];
+                min_l = columns.min[idxVar];
+                max_l = columns.max[idxVar];
                 break;
             case VARIABLE_BORNEE_INFERIEUREMENT:
-                min_l = bMin[idxVar];
+                min_l = columns.min[idxVar];
                 max_l = operations_research::MPSolver::infinity();
                 break;
             case VARIABLE_BORNEE_SUPERIEUREMENT:
                 min_l = -operations_research::MPSolver::infinity();
-                max_l = bMax[idxVar];
+                max_l = columns.max[idxVar];
                 break;
             case VARIABLE_NON_BORNEE:
                 min_l = -operations_research::MPSolver::infinity();
@@ -220,19 +221,19 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
                 break;
             default: {
                 std::ostringstream ss;
-                ss << "Unknown typeDeBorneDeLaVariable: " << typeDeBorneDeLaVariable[idxVar];
+                ss << "Unknown TypeDeBorneDeLaVariable: " << columns.boundType[idxVar];
                 throw ErrorI(ss.str());
             }
         }
 
         const operations_research::MPVariable* x = nullptr;
-        if (typeDeVariable != nullptr && typeDeVariable[idxVar] == ENTIER) {
+        if (columns.variableType != nullptr && columns.variableType[idxVar] == ENTIER) {
             x = solver->MakeIntVar(min_l, max_l, name);
         } else {
             x = solver->MakeNumVar(min_l, max_l, name);
         }
-        if (costs[idxVar] != 0.) {
-            objective->SetCoefficient(x, costs[idxVar]);
+        if (columns.cost[idxVar] != 0.) {
+            objective->SetCoefficient(x, columns.cost[idxVar]);
         }
     }
 }
@@ -410,4 +411,8 @@ operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIM
     return solver_choices_.at(solver_choice_).first;
 }
 
+std::shared_ptr<compute::ISolver> makeSolver(config::SolverChoice solver_choice, std::string_view specific_params)
+{
+    return std::make_shared<Solver>(solver_choice, specific_params);
+}
 } // namespace ortools
