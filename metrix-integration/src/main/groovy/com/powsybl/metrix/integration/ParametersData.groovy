@@ -50,6 +50,9 @@ class ParametersData {
     Integer redispatchingCostOffset
     Integer adequacyCostOffset
     Integer nbMaxLostLoadDetailedResults
+    Integer solverChoice
+    Integer pcSolverChoice
+    String specificSolverParams
 
     void computationType(MetrixComputationType computationType) {
         this.computationType = computationType
@@ -169,6 +172,18 @@ class ParametersData {
 
     void nbMaxLostLoadDetailedResults(Integer nbMaxLostLoadDetailedResults) {
         this.nbMaxLostLoadDetailedResults = nbMaxLostLoadDetailedResults
+    }
+
+    void solverChoice(Integer solverChoice) {
+        this.solverChoice = solverChoice
+    }
+
+    void pcSolverChoice(Integer pcSolverChoice) {
+        this.pcSolverChoice = pcSolverChoice
+    }
+
+    void specificSolverParams(String specificSolverParams) {
+        this.specificSolverParams = specificSolverParams
     }
 
     void gapVariableCost(Integer gapVariableCost) {
@@ -300,6 +315,15 @@ class ParametersData {
         }
         if (spec.nbThreatResults != null) {
             parameters.setNbThreatResults(spec.nbThreatResults)
+        }
+        if (spec.solverChoice != null) {
+            parameters.setSolverChoice(spec.solverChoice)
+        }
+        if (spec.pcSolverChoice != null) {
+            parameters.setPcSolverChoice(spec.pcSolverChoice)
+        }
+        if (spec.specificSolverParams != null) {
+            parameters.setSpecificSolverParams(spec.specificSolverParams)
         }
     }
 }
