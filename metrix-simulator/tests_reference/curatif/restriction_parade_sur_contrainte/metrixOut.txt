@@ -19,6 +19,7 @@ Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
 La contrainte 'FOO' ne correspond pas à un élément à surveiller.
+La parade 'FS.BIS1  FVALDI1  1' de l'incident 'FS.BIS1 FSSV.O1 1' est restreinte à plusieurs contraintes, ce qui n'est pas supporté : la restriction est ignorée
  Nb total d'incidents + parades : 6
 Mode de calcul : OPF
 Noeud bilan : 0 [FP.AND1_1]
@@ -77,7 +78,7 @@ Micro itération 1 (nombre de contraintes 1)
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 3 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 7)
+Micro itération 2 (nombre de contraintes 6)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -93,7 +94,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 58 (taille de la matrice : 58)
+Nb termes dans la matrice : 50 (taille de la matrice : 50)
 Pas de contraintes
 
 ---------------------
@@ -118,7 +119,7 @@ Micro itération 1 (nombre de contraintes 1)
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 3 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 7)
+Micro itération 2 (nombre de contraintes 6)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -134,9 +135,9 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 58 (taille de la matrice : 58)
+Nb termes dans la matrice : 50 (taille de la matrice : 50)
 Ajout de 4 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 11)
+Micro itération 3 (nombre de contraintes 10)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -152,7 +153,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :     671.4525
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 87 (taille de la matrice : 87)
+Nb termes dans la matrice : 79 (taille de la matrice : 79)
 Pas de contraintes
 
 ---------------------
@@ -177,7 +178,7 @@ Micro itération 1 (nombre de contraintes 1)
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 3 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 7)
+Micro itération 2 (nombre de contraintes 6)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -193,9 +194,9 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 1
-Nb termes dans la matrice : 58 (taille de la matrice : 58)
+Nb termes dans la matrice : 50 (taille de la matrice : 50)
 Ajout de 4 contraintes dans le probleme
-Micro itération 3 (nombre de contraintes 11)
+Micro itération 3 (nombre de contraintes 10)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -211,7 +212,7 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :    4004.1024
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 87 (taille de la matrice : 87)
+Nb termes dans la matrice : 79 (taille de la matrice : 79)
 Pas de contraintes
 
 ---------------------
@@ -236,7 +237,7 @@ Micro itération 1 (nombre de contraintes 1)
 Des contraintes ont été détectées : 1
 Nb termes dans la matrice : 14 (taille de la matrice : 14)
 Ajout de 3 contraintes dans le probleme
-Micro itération 2 (nombre de contraintes 7)
+Micro itération 2 (nombre de contraintes 6)
 -------------------- : 
 
 Appel du solveur linéaire en nombre entier
@@ -252,5 +253,5 @@ Cout des écarts de transit     :       0.0000
 Valeur de la fonction objectif :       0.0000
 
 Des contraintes ont été détectées : 0
-Nb termes dans la matrice : 58 (taille de la matrice : 58)
+Nb termes dans la matrice : 50 (taille de la matrice : 50)
 Pas de contraintes
