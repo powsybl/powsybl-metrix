@@ -91,6 +91,7 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | LIMCURGR     | I    | 1      | Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1)                                                                                                             |
 | ADEQUAOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0)                                                                              |
 | REDISPOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0)                                                                      |
+| NULLCOST     | R    | 1      | Coût minimal des groupes et du délestage, appliqué après ajout de l’offset de la phase<br>= generatorMinCost(0.5)                                                               |
 
 (io-results-options)=
 ### Options de résultats
@@ -243,6 +244,10 @@ N.B. : Les types de données sont définis par une lettre comme suit <a id="type
 | SECTTYPE     | I    | $\sum nb_{<i>}$ | Table des types de quadripôles (liste des nb1 types de la section 1, liste des nb2 types de la section 2, …)                                                                     |
 | SECTNUMQ     | I    | $\sum nb_{<i>}$ | Table des numéros dans la liste de quadripôles ou dans la liste des liaisons à courant continu (liste des nb1 numéros de la section 1, liste des nb2 numéros de la section 2, …) |
 | SECTCOEF     | R    | $\sum nb_{<i>}$ | Table des coefficients associés aux quadripôles (liste des nb1 coefficients de la section 1, liste des nb2 coefficients de la section 2, …)                                      |
+
+*Note : le seuil `SECTMAXN` ne s'applique que lorsque la somme pondérée des transits de la section est positive.
+Le sens inverse n'est pas contraint ; pour borner les deux sens, déclarer une seconde section de coefficients
+opposés, de même seuil et de nom différent.*
 
 (io-coupled-variables)=
 ### Variables couplées
@@ -517,7 +522,7 @@ diffère de la consigne préventive sont affichés
 
 -----------------------------
 (io-table_r3)=
-**Tableau R3** : transits en N par quadripôle
+**Tableau R3** : transits en N par quadripôle et par section surveillée
 
 *Format* : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```
 
@@ -527,6 +532,9 @@ diffère de la consigne préventive sont affichés
 | Transit N          | R    | MW    | Positif de départ vers arrivée |
 
 *Note : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator, les quatre seuils sont également affichés.*
+
+*Note : une section surveillée est restituée sous son nom, avec la somme pondérée des transits de ses ouvrages.
+Les colonnes seuil N-k et seuil ITAM valent 99999 (non défini), une section n'étant surveillée qu'en N.*
 
 -----------------------------
 (io-table_r3b)=
