@@ -11,13 +11,13 @@
 #ifndef CALCUL_METRIX
 #define CALCUL_METRIX
 
+#include "compute/isolver.h"
 #include "err/error.h"
 #include "margin_variations_compute.h"
 #include "pne.h"
 #include "prototypes.h"
 #include "reseau.h"
 #include "variante.h"
-#include <compute/solver.h>
 
 #include <boost/optional.hpp>
 
@@ -136,7 +136,11 @@ bool compareGroupeBaisse(const std::shared_ptr<Groupe>& grp1, const std::shared_
 class Calculer
 {
 public:
-    enum TypeDeSolveur { UTILISATION_PNE_SOLVEUR = 1, UTILISATION_SIMPLEXE = 2 };
+    enum TypeDeSolveur {
+        UTILISATION_PNE_SOLVEUR = 1,
+        UTILISATION_SIMPLEXE = 2,
+        UTILISATION_PC_SIMPLEXE = 3
+    };
 
     enum TypeCoupes {
         COUPE_SURETE_N = 1,
@@ -187,6 +191,7 @@ public:
     vector<double>
         pbCoutLineaireSansOffset_; // sert uniquement pour l'affichage des couts finaux curatifs production et conso. On
                                    // ne remplit donc le vecteur que sur les variables gen_cur et conso_cur
+    vector<double> pbCoutLineaireConsosSansPerturbation_; // couts consos avant PRTBCOST, restaures en phase AR
     vector<char> pbSens_;          // defini dans pne ou spx
     vector<double> pbSecondMembre_;                          // defini dans pne ou spx
     vector<int> pbIndicesDebutDeLigne_;                      // defini dans pne ou spx
@@ -197,7 +202,8 @@ public:
     vector<double> coefs_; // vecteur utilise pour le calcul des coefficients
 
     // specifique au simplexe
-    compute::Solver solver_;
+    std::shared_ptr<compute::ISolver> solver_pne_;
+    std::shared_ptr<compute::ISolver> pc_solver_;
 
     vector<int> pbPositionDeLaVariable_; // defini dans pne ou spx
     // vector<int> pbPositionDeLaVariableVariante0_   ; //defini dans pne ou spx
@@ -266,6 +272,9 @@ public:
     static double round(double x, double prec); // utiliser pour arrondir les calculs
     Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees);
     int PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante);
+    // branches de resolution appelees par PneSolveur
+    int resoudrePNE(const std::shared_ptr<Variante>& varianteCourante);
+    int resoudreSimplexe(TypeDeSolveur typeSolveur, const std::shared_ptr<Variante>& varianteCourante);
     void comput_ParticipationGrp(const std::shared_ptr<Incident>& icdt) const;
     void fixerVariablesEntieres(); // Fixe les variables entieres pour lancement avec SPX
 
