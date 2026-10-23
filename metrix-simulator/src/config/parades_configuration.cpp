@@ -69,16 +69,13 @@ ParadesConfiguration::ParadesConfiguration(const std::string& pathname)
             if (sub_line.find('|') != std::string::npos) {
                 std::istringstream parser(sub_line);
                 getline(parser, sub_line, '|');
+                rtrim(sub_line);
 
                 std::string constraint;
-                while (sub_line.find('|') != std::string::npos) {
-                    getline(parser, constraint, '|');
+                while (getline(parser, constraint, '|')) {
                     rtrim(constraint);
                     new_parade.constraints.insert(constraint);
                 }
-                getline(parser, constraint);
-                rtrim(constraint);
-                new_parade.constraints.insert(constraint);
             }
             new_parade.incident_name = sub_line;
 

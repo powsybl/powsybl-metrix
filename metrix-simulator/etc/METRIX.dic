@@ -197,6 +197,7 @@ ERRCouplageBoucle							Le quadripole '$1' mentionné dans une parade forme une 
 ERRCurTopoContrainteInconnue                La contrainte '$1' ne correspond pas à un élément à surveiller.
 WarnElementDansIncident                     L'element '$1' mentionne dans une parade fait partie de l'incident '$2'
 WarnElementDejaDansParade                   Element '$1' mentionne en double dans une parade de l'incident '$2'
+WarnParadeRestrictionMultiple               La parade '$1' de l'incident '$2' est restreinte à plusieurs contraintes, ce qui n'est pas supporté : la restriction est ignorée
 
 //---------------- Variables liées ---------------------
 ERRConsoNulle								Erreur : consommation nulle au noeud '$1' utilise dans le regroupement '$2'
