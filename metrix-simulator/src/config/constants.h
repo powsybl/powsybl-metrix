@@ -11,6 +11,7 @@
 #pragma once
 
 #include <cmath>
+#include <string>
 
 // Traces PNE/SPX
 #define TRACES_PNE NON_PNE   /*NON_PNE*/
@@ -23,6 +24,7 @@ namespace config
  */
 namespace constants
 {
+
 #ifdef M_PI
 constexpr double pi = M_PI;
 #else

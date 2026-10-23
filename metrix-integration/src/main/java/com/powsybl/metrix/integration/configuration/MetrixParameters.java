@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.ImmutableMap;
 import com.powsybl.commons.config.PlatformConfig;
 import com.powsybl.metrix.integration.type.MetrixComputationType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -21,6 +23,7 @@ import java.util.OptionalInt;
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
  */
 public class MetrixParameters {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MetrixParameters.class);
 
     private static final MetrixComputationType DEFAULT_COMPUTATION_TYPE = MetrixComputationType.LF;
     private static final float DEFAULT_LOSS_FACTOR = 0f;
@@ -28,7 +31,8 @@ public class MetrixParameters {
 
     public static MetrixParameters load() {
         MetrixParameters parameters = new MetrixParameters();
-        PlatformConfig.defaultConfig().getOptionalModuleConfig("metrix-default-parameters")
+        PlatformConfig platformConfig = PlatformConfig.defaultConfig();
+        platformConfig.getOptionalModuleConfig("metrix-default-parameters")
                 .ifPresent(config -> {
                     parameters.setComputationType(config.getOptionalEnumProperty("computation-type", MetrixComputationType.class)
                             .orElseGet(() -> config.getEnumProperty("computationType", MetrixComputationType.class, DEFAULT_COMPUTATION_TYPE)));
@@ -37,6 +41,12 @@ public class MetrixParameters {
                     parameters.setNominalU(config.getOptionalIntProperty("nominal-u")
                             .orElseGet(() -> config.getIntProperty("nominalU", DEFAULT_NOMINAL_U)));
                 });
+        platformConfig.getOptionalModuleConfig("metrix")
+            .ifPresent(moduleConfig -> {
+                moduleConfig.getOptionalIntProperty("solver-choice").ifPresent(parameters::setSolverChoice);
+                moduleConfig.getOptionalIntProperty("pc-solver-choice").ifPresent(parameters::setPcSolverChoice);
+                moduleConfig.getOptionalStringProperty("specific-solver-params").ifPresent(parameters::setSpecificSolverParams);
+            });
         return parameters;
     }
 
@@ -58,6 +68,9 @@ public class MetrixParameters {
     private Integer redispatchingCostOffset = null;
     private Integer adequacyCostOffset = null;
     private Integer curativeRedispatchingLimit = null;
+    private Integer solverChoice = null;
+    private Integer pcSolverChoice = null;
+    private String specificSolverParams = null;
     private Boolean showAllTDandHVDCresults = null;
     private boolean propagateBranchTripping = false;
     private Boolean withGridCost = null;
@@ -144,6 +157,21 @@ public class MetrixParameters {
     @JsonGetter
     private Integer getCurativeRedispatchingLimit() {
         return curativeRedispatchingLimit;
+    }
+
+    @JsonGetter
+    private Integer getSolverChoice() {
+        return solverChoice;
+    }
+
+    @JsonGetter
+    private Integer getPcSolverChoice() {
+        return pcSolverChoice;
+    }
+
+    @JsonGetter
+    private String getSpecificSolverParams() {
+        return specificSolverParams;
     }
 
     @JsonGetter
@@ -613,6 +641,40 @@ public class MetrixParameters {
         return this;
     }
 
+    // Solver choice
+    @JsonIgnore
+    public OptionalInt getOptionalSolverChoice() {
+        return solverChoice == null ? OptionalInt.empty() : OptionalInt.of(solverChoice);
+    }
+
+    public MetrixParameters setSolverChoice(Integer solverChoice) {
+        LOGGER.warn("MSA new setSolverChoice {}", solverChoice);
+        this.solverChoice = solverChoice;
+        return this;
+    }
+
+    // PC Solver choice
+    @JsonIgnore
+    public OptionalInt getOptionalPcSolverChoice() {
+        return pcSolverChoice == null ? OptionalInt.empty() : OptionalInt.of(pcSolverChoice);
+    }
+
+    public MetrixParameters setPcSolverChoice(Integer pcSolverChoice) {
+        this.pcSolverChoice = pcSolverChoice;
+        return this;
+    }
+
+    // specificSolverParams
+    @JsonIgnore
+    public Optional<String> getOptionalSpecificSolverParams() {
+        return Optional.ofNullable(specificSolverParams);
+    }
+
+    public MetrixParameters setSpecificSolverParams(String specificSolverParams) {
+        this.specificSolverParams = specificSolverParams;
+        return this;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(withGridCost,
@@ -646,7 +708,10 @@ public class MetrixParameters {
                     nbThreatResults,
                     redispatchingCostOffset,
                     adequacyCostOffset,
-                    curativeRedispatchingLimit);
+                    curativeRedispatchingLimit,
+                    solverChoice,
+                    pcSolverChoice,
+                    specificSolverParams);
     }
 
     @Override
@@ -683,7 +748,10 @@ public class MetrixParameters {
                     Objects.equals(nbThreatResults, other.nbThreatResults) &&
                     Objects.equals(redispatchingCostOffset, other.redispatchingCostOffset) &&
                     Objects.equals(adequacyCostOffset, other.adequacyCostOffset) &&
-                    Objects.equals(curativeRedispatchingLimit, other.curativeRedispatchingLimit);
+                    Objects.equals(curativeRedispatchingLimit, other.curativeRedispatchingLimit) &&
+                    Objects.equals(solverChoice, other.solverChoice) &&
+                    Objects.equals(pcSolverChoice, other.pcSolverChoice) &&
+                    Objects.equals(specificSolverParams, other.specificSolverParams);
         }
         return false;
     }
@@ -727,6 +795,9 @@ public class MetrixParameters {
         getOptionalRedispatchingCostOffset().ifPresent(value -> builder.put("redispatchingCostOffset", value));
         getOptionalAdequacyCostOffset().ifPresent(value -> builder.put("adequacyCostOffset", value));
         getOptionalCurativeRedispatchingLimit().ifPresent(value -> builder.put("curativeRedispatchingLimit", value));
+        getOptionalSolverChoice().ifPresent(value -> builder.put("solverChoice", value));
+        getOptionalPcSolverChoice().ifPresent(value -> builder.put("pcSolverChoice", value));
+        getOptionalSpecificSolverParams().ifPresent(value -> builder.put("specificSolverParams", value));
 
         return builder.build().toString();
     }

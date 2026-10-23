@@ -33,6 +33,8 @@ class MetrixParametersTest {
         assertFalse(p.getOptionalRedispatchingCostOffset().isPresent());
         assertFalse(p.getOptionalAdequacyCostOffset().isPresent());
         assertFalse(p.getOptionalCurativeRedispatchingLimit().isPresent());
+        assertFalse(p.getOptionalSolverChoice().isPresent());
+        assertFalse(p.getOptionalPcSolverChoice().isPresent());
     }
 
     private void checkOptionalParametersAreNotPresent(MetrixParameters p) {
@@ -56,6 +58,7 @@ class MetrixParametersTest {
         assertFalse(p.getOptionalGeneratorMinCost().isPresent());
         assertFalse(p.getOptionalContingenciesProbability().isPresent());
         assertFalse(p.isWithLostLoadDetailedResultsOnContingency().isPresent());
+        assertFalse(p.getOptionalSpecificSolverParams().isPresent());
     }
 
     @Test
@@ -113,7 +116,9 @@ class MetrixParametersTest {
             .setNbThreatResults(2)
             .setRedispatchingCostOffset(50)
             .setAdequacyCostOffset(4)
-            .setCurativeRedispatchingLimit(1500);
+            .setCurativeRedispatchingLimit(1500)
+            .setSolverChoice(5)
+            .setPcSolverChoice(6);
 
         assertTrue(p.getOptionalMaxSolverTime().isPresent());
         assertEquals(-1, p.getOptionalMaxSolverTime().getAsInt());
@@ -137,6 +142,10 @@ class MetrixParametersTest {
         assertEquals(4, p.getOptionalAdequacyCostOffset().getAsInt());
         assertTrue(p.getOptionalCurativeRedispatchingLimit().isPresent());
         assertEquals(1500, p.getOptionalCurativeRedispatchingLimit().getAsInt());
+        assertTrue(p.getOptionalSolverChoice().isPresent());
+        assertEquals(5, p.getOptionalSolverChoice().getAsInt());
+        assertTrue(p.getOptionalPcSolverChoice().isPresent());
+        assertEquals(6, p.getOptionalPcSolverChoice().getAsInt());
     }
 
     @Test
@@ -163,7 +172,8 @@ class MetrixParametersTest {
             .setCurativeLossOfLoadCost(1000f)
             .setCurativeLossOfGenerationCost(11000f)
             .setGeneratorMinCost(1.5f)
-            .setContingenciesProbability(0.001f);
+            .setContingenciesProbability(0.001f)
+            .setSpecificSolverParams("specificSolverParams");
 
         assertThat(p.isWithGridCost()).isPresent().contains(false);
         assertThat(p.isPreCurativeResults()).isPresent().contains(true);
@@ -186,6 +196,7 @@ class MetrixParametersTest {
         assertThat(p.getOptionalCurativeLossOfLoadCost()).isPresent().contains(1000f);
         assertThat(p.getOptionalCurativeLossOfGenerationCost()).isPresent().contains(11000f);
         assertThat(p.getOptionalContingenciesProbability()).isPresent().contains(0.001f);
+        assertThat(p.getOptionalSpecificSolverParams()).isPresent().contains("specificSolverParams");
     }
 
     @Test
@@ -227,7 +238,10 @@ class MetrixParametersTest {
             .setRedispatchingCostOffset(100)
             .setAdequacyCostOffset(20)
             .setCurativeRedispatchingLimit(12345)
-            .setWithLostLoadDetailedResultsOnContingency(true);
+            .setWithLostLoadDetailedResultsOnContingency(true)
+            .setSolverChoice(6)
+            .setPcSolverChoice(5)
+            .setSpecificSolverParams("specificSolverParams");
 
         expected = "{computationType=OPF, lossFactor=10.0, nominalU=2000, " +
             "withGridCost=true, " +
@@ -260,7 +274,11 @@ class MetrixParametersTest {
             "nbThreatResults=5, " +
             "redispatchingCostOffset=100, " +
             "adequacyCostOffset=20, " +
-            "curativeRedispatchingLimit=12345}";
+            "curativeRedispatchingLimit=12345, " +
+            "solverChoice=6, " +
+            "pcSolverChoice=5, " +
+            "specificSolverParams=specificSolverParams" +
+            "}";
         assertEquals(expected, p.toString());
     }
 }
