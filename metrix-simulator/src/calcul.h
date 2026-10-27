@@ -301,7 +301,6 @@ public:
     int modifJacobienneVar(
         const Quadripole::SetQuadripoleSortedByName& quads,
         bool applique); // Modifier la jacobienne lorsqu'il y a des indispo sur une variante ( et operation inverse)
-    MATRICE* factoriserJacobienne();
     int initJacobienne();
     int miseAJourSecondMembre(vector<double>& secondMembre,
                               vector<double>& secondMembreFixe); // A theta = "secondMembre"
