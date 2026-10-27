@@ -67,7 +67,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private final Map<String, TDoubleArrayList> pstValues = new HashMap<>();
 
     private final List<String> openBranchList = new ArrayList<>();
-    private final List<String> openGeneratorList = new ArrayList<>();
+    private final List<String> openGeneratorOrBatteryList = new ArrayList<>();
 
     private final Map<String, List<String>> metrixVariableIds = new HashMap<>();
     private final Map<String, TDoubleArrayList> metrixVariableValues = new HashMap<>();
@@ -212,7 +212,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         addLoadValues();
         try {
             boolean atLeastOneChange = writeVariant(variantNum, "QUADIN", openBranchList);
-            atLeastOneChange |= writeVariant(variantNum, "PRODIN", openGeneratorList);
+            atLeastOneChange |= writeVariant(variantNum, "PRODIN", openGeneratorOrBatteryList);
             atLeastOneChange |= writeVariant(variantNum, generatorOrBatteryIds, generatorOrBatteryValues);
             atLeastOneChange |= writeVariant(variantNum, hvdcLineIds, hvdcLineValues);
             atLeastOneChange |= writeVariant(variantNum, loadIds, loadValues);
@@ -233,7 +233,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         List.of(loadDetails, loadIds, loadValues, generatorOrBatteryIds, generatorOrBatteryValues, hvdcLineIds, hvdcLineValues, pstIds,
                 pstValues, metrixVariableIds, metrixVariableValues)
             .forEach(Map::clear);
-        List.of(openBranchList, openGeneratorList, contingencyIds).forEach(List::clear);
+        List.of(openBranchList, openGeneratorOrBatteryList, contingencyIds).forEach(List::clear);
         contingencyProbabilityValues.clear();
     }
 
@@ -248,7 +248,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             boolean isConnected = t.isConnected();
             isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
-                openGeneratorList.add(injection.getId());
+                openGeneratorOrBatteryList.add(injection.getId());
             }
         } else {
             if (variable == EquipmentVariable.TARGET_P) {
@@ -259,7 +259,8 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 isDifferent = isDifferent(value, getMaxP(injection));
             }
             if (isDifferent) {
-                addValue(injection.getId(), variable, value, generatorOrBatteryIds, generatorOrBatteryValues, MappableEquipmentType.GENERATOR);
+                MappableEquipmentType mappableEquipmentType = injection instanceof Generator ? MappableEquipmentType.GENERATOR : MappableEquipmentType.BATTERY;
+                addValue(injection.getId(), variable, value, generatorOrBatteryIds, generatorOrBatteryValues, mappableEquipmentType);
             }
         }
     }
