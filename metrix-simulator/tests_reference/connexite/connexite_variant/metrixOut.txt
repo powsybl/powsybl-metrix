@@ -35,6 +35,10 @@ Noeud bilan : 0 [FP.AND1_1]
 Traitement d'un paquet de 1 variante(s)
 ********************************************
 Noeud '2 [FS.BIS1_3]' est hors composante connexe principale (composante -1)
+Ligne ouverte 'FS.BIS1  FVALDI1  1' entre la composante connexe principale et le noeud '2 [FS.BIS1_3]'
+Ligne ouverte 'FS.BIS1  FVALDI1  2' entre la composante connexe principale et le noeud '2 [FS.BIS1_3]'
+Ligne ouverte 'FS.BIS1 FSSV.O1 1' entre la composante connexe principale et le noeud '2 [FS.BIS1_3]'
+Ligne ouverte 'FS.BIS1 FSSV.O1 2' entre la composante connexe principale et le noeud '2 [FS.BIS1_3]'
 Les indisponibilités de ligne de la variante 0 rompent la connexité
 
 ********************************************

@@ -745,6 +745,9 @@ private:
                      const std::vector<int>& numZones,
                      bool detailsNonConnexite); /*allows to determine the treatment to be done for the contingencies and
                                                    remedial actions responisble for a connectedness break */
+    void afficherLignesOuvertesVersCCPrincipale(const std::vector<int>& numZones,
+                                                int numZonePrincipale) const; /* N case: open lines between the main
+                                                                                 component and a node out of it */
     // For reproductible random between platforms
     static std::mt19937 random;
 };

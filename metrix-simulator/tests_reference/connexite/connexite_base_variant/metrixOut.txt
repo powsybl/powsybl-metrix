@@ -25,4 +25,5 @@ Pénalisation des HVDC dans la fonction coût = 0.1
 
 La ligne 'MUR  L61P.HA5' de la loi -1:QUADIN est introuvable
 Noeud '4176' est hors composante connexe principale (composante -1)
+Ligne ouverte 'QUAD_CYQ' entre la composante connexe principale et le noeud '4176'
 Not recoverable error: Les indisponibilités de ligne de la variante -1 rompent la connexité (file=reseau.cpp ,line=2787)
