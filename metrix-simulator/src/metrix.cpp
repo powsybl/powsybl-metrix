@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
             time(&lect);
 
             config::VariantConfiguration variant_config(input_config.filepathVariant());
-            
+
             // check first variante
             if (!variant_config.variante(input_config.firstVariant())) {
                 throw ErrorI(err::ioDico().msg("ERRPremiereVarIntrouvable", input_config.filepathVariant()));
@@ -136,11 +136,6 @@ int main(int argc, char* argv[])
                 res.updateBase(base->get());
             } else {
                 LOG(debug) << "No base change in variants";
-            }
-
-            // Double-check connexity in case the base variant broke connexite
-            if (!res.connexite()) {
-                LOG(warning) << "Base variant broke the connexity";
             }
 
             // Construction des variantes

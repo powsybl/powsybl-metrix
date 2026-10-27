@@ -157,6 +157,10 @@ std::tuple<bool, bool, std::vector<int>> Reseau::checkConnexite(bool choisiNoeud
     map<int, int>::const_iterator itNB;
     int nbZonesSynch = 0;
     if (choisiNoeudsBilan) {
+        for (const auto& pair : numNoeudBilanParZone_) {
+            noeuds_[pair.second]->bilan_ = false;
+        }
+        numNoeudBilanParZone_.clear();
         numNoeudBilanParZone_[nbZonesSynch] = 0;
         noeuds_[0]->bilan_ = true;
         lienNumConnexiteEtNumeroZones[numZones[0]] = nbZonesSynch;

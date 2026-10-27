@@ -685,8 +685,8 @@ public:
 
     int modifReseau(const std::shared_ptr<Variante>& var); /*modification du reseau (production, conso, etc) afin de
                                                     prendre en compte les variantes*/
-    int modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads); /*modification de la topologie du reseau
-                                                                           afin de prendre en compte les variantes*/
+    bool modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads); /*modification de la topologie du reseau
+                                                     afin de prendre en compte les variantes (faux si non connexe)*/
     int modifBilans(const std::shared_ptr<Variante>& var); /*modification des bilans regionaux de la variante en jouant
                                                            sur les productions*/
     int modifTauxDePertes(float ancienTx,
@@ -694,8 +694,10 @@ public:
     int resetReseau(const std::shared_ptr<Variante>& var,
                     bool toutesConsos); /*base variant restoration of the network (all modifications except unavailable
                                            quadripoles)*/
-    int resetReseauTopo(const Quadripole::SetQuadripoleSortedByName&
-                            quads); /*base variant topology restoration of the network (for all unavailable lines)*/
+    void resetReseauTopo(const Quadripole::SetQuadripoleSortedByName&
+                             quads); /*base variant topology restoration of the network (for all unavailable lines)*/
+    void retablirTopologie(const Quadripole::SetQuadripoleSortedByName&
+                               quads); /*base variant topology restoration of the unavailable lines and slack nodes*/
     void miseAjourPmax(double prodEnMoins);
 
     // Methods for connectedness analysis
