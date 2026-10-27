@@ -241,6 +241,15 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         return Math.abs(value1 - value2) > EPSILON;
     }
 
+    private static MappableEquipmentType getMappableEquipmentType(Injection<?> injection) {
+        if (injection instanceof Generator) {
+            return MappableEquipmentType.GENERATOR;
+        } else if (injection instanceof Battery) {
+            return MappableEquipmentType.BATTERY;
+        }
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
+    }
+
     void onGeneratorOrBatteryVariant(Injection<?> injection, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
         if (variable == EquipmentVariable.DISCONNECTED) {
@@ -259,8 +268,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 isDifferent = isDifferent(value, getMaxP(injection));
             }
             if (isDifferent) {
-                MappableEquipmentType mappableEquipmentType = injection instanceof Generator ? MappableEquipmentType.GENERATOR : MappableEquipmentType.BATTERY;
-                addValue(injection.getId(), variable, value, generatorOrBatteryIds, generatorOrBatteryValues, mappableEquipmentType);
+                addValue(injection.getId(), variable, value, generatorOrBatteryIds, generatorOrBatteryValues, getMappableEquipmentType(injection));
             }
         }
     }
