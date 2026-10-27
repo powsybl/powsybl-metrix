@@ -16,7 +16,7 @@ set(EXPECTED_TEST_DIR ${MAIN_TEST_DIR}_reference/${TEST_DIR_NAME})
 
 metrix_test("composante_non_connexe" 1)
 metrix_test("connexite_base_variant" 1)
-metrix_test("connexite_variant" 2)
+metrix_test("connexite_variant" 3)
 metrix_test("noeud_connexe_isole" 2)
 metrix_test("incidents_piquage" 1)
 metrix_test("incident_rompant_connexite" 4)

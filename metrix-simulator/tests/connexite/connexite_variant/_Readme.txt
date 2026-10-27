@@ -8,4 +8,4 @@
 # SPDX-License-Identifier: MPL-2.0
 #
 
-network is connex but variant 0 breaks it -> variant 0 ignored, variant 1 computed
+network is connex but variant 0 breaks it -> variant 0 ignored without results, variants 1 and 2 computed (variant 2 first)
