@@ -1151,9 +1151,15 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
         if (jacFactoriseeIt == jacIncidentsModifies_.end()) {
             LOG(debug) << "Factorisation de la jacobienne pour " << icdt->nom_;
             modifJacobienneInc(poche->incidentModifie_, true);
-            jacFactorisee = LU_Factorisation(&jac_);
-            jacIncidentsModifies_.insert(std::pair<ListeQuadsIncident, MATRICE*>(listeQuadsIncident, jacFactorisee));
+            jacFactorisee = factoriserJacobienne();
             modifJacobienneInc(poche->incidentModifie_, false);
+            if (jac_.ProblemeDeFactorisation != NON_LU) {
+                LOG_ALL(error) << "probleme lors de la factorisation de la jacobienne pour " << icdt->nom_
+                               << ": LU factorization code = " << jac_.ProblemeDeFactorisation;
+                LU_LibererMemoireLU(jacFactorisee);
+                return METRIX_PROBLEME;
+            }
+            jacIncidentsModifies_.insert(std::pair<ListeQuadsIncident, MATRICE*>(listeQuadsIncident, jacFactorisee));
         } else {
             jacFactorisee = jacFactoriseeIt->second;
         }
@@ -1375,6 +1381,11 @@ int Calculer::modifJacobienneVar(const Quadripole::SetQuadripoleSortedByName& qu
     return METRIX_PAS_PROBLEME;
 }
 
+MATRICE* Calculer::factoriserJacobienne()
+{
+    jac_.ProblemeDeFactorisation = NON_LU; // LU_Factorisation ne le positionne qu'en cas d'echec
+    return LU_Factorisation(&jac_);
+}
 
 // Nouvelle version avec detection des contraintes equivalentes
 int Calculer::ecrireCoupeTransit(const double& maxTprev,

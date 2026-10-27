@@ -202,7 +202,7 @@ int Calculer::resolutionProbleme()
     }
 
     // Factoriser la jacobienne c'est la meme pour tout le probleme
-    jacFactorisee_ = LU_Factorisation(&jac_);
+    jacFactorisee_ = factoriserJacobienne();
     if (jac_.ProblemeDeFactorisation != NON_LU) {
         LOG_ALL(error) << "probleme lors de la factorisation: LU factorization code = " << jac_.ProblemeDeFactorisation;
         return METRIX_PROBLEME;
