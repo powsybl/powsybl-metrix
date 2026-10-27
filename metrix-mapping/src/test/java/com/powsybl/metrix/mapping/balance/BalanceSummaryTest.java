@@ -193,7 +193,7 @@ class BalanceSummaryTest {
             .setEnsureIdUnicity(true)
             .setNode(6)
             .setTargetP(100.0)
-            .setTargetQ(20.0)
+            .setLocalTargetQ(20.0)
             .setMinP(-100.0)
             .setMaxP(200.0)
             .add();
