@@ -83,6 +83,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
         if (identifiable instanceof Injection) {
             return switch (identifiable) {
                 case Generator ignored -> variable == EquipmentVariable.TARGET_P;
+                case Battery ignored -> variable == EquipmentVariable.TARGET_P;
                 case Load ignored -> variable == EquipmentVariable.P0 || variable == EquipmentVariable.FIXED_ACTIVE_POWER || variable == EquipmentVariable.VARIABLE_ACTIVE_POWER;
                 case BoundaryLine ignored -> variable == EquipmentVariable.P0;
                 default -> false;
@@ -95,6 +96,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
         if (identifiable instanceof Injection<?> injection) {
             return switch (injection) {
                 case Generator generator -> generator.getTargetP();
+                case Battery battery -> battery.getTargetP();
                 case Load load -> getLoad(variable, load);
                 case BoundaryLine boundaryLine -> -boundaryLine.getP0();
                 default -> 0;
@@ -128,7 +130,7 @@ public class BalanceSummary extends DefaultTimeSeriesMapperObserver {
     }
 
     public static boolean isPositiveInjection(Identifiable<?> identifiable) {
-        return identifiable instanceof Generator;
+        return identifiable instanceof Generator || identifiable instanceof Battery;
     }
 
     @Override
