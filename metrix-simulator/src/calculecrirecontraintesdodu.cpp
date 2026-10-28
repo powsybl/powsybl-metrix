@@ -1131,6 +1131,25 @@ int Calculer::miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& 
     return METRIX_PAS_PROBLEME;
 }
 
+MATRICE* Calculer::factoriserJacobiennePochePerdue(const std::shared_ptr<Incident>& icdt)
+{
+    const auto& incidentModifie = icdt->pochePerdue_->incidentModifie_;
+
+    LOG(debug) << "Factorisation de la jacobienne pour " << icdt->nom_;
+    modifJacobienneInc(incidentModifie, true);
+    MATRICE* jacFactorisee = LU_Factorisation(&jac_);
+    modifJacobienneInc(incidentModifie, false);
+    if (jac_.ProblemeDeFactorisation != NON_LU) {
+        LOG_ALL(error) << "probleme lors de la factorisation de la jacobienne pour " << icdt->nom_
+                       << ": LU factorization code = " << jac_.ProblemeDeFactorisation;
+        if (jacFactorisee != nullptr) {
+            LU_LibererMemoireLU(jacFactorisee);
+        }
+        return nullptr;
+    }
+    return jacFactorisee;
+}
+
 int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& icdt,
                                                const std::vector<double>& secondMembreN,
                                                const std::vector<double>& secondMembreFixeN)
@@ -1149,16 +1168,8 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
     } else {
         auto jacFactoriseeIt = jacIncidentsModifies_.find(listeQuadsIncident);
         if (jacFactoriseeIt == jacIncidentsModifies_.end()) {
-            LOG(debug) << "Factorisation de la jacobienne pour " << icdt->nom_;
-            modifJacobienneInc(poche->incidentModifie_, true);
-            jacFactorisee = LU_Factorisation(&jac_);
-            modifJacobienneInc(poche->incidentModifie_, false);
-            if (jac_.ProblemeDeFactorisation != NON_LU) {
-                LOG_ALL(error) << "probleme lors de la factorisation de la jacobienne pour " << icdt->nom_
-                               << ": LU factorization code = " << jac_.ProblemeDeFactorisation;
-                if (jacFactorisee != nullptr) {
-                    LU_LibererMemoireLU(jacFactorisee);
-                }
+            jacFactorisee = factoriserJacobiennePochePerdue(icdt);
+            if (jacFactorisee == nullptr) {
                 return METRIX_PROBLEME;
             }
             jacIncidentsModifies_.insert(std::pair<ListeQuadsIncident, MATRICE*>(listeQuadsIncident, jacFactorisee));
