@@ -1,0 +1,579 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_UZE a une admittance tres grande (1444.0000000000)
+Attention: Le quadripole QUAD_YAP a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAQ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAR a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAS a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAT a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAU a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAV a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAW a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAX a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAY a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YAZ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBA a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBB a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBC a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBD a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBE a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBF a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBG a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_YBH a une admittance tres grande (100000.0000000000)
+Groupe GROUP_AWCT : Pobj (13.000000) est superieur a Pmax (12.000000): Pobj mis a Pmax.
+L'incident N-k numero 12 (QUAD_KQO) rompt la connexité, il est ignoré
+L'incident N-k numero 13 (QUAD_KQP) rompt la connexité, il est ignoré
+L'incident N-k numero 14 (QUAD_KQS) rompt la connexité, il est ignoré
+L'incident N-k numero 15 (QUAD_KRR) rompt la connexité, il est ignoré
+L'incident N-k numero 23 (QUAD_KSZ) rompt la connexité, il est ignoré
+L'incident N-k numero 24 (QUAD_KTA) rompt la connexité, il est ignoré
+L'incident N-k numero 25 (QUAD_KTB) rompt la connexité, il est ignoré
+L'incident N-k numero 27 (QUAD_KTN) rompt la connexité, il est ignoré
+L'incident N-k numero 31 (QUAD_KTR) rompt la connexité, il est ignoré
+L'incident N-k numero 32 (QUAD_KTS) rompt la connexité, il est ignoré
+L'incident N-k numero 33 (QUAD_KTT) rompt la connexité, il est ignoré
+L'incident N-k numero 34 (QUAD_KTX) rompt la connexité, il est ignoré
+L'incident N-k numero 40 (QUAD_KWT) rompt la connexité, il est ignoré
+L'incident N-k numero 42 (QUAD_KWV) rompt la connexité, il est ignoré
+L'incident N-k numero 43 (QUAD_KWW) rompt la connexité, il est ignoré
+L'incident N-k numero 44 (QUAD_KWX) rompt la connexité, il est ignoré
+L'incident N-k numero 46 (QUAD_KWZ) rompt la connexité, il est ignoré
+L'incident N-k numero 49 (QUAD_KXC) rompt la connexité, il est ignoré
+L'incident N-k numero 52 (QUAD_KXF) rompt la connexité, il est ignoré
+L'incident N-k numero 57 (QUAD_KYA) rompt la connexité, il est ignoré
+L'incident N-k numero 58 (QUAD_KYT) rompt la connexité, il est ignoré
+L'incident N-k numero 60 (QUAD_KYV) rompt la connexité, il est ignoré
+L'incident N-k numero 70 (QUAD_LCY) rompt la connexité, il est ignoré
+L'incident N-k numero 71 (QUAD_LCZ) rompt la connexité, il est ignoré
+L'incident N-k numero 72 (QUAD_LDA) rompt la connexité, il est ignoré
+L'incident N-k numero 73 (QUAD_LDB) rompt la connexité, il est ignoré
+L'incident N-k numero 74 (QUAD_LDC) rompt la connexité, il est ignoré
+L'incident N-k numero 76 (QUAD_LDE) rompt la connexité, il est ignoré
+L'incident N-k numero 83 (QUAD_LDL) rompt la connexité, il est ignoré
+L'incident N-k numero 87 (QUAD_VXG) rompt la connexité, il est ignoré
+L'incident N-k numero 88 (QUAD_VXJ) rompt la connexité, il est ignoré
+L'incident N-k numero 93 (QUAD_LDS) rompt la connexité, il est ignoré
+L'incident N-k numero 94 (QUAD_LEF) rompt la connexité, il est ignoré
+L'incident N-k numero 95 (QUAD_LEJ) rompt la connexité, il est ignoré
+L'incident N-k numero 96 (QUAD_LEK) rompt la connexité, il est ignoré
+L'incident N-k numero 97 (QUAD_LFW) rompt la connexité, il est ignoré
+L'incident N-k numero 100 (QUAD_LFZ) rompt la connexité, il est ignoré
+L'incident N-k numero 102 (QUAD_LGB) rompt la connexité, il est ignoré
+L'incident N-k numero 115 (QUAD_LHU) rompt la connexité, il est ignoré
+L'incident N-k numero 116 (QUAD_LJC) rompt la connexité, il est ignoré
+L'incident N-k numero 117 (QUAD_LJD) rompt la connexité, il est ignoré
+L'incident N-k numero 119 (QUAD_LKT) rompt la connexité, il est ignoré
+L'incident N-k numero 127 (QUAD_LMO) rompt la connexité, il est ignoré
+L'incident N-k numero 128 (QUAD_LMP) rompt la connexité, il est ignoré
+L'incident N-k numero 129 (QUAD_LOC) rompt la connexité, il est ignoré
+L'incident N-k numero 130 (QUAD_LOD) rompt la connexité, il est ignoré
+L'incident N-k numero 131 (QUAD_LOE) rompt la connexité, il est ignoré
+L'incident N-k numero 140 (QUAD_LSN) rompt la connexité, il est ignoré
+L'incident N-k numero 144 (QUAD_LVL) rompt la connexité, il est ignoré
+L'incident N-k numero 150 (QUAD_LVR) rompt la connexité, il est ignoré
+L'incident N-k numero 156 (QUAD_LVX) rompt la connexité, il est ignoré
+L'incident N-k numero 157 (QUAD_LVY) rompt la connexité, il est ignoré
+L'incident N-k numero 159 (QUAD_LXB) rompt la connexité, il est ignoré
+L'incident N-k numero 160 (QUAD_LXE) rompt la connexité, il est ignoré
+L'incident N-k numero 161 (QUAD_LXF) rompt la connexité, il est ignoré
+L'incident N-k numero 162 (QUAD_LXG) rompt la connexité, il est ignoré
+L'incident N-k numero 163 (QUAD_LXR) rompt la connexité, il est ignoré
+L'incident N-k numero 166 (QUAD_MBA) rompt la connexité, il est ignoré
+L'incident N-k numero 167 (QUAD_MCD) rompt la connexité, il est ignoré
+L'incident N-k numero 168 (QUAD_MCG) rompt la connexité, il est ignoré
+L'incident N-k numero 169 (QUAD_MDB) rompt la connexité, il est ignoré
+L'incident N-k numero 182 (QUAD_MIY) rompt la connexité, il est ignoré
+L'incident N-k numero 205 (QUAD_MOR) rompt la connexité, il est ignoré
+L'incident N-k numero 208 (QUAD_MQL) rompt la connexité, il est ignoré
+L'incident N-k numero 209 (QUAD_MTM) rompt la connexité, il est ignoré
+L'incident N-k numero 210 (QUAD_MTN) rompt la connexité, il est ignoré
+L'incident N-k numero 211 (QUAD_MTO) rompt la connexité, il est ignoré
+L'incident N-k numero 212 (QUAD_MTP) rompt la connexité, il est ignoré
+L'incident N-k numero 213 (QUAD_MTZ) rompt la connexité, il est ignoré
+L'incident N-k numero 214 (QUAD_MUA) rompt la connexité, il est ignoré
+L'incident N-k numero 215 (QUAD_MWD) rompt la connexité, il est ignoré
+L'incident N-k numero 223 (QUAD_MXZ) rompt la connexité, il est ignoré
+L'incident N-k numero 224 (QUAD_MYA) rompt la connexité, il est ignoré
+L'incident N-k numero 225 (QUAD_MYB) rompt la connexité, il est ignoré
+L'incident N-k numero 230 (QUAD_NBH) rompt la connexité, il est ignoré
+L'incident N-k numero 232 (QUAD_NBM) rompt la connexité, il est ignoré
+L'incident N-k numero 233 (QUAD_NBO) rompt la connexité, il est ignoré
+L'incident N-k numero 241 (QUAD_NCQ) rompt la connexité, il est ignoré
+L'incident N-k numero 243 (QUAD_NEE) rompt la connexité, il est ignoré
+L'incident N-k numero 248 (QUAD_NEM) rompt la connexité, il est ignoré
+L'incident N-k numero 249 (QUAD_NEQ) rompt la connexité, il est ignoré
+L'incident N-k numero 250 (QUAD_NFQ) rompt la connexité, il est ignoré
+L'incident N-k numero 251 (QUAD_NFS) rompt la connexité, il est ignoré
+L'incident N-k numero 254 (QUAD_NGT) rompt la connexité, il est ignoré
+L'incident N-k numero 257 (QUAD_NII) rompt la connexité, il est ignoré
+L'incident N-k numero 260 (QUAD_NJG) rompt la connexité, il est ignoré
+L'incident N-k numero 263 (QUAD_NKS) rompt la connexité, il est ignoré
+L'incident N-k numero 264 (QUAD_NKT) rompt la connexité, il est ignoré
+L'incident N-k numero 267 (QUAD_NLU) rompt la connexité, il est ignoré
+L'incident N-k numero 270 (QUAD_NMS) rompt la connexité, il est ignoré
+L'incident N-k numero 271 (QUAD_NMT) rompt la connexité, il est ignoré
+L'incident N-k numero 272 (QUAD_NMU) rompt la connexité, il est ignoré
+L'incident N-k numero 275 (QUAD_NNN) rompt la connexité, il est ignoré
+L'incident N-k numero 276 (QUAD_NNO) rompt la connexité, il est ignoré
+L'incident N-k numero 277 (QUAD_NNP) rompt la connexité, il est ignoré
+L'incident N-k numero 290 (QUAD_NPF) rompt la connexité, il est ignoré
+L'incident N-k numero 299 (QUAD_VOI) rompt la connexité, il est ignoré
+L'incident N-k numero 300 (QUAD_VOL) rompt la connexité, il est ignoré
+L'incident N-k numero 301 (QUAD_VOO) rompt la connexité, il est ignoré
+L'incident N-k numero 302 (QUAD_VOR) rompt la connexité, il est ignoré
+L'incident N-k numero 303 (QUAD_VOU) rompt la connexité, il est ignoré
+L'incident N-k numero 314 (QUAD_NVD) rompt la connexité, il est ignoré
+L'incident N-k numero 315 (QUAD_NVE) rompt la connexité, il est ignoré
+L'incident N-k numero 316 (QUAD_NVI) rompt la connexité, il est ignoré
+L'incident N-k numero 318 (QUAD_NVK) rompt la connexité, il est ignoré
+L'incident N-k numero 319 (QUAD_NVL) rompt la connexité, il est ignoré
+L'incident N-k numero 320 (QUAD_NVM) rompt la connexité, il est ignoré
+L'incident N-k numero 322 (QUAD_NVO) rompt la connexité, il est ignoré
+L'incident N-k numero 324 (QUAD_NVQ) rompt la connexité, il est ignoré
+L'incident N-k numero 325 (QUAD_NVR) rompt la connexité, il est ignoré
+L'incident N-k numero 326 (QUAD_NVS) rompt la connexité, il est ignoré
+L'incident N-k numero 333 (QUAD_NWZ) rompt la connexité, il est ignoré
+L'incident N-k numero 334 (QUAD_NXA) rompt la connexité, il est ignoré
+L'incident N-k numero 344 (QUAD_NYI) rompt la connexité, il est ignoré
+L'incident N-k numero 353 (QUAD_NYR) rompt la connexité, il est ignoré
+L'incident N-k numero 356 (QUAD_NYU) rompt la connexité, il est ignoré
+L'incident N-k numero 358 (QUAD_NYW) rompt la connexité, il est ignoré
+L'incident N-k numero 359 (QUAD_NYX) rompt la connexité, il est ignoré
+L'incident N-k numero 363 (QUAD_NZB) rompt la connexité, il est ignoré
+L'incident N-k numero 373 (QUAD_VZP) rompt la connexité, il est ignoré
+L'incident N-k numero 378 (QUAD_OAJ) rompt la connexité, il est ignoré
+L'incident N-k numero 380 (QUAD_OAL) rompt la connexité, il est ignoré
+L'incident N-k numero 384 (QUAD_OAP) rompt la connexité, il est ignoré
+L'incident N-k numero 396 (QUAD_VZW) rompt la connexité, il est ignoré
+L'incident N-k numero 402 (QUAD_ODN) rompt la connexité, il est ignoré
+L'incident N-k numero 407 (QUAD_ODT) rompt la connexité, il est ignoré
+L'incident N-k numero 408 (QUAD_ODU) rompt la connexité, il est ignoré
+L'incident N-k numero 409 (QUAD_OEQ) rompt la connexité, il est ignoré
+L'incident N-k numero 410 (QUAD_OIU) rompt la connexité, il est ignoré
+L'incident N-k numero 411 (QUAD_OIV) rompt la connexité, il est ignoré
+L'incident N-k numero 412 (QUAD_OIW) rompt la connexité, il est ignoré
+L'incident N-k numero 413 (QUAD_OIX) rompt la connexité, il est ignoré
+L'incident N-k numero 426 (QUAD_OLB) rompt la connexité, il est ignoré
+L'incident N-k numero 438 (QUAD_OMF) rompt la connexité, il est ignoré
+L'incident N-k numero 446 (QUAD_OMN) rompt la connexité, il est ignoré
+L'incident N-k numero 447 (QUAD_OMO) rompt la connexité, il est ignoré
+L'incident N-k numero 451 (QUAD_ONL) rompt la connexité, il est ignoré
+L'incident N-k numero 452 (QUAD_OOF) rompt la connexité, il est ignoré
+L'incident N-k numero 458 (QUAD_OOQ) rompt la connexité, il est ignoré
+L'incident N-k numero 460 (QUAD_OSA) rompt la connexité, il est ignoré
+L'incident N-k numero 461 (QUAD_OSB) rompt la connexité, il est ignoré
+L'incident N-k numero 463 (QUAD_OSD) rompt la connexité, il est ignoré
+L'incident N-k numero 464 (QUAD_OSH) rompt la connexité, il est ignoré
+L'incident N-k numero 465 (QUAD_OSQ) rompt la connexité, il est ignoré
+L'incident N-k numero 466 (QUAD_OSR) rompt la connexité, il est ignoré
+L'incident N-k numero 469 (QUAD_OSV) rompt la connexité, il est ignoré
+L'incident N-k numero 470 (QUAD_OTM) rompt la connexité, il est ignoré
+L'incident N-k numero 477 (QUAD_OYH) rompt la connexité, il est ignoré
+L'incident N-k numero 478 (QUAD_OYI) rompt la connexité, il est ignoré
+L'incident N-k numero 479 (QUAD_OYQ) rompt la connexité, il est ignoré
+L'incident N-k numero 483 (QUAD_OZF) rompt la connexité, il est ignoré
+L'incident N-k numero 496 (QUAD_PAB) rompt la connexité, il est ignoré
+L'incident N-k numero 501 (QUAD_PBI) rompt la connexité, il est ignoré
+L'incident N-k numero 503 (QUAD_PBQ) rompt la connexité, il est ignoré
+L'incident N-k numero 504 (QUAD_PBZ) rompt la connexité, il est ignoré
+L'incident N-k numero 505 (QUAD_PDY) rompt la connexité, il est ignoré
+L'incident N-k numero 506 (QUAD_PDZ) rompt la connexité, il est ignoré
+L'incident N-k numero 517 (QUAD_PII) rompt la connexité, il est ignoré
+L'incident N-k numero 519 (QUAD_PIL) rompt la connexité, il est ignoré
+L'incident N-k numero 529 (QUAD_PLN) rompt la connexité, il est ignoré
+L'incident N-k numero 530 (QUAD_PLO) rompt la connexité, il est ignoré
+L'incident N-k numero 535 (QUAD_PMS) rompt la connexité, il est ignoré
+L'incident N-k numero 537 (QUAD_PMU) rompt la connexité, il est ignoré
+L'incident N-k numero 539 (QUAD_PMW) rompt la connexité, il est ignoré
+L'incident N-k numero 549 (QUAD_PND) rompt la connexité, il est ignoré
+L'incident N-k numero 552 (QUAD_POB) rompt la connexité, il est ignoré
+L'incident N-k numero 556 (QUAD_POM) rompt la connexité, il est ignoré
+L'incident N-k numero 557 (QUAD_PON) rompt la connexité, il est ignoré
+L'incident N-k numero 561 (QUAD_PRJ) rompt la connexité, il est ignoré
+L'incident N-k numero 567 (QUAD_PSV) rompt la connexité, il est ignoré
+L'incident N-k numero 569 (QUAD_PSZ) rompt la connexité, il est ignoré
+L'incident N-k numero 570 (QUAD_PTA) rompt la connexité, il est ignoré
+L'incident N-k numero 571 (QUAD_PTC) rompt la connexité, il est ignoré
+L'incident N-k numero 572 (QUAD_PTK) rompt la connexité, il est ignoré
+L'incident N-k numero 573 (QUAD_PTS) rompt la connexité, il est ignoré
+L'incident N-k numero 576 (QUAD_PTV) rompt la connexité, il est ignoré
+L'incident N-k numero 580 (QUAD_PTZ) rompt la connexité, il est ignoré
+L'incident N-k numero 593 (QUAD_PUP) rompt la connexité, il est ignoré
+L'incident N-k numero 594 (QUAD_PUQ) rompt la connexité, il est ignoré
+L'incident N-k numero 596 (QUAD_PVD) rompt la connexité, il est ignoré
+L'incident N-k numero 598 (QUAD_PXM) rompt la connexité, il est ignoré
+L'incident N-k numero 599 (QUAD_PXN) rompt la connexité, il est ignoré
+L'incident N-k numero 600 (QUAD_PXO) rompt la connexité, il est ignoré
+L'incident N-k numero 601 (QUAD_PXP) rompt la connexité, il est ignoré
+L'incident N-k numero 602 (QUAD_PXT) rompt la connexité, il est ignoré
+L'incident N-k numero 603 (QUAD_PXU) rompt la connexité, il est ignoré
+L'incident N-k numero 614 (QUAD_PZA) rompt la connexité, il est ignoré
+L'incident N-k numero 615 (QUAD_PZS) rompt la connexité, il est ignoré
+L'incident N-k numero 616 (QUAD_PZT) rompt la connexité, il est ignoré
+L'incident N-k numero 617 (QUAD_PZW) rompt la connexité, il est ignoré
+L'incident N-k numero 630 (QUAD_QCX) rompt la connexité, il est ignoré
+L'incident N-k numero 631 (QUAD_QCY) rompt la connexité, il est ignoré
+L'incident N-k numero 633 (QUAD_QFE) rompt la connexité, il est ignoré
+L'incident N-k numero 641 (QUAD_QFL) rompt la connexité, il est ignoré
+L'incident N-k numero 642 (QUAD_QGI) rompt la connexité, il est ignoré
+L'incident N-k numero 648 (QUAD_QGO) rompt la connexité, il est ignoré
+L'incident N-k numero 649 (QUAD_VQE) rompt la connexité, il est ignoré
+L'incident N-k numero 650 (QUAD_VQD) rompt la connexité, il est ignoré
+L'incident N-k numero 651 (QUAD_VQC) rompt la connexité, il est ignoré
+L'incident N-k numero 657 (QUAD_QHM) rompt la connexité, il est ignoré
+L'incident N-k numero 658 (QUAD_QHN) rompt la connexité, il est ignoré
+L'incident N-k numero 659 (QUAD_QHO) rompt la connexité, il est ignoré
+L'incident N-k numero 660 (QUAD_QHQ) rompt la connexité, il est ignoré
+L'incident N-k numero 661 (QUAD_QHR) rompt la connexité, il est ignoré
+L'incident N-k numero 662 (QUAD_QIN) rompt la connexité, il est ignoré
+L'incident N-k numero 664 (QUAD_QJO) rompt la connexité, il est ignoré
+L'incident N-k numero 665 (QUAD_QJP) rompt la connexité, il est ignoré
+L'incident N-k numero 668 (QUAD_QMI) rompt la connexité, il est ignoré
+L'incident N-k numero 669 (QUAD_QOH) rompt la connexité, il est ignoré
+L'incident N-k numero 670 (QUAD_QOY) rompt la connexité, il est ignoré
+L'incident N-k numero 675 (QUAD_QSG) rompt la connexité, il est ignoré
+L'incident N-k numero 676 (QUAD_QSS) rompt la connexité, il est ignoré
+L'incident N-k numero 677 (QUAD_QST) rompt la connexité, il est ignoré
+L'incident N-k numero 681 (QUAD_QVT) rompt la connexité, il est ignoré
+L'incident N-k numero 682 (QUAD_QWG) rompt la connexité, il est ignoré
+L'incident N-k numero 683 (QUAD_QWH) rompt la connexité, il est ignoré
+L'incident N-k numero 684 (QUAD_QWJ) rompt la connexité, il est ignoré
+L'incident N-k numero 685 (QUAD_QWK) rompt la connexité, il est ignoré
+L'incident N-k numero 690 (QUAD_QWX) rompt la connexité, il est ignoré
+L'incident N-k numero 694 (QUAD_QXU) rompt la connexité, il est ignoré
+L'incident N-k numero 696 (QUAD_QXZ) rompt la connexité, il est ignoré
+L'incident N-k numero 697 (QUAD_QYA) rompt la connexité, il est ignoré
+L'incident N-k numero 698 (QUAD_QYB) rompt la connexité, il est ignoré
+L'incident N-k numero 699 (QUAD_QYC) rompt la connexité, il est ignoré
+L'incident N-k numero 704 (QUAD_QYH) rompt la connexité, il est ignoré
+L'incident N-k numero 705 (QUAD_QYI) rompt la connexité, il est ignoré
+L'incident N-k numero 708 (QUAD_QYL) rompt la connexité, il est ignoré
+L'incident N-k numero 710 (QUAD_WAB) rompt la connexité, il est ignoré
+L'incident N-k numero 711 (QUAD_WAE) rompt la connexité, il est ignoré
+L'incident N-k numero 717 (QUAD_QYN) rompt la connexité, il est ignoré
+L'incident N-k numero 718 (QUAD_QYP) rompt la connexité, il est ignoré
+L'incident N-k numero 721 (QUAD_QYZ) rompt la connexité, il est ignoré
+L'incident N-k numero 722 (QUAD_QZA) rompt la connexité, il est ignoré
+L'incident N-k numero 727 (QUAD_QZR) rompt la connexité, il est ignoré
+L'incident N-k numero 730 (QUAD_QZU) rompt la connexité, il est ignoré
+L'incident N-k numero 731 (QUAD_QZV) rompt la connexité, il est ignoré
+L'incident N-k numero 734 (QUAD_RCA) rompt la connexité, il est ignoré
+L'incident N-k numero 737 (QUAD_RDW) rompt la connexité, il est ignoré
+L'incident N-k numero 739 (QUAD_RFC) rompt la connexité, il est ignoré
+L'incident N-k numero 741 (QUAD_RGE) rompt la connexité, il est ignoré
+L'incident N-k numero 749 (QUAD_RKX) rompt la connexité, il est ignoré
+L'incident N-k numero 750 (QUAD_RMX) rompt la connexité, il est ignoré
+L'incident N-k numero 751 (QUAD_RMY) rompt la connexité, il est ignoré
+L'incident N-k numero 767 (QUAD_RSD) rompt la connexité, il est ignoré
+L'incident N-k numero 768 (QUAD_RSE) rompt la connexité, il est ignoré
+L'incident N-k numero 769 (QUAD_RSF) rompt la connexité, il est ignoré
+L'incident N-k numero 770 (QUAD_RSS) rompt la connexité, il est ignoré
+L'incident N-k numero 771 (QUAD_RST) rompt la connexité, il est ignoré
+L'incident N-k numero 775 (QUAD_RTD) rompt la connexité, il est ignoré
+L'incident N-k numero 786 (QUAD_RUW) rompt la connexité, il est ignoré
+L'incident N-k numero 792 (QUAD_RVC) rompt la connexité, il est ignoré
+L'incident N-k numero 793 (QUAD_RXN) rompt la connexité, il est ignoré
+L'incident N-k numero 794 (QUAD_RXO) rompt la connexité, il est ignoré
+L'incident N-k numero 795 (QUAD_SAI) rompt la connexité, il est ignoré
+L'incident N-k numero 796 (QUAD_SAJ) rompt la connexité, il est ignoré
+L'incident N-k numero 805 (QUAD_SCH) rompt la connexité, il est ignoré
+L'incident N-k numero 807 (QUAD_SCJ) rompt la connexité, il est ignoré
+L'incident N-k numero 808 (QUAD_SCO) rompt la connexité, il est ignoré
+L'incident N-k numero 812 (QUAD_SDK) rompt la connexité, il est ignoré
+L'incident N-k numero 813 (QUAD_SEC) rompt la connexité, il est ignoré
+L'incident N-k numero 820 (QUAD_SEN) rompt la connexité, il est ignoré
+L'incident N-k numero 821 (QUAD_SEO) rompt la connexité, il est ignoré
+L'incident N-k numero 822 (QUAD_SFR) rompt la connexité, il est ignoré
+L'incident N-k numero 823 (QUAD_SFU) rompt la connexité, il est ignoré
+L'incident N-k numero 826 (QUAD_SHP) rompt la connexité, il est ignoré
+L'incident N-k numero 827 (QUAD_SIF) rompt la connexité, il est ignoré
+L'incident N-k numero 828 (QUAD_SIG) rompt la connexité, il est ignoré
+L'incident N-k numero 829 (QUAD_SIH) rompt la connexité, il est ignoré
+L'incident N-k numero 830 (QUAD_SKE) rompt la connexité, il est ignoré
+L'incident N-k numero 831 (QUAD_SKO) rompt la connexité, il est ignoré
+L'incident N-k numero 832 (QUAD_SKP) rompt la connexité, il est ignoré
+L'incident N-k numero 839 (QUAD_SLC) rompt la connexité, il est ignoré
+L'incident N-k numero 840 (QUAD_SLD) rompt la connexité, il est ignoré
+L'incident N-k numero 842 (QUAD_SLX) rompt la connexité, il est ignoré
+L'incident N-k numero 851 (QUAD_SMZ) rompt la connexité, il est ignoré
+L'incident N-k numero 854 (QUAD_SNC) rompt la connexité, il est ignoré
+L'incident N-k numero 857 (QUAD_SNF) rompt la connexité, il est ignoré
+L'incident N-k numero 858 (QUAD_SNG) rompt la connexité, il est ignoré
+L'incident N-k numero 859 (QUAD_VRV) rompt la connexité, il est ignoré
+L'incident N-k numero 860 (QUAD_VRY) rompt la connexité, il est ignoré
+L'incident N-k numero 871 (QUAD_SQN) rompt la connexité, il est ignoré
+L'incident N-k numero 872 (QUAD_SQO) rompt la connexité, il est ignoré
+L'incident N-k numero 877 (QUAD_SQT) rompt la connexité, il est ignoré
+L'incident N-k numero 880 (QUAD_VYH) rompt la connexité, il est ignoré
+L'incident N-k numero 881 (QUAD_VYK) rompt la connexité, il est ignoré
+L'incident N-k numero 891 (QUAD_SRQ) rompt la connexité, il est ignoré
+L'incident N-k numero 895 (QUAD_SUR) rompt la connexité, il est ignoré
+L'incident N-k numero 896 (QUAD_SVI) rompt la connexité, il est ignoré
+L'incident N-k numero 900 (QUAD_SVW) rompt la connexité, il est ignoré
+L'incident N-k numero 901 (QUAD_SVX) rompt la connexité, il est ignoré
+L'incident N-k numero 902 (QUAD_SVY) rompt la connexité, il est ignoré
+L'incident N-k numero 903 (QUAD_SVZ) rompt la connexité, il est ignoré
+L'incident N-k numero 904 (QUAD_SXH) rompt la connexité, il est ignoré
+L'incident N-k numero 909 (QUAD_SYQ) rompt la connexité, il est ignoré
+L'incident N-k numero 910 (QUAD_SYS) rompt la connexité, il est ignoré
+L'incident N-k numero 911 (QUAD_SYT) rompt la connexité, il est ignoré
+L'incident N-k numero 912 (QUAD_SYU) rompt la connexité, il est ignoré
+L'incident N-k numero 914 (QUAD_SZB) rompt la connexité, il est ignoré
+L'incident N-k numero 918 (QUAD_SZF) rompt la connexité, il est ignoré
+L'incident N-k numero 929 (QUAD_TAQ) rompt la connexité, il est ignoré
+L'incident N-k numero 930 (QUAD_TAR) rompt la connexité, il est ignoré
+L'incident N-k numero 931 (QUAD_TBE) rompt la connexité, il est ignoré
+L'incident N-k numero 932 (QUAD_TBF) rompt la connexité, il est ignoré
+L'incident N-k numero 933 (QUAD_TBG) rompt la connexité, il est ignoré
+L'incident N-k numero 937 (QUAD_TBW) rompt la connexité, il est ignoré
+L'incident N-k numero 940 (QUAD_TCQ) rompt la connexité, il est ignoré
+L'incident N-k numero 941 (QUAD_TDM) rompt la connexité, il est ignoré
+L'incident N-k numero 942 (QUAD_TDS) rompt la connexité, il est ignoré
+L'incident N-k numero 943 (QUAD_TDT) rompt la connexité, il est ignoré
+L'incident N-k numero 949 (QUAD_TFK) rompt la connexité, il est ignoré
+L'incident N-k numero 953 (QUAD_TFU) rompt la connexité, il est ignoré
+L'incident N-k numero 954 (QUAD_TGP) rompt la connexité, il est ignoré
+L'incident N-k numero 960 (QUAD_TGV) rompt la connexité, il est ignoré
+L'incident N-k numero 974 (QUAD_VTJ) rompt la connexité, il est ignoré
+L'incident N-k numero 975 (QUAD_VTM) rompt la connexité, il est ignoré
+L'incident N-k numero 985 (QUAD_THW) rompt la connexité, il est ignoré
+L'incident N-k numero 986 (QUAD_THX) rompt la connexité, il est ignoré
+L'incident N-k numero 987 (QUAD_TIA) rompt la connexité, il est ignoré
+L'incident N-k numero 989 (QUAD_TIC) rompt la connexité, il est ignoré
+L'incident N-k numero 990 (QUAD_TID) rompt la connexité, il est ignoré
+L'incident N-k numero 991 (QUAD_TIE) rompt la connexité, il est ignoré
+L'incident N-k numero 999 (QUAD_TIJ) rompt la connexité, il est ignoré
+L'incident N-k numero 1003 (QUAD_TKE) rompt la connexité, il est ignoré
+L'incident N-k numero 1011 (QUAD_TLG) rompt la connexité, il est ignoré
+L'incident N-k numero 1012 (QUAD_TMS) rompt la connexité, il est ignoré
+L'incident N-k numero 1013 (QUAD_TMT) rompt la connexité, il est ignoré
+L'incident N-k numero 1016 (QUAD_TNZ) rompt la connexité, il est ignoré
+L'incident N-k numero 1017 (QUAD_TOA) rompt la connexité, il est ignoré
+L'incident N-k numero 1020 (QUAD_TOF) rompt la connexité, il est ignoré
+L'incident N-k numero 1025 (QUAD_TOW) rompt la connexité, il est ignoré
+L'incident N-k numero 1033 (QUAD_TSK) rompt la connexité, il est ignoré
+L'incident N-k numero 1034 (QUAD_TSL) rompt la connexité, il est ignoré
+L'incident N-k numero 1035 (QUAD_TSM) rompt la connexité, il est ignoré
+L'incident N-k numero 1036 (QUAD_TSN) rompt la connexité, il est ignoré
+L'incident N-k numero 1044 (QUAD_TSV) rompt la connexité, il est ignoré
+L'incident N-k numero 1045 (QUAD_TSW) rompt la connexité, il est ignoré
+L'incident N-k numero 1051 (QUAD_XLM) rompt la connexité, il est ignoré
+L'incident N-k numero 1055 (QUAD_TVH) rompt la connexité, il est ignoré
+L'incident N-k numero 1056 (QUAD_TWB) rompt la connexité, il est ignoré
+L'incident N-k numero 1057 (QUAD_TWC) rompt la connexité, il est ignoré
+L'incident N-k numero 1071 (QUAD_TYG) rompt la connexité, il est ignoré
+L'incident N-k numero 1072 (QUAD_TYJ) rompt la connexité, il est ignoré
+L'incident N-k numero 1076 (QUAD_TZB) rompt la connexité, il est ignoré
+L'incident N-k numero 1077 (QUAD_TZE) rompt la connexité, il est ignoré
+L'incident N-k numero 1080 (QUAD_TZX) rompt la connexité, il est ignoré
+L'incident N-k numero 1082 (QUAD_UAK) rompt la connexité, il est ignoré
+L'incident N-k numero 1083 (QUAD_UAW) rompt la connexité, il est ignoré
+L'incident N-k numero 1084 (QUAD_UAX) rompt la connexité, il est ignoré
+L'incident N-k numero 1085 (QUAD_UBS) rompt la connexité, il est ignoré
+L'incident N-k numero 1092 (QUAD_WAS) rompt la connexité, il est ignoré
+L'incident N-k numero 1104 (QUAD_UFS) rompt la connexité, il est ignoré
+L'incident N-k numero 1107 (QUAD_UFY) rompt la connexité, il est ignoré
+L'incident N-k numero 1115 (QUAD_UHS) rompt la connexité, il est ignoré
+L'incident N-k numero 1117 (QUAD_UHV) rompt la connexité, il est ignoré
+L'incident N-k numero 1121 (QUAD_UIU) rompt la connexité, il est ignoré
+L'incident N-k numero 1127 (QUAD_VUS) rompt la connexité, il est ignoré
+L'incident N-k numero 1131 (QUAD_UJK) rompt la connexité, il est ignoré
+L'incident N-k numero 1137 (QUAD_VUW) rompt la connexité, il est ignoré
+L'incident N-k numero 1138 (QUAD_VUZ) rompt la connexité, il est ignoré
+L'incident N-k numero 1143 (QUAD_XRC) rompt la connexité, il est ignoré
+L'incident N-k numero 1145 (QUAD_UKQ) rompt la connexité, il est ignoré
+L'incident N-k numero 1147 (QUAD_UNP) rompt la connexité, il est ignoré
+L'incident N-k numero 1148 (QUAD_UNQ) rompt la connexité, il est ignoré
+L'incident N-k numero 1149 (QUAD_UNR) rompt la connexité, il est ignoré
+L'incident N-k numero 1160 (QUAD_UQJ) rompt la connexité, il est ignoré
+L'incident N-k numero 1165 (QUAD_UUW) rompt la connexité, il est ignoré
+L'incident N-k numero 1166 (QUAD_UVP) rompt la connexité, il est ignoré
+L'incident N-k numero 1178 (QUAD_UYO) rompt la connexité, il est ignoré
+L'incident N-k numero 1191 (QUAD_UZE) rompt la connexité, il est ignoré
+L'incident N-k numero 1198 (QUAD_VAY) rompt la connexité, il est ignoré
+L'incident N-k numero 1199 (QUAD_XXQ) rompt la connexité, il est ignoré
+L'incident N-k numero 1200 (QUAD_VBD) rompt la connexité, il est ignoré
+L'incident N-k numero 1201 (QUAD_VBJ) rompt la connexité, il est ignoré
+L'incident N-k numero 1202 (QUAD_VBK) rompt la connexité, il est ignoré
+L'incident N-k numero 1203 (QUAD_VBL) rompt la connexité, il est ignoré
+L'incident N-k numero 1204 (QUAD_VBM) rompt la connexité, il est ignoré
+L'incident N-k numero 1212 (QUAD_VCU) rompt la connexité, il est ignoré
+L'incident N-k numero 1221 (QUAD_VDT) rompt la connexité, il est ignoré
+L'incident N-k numero 1222 (QUAD_VDY) rompt la connexité, il est ignoré
+L'incident N-k numero 1223 (QUAD_VED) rompt la connexité, il est ignoré
+L'incident N-k numero 1226 (QUAD_VFC) rompt la connexité, il est ignoré
+L'incident N-k numero 1229 (QUAD_VFF) rompt la connexité, il est ignoré
+L'incident N-k numero 1230 (QUAD_VFG) rompt la connexité, il est ignoré
+L'incident N-k numero 1232 (QUAD_VFI) rompt la connexité, il est ignoré
+L'incident N-k numero 1233 (QUAD_VFJ) rompt la connexité, il est ignoré
+L'incident N-k numero 1237 (QUAD_VWM) rompt la connexité, il est ignoré
+L'incident N-k numero 1238 (QUAD_VWP) rompt la connexité, il est ignoré
+L'incident N-k numero 1239 (QUAD_VWS) rompt la connexité, il est ignoré
+L'incident N-k numero 1240 (QUAD_VWV) rompt la connexité, il est ignoré
+L'incident N-k numero 1241 (QUAD_VWY) rompt la connexité, il est ignoré
+L'incident N-k numero 1255 (QUAD_VFT) rompt la connexité, il est ignoré
+L'incident N-k numero 1263 (QUAD_VYV) rompt la connexité, il est ignoré
+L'incident N-k numero 1264 (QUAD_VYY) rompt la connexité, il est ignoré
+L'incident N-k numero 1265 (QUAD_VZB) rompt la connexité, il est ignoré
+L'incident N-k numero 1274 (QUAD_VGW) rompt la connexité, il est ignoré
+L'incident N-k numero 1277 (QUAD_VXD) rompt la connexité, il est ignoré
+L'incident N-k numero 1280 (QUAD_VHI) rompt la connexité, il est ignoré
+L'incident N-k numero 1281 (QUAD_VHK) rompt la connexité, il est ignoré
+L'incident N-k numero 1282 (QUAD_VHT) rompt la connexité, il est ignoré
+L'incident N-k numero 1283 (QUAD_VHY) rompt la connexité, il est ignoré
+L'incident N-k numero 1284 (QUAD_VHZ) rompt la connexité, il est ignoré
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 884 (sur 1285)
+Nombre de regions       = 10
+Nombre total de noeuds  = 7049
+Nombre de consommations = 7010 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 9979 (dont 1239 surveillés en N et 1239 surveillés sur défaut)
+Nombre de groupes       = 23503 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 39 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 5 (dont 0 peuvent agir en curatif et 0 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+Le défaut QUAD_MDO mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut P.GASY711 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut P.GASY714 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut P.GASY715 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut P.GASY775 mentionné dans la liste des parades topologiques est absent du calcul
+La branche (ligne ou couplage) 'PUISEP3_PUISE   3POISS.1  DJ' mentionnée dans une parade est introuvable
+La branche (ligne ou couplage) 'PUISEP3_PUISE   3POISS.1  DJ' mentionnée dans une parade est introuvable
+Le défaut SAUS5Y712 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut SAUS5Y772 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEJUY711 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEVAY713 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEVAY715 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEVAY715 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEVAY773 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEVAY775 mentionné dans la liste des parades topologiques est absent du calcul
+Le défaut VLEVAY775 mentionné dans la liste des parades topologiques est absent du calcul
+ Nb total d'incidents + parades : 1427
+Mode de calcul : OPF
+Noeud bilan : 0 [CONSO_K]
+0 [CONSO_K](2) <-> 285 [CONSO_KJ](5) <-> 83 [CONSO_CP](2)
+                                     <-> 141 [CONSO_EV](2)
+                                     <-> 146 [CONSO_FA](2)
+                                     <-> 313 [CONSO_LL](6)
+               <-> 313 [CONSO_LL](6) <-> 83 [CONSO_CP](2)
+                                     <-> 285 [CONSO_KJ](5)
+                                     <-> 459 [CONSO_RB](4)
+                                     <-> 314 [CONSO_LM](4)
+
+
+********************************************
+Traitement d'un paquet de 2 variante(s)
+********************************************
+Attention: incident 620, l'ouvrage QUAD_QAV est deja deconnecte
+Attention: incident 652, l'ouvrage QUAD_QHG est deja deconnecte
+Attention: incident 889, l'ouvrage QUAD_SRH est deja deconnecte
+
+---------------------
+---------------------
+Variante numéro 0
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 114888.3443  MW
+Production démarrée                 = 117520.3357  MW
+Puissance à ajuster                 = -2631.9914  MW
+Puissance disponible à la hausse (hors Pimp) = 36675.5762  MW
+Puissance disponible à la baisse (hors Pimp) = -43316.4238  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_K]), bilan = 2631.9914 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 0 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  114888.3443 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :    1315.9957
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :    1315.9957
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 1537 (taille de la matrice : 1537)
+Pas de contraintes
+
+---------------------
+---------------------
+Variante numéro 455
+---------------------
+---------------------
+
+Demarrage des groupes par empilement économique :
+Consommation globale                = 117524.0077  MW
+Production démarrée                 = 117220.3357  MW
+Puissance à ajuster                 =   303.6719  MW
+Puissance disponible à la hausse (hors Pimp) = 36675.5762  MW
+Puissance disponible à la baisse (hors Pimp) = -43316.4238  MW
+Bilans par zones synchrones :
+Zone synchrone 0 (noeud bilan 0 [CONSO_K]), bilan = -303.6719 MW
+
+Utilisation du simplexe car une Pmin est différente de zéro
+Appel du simplexe
+Solution optimale trouvée pour la variante 455 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  117524.0077 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :     151.8360
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0000
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :     151.8360
+
+Prise en compte des couts avec reseau
+Micro itération 1 (nombre de contraintes 1)
+-------------------- : 
+
+Des contraintes ont été détectées : 78
+Nb termes dans la matrice : 1537 (taille de la matrice : 1537)
+Ajout de 104 contraintes dans le probleme
+Micro itération 2 (nombre de contraintes 128)
+-------------------- : 
+
+Appel du solveur linéaire en nombre entier
+Solution optimale trouvée pour la variante 455 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  117524.0077 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :  251132.9314
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  251132.9316
+
+Des contraintes ont été détectées : 0
+Nb termes dans la matrice : 58552 (taille de la matrice : 58552)
+Pas de contraintes
+Relance sans variables entieres pour le calcul de la base
+Appel du simplexe
+Solution optimale trouvée pour la variante 455 (code retour = 1)
+Résultats en volume (MW)
+Volume de production =  117524.0077 MW
+Volume de délestage  =       0.0000 MW
+Résultats sur les couts
+Cout associé aux groupes       :  251132.9314
+Cout associé au délestage      :       0.0000
+Cout de pénalisation TD & HVDC :       0.0002
+Cout des écarts de transit     :       0.0000
+Valeur de la fonction objectif :  251132.9316
+

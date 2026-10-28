@@ -271,6 +271,10 @@ public class MetrixInputData {
         parameters.isShowAllTDandHVDCresults().ifPresent(value -> die.setBoolean("SHTDHVDC", value));
         parameters.isWithLostLoadDetailedResultsOnContingency().ifPresent(value -> die.setBoolean("LOSTLOAD", value));
         parameters.getOptionalNbMaxLostLoadDetailedResults().ifPresent(value -> die.setInt("LOSTCMAX", value));
+        // Solver parameters
+        parameters.getOptionalSolverChoice().ifPresent(value -> die.setInt("SOLVERCH", value));
+        parameters.getOptionalPcSolverChoice().ifPresent(value -> die.setInt("PCSOLVER", value));
+        parameters.getOptionalSpecificSolverParams().ifPresent(value -> die.setString("SOLVPARA", value));
     }
 
     private record MetrixInputBranch(String[] cqnomqua, float[] cqadmita, float[] cqresist, int[] qasurvdi, int[] qasurnmk, int[] tnnorqua, int[] tnnexqua) {

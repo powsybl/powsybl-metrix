@@ -605,7 +605,10 @@ class MetrixDslDataLoaderTest {
             .setNbThreatResults(3)
             .setRedispatchingCostOffset(333)
             .setAdequacyCostOffset(44)
-            .setCurativeRedispatchingLimit(1111);
+            .setCurativeRedispatchingLimit(1111)
+            .setSolverChoice(6)
+            .setPcSolverChoice(5)
+            .setSpecificSolverParams("specificSolverParams");
 
         try (Writer writer = Files.newBufferedWriter(dslFile, StandardCharsets.UTF_8)) {
             writer.write(String.join(System.lineSeparator(),
@@ -645,6 +648,9 @@ class MetrixDslDataLoaderTest {
                     "    redispatchingCostOffset 333",
                     "    adequacyCostOffset 44",
                     "    curativeRedispatchingLimit 1111",
+                    "    solverChoice 6",
+                    "    pcSolverChoice 5",
+                    "    specificSolverParams 'specificSolverParams'",
                     "}"
             ));
         }
