@@ -30,6 +30,7 @@ INFOPmaxGrpHorsPimp							Puissance maximale disponible (hors Pimp) = $1 MW
 INFOIncidents								Informations sur les incidents definis pour le calcul
 INFOGeneralReseau							Informations générales sur le réseau :
 INFONoeudHorsCCPrincipale					Noeud '$1' est hors composante connexe principale (composante $2)
+INFOLigneOuverteVersCCPrincipale			Ligne ouverte '$1' entre la composante connexe principale et le noeud '$2'
 INFONbComposantesSynchrones					Nombre de composantes synchrones $1
 INFONbGroupesCouples                        Nombre de couplages de variables de type groupe : $1
 INFONbConsosCouplees                        Nombre de couplages de variables de type consommation : $1

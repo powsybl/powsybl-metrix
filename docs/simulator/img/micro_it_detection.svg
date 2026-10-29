@@ -1,0 +1,174 @@
+<svg width="100%" viewBox="0 0 680 1360" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="a2-t a2-d">
+    <defs>
+        <marker id="a2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </marker>
+    </defs>
+
+    <title id="a2-t">Logique détaillée de la détection de contraintes</title>
+    <desc id="a2-d">Phase 1 en réseau intact puis phase 2 par incident, avec quatre filtres successifs, ajout éventuel d'une contrainte fictive de poche, et tri final des contraintes détectées.</desc>
+
+    <text class="th" x="340" y="24" text-anchor="middle">detectionContraintes — logique détaillée</text>
+
+    <!-- ============== PHASE 1 : DÉTECTION EN N ============== -->
+    <rect class="dashed-zone" x="30" y="42" width="620" height="380" rx="16"/>
+    <text class="th" x="50" y="64">Phase 1 — Détection en N</text>
+    <text class="ts" x="50" y="82">Boucle sur elementsASurveillerN_</text>
+
+    <g class="fill-amber">
+        <rect x="50" y="98" width="260" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="116" text-anchor="middle" dominant-baseline="central">Écart déjà dans le problème ?</text>
+        <text class="ts" x="180" y="132" text-anchor="middle" dominant-baseline="central">(WITHOUT_REDISPATCH / WITH_OVERLOAD)</text>
+    </g>
+    <line x1="310" y1="120" x2="370" y2="120" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="390" y="116" text-anchor="start" style="fill: var(--diag-green)">Oui → skip</text>
+    <text class="ts" x="390" y="132" text-anchor="start" style="fill: var(--diag-green)">MAJ depassementEnN_</text>
+    <line x1="180" y1="142" x2="180" y2="170" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="186" y="160" text-anchor="start">Non ↓</text>
+
+    <g class="fill-teal">
+        <rect x="50" y="170" width="260" height="66" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="186" text-anchor="middle" dominant-baseline="central">Calcul transit en N</text>
+        <text class="ts" x="180" y="206" text-anchor="middle" dominant-baseline="central">Σ(coeff × transit) sur quads et HVDC</text>
+        <text class="ts" x="180" y="222" text-anchor="middle" dominant-baseline="central">→ stocke depassementEnN_</text>
+    </g>
+    <line x1="180" y1="236" x2="180" y2="250" class="arr" marker-end="url(#a2)"/>
+    <g class="fill-teal">
+        <rect x="50" y="250" width="260" height="52" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="268" text-anchor="middle" dominant-baseline="central">Dépassement ?</text>
+        <text class="ts" x="180" y="288" text-anchor="middle" dominant-baseline="central">depassementEnN_ > acceptable_diff</text>
+    </g>
+    <line x1="310" y1="276" x2="370" y2="276" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="390" y="280" text-anchor="start" style="fill: var(--diag-green)">Non → skip</text>
+    <line x1="180" y1="302" x2="180" y2="330" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-amber">
+        <rect x="50" y="330" width="260" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="180" y="348" text-anchor="middle" dominant-baseline="central">Action préventive possible ?</text>
+        <text class="ts" x="180" y="364" text-anchor="middle" dominant-baseline="central">(WITHOUT_REDISPATCH / WITH_OVERLOAD)</text>
+    </g>
+    <line x1="310" y1="352" x2="370" y2="352" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="380" y="348" text-anchor="start" style="fill: var(--diag-red)">Non → ignorée</text>
+    <text class="ts" x="380" y="364" text-anchor="start" style="fill: var(--diag-red)">ecarts_[N] = -1</text>
+    <line x1="180" y1="374" x2="180" y2="392" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-coral">
+        <rect x="80" y="392" width="200" height="28" rx="6" stroke-width="0.5"/>
+        <text class="th" x="180" y="406" text-anchor="middle" dominant-baseline="central">→ CONTRAINTE_N</text>
+    </g>
+
+    <!-- ============== PHASE 2 : DÉTECTION EN N-k ============== -->
+    <rect class="dashed-zone" x="30" y="442" width="620" height="760" rx="16"/>
+    <text class="th" x="50" y="464">Phase 2 — Détection en N-k</text>
+    <text class="ts" x="50" y="482">Boucle externe : incidents</text>
+
+    <g class="fill-gray">
+        <rect x="50" y="498" width="280" height="52" rx="8" stroke-width="0.5"/>
+        <text class="th" x="190" y="516" text-anchor="middle" dominant-baseline="central">Incident valide ?</text>
+        <text class="ts" x="190" y="536" text-anchor="middle" dominant-baseline="central">validité, parade activée, grp dispo</text>
+    </g>
+    <line x1="330" y1="524" x2="380" y2="524" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="400" y="524" text-anchor="start" style="fill: var(--diag-red)">Non → skip</text>
+    <line x1="190" y1="550" x2="190" y2="570" class="arr" marker-end="url(#a2)"/>
+
+    <rect class="dashed-inner" x="40" y="570" width="600" height="540" rx="12"/>
+    <text class="ts" x="55" y="588">Boucle interne : elementsASurveillerNk_</text>
+
+    <g class="fill-teal">
+        <rect x="55" y="602" width="260" height="52" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="620" text-anchor="middle" dominant-baseline="central">Transit sur incident</text>
+        <text class="ts" x="185" y="640" text-anchor="middle" dominant-baseline="central">Σ(coeff × transit) sur quads et HVDC</text>
+    </g>
+    <line x1="185" y1="654" x2="185" y2="674" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-purple">
+        <rect x="370" y="602" width="260" height="52" rx="8" stroke-width="0.5"/>
+        <text class="th" x="500" y="620" text-anchor="middle" dominant-baseline="central">Enregistrement menaces</text>
+        <text class="ts" x="500" y="640" text-anchor="middle" dominant-baseline="central">menacesMax_, menaceMaxAvantParade_</text>
+    </g>
+    <line x1="315" y1="628" x2="368" y2="628" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-amber">
+        <rect x="55" y="674" width="260" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="690" text-anchor="middle" dominant-baseline="central">Parades activées ET pas ITAM ?</text>
+        <text class="ts" x="185" y="708" text-anchor="middle" dominant-baseline="central">paradesActivees_ &amp;&amp; !useItam()</text>
+    </g>
+    <line x1="315" y1="696" x2="370" y2="696" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="380" y="690" text-anchor="start" style="fill: var(--diag-green)">Oui → skip</text>
+    <text class="ts" x="380" y="706" text-anchor="start" style="fill: var(--diag-green)">parade déjà choisie</text>
+    <line x1="185" y1="718" x2="185" y2="736" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-teal">
+        <rect x="55" y="736" width="260" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="752" text-anchor="middle" dominant-baseline="central">Calcul seuil + écart</text>
+        <text class="ts" x="185" y="770" text-anchor="middle" dominant-baseline="central">seuilMax/Min(icdt) selon état</text>
+    </g>
+    <line x1="185" y1="780" x2="185" y2="798" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-amber">
+        <rect x="55" y="798" width="260" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="814" text-anchor="middle" dominant-baseline="central">Filtre 1 : écart déjà entré ?</text>
+        <text class="ts" x="185" y="832" text-anchor="middle" dominant-baseline="central">(WITHOUT_REDISPATCH / WITH_OVERLOAD)</text>
+    </g>
+    <line x1="315" y1="814" x2="370" y2="814" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="380" y="814" text-anchor="start" style="fill: var(--diag-green)">Oui → skip</text>
+    <line x1="185" y1="842" x2="185" y2="860" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-amber">
+        <rect x="55" y="860" width="260" height="60" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="876" text-anchor="middle" dominant-baseline="central">Filtre 2 : action possible ?</text>
+        <text class="ts" x="185" y="894" text-anchor="middle" dominant-baseline="central">préventif / curatif / parade</text>
+        <text class="ts" x="185" y="910" text-anchor="middle" dominant-baseline="central">(WITHOUT_REDISPATCH / WITH_OVERLOAD)</text>
+    </g>
+    <line x1="315" y1="888" x2="370" y2="888" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="380" y="882" text-anchor="start" style="fill: var(--diag-red)">Non → ignorée</text>
+    <text class="ts" x="380" y="898" text-anchor="start" style="fill: var(--diag-red)">ecarts_[icdt] = -1</text>
+    <line x1="185" y1="920" x2="185" y2="938" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-amber">
+        <rect x="55" y="938" width="260" height="28" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="952" text-anchor="middle" dominant-baseline="central">Filtre 3 : écart > seuil de détection ?</text>
+    </g>
+    <line x1="315" y1="952" x2="370" y2="952" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="380" y="952" text-anchor="start" style="fill: var(--diag-green)">Non → skip</text>
+    <line x1="185" y1="966" x2="185" y2="984" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-amber">
+        <rect x="55" y="984" width="260" height="60" rx="8" stroke-width="0.5"/>
+        <text class="th" x="185" y="1000" text-anchor="middle" dominant-baseline="central">Filtre 4 : masquée par N ?</text>
+        <text class="ts" x="185" y="1018" text-anchor="middle" dominant-baseline="central">!quadFictif &amp;&amp; survMaxN_ == SURVEILLE</text>
+        <text class="ts" x="185" y="1034" text-anchor="middle" dominant-baseline="central">&amp;&amp; écart ≤ depassementEnN_</text>
+    </g>
+    <line x1="315" y1="1014" x2="370" y2="1014" class="arr" marker-end="url(#a2)"/>
+    <text class="ts" x="380" y="1000" text-anchor="start" style="fill: var(--diag-green)">Oui → redondante</text>
+    <text class="ts" x="380" y="1016" text-anchor="start" style="fill: var(--diag-green)">la N suffit (cas certain ;</text>
+    <text class="ts" x="380" y="1032" text-anchor="start" style="fill: var(--diag-green)">cas incertain arbitré à l'ajout)</text>
+    <line x1="185" y1="1044" x2="185" y2="1068" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-coral">
+        <rect x="60" y="1068" width="250" height="28" rx="6" stroke-width="0.5"/>
+        <text class="th" x="185" y="1082" text-anchor="middle" dominant-baseline="central">→ CONTRAINTE_N_MOINS_K</text>
+    </g>
+
+    <line x1="190" y1="1120" x2="190" y2="1144" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-purple">
+        <rect x="50" y="1144" width="590" height="52" rx="8" stroke-width="0.5"/>
+        <text class="th" x="345" y="1162" text-anchor="middle" dominant-baseline="central">Contrainte fictive poche (par incident)</text>
+        <text class="ts" x="345" y="1182" text-anchor="middle" dominant-baseline="central">Si pocheRécupérableEncuratif ET aucune contrainte trouvée ET parades pas activées</text>
+    </g>
+
+    <line x1="345" y1="1196" x2="345" y2="1226" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-gray">
+        <rect x="150" y="1226" width="380" height="56" rx="8" stroke-width="0.5"/>
+        <text class="th" x="340" y="1246" text-anchor="middle" dominant-baseline="central">Tri final (compareContraintes)</text>
+        <text class="ts" x="340" y="1266" text-anchor="middle" dominant-baseline="central">type croissant, puis écart décroissant</text>
+    </g>
+    <line x1="340" y1="1282" x2="340" y2="1308" class="arr" marker-end="url(#a2)"/>
+
+    <g class="fill-coral">
+        <rect x="150" y="1308" width="380" height="44" rx="8" stroke-width="0.5"/>
+        <text class="th" x="340" y="1330" text-anchor="middle" dominant-baseline="central">Sortie : nbCtr_ contraintes dans icdtQdt_[]</text>
+    </g>
+</svg>

@@ -64,6 +64,16 @@ public class MetrixVariantProviderMock implements MetrixVariantProvider {
         return g;
     }
 
+    private Battery createBattery(String id, double targetP) {
+        Battery b = mock(Battery.class);
+        when(b.getId()).thenReturn(id);
+        Terminal t = mock(Terminal.class);
+        when(b.getTerminal()).thenReturn(t);
+        when(t.isConnected()).thenReturn(true);
+        when(b.getTargetP()).thenReturn(targetP);
+        return b;
+    }
+
     final Map<String, LoadDetail> loadDetailMap = new HashMap<>();
 
     private Load createLoad(String id, double p0, String busId, LoadDetail detail) {
@@ -159,6 +169,7 @@ public class MetrixVariantProviderMock implements MetrixVariantProvider {
     @Override
     public void readVariants(Range<Integer> variantReadRange, MetrixVariantReader reader, Path workingDir) {
         Generator g1 = createGenerator("g1", 100f);
+        Battery b1 = createBattery("b1", 50f);
         Load l1 = createLoad("l1", 10f, "", null);
         Load l2 = createLoad("l2", 15f, "", null);
         Load l3 = createLoad("l3", 7f, "", null);
@@ -205,6 +216,12 @@ public class MetrixVariantProviderMock implements MetrixVariantProvider {
             reader.onEquipmentVariant(g1, EquipmentVariable.MIN_P, 111f + i);
             reader.onEquipmentVariant(g1, EquipmentVariable.MAX_P, 121f + i);
             reader.onEquipmentVariant(g1, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
+
+            // Battery
+            reader.onEquipmentVariant(b1, EquipmentVariable.TARGET_P, 50.01f + i);
+            reader.onEquipmentVariant(b1, EquipmentVariable.MIN_P, 51f + i);
+            reader.onEquipmentVariant(b1, EquipmentVariable.MAX_P, 52f + i);
+            reader.onEquipmentVariant(b1, EquipmentVariable.DISCONNECTED, (i + 1) % 2);
 
             // Load without LoadDetail
             reader.onEquipmentVariant(l1, EquipmentVariable.P0, 10f + i);
@@ -256,6 +273,11 @@ public class MetrixVariantProviderMock implements MetrixVariantProvider {
             reader.onEquipmentVariant(g1, MetrixVariable.OFF_GRID_COST_UP, 1121f + i);
             reader.onEquipmentVariant(g1, MetrixVariable.ON_GRID_COST_DOWN, 1131f + i);
             reader.onEquipmentVariant(g1, MetrixVariable.ON_GRID_COST_UP, 1141f + i);
+
+            reader.onEquipmentVariant(b1, MetrixVariable.OFF_GRID_COST_DOWN, 111f + i);
+            reader.onEquipmentVariant(b1, MetrixVariable.OFF_GRID_COST_UP, 121f + i);
+            reader.onEquipmentVariant(b1, MetrixVariable.ON_GRID_COST_DOWN, 131f + i);
+            reader.onEquipmentVariant(b1, MetrixVariable.ON_GRID_COST_UP, 141f + i);
 
             // Pst
             reader.onEquipmentVariant(pst1, EquipmentVariable.PHASE_TAP_POSITION, 17f + i);

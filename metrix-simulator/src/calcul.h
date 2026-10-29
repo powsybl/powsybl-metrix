@@ -307,6 +307,8 @@ public:
     int miseAJourSecondMembreSurIncident(const std::shared_ptr<Incident>& icdt,
                                          vector<double>& injectionsNodales,
                                          vector<double>& secondMembreFixe);
+    MATRICE* factoriserJacobiennePochePerdue(
+        const std::shared_ptr<Incident>& icdt); // nullptr en cas d'echec de la factorisation
     int miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& icdt,
                                          const vector<double>& secondMembreN,
                                          const vector<double>& secondMembreFixeN);

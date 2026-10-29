@@ -157,6 +157,10 @@ std::tuple<bool, bool, std::vector<int>> Reseau::checkConnexite(bool choisiNoeud
     map<int, int>::const_iterator itNB;
     int nbZonesSynch = 0;
     if (choisiNoeudsBilan) {
+        for (const auto& pair : numNoeudBilanParZone_) {
+            noeuds_[pair.second]->bilan_ = false;
+        }
+        numNoeudBilanParZone_.clear();
         numNoeudBilanParZone_[nbZonesSynch] = 0;
         noeuds_[0]->bilan_ = true;
         lienNumConnexiteEtNumeroZones[numZones[0]] = nbZonesSynch;
@@ -280,6 +284,9 @@ void Reseau::correctConnexite(bool was_connexe,
                     }
                 }
             }
+            if (!icdt) {
+                afficherLignesOuvertesVersCCPrincipale(numZones, numZonePrincipale);
+            }
 
             // 4. Management of contingencies and remedial actions of the zones that aren't in the main connected zone:
             // 4.a. we create the lost load object from the list of nodes that are out of main connected zone and that
@@ -398,6 +405,19 @@ bool Reseau::connexite(const std::shared_ptr<Incident>& icdt, bool choisiNoeudsB
     return resultat;
 }
 
+
+void Reseau::afficherLignesOuvertesVersCCPrincipale(const std::vector<int>& numZones, int numZonePrincipale) const
+{
+    for (const auto& quad_pair : quads_) {
+        const auto& quad = quad_pair.second;
+        bool orPrincipale = numZones[quad->tnnorqua()] == numZonePrincipale;
+        bool exPrincipale = numZones[quad->tnnexqua()] == numZonePrincipale;
+        if (quad->typeQuadripole_ == Quadripole::QUADRIPOLE_REEL && !quad->connecte() && orPrincipale != exPrincipale) {
+            const auto& noeud = orPrincipale ? quad->nexqua_ : quad->norqua_;
+            LOG_ALL(info) << err::ioDico().msg("INFOLigneOuverteVersCCPrincipale", quad->nom_, noeud->print());
+        }
+    }
+}
 
 /** Print the subnetwork starting from the node given by the depth */
 void Reseau::afficheSousReseau(unsigned int numNoeud, unsigned int prof)
