@@ -271,15 +271,20 @@ int Calculer::resolutionProbleme()
         LOG_ALL(info) << err::ioDico().msg("INFONouveauPaquetVariantes", c_fmt("%d", mapVar->second.size()));
         LOG_RES() << "********************************************";
 
-        if (!mapVar->first.empty()) {
-            // mise a jour de la topologie du reseau pour prendre en compte les modifications quadin
-            status = res_.modifReseauTopo(quads);
-
-            if (status != METRIX_PAS_PROBLEME) {
-                LOG_ALL(warning) << "probleme lors de la modification du reseau pour:";
-                afficherVariantesCle(variantesOrdonnees_, quads);
+        // mise a jour de la topologie du reseau pour prendre en compte les modifications quadin : la perte de noeuds en
+        // N n'etant pas traitee, les variantes dont les indisponibilites rompent la connexite sont ignorees
+        if (!quads.empty() && !res_.modifReseauTopo(quads)) {
+            res_.retablirTopologie(quads);
+            string numVariantes;
+            for (const auto& var : mapVar->second) {
+                numVariantes += (numVariantes.empty() ? "" : ", ") + std::to_string(var->num_);
+                metrix2Assess(var, vector<double>(), METRIX_VARIANTE_IGNOREE);
             }
+            LOG_ALL(error) << err::ioDico().msg("ERRIndispoLigneVarConnexite", numVariantes);
+            continue;
+        }
 
+        if (!mapVar->first.empty()) {
             // Modification de la jacobienne pour prendre en compte les modifications topologiques quadin
             status = modifJacobienneVar(quads, true);
             if (status != METRIX_PAS_PROBLEME) {
@@ -402,11 +407,7 @@ int Calculer::resolutionProbleme()
         // remise des lignes indisponibles du reseau dans son etat initial pour l'ensemble des variantes de même clé
         // IndispoLignes
         if (!quads.empty()) {
-            if (res_.resetReseauTopo(quads) != METRIX_PAS_PROBLEME) {
-                LOG_ALL(error) << "probleme lors de la modification des indisponibilités de lignes du reseau pour: ";
-                afficherVariantesCle(variantesOrdonnees_, quads);
-                return METRIX_PROBLEME;
-            }
+            res_.resetReseauTopo(quads);
 
             // 2-f On désapplique les modifications de la jacobienne pour l'ensemble des variantes de même clé
             // IndispoLignes

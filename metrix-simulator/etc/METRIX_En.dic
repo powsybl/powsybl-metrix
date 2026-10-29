@@ -30,6 +30,7 @@ INFOPmaxGrpHorsPimp							Maximal power available (without imposed power) = $1 M
 INFOIncidents								Information about contingencies in the problem
 INFOGeneralReseau							Global information on the network :
 INFONoeudHorsCCPrincipale					Bus '$1' is out the main component (component $2)
+INFOLigneOuverteVersCCPrincipale			Open line '$1' between the main component and bus '$2'
 INFONbComposantesSynchrones					Number of synchronous area : $1
 INFONbGroupesCouples                        Number of generator variables bindings : $1
 INFONbConsosCouplees                        Number of load variables bindings : $1

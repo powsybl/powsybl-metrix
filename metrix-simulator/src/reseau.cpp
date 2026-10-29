@@ -1664,7 +1664,7 @@ bool LigneCC::isEmulationAC() const
 // Reseau::interfaceDIE
 //--------------------
 
-int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
+bool Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 {
     // Indisponibilites de lignes (et verification de la connexite de la variante)
     //---------------------------------------------------------------------------------
@@ -1676,14 +1676,8 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
         calculerCoeffReport_ = true;
 
         // verification de la connexite du reseau + recalcul des noeuds bilan
-        for (const auto& pair : numNoeudBilanParZone_) {
-            noeuds_[pair.second]->bilan_ = false;
-        }
-        numNoeudBilanParZone_.clear();
-
         if (!connexite()) {
-            LOG_ALL(error) << err::ioDico().msg("ERRIndispoLigneVarConnexite", "N/A");
-            return METRIX_PROBLEME;
+            return false;
         }
 
         incidentsRompantConnexite_.clear();
@@ -1711,7 +1705,7 @@ int Reseau::modifReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 
         } // end loi d indispo ligne
     }
-    return METRIX_PAS_PROBLEME;
+    return true;
 }
 
 
@@ -2358,27 +2352,22 @@ int Reseau::resetReseau(const std::shared_ptr<Variante>& var, bool toutesConsos)
     return METRIX_PAS_PROBLEME;
 }
 
-int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
+void Reseau::retablirTopologie(const Quadripole::SetQuadripoleSortedByName& quads)
+{
+    for (const auto& ligne : quads) {
+        ligne->etatOr_ = ligne->etatOrBase_;
+        ligne->etatEx_ = ligne->etatExBase_;
+    }
+    calculerCoeffReport_ = true;
+
+    // on recalcule la connexite (assuree pour la topologie de base) dans le but de replacer les noeuds bilan
+    connexite();
+}
+
+void Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
 {
     if (!quads.empty()) {
-        // Application des indispos lignes
-        //----------------------------------------------
-        for (const auto& ligne : quads) {
-            ligne->etatOr_ = ligne->etatOrBase_;
-            ligne->etatEx_ = ligne->etatExBase_;
-        }
-        calculerCoeffReport_ = true;
-
-        // on recalcule la connexite surtout dans le but de replacer les noeuds bilan
-        std::map<int, int>::const_iterator itNb;
-        for (itNb = numNoeudBilanParZone_.cbegin(); itNb != numNoeudBilanParZone_.cend(); ++itNb) {
-            noeuds_[itNb->second]->bilan_ = false;
-        }
-        numNoeudBilanParZone_.clear();
-        if (!connexite()) {
-            LOG_ALL(error) << err::ioDico().msg("ERRReseauNonConnexe");
-            return METRIX_PROBLEME;
-        }
+        retablirTopologie(quads);
 
         // On remet la validite des incidents a jour
         for (const auto& inc : incidentsEtParades_) {
@@ -2399,7 +2388,6 @@ int Reseau::resetReseauTopo(const Quadripole::SetQuadripoleSortedByName& quads)
             connexite(elem, false, config::configuration().useIncRompantConnexite());
         }
     }
-    return METRIX_PAS_PROBLEME;
 }
 
 
@@ -2795,10 +2783,8 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
             }
 
         }
-        int status = modifReseauTopo(indispoLignesBase);
-
-        if (status != METRIX_PAS_PROBLEME) {
-            LOG_ALL(warning) << "probleme lors de la modification du reseau pour la variante de base";
+        if (!modifReseauTopo(indispoLignesBase)) {
+            throw ErrorI(err::ioDico().msg("ERRIndispoLigneVarConnexite", c_fmt("%d", config.num)));
         }
 
 }

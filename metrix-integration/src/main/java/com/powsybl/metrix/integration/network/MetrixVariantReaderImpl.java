@@ -33,6 +33,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.powsybl.metrix.integration.data.generator.MetrixInputData.getMaxP;
+import static com.powsybl.metrix.integration.data.generator.MetrixInputData.getMinP;
+import static com.powsybl.metrix.integration.data.generator.MetrixInputData.getTargetP;
 import static com.powsybl.metrix.integration.network.MetrixVariantsWriter.getMetrixKey;
 import static com.powsybl.metrix.integration.network.MetrixVariantsWriter.getMetrixVariableKey;
 import static com.powsybl.metrix.mapping.TimeSeriesMapper.DISCONNECTED_VALUE;
@@ -51,8 +54,8 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
 
     private final Map<Load, LoadDetail> loadDetails = new LinkedHashMap<>();
 
-    private final Map<String, List<String>> generatorIds = new HashMap<>();
-    private final Map<String, TDoubleArrayList> generatorValues = new HashMap<>();
+    private final Map<String, List<String>> generatorOrBatteryIds = new HashMap<>();
+    private final Map<String, TDoubleArrayList> generatorOrBatteryValues = new HashMap<>();
 
     private final Map<String, List<String>> hvdcLineIds = new HashMap<>();
     private final Map<String, TDoubleArrayList> hvdcLineValues = new HashMap<>();
@@ -64,7 +67,7 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
     private final Map<String, TDoubleArrayList> pstValues = new HashMap<>();
 
     private final List<String> openBranchList = new ArrayList<>();
-    private final List<String> openGeneratorList = new ArrayList<>();
+    private final List<String> openGeneratorOrBatteryList = new ArrayList<>();
 
     private final Map<String, List<String>> metrixVariableIds = new HashMap<>();
     private final Map<String, TDoubleArrayList> metrixVariableValues = new HashMap<>();
@@ -209,8 +212,8 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         addLoadValues();
         try {
             boolean atLeastOneChange = writeVariant(variantNum, "QUADIN", openBranchList);
-            atLeastOneChange |= writeVariant(variantNum, "PRODIN", openGeneratorList);
-            atLeastOneChange |= writeVariant(variantNum, generatorIds, generatorValues);
+            atLeastOneChange |= writeVariant(variantNum, "PRODIN", openGeneratorOrBatteryList);
+            atLeastOneChange |= writeVariant(variantNum, generatorOrBatteryIds, generatorOrBatteryValues);
             atLeastOneChange |= writeVariant(variantNum, hvdcLineIds, hvdcLineValues);
             atLeastOneChange |= writeVariant(variantNum, loadIds, loadValues);
             atLeastOneChange |= writeVariant(variantNum, pstIds, pstValues);
@@ -227,10 +230,10 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
             throw new UncheckedIOException(e);
         }
 
-        List.of(loadDetails, loadIds, loadValues, generatorIds, generatorValues, hvdcLineIds, hvdcLineValues, pstIds,
+        List.of(loadDetails, loadIds, loadValues, generatorOrBatteryIds, generatorOrBatteryValues, hvdcLineIds, hvdcLineValues, pstIds,
                 pstValues, metrixVariableIds, metrixVariableValues)
             .forEach(Map::clear);
-        List.of(openBranchList, openGeneratorList, contingencyIds).forEach(List::clear);
+        List.of(openBranchList, openGeneratorOrBatteryList, contingencyIds).forEach(List::clear);
         contingencyProbabilityValues.clear();
     }
 
@@ -238,25 +241,34 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
         return Math.abs(value1 - value2) > EPSILON;
     }
 
-    void onGeneratorVariant(Generator generator, EquipmentVariable variable, double value) {
+    private static MappableEquipmentType getMappableEquipmentType(Injection<?> injection) {
+        if (injection instanceof Generator) {
+            return MappableEquipmentType.GENERATOR;
+        } else if (injection instanceof Battery) {
+            return MappableEquipmentType.BATTERY;
+        }
+        throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
+    }
+
+    void onGeneratorOrBatteryVariant(Injection<?> injection, EquipmentVariable variable, double value) {
         boolean isDifferent = true;
         if (variable == EquipmentVariable.DISCONNECTED) {
-            Terminal t = generator.getTerminal();
+            Terminal t = injection.getTerminal();
             boolean isConnected = t.isConnected();
             isDifferent = Math.abs(value - DISCONNECTED_VALUE) < EPSILON && isConnected;
             if (isDifferent) {
-                openGeneratorList.add(generator.getId());
+                openGeneratorOrBatteryList.add(injection.getId());
             }
         } else {
             if (variable == EquipmentVariable.TARGET_P) {
-                isDifferent = isDifferent(value, generator.getTargetP());
+                isDifferent = isDifferent(value, getTargetP(injection));
             } else if (variable == EquipmentVariable.MIN_P) {
-                isDifferent = isDifferent(value, generator.getMinP());
+                isDifferent = isDifferent(value, getMinP(injection));
             } else if (variable == EquipmentVariable.MAX_P) {
-                isDifferent = isDifferent(value, generator.getMaxP());
+                isDifferent = isDifferent(value, getMaxP(injection));
             }
             if (isDifferent) {
-                addValue(generator.getId(), variable, value, generatorIds, generatorValues, MappableEquipmentType.GENERATOR);
+                addValue(injection.getId(), variable, value, generatorOrBatteryIds, generatorOrBatteryValues, getMappableEquipmentType(injection));
             }
         }
     }
@@ -360,8 +372,8 @@ public class MetrixVariantReaderImpl implements MetrixVariantReader {
                 onLoadVariant(load, equipmentVariable, value);
             } else if (identifiable instanceof HvdcLine hvdcLine) {
                 onHvdcVariant(hvdcLine, equipmentVariable, value);
-            } else if (identifiable instanceof Generator generator) {
-                onGeneratorVariant(generator, equipmentVariable, value);
+            } else if (identifiable instanceof Generator || identifiable instanceof Battery) {
+                onGeneratorOrBatteryVariant((Injection<?>) identifiable, equipmentVariable, value);
             } else if (identifiable instanceof TwoWindingsTransformer twoWindingsTransformer) {
                 onTransformerVariant(twoWindingsTransformer, equipmentVariable, value);
             } else if (identifiable instanceof Switch switchEquipment) {
