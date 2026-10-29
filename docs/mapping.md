@@ -62,7 +62,7 @@ Note that for the `mapToBreakers` function, the `variable` and `distributionKey`
 
 With the `timeSeriesName` variable you can map any time series by referring to its name. The available time series
 must exist in the input data set or be created within the Groovy script. For more details about time series management,
-refer to the [time series description](inv:powsyblcore:*:*#timeseries).
+refer to the [time series description](inv:powsybl-core:*:*#timeseries).
 
 Note that if the same time series (referred by its name) is used in multiple `mapToXXX` of same type, the mapping
 behavior will be as if it was applied once on the group of elements selected by these `mapToXXX` instructions.

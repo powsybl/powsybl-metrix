@@ -34,7 +34,7 @@ public class MetrixVariantsWriter {
 
     public static String getMetrixKey(EquipmentVariable variable, MappableEquipmentType equipmentType) {
         return switch (equipmentType) {
-            case GENERATOR -> getGeneratorKey(variable);
+            case GENERATOR, BATTERY -> getGeneratorOrBatteryKey(variable);
             case LOAD -> getLoadKey(variable);
             case HVDC_LINE -> getHvdcKey(variable);
             case PHASE_TAP_CHANGER -> getPhaseTapChangerKey(variable);
@@ -92,7 +92,7 @@ public class MetrixVariantsWriter {
         return null;
     }
 
-    private static String getGeneratorKey(EquipmentVariable variable) {
+    private static String getGeneratorOrBatteryKey(EquipmentVariable variable) {
         return switch (variable) {
             case TARGET_P -> "PRODIM";
             case MIN_P -> "TRPUIMIN";

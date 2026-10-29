@@ -220,20 +220,22 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         // C5 : bilan initiaux par zone synchrone (avant equilibrage)
         // ----------------------------------------------------------
-        // On les ecrit avant le status car il peuvent servir au debug
-        fprintf(fr, "C5 ;ZONE SYNC;NUM ZONE;BILAN;\n");
-        for (const auto& pair : res_.bilanParZone_) {
-            double value = (fabs(pair.second) < EPSILON_SORTIES) ? 0.0 : pair.second;
-            fprintf(fr, "C5 ;;%d;%.1f;\n", pair.first, value);
-        }
+        // On les ecrit avant le status car il peuvent servir au debug, sauf pour une variante ignoree (non calculee)
+        if (status != METRIX_VARIANTE_IGNOREE) {
+            fprintf(fr, "C5 ;ZONE SYNC;NUM ZONE;BILAN;\n");
+            for (const auto& pair : res_.bilanParZone_) {
+                double value = (fabs(pair.second) < EPSILON_SORTIES) ? 0.0 : pair.second;
+                fprintf(fr, "C5 ;;%d;%.1f;\n", pair.first, value);
+            }
 
-        // ecriture : C2.
-        //--------------
-        printCut(fr);
-        // writing : C2B
-        // detailed consumption losses
-        if (config::configuration().showLostLoadDetailed()) {
-            printCutDetailed(fr);
+            // ecriture : C2.
+            //--------------
+            printCut(fr);
+            // writing : C2B
+            // detailed consumption losses
+            if (config::configuration().showLostLoadDetailed()) {
+                printCutDetailed(fr);
+            }
         }
 
         // ecriture : C1. si probleme

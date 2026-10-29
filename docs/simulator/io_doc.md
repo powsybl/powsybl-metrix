@@ -276,7 +276,7 @@ Chaque ligne du fichier commence ensuite par le numéro du tirage suivi par le t
 Les données propres à la loi et au tirage sont écrites à la suite du mot-clé, à savoir :
 - >**PRODIN** : le nombre de groupes, puis les noms des groupes indisponibles.
 - >**PRODIM** : le nombre de groupes, puis autant de couples (indice de groupe, puissance de consigne) que le nombre de groupes indiqué.
-- >**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms des ouvrages indisponibles
+- >**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms des ouvrages indisponibles. Si ces indisponibilités rompent la connexité du réseau, la variante est ignorée (code 4), ou le calcul s’arrête en erreur pour la variante « -1 ».
 - >**TRVALPMD** : le nombre de groupes, puis autant de couples (indice de groupe, puissance maximale disponible) que le nombre de groupes indiqué.
 - >**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de groupe, puissance minimale disponible) que le nombre de groupes indiqué.
 - >**CONELE** : le nombre de consommations, puis autant de couples (nom de la consommation, nouvelle valeur de consommation) que le nombre de consommations indiqué. Il s’agit de consommations nodales. Convention Eurostag : 1 nœud = 1 conso
