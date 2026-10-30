@@ -289,14 +289,12 @@ void Calculer::ajoutRedispatchCostOffsetConsos()
     for (auto cIt = res_.consos_.cbegin(); cIt != res_.consos_.end(); ++cIt) {
         const auto& conso = cIt->second;
         if (conso->numVarConso_ >= 0) {
-            if (conso->valeur_ >= 0) {
-                pbCoutLineaire_[conso->numVarConso_] = std::max(conso->cout_ + config.redispatchCostOffset(), config.noiseCost());
-                pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
-            } else {
-                // consumption cost is negative so we use min instead of max to compare to cost noise
-                pbCoutLineaire_[conso->numVarConso_] = -(std::min(conso->cout_ + config.redispatchCostOffset(), -config.noiseCost()));
-                pbCoutLineaireSansOffset_[conso->numVarConso_] = conso->cout_;
-            }
+            // Shedding variable lies in [0, seuil*C] for C >= 0 and in [seuil*C, 0] for C < 0:
+            // the cost sign follows the load sign so that shedding is always penalized
+            const double sign = conso->valeur_ >= 0 ? 1. : -1.;
+            pbCoutLineaire_[conso->numVarConso_]
+                = sign * std::max(conso->cout_ + config.redispatchCostOffset(), config.noiseCost());
+            pbCoutLineaireSansOffset_[conso->numVarConso_] = sign * conso->cout_;
         }
     }
 }

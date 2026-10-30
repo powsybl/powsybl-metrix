@@ -483,7 +483,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     string resRedispatching = EMPTY_STRING;
 
                     if (fabs(valRedispatching) >= EPSILON_SORTIES) {
-                        volDel += valRedispatching;
+                        volDel += fabs(valRedispatching);
                         resRedispatching = c_fmt(PREC_FLOAT.c_str(), valRedispatching);
                     }
 
@@ -1746,7 +1746,12 @@ bool Calculer::computeCosts(const std::vector<int>& constraintsToDelail,
             std::string type;
 
             int numVar = numVa[j];
-            double linearCost = pbCoutLineaire_[numVar] - config::configuration().redispatchCostOffset();
+            double offset = config::configuration().redispatchCostOffset();
+             // negative load: shedding variable in [seuil*C, 0], cost and offset are negated
+            if (typeOu[j] == 1 && pbXmin_[numVar] < 0.) {
+                offset = -offset;
+            }
+            const double linearCost = pbCoutLineaire_[numVar] - offset;
             if (typeOu[j] == 0) { // grp
                 type = "G";
                 if (typeEtat_[numVar] == PROD_H) {
