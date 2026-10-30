@@ -7,9 +7,11 @@ This page will get you through the building of the executable *metrix-simulator*
 
 To build metrix-simulator, you need:
 - A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
-- [CMake](https://cmake.org) (3.12 or higher)
+  - C++17 with `USE_ORTOOLS`, required by OR-Tools
+- [CMake](https://cmake.org) (3.12 or higher, 3.21 or higher with `USE_ORTOOLS`)
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)
+- With `USE_ORTOOLS` only: Python 3 with its development headers, to build OR-Tools
 
 Use the following commands to install them on your OS:
 

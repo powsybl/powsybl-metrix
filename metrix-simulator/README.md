@@ -3,9 +3,10 @@
 ### Prerequisites
 
 - **CMake** ≥ 3.14 (≥ 3.21 with `USE_ORTOOLS`)
-- **C/C++ compiler** with C++11 support
+- **C/C++ compiler** with C++11 support (C++17 with `USE_ORTOOLS`, required by OR-Tools)
 - **Boost** ≥ 1.66 — must be installed on the system
 - **Git** — for downloading external dependencies
+- **Python 3** with its development headers — with `USE_ORTOOLS` only, to build OR-Tools
 - **Xpress** (optional, **runtime only**): a licensed FICO Xpress installation on the machine that runs `SOLVERCH=6`, located through the `XPRESSDIR` environment variable. Nothing from Xpress is needed to build: OR-Tools does not link `libxprs`, it loads `$XPRESSDIR/lib/libxprs.so` with `dlopen` at the first Xpress solve (falling back to `/opt/xpressmp`). `XPRESSDIR` is normally exported by the `xpvars.sh` script shipped with Xpress
 
 ### Build
@@ -102,7 +103,7 @@ for the static one.
 | `USE_ORTOOLS` | `OFF` | Enable the OR-Tools Xpress backend. When `OFF`, the binary is Sirius-only, identical to the legacy production version. When `ON`, the install step also deploys OR-Tools and the shared libraries it depends on, in `lib/` (`bin/` on Windows), where the installed binary finds them. |
 | `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Pure authorization switch: the Xpress backend is always compiled into OR-Tools 9.13, and whether it works on a given machine depends on `XPRESSDIR` and the Xpress license; a missing library or license is reported at runtime as a metrix error (`ERRSolveurIndisponible`) when `SOLVERCH=6` is requested. |
 | `XPRESS_ROOT` | `-D` flag or env var | Test harness only: Xpress installation handed to the test suite as `XPRESSDIR`. Defaults to the `XPRESSDIR` of the environment. Not needed to build. |
-| `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, deploys `libsirius_solver.so` alongside the binary. |
+| `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, installs `libsirius_solver.so` in `lib/`. |
 | `CODE_COVERAGE` | `OFF` | Instrument the binary for coverage analysis (forces `Debug` build type). |
 | `METRIX_RUN_ALL_TESTS` | `ON` | Run the full TNR test suite. Set to `OFF` for a reduced suite. |
 
