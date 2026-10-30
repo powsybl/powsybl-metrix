@@ -206,7 +206,9 @@ if(USE_ORTOOLS)
         PRIVATE
         ortools::ortools
     )
-    install_lib(ortools::ortools)
+    # The OR-Tools shared libraries are installed in lib/ (see below): the installed binary
+    # looks for them there. Windows has no RPATH: the DLLs are installed next to the binary.
+    set_target_properties(${target} PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
 endif()
 
 if(USE_XPRESS)
@@ -242,7 +244,21 @@ if (CODE_COVERAGE)
     )
 endif()
 
-install(TARGETS ${target} EXPORT targets RUNTIME DESTINATION bin)
+if(USE_ORTOOLS)
+    # OR-Tools and the third parties it builds (abseil, protobuf, re2...) are shared libraries:
+    # install every library the binary needs, except the system ones, under the names the
+    # loader looks for (.so in lib/, .dll in bin/ next to the binary). Requires CMake 3.21.
+    install(TARGETS ${target} EXPORT targets
+        RUNTIME_DEPENDENCIES
+            DIRECTORIES $<TARGET_FILE_DIR:ortools::ortools>
+            PRE_EXCLUDE_REGEXES "api-ms-.*" "ext-ms-.*"
+            POST_EXCLUDE_REGEXES ".*[Ss]ystem32/.*\\.dll" "^/lib/" "^/lib64/" "^/usr/lib/" "^/usr/lib64/"
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib
+    )
+else()
+    install(TARGETS ${target} EXPORT targets RUNTIME DESTINATION bin)
+endif()
 install(EXPORT targets
     FILE metrix-simulator-config.cmake
     DESTINATION ${INSTALL_CMAKE_DIR}

@@ -2,7 +2,7 @@
 
 ### Prerequisites
 
-- **CMake** ≥ 3.14
+- **CMake** ≥ 3.14 (≥ 3.21 with `USE_ORTOOLS`)
 - **C/C++ compiler** with C++11 support
 - **Boost** ≥ 1.66 — must be installed on the system
 - **Git** — for downloading external dependencies
@@ -99,7 +99,7 @@ for the static one.
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `USE_ORTOOLS` | `OFF` | Enable the OR-Tools Xpress backend. When `OFF`, the binary is Sirius-only, identical to the legacy production version. |
+| `USE_ORTOOLS` | `OFF` | Enable the OR-Tools Xpress backend. When `OFF`, the binary is Sirius-only, identical to the legacy production version. When `ON`, the install step also deploys OR-Tools and the shared libraries it depends on, in `lib/` (`bin/` on Windows), where the installed binary finds them. |
 | `USE_XPRESS` | `OFF` | Authorize `SOLVERCH=6` at runtime. Requires `USE_ORTOOLS=ON` (enforced by `cmake_dependent_option`). Pure authorization switch: the Xpress backend is always compiled into OR-Tools 9.13, and whether it works on a given machine depends on `XPRESSDIR` and the Xpress license; a missing library or license is reported at runtime as a metrix error (`ERRSolveurIndisponible`) when `SOLVERCH=6` is requested. |
 | `XPRESS_ROOT` | `-D` flag or env var | Test harness only: Xpress installation handed to the test suite as `XPRESSDIR`. Defaults to the `XPRESSDIR` of the environment. Not needed to build. |
 | `USE_SIRIUS_SHARED` | `OFF` | Link Sirius as a shared library instead of static. When `ON`, deploys `libsirius_solver.so` alongside the binary. |
