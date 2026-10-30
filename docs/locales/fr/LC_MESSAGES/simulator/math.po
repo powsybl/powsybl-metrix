@@ -1,0 +1,1842 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../simulator/math.md:9 0b2942dc5bf44ab29a3f93e1a2219be5
+msgid "Mathematical model"
+msgstr "Modèle mathématique"
+
+#: ../../simulator/math.md:11 194384b0ba0d420a88074fbea1ed1f22
+msgid "Variables"
+msgstr "Variables"
+
+#: ../../simulator/math.md:14 429ccf5c7ebd48ec929a01f858cc85ce
+msgid "Contingencies"
+msgstr "Incidents"
+
+#: ../../simulator/math.md:15 ef73d77ea92d4befbab5bbb33a4db767
+msgid ""
+"The contingencies are listed in the container $INCIDENT$. We denote by $inc$"
+" an element of this list. A contingency can cause:"
+msgstr ""
+"Les incidents sont listés dans le conteneur $INCIDENT$. Nous noterons $inc$ "
+"un élément de cette liste. Ce dernier peut provoquer :"
+
+#: ../../simulator/math.md:17 e5151dc0dc5f4d6c975fb4397fd700fb
+#, python-brace-format
+msgid "the opening of a certain number of lines $DEFAUTQUAD_{inc}$;"
+msgstr "l'ouverture d'un certain nombre de lignes $DEFAUTQUAD_{inc}$ ;"
+
+#: ../../simulator/math.md:18 a718e51cddea44ecb8670c14100e1f63
+#, python-brace-format
+msgid "the opening of a certain number of LCCs $DEFAUTLCC_{inc}$;"
+msgstr "l'ouverture d'un certain nombre de LCCs $DEFAUTLCC_{inc}$ ;"
+
+#: ../../simulator/math.md:19 9439b9ff713d4527841a7712b3cb5371
+#, python-brace-format
+msgid "and/or the shutdown of some generators $DEFAUTGRP_{inc}$."
+msgstr "et/ou l'arrêt de certains groupes $DEFAUTGRP_{inc}$."
+
+#: ../../simulator/math.md:21 0680d35bb7554437b8cc2d76a762e531
+#, python-brace-format
+msgid ""
+"At the same time, in order to fix this contingency, some curative means may "
+"be used. They are stored in the list $CURATIF_{inc}$ and contain generators,"
+" loads, PSTs, HVDCs and/or remedial actions."
+msgstr ""
+"Parallèlement, afin de corriger cet incident, certains moyens curatifs "
+"pourront être utilisés. Ils sont stockés dans la liste $CURATIF_{inc}$ et "
+"contiennent des groupes, des consommations, des TDs, des HVDCs et/ou des "
+"parades."
+
+#: ../../simulator/math.md:24 ce397b0e320e46048933ced2543f9225
+#, python-brace-format
+msgid ""
+"Finally, this contingency has a certain probability of occurring, denoted "
+"$proba_{inc}$. This contingency will always be applied to the network during"
+" the METRIX simulation, but this probability makes it possible to weight the"
+" cost of using curative actions."
+msgstr ""
+"Enfin, cet incident a une certaine probabilité de survenir, notée "
+"$proba_{inc}$. Cet incident sera forcément appliqué sur le réseau lors de la"
+" simulation de METRIX, mais cette probabilité permet de pondérer le coût "
+"d’utilisation des actions curatives."
+
+#: ../../simulator/math.md:29 f8813546408a490a81636d9ade6449a4
+msgid "Generators"
+msgstr "Groupes"
+
+#: ../../simulator/math.md:30 adaa61a94395439d9e13942d41a7ff83
+msgid ""
+"The generators of the network modeled in METRIX are stored in a list "
+"$GROUPE$. The production of a generator can be modified in the *Adequacy "
+"phase*, in the *Redispatching phase*, in both or in neither. In the "
+"equations, we will only consider the generators that can be modified in all "
+"circumstances."
+msgstr ""
+"Les groupes du réseau modélisé dans METRIX sont stockés dans une liste "
+"$GROUPE$. La production d’un groupe peut être modifiée en *Adequacy phase*, "
+"en *Redispatching phase*, les deux ou aucune. Nous ne considérerons dans les"
+" équations, que les groupes modifiables en toute circonstance."
+
+#: ../../simulator/math.md:34 ../../simulator/math.md:170
+#: ../../simulator/math.md:256 12441bbfc58344c886655565c78b44ef
+#: 237892bd4c83491eba8924adbc364b52 ed1868cd7a8c4014b82f79ef786c82b4
+msgid "Definition of the variables"
+msgstr "Définition des variables"
+
+#: ../../simulator/math.md:35 d8507ea8ff004ec7b678aef1c1dbb1b3
+msgid "Let $i$ be a generator of $GROUPE$."
+msgstr "Soit $i$ un groupe de $GROUPE$."
+
+#: ../../simulator/math.md:37 118df6d5e8984f58834c81fcdd1b91ae
+msgid ""
+"Its production is defined by an initial value $P_i^0$ and minimum and "
+"maximum values $P_{i}^{min}$ and $P_{i}^{max}$. There are two values for the"
+" minimum power: $P_{i_{ad}}^{min}$ and $P_{i_{red}}^{min}$, representing the"
+" minimums for the *Adequacy* and the *Redispatching* such that:"
+msgstr ""
+"Sa production se définit par une valeur initiale $P_i^0$ et des valeurs "
+"minimum et maximum $P_{i}^{min}$ et $P_{i}^{max}$. Il existe deux valeurs "
+"pour la puissance minimum : $P_{i_{ad}}^{min}$ et $P_{i_{red}}^{min}$, "
+"représentant les minimums pour l'*Adequacy* et le *Redispatching* tels que :"
+
+#: ../../simulator/math.md:41 2aec8f551d234c5f829d0bc728626bea
+msgid ""
+"\n"
+"P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})\n"
+msgstr ""
+"\n"
+"P_{i_{ad}}^{min} = min(0; P_{i_{red}}^{min})\n"
+
+#: ../../simulator/math.md:45 799fac07abc8402cafd351da9c912f43
+msgid ""
+"The power variation of generator $i$ is described in the *Adequacy* and "
+"*Redispatching* problems in N by two variables: $p_i^+$ and $p_i^-$, **both "
+"positive**, and representing respectively the increase and the decrease of "
+"the production of generator $i$. Likewise, for each contingency $inc$, we "
+"have two variables $p_{i_{inc}}^{-}$ and $p_{i_{inc}}^{+}$ representing the "
+"power variation in curative on this contingency $inc$, and a boolean "
+"variable activating the curative action on the contingency $actP_{i}^{inc}$."
+" These three curative variables are thus linked as follows:"
+msgstr ""
+"La variation de puissance du groupe $i$ est décrite dans les problèmes "
+"d'*Adequacy* et de *Redispatching* en N par deux variables : $p_i^+$ et "
+"$p_i^-$, **toutes deux positives**, et représentant respectivement la hausse"
+" et la baisse de la production du groupe $i$. De même, pour chaque incident "
+"$inc$, nous disposons de deux variables $p_{i_{inc}}^{-}$ et "
+"$p_{i_{inc}}^{+}$ représentant la variation de la puissance en curatif sur "
+"cet incident $inc$, et d'une variable booléenne d'activation du curatif sur "
+"l'incident $actP_{i}^{inc}$. Ces trois variables curatives sont ainsi "
+"reliées de la manière suivante :"
+
+#: ../../simulator/math.md:52 2bcc3db256ce435f8bb22f5bed7e008f
+msgid ""
+"\n"
+"p_{i_{inc}}^{-} + p_{i_{inc}}^{+} \\leq M \\cdot actP_{i}^{inc}\n"
+msgstr ""
+"\n"
+"p_{i_{inc}}^{-} + p_{i_{inc}}^{+} \\leq M \\cdot actP_{i}^{inc}\n"
+
+#: ../../simulator/math.md:56 ../../simulator/math.md:346
+#: 7834fabb8e9840059b32950663c3a133
+msgid "With $M$ a very large value."
+msgstr "Avec $M$ une très grande valeur."
+
+#: ../../simulator/math.md:58 ../../simulator/math.md:184
+#: ../../simulator/math.md:270 ../../simulator/math.md:301
+#: 31e022f18deb4885b38705a9b9966d88 57586b502ea24fc280613bdd113386e3
+#: 9642e5e9e8b44a8aa3f20f77076d9c5c cfc9f6b1c33d4415a95faa70a4dc2bbb
+msgid "Domains of definition of the variables"
+msgstr "Domaines de définition des variables"
+
+#: ../../simulator/math.md:59 3245c51dbe184c80ac0307dc856c10fc
+msgid "The domains of definition for the variables related to production are:"
+msgstr ""
+"Les domaines de définitions pour les variables liées à la production sont :"
+
+#: ../../simulator/math.md:60 b4bb00bfda0940dd96310e8cd55c63f9
+msgid "*Adequacy phase* (EOD - supply-demand balance):"
+msgstr "*Adequacy phase* (EOD - Équilibre Offre Demande) :"
+
+#: ../../simulator/math.md:62 85ffe3ea124d41ad91068bbd928d9b09
+msgid ""
+"\n"
+"\\begin{aligned}\n"
+" \\text{Si }P_{i_{ad}}^{min}\\geq 0\\text{ et }P_{i_{ad}}^{min} > P_{i}^{0} \\Rightarrow &\n"
+" \\begin{cases}\n"
+"    p_{i}^{-} = 0\\\\\n"
+"    p_{i}^{+} \\in [P_{i_{ad}}^{min} - P_{i}^{0}; P_{i}^{max} - P_{i}^{0}]\n"
+" \\end{cases}\\\\\n"
+" \\text{Sinon }&\n"
+" \\begin{cases}\n"
+"    p_{i}^{-} \\in [0; P_{i}^{0} - P_{i_{ad}}^{min}]\\\\\n"
+"    p_{i}^{+} \\in [0; P_{i}^{max} - P_{i}^{0}]\n"
+" \\end{cases}\n"
+"\\end{aligned}\n"
+" "
+msgstr ""
+"\n"
+"\\begin{aligned}\n"
+" \\text{Si }P_{i_{ad}}^{min}\\geq 0\\text{ et }P_{i_{ad}}^{min} > P_{i}^{0} \\Rightarrow &\n"
+" \\begin{cases}\n"
+"    p_{i}^{-} = 0\\\\\n"
+"    p_{i}^{+} \\in [P_{i_{ad}}^{min} - P_{i}^{0}; P_{i}^{max} - P_{i}^{0}]\n"
+" \\end{cases}\\\\\n"
+" \\text{Sinon }&\n"
+" \\begin{cases}\n"
+"    p_{i}^{-} \\in [0; P_{i}^{0} - P_{i_{ad}}^{min}]\\\\\n"
+"    p_{i}^{+} \\in [0; P_{i}^{max} - P_{i}^{0}]\n"
+" \\end{cases}\n"
+"\\end{aligned}\n"
+" "
+
+#: ../../simulator/math.md:77 29bea8092630436d85307dc5089f90ab
+msgid "<o>YJ: why $P_{i_{ad}}^{min}\\geq 0$ ??</o>"
+msgstr "<o>YJ : pourquoi le $P_{i_{ad}}^{min}\\geq 0$ ??</o>"
+
+#: ../../simulator/math.md:79 1b2981ef820840718a8920393d4ff7c2
+msgid "*Redispatching phase* in preventive:"
+msgstr "*Redispatching phase* en préventif :"
+
+#: ../../simulator/math.md:81 8ef1bd1f627d40329e7f030f436460ac
+msgid ""
+"**The variables and parameters are modified from the result of the *Adequacy"
+" phase*** in order to integrate them into the *Redispatching phase*: $P_i^0 "
+"= p_i^+ - p_i^- + P_i^0$. In other words, the preventive setpoint power "
+"takes the result of the *Adequacy phase* as its value, and the upward or "
+"downward production variables are then reset (N.B.: **this behavior is "
+"specific to generators**). The bounds are then as follows:"
+msgstr ""
+"**Les variables et paramètres sont modifiés à partir du résultat de "
+"l’*Adequacy phase*** pour les intégrer dans la *Redispatching phase* : "
+"$P_i^0 = p_i^+ - p_i^- + P_i^0$. Autrement dit, la puissance de consigne en "
+"préventif prend pour valeur le résultat de l’*Adequacy phase* et les "
+"variables de production à la hausse ou à la baisse sont ensuite "
+"réinitialisées (N.B. : **c’est un comportement propre aux groupes**). Les "
+"bornes sont alors les suivantes :"
+
+#: ../../simulator/math.md:87 ff592faf5b9345328012060395e3b25b
+msgid ""
+"\n"
+"\\begin{aligned}\n"
+"p_{i}^{+} &\\in [0; P_{i}^{max} - P_{i}^{0}]\\\\\n"
+"p_{i}^{-} &\n"
+" \\begin{cases}\n"
+"    \\in [0; P_{i}^{0} - P_{i_{red}}^{min}]\\text{ si }P_{i}^{0}\\geq P_{i}^{min}\\\\\n"
+"    = 0\\text{ sinon}\n"
+" \\end{cases}\n"
+" \\end{aligned}\n"
+msgstr ""
+"\n"
+"\\begin{aligned}\n"
+"p_{i}^{+} &\\in [0; P_{i}^{max} - P_{i}^{0}]\\\\\n"
+"p_{i}^{-} &\n"
+" \\begin{cases}\n"
+"    \\in [0; P_{i}^{0} - P_{i_{red}}^{min}]\\text{ si }P_{i}^{0}\\geq P_{i}^{min}\\\\\n"
+"    = 0\\text{ sinon}\n"
+" \\end{cases}\n"
+" \\end{aligned}\n"
+
+#: ../../simulator/math.md:98 c8ea6b79cc9e4721bd6a980654f64ba5
+msgid "*Redispatching phase* in curative:"
+msgstr "*Redispatching phase* en curatif :"
+
+#: ../../simulator/math.md:100 5f47954156ea4e579f4d787bdc435c22
+msgid ""
+"\n"
+"\\begin{cases}\n"
+"p_{i}^{+} - p_{i}^{-} + p_{i_{inc}}^{+} \\leq P_{i}^{max} - P_{i}^{0}\\\\\n"
+"min(0; P_{i_{red}}^{min} - P_{i}^{0}) \\leq p_{i}^{+} - p_{i}^{-} - p_{i_{inc}}^{-}\n"
+"\\end{cases}\n"
+msgstr ""
+"\n"
+"\\begin{cases}\n"
+"p_{i}^{+} - p_{i}^{-} + p_{i_{inc}}^{+} \\leq P_{i}^{max} - P_{i}^{0}\\\\\n"
+"min(0; P_{i_{red}}^{min} - P_{i}^{0}) \\leq p_{i}^{+} - p_{i}^{-} - p_{i_{inc}}^{-}\n"
+"\\end{cases}\n"
+
+#: ../../simulator/math.md:107 598c1165264a4571ae1a6c49edc06a11
+msgid "Costs"
+msgstr "Coûts"
+
+#: ../../simulator/math.md:109 3b7528a02d9b4223b010f80e7c34a6f6
+msgid ""
+"In addition, modifying the production variables of the generators has a "
+"cost. More precisely, we associate costs with the increase and the decrease "
+"in the *Adequacy phase*: $\\Gamma_{i_{ad}}^{-}$ and $\\Gamma_{i_{ad}}^{+}$; "
+"and in the *Redispatching phase*: $\\Gamma_{i_{red}}^{-}$ and "
+"$\\Gamma_{i_{red}}^{+}$."
+msgstr ""
+"En outre, la modification des variables de production des groupes a un coût."
+" Plus précisément, nous allons associer des coûts à la hausse et à la baisse"
+" en *Adequacy phase* : $\\Gamma_{i_{ad}}^{-}$ et $\\Gamma_{i_{ad}}^{+}$ ; et"
+" en *Redispatching phase* : $\\Gamma_{i_{red}}^{-}$ et "
+"$\\Gamma_{i_{red}}^{+}$."
+
+#: ../../simulator/math.md:113 ../../simulator/math.md:209
+#: 60c1e476e58247359e6edaeae902c81f 7bf7a9671ddb405d82e359ab72ecf6f1
+msgid "Membership of a synchronous area"
+msgstr "Appartenance à une zone synchrone"
+
+#: ../../simulator/math.md:115 1100ff1902a04baaab5b87b702bfa68c
+#, python-brace-format
+msgid ""
+"Each generator is attached to a single node of the network, which itself "
+"belongs to a single synchronous area. For each synchronous area $zc \\in "
+"ZC$, we denote by $GROUPE_{zc}$ the set of generators belonging to this "
+"synchronous area."
+msgstr ""
+"Chaque groupe est rattaché à un unique nœud du réseau, appartenant, lui-"
+"même, à une unique zone synchrone. Pour chaque zone synchrone $zc \\in ZC$, "
+"nous notons $GROUPE_{zc}$ l'ensemble des groupes appartenant à cette zone "
+"synchrone."
+
+#: ../../simulator/math.md:119 ../../simulator/math.md:161
+#: 52407028ec1442d5b1d2131a46b3e834 7eef121900a3400a9734ae165129d7be
+msgid "Generator coupling constraint"
+msgstr "Contrainte de couplage des groupes"
+
+#: ../../simulator/math.md:121 56f1dfb95a6141edae9fb7f429f6e1b8
+#, python-brace-format
+msgid ""
+"During the *Redispatching phase*, we can define in the network a set of "
+"generators whose production in N must vary proportionally. Let "
+"$COUPLAGE^{GRP}$ be the set of grouped couplings. In order to define this "
+"variation, we define a reference value for each of the generators of this "
+"set. This reference value can be $P^{max}$, $P^{min}$, $P^{0}$ or $P^{max} -"
+" P^{0}$. It is denoted $P^{ref}$."
+msgstr ""
+"Lors de la *Redispatching phase*, nous pouvons définir dans le réseau un "
+"ensemble de groupes dont la production en N doit varier de façon "
+"proportionnelle. Notons $COUPLAGE^{GRP}$ l'ensemble des couplages groupés. "
+"Afin de définir cette variation, nous allons définir une valeur de référence"
+" pour chacun des groupes de cet ensemble. Cette valeur de référence peut "
+"être $P^{max}$, $P^{min}$, $P^{0}$ ou encore $P^{max} - P^{0}$. Celle-ci "
+"sera notée $P^{ref}$."
+
+#: ../../simulator/math.md:126 07b4a81b1a5b4fee8afc198d935276e7
+#, python-brace-format
+msgid ""
+"Let $i_0$ be the first generator of this set. $\\forall i \\in "
+"COUPLAGE^{GRP}$, $i \\not = i_0$:"
+msgstr ""
+"Soit $i_0$ le premier groupe de cet ensemble. $\\forall i \\in "
+"COUPLAGE^{GRP}$, $i \\not = i_0$ :"
+
+#: ../../simulator/math.md:128 bec0cbac33554add885c3f0a4a9945d3
+msgid ""
+"\n"
+"\\frac{p_i^+ - p_i^-}{P_i^{ref}} = \\frac{p_{i_0}^+ - p_{i_0}^-}{P_{i_0}^{ref}}\n"
+msgstr ""
+"\n"
+"\\frac{p_i^+ - p_i^-}{P_i^{ref}} = \\frac{p_{i_0}^+ - p_{i_0}^-}{P_{i_0}^{ref}}\n"
+
+#: ../../simulator/math.md:133 ../../simulator/math.md:162
+#: 01ae7404eb01495ea18eb0920f157fba c8f6cbba7b51411e83301fd4d680ba65
+msgid "Curative changes limitation constraint"
+msgstr "Contrainte de limitation des changements curatifs"
+
+#: ../../simulator/math.md:134 407bc75d2e53455ba0ac79855b7bb5cf
+msgid ""
+"This constraint is **optional**; the METRIX data must indicate that we wish "
+"to apply it (with the *LimiteCurGroupe* parameter). This constraint limits "
+"the cumulative decrease in production in curative on a contingency $inc$:"
+msgstr ""
+"Cette contrainte est **facultative**, il faut indiquer dans les données "
+"METRIX que nous souhaitons l'appliquer (avec le paramètre "
+"*LimiteCurGroupe*). Cette contrainte permet de limiter la baisse cumulée de "
+"la production en curatif sur un incident $inc$ :"
+
+#: ../../simulator/math.md:138 010c8aba72154631884e8782a09af165
+#, python-brace-format
+msgid ""
+"\n"
+"\\sum_{i\\in GROUPE} p_{inc}^{-} \\leq LimiteCurGroupe\n"
+msgstr ""
+"\n"
+"\\sum_{i\\in GROUPE} p_{inc}^{-} \\leq LimiteCurGroupe\n"
+
+#: ../../simulator/math.md:142 b7719abe88834d93926d97f5318f4740
+msgid ""
+"**Note**: the constraint only considers downward variations in order to take"
+" load shedding into account."
+msgstr ""
+"**Note** : la contrainte ne considère que les variations à la baisse afin de"
+" prendre en compte le délestage de consommation."
+
+#: ../../simulator/math.md:145 ../../simulator/math.md:225
+#: ../../simulator/math.md:309 ../../simulator/math.md:403
+#: ../../simulator/math.md:475 0b4ee5d3f02a464e8895870fcd500768
+#: 0c43620a81d746c48f8727bb009836a7 30b09d8fb7a44f94a72a949bfe71059b
+#: 6b1f96c4d6424c4ca73fd3f3fb144a36 b82b1ed788dd477a868d9b908bdb6052
+msgid "<r>Summary of notations:</r>"
+msgstr "<r>Résumé des notations :</r>"
+
+#: ../../simulator/math.md:147 ../../simulator/math.md:227
+#: ../../simulator/math.md:311 ../../simulator/math.md:405
+#: ../../simulator/math.md:477 1cbfcb3a419945f7a1c2ae9016661feb
+#: 49b41d9b0f974ede931ca7711623b2b6 5b894ec942374f42bf7cefdccad4f14d
+#: a721d08536b34e838746a5db638b650e fa54e17c72d846b7b72b4ba5f24be4ee
+msgid "**Data**"
+msgstr "**Données**"
+
+#: ../../simulator/math.md:149 35a1fa2ca7744a3eab6e911b5e405f5c
+#, python-brace-format
+msgid "Sets: $GROUPE$, $COUPLAGE^{GRP}$, $GROUPE_{zc}$"
+msgstr "Ensembles : $GROUPE$, $COUPLAGE^{GRP}$, $GROUPE_{zc}$"
+
+#: ../../simulator/math.md:151 16225bebdcac4346864a1808c9f6bd06
+msgid "Values:"
+msgstr "Valeurs :"
+
+#: ../../simulator/math.md:152 212b41ea15e14c95936ed5e17b925753
+msgid "LimiteCurGroupe"
+msgstr "LimiteCurGroupe"
+
+#: ../../simulator/math.md:153 8941e0fd19e040489fdabd0143ea9cf6
+msgid ""
+"$\\forall i \\in GROUPE : P_{i}^{max}, P_{i_{ad}}^{min}, P_{i_{red}}^{min}, "
+"P_{i}^{ref}, \\Gamma_{i_{ad}}^{-}, \\Gamma_{i_{ad}}^{+}, "
+"\\Gamma_{i_{red}}^{-}, \\Gamma_{i_{red}}^{+}$"
+msgstr ""
+"$\\forall i \\in GROUPE : P_{i}^{max}, P_{i_{ad}}^{min}, P_{i_{red}}^{min}, "
+"P_{i}^{ref}, \\Gamma_{i_{ad}}^{-}, \\Gamma_{i_{ad}}^{+}, "
+"\\Gamma_{i_{red}}^{-}, \\Gamma_{i_{red}}^{+}$"
+
+#: ../../simulator/math.md:155 ../../simulator/math.md:233
+#: ../../simulator/math.md:317 ../../simulator/math.md:411
+#: ../../simulator/math.md:487 2ce7bf06ef8b4350bed16c07ad09fa72
+#: c1149206e2dc491a96fd38719fe4bbdf c6fc2baec31c4425867ccf152906d398
+#: e66a5081d4ac444b98a048fa7440286a eadfdac8156b4731942bb26fa513a53f
+msgid "**Variables**"
+msgstr "**Variables**"
+
+#: ../../simulator/math.md:157 a0f581fd5efe4ee58a5ee5b01f7b62c7
+msgid ""
+"$\\forall i \\in GROUPE, \\forall inc \\in INCIDENT : p_{i}^{+}, p_{i}^{-}, "
+"p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, actP_{i}^{inc}$"
+msgstr ""
+"$\\forall i \\in GROUPE, \\forall inc \\in INCIDENT : p_{i}^{+}, p_{i}^{-}, "
+"p_{i_{inc}}^{+}, p_{i_{inc}}^{-}, actP_{i}^{inc}$"
+
+#: ../../simulator/math.md:159 ../../simulator/math.md:491
+#: 1ed089cdfde14cefa6fa753facdb9914 22f8d68d0034439fa09f6e6f7fa91a6b
+msgid "**Constraints**"
+msgstr "**Contraintes**"
+
+#: ../../simulator/math.md:160 9642e5e9e8b44a8aa3f20f77076d9c5c
+msgid "Domain of definition constraints"
+msgstr "Contraintes des domaines de définition"
+
+#: ../../simulator/math.md:165 04af6cae0b584050835d8fc5eebc08d7
+msgid "Loads"
+msgstr "Consommations"
+
+#: ../../simulator/math.md:167 f84f7a4d36b54285bae6569b0cc964bd
+msgid ""
+"The consumption centers (called loads) are in the list $CONSO$. The power "
+"used by a load can be modified in the *Adequacy* as well as in the "
+"*Redispatching phase*."
+msgstr ""
+"Les centres de consommations (appelés consommations) sont dans la liste "
+"$CONSO$. La puissance utilisée par une consommation peut être modifiée aussi"
+" bien en *Adequacy* qu'en *Redispatching phase*."
+
+#: ../../simulator/math.md:172 507de1d765a74cb9be25e3810eda9963
+msgid "Let $i$ be a load of the set $CONSO$."
+msgstr "Soit $i$ une consommation du groupe $CONSO$."
+
+#: ../../simulator/math.md:174 03bd6490819f483681dfc66217236ffe
+msgid ""
+"$C_{i}^{0}$ defines the power consumed in the initial state; load shedding "
+"is represented in the *Adequacy phase* and in preventive by the variable "
+"$c_i^{-}$ and in curative on a contingency $inc$ by the variable "
+"$c_{i_{inc}}^{-}$ and the boolean activation variable $actC_i^{inc}$. Such "
+"that:"
+msgstr ""
+"$C_{i}^{0}$ définit la puissance consommée à l'état initial ; le délestage "
+"est représenté en *Adequacy phase* et en préventif par la variable $c_i^{-}$"
+" et en curatif sur un incident $inc$ par la variable $c_{i_{inc}}^{-}$ et la"
+" variable booléenne d'activation $actC_i^{inc}$. Tel que :"
+
+#: ../../simulator/math.md:178 2eaf3cebded74a109449d9a44f20c7dc
+msgid ""
+"\n"
+"c_{i_{inc}}^{-} \\leq M \\cdot actC_{i}^{inc}\n"
+msgstr ""
+"\n"
+"c_{i_{inc}}^{-} \\leq M \\cdot actC_{i}^{inc}\n"
+
+#: ../../simulator/math.md:182 ../../simulator/math.md:268
+#: 7834fabb8e9840059b32950663c3a133
+msgid "With $M$ a very high value."
+msgstr "Avec $M$ une valeur très élevée."
+
+#: ../../simulator/math.md:186 ed114c66a8fb49c7bf1860ed1cc5967e
+msgid ""
+"To set the maximum value of the load shedding, a percentage is used. It is "
+"defined by the parameters $\\Phi_i$ in the *Adequacy phase* and in "
+"preventive, and $\\Phi_{i_{cur}}$ in curative. Thus, we obtain the following"
+" bounds:"
+msgstr ""
+"Pour fixer la valeur maximale du délestage, un pourcentage est utilisé. "
+"Celui-ci est défini par les paramètres $\\Phi_i$ en *Adequacy phase* et en "
+"préventif, et $\\Phi_{i_{cur}}$ en curatif. Ainsi, nous obtenons les "
+"encadrements suivants :"
+
+#: ../../simulator/math.md:188 375c67d386104021910ce5cb275b2e58
+msgid "For the *Adequacy phase* and the preventive:"
+msgstr "Pour l'*Adequacy phase* et le préventif :"
+
+#: ../../simulator/math.md:190 173af5a8694c44e1a74f6b64628f7958
+#, python-brace-format
+msgid ""
+"\n"
+" c_{i}^{-} \\in\n"
+" \\begin{cases}\n"
+" [0; \\Phi_i \\cdot C_i^0]\\text{, si }C_i^{0} \\geq 0\\\\\n"
+" [\\Phi_i \\cdot C_i^0; 0]\\text{, sinon. }\n"
+" \\end{cases}\n"
+" "
+msgstr ""
+"\n"
+" c_{i}^{-} \\in\n"
+" \\begin{cases}\n"
+" [0; \\Phi_i \\cdot C_i^0]\\text{, si }C_i^{0} \\geq 0\\\\\n"
+" [\\Phi_i \\cdot C_i^0; 0]\\text{, sinon. }\n"
+" \\end{cases}\n"
+" "
+
+#: ../../simulator/math.md:198 ae8934f9baf641858c009fa3927a1014
+msgid "For the curative:"
+msgstr "Pour le curatif :"
+
+#: ../../simulator/math.md:200 4730d94995364848bac6b157d8fa06cc
+msgid ""
+"\n"
+" \\forall inc \\in INCIDENT, c_{i_{inc}}^{-} \\in [0; max(0; C_i^{0} \\cdot \\Phi_{i_{cur}})]\n"
+" "
+msgstr ""
+"\n"
+" \\forall inc \\in INCIDENT, c_{i_{inc}}^{-} \\in [0; max(0; C_i^{0} \\cdot \\Phi_{i_{cur}})]\n"
+" "
+
+#: ../../simulator/math.md:204 ../../simulator/math.md:368
+#: 008eadc3699a4589a2af4c6fc9d37061 6385cccd2fbf455ba363e7716141cdc9
+msgid "Definition of the costs"
+msgstr "Définition des coûts"
+
+#: ../../simulator/math.md:206 0381a049e77545fc800f13f5b26c32f5
+msgid ""
+"For each load, we define a cost for the *Adequacy phase* and the preventive "
+"$\\Gamma_i^{conso}$ and another one for the curative "
+"$\\Gamma_{i_{cur}}^{conso}$."
+msgstr ""
+"Pout chaque groupe, nous définissons un coût pour l'*Adequacy phase* et le "
+"préventif $\\Gamma_i^{conso}$ et un autre pour le curatif "
+"$\\Gamma_{i_{cur}}^{conso}$."
+
+#: ../../simulator/math.md:211 b05e2122e67d4ac98291da2e104d966b
+#, python-brace-format
+msgid ""
+"Each load is attached to a single node of the network, which itself is part "
+"of a single synchronous area. For each synchronous area $zc \\in ZC$, we "
+"denote by $CONSO_{zc}$ the loads belonging to this synchronous area."
+msgstr ""
+"Chaque consommation se rattache à un unique nœud du réseau, qui fait lui-"
+"même parti d’une unique zone synchrone. Pour chaque zone synchrone $zc \\in "
+"ZC$, nous notons $CONSO_{zc}$ les consos appartenant à cette zone synchrone."
+
+#: ../../simulator/math.md:215 9ddb001d13ef4811bbd8ca0ddb815e57
+msgid "Load coupling constraint"
+msgstr "Contrainte de couplage des consos"
+
+#: ../../simulator/math.md:216 0e3b045fceff48d09addeeef98b7679a
+#, python-brace-format
+msgid ""
+"As for generators, loads can be coupled so that their load shedding in N is "
+"proportional. Let $COUPLAGE_{CONSO}$ be the list of these coupled loads."
+msgstr ""
+"Tout comme pour les groupes, des consommations peuvent être couplées afin "
+"que leur délestage en N soient proportionnels. Notons $COUPLAGE_{CONSO}$ la "
+"liste de ces consommations couplées."
+
+#: ../../simulator/math.md:219 e6afb732f5d7486392e6795c4a9932c7
+#, python-brace-format
+msgid ""
+"Let i$_0$ be the first load of this list. $\\forall i \\in COUPLAGE_{CONSO},"
+" i \\neq i_0$:"
+msgstr ""
+"Soit i$_0$ le premier groupe de cette liste. $\\forall i \\in "
+"COUPLAGE_{CONSO}, i \\neq i_0$ :"
+
+#: ../../simulator/math.md:221 1b912a7e172b437d9cb556fdb3169a9b
+msgid ""
+"\n"
+"\\frac{c_i^{-}}{C_i^{0}} = \\frac{c_{i_0}^{-}}{C_{i_0}^{0}}\n"
+msgstr ""
+"\n"
+"\\frac{c_i^{-}}{C_i^{0}} = \\frac{c_{i_0}^{-}}{C_{i_0}^{0}}\n"
+
+#: ../../simulator/math.md:229 cfeda25baafd4c49a246566d83c00c9c
+#, python-brace-format
+msgid "Sets: $CONSO$, $COUPLAGE_{CONSO}$, $CONSO_{zc}$"
+msgstr "Ensembles : $CONSO$, $COUPLAGE_{CONSO}$, $CONSO_{zc}$"
+
+#: ../../simulator/math.md:231 d49a0fb680454c498879c94a3298341a
+msgid "Values: $\\forall i \\in CONSO : C_i^{0}, \\Phi_i, \\Phi_{i_{cur}}$"
+msgstr "Valeurs : $\\forall i \\in CONSO : C_i^{0}, \\Phi_i, \\Phi_{i_{cur}}$"
+
+#: ../../simulator/math.md:235 f56ce68b04b846fea75522f958a4890b
+msgid ""
+"\n"
+"\\forall i \\in CONSO, \\forall inc \\in INCIDENT : c_i^{-}, c_{i_{inc}}^{-}, actC_i^{inc}\n"
+msgstr ""
+"\n"
+"\\forall i \\in CONSO, \\forall inc \\in INCIDENT : c_i^{-}, c_{i_{inc}}^{-}, actC_i^{inc}\n"
+
+#: ../../simulator/math.md:239 99ceae0c2bab4972952b81fafe9c134b
+msgid "**Constraints** Load coupling constraint."
+msgstr "**Contraintes** Contrainte de couplage des consos."
+
+#: ../../simulator/math.md:243 4530d1096fda467bbf55b866a834ae23
+msgid "Phase tap changer (PST)"
+msgstr "Transformateur-Déphaseur (TD)"
+
+#: ../../simulator/math.md:245 840c8d74cc884e9486e13f53762461a2
+msgid ""
+"The PSTs are stored in a list $TD$. Let $i$ be an element of this list."
+msgstr ""
+"Les TDs sont stockés dans une liste $TD$. Soit $i$ un élément de cette "
+"liste."
+
+#: ../../simulator/math.md:247 38fd1b6aa88040d889776fbe9af129cd
+msgid "Min and max values of the PSTs"
+msgstr "Valeurs min et max des TDs"
+
+#: ../../simulator/math.md:249 e3f2290076724977bf3331a3b0f1ee31
+#, python-brace-format
+msgid ""
+"In METRIX, the phase shift is not done by moving from one tap to another in "
+"a discrete way, but with continuous variables evolving between a minimum "
+"power and a maximum power. The lists of phase shift taps of a PST are "
+"nevertheless used to set these minimum and maximum powers, denoted "
+"$TD_i^{min}$ and $TD_i^{max}$."
+msgstr ""
+"Dans METRIX, le déphasage se fera sans passer d’une prise à l’autre de "
+"manière discrète, mais avec des variables continues évoluant entre une "
+"puissance min et une puissance max. Les listes des prises de déphasage d'un "
+"TD sont toutefois utilisées afin de fixer ces puissances min et max, notées "
+"$TD_i^{min}$ et $TD_i^{max}$."
+
+#: ../../simulator/math.md:253 1696dc8994e7416e99aa0dfba3fc0c1d
+msgid ""
+"These values may be taken from the input data if the upward and downward tap"
+" change bounds are not defined."
+msgstr ""
+"Ces valeurs pourront être tirées des données d'entrée si les bornes de "
+"changement de prises à la hausse et à la baisse ne sont pas définies."
+
+#: ../../simulator/math.md:258 185383bd8c2a43a19ebbe0c17e6ec45d
+msgid ""
+"The setpoint power transmitted by $i$ from node *Or* to node *Nf* is "
+"represented by the parameter $TD^{0}_i$. The variation of this power in "
+"preventive is represented by the **positive** variables $td^{+}_i$ for the "
+"increase and $td^{-}_i$ for the decrease. Likewise, if the PST is allowed to"
+" act in curative on the contingency $inc$, we use the **positive** curative "
+"variables $td^{+}_{i_{inc}}$ and $td^{-}_{i_{inc}}$ and the boolean variable"
+" $actTD_{i}^{inc}$. These three variables are linked by the following "
+"constraint:"
+msgstr ""
+"La puissance de consigne transmise par $i$ du nœud *Or* au nœud *Nf* va être"
+" représentée par le paramètre $TD^{0}_i$. La variation de cette puissance en"
+" préventif  va être représentée par les variables **positives** $td^{+}_i$ à"
+" la hausse et $td^{-}_i$ à la baisse. De même, si le TD est autorisé à agir "
+"en curatif sur l’incident $inc$, nous allons utiliser les variables "
+"curatives **positives** $td^{+}_{i_{inc}}$ et $td^{-}_{i_{inc}}$ et la "
+"vraiable booléenne $actTD_{i}^{inc}$. Ces trois variables sont reliées par "
+"la contrainte suivante :"
+
+#: ../../simulator/math.md:264 8e900185f18949a1a3fb9b306760a059
+msgid ""
+"\n"
+"td^{+}_{i_{inc}} + td^{-}_{i_{inc}}\\leq M \\cdot actTD_{i}^{inc}\n"
+msgstr ""
+"\n"
+"td^{+}_{i_{inc}} + td^{-}_{i_{inc}}\\leq M \\cdot actTD_{i}^{inc}\n"
+
+#: ../../simulator/math.md:272 a9ba3b06509047a9a5485f1731970c22
+msgid "Each PST can be controlled in four different ways:"
+msgstr "Chaque TD est pilotable de quatre manières différentes :"
+
+#: ../../simulator/math.md:273 89ee42c38add4d9ea0e908c6316a22d5
+msgid "With imposed power"
+msgstr "En puissance imposée"
+
+#: ../../simulator/math.md:274 bc7acefaaaff43638014b7a0546fbf9c
+msgid "With optimized power"
+msgstr "En puissance optimisée"
+
+#: ../../simulator/math.md:275 bf9b19b825ee4880a2c1e314b3457ed1
+msgid "With imposed angle"
+msgstr "En angle imposé"
+
+#: ../../simulator/math.md:276 b55f00597aed4c63992e035d330ee869
+msgid "With optimized angle"
+msgstr "En angle optimisé"
+
+#: ../../simulator/math.md:278 b866be0746684190b3dc3ef86e931b90
+msgid ""
+"Imposed controls imply that the PST will always exchange the same power "
+"between the two nodes *Or* and *Nf*: $td^{+}_{i} = td^{-}_{i} = "
+"td^{+}_{i_{inc}} = td^{-}_{i_{inc}} = 0$."
+msgstr ""
+"Les pilotages imposés impliquent que le TD échangera toujours la même "
+"puissance entre les deux nœuds *Or* et *Nf* : $td^{+}_{i} = td^{-}_{i} = "
+"td^{+}_{i_{inc}} = td^{-}_{i_{inc}} = 0$."
+
+#: ../../simulator/math.md:281 0b45a0e043dd4489962f075e953e9bff
+msgid ""
+"For power controls (imposed and optimized), the *quadFictif* is open: only "
+"the power of the PST will be transmitted between the nodes *Or* and *Nf*."
+msgstr ""
+"Pour les pilotages en puissance (imposée et optimisée), le *quadFictif* est "
+"ouvert : seule la puissance du TD sera transmise entre les nœuds *Or* et "
+"*Nf*."
+
+#: ../../simulator/math.md:284 97e533461e2f46f9b31235fc607d53bd
+#, python-brace-format
+msgid ""
+"For optimized control (angle or power), the parameters $TD_i^{min}$ and "
+"$TD_i^{max}$ defined previously are used such that:"
+msgstr ""
+"Pour le pilotage optimisé (en angle ou en puissance), les paramètres  "
+"$TD_i^{min}$ et $TD_i^{max}$ définis précédemment, sont utilisés tels que :"
+
+#: ../../simulator/math.md:287 abf50c9b367942e4bbac9c389c959081
+msgid ""
+"\n"
+"0 \\leq td^{+}_{i} \\leq max(TD_i^{max} - TD_i^{0}; 0) \\text{ et } 0 \\leq td^{-}_{i} \\leq max(TD_i^{0} - TD_i^{min}; 0)\\\\\n"
+"\\forall inc \\in INCIDENT:\\\\\n"
+"0 \\leq td^{+}_{i_{inc}} \\leq max(TD_i^{max} - TD_i^{min}; 0) \\text{ et } 0 \\leq td^{-}_{i_{inc}} \\leq max(TD_i^{max} - TD_i^{min}; 0)\n"
+msgstr ""
+"\n"
+"0 \\leq td^{+}_{i} \\leq max(TD_i^{max} - TD_i^{0}; 0) \\text{ et } 0 \\leq td^{-}_{i} \\leq max(TD_i^{0} - TD_i^{min}; 0)\\\\\n"
+"\\forall inc \\in INCIDENT:\\\\\n"
+"0 \\leq td^{+}_{i_{inc}} \\leq max(TD_i^{max} - TD_i^{min}; 0) \\text{ et } 0 \\leq td^{-}_{i_{inc}} \\leq max(TD_i^{max} - TD_i^{min}; 0)\n"
+
+#: ../../simulator/math.md:293 c5346922a25d49aa8ea8a46bcdc2c479
+msgid "For the curative bounds, the following constraints are added:"
+msgstr "Pour l'encadrement curatif, les contraintes suivantes sont ajoutées :"
+
+#: ../../simulator/math.md:295 eddbcf569164460ab951972c36018c71
+msgid ""
+"\n"
+"\\forall inc \\in INCIDENT:\\\\\n"
+"td^{+}_{i} + td^{+}_{i_{inc}} \\leq max(TD^{max}_{i} - TD^{0}_i; 0)\\\\\n"
+"td^{-}_{i} + td^{-}_{i_{inc}} \\leq max(TD^{0}_{i} - TD^{min}_i; 0)\n"
+msgstr ""
+"\n"
+"\\forall inc \\in INCIDENT:\\\\\n"
+"td^{+}_{i} + td^{+}_{i_{inc}} \\leq max(TD^{max}_{i} - TD^{0}_i; 0)\\\\\n"
+"td^{-}_{i} + td^{-}_{i_{inc}} \\leq max(TD^{0}_{i} - TD^{min}_i; 0)\n"
+
+#: ../../simulator/math.md:302 73f2a5c4bd8644feba50d1c278cafc0f
+#, python-brace-format
+msgid ""
+"Regarding the cost, the PSTs all have the same preventive usage cost "
+"$\\Gamma^{TD}$, defined in the METRIX parameters. In curative, this cost is "
+"weighted by the probability of occurrence of the contingency, and therefore "
+"depends on each contingency."
+msgstr ""
+"En ce qui concerne le coût, les TDs ont tous le même coût d’utilisation en "
+"préventif $\\Gamma^{TD}$, défini dans les paramètres de METRIX. En curatif, "
+"ce coût est pondéré par la probabilité d’apparition de l’incident, et va "
+"donc dépendre de chaque incident."
+
+#: ../../simulator/math.md:306 bc23e4497d414a7fbeee1e8a8bd5af5e
+msgid ""
+"**In summary**: PSTs make it possible to modify the flow on lines to avoid "
+"overloads, without modifying the supply-demand balance."
+msgstr ""
+"**En résumé** : Les TDs permettent de modifier le transit des lignes pour "
+"éviter les surcharges, sans modifier l’équilibrage offre-demande."
+
+#: ../../simulator/math.md:313 8966fba71fef43deab211b121fc5a512
+msgid "Sets: $TD$"
+msgstr "Ensembles : $TD$"
+
+#: ../../simulator/math.md:315 1d8c521b1d6446d78e4ac0d01779a102
+#, python-brace-format
+msgid "Values: $TD^{0}_i$, $TD^{max}_i$, $TD^{min}_i$, $\\Gamma^{TD}$"
+msgstr "Valeurs : $TD^{0}_i$, $TD^{max}_i$, $TD^{min}_i$, $\\Gamma^{TD}$"
+
+#: ../../simulator/math.md:319 90af75003ba54725a5a39b59cc888c28
+msgid ""
+"\n"
+"\\forall i \\in TD, \\forall inc \\in INCIDENT : td^{+}_{i}, td^{-}_{i}, td^{+}_{i_{inc}}, td^{-}_{i_{inc}}, actTD_{i}^{inc}\n"
+msgstr ""
+"\n"
+"\\forall i \\in TD, \\forall inc \\in INCIDENT : td^{+}_{i}, td^{-}_{i}, td^{+}_{i_{inc}}, td^{-}_{i_{inc}}, actTD_{i}^{inc}\n"
+
+#: ../../simulator/math.md:324 87aa6fd1c3ee4273a8dd08bf16aaced6
+msgid "HVDC lines (LCC)"
+msgstr "Lignes à Courant Continu (LCC)"
+
+#: ../../simulator/math.md:326 d85b25a4c6b94fadbde39cbd5d864065
+msgid ""
+"The LCCs of the network simulated by METRIX are stored in the set $LCC$."
+msgstr ""
+"Les LCCs du réseau simulé par METRIX sont stockées dans l'ensemble $LCC$."
+
+#: ../../simulator/math.md:328 4b5cd9fc0ed3477a9ca479bfa3e1f0b0
+msgid "Variables and bounds"
+msgstr "Variables et encadrement"
+
+#: ../../simulator/math.md:330 afce316fb89b4e0884883baa9b4c9836
+msgid "Let $i \\in LCC$, we denote:"
+msgstr "Soit $i \\in LCC$, notons :"
+
+#: ../../simulator/math.md:331 007b0d1deb494bf3b9e544cb73336d2b
+#, python-brace-format
+msgid "$Lcc_i^{0}$ its setpoint power;"
+msgstr "$Lcc_i^{0}$ sa puissance de consigne ;"
+
+#: ../../simulator/math.md:332 1e86ec53fff2438f8b60fecb20a5c696
+#, python-brace-format
+msgid "$Lcc_i^{min}$ its minimum power;"
+msgstr "$Lcc_i^{min}$ sa puissance minimale ;"
+
+#: ../../simulator/math.md:333 b4df627797534018a29ceddcc1d7b7b4
+#, python-brace-format
+msgid "and $Lcc_i^{max}$ its maximum power."
+msgstr "et $Lcc_i^{max}$ sa puissance maximale."
+
+#: ../../simulator/math.md:335 9ac196aa984f444a8ab8d1bf503d8ff1
+msgid "The variations of $i$ are represented:"
+msgstr "Les variations de $i$ sont représentées :"
+
+#: ../../simulator/math.md:336 9c2c7b45e33240a886aa798f560a76e0
+#, python-brace-format
+msgid ""
+"in preventive by the **positive** variables $lcc_i^{+}$ and $lcc_i^{-}$;"
+msgstr ""
+"en préventif par les variables **positives** $lcc_i^{+}$ et $lcc_i^{-}$ ;"
+
+#: ../../simulator/math.md:337 3457c519af654b96af4b32a3fbf56824
+msgid ""
+"and in curative by the **positive** variables $lcc_{i_{inc}}^{+}$ and "
+"$lcc_{i_{inc}}^{-}$ as well as by the boolean variable $actLCC_{i}^{inc}$."
+msgstr ""
+"et en curatif par les variables **positives** $lcc_{i_{inc}}^{+}$ et "
+"$lcc_{i_{inc}}^{-}$ ainsi que par la variable booléenne $actLCC_{i}^{inc}$."
+
+#: ../../simulator/math.md:340 4cf8d5e7790a420496dfba006f017740
+msgid "These three variables are linked by the following constraint:"
+msgstr "Ces trois variables sont reliées pâr la contrainte suivante :"
+
+#: ../../simulator/math.md:342 da595ad5ef6348e29054d4c4f2d46095
+msgid ""
+"\n"
+"lcc_{i_{inc}}^{+} + lcc_{i_{inc}}^{-} \\leq M \\cdot actLCC_{i}^{inc}\n"
+msgstr ""
+"\n"
+"lcc_{i_{inc}}^{+} + lcc_{i_{inc}}^{-} \\leq M \\cdot actLCC_{i}^{inc}\n"
+
+#: ../../simulator/math.md:348 eb434a984d484233ab1b3a2c43bc5154
+msgid ""
+"The variables representing the power variations of the LCC have the "
+"following bounds:"
+msgstr ""
+"Les variables représentant les variations de puissance de la LCC ont "
+"l’encadrement suivant :"
+
+#: ../../simulator/math.md:349 67f4399b3c844c92bed62d0a13393252
+msgid "If the control is optimized power or optimized AC emulation:"
+msgstr ""
+"Si le pilotage est en puissance optimisée ou en émulation AC optimisée :"
+
+#: ../../simulator/math.md:351 9ef45a1b76b64db5928c96db8af01f9c
+#, python-brace-format
+msgid ""
+"\n"
+"lcc_i^+ \\in [0; max(Lcc_i^{max}-Lcc_i^{0}; 0)]\\text{ et }lcc_i^- \\in [0; max(Lcc_i^{0}-Lcc_i^{min}; 0)]\n"
+msgstr ""
+"\n"
+"lcc_i^+ \\in [0; max(Lcc_i^{max}-Lcc_i^{0}; 0)]\\text{ et }lcc_i^- \\in [0; max(Lcc_i^{0}-Lcc_i^{min}; 0)]\n"
+
+#: ../../simulator/math.md:355 6cced3c337854ab0a8c697143f588097
+msgid "Otherwise, it is imposed:"
+msgstr "Sinon, il est imposé :"
+
+#: ../../simulator/math.md:357 65a47c89255b4f87a37642d2d560946e
+#, python-brace-format
+msgid ""
+"\n"
+"lcc_i^{+} = lcc_i^{-} = 0\n"
+msgstr ""
+"\n"
+"lcc_i^{+} = lcc_i^{-} = 0\n"
+
+#: ../../simulator/math.md:361 80551933f19d40e38932dba5e095203d
+msgid "In curative, the bounds for the optimized controls are as follows:"
+msgstr ""
+"En curatif, les encadrements pour les pilotages optimisés sont les suivants "
+":"
+
+#: ../../simulator/math.md:363 27e6bb0705d942f59c64584689f23970
+msgid ""
+"\n"
+"lcc_i^{+} + lcc_{i_{inc}}^{+} \\leq Lcc_i^{max} - Lcc_i^{0}\\\\\n"
+"lcc_i^{-} + lcc_{i_{inc}}^{-} \\leq Lcc_i^{0} - Lcc_i^{min}\n"
+msgstr ""
+"\n"
+"lcc_i^{+} + lcc_{i_{inc}}^{+} \\leq Lcc_i^{max} - Lcc_i^{0}\\\\\n"
+"lcc_i^{-} + lcc_{i_{inc}}^{-} \\leq Lcc_i^{0} - Lcc_i^{min}\n"
+
+#: ../../simulator/math.md:369 3abdb164f8e54c3181c251b8cef4ce5a
+#, python-brace-format
+msgid ""
+"Regarding the cost, the LCCs all have the same preventive usage cost "
+"$\\Gamma^{LCC}$, defined in the METRIX parameters. In curative, this cost is"
+" weighted by the probability of occurrence of the contingency, and therefore"
+" depends on each contingency."
+msgstr ""
+"En ce qui concerne le coût, les LCCs ont toutes le même coût d’utilisation "
+"en préventif $\\Gamma^{LCC}$, défini dans les paramètres de METRIX. En "
+"curatif, ce coût est pondéré par la probabilité d’apparition de l’incident, "
+"et dépendra donc de chaque incident."
+
+#: ../../simulator/math.md:373 9a93b906b60249cc987c1451618f7acc
+msgid "Link between synchronous areas"
+msgstr "Lien entre zones synchrones"
+
+#: ../../simulator/math.md:374 2755cb667a3d4dda9dd672a484d3f6e3
+#, python-brace-format
+msgid ""
+"Let $\\forall zc \\in ZC$, $LCC_{zc}^+$ be the set of LCCs carrying power "
+"from the synchronous area $zc$ to another synchronous area. Likewise, "
+"$LCC_{zc}^-$ is the set of LCCs drawing power from the synchronous area $zc$"
+" to send it to another synchronous area."
+msgstr ""
+"Notons $\\forall zc \\in ZC$ , $LCC_{zc}^+$ l’ensemble des LCCs transportant"
+" le courant de la zone synchrone $zc$ vers une autre zone synchrone. De "
+"même, $LCC_{zc}^-$ est l’ensemble des LCCs prélevant de la puissance à la "
+"zone synchrone $zc$ pour l’envoyer vers une autre zone synchrone."
+
+#: ../../simulator/math.md:378 4f9e97382a28417fbd335f0c201110fe
+msgid "LCC in AC emulation"
+msgstr "LCC en émulation AC"
+
+#: ../../simulator/math.md:379 83e9aec74e914a41be37a40b2e54110a
+#, python-brace-format
+msgid ""
+"The fictitious PST can never act in preventive: $\\forall inc \\in "
+"INCIDENT$, an activation constraint links the preventive variables of the "
+"PST to the curative activation variable of the same PST on this contingency "
+"($actLCC_{inc}^i$); and this activation variable is fixed at $0$, preventing"
+" any variation of the preventive variables. Later, if the activation "
+"variable is unblocked, the preventive variables will only be used by the "
+"problem in the computation of the flow on the quadripole, and in any case "
+"the associated coefficient will be zero. As for the curative variables "
+"(linear and boolean), they are linked by an activation constraint. Let $i "
+"\\in TD, inc \\in INCIDENT$:"
+msgstr ""
+"Le TD fictif ne pourra jamais agir en préventif : $\\forall inc \\in "
+"INCIDENT$, une contrainte d’activation relie les variables préventives du TD"
+" à la variable d’activation en curatif du même TD sur cet incident "
+"($actLCC_{inc}^i$) ; et cette variable d’activation va être bloquée à $0$, "
+"empêchant toute variation des variables préventives. Plus tard, si la "
+"variable d’activation est débloquée, les variables préventives ne seront "
+"utilisées par le problème que dans le calcul du transit sur quadripôle, et "
+"de toute façon le coefficient associé sera nul. Quant aux variables "
+"curatives (linéaires et booléennes), elles sont reliées par une contrainte "
+"d’activation. Soit $i \\in TD, inc \\in INCIDENT$ :"
+
+#: ../../simulator/math.md:387 fdd6a45956ac4fe49187ed9be00d8cb7
+msgid ""
+"\n"
+"td_{i_{inc}}^+ + td_{i_{inc}}^- \\leq M \\cdot actLCC_{inc}^i\n"
+msgstr ""
+"\n"
+"td_{i_{inc}}^+ + td_{i_{inc}}^- \\leq M \\cdot actLCC_{inc}^i\n"
+
+#: ../../simulator/math.md:391 33f2d6ebdede430b84a4f50acaf1e06b
+msgid ""
+"The activation variable is fixed at $0$, unless the quadripole *quad0* is "
+"constrained. In that case, the variable is free to change its value."
+msgstr ""
+"La variable d’activation est bloquée à $0$, à moins que le quadripôle "
+"*quad0* soit en contrainte. Dans ce cas, la variable est libre de changer de"
+" valeur."
+
+#: ../../simulator/math.md:394 8acf974587114c1cbf7ab6e7b18fefc6
+msgid ""
+"This fictitious PST will have a zero usage cost. It will have the same "
+"preventive bounds as normal PSTs, with max and min powers coming from the "
+"LCC in AC emulation. It will also have the following curative bounds:"
+msgstr ""
+"Ce TD fictif aura un coût d’utilisation nul. Il aura le même encadrement en "
+"préventif que les TDs normaux, avec des puissances max et min issues de la "
+"LCC en émulation AC. Il aura également comme encadrement en curatif :"
+
+#: ../../simulator/math.md:397 643ed4e27ebc43c6a085f25e86e45782
+msgid ""
+"\n"
+"0 \\leq td_{i_{inc}}^+ \\leq td_i^{max}\\text{ et }0\\leq td_{i_{in}}^- \\leq -td_i^{min}\n"
+msgstr ""
+"\n"
+"0 \\leq td_{i_{inc}}^+ \\leq td_i^{max}\\text{ et }0\\leq td_{i_{in}}^- \\leq -td_i^{min}\n"
+
+#: ../../simulator/math.md:401 f92b7541035d4784910fe7bb92b70e72
+msgid "The fictitious PSTs are stored in the set $TDF$."
+msgstr "Les TDs fictifs sont stockés dans l’ensemble $TDF$."
+
+#: ../../simulator/math.md:407 28d057ed7ae84465980a4162d41ef4e1
+#, python-brace-format
+msgid "Sets: $LCC$, $TDF$, $\\forall zc \\in ZC: LCC_{zc}^+, LCC_{zc}^-$"
+msgstr "Ensembles : $LCC$, $TDF$, $\\forall zc \\in ZC: LCC_{zc}^+, LCC_{zc}^-$"
+
+#: ../../simulator/math.md:409 6d29055f0f8f4adaa9f08f99bb6cefc2
+#, python-brace-format
+msgid ""
+"Values: $\\forall i \\in LCC : Lcc_i^{0}, Lcc_i^{max}, Lcc_i^{min}, "
+"\\Gamma^{LCC}$"
+msgstr ""
+"Valeurs : $\\forall i \\in LCC : Lcc_i^{0}, Lcc_i^{max}, Lcc_i^{min}, "
+"\\Gamma^{LCC}$"
+
+#: ../../simulator/math.md:413 3754c454143b414ea301bdbc953b707d
+msgid ""
+"\n"
+"\\forall i \\in LCC, \\forall inc \\in INCIDENT: lcc_{i}^{+}, lcc_{i}^{-}, lcc_{i_{inc}}^{+}, lcc_{i_{inc}}^{-}\n"
+msgstr ""
+"\n"
+"\\forall i \\in LCC, \\forall inc \\in INCIDENT: lcc_{i}^{+}, lcc_{i}^{-}, lcc_{i_{inc}}^{+}, lcc_{i_{inc}}^{-}\n"
+
+#: ../../simulator/math.md:418 6e9175166f59425292a18a31399c8cbd
+msgid "Remedial actions"
+msgstr "Parades"
+
+#: ../../simulator/math.md:420 9fb92ef1a3cc49d2af11064b0783b38b
+msgid ""
+"The remedial actions are listed in $PARADE$. Let $prd \\in PARADE$. Each "
+"remedial action is associated with a single contingency $inc \\in INCIDENT$."
+msgstr ""
+"Les parades sont listées dans $PARADE$. Soit $prd \\in PARADE$. Chaque "
+"parade est associée à un unique incident $inc \\in INCIDENT$."
+
+#: ../../simulator/math.md:423 27e3f7d4f5a64c399b719895e1d90d14
+#, python-brace-format
+msgid ""
+"$prd$ has as parameters the list of couplings it closes "
+"($COUPLAGEFERMER_{prd}$) and those it opens ($COUPLAGEOUVRIR_{prd}$)."
+msgstr ""
+"$prd$ possède en paramètre la liste des couplages qu’elle ferme "
+"($COUPLAGEFERMER_{prd}$) et ceux qu’elle ouvre ($COUPLAGEOUVRIR_{prd}$)."
+
+#: ../../simulator/math.md:426 93dcf655799743da96fb6406894d971a
+#, python-brace-format
+msgid ""
+"We define, for a contingency $inc$ and a remedial action $prd$, the "
+"activation variable of the remedial action on this contingency "
+"$actPRD_{prd}^{inc}$, with cost $\\Gamma^{PRD}$ in the objective function."
+msgstr ""
+"Nous définissons, pour un incident $inc$ et une parade $prd$, la variable "
+"d’activation de la parade sur cet incident $actPRD_{prd}^{inc}$, de coût "
+"dans la fonction objectif $\\Gamma^{PRD}$."
+
+#: ../../simulator/math.md:430 ../../simulator/math.md:493
+#: 53b744a3fb3649a1a757e1f932952462 bde7c6abb66c4c7791a23ee444886629
+msgid "Remedial action uniqueness constraint"
+msgstr "Contrainte d'unicité des parades"
+
+#: ../../simulator/math.md:432 11150b1edec542f9bc47410196ad5a16
+msgid ""
+"For each contingency, a single remedial action is applicable, $\\forall inc "
+"\\in INDICENT$:"
+msgstr ""
+"Pour chaque incident, une parade unique est applicable, $\\forall inc \\in "
+"INDICENT$ :"
+
+#: ../../simulator/math.md:434 202a49b5295e469d934d75cf887c868b
+msgid ""
+"\n"
+"\\sum_{prd \\in PARADE \\cap CURATIF_{inc}} actPRD_{prd}^{inc} \\leq 1\n"
+msgstr ""
+"\n"
+"\\sum_{prd \\in PARADE \\cap CURATIF_{inc}} actPRD_{prd}^{inc} \\leq 1\n"
+
+#: ../../simulator/math.md:438 d81822c1d6344e37a9476526efa94bf8
+msgid ""
+"In the code, the inequality of this constraint is transformed into an "
+"equality, by introducing a “Do Nothing” remedial action for each contingency"
+" having topological remedial actions as curative actions. This remedial "
+"action has no effect on the network."
+msgstr ""
+"Dans le code, l’inégalité de cette contrainte est transformée en une "
+"égalité, par l'intermédiaire de l'introduction d'une parade “Ne Rien Faire” "
+"pour chaque incident possédant des parades topologiques en actions "
+"curatives. Cette parade n’a aucune action sur le réseau."
+
+#: ../../simulator/math.md:443 ../../simulator/math.md:494
+#: 559acf43b370465286cd5ca65303f898 5e15d85aa8de4f0693d696ea116a797e
+msgid "Remedial action usage constraint"
+msgstr "Contrainte d'utilisation des parades"
+
+#: ../../simulator/math.md:445 2a9880915dce446396d8f8efb5deed7b
+#, python-brace-format
+msgid ""
+"The activation of a remedial action $prd$ can be prevented if there is no "
+"unconstrained line among a certain set of lines. Let $QUADNECESSAIRES_{prd}$"
+" be this set."
+msgstr ""
+"L'activation d'une parade $prd$ peut être empêchée s'il n'existe aucune "
+"ligne, parmi un certain ensemble de lignes, non contrainte. Notons "
+"$QUADNECESSAIRES_{prd}$ cet ensemble."
+
+#: ../../simulator/math.md:448 0f3bd5ef4aae451cb03e786d3100a73d
+#, python-brace-format
+msgid ""
+"Let $QUADENCONTRAINTE_{inc}$ be the list of the overloaded lines following "
+"the contingency $inc$. Then $\\forall inc \\in INCIDENT, \\forall prd \\in "
+"PARADE \\cap CURATIF_{inc}$:"
+msgstr ""
+"Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à "
+"l'incident $inc$. Alors $\\forall inc \\in INCIDENT, \\forall prd \\in "
+"PARADE \\cap CURATIF_{inc}$ :"
+
+#: ../../simulator/math.md:451 06e5a7ffe46a48cba63e9b21c1c5ac88
+#, python-brace-format
+msgid ""
+"\n"
+"(\\nexists quad \\in QUADNECESSAIRES_{prd}\\text{ tel que }quad \\in QUADENCONTRAINTE_{inc}) \\Rightarrow actPRD_{prd}^{inc} = 0\n"
+msgstr ""
+"\n"
+"(\\nexists quad \\in QUADNECESSAIRES_{prd}\\text{ tel que }quad \\in QUADENCONTRAINTE_{inc}) \\Rightarrow actPRD_{prd}^{inc} = 0\n"
+
+#: ../../simulator/math.md:456 ../../simulator/math.md:495
+#: 027481817dc84e909d15e19ba2655e10 63e0490a9a304bce97438657cd3ee161
+msgid "Lost pockets valuation constraint"
+msgstr "Contrainte de valorisation des poches perdues"
+
+#: ../../simulator/math.md:458 595797fa17c84477aa628ad1fdf92c31
+msgid ""
+"When it is used, a remedial action may break the connectivity of the network"
+" by disconnecting nodes of the latter. The generation and loads present on "
+"these nodes are then lost. If this occurs, an economic penalty must be "
+"applied in the objective function."
+msgstr ""
+"Lors de son utilisation, il est possible qu’une parade rompe la connexité du"
+" réseau en déconnectant des nœuds de ce dernier. Les productions et "
+"consommations présentes sur ces nœuds vont alors être perdues. Si cela "
+"survient, une sanction économique dans la fonction objectif doit être "
+"appliquée."
+
+#: ../../simulator/math.md:462 71cb98898891450e9e5979214840774c
+msgid ""
+"Let $inc \\in INCIDENT$ and $prd \\in PARADE$ a remedial action breaking the"
+" connectivity of the network by disconnecting some nodes of it."
+msgstr ""
+"Soit $inc \\in INCIDENT$ et $prd \\in PARADE$ une parade rompant la "
+"connexité du réseau en déconnectant certains nœuds de celui-ci."
+
+#: ../../simulator/math.md:465 1a7fdfe362e04bcfa9fa489547f6c314
+msgid "Let us denote:"
+msgstr "Notons :"
+
+#: ../../simulator/math.md:466 86d7adb3f153458ca08d04a736c8c662
+#, python-brace-format
+msgid "$\\Gamma^{ENE}$ the cost of the energy not evacuated"
+msgstr "$\\Gamma^{ENE}$ le coût de l'énergie non évacuée"
+
+#: ../../simulator/math.md:467 b0e477945f944a06bb6eea5a90f8f9aa
+#, python-brace-format
+msgid "$\\Gamma^{END}$ the cost of the energy not distributed"
+msgstr "$\\Gamma^{END}$ le coût de l'énergie non distribuée"
+
+#: ../../simulator/math.md:468 658a0c769c1b4fd68ecce92c22c71553
+msgid "$GRPDECO$ the set of generators linked to the nodes of the lost pocket"
+msgstr "$GRPDECO$ l'ensemble des groupes liés aux nœuds de la poche perdue"
+
+#: ../../simulator/math.md:469 b4d90e4dfa1544959c17bc95d959772d
+msgid "$CONSODECO$ the set of loads linked to the nodes of the lost pocket"
+msgstr "$CONSODECO$ l'ensemble des consos liées aux nœuds de la poche perdue"
+
+#: ../../simulator/math.md:470 dc00985f2465448485a7293f38e7143a
+#, python-brace-format
+msgid ""
+"$VALOMax = proba_{inc} \\cdot (\\Gamma_{ENE} \\cdot \\sum_{i \\in GRPDECO} "
+"(|P_i^0| + P_i^{max}) + \\Gamma^{END} \\cdot \\sum_{i \\in CONSODECO} "
+"C_i^0)$"
+msgstr ""
+"$VALOMax = proba_{inc} \\cdot (\\Gamma_{ENE} \\cdot \\sum_{i \\in GRPDECO} "
+"(|P_i^0| + P_i^{max}) + \\Gamma^{END} \\cdot \\sum_{i \\in CONSODECO} "
+"C_i^0)$"
+
+#: ../../simulator/math.md:472 7b24905fca954d35bc827b11fa4dff35
+#, python-brace-format
+msgid ""
+"In order to quantify the economic penalty, a new **positive** variable is "
+"introduced such that: $val_{prd}^{inc} \\in [0; max(0; VALOMax)]$."
+msgstr ""
+"Afin de quantifier la sanction économique, une nouvelle variable "
+"**positive** est introduite telle que : $val_{prd}^{inc} \\in [0; max(0; "
+"VALOMax)]$."
+
+#: ../../simulator/math.md:479 663ccca075bf48f8b21d66cb56d6cf0b
+msgid "Sets: $PARADE$, $\\forall prd \\in PARADE$ :"
+msgstr "Ensembles : $PARADE$, $\\forall prd \\in PARADE$ :"
+
+#: ../../simulator/math.md:481 444faf03f66c49818c621859c7c9b0ea
+#, python-brace-format
+msgid ""
+"\n"
+"COUPLAGEFERMER_{prd}, COUPLAGEOUVRIR_{prd}, QUADNECESSAIRES_{prd}\n"
+msgstr ""
+"\n"
+"COUPLAGEFERMER_{prd}, COUPLAGEOUVRIR_{prd}, QUADNECESSAIRES_{prd}\n"
+
+#: ../../simulator/math.md:485 47db039c196041e982529e8c4617e0ad
+#, python-brace-format
+msgid "Value: $\\Gamma^{PRD}$"
+msgstr "Valeur : $\\Gamma^{PRD}$"
+
+#: ../../simulator/math.md:489 d3b9d95eb0094b5d880b39421d8b3d52
+#, python-brace-format
+msgid ""
+"$\\forall inc \\in INCIDENT, \\forall prd \\in PARADE : actPRD_{prd}^{inc}, "
+"val_{prd}^{inc}$"
+msgstr ""
+"$\\forall inc \\in INCIDENT, \\forall prd \\in PARADE : actPRD_{prd}^{inc}, "
+"val_{prd}^{inc}$"
+
+#: ../../simulator/math.md:497 12441bbfc58344c886655565c78b44ef
+msgid "Optimization problems"
+msgstr "Problèmes d'optimisation"
+
+#: ../../simulator/math.md:499 4e2f4b96dea341b79e1c41900dbad80f
+msgid "Below are the mathematical models of the two optimization phases:"
+msgstr "Ci-après, les modèles mathématiques des deux phases d'optimisation :"
+
+#: ../../simulator/math.md:500 d64081010f3c457a87fab56c7ac40c1c
+msgid "the *Adequacy phase* (i.e. generation - load balancing);"
+msgstr "l'*Adequacy phase* (i.e. équilibrage production - consommation);"
+
+#: ../../simulator/math.md:501 ae7168d62755417cbeb6ea63ab529085
+msgid ""
+"and the *Redispatching phase* (i.e. resolution of network constraints)."
+msgstr "et la *Redispatching phase* (i.e. résolution des contraintes réseau)."
+
+#: ../../simulator/math.md:503 2ce1ed69d6ed4387905bede6e7860b42
+msgid "Mathematical model of the *Adequacy phase*"
+msgstr "Modèle mathématique de l'*Adequacy phase*"
+
+#: ../../simulator/math.md:505 a4771411a26e4b05bbad129b97962578
+msgid ""
+"During this phase, we only deal with the generation - load balancing, "
+"without taking into account the electrical network itself."
+msgstr ""
+"Lors de cette phase, nous ne nous occupons que de l'équilibrage production -"
+" consommation, sans tenir compte du réseau électrique en lui-même."
+
+#: ../../simulator/math.md:508 ../../simulator/math.md:544
+#: 429ccf5c7ebd48ec929a01f858cc85ce d12af3874cbc47e8b3b475c06ad75be5
+msgid "Constraints"
+msgstr "Contraintes"
+
+#: ../../simulator/math.md:510 1c4ac9bf8ea840ca89464592a16b460c
+msgid "**Global supply-demand balance**"
+msgstr "**Équilibrage Offre-Demande global**"
+
+#: ../../simulator/math.md:512 972cffdef75a470ba39d4c6d063b5bb5
+msgid ""
+"Balancing the network amounts to having an equality between generation and "
+"load so that the demand is satisfied without any excess of production:"
+msgstr ""
+"L'équilibrage du réseau revient à avoir une égalité entre la production et "
+"la consommation afin que la demande soit satisfaite sans aucun excès de "
+"prodution :"
+
+#: ../../simulator/math.md:515 d559ed1c84c14cd7ab0ca0efa449524b
+#, python-brace-format
+msgid ""
+"\n"
+"\\sum_{i \\in GROUPE}(P_i^0 + p_i^+ + p_i^-) - \\sum_{i \\in CONSO}(C_i^0 - c_i^-) = 0\n"
+msgstr ""
+"\n"
+"\\sum_{i \\in GROUPE}(P_i^0 + p_i^+ + p_i^-) - \\sum_{i \\in CONSO}(C_i^0 - c_i^-) = 0\n"
+
+#: ../../simulator/math.md:519 138c42844cd748f59b15c38bf283b10f
+msgid "**Supply-demand balance per synchronous area**"
+msgstr "**Équilibrage Offre-Demande par zone synchrone**"
+
+#: ../../simulator/math.md:521 6d29b804e2e24d4da9a20d4a5d709974
+msgid ""
+"The network is made of nodes, distributed in synchronous areas. HVDC lines "
+"can serve as interconnections between these synchronous areas, and the power"
+" transmitted by these interconnections can be varied."
+msgstr ""
+"Le réseau est composé de nœuds, se répartissant dans des zones synchrones. "
+"Les Lignes à Courant Continu peuvent servir d’interconnexion entre ces zones"
+" synchrones, et il est possible de faire varier la puissance transmise par "
+"ces interconnexions."
+
+#: ../../simulator/math.md:524 4d0cd11498ac416cb19a0ba360e8a68c
+msgid "Hence, $\\forall zc \\in ZC$:"
+msgstr "Dès lors, $\\forall zc \\in ZC$ :"
+
+#: ../../simulator/math.md:526 2ee7899fe2b9411e86e10730ea2405a3
+msgid ""
+"\n"
+"\\sum_{i \\in GROUPE_{zc}}(P_i^0 + p_i^+ + p_i^-) - \\sum_{i \\in CONSO_{zc}}(C_i^0 - c_i^-) + \\sum_{i \\in LCC_{zc}^+}(Lcc_i^{0} + lcc_i^ + lcc_i^-) - \\sum_{i \\in LCC_{zc}^-}(Lcc_i^{0} + lcc_i^ + lcc_i^-) = 0\n"
+msgstr ""
+"\n"
+"\\sum_{i \\in GROUPE_{zc}}(P_i^0 + p_i^+ + p_i^-) - \\sum_{i \\in CONSO_{zc}}(C_i^0 - c_i^-) + \\sum_{i \\in LCC_{zc}^+}(Lcc_i^{0} + lcc_i^ + lcc_i^-) - \\sum_{i \\in LCC_{zc}^-}(Lcc_i^{0} + lcc_i^ + lcc_i^-) = 0\n"
+
+#: ../../simulator/math.md:530 e95994c4af864563b191e69ded9789ce
+msgid "**Objective function**"
+msgstr "**Fonction objectif**"
+
+#: ../../simulator/math.md:532 37621905806c455ea97c4877922d7528
+msgid ""
+"\n"
+"min \\sum_{i \\in GROUPE}(p_i^+ \\cdot \\Gamma_{i_{ad}}^+ + p_i^- \\cdot \\Gamma_{i_{ad}}^-) + \\sum_{i \\in CONSO}(|c_i^-|\\cdot \\Gamma_i^{conso}) + \\sum_{i \\in LCC}(lcc_i^+ + lcc_i^-) \\cdot \\Gamma^{LCC}\n"
+msgstr ""
+"\n"
+"min \\sum_{i \\in GROUPE}(p_i^+ \\cdot \\Gamma_{i_{ad}}^+ + p_i^- \\cdot \\Gamma_{i_{ad}}^-) + \\sum_{i \\in CONSO}(|c_i^-|\\cdot \\Gamma_i^{conso}) + \\sum_{i \\in LCC}(lcc_i^+ + lcc_i^-) \\cdot \\Gamma^{LCC}\n"
+
+#: ../../simulator/math.md:536 5171c003f55c4fd782dc61d78f94e1d5
+msgid "Mathematical model of the *Redispatching phase*"
+msgstr "Modèle mathématique de la *Redispatching phase*"
+
+#: ../../simulator/math.md:538 fbc6f3970b6640658e229362bb6165af
+msgid ""
+"During this phase, we add the consideration of the network via the "
+"management of flows on the lines. All the data, variables and constraints of"
+" the *Adequacy* problem are kept and we add some elements to them: **none of"
+" the previous constraints is affected**. <o>Only the value of some "
+"parameters may be modified.</o>"
+msgstr ""
+"Lors de cette phase, nous ajoutons la prise en compte du réseau via la "
+"gestion des flux sur les lignes. L'ensemble des données, variables et "
+"contraintes du problème d'*Adequacy* sont gardées et nous y ajoutons "
+"certains éléments : **aucune des contraintes précédentes n'est affectée**. "
+"<o>Seule la valeur de certains paramètres peut être modifiée.</o>"
+
+#: ../../simulator/math.md:542 ccf0052965f34830aca8672c0e670a0f
+msgid ""
+"As a result, flow constraints appear, but also constraints on the PSTs, "
+"LCCs, remedial actions and contingencies."
+msgstr ""
+"De ce fait, les contraintes de transit apparaissent, mais aussi sur les TDs,"
+" LCCs, parades et incidents."
+
+#: ../../simulator/math.md:546 8651b634c8fd4e91a4a9e904f46951d6
+msgid "Defined in the section [Generators](#prod_var)"
+msgstr "Définies dans la section [Groupes](#prod_var)"
+
+#: ../../simulator/math.md:547 7da8ab8e847943ae8b5586df89285740
+msgid "[Generator coupling constraint](#coup_grp_ctr)"
+msgstr "[Contrainte de couplage des groupes](#coup_grp_ctr)"
+
+#: ../../simulator/math.md:548 17245da3b58140adb980fc569e6c3bbb
+msgid "[Curative changes limitation constraint](#lim_cur_ctr)"
+msgstr "[Contrainte de limitation des changements curatifs](#lim_cur_ctr)"
+
+#: ../../simulator/math.md:550 e3cae96772fc4c408d7f9788e105ea30
+msgid "Defined in the section [Loads](#conso_var)"
+msgstr "Définies dans la section [Consommations](#conso_var)"
+
+#: ../../simulator/math.md:551 fb016b4fa9d1468988e0ffc7a9e70fe6
+msgid "[Load coupling constraint](#coup_conso_ctr)"
+msgstr "[Contrainte de couplage des consos](#coup_conso_ctr)"
+
+#: ../../simulator/math.md:553 0433b7bf353d4e9fa15ca66bdc97cac0
+msgid "Defined in the section [Remedial actions](#parades_var)"
+msgstr "Définies dans la section [Parades](#parades_var)"
+
+#: ../../simulator/math.md:554 6d9f88ac2fd8455dabe2e077cfede7c4
+msgid "[Remedial action uniqueness constraint](#unicity_prd_ctr)"
+msgstr "[Contrainte d'unicité des parades](#unicity_prd_ctr)"
+
+#: ../../simulator/math.md:555 7c5bb52517534c2faaddc5fb81f42ff2
+msgid "[Remedial action usage constraint](#usage_prd_ctr)"
+msgstr "[Contrainte d'utilisation des parades](#usage_prd_ctr)"
+
+#: ../../simulator/math.md:556 17b2fdacbc194d8289d79d83acc9b8e1
+msgid "[Lost pockets valuation constraint](#val_prd_ctr)"
+msgstr "[Contrainte de valorisation des poches perdues](#val_prd_ctr)"
+
+#: ../../simulator/math.md:558 a9223c6b99f3441290ee19c3055032b5
+msgid "New constraints"
+msgstr "Nouvelles contraintes"
+
+#: ../../simulator/math.md:560 30bc8d551a6d47dc81b61c413290d907
+msgid "**Supply-demand balance in curative**"
+msgstr "**Équilibrage Offre-Demande en curatif**"
+
+#: ../../simulator/math.md:562 8ca6faa0a7cf4798bc0106b4135e04da
+msgid ""
+"Within this phase, the balance between generation and load must also be "
+"respected in curative, whatever the contingency."
+msgstr ""
+"Au sein de cette phase, l'équilibre entre production et consommation doit "
+"aussi être respecté en curatif, quel que soit l'incident."
+
+#: ../../simulator/math.md:565 c9da328372ca41078cba509513d88e10
+msgid "$\\forall inc \\in INCIDENT, \\forall zc \\in ZC$:"
+msgstr "$\\forall inc \\in INCIDENT, \\forall zc \\in ZC$ :"
+
+#: ../../simulator/math.md:567 fcc35f8c45a94d2685a0052ae6b9410a
+msgid ""
+"\n"
+"\\sum_{i \\in CURATIF_{inc} \\cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) + \\sum_{i \\in CURATIF_{inc} \\cap CONSO_{zc}}c_{i_{inc}}^{-} + \\sum_{i \\in CURATIF_{inc} \\cap LCC_{zc}^{+}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) - \\sum_{i \\in CURATIF_{inc} \\cap LCC_{zc}^{-}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) = 0\n"
+msgstr ""
+"\n"
+"\\sum_{i \\in CURATIF_{inc} \\cap GROUPE_{zc}}(p_{i_{inc}}^+ -  p_{i_{inc}}^-) + \\sum_{i \\in CURATIF_{inc} \\cap CONSO_{zc}}c_{i_{inc}}^{-} + \\sum_{i \\in CURATIF_{inc} \\cap LCC_{zc}^{+}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) - \\sum_{i \\in CURATIF_{inc} \\cap LCC_{zc}^{-}}(lcc_{i_{inc}}^+ -  lcc_{i_{inc}}^-) = 0\n"
+
+#: ../../simulator/math.md:571 7502c663b71f4f0ca691eb64912d997f
+msgid ""
+"**N.B.**: Expressed this way, this constraint should be wrong in the case of"
+" the loss of a generator, because it maintains the EOD whereas the loss of a"
+" generator would break the balance. In practice, METRIX provides in pre-"
+"processing a “half regulation band” on each generator, depending on the most"
+" dimensioning generator contingency. Before each resolution, METRIX lowers "
+"the Pmax of each generator by its “half regulation band”. When a generator "
+"is lost, the lost production is then distributed over all the other "
+"available generators."
+msgstr ""
+"**N.B.** : Exprimée ainsi, cette contrainte devrait être fausse en cas de "
+"perte d'un groupe, car elle maintient l’EOD alors qu’une perte de groupe "
+"briserait l’équilibre. Dans les faits, METRIX prévoit en pré-traitement une "
+"“demi-bande de réglage” sur chaque groupe, en fonction de l’incident groupe "
+"le plus dimensionnant. Avant chaque résolution, METRIX abaisse la Pmax de "
+"chaque groupe de sa “demi-bande de réglage”. Lors de la perte d’un groupe, "
+"on ventile alors la production perdue sur l’ensemble des autres groupes "
+"disponibles."
+
+#: ../../simulator/math.md:577 be869d4e928142918112781310ace620
+msgid "**Flow threshold constraints**"
+msgstr "**Contraintes des seuils de transit**"
+
+#: ../../simulator/math.md:579 46ff97b2301d46709bc036ded5e9dfe7
+msgid ""
+"The flow on the lines flagged in the data as “To be monitored” is computed "
+"at each micro-iteration of the resolution. Indeed, these lines must respect "
+"three thresholds:"
+msgstr ""
+"Le transit sur les lignes notifiées dans les données comme étant “À "
+"surveiller” va être calculé à chaque micro-itération de la résolution. En "
+"effet, ces lignes doivent respecter trois seuils :"
+
+#: ../../simulator/math.md:581 fbbf4ade6547494a8335d99b4771aed5
+msgid "In N"
+msgstr "En N"
+
+#: ../../simulator/math.md:582 8bd0c3c4366e4d7988c3123df25ab640
+msgid "In N-k after curative actions"
+msgstr "En N-k après actions curatives"
+
+#: ../../simulator/math.md:583 5cd52a7a367246d79ed741a7f8edb3c6
+msgid ""
+"In N-k after contingency, but before curative actions or switching "
+"operations (i.e. ITAM threshold)"
+msgstr ""
+"En N-k après incident, mais avant les actions curatives ou manœuvres (i.e. "
+"seuil ITAM)"
+
+#: ../../simulator/math.md:585 e3f3aac07f4344609da072d5ff1c52ef
+msgid ""
+"If one of these thresholds is not respected at the end of the micro-"
+"iteration, the associated constraint is added. For each of these situations "
+"(denoted $situ$), and $\\forall i \\in QUADRIPOLE$ (i.e. for every line):"
+msgstr ""
+"Si un de ces seuils n’est pas respecté à la fin de la micro-itération, la "
+"contrainte associée est rajoutée. Pour chacune de ces situations (notée "
+"$situ$), et $\\forall i \\in QUADRIPOLE$ (i.e. pour toute ligne) :"
+
+#: ../../simulator/math.md:588 a1e8384fbc7b4f668c39dcbf07d90732
+#, python-brace-format
+msgid ""
+"\n"
+"transit_i^{situ} \\leq Max_i^{situ}\n"
+msgstr ""
+"\n"
+"transit_i^{situ} \\leq Max_i^{situ}\n"
+
+#: ../../simulator/math.md:592 409558f50b754d13bca3747cd7a005a7
+#, python-brace-format
+msgid ""
+"This flow is determined via the influence of a set of variables "
+"$VARINFLU^{situ}$ on the flow of $i$. This set depends on the situation "
+"$situ$ considered and, in the case of an N-k situation, on the contingency "
+"concerned. Each variable of this set is thus associated with an influence "
+"coefficient. These coefficients depend on the topology of the network in "
+"situation $situ$ and are stored in the set $COEFINFLU_i^{situ}$. These two "
+"sets have the same cardinality, denoted $N$, since every variable has, by "
+"definition, an influence and therefore an influence coefficient. Hence:"
+msgstr ""
+"Ce transit est déterminé via l'influence d'un ensemble de variables "
+"$VARINFLU^{situ}$ sur le transit de $i$. Cet ensemble dépendra de la "
+"situation $situ$ considérée et, dans le cas d'une situtation de type N-k, de"
+" l'incident concerné. Chaque variable de cete ensemble va ainsi être "
+"associée à un coefficient d'influence. Ces coefficients dépendent de la "
+"tologie du réseau en situation $situ$ et sont stockés dans l'ensemble "
+"$COEFINFLU_i^{situ}$. Ces deux ensembles sont de même cardinalité, notée "
+"$N$, puisque toute variable a, par définition, une influence et donc un "
+"coefficient d'influence. De ce fait :"
+
+#: ../../simulator/math.md:594 9c437ee0e0c84de7b273eac49d2c56aa
+#, python-brace-format
+msgid ""
+"\n"
+"transit_i^{situ} = \\sum_{j = 1}^N COEFINFLU_i^{situ}[j] \\cdot VARINFLU^{situ}[j]\n"
+msgstr ""
+"\n"
+"transit_i^{situ} = \\sum_{j = 1}^N COEFINFLU_i^{situ}[j] \\cdot VARINFLU^{situ}[j]\n"
+
+#: ../../simulator/math.md:598 9baf80aed36f4f838efdbfb3ad2fe3da
+#, python-brace-format
+msgid ""
+"For a given line, the value of the maximum $Max_i^{situ}$, the influence "
+"coefficients $COEFINFLU_i^{situ}$ (because the network topology can change "
+"with the contingencies), and above all the set $VARINFLU^{situ}$, change "
+"from one situation to another. More precisely, depending on the situation "
+"the set $VARINFLU^{situ}$ contains:"
+msgstr ""
+"Pour une même ligne, la valeur du maximum $Max_i^{situ}$, les coefficients "
+"d'influence $COEFINFLU_i^{situ}$ (car la topologie du réseau peut changer "
+"avec les incidents), et surtout l'ensemble $VARINFLU^{situ}$, vont changer "
+"d'une situation à l'autre. Plus précisément, selon la situation l'ensemble "
+"$VARINFLU^{situ}$ contient :"
+
+#: ../../simulator/math.md:601 4c93ee2e93c545bba1115e00c85f6dc3
+msgid ""
+"In N: all the preventive variables of the generators, loads, HVDCs and PSTs."
+msgstr ""
+"En N : toutes les variables préventives des groupes, consommations, HVDCs et"
+" TDs."
+
+#: ../../simulator/math.md:602 a0a6c70210224dae8eccdab171a7fb6e
+msgid ""
+"In N-k after curative actions: all the continuous preventive variables of "
+"the generators, loads, HVDCs and PSTs that can act in preventive, as well as"
+" the continuous curative variables of these same elements that can act in "
+"curative on the contingency concerned."
+msgstr ""
+"En N-k après actions curatives : toutes les variables préventives continues "
+"des groupes, consommations, HVDCs et TDs pouvant agir en préventif, ainsi "
+"que les variables curatives continues de ces mêmes éléments pouvant agir en "
+"curatif sur l’incident concerné."
+
+#: ../../simulator/math.md:605 e03b123c891b404f9f6a605fafb286d1
+msgid ""
+"In N-k after a contingency, but before curative actions: all the preventive "
+"variables of the generators, loads, HVDCs and PSTs, as well as the "
+"continuous curative variables of all the fictitious PSTs of the HVDCs in AC "
+"emulation."
+msgstr ""
+"En N-k après un incident, mais avant les actions curatives : toutes les "
+"variables préventives des groupes, consommations, HVDCs et TDs, ainsi que "
+"les variables curatives continues de tous les TDs fictifs des HVDCs en "
+"émulation AC."
+
+#: ../../simulator/math.md:609 a898d1ac4ccc4865aad913aff26e1da9
+msgid "<b>Case of contingencies with remedial actions causing overloads</b>"
+msgstr "<b>Cas des incidents avec parades provoquant des surcharges</b>"
+
+#: ../../simulator/math.md:611 2157581e59314910b38eb7bb2f758a05
+msgid ""
+"The formulation of the flow constraint is different when remedial actions "
+"can be used."
+msgstr ""
+"La formulation de la contrainte de transit va être différente lorsque des "
+"parades peuvent être utilisées."
+
+#: ../../simulator/math.md:613 0053145088c74183bccc3361c38d3b48
+#, python-brace-format
+msgid ""
+"Like the other flow constraints, these constraints are added progressively "
+"over the micro-iterations, as soon as a constraint on a monitored line is "
+"detected. If a contingency having remedial actions as curative actions "
+"generates a constraint on a quadripole, then constraints for each remedial "
+"action of this contingency are also added. Let $inc \\in INCIDENT$ be such a"
+" contingency, $quad \\in QUADRIPOLE$ the constrained quadripole and $prd "
+"\\in PARADE \\cap CURATIF_{inc}$ a remedial action that is curative for this"
+" contingency. Let us also set $M$ a very large value, and $situ$ the "
+"situation \"N-k after curative actions\". Two scenarios are possible:"
+msgstr ""
+"Tout comme les autres contraintes de transit, ces contraintes seront "
+"ajoutées au fur et à mesure des micro-itérations, dès qu’une contrainte sur "
+"une ligne à surveiller est détectée. Si un incident possédant des parades en"
+" actions curatives engendre une contrainte sur un quadripôle, alors des "
+"contraintes pour chaque parade de cet incident seront également ajoutées. "
+"Soit $inc \\in INCIDENT$ un tel incident, $quad \\in QUADRIPOLE$ le "
+"quadripôle en contrainte et $prd \\in PARADE \\cap CURATIF_{inc}$ une parade"
+" qui est curative de cet incident. Posons aussi $M$ une très grande valeur, "
+"et $situ$ la situation \"N-k après actions curatives\". Deux scénarios sont "
+"possibles :"
+
+#: ../../simulator/math.md:620 ad10625155bf45d6b19eba7831d5300b
+msgid ""
+"either the remedial action $prd$ opens the quadripole $quad$, in which case "
+"there is no reason to introduce a flow constraint linking $quad$ and $prd$."
+msgstr ""
+"soit la parade $prd$ ouvre le quadripôle $quad$, dans ce cas il n'y a pas de"
+" raison d'introduire une contrainte de transit liant $quad$ et $prd$."
+
+#: ../../simulator/math.md:622 adb6cd2afc85413a875a6979faa1357a
+msgid "otherwise, the following constraint is introduced:"
+msgstr "sinon, la contrainte suivante est introduite :"
+
+#: ../../simulator/math.md:624 ../../simulator/math.md:656
+#: 1033b6af46f545a4abae21f88f4c7d32 d0c5526db18745ddade7239bc09dd5f6
+#, python-brace-format
+msgid ""
+"\n"
+"transit_{quad}^{situ} + M \\cdot act_{prd}^{inc} \\leq Max_{quad}^{situ} + M\n"
+msgstr ""
+"\n"
+"transit_{quad}^{situ} + M \\cdot act_{prd}^{inc} \\leq Max_{quad}^{situ} + M\n"
+
+#: ../../simulator/math.md:628 a502a7c5444547a683145fcd349213e2
+#, python-brace-format
+msgid ""
+"With $transit_{quad}^{situ}$ the flow on $quad$ when $prd$ is activated. The"
+" flow on $quad$ is therefore only constrained (with respect to "
+"$Max_{quad}^{situ}$) if $prd$ is activated (which can be the \"Do nothing\" "
+"remedial action)."
+msgstr ""
+"Avec $transit_{quad}^{situ}$ le transit sur $quad$ lorsque $prd$ est "
+"activée. Le transit sur $quad$ est donc seulement contraint (par rapport à "
+"$Max_{quad}^{situ}$) si $prd$ est activée (qui peut être la parade \"Ne rien"
+" faire\")."
+
+#: ../../simulator/math.md:631 210f4a6383b94174a16c3f87329a2d2b
+#, python-brace-format
+msgid ""
+"In addition, if the remedial action has a non-empty list "
+"$QUADNECESSAIRES_{prd}$ (i.e. a set of lines of which at least one must be "
+"constrained for $prd$ to be activable):"
+msgstr ""
+"En outre, si la parade possède une liste $QUADNECESSAIRES_{prd}$ non vide "
+"(i.e. un ensemble de lignes dont au moins une doit être en contrainte pour "
+"que $prd$ soit activable) :"
+
+#: ../../simulator/math.md:633 69d9f0f6605c49bfa90a668953d7418f
+#, python-brace-format
+msgid ""
+"If $quad \\notin QUADNECESSAIRES_{prd}$, then $prd$ is, at first, not "
+"activable on $inc$: $act_{prd}^{inc} = 0$. $prd$ becomes activable again as "
+"soon as $inc$ causes an overload on another quadripole $quad' \\in "
+"QUADNECESSAIRES_{prd}$."
+msgstr ""
+"Si $quad \\notin QUADNECESSAIRES_{prd}$, alors $prd$ n'est, dans un premier "
+"temps, pas activable sur $inc$ : $act_{prd}^{inc} = 0$. $prd$ redeviendra "
+"activable, dès lors que $inc$ provoquera une surcharge sur un autre "
+"quadripôle $quad' \\in QUADNECESSAIRES_{prd}$."
+
+#: ../../simulator/math.md:636 beef8728740147c7855ec90e046af484
+msgid ""
+"Otherwise, the following remedial action activation constraint is added:"
+msgstr "Sinon, la contrainte d'activation de la parade suivante est ajoutée :"
+
+#: ../../simulator/math.md:638 9ef25e7dc99b43a6b5bd3050ad4b4e65
+#, python-brace-format
+msgid ""
+"\n"
+"transit_{quad}^{situ} - M \\cdot act_{prd}^{inc} \\geq Max_{quad}^{situ} - M\n"
+msgstr ""
+"\n"
+"transit_{quad}^{situ} - M \\cdot act_{prd}^{inc} \\geq Max_{quad}^{situ} - M\n"
+
+#: ../../simulator/math.md:642 db3f41fe92c84c329d7a91a5c6059150
+msgid "This constraint only makes sense if $quad$ is overloaded."
+msgstr "Cette contrainte n'a de sens que si $quad$ est en surcharge."
+
+#: ../../simulator/math.md:644 3cdc4174255f4793ab0f18dfdcadbadf
+#, python-brace-format
+msgid ""
+"If the conditions required to have the two previous flow constraints are "
+"met, then using the remedial action amounts to having the constraint "
+"$transit_{quad}^{situ} = Max_{quad}^{situ}$. This is translated "
+"computationally as $transit_{quad}^{situ} \\in [Max_{quad}^{situ} - "
+"\\epsilon; Max_{quad}^{situ} + \\epsilon]$ with $\\epsilon > 0 $ and very "
+"small. Functionally, this means that one must be very close to the overload "
+"in order to be able to use the remedial action without really being in "
+"overload."
+msgstr ""
+"Si les conditions nécessaires pour avoir les deux contraintes de transit "
+"précédentes sont réunies, alors utiliser la parade revient à avoir la "
+"contrainte $transit_{quad}^{situ} = Max_{quad}^{situ}$. Ce qui se traduit "
+"informatiquement par $transit_{quad}^{situ} \\in [Max_{quad}^{situ} - "
+"\\epsilon; Max_{quad}^{situ} + \\epsilon]$ avec $\\epsilon > 0 $ et très "
+"petit. Cela se traduit fonctionnellement par le fait qu'il faille être très "
+"proche de la surcharge afin de pouvoir utiliser la parade sans vraiment "
+"l'être."
+
+#: ../../simulator/math.md:650 5c05b50859f242bab98d86579068e8d2
+msgid "<b>Case of remedial actions causing overloads</b>"
+msgstr "<b>Cas des parades provoquant des surcharges</b>"
+
+#: ../../simulator/math.md:652 0505b8c38b734378b7aee5f9e274a641
+#, python-brace-format
+msgid ""
+"When used to fix an overload generated by a contingency $inc$, a remedial "
+"action can also cause overloads on another quadripole $quad$. Thus, "
+"$\\forall prd \\in PARADE \\cap CURATIF_{inc}$ s.t. $prd$ does not cut "
+"$quad$, the following constraint is added:"
+msgstr ""
+"En étant utilisée pour corriger une surcharge générée par un incident $inc$,"
+" une parade peut également provoquer des surcharges sur un autre quadripôle "
+"$quad$. Ainsi, $\\forall prd \\in PARADE \\cap CURATIF_{inc}$ tq $prd$ ne "
+"coupe pas $quad$, la contrainte suivante est ajoutée :"
+
+#: ../../simulator/math.md:660 0b3d1776012a43dcbb9552d01b0bff18
+msgid ""
+"We do not worry about the activation variables or the activation constraints"
+" since it is not a contingency that causes the overload, but a remedial "
+"action. Only the constraints making it possible to respect the flow "
+"threshold of the quadripole are added if the remedial actions are used."
+msgstr ""
+"Nous ne nous préoccupons pas des variables d’activation ou des contraintes "
+"d’activation puisque ce n’est pas un incident qui provoque la surcharge, "
+"mais une parade. Seules les contraintes permettant de respecter le seuil de "
+"transit du quadripôle sont ajoutées si les parades sont utilisées."
+
+#: ../../simulator/math.md:664 5c05b50859f242bab98d86579068e8d2
+msgid "<b>Constraint on the number of curative actions</b>"
+msgstr "<b>Contrainte sur le nombre d’actions curatives</b>"
+
+#: ../../simulator/math.md:666 21f417cc8a60402eb5992b66342151c9
+msgid ""
+"METRIX imposes a maximum number of curative actions per contingency. "
+"Fictitious PSTs are not counted, and the lines opened or closed by the "
+"remedial actions are counted rather than the activated remedial actions."
+msgstr ""
+"METRIX impose un nombre maximal d’actions curatives par incident. Les TD "
+"fictifs ne sont pas comptabilisés, et les lignes coupées ou fermées par les "
+"parades sont comptabilisées plutôt que les parades activées."
+
+#: ../../simulator/math.md:669 614505db59a64122b333b3bba6ef14ca
+#, python-brace-format
+msgid ""
+"Let $inc \\in INCIDENT, prd \\in PARADE \\cap CURATIF_{inc}$. Let us denote "
+"respectively $NbLignesACouper$, $NbLignesAFermer$ and $NbLignesCoupees$ the "
+"cardinalities of the sets $COUPLAGEOUVRIR_{prd}$, $COUPLAGEFERMER_{prd}$ and"
+" $DEFAUTQUAD_{inc}$."
+msgstr ""
+"Soit $inc \\in INCIDENT, prd \\in PARADE \\cap CURATIF_{inc}$. Notons "
+"respectivement $NbLignesACouper$, $NbLignesAFermer$ et $NbLignesCoupees$ les"
+" cardinalités des ensembles $COUPLAGEOUVRIR_{prd}$, $COUPLAGEFERMER_{prd}$ "
+"et $DEFAUTQUAD_{inc}$."
+
+#: ../../simulator/math.md:672 644d53a1e5ab42a09f35f0f09c466c1c
+msgid ""
+"We thus obtain the number of actions: $NbActions = NbLignesACouper + "
+"NbLignesAFermer - NbLignesCoupees$."
+msgstr ""
+"Nous obtenons ainsi le nombre d'actions : $NbActions = NbLignesACouper + "
+"NbLignesAFermer - NbLignesCoupees$."
+
+#: ../../simulator/math.md:674 b4655546ad9e4dacb4250921bf5076e7
+msgid "Likewise, let us denote:"
+msgstr "De même, notons :"
+
+#: ../../simulator/math.md:675 4c572fda17cc43999a0488b73e6081ef
+#, python-brace-format
+msgid ""
+"$ECSTF = CURATIF_{inc}/TDF$ the set of curative elements of the contingency "
+"without the fictitious PSTs."
+msgstr ""
+"$ECSTF = CURATIF_{inc}/TDF$ l’ensemble des éléments curatifs de l’incident "
+"sans les TDs fictifs."
+
+#: ../../simulator/math.md:676 343b7c6dc50440b682800b56b65c87ed
+msgid ""
+"$CoutAction$ a set of coefficients, with the same cardinality as $ECSTF$, "
+"s.t. $\\forall j \\in ECSTF$:"
+msgstr ""
+"$CoutAction$ un ensemble de coefficients, de même cardinalité que $ECSTF$, "
+"tq $\\forall j \\in ECSTF$ :"
+
+#: ../../simulator/math.md:677 8d2376ac3fbc44b487060e06536586cd
+msgid "$CoutAction[j] = 0.5$ if $j$ is a generator or a load;"
+msgstr "$CoutAction[j] = 0.5$ si $j$ est un groupe ou une conso ;"
+
+#: ../../simulator/math.md:678 5c08042f1c7b4faeacdb31d0c26abd4c
+msgid "$CoutAction[j] = 1$ otherwise."
+msgstr "$CoutAction[j] = 1$ sinon."
+
+#: ../../simulator/math.md:680 33d68e3303044d5a95dd8719e1b57798
+msgid ""
+"Finally, let us denote $NbMaxActCur$ the maximum number of curative actions "
+"allowed on a contingency."
+msgstr ""
+"Enfin, notons $NbMaxActCur$ le nombre maximum d’actions curatives autorisées"
+" sur un incident."
+
+#: ../../simulator/math.md:682 cb4f9a422d3f406783ccbbd9b7ee23b5
+msgid "The constraint is thus formulated as:"
+msgstr "La contrainte de formule ainsi :"
+
+#: ../../simulator/math.md:684 ecfd8226069b4449a37b345ac0399e7d
+#, python-brace-format
+msgid ""
+"\n"
+"NbActions \\cdot act_{prd}^{inc} + \\sum_{j \\in ECSTF} act_{j}^{inc} \\cdot CoutAction[j] < NbMaxActCur\n"
+msgstr ""
+"\n"
+"NbActions \\cdot act_{prd}^{inc} + \\sum_{j \\in ECSTF} act_{j}^{inc} \\cdot CoutAction[j] < NbMaxActCur\n"
+
+#: ../../simulator/math.md:688 38445fbc50374ee48002f0ee13a735b1
+msgid "Objective function"
+msgstr "Fonction objectif"
+
+#: ../../simulator/math.md:690 2256b8ea07204a11b64bf4a4e9d4f9db
+#, python-brace-format
+msgid ""
+"Let $\\forall inc \\in INCIDENT, NbCtre_{inc}$ be the number of constraints "
+"due to $inc$. Let us also set:"
+msgstr ""
+"Notons, $\\forall inc \\in INCIDENT, NbCtre_{inc}$ le nombre de contraintes "
+"dues à $inc$. Posons également :"
+
+#: ../../simulator/math.md:692 ac9d9a879d424794a148b55d3654ee02
+msgid ""
+"\n"
+"\\gamma_{inc}^{tot} = \\sum_{i \\in GROUPE \\cap CURATIF_{inc}} (p_{i_{inc}}^+ \\cdot \\Gamma_{i_{red}}^{+} + p_{i_{inc}}^- \\cdot \\Gamma_{i_{red}}^{-}) \\cdot proba_{inc} + \\sum_{i \\in CONSO \\cap CURATIF_{inc}} (|c_{i_{inc}}^-| \\cdot \\Gamma_{i_{cur}}^{CONSO}) \\cdot proba_{inc} + \\sum_{i \\in LCC \\cap CURATIF_{inc}} (td_{i_{inc}}^+ + td_{i_{inc}}^-) \\cdot \\Gamma^{TD} \\cdot proba_{inc} + \\sum_{prd \\in PARADE \\cap CURATIF_{inc}} (act_{prd}^{inc} \\cdot \\Gamma^{PRD} \\cdot proba_{inc} \\cdot  NbCtre_{inc} + val_{prd}^{inc})\n"
+msgstr ""
+"\n"
+"\\gamma_{inc}^{tot} = \\sum_{i \\in GROUPE \\cap CURATIF_{inc}} (p_{i_{inc}}^+ \\cdot \\Gamma_{i_{red}}^{+} + p_{i_{inc}}^- \\cdot \\Gamma_{i_{red}}^{-}) \\cdot proba_{inc} + \\sum_{i \\in CONSO \\cap CURATIF_{inc}} (|c_{i_{inc}}^-| \\cdot \\Gamma_{i_{cur}}^{CONSO}) \\cdot proba_{inc} + \\sum_{i \\in LCC \\cap CURATIF_{inc}} (td_{i_{inc}}^+ + td_{i_{inc}}^-) \\cdot \\Gamma^{TD} \\cdot proba_{inc} + \\sum_{prd \\in PARADE \\cap CURATIF_{inc}} (act_{prd}^{inc} \\cdot \\Gamma^{PRD} \\cdot proba_{inc} \\cdot  NbCtre_{inc} + val_{prd}^{inc})\n"
+
+#: ../../simulator/math.md:696 eda90259cf76479e85e736ae60a7fe2d
+msgid "We obtain the following objective function:"
+msgstr "Nous obtenons la fonction objectif suivante :"
+
+#: ../../simulator/math.md:698 d20384c032e84d9ab2b8a97a9972a408
+msgid ""
+"\n"
+"min \\sum_{i \\in GROUPE} (p_{i}^+ \\cdot \\Gamma_{i_{red}}^{+} + p_{i}^- \\cdot \\Gamma_{i_{red}}^{-}) + \\sum_{i \\in CONSO} (|c_{i}^-| \\cdot \\Gamma_{i}^{CONSO}) + \\sum_{i \\in LCC} (lcc_{i}^+ + lcc_{i}^-) \\cdot \\Gamma^{LCC} + \\sum_{i \\in TD} (td_{i}^+ + td_{i}^-) \\cdot \\Gamma^{TD} + \\sum_{inc \\in INCIDENT} \\gamma_{inc}^{tot}\n"
+msgstr ""
+"\n"
+"min \\sum_{i \\in GROUPE} (p_{i}^+ \\cdot \\Gamma_{i_{red}}^{+} + p_{i}^- \\cdot \\Gamma_{i_{red}}^{-}) + \\sum_{i \\in CONSO} (|c_{i}^-| \\cdot \\Gamma_{i}^{CONSO}) + \\sum_{i \\in LCC} (lcc_{i}^+ + lcc_{i}^-) \\cdot \\Gamma^{LCC} + \\sum_{i \\in TD} (td_{i}^+ + td_{i}^-) \\cdot \\Gamma^{TD} + \\sum_{inc \\in INCIDENT} \\gamma_{inc}^{tot}\n"

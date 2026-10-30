@@ -8,315 +8,315 @@ y { color: yellow}
 (io)=
 # Inputs and outputs
 
-## Sommaire
+## Contents
 1. [Introduction](#io-intro)
-2. [Données d’entrée au format *json*](#io-inputs-json)
-    1. [Options de calcul](#io-computing-options)
-    2. [Options de résultats](#io-results-options)
-    3. [Régions](#io-regions)
-    4. [Informations nodales](#io-nodal-information)
-        1. [Sommets](#io-summits)
-        2. [Consommations](#io-loads)
-    5. [Groupes](#io-generators)
-    6. [Quadripôles](#io-quadripoles)
-        1. [Quadripôles élémentaires](#io-elementary-quadripoles)
-        2. [Déphaseurs](#io-phase-shifters)
-    7. [Lignes à courant continu](#io-dc-lines)
-    8. [Incidents N-1 et N-k](#io-contingencies)
-    9. [Curatif](#io-curative)
-    10. [Sections surveillées](#io-monitored-sections)
-    11. [Variables couplées](#io-coupled-variables)
-    12. [Variations marginales détaillées](#io-detailed-marginal-variations)
-3. [Variantes](#io-variants)
-4. [Parades](#io-remedial-actions)
-5. [Données de sorties](#io-outputs)
-   1. [Fichier de résultat](#io-result-file)
-      1. [Tableaux descriptifs de la situation](#io-detailed-situation-tables)
-      2. [Tableaux de résultats](#io-result-table)
-   2. [Fichier de logs](#io-logs)
-   3. [Fichier LODF](#io-lodf)
-   4. [Fichier PTDF](#io-ptdf)
-   5. [Fichier MPS](#io-mps)
+2. [Input data in *json* format](#io-inputs-json)
+    1. [Computation options](#io-computing-options)
+    2. [Results options](#io-results-options)
+    3. [Regions](#io-regions)
+    4. [Nodal information](#io-nodal-information)
+        1. [Vertices](#io-summits)
+        2. [Loads](#io-loads)
+    5. [Generators](#io-generators)
+    6. [Branches](#io-quadripoles)
+        1. [Elementary branches](#io-elementary-quadripoles)
+        2. [Phase shifters](#io-phase-shifters)
+    7. [HVDC lines](#io-dc-lines)
+    8. [N-1 and N-k contingencies](#io-contingencies)
+    9. [Curative](#io-curative)
+    10. [Monitored sections](#io-monitored-sections)
+    11. [Coupled variables](#io-coupled-variables)
+    12. [Detailed marginal variations](#io-detailed-marginal-variations)
+3. [Variants](#io-variants)
+4. [Remedial actions](#io-remedial-actions)
+5. [Output data](#io-outputs)
+   1. [Results file](#io-result-file)
+      1. [Tables describing the situation](#io-detailed-situation-tables)
+      2. [Results tables](#io-result-table)
+   2. [Log file](#io-logs)
+   3. [LODF file](#io-lodf)
+   4. [PTDF file](#io-ptdf)
+   5. [MPS file](#io-mps)
 
 (io-intro)=
 ## Introduction
-Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé dans la plateforme ImaGrid). Suite à
-l’intégration dans ImaGrid, certains formats utilisés initialement dans la plate-forme ASSESS ont été conservés ; à
-savoir CSV pour les variantes, parades et pour les tableaux des sorties. Les autres données d'entrée ont, quant à elle,
-été mises sous forme *json*, au sein desquelles certaines ont été ajoutées et d’autres rendues optionnelles. Le format
-de données de METRIX v6 n’est donc pas compatible avec les versions précédentes du modèle.
+This document describes the inputs and outputs of the METRIX v6 model (used in the ImaGrid platform). Following its
+integration into ImaGrid, some formats initially used in the ASSESS platform have been kept; namely
+CSV for the variants, the remedial actions and the output tables. The other input data have, for their part,
+been put into *json* form, within which some have been added and others made optional. The data
+format of METRIX v6 is therefore not compatible with previous versions of the model.
 
 (io-inputs-json)=
-## Données d’entrée au format *json*
-La passerelle ImaGrid pour METRIX prend en entrée un fichier réseau au format IIDM et un script de configuration au
-format Groovy. Elle génère un fichier *json* : '*fort.json*'.
+## Input data in *json* format
+The ImaGrid gateway for METRIX takes as input a network file in IIDM format and a configuration script in
+Groovy format. It generates a *json* file: '*fort.json*'.
 
-Les données indiquées en **gras** dans les tableaux suivants doivent toujours être présentes dans les fichiers d’entrée,
-les autres sont optionnelles.
-La valeur par défaut configurée dans METRIX est indiquée entre parenthèses.
-Celles indiquées, quant-à-elles, en <o>orange</o>, sont des données non obligatoires, mais qui provoquent des erreurs de
-segmentation si elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> provoquent des erreurs (cf.
-fichier de logs) si elles ne sont pas renseignées.
+The data shown in **bold** in the following tables must always be present in the input files,
+the others are optional.
+The default value configured in METRIX is given in parentheses.
+Those shown in <o>orange</o>, on the other hand, are non-mandatory data, but they cause segmentation faults
+if they are not filled in. Finally, those shown in <y>yellow</y> cause errors (see
+log file) if they are not filled in.
 
 (io-types)=
-N.B. : Les types de données sont définis par une lettre comme suit <a id="types"></a>:
+N.B.: The data types are defined by a letter as follows <a id="types"></a>:
 - B = *BOOLEAN*
 - C = *STRING*
 - I = *INTEGER*
 - R = *FLOAT*
 
 (io-computing-options)=
-### Options de calcul
-| Nom          | Type | Taille | Description                                                                                                                                                                     |
+### Computation options
+| Name         | Type | Size   | Description                                                                                                                                                                     |
 |:-------------|:-----|:-------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **CGCPERTE** | R    | 1      | Coefficient de perte initial.<br>= lossFactor (0)                                                                                                                               |
-| **UNOMINAL** | I    | 1      | Tension nominale utilisée dans le per-unitage côté ImaGrid.<br>= nominalU (0)                                                                                                   |
-| MODECALC     | I    | 1      | 0 OPF, 1 Load Flow seulement, 2 OPF sans redispatching (avec variables d’écart) et 3 OPF_WITH_OVERLOAD.<br>= computationType (0)                                                |
-| NBMAXMIT     | I    | 1      | Nombre maximum de micro-itérations par variante.<br>= nbMaxIteration (30)                                                                                                       |
-| NBMAXCUR     | I    | 1      | Nombre maximum d’actions curatives par incident. Pas de limitation si la valeur est négative ou nulle.<br>= nbMaxCurativeAction (0)                                             |
-| COUTECAR     | I    | 1      | Coût des variables d’écart<br>= gapVariableCost (10)                                                                                                                            |
-| RELPERTE     | I    | 1      | Nombre maximum de relance(s) pour écart de pertes (valeur par défaut : 0 = pas de relance)<br>= lossNbRelaunch (0)                                                              |
-| SEUILPER     | I    | 1      | Seuil d’écart entre les pertes théoriques et les pertes calculées nécessitant une relance (MW)<br>= lossThreshold (500)                                                         |
-| COUTDEFA     | R    | 1      | Coût par défaut de la défaillance<br>= lossOfLoadCost (13000)                                                                                                                   |
-| MAXSOLVE     | I    | 1      | Temps maximum autorisé pour chaque résolution de solveur. 0 : pas de limite.<br>= maxSolverTime (0)                                                                             |
-| TDPENALI     | R    | 1      | Coût de déphasage des TD dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (déphasage non pénalisé).<br>= pstCostPenality (10-2) |
-| HVDCPENA     | R    | 1      | Coût de transit des HVDC dans la fonction objectif. Une valeur négative ou nulle implique qu’il n’y a pas de coût associé (transit non pénalisé).<br>= hvdcCostPenality (10-1)  |
-| PROBAINC     | R    | 1      | Probabilité des incidents<br>= contingenciesProbability(10-3)                                                                                                                   |
-| TESTITAM     | B    | 1      | Prise en compte de l’instant post-incident<br>= preCurativeThresholds (false)                                                                                                   |
-| INCNOCON     | B    | 1      | Prise en compte des incidents rompant la connexité<br>= outagesBreakingConnexity (false)                                                                                        |
-| PARNOCON     | B    | 1      | Prise en compte des parades rompant la connexité<br>= remedialActionsBreakingConnexity (false)                                                                                  |
-| PAREQUIV     | B    | 1      | Détection des parades équivalentes<br>= analogousRemedialActionDetection(false)                                                                                                 |
-| COUENDCU     | R    | 1      | Coût de l’énergie non distribuée pour un incident rompant la connexité (consommation déconnectée du réseau)<br>= curativeLossOfLoadCost(26000)                                  |
-| COUENECU     | R    | 1      | Coût de l’énergie non évacuée sur incident rompant la connexité (production déconnectée du réseau)<br>= curativeLossOfGenerationCost(100)                                       |
-| LIMCURGR     | I    | 1      | Limite de redispatching curatif<br>= curativeRedispatchingLimit(-1)                                                                                                             |
-| ADEQUAOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase d’équilibrage<br>= adequacyCostOffset(0)                                                                              |
-| REDISPOF     | I    | 1      | Offset des coûts de groupes et de délestage dans la phase de redispatching<br>= redispatchingCostOffset(0)                                                                      |
-| NULLCOST     | R    | 1      | Coût minimal des groupes et du délestage, appliqué après ajout de l’offset de la phase<br>= generatorMinCost(0.5)                                                               |
+| **CGCPERTE** | R    | 1      | Initial loss coefficient.<br>= lossFactor (0)                                                                                                                                   |
+| **UNOMINAL** | I    | 1      | Nominal voltage used in the per-unit conversion on the ImaGrid side.<br>= nominalU (0)                                                                                          |
+| MODECALC     | I    | 1      | 0 OPF, 1 Load Flow only, 2 OPF without redispatching (with slack variables) and 3 OPF_WITH_OVERLOAD.<br>= computationType (0)                                                   |
+| NBMAXMIT     | I    | 1      | Maximum number of micro-iterations per variant.<br>= nbMaxIteration (30)                                                                                                        |
+| NBMAXCUR     | I    | 1      | Maximum number of curative actions per contingency. No limit if the value is negative or zero.<br>= nbMaxCurativeAction (0)                                                     |
+| COUTECAR     | I    | 1      | Cost of the slack variables<br>= gapVariableCost (10)                                                                                                                           |
+| RELPERTE     | I    | 1      | Maximum number of relaunch(es) for loss gap (default value: 0 = no relaunch)<br>= lossNbRelaunch (0)                                                                            |
+| SEUILPER     | I    | 1      | Threshold of the gap between theoretical losses and computed losses requiring a relaunch (MW)<br>= lossThreshold (500)                                                          |
+| COUTDEFA     | R    | 1      | Default cost of loss of load<br>= lossOfLoadCost (13000)                                                                                                                        |
+| MAXSOLVE     | I    | 1      | Maximum time allowed for each solver resolution. 0: no limit.<br>= maxSolverTime (0)                                                                                            |
+| TDPENALI     | R    | 1      | Phase-shifting cost of the PSTs in the objective function. A negative or zero value means that there is no associated cost (phase shift not penalized).<br>= pstCostPenality (10-2) |
+| HVDCPENA     | R    | 1      | Flow cost of the HVDC lines in the objective function. A negative or zero value means that there is no associated cost (flow not penalized).<br>= hvdcCostPenality (10-1)      |
+| PROBAINC     | R    | 1      | Probability of the contingencies<br>= contingenciesProbability(10-3)                                                                                                            |
+| TESTITAM     | B    | 1      | Taking into account the post-contingency instant<br>= preCurativeThresholds (false)                                                                                             |
+| INCNOCON     | B    | 1      | Taking into account the contingencies that break connectivity<br>= outagesBreakingConnexity (false)                                                                             |
+| PARNOCON     | B    | 1      | Taking into account the remedial actions that break connectivity<br>= remedialActionsBreakingConnexity (false)                                                                  |
+| PAREQUIV     | B    | 1      | Detection of equivalent remedial actions<br>= analogousRemedialActionDetection(false)                                                                                           |
+| COUENDCU     | R    | 1      | Cost of undelivered energy for a contingency that breaks connectivity (load disconnected from the network)<br>= curativeLossOfLoadCost(26000)                                   |
+| COUENECU     | R    | 1      | Cost of unevacuated energy on a contingency that breaks connectivity (generation disconnected from the network)<br>= curativeLossOfGenerationCost(100)                          |
+| LIMCURGR     | I    | 1      | Curative redispatching limit<br>= curativeRedispatchingLimit(-1)                                                                                                                |
+| ADEQUAOF     | I    | 1      | Offset of generator and load shedding costs in the balancing phase<br>= adequacyCostOffset(0)                                                                                   |
+| REDISPOF     | I    | 1      | Offset of generator and load shedding costs in the redispatching phase<br>= redispatchingCostOffset(0)                                                                          |
+| NULLCOST     | R    | 1      | Minimum cost of generators and load shedding, applied after adding the phase offset<br>= generatorMinCost(0.5)                                                                  |
 
 (io-results-options)=
-### Options de résultats
-| Nom      | Type | Taille | Description                                                                                     |
-|:---------|:-----|:-------|:------------------------------------------------------------------------------------------------|
-| NBTHREAT | I    | 1      | Nombre de menaces N-k dans les résultats<br>= nbThreatResults (1)                               |
-| EQUILRES | B    | 1      | Sortie des résultats détaillés de l’équilibrage initial<br>= withAdequacyResults (false)        |
-| REDISRES | B    | 1      | Sortie des résultats détaillés du redispatching préventif<br>= withRedispatchingResults (false) |
-| VARMARES | B    | 1      | Calcul de variations marginales sur les branches<br>= marginalVariationsOnBranches (false)      |
-| LCCVMRES | B    | 1      | Calcul des variations marginales sur les HVDC<br>= marginalVariationsOnHvdc (false)             |
-| LOSSDETA | B    | 1      | Calcul des pertes par régions/pays<br>= lossDetailPerCountry (false)                            |
-| OVRLDRES | B    | 1      | Sortie uniquement des ouvrages en contrainte<br>= overloadResultsOnly (false)                   |
+### Results options
+| Name     | Type | Size | Description                                                                                      |
+|:---------|:-----|:-----|:-------------------------------------------------------------------------------------------------|
+| NBTHREAT | I    | 1    | Number of N-k threats in the results<br>= nbThreatResults (1)                                    |
+| EQUILRES | B    | 1    | Output of the detailed results of the initial balancing<br>= withAdequacyResults (false)         |
+| REDISRES | B    | 1    | Output of the detailed results of the preventive redispatching<br>= withRedispatchingResults (false) |
+| VARMARES | B    | 1    | Computation of marginal variations on the branches<br>= marginalVariationsOnBranches (false)     |
+| LCCVMRES | B    | 1    | Computation of marginal variations on the HVDC lines<br>= marginalVariationsOnHvdc (false)       |
+| LOSSDETA | B    | 1    | Computation of losses by region/country<br>= lossDetailPerCountry (false)                        |
+| OVRLDRES | B    | 1    | Output of the network elements under constraint only<br>= overloadResultsOnly (false)            |
 
 (io-regions)=
-### Régions
-| Nom          | Type | Taille   | Description                                                                |
-|:-------------|:-----|:---------|:---------------------------------------------------------------------------|
-| **CGNBREGI** | I    | 1        | Nombre total de régions<br>= $\sum$ country                                |
-| CGNOMREG     | C    | CGNBREGI | Pour région, nom de la région<br>= « paysCvg » si existe « country » sinon |
+### Regions
+| Name         | Type | Size     | Description                                                                 |
+|:-------------|:-----|:---------|:----------------------------------------------------------------------------|
+| **CGNBREGI** | I    | 1        | Total number of regions<br>= $\sum$ country                                 |
+| CGNOMREG     | C    | CGNBREGI | For each region, name of the region<br>= « paysCvg » if it exists, « country » otherwise |
 
 (io-nodal-information)=
-### Informations nodales
+### Nodal information
 
 (io-summits)=
-#### Sommets
-| Nom          | Type | Taille | Description                                                                                                      |
-|:-------------|:-----|:-------|:-----------------------------------------------------------------------------------------------------------------|
-| **TNNBNTOT** | I    | 1      | Nombre total de sommets<br>= $\sum$ bus t.q. voltageLevel.busBreakerView.bus $\in$ composante connexe principale |
+#### Vertices
+| Name         | Type | Size | Description                                                                                                       |
+|:-------------|:-----|:-----|:------------------------------------------------------------------------------------------------------------------|
+| **TNNBNTOT** | I    | 1    | Total number of vertices<br>= $\sum$ bus s.t. voltageLevel.busBreakerView.bus $\in$ main connected component      |
 
 (io-loads)=
-#### Consommations
+#### Loads
 
 (table_tnneucel)=
 
-| Nom             | Type | Taille   | Description                                                                                                                     |
+| Name            | Type | Size     | Description                                                                                                                     |
 |:----------------|:-----|:---------|:--------------------------------------------------------------------------------------------------------------------------------|
-| **ECNBCONS**    | I    | 1        | Nombre de consommations élémentaires<br>= $\sum$ load t.q. load.terminal.busBreakerView.bus $\in$ composante connexe principale |
-| <o>TNNOMNOE</o> | C    | ECNBCONS | Noms des consommations<br>= load.id                                                                                             |
-| <o>TNNEUCEL</o> | I    | ECNBCONS | Numéro du sommet de raccordement de la consommation élémentaire<br>= indice du bus dans la table TNNOMNOE                       |
-| <o>CPPOSREG</o> | I    | ECNBCONS | Lien sommet-région<br>= indice de la région dans CGNOMREG                                                                       |
-| <o>ESAFIACT</o> | R    | ECNBCONS | Valeur de la consommation active (somme de la part fixe et affine)<br>= load.p0                                                 |
-| TNVAPAL1        | I    | ECNBCONS | Pourcentage du premier palier de délestage.<br>(100 si aucun nœud configuré)                                                    |
-| TNVACOU1        | R    | ECNBCONS | Coût du délestage (valeur de COUTDEFA par défaut)                                                                               |
+| **ECNBCONS**    | I    | 1        | Number of elementary loads<br>= $\sum$ load s.t. load.terminal.busBreakerView.bus $\in$ main connected component                |
+| <o>TNNOMNOE</o> | C    | ECNBCONS | Names of the loads<br>= load.id                                                                                                 |
+| <o>TNNEUCEL</o> | I    | ECNBCONS | Number of the connection vertex of the elementary load<br>= index of the bus in the TNNOMNOE table                              |
+| <o>CPPOSREG</o> | I    | ECNBCONS | Vertex-region link<br>= index of the region in CGNOMREG                                                                         |
+| <o>ESAFIACT</o> | R    | ECNBCONS | Value of the active load (sum of the fixed and affine parts)<br>= load.p0                                                       |
+| TNVAPAL1        | I    | ECNBCONS | Percentage of the first load shedding tier.<br>(100 if no node is configured)                                                  |
+| TNVACOU1        | R    | ECNBCONS | Load shedding cost (value of COUTDEFA by default)                                                                               |
 
 (io-generators)=
-### Groupes
+### Generators
 
 (table_trnomgth)=
 
-| Nom             | Type | Taille   | Description                                                                                                                                                                                                             |
+| Name            | Type | Size     | Description                                                                                                                                                                                                             |
 |:----------------|:-----|:---------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **TRNBGROU**    | I    | 1        | Nombre de groupes raccordés<br>= $\sum$ generator t.q. generator.terminal.busBreakerView.bus $\in$  composante connexe principale                                                                                       |
-| <o>TRNOMGTH</o> | C    | TRNBGROU | Nom du groupe<br>= generator.id                                                                                                                                                                                         |
-| <o>TNNEURGT</o> | I    | TRNBGROU | Sommets de raccordement du groupe<br>= indice du bus dans la table TNNOMNOE                                                                                                                                             |
-| <o>SPPACTGT</o> | R    | TRNBGROU | Puissance de consigne $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP                                                                                                                                 |
-| <y>TRVALPMD</y> | R    | TRNBGROU | Puissance max disponible<br>= generator.maxP                                                                                                                                                                            |
-| <o>TRPUIMIN</o> | R    | TRNBGROU | Puissance min<br>= generator.minP                                                                                                                                                                                       |
-| **TRNBTYPE**    | I    | 1        | Nombre de types de groupe                                                                                                                                                                                               |
-| <o>TRNOMTYP</o> | C    | TRNBTYPE | Noms des types de groupes                                                                                                                                                                                               |
-| <o>TRTYPGRP</o> | I    | TRNBGROU | Indice du type de groupe dans TRNOMTYP                                                                                                                                                                                  |
-| <o>SPIMPMOD</o> | I    | TRNBGROU | Indique si le groupe est disponible pour le redispatching (3 = 'OUI_AR'), l’adequacy (2 = 'OUI_HR'), les deux (1 = 'OUI_HR_AR') ou aucune des deux (0 = 'NON_HR_AR')<br>(1 si aucun groupe n’est configuré et 0 sinon.) |
-| TRDEMBAN        | R    | TRNBGROU | Demi-bande de réglage en réglage secondaire.<br>= prorata du plus grand incident groupe (0)                                                                                                                             |
+| **TRNBGROU**    | I    | 1        | Number of connected generators<br>= $\sum$ generator s.t. generator.terminal.busBreakerView.bus $\in$  main connected component                                                                                         |
+| <o>TRNOMGTH</o> | C    | TRNBGROU | Name of the generator<br>= generator.id                                                                                                                                                                                 |
+| <o>TNNEURGT</o> | I    | TRNBGROU | Connection vertices of the generator<br>= index of the bus in the TNNOMNOE table                                                                                                                                        |
+| <o>SPPACTGT</o> | R    | TRNBGROU | Setpoint power $P_{obj} \in [\underline{P},\overline{P}]$<br>= generator.targetP                                                                                                                                        |
+| <y>TRVALPMD</y> | R    | TRNBGROU | Maximum available power<br>= generator.maxP                                                                                                                                                                             |
+| <o>TRPUIMIN</o> | R    | TRNBGROU | Minimum power<br>= generator.minP                                                                                                                                                                                       |
+| **TRNBTYPE**    | I    | 1        | Number of generator types                                                                                                                                                                                               |
+| <o>TRNOMTYP</o> | C    | TRNBTYPE | Names of the generator types                                                                                                                                                                                            |
+| <o>TRTYPGRP</o> | I    | TRNBGROU | Index of the generator type in TRNOMTYP                                                                                                                                                                                 |
+| <o>SPIMPMOD</o> | I    | TRNBGROU | Indicates whether the generator is available for redispatching (3 = 'OUI_AR'), adequacy (2 = 'OUI_HR'), both (1 = 'OUI_HR_AR') or neither (0 = 'NON_HR_AR')<br>(1 if no generator is configured and 0 otherwise.)       |
+| TRDEMBAN        | R    | TRNBGROU | Half-band of regulation in secondary regulation.<br>= prorata of the largest generator contingency (0)                                                                                                                  |
 
 (io-quadripoles)=
-### Quadripôles
+### Branches
 
 (io-elementary-quadripoles)=
-#### Quadripôles élémentaires
-| Nom             | Type | Taille   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+#### Elementary branches
+| Name            | Type | Size     | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |:----------------|:-----|:---------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **CQNBQUAD**    | I    | 1        | Nombre de quadripôles élémentaires<br>= $\sum$ (quad = *line* &#124;&#124; *twoWindingsTransformer*) t.q. quad.terminal1.busBreakerView.bus && quad.terminal2.busBreakerView.bus $\in$ composante connexe principale<br>+ $\in$ *switch* t.q. switch.retained && (switch.voltageLevel.busBreakerView.bus1 && switch.voltageLevel.busBreakerView.bus2 $\in$ composante connexe principale)                                                                                                        |
-| <o>CQNOMQUA</o> | C    | CQNBQUAD | Nom du quadripôle<br>= quad.id                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| <o>CQADMITA</o> | R    | CQNBQUAD | 	Admittance du quadripôle ramené à Ubase (inverse de la réactance, i.e. négliger la valeur de la résistance)<br>= $1 / (X * nominalU^2 / Unom^2)$<br>Pour les lignes :<br>$X = line.x$<br>Pour les transformateurs :<br>$X_{transfo} = twoWindingsTransformer.x$<br>Pour les transformateurs déphaseurs :<br>$X = X_{transfo} * (1 + X_{prise} / 100)$<br>$X_{prise} = phaseTapChanger.phaseTapPosition.x$<br>Pour les couplages :<br>$X = 10^-5$<br>Unom = line.terminal2.voltageLevel.nominalV |
-| <o>CQRESIST</o> | R    | CQNBQUAD | Résistance utilisée pour le calcul des pertes (en pu, base nominalU)<br>Les formules sont les mêmes que pour CQADMITA en remplaçant X par R                                                                                                                                                                                                                                                                                                                                                      |
-| <o>QASURVDI</o> | I    | CQNBQUAD | Indicateur de surveillance du quadripôle en N. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat                                                                                                                                                                                                                                                                                                                                                               |
-| <o>QASURNMK</o> | I    | CQNBQUAD | Indicateur de surveillance du quadripôle en N-K. 2 = résultat de transit uniquement, 1 = surveillé par le modèle, 0 = aucun résultat                                                                                                                                                                                                                                                                                                                                                             |
-| <y>TNNORQUA</y> | I    | CQNBQUAD | Indice du nœud origine du quadripôle (quad.terminal1.busBreakerView.bus) dans la table TNNOMNOE                                                                                                                                                                                                                                                                                                                                                                                                  |
-| <y>TNNEXQUA</y> | I    | CQNBQUAD | Indice du nœud extrémité du quadripôle (quad.terminal2.busBreakerView.bus) dans la table TNNOMNOE                                                                                                                                                                                                                                                                                                                                                                                                |
-| NBOPEBRA        | I    | 1        | Nombre de branches ouvertes conservées car elles peuvent être refermées par une parade<br>(0)                                                                                                                                                                                                                                                                                                                                                                                                    |
-| OPENBRAN        | I    | NBOPEBRA | Indices des branches ouvertes dans la table CQNOMQUA                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| **CQNBQUAD**    | I    | 1        | Number of elementary branches<br>= $\sum$ (quad = *line* &#124;&#124; *twoWindingsTransformer*) s.t. quad.terminal1.busBreakerView.bus && quad.terminal2.busBreakerView.bus $\in$ main connected component<br>+ $\in$ *switch* s.t. switch.retained && (switch.voltageLevel.busBreakerView.bus1 && switch.voltageLevel.busBreakerView.bus2 $\in$ main connected component)                                                                                                                       |
+| <o>CQNOMQUA</o> | C    | CQNBQUAD | Name of the branch<br>= quad.id                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| <o>CQADMITA</o> | R    | CQNBQUAD | 	Admittance of the branch referred to Ubase (inverse of the reactance, i.e. neglecting the value of the resistance)<br>= $1 / (X * nominalU^2 / Unom^2)$<br>For lines:<br>$X = line.x$<br>For transformers:<br>$X_{transfo} = twoWindingsTransformer.x$<br>For phase-shifting transformers:<br>$X = X_{transfo} * (1 + X_{prise} / 100)$<br>$X_{prise} = phaseTapChanger.phaseTapPosition.x$<br>For bus couplers:<br>$X = 10^-5$<br>Unom = line.terminal2.voltageLevel.nominalV                  |
+| <o>CQRESIST</o> | R    | CQNBQUAD | Resistance used for the loss computation (in pu, base nominalU)<br>The formulas are the same as for CQADMITA, replacing X by R                                                                                                                                                                                                                                                                                                                                                                   |
+| <o>QASURVDI</o> | I    | CQNBQUAD | Monitoring indicator of the branch in N. 2 = flow result only, 1 = monitored by the model, 0 = no result                                                                                                                                                                                                                                                                                                                                                                                         |
+| <o>QASURNMK</o> | I    | CQNBQUAD | Monitoring indicator of the branch in N-K. 2 = flow result only, 1 = monitored by the model, 0 = no result                                                                                                                                                                                                                                                                                                                                                                                      |
+| <y>TNNORQUA</y> | I    | CQNBQUAD | Index of the origin node of the branch (quad.terminal1.busBreakerView.bus) in the TNNOMNOE table                                                                                                                                                                                                                                                                                                                                                                                                 |
+| <y>TNNEXQUA</y> | I    | CQNBQUAD | Index of the end node of the branch (quad.terminal2.busBreakerView.bus) in the TNNOMNOE table                                                                                                                                                                                                                                                                                                                                                                                                    |
+| NBOPEBRA        | I    | 1        | Number of open branches kept because they can be reclosed by a remedial action<br>(0)                                                                                                                                                                                                                                                                                                                                                                                                            |
+| OPENBRAN        | I    | NBOPEBRA | Indices of the open branches in the CQNOMQUA table                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 (io-phase-shifters)=
-#### Déphaseurs
-| Nom             | Type | Taille   | Description                                                                                                                                              |
+#### Phase shifters
+| Name            | Type | Size     | Description                                                                                                                                              |
 |:----------------|:-----|:---------|:---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **DTNBTRDE**    | I    | 1        | Nombre total de transformateurs déphaseurs<br>$\sum$ twoWindingsTransformer.phaseTapChanger si twoWindingsTransformer est dans la table CQNOMQUA         |
-| <o>DTTRDEQU</o> | I    | DTNBTRDE | Correspondance déphaseur-numéro du quadripôle élémentaire<br>= indice de twt.id dans les tables de quadripôles                                           |
-| <o>DTMODREG</o> | I    | DTNBTRDE | Type de contrôle<br>0 : Hors service<br>1 : angle optimisé<br>2 : angle fixe<br>3 : puissance optimisé (non utilisé)<br>4 : puissance fixe (non utilisé) |
-| <o>DTVALINF</o> | R    | DTNBTRDE | Valeur min du déphasage du TD en N, en degrés<br>= phaseTapChanger.lowTapPosition.alpha                                                                  |
-| <o>DTVALSUP</o> | R    | DTNBTRDE | Valeur max du déphasage du TD en N, en degrés <br>= phaseTapChanger.highTapPosition.alpha                                                                |
-| <o>DTVALDEP</o> | R    | DTNBTRDE | Valeur initiale du déphasage par TD en degrés, c’est la valeur utilisée si DTMODREG $\in {1, 2}$<br>= phaseTapChanger.tapPosition.alpha                  |
+| **DTNBTRDE**    | I    | 1        | Total number of phase-shifting transformers<br>$\sum$ twoWindingsTransformer.phaseTapChanger if twoWindingsTransformer is in the CQNOMQUA table          |
+| <o>DTTRDEQU</o> | I    | DTNBTRDE | Phase shifter-elementary branch number correspondence<br>= index of twt.id in the branch tables                                                          |
+| <o>DTMODREG</o> | I    | DTNBTRDE | Control type<br>0: Out of service<br>1: optimized angle<br>2: fixed angle<br>3: optimized power (not used)<br>4: fixed power (not used)                   |
+| <o>DTVALINF</o> | R    | DTNBTRDE | Minimum phase shift value of the PST in N, in degrees<br>= phaseTapChanger.lowTapPosition.alpha                                                          |
+| <o>DTVALSUP</o> | R    | DTNBTRDE | Maximum phase shift value of the PST in N, in degrees <br>= phaseTapChanger.highTapPosition.alpha                                                        |
+| <o>DTVALDEP</o> | R    | DTNBTRDE | Initial phase shift value per PST in degrees, this is the value used if DTMODREG $\in {1, 2}$<br>= phaseTapChanger.tapPosition.alpha                     |
 
 (io-dc-lines)=
-### Lignes à courant continu
+### HVDC lines
 
 (table_dcnomqua)=
 
-| Nom             | Type | Taille   | Description                                                                                                                                                                                                          |
+| Name            | Type | Size     | Description                                                                                                                                                                                                          |
 |:----------------|:-----|:---------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **DCNBLIES**    | I    | 1        | Nombre de lignes à courant continu<br>= $\sum$ hvdcLine t.q.  (hvdcLine.converterStation1.terminal.busBreakerView.bus && hvdcLine.converterStation2.terminal.busBreakerView.bus) $\in$ composante connexe principale |
-| <o>DCNOMQUA</o> | C    | DCNBLIES | Nom de la ligne à courant continu<br>= hvdcLine.id                                                                                                                                                                   |
-| <o>DCNORQUA</o> | I    | DCNBLIES | Indice du nœud origine de la ligne (hvdcLine.converterStation1.terminal.busBreakerView.bus) dans la table TNNOMNOE                                                                                                   |
-| <o>DCNEXQUA</o> | I    | DCNBLIES | Indice du nœud extrémité de la ligne (hvdcLine.converterStation2.terminal.busBreakerView.bus) dans la table TNNOMNOE                                                                                                 |
-| <o>DCMINPUI</o> | R    | DCNBLIES | Puissance minimale<br>= - activePowerRange.oPRFromCS2toCS1 si l’extension HvdcOperatorActivePowerRange est utilisée, - hvdcLine.maxP sinon.                                                                          |
-| <o>DCMAXPUI</o> | R    | DCNBLIES | Puissance maximale<br>= activePowerRange.oPRFromCS1toCS2 si l’extension HvdcOperatorActivePowerRange est utilisée, hvdcLine.maxP sinon.                                                                              |
-| <o>DCIMPPUI</o> | R    | DCNBLIES | Puissance imposée $P_0$<br>= activePowerControl.p0 si l’extension  HvdcAngleDroopActivePowerControl est utilisée, +/- hvdcLine.activePowerSetPoint sinon                                                             |
-| <o>DCREGPUI</o> | I    | DCNBLIES | Type de réglage de transit sur la ligne<br>1 : puissance fixe<br>2 : puissance optimisée                                                                                                                             |
-| <o>DCTENSDC</o> | R    | DCNBLIES | Tension nominale du câble DC<br>= hvdcLine.nominalV                                                                                                                                                                  |
-| <o>DCRESIST</o> | R    | DCNBLIES | Résistance du câble DC en pu (base nominalV), normalisée par rapport à la tension DC.<br>= hvdcLine.r * nominalU $^2$ / hvdcLine.nominalV $^2$                                                                       |
-| <o>DCPERST1</o> | R    | DCNBLIES | Coefficient de pertes (en %) de la station de conversion origine<br>= hvdcLine.converterStation1.lossFactor                                                                                                          |
-| <o>DCPERST2</o> | R    | DCNBLIES | Coefficient de pertes (en %) de la station de conversion extrémité<br>= hvdcLine.converterStation2.lossFactor                                                                                                        |
-| DCNDROOP        | I    | 1        | Nombre de HVDC opérée en mode émulation AC ($P = P_0 + k \Delta\Theta$)<br>(0)                                                                                                                                       |
-| DCDROOPK        | R    | DCNDROOP | Pour chaque HVDC en émulation AC, dans l’ordre de la [table DCNOMQUA](#table_dcnomqua), valeur du coefficient k (en MW/°)                                                                                            |
+| **DCNBLIES**    | I    | 1        | Number of HVDC lines<br>= $\sum$ hvdcLine s.t.  (hvdcLine.converterStation1.terminal.busBreakerView.bus && hvdcLine.converterStation2.terminal.busBreakerView.bus) $\in$ main connected component                     |
+| <o>DCNOMQUA</o> | C    | DCNBLIES | Name of the HVDC line<br>= hvdcLine.id                                                                                                                                                                               |
+| <o>DCNORQUA</o> | I    | DCNBLIES | Index of the origin node of the line (hvdcLine.converterStation1.terminal.busBreakerView.bus) in the TNNOMNOE table                                                                                                  |
+| <o>DCNEXQUA</o> | I    | DCNBLIES | Index of the end node of the line (hvdcLine.converterStation2.terminal.busBreakerView.bus) in the TNNOMNOE table                                                                                                     |
+| <o>DCMINPUI</o> | R    | DCNBLIES | Minimum power<br>= - activePowerRange.oPRFromCS2toCS1 if the HvdcOperatorActivePowerRange extension is used, - hvdcLine.maxP otherwise.                                                                              |
+| <o>DCMAXPUI</o> | R    | DCNBLIES | Maximum power<br>= activePowerRange.oPRFromCS1toCS2 if the HvdcOperatorActivePowerRange extension is used, hvdcLine.maxP otherwise.                                                                                  |
+| <o>DCIMPPUI</o> | R    | DCNBLIES | Imposed power $P_0$<br>= activePowerControl.p0 if the HvdcAngleDroopActivePowerControl extension is used, +/- hvdcLine.activePowerSetPoint otherwise                                                                 |
+| <o>DCREGPUI</o> | I    | DCNBLIES | Type of flow control on the line<br>1: fixed power<br>2: optimized power                                                                                                                                             |
+| <o>DCTENSDC</o> | R    | DCNBLIES | Nominal voltage of the DC cable<br>= hvdcLine.nominalV                                                                                                                                                               |
+| <o>DCRESIST</o> | R    | DCNBLIES | Resistance of the DC cable in pu (base nominalV), normalized with respect to the DC voltage.<br>= hvdcLine.r * nominalU $^2$ / hvdcLine.nominalV $^2$                                                                |
+| <o>DCPERST1</o> | R    | DCNBLIES | Loss coefficient (in %) of the origin converter station<br>= hvdcLine.converterStation1.lossFactor                                                                                                                   |
+| <o>DCPERST2</o> | R    | DCNBLIES | Loss coefficient (in %) of the end converter station<br>= hvdcLine.converterStation2.lossFactor                                                                                                                      |
+| DCNDROOP        | I    | 1        | Number of HVDC lines operated in AC emulation mode ($P = P_0 + k \Delta\Theta$)<br>(0)                                                                                                                               |
+| DCDROOPK        | R    | DCNDROOP | For each HVDC line in AC emulation, in the order of the [DCNOMQUA table](#table_dcnomqua), value of the coefficient k (in MW/°)                                                                                      |
 
 (io-contingencies)=
-### Incidents N-1 et N-k
-| Nom          | Type | Taille                            | Description                                                                                                                                                                                                                                                                                                                                                                                                           |
+### N-1 and N-k contingencies
+| Name         | Type | Size                              | Description                                                                                                                                                                                                                                                                                                                                                                                                           |
 |:-------------|:-----|:----------------------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **DMNBDEFK** | I    | 1                                 | Nombre d’incidents                                                                                                                                                                                                                                                                                                                                                                                                    |
-| DMNOMDEK     | C    | DMNBDEFK                          | Nom de l’incident                                                                                                                                                                                                                                                                                                                                                                                                     |
-| DMPTDEFK     | I    | DMNBDEFK                          | Par incident, pointeur sur DMDESCRK                                                                                                                                                                                                                                                                                                                                                                                   |
-| DMDESCRK     | I    | DMNBDEFK<br>$+ 2 * \sum nb_{<i>}$ | Description des incidents<br>Pour chaque incident :<br>Nb, $Type_{<1>}$, $Indice_{<1>}$, …, $Type_{<nb>}$, $Indice_{<nb>}$<br>Nb : nombre d’éléments dans l’incident<br>Type :<br>1 pour un quadripôle (ligne, transfo)<br>2 pour un groupe<br>3 pour une liaison à courant continu<br>Indice : dans la liste de quadripôles, dans la liste des groupes ou dans la liste des liaisons à courant continu selon le type |
-| BDEFRES      | I    | 1                                 | Taille du tableau des défauts avec résultats détaillés<br>(0)                                                                                                                                                                                                                                                                                                                                                         |
-| TDEFRES      | I    | NBDEFRES                          | Suite de triplets : indice du quadripôle, nombre de défauts avec résultats détaillés, liste des indices de ces défauts.                                                                                                                                                                                                                                                                                               |
+| **DMNBDEFK** | I    | 1                                 | Number of contingencies                                                                                                                                                                                                                                                                                                                                                                                               |
+| DMNOMDEK     | C    | DMNBDEFK                          | Name of the contingency                                                                                                                                                                                                                                                                                                                                                                                               |
+| DMPTDEFK     | I    | DMNBDEFK                          | For each contingency, pointer to DMDESCRK                                                                                                                                                                                                                                                                                                                                                                             |
+| DMDESCRK     | I    | DMNBDEFK<br>$+ 2 * \sum nb_{<i>}$ | Description of the contingencies<br>For each contingency:<br>Nb, $Type_{<1>}$, $Indice_{<1>}$, …, $Type_{<nb>}$, $Indice_{<nb>}$<br>Nb: number of elements in the contingency<br>Type:<br>1 for a branch (line, transformer)<br>2 for a generator<br>3 for an HVDC link<br>Indice: in the list of branches, in the list of generators or in the list of HVDC links depending on the type |
+| BDEFRES      | I    | 1                                 | Size of the array of faults with detailed results<br>(0)                                                                                                                                                                                                                                                                                                                                                              |
+| TDEFRES      | I    | NBDEFRES                          | Sequence of triplets: index of the branch, number of faults with detailed results, list of the indices of these faults.                                                                                                                                                                                                                                                                                               |
 
 (io-curative)=
-### Curatif
-| Nom      | Type | Taille                  | Description                                                                                                                         |
+### Curative
+| Name     | Type | Size                    | Description                                                                                                                         |
 |:---------|:-----|:------------------------|:------------------------------------------------------------------------------------------------------------------------------------|
-| DTNBDEFK | I    | DTNBTRDE                | Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>(0)                                                  |
-| DTPTDEFK | I    | ≤ DTNBTRDE  * DMNBDEFK	 | Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif                   |
-| DCNBDEFK | I    | DCNBLIES                | Pour chaque TD, nombre d’incidents pour lesquels le TD peut agir en curatif<br>(0)                                                  |
-| DCPTDEFK | I    | ≤ DCNBLIES * DMNBDEFK   | Pour chaque TD agissant en curatif, dans l’ordre des indices croissants, indices des incidents traités en curatif                   |
-| NBLDCURA | I    | 1	                      | Nombre de consommations pouvant s’effacer en curatif<br>(0)                                                                         |
-| LDNBDEFK | I    | ECNBCONS                | Pour chaque consommation, nombre d’incidents traités en curatif                                                                     |
-| LDCURPER | I    | NBLDCURA                | Pour chaque consommation curative, dans l’ordre des indices, pourcentage d’effacement en curatif                                    |
-| LDPTDEFK | I    | ≤ NBLDCURA * DMNBDEFK   | Pour chaque consommation curative, dans l’ordre de la [table TNNEUCEL](#table_tnneucel), pointeur des incidents traités en curatif. |
-| GRNBCURA | I    | 1                       | Nombre de groupes pouvant agir en curatif<br>(0)                                                                                    |
-| GRNBDEFK | I    | GRNBCURA                | Pour chaque groupe curatif, nombre d’incidents traités en curatif                                                                   |
-| GRPTDEFK | I    | ≤ GRNBCURA * DMNBDEFK   | Pour chaque groupe curatif, dans l’ordre de la [table TRNOMGTH](#table_trnomgth), pointeur des incidents traités en curatif.        |
+| DTNBDEFK | I    | DTNBTRDE                | For each PST, number of contingencies for which the PST can act in curative<br>(0)                                                  |
+| DTPTDEFK | I    | ≤ DTNBTRDE  * DMNBDEFK	 | For each PST acting in curative, in increasing index order, indices of the contingencies handled in curative                        |
+| DCNBDEFK | I    | DCNBLIES                | For each PST, number of contingencies for which the PST can act in curative<br>(0)                                                  |
+| DCPTDEFK | I    | ≤ DCNBLIES * DMNBDEFK   | For each PST acting in curative, in increasing index order, indices of the contingencies handled in curative                        |
+| NBLDCURA | I    | 1	                      | Number of loads that can be curtailed in curative<br>(0)                                                                            |
+| LDNBDEFK | I    | ECNBCONS                | For each load, number of contingencies handled in curative                                                                          |
+| LDCURPER | I    | NBLDCURA                | For each curative load, in index order, percentage of curtailment in curative                                                       |
+| LDPTDEFK | I    | ≤ NBLDCURA * DMNBDEFK   | For each curative load, in the order of the [TNNEUCEL table](#table_tnneucel), pointer to the contingencies handled in curative.    |
+| GRNBCURA | I    | 1                       | Number of generators that can act in curative<br>(0)                                                                                |
+| GRNBDEFK | I    | GRNBCURA                | For each curative generator, number of contingencies handled in curative                                                            |
+| GRPTDEFK | I    | ≤ GRNBCURA * DMNBDEFK   | For each curative generator, in the order of the [TRNOMGTH table](#table_trnomgth), pointer to the contingencies handled in curative. |
 
 (io-monitored-sections)=
-### Sections surveillées
-| Nom          | Type | Taille          | Description                                                                                                                                                                      |
+### Monitored sections
+| Name         | Type | Size            | Description                                                                                                                                                                      |
 |:-------------|:-----|:----------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **SECTNBSE** | I    | 1               | Nombre de sections surveillées                                                                                                                                                   |
-| SECTNOMS     | C    | SECTNBSE        | Nom de la section                                                                                                                                                                |
-| SECTMAXN     | R    | SECTNBSE        | Seuil N de la section                                                                                                                                                            |
-| SECTNBQD     | I    | SECTNBSE        | Nombre de quadripôles de la section (nb1, nb2, …)                                                                                                                                |
-| SECTTYPE     | I    | $\sum nb_{<i>}$ | Table des types de quadripôles (liste des nb1 types de la section 1, liste des nb2 types de la section 2, …)                                                                     |
-| SECTNUMQ     | I    | $\sum nb_{<i>}$ | Table des numéros dans la liste de quadripôles ou dans la liste des liaisons à courant continu (liste des nb1 numéros de la section 1, liste des nb2 numéros de la section 2, …) |
-| SECTCOEF     | R    | $\sum nb_{<i>}$ | Table des coefficients associés aux quadripôles (liste des nb1 coefficients de la section 1, liste des nb2 coefficients de la section 2, …)                                      |
+| **SECTNBSE** | I    | 1               | Number of monitored sections                                                                                                                                                     |
+| SECTNOMS     | C    | SECTNBSE        | Name of the section                                                                                                                                                              |
+| SECTMAXN     | R    | SECTNBSE        | N threshold of the section                                                                                                                                                       |
+| SECTNBQD     | I    | SECTNBSE        | Number of branches of the section (nb1, nb2, …)                                                                                                                                  |
+| SECTTYPE     | I    | $\sum nb_{<i>}$ | Table of branch types (list of the nb1 types of section 1, list of the nb2 types of section 2, …)                                                                                |
+| SECTNUMQ     | I    | $\sum nb_{<i>}$ | Table of numbers in the list of branches or in the list of HVDC links (list of the nb1 numbers of section 1, list of the nb2 numbers of section 2, …)                            |
+| SECTCOEF     | R    | $\sum nb_{<i>}$ | Table of coefficients associated with the branches (list of the nb1 coefficients of section 1, list of the nb2 coefficients of section 2, …)                                     |
 
-*Note : le seuil `SECTMAXN` ne s'applique que lorsque la somme pondérée des transits de la section est positive.
-Le sens inverse n'est pas contraint ; pour borner les deux sens, déclarer une seconde section de coefficients
-opposés, de même seuil et de nom différent.*
+*Note: the `SECTMAXN` threshold only applies when the weighted sum of the flows of the section is positive.
+The opposite direction is not constrained; to bound both directions, declare a second section with opposite
+coefficients, the same threshold and a different name.*
 
 (io-coupled-variables)=
-### Variables couplées
-| Nom      | Type | Taille                | Description                                                                                            |
+### Coupled variables
+| Name     | Type | Size                  | Description                                                                                            |
 |:---------|:-----|:----------------------|:-------------------------------------------------------------------------------------------------------|
-| NBGBINDS | I    | 1                     | Nombre de couplages de groupes<br>(0)                                                                  |
-| NBLBINDS | I    | 1                     | Nombre de couplages de consommations<br>(0)                                                            |
-| GBINDDEF | I    | ≤ NBGBINDS + TRNBGROU | Pour chaque couplage, nombre de groupes dans le couplage puis indices des groupes couplés              |
-| GBINDNOM | C    | NBGBINDS              | Noms des couplages de groupes                                                                          |
-| GBINDREF | I    | NBGBINDS              | Pour chaque couplage, type de la variable de référence (0 = PMAX, 1 = PMIN, 2 = POBJ, 3 = PMAX-POBJ)   |
-| LBINDDEF | I    | ≤ NBLBINDS + ECNBCONS | Pour chaque couplage, nombre de consommations dans le couplage puis indices des consommations couplées |
-| LBINDNOM | C    | NBLBINDS              | Noms des couplages de consommations                                                                    |
+| NBGBINDS | I    | 1                     | Number of generator couplings<br>(0)                                                                   |
+| NBLBINDS | I    | 1                     | Number of load couplings<br>(0)                                                                        |
+| GBINDDEF | I    | ≤ NBGBINDS + TRNBGROU | For each coupling, number of generators in the coupling then indices of the coupled generators         |
+| GBINDNOM | C    | NBGBINDS              | Names of the generator couplings                                                                       |
+| GBINDREF | I    | NBGBINDS              | For each coupling, type of the reference variable (0 = PMAX, 1 = PMIN, 2 = POBJ, 3 = PMAX-POBJ)       |
+| LBINDDEF | I    | ≤ NBLBINDS + ECNBCONS | For each coupling, number of loads in the coupling then indices of the coupled loads                   |
+| LBINDNOM | C    | NBLBINDS              | Names of the load couplings                                                                            |
 
 (io-detailed-marginal-variations)=
-### Variations marginales détaillées
-| Nom      | Type | Taille   | Description                                                                                                                          |
-|:---------|:-----|:---------|:-------------------------------------------------------------------------------------------------------------------------------------|
-| NBVARMAR | I    | 1        | Taille du tableau des variations marginales détaillées (PTVARMAR)<br>(0)                                                             |
-| PTVARMAR | I    | NBVARMAR | Suite de triplets : indice du quadripôle, nombre de défauts avec variations marginales détaillées, liste des indices de ces défauts. |
+### Detailed marginal variations
+| Name     | Type | Size     | Description                                                                                                                            |
+|:---------|:-----|:---------|:---------------------------------------------------------------------------------------------------------------------------------------|
+| NBVARMAR | I    | 1        | Size of the array of detailed marginal variations (PTVARMAR)<br>(0)                                                                    |
+| PTVARMAR | I    | NBVARMAR | Sequence of triplets: index of the branch, number of faults with detailed marginal variations, list of the indices of these faults.    |
 
 (io-variants)=
-## Variantes
-Les données spécifiques à chaque variante sont décrites dans un fichier au format csv.
-La première ligne indique le nombre de tirages (i.e. de variantes), après le mot-clé *NT*.
-Chaque ligne du fichier commence ensuite par le numéro du tirage suivi par le type de la loi décrite identifiée par un mot-clé.
-Les données propres à la loi et au tirage sont écrites à la suite du mot-clé, à savoir :
-- >**PRODIN** : le nombre de groupes, puis les noms des groupes indisponibles.
-- >**PRODIM** : le nombre de groupes, puis autant de couples (indice de groupe, puissance de consigne) que le nombre de groupes indiqué.
-- >**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms des ouvrages indisponibles. Si ces indisponibilités rompent la connexité du réseau, la variante est ignorée (code 4), ou le calcul s’arrête en erreur pour la variante « -1 ».
-- >**TRVALPMD** : le nombre de groupes, puis autant de couples (indice de groupe, puissance maximale disponible) que le nombre de groupes indiqué.
-- >**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de groupe, puissance minimale disponible) que le nombre de groupes indiqué.
-- >**CONELE** : le nombre de consommations, puis autant de couples (nom de la consommation, nouvelle valeur de consommation) que le nombre de consommations indiqué. Il s’agit de consommations nodales. Convention Eurostag : 1 nœud = 1 conso
-- >**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. Le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Après application de toutes les autres lois du même tirage (notamment des lois de consommation et puissance imposée), METRIX calcule le bilan de puissance, i.e. la somme des productions imposées moins la somme des consommations de la même région, le résultat est nommé $\Delta1$. À noter qu’il s’agit réellement du bilan s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point et un rejet de la variante s’il y a un groupe modifiable dans une région pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en MW, dans cette région, on le nommera $\Delta2$ ; notons que si la grandeur $\Delta2$ est positive, alors il y a plus de production que de consommations. La différence ($\Delta1 - \Delta2$) correspond à la puissance à redistribuer sur toutes les consommations de la région. La répartition se fait au prorata de la consommation : $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$ ; $c_i$ est la consommation au nœud $i$ et $sumC$ est la somme des consommations de toute la région concernée.
-Cette loi datant d’ASSESS n’est actuellement pas utilisée dans ImaGrid.
-- >**ECHANGP** : le nombre de régions, puis autant de couples (indice de région, bilan visé pour la région) que le nombre de régions indiqué. Cette loi est similaire à la loi ECHANG mais elle agit sur les groupes de production au lieu des consommations. Après application de toutes les autres lois du même tirage, METRIX ajuste les puissances des groupes modifiables de la région pour équilibrer le bilan (somme des productions moins somme des consommations) à la valeur indiquée dans la variante. La sélection des groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la hausse et à la baisse). Si, sur une région, il y a trop de production non modifiable ou trop peu de production disponible pour équilibrer le bilan, la variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir des coûts d’empilement hors réseau prohibitifs pour la région considérée par rapport aux régions d’étude.
-Cette loi datant d’ASSESS n’est actuellement pas utilisée dans ImaGrid.
-- >**CTORDR** : le nombre de coûts à la hausse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
-- >**COUBHR** : le nombre de coûts à la baisse sans réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
-- >**COUHAR** : le nombre de coûts à la hausse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
-- >**COUBAR** : le nombre de coûts à la baisse avec réseau, puis autant de couples (nom du groupe, coût) que le nombre de groupes indiqué.
-- >**DCMINPUI** : le nombre de modifications de puissance min HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmin) qu’indiqué.
-- >**DCMAXPUI** : le nombre de modifications de puissance max HVDC puis autant de couples (nom de la ligne à courant continu, nouvelle Pmax) qu’indiqué.
-- >**DCIMPPUI** : le nombre de modifications de la puissance de consigne des lignes HVDC, puis autant de couples (nom de la ligne à courant continu, puissance de consigne) qu’indiqué. Si la ligne à courant continu n’est pas en mode « consigne imposée » dans le cas de base, METRIX modifie automatiquement le mode de fonctionnement de la ligne HVDC (pour cette variante uniquement).
+## Variants
+The data specific to each variant are described in a csv file.
+The first line indicates the number of draws (i.e. of variants), after the keyword *NT*.
+Each line of the file then starts with the draw number followed by the type of the law described, identified by a keyword.
+The data specific to the law and to the draw are written after the keyword, namely:
+- >**PRODIN**: the number of generators, then the names of the unavailable generators.
+- >**PRODIM**: the number of generators, then as many pairs (generator index, setpoint power) as the indicated number of generators.
+- >**QUADIN**: the number of unavailable lines (outages) then the names of the unavailable network elements. If these unavailabilities break the connectivity of the network, the variant is ignored (code 4), or the computation stops with an error for the "-1" variant.
+- >**TRVALPMD**: the number of generators, then as many pairs (generator index, maximum available power) as the indicated number of generators.
+- >**TRPUIMIN**: the number of generators, then as many pairs (generator index, minimum available power) as the indicated number of generators.
+- >**CONELE**: the number of loads, then as many pairs (load name, new load value) as the indicated number of loads. These are nodal loads. Eurostag convention: 1 node = 1 load
+- >**ECHANG**: law that should rather be called balance by the loads. The number of regions, then as many pairs (region index, target balance for the region) as the indicated number of regions. After applying all the other laws of the same draw (in particular the load and imposed power laws), METRIX computes the power balance, i.e. the sum of the imposed generations minus the sum of the loads of the same region, the result being named $\Delta1$. Note that it is really the balance only if there are no modifiable generators. A check is made on this point and the variant is rejected if there is a modifiable generator in a region for which a balance is to be set.<br>The law provides the desired balance, in MW, in this region, which will be named $\Delta2$; note that if the quantity $\Delta2$ is positive, then there is more generation than load. The difference ($\Delta1 - \Delta2$) corresponds to the power to be redistributed over all the loads of the region. The distribution is done pro rata to the load: $c_i = c_i – c_i*(\Delta1 - \Delta2)  / sumC$; $c_i$ is the load at node $i$ and $sumC$ is the sum of the loads of the whole region concerned.
+This law dating from ASSESS is currently not used in ImaGrid.
+- >**ECHANGP**: the number of regions, then as many pairs (region index, target balance for the region) as the indicated number of regions. This law is similar to the ECHANG law but it acts on the generators instead of the loads. After applying all the other laws of the same draw, METRIX adjusts the powers of the modifiable generators of the region to balance the balance (sum of the generations minus sum of the loads) to the value indicated in the variant. The selection of the generators to modify is made according to the off-grid merit-order costs (upward and downward). If, in a region, there is too much non-modifiable generation or too little available generation to balance the balance, the variant is rejected. Moreover, METRIX does not guarantee that the balance will not be modified during the off-grid phase. It is up to the user to choose prohibitive off-grid merit-order costs for the region considered compared to the study regions.
+This law dating from ASSESS is currently not used in ImaGrid.
+- >**CTORDR**: the number of upward costs without network, then as many pairs (generator name, cost) as the indicated number of generators.
+- >**COUBHR**: the number of downward costs without network, then as many pairs (generator name, cost) as the indicated number of generators.
+- >**COUHAR**: the number of upward costs with network, then as many pairs (generator name, cost) as the indicated number of generators.
+- >**COUBAR**: the number of downward costs with network, then as many pairs (generator name, cost) as the indicated number of generators.
+- >**DCMINPUI**: the number of HVDC minimum power modifications then as many pairs (HVDC line name, new Pmin) as indicated.
+- >**DCMAXPUI**: the number of HVDC maximum power modifications then as many pairs (HVDC line name, new Pmax) as indicated.
+- >**DCIMPPUI**: the number of modifications of the setpoint power of the HVDC lines, then as many pairs (HVDC line name, setpoint power) as indicated. If the HVDC line is not in "imposed setpoint" mode in the base case, METRIX automatically changes the operating mode of the HVDC line (for this variant only).
 
-**Remarque** : Si une ligne HVDC est en mode « consigne imposée », avant d’analyser la variante, METRIX vérifie que la
-puissance de consigne de la ligne est bien comprise entre les bornes MAX et MIN. Si ce n’est pas le cas, la variante est rejetée.
-- >**DTVALDEP** : le nombre de modifications de la valeur initiale du déphasage du TD, puis autant de couples (nom du TD, déphasage initial) qu’indiqué.
-- >**COUEFF** : le nombre de modifications du coût d’effacement de la consommation, puis autant de couples (indice de la consommation, coût) qu’indiqué.
-- >**QATI00MN** : le nombre de modifications du seuil N, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATI5MNS** : le nombre de modifications du seuil N-1, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATI20MN** : le nombre de modifications du seuil N-k, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATITAMN** : le nombre de modifications du seuil avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**GROURAND** : le nombre de groupes, la liste ordonnée des groupes pour le 'mélange' pour ne pas avoir à bruiter les coûts.
-- >**PROBABINC** : le nombre de probabilités des incidents, puis autant de couples (nom de l'incident, probabilité).
-- >**QATI00MN2** : le nombre de modifications du seuil N de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATI20MN2** : le nombre de modifications du seuil N-k de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATITAMK** : le nombre de modifications du seuil N-k avant manœuvre, puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATITAMK2** : le nombre de modifications du seuil N-k avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
-- >**QATITAMN2** : le nombre de modifications du seuil avant manœuvre de l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué.
+**Remark**: If an HVDC line is in "imposed setpoint" mode, before analyzing the variant, METRIX checks that the
+setpoint power of the line lies between the MAX and MIN bounds. If it does not, the variant is rejected.
+- >**DTVALDEP**: the number of modifications of the initial phase shift value of the PST, then as many pairs (PST name, initial phase shift) as indicated.
+- >**COUEFF**: the number of modifications of the load curtailment cost, then as many pairs (load index, cost) as indicated.
+- >**QATI00MN**: the number of modifications of the N threshold, then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATI5MNS**: the number of modifications of the N-1 threshold, then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATI20MN**: the number of modifications of the N-k threshold, then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATITAMN**: the number of modifications of the threshold before switching actions, then as many pairs (branch name, threshold value in MW) as indicated.
+- >**GROURAND**: the number of generators, the ordered list of generators for the 'shuffling' so as not to have to add noise to the costs.
+- >**PROBABINC**: the number of contingency probabilities, then as many pairs (contingency name, probability).
+- >**QATI00MN2**: the number of modifications of the N threshold from the end to the origin (if asymmetric threshold), then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATI20MN2**: the number of modifications of the N-k threshold from the end to the origin (if asymmetric threshold), then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATITAMK**: the number of modifications of the N-k threshold before switching actions, then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATITAMK2**: the number of modifications of the N-k threshold before switching actions from the end to the origin (if asymmetric threshold), then as many pairs (branch name, threshold value in MW) as indicated.
+- >**QATITAMN2**: the number of modifications of the threshold before switching actions from the end to the origin (if asymmetric threshold), then as many pairs (branch name, threshold value in MW) as indicated.
 
-**Attention** : pour chaque variante, le modèle ne tient compte que d’une seule ligne pour chaque type de loi. Si
-plusieurs lois sont définies pour une même variante seule la dernière sera conservée.
+**Warning**: for each variant, the model only takes into account a single line for each type of law. If
+several laws are defined for the same variant only the last one will be kept.
 
-Le numéro de la première variante est toujours $\geq 0$.
+The number of the first variant is always $\geq 0$.
 
-La variante « -1 » permet d’indiquer des modifications sur le cas de base qui seront valables pour toutes les variantes
-(à moins qu’elles ne soient modifiées par les données d’une variante).
+The "-1" variant makes it possible to indicate modifications of the base case that will be valid for all the variants
+(unless they are modified by the data of a variant).
 
-**Exemple** :
+**Example**:
 
 ```
 NT;2;
@@ -327,15 +327,15 @@ NT;2;
 ```
 
 (io-remedial-actions)=
-## Parades
+## Remedial actions
 
-Les données spécifiques à chaque parade sont décrites dans un fichier au format csv.
-La première ligne indique le nombre de parades, après le mot-clé *NB*.
-Chacune des lignes correspond à une parade, telle que :
+The data specific to each remedial action are described in a csv file.
+The first line indicates the number of remedial actions, after the keyword *NB*.
+Each line corresponds to a remedial action, such that:
 
-*<Nom de l'incident>*|*<Sections à surveiller séparées par un "pipe">*;*<Nombre des premiers quadripôles listés concernés>*;<Liste de *<Nom(s) du(es) quadripôle(s)>* séparé(s) par un point virgule>;
+*<Contingency name>*|*<Sections to monitor separated by a "pipe">*;*<Number of first listed branches concerned>*;<List of *<Branch name(s)>* separated by a semicolon>;
 
-**Exemple** :
+**Example**:
 
 ```
 NB;4;
@@ -345,404 +345,404 @@ S_SO_1;2;SS1_SS1_DJ_OMN;SOO1_SOO1_DJ_OMN;
 S_SO_1;1;S_SO_2;
 ```
 
-N.B. : Les parades renseignées ne sont pas considérées si le mode de lancement est *LOAD FLOW* (i.e. mode 1).
+N.B.: The remedial actions provided are not taken into account if the launch mode is *LOAD FLOW* (i.e. mode 1).
 
 (io-outputs)=
-## Données de sorties
-Pour faciliter l’intégration et les tests de METRIX dans ImaGrid, les sorties de METRIX v6 conservent le format des
-fichiers tabulés d’ASSESS (et de METRIS).
-Plusieurs fichiers de sortie sont ou peuvent être générés à l'issue d'une simulation.
+## Output data
+To facilitate the integration and testing of METRIX in ImaGrid, the outputs of METRIX v6 keep the format of the
+tabulated files of ASSESS (and of METRIS).
+Several output files are or can be generated at the end of a simulation.
 
 (io-result-file)=
-### Fichier de résultats
-Il y a un seul fichier de résultats par variante nommé de la manière suivante : *\<resultsFilepath\>_s\<numéroVariante\>*.
-Au sein de ce fichier, les données sont regroupées par thème dans des tableaux de sortie. Chaque ligne du fichier
-commence par l’identifiant du tableau.
+### Results file
+There is a single results file per variant, named as follows: *\<resultsFilepath\>_s\<variantNumber\>*.
+Within this file, the data are grouped by theme in output tables. Each line of the file
+starts with the identifier of the table.
 
-Pour chaque champ de chaque tableau, on définit :
-- le nom de la grandeur stockée ;
-- le format de la donnée (cf. [formats de données](#io-types)) ;
-- et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW pour une puissance, u.m. (unité monétaire)
-pour un coût, sans unité autrement.
+For each field of each table, the following is defined:
+- the name of the stored quantity;
+- the format of the data (see [data formats](#io-types));
+- and for a numeric quantity (*I* or *R*), the unit of this quantity: MW for a power, m.u. (monetary unit)
+for a cost, no unit otherwise.
 
-Certains tableaux ne sont pas accessibles sauf si l'option `--all-outputs` est donnée lors du lancement de l'exécutable METRIX simulator.
-Notons `EPSILON_SORTIES = 0.05`.
+Some tables are not accessible unless the `--all-outputs` option is given when launching the METRIX simulator executable.
+Let `EPSILON_SORTIES = 0.05`.
 
 (io-detailed-situation-tables)=
-#### Tableaux descriptifs de la situation
-**Tableau S1** : ouvrages indisponibles (quadripôles et groupes)
+#### Tables describing the situation
+**Table S1**: unavailable network elements (branches and generators)
 
-*Format* : ```S1 ;INDISPONIBILITE; OUVRAGE;```
+*Format*: ```S1 ;INDISPONIBILITE; OUVRAGE;```
 
-| Nom de la grandeur | Type | Unité | Description                |
-|:-------------------|:-----|:------|:---------------------------|
-| Type de l’ouvrage  | I    |       | 1 : quadripôle; 2 : groupe |
-| Nom de l’ouvrage   | C    |       |                            |
+| Quantity name        | Type | Unit | Description                  |
+|:---------------------|:-----|:-----|:-----------------------------|
+| Network element type | I    |      | 1: branch; 2: generator      |
+| Network element name | C    |      |                              |
 
-**Note** : Tableau disponible si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator.
+**Note**: Table available if the `--all-outputs` option is given when launching METRIX simulator.
 
 -----------------------------
 
 (status_output)=
-**Tableau C1** (une seule ligne) : compte rendu d’exécution
+**Table C1** (single line): execution report
 
-*Format* : ```C1 ;COMPTE RENDU;CODE;```
+*Format*: ```C1 ;COMPTE RENDU;CODE;```
 
-| Nom de la grandeur | Type | Unité | Description                                                                                                                                                                                                                                                                                                         |
-|:-------------------|:-----|:------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Code d’erreur      | I    |       | **0** si « OK », sinon<br>**-1** = erreur lors de la résolution<br>**1**  = si pas de solution au problème (problème infaisable, souvent cause EOD)<br>**2**  = trop de contraintes (max atteint)<br>**3** = trop de micro-itération (max atteint)<br>**4** = données de variante non cohérentes (variante ignorée) |
+| Quantity name | Type | Unit | Description                                                                                                                                                                                                                                                                                                         |
+|:--------------|:-----|:-----|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Error code    | I    |      | **0** if "OK", otherwise<br>**-1** = error during the resolution<br>**1**  = if no solution to the problem (infeasible problem, often caused by EOD)<br>**2**  = too many constraints (max reached)<br>**3** = too many micro-iterations (max reached)<br>**4** = inconsistent variant data (variant ignored)    |
 
 -----------------------------
-**Tableau C2** : liste des incidents rompant la connexité
+**Table C2**: list of contingencies breaking connectivity
 
-*Format* : ```C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO COUPEE;```
+*Format*: ```C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO COUPEE;```
 
-| Nom de la grandeur           | Type | Unité | Description |
-|:-----------------------------|:-----|:------|:------------|
-| Nom de l’incident            | C    |       |             |
-| Nombre de nœuds déconnectés  | I    |       |             |
-| Volume de production coupé   | R    | MW    |             |
-| Volume de consommation coupé | R    | MW    |             |
+| Quantity name            | Type | Unit | Description |
+|:-------------------------|:-----|:-----|:------------|
+| Name of the contingency  | C    |      |             |
+| Number of disconnected nodes | I |     |             |
+| Volume of generation cut | R    | MW   |             |
+| Volume of load cut       | R    | MW   |             |
 
 -----------------------------
 (io-table_c4)=
-**Tableau C4** : liste des incidents contraignants, des incidents qui ont pu être traités en
-curatif ou des incidents ayant généré un transit maximal sur incident (cf. [tableau R3B](#io-table_r3b))
+**Table C4**: list of constraining contingencies, of contingencies that could be handled in
+curative or of contingencies that generated a maximum flow on contingency (see [table R3B](#io-table_r3b))
 
-*Format* : ```C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;```
+*Format*: ```C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;```
 
-| Nom de la grandeur           | Type | Unité | Description                                                                                                                                                                                                          |
-|:-----------------------------|:-----|:------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Numéro d’ordre de l’incident | I    |       | Numérotation à partir de 1. Numéros utilisés ensuite dans tableaux [R4](#io-table_r4), [R1B](#io-table_r1b), [R2B](#io-table_r2b), [R3B](#io-table_r3b), [R5B](#io-table_r5b) et [R6B](#io-table_r6b) (cf. ci-après) |
-| Type                         | C    |       | «N-1L», «N-KL», «N-KG», «N-HVDC», «COMBO»                                                                                                                                                                            |
-| Nom de l’incident            | C    |       | Nom de l’incident                                                                                                                                                                                                    |
+| Quantity name            | Type | Unit | Description                                                                                                                                                                                                          |
+|:-------------------------|:-----|:-----|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Contingency sequence number | I |      | Numbering starting from 1. Numbers then used in tables [R4](#io-table_r4), [R1B](#io-table_r1b), [R2B](#io-table_r2b), [R3B](#io-table_r3b), [R5B](#io-table_r5b) and [R6B](#io-table_r6b) (see below)               |
+| Type                     | C    |      | «N-1L», «N-KL», «N-KG», «N-HVDC», «COMBO»                                                                                                                                                                            |
+| Name of the contingency  | C    |      | Name of the contingency                                                                                                                                                                                              |
 
 -----------------------------
-**Tableau C5** (une seule ligne) : bilans initiaux par zone synchrone, avant équilibrage
+**Table C5** (single line): initial balances per synchronous area, before balancing
 
-*Format* : ```C5 ;ZONE SYNC;NUM ZONE;BILAN;```
+*Format*: ```C5 ;ZONE SYNC;NUM ZONE;BILAN;```
 
-| Nom de la grandeur       | Type | Unité | Description |
-|:-------------------------|:-----|:------|:------------|
-| Numéro de zone synchrone | I    |       | Ex. 0       |
-| Valeur du bilan initial  | R    | MW    | Ex. -20.5   |
+| Quantity name                | Type | Unit | Description |
+|:-----------------------------|:-----|:-----|:------------|
+| Synchronous area number      | I    |      | E.g. 0      |
+| Value of the initial balance | R    | MW   | E.g. -20.5  |
 
 (io-result-table)=
-#### Tableaux de résultats
-**Note** : dans les tableaux de sorties, seules les valeurs supérieures au seuil *EPSILON_SORTIES*, si l'option
-`--all-outputs` est donnée lors du lancement à METRIX simulator.
+#### Results tables
+**Note**: in the output tables, only the values greater than the *EPSILON_SORTIES* threshold are written, if the option
+`--all-outputs` is given when launching METRIX simulator.
 
-**Tableau R1** : résultats par sommet
+**Table R1**: results per vertex
 
-*Format* :
-* ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator,
-* ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon.
+*Format*:
+* ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` if the `--all-outputs` option is given when launching METRIX simulator,
+* ```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` otherwise.
 
-| Nom de la grandeur  | Type | Unité | Description                                                                                                                                                                                                     |
-|:--------------------|:-----|:------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom du sommet       | C    |       |                                                                                                                                                                                                                 |
-| Demande             | R    | MW    | Somme des consommations à ce sommet                                                                                                                                                                             |
-| Défaillance HR      | R    | MW    | Délestage préventif lors de l'équilibrage (valeur positive) |
-| Coût défaillance HR | R    |       | Coût du délestage préventif lors de l'équilibrage (résultat uniquement présent si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator)                             |
-| Défaillance AR      | R    | MW    | Délestage préventif lié au réseau (valeur positive), en plus de l'éventuel délestage dû au manque de production |
-| Coût défaillance AR | R    |       | Coût du délestage préventif lié au réseau (résultat uniquement présent si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator) |
+| Quantity name          | Type | Unit | Description                                                                                                                                                                                                     |
+|:-----------------------|:-----|:-----|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name of the vertex     | C    |      |                                                                                                                                                                                                                 |
+| Demand                 | R    | MW   | Sum of the loads at this vertex                                                                                                                                                                                 |
+| Loss of load HR        | R    | MW   | Preventive load shedding during balancing (positive value) |
+| Loss of load cost HR   | R    |      | Cost of the preventive load shedding during balancing (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                              |
+| Loss of load AR        | R    | MW   | Network-related preventive load shedding (positive value), in addition to any load shedding due to the lack of generation |
+| Loss of load cost AR   | R    |      | Cost of the network-related preventive load shedding (result only present if the `--all-outputs` option is given when launching METRIX simulator) |
 
-**Note** : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator et qu'il n'existe pas de consommation modifiable alors tous les champs, hormis le nom, valent *0*.
+**Note**: if the `--all-outputs` option is given when launching METRIX simulator and there is no modifiable load then all the fields, except the name, are *0*.
 
 -----------------------------
 (io-table_r1b)=
-**Tableau R1B** : résultats par consommation curative. Sont uniquement affichés les consommations activées en curatif sur un incident
+**Table R1B**: results per curative load. Only the loads activated in curative on a contingency are displayed
 
-*Format* : ```R1B ;INCIDENT;CONSO;EFFACEMENT;```
+*Format*: ```R1B ;INCIDENT;CONSO;EFFACEMENT;```
 
-| Nom de la grandeur     | Type | Unité | Description                                                 |
-|:-----------------------|:-----|:------|:------------------------------------------------------------|
-| Nom de la consommation | C    |       | Nom de la consommation                                      |
-| Numéro d’incident      | I    |       | Référence à la numérotation de la [table C4](#io-table_c4)  |
-| Puissance effacée      | R    | MW    | Volume de consommation effacée en curatif (valeur positive) |
-
------------------------------
-**Tableau R1C** : résultats par couplage de consommations
-
-*Format* : ```R1C ;NOM REGROUPEMENT;DELTA_C;```
-
-| Nom de la grandeur | Type | Unité | Description                                                       |
-|:-------------------|:-----|:------|:------------------------------------------------------------------|
-| Nom du couplage    | C    |       | Nom donné au couplage dans la configuration                       |
-| Variation          | R    | MW    | Somme des variations sur l’ensemble des consommations du couplage |
+| Quantity name       | Type | Unit | Description                                                  |
+|:--------------------|:-----|:-----|:-------------------------------------------------------------|
+| Name of the load    | C    |      | Name of the load                                             |
+| Contingency number  | I    |      | Reference to the numbering of [table C4](#io-table_c4)       |
+| Curtailed power     | R    | MW   | Volume of load curtailed in curative (positive value)        |
 
 -----------------------------
-**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne préventive diffère de la consigne initiale
-(avant ou après ajustement selon l’option choisie) sont affichés
+**Table R1C**: results per load coupling
 
-*Format* :
+*Format*: ```R1C ;NOM REGROUPEMENT;DELTA_C;```
+
+| Quantity name      | Type | Unit | Description                                                       |
+|:-------------------|:-----|:-----|:------------------------------------------------------------------|
+| Name of the coupling | C  |      | Name given to the coupling in the configuration                   |
+| Variation          | R    | MW   | Sum of the variations over all the loads of the coupling          |
+
+-----------------------------
+**Table R2**: results per generator. Only the generators whose preventive setpoint differs from the initial setpoint
+(before or after adjustment depending on the chosen option) are displayed
+
+*Format*:
 * ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;```
-si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator
-* ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` sinon.
+if the `--all-outputs` option is given when launching METRIX simulator
+* ```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` otherwise.
 
-| Nom de la grandeur                                    | Type | Unité | Description                                                                                                                                                                                                                                                                                          |
-|:------------------------------------------------------|:-----|:------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom du groupe                                         | C    |       |                                                                                                                                                                                                                                                                                                      |
-| Puissance disponible                                  | R    | MW    | Pmax du groupe dans la variante                                                                                                                                                                                                                                                                      |
-| Ajustement de puissance imposé                        | R    | MW    | $\Delta P_{cons}$ entre la donnée *json* et celle de la variante                                                                                                                                                                                                                                     |
-| Ajustement de puissance lors de l’équilibrage initial | R    | MW    | $\Delta P_{cons}$ entre la donnée de la variante et la valeur après la phase d’équilibrage (si l'opton `--all-outputs` n'est pas donnée lors du lancement à METRIX simulator, que l'option *EQUILRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option `--all-outputs`) |
-| Ajustement de puissance préventif                     | R    | MW    | $\Delta P_{cons}$ entre la phase d’équilibrage et la consigne préventive  (si l'opton `--all-outputs` n'est pas donnée lors du lancement à METRIX simulator, que l'option *REDISRES* est activée, valeur arrondie à 10-1 auquel cas; valeur non arrondie si option `--all-outputs`)                  |
-| Coût hors réseau                                      | R    |       | Somme des coûts à la hausse et à la baisse hors réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                      |
-| *CT AR*                                               | R    |       | = 0.0 (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                                       |
-| *CT ARP*                                              | R    |       | = 0.0 (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                                       |
-| Coût du delta de puissance                            | R    |       | (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                                             |
-| *CT GRTP*                                             | R    |       | = 0.0 (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                                       |
-| Coût hausse AR                                        | R    |       | Coût à la hausse avec réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                |
-| Coût baisse AR                                        | R    |       | Coût à la baisse avec réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                |
-| Coût hausse HR                                        | R    |       | Coût à la hausse hors réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                |
-| Coût baisse HR                                        | R    |       | Coût à la baisse hors réseau (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                                                                                                                |
+| Quantity name                                | Type | Unit | Description                                                                                                                                                                                                                                                                                          |
+|:---------------------------------------------|:-----|:-----|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name of the generator                        | C    |      |                                                                                                                                                                                                                                                                                                      |
+| Available power                              | R    | MW   | Pmax of the generator in the variant                                                                                                                                                                                                                                                                 |
+| Imposed power adjustment                     | R    | MW   | $\Delta P_{cons}$ between the *json* data and that of the variant                                                                                                                                                                                                                                    |
+| Power adjustment during the initial balancing | R   | MW   | $\Delta P_{cons}$ between the variant data and the value after the balancing phase (if the `--all-outputs` option is not given when launching METRIX simulator, and the *EQUILRES* option is enabled, value rounded to 10-1 in which case; non-rounded value if the `--all-outputs` option is given) |
+| Preventive power adjustment                  | R    | MW   | $\Delta P_{cons}$ between the balancing phase and the preventive setpoint  (if the `--all-outputs` option is not given when launching METRIX simulator, and the *REDISRES* option is enabled, value rounded to 10-1 in which case; non-rounded value if the `--all-outputs` option is given)         |
+| Off-grid cost                                | R    |      | Sum of the upward and downward off-grid costs (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                           |
+| *CT AR*                                      | R    |      | = 0.0 (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                                   |
+| *CT ARP*                                     | R    |      | = 0.0 (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                                   |
+| Cost of the power delta                      | R    |      | (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                                         |
+| *CT GRTP*                                    | R    |      | = 0.0 (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                                   |
+| Upward cost AR                               | R    |      | Upward cost with network (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                |
+| Downward cost AR                             | R    |      | Downward cost with network (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                              |
+| Upward cost HR                               | R    |      | Upward off-grid cost (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                    |
+| Downward cost HR                             | R    |      | Downward off-grid cost (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                                                                                                                  |
 
 -----------------------------
 (io-table_r2b)=
-**Tableau R2B** : résultats curatifs par groupe. Seuls les groupes dont la consigne curative
-diffère de la consigne préventive sont affichés
+**Table R2B**: curative results per generator. Only the generators whose curative setpoint
+differs from the preventive setpoint are displayed
 
-*Format* : ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```
+*Format*: ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```
 
-| Nom de la grandeur | Type | Unité | Description                                                |
-|:-------------------|:-----|:------|:-----------------------------------------------------------|
-| Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Nom du groupe      | C    |       |                                                            |
-| Puissance ajustée  | R    | MW    |                                                            |
+| Quantity name       | Type | Unit | Description                                                  |
+|:--------------------|:-----|:-----|:-------------------------------------------------------------|
+| Contingency number  | I    |      | Reference to the numbering of [table C4](#io-table_c4)       |
+| Name of the generator | C  |      |                                                              |
+| Adjusted power      | R    | MW   |                                                              |
 
 -----------------------------
-**Tableau R2C** : résultats par couplage de groupes
+**Table R2C**: results per generator coupling
 
-*Format* : ```R2C ;NOM REGROUPEMENT;DELTA_P;```
+*Format*: ```R2C ;NOM REGROUPEMENT;DELTA_P;```
 
-| Nom de la grandeur | Type | Unité | Description                                                 |
-|:-------------------|:-----|:------|:------------------------------------------------------------|
-| Nom du couplage    | C    |       | Nom donné au couplage dans la configuration                 |
-| Variation          | R    | MW    | Somme des variations sur l’ensemble des groupes du couplage |
+| Quantity name        | Type | Unit | Description                                                       |
+|:---------------------|:-----|:-----|:------------------------------------------------------------------|
+| Name of the coupling | C    |      | Name given to the coupling in the configuration                   |
+| Variation            | R    | MW   | Sum of the variations over all the generators of the coupling     |
 
 -----------------------------
 (io-table_r3)=
-**Tableau R3** : transits en N par quadripôle et par section surveillée
+**Table R3**: flows in N per branch and per monitored section
 
-*Format* : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```
+*Format*: ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```
 
-| Nom de la grandeur | Type | Unité | Description                    |
-|:-------------------|:-----|:------|:-------------------------------|
-| Nom du quadripôle  | C    |       |                                |
-| Transit N          | R    | MW    | Positif de départ vers arrivée |
+| Quantity name      | Type | Unit | Description                    |
+|:-------------------|:-----|:-----|:-------------------------------|
+| Name of the branch | C    |      |                                |
+| Flow N             | R    | MW   | Positive from origin to end    |
 
-*Note : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator, les quatre seuils sont également affichés.*
+*Note: if the `--all-outputs` option is given when launching METRIX simulator, the four thresholds are also displayed.*
 
-*Note : une section surveillée est restituée sous son nom, avec la somme pondérée des transits de ses ouvrages.
-Les colonnes seuil N-k et seuil ITAM valent 99999 (non défini), une section n'étant surveillée qu'en N.*
+*Note: a monitored section is reported under its name, with the weighted sum of the flows of its network elements.
+The N-k threshold and ITAM threshold columns are 99999 (undefined), a section being monitored in N only.*
 
 -----------------------------
 (io-table_r3b)=
-**Tableau R3B** : transits maximum par quadripôle sur incident. Seuls les ouvrages surveillés ou avec résultats sont affichés
+**Table R3B**: maximum flows per branch on contingency. Only the monitored network elements or those with results are displayed
 
-*Format* : ```R3B ;PAR LIGNE;LIGNE;INCIDENT AM;MENACE MAX AM;```
+*Format*: ```R3B ;PAR LIGNE;LIGNE;INCIDENT AM;MENACE MAX AM;```
 
-| Nom de la grandeur                                       | Type | Unité | Description                                                |
-|:---------------------------------------------------------|:-----|:------|:-----------------------------------------------------------|
-| nom du quadripôle                                        | C    |       |                                                            |
-| incident cause du transit max avant manœuvres            |      |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| transit max avant manœuvres                              | R    | MW    | positif de départ vers arrivée                             |
-| incident cause du 1er transit max sur  incident          |      |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| 1 $^{er}$ transit max sur incident                       | R    | MW    | positif de départ vers arrivée                             |
-| *incident cause du N $^{ème}$ transit max sur  incident* |      |       | *Autant de résultats que demandé dans les paramètres*      |
-| *N $^{ème}$ transit max sur incident*                    |      |       |                                                            |
+| Quantity name                                             | Type | Unit | Description                                                |
+|:----------------------------------------------------------|:-----|:-----|:-----------------------------------------------------------|
+| name of the branch                                        | C    |      |                                                            |
+| contingency causing the max flow before switching actions |      |      | Reference to the numbering of [table C4](#io-table_c4)     |
+| max flow before switching actions                         | R    | MW   | positive from origin to end                                |
+| contingency causing the 1st max flow on contingency       |      |      | Reference to the numbering of [table C4](#io-table_c4)     |
+| 1 $^{st}$ max flow on contingency                         | R    | MW   | positive from origin to end                                |
+| *contingency causing the N $^{th}$ max flow on contingency* |   |      | *As many results as requested in the parameters*           |
+| *N $^{th}$ max flow on contingency*                       |      |      |                                                            |
 
-*Note : ce tableau n'est pas écrit s'il n'y a pas d'incident sur le réseau.*
+*Note: this table is not written if there is no contingency on the network.*
 
 -----------------------------
 (io-table_r3c)=
-**Tableau R3C** : transits spécifiques sur incident
+**Table R3C**: specific flows on contingency
 
-*Format* : ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```
+*Format*: ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```
 
-| Nom de la grandeur | Type | Unité | Description                                                |
-|:-------------------|:-----|:------|:-----------------------------------------------------------|
-| Nom du quadripôle  | C    |       |                                                            |
-| Numéro d’ incident | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Transit            | R    | MW    | Positif de départ vers arrivée                             |
+| Quantity name      | Type | Unit | Description                                                |
+|:-------------------|:-----|:-----|:-----------------------------------------------------------|
+| Name of the branch | C    |      |                                                            |
+| Contingency number | I    |      | Reference to the numbering of [table C4](#io-table_c4)     |
+| Flow               | R    | MW   | Positive from origin to end                                |
 
 -----------------------------
 (io-table_r4)=
-**Tableau R4** : variations marginales par liaison, en N et sur incident
+**Table R4**: marginal variations per link, in N and on contingency
 
-*Format* : ```R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;```
+*Format*: ```R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;```
 
-| Nom de la grandeur  | Type | Unité | Description                                                                                          |
-|:--------------------|:-----|:------|:-----------------------------------------------------------------------------------------------------|
-| Nom du quadripôle   | C    |       |                                                                                                      |
-| Numéro d’incident   | I    |       | 0 pour N, sinon cf. [tableau C4](#io-table_c4)                                                       |
-| Variation marginale | R    | u.m.  | Impact sur la fonction objectif d’une augmentation de 1MW sur le seuil (N, N-k ou AM) de cet ouvrage |
+| Quantity name       | Type | Unit | Description                                                                                          |
+|:--------------------|:-----|:-----|:-----------------------------------------------------------------------------------------------------|
+| Name of the branch  | C    |      |                                                                                                      |
+| Contingency number  | I    |      | 0 for N, otherwise see [table C4](#io-table_c4)                                                      |
+| Marginal variation  | R    | m.u. | Impact on the objective function of a 1 MW increase of the threshold (N, N-k or AM) of this network element |
 
 -----------------------------
 (io-table_r4b)=
-**Tableau R4B** : variations marginales détaillées par liaison, en N et sur incident (seuls les
-couples (ouvrage, incident) pour lesquels les variations marginales détaillées ont été demandées et sont non nulles sont
-stockées dans le tableau)
+**Table R4B**: detailed marginal variations per link, in N and on contingency (only the
+(network element, contingency) pairs for which the detailed marginal variations have been requested and are non-zero are
+stored in the table)
 
-*Format* : ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;```
+*Format*: ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR TYPVAR;NOMVAR;VOL;COUT;```
 
-| Nom de la grandeur                               | Type | Unité | Description                                                                 |
-|:-------------------------------------------------|:-----|:------|:----------------------------------------------------------------------------|
-| Nom du quadripôle                                | C    |       |                                                                             |
-| Numéro d’ incident                               | I    |       | 0 pour N, sinon cf. [tableau C4](#io-table_c4)                              |
-| Type de l’ouvrage ou de la transaction qui varie | C    |       | Sommet « N », groupe « G » ou action curative « C »                         |
-| Nom de l’ouvrage qui varie                       | C    |       | Sommet (si variation de défaillance) ou groupe (si variation de production) |
-| Volume de variation                              | R    | MW    | Coefficient de sensibilité de l’ouvrage                                     |
-| Coût de la variation                             | R    | u.m.  | Contribution de cette variable au coût marginal                             |
+| Quantity name                                           | Type | Unit | Description                                                                  |
+|:--------------------------------------------------------|:-----|:-----|:-----------------------------------------------------------------------------|
+| Name of the branch                                      | C    |      |                                                                              |
+| Contingency number                                      | I    |      | 0 for N, otherwise see [table C4](#io-table_c4)                              |
+| Type of the network element or transaction that varies  | C    |      | Vertex « N », generator « G » or curative action « C »                       |
+| Name of the network element that varies                 | C    |      | Vertex (if loss of load varies) or generator (if generation varies)          |
+| Volume of variation                                     | R    | MW   | Sensitivity coefficient of the network element                               |
+| Cost of the variation                                   | R    | m.u. | Contribution of this variable to the marginal cost                           |
 
 -----------------------------
 (io-table_r5)=
-**Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons dont la consigne
-préventive diffère de la consigne initiale sont affichées
+**Table R5**: results per phase-shifting transformer. Only the links whose preventive setpoint
+differs from the initial setpoint are displayed
 
-*Format* : ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```
+*Format*: ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```
 
-| Nom de la grandeur | Type | Unité   | Description                     |
-|:-------------------|:-----|:--------|:--------------------------------|
-| Nom du TD          | C    |         |                                 |
-| Consigne           | R    | ° ou MW | selon le mode de pilotage du TD |
-| Consigne HR        | R    | ° ou MW | selon le mode de pilotage du TD |
+| Quantity name      | Type | Unit    | Description                          |
+|:-------------------|:-----|:--------|:-------------------------------------|
+| Name of the PST    | C    |         |                                      |
+| Setpoint           | R    | ° or MW | depending on the control mode of the PST |
+| Setpoint HR        | R    | ° or MW | depending on the control mode of the PST |
 
 -----------------------------
 (io-table_r5b)=
-**Tableau R5B** : résultats des actions curatives des transformateurs déphaseurs. Seules les
-liaisons dont la consigne curative diffère de la consigne préventive sont affichées
+**Table R5B**: results of the curative actions of the phase-shifting transformers. Only the
+links whose curative setpoint differs from the preventive setpoint are displayed
 
-*Format* : ```R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;```
+*Format*: ```R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;```
 
-| Nom de la grandeur        | Type | Unité   | Description                                                |
-|:--------------------------|:-----|:--------|:-----------------------------------------------------------|
-| Numéro de l’incident      | R    |         | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Nom du TD                 | C    |         |                                                            |
-| Consigne en curatif du TD | R    | ° ou MW | Selon le mode de pilotage du TD                            |
+| Quantity name                | Type | Unit    | Description                                                |
+|:-----------------------------|:-----|:--------|:-----------------------------------------------------------|
+| Contingency number           | R    |         | Reference to the numbering of [table C4](#io-table_c4)     |
+| Name of the PST              | C    |         |                                                            |
+| Curative setpoint of the PST | R    | ° or MW | Depending on the control mode of the PST                   |
 
 -----------------------------
 (io-table_r6)=
-**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons dont la consigne
-préventive diffère de la consigne initiale sont affichées
+**Table R6**: results per HVDC line. Only the links whose preventive setpoint
+differs from the initial setpoint are displayed
 
-*Format* :
-* ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton `--all-outputs` est donnée lors du
-lancement à METRIX simulator
-* ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon.
+*Format*:
+* ```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` if the `--all-outputs` option is given when
+launching METRIX simulator
+* ```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` otherwise.
 
-| Nom de la grandeur                        | Type | Unité | Description                                                                                                                                                                   |
-|:------------------------------------------|:-----|:------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Nom de la ligne à courant continu         | C    |       |                                                                                                                                                                               |
-| Puissance transitant                      | R    | MW    |                                                                                                                                                                               |
-| Variation marginale préventive de la HVDC | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC en préventif (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator) |
-| Variation marginale de la HVDC            | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC (il s’agit du max entre la variation marginale préventive et les variations marginales curatives)                     |
-| Transit hor réseau                        | R    | MW    | (résultat uniquement présent si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator)                                                                      |
+| Quantity name                    | Type | Unit | Description                                                                                                                                                                         |
+|:---------------------------------|:-----|:-----|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name of the HVDC line            | C    |      |                                                                                                                                                                                     |
+| Flowing power                    | R    | MW   |                                                                                                                                                                                     |
+| Preventive marginal variation of the HVDC | R | m.u | Gain on the cost function of 1 MW more on the HVDC in preventive (result only present if the `--all-outputs` option is given when launching METRIX simulator)                     |
+| Marginal variation of the HVDC   | R    | m.u  | Gain on the cost function of 1 MW more on the HVDC (this is the max between the preventive marginal variation and the curative marginal variations)                                 |
+| Off-grid flow                    | R    | MW   | (result only present if the `--all-outputs` option is given when launching METRIX simulator)                                                                                        |
 
 -----------------------------
 (io-table_r6b)=
-**Tableau R6B** : résultats par actions curatives des HVDC. Seules les liaisons dont la consigne
-curative diffère de la consigne préventive sont affichées
+**Table R6B**: results per curative action of the HVDC lines. Only the links whose curative setpoint
+differs from the preventive setpoint are displayed
 
-*Format* : ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```
+*Format*: ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```
 
-| Nom de la grandeur                      | Type | Unité | Description                                                                             |
-|:----------------------------------------|:-----|:------|:----------------------------------------------------------------------------------------|
-| Numéro de l’incident                    | R    |       | Référence à la numérotation de la [table C4](#io-table_c4)                              |
-| Nom de la HVDC                          | C    |       |                                                                                         |
-| Consigne en curatif de la HVDC          | R    | MW    |                                                                                         |
-| Variation marginale curative de la HVDC | R    | u.m   | Gain sur la fonction de coût d’1 MW de plus sur la HVDC pour cet incident (non utilisé) |
+| Quantity name                            | Type | Unit | Description                                                                                |
+|:-----------------------------------------|:-----|:-----|:-------------------------------------------------------------------------------------------|
+| Contingency number                       | R    |      | Reference to the numbering of [table C4](#io-table_c4)                                     |
+| Name of the HVDC line                    | C    |      |                                                                                            |
+| Curative setpoint of the HVDC line       | R    | MW   |                                                                                            |
+| Curative marginal variation of the HVDC  | R    | m.u  | Gain on the cost function of 1 MW more on the HVDC for this contingency (not used)         |
 
 -----------------------------
 (io-table_r7)=
-**Tableau R7** : redispatching par filière
+**Table R7**: redispatching per generation type
 
-*Format* : ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;```
+*Format*: ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL CUR HAUSSE;```
 
-| Nom de la grandeur                  | Type | Unité | Description                |
-|:------------------------------------|:-----|:------|:---------------------------|
-| Filière                             | C    |       |                            |
-| Redispatching préventif à la baisse | R    | MW    | ∑ groupes de la filière    |
-| Redispatching préventif à la hausse | R    | MW    | ∑ groupes de la filière    |
-| Redispatching curatif à la baisse   | R    | MW    | max(groupes de la filière) |
-| Redispatching curatif à la hausse   | R    | MW    | max(groupes de la filière) |
+| Quantity name                       | Type | Unit | Description                          |
+|:------------------------------------|:-----|:-----|:-------------------------------------|
+| Generation type                     | C    |      |                                      |
+| Preventive downward redispatching   | R    | MW   | ∑ generators of the generation type  |
+| Preventive upward redispatching     | R    | MW   | ∑ generators of the generation type  |
+| Curative downward redispatching     | R    | MW   | max(generators of the generation type) |
+| Curative upward redispatching       | R    | MW   | max(generators of the generation type) |
 
 -----------------------------
 (io-table_r8)=
-**Tableau R8**: résultats sur les pertes calculées en actif-seul
+**Table R8**: results on the losses computed in active-only
 
-*Format* : ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```
+*Format*: ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```
 
-| Nom de la grandeur       | Type | Unité | Description |
-|:-------------------------|:-----|:------|:------------|
-| Volume de pertes calculé | R    | MW    |             |
-| Taux de pertes           | R    | %     |             |
+| Quantity name          | Type | Unit | Description |
+|:-----------------------|:-----|:-----|:------------|
+| Computed loss volume   | R    | MW   |             |
+| Loss rate              | R    | %    |             |
 
 -----------------------------
 (io-table_r8b)=
-**Tableau R8B**: résultats sur les pertes par région
+**Table R8B**: results on the losses per region
 
-*Format* : ```R8B ;PERTES;REGION;VOLUME CALCULE;```
+*Format*: ```R8B ;PERTES;REGION;VOLUME CALCULE;```
 
-| Nom de la grandeur       | Type | Unité | Description |
-|:-------------------------|:-----|:------|:------------|
-| Région ou HVDC           | C    | MW    |             |
-| Volume de pertes calculé | R    | MW    |             |
+| Quantity name          | Type | Unit | Description |
+|:-----------------------|:-----|:-----|:------------|
+| Region or HVDC         | C    | MW   |             |
+| Computed loss volume   | R    | MW   |             |
 
 -----------------------------
 (io-table_r9)=
-**Tableau R9** : résultats de la fonction objectif
+**Table R9**: results of the objective function
 
-*Format* : ```R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS BATTERIES CUR;COUT BATTERIES CUR;COUT CONSO CUR;```
+*Format*: ```R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS BATTERIES CUR;COUT BATTERIES CUR;COUT CONSO CUR;```
 
-| Nom de la grandeur                 | Type | Unité | Description                                                                   |
-|:-----------------------------------|:-----|:------|:------------------------------------------------------------------------------|
-| Coût de redispatching              | R    | u.m.  | Coût des ajustements préventifs de production                                 |
-| Coût de la défaillance             | R    | u.m.  | Coût des ajustements préventifs de consommation (i.e. du délestage préventif) |
-| Volume de dépassement sur incident | R    | MW    | Somme des dépassements de seuils sur incidents pour les ouvrages surveillés   |
-| Volume de dépassement en N         | R    | MW    | Somme des dépassement en N pour les ouvrages surveillés                       |
-| Coût de redispatching curatif      | R    | u.m.  | Coût des ajustements curatifs de production                                   |
-| Coût d’effacement curatif          | R    | u.m.  | Coût des ajustements curatifs de consommation (i.e. du délestage curatif)     |
+| Quantity name                        | Type | Unit | Description                                                                    |
+|:-------------------------------------|:-----|:-----|:-------------------------------------------------------------------------------|
+| Redispatching cost                   | R    | m.u. | Cost of the preventive generation adjustments                                  |
+| Loss of load cost                    | R    | m.u. | Cost of the preventive load adjustments (i.e. of the preventive load shedding) |
+| Overload volume on contingency       | R    | MW   | Sum of the threshold overloads on contingencies for the monitored network elements |
+| Overload volume in N                 | R    | MW   | Sum of the overloads in N for the monitored network elements                   |
+| Curative redispatching cost          | R    | m.u. | Cost of the curative generation adjustments                                    |
+| Curative curtailment cost            | R    | m.u. | Cost of the curative load adjustments (i.e. of the curative load shedding)     |
 
 -----------------------------
 (io-table_r10)=
-**Tableau R10** : résultats du curatif topologique (parades sélectionnées)
+**Table R10**: results of the topological curative (selected remedial actions)
 
-*Format* : ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```
+*Format*: ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```
 
-| Nom de la grandeur              | Type | Unité | Description                                                |
-|:--------------------------------|:-----|:------|:-----------------------------------------------------------|
-| Numéro de l’incident            | I    |       | Référence à la numérotation de la [table C4](#io-table_c4) |
-| Nom incident                    | C    |       | Nom de l’incident initial                                  |
-| Nombre d’action(s) de la parade | I    |       |                                                            |
-| Nom de la parade                | C    |       |                                                            |
+| Quantity name                         | Type | Unit | Description                                                |
+|:--------------------------------------|:-----|:-----|:-----------------------------------------------------------|
+| Contingency number                    | I    |      | Reference to the numbering of [table C4](#io-table_c4)     |
+| Contingency name                      | C    |      | Name of the initial contingency                            |
+| Number of action(s) of the remedial action | I |    |                                                            |
+| Name of the remedial action           | C    |      |                                                            |
 
-*Note : Les parades « ne rien faire » ne sont pas affichées*
+*Note: The "do nothing" remedial actions are not displayed*
 
 (io-logs)=
-### Fichier de logs
-Il y a deux fichiers de logs générés par simulation :
-- *\<errorFilepath\>* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option `--log-level`
-sans formattage.
-- *metrix\<ID_de_rotation\>.log* : ce fichier contient les logs relatifs au niveau de logs renseigné via l'option
-`--log-level` avec formattage (l'*\<ID_de_rotation\>* correspond au numéro d'ID du fichier de logs généré avec une
-certaine taille).
+### Log file
+There are two log files generated per simulation:
+- *\<errorFilepath\>*: this file contains the logs for the log level set via the `--log-level` option
+without formatting.
+- *metrix\<rotation_ID\>.log*: this file contains the logs for the log level set via the
+`--log-level` option with formatting (the *\<rotation_ID\>* corresponds to the ID number of the log file generated with a
+certain size).
 
-Il est également possible d'afficher les logs sur la sortie standard via l'option `-p [ --print-log ]`.
+It is also possible to display the logs on the standard output via the `-p [ --print-log ]` option.
 
 (io-lodf)=
-### Fichier LODF
+### LODF file
 
-Un fichier *LODF_matrix.csv* est généré si l'opion `--write-LODF` est renseignée. Ce fichier correspond à la matrice
-LODF (Line Outage Distribution Factor) de la dernière variante simulée.
+A *LODF_matrix.csv* file is generated if the `--write-LODF` option is given. This file corresponds to the
+LODF (Line Outage Distribution Factor) matrix of the last simulated variant.
 
 (io-ptdf)=
-### Fichier PTDF
+### PTDF file
 
-Un fichier *PTDF_matrix.csv* est généré si l'opion `--write-PTDF` est renseignée. Ce fichier correspond à la matrice
-PTDF (Power Transfer Distribution Factor) de la dernière variante simulée.
+A *PTDF_matrix.csv* file is generated if the `--write-PTDF` option is given. This file corresponds to the
+PTDF (Power Transfer Distribution Factor) matrix of the last simulated variant.
 
 (io-mps)=
-### Fichier MPS
+### MPS file
 
-Le fichier MPS (*Donnees_Probleme_Solveur.mps*) du dernier problème peut être généré via l'option `--mps-file`.
+The MPS file (*Donnees_Probleme_Solveur.mps*) of the last problem can be generated via the `--mps-file` option.

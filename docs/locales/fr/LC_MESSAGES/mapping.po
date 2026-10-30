@@ -1,0 +1,740 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../mapping.md:2 a1d467669ae34ec1aaff276fb046e740
+msgid "Mapping configuration"
+msgstr "Configuration du mapping"
+
+#: ../../mapping.md:4 bc1ba6f36822462eb58db1acdafb3810
+msgid "Introduction"
+msgstr "Introduction"
+
+#: ../../mapping.md:6 4d2bf8c05fbe4d1ab8388f072c556d90
+msgid "A mapping configuration is made of 3 objects:"
+msgstr "Une configuration de mapping est composée de 3 objets :"
+
+#: ../../mapping.md:7 ce8306d8c2dd4148ba8943bf3fde21b5
+msgid "an IIDM network"
+msgstr "un réseau IIDM"
+
+#: ../../mapping.md:8 9ddb81f8cc3d4cfeb012fd4f37cce66e
+msgid "a time series store (in csv format)"
+msgstr "un store de séries temporelles (au format csv)"
+
+#: ../../mapping.md:9 72ba0c80f3a74904b37513968dc6fe47
+msgid ""
+"a mapping Groovy script using the [mapping DSL](#mapping-dsl) described "
+"below"
+msgstr ""
+"un script Groovy de mapping utilisant le [DSL de mapping](#mapping-dsl) "
+"décrit ci-dessous"
+
+#: ../../mapping.md:11 dbedd461605c48f39c85426f51a43c21
+msgid ""
+"The mapping process is mainly used through Metrix simulator, but it may be "
+"executed separately to check its intermediate results."
+msgstr ""
+"Le processus de mapping est principalement utilisé via le simulateur Metrix,"
+" mais il peut être exécuté séparément pour vérifier ses résultats "
+"intermédiaires."
+
+#: ../../mapping.md:13 0329e0963b0c40b8954bee5d9c90bbd6
+msgid ""
+"With only the required options, the mapping does not produce any output. In "
+"adding option `--mapping-synthesis-dir`, it will output a "
+"[synthesis](#synthesis) of the mapping, allowing you to check the "
+"consistency of the produced multi cases. If you want to go deeper in the "
+"mapping process, the option `--check-equipment-time-series` will produce the"
+" full time series mapping. Lastly, the option `--network-output-dir` will "
+"output the network case with mapped values for the steps requested."
+msgstr ""
+"Avec uniquement les options obligatoires, le mapping ne produit aucune "
+"sortie. En ajoutant l'option `--mapping-synthesis-dir`, il produit une "
+"[synthèse](#synthesis) du mapping, permettant de vérifier la cohérence des "
+"multi-cas produits. Pour aller plus loin dans le processus de mapping, "
+"l'option `--check-equipment-time-series` produit le mapping complet des "
+"séries temporelles. Enfin, l'option `--network-output-dir` produit le cas "
+"réseau avec les valeurs mappées pour les pas de temps demandés."
+
+#: ../../mapping.md:15 8ff92072dafb4fd1921d15bd157eebd7
+msgid "Mapping DSL"
+msgstr "DSL de mapping"
+
+#: ../../mapping.md:17 a06ec1687f514a00b5df7943bc9d1901
+msgid ""
+"The purpose of the mapping is to map time series values on network elements."
+" As it is a Groovy script, it can create composite time series or modify the"
+" network."
+msgstr ""
+"Le mapping a pour but d'associer les valeurs des séries temporelles aux "
+"ouvrages du réseau. Comme il s'agit d'un script Groovy, il peut créer des "
+"séries temporelles composites ou modifier le réseau."
+
+#: ../../mapping.md:19 0dd2a3fd1c204376b284491fd64cc35b
+msgid "General parameters"
+msgstr "Paramètres généraux"
+
+#: ../../mapping.md:21 804b1cb751d44171849267e47684bb7d
+msgid "The general parameters are used to globally configure the mapping."
+msgstr ""
+"Les paramètres généraux permettent de configurer le mapping de manière "
+"globale."
+
+#: ../../mapping.md:29 573374eca63340eaa8c8badbc45975bb
+msgid "Time series mapping to network"
+msgstr "Mapping des séries temporelles sur le réseau"
+
+#: ../../mapping.md:31 335f4dd75adc452d9103288e330d6284
+msgid "There is one mapping function for each type of network elements:"
+msgstr ""
+"Il existe une fonction de mapping pour chaque type d'ouvrage du réseau :"
+
+#: ../../mapping.md:47 3ea90bd6a53943118e2f1e0688611db0
+msgid "the general syntax is:"
+msgstr "la syntaxe générale est :"
+
+#: ../../mapping.md:57 80c961a51290448fb925ca7bb5f5c689
+msgid "The elements of the general syntax are described below."
+msgstr "Les éléments de la syntaxe générale sont décrits ci-dessous."
+
+#: ../../mapping.md:59 bcfd47b6041e440eab2eeed87d8f2830
+msgid ""
+"Note that for the `mapToBreakers` function, the `variable` and "
+"`distributionKey` are always ignored."
+msgstr ""
+"Notez que pour la fonction `mapToBreakers`, la `variable` et la "
+"`distributionKey` sont toujours ignorées."
+
+#: ../../mapping.md:61 9306bb136e3c494ebfef4700bf5e5d8c
+msgid "Time series"
+msgstr "Séries temporelles"
+
+#: ../../mapping.md:63 8bdb051dd4a64e5bae37bf1019de7374
+msgid ""
+"With the `timeSeriesName` variable you can map any time series by referring "
+"to its name. The available time series must exist in the input data set or "
+"be created within the Groovy script. For more details about time series "
+"management, refer to the [time series description](inv:powsybl-"
+"core:*:*#timeseries)."
+msgstr ""
+"Avec la variable `timeSeriesName`, vous pouvez mapper n'importe quelle série"
+" temporelle en vous référant à son nom. Les séries temporelles disponibles "
+"doivent exister dans le jeu de données d'entrée ou être créées dans le "
+"script Groovy. Pour plus de détails sur la gestion des séries temporelles, "
+"reportez-vous à la [description des séries temporelles](inv:powsybl-"
+"core:*:*#timeseries)."
+
+#: ../../mapping.md:67 f584bcdba44b4ffa9a31e4c0e6e0b019
+msgid ""
+"Note that if the same time series (referred by its name) is used in multiple"
+" `mapToXXX` of same type, the mapping behavior will be as if it was applied "
+"once on the group of elements selected by these `mapToXXX` instructions. For"
+" instance, if we map a constant time series of value 100 to a generator A "
+"and in another mapTo to a generator B, then, with the default "
+"distributionKey, it will map value 50 to each generator."
+msgstr ""
+"Notez que si la même série temporelle (référencée par son nom) est utilisée "
+"dans plusieurs `mapToXXX` de même type, le comportement du mapping sera le "
+"même que si elle avait été appliquée une seule fois sur le groupe d'ouvrages"
+" sélectionnés par ces instructions `mapToXXX`. Par exemple, si l'on mappe "
+"une série temporelle constante de valeur 100 sur un groupe de production A "
+"et, dans un autre mapTo, sur un groupe de production B, alors, avec la "
+"distributionKey par défaut, la valeur 50 sera mappée sur chaque groupe."
+
+#: ../../mapping.md:72 baa17a750fd2434dae90f6838480e098
+msgid "Variable"
+msgstr "Variable"
+
+#: ../../mapping.md:74 4111dc025ce640c3a752e27c3f7a2cd5
+msgid ""
+"The `variable` allows to specify which network element attribute will be "
+"overwritten by its mapped time series value. It is an optional variable "
+"(except for `mapToTransformers`) which values depend on the element type "
+"(default is in bold) :"
+msgstr ""
+"La `variable` permet de préciser quel attribut de l'ouvrage du réseau sera "
+"écrasé par la valeur de la série temporelle mappée. Elle est optionnelle "
+"(sauf pour `mapToTransformers`) et ses valeurs dépendent du type d'ouvrage "
+"(la valeur par défaut est en gras) :"
+
+#: ../../mapping.md:77 dc1a021a1f604cbaa4e126ae8296beb6
+msgid "`mapToGenerators` **targetP**, minP, maxP, targetQ"
+msgstr "`mapToGenerators` **targetP**, minP, maxP, targetQ"
+
+#: ../../mapping.md:78 3fa52db09c4944d7b688785a7fe39d23
+msgid "`mapToBatteries` **targetP**, minP, maxP, targetQ"
+msgstr "`mapToBatteries` **targetP**, minP, maxP, targetQ"
+
+#: ../../mapping.md:79 8401d3755fc146f993d5fdaac6320c9f
+msgid ""
+"`mapToLoads` **p0**, fixedActivePower, variableActivePower, q0, "
+"fixedReactivePower, variableReactivePower"
+msgstr ""
+"`mapToLoads` **p0**, fixedActivePower, variableActivePower, q0, "
+"fixedReactivePower, variableReactivePower"
+
+#: ../../mapping.md:80 6d19bb8b14c14f6d99f007f61584d4fb
+msgid "`mapToHvdcLines` **activePowerSetpoint**, minP, maxP"
+msgstr "`mapToHvdcLines` **activePowerSetpoint**, minP, maxP"
+
+#: ../../mapping.md:81 94ea66d996834194881d98cc755dfa9c
+msgid "`mapToBoundaryLines` **p0**"
+msgstr "`mapToBoundaryLines` **p0**"
+
+#: ../../mapping.md:82 767b7c7d73644507927ed8746456bfcb
+msgid ""
+"`mapToBreakers` **open** (with 1 corresponding to a closed switch and 0 to "
+"open)"
+msgstr ""
+"`mapToBreakers` **open** (1 correspondant à un interrupteur fermé et 0 à un "
+"interrupteur ouvert)"
+
+#: ../../mapping.md:83 1bce09bf98b744a2b937ec670270de74
+msgid "`mapToTransformers` ratedU1, ratedU2"
+msgstr "`mapToTransformers` ratedU1, ratedU2"
+
+#: ../../mapping.md:84 83651476c8bb4e189b17f9b2b4b6367d
+msgid ""
+"`mapToPhaseTapChangers` **phaseTapPosition**, phaseRegulating (0: off, 1: "
+"on), regulationMode (0: CURRENT_LIMITER, 1: ACTIVE_POWER_CONTROL, 2: "
+"FIXED_TAP)"
+msgstr ""
+"`mapToPhaseTapChangers` **phaseTapPosition**, phaseRegulating (0 : off, 1 : "
+"on), regulationMode (0 : CURRENT_LIMITER, 1 : ACTIVE_POWER_CONTROL, 2 : "
+"FIXED_TAP)"
+
+#: ../../mapping.md:85 54af291dd0f545bfb0a4946ffc47a01c
+msgid ""
+"`mapToRatioTapChangers` **ratioTapPosition**, loadTapChangingCapabilities, "
+"regulating, targetV"
+msgstr ""
+"`mapToRatioTapChangers` **ratioTapPosition**, loadTapChangingCapabilities, "
+"regulating, targetV"
+
+#: ../../mapping.md:86 cfb56f875cf7416894cc8268c7efc5b0
+msgid "`mapToLccConverterStations` **powerFactor**"
+msgstr "`mapToLccConverterStations` **powerFactor**"
+
+#: ../../mapping.md:87 7fc5a1729de34c62b72a1303652c8044
+msgid ""
+"`mapToVscConverterStations` **voltageSetpoint**, voltageRegulatorOn, "
+"reactivePowerSetpoint"
+msgstr ""
+"`mapToVscConverterStations` **voltageSetpoint**, voltageRegulatorOn, "
+"reactivePowerSetpoint"
+
+#: ../../mapping.md:89 ebccc7ede2de48a8ab4289439e7abedf
+msgid ""
+"For the loads, it is forbidden to map `p0` and in the same time "
+"`fixedActivePower` or `variableActivePower`, as these variables are linked "
+"(`p0 = Pfixed + Pvar`). It is restricted to prevent incoherent mapping. If "
+"only `fixedActivePower` or `variableActivePower` is mapped, then the value "
+"of the other unmapped one will be set to 0 by default."
+msgstr ""
+"Pour les consommations, il est interdit de mapper `p0` et en même temps "
+"`fixedActivePower` ou `variableActivePower`, car ces variables sont liées "
+"(`p0 = Pfixed + Pvar`). Cette restriction évite un mapping incohérent. Si "
+"seule `fixedActivePower` ou `variableActivePower` est mappée, la valeur de "
+"l'autre variable non mappée sera fixée à 0 par défaut."
+
+#: ../../mapping.md:91 ab766e2aa7bc45108ec10f0ba06341c9
+msgid "Filter"
+msgstr "Filtre"
+
+#: ../../mapping.md:93 435c59c5cc7d4fa9b55c589a58a8c577
+msgid ""
+"The `filter` variable is evaluated for every network item (of the requested "
+"type) and only those which match will be mapped."
+msgstr ""
+"La variable `filter` est évaluée pour chaque ouvrage du réseau (du type "
+"demandé) et seuls ceux qui satisfont le filtre sont mappés."
+
+#: ../../mapping.md:95 2c184d19097b4f4b8f4a923ed62280c2
+msgid ""
+"The filter must be a groovy statement returning `true` or `false`. It has "
+"access to the same variables of the main script, with three more variables "
+"related to the current object filtered."
+msgstr ""
+"Le filtre doit être une instruction groovy retournant `true` ou `false`. Il "
+"a accès aux mêmes variables que le script principal, avec trois variables "
+"supplémentaires relatives à l'objet courant filtré."
+
+#: ../../mapping.md:97 dc67cb377ce4438cb409631950dcb738
+msgid "depending on the `mapToXXX` type:"
+msgstr "selon le type de `mapToXXX` :"
+
+#: ../../mapping.md:98 a03a4ec0e1304beda65d2cd1ab6216f4
+msgid "`mapToGenerators`: `generator`"
+msgstr "`mapToGenerators` : `generator`"
+
+#: ../../mapping.md:99 e1c9c996c82c4b71a4bb468d1dbaa312
+msgid "`mapToBatteries`: `battery`"
+msgstr "`mapToBatteries` : `battery`"
+
+#: ../../mapping.md:100 ad678f1b040b4f649f0b52d5faafecb8
+msgid "`mapToLoads`: `load`"
+msgstr "`mapToLoads` : `load`"
+
+#: ../../mapping.md:101 60fcd632108a48ed943eac63ad27c01f
+msgid "`mapToHvdcLines`: `hvdcLine`"
+msgstr "`mapToHvdcLines` : `hvdcLine`"
+
+#: ../../mapping.md:102 5fdc786dcabd4f0ea11020e6400755cc
+msgid "`mapToBoundaryLines`: `boundaryLine`"
+msgstr "`mapToBoundaryLines` : `boundaryLine`"
+
+#: ../../mapping.md:103 ab1ad58cd92b4ed1b28953d5e34039fb
+msgid "`mapToBreakers`: `breaker`,"
+msgstr "`mapToBreakers` : `breaker`,"
+
+#: ../../mapping.md:104 8419bcdfa8984712bfe28ad99045b235
+msgid ""
+"`mapToTransformers`, `mapToPhaseTapChangers` and `mapToRatioTapChangers`: "
+"`twoWindingsTransformer` (note that three windings transformers are not yet "
+"supported)."
+msgstr ""
+"`mapToTransformers`, `mapToPhaseTapChangers` et `mapToRatioTapChangers` : "
+"`twoWindingsTransformer` (notez que les transformateurs à trois enroulements"
+" ne sont pas encore pris en charge)."
+
+#: ../../mapping.md:105 9d12c6f877644f5ba27d91e2361d1dbd
+msgid "`mapToLccConverterStations`: `lccConverterStation`"
+msgstr "`mapToLccConverterStations` : `lccConverterStation`"
+
+#: ../../mapping.md:106 69742604471c4e5ba4248ad76c03c823
+msgid "`mapToVscConverterStations`: `vscConverterStation`"
+msgstr "`mapToVscConverterStations` : `vscConverterStation`"
+
+#: ../../mapping.md:107 a24dfc99ee244d76a650b743bfce393f
+msgid "`voltageLevel`"
+msgstr "`voltageLevel`"
+
+#: ../../mapping.md:108 2129b5d50aea4d48b30b45ad61a05622
+msgid "`substation`"
+msgstr "`substation`"
+
+#: ../../mapping.md:110 be3363bdafd344aba7c880873161e793
+msgid ""
+"Be careful of the syntax of the groovy statement as an assignation `load.id "
+"= 'conso'` instead of the comparison `load.id == 'conso'` would return "
+"something truth equal to true and then resulting in all equipments to be "
+"mapped."
+msgstr ""
+"Soyez attentif à la syntaxe de l'instruction groovy : une affectation "
+"`load.id = 'conso'` à la place de la comparaison `load.id == 'conso'` "
+"retournerait une valeur évaluée à vrai, ce qui entraînerait le mapping de "
+"tous les ouvrages."
+
+#: ../../mapping.md:112 6ab27c4de3a14ec8a3fecee1e660d86f
+msgid "Please learn more with the following examples:"
+msgstr "Pour en savoir plus, consultez les exemples suivants :"
+
+#: ../../mapping.md:114 24b2f5a0421249ea9b9b5c6c376c6e81
+msgid ""
+"To filter the generators of the country 'FR' of energy source type "
+"'THERMAL', we can define the following filter:"
+msgstr ""
+"Pour filtrer les groupes de production du pays 'FR' de type de source "
+"d'énergie 'THERMAL', on peut définir le filtre suivant :"
+
+#: ../../mapping.md:124 7505a4245ac0453fbf4c5bcf75cfbe6d
+msgid "or"
+msgstr "ou"
+
+#: ../../mapping.md:135 428803a02da2458190df42db55fc36fe
+msgid "To filter the generators connected to a list of voltage levels:"
+msgstr ""
+"Pour filtrer les groupes de production connectés à une liste de postes "
+"(voltage levels) :"
+
+#: ../../mapping.md:140 5050721e25b94c90977008772b0932da
+msgid ""
+"To filter the loads of particular regions (assuming the IIDM model has been "
+"extended with a custom property `region`):"
+msgstr ""
+"Pour filtrer les consommations de certaines régions (en supposant que le "
+"modèle IIDM a été enrichi d'une propriété personnalisée `region`) :"
+
+#: ../../mapping.md:145 20a399b490bd4408a2539c4abdf9c449
+msgid "To filter generators that belong to the main connected component:"
+msgstr ""
+"Pour filtrer les groupes de production appartenant à la composante connexe "
+"principale :"
+
+#: ../../mapping.md:150 b95614a4efc0476794d11b079973545c
+msgid "Distribution key"
+msgstr "Clé de répartition"
+
+#: ../../mapping.md:152 29529a7f5bca4c84a116dfbb51fe91b7
+msgid ""
+"The distribution key `distributionKey` allows to set a distribution weight "
+"for each selected item. Its content is a groovy statement returning either a"
+" time series name or an integer. The value is then normalized so that the "
+"sum for the current mapToXXX filter is equal to 1. The additional variable "
+"accessible from the groovy statement is the same as the one found in the "
+"[filter](#filter): the equipment variable (which name depends on the mapTo "
+"type)."
+msgstr ""
+"La clé de répartition `distributionKey` permet de définir un poids de "
+"répartition pour chaque ouvrage sélectionné. Son contenu est une instruction"
+" groovy retournant soit un nom de série temporelle, soit un entier. La "
+"valeur est ensuite normalisée de sorte que la somme pour le filtre mapToXXX "
+"courant soit égale à 1. La variable supplémentaire accessible depuis "
+"l'instruction groovy est la même que celle du [filtre](#filter) : la "
+"variable de l'ouvrage (dont le nom dépend du type de mapTo)."
+
+#: ../../mapping.md:154 97ea04a836b74240882f00280ed97ae7
+msgid ""
+"Note that the `mapToBreakers` function does not support a distribution key "
+"as the mapped value will be either 1 or 0 (close/open) and will be applied "
+"to all filtered breakers."
+msgstr ""
+"Notez que la fonction `mapToBreakers` ne prend pas en charge de clé de "
+"répartition, car la valeur mappée sera soit 1, soit 0 (fermé/ouvert) et sera"
+" appliquée à tous les disjoncteurs filtrés."
+
+#: ../../mapping.md:156 3d8152240df948c385f49b7aa736a5bb
+msgid "Please look at the following examples:"
+msgstr "Consultez les exemples suivants :"
+
+#: ../../mapping.md:158 a836ff39523249f89137b2a3c1151e80
+msgid "To create a distribution key relative to the Pmax of each group:"
+msgstr "Pour créer une clé de répartition relative au Pmax de chaque groupe :"
+
+#: ../../mapping.md:166 3f2c8725e0b84a269fe132a03bc26dbb
+msgid "To create a distribution key relative to the power target:"
+msgstr "Pour créer une clé de répartition relative à la puissance cible :"
+
+#: ../../mapping.md:171 2ace7b38b42e41e48a221887f51a32e9
+msgid ""
+"To create a distribution key defined by time series (assuming we have or "
+"created the time series SO_G1_key and SO_G2_key):"
+msgstr ""
+"Pour créer une clé de répartition définie par des séries temporelles (en "
+"supposant que les séries temporelles SO_G1_key et SO_G2_key existent ou ont "
+"été créées) :"
+
+#: ../../mapping.md:181 518483346779409fa4ebabf4c5940109
+msgid "To create a distribution key relative to the base load:"
+msgstr ""
+"Pour créer une clé de répartition relative à la consommation de base :"
+
+#: ../../mapping.md:189 2d6c531c4f644cd28c4fbe3426de327e
+msgid "Unmapping"
+msgstr "Unmapping"
+
+#: ../../mapping.md:191 df2a7600882f4349ae6bb1990d1f17c9
+msgid ""
+"We use that if we want to `unmap` items to keep their original static value."
+" The main purpose (aside unmapping previously mapped items due to too broad "
+"filter maybe) is to prevent the selected items to appear in the `not mapped`"
+" section in the mapping synthesis that we will see later."
+msgstr ""
+"On l'utilise pour « démapper » (`unmap`) des ouvrages afin de conserver leur"
+" valeur statique d'origine. Son but principal (outre le démapping d'ouvrages"
+" précédemment mappés à cause d'un filtre trop large) est d'éviter que les "
+"ouvrages sélectionnés apparaissent dans la section `not mapped` de la "
+"synthèse du mapping que nous verrons plus loin."
+
+#: ../../mapping.md:198 e0c3f7052c954f6998173684170cbf3b
+msgid "Generators and HVDC limits"
+msgstr "Limites des groupes de production et des lignes à courant continu"
+
+#: ../../mapping.md:200 7b7c213d31f542bcaa929e54fcad9b34
+msgid ""
+"When mapping a time series to a generator or an HVDC line, a time series "
+"value may break a threshold defined in the network case (a max power or min "
+"power, for instance). To handle this case, we can choose to ignore the limit"
+" with either:"
+msgstr ""
+"Lors du mapping d'une série temporelle sur un groupe de production ou une "
+"ligne à courant continu, une valeur de la série peut dépasser un seuil "
+"défini dans le cas réseau (une puissance maximale ou minimale, par exemple)."
+" Pour traiter ce cas, on peut choisir d'ignorer la limite avec soit :"
+
+#: ../../mapping.md:202 57c838cd28cb44708fbc8ca89a1c5aa6
+msgid ""
+"a global parameter: use `--ignore-limits` in the command line interface "
+"parameter"
+msgstr ""
+"un paramètre global : utiliser `--ignore-limits` dans les paramètres de "
+"l'interface en ligne de commande"
+
+#: ../../mapping.md:203 8484df01be5f41ac876f102b19d9d74d
+#, python-brace-format
+msgid ""
+"a per time series configuration: add `ignoreLimits { \"timeSeriesName\" }` "
+"for each wanted time series"
+msgstr ""
+"une configuration par série temporelle : ajouter `ignoreLimits { "
+"\"timeSeriesName\" }` pour chaque série temporelle souhaitée"
+
+#: ../../mapping.md:205 6988df11ebc048c18ceb24bc41d6915e
+msgid ""
+"If no option is set to ignore the limits, then, if it happens, the program "
+"will exit with an exception. Otherwise, it will log a warning message."
+msgstr ""
+"Si aucune option n'est définie pour ignorer les limites, alors, le cas "
+"échéant, le programme s'arrête avec une exception. Sinon, il journalise un "
+"message d'avertissement."
+
+#: ../../mapping.md:207 87bb10f60f3440ed9a9775bae592b9a3
+msgid "Examples"
+msgstr "Exemples"
+
+#: ../../mapping.md:209 b44e1de5570544db9183d441091ec408
+msgid "Time series mapping on a generator :"
+msgstr "Mapping d'une série temporelle sur un groupe de production :"
+
+#: ../../mapping.md:217 50ff1f223b2a41fab3d1e855644bb787
+msgid "Time series mapping on the variable active power of a load :"
+msgstr ""
+"Mapping d'une série temporelle sur la puissance active variable d'une "
+"consommation :"
+
+#: ../../mapping.md:226 0d35023c2fcd4b8fbdaf22e0bc1368b3
+msgid ""
+"Mapping on the load of a whole region (with custom IIDM properties "
+"`region`):"
+msgstr ""
+"Mapping sur la consommation d'une région entière (avec la propriété IIDM "
+"personnalisée `region`) :"
+
+#: ../../mapping.md:235 29bd321fd03b49b8ad74659845d6d6a1
+msgid "Mapping on breakers:"
+msgstr "Mapping sur des disjoncteurs :"
+
+#: ../../mapping.md:243 6415a905ea6e40f98e2ed3cf3705eb5e
+msgid "Mapping on Phase Tap Shifters:"
+msgstr "Mapping sur des transformateurs-déphaseurs :"
+
+#: ../../mapping.md:251 13a5bbf20cf740f7a49cf72ecdbdd202
+msgid ""
+"With added properties in IIDM we can, using the Groovy language, map "
+"multiple configurations:"
+msgstr ""
+"Avec des propriétés ajoutées dans IIDM, on peut, grâce au langage Groovy, "
+"mapper plusieurs configurations :"
+
+#: ../../mapping.md:271 5d64c7f52e6144e88cc7f4dd5cce8500
+msgid "Mapping on multiple items (HVDC)"
+msgstr "Mapping sur plusieurs ouvrages (lignes à courant continu)"
+
+#: ../../mapping.md:280 50824926c59c44f2b8fd74ea8e4bcc8b
+msgid "Outputs"
+msgstr "Sorties"
+
+#: ../../mapping.md:282 4fb3d24a4a0e4ac8af814cc0bd63cc14
+msgid "Synthesis"
+msgstr "Synthèse"
+
+#: ../../mapping.md:284 295eaa323ad34508977316340f715825
+msgid ""
+"The use of the option `--mapping-synthesis-dir` produces csv synthesis "
+"files."
+msgstr ""
+"L'utilisation de l'option `--mapping-synthesis-dir` produit des fichiers de "
+"synthèse csv."
+
+#: ../../mapping.md:286 726d93c01b8344f1be207aae37c627c5
+msgid ""
+"The file `mappingSynthesis.csv/txt` contains a csv/text formatted (also "
+"displayed in the command line output) global synthesis indicating how the "
+"different types of network elements or variables were processed:"
+msgstr ""
+"Le fichier `mappingSynthesis.csv/txt` contient une synthèse globale au "
+"format csv/texte (également affichée dans la sortie de la ligne de commande)"
+" indiquant comment les différents types d'ouvrages ou de variables ont été "
+"traités :"
+
+#: ../../mapping.md:287 23673d332eae4cafb495df31171deb37
+msgid "mapped: elements that were mapped with time series"
+msgstr "mapped : ouvrages qui ont été mappés avec des séries temporelles"
+
+#: ../../mapping.md:288 6683c297c4564170ba3f6e3467d68936
+msgid "unmapped: elements that weren't mapped at all"
+msgstr "unmapped : ouvrages qui n'ont pas du tout été mappés"
+
+#: ../../mapping.md:289 533e13686d89490f9cd6272e6acec8f3
+msgid ""
+"ignored unmapped: elements that weren't mapped but specifically indicated so"
+msgstr ""
+"ignored unmapped : ouvrages qui n'ont pas été mappés mais pour lesquels cela"
+" a été indiqué explicitement"
+
+#: ../../mapping.md:290 9a94800512fb4afc88b730eefc3b375c
+msgid ""
+"multi-mapped: elements that were mapped multiple times (often when we map "
+"all elements of one type once, then we apply another with a specific "
+"filter), only the last mapping will be applied"
+msgstr ""
+"multi-mapped : ouvrages qui ont été mappés plusieurs fois (souvent lorsque "
+"l'on mappe une fois tous les ouvrages d'un type, puis qu'on en applique un "
+"autre avec un filtre spécifique) ; seul le dernier mapping sera appliqué"
+
+#: ../../mapping.md:291 28887710810e47508efb2959c433874e
+msgid ""
+"disconnected: number of disconnected elements (as mapping does not apply to "
+"them)"
+msgstr ""
+"disconnected : nombre d'ouvrages déconnectés (le mapping ne s'applique pas à"
+" eux)"
+
+#: ../../mapping.md:292 228d4b881c584e3e9f137cbd48f46db6
+msgid ""
+"out of main cc: number of elements that are out of the main connected "
+"component (as mapping does not apply to them)"
+msgstr ""
+"out of main cc : nombre d'ouvrages hors de la composante connexe principale "
+"(le mapping ne s'applique pas à eux)"
+
+#: ../../mapping.md:294 a424efc81af6498ca6dda4dfc4133b3f
+msgid ""
+"Component type represents the network element (generators, loads, breakers, "
+"etc.):"
+msgstr ""
+"Le type de composant représente l'ouvrage du réseau (groupes de production, "
+"consommations, disjoncteurs, etc.) :"
+
+#: ../../mapping.md:295 050c401d79724c689317dea18a7c8854
+msgid ""
+"Files with template name `<componentType>ToTimeSeriesMapping.csv` show the "
+"effective mapping between time series and the element."
+msgstr ""
+"Les fichiers dont le nom suit le modèle "
+"`<componentType>ToTimeSeriesMapping.csv` montrent le mapping effectif entre "
+"les séries temporelles et l'ouvrage."
+
+#: ../../mapping.md:296 283d993e5ccc416a8ad1e2f882b4ae71
+msgid ""
+"Files with template name `disconnected<componentType>.csv` list the "
+"disconnected elements with additional information. Note that the time series"
+" indicated as \"AppliedTimeSeries\" isn't effectively applied."
+msgstr ""
+"Les fichiers dont le nom suit le modèle `disconnected<componentType>.csv` "
+"listent les ouvrages déconnectés avec des informations complémentaires. "
+"Notez que la série temporelle indiquée comme « AppliedTimeSeries » n'est pas"
+" effectivement appliquée."
+
+#: ../../mapping.md:297 3c8bcf2472d04c8aa1803d8fe0822477
+msgid ""
+"Same or similar information can be found for elements that are out of main "
+"connected components, unmapped and ignored unmapped, in files with "
+"respective template name `outOfMainCc<componentType>.csv`, "
+"`unmapped<componentType>.csv` and `ignoredUnmapped<componentType>.csv`."
+msgstr ""
+"Des informations identiques ou similaires se trouvent pour les ouvrages hors"
+" de la composante connexe principale, non mappés et non mappés ignorés, dans"
+" les fichiers dont les noms suivent respectivement les modèles "
+"`outOfMainCc<componentType>.csv`, `unmapped<componentType>.csv` et "
+"`ignoredUnmapped<componentType>.csv`."
+
+#: ../../mapping.md:298 8c327d12c95f4eccad040069ef089ab8
+msgid ""
+"Files with template name `timeSeriesTo<componentType>Mapping` show for each "
+"time series how it was used in the mapping, with the original network value "
+"and variable type. The file `timeSeries.csv` show the same mapping for all "
+"component types."
+msgstr ""
+"Les fichiers dont le nom suit le modèle `timeSeriesTo<componentType>Mapping`"
+" montrent, pour chaque série temporelle, comment elle a été utilisée dans le"
+" mapping, avec la valeur d'origine du réseau et le type de variable. Le "
+"fichier `timeSeries.csv` montre le même mapping pour tous les types de "
+"composants."
+
+#: ../../mapping.md:300 a7189c6a83424632bc3519d6455bdc06
+msgid ""
+"When combining with the option `--check-equipment-time-series` (and the "
+"required associated option `--check-versions`), two new files are produced:"
+msgstr ""
+"En combinaison avec l'option `--check-equipment-time-series` (et l'option "
+"associée obligatoire `--check-versions`), deux nouveaux fichiers sont "
+"produits :"
+
+#: ../../mapping.md:301 ebd3572ae61a4c7ca0aa381128ee8fd6
+msgid ""
+"`balanceSummary.csv` which contains the overall power balance at each time "
+"step"
+msgstr ""
+"`balanceSummary.csv` qui contient le bilan global de puissance à chaque pas "
+"de temps"
+
+#: ../../mapping.md:302 9a0d260095a54e2c9dbce8e731497158
+msgid ""
+"`mapping-logs.csv` which contains information and warnings about the mapping"
+" process (for instance Pmin/Pmax violations)"
+msgstr ""
+"`mapping-logs.csv` qui contient des informations et des avertissements sur "
+"le processus de mapping (par exemple les violations de Pmin/Pmax)"
+
+#: ../../mapping.md:304 5120b8a0e4884cef89eb770879819c21
+msgid "Mapping status file"
+msgstr "Fichier de statut du mapping"
+
+#: ../../mapping.md:306 60ec5b1366c74433812cde1ca27e30f3
+msgid ""
+"The use of the option `--mapping-status-file` produces a file which "
+"indicates for each available time series if it was used for the mapping."
+msgstr ""
+"L'utilisation de l'option `--mapping-status-file` produit un fichier qui "
+"indique, pour chaque série temporelle disponible, si elle a été utilisée "
+"pour le mapping."
+
+#: ../../mapping.md:308 efdcea488c9942f3aac8eb31111417d6
+msgid "Time series mapping generation"
+msgstr "Génération du mapping des séries temporelles"
+
+#: ../../mapping.md:310 ef67cef2a2ab45a7a6fbe824a050a7d8
+msgid ""
+"The use of the option `--equipment-time-series-dir` (with required "
+"associated options `--check-equipment-time-series` and `--check-versions`) "
+"produces a csv with template name `version_<version_number>.csv` containing "
+"for each time step the associated value for each component/variable mapped "
+"couple."
+msgstr ""
+"L'utilisation de l'option `--equipment-time-series-dir` (avec les options "
+"associées obligatoires `--check-equipment-time-series` et `--check-"
+"versions`) produit un csv dont le nom suit le modèle "
+"`version_<version_number>.csv` contenant, pour chaque pas de temps, la "
+"valeur associée à chaque couple composant/variable mappé."
+
+#: ../../mapping.md:312 d2fbad19d823437687a7a1ce30ab4769
+msgid "Network variant generation"
+msgstr "Génération des variantes du réseau"
+
+#: ../../mapping.md:314 608c1615ea0d46908868109aa349dda6
+msgid ""
+"The use of the option `--network-output-dir`  (with required associated "
+"options `--check-equipment-time-series` and `--check-versions`) produces as "
+"many IIDM network files as time steps we have in the input time series (with"
+" filtering by `--check-versions`, `--first-variant` and `--max-variant-"
+"count` options). Each produced file has the template name "
+"`<network_id>_<version>_<YYYYMMDD>_<HHmm>.xiidm` and is the network "
+"generated with values mapped at an indicated time step."
+msgstr ""
+"L'utilisation de l'option `--network-output-dir`  (avec les options "
+"associées obligatoires `--check-equipment-time-series` et `--check-"
+"versions`) produit autant de fichiers réseau IIDM que de pas de temps dans "
+"les séries temporelles d'entrée (avec filtrage par les options `--check-"
+"versions`, `--first-variant` et `--max-variant-count`). Chaque fichier "
+"produit a pour nom le modèle "
+"`<network_id>_<version>_<YYYYMMDD>_<HHmm>.xiidm` et correspond au réseau "
+"généré avec les valeurs mappées à un pas de temps indiqué."
