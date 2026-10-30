@@ -12,9 +12,8 @@
 
 // OR-Tools tire absl/log transitivement (via ortools/base/logging.h), qui
 // définit un macro `LOG` en collision avec celui de <metrix/log.h>. Ce header
-// et solver.cpp n'incluent donc aucun en-tête de log metrix (les messages
-// passent par log_bridge.h), et le reste de metrix ne doit pas inclure ce
-// header : il passe par factory.h.
+// et solver.cpp n'incluent donc aucun en-tête de log metrix, et le reste de
+// metrix ne doit pas inclure ce header : il passe par factory.h.
 #include "compute/isolver.h"
 #include "config/constants.h"
 #include "config/solver_choice.h"

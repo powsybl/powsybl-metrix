@@ -13,7 +13,6 @@
 #include "err/IoDico.h"
 #include "err/error.h"
 #include "factory.h"
-#include "log_bridge.h"
 #include <ortools/init/init.h>
 
 #include <cmath>
@@ -28,9 +27,6 @@ namespace ortools
 namespace
 {
 const std::string modelName = "simple_lp_program";
-
-// Nom du fichier MPS ecrit par Sirius (PNE_EcrireJeuDeDonneesMPS, SPX_EcrireProblemeAuFormatMPS)
-const std::string mpsFileName = "Donnees_Probleme_Solveur.mps";
 } // namespace
 
 Solver::Solver(config::SolverChoice solver_choice, std::string_view specific_params) :
@@ -96,21 +92,23 @@ void Solver::solve(PROBLEME_A_RESOUDRE* problem)
         solver->SetTimeLimit(absl::Seconds(problem->TempsDExecutionMaximum));
     }
 
-    auto status = solver->Solve(*makeParams(*problem));
-
-    if (status == MPSolver::ResultStatus::OPTIMAL) {
-        problem->ExistenceDUneSolution = SOLUTION_OPTIMALE_TROUVEE;
-        updateProblem(*problem, *solver);
-    } else if (status == MPSolver::ResultStatus::FEASIBLE) {
-        problem->ExistenceDUneSolution = ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE;
-        updateProblem(*problem, *solver);
-    } else if (status == MPSolver::ResultStatus::INFEASIBLE) {
-        problem->ExistenceDUneSolution = PROBLEME_INFAISABLE;
-    } else if (status == MPSolver::ResultStatus::UNBOUNDED) {
-        problem->ExistenceDUneSolution = PROBLEME_NON_BORNE;
-    } else {
-        // ABNORMAL / MODEL_INVALID / NOT_SOLVED
-        problem->ExistenceDUneSolution = PAS_DE_SOLUTION_TROUVEE;
+    switch (solver->Solve(*makeParams(*problem))) {
+        case MPSolver::OPTIMAL:
+            problem->ExistenceDUneSolution = SOLUTION_OPTIMALE_TROUVEE;
+            updateProblem(*problem, *solver);
+            break;
+        case MPSolver::FEASIBLE:
+            problem->ExistenceDUneSolution = ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE;
+            updateProblem(*problem, *solver);
+            break;
+        case MPSolver::INFEASIBLE: problem->ExistenceDUneSolution = PROBLEME_INFAISABLE; break;
+        case MPSolver::UNBOUNDED: problem->ExistenceDUneSolution = PROBLEME_NON_BORNE; break;
+        default: {
+            // ABNORMAL couvre a la fois une erreur du solveur et l'atteinte de la limite de temps
+            // sans solution entiere, que Sirius restitue en PAS_DE_SOLUTION_TROUVEE
+            const bool timeLimitReached = solver->DurationSinceConstruction() >= solver->TimeLimit();
+            problem->ExistenceDUneSolution = timeLimitReached ? PAS_DE_SOLUTION_TROUVEE : ARRET_CAR_ERREUR_INTERNE;
+        }
     }
 }
 
@@ -129,19 +127,14 @@ void Solver::solve(PROBLEME_SIMPLEXE* problem)
                  problem->TypeDeVariable,
                  nullptr});
 
-    auto status = solver->Solve(*makeParams(*problem));
-
-    if (status == MPSolver::ResultStatus::OPTIMAL || status == MPSolver::ResultStatus::FEASIBLE) {
-        if (status == MPSolver::ResultStatus::FEASIBLE) {
-            // Arret premature (limite d'iterations/temps du backend) avec une solution
-            // admissible : on la restitue comme Sirius le ferait, mais on trace car la
-            // solution n'est pas prouvee optimale.
-            logWarning(__FILE__, __LINE__, "LP solve stopped before proven optimality, using the feasible solution");
-        }
-        problem->ExistenceDUneSolution = OUI_SPX;
-        updateProblem(*problem, *solver);
-    } else {
-        problem->ExistenceDUneSolution = NON_SPX;
+    switch (solver->Solve(*makeParams(*problem))) {
+        case MPSolver::OPTIMAL:
+            problem->ExistenceDUneSolution = OUI_SPX;
+            updateProblem(*problem, *solver);
+            break;
+        case MPSolver::INFEASIBLE:
+        case MPSolver::UNBOUNDED: problem->ExistenceDUneSolution = NON_SPX; break;
+        default: problem->ExistenceDUneSolution = SPX_ERREUR_INTERNE; // ABNORMAL : erreur du solveur
     }
 }
 

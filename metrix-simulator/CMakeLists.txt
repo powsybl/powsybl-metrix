@@ -151,12 +151,10 @@ set(METRIX_SOURCES
 
 if(USE_ORTOOLS)
     list(APPEND METRIX_SOURCES
-    src/ortools/log_bridge.cpp
     src/ortools/solver.cpp
     )
     list(APPEND METRIX_HEADERS
     src/ortools/factory.h
-    src/ortools/log_bridge.h
     src/ortools/solver.h
     )
 endif()
