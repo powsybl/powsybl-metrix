@@ -33,6 +33,7 @@ jobs:
           echo "$RUNNER_TEMP/venv/bin" >> "$GITHUB_PATH"
 
       - name: Check translations
+        id: check
         run: bash docs/scripts/check_translations.sh
 
       - name: Create or update the PR comment explaining how to fix translations
