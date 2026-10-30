@@ -789,7 +789,6 @@ msgid "$[\\theta]$ the vector of phases at each node,"
 msgstr "$[\\theta]$ le vecteur des phases à chaque nœud,"
 
 #: ../../simulator/algo.md:296 bfb43b02afde4bd887c4ca7ea8f3b84c
-#, fuzzy, python-brace-format
 msgid ""
 "$[A]$ the admittance matrix of the grid. It is square and symmetric and "
 "its size is the number of nodes in the grid: $$ [A] =  \\begin{cases}"
@@ -816,7 +815,6 @@ msgstr ""
 "\\frac{1}{V_{ref}^{2}}[A]^{-1}\\times[p] $$"
 
 #: ../../simulator/algo.md:314 12293b8266ff4b04bb0d22f027ac057c
-#, fuzzy, python-brace-format
 msgid ""
 "Now $T_{ij} = V_{ref}^{2}\\times Y_{ij}\\times (\\theta_i - \\theta_j)$, "
 "so $T_{ij} = [Y][A]^{-1}[p]$, with $[Y]$ a row vector of the size of the "
@@ -2027,7 +2025,6 @@ msgid "Redispatching phase"
 msgstr "Redispatching phase"
 
 #: ../../simulator/algo.md:761 d1e0282b27ae428da4e06f1ef11a3645
-#, fuzzy, python-brace-format
 msgid ""
 "Let us name $U_w$ the column matrix of preventive actions and $V_w$ the "
 "column matrix of curative actions for variant $w$. These two matrices "
