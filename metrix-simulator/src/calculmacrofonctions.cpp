@@ -8,13 +8,8 @@
 // SPDX-License-Identifier: MPL-2.0
 //
 
-// clang-format off
-#include <metrix/log.h>
-#ifdef USE_ORTOOLS
-#   include "ortools/factory.h"
-#endif
-#include "compute/solver.h"
 #include "calcul.h"
+#include "compute/solver.h"
 #include "config/configuration.h"
 #include "config/constants.h"
 #include "config/input_configuration.h"
@@ -27,10 +22,13 @@
 #include "reseau.h"
 #include "status.h"
 #include "variante.h"
+#ifdef USE_ORTOOLS
+#    include "ortools/factory.h"
+#endif
 
-#include <chrono>
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <cmath>
 #include <fstream>
 #include <iomanip>
@@ -65,10 +63,7 @@ namespace
  * niveau qu'apres avoir verrouille). On conditionne donc tout le bloc de trace au niveau
  * de log effectif de la run plutot que de compter sur le filtrage interne du logger.
  */
-bool solverTracesEnabled()
-{
-    return metrix::log::Logger::config.loggerLevel <= metrix::log::severity::debug;
-}
+bool solverTracesEnabled() { return metrix::log::Logger::config.loggerLevel <= metrix::log::severity::debug; }
 } // namespace
 
 void Contrainte::init(const std::shared_ptr<ElementASurveiller>& qdt,
@@ -456,8 +451,7 @@ int Calculer::resoudrePNE(const std::shared_ptr<Variante>& varianteCourante)
     // Options du solveur
     //------------------
     pbPNE_.AffichageDesTraces = TRACES_PNE;
-    pbPNE_.SortirLesDonneesDuProbleme = config::inputConfiguration().exportMPSFile() ? OUI_PNE
-                                                                                     : NON_PNE; // fichier mps
+    pbPNE_.SortirLesDonneesDuProbleme = config::inputConfiguration().exportMPSFile() ? OUI_PNE : NON_PNE; // fichier mps
     pbPNE_.FaireDuPresolve = PNE_PRESOLVE; /* si NON : attention a ne pas mettre de colonne vide ou avec que des 0.*/
     pbPNE_.TempsDExecutionMaximum = config::configuration().timeMaxPne(); // (0 illimité, sinon en secondes)
     pbPNE_.NombreMaxDeSolutionsEntieres = -1;
@@ -490,8 +484,8 @@ int Calculer::resoudrePNE(const std::shared_ptr<Variante>& varianteCourante)
     }
     solver_pne_->solve(&pbPNE_);
     if (traceSolveur) {
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now() - startTime);
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()
+                                                                              - startTime);
         LOG(debug) << "MIP solve time: variante " << varianteCourante->num_ << ", micro-iteration "
                    << numMicroIteration_ << ", " << duration.count() << " us"
                    << " (nb var entieres actives = " << nbVarEntieresActives << ")";
@@ -503,8 +497,7 @@ int Calculer::resoudrePNE(const std::shared_ptr<Variante>& varianteCourante)
         || pbExistenceDUneSolution_ == ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE) {
         LOG_ALL(info) << err::ioDico().msg(
             "INFOSolOptTrouve", c_fmt("%d", varianteCourante->num_), c_fmt("%d", pbExistenceDUneSolution_));
-    } else if (pbExistenceDUneSolution_ == PROBLEME_INFAISABLE
-               || pbExistenceDUneSolution_ == PAS_DE_SOLUTION_TROUVEE) {
+    } else if (pbExistenceDUneSolution_ == PROBLEME_INFAISABLE || pbExistenceDUneSolution_ == PAS_DE_SOLUTION_TROUVEE) {
         LOG_ALL(info) << err::ioDico().msg("INFOPasDeSol", c_fmt("%d", varianteCourante->num_));
         return METRIX_PAS_SOLUTION;
     } else {
@@ -595,11 +588,10 @@ int Calculer::resoudreSimplexe(TypeDeSolveur typeSolveur, const std::shared_ptr<
         solver_pne_->solve(&pb_);
     }
     if (traceSolveur) {
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(
-            std::chrono::high_resolution_clock::now() - startTime);
-        LOG(debug) << "LP solve time: variante " << varianteCourante->num_ << ", micro-iteration "
-                   << numMicroIteration_ << ", phase "
-                   << (typeSolveur == UTILISATION_PC_SIMPLEXE ? "empilement" : "reseau")
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()
+                                                                              - startTime);
+        LOG(debug) << "LP solve time: variante " << varianteCourante->num_ << ", micro-iteration " << numMicroIteration_
+                   << ", phase " << (typeSolveur == UTILISATION_PC_SIMPLEXE ? "empilement" : "reseau")
                    << ", nb variables = " << pbNombreDeVariables_ << ", nb contraintes = " << pbNombreDeContraintes_
                    << ", " << duration.count() << " us";
     }
@@ -633,9 +625,7 @@ int Calculer::PneSolveur(TypeDeSolveur typeSolveur, const std::shared_ptr<Varian
         // Solveur II : utilisation du SIMPLEXE (reseau ou empilement economique)
         case UTILISATION_SIMPLEXE:
         case UTILISATION_PC_SIMPLEXE: return resoudreSimplexe(typeSolveur, varianteCourante);
-        default:
-            LOG_ALL(error) << "Unknown solver type";
-            return METRIX_PROBLEME;
+        default: LOG_ALL(error) << "Unknown solver type"; return METRIX_PROBLEME;
     }
 }
 

@@ -136,11 +136,7 @@ bool compareGroupeBaisse(const std::shared_ptr<Groupe>& grp1, const std::shared_
 class Calculer
 {
 public:
-    enum TypeDeSolveur {
-        UTILISATION_PNE_SOLVEUR = 1,
-        UTILISATION_SIMPLEXE = 2,
-        UTILISATION_PC_SIMPLEXE = 3
-    };
+    enum TypeDeSolveur { UTILISATION_PNE_SOLVEUR = 1, UTILISATION_SIMPLEXE = 2, UTILISATION_PC_SIMPLEXE = 3 };
 
     enum TypeCoupes {
         COUPE_SURETE_N = 1,
@@ -191,8 +187,8 @@ public:
     vector<double>
         pbCoutLineaireSansOffset_; // sert uniquement pour l'affichage des couts finaux curatifs production et conso. On
                                    // ne remplit donc le vecteur que sur les variables gen_cur et conso_cur
-    vector<double> pbCoutLineaireConsosSansPerturbation_; // couts consos avant PRTBCOST, restaures en phase AR
-    vector<char> pbSens_;          // defini dans pne ou spx
+    vector<double> pbCoutLineaireConsosSansPerturbation_;    // couts consos avant PRTBCOST, restaures en phase AR
+    vector<char> pbSens_;                                    // defini dans pne ou spx
     vector<double> pbSecondMembre_;                          // defini dans pne ou spx
     vector<int> pbIndicesDebutDeLigne_;                      // defini dans pne ou spx
     vector<int> pbNombreDeTermesDesLignes_;                  // defini dans pne ou spx
