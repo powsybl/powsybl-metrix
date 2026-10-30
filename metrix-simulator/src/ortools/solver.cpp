@@ -27,6 +27,9 @@ namespace ortools
 namespace
 {
 const std::string modelName = "simple_lp_program";
+
+// Nom du fichier MPS ecrit par Sirius (PNE_EcrireJeuDeDonneesMPS, SPX_EcrireProblemeAuFormatMPS)
+const std::string mpsFileName = "Donnees_Probleme_Solveur.mps";
 } // namespace
 
 Solver::Solver(config::SolverChoice solver_choice, std::string_view specific_params) :
@@ -90,6 +93,9 @@ void Solver::solve(PROBLEME_A_RESOUDRE* problem)
                  problem->TypeDeVariable});
     if (problem->TempsDExecutionMaximum > 0) { // 0 : illimite
         solver->SetTimeLimit(absl::Seconds(problem->TempsDExecutionMaximum));
+    }
+    if (problem->SortirLesDonneesDuProbleme == OUI_PNE) {
+        solver->Write(mpsFileName);
     }
 
     switch (solver->Solve(*makeParams(*problem))) {
