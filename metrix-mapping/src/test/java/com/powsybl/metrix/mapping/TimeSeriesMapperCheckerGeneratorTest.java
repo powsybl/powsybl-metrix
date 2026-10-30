@@ -16,10 +16,6 @@ import org.junit.jupiter.api.Test;
  */
 class TimeSeriesMapperCheckerGeneratorTest extends AbstractTimeSeriesMapperCheckerTest {
 
-    /*
-     * GENERATOR TEST
-     */
-
     @Test
     void pmax1Test() {
         Network network = createNetwork();
