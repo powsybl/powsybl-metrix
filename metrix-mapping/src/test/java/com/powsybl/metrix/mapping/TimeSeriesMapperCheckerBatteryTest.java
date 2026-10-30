@@ -16,10 +16,6 @@ import org.junit.jupiter.api.Test;
  */
 class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperCheckerTest {
 
-    /*
-     * GENERATOR TEST
-     */
-
     @Test
     void pmax1Test() {
         Network network = createNetwork();
@@ -35,14 +31,14 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
 
         // without ignore limits
         // -> targetP reduced to maxP = 1000
-        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, 0, 1000, 1000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 1000, 0, 1000, 1000,
                 WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
                 "targetP 2000 of NO_BATTERY not included in 0 to 1000, targetP changed to 1000",
                 null);
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, 0, 2000, 2000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 2000, 0, 2000, 2000,
                 INFO, expectedLabelMaxP, expectedLabelMaxP, VARIANT_ALL,
                 "targetP 2000 of NO_BATTERY not included in 0 to 1000, maxP changed to 2000",
                 null);
@@ -182,13 +178,13 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
         String expectedLabelMinP = BASE_CASE_RANGE_PROBLEM + "minP changed to base case targetP";
 
         // without ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, -1000, -1000, 600,
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, -1000, -1000, -1000, 600,
                 WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
                 "targetP -2000 of NO_BATTERY not included in -1000 to 600, targetP changed to -1000",
                 null);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, -2000, -2000, 600,
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, -2000, -2000, -2000, 600,
                 INFO, expectedLabelMinP, expectedLabelMinP, VARIANT_ALL,
                 "targetP -2000 of NO_BATTERY not included in -1000 to 600, minP changed to -2000",
                 null);
@@ -225,11 +221,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
         String expectedMessage = "targetP 500 of NO_BATTERY not included in 1000 to 2000, but targetP has not been changed";
 
         // without ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, 1000, 500, 2000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 500, 1000, 500, 2000,
                 INFO, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, 1000, 500, 2000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 500, 1000, 500, 2000,
                 INFO, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
     }
 

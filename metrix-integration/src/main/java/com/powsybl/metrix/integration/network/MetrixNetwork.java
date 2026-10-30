@@ -749,7 +749,7 @@ public class MetrixNetwork {
         switch (terminal.getConnectable().getType()) {
             // Since switches connected to lines and TWT are "replaced" by those connectables, no need to set them retained
             case LINE, TWO_WINDINGS_TRANSFORMER -> addElementToRetainedBreakersList(sw, terminal.getConnectable().getId(), false);
-            case LOAD, GENERATOR -> addElementToRetainedBreakersList(sw, switchId, setRetained);
+            case LOAD, GENERATOR, BATTERY -> addElementToRetainedBreakersList(sw, switchId, setRetained);
             case BOUNDARY_LINE -> {
                 BoundaryLine boundaryLine = (BoundaryLine) terminal.getConnectable();
                 if (boundaryLine.isPaired()) {
