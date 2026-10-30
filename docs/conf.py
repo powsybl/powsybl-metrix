@@ -83,7 +83,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md']
+exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', 'README.md', 'locales']
 
 # Reference sections generation
 autosectionlabel_prefix_document = True
@@ -166,7 +166,8 @@ def replace_versions(intersphinx_mapping, file):
 intersphinx_mapping = replace_versions(intersphinx_mapping, file_with_version)
 
 # -- Internationalization ----------------------------------------------------------------------------
-language = 'en'
+# English is the source language; ReadTheDocs overrides it for translations (e.g. -D language=fr)
+language = os.environ.get('READTHEDOCS_LANGUAGE', 'en')
 locale_dirs = ['locales/']
 gettext_uuid = True
 gettext_compact = False

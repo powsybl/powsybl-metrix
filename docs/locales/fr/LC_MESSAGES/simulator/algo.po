@@ -1,0 +1,3528 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../simulator/algo.md:8 2cf9de5f87474cd19c548caabfbc2f7f
+msgid "Algorithm description"
+msgstr "Algorithm description"
+
+#: ../../simulator/algo.md:10 ff38ba53cd8e49a2a3cbfb58325aa84e
+msgid "Introduction"
+msgstr "Introduction"
+
+#: ../../simulator/algo.md:11 2b154126ef6b40199c12fbadd1fcd4cb
+msgid ""
+"As part of its activities, RTE needs a tool capable, for a given grid, of "
+"**simulating its operation hour by hour** and of providing an **estimate of "
+"its operating cost, in normal conditions and facing various contingencies**."
+" This is, for example, necessary for the study of the development of the "
+"electrical grid."
+msgstr ""
+"Dans le cadre de ses activités, RTE a besoin d'un outil capable, pour un "
+"réseau donné, **de simuler son fonctionnement heure par heure** et de "
+"fournir une **estimation de son coût d'exploitation, en situation normale et"
+" face à différents incidents**. Cela est, par exemple, nécessaire pour "
+"l'étude du développement du réseau électrique."
+
+#: ../../simulator/algo.md:15 b6b10168189141bc8453a9ccb6260b5f
+msgid ""
+"METRIX includes both an active-power-only grid calculation (load flow) and a"
+" flow optimization model (Optimal Power Flow or OPF)."
+msgstr ""
+"METRIX comprend à la fois un calcul de réseau (load-flow) en actif seul "
+"ainsi qu'un modèle d'optimisation de flux (Optimal Power Flow ou OPF)."
+
+#: ../../simulator/algo.md:18 2cbf5923a7f14653a6006cd052a76fbd
+msgid ""
+"A **load flow** computes the distribution of flows on the network elements "
+"of the grid according to the characteristics of these network elements and "
+"to the grid injections (generation and load). The result of a load flow "
+"makes it possible to observe and assess the constraints present. An **OPF**,"
+" for its part, can modify the injections/loads and the topology so that, "
+"after running a load flow, there is no constraint on the network elements "
+"(or so that they are, at least, minimized)."
+msgstr ""
+"Un **load-flow** calcule la répartition des flux sur les ouvrages du réseau "
+"en fonction des caractéristiques de ces ouvrages et des injections du réseau"
+" (production et consommation). Le résultat d'un load-flow permet de "
+"constater et d'évaluer les contraintes présentes. Un **OPF**, quant à lui, "
+"peut modifier les injections/consommations et la topologie, de sorte, "
+"qu'après le lancement d'un load-flow, il n'y ait pas de contrainte sur les "
+"ouvrages (ou qu'elles soient, du moins, minimisées)."
+
+#: ../../simulator/algo.md:23 57b0ae60b0d248e0ac78ce42b3f34a3f
+msgid ""
+"Consequently, the objective of METRIX is to find the least-cost adjustment "
+"of the generation plan so as to have no flow constraint either in N or on "
+"contingencies. METRIX makes it possible to measure the extra cost generated "
+"by the grid on the initial generation plan and to value a grid "
+"reinforcement. In its version 6, METRIX is integrated into the ImaGrid "
+"platform, from which it can be launched on thousands of variants. These "
+"variants make it possible to model uncertainties on load, renewable "
+"generation, the availability of generators, etc."
+msgstr ""
+"De ce fait, l'objectif de METRIX est de trouver l'ajustement de moindre coût"
+" du plan de production afin de n'avoir aucune contrainte de transit ni en N "
+"ni sur incidents. METRIX permet de mesurer le surcoût engendré par le réseau"
+" sur le plan de production initial et permet de valoriser un renforcement de"
+" réseau. Dans sa version 6, METRIX est intégré dans la plate-forme ImaGrid, "
+"depuis laquelle il peut être lancé sur des milliers de variantes. Ces "
+"variantes permettent de modéliser des incertitudes sur la consommation, la "
+"production renouvelable, la disponibilité des groupes, etc."
+
+#: ../../simulator/algo.md:30 f52c441abc594091b385f0e1deff13bc
+msgid ""
+"In order to obtain a problem that is easier and faster to solve, METRIX uses"
+" the **DC approximation** to model the grid. However, this simplification "
+"does not make it possible to detect voltage constraints, and even less the "
+"problems linked to the dynamics of events."
+msgstr ""
+"Afin d'obtenir un problème plus facile et rapide à résoudre, METRIX utilise "
+"l'**approximation du courant continu** pour modéliser le réseau. Cependant, "
+"cette simplification ne permet pas de détecter les contraintes de tension et"
+" encore moins les problèmes liés à la dynamique des événements."
+
+#: ../../simulator/algo.md:34 503994d8f4ab44a8b86b06462fb07ae2
+msgid ""
+"Whether through ImaGrid or in direct execution, a base case as well as an "
+"ancillary file describing all the variants to be computed are sent as input "
+"to METRIX. The latter then applies each of the variants to the base case and"
+" returns a result for each variant. The results are presented as time series"
+" in ImaGrid. This document presents the electrical system modelling used by "
+"METRIX, the logic of the global algorithm, the optimization problem it "
+"solves and the features available within METRIX."
+msgstr ""
+"Que ce soit via ImaGrid ou en exécution directe, un cas de base ainsi qu'un "
+"fichier annexe décrivant toutes les variantes à calculer sont envoyés en "
+"entrée de METRIX. Ce dernier applique ensuite chacune des variantes au cas "
+"de base et retourne un résultat pour chaque variante. Les résultats sont "
+"présentés sous forme de chroniques dans ImaGrid. Ce document présente la "
+"modélisation du système électrique utilisée par METRIX, la logique de "
+"l'algorithme global, le problème d'optimisation qu'il résout et les "
+"fonctionnalités disponibles au sein de METRIX."
+
+#: ../../simulator/algo.md:41 0f96f588a8784286bfd360b475575663
+msgid "Objective"
+msgstr "Objectif"
+
+#: ../../simulator/algo.md:43 c94c109eac7e411ebd8345ff40f665c5
+msgid ""
+"**The goal of METRIX is to provide an estimate of the hourly operating cost "
+"of a grid operating in an optimal manner**, i.e. at the lowest possible "
+"cost."
+msgstr ""
+"**Le but de METRIX est de fournir une estimation du coût d'exploitation "
+"horaire d'un réseau fonctionnant de manière optimale**, i.e. de coût le plus"
+" faible possible."
+
+#: ../../simulator/algo.md:46 4fa358c537c4455dabb9483af4b1f6b7
+msgid ""
+"Let us consider a given grid. Since the behaviour of a grid is random, the "
+"operating cost is random as well. Let $X$ be the random variable of the "
+"operating cost of this grid. What we want to compute with METRIX is a "
+"minimization of the expectation of this random variable:"
+msgstr ""
+"Considérons un réseau donné. Le comportement d'un réseau étant aléatoire, le"
+" coût d'exploitation l'est également. Posons $X$ la variable aléatoire du "
+"coût d'exploitation de ce réseau. Ce que nous voulons calculer avec METRIX, "
+"c'est une minimisation de l'espérance de cette variable aléatoire :"
+
+#: ../../simulator/algo.md:50 783ad7a26dfe4746bee209d7e6429e1e
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X))\n"
+"\\end{aligned}\n"
+msgstr ""
+"\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X))\n"
+"\\end{aligned}\n"
+
+#: ../../simulator/algo.md:56 fac186c65a7043ea9fc4f16fdf584cb9
+msgid ""
+"Since we do not have a law to determine this expectation, we will use a "
+"statistical approach and approximate it as the mean of a large number of "
+"equiprobable realizations. We therefore need to determine the operating cost"
+" of the grid over a large number of hours (which we will call variants). "
+"Denoting $n$ the number of realizations:"
+msgstr ""
+"Puisque nous ne disposons pas de loi pour déterminer cette espérance, nous "
+"allons utiliser une approche statistique et l'approximer comme la moyenne "
+"d'un grand nombre de réalisations équiprobables. Il va donc falloir "
+"déterminer le coût d'exploitation du réseau sur un grand nombre d'heures "
+"(que nous nommerons variantes). En notant $n$ le nombre de réalisations :"
+
+#: ../../simulator/algo.md:61 4dc224b8fc764e9a9b0398b103f2324e
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X)) \\approx  min(\\frac{1}{n}\\sum_{i=0}^{n}x_i)\n"
+"\\end{aligned}\n"
+msgstr ""
+"\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X)) \\approx  min(\\frac{1}{n}\\sum_{i=0}^{n}x_i)\n"
+"\\end{aligned}\n"
+
+#: ../../simulator/algo.md:67 42bf1b591ba44a5088b231daf7a31ae2
+msgid ""
+"Moreover, to simplify the model and to parallelize the simulation of "
+"variants, it was decided to make them independent of one another: the "
+"realization of the variable on one variant is totally independent of its "
+"realization on another variant. Consequently, minimizing the sum of the "
+"costs amounts to minimizing each hourly cost:"
+msgstr ""
+"D'autre part, pour simplifier le modèle et paralléliser les simulations des "
+"variantes, il a été décidé de les rendre indépendantes les unes des autres :"
+" la réalisation de la variable sur une variante est totalement indépendante "
+"de sa réalisation sur une autre variante. Par conséquent, minimiser la somme"
+" des coûts revient à minimiser chaque coût horaire :"
+
+#: ../../simulator/algo.md:72 e4f8df634de54bab931097882a395683
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X)) \\approx  min(\\frac{1}{n}\\sum_{i=0}^{n}x_i) = \\frac{1}{n}\\sum_{i=0}^{n}min(x_i)\n"
+"\\end{aligned}\n"
+msgstr ""
+"\n"
+"\\begin{aligned}\n"
+"min(\\mathbb{E}(X)) \\approx  min(\\frac{1}{n}\\sum_{i=0}^{n}x_i) = \\frac{1}{n}\\sum_{i=0}^{n}min(x_i)\n"
+"\\end{aligned}\n"
+
+#: ../../simulator/algo.md:78 b915f4866d67443a8ac4eaa6a4652f49
+msgid ""
+"To estimate the minimum of the expectation of $X$, we will therefore have to"
+" minimize the operating cost of the grid for each variant, and this over a "
+"large number of variants. This amounts to simulating, for each variant, an "
+"optimal operation of the grid. To do so, we will use **Operations Research**"
+" tools. Furthermore, to have different variants, we will need different "
+"situations in the grid: in terms of generation costs, unavailable "
+"generators, loads of the consumption centres, etc. These grid parameters "
+"will be represented by random variables, each variant having its own "
+"realization. METRIX therefore solves a **stochastic optimization** problem."
+msgstr ""
+"Pour estimer le minimum de l'espérance de $X$, nous allons donc devoir "
+"minimiser le coût de fonctionnement du réseau de chaque variante, et ce, sur"
+" un grand nombre de variantes. Cela équivaut à simuler, pour chaque "
+"variante, un fonctionnement optimal du réseau. Pour ce faire, nous allons "
+"utiliser les outils de **Recherche Opérationnelle**. Par ailleurs, pour "
+"avoir des variantes différentes, nous allons avoir besoin de situations "
+"différentes dans le réseau : en termes de coûts de production, de groupes "
+"indisponibles, de consommations des centres de consommation, etc. Ces "
+"paramètres du réseau seront représentés par des variables aléatoires, chaque"
+" variante ayant sa réalisation. METRIX résout donc un problème "
+"d'**optimisation stochastique**."
+
+#: ../../simulator/algo.md:86 281d6e63fbe2449e9c5eba838cd5899d
+msgid "Problem statement"
+msgstr "Énoncé du problème"
+
+#: ../../simulator/algo.md:87 341430762e024a7b8f324fd66444026b
+msgid ""
+"To simulate the real and optimal operation of the grid on a variant, we will"
+" break the problem down into two optimization problems, solved one after the"
+" other."
+msgstr ""
+"Pour simuler le fonctionnement réel et optimal du réseau sur une variante, "
+"nous allons décomposer le problème en deux problèmes d'optimisation, résolus"
+" l'un après l'autre."
+
+#: ../../simulator/algo.md:90 6d6d8d991ea1478f91544f2fc387691c
+msgid "First problem"
+msgstr "Premier problème"
+
+#: ../../simulator/algo.md:91 9d76f403a5bc436a9e6923a5acbe9593
+msgid ""
+"First, a generation–load balancing problem (***Adequacy phase***), "
+"simulating the fact that, following a change in load, electricity producers "
+"adapt their generation to meet the new demand, while ensuring a minimal "
+"operating cost. If the generation capacity is insufficient, load shedding is"
+" also possible. The electrical grid is not taken into account in this phase;"
+" we assume that all generating and consuming elements are located on the "
+"same copper plate without resistance. By solving this problem, we obtain a "
+"**generation – load equality**."
+msgstr ""
+"Tout d'abord, un premier problème d'équilibrage entre production et "
+"consommation (***Adequacy phase***), simulant le fait que, suite à un "
+"changement de la consommation, les producteurs d'électricité adaptent leur "
+"production pour répondre à la nouvelle demande, tout en assurant un coût "
+"d'opération minimal. Si la capacité de production est insuffisante, du "
+"délestage de consommation est également possible. Le réseau électrique n'est"
+" pas pris en compte dans cette phase, nous supposons que tous les éléments "
+"producteurs et consommateurs se trouvent sur une même plaque de cuivre sans "
+"résistance. Avec la résolution de ce problème, nous obtenons une **égalité "
+"production – consommation**."
+
+#: ../../simulator/algo.md:98 b0523f059f064e2cb1ec8e9fb0282045
+msgid ""
+"Since **all the variables of the problem are continuous**, we use **Linear "
+"Programming**. To keep a statistical approach, the choice of generators (for"
+" equal costs) is made **randomly**. However, to avoid having a different "
+"solution at each resolution, this random choice is identical for a given "
+"computing environment."
+msgstr ""
+"Toutes les **variables du problème étant continues**, nous utilisons la "
+"**Programmation Linéaire**. Pour garder une approche statistique, le choix "
+"des groupes (pour des coûts égaux) se fait **aléatoirement**. Toutefois, "
+"pour éviter d'avoir une solution différente à chaque résolution, ce choix "
+"aléatoire est identique pour un même environnement informatique."
+
+#: ../../simulator/algo.md:103 77cfe2e37f50430380664d075e889c47
+msgid ""
+"This step is illustrated in [the diagram below](#algo-adequacy-fig): the "
+"initial situation is unbalanced between demand (150 MW) and generation (30 +"
+" 20 MW). The generators therefore increase their generation, calling first "
+"the cheapest generation."
+msgstr ""
+"Cette étape est explicitée dans [le schéma ci-après](#algo-adequacy-fig) : "
+"la situation initiale est déséquilibrée entre la demande (150 MW) et la "
+"production (30 + 20 MW). Les groupes augmentent donc leur production, en "
+"appelant d'abord les productions les moins chères."
+
+#: ../../simulator/algo.md:107 ../../simulator/algo.md:113
+#: bdf42fd5899e4ca1b3f8a18ee6050058 c24181a83b0248bfae5ef214063250a8
+msgid "Adequacy figure"
+msgstr "Adequacy figure"
+
+#: ../../simulator/algo.md:116 eabc6a8f1c1444c099992f84a4250a4b
+msgid "See [Adequacy model](#algo-adeq_math)."
+msgstr "Cf. [Adequacy model](#algo-adeq_math)."
+
+#: ../../simulator/algo.md:118 d32633e70e794ac891300e6fa717213d
+msgid "Second problem"
+msgstr "Deuxième problème"
+
+#: ../../simulator/algo.md:119 43233deeefc44e059523f94e6107eb19
+msgid ""
+"But since the power lines have not been taken into account, this **new "
+"balance may cause overloads on them**. In a second phase (***Redispatching "
+"phase***), the grid must therefore be considered in its entirety and "
+"**preventive actions** must be chosen to avoid overloads while ensuring "
+"generation – load balance. These preventive actions group together RTE's "
+"means of action on the grid, namely the **modification of the phase shifts "
+"of Phase Tap Changers and of the flows on HVDC Lines**. We also have the "
+"possibility of modifying generation or load. However, these actions involve "
+"stakeholders outside RTE, so their use will be penalized by a higher cost in"
+" the simulation."
+msgstr ""
+"Mais puisque les lignes électriques n'ont pas été prises en compte, ce "
+"**nouvel équilibre peut entraîner des surcharges sur celles-ci**. Dans une "
+"deuxième phase (***Redispatching phase***), il faut donc considérer le "
+"réseau dans son intégralité et choisir des **actions préventives** pour "
+"éviter les surcharges tout en assurant l'équilibrage Production – "
+"Consommation. Ces actions préventives regroupent les moyens d'actions de RTE"
+" sur le réseau, à savoir la **modification des déphasages des "
+"Transformateurs-Déphaseurs et des flux sur les Lignes à Courant Continu**. "
+"Nous avons également la possibilité de modifier la production ou la "
+"consommation. Néanmoins, ces actions concernent des acteurs extérieurs à "
+"RTE, leur utilisation sera donc défavorisée par un coût plus élevé dans la "
+"simulation."
+
+#: ../../simulator/algo.md:127 bc6669d13b9c453d92e67edd9c1b57cf
+msgid ""
+"In addition, contingencies may occur on the grid and disturb its operation "
+"(loss of a generator, of a line, etc.); **curative actions** must therefore "
+"be chosen to avoid further overloads. These actions are the same as in "
+"preventive, with, in addition, **topological remedial actions**: these open "
+"or close lines or couplers of the grid, so as to modify its topology, and "
+"thus to modify the flows on the lines."
+msgstr ""
+"En outre, des incidents peuvent se produire sur le réseau et perturber son "
+"fonctionnement (perte d'un groupe de production, d'une ligne, etc.) ; il "
+"faut donc choisir des **actions curatives** pour éviter d'autres surcharges."
+" Ces actions sont les mêmes qu'en préventif, avec, en supplément, des "
+"**parades topologiques** : ces dernières ouvrent ou ferment des lignes ou "
+"des couplages du réseau, de façon à en modifier la topologie, et ainsi à "
+"modifier les flux sur les lignes."
+
+#: ../../simulator/algo.md:133 b405cf00c26f419ca543c960c007c6f8
+msgid ""
+"Solving this second optimization problem will therefore make it possible to "
+"simulate the choice of the preventive and curative actions guaranteeing the "
+"proper operation of the grid at a minimal cost. Since some curative actions "
+"are of the “switch” type, **boolean variables** appear in the problem: we "
+"thus solve a **Mixed Integer Linear Problem**."
+msgstr ""
+"La résolution de ce deuxième problème d'optimisation va donc permettre de "
+"simuler le choix des actions préventives et curatives garantissant le bon "
+"fonctionnement du réseau pour un coût minimal. Certaines actions curatives "
+"étant du type “interrupteur”, **des variables booléennes** apparaissent dans"
+" le problème : nous résolvons ainsi un **Problème Linéaire Mixte en Nombres "
+"Entiers**."
+
+#: ../../simulator/algo.md:138 7721dee0b99c4b788d2f20812b1b2fa0
+msgid ""
+"The [diagram below](#algo-redis_fig) shows the preventive part of this "
+"second problem: after the grid is balanced, the threshold constraints of the"
+" lines are added, which causes the overload of a line. So that its threshold"
+" is not exceeded, we modify the generation of the generators while "
+"maintaining the supply – demand balance, which results in an extra cost of "
+"€200."
+msgstr ""
+"Le [schéma ci-après](#algo-redis_fig) montre la partie préventive de ce "
+"second problème : après l'équilibrage du réseau, les contraintes de seuil "
+"des lignes sont ajoutées, ce qui provoque la surcharge d'une ligne. Pour que"
+" son seuil ne soit pas dépassé, nous modifions les productions des groupes "
+"tout en maintenant l'équilibre offre – demande, ce qui entraîne un surcoût "
+"de 200€."
+
+#: ../../simulator/algo.md:143 ../../simulator/algo.md:149
+#: bac7fc20769d4f008192281f02fb1f48 e9e288b6c1f941f19d3994077d927a88
+msgid "Redispatching figure"
+msgstr "Redispatching figure"
+
+#: ../../simulator/algo.md:152 c989cc84d1b84f4cb75f4bcb77e68903
+msgid "See [Redispatching model](#algo-redis_math)"
+msgstr "Cf. [Redispathcing model](#algo-redis_math)"
+
+#: ../../simulator/algo.md:154 ff3e3e4daa4c4b44a765d7b2a9d5ec75
+#, python-brace-format
+msgid ""
+"These are therefore the two problems that must be solved in order to "
+"simulate the operation of the grid over the desired duration. However, "
+"<r>for greater speed and to remain within a statistical approach</r>, the "
+"choice was made **not to link the solution of variant $t$ to the initial "
+"situation of variant $t+1$**. The results of each variant are "
+"**independent** of the other variants. Consequently, each set of problems "
+"{*Adequacy phase*, *Redispatching phase*} is independent from one variant to"
+" another, and each variant can be solved in parallel."
+msgstr ""
+"Voici donc les deux problèmes qui doivent être résolus afin de simuler le "
+"fonctionnement du réseau sur la durée souhaitée. Cependant, <r>pour plus de "
+"rapidité et pour rester dans une approche statistique</r>, le choix a été "
+"fait de **ne pas lier la solution de la variante $t$ à la situation initiale"
+" de la variante $t+1$**. Les résultats de chaque variante sont "
+"**indépendants** des autres variantes. Dès lors, chaque ensemble de problème"
+" {*Adequacy phase*, *Redispatching phase*} est indépendant d'une variante à "
+"une autre, et chaque variante peut se résoudre en parallèle."
+
+#: ../../simulator/algo.md:160 147822e63be04e83a37b54046255d49f
+msgid "Assumptions and simplifications of the problem"
+msgstr "Hypothèses et simplifications du problème"
+
+#: ../../simulator/algo.md:162 8c60ed71f6f145688629b3100085a339
+msgid "Representation of lines and management of their constraints"
+msgstr "Représentation des lignes et gestion de leurs contraintes"
+
+#: ../../simulator/algo.md:164 3a0ddc99584041a8a8cc8690ebf4ab67
+msgid ""
+"To simulate the *Redispatching phase*, we solve an optimization problem "
+"including constraints on the flows of the lines. However, a grid is made of "
+"a very large number of lines. Since **only a few of them are worth "
+"monitoring** during a simulation, we indicate as simulation input which are "
+"**the lines whose flow must be constrained** and which are **the lines that "
+"can be left unmonitored**. This reduces the amount of computation to be done"
+" without reducing the usefulness of the simulation."
+msgstr ""
+"Pour simuler la *Redispatching phase*, nous résolvons un problème "
+"d'optimisation incluant des contraintes sur les transits des lignes. "
+"Cependant, un réseau est fait d'un très grand nombre de lignes. Sachant que "
+"**seules quelques-unes seront intéressantes à surveiller** lors d'une "
+"simulation, nous indiquons en entrée de la simulation quelles sont **les "
+"lignes dont il faut contraindre le transit** et quelles sont **les lignes "
+"qui peuvent être laissées sans surveillance**. Cela permet de réduire la "
+"quantité de calculs à faire sans diminuer l'utilité de la simulation."
+
+#: ../../simulator/algo.md:170 1210209e363c46dc8717953e47362e8a
+msgid ""
+"Moreover, thanks to the structure of the problem, **we can avoid adding all "
+"the flow constraints on the lines from the start**. Indeed, in an electrical"
+" grid, if lines are overloaded, this is generally due to an overload on a "
+"small group of lines which then pass the excess on to other lines. By "
+"preventing overloads on this original group of lines, we thus also eliminate"
+" the overloads on the other lines. **The optimization problem can thus be "
+"simplified by reducing the number of constraints** to be taken into account,"
+" without changing the validity of the simulation."
+msgstr ""
+"En outre, grâce à la structure du problème, **nous pouvons éviter d'ajouter "
+"d'emblée toutes les contraintes de transit sur les lignes**. En effet, dans "
+"un réseau électrique, si des lignes se trouvent en surcharge, cela est "
+"généralement dû à une surcharge sur un groupe réduit de lignes qui "
+"transmettent ensuite l'excès à d'autres. En empêchant les surcharges sur ce "
+"groupe original de lignes, nous faisons donc disparaître aussi les "
+"surcharges sur les autres lignes. **Le problème d'optimisation peut ainsi "
+"être simplifié en réduisant le nombre de contraintes** à prendre en compte, "
+"sans changer la validité de la simulation."
+
+#: ../../simulator/algo.md:177 6a930298e7af425198524411ccaf3397
+msgid ""
+"To solve the optimization problem, we will **proceed by micro-iterations**: "
+"at each micro-iteration, we solve the problem; then we check whether, in the"
+" solution found, there are overloaded lines. Among these lines, we look for "
+"which subgroup of lines generates overloads elsewhere, and therefore which "
+"subgroup of lines must be constrained in order to make all the overloads "
+"disappear. These constraints are then added to the problem, then we restart "
+"the resolution. And so on, until no more overloads appear."
+msgstr ""
+"Pour résoudre le problème d'optimisation, nous allons **procéder par micro-"
+"itérations** : à chaque micro-itération, nous résolvons le problème ; puis "
+"nous cherchons si, dans la solution trouvée, il y a des lignes en surcharge."
+" Parmi ces lignes, nous allons rechercher quel sous-groupe de lignes "
+"engendre des surcharges ailleurs, et donc quel sous-groupe de lignes, il "
+"faut contraindre pour faire disparaître toutes les surcharges. Ces "
+"contraintes sont alors ajoutées au problème, puis nous relançons la "
+"résolution. Et ce, ainsi de suite, jusqu'à ce qu'il n'y ait plus de "
+"surcharges qui apparaissent."
+
+#: ../../simulator/algo.md:184 ../../simulator/algo.md:190
+#: 9396c23abd794109811cd38344a93d37 ea4a8b735fdc421d957b6e0e09d79dd0
+msgid "Micro-iterations process"
+msgstr "Micro-iterations process"
+
+#: ../../simulator/algo.md:193 d1816649d4084881a6c42a4618bcb3e2
+#, python-brace-format
+msgid ""
+"The detailed flow of this loop — security criteria checked, available means "
+"of action, computation modes, then implementation details — is covered in "
+"the section {ref}`micro-iterations` at the end of the document."
+msgstr ""
+"Le déroulé détaillé de cette boucle — critères de sûreté vérifiés, moyens "
+"d'action mobilisables, modes de calcul, puis détails d'implémentation — fait"
+" l'objet de la section {ref}`micro-iterations` en fin de document."
+
+#: ../../simulator/algo.md:197 0d7a0bddeffc46a98e47e508a464d8b3
+msgid "Preventive and curative actions to satisfy threshold constraints"
+msgstr ""
+"Actions préventives et curatives pour satisfaire les contraintes de seuil"
+
+#: ../../simulator/algo.md:199 108f82bac5fc4afb8d17c0cd701c8b81
+msgid ""
+"To satisfy the grid constraints during the *Redispatching phase*, we use "
+"preventive actions (to modify the grid before contingencies occur, so that "
+"they do not cause failures) and curative actions (to correct the failures "
+"that occurred and keep satisfying the load)."
+msgstr ""
+"Pour satisfaire les contraintes réseau lors de la *Redispatching phase*, "
+"nous utilisons des actions préventives (pour modifier le réseau avant que "
+"les incidents ne surviennent, de façon à ce qu'ils ne provoquent pas de "
+"défaillances) et curatives (pour corriger les défaillances survenues et "
+"continuer à satisfaire la consommation)."
+
+#: ../../simulator/algo.md:203 065aa1ae0bc34c8a965b70badef8bea7
+msgid ""
+"Among these actions are the modification of generator generation and load "
+"shedding, just as in the *Adequacy phase*. But there is also the use of "
+"**Phase Tap Changers** (PSTs), **HVDC Lines** (LCCs) and **Topological "
+"Remedial Actions**."
+msgstr ""
+"Parmi ces actions, il y a la modification de la production des groupes et le"
+" délestage de la consommation, tout comme lors de l'*Adequacy phase*. Mais "
+"il y a également l'emploi des **Transfo-Déphaseurs** (TD), des **Lignes à "
+"Courant Continu** (LCC) et des **Parades Topologiques**."
+
+#: ../../simulator/algo.md:207 1a589aa5c6254cfb816acd3d2d546f0d
+msgid ""
+"PSTs are used to modify the phase on the lines on which they are installed, "
+"and thus to change the ratio $\\frac{\\text{active power}}{\\text{reactive "
+"power}}$. In other words, they make it possible to adjust the “power” "
+"flowing on the lines, without touching generation or load."
+msgstr ""
+"Les TDs servent à modifier la phase sur les lignes sur lesquelles ils sont "
+"implantés, et donc de changer le rapport $\\frac{\\text{puissance "
+"active}}{\\text{puissance réactive}}$. Autrement dit, ils permettent de "
+"régler la “puissance” circulant sur les lignes, sans toucher à la production"
+" ou la consommation."
+
+#: ../../simulator/algo.md:211 bcf934903b2143099a8520ce98b8c9c5
+msgid ""
+"The name of LCCs is fairly explicit: these lines do not carry alternating "
+"current. As with PSTs, we can adjust the power flowing through them. They "
+"thus make it possible to transfer an adjustable power between two nodes, and"
+" notably between two synchronous areas (i.e. two sets of nodes with "
+"different alternating characteristics)."
+msgstr ""
+"Le nom des LCCs est relativement explicite : ces lignes ne transportent pas "
+"du courant alternatif. Tout comme pour les TDs, nous pouvons régler la "
+"puissance circulant dessus. Elles permettent ainsi de transférer une "
+"puissance réglable entre deux nœuds, et notamment entre deux zones "
+"synchrones (i.e. deux ensembles de nœuds aux caractéristiques alternatives "
+"différentes)."
+
+#: ../../simulator/algo.md:216 adf443d7e27849c4b41a502c218466a4
+msgid ""
+"Finally, topological remedial actions (usable only in curative) correspond "
+"to the opening or closing of lines or couplers in the grid: they modify the "
+"topology of the grid. As a consequence, they modify the distribution matrix "
+"used to compute the flows on the lines, and therefore modify these flows "
+"themselves. Since their use requires a full study before integrating them as"
+" an action in a simulation, we allow **at most one topological remedial "
+"action per contingency**."
+msgstr ""
+"Enfin, les parades topologiques (utilisables uniquement en curatif) "
+"correspondent à l'ouverture ou la fermeture de lignes ou de couplages dans "
+"le réseau : elles modifient la typologie du réseau. En conséquence, elles "
+"modifient la matrice de répartition permettant de calculer les flux sur les "
+"lignes, et donc modifient ces flux eux-mêmes. Leur utilisation nécessitant "
+"une étude à part entière avant de l'intégrer comme action dans une "
+"simulation, nous n'autorisons qu'**une parade topologique maximum par "
+"incident**."
+
+#: ../../simulator/algo.md:222 10276a4094314739a375aca1a542eb75
+msgid "Active-power-only approximation"
+msgstr "Approximation de l'actif seul"
+
+#: ../../simulator/algo.md:224 fabc09d07a5f47d9bc538dfb11531239
+msgid "Assumptions"
+msgstr "Hypothèses"
+
+#: ../../simulator/algo.md:225 02f6fb0b53ff43db894094f554bea8e8
+msgid ""
+"The above-mentioned means of action are therefore used to avoid or reduce "
+"overloads on the lines. But to detect them, the flows on these lines must "
+"first be computed."
+msgstr ""
+"Ces moyens d'actions sus-cités, servent donc à éviter ou réduire les "
+"surcharges sur les lignes. Mais pour les détecter, il faut d'abord calculer "
+"les transits sur ces lignes."
+
+#: ../../simulator/algo.md:228 0e20b74310a5488caac32a1371a060ef
+msgid ""
+"For that, we can use the usual physical modelling, representing an "
+"electrical line as an inductance and a resistance in series (see [diagram "
+"below](#algo-indRes_fig))."
+msgstr ""
+"Pour cela, nous pouvons utiliser la modélisation physique habituelle, "
+"représentant une ligne électrique comme une inductance et une résistance en "
+"série (cf. [schéma ci-après](#algo-indRes_fig))."
+
+#: ../../simulator/algo.md:231 ../../simulator/algo.md:237
+#: 2cfdfe8ea3e441de8cb34c9cbad96cb2 c09936467aaf45758f9a24457f50ce72
+msgid "Inductance and resistance in series"
+msgstr "Inductance et résistance en série"
+
+#: ../../simulator/algo.md:240 119cc37745d242c895e5f5781c62b320
+#, python-brace-format
+msgid ""
+"In this case, the flow from $i$ to $j$, denoted $T_{ij}$, is computed as "
+"follows:"
+msgstr ""
+"Dans ce cas, le transit de $i$ vers $j$, noté $T_{ij}$, est calculé de la "
+"façon suivante :"
+
+#: ../../simulator/algo.md:242 0fc85c9ba7394e1a92495aa647171054
+msgid ""
+"\n"
+"T_{ij} = \\frac{V_iV_j}{Z_{ij}}sin(\\theta_i - \\theta_j + \\gamma_{ij}) + \\frac{V_i^2}{Z_{ij}}sin(\\gamma_{ij}) \\\\\n"
+"Z = R + i\\omega L \\\\\n"
+"\\gamma_{ij} = arctan(\\frac{R}{\\omega L})\n"
+msgstr ""
+"\n"
+"T_{ij} = \\frac{V_iV_j}{Z_{ij}}sin(\\theta_i - \\theta_j + \\gamma_{ij}) + \\frac{V_i^2}{Z_{ij}}sin(\\gamma_{ij}) \\\\\n"
+"Z = R + i\\omega L \\\\\n"
+"\\gamma_{ij} = arctan(\\frac{R}{\\omega L})\n"
+
+#: ../../simulator/algo.md:248 f79b8736d02143c2b06a4e8f7dd12330
+msgid ""
+"This expression can be computed. But <r>in the context of linear "
+"programming, it is more appropriate to use linear expressions. This can be "
+"obtained with a relatively good match using the </r>**<r>active-power-only "
+"approximation</r>, in which we assume that the source imposes a constant "
+"global phase shift, as well as a common voltage**."
+msgstr ""
+"Cette expression est calculable. Mais <r>dans le cadre de la programmation "
+"linéaire, il est plus approprié d'utiliser des expressions linéaires. Cela "
+"peut être obtenu avec une correspondance relativement bonne à l'aide de "
+"l'</r>**<r>approximation de l'actif seul</r>, dans laquelle nous supposons "
+"que la source impose un déphasage global constant, ainsi qu'une tension "
+"commune**."
+
+#: ../../simulator/algo.md:253 6693789be25c4eaab5715538d3ee0507
+msgid "The approximation relies on 3 simplifying assumptions:"
+msgstr "L'approximation s'appuie sur 3 hypothèses simplificatrices :"
+
+#: ../../simulator/algo.md:254 ef31ed113980426e843c12c9741d1045
+msgid ""
+"Each link is treated as a pure reactance: the resistance is assumed to be "
+"zero. We also neglect the conductances and susceptances of the lines."
+msgstr ""
+"Chaque liaison est assimilée à une réactance pure : la résistance est "
+"supposée nulle. Nous négligeons également les conductances et susceptances "
+"des lignes."
+
+#: ../../simulator/algo.md:256 1321a65dbcd84d1e94c30cafe7ccfac7
+#, python-brace-format
+msgid ""
+"The phase differences between neighbouring vertices are small; consequently,"
+" we consider that $sin(\\theta_{i} − \\theta_{j}) \\approx \\theta_{i}- "
+"\\theta_{j}$."
+msgstr ""
+"Les différences de phases entre sommets voisins sont petites ; par "
+"conséquent, nous considérons que $sin(\\theta_{i} − \\theta_{j}) \\approx "
+"\\theta_{i}- \\theta_{j}$."
+
+#: ../../simulator/algo.md:258 6527ff7a7d9d4c38b9d70e846a0915fa
+#, python-brace-format
+msgid ""
+"The voltage is assumed to be uniform across the whole grid at a fixed value "
+"$V_{ref}$."
+msgstr ""
+"La tension est supposée uniforme sur l'ensemble du réseau à une valeur fixée"
+" $V_{ref}$."
+
+#: ../../simulator/algo.md:260 b938f8a714024a53a5b6bc73fd328816
+#, python-brace-format
+msgid ""
+"\n"
+"V_i = V_j = V_{ref} = \\text{constante} \\\\\n"
+"R <<< \\omega L \\Rightarrow \\gamma_{ij} \\approx 0 \\text{ car } arctan(0) = 0\\\\\n"
+"\\theta_i \\approx \\theta_j\n"
+msgstr ""
+"\n"
+"V_i = V_j = V_{ref} = \\text{constante} \\\\\n"
+"R <<< \\omega L \\Rightarrow \\gamma_{ij} \\approx 0 \\text{ car } arctan(0) = 0\\\\\n"
+"\\theta_i \\approx \\theta_j\n"
+
+#: ../../simulator/algo.md:266 891e4549307c4ee5bc08ae2e9f5f2471
+msgid ""
+"This implies that the active power flow on a line between nodes $i$ and $j$ "
+"is written: $$ T_{ij} \\approx V_{ref}^{2}Y_{ij}(\\theta_i - "
+"\\theta_j)\\text{ avec }Y_{ij} = \\frac{1}{Z_{ij}} $$"
+msgstr ""
+"Ce qui implique que le transit de puissance active sur une ligne entre les "
+"nœuds $i$ et $j$ s'écrit : $$ T_{ij} \\approx V_{ref}^{2}Y_{ij}(\\theta_i - "
+"\\theta_j)\\text{ avec }Y_{ij} = \\frac{1}{Z_{ij}} $$"
+
+#: ../../simulator/algo.md:271 8ac1048b952844e2b83daa0420310526
+#, python-brace-format
+msgid ""
+"Moreover, at each node $i$ of the grid, the active injection is expressed "
+"as: $$ P_{i} = V_{ref}^{2} \\times \\sum_{j \\in \\alpha(i)} Y_{ij} \\times "
+"(\\theta_i - \\theta_j) $$ with $alpha(ji)$ the set of neighbouring nodes of"
+" node $i$. This approximation therefore makes it possible to obtain a "
+"**linear relationship between flows and injections**."
+msgstr ""
+"De plus, à chaque nœud $i$ du réseau, l'injection active s'exprime : $$ "
+"P_{i} = V_{ref}^{2} \\times \\sum_{j \\in \\alpha(i)} Y_{ij} \\times "
+"(\\theta_i - \\theta_j) $$ avec $alpha(ji)$ l'ensemble des nœuds voisins du "
+"nœud $i$. Cette approximation permet donc d'obtenir une **relation linéaire "
+"entre les transits et les injections**."
+
+#: ../../simulator/algo.md:278 8c69b77ce21b4233b553b1d0ec303c23
+msgid ""
+"In METRIX, we reason in terms of powers and not angles; but we deduce the "
+"latter from the former thanks to the PTDF coefficients in the DC "
+"approximation. We can then compute the flow on each line from the generation"
+" of the generators."
+msgstr ""
+"Dans METRIX, nous raisonnons à partir de puissances et non d'angles ; mais "
+"nous déduisons les seconds des premiers grâce aux coefficients PTDF en "
+"approximation du courant continu. Ensuite, nous pouvons calculer le transit "
+"sur chaque ligne à partir de la production des groupes."
+
+#: ../../simulator/algo.md:282 4b5d88d3a0a5412989481bd35d2536b9
+#, python-brace-format
+msgid ""
+"In return, we have no information on the reactive flow of the lines, on "
+"voltage drops, on “maximum transmissible power” problems, etc. Losses are "
+"not modelled on the lines: the flow entering a line comes out entirely on "
+"the other side: $T_{ij} = -T_{ji}$."
+msgstr ""
+"En contrepartie, nous n'avons aucune information sur le transit réactif des "
+"lignes, sur les chutes de tension, les problèmes de « puissance maximale "
+"transmissible », etc. Les pertes ne sont pas modélisées sur les lignes : le "
+"transit entrant dans une ligne ressort en intégralité de l'autre côté : "
+"$T_{ij} = -T_{ji}$."
+
+#: ../../simulator/algo.md:286 b025449b19174f8c85ab87b5dfc95248
+msgid "Expression of flows for METRIX"
+msgstr "Expression des transits pour METRIX"
+
+#: ../../simulator/algo.md:288 9cffc168d0084b658e2c995bc42bf0f1
+#, python-brace-format
+msgid ""
+"The above equations can be written in matrix form: $$ [p] = V_{ref}^{2} "
+"\\times [A] \\times [\\theta] $$"
+msgstr ""
+"Les équations ci-dessus peuvent s'écrire sous forme matricielle : $$ [p] = "
+"V_{ref}^{2} \\times [A] \\times [\\theta] $$"
+
+#: ../../simulator/algo.md:293 df6a0ed218e24b8698c56633a8925361
+msgid "With:"
+msgstr "Avec :"
+
+#: ../../simulator/algo.md:294 e1006b4d765f4e43bc6c3729d31f70c8
+msgid "$[p]$ the nodal active injection vector,"
+msgstr "$[p]$ le vecteur d'injecion active nodale,"
+
+#: ../../simulator/algo.md:295 06c0894afe4e4bf0913b51acebee620d
+msgid "$[\\theta]$ the vector of phases at each node,"
+msgstr "$[\\theta]$ le vecteur des phases à chaque nœud,"
+
+#: ../../simulator/algo.md:296 bfb43b02afde4bd887c4ca7ea8f3b84c
+#, python-brace-format
+msgid ""
+"$[A]$ the admittance matrix of the grid. It is square and symmetric and its "
+"size is the number of nodes in the grid: $$ [A] =  \\begin{cases}      "
+"\\alpha_{ii} = \\sum_{j \\in \\alpha(i)} Y_{ij}\\\\      \\alpha_{ij} ="
+"          \\begin{cases}              0\\text{ si }j \\notin \\alpha(i)\\\\"
+"              -Y_{ij}\\text{ sinon}          \\end{cases}  \\end{cases} $$"
+msgstr ""
+"$[A]$ la matrice d'admittance du réseau. Elle est carrée et symétrique et de"
+" taille le nombre de nœuds dans le réseau : $$ [A] =  \\begin{cases}      "
+"\\alpha_{ii} = \\sum_{j \\in \\alpha(i)} Y_{ij}\\\\      \\alpha_{ij} ="
+"          \\begin{cases}              0\\text{ si }j \\notin \\alpha(i)\\\\"
+"              -Y_{ij}\\text{ sinon}          \\end{cases}  \\end{cases} $$"
+
+#: ../../simulator/algo.md:309 8c20bd625fef4872a347bc8b385a837c
+msgid ""
+"In METRIX, the control variables are injection data (generation, load "
+"shedding or PST and HVDC setpoints): $$ [\\theta] = "
+"\\frac{1}{V_{ref}^{2}}[A]^{-1}\\times[p] $$"
+msgstr ""
+"Dans METRIX, les variables de contrôle sont des données d'injections "
+"(production, délestage ou consigne de TD et HVDC) : $$ [\\theta] = "
+"\\frac{1}{V_{ref}^{2}}[A]^{-1}\\times[p] $$"
+
+#: ../../simulator/algo.md:314 12293b8266ff4b04bb0d22f027ac057c
+#, python-brace-format
+msgid ""
+"Now $T_{ij} = V_{ref}^{2}\\times Y_{ij}\\times (\\theta_i - \\theta_j)$, so "
+"$T_{ij} = [Y][A]^{-1}[p]$, with $[Y]$ a row vector of the size of the nodes:"
+" $$ [Y] = \\begin{cases}     y_{ij} = Y_{ij}\\\\     y_{ji} = -Y_{ij}\\\\"
+"     0\\text{ sinon} \\end{cases} $$"
+msgstr ""
+"Or $T_{ij} = V_{ref}^{2}\\times Y_{ij}\\times (\\theta_i - \\theta_j)$, donc"
+" $T_{ij} = [Y][A]^{-1}[p]$, avec $[Y]$ un vecteur ligne de la taille des "
+"nœuds : $$ [Y] = \\begin{cases}     y_{ij} = Y_{ij}\\\\     y_{ji} = "
+"-Y_{ij}\\\\     0\\text{ sinon} \\end{cases} $$"
+
+#: ../../simulator/algo.md:325 f52fdc06b2c54f7e9d60e9c71a272451
+#, python-brace-format
+msgid "It is possible to compute the row vector: $$ [B] = [Y][A]^{-1} $$"
+msgstr ""
+"Il est possible de calculer le vecteur ligne : $$ [B] = [Y][A]^{-1} $$"
+
+#: ../../simulator/algo.md:330 244e531483bf4bd5a592751d0c873360
+#, python-brace-format
+msgid ""
+"We can then express the flow in a line as a function of the injection "
+"variables (hence of all the control variables): $$ T_{ij} = [B]\\times[p] $$"
+msgstr ""
+"Nous pouvons alors exprimer le transit dans une ligne en fonction des "
+"variables d'injections (dnc de toutes les variables de contrôle) : $$ T_{ij}"
+" = [B]\\times[p] $$"
+
+#: ../../simulator/algo.md:336 e455f305a56f44d88c4f29fec4883e0b
+msgid ""
+"METRIX uses this expression of the flow to write a constraint in the "
+"optimization problem."
+msgstr ""
+"METRIX utilise cette expression du transit pour écrire une contrainte dans "
+"le problème d'optimisation."
+
+#: ../../simulator/algo.md:338 e51cd81897ea4d079c66ccca4fdcb1bf
+msgid "Existence of equivalent solutions"
+msgstr "Existence de solutions équivalentes"
+
+#: ../../simulator/algo.md:339 b41896cf7d984594907ae4662d85b4ef
+msgid ""
+"It is important to note that, since simulating the *Adequacy phase* amounts "
+"to solving an optimization problem, there may be **equivalent solutions**, "
+"i.e. solutions with the same optimal cost, but different actions on the grid"
+" to reach the balance. This leads to different initial situations for the "
+"*Redispatching phase*, and therefore different optimal solutions, with "
+"completely different optimal costs. Likewise, for the same initial situation"
+" resulting from the *Adequacy phase*, the *Redispatching phase* may also "
+"return equivalent solutions."
+msgstr ""
+"Il est important de noter que, puisque simuler l'*Adequacy phase* correspond"
+" à résoudre un problème d'optimisation, il peut y avoir des **solutions "
+"équivalentes**, i.e. des solutions avec le même coût optimal, mais des "
+"actions différentes sur le réseau pour atteindre l'équilibre. Cela entraîne "
+"des situations initiales différentes pour la *Redispatching phase*, et donc "
+"des solutions optimales différentes, avec des coûts optimaux complètement "
+"différents. Identiquement, pour une même situation initale issue de "
+"l'*Adequacy phase*, la *Redispatching phase* peut aussi renvoyer des "
+"solutions équivalentes."
+
+#: ../../simulator/algo.md:346 204b0f5222b541d59c0c9ff18d5e20a3
+msgid "Grid modelling"
+msgstr "Modélisation du réseau"
+
+#: ../../simulator/algo.md:347 63d574cd3a5646609bac757d79c59a77
+msgid ""
+"We will now present the modelling of the grid elements and of the "
+"optimization problem in METRIX. To do so, we will focus on **a single "
+"variant**."
+msgstr ""
+"Nous allons désormais présenter la modélisation des éléments du réseau et du"
+" problème d'optimisation dans METRIX. Pour cela, nous allons nous focaliser "
+"sur **une seule variante**."
+
+#: ../../simulator/algo.md:350 1999e273bae24b3dbf976fe4719079e4
+msgid "Synchronous areas"
+msgstr "Zones sychrones"
+
+#: ../../simulator/algo.md:351 69b454d71edd4f7c8ff955b125371b68
+msgid ""
+"All the grid elements (generators, loads, PSTs, LCCs) are linked to one or "
+"more nodes. Each node is part of a single synchronous area, and each "
+"synchronous area contains several thousand of them. Let $ZC$ denote the set "
+"of synchronous areas of the grid."
+msgstr ""
+"Tous les éléments du réseau (groupes, consommations, TDs, LCCs) sont liés à "
+"un ou plusieurs nœuds. Chaque nœud fait partie d'une unique zone synchrone, "
+"et chaque zone synchrone en contient plusieurs milliers. Notons $ZC$ "
+"l'ensemble des zones synchrones du réseau."
+
+#: ../../simulator/algo.md:355 fabc09d07a5f47d9bc538dfb11531239
+msgid "Generators"
+msgstr "Groupes de production"
+
+#: ../../simulator/algo.md:357 4782bfddb57f40c39a0dd89f9436acde
+msgid ""
+"The METRIX model is not intended for fine optimization of generation. "
+"Consequently, the modelling of generators is simplified. As a static model, "
+"METRIX ignores the start-up dynamics of generators and some operating "
+"constraints of the various generation means. METRIX only knows their "
+"variation bounds and their costs. All generators are described in the same "
+"way regardless of their type."
+msgstr ""
+"Le modèle de METRIX n'est pas destiné à l'optimisation fine de la "
+"production. De ce fait, la modélisation des groupes est simplifiée. En tant "
+"que modèle statique, METRIX ignore la dynamique de démarrage des groupes et "
+"certaines contraintes de fonctionnement des différents moyens de production."
+" METRIX ne connaît que leurs bornes de variations et leurs coûts. Tous les "
+"groupes sont décrits de la même manière indépendamment de leur type."
+
+#: ../../simulator/algo.md:362 2605a6f71cd14a419c75bf37f50668d9
+msgid ""
+"In the *Adequacy* (i.e. balancing) and *Redispatching* phases, METRIX always"
+" takes into account the maximum power (*Pmax*) of the generator. However, in"
+" the balancing phase, METRIX does not take into account the minimum power "
+"(*Pmin*) if it is positive. In other words, METRIX can therefore start a "
+"generator between 0 and Pmax. In practice, this happens at most for the "
+"marginal generator (the last adjusted generator)."
+msgstr ""
+"Dans les phases d'*Adequacy* (i.e. d'équilibrage) et de *Redispatching*, "
+"METRIX tient toujours compte de la puissance maximale (*Pmax*) du groupe. En"
+" revanche, dans la phase d'équilibrage, METRIX ne tient pas compte de la "
+"puissance minimale (*Pmin*) si celle-ci est positive. En d'autres termes, "
+"METRIX peut donc démarrer un groupe entre 0 et Pmax. En pratique, cela se "
+"produit tout au plus pour le groupe marginal (dernier groupe ajusté)."
+
+#: ../../simulator/algo.md:368 7a4868ef288246c5839677dfcc2a7ebb
+msgid ""
+"In the *Redispatching* phase the Pmin are taken into account and METRIX "
+"therefore cannot shut down a generator that is started in the balancing "
+"phase."
+msgstr ""
+"Dans la phase de *Redispatching* les Pmin sont prises en compte et METRIX ne"
+" peut donc pas arrêter un groupe qui est démarré dans la phase "
+"d'équilibrage."
+
+#: ../../simulator/algo.md:371 d23251f8df8040f48de3c79a109f57df
+msgid ""
+"It is possible to control the participation of each generator in each of the"
+" phases through the definition of costs. The following can be associated "
+"with each generator:"
+msgstr ""
+"Il est possible de contrôler pour chaque groupe sa participation dans "
+"chacune des phases via la définition de coûts. À chaque groupe, nous pouvons"
+" associer :"
+
+#: ../../simulator/algo.md:373 afc75419540a456d8040a66e92578e10
+msgid ""
+"The upward balancing cost, which represents the generation cost per MW used "
+"in the balancing phase."
+msgstr ""
+"Le coût d'équilibrage à la hausse qui représente le coût de production par "
+"MW utilisé dans la phase d'équilibrage."
+
+#: ../../simulator/algo.md:374 ce2c5dd06a05403c8102a5b8d275af9d
+msgid "The downward balancing cost is used in the balancing phase."
+msgstr ""
+"Le coût d'équilibrage à la baisse est utilisé dans la phase d'équilibrage."
+
+#: ../../simulator/algo.md:375 a379ca767d884ad79bfdf1ed60c82eb1
+msgid ""
+"The upward 'redispatching' cost corresponds to the cost of increasing, in "
+"preventive, the setpoint power of the generator in the adjustment mechanism."
+" This cost is also used in curative."
+msgstr ""
+"Le coût de 'redispatching' à la hausse correspond au coût d'augmentation en "
+"préventif de la puissance de consigne du groupe dans le mécanisme "
+"d'ajustement. Ce coût est également utilisé en curatif."
+
+#: ../../simulator/algo.md:377 a379ca767d884ad79bfdf1ed60c82eb1
+msgid ""
+"The downward 'redispatching' cost corresponds to the cost of decreasing, in "
+"preventive, the setpoint power of the generator in the adjustment mechanism."
+" This cost is also used in curative."
+msgstr ""
+"Le coût de 'redispatching' à la baisse correspond au coût de baisse en "
+"préventif de la puissance de consigne du groupe dans le mécanisme "
+"d'ajustement. Ce coût est également utilisé en curatif."
+
+#: ../../simulator/algo.md:380 b38a548669c5409eb92ab5ce9c0e9fbe
+msgid ""
+"For a given phase, an upward and a downward cost must always be defined. The"
+" start-up cost of generators is not taken into account by METRIX."
+msgstr ""
+"Pour une même phase, il faut toujours définir un coût à la hausse et à la "
+"baisse. Le coût de démarrage des groupes n'est pas pris en compte par "
+"METRIX."
+
+#: ../../simulator/algo.md:383 0ff13360f04d48e79e6f9a7a88879b19
+msgid "See [Generation variables](#prod_var)"
+msgstr "Cf. [Variables de production](#prod_var)"
+
+#: ../../simulator/algo.md:385 05134e2cd05346b58a05a0636334f57f
+msgid "Sign convention"
+msgstr "Convention de signe"
+
+#: ../../simulator/algo.md:386 2626217cdd9f490f9b6e413eed942d65
+#, python-brace-format
+msgid ""
+"Let there be an upward cost $\\Gamma^{+}$ and a downward cost $\\Gamma^{-}$."
+" If we increase the generation of the generator by $P^{+}$, it will cost "
+"$\\Gamma^{+} \\times P^{+}$. If we decrease the generation by $P^{-}$ "
+"($P^{-} \\geq 0$), it will cost $\\Gamma^{-} \\times P^{-}$."
+msgstr ""
+"Soit un coût à la hausse $\\Gamma^{+}$ et un coût à la baisse $\\Gamma^{-}$."
+" Si nous augmentons la production du groupe de $P^{+}$, cela coûtera "
+"$\\Gamma^{+} \\times P^{+}$. Si nous baissons la production de $P^{-}$ "
+"($P^{-} \\geq 0$), cela coûtera $\\Gamma^{-} \\times P^{-}$."
+
+#: ../../simulator/algo.md:390 945cd6c3a29545b1ae52faab42b7dc2d
+msgid ""
+"With a positive cost, it “costs” to modify a generation. With a negative "
+"cost, it “pays” to modify a generation."
+msgstr ""
+"Avec un coût positif, cela « coûte » de modifier une production. Avec un "
+"coût négatif, cela « rapporte » de modifier une production."
+
+#: ../../simulator/algo.md:393 3c71da15a95841a0baddb7676e3ed698
+msgid ""
+"As a consequence, if negative values are used for downward costs and the "
+"downward cost of a generator is greater in absolute value than the upward "
+"cost of another generator, METRIX may modify the generation cost solely to "
+"benefit from this “opportunity”, without this being motivated by a balancing"
+" or flow constraint. The parameters `adequacyCostOffset` and "
+"`redispatchingCostOffset` make it possible to counter this behaviour in each"
+" of the phases: the offset is added to the generator and load shedding costs"
+" of the phase, then the result is bounded from below by `generatorMinCost` "
+"(0.5 by default). For the order between all the costs to be preserved, the "
+"offset must be at least equal to the absolute value of the largest negative "
+"cost increased by this bound."
+msgstr ""
+"En conséquence, si des valeurs négatives sont utilisées pour les coûts à la "
+"baisse et que le coût à la baisse d'un groupe est supérieur en valeur "
+"absolue au coût à la hausse d'un autre groupe, METRIX peut modifier le coût "
+"de production uniquement pour bénéficier de cette « opportunité » sans que "
+"cela soit motivé par une contrainte d'équilibrage ou de transit. Les "
+"paramètres `adequacyCostOffset` et `redispatchingCostOffset` permettent de "
+"contrer ce comportement dans chacune des phases : l'offset est ajouté aux "
+"coûts de groupes et de délestage de la phase, puis le résultat est borné "
+"inférieurement par `generatorMinCost` (0,5 par défaut). Pour que l'ordre "
+"entre tous les coûts soit conservé, l'offset doit être au moins égal à la "
+"valeur absolue du plus grand coût négatif augmentée de cette borne."
+
+#: ../../simulator/algo.md:402 699d747992204e4cbc894df49d63f0cd
+msgid ""
+"If nothing is specified (i.e. no cost is defined), all the generators of the"
+" grid can take part in both phases at zero cost."
+msgstr ""
+"Si rien n'est spécifié (i.e. aucun coût n'est défini), tous les groupes du "
+"réseau peuvent participer aux deux phases à coût nul."
+
+#: ../../simulator/algo.md:405 f88d36b81c924500a7f5bf729089dcf0
+msgid ""
+"As soon as at least one generator is configured, only the generators for "
+"which a cost is defined for a phase can take part in that phase. The "
+"generation setpoint of the other generators cannot be modified. If too few "
+"generators can act, the model may not be able to find a solution to the "
+"constraints and will then return an error code 1 (e.g. evacuation constraint"
+" on a generator that cannot be modified)."
+msgstr ""
+"Dès qu'au moins un groupe est configuré, seuls les groupes pour lesquels un "
+"coût est défini pour une phase peuvent participer à cette phase. La consigne"
+" de production des autres groupes ne peut pas être modifiée. Si trop peu de "
+"groupes peuvent agir, le modèle peut ne pas pouvoir trouver de solution aux "
+"contraintes et retournera alors un code d'erreur 1 (ex. contrainte "
+"d'évacuation sur un groupe non modifiable)."
+
+#: ../../simulator/algo.md:410 0522169fbbfc498ba0a7d3e1dc44c573
+msgid "Loads"
+msgstr "Consommations"
+
+#: ../../simulator/algo.md:412 a7ca4e1368704476b684b6b600456232
+msgid ""
+"METRIX only uses active load since it relies on the DC approximation. "
+"Another consequence of this approximation is that no losses are modelled on "
+"the lines. Losses are estimated a posteriori (see [Losses computed a "
+"posteriori](#posteriori_losses)). Loads must therefore be entered with "
+"losses included."
+msgstr ""
+"METRIX n'utilise que la consommation active puisqu'il repose sur "
+"l'approximation du courant continu. Une autre conséquence de cette "
+"approximation est qu'il n'y a pas de pertes modélisées sur les lignes. Les "
+"pertes sont estimées a posteriori (cf. [Pertes calculées a "
+"posteriori](#posteriori_losses)). Les consommations doivent donc être "
+"renseignées pertes incluses."
+
+#: ../../simulator/algo.md:417 87fac98c66bd4a2887a8464735351d7b
+msgid ""
+"In order to solve flow constraints, METRIX has the possibility of shedding "
+"load."
+msgstr ""
+"Afin de résoudre des contraintes de transit, METRIX a la possibilité de "
+"délester de la consommation."
+
+#: ../../simulator/algo.md:419 b81d37f6fc004b62b6c165022cbacdce
+msgid "This load shedding can take 3 forms:"
+msgstr "Ce délestage peut prendre 3 formes :"
+
+#: ../../simulator/algo.md:420 4a04d0ec95844b8cb15f7b5905914da1
+msgid "Load shedding in the balancing phase to respect $P = C$"
+msgstr "Délestage dans la phase d'équilibrage pour respecter $P = C$"
+
+#: ../../simulator/algo.md:421 8c60ed71f6f145688629b3100085a339
+msgid "Preventive load shedding to respect flow constraints"
+msgstr "Délestage préventif pour respecter les contraintes de transit"
+
+#: ../../simulator/algo.md:422 2c7e85f6ac30418890d3e3bdc2617f08
+msgid "Curative load shedding to respect flow constraints"
+msgstr "Délestage curatif pour respecter les contraintes de transit"
+
+#: ../../simulator/algo.md:424 cddc4ee1a5b9455685c4f2014789738c
+msgid ""
+"The load shedding level is defined by a threshold which corresponds to the "
+"percentage of the load that can be shed. The cost of this load shedding can "
+"also be defined (otherwise the default value, `COUTDEFA`, is used). The cost"
+" and the load shedding threshold are used both for load shedding in the "
+"balancing phase and for preventive load shedding in the *Redispatching* "
+"phase. Curative load shedding uses another cost and another threshold."
+msgstr ""
+"Le niveau de délestage est défini par un seuil qui correspond au pourcentage"
+" de la consommation qui peut être délesté. Le coût de ce délestage peut "
+"également être défini (sinon la valeur par défaut, `COUTDEFA`, est "
+"utilisée). Le coût et le seuil de délestage sont utilisés, à la fois pour le"
+" délestage de la phase d'équilibrage et pour le délestage préventif de la "
+"phase de *Redispatching*. Le délestage curatif utilise un autre coût et un "
+"autre seuil."
+
+#: ../../simulator/algo.md:429 06affbf457a146259de380bf2448f9a5
+#, python-format
+msgid ""
+"By default, if nothing is specified, all loads can be shed at 100% in both "
+"phases. As soon as at least one load is configured, only the configured "
+"loads can be shed. If too few loads can be shed, the model may not be able "
+"to find a solution to the constraints and will return an error code 1. If we"
+" wish to model several load shedding/curtailment costs associated with "
+"different thresholds, additional fictitious loads must be created on the "
+"same node and the active load distributed across these loads."
+msgstr ""
+"Par défaut, si rien n'est spécifié, toutes les consommations sont "
+"délestables à 100% dans les deux phases. Dès qu'au moins une consommation "
+"est configurée, seules les consommations configurées sont délestables. Si "
+"trop peu de consommations sont délestables, le modèle peut ne pas pouvoir "
+"trouver de solution aux contraintes et retournera un code d'erreur 1. Si "
+"nous souhaitons modéliser plusieurs coûts de délestage/effacement associés à"
+" différents seuils, il faut créer des charges fictives supplémentaires sur "
+"le même nœud et répartir la consommation active sur ces charges."
+
+#: ../../simulator/algo.md:436 a052d477541241aa8935af386b31f20d
+msgid "See [Load variables](#conso_var)"
+msgstr "Cf. [Variables de consommation](#conso_var)"
+
+#: ../../simulator/algo.md:438 85f46b2ab2824132b5291de4dcfd6ec9
+msgid "Lines and transformers"
+msgstr "Lignes et transformateurs"
+
+#: ../../simulator/algo.md:440 1418b41cf6f947a2a2615c88fadffd9d
+msgid "Phase Tap Changers"
+msgstr "Transformateur-Déphaseurs"
+
+#: ../../simulator/algo.md:442 872661a06f704f3a8e4e2a6f59673424
+msgid "Modelling"
+msgstr "Modélisation"
+
+#: ../../simulator/algo.md:443 73e9ce6957c7464cbade23343f7311c6
+msgid ""
+"In METRIX, a PST is linked to a quadripole and serves as a power exchanger "
+"between the two nodes of said quadripole: it draws power from one node to "
+"send it to another."
+msgstr ""
+"Dans METRIX, un TD est lié à un quadripôle et sert d'échangeur de puissance "
+"entre les deux nœuds dudit quadripôle : il prélève de la puissance sur un "
+"nœud pour l'envoyer à un autre."
+
+#: ../../simulator/algo.md:446 fe5e74ebb4a2441a9a1a6fc2abc8a108
+msgid ""
+"To properly understand how PSTs work, one must first understand that METRIX "
+"uses powers to perform its computations, whereas PSTs work with angles, by "
+"modifying the phase shift of the electrical signal. However, changing the "
+"phase shift amounts to changing the active power of said electrical signal, "
+"through a simple multiplication:"
+msgstr ""
+"Pour bien comprendre le fonctionnement des TDs, il faut, tout d'abord, "
+"concevoir que METRIX utilise des puissances pour faire ces calculs, alors "
+"que les TDs fonctionnent avec des angles, en modifiant le déphasage du "
+"signal électrique. Cependant, changer le déphasage revient à changer la "
+"puissance active dudit signal électrique, grâce à une simple multiplication "
+":"
+
+#: ../../simulator/algo.md:451 c3e85735894c4bd9ba76f1485786f81a
+#, python-brace-format
+msgid ""
+"\n"
+"Puissance = angle \\cdot \\frac{\\pi}{180} \\cdot U^2 \\cdot Y_{i,j}\n"
+msgstr ""
+"\n"
+"Puissance = angle \\cdot \\frac{\\pi}{180} \\cdot U^2 \\cdot Y_{i,j}\n"
+
+#: ../../simulator/algo.md:455 e6d33ad10b39422ba5dfe46f033d86a4
+#, python-brace-format
+msgid ""
+"With $U^2$ and $Y_{i,j}$ the voltage and impedance values of the quadripole "
+"supporting the PST, which are parameters in METRIX. Since we will be "
+"speaking of angles or powers to describe the operation of PSTs, in order not"
+" to be confused, it suffices to remember that the two are proportional "
+"according to this formula."
+msgstr ""
+"Avec $U^2$ et $Y_{i,j}$ les valeurs de tension et d'impédance du quadripôle "
+"support du TD, qui sont des paramètres dans METRIX. Puisque nous allons être"
+" amenés à parler d'angles ou de puissances pour décrire le fonctionnement "
+"des TDs, afin de ne pas être perturbés, il suffit de se souvenir que les "
+"deux sont proportionnels selon cette formule."
+
+#: ../../simulator/algo.md:459 85962b7afd874897a166929c3cfafa42
+msgid ""
+"For METRIX computations, the quadripole supporting the PST will be split "
+"into two quadripoles in series. Let us name ***quad*** the initial "
+"quadripole, with $(y, r)$ its impedance and its resistance. It links the "
+"nodes *Or* and *Dest* (i.e. origin and destination). We then create a "
+"**fictitious node** *Nf* as well as a **fictitious quadripole** "
+"***quadFictif***, going from node *Or* to node *Nf* and with characteristics"
+" $(y/0.1, 0)$. At the same time, we modify *quad* so that it goes from node "
+"*Nf* to node *Dest*. We also modify its characteristics so that they become "
+"$(y/0.9, r)*."
+msgstr ""
+"Pour les calculs de METRIX, le quadripôle de support du TD va être dissocié "
+"en deux quadripôles en série. Nommons ***quad*** le quadripôle initial, avec"
+" $(y, r)$ son impédance et sa résistance. Celui-ci relie les nœuds *Or* et "
+"*Dest* (i.e. origine et destination). Nous allons ensuite créer un **nœud "
+"fictif** *Nf* ainsi qu'un **quadripôle fictif** ***quadFictif***, allant du "
+"nœud *Or* au nœud *Nf* et de caractéristiques $(y/0.1, 0)$. Parallèlement, "
+"nous modifions *quad* afin qu'il aille du nœud *Nf* vers le nœud *Dest*. "
+"Nous modifions également ses caractéristiques pour qu'elles vaillent "
+"$(y/0.9, r)*."
+
+#: ../../simulator/algo.md:466 ../../simulator/algo.md:472
+#: ca6c10afbe4e426eb207976158de53d7 f343e9fdaf1e40c2b27625599fa9bdd8
+msgid "Transformation of the PST from the data to the modelling in METRIX"
+msgstr "Transformation du TD des données à la modélisation dans METRIX"
+
+#: ../../simulator/algo.md:475 d7cd6f076330482b927b95565d1a336a
+msgid ""
+"The PST is carried by *quadFictif*, and therefore provides the phase shift. "
+"The real quad *quad* provides the reactance part. The losses related to r "
+"are computed a posteriori, when the solution is displayed."
+msgstr ""
+"Le TD est porté par *quadFictif*, et assure donc le déphasage. Le quad réel "
+"*quad* assure la partie réactance. Les pertes liées à r sont calculées à "
+"posteriori, lors de l'affichage de la solution."
+
+#: ../../simulator/algo.md:478 10a771ad6ff943b28a2f182cd1dcd501
+msgid ""
+"**N.B.**: PSTs are carried by lines. Since the latter are ignored in the "
+"*Adequacy phase*, PSTs play no role in the *Adequacy phase*."
+msgstr ""
+"**N.B.** : Les TDs sont portés par les lignes. Ces dernières étant ignorées "
+"en *Adequacy phase*, les TDs n'ont aucun rôle à jouer en *Adequacy phase*."
+
+#: ../../simulator/algo.md:481 80b7b132276d4bc8994653f011a3bdd3
+msgid "Definition of the min and max values of PSTs"
+msgstr "Définition des valeurs min et max des TDs"
+
+#: ../../simulator/algo.md:483 35dba8112d4043f0890b0326fae0cafe
+msgid ""
+"In reality, the phase shift of the electrical signal is obtained by moving "
+"from one tap to another. Consequently, within METRIX, each PST is associated"
+" with a list of taps of increasing phase shift as well as with two maximum "
+"bounds corresponding to the maximum numbers of tap changes upward and "
+"downward: *lowran* and *uppran*. These bounds are used as follows, with $X$ "
+"the tap number of the initial phase shift of the PST:"
+msgstr ""
+"Dans la réalité, le déphasage du signal électrique se fait en passant d'une "
+"prise à l'autre. De ce fait, au sein de METRIX, chaque TD va être associé à "
+"une liste de prises de déphasage croissant ainsi qu'à deux bornes maximum "
+"correspondantes aux nombres maximum de changements de prises à la hausse et "
+"à la baisse : *lowran* et *uppran*. Ces bornes sont utilisées de la manière "
+"suivante, avec $X$ le numéro de la prise du déphasage initial du TD :"
+
+#: ../../simulator/algo.md:487 40a523570b304a3880fe8c8c10812628
+msgid "upward, the phase shift cannot exceed $X + uppran$"
+msgstr "à la hausse le déphasage ne pourra dépasser $X + uppran$"
+
+#: ../../simulator/algo.md:488 88f0d74e80ee4254815cf9ae9ee6b5e4
+msgid "downward, the phase shift cannot go below $X - lowran$"
+msgstr "à la baisse le déphasage ne pourra dépasser $X - lowran$"
+
+#: ../../simulator/algo.md:490 1cafdf31b1f94ceba3b3ac1e51e4c048
+msgid ""
+"In METRIX, the phase shift tap number corresponds to that of the tap "
+"minimizing the distance between the phase shifts of the PST and the one "
+"associated with the tap."
+msgstr ""
+"Dans METRIX, le numéro de la prise de déphasage correspond à celui de la "
+"prise minimisant la distance entre les déphasages du TD et celui associé à "
+"la prise."
+
+#: ../../simulator/algo.md:493 3637af7f66254093a263c5fd338a9c4d
+msgid "See [PST variables](#td_var)"
+msgstr "Cf. [Variables TDs](#td_var)"
+
+#: ../../simulator/algo.md:495 27cf372072d54ec78bb51bdc8d50efcf
+msgid "HVDC lines"
+msgstr "Lignes à courant continu"
+
+#: ../../simulator/algo.md:497 6a928ebec7644e89aa466d3a4a3b2fb0
+msgid ""
+"HVDC lines (or LCCs) make it possible to carry direct current, rather than "
+"alternating current like traditional quadripoles. An LCC is described by:"
+msgstr ""
+"Les lignes à courant continu (ou LCC) permettent de transporter du courant "
+"continu, plutôt que de l'alternatif comme les quadripôles traditionnels. Une"
+" LCC est décrite par :"
+
+#: ../../simulator/algo.md:499 39427b7a3e4842238d33ac02b136f408
+msgid ""
+"Two converters, each converter being located between an AC node and a DC "
+"node;"
+msgstr ""
+"Deux convertisseurs, chaque convertisseur se situe entre un nœud AC et un "
+"nœud DC ;"
+
+#: ../../simulator/algo.md:500 0f6beda168044277bcf9df7554a8af27
+msgid "and a line between the two DC nodes."
+msgstr "et une ligne entre les deux nœuds DC."
+
+#: ../../simulator/algo.md:502 11667749763449fea0e0cf2d74468a21
+msgid "Thus, an LCC line links two AC nodes:"
+msgstr "De ce fait, une ligne LCC fait donc le lien entre deux nœuds AC :"
+
+#: ../../simulator/algo.md:504 ../../simulator/algo.md:510
+#: af4639e16b914faf898705e6779a2925
+msgid "Descriptive diagram of an LCC"
+msgstr "Schéma descriptif d'une LCC"
+
+#: ../../simulator/algo.md:513 59eeed8440514cbbb9d2dc2db8717573
+msgid ""
+"An HVDC line is simulated, by METRIX, as two injections on the origin AC "
+"node (node 1) and end AC node (node 2):"
+msgstr ""
+"Une ligne HVDC est simulée, par METRIX, comme deux injections sur les nœuds "
+"AC origine (nœud 1) et extrémité (nœud 2) :"
+
+#: ../../simulator/algo.md:515 ../../simulator/algo.md:521
+#: a60104b72c504e6197b4270b9e956499 d4dd6a6a8af44ba69f1d37a0d09544c5
+msgid "Descriptive diagram of the simulation of an LCC by METRIX"
+msgstr "Schéma descriptif de la simulation d'une LCC par METRIX"
+
+#: ../../simulator/algo.md:524 8f0ee76a43024c63b8979f644bdf674f
+msgid ""
+"The sign convention for the power flowing through a converter station is as "
+"follows: when a setpoint of $n$ MW is given on station 1, this amounts to "
+"transferring $n$ MW from 1 to 2, which is equivalent to a withdrawal of $n$ "
+"MW from station 1 and an injection of $n$ MW into station 2."
+msgstr ""
+"La convention de signe pour la puissance transitant dans une station de "
+"conversion est la suivante : lorsque la consigne de $n$ MW est données sur "
+"la station 1, cela revient à faire transiter $n$ MW de 1 vers 2, ce qui "
+"équivaut au soutirage de $n$ MW de la station 1 et à une injection de $n$ MW"
+" dans la station 2."
+
+#: ../../simulator/algo.md:528 8096f29586d84307b17ca3c9840a954c
+msgid ""
+"An LCC can be controlled in different ways: in power or in AC emulation (see"
+" parameters `DCNDROOP` and `DCDROOPK`). Moreover, for both these control "
+"types, the control can be imposed (the flow power is then fixed), or "
+"optimized (the flow power can vary, at least in preventive during the "
+"*Redispatching phase*)."
+msgstr ""
+"Une LCC peut être pilotée de différentes manières : en puissance ou en "
+"émulation AC (cf. paramètres `DCNDROOP` et `DCDROOPK`). En outre, pour ces "
+"deux types pilotages, celui-ci peut être imposé, (la puissance de transit "
+"est alors fixe), ou optimisé (la puissance de transit peut varier, au moins "
+"en préventif lors de la *Redispatching phase*)."
+
+#: ../../simulator/algo.md:532 48c9541b7e0b49f0858ce723fe7a95c0
+msgid ""
+"$P_0$ being the setpoint power on the line, it may or may not be modified "
+"depending on the nature of the selected control."
+msgstr ""
+"$P_0$ étant la puissance de consigne sur la ligne, celle-ci peut être "
+"modifiée ou non suivant le caractère du pilotage retenu."
+
+#: ../../simulator/algo.md:534 c7847120fb3a4d948f28583ba4c7530e
+msgid ""
+"HVDC losses are computed a posteriori (see [Losses computed a "
+"posteriori](#posteriori_losses))."
+msgstr ""
+"Les pertes HVDC sont calculées a posteriori (cf. [Pertes calculées a "
+"posteriori](#posteriori_losses))."
+
+#: ../../simulator/algo.md:536 85c67ff96fcd4db1878f16b146149b2b
+msgid "See [LCC variables](#lcc_var)"
+msgstr "Cf. [Variables LCCs](#lcc_var)"
+
+#: ../../simulator/algo.md:538 356d1b003b4a400aa64b01945548efe8
+msgid "Link between synchronous areas"
+msgstr "Lien entre zones synchrones"
+
+#: ../../simulator/algo.md:539 d95b0331c8114099bd8be62e55e5b331
+msgid ""
+"Since LCCs serve as a link between two nodes and carry direct current, they "
+"can also be used as interconnections between different synchronous areas "
+"(unlike classical quadripoles)."
+msgstr ""
+"Les LCCs servant de lien entre deux nœuds et transportant du courant "
+"continu, elles peuvent aussi servir d'interconnexions entre des zones "
+"synchrones différentes (contrairement à des quadripôles classiques)."
+
+#: ../../simulator/algo.md:542 60facc1b59d145be9db4fcc72e475a73
+msgid "HVDC lines controlled in AC emulation"
+msgstr "Lignes à courant continu pilotées en émulation AC"
+
+#: ../../simulator/algo.md:544 e8e7caeac9a948ec83d8d2ae78f7da59
+#, python-brace-format
+msgid ""
+"A line can be controlled in AC emulation (see parameters *`DCNDROOP`* and "
+"*`DCDROOPK`*). The flow of the HVDC link is then $𝑃_0 + 𝑘(\\theta_2 − "
+"\\theta_1)$. METRIX then inserts a PST of impedance $1/𝑘$ between the two "
+"injections in order to respect the previous constraint. The PST ensures that"
+" the value of the overall flow of the HVDC link is always between $P_{min}$ "
+"and $P_{max}$. The value of $P_0$, for its part, can be fixed or optimized "
+"by METRIX (see parameter *`DCREGPUI`*)."
+msgstr ""
+"Une ligne peut être pilotée en émulation AC (cf. paramètres *`DCNDROOP`* et "
+"*`DCDROOPK`*). Le transit de la liaison HVDC vaut alors $𝑃_0 + 𝑘(\\theta_2 −"
+" \\theta_1)$. METRIX insère alors un TD d'impédance $1/𝑘$ entre les deux "
+"injections afin de respecter la contrainte précédente. Le TD assure que la "
+"valeur du transit global de la liaison HVDC soit toujours comprise entre "
+"$P_{min}$ et $P_{max}$. La valeur de $P_0$, quant à elle, peut être fixe ou "
+"optimisée par METRIX (cf. paramètre *`DCREGPUI`*)."
+
+#: ../../simulator/algo.md:550 de804c74df21495a9bcc0c56b3c669ab
+msgid ""
+"**Modelling of LCCs in AC emulation** For an LCC in AC emulation, a "
+"fictitious quadripole (named *quad0*) is associated with it, with the same "
+"origin and destination nodes. The resistance of this quadripole is zero and "
+"its admittance is determined by a parameter provided individually for each "
+"LCC in AC emulation. We then associate with this quadripole a fictitious PST"
+" with optimized angle control, which therefore causes the creation of a new "
+"fictitious node *Nf* and of a (doubly) fictitious quadripole *quad1*. The "
+"diagram below summarizes this situation."
+msgstr ""
+"**Modélisation des LCCs en émulation AC** Pour une LCC en émulation AC, un "
+"quadripôle fictif (nommé *quad0*) lui est associé, de mêmes nœuds origine et"
+" destination. La résistance de ce quadripôle est nulle et son admittance est"
+" déterminée par un paramètre fourni individuellement à chaque LCC en "
+"émulation AC. Nous associons ensuite, à ce quadripôle, un TD fictif en "
+"pilotage d'angle optimisé, qui provoque donc la création d'un nouveau nœud "
+"fictif *Nf* et d'un quadripôle (doublement) fictif *quad1*. Le schéma ci-"
+"dessous résume cette situation."
+
+#: ../../simulator/algo.md:557 ../../simulator/algo.md:563
+#: 414d901f2e144ae6957fc5744c296d19 a0ef0580cc5548f2a331fe1b7614837a
+msgid "Modelling of LCCs in AC emulation in METRIX"
+msgstr "Modélisation des LCCs en émulation AC dans METRIX"
+
+#: ../../simulator/algo.md:566 669246b05b3c448492381f4cb949a2a2
+msgid ""
+"The quadripole *quad0* and the LCC will form an element to be monitored in "
+"$N$ and in $N-k$. As for the fictitious PST, it will be made available in "
+"curative for all the simulated contingencies."
+msgstr ""
+"Le quadripôle *quad0* et la LCC formeront un élément à surveiller en $N$ et "
+"en $N-k$. Quant au TD fictif, il sera mis à disposition en curatif de tous "
+"les incidents simulés."
+
+#: ../../simulator/algo.md:569 c0d228c86f134ebc967115c57a93263e
+msgid ""
+"**In summary**: LCCs make it possible to carry a chosen power from one node "
+"to another (and possibly from one synchronous area to another). This can for"
+" example avoid overloads on adjacent lines."
+msgstr ""
+"**En résumé** : Les LCCs permettent de transporter une puissance choisie "
+"d'un nœud à un autre (et possiblement d'une zone synchrone à une autre). Ce "
+"qui peut par exemple éviter les surcharges sur les lignes adjointes."
+
+#: ../../simulator/algo.md:572 494c1893f8974846a86e666d3648efd7
+msgid "Contingencies"
+msgstr "Incidents"
+
+#: ../../simulator/algo.md:574 84c56611315643bf892685a8237bec53
+msgid ""
+"The solution found by METRIX (generation plan and load shedding) must be "
+"robust to a list of contingencies given as input. We distinguish line "
+"contingencies and generator contingencies."
+msgstr ""
+"La solution trouvée par METRIX (plan de production et délestage) doit être "
+"robuste à une liste d'incidents donnée en entrée. Nous distinguons les "
+"incidents de lignes et les incidents de groupes."
+
+#: ../../simulator/algo.md:577 146f97cd881d45009d3796792cef7283
+msgid "See [Contingency variables](#inc_var)"
+msgstr "Cf. [Variables Incidents](#inc_var)"
+
+#: ../../simulator/algo.md:579 05134e2cd05346b58a05a0636334f57f
+msgid "Line contingencies"
+msgstr "Incidents lignes"
+
+#: ../../simulator/algo.md:581 5ac9b53343e04132b66a4f9b52ef91d7
+#, python-brace-format
+msgid ""
+"METRIX is able to simulate the loss of one or more line(s). It always uses "
+"the DC approximation and therefore transfer coefficients to simulate these "
+"contingencies. Here, the flow on line $ik$ after the contingency simulating "
+"the loss of line $mn$ is written: $$ T_{ik}^{N-k} = T_{ik}^{N} + "
+"\\rho_{ik}^{mn} \\cdot T_{mn}^{N} $$"
+msgstr ""
+"METRIX est capable de simuler la perte d'une ou plusieurs ligne(s). Il "
+"utilise toujours l'approximation du courant continu et donc des coefficients"
+" de report pour simuler ces incidents. Ici, le transit sur la ligne $ik$ "
+"après l'incident qui simule la perte de la ligne $mn$ s'écrit : $$ "
+"T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{mn} \\cdot T_{mn}^{N} $$"
+
+#: ../../simulator/algo.md:588 1295e869c39f41f7bf535e7bb6f71a46
+#, python-brace-format
+msgid ""
+"To determine $\\rho_{ik}^{mn}$ (transfer coefficient), METRIX uses the "
+"Woodbury formula."
+msgstr ""
+"Afin de déterminer $\\rho_{ik}^{mn}$ (coefficient de report), METRIX utilise"
+" la formule de Woodbury."
+
+#: ../../simulator/algo.md:590 2aaba52c99e24e878f552d294bd824f5
+msgid ""
+"Note that HVDC lines do not ensure connectivity between their origin and end"
+" nodes. Consequently, contingencies simulating the loss of the feeder line "
+"of the HVDC line will be discarded (they break connectivity). On the other "
+"hand, if the contingency is well defined on the DC line (i.e. on the line "
+"between the two DC nodes), then the contingency simulating the loss of the "
+"HVDC line will indeed be simulated."
+msgstr ""
+"À noter que, les lignes à courant continu ne permettent pas d'assurer la "
+"connexité entre leur nœud origine et extrémité. Par conséquent, les "
+"incidents simulant la perte de la ligne d'alimentation de la ligne à courant"
+" continu seront écartés (ils rompent la connexité). Par contre, si "
+"l'incident est bien défini sur la ligne DC (i.e. sur la ligne entre les deux"
+" nœuds DC), alors l'incident simulant la perte de la ligne à courant continu"
+" sera bien simulé."
+
+#: ../../simulator/algo.md:595 10946560c0e84b26bc198c739dc97bf2
+msgid "Generator contingencies"
+msgstr "Incidents groupes"
+
+#: ../../simulator/algo.md:597 c1820c925db64e25b1da2326ff5c0145
+msgid ""
+"When generator contingencies are defined, METRIX distributes the generation "
+"lost during the contingency across all the other available generators (even "
+"if they are not actually started)."
+msgstr ""
+"Dans le cas où des incidents de groupes sont définis, METRIX répartit la "
+"production perdue lors de l'incident sur l'ensemble des autres groupes "
+"disponibles (même s'ils ne sont pas réellement démarrés)."
+
+#: ../../simulator/algo.md:600 ea6371054c474f70875fb8c00f97dd6b
+msgid ""
+"The global frequency reserve of the grid is computed from the power lost by "
+"the most dimensioning generator contingency. This yields the “regulation "
+"half-band” on each generator (which is 0 if there is no generator "
+"contingency). Before starting the resolution, METRIX lowers the Pmax of each"
+" generator by its “regulation half-band”."
+msgstr ""
+"La réserve de fréquence globale du réseau est calculée à partir de la "
+"puissance perdue par l'incident groupe le plus dimensionnant. Cela permet "
+"d'obtenir la « demi-bande de réglage » sur chaque groupe (qui vaut 0 s'il "
+"n'y a pas d'incident groupe). Avant de commencer la résolution, METRIX "
+"abaisse la Pmax de chaque groupe de sa « demi-bande de réglage »."
+
+#: ../../simulator/algo.md:605 f177702c00554902808f54c834d0b21e
+#, python-brace-format
+msgid ""
+"To simulate generator contingencies, METRIX uses a sensitivity coefficient. "
+"For each contingency $i$, METRIX computes the influence on each line $ik$, "
+"denoted $\\rho_{ik}^{g}$, of the loss of 1 MW on the generator $g$ in "
+"contingency and the takeover of this lost MW by all the other available "
+"generators in proportion to their Pmax."
+msgstr ""
+"Pour simuler les incidents de groupe, METRIX utilise un coefficient de "
+"sensibilité. Pour chaque incident $i$, METRIX calcule l'influence sur chaque"
+" ligne $ik$, noté $\\rho_{ik}^{g}$, de la perte de 1 MW sur le groupe en "
+"incident $g$ et la reprise de ce MW perdu par l'ensemble des autres groupes "
+"disponibles au prorata de leur Pmax."
+
+#: ../../simulator/algo.md:609 ec354ca9d5604ffbac457ba322831f4f
+#, python-brace-format
+msgid ""
+"METRIX then deduces the flow on line $ik$ after the loss of generator $g$: "
+"$$ T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{g} \\cdot P_{g}^{N} $$"
+msgstr ""
+"MERIX déduit ensuite le transit sur la ligne $ik$ après la perte du groupe "
+"$g$ : $$ T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{g} \\cdot P_{g}^{N} $$"
+
+#: ../../simulator/algo.md:614 d101ff4508a447ada369f520cba2836d
+#, python-brace-format
+msgid ""
+"with $P_{g}^{N}$ the power delivered in N by the generator that was tripped."
+msgstr ""
+"avec $P_{g}^{N}$ la puissance délivrée en N par le groupe qui a été "
+"déclenché."
+
+#: ../../simulator/algo.md:616 deffb253eeb44d77825ae2532b1ea9de
+msgid ""
+"The same strategy is used to simulate the loss of a DC line; the only "
+"difference is that the variation of 1 MW is compensated between the origin "
+"node and the end node of the DC line."
+msgstr ""
+"La même stratégie est utilisée pour simuler la perte d'une ligne DC ; la "
+"seule différence est que la variation de 1 MW se compense entre le nœud "
+"origine et le nœud extrémité de la ligne DC."
+
+#: ../../simulator/algo.md:619 a3d29b545e8d440e8560ce38afba9165
+msgid "Combined contingencies"
+msgstr "Incidents composés"
+
+#: ../../simulator/algo.md:621 9be2218a4f9b4ff8b016620a03635be2
+msgid ""
+"METRIX also handles contingencies composed of loss of generators and lines. "
+"Given that we are in the context of the DC approximation, the equations are "
+"linear and the order in which the loss of the generator or of the line "
+"occurs does not matter."
+msgstr ""
+"METRIX traite également les incidents composés de perte de groupes et de "
+"lignes. Étant donné que nous nous trouvons dans le contexte de "
+"l'approximation du courant continu, les équations sont linéaires et l'ordre "
+"d'apparition de la perte du groupe ou de la ligne n'a pas d'importance."
+
+#: ../../simulator/algo.md:625 f0ea643198304904a093c796630ca1eb
+#, python-brace-format
+msgid ""
+"The flow on line $ik$ after loss of line $mn$ and of generator $g$ is: $$ "
+"T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{g} \\cdot P_{g}^{N} + "
+"\\rho_{ik}^{mn} \\cdot (T_{mn}^{N} + \\rho_{mn}^{g} + P_{g}^{N}) $$"
+msgstr ""
+"Le transit sur la ligne $ik$ après perte de la ligne $mn$ et du groupe $g$ "
+"vaut : $$ T_{ik}^{N-k} = T_{ik}^{N} + \\rho_{ik}^{g} \\cdot P_{g}^{N} + "
+"\\rho_{ik}^{mn} \\cdot (T_{mn}^{N} + \\rho_{mn}^{g} + P_{g}^{N}) $$"
+
+#: ../../simulator/algo.md:630 a9489fedf9404825955a6c3528379f82
+#, python-brace-format
+msgid ""
+"This amounts to considering that the generator contingency occurs first, "
+"then that the line contingency and the impact of the generator contingency "
+"on this line are properly simulated ($T_{mn}^{N} + \\rho_{mn}^{g} + "
+"P_{g}^{N}$)."
+msgstr ""
+"Cela revient à considérer que l'incident groupe se produit dans un premier "
+"temps, puis que l'incident ligne et l'impact produit de l'incident groupe "
+"sur cette ligne est bien simulé ($T_{mn}^{N} + \\rho_{mn}^{g} + P_{g}^{N}$)."
+
+#: ../../simulator/algo.md:633 37280a5dd5664148b9756c31b35a2ed1
+msgid "Contingencies breaking connectivity"
+msgstr "Incidents rompant la conenxité"
+
+#: ../../simulator/algo.md:635 1de7725288604d7fa0d0cc838120c588
+msgid ""
+"By default, contingencies breaking connectivity are excluded from the "
+"computation. It is nevertheless possible to take them into account via the "
+"parameter `INCNOCON`. In this case, for each contingency, METRIX reports in "
+"the outputs the volume of generation and/or load lost during the "
+"contingency."
+msgstr ""
+"Par défaut, les incidents rompant la connexité sont exclus du calcul. Il est"
+" toutefois possible de les prendre en compte via le paramètre `INCNOCON`. "
+"Dans ce cas, pour chaque incident, METRIX renseigne dans les sorties le "
+"volume de production et/ou de consommation perdu lors de l'incident."
+
+#: ../../simulator/algo.md:639 de3b90bc77cf47399e3ffcdd7cd329c3
+msgid ""
+"If a topological remedial action makes it possible to recover part of this "
+"power, this information is given for the initial contingency and for the "
+"remedial action."
+msgstr ""
+"Si une parade topologique permet de récupérer une partie de cette puissance,"
+" cette information est donnée pour l'incident initial et pour la parade."
+
+#: ../../simulator/algo.md:642 4bc056724893434185e505a98e473b4a
+msgid "Curative actions"
+msgstr "Actions curatives"
+
+#: ../../simulator/algo.md:644 20f0403b9388438198c99cbc4e7cdf57
+msgid ""
+"In order to correct contingencies, the user can model curative actions (i.e."
+" activatable once the contingency has occurred) representing the actions "
+"taken by an operator or an automaton to bring the flow back within the "
+"admissible threshold."
+msgstr ""
+"Afin de corriger des incidents, l'utilisateur peut modéliser des actions "
+"curatives (i.e. activables une fois l'incident survenu) représentant les "
+"actions prises par un opérateur ou un automate pour rétablir le transit "
+"conformément au seuil admissible."
+
+#: ../../simulator/algo.md:648 bfff10bfd48144aebe94058584f0d51a
+msgid "In METRIX, curative actions can be:"
+msgstr "Dans METRIX les actions curatives peuvent être :"
+
+#: ../../simulator/algo.md:649 ed7f8ea00be84d739cd686200b6eb383
+msgid "modifications of the setpoints of generators, PSTs or HVDC lines;"
+msgstr "des modifications de consigne des groupes, TD ou HVDC ;"
+
+#: ../../simulator/algo.md:650 08f4887c524c423a809b56820d7ab226
+msgid "or curative load shedding."
+msgstr "ou du délestage curatif de consommation."
+
+#: ../../simulator/algo.md:652 880be0c520d54cb88a653bc98921b14c
+msgid ""
+"The optimizer will choose whether it is useful to modify the setpoint of the"
+" curative elements following the contingency. It will combine the actions if"
+" necessary and will make sure that the setpoint modifications obviously do "
+"not generate a new constraint on another line of the grid."
+msgstr ""
+"L'optimiseur choisira s'il est utile de modifier la consigne des éléments "
+"curatifs suite à l'incident. Il combinera les actions si nécessaire et "
+"s'assurera que les modifications de consigne n'engendrent évidemment pas de "
+"nouvelle contrainte sur une autre ligne du réseau."
+
+#: ../../simulator/algo.md:656 3064dc904aff440cb1fea6c954142880
+msgid ""
+"To respect a constraint on a temporary threshold before activation of "
+"curative actions, METRIX will necessarily use a preventive action. This "
+"preventive action may be complemented, if necessary, by a curative action to"
+" respect the permanent threshold after the contingency."
+msgstr ""
+"Pour respecter une contrainte sur un seuil temporaire avant activation "
+"d'actions curatives, METRIX utilisera obligatoirement une action préventive."
+" Cette action préventive pourra être complétée, si nécessaire, par une "
+"action curative pour respecter le seuil permanent après incident."
+
+#: ../../simulator/algo.md:660 dc36886b775e4e66ae39472cf957970e
+msgid ""
+"If the curative functionality is used to model the operation of an "
+"automaton, it must be taken into account that the modelling is optimistic: "
+"indeed, an automaton will act only with the aim of removing the constraint "
+"on the line it monitors; moreover, it will act even if this generates a "
+"constraint elsewhere. METRIX can use a lever to remove any constraint "
+"present on the grid and it ensures that it does not create new overloads "
+"elsewhere."
+msgstr ""
+"Si la fonctionnalité du curatif est utilisée pour modéliser le "
+"fonctionnement d'un automate, il faut bien prendre en compte que la "
+"modélisation est optimiste : en effet, un automate agira uniquement dans le "
+"but de lever la contrainte sur la ligne qu'il surveille ; de plus, il agira "
+"même si cela engendrait une contrainte ailleurs. METRIX peut utiliser un "
+"levier pour lever n'importe quelle contrainte présente sur le réseau et il "
+"fait en sorte de ne pas créer de nouvelles surcharges ailleurs."
+
+#: ../../simulator/algo.md:666 67f2c3eef2f3468ea87bee9c251e2611
+msgid "Curative topological actions"
+msgstr "Manœuvres topologiques curatives"
+
+#: ../../simulator/algo.md:668 61aeb0983ae84daea1dec6a8e2b09ceb
+msgid ""
+"Topological remedial actions are curative actions handled differently from "
+"the other curative actions, because having an impact on the topology, they "
+"modify the transfer and sensitivity coefficients. They also have a strong "
+"impact on the solving time of the optimization."
+msgstr ""
+"Les parades topologiques sont des actions curatives traitées de manière "
+"différente des autres actions curatives, car ayant un impact sur la "
+"topologie, elles modifient les coefficients de report et de sensibilité. "
+"Elles ont également un fort impact sur le temps de résolution de "
+"l'optimisation."
+
+#: ../../simulator/algo.md:672 58d141e95eb34706b9125d6b1e863540
+msgid ""
+"For METRIX, a topological remedial action is always linked to a contingency "
+"and consists of the opening (or closing) of additional lines or couplers. "
+"When a remedial action is selected by the solver, METRIX checks that this "
+"remedial action does not generate constraints on the other monitored network"
+" elements of the grid."
+msgstr ""
+"Pour METRIX, une parade topologique est toujours liée à un incident et "
+"consiste en l'ouverture (ou la fermeture) de lignes ou de couplages "
+"supplémentaires. Quand une parade est sélectionnée par le solveur, METRIX "
+"vérifie que cette parade ne génère pas de contraintes sur les autres "
+"ouvrages surveillés du réseau."
+
+#: ../../simulator/algo.md:676 d09b5b9ac2ee44bcb12103a8e71c6554
+msgid ""
+"For a given contingency, METRIX will always favour the remedial actions "
+"located at the beginning of the list. Thus, if none of the remedial actions "
+"provided is really effective, METRIX will choose the “do nothing” remedial "
+"action which is automatically added at the very beginning of the list."
+msgstr ""
+"Pour un incident donné, METRIX privilégiera toujours les parades situées en "
+"début de la liste. Ainsi si aucune des parades fournie n'est vraiment "
+"efficace, METRIX choisira la parade « ne rien faire » qui est "
+"automatiquement ajoutée en tout début de liste."
+
+#: ../../simulator/algo.md:680 c1af1a2e91414e9c80dd426703110c8a
+msgid ""
+"METRIX can combine a topological remedial action with other curative "
+"actions, but cannot combine two topological remedial actions. All the "
+"desired combinations must be explicitly provided in the list supplied as "
+"input to the computation."
+msgstr ""
+"METRIX peut combiner une parade topologique avec d'autres actions curatives,"
+" mais ne peut pas combiner deux parades topologiques. Il faut explicitement "
+"renseigner toutes les combinaisons souhaitées dans la liste fournie en "
+"entrée du calcul."
+
+#: ../../simulator/algo.md:684 fa81514da00d4d219c414b4839fc7b65
+msgid ""
+"Remedial actions may have very similar effects, hard to tell apart, which "
+"complicates the resolution of the problem. To counter these pathological "
+"cases, the parameter `PAREQUIV` makes it possible to hide the remedial "
+"actions whose effect appears similar to that of another remedial action."
+msgstr ""
+"Des parades peuvent avoir des effets très proches, difficilement "
+"différentiables, ce qui complique la résolution du problème. Pour contrer "
+"ces cas pathologiques, le paramètre `PAREQUIV` permet de masquer les parades"
+" dont l'effet semble similaire à celui d'une autre parade."
+
+#: ../../simulator/algo.md:688 894ac9485bd94db7bdec5fb379f25002
+msgid ""
+"A topological remedial action selected by METRIX makes it possible to remove"
+" (or relieve) the flow constraints linked to a contingency. However, if this"
+" remedial action is composed of several actions, there is no guarantee that "
+"it will be possible to carry out all these actions in practice. Likewise, a "
+"remedial action may be used to reconnect a branch lost because of a "
+"contingency, but given the simplifications of the METRIX model, it is by no "
+"means certain that this would actually be possible in practice."
+msgstr ""
+"Une parade topologique sélectionnée par METRIX permet de lever (ou soulager)"
+" les contraintes de transit liées à un incident. Cependant, si cette parade "
+"est composée de plusieurs actions, il n'y a pas de garantie qu'il sera "
+"possible de réaliser toutes ces actions en pratique. De même, une parade "
+"peut être utilisée pour reconnecter une proche perdue par un incident, mais "
+"compte tenu des simplifications du modèle METRIX, il n'est absolument pas "
+"assuré que cela serait effectivement possible en pratique."
+
+#: ../../simulator/algo.md:694 ea8e120b32d5449092db788b300e1364
+msgid ""
+"By default, a remedial action cannot worsen the connectivity break of a "
+"contingency (i.e. increase the number of disconnected vertices), unless the "
+"parameter `PARNOCON` is used."
+msgstr ""
+"Par défaut, une parade ne peut pas aggraver la rupture de connexité d'un "
+"incident (i.e. augmenter le nombre de sommets déconnectés), sauf si le "
+"paramètre `PARNOCON` est utilisé."
+
+#: ../../simulator/algo.md:697 fad8dba085e548c6aa5c4e1ba534b61b
+msgid ""
+"It is possible to restrict the action of a remedial action to the presence "
+"of a constraint on a specific network element. In this case, the remedial "
+"action cannot be selected as long as the network element in question is not "
+"under constraint."
+msgstr ""
+"Il est possible de restreindre l'action d'une parade à la présence d'une "
+"contrainte sur un ouvrage spécifique. Dans ce cas, la parade ne peut pas "
+"être sélectionnée tant que l'ouvrage en question n'est pas en contrainte."
+
+#: ../../simulator/algo.md:700 c43ffbf976e14b8f9eac2e94754c3851
+msgid "Optimization problems"
+msgstr "Problèmes d'optimisation"
+
+#: ../../simulator/algo.md:702 257de395ba1741ffbf4bc64f7bb153d5
+msgid ""
+"Let $W$ denote the integer number of variants to process and $w$ the index "
+"of the current variant."
+msgstr ""
+"Notons $W$ le nombre entier de variantes à traiter et $w$ l'indice de la "
+"variante courante."
+
+#: ../../simulator/algo.md:706 75ccb78c76a44a79b4b85c59cb35935a
+msgid "Adequacy phase"
+msgstr "Adequacy phase"
+
+#: ../../simulator/algo.md:707 d2bdd3d26df941198676b3cce34f8385
+#, python-brace-format
+msgid ""
+"Let $P_w$ denote the column matrix of the powers produced by the generators "
+"and $C_w$ the column matrix of the powers consumed by the consumption zones."
+" Let us also denote $P_{w}^{0}$ and $C_{w}^{0}$ the matrices of the initial "
+"values."
+msgstr ""
+"Notons $P_w$ ma matrice colonne des puissances produites par les groupes et "
+"$C_w$ la matrice colonne des puissances consommées par les zones de "
+"consommation. Notons également $P_{w}^{0}$ et $C_{w}^{0}$ les matrices des "
+"valeurs initiales."
+
+#: ../../simulator/algo.md:711 ../../simulator/algo.md:784
+#: 7940a9dd334345a892e4dfa226ae9222 fe68f0c053aa436f92a8d513294d7c89
+#, python-brace-format
+msgid ""
+"\n"
+"\\forall w \\leq W \\text{ :}\n"
+msgstr ""
+"\n"
+"\\forall w \\leq W \\text{ :}\n"
+
+#: ../../simulator/algo.md:715 1992968f969940569483e1dbf2a92b09
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{Données : }\\\\\n"
+"P_{w}^{max}, P_{w}^{min}, C_{w}^{max}, C_{w}^{min}, P_{w}^{0}, C_{w}^{0}\n"
+msgstr ""
+"\n"
+"\\text{Données : }\\\\\n"
+"P_{w}^{max}, P_{w}^{min}, C_{w}^{max}, C_{w}^{min}, P_{w}^{0}, C_{w}^{0}\n"
+
+#: ../../simulator/algo.md:720 10d23fa0065f4f68bd1cabd8aa760045
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{Variables :}\\\\\n"
+"P_{w}, C_{w}, \\Delta P_{w}, \\Delta C_{w}\n"
+msgstr ""
+"\n"
+"\\text{Variables :}\\\\\n"
+"P_{w}, C_{w}, \\Delta P_{w}, \\Delta C_{w}\n"
+
+#: ../../simulator/algo.md:725 9543bc12c4a34495a03ec2e56f805a38
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{Objectif :}\\\\\n"
+"min(\\Delta P_{w} + \\Delta C_{w})\n"
+msgstr ""
+"\n"
+"\\text{Objectif :}\\\\\n"
+"min(\\Delta P_{w} + \\Delta C_{w})\n"
+
+#: ../../simulator/algo.md:730 ../../simulator/algo.md:803
+#: 0c640becc1c04240986c5212d3a3ab18 d296b0197add428c84dbd32a3fad6051
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{s.c. :}\n"
+msgstr ""
+"\n"
+"\\text{s.c. :}\n"
+
+#: ../../simulator/algo.md:735 0df4b7a5ec6f404f81472ed63a81ee95
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"P_{w}^{min} \\leq P_{w} = P_{w}^{0} + \\Delta P_{w} \\leq P_{w}^{max}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"P_{w}^{min} \\leq P_{w} = P_{w}^{0} + \\Delta P_{w} \\leq P_{w}^{max}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:742 270657e9f8214249814bd6e135947eb4
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"C_{w}^{min} \\leq C_{w} = C_{w}^{0} + \\Delta C_{w} \\leq C_{w}^{max}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"C_{w}^{min} \\leq C_{w} = C_{w}^{0} + \\Delta C_{w} \\leq C_{w}^{max}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:749 ../../simulator/algo.md:836
+#: 1772c8b0e6294674b42be8def0af0f99 d35a289d395840df95c8b5cef924f6b9
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"P_{w} = C_{w}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"P_{w} = C_{w}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:755 8d97ffcda8ba49aba2a4ff8788b8c9b5
+msgid ""
+"Constraints [(1)](#algo-Pbounds_eq) and [(2)](#algo-Cbounds_eq) define the "
+"limits of the matrices $P_w$ and $C_w$, as well as their link via the "
+"objective function. Constraint [(3)](#algo-adeq_eq) is the basic constraint "
+"of the grid: at any time, generation and load must be equal."
+msgstr ""
+"Les contraintes [(1)](#algo-Pbounds_eq) et [(2)](#algo-Cbounds_eq), "
+"définissent les limites des matrices $P_w$ et $C_w$, ainsi que leur lien via"
+" la fonction objectif. La contrainte [(3)](#algo-adeq_eq) consitue la "
+"contrainte de base du réseau : à tout instant, la production et la "
+"consommation doivent être égales."
+
+#: ../../simulator/algo.md:760 fded6105840e4f66a26dc9233fcc8391
+msgid "Redispatching phase"
+msgstr "Redispatching phase"
+
+#: ../../simulator/algo.md:761 d1e0282b27ae428da4e06f1ef11a3645
+#, python-brace-format
+msgid ""
+"Let us name $U_w$ the column matrix of preventive actions and $V_w$ the "
+"column matrix of curative actions for variant $w$. These two matrices "
+"contain the variables representing the changes in generator generation, in "
+"load of the consumption zones, in phase shift of the Phase Tap Changers "
+"(PSTs) of the grid and in flow of the HVDC Lines (LCCs). $V_w$ will also "
+"contain the boolean variables for activating topological remedial actions. "
+"Denoting $p_i$, $c_i$, $td_i$, $lcc_i$, $prd_i$ the values of generation, "
+"load, phase shift of PSTs, flow on LCCs and remedial action activation, and "
+"denoting $n_1$, $n_2$, $n_3$, $n_4$, $n_5$ their cardinalities, we can "
+"formulate $U_w$ and $V_w$ as follows: $$ U_w=(p_1, …, p_{n_1}, c_1, …, "
+"c_{n_2}, td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, 0, …, 0)^t \\\\ V_w=(p_1, "
+"…, p_{n_1}, c_1, …, c_{n_2}, td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, prd_1, "
+"…, prd_{n_5})^t $$"
+msgstr ""
+"Nommons $U_w$ la matrice colonne des actions préventives et $V_w$ la matrice"
+" colonne des actions curatives pour la variante $w$. Ces deux matrices "
+"contiennent les variables représentant les changements de production des "
+"groupes, de consommation des zones de consommation, de déphasage des "
+"Transfo-Déphaseurs (TDs) du réseau et de flux des Lignes à Courant Continu "
+"(LCCs). $V_w$ contiendra également les variables booléennes d'activation des"
+" parades topologiques. En notant $p_i$, $c_i$, $td_i$, $lcc_i$, $prd_i$ les "
+"valeurs de production, consommation, de déphasage des TDs, de flux sur les "
+"LCCs et d'activation des parades, et en notant $n_1$, $n_2$, $n_3$, $n_4$, "
+"$n_5$ leurs cardinalités, nous pouvons formuler $U_w$ et $V_w$ de la manière"
+" suivante : $$ U_w=(p_1, …, p_{n_1}, c_1, …, c_{n_2}, td_1, …, td_{n_3}, "
+"lcc_1, …, lcc_{n_4}, 0, …, 0)^t \\\\ V_w=(p_1, …, p_{n_1}, c_1, …, c_{n_2}, "
+"td_1, …, td_{n_3}, lcc_1, …, lcc_{n_4}, prd_1, …, prd_{n_5})^t $$"
+
+#: ../../simulator/algo.md:773 a894b15496804812bc05f40ba8091331
+#, python-brace-format
+msgid ""
+"$U_w$ and $V_w$ are thus both of size $n_1 + n_2 + n_3 + n_4 + n_5$. "
+"Likewise, let us denote $U_{w}^{1}$ and $V_{w}^{1}$ the matrices of their "
+"initial values for this problem. We will note that, in the case of "
+"$U_{w}^{1}$, the parameters $p_1, ..., p_{n_1}, c_1, ..., c_{n_2}$ are the "
+"$argmin$ of the problem solved in the *Adequacy phase*."
+msgstr ""
+"$U_w$ et $V_w$ sont donc toutes deux de tailles $n_1 + n_2 + n_3 + n_4 + "
+"n_5$. De même, notons $U_{w}^{1}$ et $V_{w}^{1}$ les matrices de leurs "
+"valeurs initiales pour ce problème. Nous noterons que, dans le cas de "
+"$U_{w}^{1}$, les paramètres $p_1, ..., p_{n_1}, c_1, ..., c_{n_2}$ sont des "
+"$argmin$ du problème résolu en *Adequacy phase*."
+
+#: ../../simulator/algo.md:777 e9d6b51b0a4d4951b4f87125abf0f583
+msgid ""
+"Let us also denote $F_w$ the matrix of line flows and $M_w$ the distribution"
+" matrix which, from the preventive and curative actions, makes it possible "
+"to compute the flow on the lines in N and on the various contingencies. "
+"Denoting $m$ the number of lines and $k$ the number of contingencies, $F_w$ "
+"is a column matrix of size $m \\cdot k$ and $M_w$ a rectangular matrix of "
+"size $(m \\cdot k) \\cdot 2(n_1 + n_2 + n_3 + n_4 + n_5)$."
+msgstr ""
+"Notons également, $F_w$ la matrice des flux des lignes et $M_w$ la matrice "
+"de répartition, qui, à partir des actions préventives et curatives, permet "
+"de calculer le flux sur les lignes en N et sur les différents incidents. En "
+"notant $m$ le nombre de lignes et $k$ le nombre d'incidents, $F_w$ est une "
+"matrice colonne de taille $m \\cdot k$ et $M_w$ une matrice rectangulaire de"
+" taille $(m \\cdot k) \\cdot 2(n_1 + n_2 + n_3 + n_4 + n_5)$."
+
+#: ../../simulator/algo.md:782 6041620a25434f4983a35f596f91323a
+msgid "Finally, let us denote,"
+msgstr "Enfin notons,"
+
+#: ../../simulator/algo.md:788 afd18a5a546a45f4978724871f30e91e
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{Données : }\\\\\n"
+"U_{w}^{1}, U_{w}^{min}, U_{w}^{max}, V_{w}^{min}, V_{w}^{max}, F_{w}^{min}, F_{w}^{max}, M_w\n"
+msgstr ""
+"\n"
+"\\text{Données : }\\\\\n"
+"U_{w}^{1}, U_{w}^{min}, U_{w}^{max}, V_{w}^{min}, V_{w}^{max}, F_{w}^{min}, F_{w}^{max}, M_w\n"
+
+#: ../../simulator/algo.md:793 dda9e173690e4dc9b1ada1ed52cbc2a6
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{Variables :}\\\\\n"
+"U_{w}, V_{w}, \\Delta U_{w}, \\Delta V_{w}\n"
+msgstr ""
+"\n"
+"\\text{Variables :}\\\\\n"
+"U_{w}, V_{w}, \\Delta U_{w}, \\Delta V_{w}\n"
+
+#: ../../simulator/algo.md:798 43c8b16e0a22461f844dc9be27093a2c
+#, python-brace-format
+msgid ""
+"\n"
+"\\text{Objectif :}\\\\\n"
+"min(\\Delta U_{w} + \\Delta V_{w})\n"
+msgstr ""
+"\n"
+"\\text{Objectif :}\\\\\n"
+"min(\\Delta U_{w} + \\Delta V_{w})\n"
+
+#: ../../simulator/algo.md:808 6248db8d6b83470f820c946bad8a0dd5
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"U_{w}^{min} \\leq U_{w} = U_{w}^{1} + \\Delta U_{w} \\leq U_{w}^{max}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"U_{w}^{min} \\leq U_{w} = U_{w}^{1} + \\Delta U_{w} \\leq U_{w}^{max}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:815 62672edc549847a4872fc493e1182845
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"V_{w}^{min} \\leq V_{w} = V_{w}^{1} + \\Delta V_{w} \\leq V_{w}^{max}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"V_{w}^{min} \\leq V_{w} = V_{w}^{1} + \\Delta V_{w} \\leq V_{w}^{max}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:822 93c18c010b9540739017b3fb6c148e14
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"V_{w}^{1} = U_{w}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"V_{w}^{1} = U_{w}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:829 aa2fd61522b2427b9f302274e09c541e
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"(P_{w}, C_{w}) = f(U_{w}, V_{w})\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"(P_{w}, C_{w}) = f(U_{w}, V_{w})\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:843 d72c418336c645188c295ef5ee00a97b
+#, python-brace-format
+msgid ""
+"\n"
+"\\begin{equation}\n"
+"F_{w}^{min} \\leq F_{w} = M_{w} \\cdot  \\begin{align*} U_{w}\\\\ V_{w}\\end{align*} \\leq F_{w}^{max}\n"
+"\\end{equation}\n"
+msgstr ""
+"\n"
+"\\begin{equation}\n"
+"F_{w}^{min} \\leq F_{w} = M_{w} \\cdot  \\begin{align*} U_{w}\\\\ V_{w}\\end{align*} \\leq F_{w}^{max}\n"
+"\\end{equation}\n"
+
+#: ../../simulator/algo.md:849 d551c528890541f8a4ddcfe401e77a74
+#, python-brace-format
+msgid ""
+"Equations [(4)](#Ubounds_eq) and [(5)](#Vbounds_eq) define the bounds of the"
+" matrices $U_{w}$ and $V_{w}$, as well as their link with the objective "
+"function. In other words, they define the limits of the various generations,"
+" loads, PSTs, HVDC lines, etc., in preventive and curative. Equation "
+"[(6))](#UeqV_eq) states that the initial state of the curative actions "
+"corresponds to the state of the grid in N, i.e. what was determined with the"
+" preventive actions. Equation [(7)](#PCfUV_eq) indicates that the state of "
+"generation and load in N and on contingency is stored in $U_w$ and $V_w$. "
+"Equation [(8)](#PC_eq) recalls the necessary generation – load balance in N "
+"and on contingencies. Finally, equation [(9)](#FM_eq) defines and bounds the"
+" flow of the lines."
+msgstr ""
+"Les équations [(4)](#Ubounds_eq) et [(5)](#Vbounds_eq) définissent les "
+"encadrements des atrices $U_{w}$ et $V_{w}$, ainsi que leur lien avec la "
+"fonction objectif. Autrement dit, elles définissent les limites des "
+"différentes productions, consommations, des TD, des HVDC, etc., en préventif"
+" et curatif. L'équation [(6))](#UeqV_eq) définit le fait que l'état initial "
+"des actions curatives correspond à l'état du réseau en N, i.e. ce qui a été "
+"déterminé avec les actions préventives. L'équation [(7)](#PCfUV_eq) indique "
+"que l'état de la production et de la consommation en N et en incident est "
+"stockée dans $U_w$ et $V_w$. L'équation [(8)](#PC_eq) rappelle le nécessaire"
+" équilibre production – consommation en N et en incidents. Enfin, l'équation"
+" [(9)](#FM_eq) définit et encadre le flux des lignes."
+
+#: ../../simulator/algo.md:857 281d6e63fbe2449e9c5eba838cd5899d
+msgid "Problem formulation"
+msgstr "Formulation du problème"
+
+#: ../../simulator/algo.md:859 ee4c32f334e14706a312f79a11c92fb3
+msgid "Simulable variants"
+msgstr "Variantes simulables"
+
+#: ../../simulator/algo.md:861 48396282981b4520992b1be7f0615be0
+msgid ""
+"When modifications are common to all the variants, they are described in a "
+"variant of index “-1”. These variants are then directly applied to the "
+"nominal case."
+msgstr ""
+"Lorsque les modifications sont communes à l'ensemble des variantes, elles "
+"sont décrites dans une variante d'index « -1 ». Ces variantes sont alors "
+"directement appliquées sur le cas nominal."
+
+#: ../../simulator/algo.md:864 12cccc7a193f4e8889d0ea2aa51c5b90
+msgid "A METRIX variant can modify:"
+msgstr "Une variante METRIX peut modifier :"
+
+#: ../../simulator/algo.md:865 1bc1b0348f0846c388ccc1a03e91b622
+msgid "The availability of lines (including couplers)"
+msgstr "La disponibilité de lignes (y compris couplage)"
+
+#: ../../simulator/algo.md:866 cb596361a47e40b39ff4491a5bff7232
+msgid "The load values"
+msgstr "Les valeurs des consommations"
+
+#: ../../simulator/algo.md:867 e22bc39d882a438984533b8b5185149b
+msgid "The load shedding cost of loads"
+msgstr "Le coût de délestage des consommations"
+
+#: ../../simulator/algo.md:868 796013b31d8d4a8981b9848296ff7ee2
+msgid "The availability of generators"
+msgstr "La disponibilité des groupes"
+
+#: ../../simulator/algo.md:869 10946560c0e84b26bc198c739dc97bf2
+msgid "The generation of generators"
+msgstr "La production des groupes"
+
+#: ../../simulator/algo.md:870 0e359bad2ec04b058b431afa18986197
+msgid "The min and max power of generators"
+msgstr "La puissance min et max des groupes"
+
+#: ../../simulator/algo.md:871 a209803b1b094ba6ac78331c76d8e8ba
+msgid "The upward/downward stacking costs of generators (balancing phase)"
+msgstr ""
+"Les coûts d'empilement hausse/baisse des groupes (phase d'équilibrage)"
+
+#: ../../simulator/algo.md:872 38ff140de8e54990ada898d05b06af1d
+msgid "The upward/downward adjustment costs of generators"
+msgstr "Les coûts d'ajustement hausse/baisse des groupes"
+
+#: ../../simulator/algo.md:873 d0b7a00456054ecab8459ae2b3648599
+msgid "The min, max and setpoint powers of HVDC lines"
+msgstr "Les puissances min, max et de consigne des lignes HVDC"
+
+#: ../../simulator/algo.md:874 6028db4651684dc6b66adf96a83ef40d
+msgid ""
+"The N and N-1 thresholds on specific contingency and before-action "
+"thresholds of network elements"
+msgstr ""
+"Les seuils N, N-1 sur incident spécifique et avant manœuvre des ouvrages"
+
+#: ../../simulator/algo.md:875 55b3fa48bdef414ba31beb6c7fd209f1
+msgid "The initial phase shift and the min and max phase shifts of PSTs"
+msgstr "Le déphasage initial et les déphasages min et max des TDs"
+
+#: ../../simulator/algo.md:877 46ad8969ff1648a3a0c25b25bff477dd
+msgid "METRIX outputs"
+msgstr "Sorties de METRIX"
+
+#: ../../simulator/algo.md:879 0a8f620b2abd429aace1ecf52d7bf17a
+msgid ""
+"The METRIX results are presented as time series with one value per variant. "
+"To reduce the volume of the outputs, only the values that differ from the "
+"input data are provided."
+msgstr ""
+"Les résultats de METRIX se présentent sous forme de chronique avec une "
+"valeur par variante. Pour réduire le volume des sorties, seules les valeurs "
+"qui diffèrent des données d'entrée sont fournies."
+
+#: ../../simulator/algo.md:882 42e69fe4f5024526ab7b896c35e78422
+msgid "See [Result files](#io-result-file)"
+msgstr "Cf. [Fichiers de résultats](#io-result-file)"
+
+#: ../../simulator/algo.md:884 5d4432d14d80461a91131dbcbefce246
+msgid "Calculation status"
+msgstr "Statut du calcul"
+
+#: ../../simulator/algo.md:886 72734c1aa4f04748943ebfa07af03051
+msgid "See [Table C1](#status_output)"
+msgstr "Cf. [Tableau C1](#status_output)"
+
+#: ../../simulator/algo.md:888 9f7172eb5b964e3c9f48c94417a7d0e6
+msgid "Flows on network elements"
+msgstr "Transits sur les ouvrages"
+
+#: ../../simulator/algo.md:890 58187ea68ae64d569b2990f296b34adb
+msgid ""
+"See [Table R3](#io-table_r3), [Table R3B](#io-table_r3b) and [Table "
+"R3C](#io-table_r3c)."
+msgstr ""
+"Cf. [Tableau R3](#io-table_r3), [Tableau R3B](#io-table_r3b) et [Tableau "
+"R3C](#io-table_r3c)."
+
+#: ../../simulator/algo.md:892 406e1218c1934072aa9ba7a982fe78e4
+msgid "Results on control variables"
+msgstr "Résultats sur les variables de contrôles"
+
+#: ../../simulator/algo.md:894 6b8b9d14ac394790af71b039f567c657
+msgid ""
+"See [Table R5](#io-table_r5), [Table R5B](#io-table_r5b), [Table R6](#io-"
+"table_r6) and [Table R6B](#io-table_r6b)."
+msgstr ""
+"Cf. [Tableau R5](#io-table_r5), [Tableau R5B](#io-table_r5b), [Tableau "
+"R6](#io-table_r6) et [Tableau R6B](#io-table_r6b)."
+
+#: ../../simulator/algo.md:896 406e1218c1934072aa9ba7a982fe78e4
+msgid "Results on remedial actions"
+msgstr "Résultats sur les parades"
+
+#: ../../simulator/algo.md:898 accd9f8e3ea94de092aaed83d393e12b
+msgid "See [Table R10](#io-table_r10)"
+msgstr "Cf. [Tableau R10](#io-table_r10)"
+
+#: ../../simulator/algo.md:900 dc2b2533fbc14f8280f07a82846d5b01
+msgid "The TSO cost or 'redispatching' cost"
+msgstr "Le coût GRT ou de 'redispatching'"
+
+#: ../../simulator/algo.md:902 66765e9a4b0a4fa18b7dbc6265267262
+msgid "See [Table R7](#io-table_r7)"
+msgstr "Cf. [Tableau R7](#io-table_r7)"
+
+#: ../../simulator/algo.md:904 646ad5f05fa841559cb07815418286e4
+msgid "Grid failure"
+msgstr "La défaillance du réseau"
+
+#: ../../simulator/algo.md:906 b9fd2dd90af2429c8955aa426c1d26da
+msgid ""
+"As a METRIX result, the user has the overrun volume and the costs in "
+"preventive and in curative (i.e. post-contingency)."
+msgstr ""
+"En résultat de METRIX, l'utilisateur dispose du volume de dépassement et des"
+" coûts en préventif et en curatif (i.e. post-incident)."
+
+#: ../../simulator/algo.md:909 d0563becf3134092b0cbc26e01072223
+msgid "See [Table R9](#io-table_r9)"
+msgstr "Cf. [Tableau R9](#io-table_r9)"
+
+#: ../../simulator/algo.md:912 16cd1bfb397c4295a6b31ca7c2becfd8
+msgid "Losses computed a posteriori"
+msgstr "Pertes calculées a postétiori"
+
+#: ../../simulator/algo.md:914 c7ad8e7fa13d43f483507d80981cf835
+msgid ""
+"At the end of the computation, METRIX computes the losses a posteriori."
+msgstr "À l'issue du calcul, METRIX calcule les pertes a posteriori."
+
+#: ../../simulator/algo.md:916 ee4d94ad46d8495c83c842399ee10f80
+msgid "See [Table R8](#io-table_r8) and [Table R8B](#io-table_r8b)."
+msgstr "Cf. [Tableau R8](#io-table_r8) et [Tableau R8B](#io-table_r8b)."
+
+#: ../../simulator/algo.md:918 27cf372072d54ec78bb51bdc8d50efcf
+msgid "On AC lines"
+msgstr "Sur les lignes AC"
+
+#: ../../simulator/algo.md:920 7536c2abdd4f4b8888944d28e2cfef80
+#, python-brace-format
+msgid ""
+"Given the active flows it has computed, it estimates the losses on the "
+"dipoles with the formula: $pertes = R \\times (\\frac{T}{V})^2$ where $R$ is"
+" the resistance of the line and $T$ the active power flowing through the "
+"quadripole."
+msgstr ""
+"Compte tenu des flux actifs qu'il a calculés, il estime les pertes sur les "
+"dipôles par la formule : $pertes = R \\times (\\frac{T}{V})^2$ où $R$ est la"
+" résistance de la ligne et $T$ la puissance active transitant sur le "
+"quadripôle."
+
+#: ../../simulator/algo.md:924 b9ebb758da9345adab3a21cb4bcd8728
+msgid ""
+"**N.B.**: this is an estimate of the losses on the active part only; the "
+"reactive flow is assumed to be zero."
+msgstr ""
+"**N.B.** : il s'agit d'une estimation des pertes sur la partie active "
+"seulement, on suppose que le transit réactif est nul."
+
+#: ../../simulator/algo.md:927 27cf372072d54ec78bb51bdc8d50efcf
+msgid "On DC lines"
+msgstr "Sur les lignes DC"
+
+#: ../../simulator/algo.md:929 588eaf74e24446d0aaf0129f6fbb366e
+msgid ""
+"As regards direct current links, METRIX finds a setpoint power $P$ applied "
+"to the rectifier. The losses on direct current links are broken down into "
+"three parts: the losses in each of the two converters and the losses in the "
+"cable. The detail of the computation is below ($red$=rectifier and "
+"$ond$=inverter):"
+msgstr ""
+"En ce qui concerne les liaisons à courant continu, METRIX trouve une "
+"puissance de consigne $P$ appliquée au redresseur. Les pertes sur les "
+"liaisons à courant continu sont décomposées en trois parties : les pertes "
+"dans chacun des deux convertisseurs et les pertes dans le câble. Le détail "
+"du calcul ci-dessous ($red$=redresseur et $ond$=onduleur) :"
+
+#: ../../simulator/algo.md:932 33d0e6e26db24b968cf960d38914c84c
+#, python-brace-format
+msgid ""
+"**Losses in the converter station on the rectifier side** The losses are "
+"proportional to the power flowing through the station: $P$. METRIX uses the "
+"loss coefficient per station. $PerteStationOr=coeffPerteOr \\times P$. At "
+"the origin of the cable, there is therefore the power "
+"$P_{orCable}=(1−coeffPerteOr)\\times P$."
+msgstr ""
+"**Pertes dans la station de conversion côté redresseur** Les pertes sont "
+"proportionnelles à la puissance transitée dans la station : $P$. METRIX "
+"utilise le coefficient de pertes par station. $PerteStationOr=coeffPerteOr "
+"\\times P$. À l'origine du câble, il y a donc la puissance "
+"$P_{orCable}=(1−coeffPerteOr)\\times P$."
+
+#: ../../simulator/algo.md:935 db09eb8190814ce481c70e0e25f28619
+msgid ""
+"**Losses in the cable** $pertesCable=R\\times I_{DC}^{2}$ with "
+"$I_{DC}=\\frac{(V_{DC}^{red}−V_{DC}^{ond})}{R}$, $P_{orCable}=V_{DC}^{red} "
+"\\times I_{DC}$ and $V_{DC}^{ond}=V_{DC}^{nom}$ (i.e. the voltage at the "
+"inverter is equal to the nominal DC voltage). The value of $V_{DC}^{red}$ is"
+" found by solving a degree-2 polynomial in $V_{DC}^{red}$, which makes it "
+"possible to determine the losses on the cable."
+msgstr ""
+"**Pertes dans le câble** $pertesCable=R\\times I_{DC}^{2}$ avec "
+"$I_{DC}=\\frac{(V_{DC}^{red}−V_{DC}^{ond})}{R}$, $P_{orCable}=V_{DC}^{red} "
+"\\times I_{DC}$ et $V_{DC}^{ond}=V_{DC}^{nom}$ (i.e. la tension à l'onduleur"
+" est égale à la tension nominale DC). La valeur de $V_{DC}^{red}$ est "
+"trouvée en résolvant un polynôme de degré 2 en $V_{DC}^{red}$, ce qui permet"
+" de déterminer les pertes sur le câble."
+
+#: ../../simulator/algo.md:940 d4ab60cf58764ce2bf552ca9f1733c8b
+#, python-brace-format
+msgid ""
+"**Losses in the converter station on the inverter side** The losses are "
+"proportional to the power flowing through the station $P_{exCable}$. METRIX "
+"uses the loss coefficient per station: $PerteStationOnduleur = "
+"coeffPerteOnduleur \\times P_{exCable}$, with $P_{exCable} = P - "
+"pertesCable$. This computation of losses in DC links is the same as the one "
+"used in Convergence."
+msgstr ""
+"**Pertes dans la station de conversion côté onduleur** Les pertes sont "
+"proportionnelles à la puissance transitée dans la station $P_{exCable}$. "
+"METRIX utilise le coefficient de perte par station : $PerteStationOnduleur ="
+" coeffPerteOnduleur \\times P_{exCable}$, avec $P_{exCable} = P - "
+"pertesCable$. Ce calcul de perte dans les liaisons DC est le même que celui "
+"utilisé dans Convergence."
+
+#: ../../simulator/algo.md:945 6a1bd1b6ec9b45e399e57be190fc3a17
+msgid "Marginal variations"
+msgstr "Variations marginales"
+
+#: ../../simulator/algo.md:947 0499e5e90f6b4084a1e9a07e1a6de8d7
+msgid ""
+"Marginal variations provide information on the constraints that limit the "
+"solution. See [Table R4](#io-table_r4) and [Table R4B](#io-table_r4b)."
+msgstr ""
+"Les variations marginales permettent d'avoir des informations sur les "
+"contraintes qui limitent la solution. Cf. [Tableau R4](#io-table_r4) et "
+"[Tableau R4B](#io-table_r4b)."
+
+#: ../../simulator/algo.md:950 30d871fddb1641a3881a6d0c42dc70c9
+msgid "Marginal variations on AC lines"
+msgstr "Variations marginales sur les lignes AC"
+
+#: ../../simulator/algo.md:952 3194aeeaae684c8ab5dd9e983e14be93
+msgid ""
+"The marginal variation (MV) of an alternating current (AC) line indicates "
+"the gain on the cost function if the flow limit on the AC line were 1 MW "
+"higher. If what limited the problem was:"
+msgstr ""
+"La variation marginale (VM) d'une ligne à courant alternatif (AC) indique le"
+" gain sur la fonction de coût si la limite de transit sur la ligne AC était "
+"de 1MW supplémentaire. Si ce qui limitait le problème était :"
+
+#: ../../simulator/algo.md:954 7df91ce42f2344d6af4b4b34036ce489
+msgid ""
+"A flow in N, the MV gives the gain on the cost function if the N threshold "
+"of the line were 1 MW higher."
+msgstr ""
+"Un transit en N, la VM donne le gain sur la fonction de coût si le seuil en "
+"N de la ligne était de 1 MW supplémentaire."
+
+#: ../../simulator/algo.md:955 1f020f9c8be24517a741d6080d2c1173
+msgid ""
+"A flow in N-1, the MV gives the gain on the cost function if the N-1 "
+"threshold of the line were 1 MW higher. For an MV in N-1, it is possible to "
+"know which contingency led to this limiting constraint."
+msgstr ""
+"Un transit en N-1, la VM donne le gain sur la fonction de coût si le seuil "
+"en N-1 de la ligne était de 1 MW supplémentaire. Pour une VM en N-1, il est "
+"possible de savoir quel est l'incident qui a conduit à cette contrainte "
+"limitante."
+
+#: ../../simulator/algo.md:958 30d871fddb1641a3881a6d0c42dc70c9
+msgid "Marginal variations on HVDC lines"
+msgstr "Variations marginales sur les lignes HVDC"
+
+#: ../../simulator/algo.md:960 27aa66015a1746f6af50d4de75174413
+msgid ""
+"An MV on an HVDC line indicates the gain on the cost function if the "
+"capacity of the HVDC link were 1 MW higher. If the HVDC link can act in "
+"curative, several marginal variations will be given:"
+msgstr ""
+"Une VM sur une HVDC indique le gain sur la fonction de coût si la capacité "
+"de la liaison HVDC était d'1 MW supplémentaire. Dans le cas où la liaison "
+"HVDC peut agir en curatif plusieurs variations marginales seront données :"
+
+#: ../../simulator/algo.md:962 23b9a661fc16421a955dc2e319379e39
+msgid ""
+"The global HVDC MV indicates the gain on the cost function if the capacity "
+"of the HVDC link were 1 MW higher. The gain is then detailed in the "
+"following MVs."
+msgstr ""
+"La VM globale HVDC indique le gain sur la fonction de coût si la capacité de"
+" la liaison HVDC était d'1 MW supplémentaire. Le gain est ensuite détaillé "
+"dans les VM suivantes."
+
+#: ../../simulator/algo.md:964 af2daffbfe7f491186b4f3e92b056d82
+msgid ""
+"The preventive MV corresponds to the gain on the cost function if the "
+"admissible range for the preventive setpoint were increased by 1 MW."
+msgstr ""
+"La VM préventive correspond au gain sur la fonction de coût si la plage "
+"admissible pour la consigne préventive était augmentée de 1 MW."
+
+#: ../../simulator/algo.md:966 dbb1eb852ec94cedb95cd9365e6c999f
+msgid ""
+"The curative MV per contingency i corresponds to the gain on the cost "
+"function if the admissible range for the curative setpoint on contingency i "
+"were increased by 1 MW."
+msgstr ""
+"La VM curative par incident i correspond au gain sur la fonction de coût si "
+"la plage admissible pour la consigne curative sur l'incident i était "
+"augmentée de 1 MW."
+
+#: ../../simulator/algo.md:969 bb1123dffa7145f39b36b29164ac29ca
+msgid ""
+"**N.B.**: today, in Assess, there is in practice only one admissible range "
+"for the HVDC setpoint. This range is used by the HVDC lines in preventive as"
+" well as in curative. The last 2 MVs nevertheless provide additional "
+"information: the global MV announces a gain when the admissible range is "
+"increased by 1 MW. Thanks to the preventive and curative MVs, we can know "
+"whether this additional available MW would be used in preventive or in "
+"curative and on which contingency."
+msgstr ""
+"**N.B.** : aujourd'hui, dans Assess, il n'y a, en pratique, qu'une plage "
+"admissible pour la consigne des HVDC. Cette plage est utilisée par les HVDC "
+"en préventif comme en curatif. Les 2 dernières VM permettent cependant "
+"d'apporter des informations supplémentaires : la VM globale annonce un gain "
+"lorsque la plage admissible est augmentée d'1 MW. Grâce aux VM préventives "
+"et curatives, nous pouvons savoir si ce MW supplémentaire disponible serait "
+"utilisé en préventif ou en curatif et sur quel incident."
+
+#: ../../simulator/algo.md:975 d51767350bd8463bb4768ad55cc921f7
+msgid ""
+"**Note**: the MVs of an HVDC line are directly linked to the bound of the "
+"HVDC line (i.e. admissible range). Care must therefore be taken in the "
+"interpretation if the HVDC bounds are taken from the variants: from one "
+"variant to another, the gain announced by the MV does not correspond to the "
+"same additional MW (to the same operating range)."
+msgstr ""
+"**Remarque** : les VM d'une HVDC sont directement liées à la borne de la "
+"HVDC (i.e. plage admissible). Il est donc nécessaire de prêter attention à "
+"l'interprétation si les bornes des HVDC sont tirées des variantes : d'une "
+"variante à l'autre, le gain annoncé par la VM ne correspond pas au même MW "
+"supplémentaire (à la même plage de fonctionnement)."
+
+#: ../../simulator/algo.md:979 de31db8fa3eb4de28881ef50587337d9
+msgid "Marginal variations on loads"
+msgstr "Variations marginales sur les consommations"
+
+#: ../../simulator/algo.md:981 d460c43b05cd42fca5484d9d47046027
+msgid ""
+"If the adjustment mechanism is not simulated, the MV is given for all loads."
+" The load MV indicates the impact on the cost function if the load were 1 MW"
+" lower."
+msgstr ""
+"Si le mécanisme d'ajustement n'est pas simulé, la VM est donnée pour toutes "
+"les consommations. La VM de consommation indique l'impact sur la fonction de"
+" coût si la consommation était de 1MW de moins."
+
+#: ../../simulator/algo.md:984 56c4ccc920ff4e098463c27723578660
+msgid ""
+"Conversely, if the adjustment mechanism is simulated, the load MV is only "
+"returned on the nodes for which the failure is non-zero. For the other "
+"nodes, METRIX is not able to assess the gain."
+msgstr ""
+"Inversement, si le mécanisme d'ajustement est simulé, la VM de consommation "
+"n'est retournée que sur les nœuds pour lesquels la défaillance est non "
+"nulle. Pour les autres nœuds, METRIX n'est pas capable d'évaluer le gain."
+
+#: ../../simulator/algo.md:987 47b95d258b134053b5597405f40d48ee
+msgid "Marginal variations on monitored sections"
+msgstr "Variations marginales sur les sections surveillées"
+
+#: ../../simulator/algo.md:989 9e764009d85f4feb875bcaefc0e4f393
+msgid ""
+"The MV of a monitored section indicates the gain on the cost function if the"
+" upper bound of the sum of the flows on the section were increased by 1 MW."
+msgstr ""
+"La VM d'une section surveillée indique le gain sur la fonction coût si la "
+"borne supérieure de la somme des transits sur la section était augmenté d'1 "
+"MW."
+
+#: ../../simulator/algo.md:992 45f6bb2bccac4c67861882eff7b94ec0
+msgid "Limitations"
+msgstr "Limitations"
+
+#: ../../simulator/algo.md:994 56c79fbdfd0842fd93ed65e532c81d9d
+msgid "Limited domain of validity"
+msgstr "Domaine de validité limité"
+
+#: ../../simulator/algo.md:996 39c8ac01745d443e84c7c6a5f2a359fd
+msgid ""
+"Non-zero MVs point to a set of lines or security constraints that have a "
+"direct impact on the function to be minimized: these are the first "
+"constraints to solve to lower the redispatching cost. The MV value gives a "
+"gain on the cost function for a threshold change of 1 MW; however, it is not"
+" guaranteed that this MV holds when the variation is no longer marginal "
+"(i.e. a variation of many MW). In other words, increasing the N threshold of"
+" a line by $x$ MW may not bring a gain on the cost function of $x$ times "
+"that of the MV."
+msgstr ""
+"Les VM non nulles pointent un ensemble de lignes ou de contraintes de "
+"sécurité qui ont un impact direct sur la fonction à minimiser : ce sont les "
+"premières contraintes à résoudre pour faire baisser le coût de "
+"redispatching. La valeur de la VM donne un gain sur la fonction coût pour "
+"une modification du seuil de 1MW ; toutefois, il n'est pas garanti que cette"
+" VM fonctionne dans le cas où la variation n'est plus marginale (i.e. "
+"variation de nombreux MW). Autrement dit, augmenter le seuil N d'une ligne "
+"de $x$ MW, n'apportera peut-être pas un gain sur la fonction de coût de $x$ "
+"fois celui de la VM."
+
+#: ../../simulator/algo.md:1003 84b9e3ab447043bea2e687c8909a7140
+msgid ""
+"Let us take the example of a radial branch made of two lines, the first "
+"having a lower IST than the second. The MV will be associated with the first"
+" line. However, if we increase the IMAP of this first line, the second may "
+"become limiting and the gain will thus be smaller than what the MV "
+"announced. This same phenomenon can occur with generators that reach their "
+"Pmin or Pmax limit."
+msgstr ""
+"Prenons l'exemple d'une antenne composée de deux lignes, la première ayant "
+"une IST plus faible que la deuxième. La VM sera associée à la première "
+"ligne. Toutefois, si nous augmentons l'IMAP de cette première ligne, la "
+"deuxième peut devenir limitante et ainsi le gain sera moindre par rapport à "
+"ce qu'annonçait la VM. Ce même phénomène peut se produire avec des groupes "
+"qui rentrent en butée Pmin ou Pmax."
+
+#: ../../simulator/algo.md:1008 f1e521adc5274f758cd3bd0f7e95202c
+msgid "All other things being equal"
+msgstr "Toutes choses égales par ailleurs"
+
+#: ../../simulator/algo.md:1010 cb9a49883e2d4c35b20a128fc1d5aae7
+msgid ""
+"The gain expressed by the MV must be understood “all other things being "
+"equal”, i.e. this gain corresponds to the gain if only the capacity of the "
+"line is increased. Now, generally, such a change in the field implies a "
+"modification of the reactance of the line as well. This would therefore "
+"change the result."
+msgstr ""
+"Le gain exprimé par la VM doit être compris « toute chose égale par ailleurs"
+" », c'est-à-dire que ce gain correspond au gain si seulement la capacité de "
+"la ligne est augmentée. Or, généralement, un tel changement sur le terrain "
+"implique également une modification de la réactance de la ligne. Cela "
+"modifierait donc le résultat."
+
+#: ../../simulator/algo.md:1014 10946560c0e84b26bc198c739dc97bf2
+msgid "Hidden constraints"
+msgstr "Contraintes masquées"
+
+#: ../../simulator/algo.md:1016 ea474f59a40b4789ba5baba40cc423ea
+msgid ""
+"As described previously, the marginal variation indicates the gain on the "
+"cost function if the admissible range of the line concerned were widened. "
+"However, this result does not take into account the limits of the other "
+"lines. As a consequence, by relaxing the limit on one line, another line may"
+" become limiting for the problem."
+msgstr ""
+"Comme décrit précédemment, la variation marginale indique le gain sur la "
+"fonction de coût si la plage admissible de la ligne concernée était élargie."
+" Par contre, ce résultat ne tient pas compte des limites des autres lignes. "
+"Par conséquent, en relâchant la limite sur une ligne, une autre ligne "
+"devenir limitante pour le problème."
+
+#: ../../simulator/algo.md:1020 c7842585184648aba0b3492c29dbe4c2
+msgid ""
+"METRIX has no way of making these so-called hidden constraints explicit in "
+"advance."
+msgstr ""
+"METRIX n'a pas la possibilité d'expliciter à l'avance ces contraintes jugées"
+" masquées."
+
+#: ../../simulator/algo.md:1022 660b193eb5f24d6792a5b25a85e597c6
+msgid "Conclusions on MVs"
+msgstr "Conclusions sur les VM"
+
+#: ../../simulator/algo.md:1024 04a49934727b48c7a4208bdbf6b8e004
+msgid ""
+"MVs provide interesting information for the constraint analysis step, "
+"whether before reinforcement or after reinforcement (residual constraints)."
+msgstr ""
+"Les VM apportent des informations intéressantes pour l'étape d'analyse des "
+"contraintes que ce soit avant renforcement, ou après renforcement "
+"(contraintes résiduelles)."
+
+#: ../../simulator/algo.md:1027 fea20f36b16049d89e509ea77e52e0fc
+msgid ""
+"The value of MVs is to point out, among all the monitored lines and "
+"contingencies, the elements that are costly for the objective function. "
+"Ranking these MVs makes it possible to classify the importance of these "
+"constraints."
+msgstr ""
+"L'intérêt des VM est de pointer parmi toutes les lignes surveillées et les "
+"incidents, des éléments coûteux pour la fonction objectif. Un "
+"interclassement de ces VM permet de classer l'importance de ces contraintes."
+
+#: ../../simulator/algo.md:1031 4bc056724893434185e505a98e473b4a
+msgid "Micro-iterations"
+msgstr "Micro-itérations"
+
+#: ../../simulator/algo.md:1033 1efb3a67742f4ce8ab9538f4d5a0120f
+msgid ""
+"METRIX does not formulate all the security constraints from the outset: it "
+"starts from an unconstrained generation plan and adds to the optimization "
+"problem only the constraints that are actually violated, iteration after "
+"iteration. This section first describes this mechanism from a functional "
+"point of view, then its implementation."
+msgstr ""
+"METRIX ne formule pas d'emblée l'intégralité des contraintes de sûreté : il "
+"part d'un plan de production non contraint et n'ajoute au problème "
+"d'optimisation que les contraintes effectivement violées, itération après "
+"itération. Cette section décrit d'abord ce mécanisme d'un point de vue "
+"fonctionnel, puis son implémentation."
+
+#: ../../simulator/algo.md:1038 10946560c0e84b26bc198c739dc97bf2
+msgid "Functional description"
+msgstr "Description fonctionnelle"
+
+#: ../../simulator/algo.md:1040 2c4eb9a67b06432dbb8b2f08eb4c5b6b
+#, python-brace-format
+msgid ""
+"This section describes how the micro-iteration loop works without reference "
+"to the code: security criteria checked, available means of action and "
+"computation modes offered. The technical counterpart is described in "
+"{ref}`micro-it-implementation`."
+msgstr ""
+"Cette section décrit le fonctionnement de la boucle de micro-itération sans "
+"référence au code : critères de sûreté vérifiés, moyens d'action disponibles"
+" et modes de calcul proposés. Le pendant technique est décrit dans "
+"{ref}`micro-it-implementation`."
+
+#: ../../simulator/algo.md:1044 1d9b2abebec143c2a3a558b1b10034ee
+msgid "1. General principle"
+msgstr "1. Principe général"
+
+#: ../../simulator/algo.md:1046 c190b62472f14bddb0c5597fae794f4c
+msgid ""
+"METRIX seeks the **least-cost adjustment** of the generation plan so that no"
+" thermal limit is violated, neither on the intact grid (N situation), nor "
+"after a credible contingency (N-k situations)."
+msgstr ""
+"METRIX recherche l'**ajustement de moindre coût** du plan de production afin"
+" qu'aucune limite thermique ne soit violée, ni sur le réseau intact "
+"(situation N), ni après une contingence crédible (situations N-k)."
+
+#: ../../simulator/algo.md:1049 af4639e16b914faf898705e6779a2925
+msgid "Description of a **micro-iteration**:"
+msgstr "Description d'une **micro-itération** :"
+
+#: ../../simulator/algo.md:1059 96f0072f6a1941e89f7fb7ecb63bf69c
+msgid "2. Thermal thresholds and security regimes"
+msgstr "2. Seuils thermiques et régimes de sûreté"
+
+#: ../../simulator/algo.md:1061 e86e7894c417482a928df9fddcb082e5
+msgid ""
+"Each monitored element (line, transformer or section) is assigned **thermal "
+"limits** that depend on the operating regime. These limits represent the "
+"maximum active power flow that the element can withstand over different time"
+" horizons."
+msgstr ""
+"Chaque élément surveillé (ligne, transformateur ou section) se voit "
+"attribuer des **limites thermiques** qui dépendent du régime d'exploitation."
+" Ces limites représentent le transit de puissance active maximal que "
+"l'élément peut supporter selon différents horizons temporels."
+
+#: ../../simulator/algo.md:1070 79ddf680247d4ff1849f747a51b75b51
+msgid ""
+"The threshold used does not result from an increasing scale but from a "
+"decision tree with mutually exclusive cases, re-evaluated at each comparison"
+" between a flow and a limit. The N threshold applies under normal operating "
+"conditions. The post-contingency threshold corresponds to the stabilized "
+"regime, once the curative actions have been applied; it is generally higher "
+"than the N threshold because it reflects the short-term thermal capacity of "
+"the network element. The pre-curative-action threshold, more permissive "
+"still, covers the brief window between the contingency and the execution of "
+"the curative action: it is only used on contingencies whose remedial actions"
+" have already been activated. The fallback of the default case is not a "
+"maximum between two thresholds: when the ITAM option is active and the post-"
+"contingency threshold is not provided, the pre-curative-action threshold is "
+"used in its place."
+msgstr ""
+"Le seuil retenu ne résulte pas d'une échelle croissante mais d'un arbre de "
+"décision à cas exclusifs, réévalué à chaque comparaison entre un transit et "
+"une limite. Le seuil N s'applique en conditions normales d'exploitation. Le "
+"seuil post-incident correspond au régime stabilisé, une fois les actions "
+"curatives appliquées ; il est généralement plus élevé que le seuil N car il "
+"reflète la capacité thermique à court terme de l'ouvrage. Le seuil avant "
+"action curative, plus permissif encore, couvre la brève fenêtre séparant "
+"l'incident de l'exécution du curatif : il n'est retenu que sur les incidents"
+" dont les parades ont déjà été activées. Le repli du cas par défaut n'est "
+"pas un maximum entre deux seuils : lorsque l'option ITAM est active et que "
+"le seuil post-incident n'est pas renseigné, c'est le seuil avant action "
+"curative qui en tient lieu."
+
+#: ../../simulator/algo.md:1081 a02ac805107e4960946d2768dd558534
+msgid ""
+"All these limits can be redefined per variant, which allows thermal "
+"calibrations specific to a scenario."
+msgstr ""
+"Toutes ces limites peuvent être redéfinies par variante, ce qui autorise des"
+" calibrages thermiques propres à un scénario."
+
+#: ../../simulator/algo.md:1086 67bca3efec8f41c8908c3aa42f0bef6f
+msgid "3. Security check: N and N-k scan"
+msgstr "3. Vérification de sûreté : scan en N et N-k"
+
+#: ../../simulator/algo.md:1088 d38581cb6cf84ba3ab7763bafb0b66d6
+msgid ""
+"At each micro-iteration, after the optimizer has produced a generation "
+"dispatch, METRIX checks that no monitored element exceeds its thermal limit."
+" This check is performed in two steps."
+msgstr ""
+"À chaque micro-itération, après que l'optimiseur a produit un dispatch de "
+"production, METRIX vérifie qu'aucun élément surveillé ne dépasse sa limite "
+"thermique. Cette vérification est effectuée en deux étapes."
+
+#: ../../simulator/algo.md:1097 ef0a60939993483cb08670380768798c
+msgid ""
+"In the general case, post-contingency flows are not obtained by running a "
+"full load flow per contingency. METRIX relies on linear sensitivity factors "
+"— transfer factors and distribution factors — established from the Jacobian "
+"for a given topology, and reused from one micro-iteration to the next as "
+"long as the topology does not change. The post-contingency flow is then "
+"expressed as a linear combination of the pre-contingency flow and of the "
+"injection variations, which makes the N-k scan tractable even for thousands "
+"of contingencies and hundreds of monitored elements."
+msgstr ""
+"Dans le cas général, les transits post-contingence ne sont pas obtenus en "
+"exécutant un load-flow complet par contingence. METRIX s'appuie sur des "
+"facteurs de sensibilité linéaires — facteurs de report et facteurs de "
+"distribution — établis à partir de la Jacobienne pour une topologie donnée, "
+"et réutilisés d'une micro-itération à l'autre tant que la topologie ne "
+"change pas. Le transit post-contingence s'exprime alors comme une "
+"combinaison linéaire du transit avant contingence et des variations "
+"d'injection, ce qui rend le scan N-k traitable même pour des milliers de "
+"contingences et des centaines d'éléments surveillés."
+
+#: ../../simulator/algo.md:1104 67c4f4d7a49d4019a254441999f00d00
+msgid ""
+"One family of contingencies escapes this rule: those that break connectivity"
+" by isolating a pocket still containing load or generation. Linearization no"
+" longer applies, and for these contingencies METRIX solves a full load flow "
+"on the post-contingency topology at each micro-iteration. The corresponding "
+"factorization is cached per topology, but the solve itself is redone at each"
+" pass. The cost of the loop therefore grows with the number of such "
+"contingencies, which explains why they are subject to a dedicated activation"
+" option."
+msgstr ""
+"Une famille de contingences échappe à cette règle : celles qui rompent la "
+"connexité en isolant une poche contenant encore de la consommation ou de la "
+"production. La linéarisation ne s'applique plus, et METRIX résout pour ces "
+"contingences un load-flow complet sur la topologie post-incident, à chaque "
+"micro-itération. La factorisation correspondante est mise en cache par "
+"topologie, mais la résolution, elle, est refaite à chaque passage. Le coût "
+"de la boucle croît donc avec le nombre de telles contingences, ce qui "
+"explique qu'elles soient soumises à une option d'activation dédiée."
+
+#: ../../simulator/algo.md:1115 6220788632184f20a2a5617ce6ebf4c9
+msgid "4. Curative means of action"
+msgstr "4. Moyens d'action curatifs"
+
+#: ../../simulator/algo.md:1117 b47ad803f980492b83360f870da41c74
+msgid ""
+"When an overload is detected on a contingency, METRIX can mobilize two "
+"categories of corrective actions, in addition to preventive redispatching."
+msgstr ""
+"Lorsqu'une surcharge est détectée sur une contingence, METRIX peut mobiliser"
+" deux catégories d'actions correctives, en plus du redispatching préventif."
+
+#: ../../simulator/algo.md:1126 27857b6484f34a538ad4c2830d7b544d
+msgid ""
+"For a given contingency, the optimizer must choose exactly one remedial "
+"action — the sum of the activation variables is constrained to equal 1. This"
+" constraint never forces an action: as soon as a contingency receives its "
+"first remedial action, METRIX automatically inserts at the head of the list "
+"a “do nothing” remedial action, which leaves the topology intact. When the "
+"ITAM option is active, this fictitious remedial action is also created for "
+"contingencies that have curative means but no declared topological remedial "
+"action. Curative actions (generation, HVDC, phase shifters) are attached to "
+"the remedial actions and therefore operate in the post-remedial-action "
+"topology selected; they are shared between the remedial actions of a given "
+"contingency, not duplicated. The activation cost of a remedial action is "
+"proportional to the probability of the contingency and to the number of "
+"constraints already associated with the contingency, so that remedial "
+"actions are only mobilized when preventive actions alone are insufficient."
+msgstr ""
+"Pour une contingence donnée, l'optimiseur doit choisir exactement une parade"
+" — la somme des variables d'activation est contrainte à valoir 1. Cette "
+"contrainte ne force jamais une manœuvre : dès qu'un incident reçoit sa "
+"première parade, METRIX insère d'office en tête de liste une parade « ne "
+"rien faire », qui laisse la topologie intacte. Lorsque l'option ITAM est "
+"active, cette parade fictive est également créée pour les incidents qui "
+"disposent de moyens curatifs mais d'aucune parade topologique déclarée. Les "
+"actions curatives (production, HVDC, déphaseurs) sont rattachées aux parades"
+" et opèrent donc dans la topologie post-parade retenue ; elles sont "
+"partagées entre les parades d'un même incident, non dupliquées. Le coût "
+"d'activation d'une parade est proportionnel à la probabilité de la "
+"contingence et au nombre de contraintes déjà associées à l'incident, de "
+"sorte que les parades ne sont mobilisées que lorsque les actions préventives"
+" seules sont insuffisantes."
+
+#: ../../simulator/algo.md:1139 4b6e8b10b2bf4e51aa57c3568b080d6f
+msgid "ITAM mechanism"
+msgstr "Mécanisme ITAM"
+
+#: ../../simulator/algo.md:1141 1f9a7308d22d45ec901f72ffdb3063f7
+msgid ""
+"When the ITAM option is enabled (parameter `TESTITAM` in `fort.json`), "
+"METRIX checks an additional threshold: the **pre-curative-action limit** "
+"(`seuilMaxAvantCur_`), which represents the flow that the element can "
+"withstand during the brief window between the contingency and the actual "
+"execution of the curative action. This threshold is typically more "
+"permissive than the N-k threshold (which applies in the stabilized regime "
+"after the curative action has been applied)."
+msgstr ""
+"Lorsque l'option ITAM est activée (paramètre `TESTITAM` dans `fort.json`), "
+"METRIX vérifie un seuil supplémentaire : la **limite avant action curative**"
+" (`seuilMaxAvantCur_`), qui représente le transit que l'élément peut "
+"supporter pendant la brève fenêtre entre la contingence et l'exécution "
+"effective de l'action curative. Ce seuil est typiquement plus permissif que "
+"le seuil N-k (qui s'applique en régime stabilisé après application du "
+"curatif)."
+
+#: ../../simulator/algo.md:1148 f095cd0fe43f4c5b87d869afc715f10d
+msgid "Enabling ITAM changes five points of the computation:"
+msgstr "L'activation de l'ITAM modifie cinq points du calcul :"
+
+#: ../../simulator/algo.md:1150 75c5f93a02104b76a6274ad91568d74b
+msgid ""
+"**Automatic threshold selection**: as long as no remedial action is "
+"activated on a contingency, METRIX uses the classic N-k threshold "
+"(`seuilMaxInc_`). Once the remedial actions are activated, the pre-curative "
+"threshold (`seuilMaxAvantCur_`) applies for the subsequent detections on "
+"this contingency."
+msgstr ""
+"**Sélection automatique des seuils** : tant qu'aucune parade n'est activée "
+"sur un incident, METRIX utilise le seuil N-k classique (`seuilMaxInc_`). Une"
+" fois les parades activées, c'est le seuil avant-curatif "
+"(`seuilMaxAvantCur_`) qui s'applique pour les détections suivantes sur cet "
+"incident."
+
+#: ../../simulator/algo.md:1155 a15cbddecffc49f5b52fa9c6349588c3
+msgid ""
+"**Creation of “do nothing” remedial actions**: for contingencies that have "
+"curative means available but no topological remedial action defined, METRIX "
+"automatically creates a fictitious “do nothing” remedial action. This allows"
+" the remedial action mechanism to kick in and then to be able to check the "
+"pre-curative threshold."
+msgstr ""
+"**Création de parades « ne rien faire »** : pour les incidents qui ont du "
+"curatif disponible mais aucune parade topologique définie, METRIX crée "
+"automatiquement une parade fictive « ne rien faire ». Cela permet au "
+"mécanisme de parade de s'enclencher et de pouvoir ensuite vérifier le seuil "
+"avant-curatif."
+
+#: ../../simulator/algo.md:1161 5b89a139460549449ac58ce1937bbd8c
+msgid ""
+"**Re-detection on contingencies with activated remedial actions**: without "
+"ITAM, no further constraints are detected on a contingency once its remedial"
+" actions have been activated. With ITAM, detection continues in order to "
+"check that the pre-curative threshold is respected; if it is not, new "
+"constraints are added."
+msgstr ""
+"**Re-détection sur incidents à parades activées** : sans ITAM, on ne re-"
+"détecte plus de contraintes sur un incident une fois ses parades activées. "
+"Avec ITAM, la détection continue afin de vérifier que le seuil avant-curatif"
+" est respecté ; si ce n'est pas le cas, de nouvelles contraintes sont "
+"ajoutées."
+
+#: ../../simulator/algo.md:1167 9ff45d78e2594aeb9ea1a6b77597d3b6
+msgid ""
+"**Dedicated ITAM constraint**: upon the first activation of the remedial "
+"actions of a contingency, METRIX adds an additional constraint to the LP "
+"explicitly corresponding to the pre-curative threshold, in addition to the "
+"per-remedial-action constraints."
+msgstr ""
+"**Contrainte ITAM dédiée** : lors de la première activation des parades d'un"
+" incident, METRIX ajoute une contrainte supplémentaire au LP correspondant "
+"explicitement au seuil avant-curatif, en plus des contraintes par parade."
+
+#: ../../simulator/algo.md:1172 ae9d12e0cbd74adcbd0bc51175393730
+msgid ""
+"**Recording of the pre-remedial-action threat**: for the outputs (R3 results"
+" notably), METRIX keeps track of the maximum threat encountered before the "
+"activation of the remedial actions (`menaceMaxAvantParade_`), allowing "
+"analysts to measure the level of transient overload."
+msgstr ""
+"**Enregistrement de la menace pré-parade** : pour les sorties (résultats R3 "
+"notamment), METRIX conserve trace de la menace maximale rencontrée avant "
+"l'activation des parades (`menaceMaxAvantParade_`), permettant aux analystes"
+" de mesurer le niveau de surcharge transitoire."
+
+#: ../../simulator/algo.md:1177 76361cc07e984f929d8942f614f1c7c6
+msgid ""
+"Without ITAM (default case), only the stabilized N-k threshold is checked, "
+"and the mechanism is neutralized on the five points above."
+msgstr ""
+"Sans ITAM (cas par défaut), seul le seuil N-k stabilisé est vérifié, et le "
+"mécanisme est neutralisé sur les cinq points ci-dessus."
+
+#: ../../simulator/algo.md:1182 5e01182d70b24d6b8f5bf22ebb4f3e73
+msgid "5. Computation modes"
+msgstr "5. Modes de calcul"
+
+#: ../../simulator/algo.md:1184 e455f305a56f44d88c4f29fec4883e0b
+msgid ""
+"METRIX offers four computation modes, each corresponding to a different "
+"level of optimization."
+msgstr ""
+"METRIX propose quatre modes de calcul, chacun correspondant à un niveau "
+"d'optimisation différent."
+
+#: ../../simulator/algo.md:1192 7b10d78716e043d88e8c6a58c1096f0d
+msgid ""
+"In Load-flow mode, a single pass is performed (no iterative loop). In OPF "
+"without redispatching, generation is frozen and failure is forbidden; only "
+"the HVDC and phase shifter settings are optimized, and residual overloads "
+"are reported via slack variables. The full OPF mode uses the micro-iteration"
+" loop with all available means of action. The OPF mode with overload "
+"tolerance differs from it on three points, and not only in the handling of "
+"unsolvable overloads: slack variables there make the flow constraints soft, "
+"curative load shedding is not read there, and the coupling constraints "
+"between variables are not set."
+msgstr ""
+"En mode Load-flow, un seul passage est effectué (pas de boucle itérative). "
+"En OPF sans redispatching, la production est figée et la défaillance "
+"interdite ; seuls les réglages HVDC et déphaseurs sont optimisés, et les "
+"surcharges résiduelles sont signalées via des variables d'écart. Le mode OPF"
+" complet utilise la boucle de micro-itération avec tous les moyens d'action "
+"disponibles. Le mode OPF avec tolérance de surcharge en diffère sur trois "
+"points, et pas seulement sur le traitement des surcharges insolubles : les "
+"variables d'écart y rendent les contraintes de transit souples, le délestage"
+" curatif n'y est pas lu, et les contraintes de couplage entre variables ne "
+"sont pas posées."
+
+#: ../../simulator/algo.md:1204 fdcc4dea046c42c0ab4089615c483139
+msgid "Functional additions"
+msgstr "Compléments fonctionnels"
+
+#: ../../simulator/algo.md:1206 1f77e08d364d4371b9189d500a21da57
+msgid "Constraint generation"
+msgstr "Génération de contraintes"
+
+#: ../../simulator/algo.md:1208 e67873015b284ac69f191a8cf283bccb
+msgid ""
+"Rather than formulating the complete security problem from the start (which "
+"would include one constraint per monitored element per contingency — "
+"potentially millions of constraints), METRIX starts with an unconstrained "
+"dispatch and progressively adds only the violated constraints."
+msgstr ""
+"Plutôt que de formuler le problème complet de sûreté dès le départ (ce qui "
+"inclurait une contrainte par élément surveillé par contingence — "
+"potentiellement des millions de contraintes), METRIX démarre avec un "
+"dispatch non contraint et ajoute progressivement uniquement les contraintes "
+"violées."
+
+#: ../../simulator/algo.md:1212 2487676391a34a0fb0fd6e678b339738
+msgid "Sensitivity factors for the fast N-k scan"
+msgstr "Facteurs de sensibilité pour le scan N-k rapide"
+
+#: ../../simulator/algo.md:1214 c050e6d4563d42c6b4fc061b20acbcd2
+msgid ""
+"Post-contingency flows are not computed by independent load flows. METRIX "
+"pre-computes **power transfer distribution factors** (PTDF) and **line "
+"outage distribution factors** (LODF) from the DC grid model. These linear "
+"sensitivity coefficients make it possible to estimate post-contingency flows"
+" as a linear combination of pre-contingency flows and of injection "
+"variations, making the N-k scan efficient in computation time."
+msgstr ""
+"Les flux post-contingence ne sont pas calculés par des load-flows "
+"indépendants. METRIX pré-calcule des **facteurs de distribution de transfert"
+" de puissance** (PTDF) et des **facteurs de distribution de perte de ligne**"
+" (LODF) à partir du modèle réseau en courant continu. Ces coefficients de "
+"sensibilité linéaires permettent d'estimer les transits post-contingence "
+"comme une combinaison linéaire des flux pré-contingence et des variations "
+"d'injection, rendant le scan N-k efficace en temps de calcul."
+
+#: ../../simulator/algo.md:1220 10f1c1f426434c2ea7d658a4ae73d326
+msgid "Solver escalation"
+msgstr "Escalade du solveur"
+
+#: ../../simulator/algo.md:1222 9f7fe57f09134924b8332c5c055d95b8
+#, python-brace-format
+msgid ""
+"The optimization starts as a simple **Linear Program** (LP), solved by the "
+"Simplex method. As soon as an integer variable is introduced, the problem "
+"becomes a **Mixed Integer Linear Program** (MIP) and the solver switches to "
+"Branch & Bound. The three situations that trigger this switch are detailed "
+"in {ref}`micro-it-choix-solveur`."
+msgstr ""
+"L'optimisation démarre comme un simple **Programme Linéaire** (LP), résolu "
+"par la méthode du Simplexe. Dès qu'une variable entière est introduite, le "
+"problème devient un **Programme Linéaire Mixte en Nombres Entiers** (MIP) et"
+" le solveur bascule en Branch & Bound. Les trois situations qui déclenchent "
+"cette bascule sont détaillées dans {ref}`micro-it-choix-solveur`."
+
+#: ../../simulator/algo.md:1227 281d6e63fbe2449e9c5eba838cd5899d
+msgid "Loss re-estimation"
+msgstr "Ré-estimation des pertes"
+
+#: ../../simulator/algo.md:1229 bdaced2c46804ca897d42f2e0d9aa97d
+msgid ""
+"After convergence, METRIX can optionally re-estimate the grid losses on the "
+"basis of the final distribution of flows. If the gap between the re-"
+"estimated losses and the assumed losses exceeds the `SEUILPER` threshold "
+"(500 MW by default), the whole computation is restarted with the updated "
+"loss rate. This loop is controlled by the `RELPERTE` parameter (disabled by "
+"default). When it is enabled, it runs at most the configured number of "
+"times."
+msgstr ""
+"Après convergence, METRIX peut optionnellement ré-estimer les pertes réseau "
+"sur la base de la distribution finale des flux. Si l'écart entre les pertes "
+"ré-estimées et les pertes supposées dépasse le seuil `SEUILPER` (500 MW par "
+"défaut), l'ensemble du calcul est relancé avec le taux de pertes mis à jour."
+" Cette boucle est contrôlée par le paramètre `RELPERTE` (désactivée par "
+"défaut). Quand elle est activée, elle s'exécute au maximum le nombre de fois"
+" configuré."
+
+#: ../../simulator/algo.md:1235 a3d29b545e8d440e8560ce38afba9165
+msgid "Implementation details"
+msgstr "Détails d'implémentation"
+
+#: ../../simulator/algo.md:1237 15393b9f365e438f84b5f86389861078
+msgid "*Monitoring, constraint detection and problem construction*"
+msgstr "*Surveillance, détection de contraintes et construction du problème*"
+
+#: ../../simulator/algo.md:1239 9b01258c24d84de1a35c8b67dfef7252
+msgid ""
+"The following sections describe the micro-iteration process at the code "
+"level, with references to internal data structures, function names and "
+"algorithmic details. They are intended for developers working on the metrix-"
+"simulator C++ code."
+msgstr ""
+"Les sections suivantes décrivent le processus de micro-itération au niveau "
+"du code, avec des références aux structures de données internes, aux noms de"
+" fonctions et aux détails algorithmiques. Elles s'adressent aux développeurs"
+" travaillant sur le code C++ de metrix-simulator."
+
+#: ../../simulator/algo.md:1244 cb5f4e2a152946bd9429bf07d46080cf
+msgid "1. Overview of a micro-iteration"
+msgstr "1. Vue d'ensemble d'une micro-itération"
+
+#: ../../simulator/algo.md:1246 aaa4fa6e7dbc496a982da3bfb6d54670
+msgid ""
+"Each micro-iteration follows a sequential pipeline: solving the LP, "
+"recomputing the phases (θ), detecting the violated constraints, then adding "
+"these constraints to the problem. The loop stops when no constraint is "
+"detected anymore, or when one of the stopping criteria is reached."
+msgstr ""
+"Chaque micro-itération suit un pipeline séquentiel : résolution du LP, "
+"recalcul des phases (θ), détection des contraintes violées, puis ajout de "
+"ces contraintes au problème. La boucle s'arrête quand plus aucune contrainte"
+" n'est détectée, ou quand un des critères d'arrêt est atteint."
+
+#: ../../simulator/algo.md:1256 c10af646b074462085bb2a6696d88322
+msgid ""
+"The solver is not called at iteration 1 nor when the problem contains no "
+"constraint (we start from the economic stacking). The Simplex/MIP choice "
+"depends on the presence of integer variables (remedial actions, AC "
+"emulation, curative counting). The loop stops when no constraint has been "
+"*written* into the problem during the iteration — which is not strictly "
+"equivalent to “no constraint detected”: constraints may have been detected "
+"and then all ignored, through equivalence between remedial actions or "
+"through the absence of an action lever."
+msgstr ""
+"Le solveur n'est pas appelé à l'itération 1 ni quand le problème ne contient"
+" aucune contrainte (on part de l'empilement économique). Le choix "
+"Simplexe/PNE dépend de la présence de variables entières (parades, émulation"
+" AC, comptage curatif). La boucle s'arrête lorsque aucune contrainte n'a été"
+" *écrite* dans le problème au cours de l'itération — ce qui n'est pas "
+"strictement équivalent à « aucune contrainte détectée » : des contraintes "
+"peuvent avoir été détectées puis toutes ignorées, par équivalence entre "
+"parades ou par absence de levier d'action."
+
+#: ../../simulator/algo.md:1267 a2b23ded0c0f4eeb801806656534cab0
+msgid "2. Constraint detection — detailed logic"
+msgstr "2. Détection de contraintes — logique détaillée"
+
+#: ../../simulator/algo.md:1269 2d61f9277b324195842da62604e365b4
+msgid ""
+"Detection is done in two phases: first in the N situation (intact grid), "
+"then in N-k for each contingency. Four successive filters eliminate "
+"redundant or unsolvable constraints before retaining them."
+msgstr ""
+"La détection se fait en deux phases : d'abord en situation N (réseau "
+"intact), puis en N-k pour chaque incident. Quatre filtres successifs "
+"éliminent les contraintes redondantes ou insolubles avant de les retenir."
+
+#: ../../simulator/algo.md:1278 c3c54a01f8a3459b86c2ec450933940c
+msgid ""
+"**Semantics of “skip”:** a skip means “do not write this constraint into the"
+" LP” and move on to the next element — the variant is not flagged as "
+"unsolvable. When a filter sets `ecarts_[icdt] = -1` (“action possible” "
+"filters and N-k filter 2), the marker is permanent: the constraint is "
+"permanently ignored and the possible overload will appear in the outputs as "
+"unresolved."
+msgstr ""
+"**Sémantique des « skip » :** un skip signifie « ne pas écrire cette "
+"contrainte dans le LP » et passer à l'élément suivant — la variante n'est "
+"pas marquée insoluble. Quand un filtre pose `ecarts_[icdt] = -1` (filtres « "
+"action possible » et N-k filtre 2), le marqueur est permanent : la "
+"contrainte est définitivement ignorée et la surcharge éventuelle apparaîtra "
+"dans les sorties comme non résolue."
+
+#: ../../simulator/algo.md:1283 daa4e297a5494cfaae8a2826ac15fd5f
+msgid ""
+"The filters marked *(WITHOUT_REDISPATCH / WITH_OVERLOAD)* only run in these "
+"two modes (slack variables). The ITAM check blocks re-detection on "
+"contingencies whose remedial actions are already chosen, unless the pre-"
+"curative threshold (ITAM) must be checked. After the inner loop, per "
+"contingency: if the contingency breaks connectivity (pocket recoverable via "
+"a remedial action), no constraint was found, and the remedial actions are "
+"not already activated, a fictitious constraint is added to force the "
+"contingency into the LP."
+msgstr ""
+"Les filtres marqués *(WITHOUT_REDISPATCH / WITH_OVERLOAD)* ne s'exécutent "
+"que dans ces deux modes (variables d'écart). Le check ITAM bloque la re-"
+"détection sur les incidents dont les parades sont déjà choisies, sauf si le "
+"seuil avant-curatif (ITAM) doit être vérifié. Après la boucle interne, par "
+"incident : si l'incident rompt la connexité (poche récupérable via une "
+"parade), qu'aucune contrainte n'a été trouvée, et que les parades ne sont "
+"pas déjà activées, une contrainte fictive est ajoutée pour forcer l'entrée "
+"de l'incident dans le LP."
+
+#: ../../simulator/algo.md:1289 f13dccd4f5a346138f9bb4b04ee855a9
+msgid ""
+"The final sort is not cosmetic: it establishes the priority order "
+"subsequently exploited by the arbitration of `ajoutContraintes`. The type of"
+" a constraint depends on the situation evaluated, N or N-k, and on the "
+"presence of an HVDC line in AC emulation in the monitored element — the "
+"latter being a property of the element, a given element never mixes the two "
+"families. In practice, the sort therefore amounts, on a given element, to "
+"placing its N constraint before its N-k constraints, and to ordering the "
+"latter by decreasing gap. This ranking is what then allows the N constraint "
+"to take precedence, as the “masked by N” filter already does upstream."
+msgstr ""
+"Le tri final n'est pas cosmétique : c'est lui qui établit l'ordre de "
+"priorité exploité ensuite par l'arbitrage de `ajoutContraintes`. Le type "
+"d'une contrainte dépend de la situation évaluée, N ou N-k, et de la présence"
+" d'une HVDC en émulation AC dans l'élément surveillé — cette dernière étant "
+"une propriété de l'élément, un même élément ne mélange jamais les deux "
+"familles. En pratique le tri revient donc, sur un élément donné, à placer sa"
+" contrainte N avant ses contraintes N-k, et à ordonner celles-ci par écart "
+"décroissant. Ce classement est ce qui permet ensuite à la contrainte N de "
+"primer, comme le fait déjà en amont le filtre « masquée par N »."
+
+#: ../../simulator/algo.md:1297 1c446a53512d4827a3c718aa042dd2e4
+msgid ""
+"Finally, the two detection loops are bounded by the capacity of the "
+"`icdtQdt_` array: beyond it, detection stops for this micro-iteration and "
+"resumes at the next one."
+msgstr ""
+"Enfin, les deux boucles de détection sont bornées par la capacité du tableau"
+" `icdtQdt_` : au-delà, la détection s'arrête pour cette micro-itération et "
+"reprendra à la suivante."
+
+#: ../../simulator/algo.md:1304 436fdea9953444bdb5ac50c89f4bbca6
+msgid "3. Adding constraints to the problem — detailed logic"
+msgstr "3. Ajout des contraintes au problème — logique détaillée"
+
+#: ../../simulator/algo.md:1306 cab1a81e2e0d4c0ab6b04086654369e0
+msgid ""
+"Once the constraints are detected, they are translated into rows of the "
+"matrix of the optimization problem. This is where the remedial actions are "
+"activated, where the integer and curative variables are created, and where "
+"the flow cuts are written."
+msgstr ""
+"Une fois les contraintes détectées, elles sont traduites en lignes de la "
+"matrice du problème d'optimisation. C'est ici que les parades sont activées,"
+" que les variables entières et curatives sont créées, et que les coupes de "
+"transit sont écrites."
+
+#: ../../simulator/algo.md:1316 2edd5fe518304fa88dfb85ffaa6e6e8b
+msgid ""
+"The 4 cases correspond to the if/else if/else if/else chain of the code. "
+"Case A: first constraint of a contingency with remedial actions — creates "
+"the integer and curative variables, the activation constraints, and — if "
+"`TESTITAM` is enabled and the pre-curative gap exceeds the detection "
+"threshold — a dedicated ITAM constraint on `seuilMaxAvantCur_`. Case B: the "
+"constraint was detected on a remedial action (activated in a previous micro-"
+"iteration) — creates the per-remedial-action constraints without an "
+"activation constraint. Case B': another constraint on a contingency whose "
+"remedial actions were activated earlier in this same micro-iteration — "
+"creates the per-remedial-action constraints with an activation constraint. "
+"Case C: plain N or N-k constraint, direct addition."
+msgstr ""
+"Les 4 cas correspondent à la chaîne if/else if/else if/else du code. Case A:"
+" première contrainte d'un incident avec parades — crée les variables "
+"entières, curatives, les contraintes d'activation, et — si `TESTITAM` est "
+"activé et que l'écart pré-curatif dépasse le seuil de détection — une "
+"contrainte ITAM dédiée sur `seuilMaxAvantCur_`. Cas B : la contrainte a été "
+"détectée sur une parade (activée dans une micro-itération précédente) — crée"
+" les contraintes par parade sans contrainte d'activation. Cas B' : autre "
+"contrainte sur un incident dont les parades ont été activées plus tôt dans "
+"cette même micro-itération — crée les contraintes par parade avec contrainte"
+" d'activation. Cas C : contrainte en N ou N-k simple, ajout direct."
+
+#: ../../simulator/algo.md:1324 07fbd8afd4184c7692798cb937b9e966
+msgid ""
+"Case A follows the traversal of the contingency's remedial actions. A "
+"remedial action that disconnects all the network elements of the monitored "
+"element cannot be under constraint on this element: it receives its variable"
+" and its activation constraint, but no flow cut. The remaining remedial "
+"actions go through the pre-filtering heuristic, which discards those whose "
+"post-action flow would remain close to the pre-action flow. Two optional "
+"constraints are added along the way: a limitation of the number of curative "
+"actions when the remedial action offers more than the configured maximum, "
+"and a valuation of the lost pocket when the remedial action isolates one "
+"containing load or generation. After the loop come the topological choice "
+"constraint — which makes true the statement “exactly one remedial action is "
+"activated” from the functional part — then, under ITAM, the constraint on "
+"the pre-curative threshold."
+msgstr ""
+"Le cas A suit le parcours des parades de l'incident. Une parade qui "
+"déconnecte tous les ouvrages de l'élément surveillé ne peut pas être en "
+"contrainte sur cet élément : elle reçoit sa variable et sa contrainte "
+"d'activation, mais aucune coupe de transit. Les parades restantes passent "
+"par l'heuristique de pré-filtrage, qui écarte celles dont le transit après "
+"manœuvre resterait proche du transit avant. Deux contraintes optionnelles "
+"s'ajoutent au passage : une limitation du nombre d'actions curatives lorsque"
+" la parade en offre plus que le maximum configuré, et une valorisation de la"
+" poche perdue lorsque la parade en isole une contenant consommation ou "
+"production. Après la boucle viennent la contrainte de choix topologique — "
+"qui rend vraie l'affirmation « exactement une parade est activée » de la "
+"partie fonctionnelle — puis, sous ITAM, la contrainte sur le seuil avant "
+"curatif."
+
+#: ../../simulator/algo.md:1334 edca74ac20d9460597823f823c30c714
+msgid ""
+"Two location notes, useful for navigating the code: the integer activation "
+"variable of a remedial action and the equivalence test between remedial "
+"action constraints are created in `ecrireCoupeTransit`, and the curative "
+"variables of the contingency in `coeffPourQuadInc` — hence downstream of "
+"`ajoutContraintes`, not in the body of case A."
+msgstr ""
+"Deux précisions de localisation, utiles pour naviguer dans le code : la "
+"variable entière d'activation d'une parade et le test d'équivalence entre "
+"contraintes de parades sont créés dans `ecrireCoupeTransit`, et les "
+"variables curatives de l'incident dans `coeffPourQuadInc` — donc en aval de "
+"`ajoutContraintes`, pas dans le corps du cas A."
+
+#: ../../simulator/algo.md:1343 a3d29b545e8d440e8560ce38afba9165
+msgid "Implementation additions"
+msgstr "Compléments d'implémentation"
+
+#: ../../simulator/algo.md:1346 82e8f6f9c8564328a423d24e4f171105
+msgid "Solver choice"
+msgstr "Choix du solveur"
+
+#: ../../simulator/algo.md:1348 0555da1a2fc14a41b39e9a2c64ae08cf
+msgid ""
+"The solver starts in simplex mode. It switches to MIP (Branch & Bound) as "
+"soon as an integer variable is created. This happens when activating "
+"topological remedial actions (binary activation variables), when modelling "
+"HVDC lines in AC emulation (fictitious PSTs — variables initially fixed then"
+" unlocked if a constraint concerns them), and when creating counting "
+"variables for curative actions if `NBMAXCUR` > 0 (=max number of curative "
+"actions per contingency). At micro-iteration 1, or when the problem does not"
+" yet contain any constraint, the solver is not called: the result of the "
+"economic stacking (off-grid phase) is used directly."
+msgstr ""
+"Le solveur démarre en mode simplexe. Il bascule en PNE (Branch & Bound) dès "
+"qu'une variable entière est créée. Cela se produit lors de l'activation de "
+"parades topologiques (variables d'activation binaires), lors de la "
+"modélisation des HVDC en émulation AC (TD fictifs — variables fixées "
+"initialement puis déverrouillées si une contrainte les concerne), et lors de"
+" la création de variables de comptage des actions curatives si `NBMAXCUR` > "
+"0 (=nb max d’actions curatives par incident). À la micro-itération 1, ou "
+"quand le problème ne contient encore aucune contrainte, le solveur n'est pas"
+" appelé : on utilise directement le résultat de l'empilement économique "
+"(phase hors-réseau)."
+
+#: ../../simulator/algo.md:1356 267128a32b8c4c43b669e96b54887802
+msgid "Arbitration of the constraints to add (`choixContraintesAajouter`)"
+msgstr "Arbitrage des contraintes à ajouter (`choixContraintesAajouter`)"
+
+#: ../../simulator/algo.md:1358 6c64d1cd96ad41ffb1e77d85a6b6cba4
+msgid ""
+"This heuristic only runs if the number of detected constraints exceeds "
+"`nb_max_contraints_by_iteration`, in `OPF` or `OPF_WITH_OVERLOAD` modes, and"
+" during micro-iterations 1 to 5. When it runs, the number of constraints "
+"actually written into the problem for this micro-iteration is additionally "
+"capped at `nb_max_contraints_by_iteration`; otherwise, all the detected "
+"constraints are written."
+msgstr ""
+"Cette heuristique ne s'exécute que si le nombre de contraintes détectées "
+"dépasse `nb_max_contraints_by_iteration`, en modes `OPF` ou "
+"`OPF_WITH_OVERLOAD`, et durant les micro-itérations 1 à 5. Lorsqu'elle "
+"s'exécute, le nombre de contraintes effectivement écrites dans le problème "
+"pour cette micro-itération est en outre plafonné à "
+"`nb_max_contraints_by_iteration` ; sinon, toutes les contraintes détectées "
+"sont écrites."
+
+#: ../../simulator/algo.md:1363 43c378435ffc4afa9744849e709fbd4e
+msgid ""
+"Two distinct filterings are combined. The constraints of a same monitored "
+"element are traversed in the order of the sort, and a lower-ranked "
+"constraint is eclipsed (`ecrireContrainte_ = false`) if either of the two "
+"following conditions is true."
+msgstr ""
+"Deux filtrages distincts sont combinés. Les contraintes d'un même élément "
+"surveillé sont parcourues dans l'ordre du tri, et une contrainte de rang "
+"inférieur est éclipsée (`ecrireContrainte_ = false`) si l'une des deux "
+"conditions suivantes est vraie."
+
+#: ../../simulator/algo.md:1367 d65be76013b04726b38ad0bcd253f049
+msgid ""
+"**(a) Type priority.** It is not of the same type as the priority "
+"constraint. Since the sort places N constraints before N-k ones, this "
+"amounts, on an element under constraint both in N and on contingency, to "
+"keeping only the N constraint: we bet that correcting the N situation will "
+"suffice to resolve the post-contingency overload. The bet is well founded, "
+"since the post-contingency flow is deduced from the N flow amplified by the "
+"transfer — acting on the N flow thus acts on the N-k flow with a greater "
+"lever. It remains a bet: if the N-k constraint persists, it will simply be "
+"re-detected at the next micro-iteration, `ecrireContrainte_` being reset to "
+"`true` at each detection."
+msgstr ""
+"**(a) Priorité de type.** Elle n'est pas du même type que la contrainte "
+"prioritaire. Le tri plaçant les contraintes N avant les N-k, cela revient, "
+"sur un élément en contrainte à la fois en N et sur incident, à ne conserver "
+"que la contrainte N : on parie que corriger la situation N suffira à "
+"résorber la surcharge post-incident. Le pari est fondé, car le transit post-"
+"incident se déduit du transit en N amplifié par le report — agir sur le "
+"transit en N agit donc sur le transit N-k avec un levier plus important. Il "
+"reste un pari : si la contrainte N-k subsiste, elle sera simplement "
+"redétectée à la micro-itération suivante, `ecrireContrainte_` étant remis à "
+"`true` à chaque détection."
+
+#: ../../simulator/algo.md:1375 d6677798224d4113baa2d7152ffb1219
+#, python-format
+msgid ""
+"**(b) Near-redundancy.** The two constraints are of the same type, the "
+"contingency is not the N situation, it has no curative elements, and the "
+"flows are within 1% of each other with thresholds less than 1 MW apart. This"
+" covers the case of a same network element loaded in an almost identical way"
+" by several contingencies."
+msgstr ""
+"**(b) Quasi-redondance.** Les deux contraintes sont du même type, l'incident"
+" n'est pas la situation N, il n'a pas d'éléments curatifs, et les transits "
+"sont à moins de 1 % d'écart avec des seuils distants de moins de 1 MW. Cela "
+"couvre le cas d'un même ouvrage chargé de façon quasi identique par "
+"plusieurs incidents."
+
+#: ../../simulator/algo.md:1379 d85e98bf93af476ebcc3d782dcfc0934
+msgid ""
+"This heuristic extends the “masked by N” filter of the detection, which "
+"handles the certain case — an N-k overload lower than the N overload on the "
+"same element. Here the bet is extended to the uncertain case, but only under"
+" volume pressure. The final result does not depend on it, since the loop "
+"only stops when no more constraints are detected; only the number of micro-"
+"iterations required may vary."
+msgstr ""
+"Cette heuristique prolonge le filtre « masquée par N » de la détection, qui "
+"traite le cas certain — une surcharge N-k inférieure à la surcharge N sur le"
+" même élément. Ici le pari est étendu au cas incertain, mais uniquement sous"
+" pression de volume. Le résultat final n'en dépend pas, puisque la boucle ne"
+" s'arrête que lorsque plus aucune contrainte n'est détectée ; seul le nombre"
+" de micro-itérations nécessaires peut varier."
+
+#: ../../simulator/algo.md:1384 10946560c0e84b26bc198c739dc97bf2
+msgid "Fictitious pocket constraint"
+msgstr "Contrainte fictive de poche"
+
+#: ../../simulator/algo.md:1386 524762c2de784ab0b7589384c52f1faa
+msgid ""
+"When a contingency breaks connectivity and the lost pocket is recoverable "
+"via a remedial action (`pocheRecuperableEncuratif_`), no flow constraint has"
+" been detected on any monitored element for this contingency, and the "
+"remedial actions have not already been activated in a previous micro-"
+"iteration, a fictitious constraint is added to force the contingency into "
+"the problem. Without it, the remedial action mechanism (Case A) would never "
+"trigger and the solver would not know that it can “recover” the pocket."
+msgstr ""
+"Quand un incident rompt la connexité et que la poche perdue est récupérable "
+"via une parade (`pocheRecuperableEncuratif_`), qu'aucune contrainte de "
+"transit n'a été détectée sur aucun élément surveillé pour cet incident, et "
+"que les parades n'ont pas déjà été activées dans une micro-itération "
+"précédente, une contrainte fictive est ajoutée pour forcer l'entrée de "
+"l'incident dans le problème. Sans cela, le mécanisme de parade (Cas A) ne se"
+" déclencherait jamais et le solveur ne saurait pas qu'il peut « récupérer » "
+"la poche."
+
+#: ../../simulator/algo.md:1393 a30ac7b864fa44f3a47fdd441372f640
+msgid "Slack variables"
+msgstr "Variables d'écart"
+
+#: ../../simulator/algo.md:1395 66d39fb639a04ac48236a7f79758c8f9
+msgid ""
+"In `OPF_WITHOUT_REDISPATCH` and `OPF_WITH_OVERLOAD` modes, each flow "
+"constraint can receive a slack variable penalized in the objective function."
+" This allows the solver to tolerate overloads (at a high cost) rather than "
+"declare “no solution”. Remedial action activation constraints and AC "
+"emulation constraints are excluded from this."
+msgstr ""
+"En modes `OPF_WITHOUT_REDISPATCH` et `OPF_WITH_OVERLOAD`, chaque contrainte "
+"de transit peut recevoir une variable d'écart pénalisée dans la fonction "
+"objectif. Cela permet au solveur de tolérer des surcharges (moyennant un "
+"coût élevé) plutôt que de déclarer « pas de solution ». Les contraintes "
+"d'activation de parade et les contraintes d'émulation AC en sont exclues."
+
+#: ../../simulator/algo.md:1400 0ac4a5f1103b445f83909782e13f26ea
+msgid ""
+"This is also what explains the asymmetry in the treatment of constraints "
+"without an action lever. When the flow cut contains no non-zero coefficient "
+"— in other words when no variable of the problem influences the flow "
+"concerned — the two slack-variable modes mark the constraint as permanently "
+"ignored and continue the computation, whereas the `OPF` mode returns “no "
+"solution”. A user who observes a convergence failure in `OPF` while the same"
+" case passes in `OPF_WITH_OVERLOAD` is most often running into this "
+"difference."
+msgstr ""
+"C'est aussi ce qui explique l'asymétrie de traitement des contraintes sans "
+"levier d'action. Lorsque la coupe de transit ne contient aucun coefficient "
+"non nul — autrement dit lorsque aucune variable du problème n'influence le "
+"transit concerné — les deux modes à variables d'écart marquent la contrainte"
+" comme définitivement ignorée et poursuivent le calcul, tandis que le mode "
+"`OPF` retourne « pas de solution ». Un utilisateur qui constate un échec de "
+"convergence en `OPF` alors que le même cas passe en `OPF_WITH_OVERLOAD` se "
+"heurte le plus souvent à cette différence."

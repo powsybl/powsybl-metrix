@@ -1,0 +1,3256 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../simulator/io_doc.md:9 40dfa373ce724863830ee3666ba04651
+msgid "Inputs and outputs"
+msgstr "Inputs and outputs"
+
+#: ../../simulator/io_doc.md:11 0f358c89875b42cda19410b820766b20
+msgid "Contents"
+msgstr "Sommaire"
+
+#: ../../simulator/io_doc.md:12 155fef4e109f4db48d8402089e7963c2
+msgid "[Introduction](#io-intro)"
+msgstr "[Introduction](#io-intro)"
+
+#: ../../simulator/io_doc.md:13 aa2cdb72486d4451805240fcd7c332f4
+msgid "[Input data in *json* format](#io-inputs-json)"
+msgstr "[Données d’entrée au format *json*](#io-inputs-json)"
+
+#: ../../simulator/io_doc.md:14 15ae634c961543d6a319bedf1c7aaa0d
+msgid "[Computation options](#io-computing-options)"
+msgstr "[Options de calcul](#io-computing-options)"
+
+#: ../../simulator/io_doc.md:15 2dd5d18f67f24dc3ac48e990295253f8
+msgid "[Results options](#io-results-options)"
+msgstr "[Options de résultats](#io-results-options)"
+
+#: ../../simulator/io_doc.md:16 ba400fceec7d4c339c1acf31ffbf7393
+msgid "[Regions](#io-regions)"
+msgstr "[Régions](#io-regions)"
+
+#: ../../simulator/io_doc.md:17 6dae6772b5964bd4909aef6f38fc7031
+msgid "[Nodal information](#io-nodal-information)"
+msgstr "[Informations nodales](#io-nodal-information)"
+
+#: ../../simulator/io_doc.md:18 c71987fcf79340b988175049698afe43
+msgid "[Vertices](#io-summits)"
+msgstr "[Sommets](#io-summits)"
+
+#: ../../simulator/io_doc.md:19 00e2feff5b3141d7969b2db12afb2b7b
+msgid "[Loads](#io-loads)"
+msgstr "[Consommations](#io-loads)"
+
+#: ../../simulator/io_doc.md:20 10f9f382580e41709eafc51988762135
+msgid "[Generators](#io-generators)"
+msgstr "[Groupes](#io-generators)"
+
+#: ../../simulator/io_doc.md:21 eac30941a0dc4fd79f9c95ccd51e0208
+msgid "[Branches](#io-quadripoles)"
+msgstr "[Quadripôles](#io-quadripoles)"
+
+#: ../../simulator/io_doc.md:22 a92af20cc5584f4b9fb189f05473011c
+msgid "[Elementary branches](#io-elementary-quadripoles)"
+msgstr "[Quadripôles élémentaires](#io-elementary-quadripoles)"
+
+#: ../../simulator/io_doc.md:23 c2acc7a6df61418e9f35d4b67c5a5c54
+msgid "[Phase shifters](#io-phase-shifters)"
+msgstr "[Déphaseurs](#io-phase-shifters)"
+
+#: ../../simulator/io_doc.md:24 f8f236eb1477401db60858632e2a69ff
+msgid "[HVDC lines](#io-dc-lines)"
+msgstr "[Lignes à courant continu](#io-dc-lines)"
+
+#: ../../simulator/io_doc.md:25 4e90466554724871bd877326b9190288
+msgid "[N-1 and N-k contingencies](#io-contingencies)"
+msgstr "[Incidents N-1 et N-k](#io-contingencies)"
+
+#: ../../simulator/io_doc.md:26 0b81573ecd994354894e6d4f3420f01a
+msgid "[Curative](#io-curative)"
+msgstr "[Curatif](#io-curative)"
+
+#: ../../simulator/io_doc.md:27 819eb798c39745ec83388e8b936ffe6d
+msgid "[Monitored sections](#io-monitored-sections)"
+msgstr "[Sections surveillées](#io-monitored-sections)"
+
+#: ../../simulator/io_doc.md:28 ee3f1dca94604587bbc3615e1f5a567b
+msgid "[Coupled variables](#io-coupled-variables)"
+msgstr "[Variables couplées](#io-coupled-variables)"
+
+#: ../../simulator/io_doc.md:29 4bab961bd5c84878847d90249d429ab0
+msgid "[Detailed marginal variations](#io-detailed-marginal-variations)"
+msgstr "[Variations marginales détaillées](#io-detailed-marginal-variations)"
+
+#: ../../simulator/io_doc.md:30 f8f236eb1477401db60858632e2a69ff
+msgid "[Variants](#io-variants)"
+msgstr "[Variantes](#io-variants)"
+
+#: ../../simulator/io_doc.md:31 087d077b857e442f92b682f1982c949a
+msgid "[Remedial actions](#io-remedial-actions)"
+msgstr "[Parades](#io-remedial-actions)"
+
+#: ../../simulator/io_doc.md:32 41b3ab4dcf60492bb3b2541b31d39732
+msgid "[Output data](#io-outputs)"
+msgstr "[Données de sorties](#io-outputs)"
+
+#: ../../simulator/io_doc.md:33 402867b1ad084680b06eb1cc5d370f8c
+msgid "[Results file](#io-result-file)"
+msgstr "[Fichier de résultat](#io-result-file)"
+
+#: ../../simulator/io_doc.md:34 8d947c04e85a4833a6656676711855fd
+msgid "[Tables describing the situation](#io-detailed-situation-tables)"
+msgstr "[Tableaux descriptifs de la situation](#io-detailed-situation-tables)"
+
+#: ../../simulator/io_doc.md:35 c09b961c80624df48f079e8c1ccee560
+msgid "[Results tables](#io-result-table)"
+msgstr "[Tableaux de résultats](#io-result-table)"
+
+#: ../../simulator/io_doc.md:36 816975c883c34a149b2ec0ab11af72b7
+msgid "[Log file](#io-logs)"
+msgstr "[Fichier de logs](#io-logs)"
+
+#: ../../simulator/io_doc.md:37 b4036f919d954495b67042995ec0fabf
+msgid "[LODF file](#io-lodf)"
+msgstr "[Fichier LODF](#io-lodf)"
+
+#: ../../simulator/io_doc.md:38 63e8e3a6afdc42a38dd7b5d1290cb792
+msgid "[PTDF file](#io-ptdf)"
+msgstr "[Fichier PTDF](#io-ptdf)"
+
+#: ../../simulator/io_doc.md:39 87a2221a893245a0aff41851226325d0
+msgid "[MPS file](#io-mps)"
+msgstr "[Fichier MPS](#io-mps)"
+
+#: ../../simulator/io_doc.md:42 7947650757aa4b07a08ecc6be5bd08f6
+msgid "Introduction"
+msgstr "Introduction"
+
+#: ../../simulator/io_doc.md:43 539129f83538428cba8f32f03b5058a7
+msgid ""
+"This document describes the inputs and outputs of the METRIX v6 model (used "
+"in the ImaGrid platform). Following its integration into ImaGrid, some "
+"formats initially used in the ASSESS platform have been kept; namely CSV for"
+" the variants, the remedial actions and the output tables. The other input "
+"data have, for their part, been put into *json* form, within which some have"
+" been added and others made optional. The data format of METRIX v6 is "
+"therefore not compatible with previous versions of the model."
+msgstr ""
+"Ce document décrit les entrées et les sorties du modèle METRIX v6 (utilisé "
+"dans la plateforme ImaGrid). Suite à l’intégration dans ImaGrid, certains "
+"formats utilisés initialement dans la plate-forme ASSESS ont été conservés ;"
+" à savoir CSV pour les variantes, parades et pour les tableaux des sorties. "
+"Les autres données d'entrée ont, quant à elle, été mises sous forme *json*, "
+"au sein desquelles certaines ont été ajoutées et d’autres rendues "
+"optionnelles. Le format de données de METRIX v6 n’est donc pas compatible "
+"avec les versions précédentes du modèle."
+
+#: ../../simulator/io_doc.md:50 194d983106eb4998a736cb68fc0aa18d
+msgid "Input data in *json* format"
+msgstr "Données d’entrée au format *json*"
+
+#: ../../simulator/io_doc.md:51 abc442af345b4416a710b6215340249f
+msgid ""
+"The ImaGrid gateway for METRIX takes as input a network file in IIDM format "
+"and a configuration script in Groovy format. It generates a *json* file: "
+"'*fort.json*'."
+msgstr ""
+"La passerelle ImaGrid pour METRIX prend en entrée un fichier réseau au "
+"format IIDM et un script de configuration au format Groovy. Elle génère un "
+"fichier *json* : '*fort.json*'."
+
+#: ../../simulator/io_doc.md:54 b0dacd0de4b540fea98003e188a7e10f
+msgid ""
+"The data shown in **bold** in the following tables must always be present in"
+" the input files, the others are optional. The default value configured in "
+"METRIX is given in parentheses. Those shown in <o>orange</o>, on the other "
+"hand, are non-mandatory data, but they cause segmentation faults if they are"
+" not filled in. Finally, those shown in <y>yellow</y> cause errors (see log "
+"file) if they are not filled in."
+msgstr ""
+"Les données indiquées en **gras** dans les tableaux suivants doivent "
+"toujours être présentes dans les fichiers d’entrée, les autres sont "
+"optionnelles. La valeur par défaut configurée dans METRIX est indiquée entre"
+" parenthèses. Celles indiquées, quant-à-elles, en <o>orange</o>, sont des "
+"données non obligatoires, mais qui provoquent des erreurs de segmentation si"
+" elles ne sont pas renseignées. Enfin, celles indiquées en <y>jaune</y> "
+"provoquent des erreurs (cf. fichier de logs) si elles ne sont pas "
+"renseignées."
+
+#: ../../simulator/io_doc.md:62 de67fbdfbc7d49c79f30f7034dc33e18
+msgid ""
+"N.B.: The data types are defined by a letter as follows <a "
+"id=\"types\"></a>:"
+msgstr ""
+"N.B. : Les types de données sont définis par une lettre comme suit <a "
+"id=\"types\"></a>:"
+
+#: ../../simulator/io_doc.md:63 cadd45d86f7945f8b291540ea0583721
+msgid "B = *BOOLEAN*"
+msgstr "B = *BOOLEAN*"
+
+#: ../../simulator/io_doc.md:64 8f3692eadc1748a586c01ebc943ad450
+msgid "C = *STRING*"
+msgstr "C = *STRING*"
+
+#: ../../simulator/io_doc.md:65 4b8487b147dc4dab8a4bc59f2f3723a3
+msgid "I = *INTEGER*"
+msgstr "I = *INTEGER*"
+
+#: ../../simulator/io_doc.md:66 282b74e758fb48e08eb027b091a5af04
+msgid "R = *FLOAT*"
+msgstr "R = *FLOAT*"
+
+#: ../../simulator/io_doc.md:69 0e65c9c37ac34f49a87ffa820c99643b
+msgid "Computation options"
+msgstr "Options de calcul"
+
+#: ../../simulator/io_doc.md 0264ada6f23c44debc384a4f888fdbb6
+#: 0541f613f47e4539bec8f5677a84b130 0e66716902134bd0b7122d48e55ac6b4
+#: 18ddd32594a24a579296110177bec98b 416ba73af8ac45d8ac122c78521c3a3c
+#: 4532734715144c1891b8b5f4c76ae43f 624f2a4163e1406e930689f8d0fd9596
+#: 91f19879dfb64c2d8639b046414c006c b81855be3b704ef4ab7c18babc5668a6
+#: c9ce881a9a2e4482a7d06660edd3e3fc d11fbd58d15746ed94c12c50059dd5e8
+#: daad6dece02343f9913a9a1f2c2f8922 e3a6543adcfc4c0cbf5277c508afcf03
+#: e561f27eef8e4a23b5b9fc2a67e234a0
+msgid "Name"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 008579a863314e7bbace6360e1f58232
+#: 00f26464c2ee43f09d5307c0f6a8520a 0b9608a323fe45fc97f086fd01a2cef0
+#: 0db2aec119384372b8c4c38fcd7f01c1 17c588acf6d747ba8412f95c0145668b
+#: 19a81a8628e84309acfd0e5f3463634d 2c3627f3dc7f47ecaf50d33862b40f47
+#: 3a9728acb34f4499bfd5344c85e3e353 3ed438a2ba854ec7a1e57eb76af8501f
+#: 49c5e5bf534c4cae912bf2c7eba4ebb5 4b1dbf6e800741e09b6b88b07f7fb2b8
+#: 583c929137134fa988e1d5dafd4fbb73 5bb5e06dae6b4207a02a7d966d9a59a5
+#: 6eefb7b7c64c4783bf472e8c5c56c4e0 747b8b6019c4401aa2ecae6ec20d4cfc
+#: 7701f912104246358836a9cd39d5877c 7e10568597fb44bfbc4a737870ff1196
+#: 85dcb3889c284975b233a5efef6e3ef9 8d106afa771243e9aa2acca15048cb67
+#: 8e488c38b8a8417082228796f07ebc05 8f256dcc291c41b68ee41d389a1e76e2
+#: 98ccd798708b49f0b73a1b28b13d3cf9 9a0122f47f654c9bb39759767cf0306a
+#: 9c5eaf32e0fd46df83e790ae74946520 9db4dff245674d938745f11071cf32b5
+#: a72fc1941a7b4cff9569273a7be10083 ac747eb88a9447a4932f95cdd4eb5d7a
+#: afbf75773f234a2f848c819388d8050a b43ad848e08a49879f2b8cb91f860258
+#: bd604998bc9741afbfcebad0d314fb0a be48c4d98a53464e84becc8648fa9bbe
+#: c248c7296f5e4e25b4ddb0c5cbd7864d d65182a371474e2385565558d0b46019
+#: df1b9e1796bf41ecb81c02516d35a3a5 e1ff05ae4fe0405a9e21703ca01b3ac0
+#: e7ae70cf2ab947b68540300a51aa17a1 ee0101a5f10c4c998c5899bac6cfe349
+#: f00fd3abb032493b91c1d1b370fcc18d faf52168e00c446cafd125150e351a12
+#: fc10daf7f60f44548ba4ba240e965bae
+msgid "Type"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e039ef73fa28429c90924d29f223f2a9
+msgid "Size"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0335e7edbce746439bed304bca72b8e9
+#: 05fe072afbb94e2e815bf1b90de7628a 166cac6eedf84d7188f14d5bf18c5877
+#: 1e24e83b646c4b7bb24872db8be55d20 2092de4227bb42f086d673a7a0c0df1a
+#: 262d97faf8994e319a969523396fc8d6 419a2bdf66844f29b2520eb3256d9ed8
+#: 42a53278351847c08dfa959b93a676fe 4a9704ed5139401ea096595dae057d38
+#: 54dfbfc2172b4839a62709d560b75121 620dc6f1be9d43f588f3810a7b6addaa
+#: 634030d3c9b241b29d1cc32f839a5d79 64eed36b4a244fa4978439350a8b3e53
+#: 66a1060ec3a84cbb843c553142bed2a4 700d6c0bf31b46ee950ec145497b6d77
+#: 7da998b5490a4a1c9378c78a78a89994 7ebe282ce4904e6f9cd8c06ec95b89f1
+#: 81037abfb66945f380a8f6e6857a26d8 8381615727d34a62a4a2179b90fa7826
+#: 8b36276a207b4ba9a995d69dfa24c6cd 8d8dcdfdfbc14bbfbe7b3182d4456e90
+#: 99a6ebe5b763416bbb43d0b0a6b7116c a1ea027af07e46c5b0d72a6296d5be85
+#: a5f1363696f6492596d4e1dc7481c915 ab6ac89d5a544a3f925cc499512b8a0e
+#: b0d2b61e2e0148f59c0fd2da3f60fcae b225439442fa4063a100d579a81b569f
+#: b6b43c25bfa94a8abd7d0a4a9af9c8bb bc21c1a24ff54a7ab76b5f7761c709b6
+#: bdecd4fc491c4a568ef85e6dab382b4d c3620f391b114cdbbae14d04a7f021ff
+#: cb686d39501340998026507efb6b934c cfbb837d5eff4476b19ec70fbf98d47a
+#: d4017f733cdd4b8a856b1af1958e32a0 dacefe350f3c407097817122ed807e4c
+#: e1ef8651493e4b02a3d5eb26604b3ec7 e52d8fea4d2944b8897e616f6206f865
+#: e9f19beb7cd347168c53601f869d9e5b ea42f41086fd4756b22bea052fbef2de
+msgid "Description"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1d0ad4c379fa4fa89342552c6f2feced
+msgid "**CGCPERTE**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 00f8930100ad45c49d7d7a09f4139a0c
+#: 017f9e18e39040f5a9ee537876fbdbab 0656593bd7144eaaa706469029413670
+#: 0777b9ea234d4708875fb25da74df5b7 0af0405d561b4449aa7aa35f6a4d123c
+#: 0bc108fdd7e540fcb3a8dd9b449002c0 0ece89bd673e4f8f844dbea104a46039
+#: 15c096c0fc444c09a62dc4234850e565 172cfa22486e4a61826f3d725ed582e5
+#: 1cab37846f9c4fbaa5d6eaf6053a1fe7 255c22b70ea54cb4b05a041ddc5525ce
+#: 259079ac0f614810b99242048438db6d 2e4a3f083b864f6891b9c535785c0c66
+#: 310cb1ce723e4f3ab355bd9bbb677b92 319d0279769041b198e56989c0e3f99e
+#: 352a1e9e18e34cbbbcace9c1042102f8 36f11e909195417ba17fd0e31e35ef6c
+#: 37a2cbef69ca4ac295d7a199dfbc552e 3aba98d864354621b8aeb4bc27c44c1a
+#: 3dd8d5a8aefc427cbb667026b9ef926b 3ec14166d9a6464fb5cb87724c33d43e
+#: 401d365990fa407eb25a9e1414ced0bc 4633c3d25e794f1abaea9cafdf9ec2be
+#: 4918538022c04e1e94cfcd8599f76519 49d1f3c64c1a460b974759620b0554d9
+#: 4bbd2f495e274a5390b2668afc3a4aa7 4efb3c6d5d2e42e5931c9241682ccc2b
+#: 4f2927bbb9e24cf7a147f09aac8a6b71 4f3da05470f342cbbc843b3d8647a012
+#: 57c83cd5479c47b58b4cf2d5f3ad79f2 5d43b8d684cf4890bdbdb4cd9a485afa
+#: 5de3398da23242bebc5d09d70f1ff8e9 5ed2ac575bd948a0845d4bbdf4b5dc4e
+#: 5fae61222d5f446f9397e618cd6f1018 60bc0938a47f4278b31abcef11b99241
+#: 63dc5760efb14a929df99a392a53e16c 67ca863475eb458288c02add62afc1c0
+#: 75a9ca39e8e849c686fb10551628b25c 76579062b16d4809b78fb87d31247768
+#: 76a81b05b89440e989f78a060c4d68fa 785a196e0e6245d68be6ef450ee51f06
+#: 79e82ef9090441849fc57da1676666b5 7aab59f85f304854a5ed0f1ba3267fa4
+#: 7c6041de1c71489082df8d57c2490516 7ede6b9323d54133950a566e92ace938
+#: 8149d7da13a34e3d8f32b5c2e5b72fbc 8a53ea91349645be89926e2e1e283e60
+#: 8b03c36eba46423e802e7e835f4ab6c0 8be370f9bc864621aa55c297927da3e2
+#: 92af18d0468c455db56d5606a613f5ea 9bfa49a780824dd08709c0d33c8e9391
+#: a18338cb3bfc4b22b017c93f2e70ee12 a1c5cf8c0920465ca5f60ed1dd0179cc
+#: a2d5979308524e03b5e91ee5e75378b5 a328474bbb764192a3bbda0182c50e1f
+#: a5e9d281ea1b4232877820d64ed929e4 abfeac52b52c4b5093127f8f37637917
+#: b3381fe1fec14c75a3b67d702ea44187 b7ba77bf4abe4055ab520d4f1bd7c7e6
+#: b83c9fbc4dc447a3a654ccf28c6cccf2 c30815814c014040bb406ec6fabdc6af
+#: c4645de019e54aac9824c08725a3dd21 c80c3475b1464f1f86b7c79955a56964
+#: cd28205a55b54c96aa954cc60c122664 cee103b0d62748c58b56023e2f7f6c41
+#: d0a63cb4eb3f4feb894a4955644271e7 d13f934b47714112beb83b78a9b260d6
+#: d2bb2697e2db432f80da9775c4542d41 d5b60ada03924c21be16a3bd219b0ad6
+#: d9b99d92784449819fffaead9f237828 dd2baee7c3f945b49487fa2a9f74e656
+#: dfac0ecc4e9a46ea840a26b16b5e5dc3 e042c8a6a50344a99651c30c36ed9da5
+#: e3bcfe87e7c9460682508b7c3844c613 e541991f6c8c40d38e28dacd1c1ae302
+#: eaaaede3d6a5430089b3fd9e70f38a9b ee35160ccd3f49ba9a7156dbb2cf977d
+#: ee8cc7006f81408492981f24b7205755 ee8ce53bdec648f59c64ef2ac17ebf55
+#: eecc3e6925e8497d9e6f78f61a014261 f0c16fc91531424b885139d01a1e0ff6
+#: f14c69f695944828ba91d26f6585f9dd f456cfa22dde4a8483ae43997575da7a
+#: f6104f6f5a43458d83c46541a993ace1 fc04988df29740ddafdc161f04a78da5
+msgid "R"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0109e21a899845439b1b07ae7210d282
+#: 0176a035e48545b681d893907034f7d8 067fda90d05e466e8662c63f5e912e77
+#: 0d352c09bcf745d3968b9e4a688d4a89 1c60ff83bcb54e539873e36d4bbc9d75
+#: 1e6570489153463184f5a63ca8dcee42 1e723f84ff474dd78a6663d124c9c67f
+#: 24989b218594433082bc49da94d016d7 24b234c84c6d42bdb850e136cb27916c
+#: 26b925fefac94885a7c9da8d1076c12e 2986dc4e292149b9866219072a92ecda
+#: 31b33e9a7355454893d151bc48151802 336767a91b344582a63c9ae4b4700284
+#: 3375caaf2bb645868c03ef14f14c7589 44c10983a4a54340aae73de63f158519
+#: 49734dcd81594a3bbe69b09a08231f25 4a227dd59e044beda726882e7f32d172
+#: 663882dde63140de9c64b5e98e95b4f4 6f16ffa9c1b24f0c8f86afaba6e431c9
+#: 71e235e3fdd44b458f9c084db86f8936 745fc1018575491c87946a4a99048d48
+#: 816ea23e90444e2ba233e09320f7c46b 87edc7e8640f463d9e7a52990ff21986
+#: 88e565fe70e346f9ad541b580e0e738c 8e052f9631ce48a797bad8df45d90b91
+#: 9509d83cffac442faa71b50593906d05 9dfe4f91d5034f21abd3ac775dc61dc5
+#: 9e07a72b9381478dba06abcf827e3178 a004ca342cc74117af7e117dbef3c837
+#: a235154c14b7494881a6827ec2521c1d a6001da7d029427e8392b367e40a565d
+#: aa9fc76a34b54ddaac53a0500e2d8de9 b07663ce2fd945bebd6a96c234026c56
+#: b15951996ac14f69b3293180fbb934b5 b2dab418887843148e8923cc90a4b041
+#: b9d242b5018f471d8ed487ffe6fbbc75 baf2b8b30fc847a5b2d25cb8382e331a
+#: bd7d6eeeaae4419590566fa013861e3c bf5fb011025b45a7b450e4322dcb9c41
+#: bfdd078017d64a5ab416f6032c9ef2f1 c39bafc4641a40cab011a9ecbe69f3ec
+#: c519e23d41db422a9adde03c5cad2ef6 c96893a15dbc42368d0e4eedf177dbc3
+#: d7ba56945d0e4ab283c01228c17b7320 deabecaffedb4f9397b7ff259609ccd3
+#: e75afb2f698340ff90566cd4c51e6c7d e7a43c4ab0b44509ae383d48d9ecccab
+#: eed43d0a9c13421eb328284ccd55d26c
+msgid "1"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 808fb1be48944b5a8a648171b6bb3889
+msgid "Initial loss coefficient.<br>= lossFactor (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e0e3b424b0644325873c545dd7938235
+msgid "**UNOMINAL**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 02663874cd2940ae8fcc07c7c994e1f2
+#: 05e604c524b44639a51ada26d420ffca 0b6412f0148a433c9d540cb9a73215d3
+#: 102732f7e34f4417addcf38f8acd99aa 12a86ebc0ea9406ba612065604909ad0
+#: 1458d661a51c4994a8061896538abfe0 1643c9c2add94082be3445032d7427c6
+#: 17f98d68b6d8454ebb5932cec5fe4739 1e13cfe28672492898362d1284f96a4f
+#: 2060e46264374f8ba6a726c97e7724c8 2142e5672a1d4296bbb8bbcec3c29785
+#: 252d07bd688a4ad29c6980de41419020 2543a7735f2344408c7afea4ab6122d9
+#: 26616b1f5558453a9818527a54dc60d6 28e67b65c313412f84a5b0ac6142dea6
+#: 298f9fe3960142369b1025b77814af14 2b541647dd0341f49c3ef6fa06b2780f
+#: 2c8652b84afc4b5a917624c64a0c1aac 2cb21cafe2ff44f19a22dbe02edf3a03
+#: 36682afa5db94cc190b62e8862e9de2f 3d30231c10474ba1aaeeb4ea28b9d158
+#: 3ffe16b6870941fb98f00b550b0e6de0 4010c2e5e5a44bc48d24cfe7fc8842a6
+#: 47c2b5be6723485e9353f72425bd835a 485da3fa2a204add965646466a8e69e0
+#: 493f1b5c16d241bbb53c0510392cf2c1 4e681dea0df140ac9506c96c4d5a25b5
+#: 4fc4dbc0db694facb9d96adbbdc10e0b 54b1ae16f0af4e4bbef8b4ab23f7dfb2
+#: 5538e806cd00494588b752575bb6b11c 557950bfc40a4014b33a7519adf0b703
+#: 565fd450b86c4a59bc18ad3307d523b4 5993864c646d4005bd5b86c94e2f7244
+#: 5d11ffc242954b169cfbc2edaf910082 62f70ddce85f488e85d1a69e2cabc485
+#: 6c8e0914234347c3986059997856d09a 6f1c07e4353e443d9b7eb80a3acccf66
+#: 72f53327138f47838640628a4af135f9 74f51295973f4df19aa8c127340f9c20
+#: 78a3c64042e447cfb400086057fb7ba5 7c75921869034d5d87fbe709b8fc9e0f
+#: 7f20449ad8fb4c3385c6b4ba3c730da0 7f2fbecbeddf400dae3487d85049d1e4
+#: 8128117228c24b19aa196fed259a2ab0 89a53af1dc44417987439f728736fc5a
+#: 8b49af7ddd7f48428583780d0016f7d5 97a677fcbf1f46a8951b55704886786d
+#: 9ad2f81a6c87496e878689c6edc898bd a31f68d230314f49912ed1734e629838
+#: a3b5a5b0f5644351a06dfea1b824da99 a64a0d3a64ad48f78a110c2538c6526c
+#: abafdddfec914cd7ad68ab4777db0d05 abd0239275984f02ad257a04b7513c3d
+#: b036186822ea4763bfb80952d6e60204 bab6712328df4ec1b58919c308b968b8
+#: bba758e21bab40efa92466fcaad6bb7e bc6f1cfb11aa4861918f0514b36f0950
+#: c8e0c7b65aee4e098f85ac3f47e349eb cb8cd484fb65452dabd1c4b715430d98
+#: cd14bed8bba84c18b003d66766965b43 cd2f504f8f80408e8dede4e55ba68adc
+#: cebbde30e1594613b819c31a8f576a3e cfe9b10556c2478c85479df9703d5e2d
+#: d288b62c8e594903a5d0bdbe838bd1cd d684ff63fc874be6870fdb7e63a21f60
+#: d833c788e086424aa939740e60b317bd dac35fdb7c194dfc903b880ccdcaf8b4
+#: daddc88b457e4aa0a3945b32e166d8c5 dba563a2c1a64cb7a24f89bf74272650
+#: e95b1bcd22f247a8b5c94786d90d66b4 ed4accf247db401da9a6ff5490c83144
+#: f62cd1437c96449b9296a64aed005329 fb812b418d1b4b8e95230059f8f7a37e
+#: fd258d7119aa45a8b538903639989313 fe29f3dd42244f33abc4b8f47f6e207e
+#: fe731471d56f42629634abd25be5b7ca ff500570b917483a88cf2dd4fd3919c2
+msgid "I"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 3a04b9e4f28a4949ab6cb7d55fbf8619
+msgid ""
+"Nominal voltage used in the per-unit conversion on the ImaGrid side.<br>= "
+"nominalU (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d95537ff9913427fb8ca5952159b4b55
+msgid "MODECALC"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4603145340b14b259cba1a1bc7d0065b
+msgid ""
+"0 OPF, 1 Load Flow only, 2 OPF without redispatching (with slack variables) "
+"and 3 OPF_WITH_OVERLOAD.<br>= computationType (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5555f7863d4b49349cf9072519694d7d
+msgid "NBMAXMIT"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d48307476e134c838b0500a7f660c634
+msgid ""
+"Maximum number of micro-iterations per variant.<br>= nbMaxIteration (30)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d756ec69b48d408f8fd797995278253c
+msgid "NBMAXCUR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4a4332fe21384871a6e25e39adc73dee
+msgid ""
+"Maximum number of curative actions per contingency. No limit if the value is"
+" negative or zero.<br>= nbMaxCurativeAction (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a3c66e50c2444652a22c040441ff7040
+msgid "COUTECAR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 343eec5107174521bc92d8205f5b67fd
+msgid "Cost of the slack variables<br>= gapVariableCost (10)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 74433e4e48334be58a38f3946838a5af
+msgid "RELPERTE"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5426d826f573404d924d0682806156fb
+msgid ""
+"Maximum number of relaunch(es) for loss gap (default value: 0 = no "
+"relaunch)<br>= lossNbRelaunch (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 92dd03a78e074349958beb9fb41e369c
+msgid "SEUILPER"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 615e515d497248489cd576daef42db27
+msgid ""
+"Threshold of the gap between theoretical losses and computed losses "
+"requiring a relaunch (MW)<br>= lossThreshold (500)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md aacc4c70b9b946708a1d2dd68c3c4db7
+msgid "COUTDEFA"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4df6745c785b4410b3bcdcc763f6c421
+msgid "Default cost of loss of load<br>= lossOfLoadCost (13000)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 31a64f84c4a147a69a211852f7470a26
+msgid "MAXSOLVE"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md aeb807f56e444ff09408e8435c6f9a06
+msgid ""
+"Maximum time allowed for each solver resolution. 0: no limit.<br>= "
+"maxSolverTime (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 87ae8948dec34da3808a601c6754e311
+msgid "TDPENALI"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e93036ecd0c54d87b260c7926bfab662
+msgid ""
+"Phase-shifting cost of the PSTs in the objective function. A negative or "
+"zero value means that there is no associated cost (phase shift not "
+"penalized).<br>= pstCostPenality (10-2)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f6e6a907d9494151b8c30da7373d5f9f
+msgid "HVDCPENA"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 57e5055e6a01461c9bb9bb10f77ba272
+msgid ""
+"Flow cost of the HVDC lines in the objective function. A negative or zero "
+"value means that there is no associated cost (flow not penalized).<br>= "
+"hvdcCostPenality (10-1)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c20ad0923df2472bb17b40266fa45ea4
+msgid "PROBAINC"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b95d5d50884e4ef58cca045b4c5ca1e4
+msgid "Probability of the contingencies<br>= contingenciesProbability(10-3)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a7d740a5858a4a869c39db2c1ebfff4b
+msgid "TESTITAM"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 029fe7f4975646959761354314c3a1a4
+#: 379122ce85df40c488457b2247c733e6 6ec9a130561842d1847f4bd8fcdf2ea7
+#: 70df9b83b4ee482b88b97ca4e5fc5b73 70f068e3146849b3b316e2c65d4c0bb7
+#: 9264b42ee6c64fa2b08224df7baea365 95be2c612293410b8daf214ffcb6df35
+#: a96c07c622be43c3855156f076aa93ce e60dd6ade7814eb8ae0ff9be7792ac6b
+#: f1da3e98506242fbb55b9b0ebd6ba9e2
+msgid "B"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5681d77074f847d58a6bd1684123ce59
+msgid ""
+"Taking into account the post-contingency instant<br>= preCurativeThresholds "
+"(false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a07d2859fade40ada63246b423ad81a5
+msgid "INCNOCON"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2495c6d5065e49cb8737a6bdea1c3acc
+msgid ""
+"Taking into account the contingencies that break connectivity<br>= "
+"outagesBreakingConnexity (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c903c87b723e492c822b3e697a114c30
+msgid "PARNOCON"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5c73802f91634d31a69267954ec12751
+msgid ""
+"Taking into account the remedial actions that break connectivity<br>= "
+"remedialActionsBreakingConnexity (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a4a7a048b6bb4519bfe5bfc00f906e2b
+msgid "PAREQUIV"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b921c1507c944ed7b9570ab83e45cc2a
+msgid ""
+"Detection of equivalent remedial actions<br>= "
+"analogousRemedialActionDetection(false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0e8a01d66c75462cb66bbf864a70561c
+msgid "COUENDCU"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e9f266af877a4272b32bc0bd195bac6c
+msgid ""
+"Cost of undelivered energy for a contingency that breaks connectivity (load "
+"disconnected from the network)<br>= curativeLossOfLoadCost(26000)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 08f19f3cccf5456ebb674ad25f94c258
+msgid "COUENECU"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 48b6312f337c4ed3ac3092b88711a7ca
+msgid ""
+"Cost of unevacuated energy on a contingency that breaks connectivity "
+"(generation disconnected from the network)<br>= "
+"curativeLossOfGenerationCost(100)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2865172299c848288a0349be2ecc80eb
+msgid "LIMCURGR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 69fc11694bfe44ba83f25b0ba85f651f
+msgid "Curative redispatching limit<br>= curativeRedispatchingLimit(-1)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fb0ae75fd04d41fd8fc20fd2eb3f5774
+msgid "ADEQUAOF"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 63c8d61bc825434ab0cb396218b28a51
+msgid ""
+"Offset of generator and load shedding costs in the balancing phase<br>= "
+"adequacyCostOffset(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5a00c3c0129a412dbce10826424339ac
+msgid "REDISPOF"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 763a68c5fdf14884af991a2ac79be809
+msgid ""
+"Offset of generator and load shedding costs in the redispatching phase<br>= "
+"redispatchingCostOffset(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md cd7ca6d51a9747348db19fc06058d8d7
+msgid "NULLCOST"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 3ee5eeb36b154fcfa324f2b93356ced1
+msgid ""
+"Minimum cost of generators and load shedding, applied after adding the phase"
+" offset<br>= generatorMinCost(0.5)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:97 3d2e083b02a246e1833fa943a2224427
+msgid "Results options"
+msgstr "Options de résultats"
+
+#: ../../simulator/io_doc.md e75228cced5942af950b854f8181f053
+msgid "NBTHREAT"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4791874d70b6468b82524c5d03722240
+msgid "Number of N-k threats in the results<br>= nbThreatResults (1)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8b54bcc811f645fa82fefe42a8647af0
+msgid "EQUILRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5d6c8c0204274e6f9fbf11cb016e464b
+msgid ""
+"Output of the detailed results of the initial balancing<br>= "
+"withAdequacyResults (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 70238db567f34c88a651bf2078d51dca
+msgid "REDISRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 558de7556f8f4270bdaed284345efc68
+msgid ""
+"Output of the detailed results of the preventive redispatching<br>= "
+"withRedispatchingResults (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d58b1a9e643d412191e615a14c63931d
+msgid "VARMARES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0cdf2d73da744e0690483e5c6c963615
+msgid ""
+"Computation of marginal variations on the branches<br>= "
+"marginalVariationsOnBranches (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c4d1dc05e08142708edcda4166e7e616
+msgid "LCCVMRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 45b0ff59fa9945ecb7e4c540037da684
+msgid ""
+"Computation of marginal variations on the HVDC lines<br>= "
+"marginalVariationsOnHvdc (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fc50ece73bc94c8ca7543b750f38a859
+msgid "LOSSDETA"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c292ba79766e44a89c04e4c675570f64
+msgid ""
+"Computation of losses by region/country<br>= lossDetailPerCountry (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fa7573be0791427b9697771eb113dc62
+msgid "OVRLDRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ad31c4754d3e45729c349a5422e6933d
+msgid ""
+"Output of the network elements under constraint only<br>= "
+"overloadResultsOnly (false)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:109 ab412c7561eb450f8e1816875799691a
+msgid "Regions"
+msgstr "Régions"
+
+#: ../../simulator/io_doc.md 05d57481fa314281959c9a987bfc40bd
+msgid "**CGNBREGI**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2969f85b331d4f009c23642126d7f3ce
+msgid "Total number of regions<br>= $\\sum$ country"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 36acb6b7b4124c98ad0c636bd89bf83b
+msgid "CGNOMREG"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0153f5718fca465896c4c37e9e7cadf7
+#: 01c923c37b1048b6a55032f541b97f63 028ef79692164f1db748b35ae576bcbc
+#: 1503fecd02d2488a93c6e0bbe7f2c487 1a50f847a93d4f718e8ecf5701d1c16f
+#: 1efe0c42518c4492b102839e36d7bd55 2039b35629014ab38a8c89c518918391
+#: 242caea017f74dbba466b5d47d3a190b 3aff8be8b05e40e8a0d71098eab4b803
+#: 446b27d9e131422b91a4657ea74ea4a9 46516662ffd44f44ae59206aceeb0d73
+#: 60b9cf0f2689422295359a1810f30bbd 63738db073514550bbe0cfd12508bb08
+#: 63b83d11b43a4e67a26579f104e4b195 74827f4cb2cf4ae8b70727119149227f
+#: 7ceb5d66618c4dcfb4a8786c27c5f8e1 8bb34cf1e33742ffaf33c68e9c09f1f0
+#: 903a5af8434849098c0cfe3bd0c08cc4 94879b632cd14e2a9aa8814491bc45b5
+#: 9612cdfc19f04887a023120c8c3fd3e6 973a840d1db94b1aaf19f7fdd0e096c2
+#: a3b61905cf464d95a38d4e4943699ff5 a9ff67513be349b785b5498c8cfc77f7
+#: af2f54009d3f482db3d96023fe492f15 af8ed837c9164ddfa9a6dc51d6198e32
+#: b31001b88bcd4f72bf1104cde0e47052 b4607262dedc4fe0b46c5023b66687c6
+#: ba06e38d60af462ebd1c402c69941498 c08450b132734656831407383ddc6c86
+#: c29e0fc3bd2a4de79ca6b14cfc01b022 d25a17ec269b42b99315f051dbd9689d
+#: dc4dd510c83145838a186550b6857e4f dd7083c933dc455d80fc3947d5fc89d1
+#: ea2398e2d98e4c2e96ee508c7d7c7870 fe311b3709054aaf9d5fc4bbd922623d
+msgid "C"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9bc0262a2a5f4e6184e33b4b1468a3a0
+msgid "CGNBREGI"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9b42d1ce61ae486b8d587075092e75a4
+msgid ""
+"For each region, name of the region<br>= « paysCvg » if it exists, « country"
+" » otherwise"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:116 0e65c9c37ac34f49a87ffa820c99643b
+msgid "Nodal information"
+msgstr "Informations nodales"
+
+#: ../../simulator/io_doc.md:119 9ed116253d6340e6a4994b2b759001c0
+msgid "Vertices"
+msgstr "Sommets"
+
+#: ../../simulator/io_doc.md 8c7735d5d9fb478e8a51abf7427d55eb
+msgid "**TNNBNTOT**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e7574bb9511044d78db05cad4693cd8c
+msgid ""
+"Total number of vertices<br>= $\\sum$ bus s.t. "
+"voltageLevel.busBreakerView.bus $\\in$ main connected component"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:125 011e7c66c77a4cbfbc3b368259e8a95f
+msgid "Loads"
+msgstr "Consommations"
+
+#: ../../simulator/io_doc.md 8cef42a3ae754b8095aeb52fe2f8d06f
+msgid "**ECNBCONS**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ab072e60b11149638c3e557fc1fa8dd9
+msgid ""
+"Number of elementary loads<br>= $\\sum$ load s.t. "
+"load.terminal.busBreakerView.bus $\\in$ main connected component"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md bcb76145b6bf4879b27ddc22f62122be
+msgid "<o>TNNOMNOE</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0d696f01e2a246a4becc2786a784e012
+#: 46c15337762a48c5819312129ed2b44b 5326540d48ae4ebe95fb5f438794deea
+#: 5f6ccf929f3d44dda78d57bc4be70f4d 9053f040568d4f5693e2b20dfdefd556
+#: a265fe20e70f48eb892fd1372a187a26 c092d06de86d446eaafc338ad1445590
+msgid "ECNBCONS"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 944b5de139f44788affa84d9d264f616
+msgid "Names of the loads<br>= load.id"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b8e4374492d0475fa06bd81c2562ff2d
+msgid "<o>TNNEUCEL</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8b7e18fecea94a64918934418f0a9729
+msgid ""
+"Number of the connection vertex of the elementary load<br>= index of the bus"
+" in the TNNOMNOE table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9f22595e86f74f308aa8e73627599aa1
+msgid "<o>CPPOSREG</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 3e2ee320331a4d2a8a13e5fa74b993e1
+msgid "Vertex-region link<br>= index of the region in CGNOMREG"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1027177140c44979a18dae9e9dc99167
+msgid "<o>ESAFIACT</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 3a7feba95db44a4b8386b4fe2e8aacd3
+msgid ""
+"Value of the active load (sum of the fixed and affine parts)<br>= load.p0"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2fb973cccba04129b339281473b7f236
+msgid "TNVAPAL1"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f72660ab225243ef9535a4347da1e2c7
+msgid ""
+"Percentage of the first load shedding tier.<br>(100 if no node is "
+"configured)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 42adf1c2057a434ba244559b31585a59
+msgid "TNVACOU1"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md cebae8c5f89f4208bd4c3fa853933de7
+msgid "Load shedding cost (value of COUTDEFA by default)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:140 10f9f382580e41709eafc51988762135
+msgid "Generators"
+msgstr "Groupes"
+
+#: ../../simulator/io_doc.md b63c272f7a9d444f9b441086f9bd8233
+msgid "**TRNBGROU**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d48c7b7b728e4beca4e9bb428c7e02f0
+msgid ""
+"Number of connected generators<br>= $\\sum$ generator s.t. "
+"generator.terminal.busBreakerView.bus $\\in$  main connected component"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 00f684b0820f43ac83d8a989981cd597
+msgid "<o>TRNOMGTH</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6aa3c20275e94b6bb6fc7df66a01704e
+#: 701c7c1bba074cc6a08a810676043140 7563c2567aca4e1e96ebf94180ea8b52
+#: 9730f51de91c4651914a476c8b15ec60 a149483cd2e34d8baefb9fd415f5f5a2
+#: c468ce1f80da4f6b91c22b70f28775a0 fa42d04bbe11483bb13b82e386c16489
+#: fc690b6484f34ee0a1b5fd6fe5b6f3b6
+msgid "TRNBGROU"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2c37a50d4e5142ecbb4f33d401c5c70b
+msgid "Name of the generator<br>= generator.id"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8e44c423f53c42a2805f8838636a1737
+msgid "<o>TNNEURGT</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e704a158bc9842f093b1391ca264f9d3
+msgid ""
+"Connection vertices of the generator<br>= index of the bus in the TNNOMNOE "
+"table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ebefa6d15321410bab92686a1fd51b3a
+msgid "<o>SPPACTGT</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4dcda6786fda46ec9a087b55d637b3e8
+#, python-brace-format
+msgid ""
+"Setpoint power $P_{obj} \\in [\\underline{P},\\overline{P}]$<br>= "
+"generator.targetP"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 518019602c0645438dd08317b52967a3
+msgid "<y>TRVALPMD</y>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c615ff0af1ab4f6ba82a941733656b9f
+msgid "Maximum available power<br>= generator.maxP"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md bf0cfbc501534d48bd450ba0d31e9ddf
+msgid "<o>TRPUIMIN</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 460c94b363d443e5b5c5487d18f38a76
+msgid "Minimum power<br>= generator.minP"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 272d0914036046dab117db3bb2f5b7ca
+msgid "**TRNBTYPE**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2c37a50d4e5142ecbb4f33d401c5c70b
+msgid "Number of generator types"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6dae1aab9fd4497e884e208913fde207
+msgid "<o>TRNOMTYP</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c65a80e6a3ed4523bdc11f8e6144b091
+msgid "TRNBTYPE"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2c37a50d4e5142ecbb4f33d401c5c70b
+msgid "Names of the generator types"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5a0b43d921664f6f8055457a6193babc
+msgid "<o>TRTYPGRP</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b6666a66db0548a789084640637947e4
+msgid "Index of the generator type in TRNOMTYP"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8db5c255496d4c9eb7fe9d47c9fa3813
+msgid "<o>SPIMPMOD</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 89b8040d171d405e9edde59e1c42287b
+msgid ""
+"Indicates whether the generator is available for redispatching (3 = "
+"'OUI_AR'), adequacy (2 = 'OUI_HR'), both (1 = 'OUI_HR_AR') or neither (0 = "
+"'NON_HR_AR')<br>(1 if no generator is configured and 0 otherwise.)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d61e7b9355ba4fbcbc28bc995096262e
+msgid "TRDEMBAN"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e13f50cb6477442a8f3e99e4af833562
+msgid ""
+"Half-band of regulation in secondary regulation.<br>= prorata of the largest"
+" generator contingency (0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:159 9ed116253d6340e6a4994b2b759001c0
+msgid "Branches"
+msgstr "Quadripôles"
+
+#: ../../simulator/io_doc.md:162 fdf992e43a6d4a759492c6b3034e5c28
+msgid "Elementary branches"
+msgstr "Quadripôles élémentaires"
+
+#: ../../simulator/io_doc.md 55bebe468c8f406c89083fb333365409
+msgid "**CQNBQUAD**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 977691d9b65a4e39b9985d29c528c0a8
+msgid ""
+"Number of elementary branches<br>= $\\sum$ (quad = *line* &#124;&#124; "
+"*twoWindingsTransformer*) s.t. quad.terminal1.busBreakerView.bus && "
+"quad.terminal2.busBreakerView.bus $\\in$ main connected component<br>+ "
+"$\\in$ *switch* s.t. switch.retained && "
+"(switch.voltageLevel.busBreakerView.bus1 && "
+"switch.voltageLevel.busBreakerView.bus2 $\\in$ main connected component)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fdbc3b1a323742229464261550b3f8c3
+msgid "<o>CQNOMQUA</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0f64e8d1e8ce4d628516b3ea66e651a8
+#: 2379541cbe22408caa43a7b74e2eed17 279ce0a91dfc4907b907060c78b2a509
+#: 35bf991c16094b9fb04702c1163ad912 9738d1dde0a44b78b8e25c89554a88d0
+#: a1c5e729ee46472b80e0a421af281ce0 a81cf9b985c248868e50d550c155d501
+msgid "CQNBQUAD"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 52687dc000ff434a84ccd3217cead6eb
+msgid "Name of the branch<br>= quad.id"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 210a9056e654405c9696e99594a0482d
+msgid "<o>CQADMITA</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0535b5df494d4c2eadb99dfda407fe72
+#, python-brace-format
+msgid ""
+"Admittance of the branch referred to Ubase (inverse of the reactance, i.e. "
+"neglecting the value of the resistance)<br>= $1 / (X * nominalU^2 / "
+"Unom^2)$<br>For lines:<br>$X = line.x$<br>For transformers:<br>$X_{transfo} "
+"= twoWindingsTransformer.x$<br>For phase-shifting transformers:<br>$X = "
+"X_{transfo} * (1 + X_{prise} / 100)$<br>$X_{prise} = "
+"phaseTapChanger.phaseTapPosition.x$<br>For bus couplers:<br>$X = "
+"10^-5$<br>Unom = line.terminal2.voltageLevel.nominalV"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c9bad11369ba4fb3bf80c31c633d3f70
+msgid "<o>CQRESIST</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0d6d538ff01f42e099b38ac35d9687ce
+msgid ""
+"Resistance used for the loss computation (in pu, base nominalU)<br>The "
+"formulas are the same as for CQADMITA, replacing X by R"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9e37b870257f47c6a2d60f0d495d3b67
+msgid "<o>QASURVDI</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e1cb7cade5ba4a13bc404dfaef4bb46b
+msgid ""
+"Monitoring indicator of the branch in N. 2 = flow result only, 1 = monitored"
+" by the model, 0 = no result"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ab1a711f1aeb410e96c9899144ab300a
+msgid "<o>QASURNMK</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2e00cf34e5f9456eb43bade827d0dd02
+msgid ""
+"Monitoring indicator of the branch in N-K. 2 = flow result only, 1 = "
+"monitored by the model, 0 = no result"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a04c663fd48e489a951108e29c68a334
+msgid "<y>TNNORQUA</y>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e7130bff9c404ce1890d4fa71e0318c8
+msgid ""
+"Index of the origin node of the branch (quad.terminal1.busBreakerView.bus) "
+"in the TNNOMNOE table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7d233aa794fd4b5dbfab91d6ebe68072
+msgid "<y>TNNEXQUA</y>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f06587801ddd49ffbcda0b63b2667672
+msgid ""
+"Index of the end node of the branch (quad.terminal2.busBreakerView.bus) in "
+"the TNNOMNOE table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5e29a30825504732a1870a29506b985f
+#: 6bba39dcf5644038bf9878b046714e67
+msgid "NBOPEBRA"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4fa0e01ac795481cb1544309a5cb294e
+msgid ""
+"Number of open branches kept because they can be reclosed by a remedial "
+"action<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0070d3a95e764550a33006c5adb642c2
+msgid "OPENBRAN"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 892637efeb8b4583842d6bcff26f514d
+msgid "Indices of the open branches in the CQNOMQUA table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:177 c2acc7a6df61418e9f35d4b67c5a5c54
+msgid "Phase shifters"
+msgstr "Déphaseurs"
+
+#: ../../simulator/io_doc.md bb3834750f7d4725993127fc2c3bc9a9
+msgid "**DTNBTRDE**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 16872e8f797d4afbbeae8fd174166d45
+msgid ""
+"Total number of phase-shifting transformers<br>$\\sum$ "
+"twoWindingsTransformer.phaseTapChanger if twoWindingsTransformer is in the "
+"CQNOMQUA table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7742ac51b9f04b1fa14f616a89a20aed
+msgid "<o>DTTRDEQU</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 033a918b017e4ac7b506318856ca88b2
+#: 5194475ea1a34778b985642edaa7e4c1 623eef402a524ee180af0d9382b4622f
+#: aa5745574a6c43ce9c6244be4550a895 cbb52e73c8c149fab27b436dff66dc94
+#: fa51377a81794b3f9f65bb6558a4aee6
+msgid "DTNBTRDE"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6f9729964efb46e1ad66a88917671612
+msgid ""
+"Phase shifter-elementary branch number correspondence<br>= index of twt.id "
+"in the branch tables"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md cff053f80bb84b56a43d1875a08a7e56
+msgid "<o>DTMODREG</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d23b217d2ca44b0bb871e9a27a2bc0f9
+msgid ""
+"Control type<br>0: Out of service<br>1: optimized angle<br>2: fixed "
+"angle<br>3: optimized power (not used)<br>4: fixed power (not used)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fd9ecb4ed88f4d5a919dc74e1e2253b2
+msgid "<o>DTVALINF</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fe8c7569200540a7bf2e28c1c2d931b5
+msgid ""
+"Minimum phase shift value of the PST in N, in degrees<br>= "
+"phaseTapChanger.lowTapPosition.alpha"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 410ff42077304209ac32c5d34e5a1630
+msgid "<o>DTVALSUP</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7d969218d1594407a14772e20865232a
+msgid ""
+"Maximum phase shift value of the PST in N, in degrees <br>= "
+"phaseTapChanger.highTapPosition.alpha"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f0de002a5168484dbcf2dc10b34f4630
+msgid "<o>DTVALDEP</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d062a7c67f784b6ab1c0a5be6dcbcf16
+#, python-brace-format
+msgid ""
+"Initial phase shift value per PST in degrees, this is the value used if "
+"DTMODREG $\\in {1, 2}$<br>= phaseTapChanger.tapPosition.alpha"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:188 7493bc4742024680ad9a02251c1f1ccc
+msgid "HVDC lines"
+msgstr "Lignes à courant continu"
+
+#: ../../simulator/io_doc.md 378e09ec3acf40c5ac9f03bc989285f1
+msgid "**DCNBLIES**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1280b7d3bd974084a2e704283a09250e
+msgid ""
+"Number of HVDC lines<br>= $\\sum$ hvdcLine s.t.  "
+"(hvdcLine.converterStation1.terminal.busBreakerView.bus && "
+"hvdcLine.converterStation2.terminal.busBreakerView.bus) $\\in$ main "
+"connected component"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5d7cad62442a4b1ab6a866808d94f05f
+msgid "<o>DCNOMQUA</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 38b933e1091e45b19cc93d8d0a63befb
+#: 4200e1b657534dd39cca4827c2564ca7 594f54c14c5147d2a01f578ed47fdcb1
+#: 5d6b816e7cdd47a8a034cf716c6f61c3 61297a4daf6f4ceb84a81e56cc7512f4
+#: 775642e547ea4345bcdc43aba6a217b0 812e909d955147d38aeccc3ee386e17d
+#: 9471a175c3044ab8af922809c3379279 f0e2a3f2f1df4565bc4acb7e10b78665
+#: f13455e1a83d4eb5810eee3a6ff0c39a f73e99fa9174473caa985af844ad4f48
+#: fc743cdc2acc471b87c41f2915b11eee
+msgid "DCNBLIES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 691e7418818c4e308f1a1647f2e51397
+msgid "Name of the HVDC line<br>= hvdcLine.id"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c73897f4a1534d0b9fb5cf95f22c6f8f
+msgid "<o>DCNORQUA</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 393343a917804dafaa89f306734d34e6
+msgid ""
+"Index of the origin node of the line "
+"(hvdcLine.converterStation1.terminal.busBreakerView.bus) in the TNNOMNOE "
+"table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 06dd8f3541df4dbe9652627a9ea91856
+msgid "<o>DCNEXQUA</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 87a847ce622a4d4a93507beb1ed00ff6
+msgid ""
+"Index of the end node of the line "
+"(hvdcLine.converterStation2.terminal.busBreakerView.bus) in the TNNOMNOE "
+"table"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4e0c926de1a84a11bcdc2205ce65e6eb
+msgid "<o>DCMINPUI</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7821ebdb83c74bd49d9a81eeb7f8adb8
+msgid ""
+"Minimum power<br>= - activePowerRange.oPRFromCS2toCS1 if the "
+"HvdcOperatorActivePowerRange extension is used, - hvdcLine.maxP otherwise."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 56582db7f9c048e8b512e0f44a1afbce
+msgid "<o>DCMAXPUI</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md bfd077d34aa748df8cb47bfb548f5d92
+msgid ""
+"Maximum power<br>= activePowerRange.oPRFromCS1toCS2 if the "
+"HvdcOperatorActivePowerRange extension is used, hvdcLine.maxP otherwise."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7140eb68a3264487996c17b062a6281c
+msgid "<o>DCIMPPUI</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 49e2baae2bab4ce08adef80b6e19ed5f
+msgid ""
+"Imposed power $P_0$<br>= activePowerControl.p0 if the "
+"HvdcAngleDroopActivePowerControl extension is used, +/- "
+"hvdcLine.activePowerSetPoint otherwise"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a5649fa92c664fbe845901df2a668450
+msgid "<o>DCREGPUI</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2787b1864f2c4bd7ac2e8d29a1b08838
+msgid ""
+"Type of flow control on the line<br>1: fixed power<br>2: optimized power"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 27323c8fe16f4bc0baf8fbb5d175bd15
+msgid "<o>DCTENSDC</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md dc7f15f4a7f44c4c9e4cb1edd691d5c6
+msgid "Nominal voltage of the DC cable<br>= hvdcLine.nominalV"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2818d7c4a90048c99a00bcb07bf36690
+msgid "<o>DCRESIST</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 819041b18ba24eea92a8bb35ebccf7b0
+msgid ""
+"Resistance of the DC cable in pu (base nominalV), normalized with respect to"
+" the DC voltage.<br>= hvdcLine.r * nominalU $^2$ / hvdcLine.nominalV $^2$"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d02edf31a64a43df950c677259e48377
+msgid "<o>DCPERST1</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 59c2b9ff87d14cd295a64766d6f31e8e
+msgid ""
+"Loss coefficient (in %) of the origin converter station<br>= "
+"hvdcLine.converterStation1.lossFactor"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f3d77d6879524cd990bacee2f98accdc
+msgid "<o>DCPERST2</o>"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4d00ded98b9043e1b1ed220ae7e6bb7d
+msgid ""
+"Loss coefficient (in %) of the end converter station<br>= "
+"hvdcLine.converterStation2.lossFactor"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 41865053f2624b2896b1fe54cbb6cfcb
+#: c716d092aa944e99908b7b9b04c5644a
+msgid "DCNDROOP"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e53835dbf1894aec836a86055a740932
+msgid ""
+"Number of HVDC lines operated in AC emulation mode ($P = P_0 + k "
+"\\Delta\\Theta$)<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f9088d36621d4f24b0d96ccddc781ffb
+msgid "DCDROOPK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f89af1b9b6904405886d71c27b181b4d
+msgid ""
+"For each HVDC line in AC emulation, in the order of the [DCNOMQUA "
+"table](#table_dcnomqua), value of the coefficient k (in MW/°)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:210 4e90466554724871bd877326b9190288
+msgid "N-1 and N-k contingencies"
+msgstr "Incidents N-1 et N-k"
+
+#: ../../simulator/io_doc.md 4658eaf52d0b406a85665be72c370d78
+msgid "**DMNBDEFK**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4e90466554724871bd877326b9190288
+msgid "Number of contingencies"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6caaa368cbca41129e3d74fb9fab0a82
+msgid "DMNOMDEK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1a645de8f5bc46fd9ce1817d1b467599
+#: 86d6003fb4d64ce08790e1bef7385e60
+msgid "DMNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e65e7bcea2e34d3aad23b8ae9769236e
+msgid "Name of the contingency"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5c41c2bcf5c2449187e27d34959831c6
+msgid "DMPTDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md db4f34b1085744989e46eca7f8a4cdbd
+msgid "For each contingency, pointer to DMDESCRK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 87e104e0860d4ba6b1ed7dbf861e77fa
+msgid "DMDESCRK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e4f9430039bc4ee4a2651ca700161025
+#, python-brace-format
+msgid "DMNBDEFK<br>$+ 2 * \\sum nb_{<i>}$"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 37041f964bc545beac1eccec9b79834e
+#, python-brace-format
+msgid ""
+"Description of the contingencies<br>For each contingency:<br>Nb, "
+"$Type_{<1>}$, $Indice_{<1>}$, …, $Type_{<nb>}$, $Indice_{<nb>}$<br>Nb: "
+"number of elements in the contingency<br>Type:<br>1 for a branch (line, "
+"transformer)<br>2 for a generator<br>3 for an HVDC link<br>Indice: in the "
+"list of branches, in the list of generators or in the list of HVDC links "
+"depending on the type"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b93ca3b733b8429f9740dfd44428a110
+msgid "BDEFRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e6336d2e0ef9495a8782c9b8ce026dfb
+msgid "Size of the array of faults with detailed results<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f5d5d92590c7477c9714426641236603
+msgid "TDEFRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c358ddfd0a4048609ccbe1532dd45f3c
+msgid "NBDEFRES"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0409685fa8564d4cbd3627bd278c96e9
+msgid ""
+"Sequence of triplets: index of the branch, number of faults with detailed "
+"results, list of the indices of these faults."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:221 ae9c74bf33ff433a9407c27b1a08d8c0
+msgid "Curative"
+msgstr "Curatif"
+
+#: ../../simulator/io_doc.md f74b1b0dbea6464b88021b5a8e4ea115
+msgid "DTNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9b23653450de4492b3fc986d3c8e4838
+#: f191eb72a6c6486f9b0269abccbee0b7
+msgid ""
+"For each PST, number of contingencies for which the PST can act in "
+"curative<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 40f78b9a544d4ac5863d895a2d288812
+msgid "DTPTDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fd80d559f0144f88a0a39c3f7d5b8496
+msgid "≤ DTNBTRDE  * DMNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ac5f318d6db842b8914e3d343a1ebcb8
+#: cd76184fdd7042eabebb5e4cf7fd05af
+msgid ""
+"For each PST acting in curative, in increasing index order, indices of the "
+"contingencies handled in curative"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5ea1b1c0a03b46d5a0aca5ae4a63ebc5
+msgid "DCNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c224d4bcf7be423e9d7b83007be7b9b4
+msgid "DCPTDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1e2342607db2458d954de81608426d7c
+msgid "≤ DCNBLIES * DMNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 11611862fc0748e9965591dc17e5e551
+#: a2052fc81bbe4b15931de5f3e834ae51
+msgid "NBLDCURA"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 665709b53a6f498a88a20f9c317261c8
+msgid "Number of loads that can be curtailed in curative<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0ed796b294ac49d38031dfacfdc04b17
+msgid "LDNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f615eb351d644fb1b90d266d90e30461
+msgid "For each load, number of contingencies handled in curative"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f535ce4d00e24b1783c7e4c40fd1d1d7
+msgid "LDCURPER"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 464a0e01f27146f7b6f1f3ba96de0e1c
+msgid ""
+"For each curative load, in index order, percentage of curtailment in "
+"curative"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a770ca35409d4fb48e1fda02f2c3b2c8
+msgid "LDPTDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7f7c231018e54d9fa4ac2dbe81d4fff1
+msgid "≤ NBLDCURA * DMNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d676232d03454e37aef1efc0c14c40ae
+msgid ""
+"For each curative load, in the order of the [TNNEUCEL "
+"table](#table_tnneucel), pointer to the contingencies handled in curative."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1210855364d44a788358c2ac9dc6e83d
+#: 83bff31f44e64febbc094d25bb40f8ec
+msgid "GRNBCURA"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 665709b53a6f498a88a20f9c317261c8
+msgid "Number of generators that can act in curative<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2ce24ca79ba24223a49126c3b3401a74
+msgid "GRNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 464a0e01f27146f7b6f1f3ba96de0e1c
+msgid ""
+"For each curative generator, number of contingencies handled in curative"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 971c747a473b4d1a9b1b58cb91ab8821
+msgid "GRPTDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e413e9cf8efb429ba19d4541ca27e642
+msgid "≤ GRNBCURA * DMNBDEFK"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 610136240d5c4849bf66dbce3f13cd78
+msgid ""
+"For each curative generator, in the order of the [TRNOMGTH "
+"table](#table_trnomgth), pointer to the contingencies handled in curative."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:237 ffafa6bc0b17451d9c179d14ea0413ee
+msgid "Monitored sections"
+msgstr "Sections surveillées"
+
+#: ../../simulator/io_doc.md cd1885eddfca449e99a002a909a0b407
+msgid "**SECTNBSE**"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 819eb798c39745ec83388e8b936ffe6d
+msgid "Number of monitored sections"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7210a6adc1be44639d37a8b16ac821d3
+msgid "SECTNOMS"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7e12901e70914ecc9f5dcb044ba56ce6
+#: 86663741a74b4553a99e46209643876c 92afbcd0aa8c43fdb9f009a588587d01
+msgid "SECTNBSE"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ffafa6bc0b17451d9c179d14ea0413ee
+msgid "Name of the section"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c687cb4a725b4659b14954bfeb7420d4
+msgid "SECTMAXN"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 89d964ac0af84bd2affbce53895d1a98
+msgid "N threshold of the section"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 03f3322a07044b229e471ff86b944cd8
+msgid "SECTNBQD"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 88e8a7bed23d4d13b1ca9ce9d2b14833
+msgid "Number of branches of the section (nb1, nb2, …)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5a62765620dd43f39553154ab511bc6a
+msgid "SECTTYPE"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 095fbccdff77476f9dd4179feb8970d9
+#: 2d05c07f111744ac8c98b60e360d4b20 6dc1664cfed0424a86d925ab5eb7e3ff
+#, python-brace-format
+msgid "$\\sum nb_{<i>}$"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8d592b406cd748c684b5bc213907e1b1
+msgid ""
+"Table of branch types (list of the nb1 types of section 1, list of the nb2 "
+"types of section 2, …)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9dfdaedffb4643b4bf7903027bcea3c4
+msgid "SECTNUMQ"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md df9de92130d24fc79cec737c62bb6f39
+msgid ""
+"Table of numbers in the list of branches or in the list of HVDC links (list "
+"of the nb1 numbers of section 1, list of the nb2 numbers of section 2, …)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 77546128716543999fe48b8c2d4db0fb
+msgid "SECTCOEF"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md aa85c512ea7f478484064abd66cde3e1
+msgid ""
+"Table of coefficients associated with the branches (list of the nb1 "
+"coefficients of section 1, list of the nb2 coefficients of section 2, …)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:248 c48d83ff1ccd4aa0a7b74c1f14dd1d90
+msgid ""
+"*Note: the `SECTMAXN` threshold only applies when the weighted sum of the "
+"flows of the section is positive. The opposite direction is not constrained;"
+" to bound both directions, declare a second section with opposite "
+"coefficients, the same threshold and a different name.*"
+msgstr ""
+"*Note : le seuil `SECTMAXN` ne s'applique que lorsque la somme pondérée des "
+"transits de la section est positive. Le sens inverse n'est pas contraint ; "
+"pour borner les deux sens, déclarer une seconde section de coefficients "
+"opposés, de même seuil et de nom différent.*"
+
+#: ../../simulator/io_doc.md:253 8f141beea6664b1d8ed582af20cdea76
+msgid "Coupled variables"
+msgstr "Variables couplées"
+
+#: ../../simulator/io_doc.md 5b5d23704764472680fb8fbafa3e26f1
+#: 87472b56a993480c8905e13de3739a38 c8f2e432af774c9da93ab4eba8906855
+msgid "NBGBINDS"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 98812231209641c3b1afc6a3226da7c1
+msgid "Number of generator couplings<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5bf19cf3e2bd4b7c94c08457427e96d5
+#: e36260d351774bf4a9c83700d1d1a425
+msgid "NBLBINDS"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 98812231209641c3b1afc6a3226da7c1
+msgid "Number of load couplings<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c83f74f31b0a486286f2b2cc833fddb1
+msgid "GBINDDEF"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b4214bed9e76402589dd4699c3d15bbf
+msgid "≤ NBGBINDS + TRNBGROU"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f213c397f06b499b8b93930d30dabf0d
+msgid ""
+"For each coupling, number of generators in the coupling then indices of the "
+"coupled generators"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 043f211578254317a1ea8d9ace351c51
+msgid "GBINDNOM"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2e5596eb271c4716aa882fab804f9892
+msgid "Names of the generator couplings"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d0708a7610ab4ca28a8e259592acb95f
+msgid "GBINDREF"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a3186dcb0c4f45d49e438edbae4da375
+msgid ""
+"For each coupling, type of the reference variable (0 = PMAX, 1 = PMIN, 2 = "
+"POBJ, 3 = PMAX-POBJ)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5c2a60e3a92d418eb379e4fe672ddccb
+msgid "LBINDDEF"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md dec16c75a37e4ec0a3740d305dd7bfd8
+msgid "≤ NBLBINDS + ECNBCONS"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 67850a90ed8948af9510020e7d55af58
+msgid ""
+"For each coupling, number of loads in the coupling then indices of the "
+"coupled loads"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9c4a3f0b0c1e424f89c57594ff3a8819
+msgid "LBINDNOM"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d5d66086e4284ac29efd5e8a68884671
+msgid "Names of the load couplings"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:265 b0819d46310048f181d2300649b72bdd
+msgid "Detailed marginal variations"
+msgstr "Variations marginales détaillées"
+
+#: ../../simulator/io_doc.md 20f4a2a1824d4d84bf8b0d12e707ff32
+#: cd4961a59a974d65950a1285085d9c4c
+msgid "NBVARMAR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md dbbfea42936740ef8ca9b4008839d571
+msgid "Size of the array of detailed marginal variations (PTVARMAR)<br>(0)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6e11a4b48a8148c7a084dc424c9e7a9f
+msgid "PTVARMAR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1a11242b0c9f4b3db4706a9f4d711411
+msgid ""
+"Sequence of triplets: index of the branch, number of faults with detailed "
+"marginal variations, list of the indices of these faults."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:272 9ed116253d6340e6a4994b2b759001c0
+msgid "Variants"
+msgstr "Variantes"
+
+#: ../../simulator/io_doc.md:273 214ebd96b5664e3492daf9a67f5e0dd0
+msgid ""
+"The data specific to each variant are described in a csv file. The first "
+"line indicates the number of draws (i.e. of variants), after the keyword "
+"*NT*. Each line of the file then starts with the draw number followed by the"
+" type of the law described, identified by a keyword. The data specific to "
+"the law and to the draw are written after the keyword, namely:"
+msgstr ""
+"Les données spécifiques à chaque variante sont décrites dans un fichier au "
+"format csv. La première ligne indique le nombre de tirages (i.e. de "
+"variantes), après le mot-clé *NT*. Chaque ligne du fichier commence ensuite "
+"par le numéro du tirage suivi par le type de la loi décrite identifiée par "
+"un mot-clé. Les données propres à la loi et au tirage sont écrites à la "
+"suite du mot-clé, à savoir :"
+
+#: ../../simulator/io_doc.md:277 c5bd84dffc5e485a9e67f03a040cc85d
+msgid ""
+"**PRODIN**: the number of generators, then the names of the unavailable "
+"generators."
+msgstr ""
+"**PRODIN** : le nombre de groupes, puis les noms des groupes indisponibles."
+
+#: ../../simulator/io_doc.md:278 a1595a46585141689c61241e7074a504
+msgid ""
+"**PRODIM**: the number of generators, then as many pairs (generator index, "
+"setpoint power) as the indicated number of generators."
+msgstr ""
+"**PRODIM** : le nombre de groupes, puis autant de couples (indice de groupe,"
+" puissance de consigne) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:279 19bc5311977b49d3a24c0328ebe80c7c
+msgid ""
+"**QUADIN**: the number of unavailable lines (outages) then the names of the "
+"unavailable network elements. If these unavailabilities break the "
+"connectivity of the network, the variant is ignored (code 4), or the "
+"computation stops with an error for the \"-1\" variant."
+msgstr ""
+"**QUADIN** : le nombre de lignes indisponibles (consignations) puis les noms"
+" des ouvrages indisponibles. Si ces indisponibilités rompent la connexité du"
+" réseau, la variante est ignorée (code 4), ou le calcul s’arrête en erreur "
+"pour la variante « -1 »."
+
+#: ../../simulator/io_doc.md:280 9ab8e16d332744d9ade96888c344b719
+msgid ""
+"**TRVALPMD**: the number of generators, then as many pairs (generator index,"
+" maximum available power) as the indicated number of generators."
+msgstr ""
+"**TRVALPMD** : le nombre de groupes, puis autant de couples (indice de "
+"groupe, puissance maximale disponible) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:281 bd82773736234653986005f6df6f7a63
+msgid ""
+"**TRPUIMIN**: the number of generators, then as many pairs (generator index,"
+" minimum available power) as the indicated number of generators."
+msgstr ""
+"**TRPUIMIN** : le nombre de groupes, puis autant de couples (indice de "
+"groupe, puissance minimale disponible) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:282 a025f773aa5e425bad0acd822adf9d40
+msgid ""
+"**CONELE**: the number of loads, then as many pairs (load name, new load "
+"value) as the indicated number of loads. These are nodal loads. Eurostag "
+"convention: 1 node = 1 load"
+msgstr ""
+"**CONELE** : le nombre de consommations, puis autant de couples (nom de la "
+"consommation, nouvelle valeur de consommation) que le nombre de "
+"consommations indiqué. Il s’agit de consommations nodales. Convention "
+"Eurostag : 1 nœud = 1 conso"
+
+#: ../../simulator/io_doc.md:283 05b58dd97dfe454fa0c12d3ff99c45bf
+msgid ""
+"**ECHANG**: law that should rather be called balance by the loads. The "
+"number of regions, then as many pairs (region index, target balance for the "
+"region) as the indicated number of regions. After applying all the other "
+"laws of the same draw (in particular the load and imposed power laws), "
+"METRIX computes the power balance, i.e. the sum of the imposed generations "
+"minus the sum of the loads of the same region, the result being named "
+"$\\Delta1$. Note that it is really the balance only if there are no "
+"modifiable generators. A check is made on this point and the variant is "
+"rejected if there is a modifiable generator in a region for which a balance "
+"is to be set.<br>The law provides the desired balance, in MW, in this "
+"region, which will be named $\\Delta2$; note that if the quantity $\\Delta2$"
+" is positive, then there is more generation than load. The difference "
+"($\\Delta1 - \\Delta2$) corresponds to the power to be redistributed over "
+"all the loads of the region. The distribution is done pro rata to the load: "
+"$c_i = c_i – c_i*(\\Delta1 - \\Delta2)  / sumC$; $c_i$ is the load at node "
+"$i$ and $sumC$ is the sum of the loads of the whole region concerned. This "
+"law dating from ASSESS is currently not used in ImaGrid."
+msgstr ""
+"**ECHANG** : loi qui devrait s’appeler plutôt bilan par les consommations. "
+"Le nombre de régions, puis autant de couples (indice de région, bilan visé "
+"pour la région) que le nombre de régions indiqué. Après application de "
+"toutes les autres lois du même tirage (notamment des lois de consommation et"
+" puissance imposée), METRIX calcule le bilan de puissance, i.e. la somme des"
+" productions imposées moins la somme des consommations de la même région, le"
+" résultat est nommé $\\Delta1$. À noter qu’il s’agit réellement du bilan "
+"s’il n’y a pas de groupes modifiables. Il y a une vérification sur ce point "
+"et un rejet de la variante s’il y a un groupe modifiable dans une région "
+"pour laquelle on veut caler un bilan.<br>La loi fournit le bilan voulu, en "
+"MW, dans cette région, on le nommera $\\Delta2$ ; notons que si la grandeur "
+"$\\Delta2$ est positive, alors il y a plus de production que de "
+"consommations. La différence ($\\Delta1 - \\Delta2$) correspond à la "
+"puissance à redistribuer sur toutes les consommations de la région. La "
+"répartition se fait au prorata de la consommation : $c_i = c_i – "
+"c_i*(\\Delta1 - \\Delta2)  / sumC$ ; $c_i$ est la consommation au nœud $i$ "
+"et $sumC$ est la somme des consommations de toute la région concernée. Cette"
+" loi datant d’ASSESS n’est actuellement pas utilisée dans ImaGrid."
+
+#: ../../simulator/io_doc.md:285 bbbf09cd4dff4af0b9bd87e21bea34d3
+msgid ""
+"**ECHANGP**: the number of regions, then as many pairs (region index, target"
+" balance for the region) as the indicated number of regions. This law is "
+"similar to the ECHANG law but it acts on the generators instead of the "
+"loads. After applying all the other laws of the same draw, METRIX adjusts "
+"the powers of the modifiable generators of the region to balance the balance"
+" (sum of the generations minus sum of the loads) to the value indicated in "
+"the variant. The selection of the generators to modify is made according to "
+"the off-grid merit-order costs (upward and downward). If, in a region, there"
+" is too much non-modifiable generation or too little available generation to"
+" balance the balance, the variant is rejected. Moreover, METRIX does not "
+"guarantee that the balance will not be modified during the off-grid phase. "
+"It is up to the user to choose prohibitive off-grid merit-order costs for "
+"the region considered compared to the study regions. This law dating from "
+"ASSESS is currently not used in ImaGrid."
+msgstr ""
+"**ECHANGP** : le nombre de régions, puis autant de couples (indice de "
+"région, bilan visé pour la région) que le nombre de régions indiqué. Cette "
+"loi est similaire à la loi ECHANG mais elle agit sur les groupes de "
+"production au lieu des consommations. Après application de toutes les autres"
+" lois du même tirage, METRIX ajuste les puissances des groupes modifiables "
+"de la région pour équilibrer le bilan (somme des productions moins somme des"
+" consommations) à la valeur indiquée dans la variante. La sélection des "
+"groupes à modifier se fait suivant les coûts d’empilement hors réseau (à la "
+"hausse et à la baisse). Si, sur une région, il y a trop de production non "
+"modifiable ou trop peu de production disponible pour équilibrer le bilan, la"
+" variante est rejetée. De plus, METRIX ne garantit pas que le bilan ne sera "
+"pas modifié lors de la phase hors réseau. C’est à l’utilisateur de choisir "
+"des coûts d’empilement hors réseau prohibitifs pour la région considérée par"
+" rapport aux régions d’étude. Cette loi datant d’ASSESS n’est actuellement "
+"pas utilisée dans ImaGrid."
+
+#: ../../simulator/io_doc.md:287 79dc452531024271bec8626fc9a82031
+msgid ""
+"**CTORDR**: the number of upward costs without network, then as many pairs "
+"(generator name, cost) as the indicated number of generators."
+msgstr ""
+"**CTORDR** : le nombre de coûts à la hausse sans réseau, puis autant de "
+"couples (nom du groupe, coût) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:288 8a1373e8acb54ff798f812fb85b45c3f
+msgid ""
+"**COUBHR**: the number of downward costs without network, then as many pairs"
+" (generator name, cost) as the indicated number of generators."
+msgstr ""
+"**COUBHR** : le nombre de coûts à la baisse sans réseau, puis autant de "
+"couples (nom du groupe, coût) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:289 5ea7bc299fde42c0915cfadc573ba882
+msgid ""
+"**COUHAR**: the number of upward costs with network, then as many pairs "
+"(generator name, cost) as the indicated number of generators."
+msgstr ""
+"**COUHAR** : le nombre de coûts à la hausse avec réseau, puis autant de "
+"couples (nom du groupe, coût) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:290 535346d8192f4d59adbec795a9c4fd29
+msgid ""
+"**COUBAR**: the number of downward costs with network, then as many pairs "
+"(generator name, cost) as the indicated number of generators."
+msgstr ""
+"**COUBAR** : le nombre de coûts à la baisse avec réseau, puis autant de "
+"couples (nom du groupe, coût) que le nombre de groupes indiqué."
+
+#: ../../simulator/io_doc.md:291 9286311a6a324c30912754b7f44c55bc
+msgid ""
+"**DCMINPUI**: the number of HVDC minimum power modifications then as many "
+"pairs (HVDC line name, new Pmin) as indicated."
+msgstr ""
+"**DCMINPUI** : le nombre de modifications de puissance min HVDC puis autant "
+"de couples (nom de la ligne à courant continu, nouvelle Pmin) qu’indiqué."
+
+#: ../../simulator/io_doc.md:292 262c83df14e7404490eb534f3ca31e9c
+msgid ""
+"**DCMAXPUI**: the number of HVDC maximum power modifications then as many "
+"pairs (HVDC line name, new Pmax) as indicated."
+msgstr ""
+"**DCMAXPUI** : le nombre de modifications de puissance max HVDC puis autant "
+"de couples (nom de la ligne à courant continu, nouvelle Pmax) qu’indiqué."
+
+#: ../../simulator/io_doc.md:293 cb360470e58b44d890b7700ec0c7adcd
+msgid ""
+"**DCIMPPUI**: the number of modifications of the setpoint power of the HVDC "
+"lines, then as many pairs (HVDC line name, setpoint power) as indicated. If "
+"the HVDC line is not in \"imposed setpoint\" mode in the base case, METRIX "
+"automatically changes the operating mode of the HVDC line (for this variant "
+"only)."
+msgstr ""
+"**DCIMPPUI** : le nombre de modifications de la puissance de consigne des "
+"lignes HVDC, puis autant de couples (nom de la ligne à courant continu, "
+"puissance de consigne) qu’indiqué. Si la ligne à courant continu n’est pas "
+"en mode « consigne imposée » dans le cas de base, METRIX modifie "
+"automatiquement le mode de fonctionnement de la ligne HVDC (pour cette "
+"variante uniquement)."
+
+#: ../../simulator/io_doc.md:295 da16fabc36db42fb92c8ddba4cea1dec
+msgid ""
+"**Remark**: If an HVDC line is in \"imposed setpoint\" mode, before "
+"analyzing the variant, METRIX checks that the setpoint power of the line "
+"lies between the MAX and MIN bounds. If it does not, the variant is "
+"rejected."
+msgstr ""
+"**Remarque** : Si une ligne HVDC est en mode « consigne imposée », avant "
+"d’analyser la variante, METRIX vérifie que la puissance de consigne de la "
+"ligne est bien comprise entre les bornes MAX et MIN. Si ce n’est pas le cas,"
+" la variante est rejetée."
+
+#: ../../simulator/io_doc.md:297 0ea454d1ccba4a319cf58492b2dc211e
+msgid ""
+"**DTVALDEP**: the number of modifications of the initial phase shift value "
+"of the PST, then as many pairs (PST name, initial phase shift) as indicated."
+msgstr ""
+"**DTVALDEP** : le nombre de modifications de la valeur initiale du déphasage"
+" du TD, puis autant de couples (nom du TD, déphasage initial) qu’indiqué."
+
+#: ../../simulator/io_doc.md:298 b9c50bc924ce440ba02e368a8b987d6e
+msgid ""
+"**COUEFF**: the number of modifications of the load curtailment cost, then "
+"as many pairs (load index, cost) as indicated."
+msgstr ""
+"**COUEFF** : le nombre de modifications du coût d’effacement de la "
+"consommation, puis autant de couples (indice de la consommation, coût) "
+"qu’indiqué."
+
+#: ../../simulator/io_doc.md:299 112902f27d7541a4a3da8cde85ccc175
+msgid ""
+"**QATI00MN**: the number of modifications of the N threshold, then as many "
+"pairs (branch name, threshold value in MW) as indicated."
+msgstr ""
+"**QATI00MN** : le nombre de modifications du seuil N, puis autant de couples"
+" (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:300 a0d56af431224c67b7fb43f447ff3306
+msgid ""
+"**QATI5MNS**: the number of modifications of the N-1 threshold, then as many"
+" pairs (branch name, threshold value in MW) as indicated."
+msgstr ""
+"**QATI5MNS** : le nombre de modifications du seuil N-1, puis autant de "
+"couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:301 bf4a7a1832154de6aa943511b0bec603
+msgid ""
+"**QATI20MN**: the number of modifications of the N-k threshold, then as many"
+" pairs (branch name, threshold value in MW) as indicated."
+msgstr ""
+"**QATI20MN** : le nombre de modifications du seuil N-k, puis autant de "
+"couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:302 fd5574bc46e844e0aefb4e1810881ab2
+msgid ""
+"**QATITAMN**: the number of modifications of the threshold before switching "
+"actions, then as many pairs (branch name, threshold value in MW) as "
+"indicated."
+msgstr ""
+"**QATITAMN** : le nombre de modifications du seuil avant manœuvre, puis "
+"autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:303 df69cea67c5949b0983df9ef82f840ce
+msgid ""
+"**GROURAND**: the number of generators, the ordered list of generators for "
+"the 'shuffling' so as not to have to add noise to the costs."
+msgstr ""
+"**GROURAND** : le nombre de groupes, la liste ordonnée des groupes pour le "
+"'mélange' pour ne pas avoir à bruiter les coûts."
+
+#: ../../simulator/io_doc.md:304 2f38ee1f4c264ff2a55dc44aaa3fa747
+msgid ""
+"**PROBABINC**: the number of contingency probabilities, then as many pairs "
+"(contingency name, probability)."
+msgstr ""
+"**PROBABINC** : le nombre de probabilités des incidents, puis autant de "
+"couples (nom de l'incident, probabilité)."
+
+#: ../../simulator/io_doc.md:305 80f514a73d534071bd05a68ad2c2be5d
+msgid ""
+"**QATI00MN2**: the number of modifications of the N threshold from the end "
+"to the origin (if asymmetric threshold), then as many pairs (branch name, "
+"threshold value in MW) as indicated."
+msgstr ""
+"**QATI00MN2** : le nombre de modifications du seuil N de l'extrémité vers "
+"l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle,"
+" valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:306 95233c9d59b748ce9168d751a98185ef
+msgid ""
+"**QATI20MN2**: the number of modifications of the N-k threshold from the end"
+" to the origin (if asymmetric threshold), then as many pairs (branch name, "
+"threshold value in MW) as indicated."
+msgstr ""
+"**QATI20MN2** : le nombre de modifications du seuil N-k de l'extrémité vers "
+"l'origine (si seuil asymétrique), puis autant de couples (nom du quadripôle,"
+" valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:307 089861e395c74f2fb43cb43babcf8954
+msgid ""
+"**QATITAMK**: the number of modifications of the N-k threshold before "
+"switching actions, then as many pairs (branch name, threshold value in MW) "
+"as indicated."
+msgstr ""
+"**QATITAMK** : le nombre de modifications du seuil N-k avant manœuvre, puis "
+"autant de couples (nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:308 5658dee2c4554a599789b1d0a946ff18
+msgid ""
+"**QATITAMK2**: the number of modifications of the N-k threshold before "
+"switching actions from the end to the origin (if asymmetric threshold), then"
+" as many pairs (branch name, threshold value in MW) as indicated."
+msgstr ""
+"**QATITAMK2** : le nombre de modifications du seuil N-k avant manœuvre de "
+"l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples "
+"(nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:309 c007a6eb520c48398b0d3daeea312ed9
+msgid ""
+"**QATITAMN2**: the number of modifications of the threshold before switching"
+" actions from the end to the origin (if asymmetric threshold), then as many "
+"pairs (branch name, threshold value in MW) as indicated."
+msgstr ""
+"**QATITAMN2** : le nombre de modifications du seuil avant manœuvre de "
+"l'extrémité vers l'origine (si seuil asymétrique), puis autant de couples "
+"(nom du quadripôle, valeur du seuil en MW) qu’indiqué."
+
+#: ../../simulator/io_doc.md:311 64d66d6c6ec24a6a91ab5f82db34842c
+msgid ""
+"**Warning**: for each variant, the model only takes into account a single "
+"line for each type of law. If several laws are defined for the same variant "
+"only the last one will be kept."
+msgstr ""
+"**Attention** : pour chaque variante, le modèle ne tient compte que d’une "
+"seule ligne pour chaque type de loi. Si plusieurs lois sont définies pour "
+"une même variante seule la dernière sera conservée."
+
+#: ../../simulator/io_doc.md:314 063adc6dece146e5974fb39ee2e50c30
+msgid "The number of the first variant is always $\\geq 0$."
+msgstr "Le numéro de la première variante est toujours $\\geq 0$."
+
+#: ../../simulator/io_doc.md:316 329fa2a1a4c44683999e6324c59b8a9d
+msgid ""
+"The \"-1\" variant makes it possible to indicate modifications of the base "
+"case that will be valid for all the variants (unless they are modified by "
+"the data of a variant)."
+msgstr ""
+"La variante « -1 » permet d’indiquer des modifications sur le cas de base "
+"qui seront valables pour toutes les variantes (à moins qu’elles ne soient "
+"modifiées par les données d’une variante)."
+
+#: ../../simulator/io_doc.md:319 ../../simulator/io_doc.md:338
+#: 9c992ec13f6e4645aa8c6b5f1716e617 f400d6391bda48a0941579380575cdcb
+msgid "**Example**:"
+msgstr "**Exemple** :"
+
+#: ../../simulator/io_doc.md:330 ffafa6bc0b17451d9c179d14ea0413ee
+msgid "Remedial actions"
+msgstr "Parades"
+
+#: ../../simulator/io_doc.md:332 820a48f4beb74eb69a81926b5d4624d3
+msgid ""
+"The data specific to each remedial action are described in a csv file. The "
+"first line indicates the number of remedial actions, after the keyword *NB*."
+" Each line corresponds to a remedial action, such that:"
+msgstr ""
+"Les données spécifiques à chaque parade sont décrites dans un fichier au "
+"format csv. La première ligne indique le nombre de parades, après le mot-clé"
+" *NB*. Chacune des lignes correspond à une parade, telle que :"
+
+#: ../../simulator/io_doc.md:336 1245154fc43b4dbc9677bb3f6bf4457a
+msgid ""
+"*<Contingency name>*|*<Sections to monitor separated by a "
+"\"pipe\">*;*<Number of first listed branches concerned>*;<List of *<Branch "
+"name(s)>* separated by a semicolon>;"
+msgstr ""
+"*<Nom de l'incident>*|*<Sections à surveiller séparées par un "
+"\"pipe\">*;*<Nombre des premiers quadripôles listés concernés>*;<Liste de "
+"*<Nom(s) du(es) quadripôle(s)>* séparé(s) par un point virgule>;"
+
+#: ../../simulator/io_doc.md:348 4f5a845e3325440a948570eb367a0c53
+msgid ""
+"N.B.: The remedial actions provided are not taken into account if the launch"
+" mode is *LOAD FLOW* (i.e. mode 1)."
+msgstr ""
+"N.B. : Les parades renseignées ne sont pas considérées si le mode de "
+"lancement est *LOAD FLOW* (i.e. mode 1)."
+
+#: ../../simulator/io_doc.md:351 e5bf213760d944909425da1bcec0a635
+msgid "Output data"
+msgstr "Données de sorties"
+
+#: ../../simulator/io_doc.md:352 847fee5416ec4d58b087b7c65c7f0b37
+msgid ""
+"To facilitate the integration and testing of METRIX in ImaGrid, the outputs "
+"of METRIX v6 keep the format of the tabulated files of ASSESS (and of "
+"METRIS). Several output files are or can be generated at the end of a "
+"simulation."
+msgstr ""
+"Pour faciliter l’intégration et les tests de METRIX dans ImaGrid, les "
+"sorties de METRIX v6 conservent le format des fichiers tabulés d’ASSESS (et "
+"de METRIS). Plusieurs fichiers de sortie sont ou peuvent être générés à "
+"l'issue d'une simulation."
+
+#: ../../simulator/io_doc.md:357 363e106be0924ff4b48221fd0eb0ebae
+msgid "Results file"
+msgstr "Fichier de résultats"
+
+#: ../../simulator/io_doc.md:358 4462acfac6174e2398c0e098091573d9
+msgid ""
+"There is a single results file per variant, named as follows: "
+"*\\<resultsFilepath\\>_s\\<variantNumber\\>*. Within this file, the data are"
+" grouped by theme in output tables. Each line of the file starts with the "
+"identifier of the table."
+msgstr ""
+"Il y a un seul fichier de résultats par variante nommé de la manière "
+"suivante : *\\<resultsFilepath\\>_s\\<numéroVariante\\>*. Au sein de ce "
+"fichier, les données sont regroupées par thème dans des tableaux de sortie. "
+"Chaque ligne du fichier commence par l’identifiant du tableau."
+
+#: ../../simulator/io_doc.md:362 a9d37efca7734114b414e7d95b03f47c
+msgid "For each field of each table, the following is defined:"
+msgstr "Pour chaque champ de chaque tableau, on définit :"
+
+#: ../../simulator/io_doc.md:363 551e0e659c6c45e1a94eff8fa684914e
+msgid "the name of the stored quantity;"
+msgstr "le nom de la grandeur stockée ;"
+
+#: ../../simulator/io_doc.md:364 b2bf83ca111d45a7a28605a11b989ace
+msgid "the format of the data (see [data formats](#io-types));"
+msgstr "le format de la donnée (cf. [formats de données](#io-types)) ;"
+
+#: ../../simulator/io_doc.md:365 fac906a3cf824057a335a16957632ceb
+msgid ""
+"and for a numeric quantity (*I* or *R*), the unit of this quantity: MW for a"
+" power, m.u. (monetary unit) for a cost, no unit otherwise."
+msgstr ""
+"et pour une grandeur numérique (*I* ou *R*), l'unité de cette grandeur : MW "
+"pour une puissance, u.m. (unité monétaire) pour un coût, sans unité "
+"autrement."
+
+#: ../../simulator/io_doc.md:368 4facb0b658f8435eb3c91b79d475ea9c
+msgid ""
+"Some tables are not accessible unless the `--all-outputs` option is given "
+"when launching the METRIX simulator executable. Let `EPSILON_SORTIES = "
+"0.05`."
+msgstr ""
+"Certains tableaux ne sont pas accessibles sauf si l'option `--all-outputs` "
+"est donnée lors du lancement de l'exécutable METRIX simulator. Notons "
+"`EPSILON_SORTIES = 0.05`."
+
+#: ../../simulator/io_doc.md:372 fa1c0b113eae46c7b59fc1211ad83812
+msgid "Tables describing the situation"
+msgstr "Tableaux descriptifs de la situation"
+
+#: ../../simulator/io_doc.md:373 5e899a18055d4fb3b5ec461740c27b74
+msgid "**Table S1**: unavailable network elements (branches and generators)"
+msgstr "**Tableau S1** : ouvrages indisponibles (quadripôles et groupes)"
+
+#: ../../simulator/io_doc.md:375 575cb81246a743babbdd8147a5eb6d57
+msgid "*Format*: ```S1 ;INDISPONIBILITE; OUVRAGE;```"
+msgstr "*Format* : ```S1 ;INDISPONIBILITE; OUVRAGE;```"
+
+#: ../../simulator/io_doc.md 06661aa1b2844fa5af8faa34a9e7f821
+#: 0682b20131104d0796a8126b9efb5799 14af99ed05fd4912ab5473ff90078767
+#: 15c0023d89db4589b389af0b4a2ae1ef 167b49597c6841f8b6598e3948a2b5cd
+#: 1710c9b5f3454bb6b81e1625b71f46c4 2447af5bec594a78b3a64e7a8251378a
+#: 50df230d918442f49989fd160422098f 698b9f81fdac41b5b43a957cf885183f
+#: 6b3eebe13b2b4eb5804387a0daa7f149 7248bf85866f4a2287b6c112181c6ae5
+#: 73f94d648b614703b63aa1baeeb2d0d0 7a3d62273d1d4b1ea708e6a3fb4e470c
+#: 8ab1c0fe12c0440892b93636c0d5980b 9050589927c849eab74ecdc3af0b5ff4
+#: 96b7c4d12d0b4dc98b32e7c0ece27f05 ab9261c3cd7f4090b4b294bb5b8c17b7
+#: ae844909f321496c811ce69dc77fc972 b41c7c988f184d108f05723b28046e9e
+#: bb8f77d9bc564a79b3ba8b7f2dd50819 ca59dc67596b47dda1f9d8f6dc2154c4
+#: cd9236b9b76b48b5b6e48fe9bde0a45f d7aba540155348d082f5964c7e781868
+#: daa3ec55490c4beeb3c48238915ee299 df57809eaca84cdc85b7d741292c637d
+msgid "Quantity name"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 044c1646c4a141a880362603571ced40
+#: 0ea75d8b81cd4af4bcbdeb80eba05978 266110b32a0b47f886d9ad8e1dfb5fea
+#: 2c0bbe5cdc64464eb147327cfe6a213e 2ef0f687f0d844a59ac8fdd9222ac7ab
+#: 36f79808e3ca4bdd911ca4a7329f5fad 399e835c260d4dd4b19612304d417fc7
+#: 4aa0a9dfdd664ef484d36adf2c06e26d 4ecd783cf75c4080947ef9cef44db514
+#: 598d08af415c44d3922116495f986cbb 760d4f7605d24511b1a65fc7ec4c8948
+#: ab0813400c40419994e87a7f7e5e13c6 bcb6ec4c6eec4ddcbd12d06286fdc638
+#: c3046d053d5a48cf93332bcda3fee736 d5d5df833a3f4c78990669284e80874d
+#: d8472d4ad8c84508a20fd9f314c17009 e1c2bf682095428daf2b4e22e6baf834
+#: e5b5880c66874160981cfcdfd33e9dc7 e5d44be7da3c4e02be9127570d5d3b99
+#: e6bde9a73986438780ab60a4a8ec14fc ef670dae3a6243aeb3f4b940b087220d
+#: f085c9cc6a894abbb191b0c10e12ae87 f96ec9f85a214ec7b42c16a9991b5cbf
+#: fc1aaf14e1524f8d953c3d71db6fdbde fe13b319618d4b2c8d8caa14e65660ea
+msgid "Unit"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md a4d5e41b7a9f4ce899fee678211c25f6
+msgid "Network element type"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 460c94b363d443e5b5c5487d18f38a76
+msgid "1: branch; 2: generator"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 074dd2d14a61443bbaf48311980dc7ac
+msgid "Network element name"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:382 b7bbb84d073d447f8a05d293164d4576
+msgid ""
+"**Note**: Table available if the `--all-outputs` option is given when "
+"launching METRIX simulator."
+msgstr ""
+"**Note** : Tableau disponible si l'option `--all-outputs` est donnée lors du"
+" lancement à METRIX simulator."
+
+#: ../../simulator/io_doc.md:387 53bf3a7f6700459fbf5ac864ecc150b7
+msgid "**Table C1** (single line): execution report"
+msgstr "**Tableau C1** (une seule ligne) : compte rendu d’exécution"
+
+#: ../../simulator/io_doc.md:389 a011aeb693ec410b83e3927296967ec8
+msgid "*Format*: ```C1 ;COMPTE RENDU;CODE;```"
+msgstr "*Format* : ```C1 ;COMPTE RENDU;CODE;```"
+
+#: ../../simulator/io_doc.md de6bbd24c0eb451abaf6f0cf868d6790
+msgid "Error code"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d61aeed67f8b41b0b84dc93218b274af
+msgid ""
+"**0** if \"OK\", otherwise<br>**-1** = error during the resolution<br>**1**"
+"  = if no solution to the problem (infeasible problem, often caused by "
+"EOD)<br>**2**  = too many constraints (max reached)<br>**3** = too many "
+"micro-iterations (max reached)<br>**4** = inconsistent variant data (variant"
+" ignored)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:396 868597d0d01c4d26a8442643e07d8f73
+msgid "**Table C2**: list of contingencies breaking connectivity"
+msgstr "**Tableau C2** : liste des incidents rompant la connexité"
+
+#: ../../simulator/io_doc.md:398 6dedf13778de400d9377770d52ac13b9
+msgid ""
+"*Format*: ```C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO "
+"COUPEE;```"
+msgstr ""
+"*Format* : ```C2 ;NON CONNEXITE;INCIDENT;NB NOEUDS;PROD COUPEE;CONSO "
+"COUPEE;```"
+
+#: ../../simulator/io_doc.md b6746dce38634cf29ca2198fdb55d051
+msgid "Number of disconnected nodes"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 33a8779e3657436fa569daea8e138b5e
+msgid "Volume of generation cut"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1250a8de961c4feea3db8b9569323e28
+#: 1276fdc2abd84f199a0efd53cb56df33 17f8f46ded564459893257546163a6ba
+#: 19701f0990e0406fb3b9eefa5f61d89c 1dde6583433a480f9d54f70f148257d2
+#: 201fff7c7287427b9798af5944f681dc 2490f20b5c6147069d256eb4d8095c78
+#: 2c4a850d036b4558b9e9ef10f4f66b84 3db3ae53d45b45cfa9045137970c34d8
+#: 5c92958cb2db4251a7ccdbf6e4fe7534 64d4f568e45d4b6b818f7dd4d991a115
+#: 662814fdf3fc4dcbb523f494c97ac0cf 6ba2ddef745c4dd4875f04bec163f58a
+#: 708bab0d100e4e8da30b3ce80e8a4e72 73cb85d948794d7c8237791a7b7cc258
+#: 7c28aab1e7394c11afc4a75b6d4ba402 90e62f26252d4bc6bc9f3be726e4a9d6
+#: 9bf1463bf5c244b29525f5b5f1063aeb 9dd03702633a4e20a7e661316d2c9ae1
+#: 9f4f05e1cf2a443e8d5d14cf45515fc3 9fe53dfba0a2417093cfc04085351910
+#: a67b0f44618f40e89975101df1a650d5 a68c91d7c50a425db36351ddde558318
+#: aab5063938a54685ae0618931c77c8c3 c20383f7c50d4cdbaf81ec32739e25ae
+#: d54529b5fca34357ab7de07233d0ab3d d6c952dffd304f22b2cf838b73eda17c
+#: d7a0e7c099fb471a949a51629e4d6087 d9554555765a4de5aead815124d9bb3e
+#: e93257d9449540c59199024e61ba1172 f7ff6576f89c4d8da9867c1c4aeec7ce
+msgid "MW"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 33a8779e3657436fa569daea8e138b5e
+msgid "Volume of load cut"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:409 e3abfe085cc84d77bd2f4d5e0004bbe0
+msgid ""
+"**Table C4**: list of constraining contingencies, of contingencies that "
+"could be handled in curative or of contingencies that generated a maximum "
+"flow on contingency (see [table R3B](#io-table_r3b))"
+msgstr ""
+"**Tableau C4** : liste des incidents contraignants, des incidents qui ont pu"
+" être traités en curatif ou des incidents ayant généré un transit maximal "
+"sur incident (cf. [tableau R3B](#io-table_r3b))"
+
+#: ../../simulator/io_doc.md:412 9958f24fe9f346e7999d1a955a523eaf
+msgid "*Format*: ```C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;```"
+msgstr "*Format* : ```C4 ;INCIDENTS;NUMERO;TYPE;OUVRAGE;```"
+
+#: ../../simulator/io_doc.md 307b662b9a8e4dcfb2db71e7b81ee6e2
+msgid "Contingency sequence number"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md bcad55210d714dff843f4698651f3295
+msgid ""
+"Numbering starting from 1. Numbers then used in tables [R4](#io-table_r4), "
+"[R1B](#io-table_r1b), [R2B](#io-table_r2b), [R3B](#io-table_r3b), [R5B](#io-"
+"table_r5b) and [R6B](#io-table_r6b) (see below)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 32e7a5b214494d66ac6115f139b0c0cf
+msgid "«N-1L», «N-KL», «N-KG», «N-HVDC», «COMBO»"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:421 fe02480281c54f41b0b4e5490d561e92
+msgid ""
+"**Table C5** (single line): initial balances per synchronous area, before "
+"balancing"
+msgstr ""
+"**Tableau C5** (une seule ligne) : bilans initiaux par zone synchrone, avant"
+" équilibrage"
+
+#: ../../simulator/io_doc.md:423 f7fedcebd7e2439b8e03733c8dadaa49
+msgid "*Format*: ```C5 ;ZONE SYNC;NUM ZONE;BILAN;```"
+msgstr "*Format* : ```C5 ;ZONE SYNC;NUM ZONE;BILAN;```"
+
+#: ../../simulator/io_doc.md ccd27096e49f4e62ba455e4e95c83f2e
+msgid "Synchronous area number"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 986bf90854de41a9b4d91dc484be8439
+msgid "E.g. 0"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 1ed4d2aa889644909ab36f8daee25613
+msgid "Value of the initial balance"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2740cd84f31044c6a0552dd006c4aa50
+msgid "E.g. -20.5"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:431 c5d281341f23445c952ba3516f0772eb
+msgid "Results tables"
+msgstr "Tableaux de résultats"
+
+#: ../../simulator/io_doc.md:432 604491287f83440ea89c7e76bf569784
+msgid ""
+"**Note**: in the output tables, only the values greater than the "
+"*EPSILON_SORTIES* threshold are written, if the option `--all-outputs` is "
+"given when launching METRIX simulator."
+msgstr ""
+"**Note** : dans les tableaux de sorties, seules les valeurs supérieures au "
+"seuil *EPSILON_SORTIES*, si l'option `--all-outputs` est donnée lors du "
+"lancement à METRIX simulator."
+
+#: ../../simulator/io_doc.md:435 2b342c1a1f64480cbe7f576d3d81613e
+msgid "**Table R1**: results per vertex"
+msgstr "**Tableau R1** : résultats par sommet"
+
+#: ../../simulator/io_doc.md:437 ../../simulator/io_doc.md:478
+#: ../../simulator/io_doc.md:629 075da1d62c384e5da9d31fba6da107bb
+#: a8700d2878684c68987f852f9080a0ba bb0d86172f14491f891143d5f43890ba
+msgid "*Format*:"
+msgstr "*Format* :"
+
+#: ../../simulator/io_doc.md:438 1a98c0cae6664d479506ee8d9a7d4d4b
+msgid ""
+"```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` if the `--all-"
+"outputs` option is given when launching METRIX simulator,"
+msgstr ""
+"```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;``` si l'option "
+"`--all-outputs` est donnée lors du lancement à METRIX simulator,"
+
+#: ../../simulator/io_doc.md:439 a2693f21fd334096860a7399280c88cb
+msgid "```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` otherwise."
+msgstr "```R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;DF AR;``` sinon."
+
+#: ../../simulator/io_doc.md bf2714c3897740f99a07cc4b3114706e
+msgid "Name of the vertex"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ea844c03bed4498ba9275502de8bd4fd
+msgid "Demand"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 37c8cdfbd1054a25936cdbcdde5f6283
+msgid "Sum of the loads at this vertex"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 808c7f0604d54d3081b213c00f11c90e
+msgid "Loss of load HR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9cca9476c6c0463d9c3ee9ffccf763ec
+msgid "Preventive load shedding during balancing (positive value)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 08700bdf13344fe58d0f8b89d67ea8f2
+msgid "Loss of load cost HR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 76961f01304841b1be8ec91364a6c90f
+msgid ""
+"Cost of the preventive load shedding during balancing (result only present "
+"if the `--all-outputs` option is given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md bfed4e0714a54a0bb55dc4135a3132c5
+msgid "Loss of load AR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0f8c0fe0329f4b4e94012333df1bbb38
+msgid ""
+"Network-related preventive load shedding (positive value), in addition to "
+"any load shedding due to the lack of generation"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 08700bdf13344fe58d0f8b89d67ea8f2
+msgid "Loss of load cost AR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 76961f01304841b1be8ec91364a6c90f
+msgid ""
+"Cost of the network-related preventive load shedding (result only present if"
+" the `--all-outputs` option is given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:450 278918fa22ad49eba42af8098ad7fd2a
+msgid ""
+"**Note**: if the `--all-outputs` option is given when launching METRIX "
+"simulator and there is no modifiable load then all the fields, except the "
+"name, are *0*."
+msgstr ""
+"**Note** : si l'opton `--all-outputs` est donnée lors du lancement à METRIX "
+"simulator et qu'il n'existe pas de consommation modifiable alors tous les "
+"champs, hormis le nom, valent *0*."
+
+#: ../../simulator/io_doc.md:454 88edf3f5dbb94954a7cf65463100d127
+msgid ""
+"**Table R1B**: results per curative load. Only the loads activated in "
+"curative on a contingency are displayed"
+msgstr ""
+"**Tableau R1B** : résultats par consommation curative. Sont uniquement "
+"affichés les consommations activées en curatif sur un incident"
+
+#: ../../simulator/io_doc.md:456 792aab0a52b64a24a340697c4a0ea0e0
+msgid "*Format*: ```R1B ;INCIDENT;CONSO;EFFACEMENT;```"
+msgstr "*Format* : ```R1B ;INCIDENT;CONSO;EFFACEMENT;```"
+
+#: ../../simulator/io_doc.md bf2714c3897740f99a07cc4b3114706e
+msgid "Name of the load"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d91167943a8e44c2b75dd36f94da7d9a
+msgid "Contingency number"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 298d01bbe6074d37b0af58a813853834
+#: 4ddb415a24124a0daffaaa2b81ad54ec 808dd7afb71d42d39950a3c72c73c2ca
+#: 82a1b22366e44aae9c1652694a5c669c dc7b40c5da7642d7b577076e914b60ae
+#: f07a4c1952794ce9929493361da4862a f36e74ab416d433ab51739e6ff7d0ab4
+#: f9480e51b21b4057986c289c756bc02d
+msgid "Reference to the numbering of [table C4](#io-table_c4)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 56f96afd3189403cb039ce8d4274b5ac
+msgid "Curtailed power"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f0bc33f6db774ab788428e9571604a89
+msgid "Volume of load curtailed in curative (positive value)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:465 8b6e2ce4e1764e50b7ad169a1497aa35
+msgid "**Table R1C**: results per load coupling"
+msgstr "**Tableau R1C** : résultats par couplage de consommations"
+
+#: ../../simulator/io_doc.md:467 fc0959741f864b598cd870627b12f3ef
+msgid "*Format*: ```R1C ;NOM REGROUPEMENT;DELTA_C;```"
+msgstr "*Format* : ```R1C ;NOM REGROUPEMENT;DELTA_C;```"
+
+#: ../../simulator/io_doc.md e65e7bcea2e34d3aad23b8ae9769236e
+msgid "Name of the coupling"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 537499f818d24b7aafe3db2711d04a3a
+#: be46bc5deb7546b38d6fd59e19f5c371
+msgid "Name given to the coupling in the configuration"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 3476e777a48a4ac79082019c9b4bef7a
+#: d394872fabef4e9caa514098d0e94d6b
+msgid "Variation"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8f0e53f3c4cf4ea78714326490406bac
+msgid "Sum of the variations over all the loads of the coupling"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:475 185585eb7b1e48458881bad93074a39d
+msgid ""
+"**Table R2**: results per generator. Only the generators whose preventive "
+"setpoint differs from the initial setpoint (before or after adjustment "
+"depending on the chosen option) are displayed"
+msgstr ""
+"**Tableau R2** : résultats par groupe. Seuls les groupes dont la consigne "
+"préventive diffère de la consigne initiale (avant ou après ajustement selon "
+"l’option choisie) sont affichés"
+
+#: ../../simulator/io_doc.md:479 bd61274370614f5887143d0883464bde
+msgid ""
+"```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT "
+"AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;``` "
+"if the `--all-outputs` option is given when launching METRIX simulator"
+msgstr ""
+"```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;CT HR;CT "
+"AR;CT ARP;CT GRT;CT GRTP;CT HAUSSE AR;CT BAISSE AR;CT ORDRE;CT EMPIL HR;``` "
+"si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator"
+
+#: ../../simulator/io_doc.md:481 5635318c27ce47f6911903cacb6e5ff7
+msgid ""
+"```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` "
+"otherwise."
+msgstr ""
+"```R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;``` sinon."
+
+#: ../../simulator/io_doc.md 2c37a50d4e5142ecbb4f33d401c5c70b
+msgid "Name of the generator"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 56f96afd3189403cb039ce8d4274b5ac
+msgid "Available power"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c68d1e16fcc14cf9a25ab4b1db472ca5
+msgid "Pmax of the generator in the variant"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 171fde9659e8470f850ce9870a80e04a
+msgid "Imposed power adjustment"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 509dd051c88c40a4a296a1be09939855
+#, python-brace-format
+msgid "$\\Delta P_{cons}$ between the *json* data and that of the variant"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 497c5faf7cae4380b1b0a73e0bc1fc08
+msgid "Power adjustment during the initial balancing"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e8e462c374b34138a4b3b8520bb20002
+#, python-brace-format
+msgid ""
+"$\\Delta P_{cons}$ between the variant data and the value after the "
+"balancing phase (if the `--all-outputs` option is not given when launching "
+"METRIX simulator, and the *EQUILRES* option is enabled, value rounded to "
+"10-1 in which case; non-rounded value if the `--all-outputs` option is "
+"given)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f0df17b8cdeb4362839e36fa715dc2c3
+msgid "Preventive power adjustment"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 7e46afc8d81343e3b969bc9f363bfff5
+#, python-brace-format
+msgid ""
+"$\\Delta P_{cons}$ between the balancing phase and the preventive setpoint  "
+"(if the `--all-outputs` option is not given when launching METRIX simulator,"
+" and the *REDISRES* option is enabled, value rounded to 10-1 in which case; "
+"non-rounded value if the `--all-outputs` option is given)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e2c32644e8c040729167efc0f7f7b99c
+msgid "Off-grid cost"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 82e142bc862349f898acd53790ad1c03
+msgid ""
+"Sum of the upward and downward off-grid costs (result only present if the "
+"`--all-outputs` option is given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 08abfdf5dfdc4691a91c40effbacc6aa
+msgid "*CT AR*"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 460d49438ffe40c69f1b6d14134b5eea
+#: 6f8cf49447e84bf2ac6878e0d4929269 bf4687fa1a2f4828968b5709657f8c4e
+msgid ""
+"= 0.0 (result only present if the `--all-outputs` option is given when "
+"launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d5a7f1ea667148e494e14859aa4a4634
+msgid "*CT ARP*"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 968f5c63957840b3bc1fc167fbc53829
+msgid "Cost of the power delta"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5de724c2281c4ca5b3ced0e4c00e89b3
+#: 868a2d666aaf4253b99e4dd89a669fa5
+msgid ""
+"(result only present if the `--all-outputs` option is given when launching "
+"METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b209847fc1384417abf5944c5e6f7111
+msgid "*CT GRTP*"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 089f1dfa57344fbab205c31d2ef25ff1
+msgid "Upward cost AR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c56f3345462d45f49eab753f2d938d0f
+msgid ""
+"Upward cost with network (result only present if the `--all-outputs` option "
+"is given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md db504c4369a84daca6cf22a63137392c
+msgid "Downward cost AR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md d7747a39eb714621984f4fb3e422b855
+msgid ""
+"Downward cost with network (result only present if the `--all-outputs` "
+"option is given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 48503e761779488d91338ce1af41da62
+msgid "Upward cost HR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8980e42a59f64de4a7bd7d1cf78d8860
+msgid ""
+"Upward off-grid cost (result only present if the `--all-outputs` option is "
+"given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md db504c4369a84daca6cf22a63137392c
+msgid "Downward cost HR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 47cfaba39c654b7c9ee00f122d3c5806
+msgid ""
+"Downward off-grid cost (result only present if the `--all-outputs` option is"
+" given when launching METRIX simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:502 d36e7613c12342a7a696081a5a959bc2
+msgid ""
+"**Table R2B**: curative results per generator. Only the generators whose "
+"curative setpoint differs from the preventive setpoint are displayed"
+msgstr ""
+"**Tableau R2B** : résultats curatifs par groupe. Seuls les groupes dont la "
+"consigne curative diffère de la consigne préventive sont affichés"
+
+#: ../../simulator/io_doc.md:505 750b0bf4775a4e79bb6f011e84cf83d1
+msgid "*Format*: ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```"
+msgstr "*Format* : ```R2B ;INCIDENT;NOM GROUPE;DELTA_P;```"
+
+#: ../../simulator/io_doc.md 03589401c48d4ac29d856f46499df03b
+msgid "Adjusted power"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:514 c165ba4706414b49aa0f69731aaa1301
+msgid "**Table R2C**: results per generator coupling"
+msgstr "**Tableau R2C** : résultats par couplage de groupes"
+
+#: ../../simulator/io_doc.md:516 e4b66b395b1b48c1809f8cf8cb47032f
+msgid "*Format*: ```R2C ;NOM REGROUPEMENT;DELTA_P;```"
+msgstr "*Format* : ```R2C ;NOM REGROUPEMENT;DELTA_P;```"
+
+#: ../../simulator/io_doc.md 12d4fab5d73144f382360face112f47d
+msgid "Sum of the variations over all the generators of the coupling"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:525 de60e8b6238f42058dd95345e7168230
+msgid "**Table R3**: flows in N per branch and per monitored section"
+msgstr ""
+"**Tableau R3** : transits en N par quadripôle et par section surveillée"
+
+#: ../../simulator/io_doc.md:527 447260aa99fb4810b0f5562daf8da742
+msgid ""
+"*Format*: ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```"
+msgstr ""
+"*Format* : ```R3 ;PAR LIGNE;LIGNE;TRANSIT N;SEUIL N;SEUIL N-k;SEUIL ITAM;```"
+
+#: ../../simulator/io_doc.md bf2714c3897740f99a07cc4b3114706e
+msgid "Name of the branch"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 02bc40965edd41eeb698a2aa0a060507
+msgid "Flow N"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0f7e2517c1384bd19e416010c399d8de
+#: bf5560b560ab4373ae0cad2f43de5be6
+msgid "Positive from origin to end"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:534 84083042050649b0a5edd1ae23242099
+msgid ""
+"*Note: if the `--all-outputs` option is given when launching METRIX "
+"simulator, the four thresholds are also displayed.*"
+msgstr ""
+"*Note : si l'opton `--all-outputs` est donnée lors du lancement à METRIX "
+"simulator, les quatre seuils sont également affichés.*"
+
+#: ../../simulator/io_doc.md:536 0661f23d1bc245249010e37c557233ee
+msgid ""
+"*Note: a monitored section is reported under its name, with the weighted sum"
+" of the flows of its network elements. The N-k threshold and ITAM threshold "
+"columns are 99999 (undefined), a section being monitored in N only.*"
+msgstr ""
+"*Note : une section surveillée est restituée sous son nom, avec la somme "
+"pondérée des transits de ses ouvrages. Les colonnes seuil N-k et seuil ITAM "
+"valent 99999 (non défini), une section n'étant surveillée qu'en N.*"
+
+#: ../../simulator/io_doc.md:541 dc932adf1d1e437b8427a79452e409ce
+msgid ""
+"**Table R3B**: maximum flows per branch on contingency. Only the monitored "
+"network elements or those with results are displayed"
+msgstr ""
+"**Tableau R3B** : transits maximum par quadripôle sur incident. Seuls les "
+"ouvrages surveillés ou avec résultats sont affichés"
+
+#: ../../simulator/io_doc.md:543 c49d459ee05a48ad92c46051a698614e
+msgid "*Format*: ```R3B ;PAR LIGNE;LIGNE;INCIDENT AM;MENACE MAX AM;```"
+msgstr "*Format* : ```R3B ;PAR LIGNE;LIGNE;INCIDENT AM;MENACE MAX AM;```"
+
+#: ../../simulator/io_doc.md 39e2370805124868a245772cadce9b9c
+msgid "name of the branch"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 877765c7459d42448f98a1344753f1bd
+msgid "contingency causing the max flow before switching actions"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 544a05cd659747a99be45563fc8bad97
+msgid "max flow before switching actions"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 08f740ce3ced4aca8c6f1dd91491e36d
+#: 14086ed84e80447799769642841436e6
+msgid "positive from origin to end"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 79a00e3aad7e4c6b87a6cba1e14914bf
+msgid "contingency causing the 1st max flow on contingency"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md b9ee13fd78fe4820b612c4b100240265
+#, python-brace-format
+msgid "1 $^{st}$ max flow on contingency"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2cf8c2b59ef1474cb13fa7bc252f7506
+#, python-brace-format
+msgid "*contingency causing the N $^{th}$ max flow on contingency*"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 544b11a5add94ffbb41ec3d004778f2a
+msgid "*As many results as requested in the parameters*"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f8bd50fbe1594c8d8c60f07f4ed95c63
+#, python-brace-format
+msgid "*N $^{th}$ max flow on contingency*"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:555 685514adc295416dad6753dd0d97015a
+msgid ""
+"*Note: this table is not written if there is no contingency on the network.*"
+msgstr ""
+"*Note : ce tableau n'est pas écrit s'il n'y a pas d'incident sur le réseau.*"
+
+#: ../../simulator/io_doc.md:559 5a630a2cb3674e66b81600ee801b7c50
+msgid "**Table R3C**: specific flows on contingency"
+msgstr "**Tableau R3C** : transits spécifiques sur incident"
+
+#: ../../simulator/io_doc.md:561 4a04cd934dbe49669aeb24418b6f62ca
+msgid "*Format*: ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```"
+msgstr "*Format* : ```R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;```"
+
+#: ../../simulator/io_doc.md 39b61226644f41028901f0bf30cfc2b1
+msgid "Flow"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:571 7544032113ad46f496a059cf6b358c1a
+msgid "**Table R4**: marginal variations per link, in N and on contingency"
+msgstr ""
+"**Tableau R4** : variations marginales par liaison, en N et sur incident"
+
+#: ../../simulator/io_doc.md:573 36e7d149dc974f97a3cd403ff73425a0
+msgid "*Format*: ```R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;```"
+msgstr "*Format* : ```R4 ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR;```"
+
+#: ../../simulator/io_doc.md 49f61a21c4ae49c1b71e678ba6bb63bd
+#: 99c887fc1da341daa166ba7605858dc3
+msgid "0 for N, otherwise see [table C4](#io-table_c4)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 708c8e339d0646669f52ca6ff1a8279b
+msgid "Marginal variation"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 18b21152a6c6481a817e00f64b4d1f52
+#: 4183eaa80b8b4337a0a1928217578b67 88ed2262c1714e979212f3eb7fdea8fc
+#: a554f24bf01a4475b12abdf4f16542eb d0be1b6d33db4250a68336a6ac5a9b0a
+#: f2f5b771f89a43b1add8c930feb68f51
+msgid "m.u."
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 19018144aeaf4aa0a72f9206c45b8158
+msgid ""
+"Impact on the objective function of a 1 MW increase of the threshold (N, N-k"
+" or AM) of this network element"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:583 c36613521a1f4cd293f523259c0996c4
+msgid ""
+"**Table R4B**: detailed marginal variations per link, in N and on "
+"contingency (only the (network element, contingency) pairs for which the "
+"detailed marginal variations have been requested and are non-zero are stored"
+" in the table)"
+msgstr ""
+"**Tableau R4B** : variations marginales détaillées par liaison, en N et sur "
+"incident (seuls les couples (ouvrage, incident) pour lesquels les variations"
+" marginales détaillées ont été demandées et sont non nulles sont stockées "
+"dans le tableau)"
+
+#: ../../simulator/io_doc.md:587 cdd28e6a47c74b1c92c96c547a9da0fd
+msgid ""
+"*Format*: ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR "
+"TYPVAR;NOMVAR;VOL;COUT;```"
+msgstr ""
+"*Format* : ```R4B ;VAR. MARGINALES;LIGNE;INCIDENT;VMAR "
+"TYPVAR;NOMVAR;VOL;COUT;```"
+
+#: ../../simulator/io_doc.md b07ea6d99cd546bd8af270a496a2bb78
+msgid "Type of the network element or transaction that varies"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 116df64602ba494b8fa688e4fe1dc5da
+msgid "Vertex « N », generator « G » or curative action « C »"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md fd579118cf8e4db4b90b12b52098308b
+msgid "Name of the network element that varies"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f21773ee0d6c4a158fd85134bdc2bd4b
+msgid "Vertex (if loss of load varies) or generator (if generation varies)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8f141beea6664b1d8ed582af20cdea76
+msgid "Volume of variation"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 9c08fcbde93940c6bcf67fab9f722efd
+msgid "Sensitivity coefficient of the network element"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 708c8e339d0646669f52ca6ff1a8279b
+msgid "Cost of the variation"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 75c9962b53854a6c9a11050b1776cf4a
+msgid "Contribution of this variable to the marginal cost"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:600 6eeecd051a864f92810cfad7a06e517f
+msgid ""
+"**Table R5**: results per phase-shifting transformer. Only the links whose "
+"preventive setpoint differs from the initial setpoint are displayed"
+msgstr ""
+"**Tableau R5** : résultats par transformateur déphaseur. Seules les liaisons"
+" dont la consigne préventive diffère de la consigne initiale sont affichées"
+
+#: ../../simulator/io_doc.md:603 926b4b801667458f94a2ade217d088e5
+msgid "*Format*: ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```"
+msgstr "*Format* : ```R5 ;PAR TD;TD;CONSIGNE;PRISE;```"
+
+#: ../../simulator/io_doc.md 0724d1d68f7e4e6d9cb51086bcaa84fe
+#: 9d26c3a9683941e79ce81c8a281cd554
+msgid "Name of the PST"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0143611c8c6f408faff47f18eeb35da4
+msgid "Setpoint"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 06cf7368887f4c31b7354a2cdd5d73b2
+#: 6873b58513384422b3b7b779959574d5 c0d42a7fd03e4c6b9b700da61a422525
+msgid "° or MW"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 8b0d40aa26554901ba0d6ce72e9235a4
+#: b1acc165bd5043e6ae004964ba66d10e
+msgid "depending on the control mode of the PST"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 47b8478101054640b8de69043e41649a
+msgid "Setpoint HR"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:613 c1982ef14ce34639b206853fd5f303c8
+msgid ""
+"**Table R5B**: results of the curative actions of the phase-shifting "
+"transformers. Only the links whose curative setpoint differs from the "
+"preventive setpoint are displayed"
+msgstr ""
+"**Tableau R5B** : résultats des actions curatives des transformateurs "
+"déphaseurs. Seules les liaisons dont la consigne curative diffère de la "
+"consigne préventive sont affichées"
+
+#: ../../simulator/io_doc.md:616 40b8c2c7e92445f0a8f89af7a4f7d81c
+msgid "*Format*: ```R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;```"
+msgstr "*Format* : ```R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;```"
+
+#: ../../simulator/io_doc.md 6610ca94ff314702b673721c04870234
+msgid "Curative setpoint of the PST"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 39b65a357d554c93adc02ff93d0f4700
+msgid "Depending on the control mode of the PST"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:626 a0f47b0c968c4ed6aef4e9dec37f741f
+msgid ""
+"**Table R6**: results per HVDC line. Only the links whose preventive "
+"setpoint differs from the initial setpoint are displayed"
+msgstr ""
+"**Tableau R6** : résultats par ligne à courant continu. Seules les liaisons "
+"dont la consigne préventive diffère de la consigne initiale sont affichées"
+
+#: ../../simulator/io_doc.md:630 91061663e7ad4239b53a300e25057005
+msgid ""
+"```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` if the `--all-"
+"outputs` option is given when launching METRIX simulator"
+msgstr ""
+"```R6 ; PAR LCC;NOM;TRANSIT;VM_PREV;VM_GLOBALE;TRANSIT HR;``` si l'opton "
+"`--all-outputs` est donnée lors du lancement à METRIX simulator"
+
+#: ../../simulator/io_doc.md:632 d1c77c1933b34353af92abbc565654ad
+msgid "```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` otherwise."
+msgstr "```R6 ; PAR LCC;NOM;TRANSIT;VM_GLOBALE;``` sinon."
+
+#: ../../simulator/io_doc.md bf2714c3897740f99a07cc4b3114706e
+msgid "Name of the HVDC line"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 18c1909cc8a448be9026572544052443
+msgid "Flowing power"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 360c79a7dcaa4d5aaedf662406a0cfa8
+msgid "Preventive marginal variation of the HVDC"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 4d9ae7c66797494692f6fd259f61c149
+#: 67c4d2a5cb9d4ab4ac4ce4d7dca3715b cbd9fb4dcce9454698e76c5a4df201c2
+msgid "m.u"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e6c85f46290246079bd795dfb4bc7142
+msgid ""
+"Gain on the cost function of 1 MW more on the HVDC in preventive (result "
+"only present if the `--all-outputs` option is given when launching METRIX "
+"simulator)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 360c79a7dcaa4d5aaedf662406a0cfa8
+msgid "Marginal variation of the HVDC"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e5c0bf36e7724c6d8e6121721666b896
+msgid ""
+"Gain on the cost function of 1 MW more on the HVDC (this is the max between "
+"the preventive marginal variation and the curative marginal variations)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c6dd3812d1904ecdbd37862a6b41096b
+msgid "Off-grid flow"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:644 88edf3f5dbb94954a7cf65463100d127
+msgid ""
+"**Table R6B**: results per curative action of the HVDC lines. Only the links"
+" whose curative setpoint differs from the preventive setpoint are displayed"
+msgstr ""
+"**Tableau R6B** : résultats par actions curatives des HVDC. Seules les "
+"liaisons dont la consigne curative diffère de la consigne préventive sont "
+"affichées"
+
+#: ../../simulator/io_doc.md:647 7edb6cb47e9c426397a0a3056c9af5de
+msgid "*Format*: ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```"
+msgstr "*Format* : ```R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;```"
+
+#: ../../simulator/io_doc.md c35b4aa01d62438ba734cd6e1324692b
+msgid "Curative setpoint of the HVDC line"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 360c79a7dcaa4d5aaedf662406a0cfa8
+msgid "Curative marginal variation of the HVDC"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2916671ec1784f8c8ff18c3e5bab134a
+msgid ""
+"Gain on the cost function of 1 MW more on the HVDC for this contingency (not"
+" used)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:658 47bf48e64a234d4992cfede2b08c3775
+msgid "**Table R7**: redispatching per generation type"
+msgstr "**Tableau R7** : redispatching par filière"
+
+#: ../../simulator/io_doc.md:660 613c47040eb0495692a7e5a5ab7ec912
+msgid ""
+"*Format*: ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL "
+"CUR HAUSSE;```"
+msgstr ""
+"*Format* : ```R7 ;PAR FILIERE;TYPE;VOL BAISSE;VOL HAUSSE;VOL CUR BAISSE;VOL "
+"CUR HAUSSE;```"
+
+#: ../../simulator/io_doc.md f866d517dbea48c5996ebef5013a667f
+msgid "Generation type"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md f108cf3bd2b34a7d85bf1b8b332a7082
+msgid "Preventive downward redispatching"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6a3e6cec6cc140cb89efc9485683a0e7
+#: b8eea777ad3a44cdbe4a3f04ad3d27d1
+msgid "∑ generators of the generation type"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 2e9d9610a0e64ce3a2e9b936338833fa
+msgid "Preventive upward redispatching"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 18ac4d1ab4e94da5ac3b636853661cee
+msgid "Curative downward redispatching"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0c3d717a4c2f4105b646c95b34ee0ad8
+#: cf3cba8349404895b779b4c4f756418d
+msgid "max(generators of the generation type)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 18ac4d1ab4e94da5ac3b636853661cee
+msgid "Curative upward redispatching"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:672 cda3fcb680634de19daa5ba58d741a95
+msgid "**Table R8**: results on the losses computed in active-only"
+msgstr "**Tableau R8**: résultats sur les pertes calculées en actif-seul"
+
+#: ../../simulator/io_doc.md:674 2284bc0170a14c95a20db1b82f125dc0
+msgid "*Format*: ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```"
+msgstr "*Format* : ```R8 ;PERTES;VOLUME CALCULE;TAUX UTILISE;```"
+
+#: ../../simulator/io_doc.md 5e44d6072bc84aa1a6c069c429f73c19
+#: 907d2bd6039446ceafb73dfee2bde27c
+msgid "Computed loss volume"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5813664b849d49498f481079d76f8357
+msgid "Loss rate"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 0e35bd7fa43f4b78a348bb1055edf0ba
+msgid "%"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:683 ffa1eab7a7194676a36ca6dc105b8a44
+msgid "**Table R8B**: results on the losses per region"
+msgstr "**Tableau R8B**: résultats sur les pertes par région"
+
+#: ../../simulator/io_doc.md:685 dab928798cda4c4685fc0b42242b6899
+msgid "*Format*: ```R8B ;PERTES;REGION;VOLUME CALCULE;```"
+msgstr "*Format* : ```R8B ;PERTES;REGION;VOLUME CALCULE;```"
+
+#: ../../simulator/io_doc.md f1184781b8404450b6aabdfe0ba699c4
+msgid "Region or HVDC"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:694 91455763735543858c4e12206360d096
+msgid "**Table R9**: results of the objective function"
+msgstr "**Tableau R9** : résultats de la fonction objectif"
+
+#: ../../simulator/io_doc.md:696 fb733867b74140d99ee55ef55907e229
+msgid ""
+"*Format*: ```R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT "
+"BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS "
+"BATTERIES CUR;COUT BATTERIES CUR;COUT CONSO CUR;```"
+msgstr ""
+"*Format* : ```R9 ;FCT OBJECTIF;COUT GROUPES HORS BATTERIES;COUT "
+"BATTERIES;COUT DELESTAGE;VOLUME ECARTS N-k;VOLUME ECARTS N;COUT GRP HORS "
+"BATTERIES CUR;COUT BATTERIES CUR;COUT CONSO CUR;```"
+
+#: ../../simulator/io_doc.md ce50c3a0e8714412bf37b2aa77e7834c
+msgid "Redispatching cost"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md c0a0c61a878541928574d47ac0bce1ea
+msgid "Cost of the preventive generation adjustments"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 08700bdf13344fe58d0f8b89d67ea8f2
+msgid "Loss of load cost"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 6a816497f07c47a1a70586770fc71c37
+msgid ""
+"Cost of the preventive load adjustments (i.e. of the preventive load "
+"shedding)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 554bc4a8e2e747e7aa64309811f03239
+msgid "Overload volume on contingency"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ab21a3d5d03945a1af34ae1f68d084b0
+msgid ""
+"Sum of the threshold overloads on contingencies for the monitored network "
+"elements"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 93fc5a4f6a094f7fbe6c024fe36a8ccb
+msgid "Overload volume in N"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md e06fe8a7848c47368db04563c0102b9f
+msgid "Sum of the overloads in N for the monitored network elements"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md ce50c3a0e8714412bf37b2aa77e7834c
+msgid "Curative redispatching cost"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 29e368f8f46d49a786869be1f5927b35
+msgid "Cost of the curative generation adjustments"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 694f65052e434caabad044cb613d90cf
+msgid "Curative curtailment cost"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md bef1ded0e53e40fcb57c937cbf570bb3
+msgid ""
+"Cost of the curative load adjustments (i.e. of the curative load shedding)"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:709 1b9f64e19a4f4a7baaee8681b180f324
+msgid ""
+"**Table R10**: results of the topological curative (selected remedial "
+"actions)"
+msgstr ""
+"**Tableau R10** : résultats du curatif topologique (parades sélectionnées)"
+
+#: ../../simulator/io_doc.md:711 c8a3c10822814335bd61c874afc261f1
+msgid "*Format*: ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```"
+msgstr "*Format* : ```R10;INCIDENT;NOM INCIDENT;NB ACTIONS;ACTION;```"
+
+#: ../../simulator/io_doc.md d91167943a8e44c2b75dd36f94da7d9a
+msgid "Contingency name"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 809318ac32c444d7ae218143ba026e0e
+msgid "Name of the initial contingency"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 5e81145a2b9f47c8b98291362f62ec45
+msgid "Number of action(s) of the remedial action"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md 087d077b857e442f92b682f1982c949a
+msgid "Name of the remedial action"
+msgstr "Nom de la parade"
+
+#: ../../simulator/io_doc.md:720 adc29cdd7ceb41b5bbc1f48882c24fe5
+msgid "*Note: The \"do nothing\" remedial actions are not displayed*"
+msgstr "*Note : Les parades « ne rien faire » ne sont pas affichées*"
+
+#: ../../simulator/io_doc.md:723 e039ef73fa28429c90924d29f223f2a9
+msgid "Log file"
+msgstr "Fichier de logs"
+
+#: ../../simulator/io_doc.md:724 272b4c0b99d84e18ab9726429afe6e19
+msgid "There are two log files generated per simulation:"
+msgstr "Il y a deux fichiers de logs générés par simulation :"
+
+#: ../../simulator/io_doc.md:725 efd157e54e5849669ffe0700261103a4
+msgid ""
+"*\\<errorFilepath\\>*: this file contains the logs for the log level set via"
+" the `--log-level` option without formatting."
+msgstr ""
+"*\\<errorFilepath\\>* : ce fichier contient les logs relatifs au niveau de "
+"logs renseigné via l'option `--log-level` sans formattage."
+
+#: ../../simulator/io_doc.md:727 2ca8c9b7e3ab4b2c9340618e1835f941
+msgid ""
+"*metrix\\<rotation_ID\\>.log*: this file contains the logs for the log level"
+" set via the `--log-level` option with formatting (the *\\<rotation_ID\\>* "
+"corresponds to the ID number of the log file generated with a certain size)."
+msgstr ""
+"*metrix\\<ID_de_rotation\\>.log* : ce fichier contient les logs relatifs au "
+"niveau de logs renseigné via l'option `--log-level` avec formattage "
+"(l'*\\<ID_de_rotation\\>* correspond au numéro d'ID du fichier de logs "
+"généré avec une certaine taille)."
+
+#: ../../simulator/io_doc.md:731 10ada2ee170f42a2bb9372d7d7ff82ac
+msgid ""
+"It is also possible to display the logs on the standard output via the `-p ["
+" --print-log ]` option."
+msgstr ""
+"Il est également possible d'afficher les logs sur la sortie standard via "
+"l'option `-p [ --print-log ]`."
+
+#: ../../simulator/io_doc.md:734 707cd15c12fd44e19bda06c8015ec14f
+msgid "LODF file"
+msgstr "Fichier LODF"
+
+#: ../../simulator/io_doc.md:736 e8a82d10c9ad4539bbbd66c1cd721ecd
+msgid ""
+"A *LODF_matrix.csv* file is generated if the `--write-LODF` option is given."
+" This file corresponds to the LODF (Line Outage Distribution Factor) matrix "
+"of the last simulated variant."
+msgstr ""
+"Un fichier *LODF_matrix.csv* est généré si l'opion `--write-LODF` est "
+"renseignée. Ce fichier correspond à la matrice LODF (Line Outage "
+"Distribution Factor) de la dernière variante simulée."
+
+#: ../../simulator/io_doc.md:740 e58846f473cf41049376815513efd84e
+msgid "PTDF file"
+msgstr "Fichier PTDF"
+
+#: ../../simulator/io_doc.md:742 5f39be2f1f8045fcaf7b93b3f3c6fb55
+msgid ""
+"A *PTDF_matrix.csv* file is generated if the `--write-PTDF` option is given."
+" This file corresponds to the PTDF (Power Transfer Distribution Factor) "
+"matrix of the last simulated variant."
+msgstr ""
+"Un fichier *PTDF_matrix.csv* est généré si l'opion `--write-PTDF` est "
+"renseignée. Ce fichier correspond à la matrice PTDF (Power Transfer "
+"Distribution Factor) de la dernière variante simulée."
+
+#: ../../simulator/io_doc.md:746 5021615d0224466db72efe2833f267d7
+msgid "MPS file"
+msgstr "Fichier MPS"
+
+#: ../../simulator/io_doc.md:748 fe76026b26764f44a50dc48203d76df1
+msgid ""
+"The MPS file (*Donnees_Probleme_Solveur.mps*) of the last problem can be "
+"generated via the `--mps-file` option."
+msgstr ""
+"Le fichier MPS (*Donnees_Probleme_Solveur.mps*) du dernier problème peut "
+"être généré via l'option `--mps-file`."

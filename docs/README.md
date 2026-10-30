@@ -48,3 +48,28 @@ automatically generate anchors for each title.*
 ~~~bash
 sphinx-build -a -E docs ./build-docs
 ~~~
+
+## Translations (English / French)
+
+English (the Markdown files in `docs/`) is the only source to edit by hand. The French version is a translation stored as gettext catalogs
+in `docs/locales/fr/LC_MESSAGES/` (one `.po` file per page). It is published on [powsybl-metrix-fr.readthedocs.io](https://powsybl-metrix-fr.readthedocs.io/).
+
+To build the French documentation locally:
+~~~bash
+sphinx-build -a -D language=fr docs ./build-docs-fr
+~~~
+Any sentence without translation is displayed in English.
+
+To build both languages at once, run from the `docs` folder `make html-all` (on Windows: `make.bat html-all`):
+the results are in `docs/_build/html-en/index.html` and `docs/_build/html-fr/index.html`.
+
+After modifying English pages, update the catalogs (this also creates the catalogs of new pages) from the `docs` folder:
+~~~bash
+make gettext-update        # on Windows: make.bat gettext-update
+~~~
+Then translate in the `.po` files the entries with an empty `msgstr` and review the ones flagged `#, fuzzy` (English text changed since
+the translation was done; remove the `fuzzy` flag once the translation is up to date). Do not modify `msgid` lines: change the English page instead.
+Use the glossary in `docs/locales/glossary.md` for consistent terminology. Do not translate code, file names, parameter names or MyST roles/directives.
+
+The `.pot` templates and `.mo` files are generated and must not be committed. The CI checks that catalogs are up to date and fully translated
+(`docs/scripts/check_translations.sh`).
