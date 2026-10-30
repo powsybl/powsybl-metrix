@@ -198,6 +198,7 @@ ERRCouplageBoucle							Branch '$1' used in a remedial action creates a loop on 
 ERRCurTopoContrainteInconnue                Constraint '$1' does not match any monitored branch.
 WarnElementDansIncident                     Branch '$1' used in a remedial action is part of the outage '$2'
 WarnElementDejaDansParade                   Duplicate branch '$1' used in a remedial action of outage '$2'
+WarnParadeRestrictionMultiple               Remedial action '$1' of outage '$2' is limited to several constraints, which is not supported: the limitation is ignored
 
 //---------------- Variables li�es ---------------------
 ERRConsoNulle								Error: load value is null on bus '$1' used in variable binding '$2'

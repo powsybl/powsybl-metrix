@@ -18,8 +18,8 @@ Nombre de composantes synchrones 1
 Pénalisation des TD dans la fonction coût   = 0.01
 Pénalisation des HVDC dans la fonction coût = 0.1
 
-La contrainte '' ne correspond pas à un élément à surveiller.
-La contrainte 'FVALDI1  FTDPRA1  1|FOO|FS.BIS1 FSSV.O1 2' ne correspond pas à un élément à surveiller.
+La contrainte 'FOO' ne correspond pas à un élément à surveiller.
+La parade 'FS.BIS1  FVALDI1  1' de l'incident 'FS.BIS1 FSSV.O1 1' est restreinte à plusieurs contraintes, ce qui n'est pas supporté : la restriction est ignorée
  Nb total d'incidents + parades : 6
 Mode de calcul : OPF
 Noeud bilan : 0 [FP.AND1_1]
