@@ -9,88 +9,104 @@
 //
 
 #include "solver.h"
+
 #include "err/IoDico.h"
 #include "err/error.h"
 #include "factory.h"
 #include "log_bridge.h"
+#include <ortools/init/init.h>
 
 #include <cmath>
-#include <iostream>
+#include <map>
+#include <mutex>
 #include <sstream>
 
 using namespace operations_research;
 
 namespace ortools
 {
-const std::string Solver::solverName_ = "simple_lp_program";
-
-const std::map<config::SolverChoice, Solver::SolverChoice> Solver::solver_choices_ = {
-    std::make_pair(config::SolverChoice::XPRESS,
-                   std::make_pair(operations_research::MPSolver::XPRESS_LINEAR_PROGRAMMING,
-                                  operations_research::MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING)),
-};
-
-Solver::Solver(config::SolverChoice solver_choice, std::string_view specific_params)
-    : solver_choice_(solver_choice),
-      specific_params_(specific_params) {}
-
-static const std::string& solverChoiceName(config::SolverChoice choice)
+namespace
 {
-    static const std::map<config::SolverChoice, std::string> names = {
-        {config::SolverChoice::SIRIUS, "SIRIUS"},
-        {config::SolverChoice::XPRESS, "XPRESS"},
+const std::string modelName = "simple_lp_program";
+
+// Nom du fichier MPS ecrit par Sirius (PNE_EcrireJeuDeDonneesMPS, SPX_EcrireProblemeAuFormatMPS)
+const std::string mpsFileName = "Donnees_Probleme_Solveur.mps";
+} // namespace
+
+Solver::Solver(config::SolverChoice solver_choice, std::string_view specific_params) :
+    backend_(backend(solver_choice)),
+    specific_params_(specific_params)
+{
+}
+
+void Solver::initEnvironment()
+{
+    // Initialisation de la journalisation d'OR-Tools, requise une fois avant tout autre usage :
+    // sans elle, absl ecrit tous ses messages sur stderr, INFO et WARNING compris (dont la
+    // banniere Xpress, emise a chaque initialisation de l'environnement) ; une fois initialisee,
+    // seuls ERROR et FATAL y restent.
+    static std::once_flag loggingInitialized;
+    std::call_once(loggingInitialized, [] { CppBridge::InitLogging("metrix-simulator"); });
+
+    // Une instance OR-Tools Xpress interrompt le processus (CHECK) si l'environnement Xpress
+    // ne s'initialise pas : la disponibilite est controlee avant d'en creer une.
+    if (!MPSolver::SupportsProblemType(backend_.lp)) {
+        throw ErrorI(err::ioDico().msg("ERRSolveurIndisponible", backend_.name));
+    }
+    environment_ = std::make_unique<MPSolver>(modelName, backend_.lp);
+}
+
+const Solver::Backend& Solver::backend(config::SolverChoice solver_choice)
+{
+    static const std::map<config::SolverChoice, Backend> backends = {
+        {config::SolverChoice::XPRESS,
+         {"XPRESS", MPSolver::XPRESS_LINEAR_PROGRAMMING, MPSolver::XPRESS_MIXED_INTEGER_PROGRAMMING}},
     };
-    static const std::string unknown = "UNKNOWN";
-    auto it = names.find(choice);
-    return it != names.end() ? it->second : unknown;
+    return backends.at(solver_choice);
 }
 
-void Solver::checkSolverAvailability(operations_research::MPSolver::OptimizationProblemType problemType) const
+std::unique_ptr<MPSolver> Solver::makeMPSolver(MPSolver::OptimizationProblemType type)
 {
-    static std::map<operations_research::MPSolver::OptimizationProblemType, bool> available;
-    auto it = available.find(problemType);
-    if (it == available.end()) {
-        it = available.try_emplace(problemType, operations_research::MPSolver::SupportsProblemType(problemType)).first;
+    if (!environment_) {
+        initEnvironment();
     }
-    if (!it->second) {
-        throw ErrorI(err::ioDico().msg("ERRSolveurIndisponible", solverChoiceName(solver_choice_)));
-    }
-}
-
-void Solver::applySpecificParams(operations_research::MPSolver& solver) const
-{
-    if (specific_params_.empty()) {
-        return;
-    }
+    auto solver = std::make_unique<MPSolver>(modelName, type);
     // OR-Tools applique les paires une par une et s'arrete a la premiere cle inconnue :
     // un rejet laisse donc le backend partiellement configure, sans moyen de savoir
     // jusqu'ou. On echoue plutot que de poursuivre sur une configuration incertaine.
-    if (!solver.SetSolverSpecificParametersAsString(specific_params_)) {
+    if (!specific_params_.empty() && !solver->SetSolverSpecificParametersAsString(specific_params_)) {
         throw ErrorI(err::ioDico().msg("ERRParamSolveurRefuse", specific_params_));
     }
+    return solver;
 }
 
 void Solver::solve(PROBLEME_A_RESOUDRE* problem)
 {
-    solver_.reset();
-    solver_ = toMPSolver(*problem);
-
-    if (problem->AffichageDesTraces) {
-        solver_->EnableOutput();
+    const auto solver = makeMPSolver(backend_.mip);
+    load(*solver,
+         *problem,
+         Columns{problem->NombreDeVariables,
+                 problem->Xmin,
+                 problem->Xmax,
+                 problem->CoutLineaire,
+                 problem->X,
+                 problem->TypeDeBorneDeLaVariable,
+                 problem->TypeDeVariable});
+    if (problem->TempsDExecutionMaximum > 0) { // 0 : illimite
+        solver->SetTimeLimit(absl::Seconds(problem->TempsDExecutionMaximum));
     }
 
-    auto params = makeParams<PROBLEME_A_RESOUDRE>(*problem);
-    auto status = solver_->Solve(*params);
+    auto status = solver->Solve(*makeParams(*problem));
 
-    if (status == operations_research::MPSolver::ResultStatus::OPTIMAL) {
+    if (status == MPSolver::ResultStatus::OPTIMAL) {
         problem->ExistenceDUneSolution = SOLUTION_OPTIMALE_TROUVEE;
-        updateProblem(*problem, solver_);
-    } else if (status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
+        updateProblem(*problem, *solver);
+    } else if (status == MPSolver::ResultStatus::FEASIBLE) {
         problem->ExistenceDUneSolution = ARRET_PAR_LIMITE_DE_TEMPS_AVEC_SOLUTION_ADMISSIBLE_DISPONIBLE;
-        updateProblem(*problem, solver_);
-    } else if (status == operations_research::MPSolver::ResultStatus::INFEASIBLE) {
+        updateProblem(*problem, *solver);
+    } else if (status == MPSolver::ResultStatus::INFEASIBLE) {
         problem->ExistenceDUneSolution = PROBLEME_INFAISABLE;
-    } else if (status == operations_research::MPSolver::ResultStatus::UNBOUNDED) {
+    } else if (status == MPSolver::ResultStatus::UNBOUNDED) {
         problem->ExistenceDUneSolution = PROBLEME_NON_BORNE;
     } else {
         // ABNORMAL / MODEL_INVALID / NOT_SOLVED
@@ -100,80 +116,42 @@ void Solver::solve(PROBLEME_A_RESOUDRE* problem)
 
 void Solver::solve(PROBLEME_SIMPLEXE* problem)
 {
-    solver_.reset();
-    solver_ = toMPSolver(*problem);
+    const auto solver = makeMPSolver(backend_.lp);
+    // NB : pour un PROBLEME_SIMPLEXE, le champ TypeDeVariable contient en realite
+    // les types de borne (cf. le renseignement de pb_ dans calculmacrofonctions.cpp).
+    load(*solver,
+         *problem,
+         Columns{problem->NombreDeVariables,
+                 problem->Xmin,
+                 problem->Xmax,
+                 problem->CoutLineaire,
+                 problem->X,
+                 problem->TypeDeVariable,
+                 nullptr});
 
-    if (problem->AffichageDesTraces) {
-        solver_->EnableOutput();
-    }
+    auto status = solver->Solve(*makeParams(*problem));
 
-    auto params = makeParams<PROBLEME_SIMPLEXE>(*problem);
-    auto status = solver_->Solve(*params);
-
-    if (status == operations_research::MPSolver::ResultStatus::OPTIMAL
-        || status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
-        if (status == operations_research::MPSolver::ResultStatus::FEASIBLE) {
+    if (status == MPSolver::ResultStatus::OPTIMAL || status == MPSolver::ResultStatus::FEASIBLE) {
+        if (status == MPSolver::ResultStatus::FEASIBLE) {
             // Arret premature (limite d'iterations/temps du backend) avec une solution
             // admissible : on la restitue comme Sirius le ferait, mais on trace car la
             // solution n'est pas prouvee optimale.
             logWarning(__FILE__, __LINE__, "LP solve stopped before proven optimality, using the feasible solution");
         }
         problem->ExistenceDUneSolution = OUI_SPX;
-        updateProblem(*problem, solver_);
+        updateProblem(*problem, *solver);
     } else {
         problem->ExistenceDUneSolution = NON_SPX;
     }
 }
 
-std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME_A_RESOUDRE& problem)
+template<class PROBLEM>
+void Solver::load(MPSolver& solver, const PROBLEM& problem, const Columns& columns)
 {
-    auto solver = makeMPSolver<PROBLEME_A_RESOUDRE>();
-
-    // Create the variables and set objective cost.
-    transferVariables(solver,
-                      Columns{problem.NombreDeVariables,
-                              problem.Xmin,
-                              problem.Xmax,
-                              problem.CoutLineaire,
-                              problem.X,
-                              problem.TypeDeBorneDeLaVariable,
-                              problem.TypeDeVariable});
-
-    // Create constraints and set coefs
-    transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
-    transferMatrix(solver,
-                   problem.IndicesDebutDeLigne,
-                   problem.NombreDeTermesDesLignes,
-                   problem.IndicesColonnes,
-                   problem.CoefficientsDeLaMatriceDesContraintes,
-                   problem.NombreDeContraintes);
-
-    // set time limit
-    // TempsDExecutionMaximum est en secondes, set_time_limit attend des millisecondes
-    if (problem.TempsDExecutionMaximum > 0) {
-        solver->set_time_limit(static_cast<int64_t>(problem.TempsDExecutionMaximum) * 1000);
+    if (problem.AffichageDesTraces) {
+        solver.EnableOutput();
     }
-
-    return solver;
-}
-
-std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME_SIMPLEXE& problem)
-{
-    auto solver = makeMPSolver<PROBLEME_SIMPLEXE>();
-
-    // Create the variables and set objective cost.
-    // NB : pour un PROBLEME_SIMPLEXE, le champ TypeDeVariable contient en realite
-    // les types de borne (cf. le renseignement de pb_ dans calculmacrofonctions.cpp).
-    transferVariables(solver,
-                      Columns{problem.NombreDeVariables,
-                              problem.Xmin,
-                              problem.Xmax,
-                              problem.CoutLineaire,
-                              problem.X,
-                              problem.TypeDeVariable,
-                              nullptr});
-
-    // Create constraints and set coefs
+    transferVariables(solver, columns);
     transferRows(solver, problem.SecondMembre, problem.Sens, problem.NombreDeContraintes);
     transferMatrix(solver,
                    problem.IndicesDebutDeLigne,
@@ -181,13 +159,11 @@ std::shared_ptr<operations_research::MPSolver> Solver::toMPSolver(const PROBLEME
                    problem.IndicesColonnes,
                    problem.CoefficientsDeLaMatriceDesContraintes,
                    problem.NombreDeContraintes);
-
-    return solver;
 }
 
-void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver, const Columns& columns)
+void Solver::transferVariables(MPSolver& solver, const Columns& columns)
 {
-    MPObjective* const objective = solver->MutableObjective();
+    MPObjective* const objective = solver.MutableObjective();
     for (int idxVar = 0; idxVar < columns.count; ++idxVar) {
         const std::string name = "x" + std::to_string(idxVar);
 
@@ -228,9 +204,9 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
 
         const operations_research::MPVariable* x = nullptr;
         if (columns.variableType != nullptr && columns.variableType[idxVar] == ENTIER) {
-            x = solver->MakeIntVar(min_l, max_l, name);
+            x = solver.MakeIntVar(min_l, max_l, name);
         } else {
-            x = solver->MakeNumVar(min_l, max_l, name);
+            x = solver.MakeNumVar(min_l, max_l, name);
         }
         if (columns.cost[idxVar] != 0.) {
             objective->SetCoefficient(x, columns.cost[idxVar]);
@@ -238,10 +214,7 @@ void Solver::transferVariables(const std::shared_ptr<operations_research::MPSolv
     }
 }
 
-void Solver::transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
-                          double const* rhs,
-                          char const* sens,
-                          int nbRow)
+void Solver::transferRows(MPSolver& solver, double const* rhs, char const* sens, int nbRow)
 {
     for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
         double bMin = -MPSolver::infinity();
@@ -260,19 +233,15 @@ void Solver::transferRows(const std::shared_ptr<operations_research::MPSolver>& 
             ss << "Unknown constraint sense '" << sens[idxRow] << "' at row " << idxRow;
             throw ErrorI(ss.str());
         }
-        solver->MakeRowConstraint(bMin, bMax, "c" + std::to_string(idxRow));
+        solver.MakeRowConstraint(bMin, bMax, "c" + std::to_string(idxRow));
     }
 }
 
-void Solver::transferMatrix(const std::shared_ptr<operations_research::MPSolver>& solver,
-                            int const* indexRows,
-                            int const* terms,
-                            int const* indexCols,
-                            double const* coeffs,
-                            int nbRow)
+void Solver::transferMatrix(
+    MPSolver& solver, int const* indexRows, int const* terms, int const* indexCols, double const* coeffs, int nbRow)
 {
-    const auto& variables = solver->variables();
-    const auto& constraints = solver->constraints();
+    const auto& variables = solver.variables();
+    const auto& constraints = solver.constraints();
 
     for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
         MPConstraint* const ct = constraints[idxRow];
@@ -311,10 +280,9 @@ Solver::makeParams<PROBLEME_A_RESOUDRE>(const PROBLEME_A_RESOUDRE& problem)
 }
 
 template<>
-void Solver::updateProblem<PROBLEME_A_RESOUDRE>(PROBLEME_A_RESOUDRE& problem,
-                                                const std::shared_ptr<operations_research::MPSolver>& solver)
+void Solver::updateProblem<PROBLEME_A_RESOUDRE>(PROBLEME_A_RESOUDRE& problem, const MPSolver& solver)
 {
-    auto& variables = solver->variables();
+    const auto& variables = solver.variables();
     int nbVar = problem.NombreDeVariables;
 
     // NOTE: constraint duals (VariablesDualesDesContraintes) are deliberately not
@@ -326,7 +294,7 @@ void Solver::updateProblem<PROBLEME_A_RESOUDRE>(PROBLEME_A_RESOUDRE& problem,
 
     // Extracting variable values
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
-        auto& var = variables[idxVar];
+        const auto& var = variables[idxVar];
         problem.X[idxVar] = var->solution_value();
     }
 }
@@ -337,7 +305,7 @@ static int extractBasisStatus(const operations_research::MPVariable& var)
     double solutionValue = var.solution_value();
     // extract and return correct basis status based on bounds comparison
     MPSolver::BasisStatus ortoolsBasisStatus = var.basis_status();
-    switch(ortoolsBasisStatus) {
+    switch (ortoolsBasisStatus) {
         case MPSolver::FREE: {
             if (std::fabs(var.lb() - solutionValue) < config::constants::epsilon) {
                 return HORS_BASE_SUR_BORNE_INF;
@@ -346,14 +314,10 @@ static int extractBasisStatus(const operations_research::MPVariable& var)
             }
             return HORS_BASE_A_ZERO;
         }
-        case MPSolver::AT_LOWER_BOUND:
-            return HORS_BASE_SUR_BORNE_INF;
-        case MPSolver::AT_UPPER_BOUND:
-            return HORS_BASE_SUR_BORNE_SUP;
-        case MPSolver::FIXED_VALUE:
-            return HORS_BASE_SUR_BORNE_INF;
-        case MPSolver::BASIC:
-            return EN_BASE;
+        case MPSolver::AT_LOWER_BOUND: return HORS_BASE_SUR_BORNE_INF;
+        case MPSolver::AT_UPPER_BOUND: return HORS_BASE_SUR_BORNE_SUP;
+        case MPSolver::FIXED_VALUE: return HORS_BASE_SUR_BORNE_INF;
+        case MPSolver::BASIC: return EN_BASE;
         default: {
             std::ostringstream ss;
             ss << "Unknown ortoolsBasisStatus: " << ortoolsBasisStatus;
@@ -370,26 +334,25 @@ static bool isSlackInBase(const operations_research::MPConstraint& cnt)
 
 
 template<>
-void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem,
-                                              const std::shared_ptr<operations_research::MPSolver>& solver)
+void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem, const MPSolver& solver)
 {
-    auto& variables = solver->variables();
+    const auto& variables = solver.variables();
     int nbVar = problem.NombreDeVariables;
 
     // Extracting variable values and reduced costs
     for (int idxVar = 0; idxVar < nbVar; ++idxVar) {
-        auto& var = variables[idxVar];
+        const auto& var = variables[idxVar];
         problem.X[idxVar] = var->solution_value();
         problem.CoutsReduits[idxVar] = var->reduced_cost();
         problem.PositionDeLaVariable[idxVar] = extractBasisStatus(*var);
     }
 
-    auto& constraints = solver->constraints();
+    const auto& constraints = solver.constraints();
     int nbRow = problem.NombreDeContraintes;
     problem.NbVarDeBaseComplementaires = 0;
     int idxCmpVar = 0;
     for (int idxRow = 0; idxRow < nbRow; ++idxRow) {
-        auto& row = constraints[idxRow];
+        const auto& row = constraints[idxRow];
         problem.CoutsMarginauxDesContraintes[idxRow] = row->dual_value();
         if (isSlackInBase(*row)) {
             problem.NbVarDeBaseComplementaires++;
@@ -397,18 +360,6 @@ void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem,
             idxCmpVar++;
         }
     }
-}
-
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>() const
-{
-    return solver_choices_.at(solver_choice_).second;
-}
-
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>() const
-{
-    return solver_choices_.at(solver_choice_).first;
 }
 
 std::shared_ptr<compute::ISolver> makeSolver(config::SolverChoice solver_choice, std::string_view specific_params)

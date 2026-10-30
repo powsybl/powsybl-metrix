@@ -125,7 +125,11 @@ Calculer::Calculer(Reseau& res, MapQuadinVar& variantesOrdonnees) : res_(res), v
     const auto& params = config::configuration().specificSolverParams();
 
     solver_pne_ = makeSolver(config::configuration().solverChoice(), params);
-    pc_solver_ = makeSolver(config::configuration().pcSolverChoice(), params);
+    // Instance partagee quand les deux phases utilisent le meme solveur, comme sans OR-Tools :
+    // une instance OR-Tools controle la disponibilite du solveur et en garde l'environnement initialise
+    pc_solver_ = config::configuration().pcSolverChoice() == config::configuration().solverChoice()
+                     ? solver_pne_
+                     : makeSolver(config::configuration().pcSolverChoice(), params);
 #else
     auto shared_solver = std::make_shared<compute::Solver>();
     solver_pne_ = shared_solver;

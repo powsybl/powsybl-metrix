@@ -21,11 +21,9 @@
 #include "pne.h"
 #include <ortools/linear_solver/linear_solver.h>
 
-#include <map>
 #include <memory>
 #include <string>
 #include <string_view>
-#include <vector>
 
 namespace ortools
 {
@@ -36,21 +34,24 @@ public:
 
     void solve(PROBLEME_A_RESOUDRE* pne_problem) final;
     void solve(PROBLEME_SIMPLEXE* spx_problem) final;
-    void free() final { solver_.reset(); }
+    /// Nothing to free: the model only lives during solve()
+    void free() final {}
 
 private:
-    // First = linear solver choice ; second = mixed solver choice
-    using SolverChoice = std::pair<operations_research::MPSolver::OptimizationProblemType,
-                                   operations_research::MPSolver::OptimizationProblemType>;
+    /// OR-Tools backend of a metrix solver choice
+    struct Backend {
+        const char* name;
+        operations_research::MPSolver::OptimizationProblemType lp;
+        operations_research::MPSolver::OptimizationProblemType mip;
+    };
 
-    static const std::string solverName_;
-    static const std::map<config::SolverChoice, SolverChoice> solver_choices_;
+    static const Backend& backend(config::SolverChoice solver_choice);
 
     template<class PROBLEM>
     static std::shared_ptr<operations_research::MPSolverParameters> makeParams(const PROBLEM& problem);
 
     template<class PROBLEM>
-    static void updateProblem(PROBLEM& problem, const std::shared_ptr<operations_research::MPSolver>& solver);
+    static void updateProblem(PROBLEM& problem, const operations_research::MPSolver& solver);
 
     /// Column data of a Sirius problem, as the parallel arrays of PROBLEME_SIMPLEXE / PROBLEME_A_RESOUDRE
     struct Columns {
@@ -63,43 +64,41 @@ private:
         int const* variableType; ///< TypeDeVariable (ENTIER / REEL), nullptr for a pure LP
     };
 
-    static void transferVariables(const std::shared_ptr<operations_research::MPSolver>& solver, const Columns& columns);
+    static void transferVariables(operations_research::MPSolver& solver, const Columns& columns);
 
-    static void transferRows(const std::shared_ptr<operations_research::MPSolver>& solver,
-                             double const* rhs,
-                             char const* sens,
-                             int nbRow);
+    static void transferRows(operations_research::MPSolver& solver, double const* rhs, char const* sens, int nbRow);
 
-    static void transferMatrix(const std::shared_ptr<operations_research::MPSolver>& solver,
+    static void transferMatrix(operations_research::MPSolver& solver,
                                int const* indexRows,
                                int const* terms,
                                int const* indexCols,
                                double const* coeffs,
                                int nbRow);
 
+    /// Load the columns, rows and matrix of a Sirius problem into an empty MPSolver
     template<class PROBLEM>
-    operations_research::MPSolver::OptimizationProblemType type() const;
+    static void load(operations_research::MPSolver& solver, const PROBLEM& problem, const Columns& columns);
 
-    template<class PROBLEM>
-    std::shared_ptr<operations_research::MPSolver> makeMPSolver()
-    {
-        auto problemType = type<PROBLEM>();
-        checkSolverAvailability(problemType);
-        auto solver = std::make_shared<operations_research::MPSolver>(solverName_, problemType);
-        applySpecificParams(*solver);
-        return solver;
-    }
+    /// Initialize the OR-Tools logging and the backend environment (first solve)
+    void initEnvironment();
 
-    void checkSolverAvailability(operations_research::MPSolver::OptimizationProblemType problemType) const;
+    /// New MPSolver of the backend, configured with the SOLVPARA parameters
+    [[nodiscard]] std::unique_ptr<operations_research::MPSolver>
+    makeMPSolver(operations_research::MPSolver::OptimizationProblemType type);
 
-    void applySpecificParams(operations_research::MPSolver& solver) const;
-
-    std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_A_RESOUDRE& problem);
-    std::shared_ptr<operations_research::MPSolver> toMPSolver(const PROBLEME_SIMPLEXE& problem);
-
-    std::shared_ptr<operations_research::MPSolver> solver_;
-    config::SolverChoice solver_choice_;
+    const Backend& backend_;
     std::string specific_params_;
+
+    /**
+     * @brief Idle MPSolver keeping the backend environment initialized, created on the first solve
+     *
+     * A new MPSolver is built for each solve (MPSolver::Clear() does not reset
+     * the coefficients cached by the OR-Tools Xpress interface). Each OR-Tools
+     * Xpress instance initializes the Xpress environment and releases it on
+     * destruction: without a living instance in between, every solve would
+     * check the license again.
+     */
+    std::unique_ptr<operations_research::MPSolver> environment_;
 };
 
 // specializations for ortools
@@ -112,14 +111,8 @@ Solver::makeParams<PROBLEME_SIMPLEXE>(const PROBLEME_SIMPLEXE& problem);
 
 template<>
 void Solver::updateProblem<PROBLEME_A_RESOUDRE>(PROBLEME_A_RESOUDRE& problem,
-                                                const std::shared_ptr<operations_research::MPSolver>& solver);
+                                                const operations_research::MPSolver& solver);
 template<>
-void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem,
-                                              const std::shared_ptr<operations_research::MPSolver>& solver);
-
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_A_RESOUDRE>() const;
-template<>
-operations_research::MPSolver::OptimizationProblemType Solver::type<PROBLEME_SIMPLEXE>() const;
+void Solver::updateProblem<PROBLEME_SIMPLEXE>(PROBLEME_SIMPLEXE& problem, const operations_research::MPSolver& solver);
 
 } // namespace ortools
