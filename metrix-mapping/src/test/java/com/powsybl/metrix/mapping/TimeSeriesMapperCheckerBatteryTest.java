@@ -16,10 +16,6 @@ import org.junit.jupiter.api.Test;
  */
 class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperCheckerTest {
 
-    /*
-     * GENERATOR TEST
-     */
-
     @Test
     void pmax1Test() {
         Network network = createNetwork();
@@ -35,14 +31,14 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
 
         // without ignore limits
         // -> targetP reduced to maxP = 1000
-        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, 0, 1000, 1000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 1000, 0, 1000, 1000,
                 WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
                 "targetP 2000 of NO_BATTERY not included in 0 to 1000, targetP changed to 1000",
                 null);
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, 0, 2000, 2000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 2000, 0, 2000, 2000,
                 INFO, expectedLabelMaxP, expectedLabelMaxP, VARIANT_ALL,
                 "targetP 2000 of NO_BATTERY not included in 0 to 1000, maxP changed to 2000",
                 null);
@@ -67,14 +63,14 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
 
         // without ignore limits
         // -> targetP reduced to maxP = 1000
-        testBattery(NetworkSerDe.copy(network), pmax2Script, false, BATTERY_ID, 0, 0, 1000, 1000,
+        testBattery(NetworkSerDe.copy(network), pmax2Script, false, BATTERY_ID, 1000, 0, 1000, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1,
                 "Impossible to scale down 2000 of ts chronique_2000, targetP 1000 has been applied",
                 "Impossible to scale down at least one value of ts chronique_2000, modified targetP has been applied");
 
         // with ignore limits
         // -> maxP changed to targetP = 2000
-        testBattery(NetworkSerDe.copy(network), pmax2Script, true, BATTERY_ID, 0, 0, 2000, 2001,
+        testBattery(NetworkSerDe.copy(network), pmax2Script, true, BATTERY_ID, 2000, 0, 2000, 2001,
                 INFO, LIMIT_CHANGE + "maxP", SCALING_DOWN_PROBLEM + "at least one maxP increased", VARIANT_EMPTY,
                 "maxP of NO_BATTERY lower than targetP for 1 variants, maxP increased from 1000 to 2000",
                 "maxP violated by targetP in scaling down of at least one value of ts chronique_2000, maxP has been increased for equipments");
@@ -103,12 +99,12 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
 
         // without ignore limits
         // -> targetP reduced to maxP = 100
-        testBattery(NetworkSerDe.copy(network), pmax3Script, false, BATTERY_ID, 0, 0, 100, 100,
+        testBattery(NetworkSerDe.copy(network), pmax3Script, false, BATTERY_ID, 100, 0, 100, 100,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
         // -> same as without ignore limits (ignore limits disabled)
-        testBattery(NetworkSerDe.copy(network), pmax3Script, true, BATTERY_ID, 0, 0, 100, 100,
+        testBattery(NetworkSerDe.copy(network), pmax3Script, true, BATTERY_ID, 100, 0, 100, 100,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, null);
     }
 
@@ -140,11 +136,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
             """;
         // without ignore limits
         // -> targetP reduced to maxP = 100
-        testBattery(NetworkSerDe.copy(network), pmax4Script, false, BATTERY_ID, 0, 0, 100, 100,
+        testBattery(NetworkSerDe.copy(network), pmax4Script, false, BATTERY_ID, 100, 0, 100, 100,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, expectedSynthesisMessage);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmax4Script, true, BATTERY_ID, 0, 0, 100, 100,
+        testBattery(NetworkSerDe.copy(network), pmax4Script, true, BATTERY_ID, 100, 0, 100, 100,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, expectedSynthesisMessage);
     }
 
@@ -166,10 +162,10 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
             """;
 
         // without ignore limits
-        testBattery(NetworkSerDe.copy(network), pmax5Script, false, BATTERY_ID, 0, 0, 1000, 10000);
+        testBattery(NetworkSerDe.copy(network), pmax5Script, false, BATTERY_ID, 1000, 0, 1000, 10000);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmax5Script, true, BATTERY_ID, 0, 0, 1000, 10000);
+        testBattery(NetworkSerDe.copy(network), pmax5Script, true, BATTERY_ID, 1000, 0, 1000, 10000);
     }
 
     @Test
@@ -182,13 +178,13 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
         String expectedLabelMinP = BASE_CASE_RANGE_PROBLEM + "minP changed to base case targetP";
 
         // without ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, -1000, -1000, 600,
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, -1000, -1000, -1000, 600,
                 WARNING, expectedLabelTargetP, expectedLabelTargetP, VARIANT_ALL,
                 "targetP -2000 of NO_BATTERY not included in -1000 to 600, targetP changed to -1000",
                 null);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, -2000, -2000, 600,
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, -2000, -2000, -2000, 600,
                 INFO, expectedLabelMinP, expectedLabelMinP, VARIANT_ALL,
                 "targetP -2000 of NO_BATTERY not included in -1000 to 600, minP changed to -2000",
                 null);
@@ -225,11 +221,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
         String expectedMessage = "targetP 500 of NO_BATTERY not included in 1000 to 2000, but targetP has not been changed";
 
         // without ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 0, 1000, 500, 2000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, false, BATTERY_ID, 500, 1000, 500, 2000,
                 INFO, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 0, 1000, 500, 2000,
+        testBattery(NetworkSerDe.copy(network), emptyScript, true, BATTERY_ID, 500, 1000, 500, 2000,
                 INFO, expectedLabel, expectedLabel, VARIANT_ALL, expectedMessage, null);
     }
 
@@ -247,13 +243,13 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
                 filter { battery.id == 'NO_BATTERY' }
             }
             """;
-        testBattery(NetworkSerDe.copy(network), pmin2aScript, false, BATTERY_ID, 0, -1000, -1000, 600,
+        testBattery(NetworkSerDe.copy(network), pmin2aScript, false, BATTERY_ID, -1000, -1000, -1000, 600,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1,
                 "Impossible to scale down -2000 of ts chronique_m2000, targetP -1000 has been applied",
                 "Impossible to scale down at least one value of ts chronique_m2000, modified targetP has been applied");
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmin2aScript, true, BATTERY_ID, 0, -2001, -2000, 600,
+        testBattery(NetworkSerDe.copy(network), pmin2aScript, true, BATTERY_ID, -2000, -2001, -2000, 600,
                 INFO, LIMIT_CHANGE + "minP", SCALING_DOWN_PROBLEM + "at least one minP decreased", VARIANT_EMPTY,
                 "minP of NO_BATTERY higher than targetP for 1 variants, minP decreased from -1000 to -2000",
                 "minP violated by targetP in scaling down of at least one value of ts chronique_m2000, minP has been decreased for equipments");
@@ -303,11 +299,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
                 filter { battery.id == 'NO_BATTERY' }
             }
             """;
-        testBattery(NetworkSerDe.copy(network), pmin2cScript, false, BATTERY_ID, 0, 500, 250, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin2cScript, false, BATTERY_ID, 250, 500, 250, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmin2cScript, true, BATTERY_ID, 0, 500, 250, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin2cScript, true, BATTERY_ID, 250, 500, 250, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
     }
 
@@ -330,11 +326,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
                 variable minP
             }
             """;
-        testBattery(NetworkSerDe.copy(network), pmin3aScript, false, BATTERY_ID, 0, -100, -100, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin3aScript, false, BATTERY_ID, -100, -100, -100, 1000,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmin3aScript, true, BATTERY_ID, 0, -100, -100, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin3aScript, true, BATTERY_ID, -100, -100, -100, 1000,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, null);
     }
 
@@ -382,11 +378,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
                 variable minP
             }
             """;
-        testBattery(NetworkSerDe.copy(network), pmin3cScript, false, BATTERY_ID, 0, 500, 100, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin3cScript, false, BATTERY_ID, 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmin3cScript, true, BATTERY_ID, 0, 500, 100, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin3cScript, true, BATTERY_ID, 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, null);
     }
 
@@ -415,11 +411,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
                 variable targetP
             }
             """;
-        testBattery(NetworkSerDe.copy(network), pmin4aScript, false, BATTERY_ID, 0, -100, -100, 300,
+        testBattery(NetworkSerDe.copy(network), pmin4aScript, false, BATTERY_ID, -100, -100, -100, 300,
                 WARNING, expectedLabel, expectedLabel, VARIANT_1, expectedMessage, expectedSynthesisMessage);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmin4aScript, true, BATTERY_ID, 0, -100, -100, 300,
+        testBattery(NetworkSerDe.copy(network), pmin4aScript, true, BATTERY_ID, -100, -100, -100, 300,
                 WARNING, expectedLabelIL, expectedLabelIL, VARIANT_1, expectedMessage, expectedSynthesisMessage);
     }
 
@@ -479,11 +475,11 @@ class TimeSeriesMapperCheckerBatteryTest extends AbstractTimeSeriesMapperChecker
                 variable targetP
             }
             """;
-        testBattery(NetworkSerDe.copy(network), pmin4cScript, false, BATTERY_ID, 0, 500, 100, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin4cScript, false, BATTERY_ID, 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
 
         // with ignore limits
-        testBattery(NetworkSerDe.copy(network), pmin4cScript, true, BATTERY_ID, 0, 500, 100, 1000,
+        testBattery(NetworkSerDe.copy(network), pmin4cScript, true, BATTERY_ID, 100, 500, 100, 1000,
                 INFO, expectedLabel, expectedLabel, VARIANT_1, null, expectedSynthesisMessage);
     }
 }

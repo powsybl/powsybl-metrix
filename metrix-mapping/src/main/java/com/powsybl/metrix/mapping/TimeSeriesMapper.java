@@ -45,6 +45,7 @@ public class TimeSeriesMapper {
     public static final int DISCONNECTED_VALUE = 0; // 0 means equipment is disconnected
     public static final int CONNECTED_VALUE = 1;
     private static final String GENERATOR_NOT_FOUND_MESSAGE = "Generator '%s' not found";
+    private static final String BATTERY_NOT_FOUND_MESSAGE = "Battery '%s' not found";
     private static final String LOAD_NOT_FOUND_MESSAGE = "Load '%s' not found";
     private static final String LOAD_DETAIL_NOT_FOUND_MESSAGE = "LoadDetail '%s' not found";
 
@@ -574,6 +575,12 @@ public class TimeSeriesMapper {
         return generator.getTargetP();
     }
 
+    private double getBatteryInjection(String id) {
+        Battery battery = network.getBattery(id);
+        verifyIdentifiable(battery, BATTERY_NOT_FOUND_MESSAGE, id);
+        return battery.getTargetP();
+    }
+
     private double getLoadInjection(String id) {
         Load load = network.getLoad(id);
         verifyIdentifiable(load, LOAD_NOT_FOUND_MESSAGE, id);
@@ -615,6 +622,12 @@ public class TimeSeriesMapper {
         unmappedGenerators.retainAll(config.getUnmappedMaxPGenerators());
         for (String id : unmappedGenerators) {
             constantBalance += getGeneratorInjection(id);
+        }
+        Set<String> unmappedBatteries = new HashSet<>(config.getUnmappedBatteries());
+        unmappedBatteries.retainAll(config.getUnmappedMinPBatteries());
+        unmappedBatteries.retainAll(config.getUnmappedMaxPBatteries());
+        for (String id : unmappedBatteries) {
+            constantBalance += getBatteryInjection(id);
         }
         Set<String> unmappedLoads = config.getUnmappedLoads();
         for (String id : unmappedLoads) {
