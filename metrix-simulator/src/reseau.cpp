@@ -2058,7 +2058,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
             }
 
             // Bruitage des groupes
-            std::random_shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), myRandom);
+            randomShuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), myRandom);
             varGroupesZones_[numRegion] = groupesDeLaZone;
         }
 

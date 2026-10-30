@@ -1,0 +1,29 @@
+Use dictionnary file METRIX.dic
+Attention: Le quadripole QUAD_NLI a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_NLJ a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_NLK a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_NLL a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_NLM a une admittance tres grande (100000.0000000000)
+Attention: Le quadripole QUAD_NLN a une admittance tres grande (100000.0000000000)
+Informations générales sur le réseau :
+Demi-bande de réglage globale = 0.000000
+Demi-bande de réglage ignorée car il n'y a pas de défauts groupes
+Puissance maximale perdue sur un incident =          0 MW
+Nombre d'incidents valides = 0 (sur 0)
+Nombre de regions       = 11
+Nombre total de noeuds  = 6975
+Nombre de consommations = 7690 (dont 0 peuvent agir en curatif)
+Nombre de quadripoles   = 9824 (dont 1559 surveillés en N et 1559 surveillés sur défaut)
+Nombre de groupes       = 5467 (dont 0 peuvent agir en curatif)
+Nombre de transfo. dephaseurs = 41 (dont 0 peuvent agir en curatif)
+Nombre de liaisons à courant continu = 2 (dont 0 peuvent agir en curatif et 2 fonctionnent en émulation AC)
+Coefficient de perte = 0.00%
+Pas de limitation du nombre d'actions curatives sur incident
+Nombre de composantes synchrones 1
+Pénalisation des TD dans la fonction coût   = 0.01
+Pénalisation des HVDC dans la fonction coût = 0.1
+
+La ligne 'MUR  L61P.HA5' de la loi -1:QUADIN est introuvable
+Noeud '4176' est hors composante connexe principale (composante -1)
+Ligne ouverte 'QUAD_CYQ' entre la composante connexe principale et le noeud '4176'
+Not recoverable error: Les indisponibilités de ligne de la variante -1 rompent la connexité (file=reseau.cpp ,line=2787)

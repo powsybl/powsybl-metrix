@@ -18,12 +18,33 @@
 #include "parametres.h"
 #include "pne.h"
 
+#include <algorithm>
 #include <map>
 #include <memory>
 #include <random>
 #include <set>
 #include <string>
 #include <vector>
+
+// Remplacant de std::random_shuffle (deprecie en C++14, retire du standard en
+// C++17 ; les builds USE_ORTOOLS compilent effectivement en C++17 via les
+// interface compile features de la cible ortools::ortools). L'implementation
+// reproduit EXACTEMENT la permutation de libstdc++ avec le meme generateur :
+// les references TNR dependent de cet ordre (bruitage deterministe des groupes
+// via Reseau::myRandom), elle ne doit donc pas etre modifiee.
+template<typename RandomIt, typename Rand>
+void randomShuffle(RandomIt first, RandomIt last, Rand&& rand)
+{
+    if (first == last) {
+        return;
+    }
+    for (RandomIt i = first + 1; i != last; ++i) {
+        RandomIt j = first + rand(static_cast<int>(i - first) + 1);
+        if (i != j) {
+            std::iter_swap(i, j);
+        }
+    }
+}
 
 class Connexion;
 class Noeud;

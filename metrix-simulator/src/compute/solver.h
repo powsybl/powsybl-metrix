@@ -10,17 +10,27 @@
 
 #pragma once
 
+#include "isolver.h"
+
 #include <pne.h>
 
 namespace compute
 {
-class Solver
+class Solver : public ISolver
 {
 public:
-    void solve(PROBLEME_A_RESOUDRE* pne_problem);
-    void solve(PROBLEME_SIMPLEXE* spx_problem);
+    Solver();
+    ~Solver() override { free(); }
 
-    void free();
+    Solver(const Solver&) = delete;
+    Solver& operator=(const Solver&) = delete;
+    Solver(Solver&&) = delete;
+    Solver& operator=(Solver&&) = delete;
+
+    void solve(PROBLEME_A_RESOUDRE* pne_problem) final;
+    void solve(PROBLEME_SIMPLEXE* spx_problem) final;
+
+    void free() final;
 
 private:
     PROBLEME_SPX* problem_ = nullptr;

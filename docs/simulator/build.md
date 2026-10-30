@@ -7,9 +7,11 @@ This page will get you through the building of the executable *metrix-simulator*
 
 To build metrix-simulator, you need:
 - A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
-- [CMake](https://cmake.org) (3.12 or higher)
+  - C++17 with `USE_ORTOOLS`, required by OR-Tools
+- [CMake](https://cmake.org) (3.12 or higher, 3.21 or higher with `USE_ORTOOLS`)
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)
+- With `USE_ORTOOLS` only: Python 3 with its development headers, to build OR-Tools
 
 Use the following commands to install them on your OS:
 
@@ -70,6 +72,8 @@ $> cmake --build . --target install
 
 The following CMAKE options can be set for the executable configuration:
 - `USE_SIRIUS_SHARED` (default = OFF): If active, the project will link using the shared library of sirius solver instead of the static library
+- `USE_ORTOOLS` (default = OFF): If active, enables the Xpress backend through [OR-Tools](https://developers.google.com/optimization), selected at runtime with `SOLVERCH` / `PCSOLVER` = 6 (see [Inputs and outputs](io)). The third parties must have been built with `-DUSE_ORTOOLS=ON` as well, so that OR-Tools is available. When inactive, the binary is Sirius-only, identical to the legacy behavior
+- `USE_XPRESS` (default = OFF): If active, authorizes the Xpress solver (`SOLVERCH=6`) at runtime. Requires `USE_ORTOOLS=ON`. Nothing from Xpress is needed at build time: OR-Tools loads `libxprs.so` at runtime from `$XPRESSDIR/lib` (environment variable `XPRESSDIR`, usually exported by the Xpress `xpvars.sh` script; `LD_LIBRARY_PATH` is not consulted), so the machine running `SOLVERCH=6` needs a licensed Xpress installation and `XPRESSDIR`. See `metrix-simulator/README.md` for runtime solver selection (`SOLVERCH`/`PCSOLVER`) and the full build documentation
 - `METRIX_RUN_ALL_TESTS` (default = ON): If inactive, the project will execute a reduced scope of tests
 
 ## Extras
