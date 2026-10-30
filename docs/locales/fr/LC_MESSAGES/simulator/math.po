@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../../simulator/math.md:9 0b2942dc5bf44ab29a3f93e1a2219be5
 msgid "Mathematical model"
-msgstr "Mathematical model"
+msgstr "Modèle mathématique"
 
 #: ../../simulator/math.md:11 194384b0ba0d420a88074fbea1ed1f22
 msgid "Variables"

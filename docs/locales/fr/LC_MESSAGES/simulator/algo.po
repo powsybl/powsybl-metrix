@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../../simulator/algo.md:8 2cf9de5f87474cd19c548caabfbc2f7f
 msgid "Algorithm description"
-msgstr "Algorithm description"
+msgstr "Description de l'algorithme"
 
 #: ../../simulator/algo.md:10 ff38ba53cd8e49a2a3cbfb58325aa84e
 msgid "Introduction"

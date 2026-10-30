@@ -21,7 +21,7 @@ msgstr ""
 
 #: ../../simulator/io_doc.md:9 40dfa373ce724863830ee3666ba04651
 msgid "Inputs and outputs"
-msgstr "Inputs and outputs"
+msgstr "Entrées et sorties"
 
 #: ../../simulator/io_doc.md:11 0f358c89875b42cda19410b820766b20
 msgid "Contents"
