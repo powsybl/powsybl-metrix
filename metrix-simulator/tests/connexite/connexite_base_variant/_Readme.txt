@@ -8,4 +8,4 @@
 # SPDX-License-Identifier: MPL-2.0
 # 
 
-network is connex but base variant breaks it -> manage connexity
+network is connex but base variant breaks it -> computation stopped

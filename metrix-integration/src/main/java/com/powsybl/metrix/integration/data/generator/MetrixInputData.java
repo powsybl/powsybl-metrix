@@ -732,7 +732,7 @@ public class MetrixInputData {
         throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
-    private double getTargetP(Injection<?> injection) {
+    public static double getTargetP(Injection<?> injection) {
         if (injection instanceof Generator generator) {
             return generator.getTargetP();
         } else if (injection instanceof Battery battery) {
@@ -741,7 +741,7 @@ public class MetrixInputData {
         throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
-    private double getMaxP(Injection<?> injection) {
+    public static double getMaxP(Injection<?> injection) {
         if (injection instanceof Generator generator) {
             return generator.getMaxP();
         } else if (injection instanceof Battery battery) {
@@ -750,7 +750,7 @@ public class MetrixInputData {
         throw new IllegalArgumentException("Unknown injection type: " + injection.getId() + ". Expected Type: Generator, Battery");
     }
 
-    private double getMinP(Injection<?> injection) {
+    public static double getMinP(Injection<?> injection) {
         if (injection instanceof Generator generator) {
             return generator.getMinP();
         } else if (injection instanceof Battery battery) {
