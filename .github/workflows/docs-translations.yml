@@ -19,6 +19,7 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+      pull-requests: write   # needed to create/update/delete the PR comment
     steps:
       - name: Checkout sources
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -33,3 +34,83 @@ jobs:
 
       - name: Check translations
         run: bash docs/scripts/check_translations.sh
+
+      - name: Create or update the PR comment explaining how to fix translations
+        if: >-
+          failure()
+          && steps.check.outcome == 'failure'
+          && github.event_name == 'pull_request'
+          && github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const marker = '<!-- docs-translations-check -->';
+            const body = [
+              marker,
+              '### 🌐 French documentation translations need your attention',
+              '',
+              'The `Docs translations` check failed: the French catalogs are not in sync with the English documentation.',
+              '',
+              'To fix it:',
+              '1. From the `docs` folder, update the catalogs (this also creates the catalogs of new pages):',
+              '   ```bash',
+              '   make gettext-update        # on Windows: make.bat gettext-update',
+              '   ```',
+              '2. In `docs/locales/fr/LC_MESSAGES/**/*.po`:',
+              '   - translate the entries with an empty `msgstr`;',
+              '   - review the entries flagged `#, fuzzy` (the English text changed since the translation was done), then remove the `fuzzy` flag once the translation is up to date.',
+              '3. Commit the updated `.po` files and push.',
+              '',
+              'Notes:',
+              '- Do not edit `msgid` lines: change the English page instead.',
+              '- Use `docs/locales/glossary.md` for consistent terminology, and do not translate code, file names, parameter names or MyST roles/directives.',
+              '- `.pot` and `.mo` files are generated and must not be committed.',
+              '- You can run the same check locally with `bash docs/scripts/check_translations.sh`.',
+              '',
+              'See the "Translations" section of `docs/README.md` for details.',
+              '',
+              `_Last updated for commit ${context.payload.pull_request.head.sha.substring(0, 7)}._`,
+            ].join('\n');
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100,
+            });
+            const existing = comments.find(
+              c => c.user?.type === 'Bot' && c.body?.includes(marker)
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner, repo, comment_id: existing.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner, repo, issue_number, body,
+              });
+            }
+
+      - name: Remove the PR comment once translations are up to date
+        if: >-
+          success()
+          && github.event_name == 'pull_request'
+          && github.event.pull_request.head.repo.full_name == github.repository
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const marker = '<!-- docs-translations-check -->';
+            const { owner, repo } = context.repo;
+            const issue_number = context.issue.number;
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner, repo, issue_number, per_page: 100,
+            });
+            for (const c of comments) {
+              if (c.user?.type === 'Bot' && c.body?.includes(marker)) {
+                await github.rest.issues.deleteComment({
+                  owner, repo, comment_id: c.id,
+                });
+              }
+            }
