@@ -168,6 +168,8 @@ ERRAjoutCtr									Erreur lors de l'ajout de la contrainte sur quad $2 et incid
 ERRAjoutCtrN								Erreur lors de l'ajout de la contrainte sur quad $1
 ERRHVDCNbCellules							Erreur : la HVDC $1 n a pas de cellules ; pas de calcul de pertes a posteriori
 ERRCompensationInsuffisante                 Erreur : puissance disponible insuffisante pour compenser la perte de la poche 
+ERRHVDCEmulACEntreCompSyn					La HVDC $1 en émulation AC relie 2 composantes synchrones, ce n'est pas autorisé
+ERRTypeCalculInconnu						Mode de calcul (MODECALC) inconnu
 
 //------------- Warning --------------------
 WARNIncidentOuvrageDejaOuvert				Attention: incident $1, l'ouvrage $2 est deja deconnecte
