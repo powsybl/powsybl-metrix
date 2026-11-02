@@ -535,7 +535,7 @@ int Calculer::calculCoefsInfluencement(const std::shared_ptr<Incident>& icdt)
     }
 
     if (icdt->pochePerdue_) {
-        LOG_ALL(error) << err::ioDico().msg("ERRIncidentGrpRompantConnexite");
+        LOG_ALL(error) << err::ioDico().msg("ERRIncidentGroupeRompantConnexite", icdt->nom_, c_fmt("%d", icdt->num_));
         return METRIX_PROBLEME;
     }
 
