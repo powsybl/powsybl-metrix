@@ -7,12 +7,12 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.log.Log;
 import com.powsybl.metrix.mapping.log.TimeSeriesLoggerConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -63,12 +63,8 @@ public class TimeSeriesMappingLogger {
     }
 
     private void writeJson(Writer writer) {
-        ObjectMapper mapper = JsonUtil.createObjectMapper();
-        try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(writer, logs);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        JsonMapper jsonMapper = JsonUtil.createJsonMapperBuilder().build();
+        jsonMapper.writerWithDefaultPrettyPrinter().writeValue(writer, logs);
     }
 
     public void writeCsv(Path file) {

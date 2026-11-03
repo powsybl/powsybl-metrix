@@ -7,14 +7,14 @@
  */
 package com.powsybl.metrix.integration.io;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -121,12 +121,11 @@ public class IntAttribute implements Attribute {
         }
 
         @Override
-        public IntAttribute deserialize(JsonParser jp, DeserializationContext ctxt)
-                throws IOException {
-            JsonNode node = jp.getCodec().readTree(jp);
+        public IntAttribute deserialize(JsonParser jp, DeserializationContext ctxt) {
+            JsonNode node = ctxt.readTree(jp);
             String name = node.get("name").asText();
             List<Integer> values = new ArrayList<>();
-            node.get("values").elements().forEachRemaining(i -> values.add(i.intValue()));
+            node.get("values").iterator().forEachRemaining(i -> values.add(i.intValue()));
             return new IntAttribute(name, values.stream().mapToInt(i -> i).toArray());
         }
     }

@@ -7,10 +7,10 @@
  */
 package com.powsybl.metrix.commons;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.commons.util.ServiceLoaderCache;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -47,7 +47,7 @@ public interface MappingVariable {
             List<MappingVariableProvider> mappingVariableProviders = MAPPING_VARIABLE_LOADER.getServices();
             JsonToken token;
             while ((token = parser.nextToken()) != null) {
-                if (token == JsonToken.FIELD_NAME) {
+                if (token == JsonToken.PROPERTY_NAME) {
                     String fieldName = parser.currentName();
                     List<MappingVariableProvider> providers = mappingVariableProviders.stream().filter(p -> p.getFieldName().equals(fieldName)).toList();
                     if (providers.size() != 1) {

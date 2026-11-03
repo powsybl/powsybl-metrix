@@ -7,11 +7,11 @@
  */
 package com.powsybl.metrix.integration.io;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Iterables;
+import com.powsybl.commons.json.JsonUtil;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -45,19 +45,19 @@ public class MetrixDie {
 
     private static <T extends Attribute> void saveFort4xToJson(JsonGenerator generator, String fileName, Map<String, T> attributes) throws IOException {
         generator.writeStartObject();
-        generator.writeStringField("name", fileName);
-        generator.writeFieldName("attributes");
+        generator.writeStringProperty("name", fileName);
+        generator.writeName("attributes");
         generator.writeStartArray();
         for (T attribute : attributes.values()) {
             generator.writeStartObject();
-            generator.writeStringField("name", attribute.getName());
-            generator.writeStringField("type", attribute.getType().name());
-            generator.writeNumberField("valueCount", attribute.getValueCount());
-            generator.writeNumberField("firstIndexMaxValue", attribute.getFirstIndexMaxValue());
-            generator.writeNumberField("secondIndexMaxValue", attribute.getSecondIndexMaxValue());
-            generator.writeNumberField("firstValueIndex", 1);
-            generator.writeNumberField("lastValueIndex", attribute.getValueCount());
-            generator.writeFieldName("values");
+            generator.writeStringProperty("name", attribute.getName());
+            generator.writeStringProperty("type", attribute.getType().name());
+            generator.writeNumberProperty("valueCount", attribute.getValueCount());
+            generator.writeNumberProperty("firstIndexMaxValue", attribute.getFirstIndexMaxValue());
+            generator.writeNumberProperty("secondIndexMaxValue", attribute.getSecondIndexMaxValue());
+            generator.writeNumberProperty("firstValueIndex", 1);
+            generator.writeNumberProperty("lastValueIndex", attribute.getValueCount());
+            generator.writeName("values");
             generator.writeStartArray();
             attribute.writeJson(generator);
             generator.writeEndArray();
@@ -68,11 +68,10 @@ public class MetrixDie {
     }
 
     public void saveToJson(BufferedWriter writer) throws IOException {
-        JsonFactory factory = new JsonFactory();
-        try (JsonGenerator generator = factory.createGenerator(writer)) {
-            generator.useDefaultPrettyPrinter();
+        JsonMapper jsonMapper = JsonUtil.createJsonMapper();
+        try (JsonGenerator generator = jsonMapper.writerWithDefaultPrettyPrinter().createGenerator(writer)) {
             generator.writeStartObject();
-            generator.writeFieldName("files");
+            generator.writeName("files");
             generator.writeStartArray();
             saveFort4xToJson(generator, INTEGER_FILE_NAME, intAttributes);
             saveFort4xToJson(generator, FLOAT_FILE_NAME, floatAttributes);
@@ -89,10 +88,9 @@ public class MetrixDie {
         saveToJson(bufferedWriter);
     }
 
-    private static <T extends Attribute> void loadFromJson(JsonNode nodes, Map<String, T> attributes, Class<T> attributeClass) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        for (Iterator<JsonNode> nodeAttributes = nodes.elements(); nodeAttributes.hasNext();) {
-            JsonNode attr = nodeAttributes.next();
+    private static <T extends Attribute> void loadFromJson(JsonNode nodes, Map<String, T> attributes, Class<T> attributeClass) {
+        JsonMapper mapper = JsonUtil.createJsonMapper();
+        for (JsonNode attr : nodes) {
             T attribute = mapper.readValue(attr.toString(), attributeClass);
             attributes.put(attribute.getName(), attribute);
         }
@@ -100,11 +98,10 @@ public class MetrixDie {
 
     public void loadFromJson(Path jsonFile) throws IOException {
         try (BufferedReader reader = Files.newBufferedReader(jsonFile)) {
-            ObjectMapper mapper = new ObjectMapper();
+            JsonMapper mapper = JsonUtil.createJsonMapper();
             JsonNode rootNode = mapper.readTree(reader).path("files");
-            for (Iterator<JsonNode> files = rootNode.elements(); files.hasNext();) {
-                JsonNode dieFile = files.next();
-                String name = dieFile.path("name").textValue();
+            for (JsonNode dieFile : rootNode) {
+                String name = dieFile.path("name").stringValue();
                 JsonNode attributes = dieFile.path("attributes");
                 if (INTEGER_FILE_NAME.equals(name)) {
                     loadFromJson(attributes, intAttributes, IntAttribute.class);
