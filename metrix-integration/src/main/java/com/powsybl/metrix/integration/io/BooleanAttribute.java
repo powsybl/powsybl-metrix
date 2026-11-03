@@ -113,7 +113,7 @@ public class BooleanAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<BooleanAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(BooleanAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {

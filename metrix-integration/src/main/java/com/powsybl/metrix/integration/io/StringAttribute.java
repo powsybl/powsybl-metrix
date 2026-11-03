@@ -155,7 +155,7 @@ public class StringAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<StringAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(StringAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {

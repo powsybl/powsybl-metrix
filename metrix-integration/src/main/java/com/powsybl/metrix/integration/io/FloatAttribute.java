@@ -113,7 +113,7 @@ public class FloatAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<FloatAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(FloatAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {

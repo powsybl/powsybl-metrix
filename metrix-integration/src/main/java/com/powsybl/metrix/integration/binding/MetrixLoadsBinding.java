@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.integration.binding;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.*;
 
 /**
@@ -21,7 +24,8 @@ public class MetrixLoadsBinding {
         this.name = null;
     }
 
-    public MetrixLoadsBinding(String name, Collection<String> ids) {
+    @JsonCreator
+    public MetrixLoadsBinding(@JsonProperty("name") String name, @JsonProperty("loadsIds") Collection<String> ids) {
         this.name = name;
         this.loadsIds.addAll(ids);
     }

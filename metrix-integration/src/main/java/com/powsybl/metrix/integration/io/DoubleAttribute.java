@@ -112,7 +112,7 @@ public class DoubleAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<DoubleAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(DoubleAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {

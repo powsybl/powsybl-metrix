@@ -113,7 +113,7 @@ public class IntAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<IntAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(IntAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {
