@@ -7,15 +7,15 @@
  */
 package com.powsybl.metrix.integration.io;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
 import com.google.common.primitives.Booleans;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -113,7 +113,7 @@ public class BooleanAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<BooleanAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(BooleanAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {
@@ -121,12 +121,11 @@ public class BooleanAttribute implements Attribute {
         }
 
         @Override
-        public BooleanAttribute deserialize(JsonParser jp, DeserializationContext ctxt)
-                throws IOException {
-            JsonNode node = jp.getCodec().readTree(jp);
+        public BooleanAttribute deserialize(JsonParser jp, DeserializationContext ctxt) {
+            JsonNode node = ctxt.readTree(jp);
             String name = node.get("name").asText();
             List<Boolean> values = new ArrayList<>();
-            node.get("values").elements().forEachRemaining(i -> values.add(Boolean.parseBoolean(i.asText())));
+            node.get("values").iterator().forEachRemaining(i -> values.add(Boolean.parseBoolean(i.asText())));
             return new BooleanAttribute(name, Booleans.toArray(values));
         }
     }

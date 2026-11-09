@@ -7,9 +7,9 @@
  */
 package com.powsybl.metrix.integration.io;
 
-import com.fasterxml.jackson.core.JsonGenerator;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
+import tools.jackson.core.JsonGenerator;
 
 import java.io.IOException;
 import java.io.PrintStream;

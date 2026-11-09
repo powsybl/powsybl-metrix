@@ -7,11 +7,6 @@
  */
 package com.powsybl.metrix.mapping.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.references.DistributionKey;
@@ -21,6 +16,11 @@ import com.powsybl.timeseries.ast.NodeCalc;
 import com.powsybl.timeseries.json.TimeSeriesJsonModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.json.JsonMapper;
+import tools.jackson.databind.type.TypeFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class TimeSeriesMappingConfigJson {
     private static final long DESERIALIZATION_EXTENDED_MAX_STACK_SIZE = 4096000L;
     public static final String INVALID_TIME_SERIES_MAPPING_CONFIG_JSON = "Invalid time series mapping config JSON";
 
-    private final ObjectMapper mapper = new ObjectMapper();
+    private final JsonMapper mapper = JsonUtil.createJsonMapperBuilder().build();
 
     protected final TimeSeriesMappingConfig config;
 
@@ -67,90 +67,86 @@ public class TimeSeriesMappingConfigJson {
 
     public void writeJson(JsonGenerator generator, TimeSeriesMappingConfig config) {
         Objects.requireNonNull(generator);
-        try {
-            generator.writeStartObject();
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_GENERATORS, config.getTimeSeriesToGeneratorsMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_BATTERIES, config.getTimeSeriesToBatteriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_LOADS, config.getTimeSeriesToLoadsMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_BOUNDARY_LINES, config.getTimeSeriesToBoundaryLinesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_HVDC_LINES, config.getTimeSeriesToHvdcLinesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_PHASE_TAP_CHANGERS, config.getTimeSeriesToPhaseTapChangersMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_BREAKERS, config.getTimeSeriesToBreakersMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_TRANSFORMERS, config.getTimeSeriesToTransformersMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_LINES, config.getTimeSeriesToLinesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_RATIO_TAP_CHANGERS, config.getTimeSeriesToRatioTapChangersMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_LCC_CONVERTER_STATIONS, config.getTimeSeriesToLccConverterStationsMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TS_TO_VSC_CONVERTER_STATIONS, config.getTimeSeriesToVscConverterStationsMapping());
-            writeMappingKeyMap(generator, JsonFieldName.GENERATOR_TO_TS, config.getGeneratorToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.BATTERY_TO_TS, config.getBatteryToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.LOAD_TO_TS, config.getLoadToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.BOUNDARY_LINE_TO_TS, config.getBoundaryLineToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.HVDC_LINE_TO_TS, config.getHvdcLineToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.PHASE_TAP_CHANGER_TO_TS, config.getPhaseTapChangerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.BREAKER_TO_TS, config.getBreakerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.TRANSFORMER_TO_TS, config.getTransformerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.LINE_TO_TS, config.getLineToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.RATIO_TAP_CHANGER_TO_TS, config.getRatioTapChangerToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.LCC_CONVERTER_STATION_TO_TS, config.getLccConverterStationToTimeSeriesMapping());
-            writeMappingKeyMap(generator, JsonFieldName.VSC_CONVERTER_STATION_TO_TS, config.getVscConverterStationToTimeSeriesMapping());
-            writeMappingKeySet(generator, JsonFieldName.GENERATOR_TS, config.getGeneratorTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.BATTERY_TS, config.getBatteryTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.LOAD_TS, config.getLoadTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.BOUNDARY_LINE_TS, config.getBoundaryLineTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.HVDC_LINE_TS, config.getHvdcLineTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.PHASE_TAP_CHANGER_TS, config.getPhaseTapChangerTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.BREAKER_TS, config.getBreakerTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.TRANSFORMER_TS, config.getTransformerTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.LINE_TS, config.getLineTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.RATIO_TAP_CHANGER_TS, config.getRatioTapChangerTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.LCC_CONVERTER_STATION_TS, config.getLccConverterStationTimeSeries());
-            writeMappingKeySet(generator, JsonFieldName.VSC_CONVERTER_STATION_TS, config.getVscConverterStationTimeSeries());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_GENERATORS, config.getUnmappedGenerators());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_BATTERIES, config.getUnmappedBatteries());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_LOADS, config.getUnmappedLoads());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_FIXED_ACTIVE_POWER_LOADS, config.getUnmappedFixedActivePowerLoads());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS, config.getUnmappedVariableActivePowerLoads());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_BOUNDARY_LINES, config.getUnmappedBoundaryLines());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_HVDC_LINES, config.getUnmappedHvdcLines());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_PHASE_TAP_CHANGERS, config.getUnmappedPhaseTapChangers());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_GENERATORS, config.getUnmappedMinPGenerators());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_GENERATORS, config.getUnmappedMaxPGenerators());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_BATTERIES, config.getUnmappedMinPBatteries());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_BATTERIES, config.getUnmappedMaxPBatteries());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_HVDC_LINES, config.getUnmappedMinPHvdcLines());
-            writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_HVDC_LINES, config.getUnmappedMaxPHvdcLines());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_GENERATORS, config.getIgnoredUnmappedGenerators());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_BATTERIES, config.getIgnoredUnmappedBatteries());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_LOADS, config.getIgnoredUnmappedLoads());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_BOUNDARY_LINES, config.getIgnoredUnmappedBoundaryLines());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_HVDC_LINES, config.getIgnoredUnmappedHvdcLines());
-            writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_PHASE_TAP_CHANGERS, config.getIgnoredUnmappedPhaseTapChangers());
-            writeMappingSet(generator, JsonFieldName.DISCONNECTED_GENERATORS, config.getDisconnectedGenerators());
-            writeMappingSet(generator, JsonFieldName.DISCONNECTED_BATTERIES, config.getDisconnectedBatteries());
-            writeMappingSet(generator, JsonFieldName.DISCONNECTED_LOADS, config.getDisconnectedLoads());
-            writeMappingSet(generator, JsonFieldName.DISCONNECTED_BOUNDARY_LINES, config.getDisconnectedBoundaryLines());
-            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_GENERATORS, config.getOutOfMainCcGenerators());
-            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_BATTERIES, config.getOutOfMainCcBatteries());
-            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_LOADS, config.getOutOfMainCcLoads());
-            writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_BOUNDARY_LINES, config.getOutOfMainCcBoundaryLines());
-            writeDistributionKeys(generator, config.getDistributionKeys());
-            writeTimeSeriesNodes(generator, config.getTimeSeriesNodes());
-            writeTimeSeriesToEquipmentMap(generator, config.getTimeSeriesToEquipment());
-            writeEquipmentToTimeSeriesMap(generator, config.getEquipmentToTimeSeries());
-            writeMappingSet(generator, JsonFieldName.MAPPED_TIME_SERIES_NAMES, config.getMappedTimeSeriesNames());
-            writeMappingSet(generator, JsonFieldName.IGNORE_LIMITS_TIME_SERIES_NAMES, config.getIgnoreLimitsTimeSeriesNames());
-            writeTimeSeriesToPlannedOutagesMap(generator, config.getTimeSeriesToPlannedOutagesMapping());
-            writeGroupTimeSeriesMap(generator, JsonFieldName.GENERATOR_GROUP_TS, config.getGeneratorGroupTimeSeries());
-            writeGroupTimeSeriesMap(generator, JsonFieldName.BATTERY_GROUP_TS, config.getBatteryGroupTimeSeries());
-            writeGroupTimeSeriesMap(generator, JsonFieldName.LOAD_GROUP_TS, config.getLoadGroupTimeSeries());
-            generator.writeEndObject();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeStartObject();
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_GENERATORS, config.getTimeSeriesToGeneratorsMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_BATTERIES, config.getTimeSeriesToBatteriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_LOADS, config.getTimeSeriesToLoadsMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_BOUNDARY_LINES, config.getTimeSeriesToBoundaryLinesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_HVDC_LINES, config.getTimeSeriesToHvdcLinesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_PHASE_TAP_CHANGERS, config.getTimeSeriesToPhaseTapChangersMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_BREAKERS, config.getTimeSeriesToBreakersMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_TRANSFORMERS, config.getTimeSeriesToTransformersMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_LINES, config.getTimeSeriesToLinesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_RATIO_TAP_CHANGERS, config.getTimeSeriesToRatioTapChangersMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_LCC_CONVERTER_STATIONS, config.getTimeSeriesToLccConverterStationsMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TS_TO_VSC_CONVERTER_STATIONS, config.getTimeSeriesToVscConverterStationsMapping());
+        writeMappingKeyMap(generator, JsonFieldName.GENERATOR_TO_TS, config.getGeneratorToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.BATTERY_TO_TS, config.getBatteryToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.LOAD_TO_TS, config.getLoadToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.BOUNDARY_LINE_TO_TS, config.getBoundaryLineToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.HVDC_LINE_TO_TS, config.getHvdcLineToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.PHASE_TAP_CHANGER_TO_TS, config.getPhaseTapChangerToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.BREAKER_TO_TS, config.getBreakerToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.TRANSFORMER_TO_TS, config.getTransformerToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.LINE_TO_TS, config.getLineToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.RATIO_TAP_CHANGER_TO_TS, config.getRatioTapChangerToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.LCC_CONVERTER_STATION_TO_TS, config.getLccConverterStationToTimeSeriesMapping());
+        writeMappingKeyMap(generator, JsonFieldName.VSC_CONVERTER_STATION_TO_TS, config.getVscConverterStationToTimeSeriesMapping());
+        writeMappingKeySet(generator, JsonFieldName.GENERATOR_TS, config.getGeneratorTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.BATTERY_TS, config.getBatteryTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.LOAD_TS, config.getLoadTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.BOUNDARY_LINE_TS, config.getBoundaryLineTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.HVDC_LINE_TS, config.getHvdcLineTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.PHASE_TAP_CHANGER_TS, config.getPhaseTapChangerTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.BREAKER_TS, config.getBreakerTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.TRANSFORMER_TS, config.getTransformerTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.LINE_TS, config.getLineTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.RATIO_TAP_CHANGER_TS, config.getRatioTapChangerTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.LCC_CONVERTER_STATION_TS, config.getLccConverterStationTimeSeries());
+        writeMappingKeySet(generator, JsonFieldName.VSC_CONVERTER_STATION_TS, config.getVscConverterStationTimeSeries());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_GENERATORS, config.getUnmappedGenerators());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_BATTERIES, config.getUnmappedBatteries());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_LOADS, config.getUnmappedLoads());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_FIXED_ACTIVE_POWER_LOADS, config.getUnmappedFixedActivePowerLoads());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_VARIABLE_ACTIVE_POWER_LOADS, config.getUnmappedVariableActivePowerLoads());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_BOUNDARY_LINES, config.getUnmappedBoundaryLines());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_HVDC_LINES, config.getUnmappedHvdcLines());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_PHASE_TAP_CHANGERS, config.getUnmappedPhaseTapChangers());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_GENERATORS, config.getUnmappedMinPGenerators());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_GENERATORS, config.getUnmappedMaxPGenerators());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_BATTERIES, config.getUnmappedMinPBatteries());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_BATTERIES, config.getUnmappedMaxPBatteries());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_MIN_P_HVDC_LINES, config.getUnmappedMinPHvdcLines());
+        writeMappingSet(generator, JsonFieldName.UNMAPPED_MAX_P_HVDC_LINES, config.getUnmappedMaxPHvdcLines());
+        writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_GENERATORS, config.getIgnoredUnmappedGenerators());
+        writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_BATTERIES, config.getIgnoredUnmappedBatteries());
+        writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_LOADS, config.getIgnoredUnmappedLoads());
+        writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_BOUNDARY_LINES, config.getIgnoredUnmappedBoundaryLines());
+        writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_HVDC_LINES, config.getIgnoredUnmappedHvdcLines());
+        writeMappingSet(generator, JsonFieldName.IGNORED_UNMAPPED_PHASE_TAP_CHANGERS, config.getIgnoredUnmappedPhaseTapChangers());
+        writeMappingSet(generator, JsonFieldName.DISCONNECTED_GENERATORS, config.getDisconnectedGenerators());
+        writeMappingSet(generator, JsonFieldName.DISCONNECTED_BATTERIES, config.getDisconnectedBatteries());
+        writeMappingSet(generator, JsonFieldName.DISCONNECTED_LOADS, config.getDisconnectedLoads());
+        writeMappingSet(generator, JsonFieldName.DISCONNECTED_BOUNDARY_LINES, config.getDisconnectedBoundaryLines());
+        writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_GENERATORS, config.getOutOfMainCcGenerators());
+        writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_BATTERIES, config.getOutOfMainCcBatteries());
+        writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_LOADS, config.getOutOfMainCcLoads());
+        writeMappingSet(generator, JsonFieldName.OUT_OF_MAIN_CC_BOUNDARY_LINES, config.getOutOfMainCcBoundaryLines());
+        writeDistributionKeys(generator, config.getDistributionKeys());
+        writeTimeSeriesNodes(generator, config.getTimeSeriesNodes());
+        writeTimeSeriesToEquipmentMap(generator, config.getTimeSeriesToEquipment());
+        writeEquipmentToTimeSeriesMap(generator, config.getEquipmentToTimeSeries());
+        writeMappingSet(generator, JsonFieldName.MAPPED_TIME_SERIES_NAMES, config.getMappedTimeSeriesNames());
+        writeMappingSet(generator, JsonFieldName.IGNORE_LIMITS_TIME_SERIES_NAMES, config.getIgnoreLimitsTimeSeriesNames());
+        writeTimeSeriesToPlannedOutagesMap(generator, config.getTimeSeriesToPlannedOutagesMapping());
+        writeGroupTimeSeriesMap(generator, JsonFieldName.GENERATOR_GROUP_TS, config.getGeneratorGroupTimeSeries());
+        writeGroupTimeSeriesMap(generator, JsonFieldName.BATTERY_GROUP_TS, config.getBatteryGroupTimeSeries());
+        writeGroupTimeSeriesMap(generator, JsonFieldName.LOAD_GROUP_TS, config.getLoadGroupTimeSeries());
+        generator.writeEndObject();
     }
 
     static void writeMappingKeySet(JsonGenerator generator, Set<MappingKey> values) throws IOException {
-        generator.writeFieldName(JsonFieldName.MAPPING_KEYS.getFieldName());
+        generator.writeName(JsonFieldName.MAPPING_KEYS.getFieldName());
         generator.writeStartArray();
         for (MappingKey key : values) {
             MappingKey.writeJson(generator, key);
@@ -162,11 +158,11 @@ public class TimeSeriesMappingConfigJson {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(equipmentMap);
         try {
-            generator.writeFieldName(JsonFieldName.TS_TO_EQUIPMENT.getFieldName());
+            generator.writeName(JsonFieldName.TS_TO_EQUIPMENT.getFieldName());
             generator.writeStartArray();
             for (Map.Entry<String, Set<MappingKey>> e : equipmentMap.entrySet()) {
                 generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
+                generator.writeName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
                 generator.writeString(e.getKey());
                 writeMappingKeySet(generator, e.getValue());
                 generator.writeEndObject();
@@ -177,8 +173,8 @@ public class TimeSeriesMappingConfigJson {
         }
     }
 
-    static void writeStringSet(JsonGenerator generator, String fieldName, Set<String> values) throws IOException {
-        generator.writeFieldName(fieldName);
+    static void writeStringSet(JsonGenerator generator, String fieldName, Set<String> values) {
+        generator.writeName(fieldName);
         generator.writeStartArray();
         for (String id : values) {
             generator.writeString(id);
@@ -189,141 +185,110 @@ public class TimeSeriesMappingConfigJson {
     static void writeTimeSeriesToPlannedOutagesMap(JsonGenerator generator, Map<String, Set<String>> plannedOutagesMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(plannedOutagesMap);
-        try {
-            generator.writeFieldName(JsonFieldName.TS_TO_PLANNED_OUTAGES.getFieldName());
-            generator.writeStartArray();
-            for (Map.Entry<String, Set<String>> e : plannedOutagesMap.entrySet()) {
-                generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
-                generator.writeString(e.getKey());
-                writeStringSet(generator, JsonFieldName.OUTAGES.getFieldName(), e.getValue());
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        generator.writeName(JsonFieldName.TS_TO_PLANNED_OUTAGES.getFieldName());
+        generator.writeStartArray();
+        for (Map.Entry<String, Set<String>> e : plannedOutagesMap.entrySet()) {
+            generator.writeStartObject();
+            generator.writeName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
+            generator.writeString(e.getKey());
+            writeStringSet(generator, JsonFieldName.OUTAGES.getFieldName(), e.getValue());
+            generator.writeEndObject();
         }
+        generator.writeEndArray();
     }
 
     static void writeEquipmentToTimeSeriesMap(JsonGenerator generator, Map<MappingKey, String> equipmentMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(equipmentMap);
-        try {
-            generator.writeFieldName(JsonFieldName.EQUIPMENT_TO_TS.getFieldName());
-            generator.writeStartArray();
-            for (Map.Entry<MappingKey, String> e : equipmentMap.entrySet()) {
-                generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
-                MappingKey.writeJson(generator, e.getKey());
-                generator.writeFieldName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
-                generator.writeString(e.getValue());
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        generator.writeName(JsonFieldName.EQUIPMENT_TO_TS.getFieldName());
+        generator.writeStartArray();
+        for (Map.Entry<MappingKey, String> e : equipmentMap.entrySet()) {
+            generator.writeStartObject();
+            generator.writeName(JsonFieldName.MAPPING_KEY.getFieldName());
+            MappingKey.writeJson(generator, e.getKey());
+            generator.writeName(JsonFieldName.TIME_SERIES_NAME.getFieldName());
+            generator.writeString(e.getValue());
+            generator.writeEndObject();
         }
+        generator.writeEndArray();
     }
 
     static void writeGroupTimeSeriesMap(JsonGenerator generator, JsonFieldName jsonFieldName, Map<String, Set<String>> groupMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(groupMap);
-        try {
-            generator.writeFieldName(jsonFieldName.getFieldName());
-            generator.writeStartArray();
-            for (Map.Entry<String, Set<String>> e : groupMap.entrySet()) {
-                generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.EQUIPMENTID.getFieldName());
-                generator.writeString(e.getKey());
-                writeStringSet(generator, JsonFieldName.TIMESERIESNAMES.getFieldName(), e.getValue());
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        generator.writeName(jsonFieldName.getFieldName());
+        generator.writeStartArray();
+        for (Map.Entry<String, Set<String>> e : groupMap.entrySet()) {
+            generator.writeStartObject();
+            generator.writeName(JsonFieldName.EQUIPMENTID.getFieldName());
+            generator.writeString(e.getKey());
+            writeStringSet(generator, JsonFieldName.TIMESERIESNAMES.getFieldName(), e.getValue());
+            generator.writeEndObject();
         }
+        generator.writeEndArray();
     }
 
     void writeMappingKeyMap(JsonGenerator generator, JsonFieldName jsonFieldName, Map<MappingKey, List<String>> mappingKeyMap) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(mappingKeyMap);
-        try {
-            generator.writeFieldName(jsonFieldName.getFieldName());
-            generator.writeStartArray();
-            for (Map.Entry<MappingKey, List<String>> e : mappingKeyMap.entrySet()) {
-                generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
-                MappingKey.writeJson(generator, e.getKey());
-                generator.writeFieldName(JsonFieldName.MAPPING_LIST.getFieldName());
-                mapper.writeValue(generator, e.getValue());
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        generator.writeName(jsonFieldName.getFieldName());
+        generator.writeStartArray();
+        for (Map.Entry<MappingKey, List<String>> e : mappingKeyMap.entrySet()) {
+            generator.writeStartObject();
+            generator.writeName(JsonFieldName.MAPPING_KEY.getFieldName());
+            MappingKey.writeJson(generator, e.getKey());
+            generator.writeName(JsonFieldName.MAPPING_LIST.getFieldName());
+            mapper.writeValue(generator, e.getValue());
+            generator.writeEndObject();
         }
+        generator.writeEndArray();
     }
 
     void writeMappingSet(JsonGenerator generator, JsonFieldName fieldName, Set<String> mappingSet) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(mappingSet);
-        try {
-            generator.writeFieldName(fieldName.getFieldName());
-            mapper.writeValue(generator, mappingSet);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeName(fieldName.getFieldName());
+        mapper.writeValue(generator, mappingSet);
     }
 
     void writeMappingKeySet(JsonGenerator generator, JsonFieldName jsonFieldName, Set<MappingKey> mappingSet) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(mappingSet);
-        try {
-            generator.writeFieldName(jsonFieldName.getFieldName());
-            generator.writeStartArray();
-            for (MappingKey e : mappingSet) {
-                generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
-                MappingKey.writeJson(generator, e);
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        generator.writeName(jsonFieldName.getFieldName());
+        generator.writeStartArray();
+        for (MappingKey e : mappingSet) {
+            generator.writeStartObject();
+            generator.writeName(JsonFieldName.MAPPING_KEY.getFieldName());
+            MappingKey.writeJson(generator, e);
+            generator.writeEndObject();
         }
+        generator.writeEndArray();
     }
 
     static void writeDistributionKeys(JsonGenerator generator, Map<MappingKey, DistributionKey> distributionKeys) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(distributionKeys);
-        try {
-            generator.writeFieldName(JsonFieldName.DISTRIBUTION_KEYS.getFieldName());
-            generator.writeStartArray();
-            for (Map.Entry<MappingKey, DistributionKey> e : distributionKeys.entrySet()) {
-                generator.writeStartObject();
-                generator.writeFieldName(JsonFieldName.MAPPING_KEY.getFieldName());
-                MappingKey.writeJson(generator, e.getKey());
-                generator.writeFieldName(JsonFieldName.DISTRIBUTION.getFieldName());
-                DistributionKey.writeJson(e.getValue(), generator);
-                generator.writeEndObject();
-            }
-            generator.writeEndArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        generator.writeName(JsonFieldName.DISTRIBUTION_KEYS.getFieldName());
+        generator.writeStartArray();
+        for (Map.Entry<MappingKey, DistributionKey> e : distributionKeys.entrySet()) {
+            generator.writeStartObject();
+            generator.writeName(JsonFieldName.MAPPING_KEY.getFieldName());
+            MappingKey.writeJson(generator, e.getKey());
+            generator.writeName(JsonFieldName.DISTRIBUTION.getFieldName());
+            DistributionKey.writeJson(e.getValue(), generator);
+            generator.writeEndObject();
         }
+        generator.writeEndArray();
     }
 
     void writeTimeSeriesNodes(JsonGenerator generator, Map<String, NodeCalc> timeSeriesNodes) {
         Objects.requireNonNull(generator);
         Objects.requireNonNull(timeSeriesNodes);
-        ObjectMapper timeSeriesMapper = JsonUtil.createObjectMapper()
-            .registerModule(new TimeSeriesJsonModule());
-        try {
-            generator.writeFieldName(JsonFieldName.TIME_SERIES_NODES.getFieldName());
-            timeSeriesMapper.writeValue(generator, timeSeriesNodes);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        JsonMapper timeSeriesMapper = JsonUtil.createJsonMapperBuilder()
+            .addModule(new TimeSeriesJsonModule())
+            .build();
+        generator.writeName(JsonFieldName.TIME_SERIES_NODES.getFieldName());
+        timeSeriesMapper.writeValue(generator, timeSeriesNodes);
     }
 
     public static TimeSeriesMappingConfig parseJson(Reader reader) {
@@ -363,61 +328,53 @@ public class TimeSeriesMappingConfigJson {
 
     static Set<String> parseMappingSet(JsonParser parser) {
         Objects.requireNonNull(parser);
-        try {
-            JsonToken token;
-            ObjectMapper mapper = new ObjectMapper();
-            if ((token = parser.nextToken()) == JsonToken.START_ARRAY) {
-                return mapper.readValue(parser, TypeFactory.defaultInstance().constructCollectionType(Set.class, String.class));
-            }
-            throw new TimeSeriesException("Unexpected JSON token: " + token);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        JsonToken token;
+        JsonMapper mapper = JsonUtil.createJsonMapperBuilder().build();
+        if ((token = parser.nextToken()) == JsonToken.START_ARRAY) {
+            return mapper.readValue(parser, TypeFactory.createDefaultInstance().constructCollectionType(Set.class, String.class));
         }
+        throw new TimeSeriesException("Unexpected JSON token: " + token);
     }
 
     static Set<MappingKey> parseMappingKeySet(JsonParser parser) {
         Objects.requireNonNull(parser);
-        try {
-            Set<MappingKey> set = new LinkedHashSet<>();
-            MappingKey mappingKey = null;
-            JsonToken token;
-            while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
-                switch (token) {
-                    case FIELD_NAME -> {
-                        String fieldName = parser.currentName();
-                        if (fieldName.equals(JsonFieldName.MAPPING_KEY.getFieldName())) {
-                            mappingKey = MappingKey.parseJson(parser);
-                        } else {
-                            throw new IllegalStateException(getUnexpectedFieldName(fieldName));
-                        }
-                    }
-                    case END_OBJECT -> {
-                        if (mappingKey == null) {
-                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
-                        }
-                        set.add(mappingKey);
-                    }
-                    default -> {
-                        // Do nothing
+        Set<MappingKey> set = new LinkedHashSet<>();
+        MappingKey mappingKey = null;
+        JsonToken token;
+        while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+            switch (token) {
+                case PROPERTY_NAME -> {
+                    String fieldName = parser.currentName();
+                    if (fieldName.equals(JsonFieldName.MAPPING_KEY.getFieldName())) {
+                        mappingKey = MappingKey.parseJson(parser);
+                    } else {
+                        throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                     }
                 }
+                case END_OBJECT -> {
+                    if (mappingKey == null) {
+                        throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
+                    }
+                    set.add(mappingKey);
+                }
+                default -> {
+                    // Do nothing
+                }
             }
-            return set;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
+        return set;
     }
 
     static MappingKey parseMappingKeyFieldName(JsonParser parser, List<String> mappingList) throws IOException {
         String fieldName = parser.currentName();
-        ObjectMapper mapper = new ObjectMapper();
+        JsonMapper mapper = JsonUtil.createJsonMapperBuilder().build();
         MappingKey newMappingKey = null;
         switch (JsonFieldName.nameOf(fieldName)) {
             case MAPPING_KEY -> newMappingKey = MappingKey.parseJson(parser);
             case MAPPING_LIST -> {
                 if (parser.nextToken() == JsonToken.START_ARRAY) {
                     assert mappingList != null;
-                    mappingList.addAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructCollectionType(List.class, String.class)));
+                    mappingList.addAll(mapper.readValue(parser, TypeFactory.createDefaultInstance().constructCollectionType(List.class, String.class)));
                 }
             }
             default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
@@ -435,7 +392,7 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case START_OBJECT -> mappingList = new LinkedList<>();
-                    case FIELD_NAME -> {
+                    case PROPERTY_NAME -> {
                         MappingKey newMappingKey = parseMappingKeyFieldName(parser, mappingList);
                         mappingKey = newMappingKey != null ? newMappingKey : mappingKey;
                     }
@@ -458,51 +415,44 @@ public class TimeSeriesMappingConfigJson {
 
     static Map<MappingKey, DistributionKey> parseDistributionKeys(JsonParser parser) {
         Objects.requireNonNull(parser);
-        try {
-            Map<MappingKey, DistributionKey> map = new HashMap<>();
-            MappingKey mappingKey = null;
-            DistributionKey distributionKey = null;
-            JsonToken token;
-            while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
-                switch (token) {
-                    case FIELD_NAME -> {
-                        String fieldName = parser.currentName();
-                        switch (JsonFieldName.nameOf(fieldName)) {
-                            case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
-                            case DISTRIBUTION -> distributionKey = DistributionKey.parseJson(parser);
-                            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
-                        }
-                    }
-                    case END_OBJECT -> {
-                        if (mappingKey == null || distributionKey == null) {
-                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
-                        }
-                        map.put(mappingKey, distributionKey);
-                    }
-                    default -> {
-                        // Do nothing
+        Map<MappingKey, DistributionKey> map = new HashMap<>();
+        MappingKey mappingKey = null;
+        DistributionKey distributionKey = null;
+        JsonToken token;
+        while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+            switch (token) {
+                case PROPERTY_NAME -> {
+                    String fieldName = parser.currentName();
+                    switch (JsonFieldName.nameOf(fieldName)) {
+                        case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
+                        case DISTRIBUTION -> distributionKey = DistributionKey.parseJson(parser);
+                        default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                     }
                 }
+                case END_OBJECT -> {
+                    if (mappingKey == null || distributionKey == null) {
+                        throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
+                    }
+                    map.put(mappingKey, distributionKey);
+                }
+                default -> {
+                    // Do nothing
+                }
             }
-            return map;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
+        return map;
     }
 
     static Map<String, NodeCalc> parseTimeSeriesNodes(JsonParser parser) {
         Objects.requireNonNull(parser);
         Map<String, NodeCalc> map = new HashMap<>();
-        try {
-            ObjectMapper mapper = JsonUtil.createObjectMapper()
-                .registerModule(new TimeSeriesJsonModule());
-            if (parser.nextToken() == JsonToken.START_OBJECT) {
-                map.putAll(mapper.readValue(parser, TypeFactory.defaultInstance().constructMapType(Map.class, String.class, NodeCalc.class)));
-            }
-            return map;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
+        JsonMapper mapper = JsonUtil.createJsonMapperBuilder()
+            .addModule(new TimeSeriesJsonModule())
+            .build();
+        if (parser.nextToken() == JsonToken.START_OBJECT) {
+            map.putAll(mapper.readValue(parser, TypeFactory.createDefaultInstance().constructMapType(Map.class, String.class, NodeCalc.class)));
         }
+        return map;
     }
 
     static String parseTimeSeriesToEquipmentFieldName(JsonParser parser, Set<MappingKey> mappingKeys) throws IOException {
@@ -538,7 +488,7 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case START_OBJECT -> mappingKeys = new LinkedHashSet<>();
-                    case FIELD_NAME -> {
+                    case PROPERTY_NAME -> {
                         String newTimeSeriesName = parseTimeSeriesToEquipmentFieldName(parser, mappingKeys);
                         timeSeriesName = newTimeSeriesName != null ? newTimeSeriesName : timeSeriesName;
                     }
@@ -561,50 +511,46 @@ public class TimeSeriesMappingConfigJson {
 
     static Map<MappingKey, String> parseEquipmentToTimeSeries(JsonParser parser) {
         Objects.requireNonNull(parser);
-        try {
-            Map<MappingKey, String> map = new LinkedHashMap<>();
-            String timeSeriesName = null;
-            MappingKey mappingKey = null;
-            JsonToken token;
-            while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
-                switch (token) {
-                    case FIELD_NAME -> {
-                        String fieldName = parser.currentName();
-                        switch (JsonFieldName.nameOf(fieldName)) {
-                            case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
-                            case TIME_SERIES_NAME -> {
-                                if (parser.nextToken() == JsonToken.VALUE_STRING) {
-                                    timeSeriesName = parser.getValueAsString();
-                                }
+        Map<MappingKey, String> map = new LinkedHashMap<>();
+        String timeSeriesName = null;
+        MappingKey mappingKey = null;
+        JsonToken token;
+        while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
+            switch (token) {
+                case PROPERTY_NAME -> {
+                    String fieldName = parser.currentName();
+                    switch (JsonFieldName.nameOf(fieldName)) {
+                        case MAPPING_KEY -> mappingKey = MappingKey.parseJson(parser);
+                        case TIME_SERIES_NAME -> {
+                            if (parser.nextToken() == JsonToken.VALUE_STRING) {
+                                timeSeriesName = parser.getValueAsString();
                             }
-                            default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                         }
-                    }
-                    case END_OBJECT -> {
-                        if (mappingKey == null || timeSeriesName == null) {
-                            throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
-                        }
-                        map.put(mappingKey, timeSeriesName);
-                    }
-                    default -> {
-                        // Do nothing
+                        default -> throw new IllegalStateException(getUnexpectedFieldName(fieldName));
                     }
                 }
+                case END_OBJECT -> {
+                    if (mappingKey == null || timeSeriesName == null) {
+                        throw new TimeSeriesException(INVALID_TIME_SERIES_MAPPING_CONFIG_JSON);
+                    }
+                    map.put(mappingKey, timeSeriesName);
+                }
+                default -> {
+                    // Do nothing
+                }
             }
-            return map;
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
+        return map;
     }
 
-    static String parseGroupTimeSeriesEquipmentId(JsonParser parser) throws IOException {
+    static String parseGroupTimeSeriesEquipmentId(JsonParser parser) {
         if (parser.nextToken() == JsonToken.VALUE_STRING) {
             return parser.getValueAsString();
         }
         return null;
     }
 
-    static void parseGroupTimeSeriesNames(JsonParser parser, Set<String> names) throws IOException {
+    static void parseGroupTimeSeriesNames(JsonParser parser, Set<String> names) {
         JsonToken token;
         while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
             if (token == JsonToken.VALUE_STRING) {
@@ -635,7 +581,7 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case START_OBJECT -> names = new HashSet<>();
-                    case FIELD_NAME -> {
+                    case PROPERTY_NAME -> {
                         String newId = parseGroupTimeSeriesFieldName(parser, names);
                         id = newId != null ? newId : id;
                     }
@@ -666,7 +612,7 @@ public class TimeSeriesMappingConfigJson {
             while ((token = parser.nextToken()) != null && token != JsonToken.END_ARRAY) {
                 switch (token) {
                     case START_OBJECT -> ids = new HashSet<>();
-                    case FIELD_NAME -> {
+                    case PROPERTY_NAME -> {
                         String newTimeSeriesName = parseTimeSeriesToPlannedOutagesFieldName(parser, ids);
                         timeSeriesName = newTimeSeriesName != null ? newTimeSeriesName : timeSeriesName;
                     }
@@ -793,16 +739,12 @@ public class TimeSeriesMappingConfigJson {
     public static TimeSeriesMappingConfig parseJson(JsonParser parser) {
         Objects.requireNonNull(parser);
         TimeSeriesMappingConfig config = new TimeSeriesMappingConfig();
-        try {
-            JsonToken token;
-            while ((token = parser.nextToken()) != null) {
-                if (token == JsonToken.FIELD_NAME) {
-                    String fieldName = parser.currentName();
-                    parseJson(parser, fieldName, config);
-                }
+        JsonToken token;
+        while ((token = parser.nextToken()) != null) {
+            if (token == JsonToken.PROPERTY_NAME) {
+                String fieldName = parser.currentName();
+                parseJson(parser, fieldName, config);
             }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
         return config;
     }

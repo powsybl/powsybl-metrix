@@ -7,13 +7,11 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.metrix.commons.MappingVariable;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -35,17 +33,13 @@ public enum OtherVariable implements MappingVariable {
 
     static void writeJson(OtherVariable variable, JsonGenerator generator) {
         Objects.requireNonNull(generator);
-        try {
-            generator.writeStartObject();
-            generator.writeFieldName(variable.getFieldName());
-            generator.writeString(variable.name());
-            generator.writeEndObject();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeStartObject();
+        generator.writeName(variable.getFieldName());
+        generator.writeString(variable.name());
+        generator.writeEndObject();
     }
 
-    static MappingVariable parseJson(JsonParser parser) throws IOException {
+    static MappingVariable parseJson(JsonParser parser) {
         JsonToken token = parser.nextToken();
         if (token != null) {
             if (token == JsonToken.VALUE_STRING) {
