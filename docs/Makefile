@@ -12,7 +12,20 @@ BUILDDIR      = _build
 help:
 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
-.PHONY: help Makefile
+LANGUAGES     = fr
+POTDIR        = $(BUILDDIR)/gettext
+
+.PHONY: help Makefile gettext-update html-all
+
+# Build the documentation in every language: _build/html-en and _build/html-fr
+html-all:
+	@$(SPHINXBUILD) -b html "$(SOURCEDIR)" "$(BUILDDIR)/html-en" $(SPHINXOPTS) $(O)
+	@$(SPHINXBUILD) -b html -D language=fr "$(SOURCEDIR)" "$(BUILDDIR)/html-fr" $(SPHINXOPTS) $(O)
+
+# Extract translatable messages from the English sources and update the .po catalogs
+gettext-update:
+	@$(SPHINXBUILD) -b gettext "$(SOURCEDIR)" "$(POTDIR)" $(SPHINXOPTS) $(O)
+	sphinx-intl update -p "$(POTDIR)" $(addprefix -l ,$(LANGUAGES))
 
 
 clean:

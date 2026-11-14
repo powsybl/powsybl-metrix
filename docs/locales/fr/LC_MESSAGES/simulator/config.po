@@ -1,0 +1,430 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:49+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../simulator/config.md:8 8133d56083724e69a91bc55b3eb0dd9d
+msgid "Configuration"
+msgstr "Configuration"
+
+#: ../../simulator/config.md:10 19271e3461d34357848570b8d87aba4f
+msgid "Launch modes"
+msgstr "Mode de lancements"
+
+#: ../../simulator/config.md:12 5ca9824a15dd46a18ecf685f8e1385c1
+msgid "There are 4 launch modes:"
+msgstr "Il existe 4 modes de lancement :"
+
+#: ../../simulator/config.md:13 ../../simulator/config.md:35
+#: 45c0191614d84ac6a9371658a71ce11e a38b65d98f584d8cb4977eabf01d3685
+msgid "Load Flow (LF)"
+msgstr "Load Flow (LF)"
+
+#: ../../simulator/config.md:14 ../../simulator/config.md:44
+#: 24f5cd7e260e4e2a8d9ef70b992a652b d5bb5bc0e5b440429ab0810282bce8ef
+msgid "Optimal Power Load Flow without redispatching (OPF w/o redispatching)"
+msgstr "Optimal Power Load Flow sans redispatching (OPF w/o redispatching)"
+
+#: ../../simulator/config.md:15 ../../simulator/config.md:61
+#: 7e221220b07549889a52c9bb69c6c966 f5098facf96a49dca885cb1f9807a2bc
+msgid "Optimal Power Load Flow (OPF)"
+msgstr "Optimal Power Load Flow (OPF)"
+
+#: ../../simulator/config.md:16 ../../simulator/config.md:66
+#: 0ff155e531fb473596530df8b26ba8aa b342c423dd0a4a0ba95b6a4de2dd258b
+msgid "Optimal Power Load Flow with overload (OPF with overload)"
+msgstr "Optimal Power Load Flow avec surcharge (OPF with overload)"
+
+#: ../../simulator/config.md:18 952af30a77a84136b3be4b2fec39ab5d
+msgid "For all these modes, the first steps are:"
+msgstr "Pour tous ces modes, les premières étapes sont :"
+
+#: ../../simulator/config.md:19 75d8050d49454b2a9cbc25a8c431f412
+msgid "building the Jacobian matrix and its LU factorization"
+msgstr "construction de la jacobienne et factorisation LU de cette dernière"
+
+#: ../../simulator/config.md:20 a15e69ff3e3c47a8a813056854ca8971
+msgid "for each variant:"
+msgstr "pour chacune des variantes :"
+
+#: ../../simulator/config.md:21 f654919b049544fcab630d9e7fb65613
+msgid "updating the network topology"
+msgstr "mise à jour de la topologie réseau"
+
+#: ../../simulator/config.md:22 ae74e5eb95754b6aa7cf49f4c5db7826
+msgid "updating the Jacobian matrix"
+msgstr "mise à jour de la jacobienne"
+
+#: ../../simulator/config.md:23 e9f497d82d5a4124bba53a3512fd5caf
+msgid "refactorizing the Jacobian matrix"
+msgstr "refactorisation de la jacobienne"
+
+#: ../../simulator/config.md:24 7bc91cc4545b4a93acc4436b09005c1a
+msgid "computing the LODFs and PTDFs"
+msgstr "calculs LODFs et PTDFs"
+
+#: ../../simulator/config.md:26 d92c1c7aef2249419e382ac28586a081
+msgid "The different types of constraints are:"
+msgstr "Les différents types de contraintes sont :"
+
+#: ../../simulator/config.md:27 65c1a801174343c4bb8c67562b569aa2
+msgid "`CONTRAINTE_EMUL_AC_N = 1`: N constraint on a fictitious quadripole"
+msgstr "`CONTRAINTE_EMUL_AC_N = 1` : contrainte en N sur un quadripôle fictif"
+
+#: ../../simulator/config.md:28 accfa5f865e54938957c09c4e239d508
+msgid ""
+"`CONTRAINTE_EMULATION_AC = 2`: N-k constraint on a fictitious quadripole"
+msgstr ""
+"`CONTRAINTE_EMULATION_AC = 2` : contrainte en N-k sur un quadripôle fictif"
+
+#: ../../simulator/config.md:29 7c8dae6b6e684c639eb5cf8002afaae9
+msgid "`CONTRAINTE_N = 3`: N constraint on a non-fictitious quadripole"
+msgstr "`CONTRAINTE_N = 3` : contrainte en N sur un quadripôle non-fictif"
+
+#: ../../simulator/config.md:30 9e726ee0eee94182be0ced2c2377f2a1
+msgid ""
+"`CONTRAINTE_N_MOINS_K = 4`: N-k constraint on a non-fictitious quadripole"
+msgstr ""
+"`CONTRAINTE_N_MOINS_K = 4` : contrainte en N-k sur un quadripôle non-fictif"
+
+#: ../../simulator/config.md:31 64fdb5bd287c482aab31c10cc302dcf3
+msgid "`CONTRAINTE_PARADE = 5`: constraint on a remedial action"
+msgstr "`CONTRAINTE_PARADE = 5` : contrainte sur une parade"
+
+#: ../../simulator/config.md:32 8d7ec6487dc648e29f7285ed30bdaa25
+msgid "`CONTRAINTE_ACTIVATION = 6`: remedial action activation constraint"
+msgstr "`CONTRAINTE_ACTIVATION = 6` : contrainte d'activation d'une parade"
+
+#: ../../simulator/config.md:33 814c098dc13f42f4b0a4a69df322eaa3
+msgid "`CONTRAINTE_NON_DEF = -1`: undefined constraint"
+msgstr "`CONTRAINTE_NON_DEF = -1` : contrainte non définie"
+
+#: ../../simulator/config.md:36 aa87a0508f39435faf01c94f04e3ebd6
+msgid ""
+"Basic network simulation mode with fixed generation and load. Metrix then "
+"returns the flow on the network lines. For this mode: `MODECALC = 1`."
+msgstr ""
+"Mode basique de simulation réseau avec des productions et consommations "
+"fixes. Metrix retourne alors le flot sur les lignes du réseau. Pour ce mode "
+": `MODECALC = 1`."
+
+#: ../../simulator/config.md:39 ../../simulator/config.md:50
+#: 19271e3461d34357848570b8d87aba4f ea4c036b518c4cfba6e51595d056a1d1
+msgid "In this mode:"
+msgstr "Dans ce mode :"
+
+#: ../../simulator/config.md:40 881c345d4bee4892a85339d868b3b6f1
+msgid "Remedial actions are not read"
+msgstr "Les parades ne sont pas lues"
+
+#: ../../simulator/config.md:41 ab1332a3d25546db940a0fdd1f3871d9
+msgid ""
+"If generators or loads are declared as available for curative actions, they "
+"are ignored"
+msgstr ""
+"Si des groupes ou consommateurs sont renseignés comme étant disponibles pour"
+" le curatif, alors ils sont ignorés"
+
+#: ../../simulator/config.md:42 f2ccbeb06fee4b22a9c13c8058509e14
+msgid "There is no constraint detection phase"
+msgstr "Il n'y a pas de phase de détection de contraintes"
+
+#: ../../simulator/config.md:45 fb83f1138de1432ab2d3ef24ba6e5143
+msgid ""
+"This mode does not allow Metrix-simulator to perform redispatching "
+"(modifying injections and loads) but it tends to minimize the violations of "
+"the various constraints by using topological remedial actions, by modifying "
+"the phase shifts of the phase tap changers, or by modifying the flows on the"
+" HVDC lines. For this mode: `MODECALC = 2`."
+msgstr ""
+"Ce mode ne permet pas à Metrix-simulator de faire du redispatching (modifier"
+" les injections et consommations) mais il tend à minimiser les violations "
+"des différentes contraintes grâce à l'utilisation de parades topologiques, "
+"de modifications des déphasages des transformateurs-déphaseurs ou encore de "
+"modifications des flux sur les lignes à courant continu. Pour ce mode : "
+"`MODECALC = 2`."
+
+#: ../../simulator/config.md:51 2eddc5c9e8544f1abe9e93fa64981f3f
+msgid "If a generator is declared as available for redispatching:"
+msgstr "Si un groupe est indiqué comme disponible pour le redispatching :"
+
+#: ../../simulator/config.md:52 dc67e503e9014602bf0eeaec32f89122
+msgid ""
+"and only for redispatching (i.e. `OUI_AR`), then it is considered as "
+"available neither for redispatching nor for adequacy (i.e. `NON_HR_AR`)"
+msgstr ""
+"et uniquement pour le redispatching (i.e. `OUI_AR`), alors il est considéré "
+"comme n'étant pas disponible ni pour le redispatching ni pour l'adequacy "
+"(i.e. `NON_HR_AR`)"
+
+#: ../../simulator/config.md:54 75fb95be716b4e2dbdecdfe1aed4152b
+msgid ""
+"but also for adequacy (i.e. `OUI_HR_AR`), then it is considered as available"
+" only for adequacy (i.e. `OUI_HR`)"
+msgstr ""
+"mais aussi pour l'adequacy (i.e. `OUI_HR_AR`), alors il est considéré comme "
+"étant uniquement disponible pour l'adequacy (i.e. `OUI_HR`)"
+
+#: ../../simulator/config.md:56 46786d120e0b49e092ce6c0395ca3f14
+msgid ""
+"If generators are declared as available for curative actions, they are "
+"ignored"
+msgstr ""
+"Si des groupes sont renseignés comme étant disponibles pour le curatif, "
+"alors ils sont ignorés"
+
+#: ../../simulator/config.md:57 6a500463c36444288ac2357fafe74555
+msgid ""
+"Loss of load is forbidden here (i.e. the load variation variables are fixed "
+"and ???)"
+msgstr ""
+"Les défaillances sont interdites ici (i.e. les variables de variations de "
+"consommation sont fixes et ???)"
+
+#: ../../simulator/config.md:58 80262ed727714aa5b2d138ed0f01d918
+msgid ""
+"Slack variables are added for every constraint with a type other than "
+"`CONTRAINTE_EMUL_AC_N`, `CONTRAINTE_EMULATION_AC` or "
+"`CONTRAINTE_ACTIVATION`."
+msgstr ""
+"Des variables d'écart sont ajoutées pour toute contrainte avec un type autre"
+" que `CONTRAINTE_EMUL_AC_N`, `CONTRAINTE_EMULATION_AC` ou "
+"`CONTRAINTE_ACTIVATION`."
+
+#: ../../simulator/config.md:62 6feaab19b4864ebe8fbed7ef89e803c3
+msgid ""
+"This mode can use all possible actions (redispatching in addition to the "
+"actions described in the previous chapter) in order to minimize, at the "
+"lowest cost, the constraint violations. For this mode: `MODECALC = 0`."
+msgstr ""
+"Ce mode a la possibilité toutes les actions possibles (redispatching en plus"
+" des actions énoncées dans le chapitre précédent) afin de minimiser, à "
+"moindre coût, les violations des contraintes. Pour ce mode : `MODECALC = 0`."
+
+#: ../../simulator/config.md:67 88900c21fef84cbcadd2b25e0e4aa27a
+msgid ""
+"This mode works like the previous one; however, if no solution is found the "
+"program does not return an error, but results with overload. For this mode: "
+"`MODECALC = 3`."
+msgstr ""
+"Ce mode fonctionne comme le précédent, toutefois si aucune solution n'est "
+"trouvée le programme ne retourne pas d'erreur, mais des résultats avec "
+"surcharge. Pour ce mode : `MODECALC = 3`."
+
+#: ../../simulator/config.md:71 5b64007d926249f9a468ac01f15dc75d
+msgid ""
+"If loads are declared as available for curative actions, they are ignored. "
+"There are no coupling constraints here. Slack variables are added for every "
+"constraint with a type other than `CONTRAINTE_EMUL_AC_N`, "
+"`CONTRAINTE_EMULATION_AC` or `CONTRAINTE_ACTIVATION`."
+msgstr ""
+"Si des consommateurs sont renseignés comme étant disponibles pour le "
+"curatif, alors ils sont ignorés. Il n'y a pas de contraintes de couplage "
+"ici. Des variables d'écart sont ajoutées pour toute contrainte avec un type "
+"autre que `CONTRAINTE_EMUL_AC_N`, `CONTRAINTE_EMULATION_AC` ou "
+"`CONTRAINTE_ACTIVATION`."
+
+#: ../../simulator/config.md:75 f9f7203ea4bf4d98b26b9aad25183c3c
+msgid "PTDF file generation"
+msgstr "Générations fichiers PTDFs"
+
+#: ../../simulator/config.md:77 66d2837c288642a5a32b86b10f8e3740
+msgid ""
+"The files are generated by calling the simulator. For the moment, it is not "
+"possible to generate only the PTDF files for each variant without running a "
+"resolution. However, there is, a priori, no reason why this could not be "
+"possible."
+msgstr ""
+"La génération des fichiers se fait via l'appel au simulateur. Il n'est pour "
+"l'instant pas possible d'uniquement générer les fichiers PTDFs pour chacune "
+"des variantes sans lancer de résolution. Toutefois, il n'y a, a priori, pas "
+"de raison à ce que cela ne soit pas possible."
+
+#: ../../simulator/config.md:81 baa530e392ff4ccf993e468faf30ed0d
+msgid "Return codes and crash handling"
+msgstr "Codes de retour et gestion des crashs"
+
+#: ../../simulator/config.md:83 7effbe228c044cac8276a9a12acc98bd
+msgid "The different return statuses are as follows:"
+msgstr "Les diférents status de retour sont les suivants :"
+
+#: ../../simulator/config.md:84 d7564bf6f8704e23a67823b9e7648977
+msgid "`METRIX_PROBLEME = -1`: KO"
+msgstr "`METRIX_PROBLEME = -1` : KO"
+
+#: ../../simulator/config.md:85 b93adc88fc1a4fb6b0167a7429830ab4
+msgid "`METRIX_PAS_PROBLEME = 0`: OK"
+msgstr "`METRIX_PAS_PROBLEME = 0` : OK"
+
+#: ../../simulator/config.md:86 713119b13ed84753aa164d5a5f0165d7
+msgid "`METRIX_PAS_SOLUTION = 1`: infeasible problem or no solution found"
+msgstr ""
+"`METRIX_PAS_SOLUTION = 1` : problème infaisable ou pas de solution trouvée"
+
+#: ../../simulator/config.md:87 2c614fa3c7984b14883c980c50fcd777
+msgid ""
+"`METRIX_NB_MAX_CONT_ATTEINT = 2`: maximum number of added constraints "
+"reached"
+msgstr ""
+"`METRIX_NB_MAX_CONT_ATTEINT = 2` : nombre maximum de contraintes ajoutées "
+"atteint"
+
+#: ../../simulator/config.md:88 3d88277c3c594129a5c8d2a1af07d2a5
+msgid "`METRIX_NB_MICROIT = 3`: maximum number of micro-iterations reached"
+msgstr "`METRIX_NB_MICROIT = 3` : nombre maximum de micro-iterations atteint"
+
+#: ../../simulator/config.md:89 607431b71a6e440ea384ca97e583e899
+msgid "`METRIX_VARIANTE_IGNOREE = 4`: variant ignored"
+msgstr "`METRIX_VARIANTE_IGNOREE = 4` : variante ignorée"
+
+#: ../../simulator/config.md:90 14d87120ed5542aab7f4ea138d1a3a0f
+msgid ""
+"`METRIX_CONTRAINTE_IGNOREE = 3`: constraint ignored, because it is "
+"equivalent, Tmax is not defined or no action is possible (in the case of an "
+"OPF without redispatching or an OPF with overload)"
+msgstr ""
+"`METRIX_CONTRAINTE_IGNOREE = 3` : contrainte ignorée, car équivalente, Tmax "
+"non défini ou pas d'action possible (dans le cas d'un OPF sans redispatching"
+" ou d'un OPF avec surcharge)"
+
+#: ../../simulator/config.md:93 d7799e48e07e42a89cb60d8d9655038f
+msgid "Topological remedial action in N"
+msgstr "Parade topologique en N"
+
+#: ../../simulator/config.md:95 e3df12e4c60447299583e8ead0e5dfa0
+msgid ""
+"Using topological remedial actions in N is theoretically not possible. "
+"However, the behavior of a topological remedial action in N can be "
+"approximated by using a topological remedial action on an element very far "
+"from the study area."
+msgstr ""
+"L'utilisation de parades topologiques en N n'est théoriquement pas possible."
+" Toutefois, il est possible d'approcher le comportement de l'utilisation "
+"d'une parade topologique en N via une parade topologique sur un élément très"
+" éloigné de la zone d'étude."
+
+#: ../../simulator/config.md:97 0e69557cde9047f1b69dfc0d10046439
+msgid "ITAM thresholds"
+msgstr "Seuils ITAM"
+
+#: ../../simulator/config.md:99 9ef41bc6d37e4fa3ade383ccb5a6eed9
+msgid ""
+"The tool can be configured to use the pre-switching thresholds (i.e. post-"
+"contingency, but before curative actions) via the `TESTITAM` parameter. If "
+"these thresholds are enabled, a \"do nothing\" remedial action is added on "
+"contingencies with curative actions but without remedial actions."
+msgstr ""
+"Il est possible de paramétrer l'outil afin d'utiliser les seuils avant "
+"manœuvre (i.e. post incident, mais avant curatif) via le paramètre "
+"`TESTITAM`. Si ces seuils sont activés, une parade \"ne rien faire\" est "
+"ajoutée sur les incidents avec curatif, mais sans parade."
+
+#: ../../simulator/config.md:103 060ad10068514908aabea341e9e96920
+msgid "LF+ context"
+msgstr "Contexte LF+"
+
+#: ../../simulator/config.md:104 4105ad0ae9bb4ca79c5b5e12ecec532f
+msgid ""
+"In LF+, when an ITAM threshold is exceeded before the curative topological "
+"remedial actions are used, there is no alert or indicator showing this "
+"overload. Yet the returned solution may recommend using curative remedial "
+"actions that potentially help comply with the ITAM thresholds according to "
+"the final logs."
+msgstr ""
+"En LF+, lorsqu'il y a dépassement d'un seuil ITAM avant utilisation des "
+"parades topologiques curatives, il n'y a pas d'alerte ou d'indicateur "
+"indiquant ce dépassement. Alors que la solution retournée peut préconiser "
+"l'utilisation de parades curatives qui favorisent, potentiellement, le "
+"respect des seuils ITAM d'après les logs finaux."
+
+#: ../../simulator/config.md:108 9119e7f2916247b1b94341d79708539f
+msgid ""
+"This behavior is not realistic since, in a real situation, curative remedial"
+" actions do not have time to be activated in order to comply with these ITAM"
+" thresholds."
+msgstr ""
+"Ce comportement n'est pas réaliste puisqu'en situation réelle, les parades "
+"curatives n'ont pas le temps d'être activée afin de respecter ces seuils "
+"ITAM."
+
+#: ../../simulator/config.md:111 f051ab62869041f69571920e425352f5
+msgid "Issue"
+msgstr "Problématique"
+
+#: ../../simulator/config.md:112 12e3401c100c4591b4c42bfaf732f0ce
+msgid ""
+"Metrix solves the problem through global optimization. In other words, it "
+"tries to find an optimal solution that satisfies all the constraints while "
+"minimizing all the defined objectives (e.g. minimization of overloads in "
+"LF+). This implies that, from Metrix's point of view, the minimization of "
+"overloads is done \"all at once\" and not sequentially as might be the case "
+"manually. Thus, at the output of Metrix, it may consider that there is no "
+"more overload while it is the curative remedial actions that make it "
+"possible to comply with the ITAM thresholds (not realistic according to the "
+"previous paragraph)."
+msgstr ""
+"Metrix résout le problème via de l'optimisation globale. Autrement dit, ce "
+"dernier tente de trouver une solution optimale respectant l'ensemble des "
+"contraintes tout en minimisant l'ensemble des objectifs définis (ex : "
+"minimisation des dépassements en LF+). Ceci implique que, du point de vue de"
+" Metrix, la minimisation des dépassements se fait « d'un coup » et non pas "
+"séquentiellement comme ce pourrait être le cas manuellement. Ainsi, en "
+"sortie de Metrix, ce dernier peut considérer qu'il n'y a plus de dépassement"
+" alors que ce sont des parades curatives qui permettent de respecter les "
+"seuils ITAM (non réaliste d'après le paragraphe précédent)."
+
+#: ../../simulator/config.md:120 135ae7bf848344fe8bb4ffd9c33ba8b8
+msgid "Possible options:"
+msgstr "Options possibles :"
+
+#: ../../simulator/config.md:122 2120c8ca15564ddb9e634c2cd8d7c824
+msgid "Use the \"tmp\" files to raise an alert"
+msgstr "Utiliser les fichiers « tmp » afin de lever une alerte"
+
+#: ../../simulator/config.md:123 59623a50438d45f0bd6e8fdf81998615
+msgid ""
+"Modify the model so that only the curative topological remedial actions that"
+" have no impact on the elements with exceeded ITAM thresholds can be "
+"activated (this solution seems complex to implement a priori)"
+msgstr ""
+"Modifier le modèle afin que seules les parades topologiques curatives "
+"n'ayant pas d'impact sur les éléments avec dépassements de leur seuil ITAM "
+"soient activables (cette solution semble complexe à implémenter a priori)"
+
+#: ../../simulator/config.md:125 a2c96faafdeb4769956fa4871bd2d5e6
+msgid ""
+"For any element with an N-k threshold and an ITAM threshold but no "
+"preventive remedial action for this element: remove the N-k thresholds of "
+"this element?"
+msgstr ""
+"Pour tout élément avec un seuil N-k ainsi qu'un seuil ITAM mais pas de "
+"parade préventive pour cet élément : suppression de seuils N-k de cet "
+"élément ?"
+
+#: ../../simulator/config.md:128 128a58e4dd744745b0eaac862bfc6da9
+msgid ""
+"Given the LF+ paradigm (minimization of the overloads of different "
+"thresholds for the same element and global optimization), the most realistic"
+" process seems to be to raise an alert/warning indicating that a threshold "
+"is not respected."
+msgstr ""
+"Compte tenu du paradigme LF+ (minimisation des dépassements de différents "
+"seuils pour un même élément et optimisation globale), le process le plus "
+"réaliste semble être de lever une alerte/warning indiquant qu'un seuil n'est"
+" pas respecté."

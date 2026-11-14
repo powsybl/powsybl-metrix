@@ -12,6 +12,18 @@ set BUILDDIR=_build
 
 if "%1" == "" goto help
 
+if "%1" == "html-all" (
+	%SPHINXBUILD% -b html %SOURCEDIR% %BUILDDIR%\html-en %SPHINXOPTS% %O%
+	%SPHINXBUILD% -b html -D language=fr %SOURCEDIR% %BUILDDIR%\html-fr %SPHINXOPTS% %O%
+	goto end
+)
+
+if "%1" == "gettext-update" (
+	%SPHINXBUILD% -b gettext %SOURCEDIR% %BUILDDIR%\gettext %SPHINXOPTS% %O%
+	sphinx-intl update -p %BUILDDIR%\gettext -l fr
+	goto end
+)
+
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
 	echo.

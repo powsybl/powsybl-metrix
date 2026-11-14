@@ -7,123 +7,123 @@ y { color: yellow}
 
 # Configuration
 
-## Mode de lancements
+## Launch modes
 
-Il existe 4 modes de lancement :
+There are 4 launch modes:
 - Load Flow (LF)
-- Optimal Power Load Flow sans redispatching (OPF w/o redispatching)
+- Optimal Power Load Flow without redispatching (OPF w/o redispatching)
 - Optimal Power Load Flow (OPF)
-- Optimal Power Load Flow avec surcharge (OPF with overload)
+- Optimal Power Load Flow with overload (OPF with overload)
 
-Pour tous ces modes, les premières étapes sont :
-- construction de la jacobienne et factorisation LU de cette dernière
-- pour chacune des variantes :
-  * mise à jour de la topologie réseau
-  * mise à jour de la jacobienne
-  * refactorisation de la jacobienne
-  * calculs LODFs et PTDFs
+For all these modes, the first steps are:
+- building the Jacobian matrix and its LU factorization
+- for each variant:
+  * updating the network topology
+  * updating the Jacobian matrix
+  * refactorizing the Jacobian matrix
+  * computing the LODFs and PTDFs
 
-Les différents types de contraintes sont :
-- `CONTRAINTE_EMUL_AC_N = 1` : contrainte en N sur un quadripôle fictif
-- `CONTRAINTE_EMULATION_AC = 2` : contrainte en N-k sur un quadripôle fictif
-- `CONTRAINTE_N = 3` : contrainte en N sur un quadripôle non-fictif
-- `CONTRAINTE_N_MOINS_K = 4` : contrainte en N-k sur un quadripôle non-fictif
-- `CONTRAINTE_PARADE = 5` : contrainte sur une parade
-- `CONTRAINTE_ACTIVATION = 6` : contrainte d'activation d'une parade
-- `CONTRAINTE_NON_DEF = -1` : contrainte non définie
+The different types of constraints are:
+- `CONTRAINTE_EMUL_AC_N = 1`: N constraint on a fictitious quadripole
+- `CONTRAINTE_EMULATION_AC = 2`: N-k constraint on a fictitious quadripole
+- `CONTRAINTE_N = 3`: N constraint on a non-fictitious quadripole
+- `CONTRAINTE_N_MOINS_K = 4`: N-k constraint on a non-fictitious quadripole
+- `CONTRAINTE_PARADE = 5`: constraint on a remedial action
+- `CONTRAINTE_ACTIVATION = 6`: remedial action activation constraint
+- `CONTRAINTE_NON_DEF = -1`: undefined constraint
 
 ### Load Flow (LF)
-Mode basique de simulation réseau avec des productions et consommations fixes. Metrix retourne alors le flot sur les
-lignes du réseau. Pour ce mode : `MODECALC = 1`.
+Basic network simulation mode with fixed generation and load. Metrix then returns the flow on the
+network lines. For this mode: `MODECALC = 1`.
 
-Dans ce mode :
- - Les parades ne sont pas lues
- - Si des groupes ou consommateurs sont renseignés comme étant disponibles pour le curatif, alors ils sont ignorés
- - Il n'y a pas de phase de détection de contraintes
+In this mode:
+ - Remedial actions are not read
+ - If generators or loads are declared as available for curative actions, they are ignored
+ - There is no constraint detection phase
 
-### Optimal Power Load Flow sans redispatching (OPF w/o redispatching)
-Ce mode ne permet pas à Metrix-simulator de faire du redispatching (modifier les injections et consommations) mais il
-tend à minimiser les violations des différentes contraintes grâce à l'utilisation de parades topologiques, de
-modifications des déphasages des transformateurs-déphaseurs ou encore de modifications des flux sur les lignes à courant continu.
-Pour ce mode : `MODECALC = 2`.
+### Optimal Power Load Flow without redispatching (OPF w/o redispatching)
+This mode does not allow Metrix-simulator to perform redispatching (modifying injections and loads) but it
+tends to minimize the violations of the various constraints by using topological remedial actions,
+by modifying the phase shifts of the phase tap changers, or by modifying the flows on the HVDC lines.
+For this mode: `MODECALC = 2`.
 
-Dans ce mode :
-- Si un groupe est indiqué comme disponible pour le redispatching :
-  - et uniquement pour le redispatching (i.e. `OUI_AR`), alors il est considéré comme n'étant pas disponible ni pour le
-  redispatching ni pour l'adequacy (i.e. `NON_HR_AR`)
-  - mais aussi pour l'adequacy (i.e. `OUI_HR_AR`), alors il est considéré comme étant uniquement disponible pour
-  l'adequacy (i.e. `OUI_HR`)
-- Si des groupes sont renseignés comme étant disponibles pour le curatif, alors ils sont ignorés
-- Les défaillances sont interdites ici (i.e. les variables de variations de consommation sont fixes et ???)
-- Des variables d'écart sont ajoutées pour toute contrainte avec un type autre que `CONTRAINTE_EMUL_AC_N`,
-`CONTRAINTE_EMULATION_AC` ou `CONTRAINTE_ACTIVATION`.
+In this mode:
+- If a generator is declared as available for redispatching:
+  - and only for redispatching (i.e. `OUI_AR`), then it is considered as available neither for
+  redispatching nor for adequacy (i.e. `NON_HR_AR`)
+  - but also for adequacy (i.e. `OUI_HR_AR`), then it is considered as available only for
+  adequacy (i.e. `OUI_HR`)
+- If generators are declared as available for curative actions, they are ignored
+- Loss of load is forbidden here (i.e. the load variation variables are fixed and ???)
+- Slack variables are added for every constraint with a type other than `CONTRAINTE_EMUL_AC_N`,
+`CONTRAINTE_EMULATION_AC` or `CONTRAINTE_ACTIVATION`.
 
 ### Optimal Power Load Flow (OPF)
-Ce mode a la possibilité toutes les actions possibles (redispatching en plus des actions énoncées dans le chapitre
-précédent) afin de minimiser, à moindre coût, les violations des contraintes.
-Pour ce mode : `MODECALC = 0`.
+This mode can use all possible actions (redispatching in addition to the actions described in the previous
+chapter) in order to minimize, at the lowest cost, the constraint violations.
+For this mode: `MODECALC = 0`.
 
-### Optimal Power Load Flow avec surcharge (OPF with overload)
-Ce mode fonctionne comme le précédent, toutefois si aucune solution n'est trouvée le programme ne retourne pas d'erreur,
-mais des résultats avec surcharge.
-Pour ce mode : `MODECALC = 3`.
+### Optimal Power Load Flow with overload (OPF with overload)
+This mode works like the previous one; however, if no solution is found the program does not return an error,
+but results with overload.
+For this mode: `MODECALC = 3`.
 
-Si des consommateurs sont renseignés comme étant disponibles pour le curatif, alors ils sont ignorés.
-Il n'y a pas de contraintes de couplage ici.
-Des variables d'écart sont ajoutées pour toute contrainte avec un type autre que `CONTRAINTE_EMUL_AC_N`, `CONTRAINTE_EMULATION_AC` ou `CONTRAINTE_ACTIVATION`.
+If loads are declared as available for curative actions, they are ignored.
+There are no coupling constraints here.
+Slack variables are added for every constraint with a type other than `CONTRAINTE_EMUL_AC_N`, `CONTRAINTE_EMULATION_AC` or `CONTRAINTE_ACTIVATION`.
 
-## Générations fichiers PTDFs
+## PTDF file generation
 
-La génération des fichiers se fait via l'appel au simulateur. Il n'est pour l'instant pas possible d'uniquement générer
-les fichiers PTDFs pour chacune des variantes sans lancer de résolution.
-Toutefois, il n'y a, a priori, pas de raison à ce que cela ne soit pas possible.
+The files are generated by calling the simulator. For the moment, it is not possible to generate only
+the PTDF files for each variant without running a resolution.
+However, there is, a priori, no reason why this could not be possible.
 
-## Codes de retour et gestion des crashs
+## Return codes and crash handling
 
-Les diférents status de retour sont les suivants :
-- `METRIX_PROBLEME = -1` : KO
-- `METRIX_PAS_PROBLEME = 0` : OK
-- `METRIX_PAS_SOLUTION = 1` : problème infaisable ou pas de solution trouvée
-- `METRIX_NB_MAX_CONT_ATTEINT = 2` : nombre maximum de contraintes ajoutées atteint
-- `METRIX_NB_MICROIT = 3` : nombre maximum de micro-iterations atteint
-- `METRIX_VARIANTE_IGNOREE = 4` : variante ignorée
-- `METRIX_CONTRAINTE_IGNOREE = 3` : contrainte ignorée, car équivalente, Tmax non défini ou pas d'action possible (dans
-le cas d'un OPF sans redispatching ou d'un OPF avec surcharge)
+The different return statuses are as follows:
+- `METRIX_PROBLEME = -1`: KO
+- `METRIX_PAS_PROBLEME = 0`: OK
+- `METRIX_PAS_SOLUTION = 1`: infeasible problem or no solution found
+- `METRIX_NB_MAX_CONT_ATTEINT = 2`: maximum number of added constraints reached
+- `METRIX_NB_MICROIT = 3`: maximum number of micro-iterations reached
+- `METRIX_VARIANTE_IGNOREE = 4`: variant ignored
+- `METRIX_CONTRAINTE_IGNOREE = 3`: constraint ignored, because it is equivalent, Tmax is not defined or no action is possible (in
+the case of an OPF without redispatching or an OPF with overload)
 
-## Parade topologique en N
+## Topological remedial action in N
 
-L'utilisation de parades topologiques en N n'est théoriquement pas possible. Toutefois, il est possible d'approcher le comportement de l'utilisation d'une parade topologique en N via une parade topologique sur un élément très éloigné de la zone d'étude. 
+Using topological remedial actions in N is theoretically not possible. However, the behavior of a topological remedial action in N can be approximated by using a topological remedial action on an element very far from the study area. 
 
-## Seuils ITAM
+## ITAM thresholds
 
-Il est possible de paramétrer l'outil afin d'utiliser les seuils avant manœuvre (i.e. post incident, mais avant curatif)
-via le paramètre `TESTITAM`.
-Si ces seuils sont activés, une parade "ne rien faire" est ajoutée sur les incidents avec curatif, mais sans parade.
+The tool can be configured to use the pre-switching thresholds (i.e. post-contingency, but before curative actions)
+via the `TESTITAM` parameter.
+If these thresholds are enabled, a "do nothing" remedial action is added on contingencies with curative actions but without remedial actions.
 
-### Contexte LF+
-En LF+, lorsqu'il y a dépassement d'un seuil ITAM avant utilisation des parades topologiques curatives, il n'y a pas
-d'alerte ou d'indicateur indiquant ce dépassement. Alors que la solution retournée peut préconiser l'utilisation de
-parades curatives qui favorisent, potentiellement, le respect des seuils ITAM d'après les logs finaux.
+### LF+ context
+In LF+, when an ITAM threshold is exceeded before the curative topological remedial actions are used, there is no
+alert or indicator showing this overload. Yet the returned solution may recommend using
+curative remedial actions that potentially help comply with the ITAM thresholds according to the final logs.
 
-Ce comportement n'est pas réaliste puisqu'en situation réelle, les parades curatives n'ont pas le temps d'être activée
-afin de respecter ces seuils ITAM.
+This behavior is not realistic since, in a real situation, curative remedial actions do not have time to be activated
+in order to comply with these ITAM thresholds.
 
-### Problématique
-Metrix résout le problème via de l'optimisation globale. Autrement dit, ce dernier tente de trouver une solution
-optimale respectant l'ensemble des contraintes tout en minimisant l'ensemble des objectifs définis (ex : minimisation
-des dépassements en LF+). Ceci implique que, du point de vue de Metrix, la minimisation des dépassements se fait « d'un
-coup » et non pas séquentiellement comme ce pourrait être le cas manuellement. Ainsi, en sortie de Metrix, ce dernier
-peut considérer qu'il n'y a plus de dépassement alors que ce sont des parades curatives qui permettent de respecter les
-seuils ITAM (non réaliste d'après le paragraphe précédent).
+### Issue
+Metrix solves the problem through global optimization. In other words, it tries to find an
+optimal solution that satisfies all the constraints while minimizing all the defined objectives (e.g. minimization
+of overloads in LF+). This implies that, from Metrix's point of view, the minimization of overloads is done "all at
+once" and not sequentially as might be the case manually. Thus, at the output of Metrix, it
+may consider that there is no more overload while it is the curative remedial actions that make it possible to comply with the
+ITAM thresholds (not realistic according to the previous paragraph).
 
 
-### Options possibles :
+### Possible options:
 
- - Utiliser les fichiers « tmp » afin de lever une alerte
- - Modifier le modèle afin que seules les parades topologiques curatives n'ayant pas d'impact sur les éléments avec
-dépassements de leur seuil ITAM soient activables (cette solution semble complexe à implémenter a priori)
- - Pour tout élément avec un seuil N-k ainsi qu'un seuil ITAM mais pas de parade préventive pour cet élément :
-suppression de seuils N-k de cet élément ?
+ - Use the "tmp" files to raise an alert
+ - Modify the model so that only the curative topological remedial actions that have no impact on the elements with
+exceeded ITAM thresholds can be activated (this solution seems complex to implement a priori)
+ - For any element with an N-k threshold and an ITAM threshold but no preventive remedial action for this element:
+remove the N-k thresholds of this element?
 
-Compte tenu du paradigme LF+ (minimisation des dépassements de différents seuils pour un même élément et optimisation
-globale), le process le plus réaliste semble être de lever une alerte/warning indiquant qu'un seuil n'est pas respecté.
+Given the LF+ paradigm (minimization of the overloads of different thresholds for the same element and global
+optimization), the most realistic process seems to be to raise an alert/warning indicating that a threshold is not respected.

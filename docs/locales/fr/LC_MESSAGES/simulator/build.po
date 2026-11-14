@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../simulator/build.md:2 ae27b54647574b81b07441107377e5a0
+msgid "Building Metrix simulator"
+msgstr "Compilation de Metrix simulator"
+
+#: ../../simulator/build.md:4 06977b4d963d4722984bae762cd28bd5
+msgid ""
+"This page will get you through the building of the executable *metrix-"
+"simulator* for your preferred operating system."
+msgstr ""
+"Cette page vous guide dans la compilation de l'exécutable *metrix-simulator*"
+" pour le système d'exploitation de votre choix."
+
+#: ../../simulator/build.md:6 6ccef9e8be284f23b76d3039ea1f6694
+msgid "Requirements"
+msgstr "Prérequis"
+
+#: ../../simulator/build.md:8 04f27a9de37049459d68f3dabac10d00
+msgid "To build metrix-simulator, you need:"
+msgstr "Pour compiler metrix-simulator, vous avez besoin de :"
+
+#: ../../simulator/build.md:9 d320567e55214c06be87def87d64adce
+msgid ""
+"A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or "
+"higher, [g++](https://gcc.gnu.org) 5.0 or higher)"
+msgstr ""
+"Un compilateur C++ compatible C++11 ([clang](https://clang.llvm.org) 3.3 ou "
+"supérieur, [g++](https://gcc.gnu.org) 5.0 ou supérieur)"
+
+#: ../../simulator/build.md:10 97fbbd0be36a461b88a09143ef4a95bd
+msgid "[CMake](https://cmake.org) (3.12 or higher)"
+msgstr "[CMake](https://cmake.org) (3.12 ou supérieur)"
+
+#: ../../simulator/build.md:11 43e73f494b5e473c8300e55a42880d1a
+msgid "[Make](https://www.gnu.org/software/make/)"
+msgstr "[Make](https://www.gnu.org/software/make/)"
+
+#: ../../simulator/build.md:12 53bfc98ab75d4f20908cbd6b82ac8f90
+msgid "[Boost](https://www.boost.org) development packages (1.66 or higher)"
+msgstr ""
+"Paquets de développement [Boost](https://www.boost.org) (1.66 ou supérieur)"
+
+#: ../../simulator/build.md:14 bd0197c3aa3e4c6c9feefc5c041fea2e
+msgid "Use the following commands to install them on your OS:"
+msgstr ""
+"Utilisez les commandes suivantes pour les installer sur votre système :"
+
+#: ../../simulator/build.md:16 06ed5d964ee9467196ef432caa4c1427
+msgid "Ubuntu 20.04 and later"
+msgstr "Ubuntu 20.04 et versions ultérieures"
+
+#: ../../simulator/build.md:21 b4df69f7af704b5e9a349076a6f4a051
+msgid "Ubuntu 18.04"
+msgstr "Ubuntu 18.04"
+
+#: ../../simulator/build.md:26 e4a2706f1c6d4759995fb33bd6990d21
+msgid ""
+"**Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), "
+"so you have to install it manually:"
+msgstr ""
+"**Note :** sous Ubuntu 18.04, le paquet CMake par défaut est trop ancien "
+"(3.10), vous devez donc l'installer manuellement :"
+
+#: ../../simulator/build.md:33 233983fea1764d9383c114e554ea167c
+msgid "CentOS 8"
+msgstr "CentOS 8"
+
+#: ../../simulator/build.md:38 cd14448cb9004cb8b1556d257d3ceb6a
+msgid ""
+"**Note:** Under CentOS 8, the default CMake package is too old (3.11.4), so "
+"you have to install it manually:"
+msgstr ""
+"**Note :** sous CentOS 8, le paquet CMake par défaut est trop ancien "
+"(3.11.4), vous devez donc l'installer manuellement :"
+
+#: ../../simulator/build.md:45 68bce28520614f90a80119c262284676
+msgid "Build sources"
+msgstr "Compilation des sources"
+
+#: ../../simulator/build.md:47 5394219ac1ab472a81e335fab028ed80
+msgid "Next, you can build the executable from the sources"
+msgstr "Suivant"
+
+#: ../../simulator/build.md:49 18106fbcf92540ebbc89b37fc1ce8568
+msgid "1. Clone the project"
+msgstr "1. Cloner le projet"
+
+#: ../../simulator/build.md:55 594cc5d699a44a588fb079cdfe1978d8
+msgid "2. Build the third parties"
+msgstr "2. Compiler les dépendances tierces"
+
+#: ../../simulator/build.md:64 7c82f8a5aca5438d9090284709d3149e
+msgid "3. Build the project executable"
+msgstr "3. Compiler l'exécutable du projet"
+
+#: ../../simulator/build.md:71 a331ea96d0254626af9df38a0977c962
+msgid ""
+"The following CMAKE options can be set for the executable configuration:"
+msgstr ""
+"Les options CMAKE suivantes peuvent être définies pour la configuration de "
+"l'exécutable :"
+
+#: ../../simulator/build.md:72 43e37854453748418f56fd22941bfc75
+msgid ""
+"`USE_SIRIUS_SHARED` (default = OFF): If active, the project will link using "
+"the shared library of sirius solver instead of the static library"
+msgstr ""
+"`USE_SIRIUS_SHARED` (par défaut = OFF) : si l'option est active, le projet "
+"est lié à la bibliothèque partagée du solveur sirius au lieu de la "
+"bibliothèque statique"
+
+#: ../../simulator/build.md:73 f3a0c582df38482f9319d3f5c81b81a2
+msgid ""
+"`METRIX_RUN_ALL_TESTS` (default = ON): If inactive, the project will execute"
+" a reduced scope of tests"
+msgstr ""
+"`METRIX_RUN_ALL_TESTS` (par défaut = ON) : si l'option est inactive, le "
+"projet exécute un périmètre de tests réduit"
+
+#: ../../simulator/build.md:75 7f160ccc83de4b2abfcd95af3cb36ecb
+msgid "Extras"
+msgstr "Compléments"
+
+#: ../../simulator/build.md:76 fdf2255954ac430e8c6ba4f560c7c7f7
+msgid "Checkstyle"
+msgstr "Vérification du style de code (Checkstyle)"
+
+#: ../../simulator/build.md:77 9318714a2e7449318f2655f11ae0cc8a
+msgid ""
+"This project uses [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) to "
+"verify the code style. This tool is provided with the clang extra tools. To "
+"enable the code style checking, add the `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` "
+"flag to the configure command."
+msgstr ""
+"Ce projet utilise [clang-tidy](https://clang.llvm.org/extra/clang-tidy/) "
+"pour vérifier le style du code. Cet outil est fourni avec les outils "
+"supplémentaires de clang. Pour activer la vérification du style de code, "
+"ajoutez l'option `-DCMAKE_CXX_CLANG_TIDY=clang-tidy` à la commande de "
+"configuration."
+
+#: ../../simulator/build.md:80 cb8cc4f7ebcf42dca874cd130f9d74a0
+msgid ""
+"A clang-format file is also provided to format the code by using [clang-"
+"format](https://clang.llvm.org/docs/ClangFormat.html). Most IDEs have an "
+"option to format files using clang-format automatically."
+msgstr ""
+"Un fichier clang-format est également fourni pour formater le code avec "
+"[clang-format](https://clang.llvm.org/docs/ClangFormat.html). La plupart des"
+" IDE disposent d'une option permettant de formater automatiquement les "
+"fichiers avec clang-format."
+
+#: ../../simulator/build.md:82 1dcb3729c2764d3cbc98a86bdf7e542a
+msgid "Code coverage"
+msgstr "Couverture de code"
+
+#: ../../simulator/build.md:83 adb2fc1279c9417da6fb977983d042fc
+msgid ""
+"This project uses either "
+"[gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) or [llvm-"
+"cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) to compute the code "
+"coverage. We also use [gcovr](https://gcovr.com/en/stable/) (4.2 or higher) "
+"to generate both sonar and HTML reports. To compute the code coverage, add "
+"the `-DCODE_COVERAGE=TRUE` flag to the configure command."
+msgstr ""
+"Ce projet utilise [gcov](https://gcc.gnu.org/onlinedocs/gcc/Gcov.html) ou "
+"[llvm-cov](https://llvm.org/docs/CommandGuide/llvm-cov.html) pour calculer "
+"la couverture de code. Nous utilisons également "
+"[gcovr](https://gcovr.com/en/stable/) (4.2 ou supérieur) pour générer des "
+"rapports sonar et HTML. Pour calculer la couverture de code, ajoutez "
+"l'option `-DCODE_COVERAGE=TRUE` à la commande de configuration."
