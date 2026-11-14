@@ -3121,17 +3121,6 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
             nom = "P_" + incident->nom_ + " / ";
         }
 
-        if (!parade_def.constraints.empty()) {
-            for (const auto& cont : parade_def.constraints) {
-                auto mapCIt = elementsASurveillerNk_.find(cont);
-                if (mapCIt != elementsASurveillerNk_.end()) {
-                    parade->contraintesAutorisees_.insert(mapCIt->second);
-                } else {
-                    LOG_ALL(warning) << err::ioDico().msg("ERRCurTopoContrainteInconnue", cont);
-                }
-            }
-        }
-
         bool ok = true;
         for (auto it = parade_def.couplings.begin(); it != parade_def.couplings.end(); ++it) {
             if (it != parade_def.couplings.begin()) {
@@ -3210,6 +3199,21 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
                     "INFOIncidentRompantConnexite", "parade", incident->nom_, parade->nom_);
                 continue;
             }
+        }
+
+        for (const auto& cont : parade_def.constraints) {
+            auto mapCIt = elementsASurveillerNk_.find(cont);
+            if (mapCIt != elementsASurveillerNk_.end()) {
+                parade->contraintesAutorisees_.insert(mapCIt->second);
+            } else {
+                LOG_ALL(warning) << err::ioDico().msg("ERRCurTopoContrainteInconnue", cont);
+            }
+        }
+
+        // Non supporte : avec plusieurs contraintes autorisees, le modele exigerait toutes celles en contrainte
+        if (parade->contraintesAutorisees_.size() > 1) {
+            LOG_ALL(warning) << err::ioDico().msg("WarnParadeRestrictionMultiple", parade->nom_, incident->nom_);
+            parade->contraintesAutorisees_.clear();
         }
 
         if (incident->parades_.empty()) {

@@ -335,6 +335,8 @@ Chacune des lignes correspond à une parade, telle que :
 
 *<Nom de l'incident>*|*<Sections à surveiller séparées par un "pipe">*;*<Nombre des premiers quadripôles listés concernés>*;<Liste de *<Nom(s) du(es) quadripôle(s)>* séparé(s) par un point virgule>;
 
+La restriction ne peut porter que sur une seule section à surveiller : si plusieurs sont renseignées, elle est ignorée.
+
 **Exemple** :
 
 ```

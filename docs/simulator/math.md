@@ -442,11 +442,12 @@ parade n’a aucune action sur le réseau.
 (usage_prd_ctr)=
 #### Contrainte d'utilisation des parades
 
-L'activation d'une parade $prd$ peut être empêchée s'il n'existe aucune ligne, parmi un certain ensemble de lignes,
-non contrainte. Notons $QUADNECESSAIRES_{prd}$ cet ensemble.
+L'activation d'une parade $prd$ peut être restreinte à un ensemble de lignes $QUADNECESSAIRES_{prd}$, renseigné dans
+le fichier des parades : $prd$ n'est alors activable que si l'une de ces lignes est en contrainte. Cet ensemble contient
+au plus une ligne.
 
 Notons $QUADENCONTRAINTE_{inc}$ la liste des lignes en surtension suite à l'incident $inc$. Alors
-$\forall inc \in INCIDENT, \forall prd \in PARADE \cap CURATIF_{inc}$ :
+$\forall inc \in INCIDENT, \forall prd \in PARADE \cap CURATIF_{inc}$ tel que $QUADNECESSAIRES_{prd} \neq \emptyset$ :
 
 $$
 (\nexists quad \in QUADNECESSAIRES_{prd}\text{ tel que }quad \in QUADENCONTRAINTE_{inc}) \Rightarrow actPRD_{prd}^{inc} = 0
