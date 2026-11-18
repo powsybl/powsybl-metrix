@@ -12,7 +12,7 @@ message(STATUS "Log librairie")
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66.0 REQUIRED COMPONENTS log system filesystem)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS log filesystem OPTIONAL_COMPONENTS system)
 
 set(LOG_SOURCES
     src/logger.cpp
@@ -24,7 +24,6 @@ target_include_directories(log
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 
-    Boost::system
     Boost::log
     Boost::filesystem
 
@@ -33,9 +32,12 @@ target_include_directories(log
     )
 
 target_link_libraries(log
-    Boost::system
     Boost::log
     Boost::filesystem
 )
+
+if(TARGET Boost::system)
+    target_link_libraries(log Boost::system)
+endif()
 
 add_library(metrix::log ALIAS log)
