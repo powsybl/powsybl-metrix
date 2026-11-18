@@ -115,7 +115,7 @@ diff -urpN SuiteSparse/CMakeLists.txt SuiteSparse.patch/CMakeLists.txt
 --- SuiteSparse/CMakeLists.txt	1970-01-01 01:00:00.000000000 +0100
 +++ SuiteSparse.patch/CMakeLists.txt	2019-11-06 12:04:23.625796280 +0100
 @@ -0,0 +1,22 @@
-+cmake_minimum_required(VERSION 3.4.3 FATAL_ERROR)
++cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 +
 +project(suitesparse)
 +
