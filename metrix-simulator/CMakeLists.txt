@@ -48,7 +48,7 @@ endif(MSVC)
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS program_options log filesystem OPTIONAL_COMPONENTS system)
 
 option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
 if (USE_SIRIUS_SHARED)
