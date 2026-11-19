@@ -7,13 +7,13 @@
  */
 package com.powsybl.metrix.integration.network;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Range;
 import com.google.common.jimfs.Configuration;
 import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.PowsyblException;
+import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.contingency.*;
 import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.test.BoundaryLineNetworkFactory;
@@ -39,6 +39,8 @@ import com.powsybl.timeseries.ReadOnlyTimeSeriesStoreCache;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -334,13 +336,13 @@ class MetrixInputTest {
         metrixDslData.addLoadsBinding("2 load group", ImmutableSet.of("FVALDI11_L", "FVALDI11_L2"));
         metrixDslData.addLoadsBinding("3 load group", ImmutableSet.of("FSSV.O11_L", "FVERGE11_L", "FVALDI11_L2"));
 
-        final ObjectMapper objectMapper = new ObjectMapper();
+        final JsonMapper jsonMapper = JsonUtil.createJsonMapper();
         try (StringWriter sw = new StringWriter()) {
-            objectMapper.writeValue(sw, metrixDslData);
+            jsonMapper.writeValue(sw, metrixDslData);
             StringReader sr = new StringReader(sw.toString());
-            MetrixDslData metrixDslData2 = objectMapper.readValue(sr, MetrixDslData.class);
+            MetrixDslData metrixDslData2 = jsonMapper.readValue(sr, MetrixDslData.class);
             assertEquals(metrixDslData, metrixDslData2);
-        } catch (IOException ioe) {
+        } catch (JacksonException ioe) {
             fail();
         }
 
@@ -373,9 +375,9 @@ class MetrixInputTest {
                 .setCurativeRedispatchingLimit(1500);
 
         try (StringWriter sw = new StringWriter()) {
-            objectMapper.writeValue(sw, parameters);
+            jsonMapper.writeValue(sw, parameters);
             StringReader sr = new StringReader(sw.toString());
-            MetrixParameters parameters2 = objectMapper.readValue(sr, MetrixParameters.class);
+            MetrixParameters parameters2 = jsonMapper.readValue(sr, MetrixParameters.class);
             assertEquals(parameters, parameters2);
         } catch (IOException ioe) {
             fail();

@@ -7,12 +7,12 @@
  */
 package com.powsybl.metrix.mapping.json;
 
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.powsybl.metrix.mapping.config.TimeSeriesMappingConfig;
 import com.powsybl.metrix.mapping.references.MappingKey;
 import com.powsybl.timeseries.TimeSeries;
 import com.powsybl.timeseries.json.TimeSeriesJsonDeserializer;
 import com.powsybl.timeseries.json.TimeSeriesJsonSerializer;
+import tools.jackson.databind.module.SimpleModule;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}

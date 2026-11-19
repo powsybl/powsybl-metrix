@@ -7,16 +7,14 @@
  */
 package com.powsybl.metrix.mapping.references;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.timeseries.TimeSeriesException;
 import org.jspecify.annotations.NonNull;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -35,44 +33,36 @@ public record MappingKey(MappingVariable mappingVariable, String id) {
 
     public static void writeJson(JsonGenerator generator, MappingKey key) {
         Objects.requireNonNull(generator);
-        try {
-            generator.writeStartObject();
-            generator.writeFieldName("mappingVariable");
-            MappingVariable.writeJson(key.mappingVariable(), generator);
-            generator.writeStringField("id", key.id());
-            generator.writeEndObject();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeStartObject();
+        generator.writeName("mappingVariable");
+        MappingVariable.writeJson(key.mappingVariable(), generator);
+        generator.writeStringProperty("id", key.id());
+        generator.writeEndObject();
     }
 
     public static MappingKey parseJson(JsonParser parser) {
         Objects.requireNonNull(parser);
         MappingVariable mappingVariable = null;
         String id = null;
-        try {
-            JsonToken token;
-            while ((token = parser.nextToken()) != null) {
-                if (token.equals(JsonToken.FIELD_NAME)) {
-                    String fieldName = parser.currentName();
-                    switch (fieldName) {
-                        case "mappingVariable" -> mappingVariable = MappingVariable.parseJson(parser);
-                        case "id" -> {
-                            parser.nextToken();
-                            id = parser.getValueAsString();
-                        }
-                        default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+        JsonToken token;
+        while ((token = parser.nextToken()) != null) {
+            if (token.equals(JsonToken.PROPERTY_NAME)) {
+                String fieldName = parser.currentName();
+                switch (fieldName) {
+                    case "mappingVariable" -> mappingVariable = MappingVariable.parseJson(parser);
+                    case "id" -> {
+                        parser.nextToken();
+                        id = parser.getValueAsString();
                     }
-                } else if (token.equals(JsonToken.END_OBJECT)) {
-                    if (mappingVariable != null && id != null) {
-                        return new MappingKey(mappingVariable, id);
-                    } else {
-                        throw new IllegalStateException("Incomplete mapping key json");
-                    }
+                    default -> throw new IllegalStateException("Unexpected field name " + fieldName);
+                }
+            } else if (token.equals(JsonToken.END_OBJECT)) {
+                if (mappingVariable != null && id != null) {
+                    return new MappingKey(mappingVariable, id);
+                } else {
+                    throw new IllegalStateException("Incomplete mapping key json");
                 }
             }
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
         throw new TimeSeriesException("Invalid mapping key JSON");
     }

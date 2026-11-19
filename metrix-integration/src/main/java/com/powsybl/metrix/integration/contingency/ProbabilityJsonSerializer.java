@@ -7,18 +7,16 @@
  */
 package com.powsybl.metrix.integration.contingency;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.SerializerProvider;
 import com.google.auto.service.AutoService;
 import com.powsybl.commons.PowsyblException;
 import com.powsybl.commons.extensions.ExtensionJsonSerializer;
 import com.powsybl.contingency.Contingency;
 import org.apache.commons.lang3.StringUtils;
-
-import java.io.IOException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.SerializationContext;
 
 /**
  * @author Paul Bui-Quang {@literal <paul.buiquang at rte-france.com>}
@@ -26,19 +24,19 @@ import java.io.IOException;
 @AutoService(ExtensionJsonSerializer.class)
 public class ProbabilityJsonSerializer implements ExtensionJsonSerializer<Contingency, Probability> {
     @Override
-    public void serialize(Probability extension, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+    public void serialize(Probability extension, JsonGenerator jsonGenerator, SerializationContext serializationContext) {
         jsonGenerator.writeStartObject();
         if (extension.getProbabilityBase() != null && !Double.isNaN(extension.getProbabilityBase())) {
-            jsonGenerator.writeNumberField("probabilityBase", extension.getProbabilityBase());
+            jsonGenerator.writeNumberProperty("probabilityBase", extension.getProbabilityBase());
         }
         if (StringUtils.isNotBlank(extension.getProbabilityTimeSeriesRef())) {
-            jsonGenerator.writeStringField("probabilityTs", extension.getProbabilityTimeSeriesRef());
+            jsonGenerator.writeStringProperty("probabilityTs", extension.getProbabilityTimeSeriesRef());
         }
         jsonGenerator.writeEndObject();
     }
 
     @Override
-    public Probability deserialize(JsonParser parser, DeserializationContext deserializationContext) throws IOException {
+    public Probability deserialize(JsonParser parser, DeserializationContext deserializationContext) {
         Double base = null;
         String ts = null;
         while (parser.nextToken() != JsonToken.END_OBJECT) {

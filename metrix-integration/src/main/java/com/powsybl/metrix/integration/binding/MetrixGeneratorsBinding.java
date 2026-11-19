@@ -7,6 +7,9 @@
  */
 package com.powsybl.metrix.integration.binding;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Collection;
 
 /**
@@ -22,7 +25,10 @@ public class MetrixGeneratorsBinding extends AbstractMetrixGroupBinding {
         this(name, ids, ReferenceVariable.PMAX);
     }
 
-    public MetrixGeneratorsBinding(String name, Collection<String> ids, ReferenceVariable reference) {
+    @JsonCreator
+    public MetrixGeneratorsBinding(@JsonProperty("name") String name,
+                @JsonProperty("ids") Collection<String> ids,
+                @JsonProperty("reference") ReferenceVariable reference) {
         super(name, ids, reference);
     }
 

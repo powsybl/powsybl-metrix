@@ -7,10 +7,10 @@
  */
 package com.powsybl.metrix.mapping.references;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.timeseries.TimeSeriesException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -28,7 +28,7 @@ public class TimeSeriesDistributionKey implements DistributionKey {
 
     @Override
     public void writeJson(JsonGenerator generator) throws IOException {
-        generator.writeStringField(NAME, timeSeriesName);
+        generator.writeStringProperty(NAME, timeSeriesName);
     }
 
     public TimeSeriesDistributionKey(String timeSeriesName) {

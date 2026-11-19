@@ -7,14 +7,14 @@
  */
 package com.powsybl.metrix.integration.chunk;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.powsybl.commons.json.JsonUtil;
 import com.powsybl.contingency.ContingenciesProvider;
 import com.powsybl.contingency.Contingency;
 import com.powsybl.contingency.json.ContingencyJsonModule;
 import com.powsybl.tools.ToolRunningContext;
 import org.apache.commons.cli.CommandLine;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -148,10 +148,10 @@ public class MetrixChunkParam {
 
             Path contingenciesFile = context.getFileSystem().getPath(line.getOptionValue("contingencies-file"));
             context.getOutputStream().println("Using contingencies file " + contingenciesFile);
-            ObjectMapper objectMapper = JsonUtil.createObjectMapper().registerModule(new ContingencyJsonModule());
+            JsonMapper jsonMapper = JsonUtil.createJsonMapperBuilder().addModule(new ContingencyJsonModule()).build();
             List<Contingency> contingencies;
             try (Reader reader = Files.newBufferedReader(contingenciesFile, StandardCharsets.UTF_8)) {
-                contingencies = objectMapper.readValue(reader, new TypeReference<ArrayList<Contingency>>() {
+                contingencies = jsonMapper.readValue(reader, new TypeReference<ArrayList<Contingency>>() {
                 });
             }
             contingenciesProvider = network -> contingencies;

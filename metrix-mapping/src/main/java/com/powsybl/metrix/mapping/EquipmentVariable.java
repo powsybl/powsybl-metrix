@@ -7,13 +7,11 @@
  */
 package com.powsybl.metrix.mapping;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.powsybl.metrix.commons.MappingVariable;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.core.JsonToken;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -60,16 +58,12 @@ public enum EquipmentVariable implements MappingVariable {
         return NAME;
     }
 
-    static void writeJson(EquipmentVariable variable, JsonGenerator generator) throws IOException {
+    static void writeJson(EquipmentVariable variable, JsonGenerator generator) {
         Objects.requireNonNull(generator);
-        try {
-            generator.writeStartObject();
-            generator.writeFieldName(variable.getFieldName());
-            generator.writeString(variable.getVariableName());
-            generator.writeEndObject();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        generator.writeStartObject();
+        generator.writeName(variable.getFieldName());
+        generator.writeString(variable.getVariableName());
+        generator.writeEndObject();
     }
 
     @Override
@@ -77,7 +71,7 @@ public enum EquipmentVariable implements MappingVariable {
         return getVariableName();
     }
 
-    static MappingVariable parseJson(JsonParser parser) throws IOException {
+    static MappingVariable parseJson(JsonParser parser) {
         JsonToken token = parser.nextToken();
         if (token != null) {
             if (token == JsonToken.VALUE_STRING) {

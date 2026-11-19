@@ -7,11 +7,11 @@
  */
 package com.powsybl.metrix.integration;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
 import com.google.auto.service.AutoService;
 import com.powsybl.metrix.commons.MappingVariable;
 import com.powsybl.metrix.commons.MappingVariableProvider;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
 
 import java.io.IOException;
 
@@ -26,7 +26,7 @@ public class MetrixVariableProvider implements MappingVariableProvider<MetrixVar
     }
 
     @Override
-    public MappingVariable parseJson(JsonParser parser) throws IOException {
+    public MappingVariable parseJson(JsonParser parser) {
         return MetrixVariable.parseJson(parser);
     }
 

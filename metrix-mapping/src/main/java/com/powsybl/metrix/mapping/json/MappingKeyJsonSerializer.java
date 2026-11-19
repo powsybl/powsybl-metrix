@@ -7,10 +7,10 @@
  */
 package com.powsybl.metrix.mapping.json;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.powsybl.metrix.mapping.references.MappingKey;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class MappingKeyJsonSerializer extends StdSerializer<MappingKey> {
     }
 
     @Override
-    public void serialize(MappingKey key, JsonGenerator generator, SerializerProvider serializerProvider) {
+    public void serialize(MappingKey key, JsonGenerator generator, SerializationContext serializationContext) {
         Objects.requireNonNull(generator);
         key.toJson(generator);
     }

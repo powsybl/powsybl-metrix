@@ -7,14 +7,14 @@
  */
 package com.powsybl.metrix.integration.io;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.google.common.io.LittleEndianDataInputStream;
 import com.google.common.io.LittleEndianDataOutputStream;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.deser.std.StdDeserializer;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -155,7 +155,7 @@ public class StringAttribute implements Attribute {
     public static class JsonDeserializer extends StdDeserializer<StringAttribute> {
 
         public JsonDeserializer() {
-            this(null);
+            this(StringAttribute.class);
         }
 
         public JsonDeserializer(Class<?> vc) {
@@ -163,12 +163,11 @@ public class StringAttribute implements Attribute {
         }
 
         @Override
-        public StringAttribute deserialize(JsonParser jp, DeserializationContext ctxt)
-                throws IOException {
-            JsonNode node = jp.getCodec().readTree(jp);
+        public StringAttribute deserialize(JsonParser jp, DeserializationContext ctxt) {
+            JsonNode node = ctxt.readTree(jp);
             String name = node.get("name").asText();
             List<String> values = new ArrayList<>();
-            node.get("values").elements().forEachRemaining(i -> values.add(i.asText()));
+            node.get("values").iterator().forEachRemaining(i -> values.add(i.asText()));
             return new StringAttribute(name, values.toArray(new String[0]));
         }
     }
