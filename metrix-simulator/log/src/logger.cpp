@@ -23,9 +23,7 @@
 
 using namespace boost::log;
 
-namespace metrix
-{
-namespace log
+namespace metrix::log
 {
 /**
  * @brief Private namespace for helper functions for logging
@@ -50,9 +48,8 @@ const std::map<severity::level, std::string> Logger::severities_ = {{severity::t
 const std::chrono::milliseconds Logger::synk_timeout = std::chrono::milliseconds{100};
 
 template<>
-Logger& operator<<(Logger& logger, const Sync& element)
+Logger& operator<<(Logger& logger, const Sync&)
 {
-    static_cast<void>(element);
     std::unique_lock<std::mutex> lock(logger.mutex_);
     logger.logImpl();
     return logger;
@@ -230,5 +227,4 @@ void Logger::onTimerExpired(const boost::system::error_code& code)
     timer_.async_wait(std::bind(&Logger::onTimerExpired, this, std::placeholders::_1));
 }
 
-} // namespace log
-} // namespace metrix
+} // namespace metrix::log

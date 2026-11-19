@@ -30,12 +30,10 @@
 #include <string>
 #include <vector>
 
-namespace metrix
-{
 /**
  * @brief Namespace for logging library
  */
-namespace log
+namespace metrix::log
 {
 /**
  * @brief Namespace for definitions of log level
@@ -293,8 +291,7 @@ Logger& operator<<(Logger& logger, const Sync& element);
 template<>
 Logger& operator<<(Logger& logger, const Verbose& element);
 
-} // namespace log
-} // namespace metrix
+} // namespace metrix::log
 
 /**
  * @brief Performs a log in dev file

@@ -53,11 +53,8 @@ struct ParsedCheckConstraintLevel {
  *
  * see boost documentation for program options, "how to" chapter, "custom validator" section
  */
-static void validate(boost::any& v, const std::vector<std::string>& values, ParsedLogLevel* unused_obj, int unused)
+static void validate(boost::any& v, const std::vector<std::string>& values, ParsedLogLevel*, int)
 {
-    static_cast<void>(unused_obj);
-    static_cast<void>(unused);
-
     // Make sure no previous assignment to 'a' was made.
     po::validators::check_first_occurrence(v);
 
@@ -80,12 +77,8 @@ static void validate(boost::any& v, const std::vector<std::string>& values, Pars
  *
  * see boost documentation for program options, "how to" chapter, "custom validator" section
  */
-static void
-validate(boost::any& v, const std::vector<std::string>& values, ParsedCheckConstraintLevel* unused_obj, int unused)
+static void validate(boost::any& v, const std::vector<std::string>& values, ParsedCheckConstraintLevel*, int)
 {
-    static_cast<void>(unused_obj);
-    static_cast<void>(unused);
-
     // Make sure no previous assignment to 'a' was made.
     po::validators::check_first_occurrence(v);
 
