@@ -1,0 +1,145 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C)
+# This file is distributed under the same license as the PowSyBl Metrix
+# package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PowSyBl Metrix 3.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-30 10:41+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: powsybl-metrix maintainers\n"
+"Language-Team: French\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: ../../metrix-simulator.md:2 15c547c73ff2444fa5c33a891f980dc0
+msgid "Metrix simulator"
+msgstr "Metrix simulator"
+
+#: ../../metrix-simulator.md:4 f64255ed7c874f0ba72e5dc883e81a71
+msgid "Introduction"
+msgstr "Introduction"
+
+#: ../../metrix-simulator.md:6 a3a1efcce7764b44ac731a209757c0e6
+msgid ""
+"*Metrix simulator* is an independent C++ executable. This module is capable "
+"of performing Power Load Flow calculations as well as Optimal Power Load "
+"Flow for networks with multiple variants."
+msgstr ""
+"*Metrix simulator* est un exécutable C++ indépendant. Ce module permet "
+"d'effectuer des calculs de load-flow ainsi que d'Optimal Power Flow (OPF) "
+"sur des réseaux comportant plusieurs variantes."
+
+#: ../../metrix-simulator.md:9 46f757b9c1bb4adba6acee1c19461b11
+msgid "Installation"
+msgstr "Installation"
+
+#: ../../metrix-simulator.md:11 debf3afc18144d88a992cb422455bf9b
+msgid ""
+"*Metrix simulator* must be installed before using *powsybl-metrix*. It has "
+"its own toolchain and requirements. You can either download the already "
+"built and released executable on GitHub (for example "
+"[here](https://github.com/powsybl/powsybl-"
+"metrix/releases/download/v3.1.0/metrix-simulator-ubuntu.zip) for the last "
+"version built for Ubuntu at the time of writing), or build the executable by"
+" yourself."
+msgstr ""
+"*Metrix simulator* doit être installé avant d'utiliser *powsybl-metrix*. Il "
+"a sa propre chaîne d'outils et ses propres prérequis. Vous pouvez soit "
+"télécharger l'exécutable déjà compilé et publié sur GitHub (par exemple "
+"[ici](https://github.com/powsybl/powsybl-"
+"metrix/releases/download/v3.1.0/metrix-simulator-ubuntu.zip) pour la "
+"dernière version compilée pour Ubuntu à la date de rédaction), soit compiler"
+" l'exécutable vous-même."
+
+#: ../../metrix-simulator.md:16 0c98793db57c4435bd2b3e86fa5ad732
+msgid ""
+"Detailed build instructions are available [on this "
+"page](simulator/build.md)."
+msgstr ""
+"Les instructions de compilation détaillées sont disponibles [sur cette "
+"page](simulator/build.md)."
+
+#: ../../metrix-simulator.md:18 7ae8837a0ee948ab9bcfb09e9e8ae0a1
+msgid "Running the simulator"
+msgstr "Exécution du simulateur"
+
+#: ../../metrix-simulator.md:19 f24e7c8833074ddcb7c6afa7f7009703
+msgid ""
+"The following environment variables must be defined to run metrix properly:"
+msgstr ""
+"Les variables d'environnement suivantes doivent être définies pour exécuter "
+"metrix correctement :"
+
+#: ../../metrix-simulator.md:20 d95113cb09a94a9bb0a024bfa4fcb735
+msgid ""
+"`METRIX_ETC`: location of the `.dic` files for a language region (some of "
+"these dictionaries are exported in `etc` directory in installation "
+"directory)"
+msgstr ""
+"`METRIX_ETC` : emplacement des fichiers `.dic` pour une région linguistique "
+"(certains de ces dictionnaires sont exportés dans le répertoire `etc` du "
+"répertoire d'installation)"
+
+#: ../../metrix-simulator.md:22 284408d846164ac58a81eea4ce1882ad
+msgid "All options are detailed in the helper"
+msgstr "Toutes les options sont détaillées dans l'aide"
+
+#: ../../metrix-simulator.md:69 f84e6880762548dea29a3aacb3c1be61
+msgid "Inputs and outputs"
+msgstr "Entrées et sorties"
+
+#: ../../metrix-simulator.md:71 2f7761839bc54ab89e3e01dae2b392a4
+msgid ""
+"The inputs and outputs available for Metrix simulator are detailed [on the "
+"specific page](simulator/io_doc.md)."
+msgstr ""
+"Les entrées et sorties disponibles pour Metrix simulator sont détaillées "
+"[sur la page dédiée](simulator/io_doc.md)."
+
+#: ../../metrix-simulator.md:73 b6d78362008a40b795e0a9e149fd8f50
+msgid "Functional and mathematical descriptions"
+msgstr "Descriptions fonctionnelle et mathématique"
+
+#: ../../metrix-simulator.md:75 78601f24af4f45b59bc7ad46c045487f
+msgid "Configuration and scenarios"
+msgstr "Configuration et scénarios"
+
+#: ../../metrix-simulator.md:77 228b16cb00d7463a8f1eb97aea2be330
+msgid ""
+"OPF, Load Flow only, OPF w/o redispatching (with gap variables), and "
+"OPF_WITH_OVERLOAD. PTDFs, LODF Gestion des crashs Parade topologique en N"
+msgstr ""
+"OPF, Load Flow seul, OPF sans redispatching (avec variables d'écart) et "
+"OPF_WITH_OVERLOAD. PTDFs, LODF Gestion des crashs Parade topologique en N"
+
+#: ../../metrix-simulator.md:82 0f57842f64404248a2ad914d0e5f5730
+msgid "[Config](simulator/config.md)"
+msgstr "[Config](simulator/config.md)"
+
+#: ../../metrix-simulator.md:84 844cb041729044a8bb86e983375008db
+msgid "Algorithm description"
+msgstr "Description de l'algorithme"
+
+#: ../../metrix-simulator.md:86 a0417d15ed974e4a843d5b6fcf5c8ac3
+msgid ""
+"Steps, micro-iterations, variants, network modeling. "
+"[Algo](simulator/algo.md)"
+msgstr ""
+"Étapes, micro-itérations, variantes, modélisation du réseau. "
+"[Algo](simulator/algo.md)"
+
+#: ../../metrix-simulator.md:89 84691c1ae604482bbf1be788d95799dd
+msgid "Mathematical model"
+msgstr "Modèle mathématique"
+
+#: ../../metrix-simulator.md:91 0d52e003fbe349bda4f2a720ded7a868
+msgid "Optimization problem formulation [Math](simulator/math.md)"
+msgstr "Formulation du problème d'optimisation [Math](simulator/math.md)"
