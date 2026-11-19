@@ -192,18 +192,6 @@ To build metrix-simulator, you need:
 $> apt install -y cmake g++ git libboost-all-dev libxml2-dev make
 ```
 
-###### Ubuntu 18.04
-```
-$> apt install -y g++ git libboost-all-dev libxml2-dev make wget
-```
-
-**Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), so you have to install it manually:
-```
-$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
-```
-
 ###### CentOS 8
 ```
 $> yum install -y boost-devel gcc-c++ git libxml2-devel make wget
