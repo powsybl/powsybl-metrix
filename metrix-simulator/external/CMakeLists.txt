@@ -9,7 +9,7 @@
 # 
 
 
-cmake_minimum_required(VERSION 3.9.6 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build, options are: Debug Release RelWithDebInfo MinSizeRel (CMake defaults)")
 
@@ -31,6 +31,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED true)
 include(ExternalProject)
 include(GetPatchCommand)
 include(CloneUrl)
+
+set(external_cmake_args -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR> -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE})
+if(NOT MSVC)
+  # No FMA contraction, so that results do not depend on the target instruction set
+  list(APPEND external_cmake_args "-DCMAKE_C_FLAGS:STRING=${CMAKE_C_FLAGS} -ffp-contract=off")
+endif()
 
 set(suitesparse_url https://github.com/DrTimothyAldenDavis/SuiteSparse.git)
 set(suitesparse_tag_version v5.4.0)
@@ -57,8 +63,7 @@ else()
 
     CMAKE_CACHE_ARGS    -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
 
-    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-                        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    CMAKE_ARGS          ${external_cmake_args}
   )
   ExternalProject_Get_Property(suitesparse install_dir)
   set(SUITESPARSE_HOME ${install_dir})
@@ -86,8 +91,7 @@ else()
     GIT_TAG             origin/metrix
 
     CMAKE_CACHE_ARGS    -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
-    CMAKE_ARGS          -DCMAKE_INSTALL_PREFIX:PATH=<INSTALL_DIR>
-                        -DCMAKE_BUILD_TYPE:STRING=${CMAKE_BUILD_TYPE}
+    CMAKE_ARGS          ${external_cmake_args}
     )
   ExternalProject_Get_Property(sirius_solver install_dir)
   set(sirius_solver_ROOT ${install_dir})

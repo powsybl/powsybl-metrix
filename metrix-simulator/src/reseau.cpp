@@ -559,9 +559,14 @@ void Reseau::lireDonnees()
             trdembanDIE = config.trdembanDIE()[i];
         }
 
+        int typeGroupe = -1;
+        if (i < config.trtypgrpDIE().size() && config.trtypgrpDIE()[i] < nbTypesGroupes_) {
+            typeGroupe = config.trtypgrpDIE()[i];
+        }
+
         string grpTypeStr = "";
-        if(static_cast<unsigned int>(config.trtypgrpDIE().size()) > i && config.trtypgrpDIE()[i] >= 0 && static_cast<int>(config.trnomtypDIE().size()) > config.trtypgrpDIE()[i]) {
-            grpTypeStr = config.trnomtypDIE()[config.trtypgrpDIE()[i]];
+        if (typeGroupe >= 0 && static_cast<int>(config.trnomtypDIE().size()) > typeGroupe) {
+            grpTypeStr = config.trnomtypDIE()[typeGroupe];
             std::transform(grpTypeStr.begin(), grpTypeStr.end(), grpTypeStr.begin(),
                 [](unsigned char c) { return std::toupper(c); });
             rtrim(grpTypeStr);
@@ -569,7 +574,7 @@ void Reseau::lireDonnees()
         auto prod = std::make_shared<Groupe>(i,
                                              nomGroupe,
                                              noeuds_[indNoeudRaccord],
-                                             config.trtypgrpDIE()[i],
+                                             typeGroupe,
                                              config.sppactgtDIE()[i],
                                              config.trpuiminDIE()[i],
                                              config.trvalpmdDIE()[i],
@@ -1092,8 +1097,8 @@ void Reseau::lireDonnees()
         rtrim(nom);
         nbVar = config.gbinddefDIE()[indexCourant];
         indexCourant++;
-        std::set<int> listeVariables(&(config.gbinddefDIE()[indexCourant]),
-                                     &(config.gbinddefDIE()[indexCourant + nbVar]));
+        std::set<int> listeVariables(config.gbinddefDIE().begin() + indexCourant,
+                                     config.gbinddefDIE().begin() + indexCourant + nbVar);
         GroupesCouples::SetGroupPtr elements;
         for (auto var : listeVariables) {
             const auto& grp = groupesParIndice[var - 1];
@@ -1117,7 +1122,8 @@ void Reseau::lireDonnees()
         rtrim(nom);
         nbVar = config.lbinddefDIE()[indexCourant];
         indexCourant++;
-        std::set<int> listeVariables(&config.lbinddefDIE()[indexCourant], &config.lbinddefDIE()[indexCourant + nbVar]);
+        std::set<int> listeVariables(config.lbinddefDIE().begin() + indexCourant,
+                                     config.lbinddefDIE().begin() + indexCourant + nbVar);
         std::set<std::shared_ptr<Consommation>> elements;
         for (auto var : listeVariables) {
             const auto& conso = consommationsParIndice[var - 1];

@@ -542,7 +542,9 @@ PochePerdue::PochePerdue(const std::shared_ptr<Incident>& icdt, map<std::shared_
             // C'est une ligne interne de la poche, mieux vaut la conserver
             LOG(debug) << "On conserve la ligne " << quadIcdt->nom_;
             incidentModifie_->nbLignes_--;
-            std::remove(incidentModifie_->listeQuads_.begin(), incidentModifie_->listeQuads_.end(), quadIcdt);
+            incidentModifie_->listeQuads_.erase(
+                std::remove(incidentModifie_->listeQuads_.begin(), incidentModifie_->listeQuads_.end(), quadIcdt),
+                incidentModifie_->listeQuads_.end());
         } else if (zoneOr == zoneEnd && zoneExt == zoneEnd) {
             // C'est une ligne hors de la poche
             LOG(debug) << "On laisse la ligne '" << quadIcdt->nom_ << "' dans l'incident ";
@@ -567,13 +569,14 @@ PochePerdue::PochePerdue(const std::shared_ptr<Incident>& icdt, map<std::shared_
                 zonesConservees.insert(numZoneExt);
 
                 incidentModifie_->nbLignes_--;
-                std::remove(incidentModifie_->listeQuads_.begin(), incidentModifie_->listeQuads_.end(), quadIcdt);
+                incidentModifie_->listeQuads_.erase(
+                    std::remove(incidentModifie_->listeQuads_.begin(), incidentModifie_->listeQuads_.end(), quadIcdt),
+                    incidentModifie_->listeQuads_.end());
             } else {
                 LOG(debug) << "On laisse la ligne '" << quadIcdt->nom_ << "' dans l'incident ";
             }
         }
     }
-    incidentModifie_->listeQuads_.resize(incidentModifie_->nbLignes_);
 }
 
 PochePerdue::PochePerdue(const PochePerdue& poche) :

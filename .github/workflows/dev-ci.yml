@@ -299,8 +299,8 @@ jobs:
 
       - name: Install clang-tidy
         run: |
-          sudo apt install -y clang-tidy-15
-          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-15 100
+          sudo apt install -y clang-tidy-20
+          sudo update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-20 100
 
       - name: Checkout sources
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2

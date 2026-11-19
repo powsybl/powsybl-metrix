@@ -131,7 +131,7 @@ Logger::Logger() : timer_(context_)
     logger_ = std::unique_ptr<logger_src>(new logger_src);
 
     thread_ = std::unique_ptr<std::thread>(new std::thread([this]() {
-        timer_.expires_from_now(Logger::synk_timeout);
+        timer_.expires_after(Logger::synk_timeout);
         timer_.async_wait(std::bind(&Logger::onTimerExpired, this, std::placeholders::_1));
 
         context_.run();
@@ -162,7 +162,7 @@ Logger& Logger::log(severity::level lvl, const std::string& filepath, int line, 
 
     logInfo_ = std::unique_ptr<LogInfo>(new LogInfo(lvl, helper::get_filename(filepath), line, target));
 
-    timer_.expires_from_now(synk_timeout);
+    timer_.expires_after(synk_timeout);
 
     return *this;
 }
@@ -232,7 +232,7 @@ void Logger::onTimerExpired(const boost::system::error_code& code)
     }
 
     // refresh timer: simpler than trigger it only when a log is requested
-    timer_.expires_from_now(Logger::synk_timeout);
+    timer_.expires_after(Logger::synk_timeout);
     timer_.async_wait(std::bind(&Logger::onTimerExpired, this, std::placeholders::_1));
 }
 
