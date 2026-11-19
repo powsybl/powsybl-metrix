@@ -1172,7 +1172,7 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
             if (jacFactorisee == nullptr) {
                 return METRIX_PROBLEME;
             }
-            jacIncidentsModifies_.insert(std::pair<ListeQuadsIncident, MATRICE*>(listeQuadsIncident, jacFactorisee));
+            jacIncidentsModifies_.try_emplace(listeQuadsIncident, jacFactorisee);
         } else {
             jacFactorisee = jacFactoriseeIt->second;
         }

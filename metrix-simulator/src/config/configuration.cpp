@@ -32,8 +32,8 @@ namespace helper
 {
 // Non floating-point fields: convert as-is (throws on malformed data, as before).
 template<typename T>
-static typename std::enable_if<!std::is_floating_point<T>::value, T>::type
-parseValue(const boost::property_tree::ptree& item, bool /*tolerate_non_finite*/)
+static std::enable_if_t<!std::is_floating_point_v<T>, T> parseValue(const boost::property_tree::ptree& item,
+                                                                    bool /*tolerate_non_finite*/)
 {
     return item.get_value<T>();
 }
@@ -46,8 +46,8 @@ parseValue(const boost::property_tree::ptree& item, bool /*tolerate_non_finite*/
 // as an infinite bound in the optimization problem. Any other parsing error (NaN, garbage,
 // other fields) is re-thrown so that malformed data keeps failing fast.
 template<typename T>
-static typename std::enable_if<std::is_floating_point<T>::value, T>::type
-parseValue(const boost::property_tree::ptree& item, bool tolerate_non_finite)
+static std::enable_if_t<std::is_floating_point_v<T>, T> parseValue(const boost::property_tree::ptree& item,
+                                                                   bool tolerate_non_finite)
 {
     try {
         return item.get_value<T>();

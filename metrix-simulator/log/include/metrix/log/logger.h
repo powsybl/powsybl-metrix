@@ -278,7 +278,7 @@ private:
 template<class T>
 Logger& operator<<(Logger& logger, const T& element)
 {
-    std::unique_lock<std::mutex> lock(logger.mutex_);
+    std::scoped_lock lock(logger.mutex_);
     if (logger.logInfo_) {
         logger.logInfo_->stream << element;
     }

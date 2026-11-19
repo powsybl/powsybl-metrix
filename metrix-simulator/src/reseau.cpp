@@ -3053,7 +3053,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
             throw ErrorI(err::ioDico().msg("ERRRegionIntrouvable", str, c_fmt("%d", variant->num_)));
         }
         auto var_dbl = std::get<VariantConfiguration::VALUE>(balance);
-        variant->valeurEchange_.insert(std::pair<int, double>(region_num, var_dbl));
+        variant->valeurEchange_.try_emplace(region_num, var_dbl);
     }
 
     for (const auto& balance : config.balancesProd) {
@@ -3063,7 +3063,7 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
             throw ErrorI(err::ioDico().msg("ERRRegionIntrouvable", str, c_fmt("%d", variant->num_)));
         }
         auto var_dbl = std::get<VariantConfiguration::VALUE>(balance);
-        variant->varBilanProd_.insert(std::pair<int, double>(region_num, var_dbl));
+        variant->varBilanProd_.try_emplace(region_num, var_dbl);
     }
 
     for (const auto& incident : config.probas) {

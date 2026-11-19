@@ -50,7 +50,7 @@ const std::chrono::milliseconds Logger::synk_timeout = std::chrono::milliseconds
 template<>
 Logger& operator<<(Logger& logger, const Sync&)
 {
-    std::unique_lock<std::mutex> lock(logger.mutex_);
+    std::scoped_lock lock(logger.mutex_);
     logger.logImpl();
     return logger;
 }
@@ -60,7 +60,7 @@ Logger& operator<<(Logger& logger, const Verbose& element)
 {
     if (std::find(Logger::config.verboses.begin(), Logger::config.verboses.end(), element)
         == Logger::config.verboses.end()) {
-        std::unique_lock<std::mutex> lock(logger.mutex_);
+        std::scoped_lock lock(logger.mutex_);
         logger.logInfo_.reset();
     }
 
@@ -142,7 +142,7 @@ bool Logger::check(const boost::log::attribute_value_set& set) const
 
 Logger& Logger::log(severity::level lvl, const std::string& filepath, int line, TargetOutput target)
 {
-    std::unique_lock<std::mutex> lock(mutex_);
+    std::scoped_lock lock(mutex_);
 
     // flush previous log
     logImpl();
@@ -217,7 +217,7 @@ void Logger::formatter(const record_view& view, formatting_ostream& os) const
 
 void Logger::onTimerExpired(const boost::system::error_code& code)
 {
-    std::unique_lock<std::mutex> lock(mutex_);
+    std::scoped_lock lock(mutex_);
     if (code.value() != boost::asio::error::operation_aborted) {
         logImpl();
     }
