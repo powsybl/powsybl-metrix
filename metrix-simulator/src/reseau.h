@@ -719,7 +719,7 @@ public:
     void afficheSousReseau(unsigned int numNoeud, unsigned int prof); /* For debug */
     void afficheSousReseau(int numNoeud, int numPere, unsigned int prof, int nbIndent, std::stringstream& ss);
 
-    static int myRandom(int i);
+    static void melanger(std::vector<std::shared_ptr<Groupe>>& groupes);
 
 private:
     std::shared_ptr<TransformateurDephaseur> creerTD(const std::shared_ptr<Quadripole>& quadVrai,

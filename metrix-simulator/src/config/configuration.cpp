@@ -364,8 +364,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     // log level
     auto& map = std::get<INTEGER>(raw_config);
     if (map.count("LOGLEVEL") > 0 && !map.at("LOGLEVEL").empty()) {
-        logLevel_ = boost::make_optional<metrix::log::severity::level>(
-            static_cast<metrix::log::severity::level>(map.at("LOGLEVEL").front()));
+        logLevel_ = static_cast<metrix::log::severity::level>(map.at("LOGLEVEL").front());
     }
 }
 

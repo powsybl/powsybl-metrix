@@ -12,10 +12,10 @@
 
 #include <boost/core/null_deleter.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <boost/filesystem.hpp>
 
 #include <algorithm>
 #include <cstring>
+#include <filesystem>
 
 #if defined(_MSC_VER)
 #define localtime_r(T,Tm) (localtime_s(Tm,T) ? NULL : Tm)
@@ -34,9 +34,7 @@ namespace helper
 {
 static inline std::string get_filename(const std::string& filepath)
 {
-    // we use boost filesystem here because filesystem in STl is available only in c++17
-    boost::filesystem::path path(filepath);
-    return path.filename().generic_string();
+    return std::filesystem::path(filepath).filename().generic_string();
 }
 } // namespace helper
 
@@ -87,19 +85,15 @@ Logger::~Logger()
 
 std::string Logger::computeDevfilePattern(const std::string& filepath)
 {
-    boost::filesystem::path path(filepath);
+    std::filesystem::path path(filepath);
     const std::string rotating("%3N");
 
     if (path.has_extension()) {
-        auto filename = path.filename().generic_string();
-        size_t index = filename.find_last_of('.');
-        if (index != std::string::npos) {
-            filename = filename.substr(0, index);
-        }
-        return path.remove_filename().generic_string() + filename + rotating + path.extension().generic_string();
+        return path.replace_filename(path.stem().generic_string() + rotating + path.extension().generic_string())
+            .generic_string();
     }
 
-    return std::string(path.generic_string()) + rotating;
+    return path.generic_string() + rotating;
 }
 
 Logger::Logger() : timer_(context_)
@@ -128,14 +122,14 @@ Logger::Logger() : timer_(context_)
         core::get()->add_sink(sink);
     }
 
-    logger_ = std::unique_ptr<logger_src>(new logger_src);
+    logger_ = std::make_unique<logger_src>();
 
-    thread_ = std::unique_ptr<std::thread>(new std::thread([this]() {
+    thread_ = std::make_unique<std::thread>([this]() {
         timer_.expires_after(Logger::synk_timeout);
         timer_.async_wait(std::bind(&Logger::onTimerExpired, this, std::placeholders::_1));
 
         context_.run();
-    }));
+    });
 }
 
 Logger& Logger::instance()
@@ -160,7 +154,7 @@ Logger& Logger::log(severity::level lvl, const std::string& filepath, int line, 
         return *this;
     }
 
-    logInfo_ = std::unique_ptr<LogInfo>(new LogInfo(lvl, helper::get_filename(filepath), line, target));
+    logInfo_ = std::make_unique<LogInfo>(lvl, helper::get_filename(filepath), line, target);
 
     timer_.expires_after(synk_timeout);
 

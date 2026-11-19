@@ -1471,16 +1471,16 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
     return METRIX_PAS_PROBLEME;
 }
 
-boost::optional<std::tuple<std::string, int, std::shared_ptr<Incident>>>
+std::optional<std::tuple<std::string, int, std::shared_ptr<Incident>>>
 Calculer::getIncidentConstraint(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants, int i) const
 {
     int numIncident;
     if (pbTypeContrainte_[i] == COUPE_AUTRE || pbTypeContrainte_[i] == COUPE_BILAN) {
-        return boost::none; // Uniquement pour les contraintes de transit
+        return std::nullopt; // Uniquement pour les contraintes de transit
     }
 
     if (fabs(pbCoutsMarginauxDesContraintes_[i]) < config::constants::epsilon) {
-        return boost::none; // Seuil de restitution des resultats
+        return std::nullopt; // Seuil de restitution des resultats
     }
 
     const auto& ctre = pbContraintes_[i];
@@ -1500,11 +1500,11 @@ Calculer::getIncidentConstraint(const std::map<std::shared_ptr<Incident>, int>& 
             numIncident = itNumIncident->second;
         } else {
             LOG_ALL(warning) << "Erreur incident inconnu : " << icdt->nom_;
-            return boost::none;
+            return std::nullopt;
         }
     }
 
-    return boost::make_optional(std::make_tuple(ctre->elemAS_->nom_, numIncident, icdt));
+    return std::make_tuple(ctre->elemAS_->nom_, numIncident, icdt);
 }
 
 bool Calculer::calculVariationsMarginales(FILE* fr,
@@ -1522,7 +1522,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
     std::shared_ptr<Incident> icdt;
     for (int i = 0; i < pbNombreDeContraintes_; ++i) {
         auto opt_inc = getIncidentConstraint(incidentsContraignants, i);
-        if (!opt_inc.is_initialized()) {
+        if (!opt_inc) {
             continue;
         }
         string nom;
@@ -1675,7 +1675,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
 
     for (int i = 0; i < pbNombreDeContraintes_; ++i) {
         auto opt_inc = getIncidentConstraint(incidentsContraignants, i);
-        if (!opt_inc.is_initialized()) {
+        if (!opt_inc) {
             continue;
         }
         string nom;

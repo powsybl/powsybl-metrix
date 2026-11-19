@@ -52,7 +52,13 @@ using std::vector;
 
 std::mt19937 Reseau::random;
 
-int Reseau::myRandom(int i) { return random() % i; }
+void Reseau::melanger(std::vector<std::shared_ptr<Groupe>>& groupes)
+{
+    // Pas de std::shuffle : son resultat depend de l'implementation de la STL
+    for (size_t i = 1; i < groupes.size(); ++i) {
+        groupes[i].swap(groupes[random() % (i + 1)]);
+    }
+}
 
 bool compareGroupeHausse(const std::shared_ptr<Groupe>& grp1, const std::shared_ptr<Groupe>& grp2)
 {
@@ -2064,7 +2070,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
             }
 
             // Bruitage des groupes
-            std::random_shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), myRandom);
+            melanger(groupesDeLaZone);
             varGroupesZones_[numRegion] = groupesDeLaZone;
         }
 

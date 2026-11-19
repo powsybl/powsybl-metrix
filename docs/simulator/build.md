@@ -6,7 +6,7 @@ This page will get you through the building of the executable *metrix-simulator*
 ## Requirements
 
 To build metrix-simulator, you need:
-- A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
+- A C++ compiler that supports C++17 ([clang](https://clang.llvm.org) 9 or higher, [g++](https://gcc.gnu.org) 8 or higher)
 - [CMake](https://cmake.org) (3.12 or higher)
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)

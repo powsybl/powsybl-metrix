@@ -15,10 +15,9 @@
 #include "err/error.h"
 #include <metrix/log.h>
 
-#include <boost/filesystem.hpp>
-
 #include <cctype>
 #include <cstdlib>
+#include <filesystem>
 
 namespace po = boost::program_options;
 
@@ -269,9 +268,7 @@ std::string Options::desc() const { return make_usage_string(basename(config_.pr
 
 std::string Options::basename(const std::string& filepath)
 {
-    // we use boost filesystem here because filesystem in STl is available only in c++17
-    boost::filesystem::path path(filepath);
-    return path.filename().generic_string();
+    return std::filesystem::path(filepath).filename().generic_string();
 }
 
 std::string Options::make_usage_string(const std::string& program_name,

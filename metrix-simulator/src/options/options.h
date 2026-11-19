@@ -13,10 +13,10 @@
 #include "config/input_configuration.h"
 #include <metrix/log.h>
 
-#include <boost/optional.hpp>
 #include <boost/program_options.hpp>
 
 #include <map>
+#include <optional>
 #include <ostream>
 #include <string>
 #include <tuple>
@@ -89,7 +89,7 @@ private:
         bool printLog = false;
         bool verboseConfig = false;
         bool verboseConstraints = false;
-        boost::optional<metrix::log::severity::level> logLevel;
+        std::optional<metrix::log::severity::level> logLevel;
         bool writeConstraintsFile = false;
         bool printConstraintsMatrix = false;
         bool writePTDFfile = false;
