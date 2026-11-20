@@ -131,7 +131,7 @@ static bool checkAtMostKeyOnce(const std::map<std::string, std::vector<T>>& raw_
 
 std::string Configuration::pathname_("fort.json");
 
-void Configuration::configure(const std::string& pathname) { pathname_ = pathname; }
+void Configuration::configure(std::string_view pathname) { pathname_ = pathname; }
 
 Configuration& Configuration::instance()
 {

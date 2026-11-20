@@ -588,18 +588,18 @@ public:
     std::set<std::shared_ptr<Quadripole>>
         quadsSurv_; /* ensemble des quadripoles surveilles (pour le calcul des coefficient de report) */
 
-    std::map<std::string, std::shared_ptr<Quadripole>>
+    std::map<std::string, std::shared_ptr<Quadripole>, std::less<>>
         quads_; /* quadripoles du reseau (y compris couplages et TD) pour recherche par nom */
-    std::map<std::string, std::shared_ptr<Groupe>> groupes_;      /* groupes du reseau */
-    std::map<std::string, std::shared_ptr<Consommation>> consos_; /* consos du reseau */
-    std::map<std::string, std::shared_ptr<TransformateurDephaseur>>
-        TransfoDephaseurs_;                                    /* Transfos dephaseurs du reseau */
-    std::map<std::string, std::shared_ptr<LigneCC>> LigneCCs_; /* Liaisons e courant continu */
+    std::map<std::string, std::shared_ptr<Groupe>, std::less<>> groupes_;      /* groupes du reseau */
+    std::map<std::string, std::shared_ptr<Consommation>, std::less<>> consos_; /* consos du reseau */
+    std::map<std::string, std::shared_ptr<TransformateurDephaseur>, std::less<>>
+        TransfoDephaseurs_;                                                 /* Transfos dephaseurs du reseau */
+    std::map<std::string, std::shared_ptr<LigneCC>, std::less<>> LigneCCs_; /* Liaisons e courant continu */
 
     std::vector<std::shared_ptr<TransformateurDephaseur>> tdParIndice_; /* Indices des transformateurs dephaseurs */
     std::vector<std::shared_ptr<LigneCC>> lccParIndice_;                /* Indices des lignes CC */
 
-    std::map<std::string, std::shared_ptr<Incident>> incidents_; /* incidents (hors parades) */
+    std::map<std::string, std::shared_ptr<Incident>, std::less<>> incidents_; /* incidents (hors parades) */
     std::vector<std::shared_ptr<Incident>> incidentsEtParades_;  /* incidents suivi des parades topologiques */
     std::vector<std::shared_ptr<Incident>>
         incidentsRompantConnexite_;                             /* std::vector des d'incidents rompant la connexite*/
@@ -612,10 +612,10 @@ public:
 
     std::vector<std::shared_ptr<ElementASurveiller>>
         elementsASurveiller_; // ensemble des quads, sections surveilles... tout confondu
-    std::map<std::string, std::shared_ptr<ElementASurveiller>>
+    std::map<std::string, std::shared_ptr<ElementASurveiller>, std::less<>>
         elementsASurveillerN_; // ensemble des quads, sections surveilles... pour lesquels
                                // il faut surveiller le transit en N
-    std::map<std::string, std::shared_ptr<ElementASurveiller>>
+    std::map<std::string, std::shared_ptr<ElementASurveiller>, std::less<>>
         elementsASurveillerNk_; // ensemble des quads, sections surveilles... pour lesquels
                                 // il faut surveiller le transit en N-k
     std::vector<std::shared_ptr<ElementASurveiller>>
@@ -675,7 +675,7 @@ public:
         varGroupesZones_; /* groupes melanges d'une zone (conserve si loi ECHANGP et relance sur tx de pertes) */
 
     std::map<std::shared_ptr<Quadripole>, std::set<std::shared_ptr<Incident>>> transitsSurDefauts_;
-    std::map<std::string, std::set<std::shared_ptr<Incident>>> variationsMarginalesDetaillees_;
+    std::map<std::string, std::set<std::shared_ptr<Incident>>, std::less<>> variationsMarginalesDetaillees_;
 
     /*lecture des donnees*/
     void lireDonnees();

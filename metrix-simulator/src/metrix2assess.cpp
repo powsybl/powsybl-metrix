@@ -139,8 +139,8 @@ void Calculer::printCutDetailed(FILE* fr)
         auto nomInc = computeC2IncidentName(inc);
 
         const auto& poche = inc->pochePerdue_;
-        for (const auto& pair : poche->consumptionLosses_) {
-            if (fabs(pair.second) < EPSILON_SORTIES) {
+        for (const auto& [conso, consoCoupee] : poche->consumptionLosses_) {
+            if (fabs(consoCoupee) < EPSILON_SORTIES) {
                 continue;
             }
 
@@ -150,8 +150,8 @@ void Calculer::printCutDetailed(FILE* fr)
                 return;
             }
 
-            auto value_str = c_fmt(PREC_FLOAT.c_str(), pair.second);
-            fprintf(fr, "C2B ;;%s;%s;%s;\n", nomInc.c_str(), pair.first->nom_.c_str(), value_str.c_str());
+            auto value_str = c_fmt(PREC_FLOAT.c_str(), consoCoupee);
+            fprintf(fr, "C2B ;;%s;%s;%s;\n", nomInc.c_str(), conso->nom_.c_str(), value_str.c_str());
             nb_display++;
         }
     }
@@ -224,9 +224,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // On les ecrit avant le status car il peuvent servir au debug, sauf pour une variante ignoree (non calculee)
         if (status != METRIX_VARIANTE_IGNOREE) {
             fprintf(fr, "C5 ;ZONE SYNC;NUM ZONE;BILAN;\n");
-            for (const auto& pair : res_.bilanParZone_) {
-                double value = (fabs(pair.second) < EPSILON_SORTIES) ? 0.0 : pair.second;
-                fprintf(fr, "C5 ;;%d;%.1f;\n", pair.first, value);
+            for (const auto& [numZone, bilan] : res_.bilanParZone_) {
+                double value = (fabs(bilan) < EPSILON_SORTIES) ? 0.0 : bilan;
+                fprintf(fr, "C5 ;;%d;%.1f;\n", numZone, value);
             }
 
             // ecriture : C2.
@@ -265,19 +265,19 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
             if (elemSurv->menaceMaxAvantParade_.defaut_ != nullptr
                 && !elemSurv->menaceMaxAvantParade_.defaut_->parade_) {
-                incidentsContraignants.insert(std::make_pair(elemSurv->menaceMaxAvantParade_.defaut_, 0));
+                incidentsContraignants.try_emplace(elemSurv->menaceMaxAvantParade_.defaut_, 0);
             }
 
             for (auto rit = elemSurv->menacesMax_.crbegin(); rit != elemSurv->menacesMax_.crend(); ++rit) {
                 if (!(*rit).defaut_->parade_) {
-                    incidentsContraignants.insert(std::make_pair((*rit).defaut_, 0));
+                    incidentsContraignants.try_emplace((*rit).defaut_, 0);
                 }
             }
         }
 
         // Incidents avec transit
         for (const auto& inc : res_.incidentsAvecTransits_) {
-            incidentsContraignants.insert(std::make_pair(inc, 0));
+            incidentsContraignants.try_emplace(inc, 0);
         }
 
         // Incidents generant des contraintes limitantes (i.e. avec des couts marginaux)
@@ -309,9 +309,9 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 //	inc = pbContraintes_[i]->icdt_;
 
                 if (inc->parade_) {
-                    incidentsContraignants.insert(std::make_pair(inc->incTraiteCur_, 0));
+                    incidentsContraignants.try_emplace(inc->incTraiteCur_, 0);
                 } else {
-                    incidentsContraignants.insert(std::make_pair(inc, 0));
+                    incidentsContraignants.try_emplace(inc, 0);
                 }
             }
         }
@@ -319,9 +319,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // numerotation des incidents contraignants
         int numIncidentContraignant = 0;
 
-        for (const auto& elem : res_.incidents_) {
-            const auto& inc = elem.second;
-
+        for (const auto& [nomIncident, inc] : res_.incidents_) {
             if (!inc->validite_) {
                 continue;
             }
@@ -370,12 +368,10 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         pertesTotales_ = 0;
         double tran = 0.;
         double pertesQuad = 0.;
-        std::map<string, double> pertesParRegion;
+        std::map<string, double, std::less<>> pertesParRegion;
 
         // pertes Quads
-        for (const auto& elem : res_.quads_) {
-            const auto& quad = elem.second;
-
+        for (const auto& [nomQuad, quad] : res_.quads_) {
             if (quad->connecte()) {
                 if (quad->typeQuadripole_ == Quadripole::QUADRIPOLE_REEL) {
                     if (quad->td_ && quad->td_->fictif_) {
@@ -400,8 +396,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // pertes HVDC
         double puissHVDC = 0.;
 
-        for (const auto& elem : res_.LigneCCs_) {
-            const auto& hvdc = elem.second;
+        for (const auto& [nomLigne, hvdc] : res_.LigneCCs_) {
             puissHVDC = hvdc->puiCons_ + pbX_[hvdc->numVar_] - pbX_[hvdc->numVar_ + 1];
 
             if (hvdc->isEmulationAC()) {
@@ -464,9 +459,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "R1 ;PAR CONSO;CONSO;DEMANDE;DF HR;CDF HR;DF AR;CDF AR;\n");
         }
 
-        for (const auto& elem : res_.consos_) {
-            const auto& conso = elem.second;
-
+        for (const auto& [nomConso, conso] : res_.consos_) {
             if (conso->numVarConso_ >= 0) {
                 if (!config::inputConfiguration().useAllOutputs()) {
                     double valEquilibrage = pbXhR_[conso->numVarConso_];
@@ -519,9 +512,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (res_.nbConsosCuratifs_ > 0) {
             fprintf(fr, "R1B ;INCIDENT;CONSO;EFFACEMENT;\n");
 
-            for (const auto& elem : res_.incidents_) {
-                const auto& icdt = elem.second;
-
+            for (const auto& [nomIncident, icdt] : res_.incidents_) {
                 if (!icdt->validite_) {
                     continue;
                 }
@@ -585,8 +576,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R2. Productions groupe (hors batteries et batteries)
         //----------------------------------------------------------------
 
-        vector<double> redispatchParTypeH(res_.nbTypesGroupes_, 0.);
-        vector<double> redispatchParTypeB(res_.nbTypesGroupes_, 0.);
+        vector redispatchParTypeH(res_.nbTypesGroupes_, 0.);
+        vector redispatchParTypeB(res_.nbTypesGroupes_, 0.);
 
         if (!config::inputConfiguration().useAllOutputs()) {
             fprintf(fr, "R2 ;PAR GROUPE;GROUPE;PDISPO;DELTA_PIMP;DELTA_P_HR;DELTA_P_AR;\n");
@@ -602,9 +593,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         string sDeltaHR;
         string sDeltaAR;
 
-        for (const auto& elem : res_.groupes_) {
-            const auto& grp = elem.second;
-
+        for (const auto& [nomGroupe, grp] : res_.groupes_) {
             if (!grp->etat_) {
                 continue;
             }
@@ -710,18 +699,16 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // recuperation : R2B: Curatif des groupes hors batteries
         // recuperation : R2D: Curatif des groupes batteries
         //-------------------------------------------------------
-        vector<double> maxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
-        vector<double> maxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
-        vector<double> redispCurParType(res_.nbTypesGroupes_, 0.);
+        vector maxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
+        vector maxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
+        vector redispCurParType(res_.nbTypesGroupes_, 0.);
 
         list<tuple<const int, const string, const double>> nonBatteriesResults;
         list<tuple<const int, const string, const double>> batteriesResults;
 
         if (res_.nbGroupesCuratifs_ > 0) {
 
-            for (const auto& elem : res_.incidents_) {
-                const auto& icdt = elem.second;
-
+            for (const auto& [nomIncident, icdt] : res_.incidents_) {
                 if (!icdt->validite_) {
                     continue;
                 }
@@ -737,8 +724,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     }
                 }
 
-                vector<double> tmpMaxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
-                vector<double> tmpMaxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
+                vector tmpMaxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
+                vector tmpMaxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
 
                 for (const auto& elemC : tmpListeElemCur) {
                     if (elemC->typeElem_ != ElementCuratif::GROUPE) {
@@ -794,17 +781,15 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;\n");
         }
-        for (auto& itLog : nonBatteriesResults) {
-            fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
-                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
+        for (const auto& [numIncident, nomGroupe, deltaP] : nonBatteriesResults) {
+            fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(), numIncident, nomGroupe.c_str(), deltaP);
         }
         nonBatteriesResults.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2D ;INCIDENT;NOM BATTERIE;DELTA_P;\n");
         }
-        for (auto& itLog : batteriesResults) {
-            fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(),
-                                        std::get<0>(itLog), std::get<1>(itLog).c_str(), std::get<2>(itLog));
+        for (const auto& [numIncident, nomGroupe, deltaP] : batteriesResults) {
+            fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(), numIncident, nomGroupe.c_str(), deltaP);
         }
         batteriesResults.clear();
         // ecriture : R2C: Couplages de groupes
@@ -961,9 +946,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         //------------------------------------
         if (!res_.transitsSurDefauts_.empty()) {
             fprintf(fr, "R3C ;PAR LIGNE;LIGNE;INCIDENT;TRANSIT;\n");
-            for (const auto& def : res_.transitsSurDefauts_) {
-                const auto& quad = def.first;
-                const auto& listeIcdt = def.second;
+            for (const auto& [quad, listeIcdt] : res_.transitsSurDefauts_) {
                 for (const auto& icdt : listeIcdt) {
                     if (icdt->validite_) {
                         double transit = 0.;
@@ -996,9 +979,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         // ecriture : R5.
         //--------------
         fprintf(fr, "R5 ;PAR TD;TD;CONSIGNE;PRISE;\n");
-        for (const auto& elem : res_.TransfoDephaseurs_) {
-            const auto& td = elem.second;
-
+        for (const auto& [nomTd, td] : res_.TransfoDephaseurs_) {
             if (!config::inputConfiguration().useAllOutputs()) {
                 if (td->fictif_) {
                     continue;
@@ -1028,9 +1009,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         //--------------
         fprintf(fr, "R5B ;INCIDENT;NOM TD; CONSIGNE;PRISE;\n");
 
-        for (const auto& elem : res_.incidents_) {
-            const auto& icdt = elem.second;
-
+        for (const auto& [nomIncident, icdt] : res_.incidents_) {
             if (!icdt->validite_) {
                 continue;
             }
@@ -1112,9 +1091,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         fprintf(fr, "R6B ;INCIDENT;NOM HVDC;CONSIGNE;VM_CUR;\n");
         std::map<int, double> vmHvdc;
 
-        for (const auto& elem : res_.incidents_) {
-            const auto& icdt = elem.second;
-
+        for (const auto& [nomIncident, icdt] : res_.incidents_) {
             if (!icdt->validite_) {
                 continue;
             }
@@ -1222,9 +1199,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         int numVar;
         string nom;
 
-        for (const auto& elem : res_.LigneCCs_) {
-            const auto& ligne = elem.second;
-
+        for (const auto& [nomLigne, ligne] : res_.LigneCCs_) {
             if (!config::inputConfiguration().useAllOutputs() && !config::configuration().showAllAngleTDTransitHVDC()
                 && (ligne->type_ == LigneCC::HORS_SERVICE || ligne->type_ == LigneCC::PILOTAGE_PUISSANCE_IMPOSE)) {
                 continue;
@@ -1334,8 +1309,8 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         if (config::configuration().useResPertesDetail()) {
             fprintf(fr, "R8B ;PERTES;REGION;VOLUME CALCULE;\n");
 
-            for (const auto& region : pertesParRegion) {
-                fprintf(fr, ("R8B ;;%s;" + PREC_FLOAT + ";\n").c_str(), region.first.c_str(), region.second);
+            for (const auto& [region, pertes] : pertesParRegion) {
+                fprintf(fr, ("R8B ;;%s;" + PREC_FLOAT + ";\n").c_str(), region.c_str(), pertes);
             }
         }
 
@@ -1349,8 +1324,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
         string coutConsoCur;
 
         double fonction_objectif_G_battery_prev = 0.0;
-        for (const auto& elem : res_.groupes_) {
-            const auto& grp = elem.second;
+        for (const auto& [nomGroupe, grp] : res_.groupes_) {
             if (grp->isBattery() && grp->prodAjust_ != Groupe::NON_HR_AR && grp->etat_) {
                 numVar = grp->numVarGrp_;
                 fonction_objectif_G_battery_prev += pbCoutLineaire_[numVar] * pbX_[numVar];
@@ -1360,9 +1334,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
 
         double coutGrpBatteryC = 0.0;
 
-        for (const auto& elem : res_.incidents_) {
-            const auto& icdt = elem.second;
-
+        for (const auto& [nomIncident, icdt] : res_.incidents_) {
             if (!icdt->validite_) {
                 continue;
             }
@@ -1552,15 +1524,13 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         numVa.reserve(nbOu);
         vector<double> coeffCoupe(nbOu);
         coeffCoupe.reserve(nbOu);
-        vector<int> numVarEnBaseDansB(pbNombreDeVariables_, -1);
+        vector numVarEnBaseDansB(pbNombreDeVariables_, -1);
 
 
         int k;
 
         // recherche des variables en base de type groupe
-        for (const auto& elem : res_.groupes_) {
-            const auto& grp = elem.second;
-
+        for (const auto& [nomGroupe, grp] : res_.groupes_) {
             int g1 = grp->numVarGrp_;
             if (g1 == -1) {
                 continue;
@@ -1578,8 +1548,7 @@ bool Calculer::calculVariationsMarginales(FILE* fr,
         // recherche des variables en base de type delestage
         int nbDelestageEnBase = 0;
         int numVar;
-        for (const auto& elem : res_.consos_) {
-            const auto& conso = elem.second;
+        for (const auto& [nomConso, conso] : res_.consos_) {
             numVar = conso->numVarConso_;
             if (numVar >= 0) {
                 if (pbPositionDeLaVariable_[numVar] == EN_BASE) {
@@ -1723,7 +1692,7 @@ bool Calculer::computeCosts(const std::vector<int>& constraintsToDelail,
                             int ctrOuvr,
                             std::map<int, std::vector<CostDef>>& cost) const
 {
-    vector<double> b(pbNombreDeContraintes_, 0.0);
+    vector b(pbNombreDeContraintes_, 0.0);
     int numIncident;
     for (int i : constraintsToDelail) {
         cost[i] = std::vector<CostDef>(ctrOuvr);

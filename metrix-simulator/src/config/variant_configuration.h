@@ -134,7 +134,7 @@ private:
     void processRandomGroups(VariantConfig& variant, std::istringstream& iss) const;
 
 private:
-    const std::map<std::string, Processor>
+    const std::map<std::string, Processor, std::less<>>
         line_processors_; ///< map containing all functions to process each type of data read in the file
     VariantMap config_;   ///< map of variants
 };

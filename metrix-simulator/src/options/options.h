@@ -69,7 +69,7 @@ public:
     std::string desc() const;
 
 public:
-    static const std::map<std::string, metrix::log::severity::level> severities_;
+    static const std::map<std::string, metrix::log::severity::level, std::less<>> severities_;
 
 private:
     /**

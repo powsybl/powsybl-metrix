@@ -48,14 +48,6 @@ const std::map<severity::level, std::string> Logger::severities_ = {{severity::t
 const std::chrono::milliseconds Logger::synk_timeout = std::chrono::milliseconds{100};
 
 template<>
-Logger& operator<<(Logger& logger, const Sync&)
-{
-    std::scoped_lock lock(logger.mutex_);
-    logger.logImpl();
-    return logger;
-}
-
-template<>
 Logger& operator<<(Logger& logger, const Verbose& element)
 {
     if (std::find(Logger::config.verboses.begin(), Logger::config.verboses.end(), element)

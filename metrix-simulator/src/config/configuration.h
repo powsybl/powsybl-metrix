@@ -16,6 +16,7 @@
 #include <memory>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <vector>
 
@@ -47,7 +48,7 @@ public:
      *
      * @param pathname the pathname of the configuration file
      */
-    static void configure(const std::string& pathname);
+    static void configure(std::string_view pathname);
 
 public:
     std::optional<metrix::log::severity::level> logLevel() const { return logLevel_; }

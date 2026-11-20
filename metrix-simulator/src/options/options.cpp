@@ -108,7 +108,7 @@ static void validate(boost::any& v, const std::vector<std::string>& values, Pars
     }
 }
 
-const std::map<std::string, metrix::log::severity::level> Options::severities_ = {
+const std::map<std::string, metrix::log::severity::level, std::less<>> Options::severities_ = {
     {"trace", metrix::log::severity::trace},
     {"debug", metrix::log::severity::debug},
     {"info", metrix::log::severity::info},
