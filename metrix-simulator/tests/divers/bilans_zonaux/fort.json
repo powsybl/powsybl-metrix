@@ -1,0 +1,495 @@
+{
+  "files" : [ {
+    "name" : "fort.44_BIN",
+    "attributes" : [ {
+      "name" : "CGNBREGI",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 2 ]
+    }, {
+      "name" : "TNNBNTOT",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 118 ]
+    }, {
+      "name" : "CQNBQUAD",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 188 ]
+    }, {
+      "name" : "ECNBCONS",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 118 ]
+    }, {
+      "name" : "TRNBGROU",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 248 ]
+    }, {
+      "name" : "DTNBTRDE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 25 ]
+    }, {
+      "name" : "DCNBLIES",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "DMNBDEFK",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "SECTNBSE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "MODECALC",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "UNOMINAL",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 100 ]
+    }, {
+      "name" : "CPPOSREG",
+      "type" : "INTEGER",
+      "valueCount" : 118,
+      "firstIndexMaxValue" : 118,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 118,
+      "values" : [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
+    }, {
+      "name" : "QASURVDI",
+      "type" : "INTEGER",
+      "valueCount" : 188,
+      "firstIndexMaxValue" : 188,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 188,
+      "values" : [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    }, {
+      "name" : "QASURNMK",
+      "type" : "INTEGER",
+      "valueCount" : 188,
+      "firstIndexMaxValue" : 188,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 188,
+      "values" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    }, {
+      "name" : "TNNORQUA",
+      "type" : "INTEGER",
+      "valueCount" : 188,
+      "firstIndexMaxValue" : 188,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 188,
+      "values" : [ 51, 28, 51, 28, 58, 24, 1, 1, 3, 3, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 7, 7, 48, 13, 13, 13, 13, 14, 14, 13, 13, 12, 12, 14, 14, 14, 79, 18, 17, 17, 18, 20, 22, 21, 21, 22, 47, 47, 23, 26, 26, 26, 27, 27, 28, 29, 29, 29, 29, 29, 30, 30, 31, 31, 31, 31, 32, 33, 34, 37, 35, 34, 37, 36, 40, 41, 43, 43, 45, 46, 46, 84, 84, 38, 82, 85, 85, 48, 20, 48, 48, 49, 49, 16, 16, 50, 50, 44, 44, 73, 73, 51, 51, 50, 50, 50, 50, 50, 50, 52, 53, 53, 44, 54, 55, 56, 57, 57, 88, 57, 57, 61, 89, 89, 89, 64, 64, 65, 65, 66, 66, 68, 8, 69, 77, 70, 71, 73, 74, 73, 73, 44, 75, 88, 75, 57, 76, 78, 37, 77, 79, 83, 83, 7, 14, 14, 18, 16, 16, 16, 25, 23, 36, 35, 35, 35, 45, 47, 47, 47, 51, 51, 51, 52, 52, 67, 74, 74, 75, 75, 77, 83, 83, 86, 86 ]
+    }, {
+      "name" : "TNNEXQUA",
+      "type" : "INTEGER",
+      "valueCount" : 188,
+      "firstIndexMaxValue" : 188,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 188,
+      "values" : [ 26, 18, 26, 58, 18, 92, 5, 5, 74, 74, 9, 108, 74, 107, 10, 74, 74, 6, 86, 6, 86, 9, 10, 9, 10, 29, 15, 33, 76, 80, 12, 12, 80, 15, 63, 62, 91, 19, 90, 19, 71, 43, 43, 80, 69, 21, 31, 31, 21, 22, 22, 77, 11, 11, 28, 67, 67, 26, 27, 72, 87, 27, 72, 60, 59, 93, 81, 94, 82, 65, 76, 35, 39, 65, 65, 39, 95, 86, 86, 54, 72, 96, 76, 99, 100, 101, 39, 42, 73, 73, 87, 48, 102, 55, 75, 81, 79, 79, 106, 105, 2, 2, 2, 2, 59, 60, 16, 16, 104, 56, 103, 70, 32, 72, 72, 98, 72, 69, 52, 62, 88, 118, 75, 75, 57, 8, 109, 110, 75, 82, 85, 68, 76, 76, 85, 89, 23, 69, 65, 80, 111, 112, 113, 114, 97, 14, 117, 14, 88, 115, 116, 77, 37, 14, 61, 63, 8, 15, 15, 17, 18, 18, 18, 24, 25, 37, 37, 37, 37, 44, 48, 48, 48, 50, 50, 50, 53, 53, 66, 73, 73, 76, 76, 78, 84, 84, 85, 85 ]
+    }, {
+      "name" : "DTTRDEQU",
+      "type" : "INTEGER",
+      "valueCount" : 25,
+      "firstIndexMaxValue" : 25,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 25,
+      "values" : [ 158, 159, 160, 161, 162, 163, 164, 166, 167, 168, 169, 170, 171, 172, 173, 177, 178, 179, 182, 183, 184, 185, 186, 187, 188 ]
+    }, {
+      "name" : "DTMODREG",
+      "type" : "INTEGER",
+      "valueCount" : 25,
+      "firstIndexMaxValue" : 25,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 25,
+      "values" : [ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2 ]
+    }, {
+      "name" : "TNNEUCEL",
+      "type" : "INTEGER",
+      "valueCount" : 118,
+      "firstIndexMaxValue" : 118,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 118,
+      "values" : [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118 ]
+    }, {
+      "name" : "TRNBTYPE",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 1 ]
+    }, {
+      "name" : "TRTYPGRP",
+      "type" : "INTEGER",
+      "valueCount" : 248,
+      "firstIndexMaxValue" : 248,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 248,
+      "values" : [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+    }, {
+      "name" : "TNNEURGT",
+      "type" : "INTEGER",
+      "valueCount" : 248,
+      "firstIndexMaxValue" : 248,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 248,
+      "values" : [ 1, 1, 1, 1, 1, 3, 3, 3, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 7, 7, 11, 12, 12, 12, 12, 12, 12, 12, 13, 13, 13, 13, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 15, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 19, 19, 19, 19, 19, 19, 19, 19, 20, 21, 21, 22, 22, 27, 27, 27, 28, 28, 28, 28, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 30, 31, 31, 31, 31, 31, 31, 31, 31, 32, 32, 32, 32, 32, 32, 32, 32, 32, 34, 34, 34, 34, 37, 37, 37, 37, 37, 37, 38, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 40, 40, 40, 41, 41, 42, 46, 46, 46, 48, 48, 48, 48, 48, 48, 48, 48, 49, 49, 51, 51, 51, 51, 52, 52, 52, 52, 55, 56, 56, 56, 56, 56, 56, 56, 56, 57, 57, 60, 64, 64, 64, 65, 65, 65, 65, 67, 66, 67, 66, 67, 66, 66, 68, 68, 68, 69, 69, 69, 69, 69, 69, 69, 71, 72, 72, 72, 72, 72, 72, 74, 74, 74, 74, 74, 74, 74, 75, 75, 75, 75, 75, 76, 76, 76, 76, 76, 79, 79, 80, 80, 80, 80, 80, 80, 80, 83, 83, 85, 86, 86, 86, 86, 86, 86, 87, 87, 88 ]
+    }, {
+      "name" : "SPIMPMOD",
+      "type" : "INTEGER",
+      "valueCount" : 248,
+      "firstIndexMaxValue" : 248,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 248,
+      "values" : [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ]
+    }, {
+      "name" : "DCNDROOP",
+      "type" : "INTEGER",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0 ]
+    }, {
+      "name" : "DCNORQUA",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCNEXQUA",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCREGPUI",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DMPTDEFK",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DMDESCRK",
+      "type" : "INTEGER",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    } ]
+  }, {
+    "name" : "fort.45_BIN",
+    "attributes" : [ {
+      "name" : "CGCPERTE",
+      "type" : "FLOAT",
+      "valueCount" : 1,
+      "firstIndexMaxValue" : 1,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1,
+      "values" : [ 0.0 ]
+    }, {
+      "name" : "CQADMITA",
+      "type" : "FLOAT",
+      "valueCount" : 188,
+      "firstIndexMaxValue" : 188,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 188,
+      "values" : [ 0.33669567, 0.35504693, 0.33669567, 1.3928058, 0.47651866, 0.9916904, 0.64533335, 0.64533335, 0.57619053, 0.57619053, 0.36390978, 1.6133331, 2.1043477, 1.6133331, 0.36390978, 2.1043477, 1.9360001, 0.35328466, 0.6368421, 0.35328466, 0.6368421, 1.5612904, 1.5612904, 0.96800005, 0.96800005, 0.112297, 0.38110235, 0.41016948, 0.39672127, 0.102760084, 0.9310122, 0.9310122, 0.102760084, 0.38110235, 1.8994128, 1.8994128, 0.86208946, 3.3051043, 0.86208946, 0.7235194, 0.52608705, 0.38724032, 0.38724032, 0.26740327, 0.54930717, 90.931984, 18.51757, 18.51757, 90.931984, 23.256563, 23.256563, 0.29248425, 0.33884066, 0.33884066, 0.9475332, 0.2059925, 0.2059925, 0.9475332, 0.30898875, 0.1640678, 0.2703911, 0.30898875, 0.1640678, 0.5041667, 0.5041667, 1.3646071, 10.190543, 1.3646071, 10.190543, 17.558369, 6.9142866, 1.077612, 0.33379313, 0.538806, 1.077612, 0.33379313, 0.384127, 1.7078336, 1.7144881, 0.31839386, 0.21800527, 2.0166664, 0.2688889, 0.29104027, 0.83978194, 0.83978194, 484.00003, 56.186775, 0.5421846, 0.5421846, 0.1686411, 0.34084508, 0.70175433, 0.275, 0.3118791, 1.5971682, 1.1485841, 1.1485841, 18.802084, 18.802084, 1.456526, 1.456526, 1.6660898, 1.6660898, 0.3361111, 0.3361111, 0.4103205, 0.4103205, 18.802084, 1.2214515, 18.802084, 2.8093386, 1.5607437, 0.12982276, 0.12982276, 15.42735, 0.68169016, 0.9552758, 0.6313121, 1.8994128, 1.5783147, 3.1876373, 1.7937887, 1.7937887, 1.8994128, 0.09758064, 0.043525185, 0.043525185, 0.4582672, 0.60851246, 0.6975845, 2.4143121, 0.196828, 0.196828, 0.9834503, 0.09758064, 1.3912444, 0.24270384, 0.36437595, 0.3967213, 0.5111251, 0.17018405, 1.1593738, 1.1593738, 15.42735, 0.37250385, 1.353327, 0.37250385, 1.5783147, 0.18636888, 0.53070176, 0.6300361, 0.6300361, 0.5935792, 1.0092257, 1.0092257, 0.11242908, 0.30247137, 0.30247137, 0.3721312, 0.30247137, 0.30247137, 0.30247137, 0.20004159, 0.18302482, 0.3721312, 0.30938536, 0.30938536, 0.30938536, 0.23076853, 0.30938536, 0.30938536, 0.30938536, 0.28203875, 0.28203875, 0.28203875, 0.30769616, 0.30769616, 0.3721312, 0.6684835, 0.6684835, 0.30247137, 0.30247137, 0.19982824, 0.30247137, 0.30247137, 0.7316564, 0.7316564 ]
+    }, {
+      "name" : "CQRESIST",
+      "type" : "FLOAT",
+      "valueCount" : 188,
+      "firstIndexMaxValue" : 188,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 188,
+      "values" : [ 0.25991735, 0.24648757, 0.25991735, 0.062809914, 0.18367769, 0.08551425, 0.13842976, 0.13842976, 0.3202479, 0.3202479, 0.5268595, 0.052685957, 0.03512397, 0.052685957, 0.5268595, 0.03512397, 0.041322313, 0.5888429, 0.3243802, 0.5888429, 0.3243802, 0.111570254, 0.111570254, 0.10330578, 0.10330578, 1.8099174, 0.2272727, 0.46487603, 0.4834711, 2.0206614, 0.0767313, 0.0767313, 2.0206614, 0.2272727, 0.03679363, 0.03679363, 0.07666205, 0.02098338, 0.07666205, 0.09577563, 0.39462808, 0.5347521, 0.5347521, 0.7768595, 0.15880165, 0.01099723, 0.054002766, 0.054002766, 0.01099723, 0.042998616, 0.042998616, 0.29816118, 0.628719, 0.628719, 0.09235538, 1.0068595, 1.0068595, 0.09235538, 0.67123973, 1.2376033, 0.74999994, 0.67123973, 1.2376033, 0.429752, 0.429752, 0.05134349, 0.005886427, 0.05131579, 0.005886427, 0.0033240996, 0.0268595, 0.06405816, 0.25826448, 0.12811632, 0.06405816, 0.25826448, 0.49586785, 0.05041323, 0.05041322, 0.63673556, 0.9383884, 0.033471074, 0.72520655, 0.6652893, 0.24603304, 0.24603304, 2.066116E-4, 0.0010387813, 0.11031163, 0.11031163, 1.2066116, 0.25413224, 0.2105372, 0.31404957, 0.23407206, 0.036980607, 0.060318567, 0.060318567, 0.002742382, 0.002742382, 0.047714688, 0.047714688, 0.04168975, 0.04168975, 0.64462805, 0.64462805, 0.16862881, 0.16862881, 0.002742382, 0.047783934, 0.002742382, 0.020775624, 0.03739612, 1.5676445, 1.5676445, 0.0045706364, 0.3057851, 0.09128099, 0.09245152, 0.03679363, 0.047506925, 0.022053326, 0.03933518, 0.03933518, 0.03679363, 3.7190082, 2.8719006, 2.8719006, 0.17195292, 0.09785318, 0.05401662, 0.01565097, 1.0485537, 1.0485537, 0.038365647, 3.7190082, 0.06268595, 0.35929754, 0.16018005, 0.5247934, 0.13803324, 0.41454542, 0.11391966, 0.11391966, 0.0045706364, 0.18965374, 0.051454287, 0.18965374, 0.047506925, 1.0268594, 0.17975207, 0.1384091, 0.1384091, 0.116759, 0.078047074, 0.078047074, 0.14040008, 0.046071243, 0.046071243, 0.026873646, 0.046071243, 0.046071243, 0.046071243, 0.10195311, 0.11143223, 0.026873646, 0.046071034, 0.046071034, 0.046071034, 0.06845183, 0.046071034, 0.046071034, 0.046071034, 0.045823127, 0.045823127, 0.045823127, 0.038501453, 0.038501453, 0.026873646, 0.02070914, 0.02070914, 0.046071243, 0.046071243, 0.0, 0.046071243, 0.046071243, 0.015650969, 0.015650969 ]
+    }, {
+      "name" : "DTVALSUP",
+      "type" : "FLOAT",
+      "valueCount" : 25,
+      "firstIndexMaxValue" : 25,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 25,
+      "values" : [ 7.4322853, 7.4322853, 34.999306, 7.4322853, 7.4322853, 7.4322853, 34.99202, 34.999306, 7.4322853, 7.4322853, 7.4322853, 24.244705, 7.4322853, 7.4322853, 7.4322853, 7.4364567, 7.4364567, 34.999306, 7.4322853, 7.4322853, 60.0, 7.4322853, 7.4322853, 3.582284, 3.582284 ]
+    }, {
+      "name" : "DTVALINF",
+      "type" : "FLOAT",
+      "valueCount" : 25,
+      "firstIndexMaxValue" : 25,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 25,
+      "values" : [ -8.731546, -8.731546, -34.999306, -8.731546, -8.731546, -8.731546, -34.99202, -34.999306, -8.731546, -8.731546, -8.731546, -24.244705, -8.731546, -8.731546, -8.731546, -8.737292, -8.737292, -34.999306, -8.731546, -8.731546, -60.0, -8.731546, -8.731546, -3.8606093, -3.8606093 ]
+    }, {
+      "name" : "DTVALDEP",
+      "type" : "FLOAT",
+      "valueCount" : 25,
+      "firstIndexMaxValue" : 25,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 25,
+      "values" : [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+    }, {
+      "name" : "ESAFIACT",
+      "type" : "FLOAT",
+      "valueCount" : 118,
+      "firstIndexMaxValue" : 118,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 118,
+      "values" : [ 141.464, 0.0, 49.8753, 0.0, 0.0, 155.504, 135.117, 0.0, 0.0, 0.0, 0.0, 734.526, 242.122, 0.0, 190.433, 0.0, 0.0, 534.119, 327.363, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 86.1482, 646.565, 319.202, 74.3595, 593.062, 282.929, 40.807, 27.2047, 0.0, 0.0, 111.539, 0.0, 180.613, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 194.967, 0.0, 294.717, 171.39, 0.0, 222.172, 137.837, 0.0, 8.16141, 0.0, 381.772, 95.2164, 14.5092, 0.0, 0.0, 0.0, 0.0, 0.0, 141.464, 0.0, 265.699, 10.8819, 0.0, 150.328, 0.0, 38.0866, 74.3595, 0.0, 213.153, 866.923, 243.029, 0.0, 0.0, 0.0, 183.178, 0.0, 0.0, 0.0, 0.0, 0.0, 139.651, 89.7755, 0.0, 0.0, -300.0, -300.0, -2.8812508E-12, -24.04, -24.04, 505.0, 300.0, 85.81, 85.81, -1.454686E-13, -150.0, -150.0, 4.5845646E-13, 88.0, -3.5311576E-13, -3.5311576E-13, -3.5311576E-13, -3.211882E-14, -3.211882E-14, -8.341856E-15, -8.341856E-15, 70.0, 194.6, -2.008094E-14, -2.008094E-14, -3.4351635E-14, 200.0, -159.375, -159.375 ]
+    }, {
+      "name" : "SPPACTGT",
+      "type" : "FLOAT",
+      "valueCount" : 248,
+      "firstIndexMaxValue" : 248,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 248,
+      "values" : [ 43.985, 41.0529, 1.89, 11.65, 8.16225, 392.0, 11.65, 1.08138, 500.0, 0.0, 0.0, 0.0, 0.0, 1.89, 0.0, 0.0, 0.0, 10.5031, 11.65, 11.65, 10.5031, 158.62, 120.208, 120.208, 66.6, 0.0, 0.0, 11.65, 10.6217, 142.0, 0.0, 16.35, 0.988071, 120.208, 158.0, 1.9, 0.0, 66.6, 0.0, 0.0, 0.0, 0.0, 0.0, 11.65, 9.63363, 0.0, 81.0, 150.0, 126.9, 0.0, 89.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 11.65, 196.65, 68.7059, 0.0, 30.6, 1.9, 0.0, 0.0, 0.0, 28.3101, 11.65, 40.0, 0.0, 0.0, 0.0, 0.0, 28.5, 0.0, 11.65, 162.83, 0.0, 0.0, 0.0, 0.0, 0.0, 74.04, 11.65, 9.12444, 71.69, 0.0, 45.0, 0.0, 28.5, 0.0, 65.87, 32.6169, 11.65, 89.5, 64.0, 0.0, 0.0, 0.0, 11.65, 0.0, 102.0, 0.0, 0.0, 0.0, 79.7878, 11.65, 86.58, 41.4, 0.0, 0.0, 269.56, 0.0, 0.0, 0.0, 11.65, 13.5149, 43.985, 0.0, 0.0, 11.65, 4.49546, 0.0, 0.0, 0.0, 11.65, 5.99613, 389.7, 36.9, 9.3, 0.0, 0.0, 0.0, 0.0, 48.96, 0.0, 0.8, 0.0, 12.2717, 11.65, 0.0, 472.5, 0.0, 472.5, 0.0, 0.0, 120.208, 5.00243, 11.65, 0.0, 180.0, 9.3, 0.0, 0.0, 11.65, 37.8518, 26.93, 34.9183, 11.65, 119.29, 126.9, 38.2094, 11.65, 55.2, 0.0, 0.0, 8.26588, 78.0, 0.0, 0.0, 41.4, 0.0, 0.0, 8.65, 11.65, 17.0542, 120.208, 11.65, 46.0, 0.0, 7.79665, 11.65, 0.0, 320.04, 0.0, 0.0, 0.0, 28.5, 66.6, 0.0, 2.23074, 11.65, 8.92308, 0.0, 0.0, 0.0, 30.0, 0.0, 0.0, 0.0, 225.0, 20.9422, 11.65, 101.0, 0.0, 0.0, 28.5, 60.0, 11.65, 6.28639, 0.0, 43.985, 0.0, 43.0, 0.0, 11.65, 9.7319, 83.0, 0.0, 246.0, 1.97628, 11.65, 120.208, 12.0, 0.0, 0.0, 14.451, 0.0, 0.0, 66.6, 114.0, 59.4, 0.0, 26.93, 11.65, 37.6339, 120.208, 6.31682, 0.0, 0.0, 0.0, 43.985, 2.52, 11.65, 3.49807, 10.0, 11.65, 120.208 ]
+    }, {
+      "name" : "TRVALPMD",
+      "type" : "FLOAT",
+      "valueCount" : 248,
+      "firstIndexMaxValue" : 248,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 248,
+      "values" : [ 86.5, 85.0, 23.7, 18.24, 60.882, 392.0, 18.24, 8.066, 500.0, 289.0, 0.0, 130.0, 0.0, 23.7, 7.1, 9.0, 19.9, 78.342, 18.24, 18.24, 78.342, 324.0, 600.0, 500.0, 66.6, 18.7, 157.9, 18.24, 79.227, 293.0, 4.0, 32.05, 7.37, 300.0, 328.0, 24.0, 0.0, 66.6, 75.0, 70.0, 34.55, 29.0, 249.5, 18.24, 71.857, 100.0, 168.0, 400.0, 126.9, 33.8, 89.5, 294.0, 126.7, 20.0, 16.8, 55.0, 15.0, 18.24, 385.47, 512.476, 0.0, 63.58, 24.0, 75.0, 70.0, 249.5, 211.164, 18.24, 86.0, 1000.0, 0.0, 420.0, 0.0, 59.0, 15.25, 18.24, 169.2, 0.0, 167.0, 111.04, 405.0, 59.2, 145.13, 18.24, 68.059, 106.3, 63.25, 94.0, 15.0, 59.0, 60.0, 129.12, 243.289, 18.24, 89.5, 132.0, 19.0, 0.0, 11.8, 18.24, 100.0, 211.0, 25.0, 4.35, 19.6, 595.135, 18.24, 169.71, 85.8, 23.5, 0.0, 492.0, 130.0, 140.86, 0.0, 18.24, 100.807, 86.5, 0.0, 9.75, 18.24, 35.94, 31.925, 0.0, 0.0, 18.24, 44.725, 850.0, 465.0, 19.05, 6.96, 0.0, 54.5, 0.0, 430.0, 0.0, 47.11, 0.0, 91.534, 18.24, 0.0, 472.5, 0.0, 472.5, 0.0, 472.96, 200.0, 37.313, 18.24, 100.0, 400.0, 19.05, 0.0, 50.0, 18.24, 282.336, 52.79, 260.455, 18.24, 247.0, 126.9, 285.003, 18.24, 114.4, 120.0, 85.43, 61.655, 78.0, 28.0, 15.0, 85.8, 37.0, 67.05, 16.96, 18.24, 127.207, 500.0, 18.24, 96.0, 17.32, 58.155, 18.24, 0.0, 480.0, 0.0, 480.0, 100.0, 59.0, 66.6, 10.0, 16.639, 18.24, 66.557, 0.0, 130.0, 93.0, 141.0, 0.0, 0.0, 15.75, 225.0, 156.207, 18.24, 210.0, 61.0, 15.0, 59.0, 118.5, 18.24, 46.89, 20.2, 86.5, 8.0, 89.0, 0.0, 18.24, 72.59, 172.0, 327.1, 412.0, 14.741, 18.24, 400.0, 25.0, 400.0, 122.0, 107.79, 300.0, 0.0, 66.6, 236.5, 123.42, 164.68, 52.79, 18.24, 280.71, 900.0, 47.117, 135.0, 229.55, 0.0, 86.5, 31.6, 18.24, 26.092, 15.2, 18.24, 1200.0 ]
+    }, {
+      "name" : "TRPUIMIN",
+      "type" : "FLOAT",
+      "valueCount" : 248,
+      "firstIndexMaxValue" : 248,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 248,
+      "values" : [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -250.0, 0.0, -190.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4.55, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -4.55, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -989.75, 0.0, -380.0, 0.0, 0.0, 0.0, 0.0, -167.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -19.411, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -359.0, 0.0, 0.0, 0.0, -190.0, 0.0, 0.0, 0.0, -9.75, 0.0, 0.0, 0.0, 0.0, -22.075, -20.9, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -18.0, 0.0, -290.0, 0.0, -12.6, 0.0, -430.0, 0.0, 0.0, -240.0, 0.0, -280.0, 0.0, -280.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -35.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -480.0, 0.0, -480.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -130.0, 0.0, 0.0, 0.0, -15.0, -124.4, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -18.17, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -480.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -135.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 ]
+    }, {
+      "name" : "DCMINPUI",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCMAXPUI",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCIMPPUI",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCTENSDC",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCRESIST",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCPERST1",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DCPERST2",
+      "type" : "FLOAT",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    } ]
+  }, {
+    "name" : "fort.46_BIN",
+    "attributes" : [ ]
+  }, {
+    "name" : "fort.47_BIN",
+    "attributes" : [ {
+      "name" : "CGNOMREG",
+      "type" : "STRING",
+      "valueCount" : 4,
+      "firstIndexMaxValue" : 2,
+      "secondIndexMaxValue" : 2,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 4,
+      "values" : [ "AT", "FR" ]
+    }, {
+      "name" : "TRNOMTYP",
+      "type" : "STRING",
+      "valueCount" : 7,
+      "firstIndexMaxValue" : 7,
+      "secondIndexMaxValue" : 1,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 7,
+      "values" : [ "CHARBON" ]
+    }, {
+      "name" : "TNNOMNOE",
+      "type" : "STRING",
+      "valueCount" : 1416,
+      "firstIndexMaxValue" : 12,
+      "secondIndexMaxValue" : 118,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 1416,
+      "values" : [ "O-9KIRB2_11", "O-9PRUT1_15", "O-9PRUT2_17", "O-9SILZ2_15", "O-9STRA2_9", "O-9THAU2_14", "O-9VILL2_9", "O-9VILL5_6", "O-9YVIL2_6", "O-9YVIL20_6", "O-ASCHA2_6", "O-BISAM1_18", "O-BISAM2_18", "O-DUERN1_13", "O-DUERN2_20", "O-ERNST1_10", "O-ERNST2_32", "O-ERNST2_33", "O-ETZER1_14", "O-FEIST2_8", "O-GARAN1_9", "O-GEORG1_9", "O-GREUT2_8", "O-GREUT4_5", "O-GREUT40_5", "O-GRIES2_9", "O-HADER2_11", "O-HAUSR2_18", "O-HESSE2_19", "O-JOCHE2_12", "O-KAINA1_18", "O-KAPRU1_17", "O-KLEDE2_6", "O-LANDS1_10", "O-LIENZ1_14", "O-LIENZ2_24", "O-LIENZ2_25", "O-MALTA2_5", "O-MALTA20_19", "O-MAYRH2_7", "O-MAYRH20_6", "O-MELLA1_7", "O-MOLLN2_11", "O-NAUDE1_8", "O-NAUDE2_5", "O-NEUSI2_9", "O-OBERS1_14", "O-OBERS2_20", "O-OSTST1_8", "O-PETER1_14", "O-PETER2_27", "O-PONGA1_12", "O-PONGA2_7", "O-PYHRN2_6", "O-ROSEG2_8", "O-SALZB1_18", "O-SARA_1_14", "O-SATTL2_6", "O-SCHAE2_10", "O-SCHAE2_11", "O-SEYRI1_5", "O-SEYRI10_9", "O-SEYRI11_5", "O-SUEDB1_9", "O-TAUER1_19", "O-TERNI2_20", "O-TERNI2_21", "O-UTTEN1_8", "O-VILLA2_21", "O-WAGEN1_5", "O-WALLS2_7", "O-WEISS2_20", "O-WESTT1_12", "O-WESTT2_25", "O-WIEN_1_17", "O-WIEN_2_17", "O-WUERM2_10", "O-WUERM20_5", "O-YBBSF1_9", "O-YBBSF2_15", "O-YMELL1_7", "O-YMELL10_6", "O-ZAYA_1_9", "O-ZAYA_2_7", "O-ZELL_1_10", "O-ZELL_2_20", "O-ZELTW2_8", "O-ZURND1_8", "STEINAC5_7", "XDU_SL11_4", "XDU_SL12_4", "XGR_TA41_4", "XKA_MA11_4", "XKA_MOHL_4", "XLI_PO22_4", "XNA_GL21_4", "XNA_PR11_4", "XNA_PR12_4", "XNE_GY21_4", "XNZ_SO21_4", "XNZ_SO22_4", "XOB_RA21_4", "XPE_IS11_4", "XPE_IS12_4", "XPE_PT11_4", "XPE_PT12_4", "XSI_KR20_4", "XSI_KR21_4", "XST_PR41_4", "XST_PR52_4", "XWE_BR12_4", "XWE_BR21_4", "XWE_LE11_4", "XWE_LE12_4", "XWI_GY21_4", "XWU_SO21_4", "XZU_GY11_4", "XZU_KI11_4" ]
+    }, {
+      "name" : "CQNOMQUA",
+      "type" : "STRING",
+      "valueCount" : 3948,
+      "firstIndexMaxValue" : 21,
+      "secondIndexMaxValue" : 188,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 3948,
+      "values" : [ "203A NEU (1)", "203C NEU", "204A NEU", "204B NEU", "204C NEU", "912_7F54C764-B607-44", "9KIRB    O    2 9STR", "9KIRB    O    2.0", "9PRUT    O    2 WEST", "9PRUT    O    2.0", "9SILZ    O    2 9YVI", "9SILZ    O    2 SI_K", "9SILZ    O    2 WEST", "9SILZ    O    2.0", "9SILZ    O    2.1", "9SILZ    O    2.2", "9SILZ    O    2.3", "9STRA    O    2 9THA", "9STRA    O    2 ZELL", "9STRA    O    2.0", "9STRA    O    2.1", "9THAU    O    2 9YVI", "9THAU    O    2.0", "9VILL    O    2 9YVI", "9VILL    O    2.0", "ANDRE    O    1 HESS", "BISAM    O    1 DUER", "BISAM    O    1 KLED", "BISAM    O    1 WIEN", "BISAM    O    1 YBBS", "BISAM    O    1.0", "BISAM    O    1.1", "BISAM    O    1.2", "BISAM    O    1.3", "BISAM - SEY 1 TOOT_P", "BISAM - SEY 2", "DUERN    O    1 DU_S", "DUERN    O    1 ETZE", "DUERN    O    1.0", "ERNST    O    1 ETZE", "ERNST    O    1 WALL", "ERNST    O    2 PYHR", "ERNST    O    2 WEIS", "ERNST    O    2 YBBS", "FEIST_VILLACH_PINT_O", "GARAN    O    1 GEOR", "GARAN    O    1 KAIN", "GARAN    O    1.0", "GARAN    O    1.1", "GEORG    O    1 OBER", "GEORG    O    1.0", "GREUTH-_WUERMLACH_PI", "GRIESK - ASCHA", "GRIESK - ASCHA (1)", "GRIESK - HAUSR", "HADER - TERNI", "HADER - TERNI (1)", "HAUSR - GRIESK", "HESSE    O    1 HADE", "HESSE    O    1 WEIS", "HESSE    O    1 ZELT", "HESSE    O    1.0", "HESSE    O    1.1", "JOCHE    O    1 SCHA", "JOCHE    O    2 SCHA", "KAINA    O    1 KA_M", "KAINA    O    1 YMEL", "KAINA    O    1.0", "KAINA    O    1.1", "KAPRU - TAUER", "KLEDE    O    1 WIEN", "LANDSCHÜTZ - LIENZ", "LIENZ    O    1 MALT", "LIENZ    O    1 TAUE", "LIENZ    O    1.0", "LIENZ    O    2 MALT", "LIENZ - AURONZO_TOOT", "MAYRH    O    2 ZELL", "MAYRH    O    2.0", "MOLLN - PYHRN", "MOLLN - WEISS", "NAUDERS - NA_GL_TOOT", "NEUSI    O    1 WIEN", "NEUSI    O    2 NE_G", "NEUSZ - NZ_SO21 TOOT", "NEUSZ - NZ_SO22 TOOT", "O-MALTA - O-MALTA", "O-YMELL12-2 - O-MELL", "O-ZELL - O-WESTT.0", "O-ZELL - O-WESTT_TOO", "OBERS    O    1 ZELT", "OBERS-FEIST_PINT_OFF", "OBERS-RAVNE_PINT_OFF", "OBERS-ROSEGG_PINT_OF", "OSTST    O    1 WIEN", "OSTST    O    1 YMEL", "O_ERNST - YBBS", "O_ERNST - YBBS_ (1)", "O_PETER - PT  21.0", "O_PETER - PT  21_TOO", "O_PRU - NAUDE_TO.0", "O_PRU - NAUDE_TOOT_P", "O_WESTT - PRU", "O_WESTT - PRU_ (1)", "PETER    O    1 SCHA", "PETER    O    2 SCHA", "PETER - ERNST", "PETER - ERNST (1)", "PETER - PI_TOOT_P313", "PETER - SALZB TOOT_P", "PETER - SI_TOOT_P313", "PETER - WAGEN TOOT_P", "PONGA - KAPRU", "PONGA - WEISS TO.0", "PONGA - WEISS TOOT_P", "PRU - NAUDE (2)_TOOT", "PYHRN    O    1 WEIS", "ROSEG-VILLACH_PINT_O", "SALZB - PONGA TOOT_P", "SARA 11 - SEY", "SARA 11 - SZHO 11", "SARA 11 - SZHO 11 (1", "SARA 11 - WIEN", "SARA 11 - WIEN (1)", "SEYRING - SARA 11 TO", "STEINACH - VILL_TOOT", "STEINACH - XST_PR51_", "STEINACH - XST_PR52_", "SUEDB    O    1 WIEN", "SUEDB    O    1 YMEL", "TAUER    O    1 ZELL", "TAUER - UTTEN", "TERNI    O    2 WIEN", "TERNI    O    2.0", "UTTEN - ZELL", "VILL - STEINACH 2_TO", "VILLACH-GREUTH_PINT_", "VILLACH-WUERMLACH_PI", "WAGEN - TAUER TOOT_P", "WALLS    O    2 YBBS", "WESTT    O    1 WE_B", "WESTT    O    2 WE_B", "WESTTIROL_VöHRINGEN", "WESTTIROL_VöHRINGEN_", "WE_PR11 - NAUD_TOOT_", "WIEN     O    1 DUER", "WIEN     O    1 WI_G", "WIEN     O    1.0", "WIEN     O    1.1", "WIEN     O    2 WI_G", "WUERMLACH - SOMPLAGO", "WUERMLACH-LIENZ (1)_", "WUERMLACH-LIENZ_PINT", "YBBS - DUERN_ (1)", "ZAYA - SEYRI TOO.0", "ZAYA - SEYRI TOOT_P1", "VILL_220-110KV_TOOT_", "DUERN    O    1 DUER", "DUERN    O    1.1", "ERNST    O    1.2", "ERNST    O    1 ERNS", "ERNST    O    1.0", "ERNST    O    1.1", "GHPSTL", "GHPSTS", "LIENZ_PST1_PINT_OFF_", "LIENZ    O    1 LIEN", "LIENZ    O    1.1", "LIENZ    O    1.2", "NAUDE_PST_TOOT_P26", "OBERS    O    1 OBER", "OBERS    O    1.0", "OBERS    O    1.1", "PETER    O    1 PETE", "PETER    O    1.0", "PETER    O    1.1", "PONGAU_T1_TOOT_P312", "PONGAU_T2_TOOT_P312", "TERNI    O    1 TERN", "WESTTIROL_T1", "WESTTIROL_T2_TOOT_P4", "WIEN     O    1 WIEN", "WIEN     O    1.2", "WUERM PST_TOOT_P210", "ZAYA_T1_TOOT_P186", "ZAYA_T2_TOOT_P186", "ZELL     O    1 ZELL", "ZELL     O    1.0" ]
+    }, {
+      "name" : "TRNOMGTH",
+      "type" : "STRING",
+      "valueCount" : 4464,
+      "firstIndexMaxValue" : 18,
+      "secondIndexMaxValue" : 248,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 4464,
+      "values" : [ "HYDROROR_TIRO.1", "HYDROROR_INN2", "HYDROANUAL_ACHENS", "OTHERRES_KIRCHBIC", "SOLARPV_KIRCHBICH", "HYDROANUAL_KAUNER", "OTHERRES_PRUTZ", "SOLARPV_PRUTZ", "HYDROANUAL_SILZ", "HYDROANUAL_KUEHTA", "HYDROANUAL_KU.0", "HYDROANUAL_NE.2", "HYDROWEEKLY_NEWPS", "HYDROANUAL_AC.0", "GASCCGTOLD2_SWARO", "GASCONVOLD2_TIROL", "GASOCGTNEW_SWAROV", "SOLARPV_THAUR", "OTHERRES_THAUR", "OTHERRES_VILL", "SOLARPV_VILL", "HYDROROR_ASCHACH", "WIND_BISAMBERG_2_", "WIND_BISAMBERG_1", "HYDROROR_NOE25%", "GASOCGTNEW_JUNGBU", "GASCONVOLD2_KORNE", "OTHERRES_BISAMBER", "SOLARPV_BISAMBERG", "HYDROROR_GREIFENS", "GASCCGTOLD2_ADERK", "OTHERNRES_WIEN+NO", "SOLARPV_BISAM.0", "WIND_DUERNROHR", "HYDROROR_ALTENWöR", "HYDROANUAL_OT.1", "HYDROANUAL_OT.2", "HYDROROR_NOE2.2", "GASCONVOLD2_THEIS", "GASOCGTOLD_THEISS", "GASCONVOLD2_NOE", "GASCONVOLD1_LEOPO", "GASCCGTOLD2_THEIS", "OTHERRES_DUERNROH", "SOLARPV_DUERNROHR", "WIND_ERNSTHOFEN", "HYDROROR_ABWINDEN", "HYDROSWELL_ENNS1", "HYDROROR_OOE30%", "HYDRODAILY_PARTEN", "HYDROROR_OTTE.0", "GASCCGTOLD1_LINZF", "GASCCGTOLD2_LINZF", "GASOCGTOLD_KIRCHD", "GASCONVOLD2_OOE", "GASCCGTOLD2_L.0", "LIGHTOIL_DIV.OÖ", "OTHERRES_ERNSTHOF", "OTHERNRES_VOEST+A", "SOLARPV_ERNSTHOFE", "HYDROANUAL_OTTENS", "HYDROROR_MELK34%", "HYDROANUAL_OT.0", "GASCONVOLD2_T.0", "GASOCGTOLD_TH.0", "GASCCGTOLD2_T.0", "SOLARPV_ETZERSDOR", "OTHERRES_ETZERSDO", "HYDROSWELL_FEISTR", "HYDRODAILY_NE.1", "HYDRODAILY_NE.4", "HYDRODAILY_NEWPSP", "HYDRODAILY_NE.3", "HYDROROR_STMK25%", "GASCONVOLD2_STMK", "OTHERRES_HADERSDO", "HYDROROR_OOE40%", "HYDRODAILY_PROJEC", "HYDRODAILY_PR.0", "GASCCGTNEW_WELS+S", "GASCCGTNEW_TIMELK", "GASCCGTOLD2_LAAKI", "OTHERNRES_LENZING", "OTHERRES_HAUSRUCK", "SOLARPV_HAUSRUCK", "HYDROSWELL_ENNS2_", "HYDRODAILY_HIEFLA", "HYDROROR_MUR2", "HYDROANUAL_AR.0", "HYDROROR_STMK.2", "GASCCGTNEW_NORSKE", "OTHERNRES_VASD", "SOLARPV_HESSENBER", "OTHERRES_HESSENBE", "HYDROROR_OTTENSHE", "HYDROROR_JOCHENST", "HYDROWEEKL_RANNA", "HYDROWEEKLY_RANNA", "GASOCGTNEW_AGRANA", "OTHERRES_JOCHENST", "WIND_KAINACHTAL", "HYDROROR_MUR1", "GASCONVOLD1_THOND", "GASCONVOLD2_FELDB", "GASOCGTNEW_MMKART", "SOLARPV_KAINACHTA", "OTHERRES_KAINACHT", "OTHERNRES_STMK", "HYDROROR_SBG30%", "HYDROWEEKLY_WALD", "HYDROANUAL_KAPRUN", "HYDROANUAL_KA.0", "HYDROANUAL_RE.1", "HYDROANUAL_KA.1", "HYDROANUAL_RE.5", "OTHERRES_KAPRUN", "SOLARPV_KAPRUN", "HYDROROR_TIROL25%", "HYDROANUAL_TIROL5", "HYDROANUAL_TI.1", "OTHERRES_LANDSCHU", "HYDROANUAL_LIENZ", "HYDROANUAL_TI.0", "HYDROANUAL_TI.2", "HYDROANUAL_LI.2", "OTHERRES_LIENZ", "SOLARPV_LIENZ", "HYDROANUAL_MA.0", "HYDROANUAL_FRAGAN", "HYDROROR_KT30.0", "HYDROANUAL_RE.0", "HYDRODAILY_REIßEC", "HYDRODAILY_RE.0", "HYDROANUAL_MALTAH", "HYDROANUAL_REISSE", "HYDROANUAL_MALTA1", "HYDROANUAL_RE.2", "HYDROANUAL_RE.3", "SOLARPV_MALTA", "OTHERRES_MALTA", "HYDROANUAL_NE.1", "HYDROANUAL_ZEMM1", "HYDROANUAL_ZE.1", "HYDROANUAL_ZEMM2", "HYDROANUAL_ZE.0", "GASCCGTNEW_MELLAC", "WIND_NEUSIEDL", "SOLARPV_NEUSIEDL", "OTHERRES_NEUSIEDL", "WIND_OBERSIELACH", "HYDROSWELL_DRAU1", "HYDROROR_KT30%", "HYDROANUAL_KORALP", "HYDROANUAL_KO.0", "OTHERRES_OBERSIEL", "SOLARPV_OBERSIELA", "OTHERNRES_FRANTSC", "SOLARPV_OSTSTEIER", "OTHERRES_OSTSTEIE", "HYDROROR_INN1", "HYDROROR_OOE3.0", "SOLARPV_ST.PETER", "OTHERRES_ST.PETER", "HYDROROR_SBG40%", "HYDRODAILY_SCHWAR", "HYDROWEEKLY_REMSA", "SOLARPV_PONGAU", "HYDROSWELL_ROSEGG", "HYDROWEEKLY_WIEST", "HYDROWEEKLY_STRUB", "HYDROROR_SBG3.0", "LIGHTOIL_HKWSALZB", "GASCONVOLD2_SBG", "OTHERNRES_HALLEIN", "OTHERRES_SALZBURG", "SOLARPV_SALZBURG", "WIND_SARASDORF", "OTHERRES_SARASDOR", "HYDROROR_SCHAERDI", "GASCONVOLD1_HEILI", "SOLARPV_SUEDBURGE", "OTHERRES_SUEDBURG", "HYDROANUAL_LIMBER", "HYDROANUAL_LI.0", "HYDROANUAL_LI.1", "HYDROANUAL_LI.3", "WIND_TERNITZ", "HYDROROR_STMK.0", "HYDROROR_NOE2.0", "GASOCGTNEW_SCA", "SOLARPV_TERNITZ (", "OTHERRES_TERNITZ", "SOLARPV_TERNITZ", "HYDROANUAL_NEWPSP", "HYDROANUAL_NE.0", "HYDROANUAL_UTTEND", "HYDROSWELL_DRAU2", "HYDROANUAL_NASSFE", "HYDROANUAL_PROJEC", "HYDROANUAL_NA.0", "HYDROANUAL_PR.0", "SOLARPV_VILLACH", "OTHERRES_VILLACH", "HYDROROR_WALLSEE", "HYDRODAILY_SöLK", "HYDROANUAL_ARNSTE", "HYDROROR_STMK.1", "HYDROSWELL_EN.0", "OTHERRES_WEISSENB", "SOLARPV_WEISSENBA", "HYDROANUAL_REST", "HYDROROR_TIRO.0", "HYDROWEEKLY_HEITE", "HYDROROR_IMST", "HYDROANUAL_RE.4", "OTHERRES_WESTTIRO", "SOLARPV_WESTTIROL", "HYDROROR_FREUDENA", "GASCONVOLD2_SIMME", "CASCCGTNEW_SIMMER", "SOLARPV_WIEN", "OTHERRES_WIEN", "WIND_WIEN SüDOST", "HYDROROR_WIEN", "GASCCGTNEW_DONAUS", "LIGHTOIL_SCHWECHA", "SOLARPV_WIEN (1)", "HYDRODAILY_NE.0", "HYDRODAILY_NE.2", "HYDROROR_NOE2.1", "HYDROROR_YBBS", "HYDROROR_MELK66%", "GASCONVOLD1_THERE", "OTHERNRES_KEMATEN", "OTHERRES_YBBSFELD", "SOLARPV_YBBSFELD", "WIND_ZAYA_1_TOOT_", "SOLARPV_ZAYA", "HYDRODAILY_GERLOS", "HYDRODAILY_FUNSIN", "HYDRODAILY_GE.0", "HYDROROR_TIRO.2", "HYDROANUAL_AC.1", "OTHERRES_ZELL", "SOLARPV_ZELL", "HYDROSWELL_STMK", "OTHERRES_ZELTWEG", "WIND_ZURNDORF" ]
+    }, {
+      "name" : "DCNOMQUA",
+      "type" : "STRING",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 0,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    }, {
+      "name" : "DMNOMDEK",
+      "type" : "STRING",
+      "valueCount" : 0,
+      "firstIndexMaxValue" : 0,
+      "secondIndexMaxValue" : 0,
+      "firstValueIndex" : 1,
+      "lastValueIndex" : 0,
+      "values" : [ ]
+    } ]
+  }, {
+    "name" : "fort.48_BIN",
+    "attributes" : [ ]
+  } ]
+}

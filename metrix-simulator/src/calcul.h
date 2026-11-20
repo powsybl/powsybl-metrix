@@ -19,12 +19,11 @@
 #include "variante.h"
 #include <compute/solver.h>
 
-#include <boost/optional.hpp>
-
 #include <cassert>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <tuple>
@@ -438,7 +437,7 @@ private:
                       const std::vector<int>& typeOu,
                       int ctrOuvr,
                       CostDefMap& cost) const;
-    boost::optional<std::tuple<std::string, int, std::shared_ptr<Incident>>>
+    std::optional<std::tuple<std::string, int, std::shared_ptr<Incident>>>
     getIncidentConstraint(const std::map<std::shared_ptr<Incident>, int>& incidentsContraignants, int i) const;
     void assessAndPrintPTDF(const string& PTDFfileName);
     void printLODF(const string& LODFfileName, bool writeLODFfile) const;

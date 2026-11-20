@@ -205,7 +205,7 @@ int Calculer::ecrireContraintesDeBordGroupesDodu()
         for (auto grpIt = res_.groupes_.cbegin(); grpIt != res_.groupes_.end(); ++grpIt) {
             grp_melanges.push_back(grpIt->second);
         }
-        std::random_shuffle(grp_melanges.begin(), grp_melanges.end(), &Reseau::myRandom);
+        Reseau::melanger(grp_melanges);
     }
 
     for (int i = 0; i < res_.nbGroupes_; ++i) {
@@ -728,8 +728,7 @@ int Calculer::ajouterContraintesCouplagesGroupes()
 /* ajout de 2 contraintes pour limiter le vol de redispatching curatif e la hausse et a la baisse */
 int Calculer::ajouterLimiteCuratifGroupe(const std::map<int, std::vector<int>>& mapZoneSyncGrp)
 {
-    for (const auto& zone : mapZoneSyncGrp) {
-        const std::vector<int>& listeVarCurGrp = zone.second;
+    for (const auto& [numZone, listeVarCurGrp] : mapZoneSyncGrp) {
         int nbVarCurGrp = static_cast<int>(listeVarCurGrp.size());
 
         // redispatching B
@@ -755,11 +754,11 @@ int Calculer::ecrireEquationBilanCuratif(
     const std::map<int, std::vector<std::shared_ptr<ElementCuratifHVDC>>>& mapZoneSyncHvdc)
 {
     std::set<int> zoneSync;
-    for (const auto& sync : mapZoneSyncGrp) {
-        zoneSync.insert(sync.first);
+    for (const auto& [numZone, listeVar] : mapZoneSyncGrp) {
+        zoneSync.insert(numZone);
     }
-    for (const auto& sync : mapZoneSyncConso) {
-        zoneSync.insert(sync.first);
+    for (const auto& [numZone, listeVar] : mapZoneSyncConso) {
+        zoneSync.insert(numZone);
     }
 
     for (auto& zone : zoneSync) {
@@ -788,8 +787,7 @@ int Calculer::ecrireEquationBilanCuratif(
                 pbCoefficientsDeLaMatriceDesContraintes_.push_back(1.);
             }
         }
-        auto itZoneSyncLcc = mapZoneSyncHvdc.find(zone);
-        if (itZoneSyncLcc != mapZoneSyncHvdc.cend()) {
+        if (auto itZoneSyncLcc = mapZoneSyncHvdc.find(zone); itZoneSyncLcc != mapZoneSyncHvdc.cend()) {
             const auto& listeVarCurLcc = itZoneSyncLcc->second;
             nbVarCurLcc = static_cast<int>(listeVarCurLcc.size());
             for (int i = 0; i < nbVarCurLcc; i++) {
@@ -1161,9 +1159,8 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
     }
 
     MATRICE* jacFactorisee = nullptr;
-    ListeQuadsIncident listeQuadsIncident = poche->incidentModifie_->listeQuadsIncident();
-
-    if (listeQuadsIncident.quadsOuverts.empty() && listeQuadsIncident.quadsRefermes.empty()) {
+    if (ListeQuadsIncident listeQuadsIncident = poche->incidentModifie_->listeQuadsIncident();
+        listeQuadsIncident.quadsOuverts.empty() && listeQuadsIncident.quadsRefermes.empty()) {
         jacFactorisee = jacFactorisee_;
     } else {
         auto jacFactoriseeIt = jacIncidentsModifies_.find(listeQuadsIncident);
@@ -1172,7 +1169,7 @@ int Calculer::miseAJourSecondMembrePochePerdue(const std::shared_ptr<Incident>& 
             if (jacFactorisee == nullptr) {
                 return METRIX_PROBLEME;
             }
-            jacIncidentsModifies_.insert(std::pair<ListeQuadsIncident, MATRICE*>(listeQuadsIncident, jacFactorisee));
+            jacIncidentsModifies_.try_emplace(listeQuadsIncident, jacFactorisee);
         } else {
             jacFactorisee = jacFactoriseeIt->second;
         }
@@ -1208,8 +1205,7 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
         for (const auto& node : poche->noeudsPoche_) {
             for (const auto& conso : node->listeConsos_) {
                 double cut = conso->valeur_;
-                int numVar = conso->numVarConso_;
-                if (numVar >= 0) {
+                if (int numVar = conso->numVarConso_; numVar >= 0) {
                     cut -= pbX_[numVar];
                 }
                 consoCoupee += cut;
@@ -2107,17 +2103,15 @@ double Calculer::transitSurSection(const std::shared_ptr<ElementASurveiller>& se
     // Somme ponderee des transits en N des elements connectes de la section
     double transit = 0.;
 
-    for (const auto& elem : section->quadsASurv_) {
-        const auto& quad = elem.first;
+    for (const auto& [quad, coeff] : section->quadsASurv_) {
         if (quad->connecte()) {
-            transit += elem.second * transitSurQuad(quad, nullptr, theta);
+            transit += coeff * transitSurQuad(quad, nullptr, theta);
         }
     }
 
-    for (const auto& elem : section->hvdcASurv_) {
-        const auto& lcc = elem.first;
+    for (const auto& [lcc, coeff] : section->hvdcASurv_) {
         if (lcc->connecte()) {
-            transit += elem.second * (lcc->puiCons_ + pbX_[lcc->numVar_] - pbX_[lcc->numVar_ + 1]);
+            transit += coeff * (lcc->puiCons_ + pbX_[lcc->numVar_] - pbX_[lcc->numVar_ + 1]);
         }
     }
 
@@ -2175,8 +2169,7 @@ void enregistreMenaces(const std::shared_ptr<Incident>& icdt,
 double Calculer::transitSurQuadIncidentNonConnexe(const std::shared_ptr<Quadripole>& quad,
                                                   const std::shared_ptr<Incident>& icdt) const
 {
-    const auto& quadsInc = icdt->listeQuads_;
-    if (find(quadsInc.begin(), quadsInc.end(), quad) != quadsInc.end()) {
+    if (const auto& quadsInc = icdt->listeQuads_; find(quadsInc.begin(), quadsInc.end(), quad) != quadsInc.end()) {
         return 0.;
     }
 
@@ -2225,10 +2218,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             bool quadFictif = false;
 
             tran = 0.0;
-            for (const auto& elem : elemAS->quadsASurv_) {
-                const auto& quad = elem.first;
-                double coeff = elem.second;
-
+            for (const auto& [quad, coeff] : elemAS->quadsASurv_) {
                 if (!quad->connecte()) {
                     continue;
                 }
@@ -2243,10 +2233,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
 
             } // boucle sur les quadripoles de l'element a surveiller
 
-            for (const auto& elem : elemAS->hvdcASurv_) {
-                const auto& lcc = elem.first;
-                double coeff = elem.second;
-
+            for (const auto& [lcc, coeff] : elemAS->hvdcASurv_) {
                 if (!lcc->connecte()) {
                     continue;
                 }
@@ -2356,9 +2343,8 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
             bool quadFictif = false;
 
             transNew = 0.0;
-            for (const auto& elem : elemAS->quadsASurv_) {
-                quad = elem.first;
-                double coeff = elem.second;
+            for (const auto& [quadSurv, coeff] : elemAS->quadsASurv_) {
+                quad = quadSurv;
 
                 if (!quad->connecte()) {
                     if (icdt->nbCouplagesFermes_ == 0
@@ -2374,10 +2360,7 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
 
             } // boucle sur les quadripoles de l'element a surveiller
 
-            for (const auto& elem : elemAS->hvdcASurv_) {
-                const auto& lcc = elem.first;
-                double coeff = elem.second;
-
+            for (const auto& [lcc, coeff] : elemAS->hvdcASurv_) {
                 if (!lcc->connecte()
                     || (icdt->nbLccs_ > 0
                         && find(icdt->listeLccs_.begin(), icdt->listeLccs_.end(), lcc) != icdt->listeLccs_.end())) {
@@ -2572,10 +2555,7 @@ void Calculer::calculerFluxNk(const std::vector<double>& secondMembre)
             const auto& elemAS = res_.elementsAvecResultatNk_[j];
 
             transNew = 0.0;
-            for (const auto& elem : elemAS->quadsASurv_) {
-                const auto& quad = elem.first;
-                double coeff = elem.second;
-
+            for (const auto& [quad, coeff] : elemAS->quadsASurv_) {
                 if (!quad->connecte()
                     && (icdt->nbCouplagesFermes_ == 0
                         || find(icdt->listeCouplagesFermes_.begin(), icdt->listeCouplagesFermes_.end(), quad)
@@ -2587,10 +2567,7 @@ void Calculer::calculerFluxNk(const std::vector<double>& secondMembre)
 
             } // boucle sur les quadripoles de l'element a surveiller
 
-            for (const auto& elem : elemAS->hvdcASurv_) {
-                const auto& lcc = elem.first;
-                double coeff = elem.second;
-
+            for (const auto& [lcc, coeff] : elemAS->hvdcASurv_) {
                 if (!lcc->connecte()
                     || (icdt->nbLccs_ > 0
                         && std::find(icdt->listeLccs_.begin(), icdt->listeLccs_.end(), lcc)
@@ -3372,7 +3349,7 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
     if (poche->coefficients_.find(quad) == poche->coefficients_.end()) {
         LOG(debug) << "Calcul des coefficients pour " << quad->nom_ << " sur l'incident " << icdt->nom_;
         int codeRetour;
-        std::vector<double> coeffQuad(res_.nbNoeuds_, 0.0);
+        std::vector coeffQuad(res_.nbNoeuds_, 0.0);
 
         // calcul des deux colonnes : quad->norqua_->num et quad->nexqua_->num_ de l'inverse
         coeffQuad[quad->norqua_->num_] = quad->u2Yij_;
@@ -3578,8 +3555,7 @@ bool ouvragesEnContrainteDeconnectes(const std::shared_ptr<Contrainte>& contrain
     bool ouvragesDeconnectes = true;
     const auto& quadSurv = contrainte->elemAS_->quadsASurv_;
 
-    for (const auto& elem : quadSurv) {
-        const auto& quad = elem.first;
+    for (const auto& [quad, coeff] : quadSurv) {
         if (quad->connecte()) {
             if (std::find(parade->listeQuads_.begin(), parade->listeQuads_.end(), quad) == parade->listeQuads_.end()) {
                 ouvragesDeconnectes = false;
@@ -4082,10 +4058,7 @@ int Calculer::ajoutContrainte(const std::shared_ptr<Contrainte>& ctre, const std
 
     int codeRet;
 
-    for (const auto& elem : elemAS->quadsASurv_) {
-        const auto& quad = elem.first;
-        double coeff = elem.second; // 1 si ouvrage et <>1 si section surv.
-
+    for (const auto& [quad, coeff] : elemAS->quadsASurv_) { // coeff : 1 si ouvrage et <>1 si section surv.
         // calcul des coeffs a mettre dans la matrice du simplexe pour introduire la contrainte
         codeRet = coeffPourQuadInc(quad, ctre, secondMembreFixe, sumcoeffFixe, coeff);
         if (codeRet == METRIX_PROBLEME) {
@@ -4093,10 +4066,7 @@ int Calculer::ajoutContrainte(const std::shared_ptr<Contrainte>& ctre, const std
         }
     }
 
-    for (const auto& elem : elemAS->hvdcASurv_) {
-        const auto& lcc = elem.first;
-        double coeff = elem.second;
-
+    for (const auto& [lcc, coeff] : elemAS->hvdcASurv_) {
         if (!lcc->connecte()) {
             continue;
         }
@@ -4307,9 +4277,7 @@ int Calculer::fixerProdSansReseau()
 
     LOG_ALL(info) << err::ioDico().msg("INFOCoutsAvecReseau");
 
-    for (const auto& elem : res_.groupes_) {
-        const auto& grpe = elem.second;
-
+    for (const auto& [nomGroupe, grpe] : res_.groupes_) {
         if (grpe->etat_ && grpe->prodAjust_ != Groupe::NON_HR_AR) {
             // Phase AR, on remet la puisMin e sa valeur
             grpe->puisMin_ = grpe->puisMinAR_;
@@ -4444,11 +4412,11 @@ void Calculer::compareLoadFlowReport()
     LOG(debug) << " on compare les resultats des coeff de report aux LF";
     /////////// pour le calcul des theta en N
     // injections nodales N qui seront utilisees pour la formule coeff de report
-    std::vector<double> secondMembre(res_.nbNoeuds_, 0.0);
+    std::vector secondMembre(res_.nbNoeuds_, 0.0);
     // memset(&injectionSNodales[0],0,res_.nbNoeuds_*sizeof(double));
 
     // partie independante des variables pbX_ : sum(P0)-sum(conso)
-    std::vector<double> secMembFixe(res_.nbNoeuds_, 0.0);
+    std::vector secMembFixe(res_.nbNoeuds_, 0.0);
     // memset(&secMembFixe[0],0,res_.nbNoeuds_*sizeof(double));
 
     miseAJourSecondMembre(secondMembre, secMembFixe);
@@ -4485,9 +4453,7 @@ void Calculer::compareLoadFlowReport()
 
         LOG(debug) << " on compare pour " << icdt->nom_;
 
-        for (const auto& elem : res_.quads_) {
-            const auto& quad = elem.second;
-
+        for (const auto& [nomQuad, quad] : res_.quads_) {
             if (!quad->connecte()
                 || std::find(icdt->listeQuads_.cbegin(), icdt->listeQuads_.cend(), quad) != icdt->listeQuads_.cend()) {
                 continue;
@@ -4525,9 +4491,8 @@ bool Calculer::check_bonneDetectionTouteContrainte(const std::shared_ptr<Inciden
 
         double transit = 0.;
 
-        for (const auto& elem : elemAS->quadsASurv_) {
-            quad = elem.first;
-            double coeff = elem.second;
+        for (const auto& [quadSurv, coeff] : elemAS->quadsASurv_) {
+            quad = quadSurv;
 
             // verification que le quad n'est pas consigne
             if (!quad->connecte()) {
@@ -4549,10 +4514,7 @@ bool Calculer::check_bonneDetectionTouteContrainte(const std::shared_ptr<Inciden
                        * (injectionSNodales[quad->norqua_->num_] - injectionSNodales[quad->nexqua_->num_]);
         }
 
-        for (const auto& elem : elemAS->hvdcASurv_) {
-            const auto& lcc = elem.first;
-            double coeff = elem.second;
-
+        for (const auto& [lcc, coeff] : elemAS->hvdcASurv_) {
             if (!lcc->connecte()) {
                 continue;
             }
@@ -4627,10 +4589,10 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
         return true; // on n'a pas l'information
     }
 
-    std::vector<double> injectionSNodales(res_.nbNoeuds_, 0.);
+    std::vector injectionSNodales(res_.nbNoeuds_, 0.);
 
     // partie independante des variables pbX_ : sum(P0)-sum(conso)
-    std::vector<double> secondMembreFixe(res_.nbNoeuds_, 0.);
+    std::vector secondMembreFixe(res_.nbNoeuds_, 0.);
 
     miseAJourSecondMembre(injectionSNodales, secondMembreFixe);
 
@@ -4642,18 +4604,12 @@ bool Calculer::check_bonneDetectionContrainte(const std::shared_ptr<Contrainte>&
     check_calculThetaSurIncident(inc, injectionSNodales, secondMembreFixe);
 
     // Check le transit
-    for (const auto& elem : elemAS->quadsASurv_) {
-        const auto& quad = elem.first;
-        double coeff = elem.second;
-
+    for (const auto& [quad, coeff] : elemAS->quadsASurv_) {
         transit += coeff * quad->u2Yij_
                    * (injectionSNodales[quad->norqua_->num_] - injectionSNodales[quad->nexqua_->num_]);
     }
 
-    for (const auto& elem : elemAS->hvdcASurv_) {
-        const auto& lcc = elem.first;
-        double coeff = elem.second;
-
+    for (const auto& [lcc, coeff] : elemAS->hvdcASurv_) {
         if (!lcc->connecte()) {
             continue;
         }

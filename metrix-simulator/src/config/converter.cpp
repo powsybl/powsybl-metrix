@@ -14,9 +14,7 @@
 #include <err/error.h>
 #include <metrix/log.h>
 
-namespace config
-{
-namespace convert
+namespace config::convert
 {
 int toInt(const std::string& str)
 {
@@ -37,5 +35,4 @@ double toDouble(const std::string& str)
         throw ErrorI(err::ioDico().msg("ERRFormatNombre", str));
     }
 }
-} // namespace convert
-} // namespace config
+} // namespace config::convert

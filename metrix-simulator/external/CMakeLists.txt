@@ -25,9 +25,6 @@ project(Metrix-external CXX C) # language is required to identify compiler ID an
 set(DOWNLOAD_DIR ${CMAKE_CURRENT_BINARY_DIR}/src CACHE PATH "Directory where 3rd parties are downloaded.")
 set(TMP_DIR ${CMAKE_CURRENT_BINARY_DIR}/tmp CACHE PATH "Directory where 3rd parties temporary files are created.")
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED true)
-
 include(ExternalProject)
 include(GetPatchCommand)
 include(CloneUrl)

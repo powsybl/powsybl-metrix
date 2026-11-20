@@ -15,10 +15,9 @@
 #include "err/error.h"
 #include <metrix/log.h>
 
-#include <boost/filesystem.hpp>
-
 #include <cctype>
 #include <cstdlib>
+#include <filesystem>
 
 namespace po = boost::program_options;
 
@@ -54,11 +53,8 @@ struct ParsedCheckConstraintLevel {
  *
  * see boost documentation for program options, "how to" chapter, "custom validator" section
  */
-static void validate(boost::any& v, const std::vector<std::string>& values, ParsedLogLevel* unused_obj, int unused)
+static void validate(boost::any& v, const std::vector<std::string>& values, ParsedLogLevel*, int)
 {
-    static_cast<void>(unused_obj);
-    static_cast<void>(unused);
-
     // Make sure no previous assignment to 'a' was made.
     po::validators::check_first_occurrence(v);
 
@@ -81,12 +77,8 @@ static void validate(boost::any& v, const std::vector<std::string>& values, Pars
  *
  * see boost documentation for program options, "how to" chapter, "custom validator" section
  */
-static void
-validate(boost::any& v, const std::vector<std::string>& values, ParsedCheckConstraintLevel* unused_obj, int unused)
+static void validate(boost::any& v, const std::vector<std::string>& values, ParsedCheckConstraintLevel*, int)
 {
-    static_cast<void>(unused_obj);
-    static_cast<void>(unused);
-
     // Make sure no previous assignment to 'a' was made.
     po::validators::check_first_occurrence(v);
 
@@ -116,7 +108,7 @@ validate(boost::any& v, const std::vector<std::string>& values, ParsedCheckConst
     }
 }
 
-const std::map<std::string, metrix::log::severity::level> Options::severities_ = {
+const std::map<std::string, metrix::log::severity::level, std::less<>> Options::severities_ = {
     {"trace", metrix::log::severity::trace},
     {"debug", metrix::log::severity::debug},
     {"info", metrix::log::severity::info},
@@ -269,9 +261,7 @@ std::string Options::desc() const { return make_usage_string(basename(config_.pr
 
 std::string Options::basename(const std::string& filepath)
 {
-    // we use boost filesystem here because filesystem in STl is available only in c++17
-    boost::filesystem::path path(filepath);
-    return path.filename().generic_string();
+    return std::filesystem::path(filepath).filename().generic_string();
 }
 
 std::string Options::make_usage_string(const std::string& program_name,

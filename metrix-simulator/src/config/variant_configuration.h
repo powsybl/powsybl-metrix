@@ -10,10 +10,9 @@
 
 #pragma once
 
-#include <boost/optional.hpp>
-
 #include <functional>
 #include <map>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <tuple>
@@ -93,7 +92,7 @@ public:
      * @param num variant number
      * @returns variant configuration, if variant number exists
      */
-    boost::optional<std::reference_wrapper<const VariantConfig>> variante(int num);
+    std::optional<std::reference_wrapper<const VariantConfig>> variante(int num);
 
     /**
      * @brief Retrieve all variants
@@ -135,7 +134,7 @@ private:
     void processRandomGroups(VariantConfig& variant, std::istringstream& iss) const;
 
 private:
-    const std::map<std::string, Processor>
+    const std::map<std::string, Processor, std::less<>>
         line_processors_; ///< map containing all functions to process each type of data read in the file
     VariantMap config_;   ///< map of variants
 };

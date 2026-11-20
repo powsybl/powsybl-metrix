@@ -11,8 +11,7 @@
 
 #include "err/error.h"
 
-#include <boost/filesystem.hpp>
-
+#include <filesystem>
 #include <sstream>
 
 namespace err
@@ -26,8 +25,7 @@ void Error::formatMsg(const std::string& msg, const std::string& file, int line)
     oss << msg;
 
     if (!file.empty() && line != -1) {
-        boost::filesystem::path path(file);
-        oss << " (file=" << path.filename().generic_string() << " ,line=" << line << ")";
+        oss << " (file=" << std::filesystem::path(file).filename().generic_string() << " ,line=" << line << ")";
     }
 
     msg_ = oss.str();

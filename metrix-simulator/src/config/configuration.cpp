@@ -32,8 +32,8 @@ namespace helper
 {
 // Non floating-point fields: convert as-is (throws on malformed data, as before).
 template<typename T>
-static typename std::enable_if<!std::is_floating_point<T>::value, T>::type
-parseValue(const boost::property_tree::ptree& item, bool /*tolerate_non_finite*/)
+static std::enable_if_t<!std::is_floating_point_v<T>, T> parseValue(const boost::property_tree::ptree& item,
+                                                                    bool /*tolerate_non_finite*/)
 {
     return item.get_value<T>();
 }
@@ -46,8 +46,8 @@ parseValue(const boost::property_tree::ptree& item, bool /*tolerate_non_finite*/
 // as an infinite bound in the optimization problem. Any other parsing error (NaN, garbage,
 // other fields) is re-thrown so that malformed data keeps failing fast.
 template<typename T>
-static typename std::enable_if<std::is_floating_point<T>::value, T>::type
-parseValue(const boost::property_tree::ptree& item, bool tolerate_non_finite)
+static std::enable_if_t<std::is_floating_point_v<T>, T> parseValue(const boost::property_tree::ptree& item,
+                                                                   bool tolerate_non_finite)
 {
     try {
         return item.get_value<T>();
@@ -131,7 +131,7 @@ static bool checkAtMostKeyOnce(const std::map<std::string, std::vector<T>>& raw_
 
 std::string Configuration::pathname_("fort.json");
 
-void Configuration::configure(const std::string& pathname) { pathname_ = pathname; }
+void Configuration::configure(std::string_view pathname) { pathname_ = pathname; }
 
 Configuration& Configuration::instance()
 {
@@ -364,8 +364,7 @@ void Configuration::initWithRawConfig(const raw_configuration& raw_config)
     // log level
     auto& map = std::get<INTEGER>(raw_config);
     if (map.count("LOGLEVEL") > 0 && !map.at("LOGLEVEL").empty()) {
-        logLevel_ = boost::make_optional<metrix::log::severity::level>(
-            static_cast<metrix::log::severity::level>(map.at("LOGLEVEL").front()));
+        logLevel_ = static_cast<metrix::log::severity::level>(map.at("LOGLEVEL").front());
     }
 }
 

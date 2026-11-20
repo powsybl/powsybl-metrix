@@ -23,10 +23,10 @@
 
 namespace config
 {
-auto VariantConfiguration::variante(int num) -> boost::optional<std::reference_wrapper<const VariantConfig>>
+auto VariantConfiguration::variante(int num) -> std::optional<std::reference_wrapper<const VariantConfig>>
 {
     if (config_.count(num) > 0) {
-        return boost::make_optional<std::reference_wrapper<const VariantConfig>>(config_.at(num));
+        return std::cref(config_.at(num));
     }
 
     return {};
