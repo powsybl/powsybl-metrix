@@ -450,6 +450,7 @@ Remedial action can be limited to specific branch constraints with:
 CONTINGENCY_NAME | BRANCH_CONSTRAINT_1 | ... ;ACTIONS_COUNT;EQUIPMENT1_ACTION;...;
 ```
 where ```BRANCH_CONSTRAINT_1``` should be the id of a [monitored component](#monitored-branches-and-observed-branches) (`onBranchRatingContingencies`).
+Only one monitored component is supported: if several are listed, the limitation is ignored.
 
 Note that Metrix won't combine multiple defined remedial actions set: each line is tried independently. These topological actions may be combined with generators/loads/phase tap changers/... optimizations. If several actions are equivalent, the first defined one will be used.
 
