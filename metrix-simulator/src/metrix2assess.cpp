@@ -782,14 +782,14 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "R2B ;INCIDENT;NOM GROUPE (HORS BATTERIE);DELTA_P;\n");
         }
         for (const auto& [numIncident, nomGroupe, deltaP] : nonBatteriesResults) {
-            fprintf(fr, ("R2B ;%d;%s;" + PREC_FLOAT + ";\n").c_str(), numIncident, nomGroupe.c_str(), deltaP);
+            fprintf(fr, "R2B ;%d;%s;%s;\n", numIncident, nomGroupe.c_str(), c_fmt(PREC_FLOAT.c_str(), deltaP).c_str());
         }
         nonBatteriesResults.clear();
         if (res_.nbGroupesCuratifs_ > 0) {
             fprintf(fr, "R2D ;INCIDENT;NOM BATTERIE;DELTA_P;\n");
         }
         for (const auto& [numIncident, nomGroupe, deltaP] : batteriesResults) {
-            fprintf(fr, ("R2D ;%d;%s;" + PREC_FLOAT + ";\n").c_str(), numIncident, nomGroupe.c_str(), deltaP);
+            fprintf(fr, "R2D ;%d;%s;%s;\n", numIncident, nomGroupe.c_str(), c_fmt(PREC_FLOAT.c_str(), deltaP).c_str());
         }
         batteriesResults.clear();
         // ecriture : R2C: Couplages de groupes
@@ -1310,7 +1310,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
             fprintf(fr, "R8B ;PERTES;REGION;VOLUME CALCULE;\n");
 
             for (const auto& [region, pertes] : pertesParRegion) {
-                fprintf(fr, ("R8B ;;%s;" + PREC_FLOAT + ";\n").c_str(), region.c_str(), pertes);
+                fprintf(fr, "R8B ;;%s;%s;\n", region.c_str(), c_fmt(PREC_FLOAT.c_str(), pertes).c_str());
             }
         }
 

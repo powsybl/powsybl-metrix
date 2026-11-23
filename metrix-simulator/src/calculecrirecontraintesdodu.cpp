@@ -1204,10 +1204,8 @@ double Calculer::deltaEODPoche(const std::shared_ptr<PochePerdue>& poche)
     if (poche->pocheAvecConsoProd_) {
         for (const auto& node : poche->noeudsPoche_) {
             for (const auto& conso : node->listeConsos_) {
-                double cut = conso->valeur_;
-                if (int numVar = conso->numVarConso_; numVar >= 0) {
-                    cut -= pbX_[numVar];
-                }
+                const int numVar = conso->numVarConso_;
+                const double cut = numVar >= 0 ? conso->valeur_ - pbX_[numVar] : conso->valeur_;
                 consoCoupee += cut;
                 poche->consumptionLosses_[conso] = cut;
             }
@@ -3552,24 +3550,15 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
 bool ouvragesEnContrainteDeconnectes(const std::shared_ptr<Contrainte>& contrainte,
                                      const std::shared_ptr<Incident>& parade)
 {
-    bool ouvragesDeconnectes = true;
-    const auto& quadSurv = contrainte->elemAS_->quadsASurv_;
-
-    for (const auto& [quad, coeff] : quadSurv) {
-        if (quad->connecte()) {
-            if (std::find(parade->listeQuads_.begin(), parade->listeQuads_.end(), quad) == parade->listeQuads_.end()) {
-                ouvragesDeconnectes = false;
-                break;
-            }
-        } else {
-            if (std::find(parade->listeCouplagesFermes_.begin(), parade->listeCouplagesFermes_.end(), quad)
-                != parade->listeCouplagesFermes_.end()) {
-                ouvragesDeconnectes = false;
-                break;
-            }
+    for (const auto& [quad, coeff] : contrainte->elemAS_->quadsASurv_) {
+        // Un ouvrage connecte doit etre ouvert par la parade, un ouvrage deconnecte ne doit pas etre referme
+        const auto& quadsParade = quad->connecte() ? parade->listeQuads_ : parade->listeCouplagesFermes_;
+        const bool dansParade = std::find(quadsParade.begin(), quadsParade.end(), quad) != quadsParade.end();
+        if (dansParade != quad->connecte()) {
+            return false;
         }
     }
-    return ouvragesDeconnectes;
+    return true;
 }
 
 

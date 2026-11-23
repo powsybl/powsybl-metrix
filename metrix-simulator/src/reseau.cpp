@@ -2580,20 +2580,20 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
     for (const auto& [typeCout, couts] : config.costs) {
         for (const auto& [str, var_dbl] : couts) {
             auto groupesIt = groupes_.find(str);
-            if (groupesIt != groupes_.end()) {
-                const auto& grp = groupesIt->second;
-
-                switch (typeCout) {
-                    case VariantConfiguration::VariantConfig::CostType::UP_HR: grp->coutHausseHR_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_HR: grp->coutBaisseHR_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::CostType::UP_AR: grp->coutHausseAR_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_AR: grp->coutBaisseAR_ = var_dbl; break;
-                    default:
-                        // impossible case
-                        break;
-                }
-            } else {
+            if (groupesIt == groupes_.end()) {
                 LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+                continue;
+            }
+            const auto& grp = groupesIt->second;
+
+            switch (typeCout) {
+                case VariantConfiguration::VariantConfig::CostType::UP_HR: grp->coutHausseHR_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_HR: grp->coutBaisseHR_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::CostType::UP_AR: grp->coutHausseAR_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_AR: grp->coutBaisseAR_ = var_dbl; break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
@@ -2658,45 +2658,46 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
                                       ? elementsASurveillerN_
                                       : elementsASurveillerNk_;
             auto quadSurvIt = mapping.find(str);
-            if (quadSurvIt != mapping.end()) {
-                const auto& quad = quadSurvIt->second;
+            if (quadSurvIt == mapping.end()) {
+                continue;
+            }
+            const auto& quad = quadSurvIt->second;
 
-                switch (typeSeuil) {
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_N: quad->seuilMaxN_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC: quad->seuilMaxInc_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
-                        quad->seuilMaxIncComplexe_ = var_dbl;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
-                        quad->seuilMaxAvantCur_ = var_dbl;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
-                        quad->seuilMaxAvantCurIncComplexe_ = var_dbl;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
-                        quad->seuilMaxNExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
-                        quad->seuilMaxIncExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
-                        quad->seuilMaxIncComplexeExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
-                        quad->seuilMaxAvantCurExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
-                        quad->seuilMaxAvantCurIncComplexeExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    default:
-                        // impossible case
-                        break;
-                }
+            switch (typeSeuil) {
+                case VariantConfiguration::VariantConfig::Threshold::MAX_N: quad->seuilMaxN_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC: quad->seuilMaxInc_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
+                    quad->seuilMaxIncComplexe_ = var_dbl;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
+                    quad->seuilMaxAvantCur_ = var_dbl;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
+                    quad->seuilMaxAvantCurIncComplexe_ = var_dbl;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
+                    quad->seuilMaxNExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
+                    quad->seuilMaxIncExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
+                    quad->seuilMaxIncComplexeExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
+                    quad->seuilMaxAvantCurExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
+                    quad->seuilMaxAvantCurIncComplexeExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
@@ -2820,27 +2821,26 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     for (const auto& [typeCout, couts] : config.costs) {
         for (const auto& [str, var_dbl] : couts) {
             auto groupesIt = groupes_.find(str);
-            if (groupesIt != groupes_.end()) {
-
-                switch (typeCout) {
-                    case VariantConfiguration::VariantConfig::CostType::UP_HR:
-                        variant->grpHausseHR_.try_emplace(groupesIt->second, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_HR:
-                        variant->grpBaisseHR_.try_emplace(groupesIt->second, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::CostType::UP_AR:
-                        variant->grpHausseAR_.try_emplace(groupesIt->second, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_AR:
-                        variant->grpBaisseAR_.try_emplace(groupesIt->second, var_dbl);
-                        break;
-                    default:
-                        // impossible case
-                        break;
-                }
-            } else {
+            if (groupesIt == groupes_.end()) {
                 LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+                continue;
+            }
+            switch (typeCout) {
+                case VariantConfiguration::VariantConfig::CostType::UP_HR:
+                    variant->grpHausseHR_.try_emplace(groupesIt->second, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_HR:
+                    variant->grpBaisseHR_.try_emplace(groupesIt->second, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::CostType::UP_AR:
+                    variant->grpHausseAR_.try_emplace(groupesIt->second, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_AR:
+                    variant->grpBaisseAR_.try_emplace(groupesIt->second, var_dbl);
+                    break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
@@ -2895,49 +2895,50 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
                                   ? elementsASurveillerN_
                                   : elementsASurveillerNk_;
             auto quadSurvIt = map.find(str);
-            if (quadSurvIt != map.end()) {
-                const auto& quad = quadSurvIt->second;
+            if (quadSurvIt == map.end()) {
+                continue;
+            }
+            const auto& quad = quadSurvIt->second;
 
-                switch (typeSeuil) {
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_N:
-                        variant->quati00mn_.try_emplace(quad, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC:
-                        variant->quati5mns_.try_emplace(quad, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
-                        variant->quati20mn_.try_emplace(quad, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
-                        variant->quatitamn_.try_emplace(quad, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
-                        variant->quatitamk_.try_emplace(quad, var_dbl);
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
-                        variant->quati00mnExOr_.try_emplace(quad, var_dbl);
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
-                        variant->quati5mnsExOr_.try_emplace(quad, var_dbl);
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
-                        variant->quati20mnExOr_.try_emplace(quad, var_dbl);
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
-                        variant->quatitamnExOr_.try_emplace(quad, var_dbl);
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
-                        variant->quatitamkExOr_.try_emplace(quad, var_dbl);
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    default:
-                        // impossible case
-                        break;
-                }
+            switch (typeSeuil) {
+                case VariantConfiguration::VariantConfig::Threshold::MAX_N:
+                    variant->quati00mn_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC:
+                    variant->quati5mns_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
+                    variant->quati20mn_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
+                    variant->quatitamn_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
+                    variant->quatitamk_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
+                    variant->quati00mnExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
+                    variant->quati5mnsExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
+                    variant->quati20mnExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
+                    variant->quatitamnExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
+                    variant->quatitamkExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
