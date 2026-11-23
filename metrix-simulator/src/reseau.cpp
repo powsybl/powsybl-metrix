@@ -2503,6 +2503,24 @@ double Incident::getProb() const
     return (prob);
 }
 
+/**
+ * Element de nom `nom` dans `elements`, ou nullptr avec l'avertissement `msgId` s'il n'existe pas
+ */
+template<typename Elements>
+static typename Elements::mapped_type trouverElement(const Elements& elements,
+                                                     const std::string& nom,
+                                                     const char* msgId,
+                                                     int numVariante,
+                                                     const std::string& complement = "")
+{
+    auto it = elements.find(nom);
+    if (it == elements.end()) {
+        LOG_ALL(warning) << err::ioDico().msg(msgId, nom, c_fmt("%d", numVariante), complement);
+        return nullptr;
+    }
+    return it->second;
+}
+
 void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& config)
 {
     using config::VariantConfiguration;
@@ -2513,78 +2531,56 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
     }
 
     for (const auto& group : config.unavailableGroups) {
-        auto groupesIt = groupes_.find(group);
-        if (groupesIt != groupes_.end()) {
-            auto& grp = groupesIt->second;
+        if (const auto grp = trouverElement(groupes_, group, "ERRGroupeIntrouvable", config.num)) {
             grp->etatBase_ = false;
             grp->etat_ = false;
 
             if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
                 prodMaxPossible_ -= grp->puisMaxDispo_;
             }
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", group, c_fmt("%d", config.num));
         }
     }
 
     for (const auto& [str, var_dbl] : config.consos) {
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            const auto& conso = consosIt->second;
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
             conso->valeurBase_ = var_dbl;
             conso->valeur_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     for (const auto& [str, var_dbl] : config.groups) {
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            const auto& grp = groupesIt->second;
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
             grp->prodPobjBase_ = var_dbl;
             grp->prodPobj_ = var_dbl;
             grp->prod_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     for (const auto& [str, var_dbl] : config.pmaxGroups) {
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            const auto& grp = groupesIt->second;
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
             if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
                 prodMaxPossible_ -= grp->puisMaxDispoBase_ - var_dbl;
             }
             grp->puisMaxDispoBase_ = var_dbl;
             grp->puisMaxDispo_ = var_dbl;
             grp->puisMax_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     for (const auto& [str, var_dbl] : config.pminGroups) {
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            const auto& grp = groupesIt->second;
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
             grp->puisMinBase_ = var_dbl;
             grp->puisMin_ = var_dbl;
             grp->puisMinAR_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     for (const auto& [typeCout, couts] : config.costs) {
         for (const auto& [str, var_dbl] : couts) {
-            auto groupesIt = groupes_.find(str);
-            if (groupesIt == groupes_.end()) {
-                LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+            const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num);
+            if (!grp) {
                 continue;
             }
-            const auto& grp = groupesIt->second;
 
             switch (typeCout) {
                 case VariantConfiguration::VariantConfig::CostType::UP_HR: grp->coutHausseHR_ = var_dbl; break;
@@ -2703,44 +2699,30 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
     }
 
     for (const auto& [str, var_dbl] : config.deleteConsosCosts) {
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            const auto& conso = consosIt->second;
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
             conso->coutEffacementBase_ = var_dbl;
             conso->coutEffacement_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     for (const auto& [str, var_dbl] : config.probas) {
-        auto icIt = incidents_.find(str);
-        if (icIt != incidents_.end()) {
-            const auto& icdt = icIt->second;
+        if (const auto icdt = trouverElement(incidents_, str, "ERRIncidentIntrouvable", config.num)) {
             icdt->probabilite_ = var_dbl;
             icdt->probabiliteBase_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     Quadripole::SetQuadripoleSortedByName indispoLignesBase;
     for (const auto& line : config.unavailableLines) {
-            auto quadsIt = quads_.find(line);
-            if (quadsIt != quads_.end()) {
-                indispoLignesBase.insert(quadsIt->second);
-                const auto& quad = quadsIt->second;
-                quad->etatExBase_ = false;
-                quad->etatOrBase_ = false;
-                } else {
-                LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
-            }
-
+        if (const auto quad = trouverElement(quads_, line, "ERRQuadIntrouvable", config.num, "QUADIN")) {
+            indispoLignesBase.insert(quad);
+            quad->etatExBase_ = false;
+            quad->etatOrBase_ = false;
         }
-        if (!modifReseauTopo(indispoLignesBase)) {
-            throw ErrorI(err::ioDico().msg("ERRIndispoLigneVarConnexite", c_fmt("%d", config.num)));
-        }
-
+    }
+    if (!modifReseauTopo(indispoLignesBase)) {
+        throw ErrorI(err::ioDico().msg("ERRIndispoLigneVarConnexite", c_fmt("%d", config.num)));
+    }
 }
 
 void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfiguration& config)
@@ -2774,69 +2756,53 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     variant->num_ = config.num;
 
     for (const auto& group : config.unavailableGroups) {
-        auto groupesIt = groupes_.find(group);
-        if (groupesIt != groupes_.end()) {
-            variant->grpIndispo_.insert(groupesIt->second);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", group, c_fmt("%d", config.num));
+        if (const auto grp = trouverElement(groupes_, group, "ERRGroupeIntrouvable", config.num)) {
+            variant->grpIndispo_.insert(grp);
         }
     }
 
     for (const auto& [str, var_dbl] : config.consos) {
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            variant->valeurConso_.try_emplace(consosIt->second, var_dbl);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
+            variant->valeurConso_.try_emplace(conso, var_dbl);
         }
     }
 
     for (const auto& [str, var_dbl] : config.groups) {
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            variant->prodImpose_.try_emplace(groupesIt->second, var_dbl);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
+            variant->prodImpose_.try_emplace(grp, var_dbl);
         }
     }
 
     for (const auto& [str, var_dbl] : config.pmaxGroups) {
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            variant->prodMax_.try_emplace(groupesIt->second, var_dbl);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
+            variant->prodMax_.try_emplace(grp, var_dbl);
         }
     }
 
     for (const auto& [str, var_dbl] : config.pminGroups) {
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            variant->prodMin_.try_emplace(groupesIt->second, var_dbl);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
+            variant->prodMin_.try_emplace(grp, var_dbl);
         }
     }
 
     for (const auto& [typeCout, couts] : config.costs) {
         for (const auto& [str, var_dbl] : couts) {
-            auto groupesIt = groupes_.find(str);
-            if (groupesIt == groupes_.end()) {
-                LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+            const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num);
+            if (!grp) {
                 continue;
             }
             switch (typeCout) {
                 case VariantConfiguration::VariantConfig::CostType::UP_HR:
-                    variant->grpHausseHR_.try_emplace(groupesIt->second, var_dbl);
+                    variant->grpHausseHR_.try_emplace(grp, var_dbl);
                     break;
                 case VariantConfiguration::VariantConfig::CostType::DOWN_HR:
-                    variant->grpBaisseHR_.try_emplace(groupesIt->second, var_dbl);
+                    variant->grpBaisseHR_.try_emplace(grp, var_dbl);
                     break;
                 case VariantConfiguration::VariantConfig::CostType::UP_AR:
-                    variant->grpHausseAR_.try_emplace(groupesIt->second, var_dbl);
+                    variant->grpHausseAR_.try_emplace(grp, var_dbl);
                     break;
                 case VariantConfiguration::VariantConfig::CostType::DOWN_AR:
-                    variant->grpBaisseAR_.try_emplace(groupesIt->second, var_dbl);
+                    variant->grpBaisseAR_.try_emplace(grp, var_dbl);
                     break;
                 default:
                     // impossible case
@@ -2846,11 +2812,8 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     }
 
     for (const auto& line : config.unavailableLines) {
-        auto quadsIt = quads_.find(line);
-        if (quadsIt != quads_.end()) {
-            variant->indispoLignes_.insert(quadsIt->second);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
+        if (const auto quad = trouverElement(quads_, line, "ERRQuadIntrouvable", config.num, "QUADIN")) {
+            variant->indispoLignes_.insert(quad);
         }
     }
 
@@ -2944,11 +2907,8 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     }
 
     for (const auto& [str, var_dbl] : config.deleteConsosCosts) {
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            variant->coutEfface_.try_emplace(consosIt->second, var_dbl);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
+            variant->coutEfface_.try_emplace(conso, var_dbl);
         }
     }
 
@@ -2969,11 +2929,8 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     }
 
     for (const auto& [str, var_dbl] : config.probas) {
-        auto icIt = incidents_.find(str);
-        if (icIt != incidents_.end()) {
-            variant->probabinc_.try_emplace(icIt->second, var_dbl);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+        if (const auto icdt = trouverElement(incidents_, str, "ERRIncidentIntrouvable", config.num)) {
+            variant->probabinc_.try_emplace(icdt, var_dbl);
         }
     }
 

@@ -517,16 +517,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     continue;
                 }
 
-                auto tmpListeElemCur = icdt->listeElemCur_;
-
-                if (icdt->paradesActivees_) {
-                    for (const auto& parade : icdt->parades_) {
-                        if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
-                            tmpListeElemCur = parade->listeElemCur_;
-                            break;
-                        }
-                    }
-                }
+                const auto& tmpListeElemCur = resolveActiveElemCur(icdt, pbX_);
 
                 for (const auto& elemC : tmpListeElemCur) {
                     if (elemC->typeElem_ != ElementCuratif::CONSO) {
@@ -713,16 +704,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                     continue;
                 }
 
-                auto tmpListeElemCur = icdt->listeElemCur_;
-
-                if (icdt->paradesActivees_) {
-                    for (const auto& parade : icdt->parades_) {
-                        if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
-                            tmpListeElemCur = parade->listeElemCur_;
-                            break;
-                        }
-                    }
-                }
+                const auto& tmpListeElemCur = resolveActiveElemCur(icdt, pbX_);
 
                 vector tmpMaxRedispCurParTypeH(res_.nbTypesGroupes_, 0.);
                 vector tmpMaxRedispCurParTypeB(res_.nbTypesGroupes_, 0.);
@@ -1014,16 +996,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            auto tmpListeElemCur = icdt->listeElemCur_;
-
-            if (icdt->paradesActivees_) {
-                for (const auto& parade : icdt->parades_) {
-                    if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
-                        tmpListeElemCur = parade->listeElemCur_;
-                        break;
-                    }
-                }
-            }
+            const auto& tmpListeElemCur = resolveActiveElemCur(icdt, pbX_);
 
             for (const auto& elemC : tmpListeElemCur) {
                 if (elemC->typeElem_ != ElementCuratif::TD) {
@@ -1096,16 +1069,7 @@ int Calculer::metrix2Assess(const std::shared_ptr<Variante>& var, const vector<d
                 continue;
             }
 
-            auto tmpListeElemCur = icdt->listeElemCur_;
-
-            if (icdt->paradesActivees_) {
-                for (const auto& parade : icdt->parades_) {
-                    if ((parade->numVarActivation_ != -1) && (pbX_[parade->numVarActivation_] > 0.5)) {
-                        tmpListeElemCur = parade->listeElemCur_;
-                        break;
-                    }
-                }
-            }
+            const auto& tmpListeElemCur = resolveActiveElemCur(icdt, pbX_);
 
             for (const auto& elemC : tmpListeElemCur) {
                 if (elemC->typeElem_ != ElementCuratif::HVDC) {
