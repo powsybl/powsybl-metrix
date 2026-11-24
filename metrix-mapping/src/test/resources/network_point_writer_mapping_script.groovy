@@ -46,7 +46,7 @@ mapToGenerators {
     filter {generator.id == 'FSSV.O12_G'}
 }
 mapToGenerators {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulation_mode_ts'
     filter {
         generator.id=="FVALDI11_G"
     }
@@ -67,7 +67,7 @@ mapToGenerators {
     variable targetV
 }
 mapToGenerators {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulation_mode_ts'
     filter {
         generator.id=="FSSV.O11_G"
     }
@@ -232,7 +232,7 @@ mapToLccConverterStations {
     variable powerFactor
 }
 mapToVscConverterStations {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulation_mode_ts'
     filter {
         vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
     }
