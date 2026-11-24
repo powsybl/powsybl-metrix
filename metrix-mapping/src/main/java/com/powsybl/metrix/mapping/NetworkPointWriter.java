@@ -13,6 +13,9 @@ import com.powsybl.iidm.network.*;
 import com.powsybl.iidm.network.extensions.HvdcOperatorActivePowerRange;
 import com.powsybl.iidm.network.extensions.LoadDetail;
 import com.powsybl.iidm.network.extensions.LoadDetailAdder;
+import com.powsybl.iidm.network.regulation.RegulationMode;
+import com.powsybl.iidm.network.regulation.VoltageRegulation;
+import com.powsybl.iidm.network.regulation.VoltageRegulationHolder;
 import com.powsybl.iidm.serde.ExportOptions;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.MappingVariable;
@@ -132,10 +135,12 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private void mapToVscConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
         switch (variable) {
-            case VOLTAGE_REGULATOR_ON ->
-                converter.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case VOLTAGE_SETPOINT -> converter.setVoltageSetpoint(equipmentValue);
-            case REACTIVE_POWER_SETPOINT -> converter.setReactivePowerSetpoint(equipmentValue);
+            case VOLTAGE_REGULATOR_ON -> {
+                VoltageRegulation voltageRegulation = newVoltageRegulation(converter, converter.getVoltageRegulation());
+                voltageRegulation.setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            }
+            case VOLTAGE_SETPOINT -> converter.setLocalTargetV(equipmentValue);
+            case REACTIVE_POWER_SETPOINT -> converter.setLocalTargetQ(equipmentValue);
             default -> {
                 // Do nothing
             }
@@ -156,11 +161,18 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case REGULATION_MODE -> selectRegulationMode(equipmentValue, transformer);
             // mapToRatioTapChanger variables
             case RATIO_TAP_POSITION -> transformer.getRatioTapChanger().setTapPosition((int) equipmentValue);
-            case TARGET_V -> transformer.getRatioTapChanger().setTargetV(equipmentValue);
+            case TARGET_V -> {
+                RatioTapChanger ratioTapChanger = transformer.getRatioTapChanger();
+                VoltageRegulation voltageRegulation = newVoltageRegulation(ratioTapChanger, ratioTapChanger.getVoltageRegulation());
+                voltageRegulation.setTargetValue(equipmentValue);
+            }
             case LOAD_TAP_CHANGING_CAPABILITIES ->
                 transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case RATIO_REGULATING ->
-                transformer.getRatioTapChanger().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case RATIO_REGULATING -> {
+                RatioTapChanger ratioTapChanger = transformer.getRatioTapChanger();
+                VoltageRegulation voltageRegulation = newVoltageRegulation(ratioTapChanger, ratioTapChanger.getVoltageRegulation());
+                voltageRegulation.setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            }
             case DISCONNECTED -> {
                 if (Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
                     transformer.getTerminal1().disconnect();
@@ -271,16 +283,28 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         return loadDetail;
     }
 
+    private VoltageRegulation newVoltageRegulation(VoltageRegulationHolder<?> voltageRegulationHolder, VoltageRegulation voltageRegulation) {
+        if (voltageRegulation == null) {
+            voltageRegulationHolder.newVoltageRegulation().withMode(RegulationMode.VOLTAGE).build();
+            return voltageRegulationHolder.getVoltageRegulation();
+        } else if (voltageRegulation.getMode() == null) {
+            voltageRegulation.setMode(RegulationMode.VOLTAGE);
+        }
+        return voltageRegulation;
+    }
+
     private void mapToGeneratorVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         Generator generator = network.getGenerator(identifiable.getId());
         switch (variable) {
             case TARGET_P -> generator.setTargetP(equipmentValue);
-            case TARGET_Q -> generator.setTargetQ(equipmentValue);
+            case TARGET_Q -> generator.setLocalTargetQ(equipmentValue);
             case MIN_P -> generator.setMinP(equipmentValue);
             case MAX_P -> generator.setMaxP(equipmentValue);
-            case VOLTAGE_REGULATOR_ON ->
-                generator.setVoltageRegulatorOn(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case TARGET_V -> generator.setTargetV(equipmentValue);
+            case VOLTAGE_REGULATOR_ON -> {
+                VoltageRegulation voltageRegulation = newVoltageRegulation(generator, generator.getVoltageRegulation());
+                voltageRegulation.setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            }
+            case TARGET_V -> generator.setLocalTargetV(equipmentValue);
             case DISCONNECTED -> disconnectInjection(equipmentValue, generator);
             default -> { /* Do nothing */ }
         }
@@ -290,7 +314,7 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
         Battery battery = network.getBattery(identifiable.getId());
         switch (variable) {
             case TARGET_P -> battery.setTargetP(equipmentValue);
-            case TARGET_Q -> battery.setTargetQ(equipmentValue);
+            case TARGET_Q -> battery.setLocalTargetQ(equipmentValue);
             case MIN_P -> battery.setMinP(equipmentValue);
             case MAX_P -> battery.setMaxP(equipmentValue);
             case DISCONNECTED -> disconnectInjection(equipmentValue, battery);

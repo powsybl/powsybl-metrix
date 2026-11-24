@@ -186,7 +186,7 @@ public class TimeSeriesMappingConfigCsvWriter {
         if (variable == EquipmentVariable.TARGET_P) {
             getPower = id -> network.getGenerator(id).getTargetP();
         } else if (variable == EquipmentVariable.TARGET_Q) {
-            getPower = id -> network.getGenerator(id).getTargetQ();
+            getPower = id -> network.getGenerator(id).getLocalTargetQ();
         } else if (variable == EquipmentVariable.MIN_P) {
             getPower = id -> (double) TimeSeriesMapper.getMin(network.getIdentifiable(id));
         } else if (variable == EquipmentVariable.MAX_P) {

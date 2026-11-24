@@ -124,7 +124,7 @@ class MappingKeyNetworkValueTest {
     @Test
     void getVscConverterStationValueTest() {
         final String id = "FSSV.O1_FSSV.O1_HVDC2";
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, id)), 0);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, id)), 1);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, id)), 406);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, id)), 0);
     }

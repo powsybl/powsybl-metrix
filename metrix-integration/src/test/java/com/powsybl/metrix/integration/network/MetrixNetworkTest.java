@@ -108,7 +108,7 @@ class MetrixNetworkTest {
             .setId("S1VL1_battery")
             .setNode(28)
             .setTargetP(9999.99)
-            .setTargetQ(9999.99)
+            .setLocalTargetQ(9999.99)
             .setMinP(-9999.99)
             .setMaxP(9999.99)
             .add();

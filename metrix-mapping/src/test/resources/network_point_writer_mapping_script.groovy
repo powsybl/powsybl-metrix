@@ -252,13 +252,6 @@ mapToVscConverterStations {
     }
     variable reactivePowerSetpoint
 }
-mapToVscConverterStations {
-    timeSeriesName 'ts1'
-    filter {
-        vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
-    }
-    variable voltageRegulatorOn
-}
 mapToLines {
     timeSeriesName 'ts1'
     filter {

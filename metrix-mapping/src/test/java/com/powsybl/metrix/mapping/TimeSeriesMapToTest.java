@@ -344,7 +344,7 @@ class TimeSeriesMapToTest {
             .setEnsureIdUnicity(true)
             .setNode(6)
             .setTargetP(100.0)
-            .setTargetQ(20.0)
+            .setLocalTargetQ(20.0)
             .setMinP(10.0)
             .setMaxP(200.0)
             .add();
