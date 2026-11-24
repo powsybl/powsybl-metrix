@@ -3550,15 +3550,14 @@ int Calculer::coeffPourQuadIncRompantConnexite(const std::shared_ptr<Quadripole>
 bool ouvragesEnContrainteDeconnectes(const std::shared_ptr<Contrainte>& contrainte,
                                      const std::shared_ptr<Incident>& parade)
 {
-    for (const auto& [quad, coeff] : contrainte->elemAS_->quadsASurv_) {
-        // Un ouvrage connecte doit etre ouvert par la parade, un ouvrage deconnecte ne doit pas etre referme
+    // Un ouvrage connecte doit etre ouvert par la parade, un ouvrage deconnecte ne doit pas etre referme
+    const auto& quadsSurv = contrainte->elemAS_->quadsASurv_;
+    return std::all_of(quadsSurv.begin(), quadsSurv.end(), [&parade](const auto& quadSurv) {
+        const auto& quad = quadSurv.first;
         const auto& quadsParade = quad->connecte() ? parade->listeQuads_ : parade->listeCouplagesFermes_;
         const bool dansParade = std::find(quadsParade.begin(), quadsParade.end(), quad) != quadsParade.end();
-        if (dansParade != quad->connecte()) {
-            return false;
-        }
-    }
-    return true;
+        return dansParade == quad->connecte();
+    });
 }
 
 
