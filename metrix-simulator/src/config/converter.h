@@ -18,12 +18,10 @@
 
 #include <string>
 
-namespace config
-{
 /**
  * @brief Namespace containing some helper functions for configuration files reading
  */
-namespace convert
+namespace config::convert
 {
 /**
  * @brief Convert string ot integer
@@ -44,5 +42,4 @@ int toInt(const std::string& str);
  * @returns converted value
  */
 double toDouble(const std::string& str);
-} // namespace convert
-} // namespace config
+} // namespace config::convert

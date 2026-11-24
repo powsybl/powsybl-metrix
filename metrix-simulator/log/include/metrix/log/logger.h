@@ -30,12 +30,10 @@
 #include <string>
 #include <vector>
 
-namespace metrix
-{
 /**
  * @brief Namespace for logging library
  */
-namespace log
+namespace metrix::log
 {
 /**
  * @brief Namespace for definitions of log level
@@ -62,18 +60,7 @@ enum level {
 constexpr severity::level default_level = severity::info; ///< default log level
 
 // Manipulators
-struct Sync {
-};
-
-/**
- * constexpr variable allowing to use sync with the same interface as std::hex for the STL ostream. Put at the end of a
- * LOG statement, it forces the flushing of all sinks without waiting for the timer. Data sent to the log flow in the
- * same line after using sync is ignored.
- * @code{.cpp}
- * LOG(info) << "This is a log" << metrix::log::sync << "This part is ignored";
- * @endcode
- */
-constexpr Sync sync;
+struct Sync;
 
 /**
  * @brief Verbose definitions
@@ -197,6 +184,7 @@ public:
 
     template<class T>
     friend Logger& operator<<(Logger& logger, const T& element);
+    friend Logger& operator<<(Logger& logger, const Sync&);
 
 private:
     using logger_src = boost::log::sources::severity_logger<severity::level>;
@@ -280,21 +268,36 @@ private:
 template<class T>
 Logger& operator<<(Logger& logger, const T& element)
 {
-    std::unique_lock<std::mutex> lock(logger.mutex_);
+    std::scoped_lock lock(logger.mutex_);
     if (logger.logInfo_) {
         logger.logInfo_->stream << element;
     }
     return logger;
 }
 
-template<>
-Logger& operator<<(Logger& logger, const Sync& element);
+struct Sync {
+    friend Logger& operator<<(Logger& logger, const Sync&)
+    {
+        std::scoped_lock lock(logger.mutex_);
+        logger.logImpl();
+        return logger;
+    }
+};
+
+/**
+ * constexpr variable allowing to use sync with the same interface as std::hex for the STL ostream. Put at the end of a
+ * LOG statement, it forces the flushing of all sinks without waiting for the timer. Data sent to the log flow in the
+ * same line after using sync is ignored.
+ * @code{.cpp}
+ * LOG(info) << "This is a log" << metrix::log::sync << "This part is ignored";
+ * @endcode
+ */
+constexpr Sync sync;
 
 template<>
 Logger& operator<<(Logger& logger, const Verbose& element);
 
-} // namespace log
-} // namespace metrix
+} // namespace metrix::log
 
 /**
  * @brief Performs a log in dev file

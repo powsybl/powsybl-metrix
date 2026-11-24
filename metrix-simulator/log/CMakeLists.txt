@@ -12,7 +12,7 @@ message(STATUS "Log librairie")
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66.0 REQUIRED COMPONENTS log filesystem OPTIONAL_COMPONENTS system)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS log OPTIONAL_COMPONENTS system)
 
 set(LOG_SOURCES
     src/logger.cpp
@@ -25,7 +25,6 @@ target_include_directories(log
     $<INSTALL_INTERFACE:include>
 
     Boost::log
-    Boost::filesystem
 
     PRIVATE
     src
@@ -33,7 +32,6 @@ target_include_directories(log
 
 target_link_libraries(log
     Boost::log
-    Boost::filesystem
 )
 
 if(TARGET Boost::system)

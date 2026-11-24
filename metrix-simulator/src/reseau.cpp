@@ -52,7 +52,13 @@ using std::vector;
 
 std::mt19937 Reseau::random;
 
-int Reseau::myRandom(int i) { return random() % i; }
+void Reseau::melanger(std::vector<std::shared_ptr<Groupe>>& groupes)
+{
+    // Pas de std::shuffle : son resultat depend de l'implementation de la STL
+    for (size_t i = 1; i < groupes.size(); ++i) {
+        groupes[i].swap(groupes[random() % (i + 1)]);
+    }
+}
 
 bool compareGroupeHausse(const std::shared_ptr<Groupe>& grp1, const std::shared_ptr<Groupe>& grp2)
 {
@@ -203,7 +209,7 @@ void Reseau::lireDonnees()
 
         auto quad = std::make_shared<Quadripole>(
             i, nomQuadripole, noeuds_[indNorqua], noeuds_[indNexqua], config.cqadmitaDIE()[i], config.cqresistDIE()[i]);
-        quads_.insert(std::pair<string, std::shared_ptr<Quadripole>>(quad->nom_, quad));
+        quads_.try_emplace(quad->nom_, quad);
         quadsParIndice.push_back(quad);
 
         // on cree un element a surveiller si la ligne est connectee des 2 cotes et que la surveillance est demandee
@@ -226,14 +232,12 @@ void Reseau::lireDonnees()
             quadsSurv_.insert(quad);
 
             if (elemAS->survMaxN_ == ElementASurveiller::SURVEILLE) {
-                elementsASurveillerN_.insert(
-                    std::pair<string, std::shared_ptr<ElementASurveiller>>(elemAS->nom_, elemAS));
+                elementsASurveillerN_.try_emplace(elemAS->nom_, elemAS);
                 nbQuadSurvN_++;
             }
 
             if (elemAS->survMaxInc_ == ElementASurveiller::SURVEILLE) {
-                elementsASurveillerNk_.insert(
-                    std::pair<string, std::shared_ptr<ElementASurveiller>>(elemAS->nom_, elemAS));
+                elementsASurveillerNk_.try_emplace(elemAS->nom_, elemAS);
                 nbQuadSurvNk_++;
             } else if (elemAS->survMaxInc_ == ElementASurveiller::AVEC_RESULTAT) {
                 elementsAvecResultatNk_.push_back(elemAS);
@@ -398,7 +402,7 @@ void Reseau::lireDonnees()
                     cptPtIncident++;
                 }
             }
-            LigneCCs_.insert(std::pair<string, std::shared_ptr<LigneCC>>(ligneCC->nom_, ligneCC));
+            LigneCCs_.try_emplace(ligneCC->nom_, ligneCC);
             lccParIndice_.push_back(ligneCC);
 
             // Traitement des lignes CC en emulation AC
@@ -429,7 +433,7 @@ void Reseau::lireDonnees()
                     nbQuads_, nomQuad, ligneCC->norqua_, ligneCC->nexqua_, coefK, 0.);
 
                 quadACFictif->typeQuadripole_ = Quadripole::QUADRIPOLE_EMULATION_AC;
-                quads_.insert(std::pair<string, std::shared_ptr<Quadripole>>(quadACFictif->nom_, quadACFictif));
+                quads_.try_emplace(quadACFictif->nom_, quadACFictif);
                 ligneCC->quadFictif_ = quadACFictif;
                 nbQuads_++;
 
@@ -484,11 +488,9 @@ void Reseau::lireDonnees()
                 quadACFictif->elemAS_ = elemAS;
                 elementsASurveiller_.push_back(elemAS);
                 quadsSurv_.insert(quadACFictif);
-                elementsASurveillerN_.insert(
-                    std::pair<string, std::shared_ptr<ElementASurveiller>>(elemAS->nom_, elemAS));
+                elementsASurveillerN_.try_emplace(elemAS->nom_, elemAS);
                 nbQuadSurvN_++;
-                elementsASurveillerNk_.insert(
-                    std::pair<string, std::shared_ptr<ElementASurveiller>>(elemAS->nom_, elemAS));
+                elementsASurveillerNk_.try_emplace(elemAS->nom_, elemAS);
                 nbQuadSurvNk_++;
 
                 // Ajout du TD fictif en curatif sur tous les incidents
@@ -584,7 +586,7 @@ void Reseau::lireDonnees()
                                              );
 
 
-        groupes_.insert(std::pair<string, std::shared_ptr<Groupe>>(prod->nom_, prod));
+        groupes_.try_emplace(prod->nom_, prod);
         groupesParIndice.push_back(prod);
         // chaque groupe modifiable introduit trois variable P_hausse et P_baisse et P_fixe
         if (prod->prodAjust_ != Groupe::NON_HR_AR) {
@@ -631,7 +633,7 @@ void Reseau::lireDonnees()
         const auto& noeud = noeuds_[indNoeudRaccord];
 
         auto conso = std::make_shared<Consommation>(i, nomConso, noeud, config.esafiactDIE()[i]);
-        consos_.insert(std::pair<string, std::shared_ptr<Consommation>>(conso->nom_, conso));
+        consos_.try_emplace(conso->nom_, conso);
         consommationsParIndice.push_back(conso);
 
         int nvapalDIE = 100;
@@ -741,7 +743,7 @@ void Reseau::lireDonnees()
 
         cptTableDescr += config.sectnbqdDIE()[i];
         elementsASurveiller_.push_back(elemAS);
-        elementsASurveillerN_.insert(std::pair<string, std::shared_ptr<ElementASurveiller>>(elemAS->nom_, elemAS));
+        elementsASurveillerN_.try_emplace(elemAS->nom_, elemAS);
         nbQuadSurvN_++;
     }
 
@@ -864,7 +866,7 @@ void Reseau::lireDonnees()
 
             icdt->nom_ = nom;
         }
-        incidents_.insert(std::pair<string, std::shared_ptr<Incident>>(icdt->nom_, icdt));
+        incidents_.try_emplace(icdt->nom_, icdt);
         incidentsEtParades_.push_back(icdt);
 
         if (icdt->nbLignes_ > 0 || icdt->nbLccs_ > 0) {
@@ -905,8 +907,7 @@ void Reseau::lireDonnees()
                     incidentsAvecTransits_.insert(icdt);
                 }
             }
-            transitsSurDefauts_.insert(
-                std::pair<std::shared_ptr<Quadripole>, std::set<std::shared_ptr<Incident>>>(quad, listeIncidents));
+            transitsSurDefauts_.try_emplace(quad, listeIncidents);
         }
     }
 
@@ -936,8 +937,7 @@ void Reseau::lireDonnees()
                     listeIncidents.insert(icdt);
                 }
             }
-            variationsMarginalesDetaillees_.insert(
-                std::pair<string, std::set<std::shared_ptr<Incident>>>(quad->nom_, listeIncidents));
+            variationsMarginalesDetaillees_.try_emplace(quad->nom_, listeIncidents);
         }
     }
 
@@ -968,8 +968,7 @@ void Reseau::lireDonnees()
 
             inc->listeElemCur_.push_back(elemC);
             if (td->fictif_) {
-                inc->tdFictifsElemCur_.insert(
-                    std::pair<std::shared_ptr<Quadripole>, std::shared_ptr<ElementCuratifTD>>(td->quadVrai_, elemC));
+                inc->tdFictifsElemCur_.try_emplace(td->quadVrai_, elemC);
             }
         }
     }
@@ -998,8 +997,7 @@ void Reseau::lireDonnees()
 
             auto elemC = std::make_shared<ElementCuratifHVDC>(lcc);
             inc->listeElemCur_.push_back(elemC);
-            inc->lccElemCur_.insert(
-                std::pair<std::shared_ptr<LigneCC>, std::shared_ptr<ElementCuratifHVDC>>(lcc, elemC));
+            inc->lccElemCur_.try_emplace(lcc, elemC);
         }
     }
 
@@ -1050,8 +1048,7 @@ void Reseau::lireDonnees()
         }
     }
 
-    for (const auto& elem : incidents_) {
-        const auto& inc = elem.second;
+    for (const auto& [nomIncident, inc] : incidents_) {
         if (!inc->validite_) {
             continue;
         }
@@ -1732,21 +1729,19 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // I-2 : Modif pmax et pmin
     //------------------------
-    for (const auto& elem : var->prodMax_) {
-        const auto& prod = elem.first;
-        prod->puisMaxDispo_ = elem.second;
-        prod->puisMax_ = elem.second;
+    for (const auto& [prod, puisMax] : var->prodMax_) {
+        prod->puisMaxDispo_ = puisMax;
+        prod->puisMax_ = puisMax;
         if (prod->prodAjust_ == Groupe::OUI_HR_AR || prod->prodAjust_ == Groupe::OUI_HR) {
             prodEnMoins += (prod->puisMaxDispoBase_ - prod->puisMaxDispo_);
         }
         LOG(debug) << "la prod max du groupe : " << prod->nom_ << " est modifee, nouvelle valeur : " << prod->puisMax_;
     }
 
-    for (const auto& elem : var->prodMin_) {
-        elem.first->puisMinAR_ = elem.second;
+    for (const auto& [grp, puisMin] : var->prodMin_) {
+        grp->puisMinAR_ = puisMin;
         // prod->puisMin_ = (prod->puisMinAR_ > 0)?0:prod->puisMinAR_; // deja dans le modifBilan
-        LOG(debug) << "la prod min AR du groupe : " << elem.first->nom_
-                   << " est modifee, nouvelle valeur : " << elem.second;
+        LOG(debug) << "la prod min AR du groupe : " << grp->nom_ << " est modifee, nouvelle valeur : " << puisMin;
     }
 
     // I-3 : mise a jour des Pmax des groupes pour le reglage de frequence suite a l'indisponibilite des groupes de
@@ -1757,83 +1752,76 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // II-productions imposees
     //------------------------
-    for (const auto& elem : var->prodImpose_) {
-        elem.first->prodPobj_ = elem.second;
+    for (const auto& [grp, prodImposee] : var->prodImpose_) {
+        grp->prodPobj_ = prodImposee;
 
         // prod->checkCoherencePminMaxObj();
-        LOG(debug) << "la prod impose : " << elem.first->nom_ << " est modifee, nouvelle valeur : " << elem.second;
+        LOG(debug) << "la prod impose : " << grp->nom_ << " est modifee, nouvelle valeur : " << prodImposee;
     }
 
 
     // III-variation de la consommation
     //-------------------------------
-    for (const auto& elem : var->valeurConso_) {
-        elem.first->valeur_ = elem.second;
+    for (const auto& [conso, valeur] : var->valeurConso_) {
+        conso->valeur_ = valeur;
 
-        LOG(debug) << "la conso : " << elem.first->nom_ << " est modifee, nouvelle valeur : " << elem.first->valeur_;
+        LOG(debug) << "la conso : " << conso->nom_ << " est modifee, nouvelle valeur : " << conso->valeur_;
     }
 
     // IV-variation des couts a la hausse sans reseau
     //----------------------------------------------
-    for (const auto& elem : var->grpHausseHR_) {
-        elem.first->coutHausseHR_ = elem.second;
+    for (const auto& [grp, nouveauCout] : var->grpHausseHR_) {
+        grp->coutHausseHR_ = nouveauCout;
 
-        LOG(debug) << "le cout a la hausse  : " << elem.first->nom_
-                   << " est modife, nouvelle valeur est: " << elem.second;
+        LOG(debug) << "le cout a la hausse  : " << grp->nom_ << " est modife, nouvelle valeur est: " << nouveauCout;
     }
 
     // V-variation des couts a la baisse sans reseau
     //----------------------------------------------
-    for (const auto& elem : var->grpBaisseHR_) {
-        elem.first->coutBaisseHR_ = elem.second;
+    for (const auto& [grp, nouveauCout] : var->grpBaisseHR_) {
+        grp->coutBaisseHR_ = nouveauCout;
 
-        LOG(debug) << "le cout a la baisse  : " << elem.first->nom_
-                   << " est modife, nouvelle valeur est: " << elem.second;
+        LOG(debug) << "le cout a la baisse  : " << grp->nom_ << " est modife, nouvelle valeur est: " << nouveauCout;
     }
     // VII-variation des couts a la hausse avec reseau
     //----------------------------------------------
-    for (const auto& elem : var->grpHausseAR_) {
-        elem.first->coutHausseAR_ = elem.second;
+    for (const auto& [grp, nouveauCout] : var->grpHausseAR_) {
+        grp->coutHausseAR_ = nouveauCout;
 
-        LOG(debug) << "le cout a la hausse AR : " << elem.first->nom_
-                   << " est modife, nouvelle valeur est: " << elem.second;
+        LOG(debug) << "le cout a la hausse AR : " << grp->nom_ << " est modife, nouvelle valeur est: " << nouveauCout;
     }
     // VIII-variation des couts a la baisse avec reseau
     //----------------------------------------------
-    for (const auto& elem : var->grpBaisseAR_) {
-        elem.first->coutBaisseAR_ = elem.second;
+    for (const auto& [grp, nouveauCout] : var->grpBaisseAR_) {
+        grp->coutBaisseAR_ = nouveauCout;
 
-        LOG(debug) << "le cout a la baisse AR : " << elem.first->nom_
-                   << " est modife, nouvelle valeur est: " << elem.second;
+        LOG(debug) << "le cout a la baisse AR : " << grp->nom_ << " est modife, nouvelle valeur est: " << nouveauCout;
     }
 
     // IX - variation des couts d'effacement
     //----------------------------------------------
-    for (const auto& elem : var->coutEfface_) {
-        elem.first->coutEffacement_ = elem.second;
+    for (const auto& [conso, nouveauCout] : var->coutEfface_) {
+        conso->coutEffacement_ = nouveauCout;
 
-        LOG(debug) << "le cout d'effacement : " << elem.first->nom_
-                   << " est modife, nouvelle valeur est: " << elem.first->coutEffacement_;
+        LOG(debug) << "le cout d'effacement : " << conso->nom_
+                   << " est modife, nouvelle valeur est: " << conso->coutEffacement_;
     }
 
     // X - bilan zonal en jouant sur la consommation
     //-------------------------------------------------------
     double bilanCourant = 0.0; // bilan actuel apres application de toutes les autres lois
-    double bilanCible = 0.0;   // bilan visé par la variante
     double sumC = 0.0;         // somme des consommations
 
-    for (const auto& elem : var->valeurEchange_) {
-        bilanCible = elem.second;
-
+    for (const auto& [numRegion, bilanCible] : var->valeurEchange_) {
         bilanCourant = 0.0;
         sumC = 0.0;
 
-        LOG(debug) << " bilan d'echange sur region num : " << elem.first
+        LOG(debug) << " bilan d'echange sur region num : " << numRegion
                    << ", nouvelle valeur d echange : " << bilanCible;
         // calcul de echCourant
         for (auto grpIt = groupes_.cbegin(); grpIt != groupes_.end(); ++grpIt) {
             const auto& prod = grpIt->second;
-            if (noeuds_[prod->numNoeud_]->numRegion_ != elem.first || !prod->etat_) {
+            if (noeuds_[prod->numNoeud_]->numRegion_ != numRegion || !prod->etat_) {
                 continue;
             }
 
@@ -1850,7 +1838,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
             const auto& conso = cIt->second;
 
-            if (conso->noeud_->numRegion_ != elem.first) {
+            if (conso->noeud_->numRegion_ != numRegion) {
                 continue;
             }
 
@@ -1866,7 +1854,7 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         for (auto cIt = consos_.cbegin(); cIt != consos_.end(); ++cIt) {
             const auto& conso = cIt->second;
 
-            if (conso->noeud_->numRegion_ != elem.first) {
+            if (conso->noeud_->numRegion_ != numRegion) {
                 continue;
             }
 
@@ -1894,9 +1882,8 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
         }
     }
 
-    for (auto& elem : var->dcPuissMax_) {
-        const auto& lcc = elem.first;
-        lcc->puiMax_ = elem.second;
+    for (const auto& [lcc, puissance] : var->dcPuissMax_) {
+        lcc->puiMax_ = puissance;
 
         if (lcc->isEmulationAC()) {
             // Mise à jour du quad fictif surveillé
@@ -1910,9 +1897,9 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // XII-Puissance de consigne des HVDCs
     //-----------------------------------
-    for (const auto& elem : var->dcPuissImp_) {
+    for (const auto& [lcc, puissance] : var->dcPuissImp_) {
         // Modification de la puissance de consigne de la LCC
-        elem.first->puiCons_ = elem.second;
+        lcc->puiCons_ = puissance;
     }
 
     // Vérification PCons, Pmin et Pmax (si pilotage puissance imposée)
@@ -1927,76 +1914,64 @@ int Reseau::modifReseau(const std::shared_ptr<Variante>& var)
 
     // XIII-Dephasage des TDs
     //------------------------
-    for (const auto& elem : var->dtValDep_) {
-        const auto& td = elem.first;
+    for (const auto& [td, puissance] : var->dtValDep_) {
         if (td->type_ == TransformateurDephaseur::HORS_SERVICE) {
             LOG_ALL(warning) << err::ioDico().msg("WARNTdHs", td->quadVrai_->nom_);
             continue;
         }
-        td->setPuiCons(elem.second);
+        td->setPuiCons(puissance);
     }
 
     // XIV-Seuils des quadripoles
     //----------------------------
-    for (const auto& elem : var->quati00mn_) {
+    for (const auto& [quad, seuil] : var->quati00mn_) {
         // Modification du seuil N
-        const auto& quad = elem.first;
-        quad->seuilMaxN_ = elem.second;
+        quad->seuilMaxN_ = seuil;
     }
-    for (const auto& elem : var->quati5mns_) {
+    for (const auto& [quad, seuil] : var->quati5mns_) {
         // Modification du seuil N-1
-        const auto& quad = elem.first;
-        quad->seuilMaxInc_ = elem.second;
+        quad->seuilMaxInc_ = seuil;
     }
-    for (const auto& elem : var->quati20mn_) {
+    for (const auto& [quad, seuil] : var->quati20mn_) {
         // Modification du seuil N-k
-        const auto& quad = elem.first;
-        quad->seuilMaxIncComplexe_ = elem.second;
+        quad->seuilMaxIncComplexe_ = seuil;
     }
-    for (auto& elem : var->quatitamn_) {
+    for (const auto& [quad, seuil] : var->quatitamn_) {
         // Modification du seuil ITAM
-        auto& quad = elem.first;
-        quad->seuilMaxAvantCur_ = elem.second;
+        quad->seuilMaxAvantCur_ = seuil;
     }
-    for (const auto& elem : var->quatitamk_) {
+    for (const auto& [quad, seuil] : var->quatitamk_) {
         // Modification du seuil ITAM complexe
-        const auto& quad = elem.first;
-        quad->seuilMaxAvantCurIncComplexe_ = elem.second;
+        quad->seuilMaxAvantCurIncComplexe_ = seuil;
     }
 
     // Seuils Extremite -> Origine
-    for (const auto& elem : var->quati00mnExOr_) {
+    for (const auto& [quad, seuil] : var->quati00mnExOr_) {
         // Modification du seuil N
-        const auto& quad = elem.first;
-        quad->seuilMaxNExOr_ = elem.second;
+        quad->seuilMaxNExOr_ = seuil;
     }
-    for (const auto& elem : var->quati5mnsExOr_) {
+    for (const auto& [quad, seuil] : var->quati5mnsExOr_) {
         // Modification du seuil N-1
-        const auto& quad = elem.first;
-        quad->seuilMaxIncExOr_ = elem.second;
+        quad->seuilMaxIncExOr_ = seuil;
     }
-    for (const auto& elem : var->quati20mnExOr_) {
+    for (const auto& [quad, seuil] : var->quati20mnExOr_) {
         // Modification du seuil N-k
-        const auto& quad = elem.first;
-        quad->seuilMaxIncComplexeExOr_ = elem.second;
+        quad->seuilMaxIncComplexeExOr_ = seuil;
     }
-    for (const auto& elem : var->quatitamnExOr_) {
+    for (const auto& [quad, seuil] : var->quatitamnExOr_) {
         // Modification du seuil ITAM
-        const auto& quad = elem.first;
-        quad->seuilMaxAvantCurExOr_ = elem.second;
+        quad->seuilMaxAvantCurExOr_ = seuil;
     }
-    for (const auto& elem : var->quatitamkExOr_) {
+    for (const auto& [quad, seuil] : var->quatitamkExOr_) {
         // Modification du seuil ITAM complexe
-        const auto& quad = elem.first;
-        quad->seuilMaxAvantCurIncComplexeExOr_ = elem.second;
+        quad->seuilMaxAvantCurIncComplexeExOr_ = seuil;
     }
 
     // XV-Probabilite des incidents
     //----------------------------
-    for (const auto& elem : var->probabinc_) {
+    for (const auto& [icdt, proba] : var->probabinc_) {
         // Modification de la probabilite de défaut
-        const auto& icdt = elem.first;
-        icdt->probabilite_ = elem.second;
+        icdt->probabilite_ = proba;
     }
 
     // A la fin : Application des bilans zonaux (ex-X)
@@ -2023,15 +1998,11 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
     }
 
     double bilanCourant = 0.0; // bilan actuel apres application de toutes les autres lois
-    double bilanCible = 0.0;   // bilan vis par la variante
     double sumC = 0.0;         // somme des consommations
-    int numRegion = -1;
     vector<std::shared_ptr<Groupe>> groupesDeLaZone;
     std::map<int, vector<std::shared_ptr<Groupe>>>::const_iterator grpZone;
 
-    for (const auto& elem : var->varBilanProd_) {
-        numRegion = elem.first;
-        bilanCible = elem.second;
+    for (const auto& [numRegion, bilanCible] : var->varBilanProd_) {
         bilanCourant = 0.0;
         sumC = 0.0;
 
@@ -2064,7 +2035,7 @@ int Reseau::modifBilans(const std::shared_ptr<Variante>& var)
             }
 
             // Bruitage des groupes
-            std::random_shuffle(groupesDeLaZone.begin(), groupesDeLaZone.end(), myRandom);
+            melanger(groupesDeLaZone);
             varGroupesZones_[numRegion] = groupesDeLaZone;
         }
 
@@ -2423,7 +2394,7 @@ std::shared_ptr<TransformateurDephaseur> Reseau::creerTD(const std::shared_ptr<Q
     auto quad = std::make_shared<Quadripole>(
         numQuadFictif, nomQuad, noeudVrai, noeudFictif, quadVrai->y_ / config::constants::parameter_ktd, 0.);
     quad->typeQuadripole_ = Quadripole::QUADRIPOLE_FICTIF;
-    quads_.insert(std::pair<string, std::shared_ptr<Quadripole>>(quad->nom_, quad));
+    quads_.try_emplace(quad->nom_, quad);
 
     // Pour les procédures de verif en debug on a besoin de calculer les coeffs de report de tous les quads
     if (config::inputConfiguration().checkConstraintLevel() != config::InputConfiguration::CheckConstraintLevel::NONE) {
@@ -2435,7 +2406,7 @@ std::shared_ptr<TransformateurDephaseur> Reseau::creerTD(const std::shared_ptr<Q
 
     auto td = std::make_shared<TransformateurDephaseur>(
         numTd, quad, quadVrai, pCons, pMin, pMax, typeP, curatif, lowtap, nbtap, tapdepha, lowran, uppran);
-    TransfoDephaseurs_.insert(std::pair<string, std::shared_ptr<TransformateurDephaseur>>(quadVrai->nom_, td));
+    TransfoDephaseurs_.try_emplace(quadVrai->nom_, td);
     tdParIndice_.push_back(td);
 
     // c- modification du noeud origine du quadripole quadVrais qui etait support du TD, et qui ne l est plus.
@@ -2532,6 +2503,24 @@ double Incident::getProb() const
     return (prob);
 }
 
+/**
+ * Element de nom `nom` dans `elements`, ou nullptr avec l'avertissement `msgId` s'il n'existe pas
+ */
+template<typename Elements>
+static typename Elements::mapped_type trouverElement(const Elements& elements,
+                                                     const std::string& nom,
+                                                     const char* msgId,
+                                                     int numVariante,
+                                                     const std::string& complement = "")
+{
+    auto it = elements.find(nom);
+    if (it == elements.end()) {
+        LOG_ALL(warning) << err::ioDico().msg(msgId, nom, c_fmt("%d", numVariante), complement);
+        return nullptr;
+    }
+    return it->second;
+}
+
 void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& config)
 {
     using config::VariantConfiguration;
@@ -2542,106 +2531,72 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
     }
 
     for (const auto& group : config.unavailableGroups) {
-        auto groupesIt = groupes_.find(group);
-        if (groupesIt != groupes_.end()) {
-            auto& grp = groupesIt->second;
+        if (const auto grp = trouverElement(groupes_, group, "ERRGroupeIntrouvable", config.num)) {
             grp->etatBase_ = false;
             grp->etat_ = false;
 
             if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
                 prodMaxPossible_ -= grp->puisMaxDispo_;
             }
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", group, c_fmt("%d", config.num));
         }
     }
 
-    for (const auto& conso_cfg : config.consos) {
-        const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            const auto& conso = consosIt->second;
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
+    for (const auto& [str, var_dbl] : config.consos) {
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
             conso->valeurBase_ = var_dbl;
             conso->valeur_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
-    for (const auto& group : config.groups) {
-        const auto& str = std::get<VariantConfiguration::NAME>(group);
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            const auto& grp = groupesIt->second;
+    for (const auto& [str, var_dbl] : config.groups) {
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
             grp->prodPobjBase_ = var_dbl;
             grp->prodPobj_ = var_dbl;
             grp->prod_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
-    for (const auto& group : config.pmaxGroups) {
-        const auto& str = std::get<VariantConfiguration::NAME>(group);
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            const auto& grp = groupesIt->second;
+    for (const auto& [str, var_dbl] : config.pmaxGroups) {
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
             if (grp->prodAjust_ == Groupe::OUI_HR_AR || grp->prodAjust_ == Groupe::OUI_HR) {
                 prodMaxPossible_ -= grp->puisMaxDispoBase_ - var_dbl;
             }
             grp->puisMaxDispoBase_ = var_dbl;
             grp->puisMaxDispo_ = var_dbl;
             grp->puisMax_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
-    for (const auto& group : config.pminGroups) {
-        const auto& str = std::get<VariantConfiguration::NAME>(group);
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            const auto& grp = groupesIt->second;
+    for (const auto& [str, var_dbl] : config.pminGroups) {
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
             grp->puisMinBase_ = var_dbl;
             grp->puisMin_ = var_dbl;
             grp->puisMinAR_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
-    for (const auto& cost : config.costs) {
-        for (const auto& group : cost.second) {
-            const auto& str = std::get<VariantConfiguration::NAME>(group);
-            auto groupesIt = groupes_.find(str);
-            if (groupesIt != groupes_.end()) {
-                const auto& grp = groupesIt->second;
-                auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
+    for (const auto& [typeCout, couts] : config.costs) {
+        for (const auto& [str, var_dbl] : couts) {
+            const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num);
+            if (!grp) {
+                continue;
+            }
 
-                switch (cost.first) {
-                    case VariantConfiguration::VariantConfig::CostType::UP_HR: grp->coutHausseHR_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_HR: grp->coutBaisseHR_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::CostType::UP_AR: grp->coutHausseAR_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_AR: grp->coutBaisseAR_ = var_dbl; break;
-                    default:
-                        // impossible case
-                        break;
-                }
-            } else {
-                LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+            switch (typeCout) {
+                case VariantConfiguration::VariantConfig::CostType::UP_HR: grp->coutHausseHR_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_HR: grp->coutBaisseHR_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::CostType::UP_AR: grp->coutHausseAR_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_AR: grp->coutBaisseAR_ = var_dbl; break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
 
-    for (const auto& line : config.pmaxHvdc) {
-        const auto& str = std::get<VariantConfiguration::NAME>(line);
+    for (const auto& [str, var_dbl] : config.pmaxHvdc) {
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
             const auto& lcc = lccIt->second;
             lcc->puiMaxBase_ = var_dbl;
             lcc->puiMax_ = var_dbl;
@@ -2657,33 +2612,27 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (const auto& line : config.pminHvdc) {
-        const auto& str = std::get<VariantConfiguration::NAME>(line);
+    for (const auto& [str, var_dbl] : config.pminHvdc) {
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
             const auto& lcc = lccIt->second;
             lcc->puiMinBase_ = var_dbl;
             lcc->puiMin_ = var_dbl;
         }
     }
 
-    for (const auto& line : config.powerHvdc) {
-        const auto& str = std::get<VariantConfiguration::NAME>(line);
+    for (const auto& [str, var_dbl] : config.powerHvdc) {
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
             const auto& lcc = lccIt->second;
             lcc->puiConsBase_ = var_dbl;
             lcc->puiCons_ = var_dbl;
         }
     }
 
-    for (const auto& tdPhasing : config.tdPhasing) {
-        const auto& str = std::get<VariantConfiguration::NAME>(tdPhasing);
+    for (const auto& [str, var_int] : config.tdPhasing) {
         auto tdIt = TransfoDephaseurs_.find(str);
         if (tdIt != TransfoDephaseurs_.end()) {
-            auto var_int = std::get<VariantConfiguration::VALUE>(tdPhasing);
             const auto& td = tdIt->second;
             if (td->type_ == TransformateurDephaseur::HORS_SERVICE) {
                 LOG_ALL(warning) << err::ioDico().msg("WARNTdHs", td->quadVrai_->nom_);
@@ -2699,113 +2648,94 @@ void Reseau::updateBase(const config::VariantConfiguration::VariantConfig& confi
         }
     }
 
-    for (const auto& threshold : config.tresholds) {
-        for (const auto& quad_cfg : threshold.second) {
-            const auto& str = std::get<VariantConfiguration::NAME>(quad_cfg);
-            const auto& mapping = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
+    for (const auto& [typeSeuil, seuils] : config.tresholds) {
+        for (const auto& [str, var_dbl] : seuils) {
+            const auto& mapping = (typeSeuil == VariantConfiguration::VariantConfig::Threshold::MAX_N)
                                       ? elementsASurveillerN_
                                       : elementsASurveillerNk_;
             auto quadSurvIt = mapping.find(str);
-            if (quadSurvIt != mapping.end()) {
-                const auto& quad = quadSurvIt->second;
-                auto var_dbl = std::get<VariantConfiguration::VALUE>(quad_cfg);
+            if (quadSurvIt == mapping.end()) {
+                continue;
+            }
+            const auto& quad = quadSurvIt->second;
 
-                switch (threshold.first) {
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_N: quad->seuilMaxN_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC: quad->seuilMaxInc_ = var_dbl; break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
-                        quad->seuilMaxIncComplexe_ = var_dbl;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
-                        quad->seuilMaxAvantCur_ = var_dbl;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
-                        quad->seuilMaxAvantCurIncComplexe_ = var_dbl;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
-                        quad->seuilMaxNExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
-                        quad->seuilMaxIncExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
-                        quad->seuilMaxIncComplexeExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
-                        quad->seuilMaxAvantCurExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
-                        quad->seuilMaxAvantCurIncComplexeExOr_ = var_dbl;
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    default:
-                        // impossible case
-                        break;
-                }
+            switch (typeSeuil) {
+                case VariantConfiguration::VariantConfig::Threshold::MAX_N: quad->seuilMaxN_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC: quad->seuilMaxInc_ = var_dbl; break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
+                    quad->seuilMaxIncComplexe_ = var_dbl;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
+                    quad->seuilMaxAvantCur_ = var_dbl;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
+                    quad->seuilMaxAvantCurIncComplexe_ = var_dbl;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
+                    quad->seuilMaxNExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
+                    quad->seuilMaxIncExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
+                    quad->seuilMaxIncComplexeExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
+                    quad->seuilMaxAvantCurExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
+                    quad->seuilMaxAvantCurIncComplexeExOr_ = var_dbl;
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
 
-    for (const auto& conso_cfg : config.deleteConsosCosts) {
-        const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
-            const auto& conso = consosIt->second;
+    for (const auto& [str, var_dbl] : config.deleteConsosCosts) {
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
             conso->coutEffacementBase_ = var_dbl;
             conso->coutEffacement_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
-    for (auto& incident : config.probas) {
-        const auto& str = std::get<VariantConfiguration::NAME>(incident);
-        auto icIt = incidents_.find(str);
-        if (icIt != incidents_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(incident);
-            const auto& icdt = icIt->second;
+    for (const auto& [str, var_dbl] : config.probas) {
+        if (const auto icdt = trouverElement(incidents_, str, "ERRIncidentIntrouvable", config.num)) {
             icdt->probabilite_ = var_dbl;
             icdt->probabiliteBase_ = var_dbl;
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
         }
     }
 
     Quadripole::SetQuadripoleSortedByName indispoLignesBase;
     for (const auto& line : config.unavailableLines) {
-            auto quadsIt = quads_.find(line);
-            if (quadsIt != quads_.end()) {
-                indispoLignesBase.insert(quadsIt->second);
-                const auto& quad = quadsIt->second;
-                quad->etatExBase_ = false;
-                quad->etatOrBase_ = false;
-                } else {
-                LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
-            }
-
+        if (const auto quad = trouverElement(quads_, line, "ERRQuadIntrouvable", config.num, "QUADIN")) {
+            indispoLignesBase.insert(quad);
+            quad->etatExBase_ = false;
+            quad->etatOrBase_ = false;
         }
-        if (!modifReseauTopo(indispoLignesBase)) {
-            throw ErrorI(err::ioDico().msg("ERRIndispoLigneVarConnexite", c_fmt("%d", config.num)));
-        }
-
+    }
+    if (!modifReseauTopo(indispoLignesBase)) {
+        throw ErrorI(err::ioDico().msg("ERRIndispoLigneVarConnexite", c_fmt("%d", config.num)));
+    }
 }
 
 void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfiguration& config)
 {
     const auto& input_config = config::inputConfiguration();
     unsigned int variant_index = 0;
-    for (const auto& pair : config.variants()) {
-        if (pair.first == config::VariantConfiguration::variant_base) {
+    for (const auto& [numVariante, variante] : config.variants()) {
+        if (numVariante == config::VariantConfiguration::variant_base) {
             // ignore base variant: is processed in another function
             continue;
         }
 
-        if (pair.first < static_cast<int>(input_config.firstVariant())) {
+        if (numVariante < static_cast<int>(input_config.firstVariant())) {
             // ignore variants before first variant
             continue;
         }
@@ -2814,7 +2744,7 @@ void Reseau::updateVariants(MapQuadinVar& mapping, const config::VariantConfigur
             return;
         }
         variant_index++;
-        updateVariant(mapping, pair.second);
+        updateVariant(mapping, variante);
     }
 }
 
@@ -2826,137 +2756,95 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
     variant->num_ = config.num;
 
     for (const auto& group : config.unavailableGroups) {
-        auto groupesIt = groupes_.find(group);
-        if (groupesIt != groupes_.end()) {
-            variant->grpIndispo_.insert(groupesIt->second);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", group, c_fmt("%d", config.num));
+        if (const auto grp = trouverElement(groupes_, group, "ERRGroupeIntrouvable", config.num)) {
+            variant->grpIndispo_.insert(grp);
         }
     }
 
-    for (const auto& conso_cfg : config.consos) {
-        const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
-            variant->valeurConso_.insert(std::pair<std::shared_ptr<Consommation>, double>(consosIt->second, var_dbl));
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [str, var_dbl] : config.consos) {
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
+            variant->valeurConso_.try_emplace(conso, var_dbl);
         }
     }
 
-    for (const auto& group : config.groups) {
-        const auto& str = std::get<VariantConfiguration::NAME>(group);
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            variant->prodImpose_.insert(std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [str, var_dbl] : config.groups) {
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
+            variant->prodImpose_.try_emplace(grp, var_dbl);
         }
     }
 
-    for (const auto& group : config.pmaxGroups) {
-        const auto& str = std::get<VariantConfiguration::NAME>(group);
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            variant->prodMax_.insert(std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [str, var_dbl] : config.pmaxGroups) {
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
+            variant->prodMax_.try_emplace(grp, var_dbl);
         }
     }
 
-    for (const auto& group : config.pminGroups) {
-        const auto& str = std::get<VariantConfiguration::NAME>(group);
-        auto groupesIt = groupes_.find(str);
-        if (groupesIt != groupes_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-            variant->prodMin_.insert(std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [str, var_dbl] : config.pminGroups) {
+        if (const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num)) {
+            variant->prodMin_.try_emplace(grp, var_dbl);
         }
     }
 
-    for (const auto& cost : config.costs) {
-        for (auto group : cost.second) {
-            const auto& str = std::get<VariantConfiguration::NAME>(group);
-            auto groupesIt = groupes_.find(str);
-            if (groupesIt != groupes_.end()) {
-                auto var_dbl = std::get<VariantConfiguration::VALUE>(group);
-
-                switch (cost.first) {
-                    case VariantConfiguration::VariantConfig::CostType::UP_HR:
-                        variant->grpHausseHR_.insert(
-                            std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_HR:
-                        variant->grpBaisseHR_.insert(
-                            std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::CostType::UP_AR:
-                        variant->grpHausseAR_.insert(
-                            std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::CostType::DOWN_AR:
-                        variant->grpBaisseAR_.insert(
-                            std::pair<std::shared_ptr<Groupe>, double>(groupesIt->second, var_dbl));
-                        break;
-                    default:
-                        // impossible case
-                        break;
-                }
-            } else {
-                LOG_ALL(warning) << err::ioDico().msg("ERRGroupeIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [typeCout, couts] : config.costs) {
+        for (const auto& [str, var_dbl] : couts) {
+            const auto grp = trouverElement(groupes_, str, "ERRGroupeIntrouvable", config.num);
+            if (!grp) {
+                continue;
+            }
+            switch (typeCout) {
+                case VariantConfiguration::VariantConfig::CostType::UP_HR:
+                    variant->grpHausseHR_.try_emplace(grp, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_HR:
+                    variant->grpBaisseHR_.try_emplace(grp, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::CostType::UP_AR:
+                    variant->grpHausseAR_.try_emplace(grp, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::CostType::DOWN_AR:
+                    variant->grpBaisseAR_.try_emplace(grp, var_dbl);
+                    break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
 
     for (const auto& line : config.unavailableLines) {
-        auto quadsIt = quads_.find(line);
-        if (quadsIt != quads_.end()) {
-            variant->indispoLignes_.insert(quadsIt->second);
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRQuadIntrouvable", line, c_fmt("%d", config.num), "QUADIN");
+        if (const auto quad = trouverElement(quads_, line, "ERRQuadIntrouvable", config.num, "QUADIN")) {
+            variant->indispoLignes_.insert(quad);
         }
     }
 
-    for (const auto& line : config.pmaxHvdc) {
-        const auto& str = std::get<VariantConfiguration::NAME>(line);
+    for (const auto& [str, var_dbl] : config.pmaxHvdc) {
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
-            variant->dcPuissMax_.insert(std::pair<std::shared_ptr<LigneCC>, double>(lccIt->second, var_dbl));
+            variant->dcPuissMax_.try_emplace(lccIt->second, var_dbl);
         }
     }
 
-    for (const auto& line : config.pminHvdc) {
-        const auto& str = std::get<VariantConfiguration::NAME>(line);
+    for (const auto& [str, var_dbl] : config.pminHvdc) {
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
-            variant->dcPuissMin_.insert(std::pair<std::shared_ptr<LigneCC>, double>(lccIt->second, var_dbl));
+            variant->dcPuissMin_.try_emplace(lccIt->second, var_dbl);
         }
     }
 
-    for (const auto& line : config.powerHvdc) {
-        const auto& str = std::get<VariantConfiguration::NAME>(line);
+    for (const auto& [str, var_dbl] : config.powerHvdc) {
         auto lccIt = LigneCCs_.find(str);
         if (lccIt != LigneCCs_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(line);
-            variant->dcPuissImp_.insert(std::pair<std::shared_ptr<LigneCC>, double>(lccIt->second, var_dbl));
+            variant->dcPuissImp_.try_emplace(lccIt->second, var_dbl);
         }
     }
 
-    for (const auto& tdPhasing : config.tdPhasing) {
-        const auto& str = std::get<VariantConfiguration::NAME>(tdPhasing);
+    for (const auto& [str, var_int] : config.tdPhasing) {
         auto tdIt = TransfoDephaseurs_.find(str);
         if (tdIt != TransfoDephaseurs_.end()) {
-            auto var_int = std::get<VariantConfiguration::VALUE>(tdPhasing);
             const auto& td = tdIt->second;
             if (!td->tapdepha_.empty() && (var_int >= td->lowtap_) && (var_int < td->lowtap_ + td->nbtap_)) {
                 auto power = td->angle2Power(td->tapdepha_[var_int - td->lowtap_]);
-                variant->dtValDep_.insert(std::pair<std::shared_ptr<TransformateurDephaseur>, double>(td, power));
+                variant->dtValDep_.try_emplace(td, power);
             } else {
                 LOG_ALL(warning) << err::ioDico().msg(
                     "ERRTDPriseIntrouvable", str, c_fmt("%d", var_int), c_fmt("%d", config.num));
@@ -2964,110 +2852,85 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
 
-    for (const auto& threshold : config.tresholds) {
-        for (const auto& quad_cfg : threshold.second) {
-            const auto& str = std::get<VariantConfiguration::NAME>(quad_cfg);
-            const auto& map = (threshold.first == VariantConfiguration::VariantConfig::Threshold::MAX_N)
+    for (const auto& [typeSeuil, seuils] : config.tresholds) {
+        for (const auto& [str, var_dbl] : seuils) {
+            const auto& map = (typeSeuil == VariantConfiguration::VariantConfig::Threshold::MAX_N)
                                   ? elementsASurveillerN_
                                   : elementsASurveillerNk_;
             auto quadSurvIt = map.find(str);
-            if (quadSurvIt != map.end()) {
-                const auto& quad = quadSurvIt->second;
-                auto var_dbl = std::get<VariantConfiguration::VALUE>(quad_cfg);
+            if (quadSurvIt == map.end()) {
+                continue;
+            }
+            const auto& quad = quadSurvIt->second;
 
-                switch (threshold.first) {
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_N:
-                        variant->quati00mn_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC:
-                        variant->quati5mns_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
-                        variant->quati20mn_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
-                        variant->quatitamn_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
-                        variant->quatitamk_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
-                        variant->quati00mnExOr_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
-                        variant->quati5mnsExOr_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
-                        variant->quati20mnExOr_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
-                        variant->quatitamnExOr_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
-                        variant->quatitamkExOr_.insert(
-                            std::pair<std::shared_ptr<ElementASurveiller>, double>(quad, var_dbl));
-                        quad->seuilsAssymetriques_ = true;
-                        break;
-                    default:
-                        // impossible case
-                        break;
-                }
+            switch (typeSeuil) {
+                case VariantConfiguration::VariantConfig::Threshold::MAX_N:
+                    variant->quati00mn_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC:
+                    variant->quati5mns_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX:
+                    variant->quati20mn_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR:
+                    variant->quatitamn_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX:
+                    variant->quatitamk_.try_emplace(quad, var_dbl);
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_NEXOR:
+                    variant->quati00mnExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_EXOR:
+                    variant->quati5mnsExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_INC_COMPLEX_EXOR:
+                    variant->quati20mnExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_EXOR:
+                    variant->quatitamnExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                case VariantConfiguration::VariantConfig::Threshold::MAX_BEFORE_CUR_COMPLEX_EXOR:
+                    variant->quatitamkExOr_.try_emplace(quad, var_dbl);
+                    quad->seuilsAssymetriques_ = true;
+                    break;
+                default:
+                    // impossible case
+                    break;
             }
         }
     }
 
-    for (const auto& conso_cfg : config.deleteConsosCosts) {
-        const auto& str = std::get<VariantConfiguration::NAME>(conso_cfg);
-        auto consosIt = consos_.find(str);
-        if (consosIt != consos_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(conso_cfg);
-            variant->coutEfface_.insert(std::pair<std::shared_ptr<Consommation>, double>(consosIt->second, var_dbl));
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRNoeudConsoIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [str, var_dbl] : config.deleteConsosCosts) {
+        if (const auto conso = trouverElement(consos_, str, "ERRNoeudConsoIntrouvable", config.num)) {
+            variant->coutEfface_.try_emplace(conso, var_dbl);
         }
     }
 
-    for (const auto& balance : config.balancesConso) {
-        const auto& str = std::get<VariantConfiguration::NAME>(balance);
+    for (const auto& [str, var_dbl] : config.balancesConso) {
         int region_num = findRegion(str);
         if (region_num == -1) {
             throw ErrorI(err::ioDico().msg("ERRRegionIntrouvable", str, c_fmt("%d", variant->num_)));
         }
-        auto var_dbl = std::get<VariantConfiguration::VALUE>(balance);
-        variant->valeurEchange_.insert(std::pair<int, double>(region_num, var_dbl));
+        variant->valeurEchange_.try_emplace(region_num, var_dbl);
     }
 
-    for (const auto& balance : config.balancesProd) {
-        const auto& str = std::get<VariantConfiguration::NAME>(balance);
+    for (const auto& [str, var_dbl] : config.balancesProd) {
         int region_num = findRegion(str);
         if (region_num == -1) {
             throw ErrorI(err::ioDico().msg("ERRRegionIntrouvable", str, c_fmt("%d", variant->num_)));
         }
-        auto var_dbl = std::get<VariantConfiguration::VALUE>(balance);
-        variant->varBilanProd_.insert(std::pair<int, double>(region_num, var_dbl));
+        variant->varBilanProd_.try_emplace(region_num, var_dbl);
     }
 
-    for (const auto& incident : config.probas) {
-        const auto& str = std::get<VariantConfiguration::NAME>(incident);
-        auto icIt = incidents_.find(str);
-        if (icIt != incidents_.end()) {
-            auto var_dbl = std::get<VariantConfiguration::VALUE>(incident);
-            variant->probabinc_.insert(std::pair<std::shared_ptr<Incident>, double>(icIt->second, var_dbl));
-        } else {
-            LOG_ALL(warning) << err::ioDico().msg("ERRIncidentIntrouvable", str, c_fmt("%d", config.num));
+    for (const auto& [str, var_dbl] : config.probas) {
+        if (const auto icdt = trouverElement(incidents_, str, "ERRIncidentIntrouvable", config.num)) {
+            variant->probabinc_.try_emplace(icdt, var_dbl);
         }
     }
 
@@ -3080,8 +2943,9 @@ void Reseau::updateVariant(MapQuadinVar& mapping, const config::VariantConfigura
         }
     }
     if (!config.randomGroups.empty()){
-        for (const auto& group : groupes_){
-            if (std::find(config.randomGroups.begin(), config.randomGroups.end(), group.first) == config.randomGroups.end()){
+        for (const auto& [nomGroupe, groupe] : groupes_) {
+            if (std::find(config.randomGroups.begin(), config.randomGroups.end(), nomGroupe)
+                == config.randomGroups.end()) {
                 throw ErrorI(err::ioDico().msg("ERRGrpRandomDifferentGrp", c_fmt("%d", variant->num_)));
             }
         }
@@ -3238,9 +3102,7 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
     }
 
     // Move curative means (TD/HVDC) from incident to parades
-    for (const auto& elem : incidents_) {
-        const auto& inc = elem.second;
-
+    for (const auto& [nomIncident, inc] : incidents_) {
         if (inc->parades_.empty() || inc->listeElemCur_.empty()) {
             continue;
         }
@@ -3266,8 +3128,7 @@ void Reseau::updateParades(const config::ParadesConfiguration& config)
              ++it) {
             auto elemCur = std::make_shared<ElementCuratifTD>(it->second->td_);
             inc->listeElemCur_.push_back(elemCur);
-            inc->tdFictifsElemCur_.insert(
-                std::pair<std::shared_ptr<Quadripole>, std::shared_ptr<ElementCuratifTD>>(it->first, elemCur));
+            inc->tdFictifsElemCur_.try_emplace(it->first, elemCur);
         }
     }
 

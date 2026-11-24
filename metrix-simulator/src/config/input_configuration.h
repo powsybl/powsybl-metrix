@@ -12,9 +12,8 @@
 
 #include <metrix/log.h>
 
-#include <boost/optional.hpp>
-
 #include <memory>
+#include <optional>
 #include <string>
 
 namespace config
@@ -43,7 +42,7 @@ public:
                        unsigned int nb_variant,
                        bool print_log,
                        const std::vector<metrix::log::Verbose>& enabled_verboses,
-                       boost::optional<metrix::log::severity::level> level,
+                       std::optional<metrix::log::severity::level> level,
                        bool write_constraint_file,
                        bool print_constraints_matrix,
                        bool write_PTDF_file,
@@ -62,7 +61,7 @@ public:
     unsigned int nbVariant() const { return nbVariant_; }
     bool printLog() const { return printLog_; }
     const std::vector<metrix::log::Verbose>& verboses() const { return verboses_; };
-    const boost::optional<metrix::log::severity::level>& logLevel() const { return logLevel_; }
+    const std::optional<metrix::log::severity::level>& logLevel() const { return logLevel_; }
     bool writeConstraintsFile() const { return writeConstraintsFile_; }
     bool printConstraintsMatrix() const { return printConstraintsMatrix_; }
     bool writePTDFfile() const { return writePTDFfile_; }
@@ -82,7 +81,7 @@ private:
     unsigned int nbVariant_ = 0;
     bool printLog_ = false;
     std::vector<metrix::log::Verbose> verboses_;
-    boost::optional<metrix::log::severity::level> logLevel_;
+    std::optional<metrix::log::severity::level> logLevel_;
     bool writeConstraintsFile_ = false;
     bool printConstraintsMatrix_ = false;
     bool writePTDFfile_ = false;

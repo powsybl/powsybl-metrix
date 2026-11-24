@@ -21,7 +21,7 @@ cmake_policy(SET CMP0074 NEW) # Use <package>_ROOT variables to find package
 message("Build directory : ${CMAKE_BINARY_DIR}")
 message("Source directory : ${CMAKE_SOURCE_DIR}")
 
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED true)
 
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -49,7 +49,12 @@ endif(MSVC)
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66.0 REQUIRED COMPONENTS program_options log filesystem OPTIONAL_COMPONENTS system)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS program_options log OPTIONAL_COMPONENTS system)
+
+# Before GCC 9.1, std::filesystem lives in a separate library
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.1)
+  link_libraries(stdc++fs)
+endif()
 
 option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
 if (USE_SIRIUS_SHARED)

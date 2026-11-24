@@ -12,11 +12,11 @@
 
 #include <metrix/log.h>
 
-#include <boost/optional.hpp>
-
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <vector>
 
@@ -48,10 +48,10 @@ public:
      *
      * @param pathname the pathname of the configuration file
      */
-    static void configure(const std::string& pathname);
+    static void configure(std::string_view pathname);
 
 public:
-    boost::optional<metrix::log::severity::level> logLevel() const { return logLevel_; }
+    std::optional<metrix::log::severity::level> logLevel() const { return logLevel_; }
     bool useCurative() const { return nb_max_action_curative_ > 0; }
     bool usePenalisationTD() const { return cost_td_ > 0.; }
     bool usePenalisationHVDC() const { return cost_hvdc_ > 0.; }
@@ -357,7 +357,7 @@ private:
 
     unsigned int lost_load_detailed_max_;
 
-    boost::optional<metrix::log::severity::level> logLevel_; ///< logger level
+    std::optional<metrix::log::severity::level> logLevel_; ///< logger level
 };
 
 /**

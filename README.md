@@ -182,7 +182,7 @@ all input options are described in --help option
 ##### Requirements
 
 To build metrix-simulator, you need:
-- A C++ compiler that supports C++11 ([clang](https://clang.llvm.org) 3.3 or higher, [g++](https://gcc.gnu.org) 5.0 or higher)
+- A C++ compiler that supports C++17 ([clang](https://clang.llvm.org) 9 or higher, [g++](https://gcc.gnu.org) 8 or higher)
 - [CMake](https://cmake.org) (3.14 or higher)
 - [Make](https://www.gnu.org/software/make/)
 - [Boost](https://www.boost.org) development packages (1.66 or higher)
@@ -190,18 +190,6 @@ To build metrix-simulator, you need:
 ###### Ubuntu 20.04
 ```
 $> apt install -y cmake g++ git libboost-all-dev libxml2-dev make
-```
-
-###### Ubuntu 18.04
-```
-$> apt install -y g++ git libboost-all-dev libxml2-dev make wget
-```
-
-**Note:** Under Ubuntu 18.04, the default CMake package is too old (3.10), so you have to install it manually:
-```
-$> wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz
-$> tar xzf cmake-3.14.0-Linux-x86_64.tar.gz
-$> export PATH=$PWD/cmake-3.14.0-Linux-x86_64/bin:$PATH
 ```
 
 ###### CentOS 8

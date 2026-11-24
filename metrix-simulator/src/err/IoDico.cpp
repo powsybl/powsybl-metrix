@@ -242,7 +242,7 @@ bool IoDico::processLine(ifstream& in, string& key, string& value)
 string
 IoDico::msg(const char* msgId, const string& p1, const string& p2, const string& p3, const string& p4, const string& p5)
 {
-    const std::array<const string*, 5> tab = {&p1, &p2, &p3, &p4, &p5};
+    const std::array tab = {&p1, &p2, &p3, &p4, &p5};
     string val;
 
     if (map_.find(msgId) == map_.end()) {

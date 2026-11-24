@@ -16,12 +16,10 @@
 #define TRACES_PNE NON_PNE   /*NON_PNE*/
 #define PNE_PRESOLVE OUI_PNE /*OUI_PNE*/
 
-namespace config
-{
 /**
  * @brief Namespace describing compile-time constants
  */
-namespace constants
+namespace config::constants
 {
 #ifdef M_PI
 constexpr double pi = M_PI;
@@ -83,5 +81,4 @@ constexpr double display_margin_variation_threshold = 0.000005;
 
 const std::string battery_type = "BATTERIE";
 
-} // namespace constants
-} // namespace config
+} // namespace config::constants
