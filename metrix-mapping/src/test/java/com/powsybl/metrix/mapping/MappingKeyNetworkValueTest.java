@@ -214,4 +214,12 @@ class MappingKeyNetworkValueTest {
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown variable targetP for line FP.AND1  FVERGE1  1");
     }
+
+    @Test
+    void getUnknownVariableTest() {
+        MappingKey mappingKey = new MappingKey(OtherVariable.OTHER_VARIABLE, "FSSV.O11_L");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
+            .isInstanceOf(TimeSeriesMappingException.class)
+            .hasMessage("Unknown variable type com.powsybl.metrix.mapping.OtherVariable for identifiable FSSV.O11_L");
+    }
 }
