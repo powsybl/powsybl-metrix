@@ -13,6 +13,7 @@ import com.google.common.jimfs.Jimfs;
 import com.powsybl.commons.datasource.DataSource;
 import com.powsybl.commons.datasource.DataSourceUtil;
 import com.powsybl.iidm.network.Network;
+import com.powsybl.iidm.network.regulation.RegulationMode;
 import com.powsybl.iidm.serde.NetworkSerDe;
 import com.powsybl.metrix.commons.data.datatable.DataTableStore;
 import com.powsybl.metrix.commons.observer.TimeSeriesMapperObserver;
@@ -52,18 +53,32 @@ class NetworkPointWriterTest {
     private final TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
     private final String expectedDirectoryNameBase = "/expected/NetworkPointWriter/";
     private List<TimeSeriesMapperObserver> networkPointWriterList;
+    private ReadOnlyTimeSeriesStore store;
 
     @BeforeEach
     void setUp() {
         this.fileSystem = Jimfs.newFileSystem(Configuration.unix());
         network = NetworkSerDe.read(Objects.requireNonNull(getClass().getResourceAsStream("/simpleNetwork.xml")));
         addBattery1();
+        addRatioTapChangerVoltageRegulation();
         Path networkOutputDir = fileSystem.getPath(".");
 
         // Create NetworkPointWriter
         DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(network.getId()), null);
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
         networkPointWriterList = List.of(networkPointWriter);
+        store = new ReadOnlyTimeSeriesStoreCache(
+            TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
+            TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
+            TimeSeries.createDouble("variable_ts1", index, 10d, 11d),
+            TimeSeries.createDouble("switch_ts", index, 0d, 1d),
+            TimeSeries.createDouble("ts1", index, 10d, 11d),
+            TimeSeries.createDouble("ts2", index, -10d, -11d),
+            TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
+            TimeSeries.createDouble("regulating_0_1_ts", index, 0d, 1d),
+            TimeSeries.createDouble("regulating_1_0_ts", index, 1d, 0d),
+            TimeSeries.createDouble("regulation_mode_ts", index, 0d, 2d)
+        );
     }
 
     private void addBattery1() {
@@ -76,6 +91,17 @@ class NetworkPointWriterTest {
             .setMinP(10.0)
             .setMaxP(200.0)
             .add();
+    }
+
+    private void addRatioTapChangerVoltageRegulation() {
+        network.getTwoWindingsTransformer("FP.AND1  FTDPRA1  1").getRatioTapChanger()
+            .setLoadTapChangingCapabilities(true)
+            .newVoltageRegulation()
+            .withRegulating(false)
+            .withMode(RegulationMode.REACTIVE_POWER)
+            .withTargetValue(-10.0)
+            .withTerminal(network.getTwoWindingsTransformer("FP.AND1  FTDPRA1  1").getTerminal2())
+            .withTargetDeadband(0).build();
     }
 
     @AfterEach
@@ -98,11 +124,6 @@ class NetworkPointWriterTest {
                 variable regulationMode
             }
             """;
-
-        // Timeseries
-        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
-            TimeSeries.createDouble("regulation_mode_ts", index, 0d, 2d)
-        );
 
         assertMapping(script, store, expectedDirectoryName);
     }
@@ -140,18 +161,6 @@ class NetworkPointWriterTest {
         try (InputStream scriptStream = Objects.requireNonNull(getClass().getResourceAsStream("/network_point_writer_mapping_script.groovy"))) {
             // Mapping script
             String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
-
-            ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
-                TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
-                TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
-                TimeSeries.createDouble("variable_ts1", index, 10d, 11d),
-                TimeSeries.createDouble("switch_ts", index, 0d, 1d),
-                TimeSeries.createDouble("ts1", index, 10d, 11d),
-                TimeSeries.createDouble("ts2", index, -10d, -11d),
-                TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
-                TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
-            );
-
             assertMapping(script, store, expectedDirectoryName);
         }
     }
@@ -163,13 +172,15 @@ class NetworkPointWriterTest {
             String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
 
             ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
-                TimeSeries.createDouble("constant_ts1", index, -5d, -5d),
+                TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
                 TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
-                TimeSeries.createDouble("variable_ts1", index, -10d, -11d),
+                TimeSeries.createDouble("variable_ts1", index, 10d, 11d),
                 TimeSeries.createDouble("switch_ts", index, 0d, 1d),
                 TimeSeries.createDouble("ts1", index, 10d, 11d),
                 TimeSeries.createDouble("ts2", index, -10d, -11d),
                 TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
+                TimeSeries.createDouble("regulating_0_1_ts", index, 0d, 1d),
+                TimeSeries.createDouble("regulating_1_0_ts", index, 1d, 0d),
                 TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
             );
 

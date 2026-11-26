@@ -92,7 +92,9 @@
                 <iidm:step rho="0.9629999995231628"/>
                 <iidm:step rho="0.9580000042915344"/>
                 <iidm:step rho="0.953000009059906"/>
-                <iidm:voltageRegulation targetValue="10.0" mode="VOLTAGE" regulating="false"/>
+                <iidm:voltageRegulation targetValue="10.0" targetDeadband="0.0" mode="REACTIVE_POWER" regulating="false">
+                    <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="TWO"/>
+                </iidm:voltageRegulation>
             </iidm:ratioTapChanger>
             <iidm:phaseTapChanger regulating="true" tapPosition="10" targetDeadband="10.0" loadTapChangingCapabilities="true" regulationMode="CURRENT_LIMITER" regulationValue="600.0">
                 <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="ONE"/>

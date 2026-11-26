@@ -169,11 +169,18 @@ mapToPhaseTapChangers {
     variable regulationMode
 }
 mapToPhaseTapChangers {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulating_1_0_ts'
     filter {
         twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
     }
     variable phaseRegulating
+}
+mapToRatioTapChangers {
+    timeSeriesName 'regulating_0_1_ts'
+    filter {
+        twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+    }
+    variable ratioRegulating
 }
 mapToPhaseTapChangers {
     timeSeriesName 'ts1'

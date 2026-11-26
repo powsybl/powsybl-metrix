@@ -62,7 +62,7 @@
             </iidm:nodeBreakerTopology>
         </iidm:voltageLevel>
         <iidm:twoWindingsTransformer id="FP.AND1  FTDPRA1  1" r="13.0" x="1.0" ratedU1="380.0" ratedU2="380.0" voltageLevelId1="FTDPRA1" node1="11" voltageLevelId2="FP.AND1" node2="11" p1="-95.99961429575856" p2="95.99961429575856" selectedOperationalLimitsGroupIds1="DEFAULT" selectedOperationalLimitsGroupIds2="DEFAULT">
-            <iidm:ratioTapChanger tapPosition="14" loadTapChangingCapabilities="false">
+            <iidm:ratioTapChanger tapPosition="14" loadTapChangingCapabilities="true">
                 <iidm:step rho="1.0880000591278076"/>
                 <iidm:step rho="1.0829999446868896"/>
                 <iidm:step rho="1.0779999494552612"/>
@@ -92,6 +92,9 @@
                 <iidm:step rho="0.9629999995231628"/>
                 <iidm:step rho="0.9580000042915344"/>
                 <iidm:step rho="0.953000009059906"/>
+                <iidm:voltageRegulation targetValue="-10.0" targetDeadband="0.0" mode="REACTIVE_POWER" regulating="false">
+                    <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="TWO"/>
+                </iidm:voltageRegulation>
             </iidm:ratioTapChanger>
             <iidm:phaseTapChanger regulating="false" tapPosition="16" targetDeadband="0.0" loadTapChangingCapabilities="true" regulationMode="CURRENT_LIMITER" regulationValue="600.0">
                 <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="ONE"/>
