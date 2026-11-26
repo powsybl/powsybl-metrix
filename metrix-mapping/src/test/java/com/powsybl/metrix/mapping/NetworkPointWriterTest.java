@@ -53,7 +53,7 @@ class NetworkPointWriterTest {
     private final TimeSeriesIndex index = RegularTimeSeriesIndex.create(Interval.parse("2015-01-01T01:00:00Z/2015-01-01T02:00:00Z"), Duration.ofHours(1));
     private final String expectedDirectoryNameBase = "/expected/NetworkPointWriter/";
     private List<TimeSeriesMapperObserver> networkPointWriterList;
-    private ReadOnlyTimeSeriesStore store;
+    private ReadOnlyTimeSeriesStore fullStore;
 
     @BeforeEach
     void setUp() {
@@ -67,7 +67,7 @@ class NetworkPointWriterTest {
         DataSource dataSource = DataSourceUtil.createDataSource(networkOutputDir.resolve(network.getId()), null);
         NetworkPointWriter networkPointWriter = new NetworkPointWriter(network, dataSource);
         networkPointWriterList = List.of(networkPointWriter);
-        store = new ReadOnlyTimeSeriesStoreCache(
+        fullStore = new ReadOnlyTimeSeriesStoreCache(
             TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
             TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
             TimeSeries.createDouble("variable_ts1", index, 10d, 11d),
@@ -125,7 +125,12 @@ class NetworkPointWriterTest {
             }
             """;
 
-        assertMapping(script, store, expectedDirectoryName);
+        // Timeseries
+        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
+            TimeSeries.createDouble("regulation_mode_ts", index, 3d, 3d)
+        );
+
+        assertMapping(script, fullStore, expectedDirectoryName);
     }
 
     @Test
@@ -161,7 +166,7 @@ class NetworkPointWriterTest {
         try (InputStream scriptStream = Objects.requireNonNull(getClass().getResourceAsStream("/network_point_writer_mapping_script.groovy"))) {
             // Mapping script
             String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
-            assertMapping(script, store, expectedDirectoryName);
+            assertMapping(script, fullStore, expectedDirectoryName);
         }
     }
 
@@ -171,28 +176,15 @@ class NetworkPointWriterTest {
             // Mapping script
             String script = new String(scriptStream.readAllBytes(), StandardCharsets.UTF_8);
 
-            ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
-                TimeSeries.createDouble("constant_ts1", index, 100d, 100d),
-                TimeSeries.createDouble("constant_ts2", index, 3000d, 3000d),
-                TimeSeries.createDouble("variable_ts1", index, 10d, 11d),
-                TimeSeries.createDouble("switch_ts", index, 0d, 1d),
-                TimeSeries.createDouble("ts1", index, 10d, 11d),
-                TimeSeries.createDouble("ts2", index, -10d, -11d),
-                TimeSeries.createDouble("power_factor_ts", index, 0d, 1d),
-                TimeSeries.createDouble("regulating_0_1_ts", index, 0d, 1d),
-                TimeSeries.createDouble("regulating_1_0_ts", index, 1d, 0d),
-                TimeSeries.createDouble("regulation_mode_ts", index, 0d, 1d)
-            );
-
             // Create Mapper
-            TimeSeriesMapper mapper = prepareMapper(script, store);
+            TimeSeriesMapper mapper = prepareMapper(script, fullStore);
 
             // Launch mapper
             // FSSV.O11_G generator in base case minP=0 maxP=500
             // mapping of maxP with constant_ts1 time series -> maxP=-5
             // mapping of minP with variable_ts1 time series -> minP=-10
             // restoreInitialState to minP=0 should pass ValidationUtil.checkActivePowerLimits
-            assertDoesNotThrow(() -> mapper.mapToNetwork(store, networkPointWriterList));
+            assertDoesNotThrow(() -> mapper.mapToNetwork(fullStore, networkPointWriterList));
         }
     }
 
