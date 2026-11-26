@@ -124,7 +124,7 @@ class MappingKeyNetworkValueTest {
     @Test
     void getVscConverterStationValueTest() {
         final String id = "FSSV.O1_FSSV.O1_HVDC2";
-        checkValue(key.getValue(new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, id)), 0);
+        checkValue(key.getValue(new MappingKey(EquipmentVariable.VOLTAGE_REGULATOR_ON, id)), 1);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.VOLTAGE_SETPOINT, id)), 406);
         checkValue(key.getValue(new MappingKey(EquipmentVariable.REACTIVE_POWER_SETPOINT, id)), 0);
     }
@@ -213,5 +213,13 @@ class MappingKeyNetworkValueTest {
         assertThatThrownBy(() -> key.getValue(mappingKey))
                 .isInstanceOf(TimeSeriesMappingException.class)
                 .hasMessage("Unknown variable targetP for line FP.AND1  FVERGE1  1");
+    }
+
+    @Test
+    void getUnknownVariableTest() {
+        MappingKey mappingKey = new MappingKey(OtherVariable.OTHER_VARIABLE, "FSSV.O11_L");
+        assertThatThrownBy(() -> key.getValue(mappingKey))
+            .isInstanceOf(TimeSeriesMappingException.class)
+            .hasMessage("Unknown variable type com.powsybl.metrix.mapping.OtherVariable for identifiable FSSV.O11_L");
     }
 }

@@ -46,7 +46,7 @@ mapToGenerators {
     filter {generator.id == 'FSSV.O12_G'}
 }
 mapToGenerators {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulation_mode_ts'
     filter {
         generator.id=="FVALDI11_G"
     }
@@ -67,7 +67,7 @@ mapToGenerators {
     variable targetV
 }
 mapToGenerators {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulation_mode_ts'
     filter {
         generator.id=="FSSV.O11_G"
     }
@@ -169,11 +169,18 @@ mapToPhaseTapChangers {
     variable regulationMode
 }
 mapToPhaseTapChangers {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulating_1_0_ts'
     filter {
         twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
     }
     variable phaseRegulating
+}
+mapToRatioTapChangers {
+    timeSeriesName 'regulating_0_1_ts'
+    filter {
+        twoWindingsTransformer.id=="FP.AND1  FTDPRA1  1"
+    }
+    variable ratioRegulating
 }
 mapToPhaseTapChangers {
     timeSeriesName 'ts1'
@@ -232,7 +239,7 @@ mapToLccConverterStations {
     variable powerFactor
 }
 mapToVscConverterStations {
-    timeSeriesName 'ts1'
+    timeSeriesName 'regulation_mode_ts'
     filter {
         vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
     }
@@ -251,13 +258,6 @@ mapToVscConverterStations {
         vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
     }
     variable reactivePowerSetpoint
-}
-mapToVscConverterStations {
-    timeSeriesName 'ts1'
-    filter {
-        vscConverterStation.id=="FSSV.O1_FSSV.O1_HVDC1"
-    }
-    variable voltageRegulatorOn
 }
 mapToLines {
     timeSeriesName 'ts1'

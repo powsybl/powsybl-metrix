@@ -92,9 +92,11 @@
                 <iidm:step rho="0.9629999995231628"/>
                 <iidm:step rho="0.9580000042915344"/>
                 <iidm:step rho="0.953000009059906"/>
-                <iidm:voltageRegulation targetValue="11.0" mode="VOLTAGE" regulating="false"/>
+                <iidm:voltageRegulation targetValue="11.0" targetDeadband="0.0" mode="REACTIVE_POWER" regulating="true">
+                    <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="TWO"/>
+                </iidm:voltageRegulation>
             </iidm:ratioTapChanger>
-            <iidm:phaseTapChanger regulating="true" tapPosition="11" targetDeadband="11.0" loadTapChangingCapabilities="true" regulationMode="ACTIVE_POWER_CONTROL" regulationValue="600.0">
+            <iidm:phaseTapChanger regulating="false" tapPosition="11" targetDeadband="11.0" loadTapChangingCapabilities="true" regulationMode="CURRENT_LIMITER" regulationValue="600.0">
                 <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="ONE"/>
                 <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" rho="1.0" alpha="-9.167247772216797"/>
                 <iidm:step r="6.705299601890147E-4" x="6.616116152144969E-4" rho="1.0" alpha="-0.15"/>
@@ -240,6 +242,7 @@
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:vscConverterStation>
         </iidm:voltageLevel>
     </iidm:substation>

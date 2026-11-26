@@ -63,11 +63,11 @@ public class MappingKeyNetworkValue {
     private double getGeneratorValue(Generator generator, EquipmentVariable variable) {
         return switch (variable) {
             case TARGET_P -> generator.getTargetP();
-            case TARGET_Q -> generator.getTargetQ();
+            case TARGET_Q -> generator.getLocalTargetQ();
             case MIN_P -> generator.getMinP();
             case MAX_P -> generator.getMaxP();
-            case VOLTAGE_REGULATOR_ON -> generator.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
-            case TARGET_V -> generator.getTargetV();
+            case VOLTAGE_REGULATOR_ON -> generator.isRegulating() ? ON_VALUE : OFF_VALUE;
+            case TARGET_V -> generator.getLocalTargetV();
             case DISCONNECTED -> generator.getTerminal().isConnected() ? OFF_VALUE : ON_VALUE;
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for generator %s", variable, generator.getId()));
@@ -128,7 +128,7 @@ public class MappingKeyNetworkValue {
                     twoWindingsTransformer.getPhaseTapChanger().isRegulating());
             // mapToRatioTapChanger variables
             case RATIO_TAP_POSITION -> twoWindingsTransformer.getRatioTapChanger().getTapPosition();
-            case TARGET_V -> twoWindingsTransformer.getRatioTapChanger().getTargetV();
+            case TARGET_V -> twoWindingsTransformer.getRatioTapChanger().getLocalTargetV();
             case LOAD_TAP_CHANGING_CAPABILITIES ->
                 twoWindingsTransformer.getRatioTapChanger().hasLoadTapChangingCapabilities() ? ON_VALUE : OFF_VALUE;
             case RATIO_REGULATING -> twoWindingsTransformer.getRatioTapChanger().isRegulating() ? ON_VALUE : OFF_VALUE;
@@ -146,9 +146,9 @@ public class MappingKeyNetworkValue {
 
     private double getVscConverterStationValue(VscConverterStation vscConverterStation, EquipmentVariable variable) {
         return switch (variable) {
-            case VOLTAGE_REGULATOR_ON -> vscConverterStation.isVoltageRegulatorOn() ? ON_VALUE : OFF_VALUE;
-            case VOLTAGE_SETPOINT -> vscConverterStation.getVoltageSetpoint();
-            case REACTIVE_POWER_SETPOINT -> vscConverterStation.getReactivePowerSetpoint();
+            case VOLTAGE_REGULATOR_ON -> vscConverterStation.isRegulating() ? ON_VALUE : OFF_VALUE;
+            case VOLTAGE_SETPOINT -> vscConverterStation.getRegulatingTargetV();
+            case REACTIVE_POWER_SETPOINT -> vscConverterStation.getRegulatingTargetQ();
             default ->
                 throw new TimeSeriesMappingException(String.format("Unknown variable %s for vscConverterStation %s", variable, vscConverterStation.getId()));
         };

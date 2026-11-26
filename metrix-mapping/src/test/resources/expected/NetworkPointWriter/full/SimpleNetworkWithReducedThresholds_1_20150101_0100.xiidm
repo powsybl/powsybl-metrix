@@ -92,7 +92,9 @@
                 <iidm:step rho="0.9629999995231628"/>
                 <iidm:step rho="0.9580000042915344"/>
                 <iidm:step rho="0.953000009059906"/>
-                <iidm:voltageRegulation targetValue="10.0" mode="VOLTAGE" regulating="false"/>
+                <iidm:voltageRegulation targetValue="10.0" targetDeadband="0.0" mode="REACTIVE_POWER" regulating="false">
+                    <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="TWO"/>
+                </iidm:voltageRegulation>
             </iidm:ratioTapChanger>
             <iidm:phaseTapChanger regulating="true" tapPosition="10" targetDeadband="10.0" loadTapChangingCapabilities="true" regulationMode="CURRENT_LIMITER" regulationValue="600.0">
                 <iidm:terminalRef id="FP.AND1  FTDPRA1  1" side="ONE"/>
@@ -217,7 +219,7 @@
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2000.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
-                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="false"/>
             </iidm:generator>
             <iidm:generator id="FSSV.O12_G" energySource="THERMAL" minP="0.0" maxP="3001.0" targetP="3000.0" localTargetV="406.4500427246094" localTargetQ="2.3523099422454834" node="20" p="-480.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>
@@ -233,13 +235,14 @@
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
                 </iidm:reactiveCapabilityCurve>
-                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="false"/>
             </iidm:vscConverterStation>
             <iidm:vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" lossFactor="2.0" localTargetV="406.0" localTargetQ="0.0" node="12" p="0.0">
                 <iidm:reactiveCapabilityCurve>
                     <iidm:point p="-1011.0" minQ="-300.0" maxQ="300.0"/>
                     <iidm:point p="1011.0" minQ="-300.0" maxQ="300.0"/>
                 </iidm:reactiveCapabilityCurve>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
             </iidm:vscConverterStation>
         </iidm:voltageLevel>
     </iidm:substation>
@@ -305,7 +308,7 @@
                     <iidm:point p="0.0" minQ="-200.0" maxQ="200.0"/>
                     <iidm:point p="2500.0" minQ="-200.0" maxQ="200.0"/>
                 </iidm:reactiveCapabilityCurve>
-                <iidm:voltageRegulation mode="VOLTAGE" regulating="true"/>
+                <iidm:voltageRegulation mode="VOLTAGE" regulating="false"/>
             </iidm:generator>
             <iidm:generator id="FVALDI12_G" energySource="THERMAL" minP="-100.0" maxP="2500.0" targetP="0.0" localTargetV="406.4500427246094" localTargetQ="6.45497989654541" node="23" p="-0.0">
                 <iidm:property name="genreCvg" value="CHARBON"/>

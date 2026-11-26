@@ -219,13 +219,13 @@
         </reactiveCapabilityCurve>
       </generator>
       <load id="FSSV.O11_L" loadType="UNDEFINED" p0="480" q0="4.8000001907348633" node="18" p="480"/>
-      <vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" voltageRegulatorOn="false" lossFactor="2" voltageSetpoint="406" reactivePowerSetpoint="0" node="10" p="0">
+      <vscConverterStation id="FSSV.O1_FSSV.O1_HVDC1" name="FSSV.O1_HVDC1" voltageRegulatorOn="true" lossFactor="2" voltageSetpoint="406" reactivePowerSetpoint="0" node="10" p="0">
         <reactiveCapabilityCurve>
           <point p="-1011" minQ="-300" maxQ="300"/>
           <point p="1011" minQ="-300" maxQ="300"/>
         </reactiveCapabilityCurve>
       </vscConverterStation>
-      <vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" voltageRegulatorOn="false" lossFactor="2" voltageSetpoint="406" reactivePowerSetpoint="0" node="12" p="0">
+      <vscConverterStation id="FSSV.O1_FSSV.O1_HVDC2" name="FSSV.O1_HVDC2" voltageRegulatorOn="true" lossFactor="2" voltageSetpoint="406" reactivePowerSetpoint="0" node="12" p="0">
         <reactiveCapabilityCurve>
           <point p="-1011" minQ="-300" maxQ="300"/>
           <point p="1011" minQ="-300" maxQ="300"/>
