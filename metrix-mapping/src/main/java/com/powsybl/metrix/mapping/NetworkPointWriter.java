@@ -132,7 +132,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
     private void mapToVscConverterStationVariable(Identifiable<?> identifiable, EquipmentVariable variable, double equipmentValue) {
         VscConverterStation converter = network.getVscConverterStation(identifiable.getId());
         switch (variable) {
-            case VOLTAGE_REGULATOR_ON -> converter.getVoltageRegulation().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case VOLTAGE_REGULATOR_ON ->
+                converter.getVoltageRegulation().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case VOLTAGE_SETPOINT -> converter.setLocalTargetV(equipmentValue);
             case REACTIVE_POWER_SETPOINT -> converter.setLocalTargetQ(equipmentValue);
             default -> {
@@ -158,7 +159,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case TARGET_V -> transformer.getRatioTapChanger().getVoltageRegulation().setTargetValue(equipmentValue);
             case LOAD_TAP_CHANGING_CAPABILITIES ->
                 transformer.getRatioTapChanger().setLoadTapChangingCapabilities(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
-            case RATIO_REGULATING -> transformer.getRatioTapChanger().getVoltageRegulation().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case RATIO_REGULATING ->
+                transformer.getRatioTapChanger().getVoltageRegulation().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case DISCONNECTED -> {
                 if (Math.abs(equipmentValue - DISCONNECTED_VALUE) > EPSILON_COMPARISON) {
                     transformer.getTerminal1().disconnect();
@@ -276,7 +278,8 @@ public class NetworkPointWriter extends DefaultTimeSeriesMapperObserver {
             case TARGET_Q -> generator.setLocalTargetQ(equipmentValue);
             case MIN_P -> generator.setMinP(equipmentValue);
             case MAX_P -> generator.setMaxP(equipmentValue);
-            case VOLTAGE_REGULATOR_ON -> generator.getVoltageRegulation().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
+            case VOLTAGE_REGULATOR_ON ->
+                generator.getVoltageRegulation().setRegulating(Math.abs(equipmentValue - OFF_VALUE) > EPSILON_COMPARISON);
             case TARGET_V -> generator.setLocalTargetV(equipmentValue);
             case DISCONNECTED -> disconnectInjection(equipmentValue, generator);
             default -> { /* Do nothing */ }
