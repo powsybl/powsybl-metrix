@@ -125,11 +125,6 @@ class NetworkPointWriterTest {
             }
             """;
 
-        // Timeseries
-        ReadOnlyTimeSeriesStore store = new ReadOnlyTimeSeriesStoreCache(
-            TimeSeries.createDouble("regulation_mode_ts", index, 3d, 3d)
-        );
-
         assertMapping(script, fullStore, expectedDirectoryName);
     }
 
