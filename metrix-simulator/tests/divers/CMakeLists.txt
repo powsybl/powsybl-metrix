@@ -39,3 +39,4 @@ metrix_test("resultats_surcharges_uniquement" 10)
 endif()
 metrix_test_no_check("transits_sur_incidents" 1) # no output check because of random display order
 metrix_test("redispatching_offset" 3)
+metrix_test("redispatching_offset_charge_negative" 2)

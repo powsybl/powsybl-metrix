@@ -442,9 +442,9 @@ curatif ou des incidents ayant généré un transit maximal sur incident (cf. [t
 |:--------------------|:-----|:------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Nom du sommet       | C    |       |                                                                                                                                                                                                                 |
 | Demande             | R    | MW    | Somme des consommations à ce sommet                                                                                                                                                                             |
-| Défaillance HR      | R    | MW    | Délestage préventif lors de l'équilibrage (valeur positive) |
+| Défaillance HR      | R    | MW    | Délestage préventif lors de l'équilibrage, du même signe que la consommation : négatif pour une consommation négative (injection), dont la puissance injectée est alors réduite de la valeur absolue |
 | Coût défaillance HR | R    |       | Coût du délestage préventif lors de l'équilibrage (résultat uniquement présent si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator)                             |
-| Défaillance AR      | R    | MW    | Délestage préventif lié au réseau (valeur positive), en plus de l'éventuel délestage dû au manque de production |
+| Défaillance AR      | R    | MW    | Délestage préventif lié au réseau, du même signe que la consommation (cf. Défaillance HR), en plus de l'éventuel délestage dû au manque de production |
 | Coût défaillance AR | R    |       | Coût du délestage préventif lié au réseau (résultat uniquement présent si l'option `--all-outputs` est donnée lors du lancement à METRIX simulator) |
 
 **Note** : si l'opton `--all-outputs` est donnée lors du lancement à METRIX simulator et qu'il n'existe pas de consommation modifiable alors tous les champs, hormis le nom, valent *0*.
