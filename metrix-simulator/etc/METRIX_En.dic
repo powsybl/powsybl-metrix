@@ -167,6 +167,8 @@ ERRAjoutCtr									Error while adding constraint on line $2 after contingency $
 ERRAjoutCtrN								Error while adding constraint on line $1
 ERRHVDCNbCellules							Error: the HVDC link $1 has no cell ; computation of losses impossible
 ERRCompensationInsuffisante                 Error: not enough power to compensate loss of nodes 
+ERRHVDCEmulACEntreCompSyn					HVDC link $1 in AC emulation connects 2 synchronous areas. Not supported.
+ERRTypeCalculInconnu						Unknown computation mode (MODECALC)
 
 
 //------------- Warning --------------------
@@ -199,7 +201,7 @@ ERRCurTopoContrainteInconnue                Constraint '$1' does not match any m
 WarnElementDansIncident                     Branch '$1' used in a remedial action is part of the outage '$2'
 WarnElementDejaDansParade                   Duplicate branch '$1' used in a remedial action of outage '$2'
 
-//---------------- Variables li�es ---------------------
+//---------------- Variables liées ---------------------
 ERRConsoNulle								Error: load value is null on bus '$1' used in variable binding '$2'
 ERRVarRefNulle								Error: reference variable is null for generator '$1' used in variable binding '$2' 
 ERRGrpNonAjustable							Error : non ajustable group '$1' used in variable coupling '$2'

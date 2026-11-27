@@ -2211,10 +2211,10 @@ int Calculer::detectionContraintes(const std::vector<double>& secondMembre /*pha
                  || config::configuration().computationType()
                         == config::Configuration::ComputationType::OPF_WITH_OVERLOAD)
                 && elemAS->ecarts_.find(SITU_N) != elemAS->ecarts_.end()) {
-                LOG(debug) << metrix::log::verbose_constraints << "Contrainte N deja entree dans le probleme pour "
-                           << elemAS->nom_ << " (ecart = " << pbX_[elemAS->ecarts_.find(SITU_N)->second] << ")";
                 int varEcart = elemAS->ecarts_.find(SITU_N)->second;
                 if (varEcart != -1) {
+                    LOG(debug) << metrix::log::verbose_constraints << "Contrainte N deja entree dans le probleme pour "
+                               << elemAS->nom_ << " (ecart = " << pbX_[varEcart] << ")";
                     elemAS->depassementEnN_ = fabs(pbX_[varEcart]);
                 }
                 continue; // on a deja une variable d'ecart pour cette contrainte

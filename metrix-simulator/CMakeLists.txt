@@ -40,7 +40,8 @@ else()
   if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
   endif()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Werror -pthread")
+  # No FMA contraction, so that results do not depend on the target instruction set
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pedantic -Werror -pthread -ffp-contract=off")
   set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
   set(CMAKE_CXX_FLAGS_RELEASE "-O3")
   set(CMAKE_C_FLAGS_RELEASE "-O3")
@@ -48,7 +49,7 @@ endif(MSVC)
 
 set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
-find_package(Boost 1.66.0 REQUIRED COMPONENTS system program_options log filesystem)
+find_package(Boost 1.66.0 REQUIRED COMPONENTS program_options log filesystem OPTIONAL_COMPONENTS system)
 
 option(USE_SIRIUS_SHARED "Use shared library for sirius solver" OFF)
 if (USE_SIRIUS_SHARED)

@@ -272,7 +272,7 @@ private:
 
     // thread management
     std::unique_ptr<std::thread> thread_;
-    boost::asio::io_service context_;
+    boost::asio::io_context context_;
     boost::asio::steady_timer timer_;
     mutable std::mutex mutex_;
 };
