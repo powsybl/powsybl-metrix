@@ -1747,7 +1747,7 @@ bool Calculer::computeCosts(const std::vector<int>& constraintsToDelail,
 
             int numVar = numVa[j];
             double offset = config::configuration().redispatchCostOffset();
-             // negative load: shedding variable in [seuil*C, 0], cost and offset are negated
+            // negative load: shedding variable in [seuil*C, 0], cost and offset are negated
             if (typeOu[j] == 1 && pbXmin_[numVar] < 0.) {
                 offset = -offset;
             }
